@@ -120,10 +120,11 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   preserveNodeMaps?: boolean;
 
   /**
-   * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s).
+   * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s),
+   * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
    */
-  project?: string | string[];
+  project?: string | string[] | true;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from

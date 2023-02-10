@@ -1,0 +1,1151 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/_error_/implements-non-identifier/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/_error_/missing-body/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/_error_/missing-extends-type-param/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/_error_/missing-type-param/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/_error_/non-identifier-name/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/_error_/non-identifier-type-param/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/abstract/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/declare/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/decorator-many/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/decorator-one/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/empty/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/extends/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/extends-literal/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/extends-type-param/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/implements-many/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/implements-one/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/type-param/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/type-parameters-extends-type-param/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/with-member-one/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/_error_/kind-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/_error_/missing-source/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/_error_/named-non-identifier/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/_error_/non-string-source/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/_error_/type-kind/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/assertion/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/named/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/unnamed/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportDefaultDeclaration/fixtures/_error_/enum/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportDefaultDeclaration/fixtures/_error_/namespace/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportDefaultDeclaration/fixtures/_error_/type-alias/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportDefaultDeclaration/fixtures/_error_/variable-declaration/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportDefaultDeclaration/fixtures/anonymous-class/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportDefaultDeclaration/fixtures/anonymous-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportDefaultDeclaration/fixtures/arrow-function-expression/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportDefaultDeclaration/fixtures/class/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportDefaultDeclaration/fixtures/class-expression/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportDefaultDeclaration/fixtures/function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportDefaultDeclaration/fixtures/identifier/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportDefaultDeclaration/fixtures/interface/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportDefaultDeclaration/fixtures/literal/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/_error_/aliased-literal/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/_error_/anonymous-class/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/_error_/anonymous-function-expression/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/_error_/arrow-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/_error_/assertion/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/_error_/class-expression/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/_error_/identifier-direct/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/_error_/literal-braced/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/_error_/literal-direct/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/aliased/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/class/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/declare-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/enum/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/function-declaration/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/identifier-braced/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/identifier-many/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/interface/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/namespace/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/type-alias/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportNamedDeclaration/fixtures/variable-declaration/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/FunctionDeclaration/fixtures/_error_/missing-id-and-not-exported/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/FunctionDeclaration/fixtures/_error_/missing-type-param/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/FunctionDeclaration/fixtures/_error_/non-identifier-name/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/FunctionDeclaration/fixtures/_error_/non-identifier-type-param/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/FunctionDeclaration/fixtures/async/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/FunctionDeclaration/fixtures/empty/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/FunctionDeclaration/fixtures/generator/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/FunctionDeclaration/fixtures/param-many/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/FunctionDeclaration/fixtures/param-one/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/FunctionDeclaration/fixtures/returnType/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/FunctionDeclaration/fixtures/type-param-many/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/FunctionDeclaration/fixtures/type-param-one/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/_error_/default-non-identifier/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/_error_/named-and-namespace/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/_error_/named-non-identifier/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/_error_/namespace-and-default/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/_error_/namespace-and-named/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/_error_/namespace-and-namespace/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/_error_/namespace-non-identifier/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/_error_/non-string-source/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/assertion/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/default/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/default-and-named-many/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/default-and-named-none/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/default-and-named-one/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/default-and-namespace/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/named-many/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/named-none/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/named-one/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ImportDeclaration/fixtures/side-effect/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSDeclareFunction/fixtures/_error_/async/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSDeclareFunction/fixtures/_error_/declare-with-body/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSDeclareFunction/fixtures/_error_/missing-id-and-not-exported/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSDeclareFunction/fixtures/_error_/missing-type-param/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSDeclareFunction/fixtures/_error_/non-identifier-name/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSDeclareFunction/fixtures/_error_/non-identifier-type-param/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSDeclareFunction/fixtures/empty/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSDeclareFunction/fixtures/generator/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSDeclareFunction/fixtures/param-many/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSDeclareFunction/fixtures/param-one/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSDeclareFunction/fixtures/returnType/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSDeclareFunction/fixtures/type-param-many/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSDeclareFunction/fixtures/type-param-one/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSDeclareFunction/fixtures/without-declare/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSEnumDeclaration/fixtures/_error_/missing-body/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSEnumDeclaration/fixtures/_error_/missing-id/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSEnumDeclaration/fixtures/_error_/non-identifier-name/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSEnumDeclaration/fixtures/const/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSEnumDeclaration/fixtures/declare/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSEnumDeclaration/fixtures/empty/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSEnumDeclaration/fixtures/with-member-one/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSImportEqualsDeclaration/fixtures/_error_/entity-name-invalid/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSImportEqualsDeclaration/fixtures/_error_/external-module-ref-non-string/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSImportEqualsDeclaration/fixtures/_error_/import-kind/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSImportEqualsDeclaration/fixtures/_error_/missing-id/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSImportEqualsDeclaration/fixtures/_error_/missing-reference/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSImportEqualsDeclaration/fixtures/entity-name-many/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSImportEqualsDeclaration/fixtures/entity-name-one/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSImportEqualsDeclaration/fixtures/external-module-ref-string/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSInterfaceDeclaration/fixtures/_error_/missing-body/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSInterfaceDeclaration/fixtures/_error_/missing-extends/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSInterfaceDeclaration/fixtures/_error_/missing-id/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSInterfaceDeclaration/fixtures/_error_/missing-type-param/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSInterfaceDeclaration/fixtures/_error_/non-identifier-extends/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSInterfaceDeclaration/fixtures/_error_/non-identifier-name/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSInterfaceDeclaration/fixtures/_error_/non-identifier-type-param/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSInterfaceDeclaration/fixtures/declare/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSInterfaceDeclaration/fixtures/empty/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSInterfaceDeclaration/fixtures/extends-many/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSInterfaceDeclaration/fixtures/extends-one/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSInterfaceDeclaration/fixtures/type-param-many/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSInterfaceDeclaration/fixtures/type-param-one/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSInterfaceDeclaration/fixtures/with-member-one/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/_error_/module-invalid-id/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/_error_/module-missing-body/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/_error_/namespace-declare-no-body/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/_error_/namespace-id-literal/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/_error_/namespace-invalid-id/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/_error_/namespace-no-body/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/global/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/module-declare/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/module-declare-no-body/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/module-id-identifier/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/module-id-literal/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/module-id-qualified-name/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/namespace-declare/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/namespace-id-identifier/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/namespace-id-qualified-name/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSNamespaceExportDeclaration/fixtures/_error_/missing-id/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSNamespaceExportDeclaration/fixtures/_error_/non-identifier-name/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSNamespaceExportDeclaration/fixtures/valid/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSTypeAliasDeclaration/fixtures/_error_/missing-type-parameter/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSTypeAliasDeclaration/fixtures/_error_/non-identifier-name/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSTypeAliasDeclaration/fixtures/_error_/non-identifier-type-parameter/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSTypeAliasDeclaration/fixtures/declare/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSTypeAliasDeclaration/fixtures/type-param-many/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSTypeAliasDeclaration/fixtures/type-param-one/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSTypeAliasDeclaration/fixtures/valid/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/VariableDeclaration/fixtures/_error_/missing-id-with-value/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/VariableDeclaration/fixtures/_error_/missing-id-without-value/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/VariableDeclaration/fixtures/const-with-value/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/VariableDeclaration/fixtures/const-without-value/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/VariableDeclaration/fixtures/declare/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/VariableDeclaration/fixtures/let-with-value/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/VariableDeclaration/fixtures/let-without-value/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/VariableDeclaration/fixtures/multiple-declarations/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/VariableDeclaration/fixtures/var-with-value/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/VariableDeclaration/fixtures/var-without-value/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/_error_/modifier-override-with-no-extends/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/key-computed-complex/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/key-computed-number/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/key-computed-string/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/key-number/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/key-private/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/key-string/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/modifier-abstract/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/modifier-abstract-with-value/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/modifier-declare/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/modifier-override/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/modifier-private/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/modifier-protected/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/modifier-public/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/modifier-readonly/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/modifier-static/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/no-annotation-no-value/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/no-annotation-with-value/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/with-annotation-no-value/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/element/AccessorProperty/fixtures/with-annotation-with-value/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/expression/TSSatisfiesExpression/fixtures/array-array/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/expression/TSSatisfiesExpression/fixtures/arrow-func-no-parentheses/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/expression/TSSatisfiesExpression/fixtures/arrow-func-with-parentheses/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/expression/TSSatisfiesExpression/fixtures/chained-satisfies/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/expression/TSSatisfiesExpression/fixtures/conditional-no-parentheses/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/expression/TSSatisfiesExpression/fixtures/conditional-with-parentheses/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/expression/TSSatisfiesExpression/fixtures/identifier-keyword/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/expression/TSSatisfiesExpression/fixtures/identifier-object-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/expression/TSSatisfiesExpression/fixtures/identifier-tuple-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/expression/TSSatisfiesExpression/fixtures/logical-no-parentheses/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/expression/TSSatisfiesExpression/fixtures/logical-with-parentheses/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/expression/TSSatisfiesExpression/fixtures/object-object-inner-parentheses/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/expression/TSSatisfiesExpression/fixtures/object-object-outer-parentheses/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/accessor-decorators/fixtures/accessor-decorator-factory-instance-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/accessor-decorators/fixtures/accessor-decorator-factory-static-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/accessor-decorators/fixtures/accessor-decorator-instance-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/accessor-decorators/fixtures/accessor-decorator-static-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/babylon-convergence/fixtures/type-parameter-whitespace-loc/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/babylon-convergence/fixtures/type-parameters/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/abstract-class-with-abstract-static-constructor/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/abstract-class-with-override-property/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/abstract-interface/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/await-without-async-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/class-private-identifier-field-with-accessibility-error/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/class-with-constructor-and-type-parameters/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/class-with-export-parameter-properties/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/class-with-implements-and-extends/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/class-with-static-parameter-properties/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/class-with-two-methods-computed-constructor/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/const-assertions/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/export-named-enum-computed-number/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/export-named-enum-computed-string/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/export-named-enum-computed-var-ref/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/export-type-star-from/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/export-with-import-assertions/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/import-type-error/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/interface-with-construct-signature-with-parameter-accessibility/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/new-target-in-arrow-function-body/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/var-with-definite-assignment/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/abstract-class-with-abstract-constructor/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/abstract-class-with-abstract-method/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/abstract-class-with-abstract-properties/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/abstract-class-with-abstract-readonly-property/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/abstract-class-with-declare-properties/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/abstract-class-with-optional-method/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/abstract-class-with-override-method/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/angle-bracket-type-assertion/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/angle-bracket-type-assertion-arrow-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/arrow-function-with-optional-parameter/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/arrow-function-with-type-parameters/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/async-function-expression/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/async-function-with-var-declaration/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/call-signatures/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/call-signatures-with-generics/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/cast-as-expression/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/cast-as-multi/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/cast-as-multi-assign/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/cast-as-operator/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/cast-as-simple/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/catch-clause-with-annotation/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/catch-clause-with-invalid-annotation/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-multi-line-keyword-abstract/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-multi-line-keyword-declare/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-private-identifier-field-with-annotation/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-private-identifier-readonly-field/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-static-blocks/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-accessibility-modifiers/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-constructor-and-modifier/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-constructor-and-parameter-property-with-modifiers/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-constructor-and-parameter-proptery-with-override-modifier/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-constructor-and-return-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-declare-properties/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-definite-assignment/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-extends-and-implements/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-extends-generic/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-extends-generic-multiple/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-generic-method/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-generic-method-default/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-implements/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-implements-generic/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-implements-generic-multiple/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-method/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-mixin/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-mixin-reference/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-optional-computed-method/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-optional-computed-property/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-optional-methods/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-optional-properties/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-optional-property-undefined/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-override-method/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-override-property/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-private-optional-property/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-private-parameter-properties/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-property-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-property-values/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-protected-parameter-properties/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-public-parameter-properties/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-readonly-parameter-properties/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-readonly-property/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-type-parameter/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-type-parameter-default/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/class-with-type-parameter-underscore/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/const-enum/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/declare-class-with-optional-method/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/declare-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/destructuring-assignment/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/destructuring-assignment-nested/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/destructuring-assignment-object/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/destructuring-assignment-property/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/directive-in-module/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/directive-in-namespace/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/dynamic-import-with-import-assertions/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-all-with-import-assertions/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-as-namespace/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-assignment/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-declare-const-named-enum/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-declare-named-enum/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-default-class-with-generic/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-default-class-with-multiple-generics/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-default-interface/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-named-class-with-generic/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-named-class-with-multiple-generics/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-named-enum/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-star-as-ns-from/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-type-as/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-type-from/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-type-from-as/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/function-anonymus-with-type-parameters/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/function-anynomus-with-return-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/function-overloads/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/function-with-await/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/function-with-object-type-with-optional-properties/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/function-with-object-type-without-annotation/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/function-with-type-parameters/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/function-with-type-parameters-that-have-comments/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/function-with-type-parameters-with-constraint/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/function-with-types/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/function-with-types-assignation/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/global-this/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/import-equal-declaration/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/import-equal-type-declaration/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/import-export-equal-declaration/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/import-export-equal-type-declaration/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/import-type-default/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/import-type-empty/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/import-type-named/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/import-type-named-as/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/import-type-star-as-ns/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/import-with-import-assertions/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/interface-extends/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/interface-extends-multiple/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/interface-type-parameters/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/interface-with-all-property-types/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/interface-with-extends-member-expression/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/interface-with-extends-type-parameters/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/interface-with-generic/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/interface-with-jsdoc/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/interface-with-method/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/interface-with-optional-properties/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/interface-without-type-annotation/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/intrinsic-keyword/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/keyof-operator/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/keyword-variables/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/nested-type-arguments/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/never-type-param/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/non-null-assertion-operator/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/null-and-undefined-type-annotations/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/nullish-coalescing/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/object-with-escaped-properties/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/object-with-typed-methods/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/optional-chain/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/optional-chain-call/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/optional-chain-call-with-non-null-assertion/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/optional-chain-call-with-parens/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/optional-chain-element-access/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/optional-chain-element-access-with-non-null-assertion/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/optional-chain-element-access-with-parens/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/optional-chain-with-non-null-assertion/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/optional-chain-with-parens/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/parenthesized-use-strict/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/private-fields-in-in/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/readonly-arrays/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/readonly-tuples/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/short-circuiting-assignment-and-and/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/short-circuiting-assignment-or-or/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/short-circuiting-assignment-question-question/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/symbol-type-param/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-alias-declaration/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-alias-declaration-export/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-alias-declaration-export-function-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-alias-declaration-export-object-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-alias-declaration-with-constrained-type-parameter/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-alias-object-without-annotation/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-assertion-in-arrow-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-assertion-in-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-assertion-in-interface/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-assertion-in-method/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-assertion-with-guard-in-arrow-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-assertion-with-guard-in-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-assertion-with-guard-in-interface/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-assertion-with-guard-in-method/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-guard-in-arrow-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-guard-in-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-guard-in-interface/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-guard-in-method/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-import-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-import-type-with-type-parameters-in-type-reference/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-only-export-specifiers/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-only-import-specifiers/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-parameters-comments/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-parameters-comments-heritage/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/type-reference-comments/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/typed-keyword-bigint/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/typed-keyword-boolean/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/typed-keyword-false/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/typed-keyword-never/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/typed-keyword-null/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/typed-keyword-number/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/typed-keyword-object/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/typed-keyword-string/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/typed-keyword-symbol/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/typed-keyword-true/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/typed-keyword-undefined/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/typed-keyword-unknown/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/typed-keyword-void/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/typed-method-signature/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/typed-this/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/union-intersection/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/unique-symbol/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/unknown-type-annotation/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/var-with-dotted-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/var-with-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/variable-declaration-type-annotation-spacing/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/class-decorators/fixtures/class-decorator/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/class-decorators/fixtures/class-decorator-factory/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/class-decorators/fixtures/class-parameter-property/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/class-decorators/fixtures/export-default-class-decorator/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/class-decorators/fixtures/export-named-class-decorator/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/comments/fixtures/type-assertion-regression-test/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/declare/fixtures/abstract-class/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/declare/fixtures/class/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/declare/fixtures/enum/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/declare/fixtures/function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/declare/fixtures/interface/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/declare/fixtures/module/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/declare/fixtures/namespace/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/declare/fixtures/type-alias/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/declare/fixtures/variable/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/class-empty-extends/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/class-empty-extends-implements/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/class-extends-empty-implements/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/class-multiple-implements/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/decorator-on-enum-declaration/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/decorator-on-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/decorator-on-interface-declaration/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/decorator-on-variable/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-arguments/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-arguments-in-call-expression/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-arguments-in-new-expression/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-parameters/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-parameters-in-arrow-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-parameters-in-constructor/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-parameters-in-function-expression/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-parameters-in-method/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-parameters-in-method-signature/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/enum-with-keywords/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/index-signature-parameters/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-empty-extends/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-implements/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-index-signature-export/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-index-signature-private/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-index-signature-protected/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-index-signature-public/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-index-signature-static/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-method-export/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-method-private/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-method-protected/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-method-public/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-method-readonly/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-method-static/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-multiple-extends/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-property-export/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-property-private/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-property-protected/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-property-public/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-property-static/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-property-with-default-value/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-with-no-body/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/interface-with-optional-index-signature/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/object-assertion-not-allowed/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/object-optional-not-allowed/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/errorRecovery/fixtures/_error_/solo-const/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/expressions/fixtures/_error_/instantiation-expression/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/expressions/fixtures/call-expression-type-arguments/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/expressions/fixtures/new-expression-type-arguments/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/expressions/fixtures/optional-call-expression-type-arguments/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/expressions/fixtures/tagged-template-expression-type-arguments/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/method-decorators/fixtures/method-decorator-factory-instance-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/method-decorators/fixtures/method-decorator-factory-static-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/method-decorators/fixtures/method-decorator-instance-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/method-decorators/fixtures/method-decorator-static-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/namespaces-and-modules/fixtures/ambient-module-declaration-with-import/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/namespaces-and-modules/fixtures/declare-namespace-with-exported-function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/namespaces-and-modules/fixtures/global-module-declaration/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/namespaces-and-modules/fixtures/module-with-default-exports/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/namespaces-and-modules/fixtures/nested-internal-module/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/namespaces-and-modules/fixtures/shorthand-ambient-module-declaration/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-array-pattern-decorator/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-rest-element-decorator/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-decorator-constructor/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-decorator-decorator-instance-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-decorator-decorator-static-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-decorator-instance-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-decorator-static-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-object-pattern-decorator/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/property-decorators/fixtures/property-decorator-factory-instance-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/property-decorators/fixtures/property-decorator-factory-static-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/property-decorators/fixtures/property-decorator-instance-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/property-decorators/fixtures/property-decorator-static-member/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/array-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/conditional/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/conditional-infer/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/conditional-infer-nested/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/conditional-infer-simple/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/conditional-infer-with-constraint/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/conditional-with-null/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/constructor/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/constructor-abstract/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/constructor-empty/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/constructor-generic/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/constructor-in-generic/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/constructor-with-rest/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/function/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/function-generic/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/function-in-generic/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/function-with-array-destruction/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/function-with-object-destruction/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/function-with-rest/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/function-with-this/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/index-signature/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/index-signature-readonly/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/index-signature-without-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/indexed/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/interface-with-accessors/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/intersection-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/literal-number/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/literal-number-negative/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/literal-string/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/mapped/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/mapped-named-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/mapped-readonly/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/mapped-readonly-minus/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/mapped-readonly-plus/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/mapped-untypped/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/nested-types/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/object-literal-type-with-accessors/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/optional-variance-in/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/optional-variance-in-and-out/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/optional-variance-in-out/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/optional-variance-out/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/parenthesized-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/reference/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/reference-generic/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/reference-generic-nested/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/template-literal-type-1/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/template-literal-type-2/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/template-literal-type-3/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/template-literal-type-4/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/this-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/this-type-expanded/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/tuple/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/tuple-empty/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/tuple-named/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/tuple-named-optional/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/tuple-named-rest/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/tuple-named-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/tuple-optional/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/tuple-rest/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/tuple-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/type-literal/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/type-operator/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/typeof/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/typeof-this/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/typeof-with-type-parameters/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/union-intersection/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/types/fixtures/union-type/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;

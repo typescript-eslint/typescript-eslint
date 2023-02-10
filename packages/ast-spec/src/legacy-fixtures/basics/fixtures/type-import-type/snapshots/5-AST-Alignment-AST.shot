@@ -1,0 +1,175 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSTypeAliasDeclaration {
+        type: 'TSTypeAliasDeclaration',
+        id: Identifier {
+          type: 'Identifier',
+          name: 'A',
+
+          range: [78, 79],
+          loc: {
+            start: { column: 5, line: 3 },
+            end: { column: 6, line: 3 },
+          },
+        },
+        typeAnnotation: TSTypeQuery {
+          type: 'TSTypeQuery',
+          exprName: TSImportType {
+            type: 'TSImportType',
+-           argument: TSLiteralType {
+-             type: 'TSLiteralType',
+-             literal: Literal {
+-               type: 'Literal',
+-               raw: '\\\\'A\\\\'',
+-               value: 'A',
++           argument: Literal {
++             type: 'Literal',
++             raw: '\\\\'A\\\\'',
++             value: 'A',
+
+-               range: [96, 99],
+-               loc: {
+-                 start: { column: 23, line: 3 },
+-                 end: { column: 26, line: 3 },
+-               },
+-             },
+-
+              range: [96, 99],
+              loc: {
+                start: { column: 23, line: 3 },
+                end: { column: 26, line: 3 },
+              },
+            },
+-           qualifier: null,
+-           typeParameters: null,
+
+            range: [89, 100],
+            loc: {
+              start: { column: 16, line: 3 },
+              end: { column: 27, line: 3 },
+            },
+          },
+
+          range: [82, 100],
+          loc: {
+            start: { column: 9, line: 3 },
+            end: { column: 27, line: 3 },
+          },
+        },
+
+        range: [73, 101],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 28, line: 3 },
+        },
+      },
+      TSTypeAliasDeclaration {
+        type: 'TSTypeAliasDeclaration',
+        id: Identifier {
+          type: 'Identifier',
+          name: 'B',
+
+          range: [107, 108],
+          loc: {
+            start: { column: 5, line: 4 },
+            end: { column: 6, line: 4 },
+          },
+        },
+        typeAnnotation: TSImportType {
+          type: 'TSImportType',
+-         argument: TSLiteralType {
+-           type: 'TSLiteralType',
+-           literal: Literal {
+-             type: 'Literal',
+-             raw: '\\\\'B\\\\'',
+-             value: 'B',
+-
+-             range: [118, 121],
+-             loc: {
+-               start: { column: 16, line: 4 },
+-               end: { column: 19, line: 4 },
+-             },
+-           },
++         argument: Literal {
++           type: 'Literal',
++           raw: '\\\\'B\\\\'',
++           value: 'B',
+
+            range: [118, 121],
+            loc: {
+              start: { column: 16, line: 4 },
+              end: { column: 19, line: 4 },
+            },
+          },
+          qualifier: Identifier {
+            type: 'Identifier',
+            name: 'X',
+
+            range: [123, 124],
+            loc: {
+              start: { column: 21, line: 4 },
+              end: { column: 22, line: 4 },
+            },
+          },
+          typeParameters: TSTypeParameterInstantiation {
+            type: 'TSTypeParameterInstantiation',
+            params: Array [
+              TSTypeReference {
+                type: 'TSTypeReference',
+                typeName: Identifier {
+                  type: 'Identifier',
+                  name: 'Y',
+
+                  range: [125, 126],
+                  loc: {
+                    start: { column: 23, line: 4 },
+                    end: { column: 24, line: 4 },
+                  },
+                },
+
+                range: [125, 126],
+                loc: {
+                  start: { column: 23, line: 4 },
+                  end: { column: 24, line: 4 },
+                },
+              },
+            ],
+
+            range: [124, 127],
+            loc: {
+              start: { column: 22, line: 4 },
+              end: { column: 25, line: 4 },
+            },
+          },
+
+          range: [111, 127],
+          loc: {
+            start: { column: 9, line: 4 },
+            end: { column: 25, line: 4 },
+          },
+        },
+
+        range: [102, 128],
+        loc: {
+          start: { column: 0, line: 4 },
+          end: { column: 26, line: 4 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 129],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 5 },
+    },
+  }"
+`;

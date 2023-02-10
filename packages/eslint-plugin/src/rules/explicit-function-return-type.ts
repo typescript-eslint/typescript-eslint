@@ -15,6 +15,7 @@ type Options = [
     allowHigherOrderFunctions?: boolean;
     allowDirectConstAssertionInArrowFunctions?: boolean;
     allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
+    allowFunctionsWithoutTypeParameters?: boolean;
     allowedNames?: string[];
   },
 ];
@@ -61,6 +62,11 @@ export default util.createRule<Options, MessageIds>({
               'Whether to ignore arrow functions immediately returning a `as const` value.',
             type: 'boolean',
           },
+          allowFunctionsWithoutTypeParameters: {
+            description:
+              "Whether to ignore functions that don't have generic type parameters.",
+            type: 'boolean',
+          },
           allowedNames: {
             description:
               'An array of function/method names that will not have their arguments or return values checked.',
@@ -86,12 +92,16 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
-    function isAllowedName(
+    function isAllowedFunction(
       node:
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionExpression
         | TSESTree.FunctionDeclaration,
     ): boolean {
+      if (options.allowFunctionsWithoutTypeParameters && !node.typeParameters) {
+        return true;
+      }
+
       if (!options.allowedNames?.length) {
         return false;
       }
@@ -153,7 +163,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        if (isAllowedName(node)) {
+        if (isAllowedFunction(node)) {
           return;
         }
 
@@ -174,7 +184,7 @@ export default util.createRule<Options, MessageIds>({
         );
       },
       FunctionDeclaration(node): void {
-        if (isAllowedName(node)) {
+        if (isAllowedFunction(node)) {
           return;
         }
         if (options.allowTypedFunctionExpressions && node.returnType) {
