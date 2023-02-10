@@ -141,6 +141,7 @@ Program {
           end: { column: 20, line: 3 },
         },
       },
+      kind: "namespace",
 
       range: [73, 157],
       loc: {

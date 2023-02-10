@@ -2,5 +2,114 @@
 
 exports[`AST Fixtures legacy-fixtures namespaces-and-modules global-module-declaration AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSModuleDeclaration {
+        type: 'TSModuleDeclaration',
+        body: TSModuleBlock {
+          type: 'TSModuleBlock',
+          body: Array [
+            TSModuleDeclaration {
+              type: 'TSModuleDeclaration',
+              body: TSModuleBlock {
+                type: 'TSModuleBlock',
+                body: Array [],
+
+                range: [114, 116],
+                loc: {
+                  start: { column: 24, line: 4 },
+                  end: { column: 26, line: 4 },
+                },
+              },
+              declare: true,
+              id: Identifier {
+                type: 'Identifier',
+                name: 'global',
+
+                range: [107, 113],
+                loc: {
+                  start: { column: 17, line: 4 },
+                  end: { column: 23, line: 4 },
+                },
+              },
+-             kind: 'module',
+
+              range: [92, 116],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 26, line: 4 },
+              },
+            },
+            TSModuleDeclaration {
+              type: 'TSModuleDeclaration',
+              body: TSModuleBlock {
+                type: 'TSModuleBlock',
+                body: Array [],
+
+                range: [144, 146],
+                loc: {
+                  start: { column: 27, line: 5 },
+                  end: { column: 29, line: 5 },
+                },
+              },
+              declare: true,
+              id: Identifier {
+                type: 'Identifier',
+                name: 'global',
+
+                range: [137, 143],
+                loc: {
+                  start: { column: 20, line: 5 },
+                  end: { column: 26, line: 5 },
+                },
+              },
+-             kind: 'namespace',
+
+              range: [119, 146],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 29, line: 5 },
+              },
+            },
+          ],
+
+          range: [88, 148],
+          loc: {
+            start: { column: 15, line: 3 },
+            end: { column: 1, line: 6 },
+          },
+        },
+        declare: true,
+        global: true,
+        id: Identifier {
+          type: 'Identifier',
+          name: 'global',
+
+          range: [81, 87],
+          loc: {
+            start: { column: 8, line: 3 },
+            end: { column: 14, line: 3 },
+          },
+        },
+-       kind: 'global',
+
+        range: [73, 148],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 149],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 7 },
+    },
+  }"
 `;

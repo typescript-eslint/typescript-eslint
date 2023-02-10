@@ -187,6 +187,7 @@ Program {
           end: { column: 12, line: 3 },
         },
       },
+      kind: "module",
 
       range: [73, 174],
       loc: {

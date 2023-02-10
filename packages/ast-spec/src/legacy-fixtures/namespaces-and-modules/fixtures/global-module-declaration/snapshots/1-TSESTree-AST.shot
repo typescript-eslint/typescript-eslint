@@ -32,6 +32,7 @@ Program {
                 end: { column: 23, line: 4 },
               },
             },
+            kind: "module",
 
             range: [92, 116],
             loc: {
@@ -62,6 +63,7 @@ Program {
                 end: { column: 26, line: 5 },
               },
             },
+            kind: "namespace",
 
             range: [119, 146],
             loc: {
@@ -89,6 +91,7 @@ Program {
           end: { column: 14, line: 3 },
         },
       },
+      kind: "global",
 
       range: [73, 148],
       loc: {

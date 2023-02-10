@@ -110,6 +110,7 @@ Program {
           end: { column: 10, line: 3 },
         },
       },
+      kind: "module",
 
       range: [73, 132],
       loc: {
