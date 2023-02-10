@@ -1,4 +1,4 @@
-export * from './containsTypesByName';
+export * from './containsAllTypesByName';
 export * from './getConstrainedTypeAtLocation';
 export * from './getContextualType';
 export * from './getDeclaration';

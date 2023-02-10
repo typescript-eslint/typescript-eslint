@@ -46,6 +46,7 @@ async function functionReturnsPromise() {
   return Promise.resolve('value');
 }
 
+// An explicit return type that is not Promise means this function cannot be made async, so it is ignored by the rule
 function functionReturnsUnionWithPromiseExplicitly(
   p: boolean,
 ): string | Promise<string> {
