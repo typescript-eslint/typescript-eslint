@@ -55,7 +55,7 @@ interface TSModuleDeclarationBase extends BaseNode {
   modifiers?: Modifier[];
 
   /**
-   * THe keyword used to define this module declaration
+   * The keyword used to define this module declaration
    * ```
    * namespace Foo {}
    * ^^^^^^^^^
