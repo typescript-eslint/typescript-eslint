@@ -30,10 +30,12 @@ const tarFolder = tmp.dirSync({
 const tseslintPackages: PackageJSON['devDependencies'] = {};
 for (const pkg of PACKAGES) {
   const packageDir = path.join(PACKAGES_DIR, pkg);
-  const packageJson: PackageJSON = require(path.join(
-    packageDir,
-    'package.json',
-  ));
+  const packagePath = path.join(packageDir, 'package.json');
+  if (!fs.existsSync(packagePath)) {
+    continue;
+  }
+
+  const packageJson = require(packagePath) as PackageJSON;
   if (packageJson.private === true) {
     continue;
   }
