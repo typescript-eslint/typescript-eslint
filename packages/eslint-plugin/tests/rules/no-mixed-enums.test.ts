@@ -145,6 +145,67 @@ ruleTester.run('no-mixed-enums', rule, {
         A,
       }
     `,
+    `
+enum Foo {
+  A = 1,
+}
+enum Foo {
+  B = 2,
+}
+    `,
+    `
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
+declare module '@typescript-eslint/types' {
+  enum AST_NODE_TYPES {
+    StringLike = 'StringLike',
+  }
+}
+    `,
+    `
+namespace Test {
+  export enum Bar {
+    A = 1,
+  }
+}
+namespace Test {
+  export enum Bar {
+    B = 2,
+  }
+}
+    `,
+    `
+namespace Outer {
+  namespace Test {
+    export enum Bar {
+      A = 1,
+    }
+  }
+}
+namespace Outer {
+  namespace Test {
+    export enum Bar {
+      B = 'B',
+    }
+  }
+}
+    `,
+    `
+namespace Outer {
+  namespace Test {
+    export enum Bar {
+      A = 1,
+    }
+  }
+}
+namespace Different {
+  namespace Test {
+    export enum Bar {
+      B = 'B',
+    }
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -441,6 +502,91 @@ ruleTester.run('no-mixed-enums', rule, {
           endColumn: 18,
           column: 15,
           line: 9,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
+
+declare module '@typescript-eslint/types' {
+  enum AST_NODE_TYPES {
+    Numeric = 0,
+  }
+}
+      `,
+      errors: [
+        {
+          endColumn: 16,
+          column: 15,
+          line: 6,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+enum Foo {
+  A = 1,
+}
+enum Foo {
+  B = 'B',
+}
+      `,
+      errors: [
+        {
+          endColumn: 10,
+          column: 7,
+          line: 6,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+namespace Test {
+  export enum Bar {
+    A = 1,
+  }
+}
+namespace Test {
+  export enum Bar {
+    B = 'B',
+  }
+}
+      `,
+      errors: [
+        {
+          endColumn: 12,
+          column: 9,
+          line: 9,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+namespace Outer {
+  export namespace Test {
+    export enum Bar {
+      A = 1,
+    }
+  }
+}
+namespace Outer {
+  export namespace Test {
+    export enum Bar {
+      B = 'B',
+    }
+  }
+}
+      `,
+      errors: [
+        {
+          endColumn: 14,
+          column: 11,
+          line: 12,
           messageId: 'mixed',
         },
       ],
