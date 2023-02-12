@@ -699,6 +699,17 @@ let foo = (() => (): string => {
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => (): void => {})()();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
