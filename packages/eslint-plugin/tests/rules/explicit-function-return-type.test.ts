@@ -710,6 +710,17 @@ let foo = (() => (): void => {})()();
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => (() => {})())();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
