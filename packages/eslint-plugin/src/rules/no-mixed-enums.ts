@@ -97,7 +97,7 @@ export default util.createRule({
 
     function getMemberType(
       member: TSESTree.TSEnumMember,
-    ): AllowedType | undefined {
+    ): AllowedType | ts.TypeFlags.Unknown | undefined {
       if (!member.initializer) {
         return undefined;
       }
@@ -110,7 +110,7 @@ export default util.createRule({
             case 'string':
               return ts.TypeFlags.String;
             default:
-              return undefined;
+              return ts.TypeFlags.Unknown;
           }
 
         case AST_NODE_TYPES.TemplateLiteral:
@@ -125,7 +125,7 @@ export default util.createRule({
 
     function getDesiredTypeForDefinition(
       node: TSESTree.TSEnumDeclaration,
-    ): AllowedType | undefined {
+    ): AllowedType | ts.TypeFlags.Unknown | undefined {
       const { imports, previousSibling } = collectNodeDefinitions(node);
 
       // Case: Merged ambiently via module augmentation
@@ -191,9 +191,15 @@ export default util.createRule({
         }
 
         let desiredType = getDesiredTypeForDefinition(node);
+        if (desiredType === ts.TypeFlags.Unknown) {
+          return;
+        }
 
         for (const member of node.members) {
           const currentType = getMemberType(member);
+          if (currentType === ts.TypeFlags.Unknown) {
+            return;
+          }
 
           if (currentType === ts.TypeFlags.Number) {
             desiredType ??= currentType;

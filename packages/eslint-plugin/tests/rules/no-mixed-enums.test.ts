@@ -22,6 +22,11 @@ ruleTester.run('no-mixed-enums', rule, {
     `,
     `
       enum Fruit {
+        Apple = false,
+      }
+    `,
+    `
+      enum Fruit {
         Apple,
         Banana,
       }
@@ -42,6 +47,12 @@ ruleTester.run('no-mixed-enums', rule, {
       enum Fruit {
         Apple = 0,
         Banana = 1,
+      }
+    `,
+    `
+      enum Fruit {
+        Apple,
+        Banana = false,
       }
     `,
     `
@@ -154,10 +165,43 @@ enum Foo {
 }
     `,
     `
+enum Foo {
+  A = \`A\`,
+}
+enum Foo {
+  B = \`B\`,
+}
+    `,
+    `
+enum Foo {
+  A = false, // (TS error)
+}
+enum Foo {
+  B = \`B\`,
+}
+    `,
+    `
+enum Foo {
+  A = 'A',
+}
+enum Foo {
+  B = false, // (TS error)
+}
+    `,
+    `
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 declare module '@typescript-eslint/types' {
   enum AST_NODE_TYPES {
+    StringLike = 'StringLike',
+  }
+}
+    `,
+    `
+import { TSESTree } from '@typescript-eslint/types';
+
+declare module '@typescript-eslint/types' {
+  enum TSESTree {
     StringLike = 'StringLike',
   }
 }
@@ -548,6 +592,28 @@ enum Foo {
 namespace Test {
   export enum Bar {
     A = 1,
+  }
+}
+namespace Test {
+  export enum Bar {
+    B = 'B',
+  }
+}
+      `,
+      errors: [
+        {
+          endColumn: 12,
+          column: 9,
+          line: 9,
+          messageId: 'mixed',
+        },
+      ],
+    },
+    {
+      code: `
+namespace Test {
+  export enum Bar {
+    A,
   }
 }
 namespace Test {
