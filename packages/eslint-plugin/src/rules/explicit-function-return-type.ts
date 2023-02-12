@@ -113,6 +113,10 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
 
+      if (options.allowIIFEs && isIIFE(node)) {
+        return true;
+      }
+
       if (
         node.type === AST_NODE_TYPES.ArrowFunctionExpression ||
         node.type === AST_NODE_TYPES.FunctionExpression
@@ -158,7 +162,10 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function isIIFE(
-      node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionExpression
+        | TSESTree.FunctionDeclaration,
     ): boolean {
       return node.parent!.type === AST_NODE_TYPES.CallExpression;
     }
