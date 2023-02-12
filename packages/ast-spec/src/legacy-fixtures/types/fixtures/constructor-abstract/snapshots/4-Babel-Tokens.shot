@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types constructor-abstract Babel - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "var",
+
+    range: [73, 76],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 3, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "x",
+
+    range: [77, 78],
+    loc: {
+      start: { column: 4, line: 3 },
+      end: { column: 5, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [78, 79],
+    loc: {
+      start: { column: 5, line: 3 },
+      end: { column: 6, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "abstract",
+
+    range: [80, 88],
+    loc: {
+      start: { column: 7, line: 3 },
+      end: { column: 15, line: 3 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "new",
+
+    range: [89, 92],
+    loc: {
+      start: { column: 16, line: 3 },
+      end: { column: 19, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [93, 94],
+    loc: {
+      start: { column: 20, line: 3 },
+      end: { column: 21, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [94, 95],
+    loc: {
+      start: { column: 21, line: 3 },
+      end: { column: 22, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=>",
+
+    range: [96, 98],
+    loc: {
+      start: { column: 23, line: 3 },
+      end: { column: 25, line: 3 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "void",
+
+    range: [99, 103],
+    loc: {
+      start: { column: 26, line: 3 },
+      end: { column: 30, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [103, 104],
+    loc: {
+      start: { column: 30, line: 3 },
+      end: { column: 31, line: 3 },
+    },
+  },
+]
+`;

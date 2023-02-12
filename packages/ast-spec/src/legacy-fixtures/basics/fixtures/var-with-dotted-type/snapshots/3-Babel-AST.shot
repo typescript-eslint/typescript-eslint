@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics var-with-dotted-type Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "foo",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTypeReference {
+                type: "TSTypeReference",
+                typeName: TSQualifiedName {
+                  type: "TSQualifiedName",
+                  left: TSQualifiedName {
+                    type: "TSQualifiedName",
+                    left: Identifier {
+                      type: "Identifier",
+                      name: "A",
+
+                      range: [82, 83],
+                      loc: {
+                        start: { column: 9, line: 3 },
+                        end: { column: 10, line: 3 },
+                      },
+                    },
+                    right: Identifier {
+                      type: "Identifier",
+                      name: "B",
+
+                      range: [84, 85],
+                      loc: {
+                        start: { column: 11, line: 3 },
+                        end: { column: 12, line: 3 },
+                      },
+                    },
+
+                    range: [82, 85],
+                    loc: {
+                      start: { column: 9, line: 3 },
+                      end: { column: 12, line: 3 },
+                    },
+                  },
+                  right: Identifier {
+                    type: "Identifier",
+                    name: "C",
+
+                    range: [86, 87],
+                    loc: {
+                      start: { column: 13, line: 3 },
+                      end: { column: 14, line: 3 },
+                    },
+                  },
+
+                  range: [82, 87],
+                  loc: {
+                    start: { column: 9, line: 3 },
+                    end: { column: 14, line: 3 },
+                  },
+                },
+
+                range: [82, 87],
+                loc: {
+                  start: { column: 9, line: 3 },
+                  end: { column: 14, line: 3 },
+                },
+              },
+
+              range: [80, 87],
+              loc: {
+                start: { column: 7, line: 3 },
+                end: { column: 14, line: 3 },
+              },
+            },
+
+            range: [77, 87],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 14, line: 3 },
+            },
+          },
+          init: null,
+
+          range: [77, 87],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 14, line: 3 },
+          },
+        },
+      ],
+      kind: "var",
+
+      range: [73, 88],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 15, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 89],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

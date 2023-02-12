@@ -1,0 +1,252 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-method Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "isBar",
+
+              range: [94, 99],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 7, line: 4 },
+              },
+            },
+            kind: "method",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: null,
+
+                    range: [132, 139],
+                    loc: {
+                      start: { column: 4, line: 5 },
+                      end: { column: 11, line: 5 },
+                    },
+                  },
+                ],
+
+                range: [126, 143],
+                loc: {
+                  start: { column: 34, line: 4 },
+                  end: { column: 3, line: 6 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSTypePredicate {
+                  type: "TSTypePredicate",
+                  asserts: true,
+                  parameterName: TSThisType {
+                    type: "TSThisType",
+
+                    range: [111, 115],
+                    loc: {
+                      start: { column: 19, line: 4 },
+                      end: { column: 23, line: 4 },
+                    },
+                  },
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSStringKeyword {
+                      type: "TSStringKeyword",
+
+                      range: [119, 125],
+                      loc: {
+                        start: { column: 27, line: 4 },
+                        end: { column: 33, line: 4 },
+                      },
+                    },
+
+                    range: [119, 125],
+                    loc: {
+                      start: { column: 27, line: 4 },
+                      end: { column: 33, line: 4 },
+                    },
+                  },
+
+                  range: [103, 125],
+                  loc: {
+                    start: { column: 11, line: 4 },
+                    end: { column: 33, line: 4 },
+                  },
+                },
+
+                range: [101, 125],
+                loc: {
+                  start: { column: 9, line: 4 },
+                  end: { column: 33, line: 4 },
+                },
+              },
+
+              range: [99, 143],
+              loc: {
+                start: { column: 7, line: 4 },
+                end: { column: 3, line: 6 },
+              },
+            },
+
+            range: [94, 143],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 3, line: 6 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "isBaz",
+
+              range: [146, 151],
+              loc: {
+                start: { column: 2, line: 7 },
+                end: { column: 7, line: 7 },
+              },
+            },
+            static: false,
+            value: ArrowFunctionExpression {
+              type: "ArrowFunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: null,
+
+                    range: [190, 197],
+                    loc: {
+                      start: { column: 4, line: 8 },
+                      end: { column: 11, line: 8 },
+                    },
+                  },
+                ],
+
+                range: [184, 201],
+                loc: {
+                  start: { column: 40, line: 7 },
+                  end: { column: 3, line: 9 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSTypePredicate {
+                  type: "TSTypePredicate",
+                  asserts: true,
+                  parameterName: TSThisType {
+                    type: "TSThisType",
+
+                    range: [166, 170],
+                    loc: {
+                      start: { column: 22, line: 7 },
+                      end: { column: 26, line: 7 },
+                    },
+                  },
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSStringKeyword {
+                      type: "TSStringKeyword",
+
+                      range: [174, 180],
+                      loc: {
+                        start: { column: 30, line: 7 },
+                        end: { column: 36, line: 7 },
+                      },
+                    },
+
+                    range: [174, 180],
+                    loc: {
+                      start: { column: 30, line: 7 },
+                      end: { column: 36, line: 7 },
+                    },
+                  },
+
+                  range: [158, 180],
+                  loc: {
+                    start: { column: 14, line: 7 },
+                    end: { column: 36, line: 7 },
+                  },
+                },
+
+                range: [156, 180],
+                loc: {
+                  start: { column: 12, line: 7 },
+                  end: { column: 36, line: 7 },
+                },
+              },
+
+              range: [154, 201],
+              loc: {
+                start: { column: 10, line: 7 },
+                end: { column: 3, line: 9 },
+              },
+            },
+
+            range: [146, 202],
+            loc: {
+              start: { column: 2, line: 7 },
+              end: { column: 4, line: 9 },
+            },
+          },
+        ],
+
+        range: [90, 204],
+        loc: {
+          start: { column: 17, line: 3 },
+          end: { column: 1, line: 10 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "AssertsFoo",
+
+        range: [79, 89],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 16, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 204],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 10 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 205],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 11 },
+  },
+}
+`;

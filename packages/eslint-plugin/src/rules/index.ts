@@ -22,6 +22,7 @@ import explicitModuleBoundaryTypes from './explicit-module-boundary-types';
 import funcCallSpacing from './func-call-spacing';
 import indent from './indent';
 import initDeclarations from './init-declarations';
+import keySpacing from './key-spacing';
 import keywordSpacing from './keyword-spacing';
 import linesBetweenClassMembers from './lines-between-class-members';
 import memberDelimiterStyle from './member-delimiter-style';
@@ -47,6 +48,7 @@ import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noImplicitAnyCatch from './no-implicit-any-catch';
 import noImpliedEval from './no-implied-eval';
+import noImportTypeSideEffects from './no-import-type-side-effects';
 import noInferrableTypes from './no-inferrable-types';
 import noInvalidThis from './no-invalid-this';
 import noInvalidVoidType from './no-invalid-void-type';
@@ -153,6 +155,7 @@ export default {
   'func-call-spacing': funcCallSpacing,
   indent: indent,
   'init-declarations': initDeclarations,
+  'key-spacing': keySpacing,
   'keyword-spacing': keywordSpacing,
   'lines-between-class-members': linesBetweenClassMembers,
   'member-delimiter-style': memberDelimiterStyle,
@@ -178,6 +181,7 @@ export default {
   'no-for-in-array': noForInArray,
   'no-implicit-any-catch': noImplicitAnyCatch,
   'no-implied-eval': noImpliedEval,
+  'no-import-type-side-effects': noImportTypeSideEffects,
   'no-inferrable-types': noInferrableTypes,
   'no-invalid-this': noInvalidThis,
   'no-invalid-void-type': noInvalidVoidType,

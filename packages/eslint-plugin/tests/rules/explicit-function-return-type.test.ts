@@ -401,6 +401,46 @@ new Foo(1, () => {});
       options: [{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }],
     },
     {
+      code: 'const log = (a: string) => a;',
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: 'const log = <A>(a: A): A => a;',
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+function log<A>(a: A): A {
+  return a;
+}
+      `,
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+function log(a: string) {
+  return a;
+}
+      `,
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+const log = function <A>(a: A): A {
+  return a;
+};
+      `,
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+const log = function (a: A): string {
+  return a;
+};
+      `,
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
       filename: 'test.ts',
       options: [
         {
@@ -1422,6 +1462,29 @@ const func = (value: number) => ({ type: 'X', value } as const);
           endColumn: 41,
         },
       ],
+    },
+    {
+      code: 'const log = <A>(a: A) => a;',
+      errors: [{ messageId: 'missingReturnType' }],
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+function log<A>(a: A) {
+  return a;
+}
+      `,
+      errors: [{ messageId: 'missingReturnType' }],
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+const log = function <A>(a: A) {
+  return a;
+};
+      `,
+      errors: [{ messageId: 'missingReturnType' }],
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
     },
     {
       filename: 'test.ts',

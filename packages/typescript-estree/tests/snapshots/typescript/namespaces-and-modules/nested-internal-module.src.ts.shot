@@ -595,6 +595,7 @@ Object {
                 ],
                 "type": "Identifier",
               },
+              "kind": "module",
               "loc": Object {
                 "end": Object {
                   "column": 5,
@@ -665,6 +666,7 @@ Object {
         ],
         "type": "Identifier",
       },
+      "kind": "module",
       "loc": Object {
         "end": Object {
           "column": 1,

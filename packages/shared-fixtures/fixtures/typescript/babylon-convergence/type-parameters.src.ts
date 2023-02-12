@@ -1,1 +1,0 @@
-function f<T extends object = object>() {}
