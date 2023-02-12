@@ -109,12 +109,12 @@ export default util.createRule<Options, MessageIds>({
         return true;
       }
 
-      if (!options.allowedNames?.length) {
-        return false;
-      }
-
       if (options.allowIIFEs && isIIFE(node)) {
         return true;
+      }
+
+      if (!options.allowedNames?.length) {
+        return false;
       }
 
       if (
