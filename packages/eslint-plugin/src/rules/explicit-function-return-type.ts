@@ -17,6 +17,7 @@ type Options = [
     allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
     allowFunctionsWithoutTypeParameters?: boolean;
     allowedNames?: string[];
+    allowIIFEs?: boolean;
   },
 ];
 type MessageIds = 'missingReturnType';
@@ -75,6 +76,11 @@ export default util.createRule<Options, MessageIds>({
             },
             type: 'array',
           },
+          allowIIFEs: {
+            description:
+              'Whether to ignore immediately invoked function expressions (IIFEs).',
+            type: 'boolean',
+          },
         },
         additionalProperties: false,
       },
@@ -88,6 +94,7 @@ export default util.createRule<Options, MessageIds>({
       allowDirectConstAssertionInArrowFunctions: true,
       allowConciseArrowFunctionExpressionsStartingWithVoid: false,
       allowedNames: [],
+      allowIIFEs: false,
     },
   ],
   create(context, [options]) {
@@ -99,6 +106,10 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration,
     ): boolean {
       if (options.allowFunctionsWithoutTypeParameters && !node.typeParameters) {
+        return true;
+      }
+
+      if (options.allowIIFEs && isIIFE(node)) {
         return true;
       }
 
@@ -149,6 +160,16 @@ export default util.createRule<Options, MessageIds>({
       }
       return false;
     }
+
+    function isIIFE(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionExpression
+        | TSESTree.FunctionDeclaration,
+    ): boolean {
+      return node.parent!.type === AST_NODE_TYPES.CallExpression;
+    }
+
     return {
       'ArrowFunctionExpression, FunctionExpression'(
         node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
