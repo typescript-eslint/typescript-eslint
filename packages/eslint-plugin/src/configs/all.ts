@@ -11,6 +11,8 @@ export = {
     '@typescript-eslint/ban-ts-comment': 'error',
     '@typescript-eslint/ban-tslint-comment': 'error',
     '@typescript-eslint/ban-types': 'error',
+    'block-spacing': 'off',
+    '@typescript-eslint/block-spacing': 'error',
     'brace-style': 'off',
     '@typescript-eslint/brace-style': 'error',
     '@typescript-eslint/class-literal-property-style': 'error',
