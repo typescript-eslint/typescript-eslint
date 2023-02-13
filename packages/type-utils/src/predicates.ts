@@ -1,5 +1,5 @@
 import debug from 'debug';
-import * as tools from 'ts-api-tools';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { getTypeArguments } from './getTypeArguments';

@@ -1,4 +1,4 @@
-import * as tools from 'ts-api-tools';
+import * as tools from 'ts-api-utils';
 
 import * as util from '../util';
 
