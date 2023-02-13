@@ -3,7 +3,7 @@ import type {
   TSESTree,
 } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-tools';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -818,7 +818,7 @@ export default util.createRule<Options, MessageId>({
       // If incoming type is either "true" or "false", there will be one type
       // object with intrinsicName set accordingly
       // If incoming type is boolean, there will be two type objects with
-      // intrinsicName set "true" and "false" each because of ts-api-tools.unionTypeParts()
+      // intrinsicName set "true" and "false" each because of ts-api-utils.unionTypeParts()
       if (booleans.length === 1) {
         tools.isBooleanLiteralType(booleans[0], true)
           ? variantTypes.add('truthy boolean')
