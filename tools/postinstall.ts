@@ -21,11 +21,13 @@ void (async function (): Promise<void> {
   // Install git hooks
   await $`yarn husky install`;
 
-  // Clean any caches that may be invalid now
-  await $`yarn clean`;
+  if (!process.env.SKIP_POSTINSTALL_BUILD) {
+    // Clean any caches that may be invalid now
+    await $`yarn clean`;
 
-  // Build all the packages ready for use
-  await $`yarn build`;
+    // Build all the packages ready for use
+    await $`yarn build`;
+  }
 })();
 
 async function $(cmd: TemplateStringsArray): Promise<execa.ExecaChildProcess> {

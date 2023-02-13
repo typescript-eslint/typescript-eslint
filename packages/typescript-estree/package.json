@@ -2,14 +2,26 @@
   "name": "@typescript-eslint/typescript-estree",
   "version": "5.51.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "_ts3.4",
     "README.md",
     "LICENSE"
   ],
+  "type": "commonjs",
+  "typesVersions": {
+    "<3.8": {
+      ".": [
+        "_ts3.4/dist/index.d.ts"
+      ]
+    }
+  },
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
+    }
+  },
   "engines": {
     "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
   },
@@ -48,7 +60,7 @@
     "globby": "^11.1.0",
     "is-glob": "^4.0.3",
     "semver": "^7.3.7",
-    "ts-api-tools": "^0.0.15"
+    "ts-api-utils": "^0.0.21"
   },
   "devDependencies": {
     "@babel/code-frame": "*",
@@ -73,12 +85,5 @@
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
-  },
-  "typesVersions": {
-    "<3.8": {
-      "*": [
-        "_ts3.4/*"
-      ]
-    }
   }
 }

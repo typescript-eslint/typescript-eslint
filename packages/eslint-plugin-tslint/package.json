@@ -1,8 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin-tslint",
   "version": "5.51.0",
-  "main": "dist/index.js",
-  "typings": "src/index.ts",
   "description": "ESLint plugin that wraps a TSLint configuration and lints the whole source using TSLint",
   "keywords": [
     "eslint",
@@ -10,6 +8,13 @@
     "eslint-plugin",
     "tslint"
   ],
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
+    }
+  },
   "engines": {
     "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
   },
