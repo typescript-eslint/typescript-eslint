@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.52.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.51.0...v5.52.0) (2023-02-13)
+
+
+### Features
+
+* **typescript-estree:** add `.kind` to `TSModuleDeclaration` ([#6443](https://github.com/typescript-eslint/typescript-eslint/issues/6443)) ([2f948df](https://github.com/typescript-eslint/typescript-eslint/commit/2f948df35b73d916e7fe42b21343568b1617e3f1))
+* **typescript-estree:** allow specifying project: true ([#6084](https://github.com/typescript-eslint/typescript-eslint/issues/6084)) ([dcd05f0](https://github.com/typescript-eslint/typescript-eslint/commit/dcd05f0b3ab62779571294d08a4542d66ebb2294))
+
+
+
+
+
 # [5.51.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.50.0...v5.51.0) (2023-02-06)
 
 

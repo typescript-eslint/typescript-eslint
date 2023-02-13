@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.52.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.51.0...v5.52.0) (2023-02-13)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-import-type-side-effects] correctly ignore zero-specifier imports ([#6444](https://github.com/typescript-eslint/typescript-eslint/issues/6444)) ([d5a6688](https://github.com/typescript-eslint/typescript-eslint/commit/d5a6688a22ebaa2992e549f44c224fc8d0fc5cc7))
+* **eslint-plugin:** [no-unnecessary-condition] account for optional chaining on potentially void values ([#6432](https://github.com/typescript-eslint/typescript-eslint/issues/6432)) ([e1d9c67](https://github.com/typescript-eslint/typescript-eslint/commit/e1d9c67981be53e091a4107f326b9bf097650c1f)), closes [#5255](https://github.com/typescript-eslint/typescript-eslint/issues/5255)
+* **eslint-plugin:** [no-unnecessary-condition] fix false positive when checking indexed access types ([#6452](https://github.com/typescript-eslint/typescript-eslint/issues/6452)) ([d569924](https://github.com/typescript-eslint/typescript-eslint/commit/d569924cf3c223c185f6ba913390cd865cd33197))
+* **eslint-plugin:** fix key-spacing when type starts on next line ([#6412](https://github.com/typescript-eslint/typescript-eslint/issues/6412)) ([3eb2eed](https://github.com/typescript-eslint/typescript-eslint/commit/3eb2eed6167e2ffad6c44c0fcbd86be4b6202aeb))
+
+
+### Features
+
+* **eslint-plugin:** [block-spacing] extending base rule for TS related blocks ([#6195](https://github.com/typescript-eslint/typescript-eslint/issues/6195)) ([b2db3f5](https://github.com/typescript-eslint/typescript-eslint/commit/b2db3f57d3b551e1159380c3d23edee14f133ac1))
+* **eslint-plugin:** [explicit-function-return-type] add allowFunctionsWithoutTypeParameters option ([#6105](https://github.com/typescript-eslint/typescript-eslint/issues/6105)) ([113640e](https://github.com/typescript-eslint/typescript-eslint/commit/113640e9742acb3a193078e9704648517aebf1d8))
+* **eslint-plugin:** [explicit-function-return-type] add allowIIFEs option ([#6237](https://github.com/typescript-eslint/typescript-eslint/issues/6237)) ([a1b3f7b](https://github.com/typescript-eslint/typescript-eslint/commit/a1b3f7b4d97154ac4b0d7934d12f1d5970cffe15))
+* **typescript-estree:** add `.kind` to `TSModuleDeclaration` ([#6443](https://github.com/typescript-eslint/typescript-eslint/issues/6443)) ([2f948df](https://github.com/typescript-eslint/typescript-eslint/commit/2f948df35b73d916e7fe42b21343568b1617e3f1))
+* **typescript-estree:** allow specifying project: true ([#6084](https://github.com/typescript-eslint/typescript-eslint/issues/6084)) ([dcd05f0](https://github.com/typescript-eslint/typescript-eslint/commit/dcd05f0b3ab62779571294d08a4542d66ebb2294))
+
+
+
+
+
 # [5.51.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.50.0...v5.51.0) (2023-02-06)
 
 
