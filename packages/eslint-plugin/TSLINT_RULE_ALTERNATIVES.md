@@ -185,7 +185,7 @@ It lists all TSLint rules along side rules from the ESLint ecosystem that are th
 | [`one-line`]                        | 🌟  | [`brace-style`][brace-style] or [Prettier]                                          |
 | [`one-variable-per-declaration`]    | 🌟  | [`one-var`][one-var]                                                                |
 | [`ordered-imports`]                 | 🌓  | [`import/order`]                                                                    |
-| [`prefer-function-over-method`]     | 🌟  | [`class-methods-use-this`][class-methods-use-this]                                  |
+| [`prefer-function-over-method`]     | 🌟  | [`@typescript-eslint/class-methods-use-this`]                                       |
 | [`prefer-method-signature`]         | ✅  | [`@typescript-eslint/method-signature-style`]                                       |
 | [`prefer-switch`]                   | 🛑  | N/A                                                                                 |
 | [`prefer-template`]                 | 🌟  | [`prefer-template`][prefer-template]                                                |
@@ -566,7 +566,6 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [object-shorthand]: https://eslint.org/docs/rules/object-shorthand
 [brace-style]: https://eslint.org/docs/rules/brace-style
 [one-var]: https://eslint.org/docs/rules/one-var
-[class-methods-use-this]: https://eslint.org/docs/rules/class-methods-use-this
 [prefer-template]: https://eslint.org/docs/rules/prefer-template
 [quotes]: https://eslint.org/docs/rules/quotes
 [semi]: https://eslint.org/docs/rules/semi
@@ -598,6 +597,7 @@ Relevant plugins: [`chai-expect-keywords`](https://github.com/gavinaiken/eslint-
 [`@typescript-eslint/await-thenable`]: https://typescript-eslint.io/rules/await-thenable
 [`@typescript-eslint/ban-types`]: https://typescript-eslint.io/rules/ban-types
 [`@typescript-eslint/ban-ts-comment`]: https://typescript-eslint.io/rules/ban-ts-comment
+[`@typescript-eslint/class-methods-use-this`]: https://typescript-eslint.io/rules/class-methods-use-this
 [`@typescript-eslint/consistent-type-assertions`]: https://typescript-eslint.io/rules/consistent-type-assertions
 [`@typescript-eslint/consistent-type-definitions`]: https://typescript-eslint.io/rules/consistent-type-definitions
 [`@typescript-eslint/explicit-member-accessibility`]: https://typescript-eslint.io/rules/explicit-member-accessibility
