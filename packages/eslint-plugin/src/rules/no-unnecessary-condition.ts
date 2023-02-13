@@ -235,13 +235,13 @@ export default createRule<Options, MessageId>({
       const type = getNodeType(node);
 
       // Conditional is always necessary if it involves:
-      //    `any` or `unknown` or a naked type parameter
+      //    `any` or `unknown` or a naked type variable
       if (
         unionTypeParts(type).some(
           part =>
             isTypeAnyType(part) ||
             isTypeUnknownType(part) ||
-            isTypeFlagSet(part, ts.TypeFlags.TypeParameter),
+            isTypeFlagSet(part, ts.TypeFlags.TypeVariable),
         )
       ) {
         return;
