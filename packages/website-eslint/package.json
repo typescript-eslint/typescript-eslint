@@ -3,17 +3,24 @@
   "version": "5.51.0",
   "private": true,
   "description": "ESLint which works in browsers.",
-  "engines": {
-    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
-  },
-  "types": "types/index.d.ts",
-  "main": "dist/index.js",
   "files": [
     "dist"
   ],
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
+    }
+  },
+  "engines": {
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
+  },
   "scripts": {
     "build": "rollup --config=rollup.config.js",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore"
+    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
+    "lint": "nx lint",
+    "typecheck": "tsc -p jsconfig.json --noEmit"
   },
   "dependencies": {
     "@typescript-eslint/types": "5.51.0",

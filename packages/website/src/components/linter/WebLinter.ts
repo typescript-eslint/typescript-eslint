@@ -1,8 +1,10 @@
 import { createVirtualCompilerHost } from '@site/src/components/linter/CompilerHost';
 import { parseSettings } from '@site/src/components/linter/config';
+import type { analyze } from '@typescript-eslint/scope-manager';
 import type { ParserOptions } from '@typescript-eslint/types';
+import type { astConverter } from '@typescript-eslint/typescript-estree/use-at-your-own-risk/ast-converter';
+import type { getScriptKind } from '@typescript-eslint/typescript-estree/use-at-your-own-risk/getScriptKind';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import type { LintUtils } from '@typescript-eslint/website-eslint';
 import type {
   CompilerHost,
   CompilerOptions,
@@ -11,6 +13,14 @@ import type {
 } from 'typescript';
 
 const PARSER_NAME = '@typescript-eslint/parser';
+
+export interface LintUtils {
+  createLinter: () => TSESLint.Linter;
+  analyze: typeof analyze;
+  visitorKeys: TSESLint.SourceCode.VisitorKeys;
+  astConverter: typeof astConverter;
+  getScriptKind: typeof getScriptKind;
+}
 
 export class WebLinter {
   private readonly host: CompilerHost;

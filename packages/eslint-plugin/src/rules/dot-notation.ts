@@ -77,7 +77,6 @@ export default createRule<Options, MessageIds>({
       (options.allowIndexSignaturePropertyAccess ?? false) ||
       tools.isCompilerOptionEnabled(
         services.program.getCompilerOptions(),
-        // @ts-expect-error - TS is refining the type to never for some reason
         'noPropertyAccessFromIndexSignature',
       );
 

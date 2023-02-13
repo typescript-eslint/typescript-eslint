@@ -20,6 +20,13 @@
     ".": {
       "types": "./dist/index.d.ts",
       "require": "./dist/index.js"
+    },
+    "./package.json": {
+      "require": "./package.json"
+    },
+    "./use-at-your-own-risk/analyze": {
+      "types": "./dist/analyze.d.ts",
+      "require": "./dist/analyze.js"
     }
   },
   "engines": {

@@ -143,7 +143,7 @@ declare module 'eslint/lib/rules/indent' {
 
 declare module 'eslint/lib/rules/key-spacing' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-  import type { RuleFunction } from '@typescript-eslint/utils/dist/ts-eslint';
+  import type { RuleFunction } from '@typescript-eslint/utils/ts-eslint';
 
   type Options = [
     {
@@ -195,7 +195,7 @@ declare module 'eslint/lib/rules/key-spacing' {
 
 declare module 'eslint/lib/rules/keyword-spacing' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-  import type { RuleFunction } from '@typescript-eslint/utils/dist/ts-eslint';
+  import type { RuleFunction } from '@typescript-eslint/utils/ts-eslint';
 
   type Options = [
     {

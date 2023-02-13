@@ -14,6 +14,9 @@
     ".": {
       "types": "./dist/index.d.ts",
       "require": "./dist/index.js"
+    },
+    "./package.json": {
+      "require": "./package.json"
     }
   },
   "engines": {

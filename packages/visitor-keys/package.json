@@ -21,6 +21,13 @@
     ".": {
       "types": "./dist/index.d.ts",
       "require": "./dist/index.js"
+    },
+    "./package.json": {
+      "require": "./package.json"
+    },
+    "./use-at-your-own-risk/visitor-keys": {
+      "types": "./dist/visitor-keys.d.ts",
+      "require": "./dist/visitor-keys.js"
     }
   },
   "engines": {

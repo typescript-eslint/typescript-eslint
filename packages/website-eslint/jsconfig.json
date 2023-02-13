@@ -1,0 +1,18 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "outDir": "./dist",
+    "rootDir": ".",
+    "resolveJsonModule": true
+  },
+  "include": ["src", "typings", "tests", "tools"],
+  "references": [
+    { "path": "../parser/tsconfig.build.json" },
+    { "path": "../scope-manager/tsconfig.build.json" },
+    { "path": "../types/tsconfig.build.json" },
+    { "path": "../typescript-estree/tsconfig.build.json" },
+    { "path": "../utils/tsconfig.build.json" },
+    { "path": "../visitor-keys/tsconfig.build.json" }
+  ]
+}

@@ -5,6 +5,10 @@
     "rootDir": "."
   },
   "include": ["src", "tests"],
-  "exclude": ["tests/test-project", "tests/test-tslint-rules-directory"],
+  "exclude": [
+    "tests/fixture-project",
+    "tests/test-project",
+    "tests/test-tslint-rules-directory"
+  ],
   "references": [{ "path": "../utils/tsconfig.build.json" }]
 }

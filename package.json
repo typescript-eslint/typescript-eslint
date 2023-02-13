@@ -123,13 +123,16 @@
     "jest-snapshot": "^29",
     "jest-util": "^29",
     "pretty-format": "^29",
-    "@swc/core-android-arm-eabi": "npm:dummypkg-a@1.0.0",
-    "@swc/core-android-arm64": "npm:dummypkg-a@1.0.0",
-    "@swc/core-freebsd-x64": "npm:dummypkg-a@1.0.0",
-    "@swc/core-linux-arm-gnueabihf": "npm:dummypkg-a@1.0.0",
-    "@swc/core-linux-arm64-gnu": "npm:dummypkg-a@1.0.0",
-    "@swc/core-linux-arm64-musl": "npm:dummypkg-a@1.0.0",
-    "@swc/core-win32-arm64-msvc": "npm:dummypkg-a@1.0.0",
-    "@swc/core-win32-ia32-msvc": "npm:dummypkg-a@1.0.0"
+    "@swc/core-android-arm-eabi": "file:./tools/dummypkg",
+    "@swc/core-android-arm64": "file:./tools/dummypkg",
+    "@swc/core-freebsd-x64": "file:./tools/dummypkg",
+    "@swc/core-linux-arm-gnueabihf": "file:./tools/dummypkg",
+    "@swc/core-linux-arm64-gnu": "file:./tools/dummypkg",
+    "@swc/core-linux-arm64-musl": "file:./tools/dummypkg",
+    "@swc/core-win32-arm64-msvc": "file:./tools/dummypkg",
+    "@swc/core-win32-ia32-msvc": "file:./tools/dummypkg",
+    "@types/eslint": "file:./tools/dummypkg",
+    "@types/eslint-scope": "file:./tools/dummypkg",
+    "@types/estree": "file:./tools/dummypkg"
   }
 }

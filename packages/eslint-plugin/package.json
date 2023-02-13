@@ -2,15 +2,6 @@
   "name": "@typescript-eslint/eslint-plugin",
   "version": "5.51.0",
   "description": "TypeScript plugin for ESLint",
-  "keywords": [
-    "eslint",
-    "eslintplugin",
-    "eslint-plugin",
-    "typescript"
-  ],
-  "engines": {
-    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
-  },
   "files": [
     "dist",
     "docs",
@@ -19,6 +10,23 @@
     "README.md",
     "LICENSE"
   ],
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "require": "./dist/index.js"
+    },
+    "./package.json": {
+      "require": "./package.json"
+    },
+    "./use-at-your-own-risk/rules": {
+      "types": "./rules.d.ts",
+      "require": "./dist/rules/index.js"
+    }
+  },
+  "engines": {
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
@@ -28,8 +36,12 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "index.d.ts",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "typescript"
+  ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
     "check-docs": "jest tests/docs.test.ts --runTestsByPath --silent --runInBand",

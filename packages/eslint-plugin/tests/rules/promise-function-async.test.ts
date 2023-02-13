@@ -1,7 +1,5 @@
-import { noFormat } from '@typescript-eslint/utils/src/eslint-utils';
-
 import rule from '../../src/rules/promise-function-async';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const messageId = 'missingAsync';

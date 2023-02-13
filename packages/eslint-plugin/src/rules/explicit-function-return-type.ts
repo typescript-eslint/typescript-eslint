@@ -167,7 +167,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionExpression
         | TSESTree.FunctionDeclaration,
     ): boolean {
-      return node.parent!.type === AST_NODE_TYPES.CallExpression;
+      return node.parent.type === AST_NODE_TYPES.CallExpression;
     }
 
     return {

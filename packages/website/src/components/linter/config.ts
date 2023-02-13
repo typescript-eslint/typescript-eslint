@@ -1,4 +1,4 @@
-import type { ParseSettings } from '@typescript-eslint/typescript-estree/dist/parseSettings';
+import type { ParseSettings } from '@typescript-eslint/typescript-estree/use-at-your-own-risk/parseSettings';
 
 export const parseSettings: ParseSettings = {
   code: '',

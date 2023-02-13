@@ -22,21 +22,28 @@
       "types": "./dist/index.d.ts",
       "require": "./dist/index.js"
     },
-    "./ASTUtils": {
+    "./ast-utils": {
       "types": "./dist/ast-utils/index.d.ts",
       "require": "./dist/ast-utils/index.js"
     },
-    "./ESLintUtils": {
+    "./eslint-utils": {
       "types": "./dist/eslint-utils/index.d.ts",
       "require": "./dist/eslint-utils/index.js"
     },
-    "./JSONSchema": {
-      "types": "./dist/json-schema/index.d.ts",
-      "require": "./dist/json-schema/index.js"
+    "./eslint-utils/rule-tester": {
+      "types": "./dist/eslint-utils/rule-tester/RuleTester.d.ts",
+      "require": "./dist/eslint-utils/rule-tester/RuleTester.js"
     },
-    "./TSESLint": {
+    "./json-schema": {
+      "types": "./dist/json-schema.d.ts",
+      "require": "./dist/json-schema.js"
+    },
+    "./ts-eslint": {
       "types": "./dist/ts-eslint/index.d.ts",
       "require": "./dist/ts-eslint/index.js"
+    },
+    "./package.json": {
+      "require": "./package.json"
     }
   },
   "engines": {

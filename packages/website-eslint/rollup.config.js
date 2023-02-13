@@ -113,6 +113,7 @@ module.exports = {
     }),
     resolve({
       browser: true,
+      exportConditions: ['require'],
       preferBuiltins: false,
     }),
     commonjs(),
