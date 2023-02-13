@@ -16,6 +16,7 @@
     "armano2",
     "Jed Fox"
   ],
+  "type": "commonjs",
   "license": "BSD-2-Clause",
   "repository": "typescript-eslint/typescript-eslint",
   "bugs": {

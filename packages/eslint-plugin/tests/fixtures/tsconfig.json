@@ -10,6 +10,7 @@
   },
   "include": [
     "file.ts",
+    "consistent-type-exports.ts",
     "react.tsx"
   ]
 }
