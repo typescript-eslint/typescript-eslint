@@ -1,0 +1,6 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple AST Alignment - Token 1`] = `
+"Snapshot Diff:
+Compared values have no visual difference."
+`;

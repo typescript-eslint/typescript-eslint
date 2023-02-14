@@ -1,3 +1,0 @@
-declare abstract class Foo {
-
-}

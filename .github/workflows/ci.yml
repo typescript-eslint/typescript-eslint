@@ -8,6 +8,7 @@ on:
   pull_request:
     branches:
       - '**'
+  merge_group:
 
 env:
   PRIMARY_NODE_VERSION: 18

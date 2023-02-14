@@ -52,7 +52,7 @@ interface ParserOptions {
   filePath?: string;
   loc?: boolean;
   program?: Program;
-  project?: string | string[];
+  project?: string | string[] | true;
   projectFolderIgnoreList?: (string | RegExp)[];
   range?: boolean;
   sourceType?: SourceType;

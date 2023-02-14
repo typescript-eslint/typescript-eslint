@@ -1,3 +1,4 @@
+import Link from '@docusaurus/Link';
 import IconExternalLink from '@theme/Icon/ExternalLink';
 import clsx from 'clsx';
 import type Monaco from 'monaco-editor';
@@ -134,9 +135,9 @@ export default function ErrorsViewer({
                 {uri && (
                   <>
                     {' - '}
-                    <a href={uri} target="_blank">
+                    <Link href={uri} target="_blank">
                       docs <IconExternalLink width={13.5} height={13.5} />
-                    </a>
+                    </Link>
                   </>
                 )}
               </h4>

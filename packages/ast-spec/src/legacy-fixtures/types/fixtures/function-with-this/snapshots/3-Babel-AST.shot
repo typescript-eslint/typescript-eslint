@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types function-with-this Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "f",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSFunctionType {
+                type: "TSFunctionType",
+                parameters: Array [
+                  Identifier {
+                    type: "Identifier",
+                    name: "this",
+                    typeAnnotation: TSTypeAnnotation {
+                      type: "TSTypeAnnotation",
+                      typeAnnotation: TSNumberKeyword {
+                        type: "TSNumberKeyword",
+
+                        range: [87, 93],
+                        loc: {
+                          start: { column: 14, line: 3 },
+                          end: { column: 20, line: 3 },
+                        },
+                      },
+
+                      range: [85, 93],
+                      loc: {
+                        start: { column: 12, line: 3 },
+                        end: { column: 20, line: 3 },
+                      },
+                    },
+
+                    range: [81, 93],
+                    loc: {
+                      start: { column: 8, line: 3 },
+                      end: { column: 20, line: 3 },
+                    },
+                  },
+                ],
+                typeAnnotation: TSTypeAnnotation {
+                  type: "TSTypeAnnotation",
+                  typeAnnotation: TSVoidKeyword {
+                    type: "TSVoidKeyword",
+
+                    range: [98, 102],
+                    loc: {
+                      start: { column: 25, line: 3 },
+                      end: { column: 29, line: 3 },
+                    },
+                  },
+
+                  range: [95, 102],
+                  loc: {
+                    start: { column: 22, line: 3 },
+                    end: { column: 29, line: 3 },
+                  },
+                },
+
+                range: [80, 102],
+                loc: {
+                  start: { column: 7, line: 3 },
+                  end: { column: 29, line: 3 },
+                },
+              },
+
+              range: [78, 102],
+              loc: {
+                start: { column: 5, line: 3 },
+                end: { column: 29, line: 3 },
+              },
+            },
+
+            range: [77, 102],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 29, line: 3 },
+            },
+          },
+          init: null,
+
+          range: [77, 102],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 29, line: 3 },
+          },
+        },
+      ],
+      kind: "let",
+
+      range: [73, 103],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 30, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 104],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

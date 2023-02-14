@@ -1,4 +1,4 @@
-import { forEachComment } from 'tsutils/util/util';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { getLocFor } from './node-utils';
@@ -18,7 +18,7 @@ export function convertComments(
 ): TSESTree.Comment[] {
   const comments: TSESTree.Comment[] = [];
 
-  forEachComment(
+  tools.forEachComment(
     ast,
     (_, comment) => {
       const type =

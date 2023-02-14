@@ -6728,7 +6728,7 @@ end-of-stream@^1.1.0, end-of-stream@^1.4.1:
   dependencies:
     once "^1.4.0"
 
-enhanced-resolve@^5.10.0, enhanced-resolve@^5.9.3:
+enhanced-resolve@^5.10.0:
   version "5.10.0"
   resolved "https://registry.yarnpkg.com/enhanced-resolve/-/enhanced-resolve-5.10.0.tgz#0dc579c3bb2a1032e357ac45b8f3a6f3ad4fb1e6"
   integrity sha512-T0yTFjdpldGY8PmuXXR0PyQ1ufZpEGiHVrp7zHKB7jdR4qlmZHhONVM5AQOAWXuF/w3dnHbEQVrNptJgt7F+cQ==
@@ -13658,6 +13658,11 @@ trough@^1.0.0:
   version "1.0.5"
   resolved "https://registry.yarnpkg.com/trough/-/trough-1.0.5.tgz#b8b639cefad7d0bb2abd37d433ff8293efa5f406"
   integrity sha512-rvuRbTarPXmMb79SmzEp8aqXNKcK+y0XaB298IXueQ8I2PsrATcPBCSPyK/dDNa2iWOhKlfNnOjdAOTBU/nkFA==
+
+ts-api-utils@^0.0.21:
+  version "0.0.21"
+  resolved "https://registry.yarnpkg.com/ts-api-utils/-/ts-api-utils-0.0.21.tgz#d5e58e3200f848123a89f3987d6ee9b613642d01"
+  integrity sha512-Dr9RHp5+4jLF+2wARhwQO1Z/6BFVsKigZhascnbsbyzSEDKO9qGlN7RgsquqHwP0lHiQmLJFYiGCLXTmcDC9Wg==
 
 ts-essentials@^2.0.3:
   version "2.0.12"

@@ -148,9 +148,8 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [{ formatWithPrettier }]) {
     const sourceCode = context.getSourceCode();
-    const { program, esTreeNodeToTSNodeMap } =
-      ESLintUtils.getParserServices(context);
-    const checker = program.getTypeChecker();
+    const services = ESLintUtils.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     const checkedObjects = new Set<TSESTree.ObjectExpression>();
 
@@ -522,7 +521,7 @@ export default createRule<Options, MessageIds>({
 
         const type = getContextualType(
           checker,
-          esTreeNodeToTSNodeMap.get(node),
+          services.esTreeNodeToTSNodeMap.get(node),
         );
         if (!type) {
           return;

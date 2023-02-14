@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -120,8 +120,8 @@ export default util.createRule<Options, MessageId>({
   ],
 
   create(context, [{ checksConditionals, checksVoidReturn, checksSpreads }]) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     const checkedNodes = new Set<TSESTree.Node>();
 
@@ -200,7 +200,7 @@ export default util.createRule<Options, MessageId>({
         }
         return;
       }
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (isAlwaysThenable(checker, tsNode)) {
         context.report({
           messageId: 'conditional',
@@ -212,7 +212,7 @@ export default util.createRule<Options, MessageId>({
     function checkArguments(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       const voidArgs = voidFunctionArguments(checker, tsNode);
       if (voidArgs.size === 0) {
         return;
@@ -223,7 +223,7 @@ export default util.createRule<Options, MessageId>({
           continue;
         }
 
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(argument);
+        const tsNode = services.esTreeNodeToTSNodeMap.get(argument);
         if (returnsThenable(checker, tsNode as ts.Expression)) {
           context.report({
             messageId: 'voidReturnArgument',
@@ -234,8 +234,8 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkAssignment(node: TSESTree.AssignmentExpression): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const varType = checker.getTypeAtLocation(tsNode.left);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+      const varType = services.getTypeAtLocation(node.left);
       if (!isVoidReturningFunctionType(checker, tsNode.left, varType)) {
         return;
       }
@@ -249,11 +249,11 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkVariableDeclaration(node: TSESTree.VariableDeclarator): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (tsNode.initializer === undefined || node.init == null) {
         return;
       }
-      const varType = checker.getTypeAtLocation(tsNode.name);
+      const varType = services.getTypeAtLocation(node.id);
       if (!isVoidReturningFunctionType(checker, tsNode.initializer, varType)) {
         return;
       }
@@ -267,7 +267,7 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkProperty(node: TSESTree.Property): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (ts.isPropertyAssignment(tsNode)) {
         const contextualType = checker.getContextualType(tsNode.initializer);
         if (
@@ -343,7 +343,7 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkReturnStatement(node: TSESTree.ReturnStatement): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (tsNode.expression === undefined || node.argument == null) {
         return;
       }
@@ -365,7 +365,7 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkJSXAttribute(node: TSESTree.JSXAttribute): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       const value = tsNode.initializer;
       if (
         node.value == null ||
@@ -389,7 +389,7 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkSpread(node: TSESTree.SpreadElement): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
 
       if (isSometimesThenable(checker, tsNode.expression)) {
         context.report({
@@ -410,8 +410,8 @@ export default util.createRule<Options, MessageId>({
 function isSometimesThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
 
-  for (const subType of tsutils.unionTypeParts(checker.getApparentType(type))) {
-    if (tsutils.isThenableType(checker, node, subType)) {
+  for (const subType of tools.unionTypeParts(checker.getApparentType(type))) {
+    if (tools.isThenableType(checker, node, subType)) {
       return true;
     }
   }
@@ -426,7 +426,7 @@ function isSometimesThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
 function isAlwaysThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
 
-  for (const subType of tsutils.unionTypeParts(checker.getApparentType(type))) {
+  for (const subType of tools.unionTypeParts(checker.getApparentType(type))) {
     const thenProp = subType.getProperty('then');
 
     // If one of the alternates has no then property, it is not thenable in all
@@ -440,7 +440,7 @@ function isAlwaysThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
     // be of the right form to consider it thenable.
     const thenType = checker.getTypeOfSymbolAtLocation(thenProp, node);
     let hasThenableSignature = false;
-    for (const subType of tsutils.unionTypeParts(thenType)) {
+    for (const subType of tools.unionTypeParts(thenType)) {
       for (const signature of subType.getCallSignatures()) {
         if (
           signature.parameters.length !== 0 &&
@@ -478,7 +478,7 @@ function isFunctionParam(
   const type: ts.Type | undefined = checker.getApparentType(
     checker.getTypeOfSymbolAtLocation(param, node),
   );
-  for (const subType of tsutils.unionTypeParts(type)) {
+  for (const subType of tools.unionTypeParts(type)) {
     if (subType.getCallSignatures().length !== 0) {
       return true;
     }
@@ -527,7 +527,7 @@ function voidFunctionArguments(
   // We can't use checker.getResolvedSignature because it prefers an early '() => void' over a later '() => Promise<void>'
   // See https://github.com/microsoft/TypeScript/issues/48077
 
-  for (const subType of tsutils.unionTypeParts(type)) {
+  for (const subType of tools.unionTypeParts(type)) {
     // Standard function calls and `new` have two different types of signatures
     const signatures = ts.isCallExpression(node)
       ? subType.getCallSignatures()
@@ -610,7 +610,7 @@ function anySignatureIsThenableType(
 ): boolean {
   for (const signature of type.getCallSignatures()) {
     const returnType = signature.getReturnType();
-    if (tsutils.isThenableType(checker, node, returnType)) {
+    if (tools.isThenableType(checker, node, returnType)) {
       return true;
     }
   }
@@ -626,7 +626,7 @@ function isThenableReturningFunctionType(
   node: ts.Node,
   type: ts.Type,
 ): boolean {
-  for (const subType of tsutils.unionTypeParts(type)) {
+  for (const subType of tools.unionTypeParts(type)) {
     if (anySignatureIsThenableType(checker, node, subType)) {
       return true;
     }
@@ -645,17 +645,17 @@ function isVoidReturningFunctionType(
 ): boolean {
   let hadVoidReturn = false;
 
-  for (const subType of tsutils.unionTypeParts(type)) {
+  for (const subType of tools.unionTypeParts(type)) {
     for (const signature of subType.getCallSignatures()) {
       const returnType = signature.getReturnType();
 
       // If a certain positional argument accepts both thenable and void returns,
       // a promise-returning function is valid
-      if (tsutils.isThenableType(checker, node, returnType)) {
+      if (tools.isThenableType(checker, node, returnType)) {
         return false;
       }
 
-      hadVoidReturn ||= tsutils.isTypeFlagSet(returnType, ts.TypeFlags.Void);
+      hadVoidReturn ||= tools.isTypeFlagSet(returnType, ts.TypeFlags.Void);
     }
   }
 

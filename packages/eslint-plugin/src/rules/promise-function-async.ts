@@ -91,8 +91,8 @@ export default util.createRule<Options, MessageIds>({
       'Promise',
       ...allowedPromiseNames!,
     ]);
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
     function validateNode(
@@ -101,10 +101,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression,
     ): void {
-      const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const signatures = checker
-        .getTypeAtLocation(originalNode)
-        .getCallSignatures();
+      const signatures = services.getTypeAtLocation(node).getCallSignatures();
       if (!signatures.length) {
         return;
       }
