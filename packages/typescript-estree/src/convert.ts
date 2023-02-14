@@ -661,6 +661,14 @@ export class Converter {
       result.accessibility = accessibility;
     }
 
+    if (hasModifier(SyntaxKind.ExportKeyword, node)) {
+      throw createError(
+        this.ast,
+        node.pos,
+        'A method signature cannot have an export modifier.',
+      );
+    }
+
     if (hasModifier(SyntaxKind.StaticKeyword, node)) {
       result.static = true;
     }
@@ -1640,6 +1648,14 @@ export class Converter {
 
         const modifiers = getModifiers(node);
         if (modifiers) {
+          if (hasModifier(SyntaxKind.ExportKeyword, node)) {
+            throw createError(
+              this.ast,
+              node.pos,
+              'A parameter cannot have an export modifier.',
+            );
+          }
+
           return this.createNode<TSESTree.TSParameterProperty>(node, {
             type: AST_NODE_TYPES.TSParameterProperty,
             accessibility: getTSNodeAccessibility(node) ?? undefined,
@@ -2495,6 +2511,14 @@ export class Converter {
           'A property signature cannot have an initializer.',
         );
 
+        if (hasModifier(SyntaxKind.ExportKeyword, node)) {
+          throw createError(
+            this.ast,
+            node.pos,
+            'A property signature cannot have an export modifier.',
+          );
+        }
+
         const result = this.createNode<TSESTree.TSPropertySignature>(node, {
           type: AST_NODE_TYPES.TSPropertySignature,
           optional: isOptional(node) || undefined,
@@ -2532,6 +2556,14 @@ export class Converter {
         const accessibility = getTSNodeAccessibility(node);
         if (accessibility) {
           result.accessibility = accessibility;
+        }
+
+        if (hasModifier(SyntaxKind.ExportKeyword, node)) {
+          throw createError(
+            this.ast,
+            node.pos,
+            'An index signature cannot have an export modifier.',
+          );
         }
 
         if (hasModifier(SyntaxKind.StaticKeyword, node)) {
