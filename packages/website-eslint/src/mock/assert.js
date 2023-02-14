@@ -81,6 +81,7 @@ function assert(value, message) {
   }
 }
 assert.equal = function equal(actual, expected, message) {
+  // eslint-disable-next-line eqeqeq -- intentional loose equal
   if (actual != expected) {
     fail(actual, expected, message, '==', equal);
   }
@@ -96,6 +97,7 @@ assert.notStrictEqual = function notStrictEqual(actual, expected, message) {
   }
 };
 assert.notEqual = function notEqual(actual, expected, message) {
+  // eslint-disable-next-line eqeqeq -- intentional loose equal
   if (actual == expected) {
     fail(actual, expected, message, '!=', notEqual);
   }

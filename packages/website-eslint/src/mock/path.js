@@ -52,7 +52,7 @@ function normalizeArray(parts, allowAboveRoot) {
 // Split a filename into [root, dir, basename, ext], unix version
 // 'root' is just a slash, or nothing.
 const splitPathRe =
-  /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^\/]+?|)(\.[^.\/]*|))(?:[\/]*)$/;
+  /^(\/?|)([\s\S]*?)((?:\.{1,2}|[^/]+?|)(\.[^./]*|))(?:[/]*)$/;
 const splitPath = function (filename) {
   return splitPathRe.exec(filename).slice(1);
 };
@@ -60,8 +60,8 @@ const splitPath = function (filename) {
 // path.resolve([from ...], to)
 // posix version
 export function resolve() {
-  let resolvedPath = '',
-    resolvedAbsolute = false;
+  let resolvedPath = '';
+  let resolvedAbsolute = false;
 
   for (let i = arguments.length - 1; i >= -1 && !resolvedAbsolute; i--) {
     const path = i >= 0 ? arguments[i] : '/';
@@ -94,8 +94,8 @@ export function resolve() {
 // path.normalize(path)
 // posix version
 export function normalize(path) {
-  let isPathAbsolute = isAbsolute(path),
-    trailingSlash = path.endsWith('/');
+  let isPathAbsolute = isAbsolute(path);
+  let trailingSlash = path.endsWith('/');
 
   // Normalize the path
   path = normalizeArray(
@@ -124,7 +124,7 @@ export function isAbsolute(path) {
 export function join() {
   const paths = Array.prototype.slice.call(arguments, 0);
   return normalize(
-    filter(paths, function (p, index) {
+    filter(paths, function (p) {
       if (typeof p !== 'string') {
         throw new TypeError('Arguments to path.join must be strings');
       }
@@ -142,15 +142,21 @@ export function relative(from, to) {
   function trim(arr) {
     let start = 0;
     for (; start < arr.length; start++) {
-      if (arr[start] !== '') break;
+      if (arr[start] !== '') {
+        break;
+      }
     }
 
     var end = arr.length - 1;
     for (; end >= 0; end--) {
-      if (arr[end] !== '') break;
+      if (arr[end] !== '') {
+        break;
+      }
     }
 
-    if (start > end) return [];
+    if (start > end) {
+      return [];
+    }
     return arr.slice(start, end - start + 1);
   }
 
@@ -166,7 +172,7 @@ export function relative(from, to) {
     }
   }
 
-  const outputParts = [];
+  let outputParts = [];
   for (let i = samePartsLength; i < fromParts.length; i++) {
     outputParts.push('..');
   }
@@ -176,8 +182,8 @@ export function relative(from, to) {
   return outputParts.join('/');
 }
 
-export var sep = '/';
-export var delimiter = ':';
+export const sep = '/';
+export const delimiter = ':';
 
 export function dirname(path) {
   const result = splitPath(path);
@@ -210,6 +216,7 @@ export function extname(path) {
   return splitPath(path)[3];
 }
 
+// eslint-disable-next-line import/no-default-export
 export default {
   extname: extname,
   basename: basename,
@@ -224,10 +231,14 @@ export default {
 };
 
 function filter(xs, f) {
-  if (xs.filter) return xs.filter(f);
+  if (xs.filter) {
+    return xs.filter(f);
+  }
   const res = [];
   for (let i = 0; i < xs.length; i++) {
-    if (f(xs[i], i, xs)) res.push(xs[i]);
+    if (f(xs[i], i, xs)) {
+      res.push(xs[i]);
+    }
   }
   return res;
 }

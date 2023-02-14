@@ -1,5 +1,6 @@
-import type { Sandbox } from '../sandbox';
 import type { DiagnosticRelatedInformation, Node } from 'typescript';
+
+import type { Sandbox } from '../sandbox';
 
 export declare interface LocalStorageOption {
   blurb: string;

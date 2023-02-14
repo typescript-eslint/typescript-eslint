@@ -1,18 +1,16 @@
-node_modules
-dist
-jest.config.js
-fixtures
-coverage
-__snapshots__
-.docusaurus
-build
-
+**/node_modules
+**/dist
+**/jest.config.js
+**/fixtures
+**/coverage
+**/__snapshots__
+**/.docusaurus
+**/build
 packages/eslint-plugin-tslint/tests
-
-packages/website/**/*.js
-packages/website/**/*.d.ts
-packages/website-eslint/**/*.js
-packages/website-eslint/**/*.d.ts
-
 # Files copied as part of the build
 packages/types/src/generated/**/*.ts
+packages/website-eslint/typings/eslint.d.ts
+
+# TODO - enable linting for JS files (need to also add them to the project.json)
+packages/website/**/*.js
+packages/website/**/*.d.ts

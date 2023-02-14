@@ -1,5 +1,6 @@
-import { PluginUtils } from './pluginUtils';
 import type React from 'react';
+
+import type { PluginUtils } from './pluginUtils';
 
 declare type Sandbox = import('./sandbox').Sandbox;
 declare type Monaco = typeof import('monaco-editor');

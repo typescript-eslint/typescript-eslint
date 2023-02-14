@@ -18,38 +18,11 @@ module.exports = {
     'eslint:recommended',
     'plugin:eslint-plugin/recommended',
     'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
   ],
   parserOptions: {
     sourceType: 'module',
-    project: [
-      './tsconfig.eslint.json',
-      './packages/*/tsconfig.json',
-      './tests/integration/tsconfig.json',
-      /**
-       * We are currently in the process of transitioning to nx's out of the box structure and
-       * so need to manually specify converted packages' tsconfig.build.json and tsconfig.spec.json
-       * files here for now in addition to the tsconfig.json glob pattern.
-       *
-       * TODO(#4665): Clean this up once all packages have been transitioned.
-       */
-      './packages/scope-manager/tsconfig.build.json',
-      './packages/scope-manager/tsconfig.spec.json',
-    ],
-    allowAutomaticSingleRunInference: true,
-    tsconfigRootDir: __dirname,
-    warnOnUnsupportedTypeScriptVersion: false,
-    EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
-    cacheLifetime: {
-      // we pretty well never create/change tsconfig structure - so need to ever evict the cache
-      // in the rare case that we do - just need to manually restart their IDE.
-      glob: 'Infinity',
-    },
   },
   rules: {
-    // make sure we're not leveraging any deprecated APIs
-    'deprecation/deprecation': 'error',
-
     //
     // our plugin :D
     //
@@ -69,8 +42,6 @@ module.exports = {
       'error',
       { prefer: 'type-imports', disallowTypeAnnotations: true },
     ],
-    '@typescript-eslint/explicit-function-return-type': 'error',
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-empty-function': [
       'error',
       { allow: ['arrowFunctions'] },
@@ -79,32 +50,12 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/prefer-for-of': 'error',
-    '@typescript-eslint/prefer-nullish-coalescing': 'error',
-    '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/unbound-method': 'off',
     '@typescript-eslint/prefer-as-const': 'error',
-    '@typescript-eslint/restrict-template-expressions': [
-      'error',
-      {
-        allowNumber: true,
-        allowBoolean: true,
-        allowAny: true,
-        allowNullish: true,
-        allowRegExp: true,
-      },
-    ],
     '@typescript-eslint/no-unused-vars': [
       'warn',
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
     ],
-
-    //
-    // Internal repo rules
-    //
-
-    '@typescript-eslint/internal/no-poorly-typed-ts-props': 'error',
-    '@typescript-eslint/internal/no-typescript-default-import': 'error',
-    '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
 
     //
     // eslint-base
@@ -202,6 +153,76 @@ module.exports = {
     'one-var': ['error', 'never'],
   },
   overrides: [
+    // only turn on type-aware linting for TS files
+    {
+      files: ['*.ts', '*.tsx'],
+      extends: [
+        'plugin:@typescript-eslint/recommended-requiring-type-checking',
+      ],
+      parserOptions: {
+        project: [
+          './tsconfig.eslint.json',
+          './packages/*/tsconfig.json',
+          './tests/integration/tsconfig.json',
+          /**
+           * We are currently in the process of transitioning to nx's out of the box structure and
+           * so need to manually specify converted packages' tsconfig.build.json and tsconfig.spec.json
+           * files here for now in addition to the tsconfig.json glob pattern.
+           *
+           * TODO(#4665): Clean this up once all packages have been transitioned.
+           */
+          './packages/scope-manager/tsconfig.build.json',
+          './packages/scope-manager/tsconfig.spec.json',
+        ],
+        allowAutomaticSingleRunInference: true,
+        tsconfigRootDir: __dirname,
+        warnOnUnsupportedTypeScriptVersion: false,
+        EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
+        cacheLifetime: {
+          // we pretty well never create/change tsconfig structure - so need to ever evict the cache
+          // in the rare case that we do - just need to manually restart their IDE.
+          glob: 'Infinity',
+        },
+      },
+      rules: {
+        // make sure we're not leveraging any deprecated APIs
+        'deprecation/deprecation': 'error',
+
+        //
+        // our plugin :D
+        //
+        '@typescript-eslint/prefer-nullish-coalescing': 'error',
+        '@typescript-eslint/prefer-optional-chain': 'error',
+        '@typescript-eslint/restrict-template-expressions': [
+          'error',
+          {
+            allowNumber: true,
+            allowBoolean: true,
+            allowAny: true,
+            allowNullish: true,
+            allowRegExp: true,
+          },
+        ],
+        '@typescript-eslint/explicit-function-return-type': 'error',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
+        // we don't use classes enough in our codebase to warrant the numerous false positive against the TS API types etc
+        '@typescript-eslint/unbound-method': 'off',
+
+        //
+        // Internal repo rules
+        //
+
+        '@typescript-eslint/internal/no-poorly-typed-ts-props': 'error',
+        '@typescript-eslint/internal/no-typescript-default-import': 'error',
+        '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
+      },
+    },
+    {
+      files: ['*.js'],
+      parserOptions: {
+        project: null,
+      },
+    },
     // all test files
     {
       files: [
