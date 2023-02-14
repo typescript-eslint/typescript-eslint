@@ -1,0 +1,93 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics arrow-function-with-optional-parameter Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: CallExpression {
+        type: "CallExpression",
+        arguments: Array [],
+        callee: ArrowFunctionExpression {
+          type: "ArrowFunctionExpression",
+          async: false,
+          body: BinaryExpression {
+            type: "BinaryExpression",
+            left: Identifier {
+              type: "Identifier",
+              name: "k",
+
+              range: [82, 83],
+              loc: {
+                start: { column: 9, line: 3 },
+                end: { column: 10, line: 3 },
+              },
+            },
+            operator: "+",
+            right: Literal {
+              type: "Literal",
+              raw: "1",
+              value: 1,
+
+              range: [86, 87],
+              loc: {
+                start: { column: 13, line: 3 },
+                end: { column: 14, line: 3 },
+              },
+            },
+
+            range: [82, 87],
+            loc: {
+              start: { column: 9, line: 3 },
+              end: { column: 14, line: 3 },
+            },
+          },
+          expression: true,
+          generator: false,
+          id: null,
+          params: Array [
+            Identifier {
+              type: "Identifier",
+              name: "k",
+              optional: true,
+
+              range: [75, 77],
+              loc: {
+                start: { column: 2, line: 3 },
+                end: { column: 4, line: 3 },
+              },
+            },
+          ],
+
+          range: [74, 87],
+          loc: {
+            start: { column: 1, line: 3 },
+            end: { column: 14, line: 3 },
+          },
+        },
+        optional: false,
+
+        range: [73, 90],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 17, line: 3 },
+        },
+      },
+
+      range: [73, 91],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 18, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 92],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

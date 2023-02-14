@@ -11,6 +11,48 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('key-spacing', rule, {
   valid: [
+    // non-applicable
+    {
+      code: `
+interface X {
+  x:
+    | number
+    | string;
+}
+      `,
+      options: [{ align: 'value' }],
+    },
+    {
+      code: `
+interface X {
+  x:
+    | number
+    | string;
+}
+      `,
+      options: [{}],
+    },
+    {
+      code: `
+interface X {
+  abcdef: string;
+  x:
+    | number
+    | string;
+  defgh: string;
+}
+      `,
+      options: [{ align: 'value' }],
+    },
+    {
+      code: `
+interface X {
+  x:
+    | number; abcd: string;
+}
+      `,
+      options: [{ align: 'value' }],
+    },
     // align: value
     {
       code: `

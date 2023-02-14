@@ -1,2 +1,0 @@
-var obj = function (): void {
-};

@@ -1,0 +1,226 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics type-import-type Babel - Tokens 1`] = `
+Array [
+  Identifier {
+    type: "Identifier",
+    value: "type",
+
+    range: [73, 77],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 4, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "A",
+
+    range: [78, 79],
+    loc: {
+      start: { column: 5, line: 3 },
+      end: { column: 6, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [80, 81],
+    loc: {
+      start: { column: 7, line: 3 },
+      end: { column: 8, line: 3 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "typeof",
+
+    range: [82, 88],
+    loc: {
+      start: { column: 9, line: 3 },
+      end: { column: 15, line: 3 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "import",
+
+    range: [89, 95],
+    loc: {
+      start: { column: 16, line: 3 },
+      end: { column: 22, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [95, 96],
+    loc: {
+      start: { column: 22, line: 3 },
+      end: { column: 23, line: 3 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'A'",
+
+    range: [96, 99],
+    loc: {
+      start: { column: 23, line: 3 },
+      end: { column: 26, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [99, 100],
+    loc: {
+      start: { column: 26, line: 3 },
+      end: { column: 27, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [100, 101],
+    loc: {
+      start: { column: 27, line: 3 },
+      end: { column: 28, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "type",
+
+    range: [102, 106],
+    loc: {
+      start: { column: 0, line: 4 },
+      end: { column: 4, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "B",
+
+    range: [107, 108],
+    loc: {
+      start: { column: 5, line: 4 },
+      end: { column: 6, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [109, 110],
+    loc: {
+      start: { column: 7, line: 4 },
+      end: { column: 8, line: 4 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "import",
+
+    range: [111, 117],
+    loc: {
+      start: { column: 9, line: 4 },
+      end: { column: 15, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [117, 118],
+    loc: {
+      start: { column: 15, line: 4 },
+      end: { column: 16, line: 4 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'B'",
+
+    range: [118, 121],
+    loc: {
+      start: { column: 16, line: 4 },
+      end: { column: 19, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [121, 122],
+    loc: {
+      start: { column: 19, line: 4 },
+      end: { column: 20, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ".",
+
+    range: [122, 123],
+    loc: {
+      start: { column: 20, line: 4 },
+      end: { column: 21, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "X",
+
+    range: [123, 124],
+    loc: {
+      start: { column: 21, line: 4 },
+      end: { column: 22, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "<",
+
+    range: [124, 125],
+    loc: {
+      start: { column: 22, line: 4 },
+      end: { column: 23, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Y",
+
+    range: [125, 126],
+    loc: {
+      start: { column: 23, line: 4 },
+      end: { column: 24, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ">",
+
+    range: [126, 127],
+    loc: {
+      start: { column: 24, line: 4 },
+      end: { column: 25, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [127, 128],
+    loc: {
+      start: { column: 25, line: 4 },
+      end: { column: 26, line: 4 },
+    },
+  },
+]
+`;

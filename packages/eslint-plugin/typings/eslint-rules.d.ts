@@ -661,6 +661,21 @@ declare module 'eslint/lib/rules/quotes' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/block-spacing' {
+  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+  const rule: TSESLint.RuleModule<
+    'missing' | 'extra',
+    ['always' | 'never'],
+    {
+      BlockStatement(node: TSESTree.BlockStatement): void;
+      StaticBlock(node: TSESTree.StaticBlock): void;
+      SwitchStatement(node: TSESTree.SwitchStatement): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/brace-style' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 

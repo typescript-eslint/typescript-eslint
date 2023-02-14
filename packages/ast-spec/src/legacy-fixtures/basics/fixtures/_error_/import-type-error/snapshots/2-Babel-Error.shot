@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics _error_ import-type-error Babel - Error 1`] = `[SyntaxError: A type-only import can specify a default import or named bindings, but not both. (3:0)]`;

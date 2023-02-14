@@ -1,0 +1,4 @@
+// TODO: This fixture might be too large, and if so should be split up.
+
+foo?.bar<A>();
+foo?.bar<number>();

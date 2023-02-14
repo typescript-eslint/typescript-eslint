@@ -3,6 +3,27 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.51.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.50.0...v5.51.0) (2023-02-06)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [sort-type-constituents] fixed behavior change ([#6384](https://github.com/typescript-eslint/typescript-eslint/issues/6384)) ([5bf7f7f](https://github.com/typescript-eslint/typescript-eslint/commit/5bf7f7fe48aee61a676dfbe829c2a5e9e44cd552)), closes [#6339](https://github.com/typescript-eslint/typescript-eslint/issues/6339)
+* **eslint-plugin:** do not use .at(), Node 14 does not support it ([#6402](https://github.com/typescript-eslint/typescript-eslint/issues/6402)) ([077ed1b](https://github.com/typescript-eslint/typescript-eslint/commit/077ed1b5be844df35b7fba554ddae579b3144787))
+
+
+### Features
+
+* **eslint-plugin:** [naming-convention] improve performance by removing unnecessary selectors ([#6376](https://github.com/typescript-eslint/typescript-eslint/issues/6376)) ([3647a1c](https://github.com/typescript-eslint/typescript-eslint/commit/3647a1c1bbcfe6551647632fc2d978fa90881de1))
+* **eslint-plugin:** [no-floating-promises] error on logical expression ([#6356](https://github.com/typescript-eslint/typescript-eslint/issues/6356)) ([f330e06](https://github.com/typescript-eslint/typescript-eslint/commit/f330e0651548d55163ddc3233c90fd3cbe37c9c0))
+* **eslint-plugin:** [no-import-type-side-effects] add rule to warn against runtime side effects with `verbatimModuleSyntax` ([#6394](https://github.com/typescript-eslint/typescript-eslint/issues/6394)) ([b14d3be](https://github.com/typescript-eslint/typescript-eslint/commit/b14d3be0f305d71e0adfc9381e9de993898b2b43))
+* **eslint-plugin:** [strict-boolean-expressions] add allow nullable enum to strict boolean expressions ([#6096](https://github.com/typescript-eslint/typescript-eslint/issues/6096)) ([d4747cd](https://github.com/typescript-eslint/typescript-eslint/commit/d4747cd8cc9dad2bf2cb64e1c0e8980ce34d82c7))
+* **typescript-estree:** cache project glob resolution ([#6367](https://github.com/typescript-eslint/typescript-eslint/issues/6367)) ([afae837](https://github.com/typescript-eslint/typescript-eslint/commit/afae8374df64101627808ccfeb5b715c865e910f))
+
+
+
+
+
 # [5.50.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.49.0...v5.50.0) (2023-01-31)
 
 
