@@ -4,6 +4,7 @@ import awaitThenable from './await-thenable';
 import banTsComment from './ban-ts-comment';
 import banTslintComment from './ban-tslint-comment';
 import banTypes from './ban-types';
+import blockSpacing from './block-spacing';
 import braceStyle from './brace-style';
 import classLiteralPropertyStyle from './class-literal-property-style';
 import commaDangle from './comma-dangle';
@@ -133,6 +134,7 @@ export default {
   'ban-ts-comment': banTsComment,
   'ban-tslint-comment': banTslintComment,
   'ban-types': banTypes,
+  'block-spacing': blockSpacing,
   'brace-style': braceStyle,
   'class-literal-property-style': classLiteralPropertyStyle,
   'comma-dangle': commaDangle,

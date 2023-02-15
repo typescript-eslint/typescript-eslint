@@ -17,7 +17,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow aliasing `this`',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     schema: [
       {

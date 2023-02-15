@@ -92,7 +92,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require consistently using either `T[]` or `Array<T>` for arrays',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
     fixable: 'code',
     messages: {

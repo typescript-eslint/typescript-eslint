@@ -18,7 +18,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Disallow unnecessary parentheses',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'code',

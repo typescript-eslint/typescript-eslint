@@ -83,10 +83,13 @@ function parseOptions(context: Context): ParsedOptions {
   const normalizedOptions = context.options
     .map(opt => normalizeOption(opt))
     .reduce((acc, val) => acc.concat(val), []);
-  return util.getEnumNames(Selectors).reduce((acc, k) => {
+
+  const result = util.getEnumNames(Selectors).reduce((acc, k) => {
     acc[k] = createValidator(k, context, normalizedOptions);
     return acc;
   }, {} as ParsedOptions);
+
+  return result;
 }
 
 export { parseOptions };

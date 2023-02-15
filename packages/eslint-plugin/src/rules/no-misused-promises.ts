@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-tools';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -63,7 +63,7 @@ export default util.createRule<Options, MessageId>({
   meta: {
     docs: {
       description: 'Disallow Promises in places not designed to handle them',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {

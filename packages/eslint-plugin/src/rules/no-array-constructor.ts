@@ -9,7 +9,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow generic `Array` constructors',
-      recommended: 'error',
+      recommended: 'recommended',
       extendsBaseRule: true,
     },
     fixable: 'code',

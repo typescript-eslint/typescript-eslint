@@ -17,7 +17,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow TypeScript namespaces',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     messages: {
       moduleSyntaxIsPreferred:

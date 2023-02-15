@@ -1,5 +1,5 @@
 import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-tools';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -178,7 +178,6 @@ export default util.createRule({
     docs: {
       description:
         'Disallow members of unions and intersections that do nothing or override type information',
-      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {

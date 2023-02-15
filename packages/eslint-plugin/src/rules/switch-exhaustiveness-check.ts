@@ -1,5 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-tools';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
@@ -18,7 +18,6 @@ export default createRule({
     docs: {
       description:
         'Require switch-case statements to be exhaustive with union type',
-      recommended: false,
       requiresTypeChecking: true,
     },
     hasSuggestions: true,

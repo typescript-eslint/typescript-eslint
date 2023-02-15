@@ -14,7 +14,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before blocks',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: baseRule.meta.fixable,

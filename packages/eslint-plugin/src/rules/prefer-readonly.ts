@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-tools';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -26,7 +26,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         "Require private members to be marked as `readonly` if they're never modified outside of the constructor",
-      recommended: false,
       requiresTypeChecking: true,
     },
     fixable: 'code',

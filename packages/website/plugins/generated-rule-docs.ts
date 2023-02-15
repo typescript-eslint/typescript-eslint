@@ -158,7 +158,6 @@ export const generatedRuleDocs: Plugin = () => {
     })();
 
     // 5. Add a description of how to use / options for the rule
-    const optionLevel = meta.docs.recommended === 'error' ? 'error' : 'warn';
 
     if (meta.docs.extendsBaseRule) {
       const extendsBaseRuleName =
@@ -206,7 +205,7 @@ export const generatedRuleDocs: Plugin = () => {
       : ''
   }
     "${extendsBaseRuleName}": "off",
-    "@typescript-eslint/${file.stem}": "${optionLevel}"
+    "@typescript-eslint/${file.stem}": "error"
   }
 }`;
       };
@@ -233,7 +232,7 @@ export const generatedRuleDocs: Plugin = () => {
 
       const getEslintrcString = `{
   "rules": {
-    "@typescript-eslint/${file.stem}": "${optionLevel}"
+    "@typescript-eslint/${file.stem}": "error"
   }
 }`;
       root.children.splice(firstH2Index, 0, {

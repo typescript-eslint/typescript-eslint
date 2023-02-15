@@ -13,7 +13,7 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
     messages: {
       preferTypeAnnotation:

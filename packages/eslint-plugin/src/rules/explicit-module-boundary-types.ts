@@ -38,7 +38,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         "Require explicit return and argument types on exported functions' and classes' public class methods",
-      recommended: false,
     },
     messages: {
       missingReturnType: 'Missing return type on function.',

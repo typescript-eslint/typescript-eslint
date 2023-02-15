@@ -595,6 +595,132 @@ const x: Bar<Foo> = arg1 => arg2 => arg1 + arg2;
         },
       ],
     },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = function (): number {
+  return 1;
+};
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = (function () {
+  return 1;
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = (() => {
+  return 1;
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = ((arg: number): number => {
+  return arg;
+})(0);
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = (() => (() => 'foo')())();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => (): string => {
+  return 'foo';
+})()();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => (): string => {
+  return 'foo';
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+          allowHigherOrderFunctions: false,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => (): string => {
+  return 'foo';
+})()();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+          allowHigherOrderFunctions: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => (): void => {})()();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => (() => {})())();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -1474,6 +1600,94 @@ class Foo {
           endLine: 4,
           column: 3,
           endColumn: 18,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = (function () {
+  return 'foo';
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 14,
+          endColumn: 25,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = (function () {
+  return () => {
+    return 1;
+  };
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 10,
+          endColumn: 15,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = function () {
+  return 'foo';
+};
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 11,
+          endColumn: 22,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => () => {})()();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 18,
+          endColumn: 23,
         },
       ],
     },

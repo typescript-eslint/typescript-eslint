@@ -257,6 +257,26 @@ You may pass function/method names you would like this rule to ignore, like so:
 }
 ```
 
+### `allowIIFE`
+
+Examples of code for this rule with `{ allowIIFE: true }`:
+
+#### ❌ Incorrect
+
+```ts
+var func = () => 'foo';
+```
+
+#### ✅ Correct
+
+```ts
+var foo = (() => 'foo')();
+
+var bar = (function () {
+  return 'bar';
+})();
+```
+
 ## When Not To Use It
 
 If you don't wish to prevent calling code from using function return values in unexpected ways, then

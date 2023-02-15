@@ -9,7 +9,7 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description: 'Enforce valid definition of `new` and `constructor`',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     schema: [],
     messages: {
