@@ -242,6 +242,38 @@ const log = (message: string) => {
 var log = (message: string) => void console.log(message);
 ```
 
+### `allowFunctionsWithoutTypeParameters`
+
+Examples of code for this rule with `{ allowFunctionsWithoutTypeParameters: true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+function foo<T>(t: T) {
+  return t;
+}
+
+const bar = <T>(t: T) => t;
+```
+
+#### ✅ Correct
+
+```ts
+function foo<T>(t: T): T {
+  return t;
+}
+
+const bar = <T>(t: T): T => t;
+
+const allowedFunction(x: string) {
+  return x;
+}
+
+const allowedArrow = (x: string) => x;
+```
+
 ### `allowedNames`
 
 You may pass function/method names you would like this rule to ignore, like so:
