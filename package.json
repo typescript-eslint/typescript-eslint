@@ -112,17 +112,12 @@
     "typescript": ">=4.2.4 <5.0.0"
   },
   "resolutions": {
-    "typescript": "~4.9.3",
+    "typescript": "~4.9.5",
     "@types/node": "^18.11.9",
-    "@jest/create-cache-key-function": "^29",
     "@jest/reporters": "^29",
     "@jest/test-result": "^29",
     "jest-config": "^29",
-    "jest-diff": "^29",
-    "jest-get-type": "^29",
-    "jest-matcher-utils": "^29",
     "jest-resolve": "^29",
-    "jest-snapshot": "^29",
     "jest-util": "^29",
     "pretty-format": "^29",
     "@swc/core-android-arm-eabi": "npm:dummypkg-a@1.0.0",
