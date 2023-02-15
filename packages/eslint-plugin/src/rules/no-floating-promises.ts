@@ -1,9 +1,10 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
+import { OperatorPrecedence } from '../util';
 
 type Options = [
   {
@@ -64,9 +65,8 @@ export default util.createRule<Options, MessageId>({
   ],
 
   create(context, [options]) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
-    const sourceCode = context.getSourceCode();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     return {
       ExpressionStatement(node): void {
@@ -88,10 +88,21 @@ export default util.createRule<Options, MessageId>({
               suggest: [
                 {
                   messageId: 'floatingFixVoid',
-                  fix(fixer): TSESLint.RuleFix {
-                    let code = sourceCode.getText(node);
-                    code = `void ${code}`;
-                    return fixer.replaceText(node, code);
+                  fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
+                    const tsNode = services.esTreeNodeToTSNodeMap.get(
+                      node.expression,
+                    );
+                    if (isHigherPrecedenceThanUnary(tsNode)) {
+                      return fixer.insertTextBefore(node, 'void ');
+                    } else {
+                      return [
+                        fixer.insertTextBefore(node, 'void ('),
+                        fixer.insertTextAfterRange(
+                          [expression.range[1], expression.range[1]],
+                          ')',
+                        ),
+                      ];
+                    }
                   },
                 },
               ],
@@ -113,10 +124,10 @@ export default util.createRule<Options, MessageId>({
                         'await',
                       );
                     }
-                    const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+                    const tsNode = services.esTreeNodeToTSNodeMap.get(
                       node.expression,
                     );
-                    if (isHigherPrecedenceThanAwait(tsNode)) {
+                    if (isHigherPrecedenceThanUnary(tsNode)) {
                       return fixer.insertTextBefore(node, 'await ');
                     } else {
                       return [
@@ -136,16 +147,12 @@ export default util.createRule<Options, MessageId>({
       },
     };
 
-    function isHigherPrecedenceThanAwait(node: ts.Node): boolean {
-      const operator = tsutils.isBinaryExpression(node)
+    function isHigherPrecedenceThanUnary(node: ts.Node): boolean {
+      const operator = ts.isBinaryExpression(node)
         ? node.operatorToken.kind
         : ts.SyntaxKind.Unknown;
       const nodePrecedence = util.getOperatorPrecedence(node.kind, operator);
-      const awaitPrecedence = util.getOperatorPrecedence(
-        ts.SyntaxKind.AwaitExpression,
-        ts.SyntaxKind.Unknown,
-      );
-      return nodePrecedence > awaitPrecedence;
+      return nodePrecedence > OperatorPrecedence.Unary;
     }
 
     function isAsyncIife(node: TSESTree.ExpressionStatement): boolean {
@@ -184,9 +191,7 @@ export default util.createRule<Options, MessageId>({
       }
 
       // Check the type. At this point it can't be unhandled if it isn't a promise
-      if (
-        !isPromiseLike(checker, parserServices.esTreeNodeToTSNodeMap.get(node))
-      ) {
+      if (!isPromiseLike(checker, services.esTreeNodeToTSNodeMap.get(node))) {
         return false;
       }
 
@@ -214,6 +219,11 @@ export default util.createRule<Options, MessageId>({
         // `new Promise()`), the promise is not handled because it doesn't have the
         // necessary then/catch call at the end of the chain.
         return true;
+      } else if (node.type === AST_NODE_TYPES.LogicalExpression) {
+        return (
+          isUnhandledPromise(checker, node.left) ||
+          isUnhandledPromise(checker, node.right)
+        );
       }
 
       // We conservatively return false for all other types of expressions because
@@ -230,7 +240,7 @@ export default util.createRule<Options, MessageId>({
 //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
 function isPromiseLike(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
-  for (const ty of tsutils.unionTypeParts(checker.getApparentType(type))) {
+  for (const ty of tools.unionTypeParts(checker.getApparentType(type))) {
     const then = ty.getProperty('then');
     if (then === undefined) {
       continue;
@@ -256,7 +266,7 @@ function hasMatchingSignature(
   type: ts.Type,
   matcher: (signature: ts.Signature) => boolean,
 ): boolean {
-  for (const t of tsutils.unionTypeParts(type)) {
+  for (const t of tools.unionTypeParts(type)) {
     if (t.getCallSignatures().some(matcher)) {
       return true;
     }
@@ -273,7 +283,7 @@ function isFunctionParam(
   const type: ts.Type | undefined = checker.getApparentType(
     checker.getTypeOfSymbolAtLocation(param, node),
   );
-  for (const t of tsutils.unionTypeParts(type)) {
+  for (const t of tools.unionTypeParts(type)) {
     if (t.getCallSignatures().length !== 0) {
       return true;
     }

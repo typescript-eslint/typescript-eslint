@@ -1,14 +1,4 @@
-import {
-  isBinaryExpression,
-  isCallExpression,
-  isIdentifier,
-  isJsxExpression,
-  isNewExpression,
-  isParameterDeclaration,
-  isPropertyAssignment,
-  isPropertyDeclaration,
-  isVariableDeclaration,
-} from 'tsutils';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 /**
@@ -25,23 +15,23 @@ export function getContextualType(
     return;
   }
 
-  if (isCallExpression(parent) || isNewExpression(parent)) {
+  if (ts.isCallExpression(parent) || ts.isNewExpression(parent)) {
     if (node === parent.expression) {
       // is the callee, so has no contextual type
       return;
     }
   } else if (
-    isVariableDeclaration(parent) ||
-    isPropertyDeclaration(parent) ||
-    isParameterDeclaration(parent)
+    ts.isVariableDeclaration(parent) ||
+    ts.isPropertyDeclaration(parent) ||
+    tools.isParameterDeclaration(parent)
   ) {
     return parent.type ? checker.getTypeFromTypeNode(parent.type) : undefined;
-  } else if (isJsxExpression(parent)) {
+  } else if (ts.isJsxExpression(parent)) {
     return checker.getContextualType(parent);
-  } else if (isPropertyAssignment(parent) && isIdentifier(node)) {
+  } else if (ts.isPropertyAssignment(parent) && ts.isIdentifier(node)) {
     return checker.getContextualType(node);
   } else if (
-    isBinaryExpression(parent) &&
+    ts.isBinaryExpression(parent) &&
     parent.operatorToken.kind === ts.SyntaxKind.EqualsToken &&
     parent.right === node
   ) {

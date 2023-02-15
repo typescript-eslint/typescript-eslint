@@ -1,0 +1,156 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics nested-type-arguments Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "nestedArray",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTypeReference {
+                type: "TSTypeReference",
+                typeName: Identifier {
+                  type: "Identifier",
+                  name: "Array",
+
+                  range: [90, 95],
+                  loc: {
+                    start: { column: 17, line: 3 },
+                    end: { column: 22, line: 3 },
+                  },
+                },
+                typeParameters: TSTypeParameterInstantiation {
+                  type: "TSTypeParameterInstantiation",
+                  params: Array [
+                    TSTypeReference {
+                      type: "TSTypeReference",
+                      typeName: Identifier {
+                        type: "Identifier",
+                        name: "Array",
+
+                        range: [96, 101],
+                        loc: {
+                          start: { column: 23, line: 3 },
+                          end: { column: 28, line: 3 },
+                        },
+                      },
+                      typeParameters: TSTypeParameterInstantiation {
+                        type: "TSTypeParameterInstantiation",
+                        params: Array [
+                          TSTypeReference {
+                            type: "TSTypeReference",
+                            typeName: Identifier {
+                              type: "Identifier",
+                              name: "Array",
+
+                              range: [102, 107],
+                              loc: {
+                                start: { column: 29, line: 3 },
+                                end: { column: 34, line: 3 },
+                              },
+                            },
+                            typeParameters: TSTypeParameterInstantiation {
+                              type: "TSTypeParameterInstantiation",
+                              params: Array [
+                                TSStringKeyword {
+                                  type: "TSStringKeyword",
+
+                                  range: [108, 114],
+                                  loc: {
+                                    start: { column: 35, line: 3 },
+                                    end: { column: 41, line: 3 },
+                                  },
+                                },
+                              ],
+
+                              range: [107, 115],
+                              loc: {
+                                start: { column: 34, line: 3 },
+                                end: { column: 42, line: 3 },
+                              },
+                            },
+
+                            range: [102, 115],
+                            loc: {
+                              start: { column: 29, line: 3 },
+                              end: { column: 42, line: 3 },
+                            },
+                          },
+                        ],
+
+                        range: [101, 116],
+                        loc: {
+                          start: { column: 28, line: 3 },
+                          end: { column: 43, line: 3 },
+                        },
+                      },
+
+                      range: [96, 116],
+                      loc: {
+                        start: { column: 23, line: 3 },
+                        end: { column: 43, line: 3 },
+                      },
+                    },
+                  ],
+
+                  range: [95, 117],
+                  loc: {
+                    start: { column: 22, line: 3 },
+                    end: { column: 44, line: 3 },
+                  },
+                },
+
+                range: [90, 117],
+                loc: {
+                  start: { column: 17, line: 3 },
+                  end: { column: 44, line: 3 },
+                },
+              },
+
+              range: [88, 117],
+              loc: {
+                start: { column: 15, line: 3 },
+                end: { column: 44, line: 3 },
+              },
+            },
+
+            range: [77, 117],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 44, line: 3 },
+            },
+          },
+          init: null,
+
+          range: [77, 117],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 44, line: 3 },
+          },
+        },
+      ],
+      kind: "var",
+
+      range: [73, 118],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 45, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 119],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

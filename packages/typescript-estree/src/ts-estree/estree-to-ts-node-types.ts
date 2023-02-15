@@ -55,6 +55,7 @@ export interface EstreeToTsNodeTypes {
     | ts.ClassDeclaration
     | ts.ClassExpression
     | ts.TypeAliasDeclaration
+    | ts.ImportEqualsDeclaration
     | ts.InterfaceDeclaration
     | ts.EnumDeclaration
     | ts.ModuleDeclaration;

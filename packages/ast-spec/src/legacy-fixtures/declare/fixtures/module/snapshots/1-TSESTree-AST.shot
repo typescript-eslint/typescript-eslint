@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures declare module TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSModuleDeclaration {
+      type: "TSModuleDeclaration",
+      body: TSModuleBlock {
+        type: "TSModuleBlock",
+        body: Array [],
+
+        range: [92, 94],
+        loc: {
+          start: { column: 19, line: 3 },
+          end: { column: 21, line: 3 },
+        },
+      },
+      declare: true,
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [88, 91],
+        loc: {
+          start: { column: 15, line: 3 },
+          end: { column: 18, line: 3 },
+        },
+      },
+      kind: "module",
+
+      range: [73, 94],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 21, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 95],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

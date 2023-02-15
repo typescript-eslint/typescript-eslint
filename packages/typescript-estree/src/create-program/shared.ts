@@ -5,10 +5,15 @@ import * as ts from 'typescript';
 import type { ModuleResolver } from '../parser-options';
 import type { ParseSettings } from '../parseSettings';
 
-interface ASTAndProgram {
+interface ASTAndNoProgram {
+  ast: ts.SourceFile;
+  program: null;
+}
+interface ASTAndDefiniteProgram {
   ast: ts.SourceFile;
   program: ts.Program;
 }
+type ASTAndProgram = ASTAndNoProgram | ASTAndDefiniteProgram;
 
 /**
  * Compiler options required to avoid critical functionality issues
@@ -94,7 +99,7 @@ function getExtension(fileName: string | undefined): string | null {
 function getAstFromProgram(
   currentProgram: Program,
   parseSettings: ParseSettings,
-): ASTAndProgram | undefined {
+): ASTAndDefiniteProgram | undefined {
   const ast = currentProgram.getSourceFile(parseSettings.filePath);
 
   // working around https://github.com/typescript-eslint/typescript-eslint/issues/1573
@@ -124,12 +129,28 @@ function getModuleResolver(moduleResolverPath: string): ModuleResolver {
   return moduleResolver;
 }
 
+/**
+ * Hash content for compare content.
+ * @param content hashed contend
+ * @returns hashed result
+ */
+function createHash(content: string): string {
+  // No ts.sys in browser environments.
+  if (ts.sys?.createHash) {
+    return ts.sys.createHash(content);
+  }
+  return content;
+}
+
 export {
+  ASTAndDefiniteProgram,
+  ASTAndNoProgram,
   ASTAndProgram,
   CORE_COMPILER_OPTIONS,
   canonicalDirname,
   CanonicalPath,
   createDefaultCompilerOptionsFromExtra,
+  createHash,
   ensureAbsolutePath,
   getCanonicalFileName,
   getAstFromProgram,

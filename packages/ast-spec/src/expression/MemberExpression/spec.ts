@@ -2,11 +2,10 @@ import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type { BaseNode } from '../../base/BaseNode';
 import type { PrivateIdentifier } from '../../special/PrivateIdentifier/spec';
 import type { Expression } from '../../unions/Expression';
-import type { LeftHandSideExpression } from '../../unions/LeftHandSideExpression';
 import type { Identifier } from '../Identifier/spec';
 
 interface MemberExpressionBase extends BaseNode {
-  object: LeftHandSideExpression;
+  object: Expression;
   property: Expression | Identifier | PrivateIdentifier;
   computed: boolean;
   optional: boolean;

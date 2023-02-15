@@ -1,12 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import {
-  isObjectFlagSet,
-  isObjectType,
-  isStrictCompilerOptionEnabled,
-  isTypeFlagSet,
-  isVariableDeclaration,
-} from 'tsutils';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -53,9 +47,9 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [{}],
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
-    const compilerOptions = parserServices.program.getCompilerOptions();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
+    const compilerOptions = services.program.getCompilerOptions();
 
     /**
      * Sometimes tuple types don't have ObjectFlags.Tuple set, like when they're being matched against an inferred type.
@@ -91,8 +85,8 @@ export default util.createRule<Options, MessageIds>({
     /**
      * Returns true if there's a chance the variable has been used before a value has been assigned to it
      */
-    function isPossiblyUsedBeforeAssigned(node: ts.Expression): boolean {
-      const declaration = util.getDeclaration(checker, node);
+    function isPossiblyUsedBeforeAssigned(node: TSESTree.Expression): boolean {
+      const declaration = util.getDeclaration(services, node);
       if (!declaration) {
         // don't know what the declaration is for some reason, so just assume the worst
         return true;
@@ -100,10 +94,13 @@ export default util.createRule<Options, MessageIds>({
 
       if (
         // non-strict mode doesn't care about used before assigned errors
-        isStrictCompilerOptionEnabled(compilerOptions, 'strictNullChecks') &&
+        tools.isStrictCompilerOptionEnabled(
+          compilerOptions,
+          'strictNullChecks',
+        ) &&
         // ignore class properties as they are compile time guarded
         // also ignore function arguments as they can't be used before defined
-        isVariableDeclaration(declaration) &&
+        ts.isVariableDeclaration(declaration) &&
         // is it `const x!: number`
         declaration.initializer === undefined &&
         declaration.exclamationToken === undefined &&
@@ -111,7 +108,7 @@ export default util.createRule<Options, MessageIds>({
       ) {
         // check if the defined variable type has changed since assignment
         const declarationType = checker.getTypeFromTypeNode(declaration.type);
-        const type = util.getConstrainedTypeAtLocation(checker, node);
+        const type = util.getConstrainedTypeAtLocation(services, node);
         if (declarationType === type) {
           // possibly used before assigned, so just skip it
           // better to false negative and skip it, than false positive and fix to compile erroring code
@@ -157,15 +154,15 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+        const originalNode = services.esTreeNodeToTSNodeMap.get(node);
 
         const type = util.getConstrainedTypeAtLocation(
-          checker,
-          originalNode.expression,
+          services,
+          node.expression,
         );
 
         if (!util.isNullableType(type)) {
-          if (isPossiblyUsedBeforeAssigned(originalNode.expression)) {
+          if (isPossiblyUsedBeforeAssigned(node.expression)) {
             return;
           }
 
@@ -241,13 +238,12 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-        const castType = checker.getTypeAtLocation(originalNode);
+        const castType = services.getTypeAtLocation(node);
 
         if (
-          isTypeFlagSet(castType, ts.TypeFlags.Literal) ||
-          (isObjectType(castType) &&
-            (isObjectFlagSet(castType, ts.ObjectFlags.Tuple) ||
+          tools.isTypeFlagSet(castType, ts.TypeFlags.Literal) ||
+          (tools.isObjectType(castType) &&
+            (tools.isObjectFlagSet(castType, ts.ObjectFlags.Tuple) ||
               couldBeTupleType(castType)))
         ) {
           // It's not always safe to remove a cast to a literal type or tuple
@@ -255,14 +251,14 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const uncastType = checker.getTypeAtLocation(originalNode.expression);
+        const uncastType = services.getTypeAtLocation(node.expression);
 
         if (uncastType === castType) {
           context.report({
             node,
             messageId: 'unnecessaryAssertion',
             fix(fixer) {
-              if (originalNode.kind === ts.SyntaxKind.TypeAssertionExpression) {
+              if (node.type === AST_NODE_TYPES.TSTypeAssertion) {
                 const closingAngleBracket = sourceCode.getTokenAfter(
                   node.typeAnnotation,
                 );

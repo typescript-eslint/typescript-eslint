@@ -103,6 +103,7 @@ export class WebLinter {
       host: this.host,
     });
     const tsAst = program.getSourceFile(fileName)!;
+    const checker = program.getTypeChecker();
 
     const { estree: ast, astMaps } = this.lintUtils.astConverter(
       tsAst,
@@ -122,10 +123,13 @@ export class WebLinter {
     return {
       ast,
       services: {
-        hasFullTypeInformation: true,
         program,
         esTreeNodeToTSNodeMap: astMaps.esTreeNodeToTSNodeMap,
         tsNodeToESTreeNodeMap: astMaps.tsNodeToESTreeNodeMap,
+        getSymbolAtLocation: node =>
+          checker.getSymbolAtLocation(astMaps.esTreeNodeToTSNodeMap.get(node)),
+        getTypeAtLocation: node =>
+          checker.getTypeAtLocation(astMaps.esTreeNodeToTSNodeMap.get(node)),
       },
       scopeManager,
       visitorKeys: this.lintUtils.visitorKeys,

@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures declare type-alias TSESTree - Tokens 1`] = `
+Array [
+  Identifier {
+    type: "Identifier",
+    value: "declare",
+
+    range: [73, 80],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 7, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "type",
+
+    range: [81, 85],
+    loc: {
+      start: { column: 8, line: 3 },
+      end: { column: 12, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Foo",
+
+    range: [86, 89],
+    loc: {
+      start: { column: 13, line: 3 },
+      end: { column: 16, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [90, 91],
+    loc: {
+      start: { column: 17, line: 3 },
+      end: { column: 18, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "string",
+
+    range: [92, 98],
+    loc: {
+      start: { column: 19, line: 3 },
+      end: { column: 25, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [98, 99],
+    loc: {
+      start: { column: 25, line: 3 },
+      end: { column: 26, line: 3 },
+    },
+  },
+]
+`;

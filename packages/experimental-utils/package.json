@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/experimental-utils",
-  "version": "5.46.1",
+  "version": "5.51.0",
   "description": "(Experimental) Utilities for working with TypeScript + ESLint together",
   "keywords": [
     "eslint",
@@ -39,7 +39,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/utils": "5.46.1"
+    "@typescript-eslint/utils": "5.51.0"
   },
   "peerDependencies": {
     "eslint": "^7.0.0 || ^8.0.0"

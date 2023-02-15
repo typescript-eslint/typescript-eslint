@@ -45,6 +45,7 @@ Program {
           end: { column: 17, line: 1 },
         },
       },
+      kind: "namespace",
 
       range: [0, 20],
       loc: {

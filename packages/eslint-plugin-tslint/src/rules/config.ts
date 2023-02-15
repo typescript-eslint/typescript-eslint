@@ -104,8 +104,8 @@ export default createRule<Options, MessageIds>({
   ) {
     const fileName = context.getFilename();
     const sourceCode = context.getSourceCode().text;
-    const parserServices = ESLintUtils.getParserServices(context);
-    const program = parserServices.program;
+    const services = ESLintUtils.getParserServices(context);
+    const program = services.program;
 
     /**
      * Create an instance of TSLint

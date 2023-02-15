@@ -103,6 +103,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-nam
 +           end: { column: 11, line: 1 },
           },
         },
+-       kind: 'namespace',
 
         range: [0, 18],
         loc: {

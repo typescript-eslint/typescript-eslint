@@ -43,17 +43,16 @@ export default util.createRule<Options, MessageIds>({
   },
 
   create(context, [options]) {
-    const service = util.getParserServices(context);
-    const checker = service.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     /**
      * Check if a given node is an array which all elements are string.
      * @param node
      */
-    function isStringArrayNode(node: TSESTree.LeftHandSideExpression): boolean {
-      const type = checker.getTypeAtLocation(
-        service.esTreeNodeToTSNodeMap.get(node),
-      );
+    function isStringArrayNode(node: TSESTree.Expression): boolean {
+      const type = services.getTypeAtLocation(node);
+
       if (checker.isArrayType(type) || checker.isTupleType(type)) {
         const typeArgs = checker.getTypeArguments(type);
         return typeArgs.every(
@@ -67,10 +66,9 @@ export default util.createRule<Options, MessageIds>({
       "CallExpression[arguments.length=0] > MemberExpression[property.name='sort'][computed=false]"(
         callee: TSESTree.MemberExpression,
       ): void {
-        const tsNode = service.esTreeNodeToTSNodeMap.get(callee.object);
         const calleeObjType = util.getConstrainedTypeAtLocation(
-          checker,
-          tsNode,
+          services,
+          callee.object,
         );
 
         if (options.ignoreStringArrays && isStringArrayNode(callee.object)) {

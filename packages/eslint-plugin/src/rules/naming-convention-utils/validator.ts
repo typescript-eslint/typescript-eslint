@@ -101,25 +101,25 @@ function createValidator(
       let name: string | null = originalName;
 
       name = validateUnderscore('leading', config, name, node, originalName);
-      if (name === null) {
+      if (name == null) {
         // fail
         return;
       }
 
       name = validateUnderscore('trailing', config, name, node, originalName);
-      if (name === null) {
+      if (name == null) {
         // fail
         return;
       }
 
       name = validateAffix('prefix', config, name, node, originalName);
-      if (name === null) {
+      if (name == null) {
         // fail
         return;
       }
 
       name = validateAffix('suffix', config, name, node, originalName);
-      if (name === null) {
+      if (name == null) {
         // fail
         return;
       }
@@ -383,7 +383,7 @@ function createValidator(
     modifiers: Set<Modifiers>,
   ): boolean {
     const formats = config.format;
-    if (formats === null || formats.length === 0) {
+    if (!formats?.length) {
       return true;
     }
 
@@ -427,7 +427,7 @@ function isCorrectType(
   context: Context,
   selector: Selectors,
 ): boolean {
-  if (config.types === null) {
+  if (config.types == null) {
     return true;
   }
 
@@ -435,11 +435,10 @@ function isCorrectType(
     return true;
   }
 
-  const { esTreeNodeToTSNodeMap, program } = util.getParserServices(context);
-  const checker = program.getTypeChecker();
-  const tsNode = esTreeNodeToTSNodeMap.get(node);
-  const type = checker
-    .getTypeAtLocation(tsNode)
+  const services = util.getParserServices(context);
+  const checker = services.program.getTypeChecker();
+  const type = services
+    .getTypeAtLocation(node)
     // remove null and undefined from the type, as we don't care about it here
     .getNonNullableType();
 

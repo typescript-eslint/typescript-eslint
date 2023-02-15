@@ -70,6 +70,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once AST 
 +           end: { column: 13, line: 1 },
           },
         },
+-       kind: 'namespace',
 
         range: [0, 20],
         loc: {
