@@ -124,7 +124,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
    */
-  project?: string | string[] | true;
+  project?: string | string[] | true | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -145,7 +145,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * This overrides any program or programs that would have been computed from the `project` option.
    * All linted files must be part of the provided program(s).
    */
-  programs?: ts.Program[];
+  programs?: ts.Program[] | null;
 
   /**
    * @deprecated - this flag will be removed in the next major.
