@@ -31,7 +31,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce consistent spacing between property names and type annotations in types and interfaces',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',

@@ -7,12 +7,18 @@ import type { FeatureProps } from './Feature';
 import { Feature } from './Feature';
 import styles from './RuleAttributes.module.css';
 
-const getRecommendation = (docs: RuleMetaDataDocs): [string, string] => {
-  return docs.recommended === 'strict'
-    ? ['🔒', 'strict']
-    : docs.requiresTypeChecking
-    ? ['🧠', 'recommended-requiring-type-checking']
-    : ['✅', 'recommended'];
+const recommendations = {
+  recommended: ['✅', 'recommended'],
+  strict: ['🔒', 'strict'],
+  stylistic: ['🎨', 'stylistic'],
+};
+
+const getRecommendation = (docs: RuleMetaDataDocs): string[] => {
+  const recommendation = recommendations[docs.recommended!];
+
+  return docs.requiresTypeChecking
+    ? [recommendation[0], `${recommendation[1]}-type-checked`]
+    : recommendation;
 };
 
 export function RuleAttributes({ name }: { name: string }): React.ReactNode {

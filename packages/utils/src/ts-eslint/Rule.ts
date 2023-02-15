@@ -5,7 +5,7 @@ import type { Linter } from './Linter';
 import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
 
-export type RuleRecommendation = 'error' | 'strict' | 'warn' | false;
+export type RuleRecommendation = 'recommended' | 'strict' | 'stylistic';
 
 interface RuleMetaDataDocs {
   /**
@@ -17,7 +17,7 @@ interface RuleMetaDataDocs {
    * Used by the build tools to generate the recommended and strict configs.
    * Set to false to not include it as a recommendation
    */
-  recommended: 'error' | 'strict' | 'warn' | false;
+  recommended?: RuleRecommendation;
   /**
    * The URL of the rule's docs
    */

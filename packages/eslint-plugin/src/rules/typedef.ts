@@ -23,7 +23,6 @@ export default util.createRule<[Options], MessageIds>({
   meta: {
     docs: {
       description: 'Require type annotations in certain places',
-      recommended: false,
     },
     messages: {
       expectedTypedef: 'Expected a type annotation.',

@@ -11,7 +11,7 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description: 'Disallow returning a value with type `any` from a function',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
