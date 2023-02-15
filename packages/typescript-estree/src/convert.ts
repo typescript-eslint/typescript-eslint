@@ -665,7 +665,11 @@ export class Converter {
     }
 
     if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-      result.export = true;
+      throw createError(
+        this.ast,
+        node.pos,
+        'A method signature cannot have an export modifier.',
+      );
     }
 
     if (hasModifier(SyntaxKind.StaticKeyword, node)) {
@@ -1050,6 +1054,20 @@ export class Converter {
       }
 
       case SyntaxKind.PropertyAssignment:
+        this.#throwErrorIfDeprecatedPropertyExists(
+          node,
+          // eslint-disable-next-line deprecation/deprecation
+          node.questionToken,
+          'A property assignment cannot have a question token.',
+        );
+
+        this.#throwErrorIfDeprecatedPropertyExists(
+          node,
+          // eslint-disable-next-line deprecation/deprecation
+          node.exclamationToken,
+          'A property assignment cannot have an exclamation token.',
+        );
+
         return this.createNode<TSESTree.Property>(node, {
           type: AST_NODE_TYPES.Property,
           key: this.convertChild(node.name),
@@ -1061,6 +1079,27 @@ export class Converter {
         });
 
       case SyntaxKind.ShorthandPropertyAssignment: {
+        this.#throwErrorIfDeprecatedPropertyExists(
+          node,
+          // eslint-disable-next-line deprecation/deprecation
+          node.modifiers,
+          'A shorthand property assignment cannot have modifiers.',
+        );
+
+        this.#throwErrorIfDeprecatedPropertyExists(
+          node,
+          // eslint-disable-next-line deprecation/deprecation
+          node.questionToken,
+          'A shorthand property assignment cannot have a question token.',
+        );
+
+        this.#throwErrorIfDeprecatedPropertyExists(
+          node,
+          // eslint-disable-next-line deprecation/deprecation
+          node.exclamationToken,
+          'A shorthand property assignment cannot have an exclamation token.',
+        );
+
         if (node.objectAssignmentInitializer) {
           return this.createNode<TSESTree.Property>(node, {
             type: AST_NODE_TYPES.Property,
@@ -1612,13 +1651,20 @@ export class Converter {
 
         const modifiers = getModifiers(node);
         if (modifiers) {
+          if (hasModifier(SyntaxKind.ExportKeyword, node)) {
+            throw createError(
+              this.ast,
+              node.pos,
+              'A parameter cannot have an export modifier.',
+            );
+          }
+
           return this.createNode<TSESTree.TSParameterProperty>(node, {
             type: AST_NODE_TYPES.TSParameterProperty,
             accessibility: getTSNodeAccessibility(node) ?? undefined,
             readonly:
               hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
             static: hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
-            export: hasModifier(SyntaxKind.ExportKeyword, node) || undefined,
             override:
               hasModifier(SyntaxKind.OverrideKeyword, node) || undefined,
             parameter: result,
@@ -2466,6 +2512,21 @@ export class Converter {
       }
 
       case SyntaxKind.PropertySignature: {
+        this.#throwErrorIfDeprecatedPropertyExists(
+          node,
+          // eslint-disable-next-line deprecation/deprecation
+          node.initializer,
+          'A property signature cannot have an initializer.',
+        );
+
+        if (hasModifier(SyntaxKind.ExportKeyword, node)) {
+          throw createError(
+            this.ast,
+            node.pos,
+            'A property signature cannot have an export modifier.',
+          );
+        }
+
         const result = this.createNode<TSESTree.TSPropertySignature>(node, {
           type: AST_NODE_TYPES.TSPropertySignature,
           optional: isOptional(node) || undefined,
@@ -2474,14 +2535,8 @@ export class Converter {
           typeAnnotation: node.type
             ? this.convertTypeAnnotation(node.type, node)
             : undefined,
-          initializer:
-            this.convertChild(
-              // eslint-disable-next-line deprecation/deprecation -- TODO breaking change remove this from the AST
-              node.initializer,
-            ) || undefined,
           readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
           static: hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
-          export: hasModifier(SyntaxKind.ExportKeyword, node) || undefined,
         });
 
         const accessibility = getTSNodeAccessibility(node);
@@ -2512,7 +2567,11 @@ export class Converter {
         }
 
         if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-          result.export = true;
+          throw createError(
+            this.ast,
+            node.pos,
+            'An index signature cannot have an export modifier.',
+          );
         }
 
         if (hasModifier(SyntaxKind.StaticKeyword, node)) {
@@ -2539,6 +2598,13 @@ export class Converter {
       }
 
       case SyntaxKind.FunctionType:
+        this.#throwErrorIfDeprecatedPropertyExists(
+          node,
+          // eslint-disable-next-line deprecation/deprecation
+          node.modifiers,
+          'A function type cannot have modifiers.',
+        );
+      // intentional fallthrough
       case SyntaxKind.ConstructSignature:
       case SyntaxKind.CallSignature: {
         const type =
@@ -2966,6 +3032,16 @@ export class Converter {
 
       default:
         return this.deeplyCopy(node);
+    }
+  }
+
+  #throwErrorIfDeprecatedPropertyExists<Node extends ts.Node>(
+    node: Node,
+    property: unknown,
+    message: string,
+  ): void {
+    if (property) {
+      throw createError(this.ast, node.pos, message);
     }
   }
 }
