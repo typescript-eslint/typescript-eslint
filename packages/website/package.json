@@ -6,6 +6,7 @@
     "build": "docusaurus build",
     "clear": "docusaurus clear",
     "format": "prettier --write \"./**/*.{md,mdx,ts,js,tsx,jsx}\" --ignore-path ../../.prettierignore",
+    "generate-website-dts": "tsx ./tools/generate-website-dts.ts",
     "lint": "nx lint",
     "serve": "docusaurus serve",
     "start": "docusaurus start",
@@ -51,9 +52,7 @@
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "5.52.0",
     "copy-webpack-plugin": "^11.0.0",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-react": "^7.29.4",
-    "eslint-plugin-react-hooks": "^4.5.0",
+    "cross-fetch": "*",
     "globby": "^11.1.0",
     "monaco-editor": "^0.33.0",
     "webpack": "^5.74.0"

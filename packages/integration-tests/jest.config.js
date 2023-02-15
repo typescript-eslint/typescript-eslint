@@ -5,7 +5,7 @@ require('ts-node').register({
   transpileOnly: true,
   files: ['./pack-packages.ts'],
 });
-const { tseslintPackages } = require('./tests/pack-packages');
+const { tseslintPackages } = require('./tools/pack-packages');
 
 // @ts-check
 /** @type {import('@jest/types').Config.InitialOptions} */

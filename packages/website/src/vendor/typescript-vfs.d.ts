@@ -1,4 +1,8 @@
-/* eslint-disable import/no-duplicates -- bug -> rule suggests merging to `import * as ns, {...}` which is invalid TS syntax */
+/*
+eslint-disable import/no-duplicates --
+bug -> rule suggests merging to `import * as ns, {...}` which is invalid TS syntax
+https://github.com/import-js/eslint-plugin-import/issues/1869
+*/
 import type {
   CompilerHost,
   CompilerOptions,

@@ -13,11 +13,8 @@ module.exports = {
     'simple-import-sort',
   ],
   env: {
-    es6: true,
+    es2020: true,
     node: true,
-  },
-  globals: {
-    globalThis: true,
   },
   extends: [
     'eslint:recommended',
@@ -332,7 +329,7 @@ module.exports = {
         '**/tools/**/*.*t*',
         '**/tests/**/*.ts',
         './packages/repo-tools/**/*.*t*',
-        './packages/repo-tests/**/*.*t*',
+        './packages/integration-tests/**/*.*t*',
       ],
       rules: {
         // allow console logs in tools and tests
@@ -367,7 +364,7 @@ module.exports = {
       },
     },
     {
-      files: ['./packages/website/'],
+      files: ['./packages/website/**/*.{ts,tsx,mts,cts,js,jsx}'],
       extends: [
         'plugin:jsx-a11y/recommended',
         'plugin:react/recommended',
@@ -375,9 +372,10 @@ module.exports = {
       ],
       plugins: ['jsx-a11y', 'react', 'react-hooks'],
       rules: {
+        '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
+        'import/no-default-export': 'off',
         'react/jsx-no-target-blank': 'off',
         'react/no-unescaped-entities': 'off',
-        '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
         'react-hooks/exhaustive-deps': 'off', // TODO: enable it later
       },
       settings: {

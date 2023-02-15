@@ -18,14 +18,7 @@ async function getFileAndStoreLocally(
 }
 
 async function main(): Promise<void> {
-  const vendor = path.join(
-    __dirname,
-    '..',
-    'packages',
-    'website',
-    'src',
-    'vendor',
-  );
+  const vendor = path.join(__dirname, '..', 'src', 'vendor');
   const ds = path.join(vendor, 'ds');
 
   if (!fs.existsSync(vendor)) {
@@ -104,6 +97,10 @@ async function main(): Promise<void> {
       );
       return removedWorker.replace('ui:', '// ui:');
     },
+  );
+
+  console.log(
+    "You'll need to do some manual cleanup on the files to update them to our codebase standards",
   );
 }
 

@@ -19,7 +19,6 @@ import React from 'react';
 
 import styles from './styles.module.css';
 
-// eslint-disable-next-line import/no-default-export
 export default function CodeBlockString({
   children,
   className: blockClassName = '',

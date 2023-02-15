@@ -29,7 +29,7 @@ const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
   jest: rootPackageJson.devDependencies.jest,
 };
 
-const FIXTURES_DIR = path.join(__dirname, 'fixtures');
+const FIXTURES_DIR = path.join(__dirname, '..', 'fixtures');
 
 // make sure that jest doesn't timeout the test
 jest.setTimeout(60000);

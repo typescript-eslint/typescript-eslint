@@ -6,7 +6,7 @@ These tests are setup to run within temporary folders to ensure that each test i
 
 ## Adding a new integration test
 
-1. Add a new folder in `/tests/integration/fixtures`
+1. Add a new folder in `/fixtures/`
 1. Add a `package.json` to your folder.
 1. List the required dependencies under `devDependencies`.
    - Use `latest` for the dependency to ensure we are testing against the newest versions of the package.
@@ -15,11 +15,11 @@ These tests are setup to run within temporary folders to ensure that each test i
 1. Create the necessary files to test the integration.
    - Your test should have a lint error in it in an appropriate location.
      This is so that we can be certain the setup actually works correctly.
-1. Add a test to `/tests/integration/tests` named the same as your folder.
+1. Add a test to `/tests/` named the same as your folder.
 1. Paste the following content into your test:
 
    ```ts
-   import { integrationTest } from '../integration-test-base';
+   import { integrationTest } from '../tools/integration-test-base';
 
    integrationTest(
      __filename,

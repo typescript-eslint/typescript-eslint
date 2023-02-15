@@ -32,7 +32,7 @@
     "clean": "nx clean",
     "clean-fixtures": "nx clean-fixtures",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate:lib": "nx generate-lib",
+    "generate-lib": "nx generate-lib",
     "lint": "nx lint",
     "test": "nx test --code-coverage",
     "typecheck": "nx typecheck"
