@@ -41,7 +41,7 @@ describe('getProjectConfigFiles', () => {
 
     const actual = getProjectConfigFiles(parseSettings, project);
 
-    expect(actual).toEqual(project);
+    expect(actual).toBeNull();
   });
 
   describe('when caching hits', () => {
