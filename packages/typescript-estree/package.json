@@ -48,7 +48,7 @@
     "globby": "^11.1.0",
     "is-glob": "^4.0.3",
     "semver": "^7.3.7",
-    "ts-api-utils": "^0.0.21"
+    "ts-api-utils": "^0.0.22"
   },
   "devDependencies": {
     "@babel/code-frame": "*",

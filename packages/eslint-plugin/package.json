@@ -53,7 +53,7 @@
     "natural-compare-lite": "^1.4.0",
     "regexpp": "^3.2.0",
     "semver": "^7.3.7",
-    "ts-api-utils": "^0.0.21"
+    "ts-api-utils": "^0.0.22"
   },
   "devDependencies": {
     "@types/debug": "*",
