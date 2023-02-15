@@ -12,7 +12,7 @@
   },
   "files": [
     "dist",
-    "_ts3.4",
+    "_ts4.2",
     "package.json",
     "README.md",
     "LICENSE"
@@ -31,9 +31,9 @@
   "scripts": {
     "prebuild": "yarn tsx ./tools/copy-ast-spec.ts",
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "downlevel-dts dist _ts3.4/dist",
+    "postbuild": "downlevel-dts dist _ts4.2/dist --to=4.2",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf src/generated && rimraf _ts3.4 && rimraf coverage",
+    "postclean": "rimraf dist && rimraf src/generated && rimraf _ts3.4 && rimraf _ts4.2 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate:lib": "yarn tsx ../scope-manager/tools/generate-lib.ts",
     "lint": "nx lint",
@@ -71,9 +71,9 @@
     "url": "https://opencollective.com/typescript-eslint"
   },
   "typesVersions": {
-    "<3.8": {
+    "<4.7": {
       "*": [
-        "_ts3.4/*"
+        "_ts4.2/*"
       ]
     }
   },
