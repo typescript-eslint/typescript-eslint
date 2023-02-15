@@ -31,7 +31,7 @@
   "scripts": {
     "build": "tsc -b tsconfig.build.json && api-extractor run --local",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf .rollup.cache && rimraf coverage",
+    "postclean": "rimraf dist && rimraf coverage",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "nx lint",
