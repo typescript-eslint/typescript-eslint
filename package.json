@@ -27,7 +27,7 @@
     "check-configs": "nx run-many --target=check-configs --parallel",
     "check-docs": "nx run-many --target=check-docs --parallel",
     "check-format": "prettier --list-different .",
-    "check-spelling": "cspell --config=.cspell.json \"**/*.{md,mdx,ts,mts,cts,js,cjs,mjs,tsx,jsx}\"",
+    "check-spelling": "cspell --config=.cspell.json \"**/*.{md,mdx,ts,mts,cts,js,cjs,mjs,tsx,jsx}\" --no-progress --show-context --show-suggestions",
     "clean": "lerna clean -y && nx run-many --target=clean",
     "format": "prettier --write .",
     "generate-contributors": "yarn tsx ./tools/generate-contributors.ts",

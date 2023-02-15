@@ -27,7 +27,7 @@ let RESOLUTION_CACHE: ExpiringCache<string, readonly CanonicalPath[]> | null =
 export function resolveProjectList(
   options: Readonly<{
     cacheLifetime?: TSESTreeOptions['cacheLifetime'];
-    project: TSESTreeOptions['project'];
+    project: string[] | null;
     projectFolderIgnoreList: TSESTreeOptions['projectFolderIgnoreList'];
     singleRun: boolean;
     tsconfigRootDir: string;
@@ -36,9 +36,7 @@ export function resolveProjectList(
   const sanitizedProjects: string[] = [];
 
   // Normalize and sanitize the project paths
-  if (typeof options.project === 'string') {
-    sanitizedProjects.push(options.project);
-  } else if (Array.isArray(options.project)) {
+  if (options.project != null) {
     for (const project of options.project) {
       if (typeof project === 'string') {
         sanitizedProjects.push(project);
