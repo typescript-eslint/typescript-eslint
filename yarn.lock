@@ -3246,13 +3246,6 @@
     read-package-json-fast "^2.0.3"
     which "^2.0.2"
 
-"@nrwl/cli@15.5.3":
-  version "15.5.3"
-  resolved "https://registry.yarnpkg.com/@nrwl/cli/-/cli-15.5.3.tgz#13277e5a0e8ba713850bcf13fa76717ea747a2bb"
-  integrity sha512-NWf9CWswvdYM6YzXuweaZPAZ2erMtQrrHZdgFbUGeojZBZ+b4TCGzLWNodZj4yQOa/eTwlyPMYO2LEw9CoapDQ==
-  dependencies:
-    nx "15.5.3"
-
 "@nrwl/cli@15.6.3":
   version "15.6.3"
   resolved "https://registry.npmjs.org/@nrwl/cli/-/cli-15.6.3.tgz#999531d6efb30afc39373bdcbd7e78254a3a3fd3"
@@ -3260,21 +3253,10 @@
   dependencies:
     nx "15.6.3"
 
-"@nrwl/devkit@15.6.3":
+"@nrwl/devkit@15.6.3", "@nrwl/devkit@>=15.4.2 < 16":
   version "15.6.3"
   resolved "https://registry.npmjs.org/@nrwl/devkit/-/devkit-15.6.3.tgz#e4e96c53ba3304786a49034286c8511534b2b194"
   integrity sha512-/JDvdzNxUM+C1PCZPCrvmFx+OfywqZdOq1GS9QR8C0VctTLG4D/SGSFD88O1SAdcbH/f1mMiBGfEYZYd23fghQ==
-  dependencies:
-    "@phenomnomnominal/tsquery" "4.1.1"
-    ejs "^3.1.7"
-    ignore "^5.0.4"
-    semver "7.3.4"
-    tslib "^2.3.0"
-
-"@nrwl/devkit@>=15.4.2 < 16":
-  version "15.5.3"
-  resolved "https://registry.npmjs.org/@nrwl/devkit/-/devkit-15.5.3.tgz#16fac0147c2ab6ebba7b5357b2b959ad46b6eb26"
-  integrity sha512-GGNLLGXDGWflrpaLimnE6hChfZfq3+XWZ0LJWL0IuCnchngPbNzuyh8S8KPgNKKgq4Nv0hglWefIwMg2UhHysA==
   dependencies:
     "@phenomnomnominal/tsquery" "4.1.1"
     ejs "^3.1.7"
@@ -3323,13 +3305,6 @@
     strip-json-comments "^3.1.1"
     tar "6.1.11"
     yargs-parser ">=21.0.1"
-
-"@nrwl/tao@15.5.3":
-  version "15.5.3"
-  resolved "https://registry.yarnpkg.com/@nrwl/tao/-/tao-15.5.3.tgz#08c05715d2ecb108ed8b2c5381b9017cf1448b4a"
-  integrity sha512-vgPLIW9IoBfQ4IkHRT5RC4LqNwFBK5jmHYmFIRgbIeFRudFBbnpmOaKRME0OwN7qJ6964PVVbzahAPvYVD02xw==
-  dependencies:
-    nx "15.5.3"
 
 "@nrwl/tao@15.6.3":
   version "15.6.3"
@@ -10465,10 +10440,10 @@ modify-values@^1.0.0:
   resolved "https://registry.yarnpkg.com/modify-values/-/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
   integrity sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==
 
-monaco-editor@^0.33.0:
-  version "0.33.0"
-  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.33.0.tgz#842e244f3750a2482f8a29c676b5684e75ff34af"
-  integrity sha512-VcRWPSLIUEgQJQIE0pVT8FcGBIgFoxz7jtqctE+IiCxWugD0DwgyQBcZBhdSrdMC84eumoqMZsGl2GTreOzwqw==
+monaco-editor@^0.35.0:
+  version "0.35.0"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.35.0.tgz#49c4220c815262a900dacf0ae8a59bef66efab8b"
+  integrity sha512-BJfkAZ0EJ7JgrgWzqjfBNP9hPSS8NlfECEDMEIIiozV2UaPq22yeuOjgbd3TwMh3anH0krWZirXZfn8KUSxiOA==
 
 ms@2.0.0:
   version "2.0.0"
@@ -10794,48 +10769,7 @@ nth-check@^2.0.0, nth-check@^2.0.1:
   dependencies:
     boolbase "^1.0.0"
 
-nx@15.5.3, "nx@>=15.4.2 < 16":
-  version "15.5.3"
-  resolved "https://registry.npmjs.org/nx/-/nx-15.5.3.tgz#bf6252e7d9e17121dd82dec4f6fce319b9e005fa"
-  integrity sha512-PHB8VbiBLP108xb+yR8IGEsYWr7OcmDDOjHL+73oP4lVjyPgT8wdTMe6tI5LdBgv+KZ+0kiThK3ckvcPsfgvLQ==
-  dependencies:
-    "@nrwl/cli" "15.5.3"
-    "@nrwl/tao" "15.5.3"
-    "@parcel/watcher" "2.0.4"
-    "@yarnpkg/lockfile" "^1.1.0"
-    "@yarnpkg/parsers" "^3.0.0-rc.18"
-    "@zkochan/js-yaml" "0.0.6"
-    axios "^1.0.0"
-    chalk "^4.1.0"
-    cli-cursor "3.1.0"
-    cli-spinners "2.6.1"
-    cliui "^7.0.2"
-    dotenv "~10.0.0"
-    enquirer "~2.3.6"
-    fast-glob "3.2.7"
-    figures "3.2.0"
-    flat "^5.0.2"
-    fs-extra "^11.1.0"
-    glob "7.1.4"
-    ignore "^5.0.4"
-    js-yaml "4.1.0"
-    jsonc-parser "3.2.0"
-    lines-and-columns "~2.0.3"
-    minimatch "3.0.5"
-    npm-run-path "^4.0.1"
-    open "^8.4.0"
-    semver "7.3.4"
-    string-width "^4.2.3"
-    strong-log-transformer "^2.1.0"
-    tar-stream "~2.2.0"
-    tmp "~0.2.1"
-    tsconfig-paths "^4.1.2"
-    tslib "^2.3.0"
-    v8-compile-cache "2.3.0"
-    yargs "^17.6.2"
-    yargs-parser "21.1.1"
-
-nx@15.6.3:
+nx@15.6.3, "nx@>=15.4.2 < 16":
   version "15.6.3"
   resolved "https://registry.npmjs.org/nx/-/nx-15.6.3.tgz#900087bce38c6e5975660c23ebd41ead1bf54f98"
   integrity sha512-3t0A0GPLNen1yPAyE+VGZ3nkAzZYb5nfXtAcx8SHBlKq4u42yBY3khBmP1y4Og3jhIwFIj7J7Npeh8ZKrthmYQ==
