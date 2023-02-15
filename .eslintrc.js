@@ -1,3 +1,5 @@
+// @ts-check
+/** @type {import('@typescript-eslint/utils').TSESLint.Linter.Config} */
 module.exports = {
   root: true,
   plugins: [
@@ -14,6 +16,9 @@ module.exports = {
     es6: true,
     node: true,
   },
+  globals: {
+    globalThis: true,
+  },
   extends: [
     'eslint:recommended',
     'plugin:eslint-plugin/recommended',
@@ -25,7 +30,6 @@ module.exports = {
     project: [
       './tsconfig.eslint.json',
       './packages/*/tsconfig.json',
-      './tests/integration/tsconfig.json',
       /**
        * We are currently in the process of transitioning to nx's out of the box structure and
        * so need to manually specify converted packages' tsconfig.build.json and tsconfig.spec.json
@@ -156,6 +160,7 @@ module.exports = {
           'eslint-disable-line',
           'eslint-disable-next-line',
           'eslint-enable',
+          'global',
         ],
       },
     ],
@@ -202,6 +207,18 @@ module.exports = {
     'one-var': ['error', 'never'],
   },
   overrides: [
+    {
+      files: ['*.js'],
+      extends: ['plugin:@typescript-eslint/disable-type-checked'],
+      rules: {
+        // turn off other type-aware rules
+        'deprecation/deprecation': 'off',
+        '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
+
+        // turn off rules that don't apply to JS code
+        '@typescript-eslint/explicit-function-return-type': 'off',
+      },
+    },
     // all test files
     {
       files: [
@@ -210,9 +227,8 @@ module.exports = {
         './packages/*/tests/**/spec.ts',
         './packages/*/tests/**/test.ts',
         './packages/parser/tests/**/*.ts',
-        './tests/integration/**/*.test.ts',
-        './tests/integration/integration-test-base.ts',
-        './tests/integration/pack-packages.ts',
+        './packages/integration-tests/tools/integration-test-base.ts',
+        './packages/integration-tests/tools/pack-packages.ts',
       ],
       env: {
         'jest/globals': true,
@@ -312,7 +328,12 @@ module.exports = {
     },
     // tools and tests
     {
-      files: ['**/tools/**/*.*t*', '**/tests/**/*.ts'],
+      files: [
+        '**/tools/**/*.*t*',
+        '**/tests/**/*.ts',
+        './packages/repo-tools/**/*.*t*',
+        './packages/repo-tests/**/*.*t*',
+      ],
       rules: {
         // allow console logs in tools and tests
         'no-console': 'off',
@@ -371,6 +392,13 @@ module.exports = {
         'import/no-default-export': 'off',
         // allow console logs in the website to help with debugging things in production
         'no-console': 'off',
+      },
+    },
+    {
+      files: ['./packages/website-eslint/src/mock/**/*.js'],
+      rules: {
+        // mocks have to mirror their original
+        'import/no-default-export': 'off',
       },
     },
   ],

@@ -62,7 +62,7 @@
     "@types/natural-compare-lite": "^1.4.0",
     "@types/prettier": "*",
     "chalk": "^5.0.1",
-    "cross-fetch": "^3.1.5",
+    "cross-fetch": "*",
     "grapheme-splitter": "^1.0.4",
     "json-schema": "*",
     "markdown-table": "^3.0.2",

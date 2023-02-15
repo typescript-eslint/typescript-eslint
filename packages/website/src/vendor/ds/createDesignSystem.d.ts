@@ -1,5 +1,7 @@
-import type { Sandbox } from '../sandbox';
+import type * as Monaco from 'monaco-editor';
 import type { DiagnosticRelatedInformation, Node } from 'typescript';
+
+import type { Sandbox } from '../sandbox';
 
 export declare interface LocalStorageOption {
   blurb: string;
@@ -39,7 +41,7 @@ export declare const createDesignSystem: (sandbox: Sandbox) => (
    * The type is quite small, so it should be very feasible for you to massage other data to fit into this function
    */
   listDiags: (
-    model: import('monaco-editor').editor.ITextModel,
+    model: Monaco.editor.ITextModel,
     diags: DiagnosticRelatedInformation[],
   ) => HTMLUListElement;
   /** Lets you remove the hovers from listDiags etc */
@@ -84,5 +86,5 @@ export declare const createDesignSystem: (sandbox: Sandbox) => (
   /** Create a new Design System instance and add it to the container. You'll need to cast
    * this after usage, because otherwise the type-system circularly references itself
    */
-  createSubDesignSystem: () => any;
+  createSubDesignSystem: () => unknown;
 };

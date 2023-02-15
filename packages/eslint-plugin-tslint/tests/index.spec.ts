@@ -1,7 +1,9 @@
-import { TSESLint } from '@typescript-eslint/utils';
 import * as parser from '@typescript-eslint/parser';
+import { TSESLint } from '@typescript-eslint/utils';
 import { readFileSync } from 'fs';
-import rule, { Options } from '../src/rules/config';
+
+import type { Options } from '../src/rules/config';
+import rule from '../src/rules/config';
 
 const ruleTester = new TSESLint.RuleTester({
   parserOptions: {
@@ -12,7 +14,7 @@ const ruleTester = new TSESLint.RuleTester({
      * Project is needed to generate the parserServices
      * within @typescript-eslint/parser
      */
-    project: './tests/fixture-project/tsconfig.json',
+    project: './tests/fixtures/fixture-project/tsconfig.json',
     warnOnUnsupportedTypeScriptVersion: false,
   },
   parser: require.resolve('@typescript-eslint/parser'),
@@ -34,7 +36,7 @@ const tslintRulesConfig: Options = [
  */
 const tslintRulesDirectoryConfig: Options = [
   {
-    rulesDirectory: ['./tests/test-tslint-rules-directory'],
+    rulesDirectory: ['./tests/fixtures/test-tslint-rules-directory'],
     rules: {
       'always-fail': {
         severity: 'error',
@@ -48,14 +50,14 @@ ruleTester.run('tslint/config', rule, {
     {
       code: 'var foo = true;',
       options: tslintRulesConfig,
-      filename: './tests/fixture-project/1.ts',
+      filename: './tests/fixtures/fixture-project/1.ts',
     },
     {
-      filename: './tests/test-project/file-spec.ts',
-      code: readFileSync('./tests/test-project/file-spec.ts', 'utf8').replace(
-        /\n/g,
-        ' ',
-      ),
+      filename: './tests/fixtures/test-project/file-spec.ts',
+      code: readFileSync(
+        './tests/fixtures/test-project/file-spec.ts',
+        'utf8',
+      ).replace(/\n/g, ' '),
       parserOptions: {
         project: `${__dirname}/test-project/tsconfig.json`,
       },
@@ -64,16 +66,16 @@ ruleTester.run('tslint/config', rule, {
     {
       code: 'throw "should be ok because rule is not loaded";',
       options: tslintRulesConfig,
-      filename: './tests/fixture-project/2.ts',
+      filename: './tests/fixtures/fixture-project/2.ts',
     },
   ],
 
   invalid: [
     {
-      options: [{ lintFile: './tests/test-project/tslint.json' }],
+      options: [{ lintFile: './tests/fixtures/test-project/tslint.json' }],
       code: 'throw "err" // no-string-throw',
       output: 'throw new Error("err") // no-string-throw',
-      filename: './tests/fixture-project/3.ts',
+      filename: './tests/fixtures/fixture-project/3.ts',
       errors: [
         {
           messageId: 'failure',
@@ -89,7 +91,7 @@ ruleTester.run('tslint/config', rule, {
       code: 'var foo = true // semicolon',
       options: tslintRulesConfig,
       output: 'var foo = true; // semicolon',
-      filename: './tests/fixture-project/4.ts',
+      filename: './tests/fixtures/fixture-project/4.ts',
       errors: [
         {
           messageId: 'failure',
@@ -105,8 +107,8 @@ ruleTester.run('tslint/config', rule, {
     {
       code: 'var foo = true // fail',
       options: tslintRulesDirectoryConfig,
-      output: 'var foo = true // fail',
-      filename: './tests/fixture-project/5.ts',
+      output: null,
+      filename: './tests/fixtures/fixture-project/5.ts',
       errors: [
         {
           messageId: 'failure',
@@ -120,11 +122,11 @@ ruleTester.run('tslint/config', rule, {
       ],
     },
     {
-      filename: './tests/test-project/source.ts',
-      code: readFileSync('./tests/test-project/source.ts', 'utf8').replace(
-        /\n/g,
-        ' ',
-      ),
+      filename: './tests/fixtures/test-project/source.ts',
+      code: readFileSync(
+        './tests/fixtures/test-project/source.ts',
+        'utf8',
+      ).replace(/\n/g, ' '),
       parserOptions: {
         project: `${__dirname}/test-project/tsconfig.json`,
       },

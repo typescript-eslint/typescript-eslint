@@ -18,7 +18,7 @@ interface PackageJSON {
   devDependencies: Record<string, string>;
 }
 
-const PACKAGES_DIR = path.resolve(__dirname, '..', '..', 'packages');
+const PACKAGES_DIR = path.resolve(__dirname, '..', '..');
 const PACKAGES = fs.readdirSync(PACKAGES_DIR);
 
 const tarFolder = tmp.dirSync({

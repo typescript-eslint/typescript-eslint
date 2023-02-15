@@ -1,1 +1,1 @@
-type Foo = [string, string?]
+type Foo = [string, string?];

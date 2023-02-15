@@ -1,5 +1,6 @@
 import all from './configs/all';
 import base from './configs/base';
+import disableTypeChecked from './configs/disable-type-checked';
 import eslintRecommended from './configs/eslint-recommended';
 import recommended from './configs/recommended';
 import recommendedTypeChecked from './configs/recommended-type-checked';
@@ -13,6 +14,7 @@ export = {
   configs: {
     all,
     base,
+    'disable-type-checked': disableTypeChecked,
     'eslint-recommended': eslintRecommended,
     recommended,
     'recommended-requiring-type-checking': recommendedTypeChecked,

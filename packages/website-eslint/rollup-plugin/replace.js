@@ -9,6 +9,7 @@ function toAbsolute(id) {
 
 function log(opts, message, type = 'info') {
   if (opts.verbose) {
+    // eslint-disable-next-line no-console
     console.log('rollup-plugin-replace > [' + type + ']', message);
   }
 }
@@ -74,7 +75,8 @@ module.exports = (options = {}) => {
         }
 
         let match = item.test.exec(code);
-        let start, end;
+        let start;
+        let end;
         while (match) {
           hasReplacements = true;
           start = match.index;

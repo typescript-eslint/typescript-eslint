@@ -32,7 +32,11 @@ interface User {
   html_url: string;
 }
 
-async function getData<T>(url: string): Promise<T> {
+async function getData<T>(url: string | undefined): Promise<T | null> {
+  if (url == null) {
+    return null;
+  }
+
   const response = await fetch(url, {
     method: 'GET',
     headers: {
@@ -52,7 +56,7 @@ async function* fetchUsers(page = 1): AsyncIterableIterator<Contributor[]> {
     );
 
     if (!Array.isArray(contributors)) {
-      throw new Error(contributors.message);
+      throw new Error(contributors?.message ?? 'An error occurred');
     }
 
     const thresholdedContributors = contributors.filter(
@@ -143,7 +147,7 @@ async function main(): Promise<void> {
   );
 
   writeTable(
-    users.filter(c => c.login),
+    users.filter((c): c is User => c?.login != null),
     5,
   );
 }

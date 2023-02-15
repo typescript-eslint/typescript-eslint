@@ -11,7 +11,7 @@ interface PackageJSON {
   devDependencies: Record<string, string>;
 }
 
-const rootPackageJson: PackageJSON = require('../../package.json');
+const rootPackageJson: PackageJSON = require('../../../package.json');
 
 tmp.setGracefulCleanup();
 
@@ -23,7 +23,6 @@ const tmpFile = promisify(tmp.file);
 const writeFile = promisify(fs.writeFile);
 
 const BASE_DEPENDENCIES: PackageJSON['devDependencies'] = {
-  // @ts-expect-error -- this is in `./pack-packages.ts`
   ...global.tseslintPackages,
   eslint: rootPackageJson.devDependencies.eslint,
   typescript: rootPackageJson.devDependencies.typescript,
@@ -64,7 +63,6 @@ export function integrationTest(testFilename: string, filesGlob: string): void {
           },
           // ensure everything uses the locally packed versions instead of the NPM versions
           resolutions: {
-            // @ts-expect-error -- this is in `./pack-packages.ts`
             ...global.tseslintPackages,
           },
         }),

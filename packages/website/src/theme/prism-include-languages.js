@@ -1,5 +1,6 @@
 import siteConfig from '@generated/docusaurus.config';
 
+// eslint-disable-next-line import/no-default-export -- needs to be default for docusaurus reasons
 export default function prismIncludeLanguages(PrismObject) {
   const {
     themeConfig: { prism },
@@ -8,7 +9,7 @@ export default function prismIncludeLanguages(PrismObject) {
   globalThis.Prism = PrismObject;
 
   additionalLanguages.forEach(lang => {
-    require(`prismjs/components/prism-${lang}`); // eslint-disable-line
+    require(`prismjs/components/prism-${lang}`);
   });
 
   require(`../prism/language/jsonc`);

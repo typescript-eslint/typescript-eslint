@@ -681,7 +681,7 @@ export type Y = {
     {
       code: `
         import foo from 'foo';
-        type Baz = typeof foo.bar['Baz']; // TSQualifiedName & TSTypeQuery
+        type Baz = (typeof foo.bar)['Baz']; // TSQualifiedName & TSTypeQuery
       `,
       output: `
         import type foo from 'foo';

@@ -19,15 +19,14 @@ exports[`AST Fixtures element AccessorProperty key-string AST Alignment - AST 1`
 +             type: 'ClassAccessorProperty',
               computed: false,
 -             declare: false,
-              key: Literal {
-                type: 'Literal',
-                raw: '\\\\'prop\\\\'',
-                value: 'prop',
+              key: Identifier {
+                type: 'Identifier',
+                name: 'prop',
 
-                range: [23, 29],
+                range: [23, 27],
                 loc: {
                   start: { column: 11, line: 2 },
-                  end: { column: 17, line: 2 },
+                  end: { column: 15, line: 2 },
                 },
               },
 -             override: false,
@@ -37,22 +36,22 @@ exports[`AST Fixtures element AccessorProperty key-string AST Alignment - AST 1`
                 raw: '\\\\'value\\\\'',
                 value: 'value',
 
-                range: [32, 39],
+                range: [30, 37],
                 loc: {
-                  start: { column: 20, line: 2 },
-                  end: { column: 27, line: 2 },
+                  start: { column: 18, line: 2 },
+                  end: { column: 25, line: 2 },
                 },
               },
 
-              range: [14, 40],
+              range: [14, 38],
               loc: {
                 start: { column: 2, line: 2 },
-                end: { column: 28, line: 2 },
+                end: { column: 26, line: 2 },
               },
             },
           ],
 
-          range: [10, 42],
+          range: [10, 40],
           loc: {
             start: { column: 10, line: 1 },
             end: { column: 1, line: 3 },
@@ -70,7 +69,7 @@ exports[`AST Fixtures element AccessorProperty key-string AST Alignment - AST 1`
         },
         superClass: null,
 
-        range: [0, 42],
+        range: [0, 40],
         loc: {
           start: { column: 0, line: 1 },
           end: { column: 1, line: 3 },
@@ -79,7 +78,7 @@ exports[`AST Fixtures element AccessorProperty key-string AST Alignment - AST 1`
     ],
     sourceType: 'script',
 
-    range: [0, 43],
+    range: [0, 41],
     loc: {
       start: { column: 0, line: 1 },
       end: { column: 0, line: 4 },

@@ -1,6 +1,10 @@
+// @ts-check
+
 import 'vs/language/typescript/tsWorker';
-import { Linter } from 'eslint';
+
+// @ts-expect-error -- we don't do types for the plugins
 import rules from '@typescript-eslint/eslint-plugin/dist/rules';
+import { Linter } from 'eslint';
 
 export function createLinter() {
   const linter = new Linter();

@@ -11,7 +11,7 @@
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
     "test": "playwright test",
-    "typecheck": "tsc"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.3",
@@ -36,6 +36,7 @@
     "react-dom": "^18.1.0",
     "react-split-pane": "^0.1.92",
     "remark-docusaurus-tabs": "^0.2.0",
+    "ts-node": "*",
     "typescript": "*"
   },
   "resolutions": {

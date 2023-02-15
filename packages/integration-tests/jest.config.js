@@ -5,10 +5,13 @@ require('ts-node').register({
   transpileOnly: true,
   files: ['./pack-packages.ts'],
 });
-const { tseslintPackages } = require('./pack-packages');
+const { tseslintPackages } = require('./tests/pack-packages');
 
+// @ts-check
+/** @type {import('@jest/types').Config.InitialOptions} */
 module.exports = {
   ...require('../../jest.config.base.js'),
+  collectCoverage: false,
   globals: {
     tseslintPackages,
   },

@@ -42,51 +42,51 @@ Array [
       end: { column: 10, line: 2 },
     },
   },
-  String {
-    type: "String",
-    value: "'prop'",
+  Identifier {
+    type: "Identifier",
+    value: "prop",
 
-    range: [23, 29],
+    range: [23, 27],
     loc: {
       start: { column: 11, line: 2 },
-      end: { column: 17, line: 2 },
+      end: { column: 15, line: 2 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "=",
 
-    range: [30, 31],
+    range: [28, 29],
     loc: {
-      start: { column: 18, line: 2 },
-      end: { column: 19, line: 2 },
+      start: { column: 16, line: 2 },
+      end: { column: 17, line: 2 },
     },
   },
   String {
     type: "String",
     value: "'value'",
 
-    range: [32, 39],
+    range: [30, 37],
     loc: {
-      start: { column: 20, line: 2 },
-      end: { column: 27, line: 2 },
+      start: { column: 18, line: 2 },
+      end: { column: 25, line: 2 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [39, 40],
+    range: [37, 38],
     loc: {
-      start: { column: 27, line: 2 },
-      end: { column: 28, line: 2 },
+      start: { column: 25, line: 2 },
+      end: { column: 26, line: 2 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [41, 42],
+    range: [39, 40],
     loc: {
       start: { column: 0, line: 3 },
       end: { column: 1, line: 3 },

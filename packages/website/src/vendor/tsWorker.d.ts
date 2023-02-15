@@ -1,11 +1,11 @@
-import * as ts from 'typescript';
+import type * as ts from 'typescript';
 
 export declare class TypeScriptWorker implements ts.LanguageServiceHost {
   private _ctx;
   private _extraLibs;
   private _languageService;
   private _compilerOptions;
-  constructor(ctx: any, createData: any);
+  constructor(ctx: unknown, createData: unknown);
   getCompilationSettings(): ts.CompilerOptions;
   getScriptFileNames(): string[];
   private _getModel;
@@ -54,19 +54,19 @@ export declare class TypeScriptWorker implements ts.LanguageServiceHost {
   getNavigationBarItems(fileName: string): Promise<ts.NavigationBarItem[]>;
   getFormattingEditsForDocument(
     fileName: string,
-    options: ts.FormatCodeOptions,
+    options: ts.FormatCodeSettings,
   ): Promise<ts.TextChange[]>;
   getFormattingEditsForRange(
     fileName: string,
     start: number,
     end: number,
-    options: ts.FormatCodeOptions,
+    options: ts.FormatCodeSettings,
   ): Promise<ts.TextChange[]>;
   getFormattingEditsAfterKeystroke(
     fileName: string,
     postion: number,
     ch: string,
-    options: ts.FormatCodeOptions,
+    options: ts.FormatCodeSettings,
   ): Promise<ts.TextChange[]>;
   findRenameLocations(
     fileName: string,
@@ -78,7 +78,7 @@ export declare class TypeScriptWorker implements ts.LanguageServiceHost {
   getRenameInfo(
     fileName: string,
     positon: number,
-    options: ts.RenameInfoOptions,
+    options: ts.UserPreferences,
   ): Promise<ts.RenameInfo>;
   getEmitOutput(fileName: string): Promise<ts.EmitOutput>;
   getCodeFixesAtPosition(
@@ -86,7 +86,7 @@ export declare class TypeScriptWorker implements ts.LanguageServiceHost {
     start: number,
     end: number,
     errorCodes: number[],
-    formatOptions: ts.FormatCodeOptions,
+    formatOptions: ts.FormatCodeSettings,
   ): Promise<ReadonlyArray<ts.CodeFixAction>>;
   updateExtraLibs(extraLibs: IExtraLibs): void;
   /**

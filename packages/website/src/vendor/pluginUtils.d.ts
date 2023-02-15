@@ -1,8 +1,10 @@
 import type React from 'react';
 
+import type DesignSystem from './ds/createDesignSystem';
+
 /** Creates a set of util functions which is exposed to Plugins to make it easier to build consistent UIs */
 export declare const createUtils: (
-  sb: any,
+  sb: unknown,
   react: typeof React,
 ) => {
   /** Use this to make a few dumb element generation funcs */
@@ -15,52 +17,7 @@ export declare const createUtils: (
    * The playground plugin design system. Calling any of the functions will append the
    * element to the container you pass into the first param, and return the HTMLElement
    */
-  createDesignSystem: (container: Element) => {
-    container: Element;
-    clear: () => void;
-    code: (code: string) => HTMLElement;
-    title: (title: string) => HTMLElement;
-    subtitle: (subtitle: string) => HTMLElement;
-    p: (subtitle: string) => HTMLElement;
-    showEmptyScreen: (message: string) => HTMLDivElement;
-    listDiags: (
-      model: import('monaco-editor').editor.ITextModel,
-      diags: import('typescript').DiagnosticRelatedInformation[],
-    ) => HTMLUListElement;
-    clearDeltaDecorators: (force?: true | undefined) => void;
-    localStorageOption: (
-      setting: import('./ds/createDesignSystem').LocalStorageOption,
-    ) => HTMLLIElement;
-    showOptionList: (
-      options: import('./ds/createDesignSystem').LocalStorageOption[],
-      style: import('./ds/createDesignSystem').OptionsListConfig,
-    ) => void;
-    createTextInput: (config: {
-      id: string;
-      placeholder: string;
-      onChanged?: ((text: string, input: HTMLInputElement) => void) | undefined;
-      onEnter: (text: string, input: HTMLInputElement) => void;
-      value?: string | undefined;
-      keepValueAcrossReloads?: true | undefined;
-      isEnabled?: ((input: HTMLInputElement) => boolean) | undefined;
-    }) => HTMLFormElement;
-    createASTTree: (
-      node: import('typescript').Node,
-      settings?:
-        | {
-            closedByDefault?: true | undefined;
-          }
-        | undefined,
-    ) => HTMLDivElement;
-    button: (settings: {
-      label: string;
-      onclick?: ((ev: MouseEvent) => void) | undefined;
-    }) => HTMLInputElement;
-    createTabBar: () => HTMLDivElement;
-    createTabButton: (text: string) => HTMLButtonElement;
-    declareRestartRequired: (i?: ((key: string) => string) | undefined) => void;
-    createSubDesignSystem: () => any;
-  };
+  createDesignSystem: ReturnType<typeof DesignSystem.createDesignSystem>;
   /** Flashes a HTML Element */
   flashHTMLElement: (element: HTMLElement) => void;
   /** Add a little red button in the top corner of a plugin tab with a number */

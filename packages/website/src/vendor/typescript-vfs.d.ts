@@ -1,21 +1,26 @@
-declare type System = import('typescript').System;
-declare type CompilerOptions = import('typescript').CompilerOptions;
-declare type CustomTransformers = import('typescript').CustomTransformers;
-declare type LanguageServiceHost = import('typescript').LanguageServiceHost;
-declare type CompilerHost = import('typescript').CompilerHost;
-declare type SourceFile = import('typescript').SourceFile;
-declare type TS = typeof import('typescript');
+/* eslint-disable import/no-duplicates -- bug -> rule suggests merging to `import * as ns, {...}` which is invalid TS syntax */
+import type {
+  CompilerHost,
+  CompilerOptions,
+  CustomTransformers,
+  LanguageService,
+  LanguageServiceHost,
+  SourceFile,
+  SourceFile,
+  System,
+  TextSpan,
+} from 'typescript';
+import type * as typescript from 'typescript';
+
 export interface VirtualTypeScriptEnvironment {
   sys: System;
-  languageService: import('typescript').LanguageService;
-  getSourceFile: (
-    fileName: string,
-  ) => import('typescript').SourceFile | undefined;
+  languageService: LanguageService;
+  getSourceFile: (fileName: string) => SourceFile | undefined;
   createFile: (fileName: string, content: string) => void;
   updateFile: (
     fileName: string,
     content: string,
-    replaceTextSpan?: import('typescript').TextSpan,
+    replaceTextSpan?: TextSpan,
   ) => void;
 }
 /**
@@ -52,7 +57,7 @@ export declare const knownLibFilesForCompilerOptions: (
  */
 export declare const createDefaultMapFromNodeModules: (
   compilerOptions: CompilerOptions,
-  ts?: typeof import('typescript') | undefined,
+  ts?: typeof typescript | undefined,
 ) => Map<string, string>;
 /**
  * Adds recursively files from the FS into the map based on the folder
@@ -82,7 +87,7 @@ export declare const createDefaultMapFromCDN: (
   version: string,
   cache: boolean,
   ts: TS,
-  lzstring?: any | undefined,
+  lzstring?: unknown | undefined,
   fetcher?: typeof fetch | undefined,
   storer?: Storage | undefined,
 ) => Promise<Map<string, string>>;
@@ -125,6 +130,6 @@ export declare function createVirtualLanguageServiceHost(
   customTransformers?: CustomTransformers,
 ): {
   languageServiceHost: LanguageServiceHost;
-  updateFile: (sourceFile: import('typescript').SourceFile) => void;
+  updateFile: (sourceFile: SourceFile) => void;
 };
 export {};
