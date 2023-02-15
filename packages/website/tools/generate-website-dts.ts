@@ -1,32 +1,49 @@
 import fetch from 'cross-fetch';
 import * as fs from 'fs';
+import makeDir from 'make-dir';
 import * as path from 'path';
+import { rimraf } from 'rimraf';
 
-const baseHost = 'https://www.staging-typescript.org';
+const BASE_HOST = 'https://www.staging-typescript.org';
 
 async function getFileAndStoreLocally(
   url: string,
   path: string,
   editFunc: (arg: string) => string = (text: string): string => text,
 ): Promise<void> {
-  const response = await fetch(baseHost + url, {
+  console.log('Fetching', url);
+  const response = await fetch(BASE_HOST + url, {
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
   const contents = await response.text();
-  fs.writeFileSync(path, editFunc(contents), 'utf8');
+  fs.writeFileSync(
+    path,
+    [
+      '/**********************************************',
+      ' *      DO NOT MODIFY THIS FILE MANUALLY      *',
+      ' *                                            *',
+      ' *     THIS FILE HAS BEEN FETCHED FROM THE    *',
+      ' *      TYPESCRIPT PLAYGROUND SOURCE CODE.    *',
+      ' *                                            *',
+      ' *    YOU CAN REGENERATE THESE FILES USING    *',
+      ' *          yarn generate-website-dts         *',
+      ' **********************************************/',
+      '',
+      editFunc(contents),
+    ].join('\n'),
+    'utf8',
+  );
 }
 
 async function main(): Promise<void> {
   const vendor = path.join(__dirname, '..', 'src', 'vendor');
   const ds = path.join(vendor, 'ds');
 
-  if (!fs.existsSync(vendor)) {
-    fs.mkdirSync(vendor);
-  }
-  if (!fs.existsSync(ds)) {
-    fs.mkdirSync(ds);
-  }
+  console.log('Cleaning...');
+  await rimraf(vendor);
+  await makeDir(vendor);
+  await makeDir(ds);
 
   // The API for the monaco typescript worker
   await getFileAndStoreLocally(
@@ -97,10 +114,6 @@ async function main(): Promise<void> {
       );
       return removedWorker.replace('ui:', '// ui:');
     },
-  );
-
-  console.log(
-    "You'll need to do some manual cleanup on the files to update them to our codebase standards",
   );
 }
 

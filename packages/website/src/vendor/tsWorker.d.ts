@@ -1,11 +1,20 @@
-import type * as ts from 'typescript';
+/**********************************************
+ *      DO NOT MODIFY THIS FILE MANUALLY      *
+ *                                            *
+ *     THIS FILE HAS BEEN FETCHED FROM THE    *
+ *      TYPESCRIPT PLAYGROUND SOURCE CODE.    *
+ *                                            *
+ *    YOU CAN REGENERATE THESE FILES USING    *
+ *          yarn generate-website-dts         *
+ **********************************************/
 
+import ts from 'typescript';
 export declare class TypeScriptWorker implements ts.LanguageServiceHost {
   private _ctx;
   private _extraLibs;
   private _languageService;
   private _compilerOptions;
-  constructor(ctx: unknown, createData: unknown);
+  constructor(ctx: any, createData: any);
   getCompilationSettings(): ts.CompilerOptions;
   getScriptFileNames(): string[];
   private _getModel;
@@ -54,19 +63,19 @@ export declare class TypeScriptWorker implements ts.LanguageServiceHost {
   getNavigationBarItems(fileName: string): Promise<ts.NavigationBarItem[]>;
   getFormattingEditsForDocument(
     fileName: string,
-    options: ts.FormatCodeSettings,
+    options: ts.FormatCodeOptions,
   ): Promise<ts.TextChange[]>;
   getFormattingEditsForRange(
     fileName: string,
     start: number,
     end: number,
-    options: ts.FormatCodeSettings,
+    options: ts.FormatCodeOptions,
   ): Promise<ts.TextChange[]>;
   getFormattingEditsAfterKeystroke(
     fileName: string,
     postion: number,
     ch: string,
-    options: ts.FormatCodeSettings,
+    options: ts.FormatCodeOptions,
   ): Promise<ts.TextChange[]>;
   findRenameLocations(
     fileName: string,
@@ -78,7 +87,7 @@ export declare class TypeScriptWorker implements ts.LanguageServiceHost {
   getRenameInfo(
     fileName: string,
     positon: number,
-    options: ts.UserPreferences,
+    options: ts.RenameInfoOptions,
   ): Promise<ts.RenameInfo>;
   getEmitOutput(fileName: string): Promise<ts.EmitOutput>;
   getCodeFixesAtPosition(
@@ -86,13 +95,11 @@ export declare class TypeScriptWorker implements ts.LanguageServiceHost {
     start: number,
     end: number,
     errorCodes: number[],
-    formatOptions: ts.FormatCodeSettings,
+    formatOptions: ts.FormatCodeOptions,
   ): Promise<ReadonlyArray<ts.CodeFixAction>>;
   updateExtraLibs(extraLibs: IExtraLibs): void;
-  /**
-   * https://github.com/microsoft/TypeScript-Website/blob/246798df5013036bd9b4389932b642c20ab35deb/packages/playground-worker/types.d.ts#L48
-   */
-  getLibFiles(): Promise<Record<string, string>>;
+  readFile(path: string, encoding?: string | undefined): string | undefined;
+  fileExists(path: string): boolean;
 }
 export interface IExtraLib {
   content: string;

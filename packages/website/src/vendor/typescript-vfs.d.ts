@@ -1,30 +1,31 @@
-/*
-eslint-disable import/no-duplicates --
-bug -> rule suggests merging to `import * as ns, {...}` which is invalid TS syntax
-https://github.com/import-js/eslint-plugin-import/issues/1869
-*/
-import type {
-  CompilerHost,
-  CompilerOptions,
-  CustomTransformers,
-  LanguageService,
-  LanguageServiceHost,
-  SourceFile,
-  SourceFile,
-  System,
-  TextSpan,
-} from 'typescript';
-import type * as typescript from 'typescript';
+/**********************************************
+ *      DO NOT MODIFY THIS FILE MANUALLY      *
+ *                                            *
+ *     THIS FILE HAS BEEN FETCHED FROM THE    *
+ *      TYPESCRIPT PLAYGROUND SOURCE CODE.    *
+ *                                            *
+ *    YOU CAN REGENERATE THESE FILES USING    *
+ *          yarn generate-website-dts         *
+ **********************************************/
 
+declare type System = import('typescript').System;
+declare type CompilerOptions = import('typescript').CompilerOptions;
+declare type CustomTransformers = import('typescript').CustomTransformers;
+declare type LanguageServiceHost = import('typescript').LanguageServiceHost;
+declare type CompilerHost = import('typescript').CompilerHost;
+declare type SourceFile = import('typescript').SourceFile;
+declare type TS = typeof import('typescript');
 export interface VirtualTypeScriptEnvironment {
   sys: System;
-  languageService: LanguageService;
-  getSourceFile: (fileName: string) => SourceFile | undefined;
+  languageService: import('typescript').LanguageService;
+  getSourceFile: (
+    fileName: string,
+  ) => import('typescript').SourceFile | undefined;
   createFile: (fileName: string, content: string) => void;
   updateFile: (
     fileName: string,
     content: string,
-    replaceTextSpan?: TextSpan,
+    replaceTextSpan?: import('typescript').TextSpan,
   ) => void;
 }
 /**
@@ -61,7 +62,8 @@ export declare const knownLibFilesForCompilerOptions: (
  */
 export declare const createDefaultMapFromNodeModules: (
   compilerOptions: CompilerOptions,
-  ts?: typeof typescript | undefined,
+  ts?: typeof import('typescript'),
+  tsLibDirectory?: string,
 ) => Map<string, string>;
 /**
  * Adds recursively files from the FS into the map based on the folder
@@ -91,9 +93,9 @@ export declare const createDefaultMapFromCDN: (
   version: string,
   cache: boolean,
   ts: TS,
-  lzstring?: unknown | undefined,
-  fetcher?: typeof fetch | undefined,
-  storer?: Storage | undefined,
+  lzstring?: typeof import('lz-string'),
+  fetcher?: typeof fetch,
+  storer?: typeof localStorage,
 ) => Promise<Map<string, string>>;
 /**
  * Creates an in-memory System object which can be used in a TypeScript program, this
@@ -109,6 +111,7 @@ export declare function createFSBackedSystem(
   files: Map<string, string>,
   _projectRoot: string,
   ts: TS,
+  tsLibDirectory?: string,
 ): System;
 /**
  * Creates an in-memory CompilerHost -which is essentially an extra wrapper to System
@@ -134,6 +137,6 @@ export declare function createVirtualLanguageServiceHost(
   customTransformers?: CustomTransformers,
 ): {
   languageServiceHost: LanguageServiceHost;
-  updateFile: (sourceFile: SourceFile) => void;
+  updateFile: (sourceFile: import('typescript').SourceFile) => void;
 };
 export {};

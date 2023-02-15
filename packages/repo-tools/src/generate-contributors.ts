@@ -81,6 +81,15 @@ function writeTable(contributors: User[], perLine = 5): void {
   const columns = contributors.length > perLine ? perLine : contributors.length;
 
   const lines = [
+    '<!-- ------------------------------------------',
+    ' |      DO NOT MODIFY THIS FILE MANUALLY      |',
+    ' |                                            |',
+    ' | THIS FILE HAS BEEN AUTOMATICALLY GENERATED |',
+    ' |                                            |',
+    ' |     YOU CAN REGENERATE THIS FILE USING     |',
+    ' |         yarn generate-contributors         |',
+    ' ------------------------------------------- -->',
+    '',
     '# Contributors',
     '',
     'Thanks goes to these wonderful people:',
@@ -136,7 +145,7 @@ async function main(): Promise<void> {
   }
 
   // fetch the user info
-  const users = await Promise.all(
+  const users = await Promise.allSettled(
     githubContributors
       // remove ignored users and bots
       .filter(
@@ -147,7 +156,14 @@ async function main(): Promise<void> {
   );
 
   writeTable(
-    users.filter((c): c is User => c?.login != null),
+    users
+      .map(result => {
+        if (result.status === 'fulfilled') {
+          return result.value;
+        }
+        return null;
+      })
+      .filter((c): c is User => c?.login != null),
     5,
   );
 }

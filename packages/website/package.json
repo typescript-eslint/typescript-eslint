@@ -54,7 +54,9 @@
     "copy-webpack-plugin": "^11.0.0",
     "cross-fetch": "*",
     "globby": "^11.1.0",
+    "make-dir": "*",
     "monaco-editor": "^0.33.0",
+    "rimraf": "*",
     "webpack": "^5.74.0"
   },
   "browserslist": {

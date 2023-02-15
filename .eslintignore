@@ -9,3 +9,6 @@ build
 
 # Files copied as part of the build
 packages/types/src/generated/**/*.ts
+
+# Playground types downloaded from the web
+packages/website/src/vendor

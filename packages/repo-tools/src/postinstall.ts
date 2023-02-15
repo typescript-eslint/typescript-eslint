@@ -1,4 +1,5 @@
 import * as execa from 'execa';
+import path from 'path';
 
 /**
  * In certain circumstances we want to skip the below the steps and it may not always
@@ -14,18 +15,25 @@ if (process.env.SKIP_POSTINSTALL) {
   process.exit(0);
 }
 
+const REPO_ROOT = path.resolve(__dirname, '..', '..');
+
 void (async function (): Promise<void> {
+  // make sure we're running from the root
+  process.chdir(REPO_ROOT);
+
   // Apply patches to installed node_modules
   await $`yarn patch-package`;
 
   // Install git hooks
   await $`yarn husky install`;
 
-  // Clean any caches that may be invalid now
-  await $`yarn clean`;
+  if (!process.env.SKIP_POSTINSTALL_BUILD) {
+    // Clean any caches that may be invalid now
+    await $`yarn clean`;
 
-  // Build all the packages ready for use
-  await $`yarn build`;
+    // Build all the packages ready for use
+    await $`yarn build`;
+  }
 })();
 
 async function $(cmd: TemplateStringsArray): Promise<execa.ExecaChildProcess> {
