@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-tools';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -19,7 +19,7 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallow the use of `eval()`-like methods',
-      recommended: 'error',
+      recommended: 'recommended',
       extendsBaseRule: true,
       requiresTypeChecking: true,
     },

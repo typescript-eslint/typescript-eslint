@@ -24,7 +24,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require any function or method that returns a Promise to be marked async',
-      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {

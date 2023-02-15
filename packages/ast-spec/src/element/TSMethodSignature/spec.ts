@@ -20,7 +20,6 @@ interface TSMethodSignatureBase extends BaseNode {
   readonly?: boolean;
   typeParameters?: TSTypeParameterDeclaration;
   accessibility?: Accessibility;
-  export?: boolean;
   static?: boolean;
   kind: 'get' | 'method' | 'set';
 }

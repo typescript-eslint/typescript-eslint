@@ -53,7 +53,6 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Require explicit accessibility modifiers on class properties and methods',
       // too opinionated to be recommended
-      recommended: false,
     },
     fixable: 'code',
     messages: {

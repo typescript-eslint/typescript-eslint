@@ -21,6 +21,7 @@ export const parseSettings: ParseSettings = {
   tsconfigRootDir: '/',
   errorOnInvalidAST: false,
   errorOnUnknownASTType: false,
+  tsconfigMatchCache: new Map(),
   errorOnTypeScriptSyntacticAndSemanticIssues: false,
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   singleRun: false,

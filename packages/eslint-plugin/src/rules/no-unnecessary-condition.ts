@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-tools';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
@@ -225,7 +225,7 @@ export default createRule<Options, MessageId>({
       const type = getConstrainedTypeAtLocation(services, node);
 
       // Conditional is always necessary if it involves:
-      //    `any` or `unknown` or a naked type parameter
+      //    `any` or `unknown` or a naked type variable
       if (
         tools
           .unionTypeParts(type)
@@ -233,7 +233,7 @@ export default createRule<Options, MessageId>({
             part =>
               isTypeAnyType(part) ||
               isTypeUnknownType(part) ||
-              isTypeFlagSet(part, ts.TypeFlags.TypeParameter),
+              isTypeFlagSet(part, ts.TypeFlags.TypeVariable),
           )
       ) {
         return;
@@ -574,10 +574,11 @@ export default createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.MemberExpression
           ? !isNullableOriginFromPrev(node)
           : true;
+      const possiblyVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
       return (
-        isTypeAnyType(type) ||
-        isTypeUnknownType(type) ||
-        (isNullableType(type, { allowUndefined: true }) && isOwnNullable)
+        isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||
+        (isOwnNullable &&
+          (isNullableType(type, { allowUndefined: true }) || possiblyVoid))
       );
     }
 

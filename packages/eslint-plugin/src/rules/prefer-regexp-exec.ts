@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-tools';
+import * as tools from 'ts-api-utils';
 import type * as ts from 'typescript';
 
 import {
@@ -28,7 +28,6 @@ export default createRule({
     docs: {
       description:
         'Enforce `RegExp#exec` over `String#match` if no global flag is provided',
-      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {

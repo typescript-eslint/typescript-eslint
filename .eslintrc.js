@@ -17,8 +17,8 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:eslint-plugin/recommended',
-    'plugin:@typescript-eslint/recommended',
-    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    'plugin:@typescript-eslint/recommended-type-checked',
+    // TODO: consider enabling strict-type-checked and/or stylistic-type-checked
   ],
   parserOptions: {
     sourceType: 'module',
@@ -94,7 +94,7 @@ module.exports = {
       },
     ],
     '@typescript-eslint/no-unused-vars': [
-      'warn',
+      'error',
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
     ],
 
@@ -122,7 +122,7 @@ module.exports = {
     'no-console': 'error',
     'no-process-exit': 'error',
     'no-fallthrough': [
-      'warn',
+      'error',
       { commentPattern: '.*intentional fallthrough.*' },
     ],
 
@@ -223,7 +223,7 @@ module.exports = {
         '@typescript-eslint/no-unsafe-member-access': 'off',
         '@typescript-eslint/no-unsafe-return': 'off',
         'eslint-plugin/consistent-output': 'off', // Might eventually be removed from `eslint-plugin/recommended`: https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/284
-        'jest/no-disabled-tests': 'warn',
+        'jest/no-disabled-tests': 'error',
         'jest/no-focused-tests': 'error',
         'jest/no-alias-methods': 'error',
         'jest/no-identical-title': 'error',
@@ -231,9 +231,9 @@ module.exports = {
         'jest/no-test-prefixes': 'error',
         'jest/no-done-callback': 'error',
         'jest/no-test-return-statement': 'error',
-        'jest/prefer-to-be': 'warn',
-        'jest/prefer-to-contain': 'warn',
-        'jest/prefer-to-have-length': 'warn',
+        'jest/prefer-to-be': 'error',
+        'jest/prefer-to-contain': 'error',
+        'jest/prefer-to-have-length': 'error',
         'jest/prefer-spy-on': 'error',
         'jest/valid-expect': 'error',
         'jest/no-deprecated-functions': 'error',
@@ -312,7 +312,7 @@ module.exports = {
     },
     // tools and tests
     {
-      files: ['**/tools/**/*.ts', '**/tests/**/*.ts'],
+      files: ['**/tools/**/*.*t*', '**/tests/**/*.ts'],
       rules: {
         // allow console logs in tools and tests
         'no-console': 'off',

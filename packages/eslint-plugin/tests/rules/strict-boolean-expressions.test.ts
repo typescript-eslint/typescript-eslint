@@ -133,6 +133,39 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
     }),
 
+    // nullable enum in boolean context
+    {
+      code: `
+        enum ExampleEnum {
+          This = 0,
+          That = 1,
+        }
+        const rand = Math.random();
+        let theEnum: ExampleEnum | null = null;
+        if (rand < 0.3) {
+          theEnum = ExampleEnum.This;
+        }
+        if (theEnum) {
+        }
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+    {
+      code: `
+        enum ExampleEnum {
+          This = 0,
+          That = 1,
+        }
+        const rand = Math.random();
+        let theEnum: ExampleEnum | null = null;
+        if (rand < 0.3) {
+          theEnum = ExampleEnum.This;
+        }
+        if (!theEnum) {
+        }
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
     {
       code: `
 declare const x: string[] | null;
@@ -965,6 +998,157 @@ if (y) {
       ],
     }),
 
+    // nullable enum in boolean context
+    {
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This = 0,
+          That = 1,
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (theEnum) {
+        }
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 13,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 7,
+          endColumn: 20,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This = 0,
+          That = 1,
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (theEnum != null) {
+        }
+      `,
+    },
+    {
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This = 0,
+          That = 1,
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (!theEnum) {
+        }
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 14,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 7,
+          endColumn: 21,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This = 0,
+          That = 1,
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (theEnum == null) {
+        }
+      `,
+    },
+    {
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This,
+          That,
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (!theEnum) {
+        }
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 14,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 7,
+          endColumn: 21,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This,
+          That,
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (theEnum == null) {
+        }
+      `,
+    },
+    {
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 'a',
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (!theEnum) {
+        }
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 14,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 7,
+          endColumn: 21,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This = '',
+          That = 'a',
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (theEnum == null) {
+        }
+      `,
+    },
+    {
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 0,
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (!theEnum) {
+        }
+      `,
+      errors: [
+        {
+          line: 7,
+          column: 14,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 7,
+          endColumn: 21,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This = '',
+          That = 0,
+        }
+        const theEnum = Math.random() < 0.3 ? ExampleEnum.This : null;
+        if (theEnum == null) {
+        }
+      `,
+    },
     // any in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       code: noFormat`

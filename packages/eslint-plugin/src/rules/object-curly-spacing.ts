@@ -25,7 +25,6 @@ export default createRule<Options, MessageIds>({
     ...baseRule.meta,
     docs: {
       description: 'Enforce consistent spacing inside braces',
-      recommended: false,
       extendsBaseRule: true,
     },
   },

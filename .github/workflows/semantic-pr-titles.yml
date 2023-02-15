@@ -30,7 +30,6 @@ jobs:
             eslint-plugin
             eslint-plugin-internal
             eslint-plugin-tslint
-            experimental-utils
             parser
             scope-manager
             type-utils
