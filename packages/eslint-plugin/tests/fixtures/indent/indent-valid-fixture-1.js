@@ -1,6 +1,7 @@
 if (a) {
   var b = c;
-  var d = e * f;
+  var d = e
+    * f;
   var e = f; // <-
   // ->
   function g() {
@@ -15,9 +16,11 @@ if (a) {
   } // <-
 
   do {
-    o = p + q; // NO ERROR: DON'T VALIDATE MULTILINE STATEMENTS
-    o = p + q;
-  } while (r); // <-
+    o = p +
+  q; // NO ERROR: DON'T VALIDATE MULTILINE STATEMENTS
+    o = p +
+    q;
+  } while(r); // <-
 
   for (var s in t) {
     u++;
@@ -27,18 +30,17 @@ if (a) {
     v++; // <-
   }
 
-  if (w) {
+  if ( w ) {
     x++;
   } else if (y) {
     z++; // <-
     aa++;
-  } else {
-    // <-
+  } else { // <-
     bb++; // ->
   } // ->
 }
 
-/**/ var b; // NO ERROR: single line multi-line comments followed by code is OK
+/**/var b; // NO ERROR: single line multi-line comments followed by code is OK
 /*
  *
  */ var b; // NO ERROR: multi-line comments followed by code is OK
@@ -47,17 +49,22 @@ var arr = [
   a,
   b,
   c,
-  function () {
-    d;
+  function (){
+    d
   }, // <-
   {},
   {
     a: b,
     c: d,
-    d: e,
+    d: e
   },
-  [f, g, h, i],
-  [j],
+  [
+    f,
+    g,
+    h,
+    i
+  ],
+  [j]
 ];
 
 var obj = {
@@ -65,43 +72,42 @@ var obj = {
     b: {
       c: d,
       e: f,
-      g: h + i, // NO ERROR: DON'T VALIDATE MULTILINE STATEMENTS
-    },
+      g: h +
+    i // NO ERROR: DON'T VALIDATE MULTILINE STATEMENTS
+    }
   },
-  g: [h, i, j, k],
+  g: [
+    h,
+    i,
+    j,
+    k
+  ]
 };
 
-var arrObject = {
-  a: [
-    a,
-    b, // NO ERROR: INDENT ONCE WHEN MULTIPLE INDENTED EXPRESSIONS ARE ON SAME LINE
-    c,
-  ],
-};
+var arrObject = {a:[
+  a,
+  b, // NO ERROR: INDENT ONCE WHEN MULTIPLE INDENTED EXPRESSIONS ARE ON SAME LINE
+  c
+]};
 
-var objArray = [
-  {
-    a: b,
-    b: c, // NO ERROR: INDENT ONCE WHEN MULTIPLE INDENTED EXPRESSIONS ARE ON SAME LINE
-    c: d,
-  },
-];
+var objArray = [{
+  a: b,
+  b: c, // NO ERROR: INDENT ONCE WHEN MULTIPLE INDENTED EXPRESSIONS ARE ON SAME LINE
+  c: d
+}];
 
-var arrArray = [
-  [
-    a,
-    b, // NO ERROR: INDENT ONCE WHEN MULTIPLE INDENTED EXPRESSIONS ARE ON SAME LINE
-    c,
-  ],
-];
+var arrArray = [[
+  a,
+  b, // NO ERROR: INDENT ONCE WHEN MULTIPLE INDENTED EXPRESSIONS ARE ON SAME LINE
+  c
+]];
 
-var objObject = {
-  a: {
-    a: b,
-    b: c, // NO ERROR: INDENT ONCE WHEN MULTIPLE INDENTED EXPRESSIONS ARE ON SAME LINE
-    c: d,
-  },
-};
+var objObject = {a:{
+  a: b,
+  b: c, // NO ERROR: INDENT ONCE WHEN MULTIPLE INDENTED EXPRESSIONS ARE ON SAME LINE
+  c: d
+}};
+
 
 switch (a) {
   case 'a':
@@ -119,7 +125,7 @@ switch (a) {
   case 'f':
     var a = 'b';
     break;
-  case 'g': {
+  case 'g':     {
     var a = 'b';
     break;
   }
@@ -132,8 +138,8 @@ a.b('hi')
   .c(a.b()) // <-
   .d(); // <-
 
-if (a) {
-  if (b) {
+if ( a ) {
+  if ( b ) {
     d.e(f) // ->
       .g() // ->
       .h(); // ->
@@ -157,9 +163,13 @@ var a = b,
   e = {
     f: g,
     n: o,
-    p: q,
+    p: q
   },
-  r = [s, t, u];
+  r = [
+    s,
+    t,
+    u
+  ];
 
 var a = function () {
   b = c; // ->
@@ -168,33 +178,37 @@ var a = function () {
 };
 
 function c(a, b) {
-  if (a || (a && b)) {
-    // NO ERROR: DON'T VALIDATE MULTILINE STATEMENTS
+  if (a || (a &&
+            b)) { // NO ERROR: DON'T VALIDATE MULTILINE STATEMENTS
     return d;
   }
 }
 
-if (a || b) {
+if ( a
+  || b ) {
   var x; // ->
   var c,
-    d = function (a, b) {
-      // <-
+    d = function(a,
+      b) { // <-
       a; // ->
       b;
       c; // <-
-    };
+    }
 }
 
+
 a({
-  d: 1,
+  d: 1
 });
 
-a(1);
+a(
+1
+);
 
 a(
   b({
-    d: 1,
-  }),
+    d: 1
+  })
 );
 
 a(
@@ -202,114 +216,124 @@ a(
     c({
       d: 1,
       e: 1,
-      f: 1,
-    }),
-  ),
+      f: 1
+    })
+  )
 );
 
 a({ d: 1 });
 
 aa(
-  b({
-    // NO ERROR: CallExpression args not linted by default
-    c: d, // ->
-    e: f,
-    f: g,
-  }), // ->
+   b({ // NO ERROR: CallExpression args not linted by default
+     c: d, // ->
+     e: f,
+     f: g
+   }) // ->
 );
-
-aaaaaa(b, c, {
-  d: a,
-});
-
-a(
-  b,
-  c,
-  d,
-  e,
-  f,
-  g, // NO ERROR: alignment of arguments of callExpression not checked
-); // <-
-
-a(); // <-
 
 aaaaaa(
   b,
   c,
   {
-    d: a,
-  },
-  {
-    e: f,
-  },
+    d: a
+  }
 );
 
-a.b().c(function () {
-  var a;
-}).d.e;
+a(b, c,
+  d, e,
+    f, g  // NO ERROR: alignment of arguments of callExpression not checked
+);  // <-
+
+a(
+); // <-
+
+aaaaaa(
+  b,
+  c, {
+    d: a
+  }, {
+    e: f
+  }
+);
+
+a.b()
+  .c(function(){
+    var a;
+  }).d.e;
 
 if (a == 'b') {
-  if (c && d) e = f;
-  else g('h').i('j');
+  if (c && d) e = f
+  else g('h').i('j')
 }
 
 a = function (b, c) {
   return a(function () {
-    var d = e;
-    var f = g;
-    var h = i;
+    var d = e
+    var f = g
+    var h = i
 
-    if (!j) k('l', (m = n));
-    if (o) p;
-    else if (q) r;
-  });
-};
+    if (!j) k('l', (m = n))
+    if (o) p
+    else if (q) r
+  })
+}
 
-var a = function () {
-  'b'
-    .replace(/a/, 'a')
-    .replace(/bc?/, function (e) {
-      return 'b' + (e.f === 2 ? 'c' : 'f');
+var a = function() {
+  "b"
+    .replace(/a/, "a")
+    .replace(/bc?/, function(e) {
+      return "b" + (e.f === 2 ? "c" : "f");
     })
-    .replace(/d/, 'd');
+    .replace(/d/, "d");
 };
 
 $(b)
-  .on('a', 'b', function () {
-    $(c).e('f');
-  })
-  .on('g', 'h', function () {
-    $(i).j('k');
-  });
+  .on('a', 'b', function() { $(c).e('f'); })
+  .on('g', 'h', function() { $(i).j('k'); });
 
-a.b('c', 'd'); // NO ERROR: CallExpression args not linted by default
+a
+  .b('c',
+           'd'); // NO ERROR: CallExpression args not linted by default
 
-a.b('c', [
-  'd',
-  function (e) {
+a
+  .b('c', [ 'd', function(e) {
     e++;
-  },
-]);
+  }]);
 
-var a = function () {
+var a = function() {
     a++;
     b++; // <-
     c++; // <-
   },
   b;
 
-var b = [a, b, c],
+var b = [
+    a,
+    b,
+    c
+  ],
   c;
 
 var c = {
     a: 1,
     b: 2,
-    c: 3,
+    c: 3
   },
   d;
 
 // holes in arrays indentation
-x = [1, 1, 1, 1, 1, 1, 1, 1, 1, 1];
+x = [
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1
+];
 
 try {
   a++;
@@ -325,28 +349,28 @@ try {
   j++; // ->
 }
 
-if (
-  array.some(function () {
-    return true;
-  })
-) {
+if (array.some(function(){
+  return true;
+})) {
   a++; // ->
   b++;
   c++; // <-
 }
 
-var a = b.c(function () {
+var a = b.c(function() {
     d++;
   }),
   e;
 
 switch (true) {
-  case a && b:
-  case c && // ->
-    d:
-  case e && // <-
-    f:
-  case g && h:
+  case (a
+  && b):
+  case (c // ->
+&& d):
+  case (e // <-
+    && f):
+  case (g
+&& h):
     var i = j; // <-
     var k = l;
     var m = n; // ->
@@ -354,7 +378,8 @@ switch (true) {
 
 if (a) {
   b();
-} else {
+}
+else {
   c(); // ->
   d();
   e(); // <-
@@ -373,49 +398,53 @@ if (a) {
 
 if (a) {
   b();
-} else c();
+}
+else c();
 
 a();
 
-if ('very very long multi line' + 'with weird indentation') {
+if( "very very long multi line" +
+      "with weird indentation" ) {
   b();
   a(); // ->
   c(); // <-
 }
 
-a('very very long multi line' + 'with weird indentation', function () {
+a( "very very long multi line" +
+    "with weird indentation", function() {
   b();
   a(); // ->
   c(); // <-
 }); // <-
 
-a = function (content, dom) {
+a = function(content, dom) {
   b();
   c(); // <-
   d(); // ->
 };
 
-a = function (content, dom) {
+a = function(content, dom) {
   b();
   c(); // <-
   d(); // ->
 };
 
-a = function (content, dom) {
+a = function(content, dom) {
   b(); // ->
 };
 
-a = function (content, dom) {
+a = function(content, dom) {
   b(); // ->
 };
 
-a('This is a terribly long description youll ' + 'have to read', function () {
+a('This is a terribly long description youll ' +
+  'have to read', function () {
   b(); // <-
   c(); // <-
 }); // <-
 
 if (
-  array.some(function () {
+  array.some(function(){
     return true;
   })
 ) {
@@ -426,12 +455,13 @@ if (
 
 function c(d) {
   return {
-    e: function (f, g) {},
+    e: function(f, g) {
+    }
   };
 }
 
 function a(b) {
-  switch (x) {
+  switch(x) {
     case 1:
       if (foo) {
         return 5;
@@ -440,16 +470,15 @@ function a(b) {
 }
 
 function a(b) {
-  switch (x) {
+  switch(x) {
     case 1:
       c;
   }
 }
 
 function a(b) {
-  switch (x) {
-    case 1:
-      c;
+  switch(x) {
+    case 1: c;
   }
 }
 
@@ -465,14 +494,14 @@ function test() {
 }
 
 function a(b) {
-  switch (x) {
+  switch(x) {
     case 1:
-      {
-        // <-
+      { // <-
         a(); // ->
       }
       break;
-    default: {
+    default:
+    {
       b();
     }
   }
@@ -480,13 +509,14 @@ function a(b) {
 
 switch (a) {
   default:
-    if (b) c();
+    if (b)
+      c();
 }
 
 function test(x) {
   switch (x) {
     case 1:
-      return function () {
+      return function() {
         var a = 5;
         return a;
       };
@@ -495,5 +525,6 @@ function test(x) {
 
 switch (a) {
   default:
-    if (b) c();
+    if (b)
+      c();
 }

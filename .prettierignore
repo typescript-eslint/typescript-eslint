@@ -5,6 +5,7 @@
 **/.vs
 CONTRIBUTORS.md
 packages/ast-spec/src/*/*/fixtures/_error_/*/fixture.ts
+packages/eslint-plugin/tests/fixtures/indent/
 
 # prettier errors on this case because it's semantically valid
 packages/ast-spec/src/element/AccessorProperty/fixtures/modifier-abstract-with-value/fixture.ts

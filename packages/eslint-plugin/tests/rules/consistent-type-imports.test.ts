@@ -685,7 +685,7 @@ export type Y = {
       `,
       output: `
         import type foo from 'foo';
-        type Baz = typeof foo.bar['Baz']; // TSQualifiedName & TSTypeQuery
+        type Baz = (typeof foo.bar)['Baz']; // TSQualifiedName & TSTypeQuery
       `,
       errors: [
         {
