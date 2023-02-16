@@ -67,7 +67,7 @@ export default util.createRule({
       return found;
     }
 
-    function getAllowedTypeForNode(node: ts.Node): AllowedType | undefined {
+    function getAllowedTypeForNode(node: ts.Node): AllowedType {
       return tsutils.isTypeFlagSet(
         typeChecker.getTypeAtLocation(node),
         ts.TypeFlags.StringLike,

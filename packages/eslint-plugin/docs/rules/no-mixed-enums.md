@@ -30,7 +30,8 @@ enum Status {
 enum Status {
   Unknown = 0,
   Closed = 1,
-  Open = 2
+  Open = 2,
+}
 ```
 
 ### ✅ Correct (Implicit Numbers)
@@ -39,7 +40,8 @@ enum Status {
 enum Status {
   Unknown,
   Closed,
-  Open
+  Open,
+}
 ```
 
 ### ✅ Correct (Strings)
@@ -49,6 +51,7 @@ enum Status {
   Unknown = 'unknown',
   Closed = 'closed',
   Open = 'open',
+}
 ```
 
 ## Iteration Pitfalls of Mixed Enum Member Values
