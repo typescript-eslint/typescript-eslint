@@ -101,9 +101,9 @@ export default util.createRule({
 
     function getMemberType(
       member: TSESTree.TSEnumMember,
-    ): AllowedType | ts.TypeFlags.Unknown | undefined {
+    ): AllowedType | undefined {
       if (!member.initializer) {
-        return undefined;
+        return AllowedType.Number;
       }
 
       switch (member.initializer.type) {
@@ -201,7 +201,7 @@ export default util.createRule({
 
         for (const member of node.members) {
           const currentType = getMemberType(member);
-          if (currentType === ts.TypeFlags.Unknown) {
+          if (currentType === AllowedType.Unknown) {
             return;
           }
 
