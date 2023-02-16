@@ -241,25 +241,25 @@ describe('convert', () => {
 
   describe('allowInvalidAST', () => {
     const code = 'const;';
-    const error =
-      'A variable declaration list must have at least one variable declarator.';
 
-    it(`does not throw an error for an invalid AST when allowInvalidAST is false`, () => {
+    it(`throws an error for an invalid AST when allowInvalidAST is false`, () => {
       const ast = convertCode(code);
 
       const instance = new Converter(ast);
 
-      expect(() => instance.convertProgram()).not.toThrow();
+      expect(() => instance.convertProgram()).toThrow(
+        'A variable declaration list must have at least one variable declarator.',
+      );
     });
 
-    it(`throws an error for an invalid AST when allowInvalidAST is true`, () => {
+    it(`does not throw an error for an invalid AST when allowInvalidAST is true`, () => {
       const ast = convertCode(code);
 
       const instance = new Converter(ast, {
         allowInvalidAST: true,
       });
 
-      expect(() => instance.convertProgram()).toThrow(error);
+      expect(() => instance.convertProgram()).not.toThrow();
     });
   });
 });
