@@ -9,11 +9,11 @@ export function parseTSESTree(
   try {
     const result = parse(contents, {
       comment: false,
+      errorOnInvalidAST: fixture.config.errorOnInvalidAST,
       jsx: fixture.ext.endsWith('x'),
       loc: true,
       range: true,
       tokens: true,
-      errorOnInvalidAST: fixture.config.errorOnInvalidAST,
     });
     const { tokens: _, comments: __, ...program } = result;
 
