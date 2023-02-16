@@ -8,8 +8,8 @@ export function parseTSESTree(
 ): ParserResponse {
   try {
     const result = parse(contents, {
+      allowInvalidAST: fixture.config.allowInvalidAST,
       comment: false,
-      errorOnInvalidAST: fixture.config.errorOnInvalidAST,
       jsx: fixture.ext.endsWith('x'),
       loc: true,
       range: true,

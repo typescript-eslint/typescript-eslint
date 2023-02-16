@@ -12,6 +12,12 @@ import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 
 interface ParseOptions {
   /**
+   * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
+   * This case only usually occurs when attempting to lint invalid code.
+   */
+  allowInvalidAST?: boolean;
+
+  /**
    * create a top-level comments array containing all comments
    */
   comment?: boolean;
@@ -27,16 +33,6 @@ interface ParseOptions {
    * - false === []
    */
   debugLevel?: DebugLevel;
-
-  /**
-   * Causes the parser to an error if it sees that a required node child does not exist.
-   * This case only usually occurs when attempting to lint invalid code.
-   *
-   * @remarks
-   * This is because TypeScript reports some syntax issues as semantic diagnostics.
-   * See https://github.com/typescript-eslint/typescript-eslint/issues/1852.
-   */
-  errorOnInvalidAST?: boolean;
 
   /**
    * Cause the parser to error if it encounters an unknown AST node type (useful for testing).

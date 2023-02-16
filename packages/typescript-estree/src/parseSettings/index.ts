@@ -11,6 +11,11 @@ type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
  */
 export interface MutableParseSettings {
   /**
+   * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
+   */
+  allowInvalidAST: boolean;
+
+  /**
    * Code of the file being parsed, or raw source file containing it.
    */
   code: string | ts.SourceFile;
@@ -41,11 +46,6 @@ export interface MutableParseSettings {
    * Which debug areas should be logged.
    */
   debugLevel: Set<DebugModule>;
-
-  /**
-   * Whether to throw an error when a required node child does not exist.
-   */
-  errorOnInvalidAST: boolean;
 
   /**
    * Whether to error if TypeScript reports a semantic or syntactic error diagnostic.

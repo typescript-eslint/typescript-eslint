@@ -38,7 +38,7 @@ import { AST_NODE_TYPES } from './ts-estree';
 const SyntaxKind = ts.SyntaxKind;
 
 interface ConverterOptions {
-  errorOnInvalidAST?: boolean;
+  allowInvalidAST?: boolean;
   errorOnUnknownASTType?: boolean;
   shouldPreserveNodeMaps?: boolean;
 }
@@ -710,7 +710,7 @@ export class Converter {
     allowNull: boolean,
   ): void {
     if (!allowNull && node.moduleSpecifier == null) {
-      this.#throwIfErrorOnInvalidAST(
+      this.#throwUnlessAllowInvalidAST(
         node.pos,
         'Module specifier must be a string literal.',
       );
@@ -720,7 +720,7 @@ export class Converter {
       node.moduleSpecifier &&
       node.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
     ) {
-      this.#throwIfErrorOnInvalidAST(
+      this.#throwUnlessAllowInvalidAST(
         node.moduleSpecifier.pos,
         'Module specifier must be a string literal.',
       );
@@ -842,7 +842,7 @@ export class Converter {
 
       case SyntaxKind.ThrowStatement:
         if (node.expression.end === node.expression.pos) {
-          this.#throwIfErrorOnInvalidAST(
+          this.#throwUnlessAllowInvalidAST(
             node.pos,
             'A throw statement must throw an expression.',
           );
@@ -993,7 +993,7 @@ export class Converter {
         });
 
         if (!result.declarations.length) {
-          this.#throwIfErrorOnInvalidAST(
+          this.#throwUnlessAllowInvalidAST(
             node.pos,
             'A variable declaration list must have at least one variable declarator.',
           );
@@ -1276,7 +1276,7 @@ export class Converter {
             !hasModifier(ts.SyntaxKind.AbstractKeyword, node) &&
             !hasModifier(ts.SyntaxKind.AbstractKeyword, node.parent)
           ) {
-            this.#throwIfErrorOnInvalidAST(
+            this.#throwUnlessAllowInvalidAST(
               node.name.pos,
               'Function implementation is missing or not immediately following the declaration.',
             );
@@ -1706,7 +1706,7 @@ export class Converter {
           (!hasModifier(ts.SyntaxKind.ExportKeyword, node) ||
             !hasModifier(ts.SyntaxKind.DefaultKeyword, node))
         ) {
-          this.#throwIfErrorOnInvalidAST(
+          this.#throwUnlessAllowInvalidAST(
             node.pos,
             "A class declaration without the 'default' modifier must have a name.",
           );
@@ -1744,7 +1744,7 @@ export class Converter {
 
         if (superClass) {
           if (superClass.types.length > 1) {
-            this.#throwIfErrorOnInvalidAST(
+            this.#throwUnlessAllowInvalidAST(
               superClass.types[1].pos,
               'Classes can only extend a single class.',
             );
@@ -2071,7 +2071,7 @@ export class Converter {
       case SyntaxKind.CallExpression: {
         if (node.expression.kind === SyntaxKind.ImportKeyword) {
           if (node.arguments.length !== 1 && node.arguments.length !== 2) {
-            this.#throwIfErrorOnInvalidAST(
+            this.#throwUnlessAllowInvalidAST(
               node.arguments.pos,
               'Dynamic import requires exactly one or two arguments.',
             );
@@ -3071,15 +3071,15 @@ export class Converter {
 
   #checkIllegalDecorators(node: ts.Node): void {
     if (nodeHasIllegalDecorators(node)) {
-      this.#throwIfErrorOnInvalidAST(
+      this.#throwUnlessAllowInvalidAST(
         node.pos,
         'Decorators are not valid here.',
       );
     }
   }
 
-  #throwIfErrorOnInvalidAST(pos: number, message: string): void {
-    if (this.options.errorOnInvalidAST) {
+  #throwUnlessAllowInvalidAST(pos: number, message: string): void {
+    if (!this.options.allowInvalidAST) {
       throw createError(this.ast, pos, message);
     }
   }

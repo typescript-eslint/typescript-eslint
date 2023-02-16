@@ -26,7 +26,7 @@ export function astConverter(
    * Recursively convert the TypeScript AST into an ESTree-compatible AST
    */
   const instance = new Converter(ast, {
-    errorOnInvalidAST: parseSettings.errorOnInvalidAST || false,
+    allowInvalidAST: parseSettings.allowInvalidAST || false,
     errorOnUnknownASTType: parseSettings.errorOnUnknownASTType || false,
     shouldPreserveNodeMaps,
   });

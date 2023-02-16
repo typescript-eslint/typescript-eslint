@@ -31,6 +31,7 @@ export function createParseSettings(
       ? options.tsconfigRootDir
       : process.cwd();
   const parseSettings: MutableParseSettings = {
+    allowInvalidAST: options.allowInvalidAST === true,
     code,
     codeFullText,
     comment: options.comment === true,
@@ -44,7 +45,6 @@ export function createParseSettings(
         : Array.isArray(options.debugLevel)
         ? new Set(options.debugLevel)
         : new Set(),
-    errorOnInvalidAST: options.errorOnInvalidAST === true,
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: options.errorOnUnknownASTType === true,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect:

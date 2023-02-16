@@ -1,1 +1,1 @@
-@decl interface Test {};
+@decl interface Test {}

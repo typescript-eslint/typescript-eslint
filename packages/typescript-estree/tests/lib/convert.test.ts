@@ -239,12 +239,12 @@ describe('convert', () => {
     }
   });
 
-  describe('errorOnInvalidAST', () => {
+  describe('allowInvalidAST', () => {
     const code = 'const;';
     const error =
       'A variable declaration list must have at least one variable declarator.';
 
-    it(`does not throw an error for an invalid AST when errorOnInvalidAST is false`, () => {
+    it(`does not throw an error for an invalid AST when allowInvalidAST is false`, () => {
       const ast = convertCode(code);
 
       const instance = new Converter(ast);
@@ -252,11 +252,11 @@ describe('convert', () => {
       expect(() => instance.convertProgram()).not.toThrow();
     });
 
-    it(`throws an error for an invalid AST when errorOnInvalidAST is true`, () => {
+    it(`throws an error for an invalid AST when allowInvalidAST is true`, () => {
       const ast = convertCode(code);
 
       const instance = new Converter(ast, {
-        errorOnInvalidAST: true,
+        allowInvalidAST: true,
       });
 
       expect(() => instance.convertProgram()).toThrow(error);

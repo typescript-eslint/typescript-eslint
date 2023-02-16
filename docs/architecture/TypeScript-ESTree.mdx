@@ -32,6 +32,12 @@ Parses the given string of code with the options provided and returns an ESTree-
 ```ts
 interface ParseOptions {
   /**
+   * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
+   * This case only usually occurs when attempting to lint invalid code.
+   */
+  allowInvalidAST?: boolean;
+
+  /**
    * create a top-level comments array containing all comments
    */
   comment?: boolean;
@@ -47,12 +53,6 @@ interface ParseOptions {
    * - false === []
    */
   debugLevel?: boolean | ('typescript-eslint' | 'eslint' | 'typescript')[];
-
-  /**
-   * Causes the parser to an error if it receives an invalid AST from TypeScript.
-   * This case only usually occurs when attempting to lint invalid code.
-   */
-  errorOnInvalidAST?: boolean;
 
   /**
    * Cause the parser to error if it encounters an unknown AST node type (useful for testing).

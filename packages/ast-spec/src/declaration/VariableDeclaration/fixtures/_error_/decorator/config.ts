@@ -1,3 +1,3 @@
 export default {
-  errorOnInvalidAST: true,
+  allowInvalidAST: true,
 };
