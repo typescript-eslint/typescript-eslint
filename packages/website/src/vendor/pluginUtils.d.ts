@@ -1,5 +1,14 @@
-import type React from 'react';
+/**********************************************
+ *      DO NOT MODIFY THIS FILE MANUALLY      *
+ *                                            *
+ *     THIS FILE HAS BEEN FETCHED FROM THE    *
+ *      TYPESCRIPT PLAYGROUND SOURCE CODE.    *
+ *                                            *
+ *    YOU CAN REGENERATE THESE FILES USING    *
+ *          yarn generate-website-dts         *
+ **********************************************/
 
+import type React from 'react';
 /** Creates a set of util functions which is exposed to Plugins to make it easier to build consistent UIs */
 export declare const createUtils: (
   sb: any,

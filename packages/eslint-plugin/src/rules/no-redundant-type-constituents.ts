@@ -51,7 +51,7 @@ const keywordNodeTypesToTsTypes = new Map([
   [TSESTree.AST_NODE_TYPES.TSStringKeyword, ts.TypeFlags.String],
 ]);
 
-type PrimitiveTypeFlag = typeof primitiveTypeFlags[number];
+type PrimitiveTypeFlag = (typeof primitiveTypeFlags)[number];
 
 interface TypeFlagsWithName {
   typeFlags: ts.TypeFlags;

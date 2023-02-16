@@ -1,2 +1,2 @@
-var obj = { value: 1 }
-type B = typeof obj
+var obj = { value: 1 };
+type B = typeof obj;

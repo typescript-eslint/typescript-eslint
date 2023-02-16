@@ -698,7 +698,7 @@ export default util.createRule<Options, MessageIds>({
     function getPaddingType(
       prevNode: TSESTree.Node,
       nextNode: TSESTree.Node,
-    ): typeof PaddingTypes[keyof typeof PaddingTypes] {
+    ): (typeof PaddingTypes)[keyof typeof PaddingTypes] {
       for (let i = configureList.length - 1; i >= 0; --i) {
         const configure = configureList[i];
         if (

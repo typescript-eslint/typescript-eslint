@@ -1,7 +1,16 @@
-import type { Sandbox } from '../sandbox';
-import type { DiagnosticRelatedInformation, Node } from 'typescript';
+/**********************************************
+ *      DO NOT MODIFY THIS FILE MANUALLY      *
+ *                                            *
+ *     THIS FILE HAS BEEN FETCHED FROM THE    *
+ *      TYPESCRIPT PLAYGROUND SOURCE CODE.    *
+ *                                            *
+ *    YOU CAN REGENERATE THESE FILES USING    *
+ *          yarn generate-website-dts         *
+ **********************************************/
 
-export declare interface LocalStorageOption {
+import type { Sandbox } from '@typescript/sandbox';
+import type { DiagnosticRelatedInformation, Node } from 'typescript';
+export declare type LocalStorageOption = {
   blurb: string;
   flag: string;
   display: string;
@@ -9,11 +18,11 @@ export declare interface LocalStorageOption {
   oneline?: true;
   requireRestart?: true;
   onchange?: (newValue: boolean) => void;
-}
-export declare interface OptionsListConfig {
+};
+export declare type OptionsListConfig = {
   style: 'separated' | 'rows';
   requireRestart?: true;
-}
+};
 export declare type DesignSystem = ReturnType<
   ReturnType<typeof createDesignSystem>
 >;
@@ -43,7 +52,7 @@ export declare const createDesignSystem: (sandbox: Sandbox) => (
     diags: DiagnosticRelatedInformation[],
   ) => HTMLUListElement;
   /** Lets you remove the hovers from listDiags etc */
-  clearDeltaDecorators: (force?: true | undefined) => void;
+  clearDeltaDecorators: (force?: true) => void;
   /** Shows a single option in local storage (adds an li to the container BTW) */
   localStorageOption: (setting: LocalStorageOption) => HTMLLIElement;
   /** Uses localStorageOption to create a list of options */
@@ -64,11 +73,9 @@ export declare const createDesignSystem: (sandbox: Sandbox) => (
   /** Renders an AST tree */
   createASTTree: (
     node: Node,
-    settings?:
-      | {
-          closedByDefault?: true | undefined;
-        }
-      | undefined,
+    settings?: {
+      closedByDefault?: true;
+    },
   ) => HTMLDivElement;
   /** Creates an input button */
   button: (settings: {

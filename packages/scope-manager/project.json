@@ -54,7 +54,8 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/scope-manager/**/*.ts"]
+        "lintFilePatterns": ["packages/scope-manager/**/*.{mts,cts,ts,tsx}"],
+        "ignorePath": ".eslintignore"
       }
     },
     "test": {

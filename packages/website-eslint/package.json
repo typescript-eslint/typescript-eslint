@@ -13,7 +13,9 @@
   ],
   "scripts": {
     "build": "rollup --config=rollup.config.js",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore"
+    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
+    "lint": "nx lint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@typescript-eslint/types": "5.52.0",
@@ -30,6 +32,7 @@
     "@typescript-eslint/typescript-estree": "5.52.0",
     "@typescript-eslint/visitor-keys": "5.52.0",
     "eslint": "*",
+    "magic-string": "^0.25.9",
     "rollup": "^2.75.4",
     "rollup-plugin-terser": "^7.0.2",
     "semver": "^7.3.7"

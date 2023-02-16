@@ -1,5 +1,5 @@
-const s = Symbol()
+const s = Symbol();
 class A {
-    a: typeof s
-    [s]: number
+  a: typeof s;
+  [s]: number;
 }

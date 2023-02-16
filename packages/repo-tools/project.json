@@ -1,0 +1,16 @@
+{
+  "name": "repo-tools",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "type": "library",
+  "implicitDependencies": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/repo-tools/**/*.{mts,cts,ts,tsx}"],
+        "ignorePath": ".eslintignore"
+      }
+    }
+  }
+}
