@@ -7,7 +7,11 @@ import * as ts from 'typescript';
 
 import * as util from '../util';
 
-type AllowedType = ts.TypeFlags.Number | ts.TypeFlags.String;
+enum AllowedType {
+  Number,
+  String,
+  Unknown,
+}
 
 export default util.createRule({
   name: 'no-mixed-enums',
@@ -72,8 +76,8 @@ export default util.createRule({
         typeChecker.getTypeAtLocation(node),
         ts.TypeFlags.StringLike,
       )
-        ? ts.TypeFlags.String
-        : ts.TypeFlags.Number;
+        ? AllowedType.String
+        : AllowedType.Number;
     }
 
     function getTypeFromImported(
@@ -106,15 +110,15 @@ export default util.createRule({
         case AST_NODE_TYPES.Literal:
           switch (typeof member.initializer.value) {
             case 'number':
-              return ts.TypeFlags.Number;
+              return AllowedType.Number;
             case 'string':
-              return ts.TypeFlags.String;
+              return AllowedType.String;
             default:
-              return ts.TypeFlags.Unknown;
+              return AllowedType.Unknown;
           }
 
         case AST_NODE_TYPES.TemplateLiteral:
-          return ts.TypeFlags.String;
+          return AllowedType.String;
 
         default:
           return getAllowedTypeForNode(
@@ -173,9 +177,9 @@ export default util.createRule({
                   typeChecker.getTypeAtLocation(member.initializer),
                   ts.TypeFlags.StringLike,
                 )
-                ? ts.TypeFlags.String
-                : ts.TypeFlags.Number
-              : ts.TypeFlags.Number;
+                ? AllowedType.String
+                : AllowedType.Number
+              : AllowedType.Number;
           }
         }
       }
@@ -201,13 +205,13 @@ export default util.createRule({
             return;
           }
 
-          if (currentType === ts.TypeFlags.Number) {
+          if (currentType === AllowedType.Number) {
             desiredType ??= currentType;
           }
 
           if (
             currentType !== desiredType &&
-            (currentType !== undefined || desiredType === ts.TypeFlags.String)
+            (currentType !== undefined || desiredType === AllowedType.String)
           ) {
             context.report({
               messageId: 'mixed',
