@@ -99,9 +99,7 @@ export default util.createRule({
       return getAllowedTypeForNode(valueDeclaration.members[0]);
     }
 
-    function getMemberType(
-      member: TSESTree.TSEnumMember,
-    ): AllowedType | undefined {
+    function getMemberType(member: TSESTree.TSEnumMember): AllowedType {
       if (!member.initializer) {
         return AllowedType.Number;
       }
