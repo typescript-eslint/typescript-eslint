@@ -3,7 +3,6 @@
 exports[`AST Fixtures List fixtures with Error differences 1`] = `
 Object {
   "Babel errored but TSESTree didn't": Set {
-    "declaration/ClassDeclaration/fixtures/_error_/export-missing-name/fixture.ts",
     "declaration/ClassDeclaration/fixtures/_error_/implements-non-identifier/fixture.ts",
     "declaration/ClassDeclaration/fixtures/_error_/missing-extends-type-param/fixture.ts",
     "declaration/ClassDeclaration/fixtures/_error_/missing-type-param/fixture.ts",
@@ -14,17 +13,12 @@ Object {
     "declaration/TSDeclareFunction/fixtures/_error_/async/fixture.ts",
     "declaration/TSDeclareFunction/fixtures/_error_/declare-with-body/fixture.ts",
     "declaration/TSDeclareFunction/fixtures/_error_/missing-type-param/fixture.ts",
-    "declaration/TSEnumDeclaration/fixtures/_error_/decorator/fixture.ts",
     "declaration/TSImportEqualsDeclaration/fixtures/_error_/external-module-ref-non-string/fixture.ts",
     "declaration/TSImportEqualsDeclaration/fixtures/_error_/import-kind/fixture.ts",
-    "declaration/TSInterfaceDeclaration/fixtures/_error_/decorator/fixture.ts",
     "declaration/TSInterfaceDeclaration/fixtures/_error_/missing-extends/fixture.ts",
     "declaration/TSInterfaceDeclaration/fixtures/_error_/missing-type-param/fixture.ts",
     "declaration/TSInterfaceDeclaration/fixtures/_error_/non-identifier-extends/fixture.ts",
-    "declaration/TSTypeAliasDeclaration/fixtures/_error_/decorator/fixture.ts",
     "declaration/TSTypeAliasDeclaration/fixtures/_error_/missing-type-parameter/fixture.ts",
-    "declaration/VariableDeclaration/fixtures/_error_/decorator/fixture.ts",
-    "declaration/VariableDeclaration/fixtures/_error_/no-variables/fixture.ts",
     "element/AccessorProperty/fixtures/_error_/modifier-override-with-no-extends/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/abstract-class-with-abstract-static-constructor/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/abstract-class-with-override-property/fixture.ts",
@@ -80,7 +74,6 @@ Object {
     "legacy-fixtures/errorRecovery/fixtures/_error_/interface-with-optional-index-signature/fixture.ts",
     "legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-array-pattern-decorator/fixture.ts",
     "legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-rest-element-decorator/fixture.ts",
-    "statement/ThrowStatement/fixtures/_error_/missing-argument/fixture.ts",
   },
   "TSESTree errored but Babel didn't": Set {
     "declaration/ExportAllDeclaration/fixtures/_error_/named-non-identifier/fixture.ts",
