@@ -1,17 +1,18 @@
 {
   "name": "website",
-  "version": "5.51.0",
+  "version": "5.52.0",
   "private": true,
   "scripts": {
     "build": "docusaurus build",
     "clear": "docusaurus clear",
     "format": "prettier --write \"./**/*.{md,mdx,ts,js,tsx,jsx}\" --ignore-path ../../.prettierignore",
+    "generate-website-dts": "tsx ./tools/generate-website-dts.ts",
     "lint": "nx lint",
     "serve": "docusaurus serve",
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
     "test": "playwright test",
-    "typecheck": "tsc"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.3",
@@ -21,8 +22,8 @@
     "@docusaurus/remark-plugin-npm2yarn": "~2.2.0",
     "@docusaurus/theme-common": "~2.2.0",
     "@mdx-js/react": "1.6.22",
-    "@typescript-eslint/parser": "5.51.0",
-    "@typescript-eslint/website-eslint": "5.51.0",
+    "@typescript-eslint/parser": "5.52.0",
+    "@typescript-eslint/website-eslint": "5.52.0",
     "clsx": "^1.1.1",
     "eslint": "*",
     "json-schema": "^0.4.0",
@@ -36,6 +37,7 @@
     "react-dom": "^18.1.0",
     "react-split-pane": "^0.1.92",
     "remark-docusaurus-tabs": "^0.2.0",
+    "ts-node": "*",
     "typescript": "*"
   },
   "resolutions": {
@@ -48,13 +50,13 @@
     "@types/react": "^18.0.9",
     "@types/react-helmet": "^6.1.5",
     "@types/react-router-dom": "^5.3.3",
-    "@typescript-eslint/eslint-plugin": "5.51.0",
+    "@typescript-eslint/eslint-plugin": "5.52.0",
     "copy-webpack-plugin": "^11.0.0",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-react": "^7.29.4",
-    "eslint-plugin-react-hooks": "^4.5.0",
+    "cross-fetch": "*",
     "globby": "^11.1.0",
+    "make-dir": "*",
     "monaco-editor": "^0.33.0",
+    "rimraf": "*",
     "webpack": "^5.74.0"
   },
   "browserslist": {

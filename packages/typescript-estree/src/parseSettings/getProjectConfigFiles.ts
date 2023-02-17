@@ -20,12 +20,16 @@ export function getProjectConfigFiles(
     ParseSettings,
     'filePath' | 'tsconfigMatchCache' | 'tsconfigRootDir'
   >,
-  project: string | string[] | true | undefined,
-): string[] | undefined {
+  project: string | string[] | true | undefined | null,
+): string[] | null {
   if (project !== true) {
-    return project === undefined || Array.isArray(project)
-      ? project
-      : [project];
+    if (project == null) {
+      return null;
+    }
+    if (Array.isArray(project)) {
+      return project;
+    }
+    return [project];
   }
 
   log('Looking for tsconfig.json at or above file: %s', parseSettings.filePath);

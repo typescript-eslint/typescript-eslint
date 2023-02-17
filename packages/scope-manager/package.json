@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "5.51.0",
+  "version": "5.52.0",
   "description": "TypeScript scope analyser for ESLint",
   "keywords": [
     "eslint",
@@ -32,18 +32,18 @@
     "clean": "nx clean",
     "clean-fixtures": "nx clean-fixtures",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate:lib": "nx generate-lib",
+    "generate-lib": "nx generate-lib",
     "lint": "nx lint",
     "test": "nx test --code-coverage",
     "typecheck": "nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "5.51.0",
-    "@typescript-eslint/visitor-keys": "5.51.0"
+    "@typescript-eslint/types": "5.52.0",
+    "@typescript-eslint/visitor-keys": "5.52.0"
   },
   "devDependencies": {
     "@types/glob": "*",
-    "@typescript-eslint/typescript-estree": "5.51.0",
+    "@typescript-eslint/typescript-estree": "5.52.0",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
@@ -57,9 +57,9 @@
     "url": "https://opencollective.com/typescript-eslint"
   },
   "typesVersions": {
-    "<3.8": {
+    "<4.7": {
       "*": [
-        "_ts3.4/*"
+        "_ts4.2/*"
       ]
     }
   }

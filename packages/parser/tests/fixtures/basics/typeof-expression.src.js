@@ -1,1 +1,1 @@
-typeof 'str'
+typeof 'str';

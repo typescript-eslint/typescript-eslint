@@ -1,3 +1,13 @@
+/**********************************************
+ *      DO NOT MODIFY THIS FILE MANUALLY      *
+ *                                            *
+ *     THIS FILE HAS BEEN FETCHED FROM THE    *
+ *      TYPESCRIPT PLAYGROUND SOURCE CODE.    *
+ *                                            *
+ *    YOU CAN REGENERATE THESE FILES USING    *
+ *          yarn generate-website-dts         *
+ **********************************************/
+
 declare type System = import('typescript').System;
 declare type CompilerOptions = import('typescript').CompilerOptions;
 declare type CustomTransformers = import('typescript').CustomTransformers;
@@ -52,7 +62,8 @@ export declare const knownLibFilesForCompilerOptions: (
  */
 export declare const createDefaultMapFromNodeModules: (
   compilerOptions: CompilerOptions,
-  ts?: typeof import('typescript') | undefined,
+  ts?: typeof import('typescript'),
+  tsLibDirectory?: string,
 ) => Map<string, string>;
 /**
  * Adds recursively files from the FS into the map based on the folder
@@ -82,9 +93,9 @@ export declare const createDefaultMapFromCDN: (
   version: string,
   cache: boolean,
   ts: TS,
-  lzstring?: any | undefined,
-  fetcher?: typeof fetch | undefined,
-  storer?: Storage | undefined,
+  lzstring?: typeof import('lz-string'),
+  fetcher?: typeof fetch,
+  storer?: typeof localStorage,
 ) => Promise<Map<string, string>>;
 /**
  * Creates an in-memory System object which can be used in a TypeScript program, this
@@ -100,6 +111,7 @@ export declare function createFSBackedSystem(
   files: Map<string, string>,
   _projectRoot: string,
   ts: TS,
+  tsLibDirectory?: string,
 ): System;
 /**
  * Creates an in-memory CompilerHost -which is essentially an extra wrapper to System

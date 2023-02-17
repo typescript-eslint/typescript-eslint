@@ -39,6 +39,7 @@ Set {
   "element/AccessorProperty/fixtures/key-computed-complex/fixture.ts",
   "element/AccessorProperty/fixtures/key-computed-number/fixture.ts",
   "element/AccessorProperty/fixtures/key-computed-string/fixture.ts",
+  "element/AccessorProperty/fixtures/key-number/fixture.ts",
   "element/AccessorProperty/fixtures/key-private/fixture.ts",
   "element/AccessorProperty/fixtures/key-string/fixture.ts",
   "element/AccessorProperty/fixtures/modifier-abstract-with-value/fixture.ts",

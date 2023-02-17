@@ -126,7 +126,6 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
   useEffect(() => {
     const lintEditor = debounce(() => {
-      // eslint-disable-next-line no-console
       console.info('[Editor] linting triggered');
 
       webLinter.updateParserOptions(jsx, sourceType);
@@ -218,7 +217,6 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
           if (tabs.code.isAttachedToEditor()) {
             const position = sandboxInstance.editor.getPosition();
             if (position) {
-              // eslint-disable-next-line no-console
               console.info('[Editor] updating cursor', position);
               onSelect(position);
             }
