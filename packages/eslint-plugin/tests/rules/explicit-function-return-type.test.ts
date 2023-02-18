@@ -401,6 +401,46 @@ new Foo(1, () => {});
       options: [{ allowConciseArrowFunctionExpressionsStartingWithVoid: true }],
     },
     {
+      code: 'const log = (a: string) => a;',
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: 'const log = <A>(a: A): A => a;',
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+function log<A>(a: A): A {
+  return a;
+}
+      `,
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+function log(a: string) {
+  return a;
+}
+      `,
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+const log = function <A>(a: A): A {
+  return a;
+};
+      `,
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+const log = function (a: A): string {
+  return a;
+};
+      `,
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
       filename: 'test.ts',
       options: [
         {
@@ -552,6 +592,132 @@ const x: Bar<Foo> = arg1 => arg2 => arg1 + arg2;
         {
           allowTypedFunctionExpressions: true,
           allowHigherOrderFunctions: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = function (): number {
+  return 1;
+};
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = (function () {
+  return 1;
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = (() => {
+  return 1;
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = ((arg: number): number => {
+  return arg;
+})(0);
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = (() => (() => 'foo')())();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => (): string => {
+  return 'foo';
+})()();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => (): string => {
+  return 'foo';
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+          allowHigherOrderFunctions: false,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => (): string => {
+  return 'foo';
+})()();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+          allowHigherOrderFunctions: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => (): void => {})()();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => (() => {})())();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
         },
       ],
     },
@@ -1320,6 +1486,29 @@ const func = (value: number) => ({ type: 'X', value } as const);
       ],
     },
     {
+      code: 'const log = <A>(a: A) => a;',
+      errors: [{ messageId: 'missingReturnType' }],
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+function log<A>(a: A) {
+  return a;
+}
+      `,
+      errors: [{ messageId: 'missingReturnType' }],
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
+      code: `
+const log = function <A>(a: A) {
+  return a;
+};
+      `,
+      errors: [{ messageId: 'missingReturnType' }],
+      options: [{ allowFunctionsWithoutTypeParameters: true }],
+    },
+    {
       filename: 'test.ts',
       options: [
         {
@@ -1411,6 +1600,94 @@ class Foo {
           endLine: 4,
           column: 3,
           endColumn: 18,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = (function () {
+  return 'foo';
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 14,
+          endColumn: 25,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+const foo = (function () {
+  return () => {
+    return 1;
+  };
+})();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 10,
+          endColumn: 15,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = function () {
+  return 'foo';
+};
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 11,
+          endColumn: 22,
+        },
+      ],
+    },
+    {
+      filename: 'test.ts',
+      code: `
+let foo = (() => () => {})()();
+      `,
+      options: [
+        {
+          allowIIFEs: true,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 18,
+          endColumn: 23,
         },
       ],
     },

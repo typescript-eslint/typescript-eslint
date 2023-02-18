@@ -1,0 +1,216 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics function-with-object-type-with-optional-properties TSESTree - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "function",
+
+    range: [73, 81],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 8, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "foo",
+
+    range: [82, 85],
+    loc: {
+      start: { column: 9, line: 3 },
+      end: { column: 12, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [85, 86],
+    loc: {
+      start: { column: 12, line: 3 },
+      end: { column: 13, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [86, 87],
+    loc: {
+      start: { column: 13, line: 3 },
+      end: { column: 14, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "bar",
+
+    range: [88, 91],
+    loc: {
+      start: { column: 15, line: 3 },
+      end: { column: 18, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ",",
+
+    range: [91, 92],
+    loc: {
+      start: { column: 18, line: 3 },
+      end: { column: 19, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "baz",
+
+    range: [93, 96],
+    loc: {
+      start: { column: 20, line: 3 },
+      end: { column: 23, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [97, 98],
+    loc: {
+      start: { column: 24, line: 3 },
+      end: { column: 25, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [98, 99],
+    loc: {
+      start: { column: 25, line: 3 },
+      end: { column: 26, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [100, 101],
+    loc: {
+      start: { column: 27, line: 3 },
+      end: { column: 28, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "bar",
+
+    range: [102, 105],
+    loc: {
+      start: { column: 29, line: 3 },
+      end: { column: 32, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "?",
+
+    range: [105, 106],
+    loc: {
+      start: { column: 32, line: 3 },
+      end: { column: 33, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [106, 107],
+    loc: {
+      start: { column: 33, line: 3 },
+      end: { column: 34, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "string",
+
+    range: [108, 114],
+    loc: {
+      start: { column: 35, line: 3 },
+      end: { column: 41, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [114, 115],
+    loc: {
+      start: { column: 41, line: 3 },
+      end: { column: 42, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "baz",
+
+    range: [116, 119],
+    loc: {
+      start: { column: 43, line: 3 },
+      end: { column: 46, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "?",
+
+    range: [119, 120],
+    loc: {
+      start: { column: 46, line: 3 },
+      end: { column: 47, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [121, 122],
+    loc: {
+      start: { column: 48, line: 3 },
+      end: { column: 49, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [122, 123],
+    loc: {
+      start: { column: 49, line: 3 },
+      end: { column: 50, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [124, 125],
+    loc: {
+      start: { column: 51, line: 3 },
+      end: { column: 52, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [125, 126],
+    loc: {
+      start: { column: 52, line: 3 },
+      end: { column: 53, line: 3 },
+    },
+  },
+]
+`;

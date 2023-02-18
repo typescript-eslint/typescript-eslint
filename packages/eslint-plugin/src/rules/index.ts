@@ -4,6 +4,7 @@ import awaitThenable from './await-thenable';
 import banTsComment from './ban-ts-comment';
 import banTslintComment from './ban-tslint-comment';
 import banTypes from './ban-types';
+import blockSpacing from './block-spacing';
 import braceStyle from './brace-style';
 import classLiteralPropertyStyle from './class-literal-property-style';
 import commaDangle from './comma-dangle';
@@ -59,6 +60,7 @@ import noMagicNumbers from './no-magic-numbers';
 import noMeaninglessVoidOperator from './no-meaningless-void-operator';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
+import noMixedEnums from './no-mixed-enums';
 import noNamespace from './no-namespace';
 import noNonNullAssertedNullishCoalescing from './no-non-null-asserted-nullish-coalescing';
 import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chain';
@@ -138,6 +140,7 @@ export default {
   'ban-ts-comment': banTsComment,
   'ban-tslint-comment': banTslintComment,
   'ban-types': banTypes,
+  'block-spacing': blockSpacing,
   'brace-style': braceStyle,
   'class-literal-property-style': classLiteralPropertyStyle,
   'comma-dangle': commaDangle,
@@ -193,6 +196,7 @@ export default {
   'no-meaningless-void-operator': noMeaninglessVoidOperator,
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,
+  'no-mixed-enums': noMixedEnums,
   'no-namespace': noNamespace,
   'no-non-null-asserted-nullish-coalescing': noNonNullAssertedNullishCoalescing,
   'no-non-null-asserted-optional-chain': noNonNullAssertedOptionalChain,

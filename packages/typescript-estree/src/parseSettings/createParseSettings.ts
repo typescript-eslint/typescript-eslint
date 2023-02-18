@@ -2,6 +2,11 @@ import debug from 'debug';
 
 import { ensureAbsolutePath } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
+import {
+  DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
+  ExpiringCache,
+} from './ExpiringCache';
+import { getProjectConfigFiles } from './getProjectConfigFiles';
 import type { MutableParseSettings } from './index';
 import { inferSingleRun } from './inferSingleRun';
 import { resolveProjectList } from './resolveProjectList';
@@ -11,10 +16,13 @@ const log = debug(
   'typescript-eslint:typescript-estree:parser:parseSettings:createParseSettings',
 );
 
+let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
+
 export function createParseSettings(
   code: string,
   options: Partial<TSESTreeOptions> = {},
 ): MutableParseSettings {
+  const singleRun = inferSingleRun(options);
   const tsconfigRootDir =
     typeof options.tsconfigRootDir === 'string'
       ? options.tsconfigRootDir
@@ -58,8 +66,14 @@ export function createParseSettings(
     programs: Array.isArray(options.programs) ? options.programs : null,
     projects: [],
     range: options.range === true,
-    singleRun: inferSingleRun(options),
+    singleRun,
     tokens: options.tokens === true ? [] : null,
+    tsconfigMatchCache: (TSCONFIG_MATCH_CACHE ??= new ExpiringCache(
+      singleRun
+        ? 'Infinity'
+        : options.cacheLifetime?.glob ??
+          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
+    )),
     tsconfigRootDir,
   };
 
@@ -95,7 +109,7 @@ export function createParseSettings(
   if (!parseSettings.programs) {
     parseSettings.projects = resolveProjectList({
       cacheLifetime: options.cacheLifetime,
-      project: options.project,
+      project: getProjectConfigFiles(parseSettings, options.project),
       projectFolderIgnoreList: options.projectFolderIgnoreList,
       singleRun: parseSettings.singleRun,
       tsconfigRootDir: tsconfigRootDir,

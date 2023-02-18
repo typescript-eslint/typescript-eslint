@@ -1,2 +1,0 @@
-@deco()
-interface M {}
