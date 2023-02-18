@@ -129,6 +129,14 @@ a ?? (b && c) ?? d;
 a ?? (b && c && d);
 ```
 
+### `ignorePrimitives`
+If you would like to ignore certain primitive types that can be falsy then you may pass an object containing a boolean value for each primitive:
+
+- Option entries in the object:
+  - `string: true`, ignores `null` or `undefined` unions with `string` (default: false).
+  - `number: true`, ignores `null` or `undefined` unions with `number` (default: false).
+  - `boolean: true`, ignores `null` or `undefined` unions with `boolean` (default: false).
+
 **_NOTE:_** Errors for this specific case will be presented as suggestions (see below), instead of fixes. This is because it is not always safe to automatically convert `||` to `??` within a mixed logical expression, as we cannot tell the intended precedence of the operator. Note that by design, `??` requires parentheses when used with `&&` or `||` in the same expression.
 
 ## When Not To Use It
