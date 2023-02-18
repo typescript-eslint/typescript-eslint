@@ -5,7 +5,7 @@ import type {
   Options,
 } from '../../src/rules/no-duplicate-type-constituents';
 import rule from '../../src/rules/no-duplicate-type-constituents';
-import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
+import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -96,7 +96,7 @@ type B = "B";
 type T = 'A' ${operator} 'B';`,
   },
   {
-    code: noFormat`type A = "A";
+    code: `type A = "A";
 type B = "B";
 type T = (A) ${operator} (B);`,
   },
@@ -406,9 +406,9 @@ const a : A   = 'A';`,
       ],
     },
     {
-      code: noFormat`type A = "A";
+      code: `type A = "A";
 type T = (A) ${operator} (A);`,
-      output: noFormat`type A = "A";
+      output: `type A = "A";
 type T = (A)  ;`,
       errors: [
         {
@@ -422,9 +422,9 @@ type T = (A)  ;`,
       ],
     },
     {
-      code: noFormat`type A = "A";
+      code: `type A = "A";
 type T = (A) ${operator} ((A));`,
-      output: noFormat`type A = "A";
+      output: `type A = "A";
 type T = (A)  ;`,
       errors: [
         {
