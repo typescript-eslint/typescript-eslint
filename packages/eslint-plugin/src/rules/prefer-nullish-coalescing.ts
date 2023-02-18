@@ -320,24 +320,6 @@ export default util.createRule<Options, MessageIds>({
           }
         }
 
-        // if (isUnionOrIntersectionType(type)) {
-        //   if (
-        //     (
-        //       [
-        //         ['string', ts.TypeFlags.String],
-        //         ['boolean', ts.TypeFlags.BooleanLiteral],
-        //         ['number', ts.TypeFlags.Number],
-        //       ] as const
-        //     ).some(
-        //       ([ignoredType, flag]) =>
-        //         ignorePrimitives?.[ignoredType] &&
-        //         type.types.some(t => isTypeFlagSet(t, flag)),
-        //     )
-        //   ) {
-        //     return;
-        //   }
-        // }
-
         const barBarOperator = util.nullThrows(
           sourceCode.getTokenAfter(
             node.left,
