@@ -137,38 +137,36 @@ export default util.createRule<Options, MessageIds>({
       }, []);
 
       const fix: TSESLint.ReportFixFunction = fixer => {
-        return duplicateConstituents
-          .map(duplicateConstituent => {
-            const fixes: TSESLint.RuleFix[] = [];
-            const beforeTokens = sourceCode.getTokensBefore(
-              duplicateConstituent.duplicated,
-            );
-            const afterTokens = sourceCode.getTokensAfter(
-              duplicateConstituent.duplicated,
-            );
-            const beforeUnionOrIntersectionToken = beforeTokens
-              .reverse()
-              .find(token => token.value === '|' || token.value === '&');
+        return duplicateConstituents.flatMap(duplicateConstituent => {
+          const fixes: TSESLint.RuleFix[] = [];
+          const beforeTokens = sourceCode.getTokensBefore(
+            duplicateConstituent.duplicated,
+          );
+          const afterTokens = sourceCode.getTokensAfter(
+            duplicateConstituent.duplicated,
+          );
+          const beforeUnionOrIntersectionToken = beforeTokens
+            .reverse()
+            .find(token => token.value === '|' || token.value === '&');
 
-            if (beforeUnionOrIntersectionToken) {
-              const bracketBeforeTokens = sourceCode.getTokensBetween(
-                beforeUnionOrIntersectionToken,
-                duplicateConstituent.duplicated,
-              );
-              const bracketAfterTokens = afterTokens.slice(
-                0,
-                bracketBeforeTokens.length,
-              );
-              [
-                beforeUnionOrIntersectionToken,
-                ...bracketBeforeTokens,
-                duplicateConstituent.duplicated,
-                ...bracketAfterTokens,
-              ].forEach(token => fixes.push(fixer.remove(token)));
-            }
-            return fixes;
-          })
-          .flat();
+          if (beforeUnionOrIntersectionToken) {
+            const bracketBeforeTokens = sourceCode.getTokensBetween(
+              beforeUnionOrIntersectionToken,
+              duplicateConstituent.duplicated,
+            );
+            const bracketAfterTokens = afterTokens.slice(
+              0,
+              bracketBeforeTokens.length,
+            );
+            [
+              beforeUnionOrIntersectionToken,
+              ...bracketBeforeTokens,
+              duplicateConstituent.duplicated,
+              ...bracketAfterTokens,
+            ].forEach(token => fixes.push(fixer.remove(token)));
+          }
+          return fixes;
+        });
       };
 
       duplicateConstituents.forEach(duplicateConstituent => {
