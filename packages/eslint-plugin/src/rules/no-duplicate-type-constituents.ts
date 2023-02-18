@@ -138,7 +138,6 @@ export default util.createRule<Options, MessageIds>({
 
       const fix: TSESLint.ReportFixFunction = fixer => {
         return duplicateConstituents.flatMap(duplicateConstituent => {
-          const fixes: TSESLint.RuleFix[] = [];
           const beforeTokens = sourceCode.getTokensBefore(
             duplicateConstituent.duplicated,
           );
@@ -148,24 +147,23 @@ export default util.createRule<Options, MessageIds>({
           const beforeUnionOrIntersectionToken = beforeTokens
             .reverse()
             .find(token => token.value === '|' || token.value === '&');
-
-          if (beforeUnionOrIntersectionToken) {
-            const bracketBeforeTokens = sourceCode.getTokensBetween(
-              beforeUnionOrIntersectionToken,
-              duplicateConstituent.duplicated,
-            );
-            const bracketAfterTokens = afterTokens.slice(
-              0,
-              bracketBeforeTokens.length,
-            );
-            [
-              beforeUnionOrIntersectionToken,
-              ...bracketBeforeTokens,
-              duplicateConstituent.duplicated,
-              ...bracketAfterTokens,
-            ].forEach(token => fixes.push(fixer.remove(token)));
+          if (!beforeUnionOrIntersectionToken) {
+            return [];
           }
-          return fixes;
+          const bracketBeforeTokens = sourceCode.getTokensBetween(
+            beforeUnionOrIntersectionToken,
+            duplicateConstituent.duplicated,
+          );
+          const bracketAfterTokens = afterTokens.slice(
+            0,
+            bracketBeforeTokens.length,
+          );
+          return [
+            beforeUnionOrIntersectionToken,
+            ...bracketBeforeTokens,
+            duplicateConstituent.duplicated,
+            ...bracketAfterTokens,
+          ].map(token => fixer.remove(token));
         });
       };
 
