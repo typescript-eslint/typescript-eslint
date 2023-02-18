@@ -1,6 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
+import { isTypeFlagSet, isUnionOrIntersectionType } from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -11,6 +12,11 @@ export type Options = [
     ignoreTernaryTests?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+    ignorePrimitives?: {
+      string?: boolean;
+      boolean?: boolean;
+      number?: boolean;
+    };
   },
 ];
 
@@ -56,6 +62,14 @@ export default util.createRule<Options, MessageIds>({
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
             type: 'boolean',
           },
+          ignorePrimitives: {
+            type: 'object',
+            properties: {
+              string: { type: 'boolean' },
+              boolean: { type: 'boolean' },
+              number: { type: 'boolean' },
+            },
+          },
         },
         additionalProperties: false,
       },
@@ -67,6 +81,11 @@ export default util.createRule<Options, MessageIds>({
       ignoreTernaryTests: true,
       ignoreMixedLogicalExpressions: true,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+      ignorePrimitives: {
+        string: false,
+        boolean: false,
+        number: false,
+      },
     },
   ],
   create(
@@ -77,6 +96,7 @@ export default util.createRule<Options, MessageIds>({
         ignoreTernaryTests,
         ignoreMixedLogicalExpressions,
         allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
+        ignorePrimitives,
       },
     ],
   ) {
@@ -278,6 +298,45 @@ export default util.createRule<Options, MessageIds>({
         if (ignoreMixedLogicalExpressions === true && isMixedLogical) {
           return;
         }
+
+        if (isUnionOrIntersectionType(type)) {
+          if (
+            ignorePrimitives?.string &&
+            type.types.some(t => isTypeFlagSet(t, ts.TypeFlags.String))
+          ) {
+            return;
+          }
+          if (
+            ignorePrimitives?.boolean &&
+            type.types.some(t => isTypeFlagSet(t, ts.TypeFlags.BooleanLiteral))
+          ) {
+            return;
+          }
+          if (
+            ignorePrimitives?.number &&
+            type.types.some(t => isTypeFlagSet(t, ts.TypeFlags.Number))
+          ) {
+            return;
+          }
+        }
+
+        // if (isUnionOrIntersectionType(type)) {
+        //   if (
+        //     (
+        //       [
+        //         ['string', ts.TypeFlags.String],
+        //         ['boolean', ts.TypeFlags.BooleanLiteral],
+        //         ['number', ts.TypeFlags.Number],
+        //       ] as const
+        //     ).some(
+        //       ([ignoredType, flag]) =>
+        //         ignorePrimitives?.[ignoredType] &&
+        //         type.types.some(t => isTypeFlagSet(t, flag)),
+        //     )
+        //   ) {
+        //     return;
+        //   }
+        // }
 
         const barBarOperator = util.nullThrows(
           sourceCode.getTokenAfter(

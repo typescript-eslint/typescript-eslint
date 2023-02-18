@@ -20,6 +20,7 @@ const ruleTester = new RuleTester({
 
 const types = ['string', 'number', 'boolean', 'object'];
 const nullishTypes = ['null', 'undefined', 'null | undefined'];
+const ignorablePrimitiveTypes = ['string', 'number', 'boolean'] as const;
 
 function typeValidTest(
   cb: (type: string) => TSESLint.ValidTestCase<Options> | string,
@@ -205,6 +206,13 @@ declare const d: ${type} | ${nullish};
 a && b || c || d;
       `,
       options: [{ ignoreMixedLogicalExpressions: true }],
+    })),
+    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+      code: `
+declare const x: ${type} | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: { [type]: true } }],
     })),
   ],
   invalid: [
@@ -748,6 +756,28 @@ declare const c: ${type};
       `,
             },
           ],
+        },
+      ],
+    })),
+    ...ignorablePrimitiveTypes.map<
+      TSESLint.InvalidTestCase<MessageIds, Options>
+    >(ignoreablePrimitive => ({
+      code: `
+declare const x: ${ignoreablePrimitive} | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: Object.fromEntries(
+            ignorablePrimitiveTypes
+              .filter(t => t !== ignoreablePrimitive)
+              .map(t => [t, true]),
+          ),
+        },
+      ],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
         },
       ],
     })),
