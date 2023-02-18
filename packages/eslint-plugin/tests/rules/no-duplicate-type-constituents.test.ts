@@ -456,16 +456,26 @@ type T = A  /* comment */ ;`,
     {
       code: `type A1 = "A";
 type A2 = "A";
-type T = A1 ${operator} A2;`,
+type A3 = "A";
+type T = A1 ${operator} A2 ${operator} A3;`,
       output: `type A1 = "A";
 type A2 = "A";
-type T = A1  ;`,
+type A3 = "A";
+type T = A1    ;`,
       errors: [
         {
           messageId: 'duplicate',
           data: {
             type,
             duplicated: 'A2',
+            previous: 'A1',
+          },
+        },
+        {
+          messageId: 'duplicate',
+          data: {
+            type,
+            duplicated: 'A3',
             previous: 'A1',
           },
         },

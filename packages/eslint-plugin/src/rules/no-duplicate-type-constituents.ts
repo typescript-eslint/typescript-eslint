@@ -113,28 +113,39 @@ export default util.createRule<Options, MessageIds>({
         duplicated: TSESTree.TypeNode;
         duplicatePrevious: TSESTree.TypeNode;
       }[] = [];
-
-      node.types.reduce<
-        {
-          node: TSESTree.TypeNode;
-          type: Type;
-        }[]
-      >((uniqConstituents, constituentNode) => {
-        const type = checker.getTypeAtLocation(
-          parserServices.esTreeNodeToTSNodeMap.get(constituentNode),
-        );
-        const duplicatePreviousConstituent = uniqConstituents.find(
-          ele => isSameAstNode(ele.node, constituentNode) || ele.type === type,
-        );
-        if (duplicatePreviousConstituent) {
-          duplicateConstituents.push({
-            duplicated: constituentNode,
-            duplicatePrevious: duplicatePreviousConstituent.node,
-          });
-          return uniqConstituents;
-        }
-        return [...uniqConstituents, { node: constituentNode, type }];
-      }, []);
+      const cachedTypeMap: Map<TSESTree.TypeNode, Type> = new Map();
+      node.types.reduce<TSESTree.TypeNode[]>(
+        (uniqConstituents, constituentNode) => {
+          const duplicatedPreviousConstituentInAst = uniqConstituents.find(
+            ele => isSameAstNode(ele, constituentNode),
+          );
+          if (duplicatedPreviousConstituentInAst) {
+            duplicateConstituents.push({
+              duplicated: constituentNode,
+              duplicatePrevious: duplicatedPreviousConstituentInAst,
+            });
+            return uniqConstituents;
+          }
+          const constituentNodeType = checker.getTypeAtLocation(
+            parserServices.esTreeNodeToTSNodeMap.get(constituentNode),
+          );
+          const duplicatedPreviousConstituentInType = [
+            ...cachedTypeMap.entries(),
+          ].find(([, type]) => {
+            return type === constituentNodeType;
+          })?.[0];
+          if (duplicatedPreviousConstituentInType) {
+            duplicateConstituents.push({
+              duplicated: constituentNode,
+              duplicatePrevious: duplicatedPreviousConstituentInType,
+            });
+            return uniqConstituents;
+          }
+          cachedTypeMap.set(constituentNode, constituentNodeType);
+          return [...uniqConstituents, constituentNode];
+        },
+        [],
+      );
 
       const fix: TSESLint.ReportFixFunction = fixer => {
         return duplicateConstituents.flatMap(duplicateConstituent => {
