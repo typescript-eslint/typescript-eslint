@@ -1,4 +1,4 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { Type } from 'typescript';
 
@@ -146,38 +146,6 @@ export default util.createRule<Options, MessageIds>({
         },
         [],
       );
-
-      const fix: TSESLint.ReportFixFunction = fixer => {
-        return duplicateConstituents.flatMap(duplicateConstituent => {
-          const beforeTokens = sourceCode.getTokensBefore(
-            duplicateConstituent.duplicated,
-          );
-          const afterTokens = sourceCode.getTokensAfter(
-            duplicateConstituent.duplicated,
-          );
-          const beforeUnionOrIntersectionToken = beforeTokens
-            .reverse()
-            .find(token => token.value === '|' || token.value === '&');
-          if (!beforeUnionOrIntersectionToken) {
-            return [];
-          }
-          const bracketBeforeTokens = sourceCode.getTokensBetween(
-            beforeUnionOrIntersectionToken,
-            duplicateConstituent.duplicated,
-          );
-          const bracketAfterTokens = afterTokens.slice(
-            0,
-            bracketBeforeTokens.length,
-          );
-          return [
-            beforeUnionOrIntersectionToken,
-            ...bracketBeforeTokens,
-            duplicateConstituent.duplicated,
-            ...bracketAfterTokens,
-          ].map(token => fixer.remove(token));
-        });
-      };
-
       duplicateConstituents.forEach(duplicateConstituent => {
         context.report({
           data: {
@@ -192,7 +160,34 @@ export default util.createRule<Options, MessageIds>({
           },
           messageId: 'duplicate',
           node,
-          fix,
+          fix: fixer => {
+            const beforeTokens = sourceCode.getTokensBefore(
+              duplicateConstituent.duplicated,
+            );
+            const afterTokens = sourceCode.getTokensAfter(
+              duplicateConstituent.duplicated,
+            );
+            const beforeUnionOrIntersectionToken = beforeTokens
+              .reverse()
+              .find(token => token.value === '|' || token.value === '&');
+            if (!beforeUnionOrIntersectionToken) {
+              return [];
+            }
+            const bracketBeforeTokens = sourceCode.getTokensBetween(
+              beforeUnionOrIntersectionToken,
+              duplicateConstituent.duplicated,
+            );
+            const bracketAfterTokens = afterTokens.slice(
+              0,
+              bracketBeforeTokens.length,
+            );
+            return [
+              beforeUnionOrIntersectionToken,
+              ...bracketBeforeTokens,
+              duplicateConstituent.duplicated,
+              ...bracketAfterTokens,
+            ].map(token => fixer.remove(token));
+          },
         });
       });
     }
