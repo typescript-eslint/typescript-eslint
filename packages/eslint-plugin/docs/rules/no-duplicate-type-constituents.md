@@ -42,7 +42,7 @@ type T2 = A | B | C;
 
 type T3 = { a: string } & { b: string };
 
-type T4 = [1, 2, 3] & [1, 2, 3, 4];
+type T4 = [1, 2, 3] | [1, 2, 3, 4];
 
 type StringA = string;
 type NumberB = number;
