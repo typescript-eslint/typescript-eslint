@@ -269,7 +269,7 @@ jobs:
 
       # we don't collect coverage for these tests on purpose
       - name: Run unit tests for ${{ matrix.package }}
-        run: npx nx test @typescript-eslint/${{ matrix.package }} --coverage=false
+        run: npx nx test ${{ matrix.package }} --coverage=false
         env:
           CI: true
 
