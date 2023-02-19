@@ -1,0 +1,141 @@
+---
+id: configs
+title: Configurations
+---
+
+[ESLint shareable configurations](https://eslint.org/docs/latest/developer-guide/shareable-configs) exist to provide a comprehensive base config for you.
+`@typescript-eslint/eslint-plugin` includes built-in configurations you can extend from to pull in the recommended starting rules.
+
+> With the exception of `strict`, all configurations are considered "stable".
+> Rule additions and removals are treated as breaking changes and will only be done in major version bumps.
+
+## Recommended Configurations
+
+Most projects should extend from at least one of:
+
+- [`recommended`](#recommended): Recommended rules for code correctness that you can drop in without additional configuration.
+- [`recommended-requiring-type-checking`](#recommended-requiring-type-checking): Additional recommended rules that require type information.
+- [`strict`](#strict): Additional strict rules that can also catch bugs but are more opinionated than recommended rules.
+
+:::tip
+We recommend most projects use [`recommended-requiring-type-checking`](#recommended-requiring-type-checking) (which requires [typed linting](./Typed_Linting.mdx)).
+:::
+
+:::note
+These configurations are our recommended starting points, but **you don't need to use them as-is**.
+ESLint allows configuring own rule settings on top of extended configurations.
+See [ESLint's Configuring Rules docs](https://eslint.org/docs/user-guide/configuring/rules#using-configuration-files).
+:::
+
+### `recommended`
+
+Recommended rules for code correctness that you can drop in without additional configuration.
+These rules are those whose reports are almost always for a bad practice and/or likely bug.
+`recommended` also disables rules known to conflict with this repository, or cause issues in TypeScript codebases.
+
+```json
+{
+  "extends": ["plugin:@typescript-eslint/recommended"]
+}
+```
+
+See [`configs/recommended.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/recommended.ts) for the exact contents of this config.
+
+:::tip
+We strongly recommend all TypeScript projects extend from `plugin:@typescript-eslint/recommended`.
+:::
+
+### `recommended-requiring-type-checking`
+
+Additional recommended rules that require type information.
+Rules in this configuration are similarly useful to those in `recommended`.
+
+```json
+{
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking"
+  ]
+}
+```
+
+See [`configs/recommended-requiring-type-checking.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/recommended-requiring-type-checking.ts) for the exact contents of this config.
+
+:::tip
+We recommend all TypeScript projects extend from `plugin:@typescript-eslint/recommended-requiring-type-checking`, with the caveat that rules using type information take longer to run.
+See [Linting with Type Information](/linting/typed-linting) for more details.
+:::
+
+### `strict`
+
+Additional strict rules that can also catch bugs but are more opinionated than recommended rules.
+
+```json
+{
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "plugin:@typescript-eslint/recommended-requiring-type-checking",
+    "plugin:@typescript-eslint/strict"
+  ]
+}
+```
+
+See [`configs/strict.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/strict.ts) for the exact contents of this config.
+
+:::caution
+We recommend a TypeScript project extend from `plugin:@typescript-eslint/strict` only if a nontrivial percentage of its developers are highly proficient in TypeScript.
+:::
+
+## Other Configurations
+
+typescript-eslint includes a scattering of utility configurations used by the recommended configurations.
+We don't recommend using these directly; instead, extend from an earlier recommended rule.
+
+### `all`
+
+Enables each the rules provided as a part of typescript-eslint.
+Note that many rules are not applicable in all codebases, or are meant to be configured.
+
+See [`configs/all.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/all.ts) for the exact contents of this config.
+
+:::warning
+We do not recommend a TypeScript projects extend from `plugin:@typescript-eslint/all`.
+Many rules conflict with each other and/or are intended to be configured per-project.
+:::
+
+### `base`
+
+A minimal ruleset that sets only the required parser and plugin options needed to run typescript-eslint.
+
+<configuration-contents expanded name="base" />
+
+This config is automatically included if you use any of the recommended configurations.
+
+### `eslint-recommended`
+
+This ruleset is meant to be used after extending `eslint:recommended`.
+It disables core ESLint rules that are already checked by the TypeScript compiler.
+Additionally, it enables rules that promote using the more modern constructs TypeScript allows for.
+
+```jsonc
+{
+  "extends": [
+    "eslint:recommended",
+    "plugin:@typescript-eslint/eslint-recommended"
+  ]
+}
+```
+
+This config is automatically included if you use any of the recommended configurations.
+
+See [`configs/eslint-recommended.ts`](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/src/configs/eslint-recommended.ts) for the exact contents of this config.
+
+## Suggesting Configuration Changes
+
+If you feel strongly that a specific rule should (or should not) be one of these configurations, please [file an issue](https://github.com/typescript-eslint/typescript-eslint/issues/new?assignees=&labels=package%3A+eslint-plugin%2Cpreset+config+change%2Ctriage&template=09-config-change.yaml&title=Configs%3A+%3Ca+short+description+of+my+proposal%3E) along with a **detailed** argument explaining your reasoning.
+
+## Formatting
+
+None of the preset configs provided by typescript-eslint enable formatting rules (rules that only serve to enforce code whitespace and other trivia).
+We strongly recommend you use Prettier or an equivalent for formatting your code, not ESLint formatting rules.
+See [What About Formatting? > Suggested Usage](./troubleshooting/formatting#suggested-usage).

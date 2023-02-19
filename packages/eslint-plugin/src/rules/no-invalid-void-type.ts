@@ -13,7 +13,8 @@ type MessageIds =
   | 'invalidVoidNotReturnOrGeneric'
   | 'invalidVoidNotReturn'
   | 'invalidVoidNotReturnOrThisParam'
-  | 'invalidVoidNotReturnOrThisParamOrGeneric';
+  | 'invalidVoidNotReturnOrThisParamOrGeneric'
+  | 'invalidVoidUnionConstituent';
 
 export default util.createRule<[Options], MessageIds>({
   name: 'no-invalid-void-type',
@@ -25,14 +26,16 @@ export default util.createRule<[Options], MessageIds>({
     },
     messages: {
       invalidVoidForGeneric:
-        '{{ generic }} may not have void as a type variable.',
+        '{{ generic }} may not have void as a type argument.',
       invalidVoidNotReturnOrGeneric:
-        'void is only valid as a return type or generic type variable.',
+        'void is only valid as a return type or generic type argument.',
       invalidVoidNotReturn: 'void is only valid as a return type.',
       invalidVoidNotReturnOrThisParam:
         'void is only valid as return type or type of `this` parameter.',
       invalidVoidNotReturnOrThisParamOrGeneric:
-        'void is only valid as a return type or generic type variable or the type of a `this` parameter.',
+        'void is only valid as a return type or generic type argument or the type of a `this` parameter.',
+      invalidVoidUnionConstituent:
+        'void is not valid as a constituent in a union type',
     },
     schema: [
       {
@@ -136,7 +139,7 @@ export default util.createRule<[Options], MessageIds>({
     ): void {
       if (parentNode.default !== node) {
         context.report({
-          messageId: 'invalidVoidNotReturnOrGeneric',
+          messageId: getNotReturnOrGenericMessageId(node),
           node,
         });
       }
@@ -218,7 +221,7 @@ export default util.createRule<[Options], MessageIds>({
             allowInGenericTypeArguments && allowAsThisParameter
               ? 'invalidVoidNotReturnOrThisParamOrGeneric'
               : allowInGenericTypeArguments
-              ? 'invalidVoidNotReturnOrGeneric'
+              ? getNotReturnOrGenericMessageId(node)
               : allowAsThisParameter
               ? 'invalidVoidNotReturnOrThisParam'
               : 'invalidVoidNotReturn',
@@ -228,3 +231,11 @@ export default util.createRule<[Options], MessageIds>({
     };
   },
 });
+
+function getNotReturnOrGenericMessageId(
+  node: TSESTree.TSVoidKeyword,
+): MessageIds {
+  return node.parent!.type === AST_NODE_TYPES.TSUnionType
+    ? 'invalidVoidUnionConstituent'
+    : 'invalidVoidNotReturnOrGeneric';
+}

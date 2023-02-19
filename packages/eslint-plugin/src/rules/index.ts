@@ -4,6 +4,7 @@ import awaitThenable from './await-thenable';
 import banTsComment from './ban-ts-comment';
 import banTslintComment from './ban-tslint-comment';
 import banTypes from './ban-types';
+import blockSpacing from './block-spacing';
 import braceStyle from './brace-style';
 import classLiteralPropertyStyle from './class-literal-property-style';
 import commaDangle from './comma-dangle';
@@ -22,6 +23,7 @@ import explicitModuleBoundaryTypes from './explicit-module-boundary-types';
 import funcCallSpacing from './func-call-spacing';
 import indent from './indent';
 import initDeclarations from './init-declarations';
+import keySpacing from './key-spacing';
 import keywordSpacing from './keyword-spacing';
 import linesBetweenClassMembers from './lines-between-class-members';
 import memberDelimiterStyle from './member-delimiter-style';
@@ -47,6 +49,7 @@ import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noImplicitAnyCatch from './no-implicit-any-catch';
 import noImpliedEval from './no-implied-eval';
+import noImportTypeSideEffects from './no-import-type-side-effects';
 import noInferrableTypes from './no-inferrable-types';
 import noInvalidThis from './no-invalid-this';
 import noInvalidVoidType from './no-invalid-void-type';
@@ -56,6 +59,7 @@ import noMagicNumbers from './no-magic-numbers';
 import noMeaninglessVoidOperator from './no-meaningless-void-operator';
 import noMisusedNew from './no-misused-new';
 import noMisusedPromises from './no-misused-promises';
+import noMixedEnums from './no-mixed-enums';
 import noNamespace from './no-namespace';
 import noNonNullAssertedNullishCoalescing from './no-non-null-asserted-nullish-coalescing';
 import noNonNullAssertedOptionalChain from './no-non-null-asserted-optional-chain';
@@ -78,6 +82,7 @@ import noUnnecessaryTypeConstraint from './no-unnecessary-type-constraint';
 import noUnsafeArgument from './no-unsafe-argument';
 import noUnsafeAssignment from './no-unsafe-assignment';
 import noUnsafeCall from './no-unsafe-call';
+import noUnsafeDeclarationMerging from './no-unsafe-declaration-merging';
 import noUnsafeMemberAccess from './no-unsafe-member-access';
 import noUnsafeReturn from './no-unsafe-return';
 import noUnusedExpressions from './no-unused-expressions';
@@ -114,6 +119,7 @@ import restrictPlusOperands from './restrict-plus-operands';
 import restrictTemplateExpressions from './restrict-template-expressions';
 import returnAwait from './return-await';
 import semi from './semi';
+import sortTypeConstituents from './sort-type-constituents';
 import sortTypeUnionIntersectionMembers from './sort-type-union-intersection-members';
 import spaceBeforeBlocks from './space-before-blocks';
 import spaceBeforeFunctionParen from './space-before-function-paren';
@@ -133,6 +139,7 @@ export default {
   'ban-ts-comment': banTsComment,
   'ban-tslint-comment': banTslintComment,
   'ban-types': banTypes,
+  'block-spacing': blockSpacing,
   'brace-style': braceStyle,
   'class-literal-property-style': classLiteralPropertyStyle,
   'comma-dangle': commaDangle,
@@ -151,6 +158,7 @@ export default {
   'func-call-spacing': funcCallSpacing,
   indent: indent,
   'init-declarations': initDeclarations,
+  'key-spacing': keySpacing,
   'keyword-spacing': keywordSpacing,
   'lines-between-class-members': linesBetweenClassMembers,
   'member-delimiter-style': memberDelimiterStyle,
@@ -176,6 +184,7 @@ export default {
   'no-for-in-array': noForInArray,
   'no-implicit-any-catch': noImplicitAnyCatch,
   'no-implied-eval': noImpliedEval,
+  'no-import-type-side-effects': noImportTypeSideEffects,
   'no-inferrable-types': noInferrableTypes,
   'no-invalid-this': noInvalidThis,
   'no-invalid-void-type': noInvalidVoidType,
@@ -185,6 +194,7 @@ export default {
   'no-meaningless-void-operator': noMeaninglessVoidOperator,
   'no-misused-new': noMisusedNew,
   'no-misused-promises': noMisusedPromises,
+  'no-mixed-enums': noMixedEnums,
   'no-namespace': noNamespace,
   'no-non-null-asserted-nullish-coalescing': noNonNullAssertedNullishCoalescing,
   'no-non-null-asserted-optional-chain': noNonNullAssertedOptionalChain,
@@ -207,6 +217,7 @@ export default {
   'no-unsafe-argument': noUnsafeArgument,
   'no-unsafe-assignment': noUnsafeAssignment,
   'no-unsafe-call': noUnsafeCall,
+  'no-unsafe-declaration-merging': noUnsafeDeclarationMerging,
   'no-unsafe-member-access': noUnsafeMemberAccess,
   'no-unsafe-return': noUnsafeReturn,
   'no-unused-expressions': noUnusedExpressions,
@@ -243,6 +254,7 @@ export default {
   'restrict-template-expressions': restrictTemplateExpressions,
   'return-await': returnAwait,
   semi: semi,
+  'sort-type-constituents': sortTypeConstituents,
   'sort-type-union-intersection-members': sortTypeUnionIntersectionMembers,
   'space-before-blocks': spaceBeforeBlocks,
   'space-before-function-paren': spaceBeforeFunctionParen,

@@ -38,6 +38,7 @@ import { es2018_regexp } from './es2018.regexp';
 import { es2019 } from './es2019';
 import { es2019_array } from './es2019.array';
 import { es2019_full } from './es2019.full';
+import { es2019_intl } from './es2019.intl';
 import { es2019_object } from './es2019.object';
 import { es2019_string } from './es2019.string';
 import { es2019_symbol } from './es2019.symbol';
@@ -124,6 +125,7 @@ const lib = {
   'es2019.object': es2019_object,
   'es2019.string': es2019_string,
   'es2019.symbol': es2019_symbol,
+  'es2019.intl': es2019_intl,
   'es2020.bigint': es2020_bigint,
   'es2020.date': es2020_date,
   'es2020.promise': es2020_promise,

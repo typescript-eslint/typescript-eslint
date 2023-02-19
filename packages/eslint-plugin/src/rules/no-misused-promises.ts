@@ -250,7 +250,7 @@ export default util.createRule<Options, MessageId>({
 
     function checkVariableDeclaration(node: TSESTree.VariableDeclarator): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      if (tsNode.initializer === undefined || node.init === null) {
+      if (tsNode.initializer === undefined || node.init == null) {
         return;
       }
       const varType = checker.getTypeAtLocation(tsNode.name);
@@ -344,7 +344,7 @@ export default util.createRule<Options, MessageId>({
 
     function checkReturnStatement(node: TSESTree.ReturnStatement): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      if (tsNode.expression === undefined || node.argument === null) {
+      if (tsNode.expression === undefined || node.argument == null) {
         return;
       }
       const contextualType = checker.getContextualType(tsNode.expression);
@@ -368,7 +368,7 @@ export default util.createRule<Options, MessageId>({
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const value = tsNode.initializer;
       if (
-        node.value === null ||
+        node.value == null ||
         value === undefined ||
         !ts.isJsxExpression(value) ||
         value.expression === undefined
@@ -564,7 +564,11 @@ function voidFunctionArguments(
             // Check each type in the tuple - for example, [boolean, () => void] would
             // add the index of the second tuple parameter to 'voidReturnIndices'
             const typeArgs = checker.getTypeArguments(type);
-            for (let i = index; i < node.arguments.length; i++) {
+            for (
+              let i = index;
+              i < node.arguments.length && i - index < typeArgs.length;
+              i++
+            ) {
               checkThenableOrVoidArgument(
                 checker,
                 node,

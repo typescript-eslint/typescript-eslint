@@ -1,0 +1,236 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics typed-this Babel - Tokens 1`] = `
+Array [
+  Identifier {
+    type: "Identifier",
+    value: "interface",
+
+    range: [73, 82],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 9, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "UIElement",
+
+    range: [83, 92],
+    loc: {
+      start: { column: 10, line: 3 },
+      end: { column: 19, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [93, 94],
+    loc: {
+      start: { column: 20, line: 3 },
+      end: { column: 21, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "addClickListener",
+
+    range: [97, 113],
+    loc: {
+      start: { column: 2, line: 4 },
+      end: { column: 18, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [113, 114],
+    loc: {
+      start: { column: 18, line: 4 },
+      end: { column: 19, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "onclick",
+
+    range: [114, 121],
+    loc: {
+      start: { column: 19, line: 4 },
+      end: { column: 26, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [121, 122],
+    loc: {
+      start: { column: 26, line: 4 },
+      end: { column: 27, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [123, 124],
+    loc: {
+      start: { column: 28, line: 4 },
+      end: { column: 29, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "this",
+
+    range: [124, 128],
+    loc: {
+      start: { column: 29, line: 4 },
+      end: { column: 33, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [128, 129],
+    loc: {
+      start: { column: 33, line: 4 },
+      end: { column: 34, line: 4 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "void",
+
+    range: [130, 134],
+    loc: {
+      start: { column: 35, line: 4 },
+      end: { column: 39, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ",",
+
+    range: [134, 135],
+    loc: {
+      start: { column: 39, line: 4 },
+      end: { column: 40, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "e",
+
+    range: [136, 137],
+    loc: {
+      start: { column: 41, line: 4 },
+      end: { column: 42, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [137, 138],
+    loc: {
+      start: { column: 42, line: 4 },
+      end: { column: 43, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Event",
+
+    range: [139, 144],
+    loc: {
+      start: { column: 44, line: 4 },
+      end: { column: 49, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [144, 145],
+    loc: {
+      start: { column: 49, line: 4 },
+      end: { column: 50, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=>",
+
+    range: [146, 148],
+    loc: {
+      start: { column: 51, line: 4 },
+      end: { column: 53, line: 4 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "void",
+
+    range: [149, 153],
+    loc: {
+      start: { column: 54, line: 4 },
+      end: { column: 58, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [153, 154],
+    loc: {
+      start: { column: 58, line: 4 },
+      end: { column: 59, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [154, 155],
+    loc: {
+      start: { column: 59, line: 4 },
+      end: { column: 60, line: 4 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "void",
+
+    range: [156, 160],
+    loc: {
+      start: { column: 61, line: 4 },
+      end: { column: 65, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [160, 161],
+    loc: {
+      start: { column: 65, line: 4 },
+      end: { column: 66, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [162, 163],
+    loc: {
+      start: { column: 0, line: 5 },
+      end: { column: 1, line: 5 },
+    },
+  },
+]
+`;

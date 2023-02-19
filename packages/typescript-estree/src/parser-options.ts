@@ -1,39 +1,14 @@
-import type { DebugLevel } from '@typescript-eslint/types';
+import type {
+  CacheDurationSeconds,
+  DebugLevel,
+} from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
-import type { CanonicalPath } from './create-program/shared';
 import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 
-type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
-
-export interface Extra {
-  code: string;
-  comment: boolean;
-  comments: TSESTree.Comment[];
-  createDefaultProgram: boolean;
-  debugLevel: Set<DebugModule>;
-  errorOnTypeScriptSyntacticAndSemanticIssues: boolean;
-  errorOnUnknownASTType: boolean;
-  EXPERIMENTAL_useSourceOfProjectReferenceRedirect: boolean;
-  extraFileExtensions: string[];
-  filePath: string;
-  jsx: boolean;
-  loc: boolean;
-  singleRun: boolean;
-  log: (message: string) => void;
-  preserveNodeMaps?: boolean;
-  programs: null | Iterable<ts.Program>;
-  projects: CanonicalPath[];
-  range: boolean;
-  strict: boolean;
-  tokens: null | TSESTree.Token[];
-  tsconfigRootDir: string;
-  moduleResolver: string;
-}
-
-////////////////////////////////////////////////////
-// MAKE SURE THIS IS KEPT IN SYNC WITH THE README //
-////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////
+// MAKE SURE THIS IS KEPT IN SYNC WITH THE WEBSITE DOCS //
+//////////////////////////////////////////////////////////
 
 interface ParseOptions {
   /**
@@ -145,10 +120,11 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   preserveNodeMaps?: boolean;
 
   /**
-   * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s).
+   * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s),
+   * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
    */
-  project?: string | string[];
+  project?: string | string[] | true;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -196,6 +172,25 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    */
   allowAutomaticSingleRunInference?: boolean;
 
+  /**
+   * Granular control of the expiry lifetime of our internal caches.
+   * You can specify the number of seconds as an integer number, or the string
+   * 'Infinity' if you never want the cache to expire.
+   *
+   * By default cache entries will be evicted after 30 seconds, or will persist
+   * indefinitely if `allowAutomaticSingleRunInference = true` AND the parser
+   * infers that it is a single run.
+   */
+  cacheLifetime?: {
+    /**
+     * Glob resolution for `parserOptions.project` values.
+     */
+    glob?: CacheDurationSeconds;
+  };
+
+  /**
+   * Path to a file exporting a custom `ModuleResolver`.
+   */
   moduleResolver?: string;
 }
 

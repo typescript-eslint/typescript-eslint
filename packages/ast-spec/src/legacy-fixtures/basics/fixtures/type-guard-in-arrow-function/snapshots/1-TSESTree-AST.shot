@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics type-guard-in-arrow-function TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "isString",
+
+            range: [79, 87],
+            loc: {
+              start: { column: 6, line: 3 },
+              end: { column: 14, line: 3 },
+            },
+          },
+          init: ArrowFunctionExpression {
+            type: "ArrowFunctionExpression",
+            async: false,
+            body: BlockStatement {
+              type: "BlockStatement",
+              body: Array [
+                ReturnStatement {
+                  type: "ReturnStatement",
+                  argument: BinaryExpression {
+                    type: "BinaryExpression",
+                    left: UnaryExpression {
+                      type: "UnaryExpression",
+                      argument: Identifier {
+                        type: "Identifier",
+                        name: "x",
+
+                        range: [133, 134],
+                        loc: {
+                          start: { column: 16, line: 4 },
+                          end: { column: 17, line: 4 },
+                        },
+                      },
+                      operator: "typeof",
+                      prefix: true,
+
+                      range: [126, 134],
+                      loc: {
+                        start: { column: 9, line: 4 },
+                        end: { column: 17, line: 4 },
+                      },
+                    },
+                    operator: "===",
+                    right: Literal {
+                      type: "Literal",
+                      raw: "'string'",
+                      value: "string",
+
+                      range: [139, 147],
+                      loc: {
+                        start: { column: 22, line: 4 },
+                        end: { column: 30, line: 4 },
+                      },
+                    },
+
+                    range: [126, 147],
+                    loc: {
+                      start: { column: 9, line: 4 },
+                      end: { column: 30, line: 4 },
+                    },
+                  },
+
+                  range: [119, 148],
+                  loc: {
+                    start: { column: 2, line: 4 },
+                    end: { column: 31, line: 4 },
+                  },
+                },
+              ],
+
+              range: [115, 150],
+              loc: {
+                start: { column: 42, line: 3 },
+                end: { column: 1, line: 5 },
+              },
+            },
+            expression: false,
+            generator: false,
+            id: null,
+            params: Array [
+              Identifier {
+                type: "Identifier",
+                name: "x",
+                typeAnnotation: TSTypeAnnotation {
+                  type: "TSTypeAnnotation",
+                  typeAnnotation: TSAnyKeyword {
+                    type: "TSAnyKeyword",
+
+                    range: [94, 97],
+                    loc: {
+                      start: { column: 21, line: 3 },
+                      end: { column: 24, line: 3 },
+                    },
+                  },
+
+                  range: [92, 97],
+                  loc: {
+                    start: { column: 19, line: 3 },
+                    end: { column: 24, line: 3 },
+                  },
+                },
+
+                range: [91, 97],
+                loc: {
+                  start: { column: 18, line: 3 },
+                  end: { column: 24, line: 3 },
+                },
+              },
+            ],
+            returnType: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTypePredicate {
+                type: "TSTypePredicate",
+                asserts: false,
+                parameterName: Identifier {
+                  type: "Identifier",
+                  name: "x",
+
+                  range: [100, 101],
+                  loc: {
+                    start: { column: 27, line: 3 },
+                    end: { column: 28, line: 3 },
+                  },
+                },
+                typeAnnotation: TSTypeAnnotation {
+                  type: "TSTypeAnnotation",
+                  typeAnnotation: TSStringKeyword {
+                    type: "TSStringKeyword",
+
+                    range: [105, 111],
+                    loc: {
+                      start: { column: 32, line: 3 },
+                      end: { column: 38, line: 3 },
+                    },
+                  },
+
+                  range: [105, 111],
+                  loc: {
+                    start: { column: 32, line: 3 },
+                    end: { column: 38, line: 3 },
+                  },
+                },
+
+                range: [100, 111],
+                loc: {
+                  start: { column: 27, line: 3 },
+                  end: { column: 38, line: 3 },
+                },
+              },
+
+              range: [98, 111],
+              loc: {
+                start: { column: 25, line: 3 },
+                end: { column: 38, line: 3 },
+              },
+            },
+
+            range: [90, 150],
+            loc: {
+              start: { column: 17, line: 3 },
+              end: { column: 1, line: 5 },
+            },
+          },
+
+          range: [79, 150],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 1, line: 5 },
+          },
+        },
+      ],
+      kind: "const",
+
+      range: [73, 151],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 2, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 152],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

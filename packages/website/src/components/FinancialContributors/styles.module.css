@@ -2,6 +2,7 @@
   display: inline-flex;
   flex-direction: column;
   gap: 8px;
+  height: 100%;
 }
 
 .linksArea {
@@ -12,8 +13,23 @@
   margin: 48px 24px 24px;
 }
 
+.tierOtherArea {
+  padding: 0;
+}
+
 .become {
   font-size: 1.25rem;
+  padding: 0.75rem 1.75rem;
+}
+
+.linksMore {
+  display: flex;
+  gap: 0.5rem;
+}
+
+[data-theme='dark'] .linksArea a {
+  --ifm-font-color-base: var(--ifm-color-white);
+  --ifm-button-color: var(--ifm-color-white);
 }
 
 @media screen and (min-width: 1150px) {
@@ -24,18 +40,17 @@
     max-width: 100%;
   }
 
-  .tierArea {
-    margin: 16px 0;
-    width: auto;
-    padding: 0 60px;
-  }
-
   .tierSponsorArea {
     grid-area: 1 / 1 / 3 / 2;
   }
 
   .tierSupporterArea {
     grid-area: 1 / 2 / 2 / 3;
+  }
+
+  .tierSponsorArea,
+  .tierSupporterArea {
+    padding: 0 60px;
   }
 
   .tierOtherArea {

@@ -1,12 +1,11 @@
-import type { Extra } from '@typescript-eslint/typescript-estree/dist/parser-options';
+import type { ParseSettings } from '@typescript-eslint/typescript-estree/dist/parseSettings';
 
-export const extra: Extra = {
+export const parseSettings: ParseSettings = {
   code: '',
   comment: true,
   comments: [],
   createDefaultProgram: false,
   debugLevel: new Set(),
-  errorOnTypeScriptSyntacticAndSemanticIssues: false,
   errorOnUnknownASTType: false,
   extraFileExtensions: [],
   filePath: '',
@@ -17,9 +16,10 @@ export const extra: Extra = {
   preserveNodeMaps: true,
   projects: [],
   range: true,
-  strict: false,
   tokens: [],
   tsconfigRootDir: '/',
+  tsconfigMatchCache: new Map(),
+  errorOnTypeScriptSyntacticAndSemanticIssues: false,
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   singleRun: false,
   programs: null,

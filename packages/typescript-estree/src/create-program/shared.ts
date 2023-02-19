@@ -2,7 +2,8 @@ import path from 'path';
 import type { Program } from 'typescript';
 import * as ts from 'typescript';
 
-import type { Extra, ModuleResolver } from '../parser-options';
+import type { ModuleResolver } from '../parser-options';
+import type { ParseSettings } from '../parseSettings';
 
 interface ASTAndProgram {
   ast: ts.SourceFile;
@@ -33,9 +34,9 @@ const DEFAULT_COMPILER_OPTIONS: ts.CompilerOptions = {
 };
 
 function createDefaultCompilerOptionsFromExtra(
-  extra: Extra,
+  parseSettings: ParseSettings,
 ): ts.CompilerOptions {
-  if (extra.debugLevel.has('typescript')) {
+  if (parseSettings.debugLevel.has('typescript')) {
     return {
       ...DEFAULT_COMPILER_OPTIONS,
       extendedDiagnostics: true,
@@ -63,10 +64,10 @@ function getCanonicalFileName(filePath: string): CanonicalPath {
   return correctPathCasing(normalized) as CanonicalPath;
 }
 
-function ensureAbsolutePath(p: string, extra: Extra): string {
+function ensureAbsolutePath(p: string, tsconfigRootDir: string): string {
   return path.isAbsolute(p)
     ? p
-    : path.join(extra.tsconfigRootDir || process.cwd(), p);
+    : path.join(tsconfigRootDir || process.cwd(), p);
 }
 
 function canonicalDirname(p: CanonicalPath): CanonicalPath {
@@ -92,12 +93,12 @@ function getExtension(fileName: string | undefined): string | null {
 
 function getAstFromProgram(
   currentProgram: Program,
-  extra: Extra,
+  parseSettings: ParseSettings,
 ): ASTAndProgram | undefined {
-  const ast = currentProgram.getSourceFile(extra.filePath);
+  const ast = currentProgram.getSourceFile(parseSettings.filePath);
 
   // working around https://github.com/typescript-eslint/typescript-eslint/issues/1573
-  const expectedExt = getExtension(extra.filePath);
+  const expectedExt = getExtension(parseSettings.filePath);
   const returnedExt = getExtension(ast?.fileName);
   if (expectedExt !== returnedExt) {
     return undefined;
@@ -123,12 +124,26 @@ function getModuleResolver(moduleResolverPath: string): ModuleResolver {
   return moduleResolver;
 }
 
+/**
+ * Hash content for compare content.
+ * @param content hashed contend
+ * @returns hashed result
+ */
+function createHash(content: string): string {
+  // No ts.sys in browser environments.
+  if (ts.sys?.createHash) {
+    return ts.sys.createHash(content);
+  }
+  return content;
+}
+
 export {
   ASTAndProgram,
   CORE_COMPILER_OPTIONS,
   canonicalDirname,
   CanonicalPath,
   createDefaultCompilerOptionsFromExtra,
+  createHash,
   ensureAbsolutePath,
   getCanonicalFileName,
   getAstFromProgram,

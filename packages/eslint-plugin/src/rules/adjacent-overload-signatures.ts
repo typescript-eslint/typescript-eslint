@@ -8,7 +8,8 @@ type RuleNode =
   | TSESTree.Program
   | TSESTree.TSModuleBlock
   | TSESTree.TSTypeLiteral
-  | TSESTree.TSInterfaceBody;
+  | TSESTree.TSInterfaceBody
+  | TSESTree.BlockStatement;
 type Member =
   | TSESTree.ClassElement
   | TSESTree.ProgramStatement
@@ -64,7 +65,7 @@ export default util.createRule({
         case AST_NODE_TYPES.TSDeclareFunction:
         case AST_NODE_TYPES.FunctionDeclaration: {
           const name = member.id?.name ?? null;
-          if (name === null) {
+          if (name == null) {
             return null;
           }
           return {
@@ -121,6 +122,7 @@ export default util.createRule({
         case AST_NODE_TYPES.Program:
         case AST_NODE_TYPES.TSModuleBlock:
         case AST_NODE_TYPES.TSInterfaceBody:
+        case AST_NODE_TYPES.BlockStatement:
           return node.body;
 
         case AST_NODE_TYPES.TSTypeLiteral:
@@ -141,7 +143,7 @@ export default util.createRule({
 
         members.forEach(member => {
           const method = getMemberMethod(member);
-          if (method === null) {
+          if (method == null) {
             lastMethod = null;
             return;
           }
@@ -172,6 +174,7 @@ export default util.createRule({
       TSModuleBlock: checkBodyForOverloadMethods,
       TSTypeLiteral: checkBodyForOverloadMethods,
       TSInterfaceBody: checkBodyForOverloadMethods,
+      BlockStatement: checkBodyForOverloadMethods,
     };
   },
 });
