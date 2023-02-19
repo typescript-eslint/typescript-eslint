@@ -1,0 +1,169 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ./elsewhere/repo/file.ts 1`] = `"./elsewhere/repo/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ./elsewhere/repo/nested/file.ts 1`] = `"./elsewhere/repo/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ./repos/file.ts 1`] = `"<tsconfigRootDir>/../file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ./repos/other/file.ts 1`] = `"<tsconfigRootDir>/../other/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ./repos/repo/file.ts 1`] = `"<tsconfigRootDir>/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ./repos/repo/nested/file.ts 1`] = `"<tsconfigRootDir>/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath /elsewhere/repo/file.ts 1`] = `"/elsewhere/repo/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath /elsewhere/repo/nested/file.ts 1`] = `"/elsewhere/repo/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath /file.ts 1`] = `"/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath /nested/file.ts 1`] = `"/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath /repos/repo/file.ts 1`] = `"/repos/repo/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath /repos/repo/nested/file.ts 1`] = `"/repos/repo/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ~/file.ts 1`] = `"~/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ~/nested/file.ts 1`] = `"~/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ~/nested/file.ts 2`] = `"~/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ~/other/nested/path/to/file.ts 1`] = `"~/other/nested/path/to/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ~/other/repo/file.ts 1`] = `"~/other/repo/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ~/repos/file.ts 1`] = `"~/repos/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ~/repos/other/file.ts 1`] = `"~/repos/other/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ~/repos/other/nested/file.ts 1`] = `"~/repos/other/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ~/repos/repo/file.ts 1`] = `"~/repos/repo/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ~/repos/repo/nestedfile.ts 1`] = `"~/repos/repo/nestedfile.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath A:/file.ts 1`] = `"A:/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath A:/nested/file.ts 1`] = `"A:/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ABC:/file.ts 1`] = `"ABC:/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath C:/file.ts 1`] = `"C:/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath file.ts 1`] = `"file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath nested/file.ts 1`] = `"nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ./elsewhere/repo/file.ts 1`] = `"./elsewhere/repo/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ./elsewhere/repo/nested/file.ts 1`] = `"./elsewhere/repo/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ./repos/file.ts 1`] = `"./repos/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ./repos/other/file.ts 1`] = `"./repos/other/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ./repos/repo/file.ts 1`] = `"./repos/repo/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ./repos/repo/nested/file.ts 1`] = `"./repos/repo/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath /elsewhere/repo/file.ts 1`] = `"/elsewhere/repo/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath /elsewhere/repo/nested/file.ts 1`] = `"/elsewhere/repo/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath /file.ts 1`] = `"/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath /nested/file.ts 1`] = `"/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath /repos/repo/file.ts 1`] = `"<tsconfigRootDir>/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath /repos/repo/nested/file.ts 1`] = `"<tsconfigRootDir>/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ~/file.ts 1`] = `"~/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ~/nested/file.ts 1`] = `"~/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ~/nested/file.ts 2`] = `"~/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ~/other/nested/path/to/file.ts 1`] = `"~/other/nested/path/to/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ~/other/repo/file.ts 1`] = `"~/other/repo/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ~/repos/file.ts 1`] = `"~/repos/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ~/repos/other/file.ts 1`] = `"~/repos/other/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ~/repos/other/nested/file.ts 1`] = `"~/repos/other/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ~/repos/repo/file.ts 1`] = `"~/repos/repo/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ~/repos/repo/nestedfile.ts 1`] = `"~/repos/repo/nestedfile.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath A:/file.ts 1`] = `"A:/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath A:/nested/file.ts 1`] = `"A:/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ABC:/file.ts 1`] = `"ABC:/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath C:/file.ts 1`] = `"C:/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath file.ts 1`] = `"file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath nested/file.ts 1`] = `"nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ./elsewhere/repo/file.ts 1`] = `"./elsewhere/repo/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ./elsewhere/repo/nested/file.ts 1`] = `"./elsewhere/repo/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ./repos/file.ts 1`] = `"./repos/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ./repos/other/file.ts 1`] = `"./repos/other/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ./repos/repo/file.ts 1`] = `"./repos/repo/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ./repos/repo/nested/file.ts 1`] = `"./repos/repo/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath /elsewhere/repo/file.ts 1`] = `"/elsewhere/repo/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath /elsewhere/repo/nested/file.ts 1`] = `"/elsewhere/repo/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath /file.ts 1`] = `"/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath /nested/file.ts 1`] = `"/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath /repos/repo/file.ts 1`] = `"/repos/repo/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath /repos/repo/nested/file.ts 1`] = `"/repos/repo/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ~/file.ts 1`] = `"~/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ~/nested/file.ts 1`] = `"~/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ~/nested/file.ts 2`] = `"~/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ~/other/nested/path/to/file.ts 1`] = `"~/other/nested/path/to/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ~/other/repo/file.ts 1`] = `"~/other/repo/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ~/repos/file.ts 1`] = `"~/repos/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ~/repos/other/file.ts 1`] = `"~/repos/other/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ~/repos/other/nested/file.ts 1`] = `"~/repos/other/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ~/repos/repo/file.ts 1`] = `"<tsconfigRootDir>/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ~/repos/repo/nestedfile.ts 1`] = `"<tsconfigRootDir>/nestedfile.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath A:/file.ts 1`] = `"A:/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath A:/nested/file.ts 1`] = `"A:/nested/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ABC:/file.ts 1`] = `"ABC:/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath C:/file.ts 1`] = `"C:/file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath file.ts 1`] = `"file.ts"`;
+
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath nested/file.ts 1`] = `"nested/file.ts"`;
