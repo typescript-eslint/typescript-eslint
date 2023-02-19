@@ -1,7 +1,10 @@
+import { ESLint } from 'eslint';
 import fs from 'fs';
 import glob from 'glob';
 import makeDir from 'make-dir';
 import path from 'path';
+import * as semver from 'semver';
+import * as ts from 'typescript';
 
 import type { AnalyzeOptions } from './util';
 import { parseAndAnalyze } from './util';
@@ -25,8 +28,10 @@ const fixtures = glob
     const { name, dir, ext } = path.parse(relative);
     const segments = dir.split(path.sep);
     const snapshotPath = path.join(FIXTURES_DIR, dir);
+    const configPath = path.join(snapshotPath, `${name}.config.json`);
     return {
       absolute,
+      configPath: fs.existsSync(configPath) ? configPath : undefined,
       name,
       ext,
       segments,
@@ -50,6 +55,27 @@ const ALLOWED_OPTIONS: Map<string, ALLOWED_VALUE> = new Map<
   ['sourceType', ['string', new Set(['module', 'script'])]],
   ['emitDecoratorMetadata', ['boolean']],
 ]);
+
+interface FixtureConfig {
+  eslint?: string;
+  typescript?: string;
+}
+
+function shouldSkipFixture(configPath: string): boolean {
+  const config = JSON.parse(
+    fs.readFileSync(configPath, 'utf8').toString(),
+  ) as FixtureConfig;
+
+  if (config.eslint && !semver.satisfies(ESLint.version, config.eslint)) {
+    return true;
+  }
+
+  if (config.typescript && !semver.satisfies(ts.version, config.typescript)) {
+    return true;
+  }
+
+  return false;
+}
 
 function nestDescribe(
   fixture: typeof fixtures[number],
@@ -164,7 +190,10 @@ function nestDescribe(
       }
     };
 
-    if ([...fixture.segments, fixture.name].join(path.sep) === ONLY) {
+    if (fixture.configPath && shouldSkipFixture(fixture.configPath)) {
+      // eslint-disable-next-line jest/no-disabled-tests
+      it.skip(fixture.name, test);
+    } else if ([...fixture.segments, fixture.name].join(path.sep) === ONLY) {
       // eslint-disable-next-line jest/no-focused-tests
       it.only(fixture.name, test);
     } else {

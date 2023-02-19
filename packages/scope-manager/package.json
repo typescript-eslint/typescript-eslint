@@ -44,12 +44,14 @@
   "devDependencies": {
     "@types/glob": "*",
     "@typescript-eslint/typescript-estree": "5.52.0",
+    "eslint": "*",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
     "prettier": "*",
     "pretty-format": "*",
     "rimraf": "*",
+    "semver": "*",
     "typescript": "*"
   },
   "funding": {

@@ -1,3 +1,6 @@
+import * as semver from 'semver';
+import * as ts from 'typescript';
+
 import { getRealVariables, parseAndAnalyze } from '../util';
 
 describe('References:', () => {
@@ -541,10 +544,11 @@ describe('References:', () => {
     );
   });
 
-  describe('When emitDecoratorMetadata is true', () => {
-    it('check type referenced by decorator metadata', () => {
-      const { scopeManager } = parseAndAnalyze(
-        `
+  if (semver.satisfies(ts.version, '>=4')) {
+    describe('When emitDecoratorMetadata is true', () => {
+      it('check type referenced by decorator metadata', () => {
+        const { scopeManager } = parseAndAnalyze(
+          `
         @deco
         class A {
           property: Type1;
@@ -585,75 +589,78 @@ describe('References:', () => {
           foo(): TypeC;
         }
       `,
-        {
-          emitDecoratorMetadata: true,
-        },
-      );
+          {
+            emitDecoratorMetadata: true,
+          },
+        );
 
-      const classAScope = scopeManager.globalScope!.childScopes[0];
-      const propertyTypeRef = classAScope.references[2];
-      expect(propertyTypeRef.identifier.name).toBe('a');
-      expect(propertyTypeRef.isTypeReference).toBe(true);
-      expect(propertyTypeRef.isValueReference).toBe(true);
+        const classAScope = scopeManager.globalScope!.childScopes[0];
+        const propertyTypeRef = classAScope.references[2];
+        expect(propertyTypeRef.identifier.name).toBe('a');
+        expect(propertyTypeRef.isTypeReference).toBe(true);
+        expect(propertyTypeRef.isValueReference).toBe(true);
 
-      const setterParamTypeRef = classAScope.childScopes[0].references[0];
-      expect(setterParamTypeRef.identifier.name).toBe('SetterType');
-      expect(setterParamTypeRef.isTypeReference).toBe(true);
-      expect(setterParamTypeRef.isValueReference).toBe(false);
+        const setterParamTypeRef = classAScope.childScopes[0].references[0];
+        expect(setterParamTypeRef.identifier.name).toBe('SetterType');
+        expect(setterParamTypeRef.isTypeReference).toBe(true);
+        expect(setterParamTypeRef.isValueReference).toBe(false);
 
-      const constructorParamTypeRef = classAScope.childScopes[1].references[0];
-      expect(constructorParamTypeRef.identifier.name).toBe('b');
-      expect(constructorParamTypeRef.isTypeReference).toBe(true);
-      expect(constructorParamTypeRef.isValueReference).toBe(true);
+        const constructorParamTypeRef =
+          classAScope.childScopes[1].references[0];
+        expect(constructorParamTypeRef.identifier.name).toBe('b');
+        expect(constructorParamTypeRef.isTypeReference).toBe(true);
+        expect(constructorParamTypeRef.isValueReference).toBe(true);
 
-      const methodParamTypeRef = classAScope.childScopes[2].references[0];
-      expect(methodParamTypeRef.identifier.name).toBe('Type2');
-      expect(methodParamTypeRef.isTypeReference).toBe(true);
-      expect(methodParamTypeRef.isValueReference).toBe(true);
-      const methodParamTypeRef0 = classAScope.childScopes[2].references[2];
-      expect(methodParamTypeRef0.identifier.name).toBe('Type0');
-      expect(methodParamTypeRef0.isTypeReference).toBe(true);
-      expect(methodParamTypeRef0.isValueReference).toBe(true);
+        const methodParamTypeRef = classAScope.childScopes[2].references[0];
+        expect(methodParamTypeRef.identifier.name).toBe('Type2');
+        expect(methodParamTypeRef.isTypeReference).toBe(true);
+        expect(methodParamTypeRef.isValueReference).toBe(true);
+        const methodParamTypeRef0 = classAScope.childScopes[2].references[2];
+        expect(methodParamTypeRef0.identifier.name).toBe('Type0');
+        expect(methodParamTypeRef0.isTypeReference).toBe(true);
+        expect(methodParamTypeRef0.isValueReference).toBe(true);
 
-      const methodParamTypeRef1 = classAScope.childScopes[3].references[0];
-      expect(methodParamTypeRef1.identifier.name).toBe('Type3');
-      expect(methodParamTypeRef1.isTypeReference).toBe(true);
-      expect(methodParamTypeRef1.isValueReference).toBe(true);
+        const methodParamTypeRef1 = classAScope.childScopes[3].references[0];
+        expect(methodParamTypeRef1.identifier.name).toBe('Type3');
+        expect(methodParamTypeRef1.isTypeReference).toBe(true);
+        expect(methodParamTypeRef1.isValueReference).toBe(true);
 
-      const methodReturnTypeRef = classAScope.childScopes[4].references[0];
-      expect(methodReturnTypeRef.identifier.name).toBe('Type4');
-      expect(methodReturnTypeRef.isTypeReference).toBe(true);
-      expect(methodReturnTypeRef.isValueReference).toBe(true);
+        const methodReturnTypeRef = classAScope.childScopes[4].references[0];
+        expect(methodReturnTypeRef.identifier.name).toBe('Type4');
+        expect(methodReturnTypeRef.isTypeReference).toBe(true);
+        expect(methodReturnTypeRef.isValueReference).toBe(true);
 
-      const setterParamTypeRef1 = classAScope.childScopes[5].references[0];
-      expect(setterParamTypeRef1.identifier.name).toBe('Type5');
-      expect(setterParamTypeRef1.isTypeReference).toBe(true);
-      expect(setterParamTypeRef1.isValueReference).toBe(true);
+        const setterParamTypeRef1 = classAScope.childScopes[5].references[0];
+        expect(setterParamTypeRef1.identifier.name).toBe('Type5');
+        expect(setterParamTypeRef1.isTypeReference).toBe(true);
+        expect(setterParamTypeRef1.isValueReference).toBe(true);
 
-      const setterParamTypeRef2 = classAScope.childScopes[6].references[0];
-      expect(setterParamTypeRef2.identifier.name).toBe('Type6');
-      expect(setterParamTypeRef2.isTypeReference).toBe(true);
-      expect(setterParamTypeRef2.isValueReference).toBe(true);
+        const setterParamTypeRef2 = classAScope.childScopes[6].references[0];
+        expect(setterParamTypeRef2.identifier.name).toBe('Type6');
+        expect(setterParamTypeRef2.isTypeReference).toBe(true);
+        expect(setterParamTypeRef2.isValueReference).toBe(true);
 
-      const classBScope = scopeManager.globalScope!.childScopes[1];
+        const classBScope = scopeManager.globalScope!.childScopes[1];
 
-      const constructorParamTypeRef1 = classBScope.childScopes[0].references[0];
-      expect(constructorParamTypeRef1.identifier.name).toBe('c');
-      expect(constructorParamTypeRef1.isTypeReference).toBe(true);
-      expect(constructorParamTypeRef1.isValueReference).toBe(true);
+        const constructorParamTypeRef1 =
+          classBScope.childScopes[0].references[0];
+        expect(constructorParamTypeRef1.identifier.name).toBe('c');
+        expect(constructorParamTypeRef1.isTypeReference).toBe(true);
+        expect(constructorParamTypeRef1.isValueReference).toBe(true);
 
-      const setterParamTypeRef3 = classBScope.childScopes[1].references[0];
-      // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-      expect(setterParamTypeRef3.identifier.name).toBe('Type');
-      expect(setterParamTypeRef3.isTypeReference).toBe(true);
-      expect(setterParamTypeRef3.isValueReference).toBe(false);
+        const setterParamTypeRef3 = classBScope.childScopes[1].references[0];
+        // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+        expect(setterParamTypeRef3.identifier.name).toBe('Type');
+        expect(setterParamTypeRef3.isTypeReference).toBe(true);
+        expect(setterParamTypeRef3.isValueReference).toBe(false);
 
-      const classCScope = scopeManager.globalScope!.childScopes[2];
+        const classCScope = scopeManager.globalScope!.childScopes[2];
 
-      const methodReturnTypeRef1 = classCScope.childScopes[0].references[0];
-      expect(methodReturnTypeRef1.identifier.name).toBe('TypeC');
-      expect(methodReturnTypeRef1.isTypeReference).toBe(true);
-      expect(methodReturnTypeRef1.isValueReference).toBe(false);
+        const methodReturnTypeRef1 = classCScope.childScopes[0].references[0];
+        expect(methodReturnTypeRef1.identifier.name).toBe('TypeC');
+        expect(methodReturnTypeRef1.isTypeReference).toBe(true);
+        expect(methodReturnTypeRef1.isValueReference).toBe(false);
+      });
     });
-  });
+  }
 });

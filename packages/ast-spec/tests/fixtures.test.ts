@@ -1,7 +1,10 @@
+import { ESLint } from 'eslint';
 import fs from 'fs';
 import glob from 'glob';
 import makeDir from 'make-dir';
 import path from 'path';
+import * as semver from 'semver';
+import * as ts from 'typescript';
 
 import { parseBabel } from './util/parsers/babel';
 import type {
@@ -44,8 +47,37 @@ const ERROR_FIXTURES: readonly string[] = glob.sync(
   `${SRC_DIR}/**/fixtures/_error_/*/fixture.{ts,tsx}`,
 );
 
-const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
-  absolute => {
+function loadConfig(configPath: string): ASTFixtureConfig {
+  try {
+    return require(configPath).default;
+  } catch {
+    return {};
+  }
+}
+
+function versionsSemverExcluded(
+  versions: ASTFixtureVersionsConfig | undefined,
+): boolean {
+  if (!versions) {
+    return false;
+  }
+
+  if (versions.eslint && !semver.satisfies(ESLint.version, versions.eslint)) {
+    return true;
+  }
+
+  if (
+    versions.typescript &&
+    !semver.satisfies(ts.version, versions.typescript)
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES]
+  .map(absolute => {
     const relativeToSrc = path.relative(SRC_DIR, absolute);
     const { dir, ext } = path.parse(relativeToSrc);
     const segments = dir.split(path.sep).filter(s => s !== 'fixtures');
@@ -53,15 +85,15 @@ const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
     const fixtureDir = path.join(SRC_DIR, dir);
     const configPath = path.join(fixtureDir, 'config' /* .ts */);
     const snapshotPath = path.join(fixtureDir, 'snapshots');
+    const config = loadConfig(configPath);
+
+    if (versionsSemverExcluded(config.versions)) {
+      return undefined;
+    }
+
     return {
       absolute,
-      config: ((): ASTFixtureConfig => {
-        try {
-          return require(configPath).default;
-        } catch {
-          return {};
-        }
-      })(),
+      config,
       ext,
       isError: absolute.includes('/_error_/'),
       isJSX: ext.endsWith('x'),
@@ -99,8 +131,8 @@ const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
       },
       snapshotPath,
     };
-  },
-);
+  })
+  .filter((f): f is NonNullable<typeof f> => !!f);
 
 function hasErrorCode(e: unknown): e is { code: unknown } {
   return typeof e === 'object' && e != null && 'code' in e;
