@@ -42,7 +42,7 @@ exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ~/repos/other/ne
 
 exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ~/repos/repo/file.ts 1`] = `"~/repos/repo/file.ts"`;
 
-exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ~/repos/repo/nestedfile.ts 1`] = `"~/repos/repo/nestedfile.ts"`;
+exports[`describeFilePath tsconfigRootDir ./repos/repo filePath ~/repos/repo/nested/file.ts 1`] = `"~/repos/repo/nested/file.ts"`;
 
 exports[`describeFilePath tsconfigRootDir ./repos/repo filePath A:/file.ts 1`] = `"A:/file.ts"`;
 
@@ -98,7 +98,7 @@ exports[`describeFilePath tsconfigRootDir /repos/repo filePath ~/repos/other/nes
 
 exports[`describeFilePath tsconfigRootDir /repos/repo filePath ~/repos/repo/file.ts 1`] = `"~/repos/repo/file.ts"`;
 
-exports[`describeFilePath tsconfigRootDir /repos/repo filePath ~/repos/repo/nestedfile.ts 1`] = `"~/repos/repo/nestedfile.ts"`;
+exports[`describeFilePath tsconfigRootDir /repos/repo filePath ~/repos/repo/nested/file.ts 1`] = `"~/repos/repo/nested/file.ts"`;
 
 exports[`describeFilePath tsconfigRootDir /repos/repo filePath A:/file.ts 1`] = `"A:/file.ts"`;
 
@@ -154,7 +154,7 @@ exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ~/repos/other/ne
 
 exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ~/repos/repo/file.ts 1`] = `"<tsconfigRootDir>/file.ts"`;
 
-exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ~/repos/repo/nestedfile.ts 1`] = `"<tsconfigRootDir>/nestedfile.ts"`;
+exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath ~/repos/repo/nested/file.ts 1`] = `"<tsconfigRootDir>/nested/file.ts"`;
 
 exports[`describeFilePath tsconfigRootDir ~/repos/repo filePath A:/file.ts 1`] = `"A:/file.ts"`;
 

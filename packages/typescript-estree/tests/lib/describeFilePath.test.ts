@@ -26,7 +26,7 @@ describe('describeFilePath', () => {
         '~/repos/other/file.ts',
         '~/repos/other/nested/file.ts',
         '~/repos/repo/file.ts',
-        '~/repos/repo/nestedfile.ts',
+        '~/repos/repo/nested/file.ts',
         'A:/file.ts',
         'A:/nested/file.ts',
         'ABC:/file.ts',
