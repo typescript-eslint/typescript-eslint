@@ -21,6 +21,7 @@ export = {
     '@typescript-eslint/no-extraneous-class': 'warn',
     '@typescript-eslint/no-invalid-void-type': 'warn',
     '@typescript-eslint/no-meaningless-void-operator': 'warn',
+    '@typescript-eslint/no-mixed-enums': 'warn',
     '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'warn',
     'no-throw-literal': 'off',
     '@typescript-eslint/no-throw-literal': 'warn',
