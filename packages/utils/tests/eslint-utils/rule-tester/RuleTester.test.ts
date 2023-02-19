@@ -1,5 +1,7 @@
 import * as parser from '@typescript-eslint/parser';
+import { ESLint } from 'eslint';
 import eslintPackageJson from 'eslint/package.json';
+import semver from 'semver';
 
 import * as dependencyConstraintsModule from '../../../src/eslint-utils/rule-tester/dependencyConstraints';
 import { RuleTester } from '../../../src/eslint-utils/rule-tester/RuleTester';
@@ -99,7 +101,9 @@ const NOOP_RULE: RuleModule<'error', []> = {
   },
 };
 
-describe('RuleTester', () => {
+(semver.satisfies((ESLint as { version: string }).version, '>=8')
+  ? describe
+  : describe.skip)('RuleTester', () => {
   it('automatically sets the filename for tests', () => {
     const ruleTester = new RuleTester({
       parser: '@typescript-eslint/parser',
