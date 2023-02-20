@@ -269,7 +269,7 @@ class Referencer extends Visitor {
         { processRightHandNodes: true },
       );
       this.visitFunctionParameterTypeAnnotation(param);
-      param.decorators?.forEach(d => this.visit(d));
+      param.decorators.forEach(d => this.visit(d));
     }
 
     this.visitType(node.returnType);
@@ -783,13 +783,8 @@ class Referencer extends Visitor {
         { processRightHandNodes: true },
       );
 
-      if (decl.init) {
-        this.visit(decl.init);
-      }
-
-      if ('typeAnnotation' in decl.id) {
-        this.visitType(decl.id.typeAnnotation);
-      }
+      this.visit(decl.init);
+      this.visitType(decl.id.typeAnnotation);
     }
   }
 

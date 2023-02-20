@@ -358,7 +358,7 @@ export default util.createRule<Options, MessageIds>({
           body: node.body as any,
           id: null,
           // TODO: This is invalid, there can be more than one extends in interface
-          superClass: node.extends![0].expression as any,
+          superClass: node.extends[0].expression as any,
           abstract: false,
           declare: false,
           decorators: [],

@@ -229,7 +229,7 @@ export default util.createRule<Options, MessageIds>({
         accessibility: TSESTree.Accessibility,
         fixer: TSESLint.RuleFixer,
       ): TSESLint.RuleFix | null {
-        if (node?.decorators?.length) {
+        if (node?.decorators.length) {
           const lastDecorator = node.decorators[node.decorators.length - 1];
           const nextToken = sourceCode.getTokenAfter(lastDecorator)!;
           return fixer.insertTextBefore(nextToken, `${accessibility} `);

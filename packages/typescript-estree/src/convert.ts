@@ -390,10 +390,9 @@ export class Converter {
     return parameters.map(param => {
       const convertedParam = this.convertChild(param) as TSESTree.Parameter;
 
-      const decorators = getDecorators(param);
-      if (decorators?.length) {
-        convertedParam.decorators = decorators.map(el => this.convertChild(el));
-      }
+      convertedParam.decorators =
+        getDecorators(param)?.map(el => this.convertChild(el)) ?? [];
+
       return convertedParam;
     });
   }
@@ -2109,7 +2108,9 @@ export class Converter {
         let regex = null;
         try {
           regex = new RegExp(pattern, flags);
-        } catch {}
+        } catch {
+          // Intentionally blank, so regex stays null
+        }
 
         return this.createNode<TSESTree.RegExpLiteral>(node, {
           type: AST_NODE_TYPES.Literal,

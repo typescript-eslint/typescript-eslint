@@ -57,7 +57,7 @@ class ClassVisitor extends Visitor {
         .defineIdentifier(node.id, new ClassNameDefinition(node.id, node));
     }
 
-    node.decorators?.forEach(d => this.#referencer.visit(d));
+    node.decorators.forEach(d => this.#referencer.visit(d));
 
     this.#referencer.scopeManager.nestClassScope(node);
 
@@ -75,7 +75,7 @@ class ClassVisitor extends Visitor {
     this.visitType(node.typeParameters);
     // then the usages
     this.visitType(node.superTypeParameters);
-    node.implements?.forEach(imp => this.visitType(imp));
+    node.implements.forEach(imp => this.visitType(imp));
 
     this.visit(node.body);
 
@@ -96,7 +96,7 @@ class ClassVisitor extends Visitor {
      *   foo: Type;
      * }
      */
-    this.visitMetadataType(node.typeAnnotation, !!node.decorators);
+    this.visitMetadataType(node.typeAnnotation, !!node.decorators.length);
   }
 
   protected visitFunctionParameterTypeAnnotation(
@@ -140,7 +140,7 @@ class ClassVisitor extends Visitor {
      *   foo(): Type {}
      * }
      */
-    let withMethodDecorators = !!methodNode.decorators;
+    let withMethodDecorators = !!methodNode.decorators.length;
     /**
      * class A {
      *   foo(
@@ -157,7 +157,7 @@ class ClassVisitor extends Visitor {
     withMethodDecorators =
       withMethodDecorators ||
       (methodNode.kind !== 'set' &&
-        node.params.some(param => param.decorators));
+        node.params.some(param => param.decorators.length));
     if (!withMethodDecorators && methodNode.kind === 'set') {
       const keyName = getLiteralMethodKeyName(methodNode);
 
@@ -177,7 +177,7 @@ class ClassVisitor extends Visitor {
             // Node must both be static or not
             node.static === methodNode.static &&
             getLiteralMethodKeyName(node) === keyName,
-        )?.decorators
+        )?.decorators.length
       ) {
         withMethodDecorators = true;
       }
@@ -219,7 +219,7 @@ class ClassVisitor extends Visitor {
         { processRightHandNodes: true },
       );
       this.visitFunctionParameterTypeAnnotation(param, withMethodDecorators);
-      param.decorators?.forEach(d => this.visit(d));
+      param.decorators.forEach(d => this.visit(d));
     }
 
     this.visitMetadataType(node.returnType, withMethodDecorators);
@@ -271,9 +271,7 @@ class ClassVisitor extends Visitor {
       }
     }
 
-    if ('decorators' in node) {
-      node.decorators?.forEach(d => this.#referencer.visit(d));
-    }
+    node.decorators.forEach(d => this.#referencer.visit(d));
   }
 
   protected visitMethod(node: TSESTree.MethodDefinition): void {
@@ -287,9 +285,7 @@ class ClassVisitor extends Visitor {
       this.#referencer.visit(node.value);
     }
 
-    if ('decorators' in node) {
-      node.decorators?.forEach(d => this.#referencer.visit(d));
-    }
+    node.decorators.forEach(d => this.#referencer.visit(d));
   }
 
   protected visitType(node: TSESTree.Node | null | undefined): void {
