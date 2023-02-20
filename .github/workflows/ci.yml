@@ -191,9 +191,9 @@ jobs:
           # unfortunately you can't reference environment variables in an array :(
           [
             # lowest possible version
-            '3.3.1',
+            '4.2.4',
             # somewhere in the middle for sanity check
-            '~4.0.8',
+            '~4.5.5',
             # highest possible version
             '~4.8.2',
           ]
