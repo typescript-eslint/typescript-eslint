@@ -5,7 +5,7 @@ import * as util from '../util';
 
 type Options = [
   {
-    allow?: Array<util.TypeOrValueSpecifier>;
+    allow?: util.TypeOrValueSpecifier[];
     checkParameterProperties?: boolean;
     ignoreInferredTypes?: boolean;
     treatMethodsAsReadonly?: boolean;
