@@ -218,6 +218,15 @@ async function* foo(): Promise<string> {
   return new Promise(res => res(\`hello\`));
 }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/5458
+    `
+    async function* f() {
+      let x!: Omit<{
+        [Symbol.asyncIterator](): AsyncIterator<any>;
+      }, 'z'>
+      yield* x;
+    }
+    `,
   ],
 
   invalid: [
