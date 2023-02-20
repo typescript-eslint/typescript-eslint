@@ -4,7 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> & {
-  [K in Key]?: NonNullable<Base[Key]>;
+  [K in Key]-?: NonNullable<Base[Key]>;
 };
 type TypeParameterWithConstraint = MakeRequired<
   TSESTree.TSTypeParameter,
