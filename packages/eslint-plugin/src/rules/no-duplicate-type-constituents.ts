@@ -163,23 +163,17 @@ export default util.createRule<Options, MessageIds>({
           fix: fixer => {
             const beforeTokens = sourceCode.getTokensBefore(
               duplicateConstituent.duplicated,
+              { filter: token => token.value === '|' || token.value === '&' },
             );
-            const afterTokens = sourceCode.getTokensAfter(
-              duplicateConstituent.duplicated,
-            );
-            const beforeUnionOrIntersectionToken = beforeTokens
-              .reverse()
-              .find(token => token.value === '|' || token.value === '&');
-            if (!beforeUnionOrIntersectionToken) {
-              return [];
-            }
+            const beforeUnionOrIntersectionToken =
+              beforeTokens[beforeTokens.length - 1];
             const bracketBeforeTokens = sourceCode.getTokensBetween(
               beforeUnionOrIntersectionToken,
               duplicateConstituent.duplicated,
             );
-            const bracketAfterTokens = afterTokens.slice(
-              0,
-              bracketBeforeTokens.length,
+            const bracketAfterTokens = sourceCode.getTokensAfter(
+              duplicateConstituent.duplicated,
+              { count: bracketBeforeTokens.length },
             );
             return [
               beforeUnionOrIntersectionToken,
