@@ -2801,6 +2801,9 @@ var a = 1
     },
     {
       code: 'export function foo(arg1: string): number;\nexport function foo(arg2: number) {\n return arg2;\n}',
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       options: [
         { blankLine: 'always', prev: '*', next: 'block-like' },
         { blankLine: 'never', prev: '*', next: 'export' },
@@ -2808,6 +2811,9 @@ var a = 1
     },
     {
       code: 'function foo(arg1: string): number;\nfunction foo(arg2: number) {\n return arg2;\n}',
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
       options: [
         { blankLine: 'always', prev: '*', next: 'block-like' },
         { blankLine: 'never', prev: '*', next: 'function' },

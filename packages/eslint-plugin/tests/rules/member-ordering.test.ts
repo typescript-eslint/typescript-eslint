@@ -5,6 +5,9 @@ import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
+  dependencyConstraints: {
+    typescript: '4.9',
+  },
 });
 
 const grouped: RunTests<MessageIds, Options> = {
