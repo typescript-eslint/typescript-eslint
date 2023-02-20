@@ -81,12 +81,13 @@ export const useSandboxServices = (
 
         let libEntries: Map<string, string> | undefined;
         const worker = await sandboxInstance.getWorkerProcess();
-        if (worker.getLibFiles) {
+        if ('getLibFiles' in worker && worker.getLibFiles) {
           libEntries = new Map(
-            Object.entries((await worker.getLibFiles()) ?? {}).map(item => [
-              '/' + item[0],
-              item[1],
-            ]),
+            Object.entries(
+              (await (
+                worker.getLibFiles as () => Promise<Record<string, string>>
+              )()) ?? {},
+            ).map(item => ['/' + item[0], item[1]]),
           );
         } else {
           // for some older version of playground we do not have definitions available

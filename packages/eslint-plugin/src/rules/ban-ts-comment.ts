@@ -29,7 +29,7 @@ export default util.createRule<[Options], MessageIds>({
     docs: {
       description:
         'Disallow `@ts-<directive>` comments or require descriptions after directives',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     messages: {
       tsDirectiveComment:
@@ -147,7 +147,10 @@ export default util.createRule<[Options], MessageIds>({
               minimumDescriptionLength = defaultMinimumDescriptionLength,
             } = options;
             const format = descriptionFormats.get(fullDirective);
-            if (description.trim().length < minimumDescriptionLength) {
+            if (
+              util.getStringLength(description.trim()) <
+              minimumDescriptionLength
+            ) {
               context.report({
                 data: { directive, minimumDescriptionLength },
                 node: comment,

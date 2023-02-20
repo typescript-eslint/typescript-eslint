@@ -1,3 +1,4 @@
+import Link from '@docusaurus/Link';
 import type { RuleMetaDataDocs } from '@site/../utils/dist/ts-eslint/Rule';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
 import React from 'react';
@@ -6,12 +7,18 @@ import type { FeatureProps } from './Feature';
 import { Feature } from './Feature';
 import styles from './RuleAttributes.module.css';
 
-const getRecommendation = (docs: RuleMetaDataDocs): [string, string] => {
-  return docs.recommended === 'strict'
-    ? ['🔒', 'strict']
-    : docs.requiresTypeChecking
-    ? ['🧠', 'recommended-requiring-type-checking']
-    : ['✅', 'recommended'];
+const recommendations = {
+  recommended: ['✅', 'recommended'],
+  strict: ['🔒', 'strict'],
+  stylistic: ['🎨', 'stylistic'],
+};
+
+const getRecommendation = (docs: RuleMetaDataDocs): string[] => {
+  const recommendation = recommendations[docs.recommended!];
+
+  return docs.requiresTypeChecking
+    ? [recommendation[0], `${recommendation[1]}-type-checked`]
+    : recommendation;
 };
 
 export function RuleAttributes({ name }: { name: string }): React.ReactNode {
@@ -29,18 +36,15 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
       children: (
         <>
           Extending{' '}
-          <a href={`/docs/linting/configs#${recommendation}`} target="_blank">
+          <Link to={`/linting/configs#${recommendation}`} target="_blank">
             <code className={styles.code}>
               "plugin:@typescript-eslint/{recommendation}"
             </code>
-          </a>{' '}
+          </Link>{' '}
           in an{' '}
-          <a
-            href="https://eslint.org/docs/latest/user-guide/configuring/configuration-files#extending-configuration-files"
-            target="_blank"
-          >
+          <Link href="https://eslint.org/docs/latest/user-guide/configuring/configuration-files#extending-configuration-files">
             ESLint configuration
-          </a>{' '}
+          </Link>{' '}
           enables this rule.
         </>
       ),
@@ -53,12 +57,9 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
       children: (
         <>
           Some problems reported by this rule are automatically fixable by the{' '}
-          <a
-            href="https://eslint.org/docs/latest/user-guide/command-line-interface#--fix"
-            target="_blank"
-          >
+          <Link href="https://eslint.org/docs/latest/user-guide/command-line-interface#--fix">
             <code>--fix</code> ESLint command line option
-          </a>
+          </Link>
           .
         </>
       ),
@@ -71,12 +72,9 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
       children: (
         <>
           Some problems reported by this rule are manually fixable by editor{' '}
-          <a
-            href="https://eslint.org/docs/latest/developer-guide/working-with-rules#providing-suggestions"
-            target="_blank"
-          >
+          <Link href="https://eslint.org/docs/latest/developer-guide/working-with-rules#providing-suggestions">
             suggestions
-          </a>
+          </Link>
           .
         </>
       ),
@@ -89,9 +87,9 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
       children: (
         <>
           This rule requires{' '}
-          <a href="/linting/typed-linting" target="_blank">
+          <Link href="/linting/typed-linting" target="_blank">
             type information
-          </a>{' '}
+          </Link>{' '}
           to run.
         </>
       ),

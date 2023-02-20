@@ -34,6 +34,7 @@ Program {
               end: { column: 12, line: 1 },
             },
           },
+          kind: "module",
 
           range: [11, 15],
           loc: {
@@ -55,6 +56,7 @@ Program {
             end: { column: 10, line: 1 },
           },
         },
+        kind: "module",
 
         range: [9, 15],
         loc: {
@@ -76,6 +78,7 @@ Program {
           end: { column: 8, line: 1 },
         },
       },
+      kind: "module",
 
       range: [0, 15],
       loc: {

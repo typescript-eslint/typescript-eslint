@@ -1,0 +1,219 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-optional-methods TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            decorators: Array [],
+            key: Identifier {
+              type: "Identifier",
+              decorators: Array [],
+              name: "foo",
+              optional: false,
+
+              range: [87, 90],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 5, line: 4 },
+              },
+            },
+            kind: "method",
+            optional: true,
+            override: false,
+            static: false,
+            value: TSEmptyBodyFunctionExpression {
+              type: "TSEmptyBodyFunctionExpression",
+              async: false,
+              body: null,
+              declare: false,
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+
+              range: [91, 94],
+              loc: {
+                start: { column: 6, line: 4 },
+                end: { column: 9, line: 4 },
+              },
+            },
+
+            range: [87, 94],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 9, line: 4 },
+            },
+          },
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            decorators: Array [],
+            key: Identifier {
+              type: "Identifier",
+              decorators: Array [],
+              name: "bar",
+              optional: false,
+
+              range: [97, 100],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 5, line: 5 },
+              },
+            },
+            kind: "method",
+            optional: true,
+            override: false,
+            static: false,
+            value: TSEmptyBodyFunctionExpression {
+              type: "TSEmptyBodyFunctionExpression",
+              async: false,
+              body: null,
+              declare: false,
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSStringKeyword {
+                  type: "TSStringKeyword",
+
+                  range: [105, 111],
+                  loc: {
+                    start: { column: 10, line: 5 },
+                    end: { column: 16, line: 5 },
+                  },
+                },
+
+                range: [103, 111],
+                loc: {
+                  start: { column: 8, line: 5 },
+                  end: { column: 16, line: 5 },
+                },
+              },
+
+              range: [101, 112],
+              loc: {
+                start: { column: 6, line: 5 },
+                end: { column: 17, line: 5 },
+              },
+            },
+
+            range: [97, 112],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 17, line: 5 },
+            },
+          },
+          MethodDefinition {
+            type: "MethodDefinition",
+            accessibility: "private",
+            computed: false,
+            decorators: Array [],
+            key: Identifier {
+              type: "Identifier",
+              decorators: Array [],
+              name: "baz",
+              optional: false,
+
+              range: [123, 126],
+              loc: {
+                start: { column: 10, line: 6 },
+                end: { column: 13, line: 6 },
+              },
+            },
+            kind: "method",
+            optional: true,
+            override: false,
+            static: false,
+            value: TSEmptyBodyFunctionExpression {
+              type: "TSEmptyBodyFunctionExpression",
+              async: false,
+              body: null,
+              declare: false,
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSStringKeyword {
+                  type: "TSStringKeyword",
+
+                  range: [131, 137],
+                  loc: {
+                    start: { column: 18, line: 6 },
+                    end: { column: 24, line: 6 },
+                  },
+                },
+
+                range: [129, 137],
+                loc: {
+                  start: { column: 16, line: 6 },
+                  end: { column: 24, line: 6 },
+                },
+              },
+
+              range: [127, 138],
+              loc: {
+                start: { column: 14, line: 6 },
+                end: { column: 25, line: 6 },
+              },
+            },
+
+            range: [115, 138],
+            loc: {
+              start: { column: 2, line: 6 },
+              end: { column: 25, line: 6 },
+            },
+          },
+        ],
+
+        range: [83, 140],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      declare: false,
+      decorators: Array [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: Array [],
+        name: "Foo",
+        optional: false,
+
+        range: [79, 82],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+      implements: Array [],
+      superClass: null,
+
+      range: [73, 140],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 141],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

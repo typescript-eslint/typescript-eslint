@@ -66,17 +66,16 @@ exports[`AST Fixtures expression TSSatisfiesExpression object-object-outer-paren
               TSPropertySignature {
                 type: 'TSPropertySignature',
                 computed: false,
--               export: false,
                 key: Identifier {
                   type: 'Identifier',
 -                 decorators: Array [],
                   name: 'prop',
 -                 optional: false,
 
-                  range: [32, 36],
+                  range: [33, 37],
                   loc: {
-                    start: { column: 32, line: 1 },
-                    end: { column: 36, line: 1 },
+                    start: { column: 33, line: 1 },
+                    end: { column: 37, line: 1 },
                   },
                 },
 -               optional: false,
@@ -87,39 +86,39 @@ exports[`AST Fixtures expression TSSatisfiesExpression object-object-outer-paren
                   typeAnnotation: TSStringKeyword {
                     type: 'TSStringKeyword',
 
-                    range: [38, 44],
+                    range: [39, 45],
                     loc: {
-                      start: { column: 38, line: 1 },
-                      end: { column: 44, line: 1 },
+                      start: { column: 39, line: 1 },
+                      end: { column: 45, line: 1 },
                     },
                   },
 
-                  range: [36, 44],
+                  range: [37, 45],
                   loc: {
-                    start: { column: 36, line: 1 },
-                    end: { column: 44, line: 1 },
+                    start: { column: 37, line: 1 },
+                    end: { column: 45, line: 1 },
                   },
                 },
 
-                range: [32, 44],
+                range: [33, 45],
                 loc: {
-                  start: { column: 32, line: 1 },
-                  end: { column: 44, line: 1 },
+                  start: { column: 33, line: 1 },
+                  end: { column: 45, line: 1 },
                 },
               },
             ],
 
-            range: [30, 46],
+            range: [31, 47],
             loc: {
-              start: { column: 30, line: 1 },
-              end: { column: 46, line: 1 },
+              start: { column: 31, line: 1 },
+              end: { column: 47, line: 1 },
             },
           },
 
-          range: [1, 46],
+          range: [0, 47],
           loc: {
-            start: { column: 1, line: 1 },
-            end: { column: 46, line: 1 },
+            start: { column: 0, line: 1 },
+            end: { column: 47, line: 1 },
           },
         },
 

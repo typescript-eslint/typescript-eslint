@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-utils';
 import type * as ts from 'typescript';
 
 import {
@@ -28,7 +28,6 @@ export default createRule({
     docs: {
       description:
         'Enforce `RegExp#exec` over `String#match` if no global flag is provided',
-      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {
@@ -39,8 +38,8 @@ export default createRule({
 
   create(context) {
     const globalScope = context.getScope();
-    const parserServices = getParserServices(context);
-    const typeChecker = parserServices.program.getTypeChecker();
+    const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
     /**
@@ -48,7 +47,7 @@ export default createRule({
      * @param node The node type to check.
      */
     function isStringType(type: ts.Type): boolean {
-      return getTypeName(typeChecker, type) === 'string';
+      return getTypeName(checker, type) === 'string';
     }
 
     /**
@@ -56,7 +55,7 @@ export default createRule({
      * @param node The node type to check.
      */
     function isRegExpType(type: ts.Type): boolean {
-      return getTypeName(typeChecker, type) === 'RegExp';
+      return getTypeName(checker, type) === 'RegExp';
     }
 
     function collectArgumentTypes(types: ts.Type[]): ArgumentType {
@@ -101,13 +100,7 @@ export default createRule({
         const [argumentNode] = callNode.arguments;
         const argumentValue = getStaticValue(argumentNode, globalScope);
 
-        if (
-          !isStringType(
-            typeChecker.getTypeAtLocation(
-              parserServices.esTreeNodeToTSNodeMap.get(objectNode),
-            ),
-          )
-        ) {
+        if (!isStringType(services.getTypeAtLocation(objectNode))) {
           return;
         }
 
@@ -123,7 +116,7 @@ export default createRule({
 
         if (
           argumentNode.type === AST_NODE_TYPES.Literal &&
-          typeof argumentNode.value == 'string'
+          typeof argumentNode.value === 'string'
         ) {
           const regExp = RegExp(argumentNode.value);
           return context.report({
@@ -138,11 +131,9 @@ export default createRule({
           });
         }
 
-        const argumentType = typeChecker.getTypeAtLocation(
-          parserServices.esTreeNodeToTSNodeMap.get(argumentNode),
-        );
+        const argumentType = services.getTypeAtLocation(argumentNode);
         const argumentTypes = collectArgumentTypes(
-          tsutils.unionTypeParts(argumentType),
+          tools.unionTypeParts(argumentType),
         );
         switch (argumentTypes) {
           case ArgumentType.RegExp:

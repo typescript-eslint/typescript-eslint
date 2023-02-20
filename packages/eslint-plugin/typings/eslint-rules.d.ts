@@ -141,6 +141,58 @@ declare module 'eslint/lib/rules/indent' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/key-spacing' {
+  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+  import type { RuleFunction } from '@typescript-eslint/utils/dist/ts-eslint';
+
+  type Options = [
+    {
+      beforeColon?: boolean;
+      afterColon?: boolean;
+      mode?: 'strict' | 'minimum';
+      align?:
+        | 'value'
+        | 'colon'
+        | {
+            on?: 'value' | 'colon';
+            beforeColon?: boolean;
+            afterColon?: boolean;
+            mode?: 'strict' | 'minimum';
+          };
+      singleLine?: {
+        beforeColon?: boolean;
+        afterColon?: boolean;
+        mode?: 'strict' | 'minimum';
+      };
+      multiLine?: {
+        beforeColon?: boolean;
+        afterColon?: boolean;
+        mode?: 'strict' | 'minimum';
+        align?:
+          | 'value'
+          | 'colon'
+          | {
+              on?: 'value' | 'colon';
+              beforeColon?: boolean;
+              afterColon?: boolean;
+              mode?: 'strict' | 'minimum';
+            };
+      };
+    },
+  ];
+  type MessageIds = 'extraKey' | 'extraValue' | 'missingKey' | 'missingValue';
+
+  const rule: TSESLint.RuleModule<
+    MessageIds,
+    Options,
+    {
+      ObjectExpression: RuleFunction<TSESTree.ObjectExpression>;
+      Property: RuleFunction<TSESTree.Property>;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/keyword-spacing' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
   import type { RuleFunction } from '@typescript-eslint/utils/dist/ts-eslint';
@@ -604,6 +656,21 @@ declare module 'eslint/lib/rules/quotes' {
     {
       Literal(node: TSESTree.Literal): void;
       TemplateLiteral(node: TSESTree.TemplateLiteral): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/block-spacing' {
+  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+  const rule: TSESLint.RuleModule<
+    'missing' | 'extra',
+    ['always' | 'never'],
+    {
+      BlockStatement(node: TSESTree.BlockStatement): void;
+      StaticBlock(node: TSESTree.StaticBlock): void;
+      SwitchStatement(node: TSESTree.SwitchStatement): void;
     }
   >;
   export = rule;

@@ -12,17 +12,16 @@ import type {
 
 interface TSMethodSignatureBase extends BaseNode {
   type: AST_NODE_TYPES.TSMethodSignature;
-  key: PropertyName;
-  computed: boolean;
-  params: Parameter[];
-  optional: boolean;
-  returnType: TSTypeAnnotation | undefined;
-  readonly: boolean;
-  typeParameters: TSTypeParameterDeclaration | undefined;
   accessibility: Accessibility | undefined;
-  export: boolean;
-  static: boolean;
+  computed: boolean;
+  key: PropertyName;
   kind: 'get' | 'method' | 'set';
+  optional: boolean;
+  params: Parameter[];
+  readonly: boolean;
+  returnType: TSTypeAnnotation | undefined;
+  static: boolean;
+  typeParameters: TSTypeParameterDeclaration | undefined;
 }
 
 export interface TSMethodSignatureComputedName extends TSMethodSignatureBase {

@@ -30,6 +30,7 @@ Program {
           end: { column: 16, line: 1 },
         },
       },
+      kind: "module",
 
       range: [0, 19],
       loc: {

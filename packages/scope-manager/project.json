@@ -6,14 +6,14 @@
   "targets": {
     "build": {
       "executor": "nx:run-commands",
-      "outputs": ["{projectRoot}/dist", "{projectRoot}/_ts3.4"],
+      "outputs": ["{projectRoot}/dist", "{projectRoot}/_ts4.2"],
       "options": {
         "parallel": false,
         "cwd": "packages/scope-manager",
         "commands": [
-          "rimraf _ts3.4",
+          "rimraf _ts4.2",
           "tsc -b tsconfig.build.json",
-          "downlevel-dts dist _ts3.4/dist"
+          "downlevel-dts dist _ts4.2/dist --to=4.2"
         ]
       }
     },
@@ -36,6 +36,7 @@
         "commands": [
           "tsc -b tsconfig.build.json --clean",
           "rimraf dist",
+          "rimraf _ts4.2",
           "rimraf _ts3.4",
           "rimraf coverage"
         ]
@@ -53,7 +54,8 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/scope-manager/**/*.ts"]
+        "lintFilePatterns": ["packages/scope-manager/**/*.{mts,cts,ts,tsx}"],
+        "ignorePath": ".eslintignore"
       }
     },
     "test": {
@@ -69,9 +71,7 @@
       "options": {
         "parallel": false,
         "cwd": "packages/scope-manager",
-        "commands": [
-          "../../node_modules/.bin/ts-node --files --transpile-only tools/generate-lib.ts"
-        ]
+        "commands": ["yarn tsx tools/generate-lib.ts"]
       }
     }
   },

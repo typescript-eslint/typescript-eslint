@@ -22,7 +22,6 @@ export default createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before and after commas',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
@@ -68,7 +67,7 @@ export default createRule<Options, MessageIds>({
       let previousToken = sourceCode.getFirstToken(node);
       for (const element of node.elements) {
         let token: TSESTree.Token | null;
-        if (element === null) {
+        if (element == null) {
           token = sourceCode.getTokenAfter(previousToken!);
           if (token && isCommaToken(token)) {
             ignoredTokens.add(token);

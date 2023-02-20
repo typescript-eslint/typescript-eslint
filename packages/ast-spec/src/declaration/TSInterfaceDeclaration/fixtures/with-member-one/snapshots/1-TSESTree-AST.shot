@@ -12,7 +12,6 @@ Program {
           TSPropertySignature {
             type: "TSPropertySignature",
             computed: false,
-            export: false,
             key: Identifier {
               type: "Identifier",
               decorators: Array [],

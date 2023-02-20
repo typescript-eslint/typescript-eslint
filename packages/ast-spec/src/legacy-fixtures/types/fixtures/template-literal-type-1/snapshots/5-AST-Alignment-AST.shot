@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types template-literal-type-1 AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSTypeAliasDeclaration {
+        type: 'TSTypeAliasDeclaration',
+-       declare: false,
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'T',
+-         optional: false,
+
+          range: [78, 79],
+          loc: {
+            start: { column: 5, line: 3 },
+            end: { column: 6, line: 3 },
+          },
+        },
+        typeAnnotation: TSLiteralType {
+          type: 'TSLiteralType',
+          literal: TemplateLiteral {
+            type: 'TemplateLiteral',
+            expressions: Array [],
+            quasis: Array [
+              TemplateElement {
+                type: 'TemplateElement',
+                tail: true,
+                value: Object {
+                  'cooked': 'foo',
+                  'raw': 'foo',
+                },
+
+                range: [82, 87],
+                loc: {
+                  start: { column: 9, line: 3 },
+                  end: { column: 14, line: 3 },
+                },
+              },
+            ],
+
+            range: [82, 87],
+            loc: {
+              start: { column: 9, line: 3 },
+              end: { column: 14, line: 3 },
+            },
+          },
+
+          range: [82, 87],
+          loc: {
+            start: { column: 9, line: 3 },
+            end: { column: 14, line: 3 },
+          },
+        },
+
+        range: [73, 88],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 15, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 89],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

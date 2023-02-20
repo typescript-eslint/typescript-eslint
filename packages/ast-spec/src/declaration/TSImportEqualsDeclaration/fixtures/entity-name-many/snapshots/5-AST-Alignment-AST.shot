@@ -23,7 +23,7 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration entity-name-many AST
           },
         },
         importKind: 'value',
-        isExport: false,
++       isExport: false,
         moduleReference: TSQualifiedName {
           type: 'TSQualifiedName',
           left: TSQualifiedName {

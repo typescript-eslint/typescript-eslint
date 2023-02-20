@@ -19,7 +19,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow explicit type declarations for variables or parameters initialized to a number, string, or boolean',
-      recommended: 'error',
+      recommended: 'stylistic',
     },
     fixable: 'code',
     messages: {
@@ -147,7 +147,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         case AST_NODE_TYPES.TSNullKeyword:
-          return init.type === AST_NODE_TYPES.Literal && init.value === null;
+          return init.type === AST_NODE_TYPES.Literal && init.value == null;
 
         case AST_NODE_TYPES.TSStringKeyword:
           return (

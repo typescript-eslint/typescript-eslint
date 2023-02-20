@@ -1,0 +1,61 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics import-type-empty TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ImportDeclaration {
+      type: "ImportDeclaration",
+      assertions: Array [],
+      importKind: "value",
+      source: Literal {
+        type: "Literal",
+        raw: "'./foo'",
+        value: "./foo",
+
+        range: [145, 152],
+        loc: {
+          start: { column: 17, line: 4 },
+          end: { column: 24, line: 4 },
+        },
+      },
+      specifiers: Array [
+        ImportDefaultSpecifier {
+          type: "ImportDefaultSpecifier",
+          local: Identifier {
+            type: "Identifier",
+            decorators: Array [],
+            name: "type",
+            optional: false,
+
+            range: [135, 139],
+            loc: {
+              start: { column: 7, line: 4 },
+              end: { column: 11, line: 4 },
+            },
+          },
+
+          range: [135, 139],
+          loc: {
+            start: { column: 7, line: 4 },
+            end: { column: 11, line: 4 },
+          },
+        },
+      ],
+
+      range: [128, 153],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 25, line: 4 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [128, 154],
+  loc: {
+    start: { column: 0, line: 4 },
+    end: { column: 0, line: 5 },
+  },
+}
+`;

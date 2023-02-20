@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-utils';
 
 import * as util from '../util';
 import { getThisExpression } from '../util';
@@ -16,7 +16,7 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description: 'Disallow member access on a value with type `any`',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -33,10 +33,9 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
-    const checker = program.getTypeChecker();
-    const compilerOptions = program.getCompilerOptions();
-    const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
+    const services = util.getParserServices(context);
+    const compilerOptions = services.program.getCompilerOptions();
+    const isNoImplicitThis = tools.isStrictCompilerOptionEnabled(
       compilerOptions,
       'noImplicitThis',
     );
@@ -60,8 +59,7 @@ export default util.createRule({
         }
       }
 
-      const tsNode = esTreeNodeToTSNodeMap.get(node.object);
-      const type = checker.getTypeAtLocation(tsNode);
+      const type = services.getTypeAtLocation(node.object);
       const state = util.isTypeAnyType(type) ? State.Unsafe : State.Safe;
       stateCache.set(node, state);
 
@@ -78,10 +76,7 @@ export default util.createRule({
           if (
             thisExpression &&
             util.isTypeAnyType(
-              util.getConstrainedTypeAtLocation(
-                checker,
-                esTreeNodeToTSNodeMap.get(thisExpression),
-              ),
+              util.getConstrainedTypeAtLocation(services, thisExpression),
             )
           ) {
             messageId = 'unsafeThisMemberExpression';
@@ -119,8 +114,7 @@ export default util.createRule({
           return;
         }
 
-        const tsNode = esTreeNodeToTSNodeMap.get(node);
-        const type = checker.getTypeAtLocation(tsNode);
+        const type = services.getTypeAtLocation(node);
 
         if (util.isTypeAnyType(type)) {
           const propertyName = sourceCode.getText(node);

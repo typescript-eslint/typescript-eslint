@@ -3,7 +3,6 @@ import type * as ts from 'typescript';
 // Workaround to support new TS version features for consumers on old TS versions
 // Eg: https://github.com/typescript-eslint/typescript-eslint/issues/2388, https://github.com/typescript-eslint/typescript-eslint/issues/2784
 declare module 'typescript' {
-  /* eslint-disable @typescript-eslint/no-empty-interface */
   // added in TS 4.0
   export interface NamedTupleMember extends ts.Node {}
   // added in TS 4.1
@@ -16,7 +15,6 @@ declare module 'typescript' {
   export interface AssertEntry extends ts.Node {}
   // added in TS 4.9
   export interface SatisfiesExpression extends ts.Node {}
-  /* eslint-enable @typescript-eslint/no-empty-interface */
 }
 
 export type TSToken = ts.Token<ts.SyntaxKind>;

@@ -33,6 +33,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-id-literal AST Alig
             end: { column: 10, line: 1 },
           },
         },
+-       kind: 'module',
 
         range: [0, 13],
         loc: {

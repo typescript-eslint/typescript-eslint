@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics type-reference-comments Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "mBuffers",
+
+              range: [99, 107],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 10, line: 4 },
+              },
+            },
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTypeReference {
+                type: "TSTypeReference",
+                typeName: TSQualifiedName {
+                  type: "TSQualifiedName",
+                  left: Identifier {
+                    type: "Identifier",
+                    name: "interop",
+
+                    range: [109, 116],
+                    loc: {
+                      start: { column: 12, line: 4 },
+                      end: { column: 19, line: 4 },
+                    },
+                  },
+                  right: Identifier {
+                    type: "Identifier",
+                    name: "Reference",
+
+                    range: [117, 126],
+                    loc: {
+                      start: { column: 20, line: 4 },
+                      end: { column: 29, line: 4 },
+                    },
+                  },
+
+                  range: [109, 126],
+                  loc: {
+                    start: { column: 12, line: 4 },
+                    end: { column: 29, line: 4 },
+                  },
+                },
+                typeParameters: TSTypeParameterInstantiation {
+                  type: "TSTypeParameterInstantiation",
+                  params: Array [
+                    TSAnyKeyword {
+                      type: "TSAnyKeyword",
+
+                      range: [127, 130],
+                      loc: {
+                        start: { column: 30, line: 4 },
+                        end: { column: 33, line: 4 },
+                      },
+                    },
+                  ],
+
+                  range: [126, 147],
+                  loc: {
+                    start: { column: 29, line: 4 },
+                    end: { column: 50, line: 4 },
+                  },
+                },
+
+                range: [109, 147],
+                loc: {
+                  start: { column: 12, line: 4 },
+                  end: { column: 50, line: 4 },
+                },
+              },
+
+              range: [107, 147],
+              loc: {
+                start: { column: 10, line: 4 },
+                end: { column: 50, line: 4 },
+              },
+            },
+            value: null,
+
+            range: [99, 148],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 51, line: 4 },
+            },
+          },
+        ],
+
+        range: [95, 150],
+        loc: {
+          start: { column: 22, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "AudioBufferList",
+
+        range: [79, 94],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 21, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 150],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 151],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

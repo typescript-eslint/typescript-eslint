@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures class-decorators class-decorator TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [],
+
+        range: [91, 93],
+        loc: {
+          start: { column: 10, line: 4 },
+          end: { column: 12, line: 4 },
+        },
+      },
+      declare: false,
+      decorators: Array [
+        Decorator {
+          type: "Decorator",
+          expression: Identifier {
+            type: "Identifier",
+            decorators: Array [],
+            name: "sealed",
+            optional: false,
+
+            range: [74, 80],
+            loc: {
+              start: { column: 1, line: 3 },
+              end: { column: 7, line: 3 },
+            },
+          },
+
+          range: [73, 80],
+          loc: {
+            start: { column: 0, line: 3 },
+            end: { column: 7, line: 3 },
+          },
+        },
+      ],
+      id: Identifier {
+        type: "Identifier",
+        decorators: Array [],
+        name: "Qux",
+        optional: false,
+
+        range: [87, 90],
+        loc: {
+          start: { column: 6, line: 4 },
+          end: { column: 9, line: 4 },
+        },
+      },
+      implements: Array [],
+      superClass: null,
+
+      range: [73, 93],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 12, line: 4 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 94],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 5 },
+  },
+}
+`;

@@ -36,7 +36,7 @@ function stringifyNode(
 function getCustomMessage(
   bannedType: null | string | { message?: string; fixWith?: string },
 ): string {
-  if (bannedType === null) {
+  if (bannedType == null) {
     return '';
   }
 
@@ -120,7 +120,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow certain types',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     fixable: 'code',
     messages: {

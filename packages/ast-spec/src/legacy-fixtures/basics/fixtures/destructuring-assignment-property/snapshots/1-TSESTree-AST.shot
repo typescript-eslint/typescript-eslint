@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics destructuring-assignment-property TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: Array [],
+
+        range: [106, 108],
+        loc: {
+          start: { column: 33, line: 3 },
+          end: { column: 35, line: 3 },
+        },
+      },
+      declare: false,
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: Array [],
+        name: "Foo",
+        optional: false,
+
+        range: [82, 85],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 12, line: 3 },
+        },
+      },
+      params: Array [
+        AssignmentPattern {
+          type: "AssignmentPattern",
+          decorators: Array [],
+          left: ObjectPattern {
+            type: "ObjectPattern",
+            decorators: Array [],
+            optional: false,
+            properties: Array [
+              Property {
+                type: "Property",
+                computed: false,
+                key: Identifier {
+                  type: "Identifier",
+                  decorators: Array [],
+                  name: "foo",
+                  optional: false,
+
+                  range: [88, 91],
+                  loc: {
+                    start: { column: 15, line: 3 },
+                    end: { column: 18, line: 3 },
+                  },
+                },
+                kind: "init",
+                method: false,
+                optional: false,
+                shorthand: true,
+                value: AssignmentPattern {
+                  type: "AssignmentPattern",
+                  decorators: Array [],
+                  left: Identifier {
+                    type: "Identifier",
+                    decorators: Array [],
+                    name: "foo",
+                    optional: false,
+
+                    range: [88, 91],
+                    loc: {
+                      start: { column: 15, line: 3 },
+                      end: { column: 18, line: 3 },
+                    },
+                  },
+                  optional: false,
+                  right: ArrayExpression {
+                    type: "ArrayExpression",
+                    elements: Array [],
+
+                    range: [94, 96],
+                    loc: {
+                      start: { column: 21, line: 3 },
+                      end: { column: 23, line: 3 },
+                    },
+                  },
+
+                  range: [88, 96],
+                  loc: {
+                    start: { column: 15, line: 3 },
+                    end: { column: 23, line: 3 },
+                  },
+                },
+
+                range: [88, 96],
+                loc: {
+                  start: { column: 15, line: 3 },
+                  end: { column: 23, line: 3 },
+                },
+              },
+            ],
+
+            range: [86, 98],
+            loc: {
+              start: { column: 13, line: 3 },
+              end: { column: 25, line: 3 },
+            },
+          },
+          optional: false,
+          right: Identifier {
+            type: "Identifier",
+            decorators: Array [],
+            name: "bar",
+            optional: false,
+
+            range: [101, 104],
+            loc: {
+              start: { column: 28, line: 3 },
+              end: { column: 31, line: 3 },
+            },
+          },
+
+          range: [86, 104],
+          loc: {
+            start: { column: 13, line: 3 },
+            end: { column: 31, line: 3 },
+          },
+        },
+      ],
+
+      range: [73, 108],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 35, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 109],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

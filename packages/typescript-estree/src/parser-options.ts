@@ -1,4 +1,7 @@
-import type { DebugLevel } from '@typescript-eslint/types';
+import type {
+  CacheDurationSeconds,
+  DebugLevel,
+} from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
 import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
@@ -117,10 +120,11 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   preserveNodeMaps?: boolean;
 
   /**
-   * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s).
+   * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s),
+   * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
    */
-  project?: string | string[];
+  project?: string | string[] | true | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -141,7 +145,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * This overrides any program or programs that would have been computed from the `project` option.
    * All linted files must be part of the provided program(s).
    */
-  programs?: ts.Program[];
+  programs?: ts.Program[] | null;
 
   /**
    * @deprecated - this flag will be removed in the next major.
@@ -163,6 +167,25 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    */
   allowAutomaticSingleRunInference?: boolean;
 
+  /**
+   * Granular control of the expiry lifetime of our internal caches.
+   * You can specify the number of seconds as an integer number, or the string
+   * 'Infinity' if you never want the cache to expire.
+   *
+   * By default cache entries will be evicted after 30 seconds, or will persist
+   * indefinitely if `allowAutomaticSingleRunInference = true` AND the parser
+   * infers that it is a single run.
+   */
+  cacheLifetime?: {
+    /**
+     * Glob resolution for `parserOptions.project` values.
+     */
+    glob?: CacheDurationSeconds;
+  };
+
+  /**
+   * Path to a file exporting a custom `ModuleResolver`.
+   */
   moduleResolver?: string;
 }
 
@@ -182,12 +205,23 @@ export interface ParserWeakMapESTreeToTSNode<
   has(key: unknown): boolean;
 }
 
-export interface ParserServices {
-  program: ts.Program;
+export interface ParserServicesNodeMaps {
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode | TSToken, TSESTree.Node>;
-  hasFullTypeInformation: boolean;
 }
+export interface ParserServicesWithTypeInformation
+  extends ParserServicesNodeMaps {
+  program: ts.Program;
+  getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
+  getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
+}
+export interface ParserServicesWithoutTypeInformation
+  extends ParserServicesNodeMaps {
+  program: null;
+}
+export type ParserServices =
+  | ParserServicesWithTypeInformation
+  | ParserServicesWithoutTypeInformation;
 
 export interface ModuleResolver {
   version: 1;

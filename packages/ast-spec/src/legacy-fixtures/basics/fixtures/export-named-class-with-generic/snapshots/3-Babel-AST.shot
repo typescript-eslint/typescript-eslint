@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics export-named-class-with-generic Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: Array [],
+      declaration: ClassDeclaration {
+        type: "ClassDeclaration",
+        body: ClassBody {
+          type: "ClassBody",
+          body: Array [],
+
+          range: [93, 95],
+          loc: {
+            start: { column: 20, line: 3 },
+            end: { column: 22, line: 3 },
+          },
+        },
+        id: Identifier {
+          type: "Identifier",
+          name: "Foo",
+
+          range: [86, 89],
+          loc: {
+            start: { column: 13, line: 3 },
+            end: { column: 16, line: 3 },
+          },
+        },
+        superClass: null,
+        typeParameters: TSTypeParameterDeclaration {
+          type: "TSTypeParameterDeclaration",
+          params: Array [
+            TSTypeParameter {
+              type: "TSTypeParameter",
+              name: "T",
+
+              range: [90, 91],
+              loc: {
+                start: { column: 17, line: 3 },
+                end: { column: 18, line: 3 },
+              },
+            },
+          ],
+
+          range: [89, 92],
+          loc: {
+            start: { column: 16, line: 3 },
+            end: { column: 19, line: 3 },
+          },
+        },
+
+        range: [80, 95],
+        loc: {
+          start: { column: 7, line: 3 },
+          end: { column: 22, line: 3 },
+        },
+      },
+      exportKind: "value",
+      source: null,
+      specifiers: Array [],
+
+      range: [73, 95],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 22, line: 3 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 96],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

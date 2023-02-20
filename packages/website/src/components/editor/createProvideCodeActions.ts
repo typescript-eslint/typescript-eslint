@@ -11,7 +11,6 @@ export function createProvideCodeActions(
       model,
       _range,
       context,
-      _token,
     ): Monaco.languages.ProviderResult<Monaco.languages.CodeActionList> {
       if (context.only !== 'quickfix') {
         return {

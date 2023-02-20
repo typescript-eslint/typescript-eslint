@@ -169,7 +169,7 @@ class ClassVisitor extends Visitor {
        * }
        */
       if (
-        keyName !== null &&
+        keyName != null &&
         this.#classNode.body.body.find(
           (node): node is TSESTree.MethodDefinition =>
             node !== methodNode &&

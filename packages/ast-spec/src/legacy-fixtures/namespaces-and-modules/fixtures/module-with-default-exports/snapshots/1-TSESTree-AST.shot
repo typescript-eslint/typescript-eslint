@@ -1,0 +1,225 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default-exports TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSModuleDeclaration {
+      type: "TSModuleDeclaration",
+      body: TSModuleBlock {
+        type: "TSModuleBlock",
+        body: Array [
+          ExportDefaultDeclaration {
+            type: "ExportDefaultDeclaration",
+            declaration: ClassDeclaration {
+              type: "ClassDeclaration",
+              abstract: false,
+              body: ClassBody {
+                type: "ClassBody",
+                body: Array [
+                  MethodDefinition {
+                    type: "MethodDefinition",
+                    computed: false,
+                    decorators: Array [],
+                    key: Identifier {
+                      type: "Identifier",
+                      decorators: Array [],
+                      name: "method",
+                      optional: false,
+
+                      range: [119, 125],
+                      loc: {
+                        start: { column: 4, line: 5 },
+                        end: { column: 10, line: 5 },
+                      },
+                    },
+                    kind: "method",
+                    optional: false,
+                    override: false,
+                    static: false,
+                    value: FunctionExpression {
+                      type: "FunctionExpression",
+                      async: false,
+                      body: BlockStatement {
+                        type: "BlockStatement",
+                        body: Array [],
+
+                        range: [131, 133],
+                        loc: {
+                          start: { column: 16, line: 5 },
+                          end: { column: 18, line: 5 },
+                        },
+                      },
+                      declare: false,
+                      expression: false,
+                      generator: false,
+                      id: null,
+                      params: Array [],
+                      returnType: TSTypeAnnotation {
+                        type: "TSTypeAnnotation",
+                        typeAnnotation: TSTypeReference {
+                          type: "TSTypeReference",
+                          typeName: Identifier {
+                            type: "Identifier",
+                            decorators: Array [],
+                            name: "C",
+                            optional: false,
+
+                            range: [129, 130],
+                            loc: {
+                              start: { column: 14, line: 5 },
+                              end: { column: 15, line: 5 },
+                            },
+                          },
+
+                          range: [129, 130],
+                          loc: {
+                            start: { column: 14, line: 5 },
+                            end: { column: 15, line: 5 },
+                          },
+                        },
+
+                        range: [127, 130],
+                        loc: {
+                          start: { column: 12, line: 5 },
+                          end: { column: 15, line: 5 },
+                        },
+                      },
+
+                      range: [125, 133],
+                      loc: {
+                        start: { column: 10, line: 5 },
+                        end: { column: 18, line: 5 },
+                      },
+                    },
+
+                    range: [119, 133],
+                    loc: {
+                      start: { column: 4, line: 5 },
+                      end: { column: 18, line: 5 },
+                    },
+                  },
+                ],
+
+                range: [113, 137],
+                loc: {
+                  start: { column: 25, line: 4 },
+                  end: { column: 3, line: 6 },
+                },
+              },
+              declare: false,
+              decorators: Array [],
+              id: Identifier {
+                type: "Identifier",
+                decorators: Array [],
+                name: "C",
+                optional: false,
+
+                range: [111, 112],
+                loc: {
+                  start: { column: 23, line: 4 },
+                  end: { column: 24, line: 4 },
+                },
+              },
+              implements: Array [],
+              superClass: null,
+
+              range: [105, 137],
+              loc: {
+                start: { column: 17, line: 4 },
+                end: { column: 3, line: 6 },
+              },
+            },
+            exportKind: "value",
+
+            range: [90, 137],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 3, line: 6 },
+            },
+          },
+          ExportDefaultDeclaration {
+            type: "ExportDefaultDeclaration",
+            declaration: FunctionDeclaration {
+              type: "FunctionDeclaration",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [],
+
+                range: [170, 172],
+                loc: {
+                  start: { column: 32, line: 7 },
+                  end: { column: 34, line: 7 },
+                },
+              },
+              declare: false,
+              expression: false,
+              generator: false,
+              id: Identifier {
+                type: "Identifier",
+                decorators: Array [],
+                name: "bar",
+                optional: false,
+
+                range: [164, 167],
+                loc: {
+                  start: { column: 26, line: 7 },
+                  end: { column: 29, line: 7 },
+                },
+              },
+              params: Array [],
+
+              range: [155, 172],
+              loc: {
+                start: { column: 17, line: 7 },
+                end: { column: 34, line: 7 },
+              },
+            },
+            exportKind: "value",
+
+            range: [140, 172],
+            loc: {
+              start: { column: 2, line: 7 },
+              end: { column: 34, line: 7 },
+            },
+          },
+        ],
+
+        range: [86, 174],
+        loc: {
+          start: { column: 13, line: 3 },
+          end: { column: 1, line: 8 },
+        },
+      },
+      declare: false,
+      global: false,
+      id: Literal {
+        type: "Literal",
+        raw: "'foo'",
+        value: "foo",
+
+        range: [80, 85],
+        loc: {
+          start: { column: 7, line: 3 },
+          end: { column: 12, line: 3 },
+        },
+      },
+      kind: "module",
+
+      range: [73, 174],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 8 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 175],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 9 },
+  },
+}
+`;

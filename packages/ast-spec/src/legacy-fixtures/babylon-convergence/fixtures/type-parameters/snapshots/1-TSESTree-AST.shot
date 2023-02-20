@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures babylon-convergence type-parameters TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: Array [],
+
+        range: [113, 115],
+        loc: {
+          start: { column: 40, line: 3 },
+          end: { column: 42, line: 3 },
+        },
+      },
+      declare: false,
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: Array [],
+        name: "f",
+        optional: false,
+
+        range: [82, 83],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 10, line: 3 },
+        },
+      },
+      params: Array [],
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: Array [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            constraint: TSObjectKeyword {
+              type: "TSObjectKeyword",
+
+              range: [94, 100],
+              loc: {
+                start: { column: 21, line: 3 },
+                end: { column: 27, line: 3 },
+              },
+            },
+            default: TSObjectKeyword {
+              type: "TSObjectKeyword",
+
+              range: [103, 109],
+              loc: {
+                start: { column: 30, line: 3 },
+                end: { column: 36, line: 3 },
+              },
+            },
+            in: false,
+            name: Identifier {
+              type: "Identifier",
+              decorators: Array [],
+              name: "T",
+              optional: false,
+
+              range: [84, 85],
+              loc: {
+                start: { column: 11, line: 3 },
+                end: { column: 12, line: 3 },
+              },
+            },
+            out: false,
+
+            range: [84, 109],
+            loc: {
+              start: { column: 11, line: 3 },
+              end: { column: 36, line: 3 },
+            },
+          },
+        ],
+
+        range: [83, 110],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 37, line: 3 },
+        },
+      },
+
+      range: [73, 115],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 42, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 116],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

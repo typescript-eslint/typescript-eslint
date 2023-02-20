@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics nested-type-arguments TSESTree - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "var",
+
+    range: [73, 76],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 3, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "nestedArray",
+
+    range: [77, 88],
+    loc: {
+      start: { column: 4, line: 3 },
+      end: { column: 15, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [88, 89],
+    loc: {
+      start: { column: 15, line: 3 },
+      end: { column: 16, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Array",
+
+    range: [90, 95],
+    loc: {
+      start: { column: 17, line: 3 },
+      end: { column: 22, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "<",
+
+    range: [95, 96],
+    loc: {
+      start: { column: 22, line: 3 },
+      end: { column: 23, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Array",
+
+    range: [96, 101],
+    loc: {
+      start: { column: 23, line: 3 },
+      end: { column: 28, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "<",
+
+    range: [101, 102],
+    loc: {
+      start: { column: 28, line: 3 },
+      end: { column: 29, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Array",
+
+    range: [102, 107],
+    loc: {
+      start: { column: 29, line: 3 },
+      end: { column: 34, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "<",
+
+    range: [107, 108],
+    loc: {
+      start: { column: 34, line: 3 },
+      end: { column: 35, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "string",
+
+    range: [108, 114],
+    loc: {
+      start: { column: 35, line: 3 },
+      end: { column: 41, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ">",
+
+    range: [114, 115],
+    loc: {
+      start: { column: 41, line: 3 },
+      end: { column: 42, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ">",
+
+    range: [115, 116],
+    loc: {
+      start: { column: 42, line: 3 },
+      end: { column: 43, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ">",
+
+    range: [116, 117],
+    loc: {
+      start: { column: 43, line: 3 },
+      end: { column: 44, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [117, 118],
+    loc: {
+      start: { column: 44, line: 3 },
+      end: { column: 45, line: 3 },
+    },
+  },
+]
+`;

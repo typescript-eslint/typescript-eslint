@@ -4,7 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> & {
-  [K in Key]-?: NonNullable<Base[Key]>;
+  [K in Key]?: NonNullable<Base[Key]>;
 };
 type TypeParameterWithConstraint = MakeRequired<
   TSESTree.TSTypeParameter,
@@ -16,7 +16,7 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallow unnecessary constraints on generic types',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     hasSuggestions: true,
     messages: {

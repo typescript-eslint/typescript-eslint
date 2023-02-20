@@ -3,6 +3,7 @@ import type { Program } from 'typescript';
 import type { Lib } from './lib';
 
 type DebugLevel = boolean | ('typescript-eslint' | 'eslint' | 'typescript')[];
+type CacheDurationSeconds = number | 'Infinity';
 
 type EcmaVersion =
   | 3
@@ -50,8 +51,8 @@ interface ParserOptions {
   extraFileExtensions?: string[];
   filePath?: string;
   loc?: boolean;
-  program?: Program;
-  project?: string | string[];
+  program?: Program | null;
+  project?: string | string[] | true | null;
   projectFolderIgnoreList?: (string | RegExp)[];
   range?: boolean;
   sourceType?: SourceType;
@@ -59,7 +60,17 @@ interface ParserOptions {
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
   moduleResolver?: string;
+  cacheLifetime?: {
+    glob?: CacheDurationSeconds;
+  };
+
   [additionalProperties: string]: unknown;
 }
 
-export { DebugLevel, EcmaVersion, ParserOptions, SourceType };
+export {
+  CacheDurationSeconds,
+  DebugLevel,
+  EcmaVersion,
+  ParserOptions,
+  SourceType,
+};

@@ -38,6 +38,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-id-qualified-name A
                 end: { column: 12, line: 1 },
               },
             },
+-           kind: 'module',
 
             range: [11, 15],
             loc: {
@@ -59,6 +60,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-id-qualified-name A
               end: { column: 10, line: 1 },
             },
           },
+-         kind: 'module',
 
           range: [9, 15],
           loc: {
@@ -80,6 +82,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-id-qualified-name A
             end: { column: 8, line: 1 },
           },
         },
+-       kind: 'module',
 
         range: [0, 15],
         loc: {

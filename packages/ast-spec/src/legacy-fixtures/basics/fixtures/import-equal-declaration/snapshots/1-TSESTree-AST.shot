@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics import-equal-declaration TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSImportEqualsDeclaration {
+      type: "TSImportEqualsDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        decorators: Array [],
+        name: "foo",
+        optional: false,
+
+        range: [80, 83],
+        loc: {
+          start: { column: 7, line: 3 },
+          end: { column: 10, line: 3 },
+        },
+      },
+      importKind: "value",
+      moduleReference: TSExternalModuleReference {
+        type: "TSExternalModuleReference",
+        expression: Literal {
+          type: "Literal",
+          raw: "'bar'",
+          value: "bar",
+
+          range: [94, 99],
+          loc: {
+            start: { column: 21, line: 3 },
+            end: { column: 26, line: 3 },
+          },
+        },
+
+        range: [86, 100],
+        loc: {
+          start: { column: 13, line: 3 },
+          end: { column: 27, line: 3 },
+        },
+      },
+
+      range: [73, 101],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 28, line: 3 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 102],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

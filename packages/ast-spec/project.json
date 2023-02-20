@@ -10,13 +10,14 @@
         "cwd": "packages/ast-spec",
         "commands": ["yarn build"]
       },
-      "outputs": ["packages/ast-spec/dist/**/*.ts"]
+      "outputs": ["{projectRoot}/dist/**/*.ts"]
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/ast-spec/**/*.ts"]
+        "lintFilePatterns": ["packages/ast-spec/**/*.{mts,cts,ts,tsx}"],
+        "ignorePath": ".eslintignore"
       }
     }
   }

@@ -19,7 +19,6 @@ Program {
         },
       },
       importKind: "value",
-      isExport: false,
       moduleReference: Identifier {
         type: "Identifier",
         decorators: Array [],

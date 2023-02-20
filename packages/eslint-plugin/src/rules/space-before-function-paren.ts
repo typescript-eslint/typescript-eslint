@@ -22,7 +22,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before function parenthesis',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
@@ -140,7 +139,8 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      let leftToken: TSESTree.Token, rightToken: TSESTree.Token;
+      let leftToken: TSESTree.Token;
+      let rightToken: TSESTree.Token;
       if (node.typeParameters) {
         leftToken = sourceCode.getLastToken(node.typeParameters)!;
         rightToken = sourceCode.getTokenAfter(leftToken)!;

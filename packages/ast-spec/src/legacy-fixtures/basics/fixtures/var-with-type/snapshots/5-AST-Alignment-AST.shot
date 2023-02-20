@@ -1,0 +1,148 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics var-with-type AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'name',
+-             optional: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [83, 89],
+                  loc: {
+                    start: { column: 10, line: 3 },
+                    end: { column: 16, line: 3 },
+                  },
+                },
+
+                range: [81, 89],
+                loc: {
+                  start: { column: 8, line: 3 },
+                  end: { column: 16, line: 3 },
+                },
+              },
+
+              range: [77, 89],
+              loc: {
+                start: { column: 4, line: 3 },
+                end: { column: 16, line: 3 },
+              },
+            },
+            init: Literal {
+              type: 'Literal',
+              raw: '\\\\'Nicholas\\\\'',
+              value: 'Nicholas',
+
+              range: [92, 102],
+              loc: {
+                start: { column: 19, line: 3 },
+                end: { column: 29, line: 3 },
+              },
+            },
+
+            range: [77, 102],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 29, line: 3 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'var',
+
+        range: [73, 103],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 30, line: 3 },
+        },
+      },
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'foo',
+-             optional: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [113, 119],
+                  loc: {
+                    start: { column: 9, line: 4 },
+                    end: { column: 15, line: 4 },
+                  },
+                },
+
+                range: [111, 119],
+                loc: {
+                  start: { column: 7, line: 4 },
+                  end: { column: 15, line: 4 },
+                },
+              },
+
+              range: [108, 119],
+              loc: {
+                start: { column: 4, line: 4 },
+                end: { column: 15, line: 4 },
+              },
+            },
+            init: Literal {
+              type: 'Literal',
+              raw: '\\\\'Bar\\\\'',
+              value: 'Bar',
+
+              range: [122, 127],
+              loc: {
+                start: { column: 18, line: 4 },
+                end: { column: 23, line: 4 },
+              },
+            },
+
+            range: [108, 127],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 23, line: 4 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'var',
+
+        range: [104, 128],
+        loc: {
+          start: { column: 0, line: 4 },
+          end: { column: 24, line: 4 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 129],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 5 },
+    },
+  }"
+`;

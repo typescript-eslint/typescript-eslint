@@ -1,0 +1,138 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics directive-in-module TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSModuleDeclaration {
+      type: "TSModuleDeclaration",
+      body: TSModuleBlock {
+        type: "TSModuleBlock",
+        body: Array [
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            directive: "use strict",
+            expression: Literal {
+              type: "Literal",
+              raw: "'use strict'",
+              value: "use strict",
+
+              range: [88, 100],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 14, line: 4 },
+              },
+            },
+
+            range: [88, 101],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 15, line: 4 },
+            },
+          },
+          VariableDeclaration {
+            type: "VariableDeclaration",
+            declarations: Array [
+              VariableDeclarator {
+                type: "VariableDeclarator",
+                definite: false,
+                id: Identifier {
+                  type: "Identifier",
+                  decorators: Array [],
+                  name: "a",
+                  optional: false,
+
+                  range: [108, 109],
+                  loc: {
+                    start: { column: 6, line: 5 },
+                    end: { column: 7, line: 5 },
+                  },
+                },
+                init: Literal {
+                  type: "Literal",
+                  raw: "1",
+                  value: 1,
+
+                  range: [112, 113],
+                  loc: {
+                    start: { column: 10, line: 5 },
+                    end: { column: 11, line: 5 },
+                  },
+                },
+
+                range: [108, 113],
+                loc: {
+                  start: { column: 6, line: 5 },
+                  end: { column: 11, line: 5 },
+                },
+              },
+            ],
+            declare: false,
+            kind: "var",
+
+            range: [104, 114],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 12, line: 5 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: Literal {
+              type: "Literal",
+              raw: "'use strict'",
+              value: "use strict",
+
+              range: [117, 129],
+              loc: {
+                start: { column: 2, line: 6 },
+                end: { column: 14, line: 6 },
+              },
+            },
+
+            range: [117, 130],
+            loc: {
+              start: { column: 2, line: 6 },
+              end: { column: 15, line: 6 },
+            },
+          },
+        ],
+
+        range: [84, 132],
+        loc: {
+          start: { column: 11, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      declare: false,
+      global: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: Array [],
+        name: "foo",
+        optional: false,
+
+        range: [80, 83],
+        loc: {
+          start: { column: 7, line: 3 },
+          end: { column: 10, line: 3 },
+        },
+      },
+      kind: "module",
+
+      range: [73, 132],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 133],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-constructor TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: Array [],
+      declaration: ClassDeclaration {
+        type: "ClassDeclaration",
+        abstract: true,
+        body: ClassBody {
+          type: "ClassBody",
+          body: Array [
+            TSAbstractMethodDefinition {
+              type: "TSAbstractMethodDefinition",
+              computed: false,
+              decorators: Array [],
+              key: Identifier {
+                type: "Identifier",
+                decorators: Array [],
+                name: "constructor",
+                optional: false,
+
+                range: [123, 134],
+                loc: {
+                  start: { column: 11, line: 4 },
+                  end: { column: 22, line: 4 },
+                },
+              },
+              kind: "constructor",
+              optional: false,
+              override: false,
+              static: false,
+              value: TSEmptyBodyFunctionExpression {
+                type: "TSEmptyBodyFunctionExpression",
+                async: false,
+                body: null,
+                declare: false,
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+
+                range: [134, 137],
+                loc: {
+                  start: { column: 22, line: 4 },
+                  end: { column: 25, line: 4 },
+                },
+              },
+
+              range: [114, 137],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 25, line: 4 },
+              },
+            },
+          ],
+
+          range: [110, 139],
+          loc: {
+            start: { column: 37, line: 3 },
+            end: { column: 1, line: 5 },
+          },
+        },
+        declare: false,
+        decorators: Array [],
+        id: Identifier {
+          type: "Identifier",
+          decorators: Array [],
+          name: "AbstractSocket",
+          optional: false,
+
+          range: [95, 109],
+          loc: {
+            start: { column: 22, line: 3 },
+            end: { column: 36, line: 3 },
+          },
+        },
+        implements: Array [],
+        superClass: null,
+
+        range: [80, 139],
+        loc: {
+          start: { column: 7, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      exportKind: "value",
+      source: null,
+      specifiers: Array [],
+
+      range: [73, 139],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 140],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

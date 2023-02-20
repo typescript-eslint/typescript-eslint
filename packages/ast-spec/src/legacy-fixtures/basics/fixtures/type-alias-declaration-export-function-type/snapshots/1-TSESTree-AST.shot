@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export-function-type TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: Array [],
+      declaration: TSTypeAliasDeclaration {
+        type: "TSTypeAliasDeclaration",
+        declare: false,
+        id: Identifier {
+          type: "Identifier",
+          decorators: Array [],
+          name: "TestCallback",
+          optional: false,
+
+          range: [85, 97],
+          loc: {
+            start: { column: 12, line: 3 },
+            end: { column: 24, line: 3 },
+          },
+        },
+        typeAnnotation: TSFunctionType {
+          type: "TSFunctionType",
+          params: Array [
+            Identifier {
+              type: "Identifier",
+              decorators: Array [],
+              name: "a",
+              optional: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSNumberKeyword {
+                  type: "TSNumberKeyword",
+
+                  range: [104, 110],
+                  loc: {
+                    start: { column: 31, line: 3 },
+                    end: { column: 37, line: 3 },
+                  },
+                },
+
+                range: [102, 110],
+                loc: {
+                  start: { column: 29, line: 3 },
+                  end: { column: 37, line: 3 },
+                },
+              },
+
+              range: [101, 110],
+              loc: {
+                start: { column: 28, line: 3 },
+                end: { column: 37, line: 3 },
+              },
+            },
+          ],
+          returnType: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSVoidKeyword {
+              type: "TSVoidKeyword",
+
+              range: [115, 119],
+              loc: {
+                start: { column: 42, line: 3 },
+                end: { column: 46, line: 3 },
+              },
+            },
+
+            range: [112, 119],
+            loc: {
+              start: { column: 39, line: 3 },
+              end: { column: 46, line: 3 },
+            },
+          },
+
+          range: [100, 119],
+          loc: {
+            start: { column: 27, line: 3 },
+            end: { column: 46, line: 3 },
+          },
+        },
+
+        range: [80, 120],
+        loc: {
+          start: { column: 7, line: 3 },
+          end: { column: 47, line: 3 },
+        },
+      },
+      exportKind: "type",
+      source: null,
+      specifiers: Array [],
+
+      range: [73, 120],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 47, line: 3 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 121],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

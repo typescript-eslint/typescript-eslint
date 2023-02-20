@@ -101,8 +101,8 @@ exports[`semanticInfo fixtures/export-file.src 1`] = `
   "comments": [],
   "loc": {
     "end": {
-      "column": 25,
-      "line": 1,
+      "column": 0,
+      "line": 2,
     },
     "start": {
       "column": 0,
@@ -111,7 +111,7 @@ exports[`semanticInfo fixtures/export-file.src 1`] = `
   },
   "range": [
     0,
-    25,
+    26,
   ],
   "sourceType": "module",
   "tokens": [
@@ -335,7 +335,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
           16,
           35,
         ],
-        "raw": ""./export-file.src"",
+        "raw": "'./export-file.src'",
         "type": "Literal",
         "value": "./export-file.src",
       },
@@ -518,8 +518,8 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
   "comments": [],
   "loc": {
     "end": {
-      "column": 15,
-      "line": 2,
+      "column": 0,
+      "line": 3,
     },
     "start": {
       "column": 0,
@@ -528,7 +528,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
   },
   "range": [
     0,
-    52,
+    53,
   ],
   "sourceType": "module",
   "tokens": [
@@ -602,7 +602,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
         35,
       ],
       "type": "String",
-      "value": ""./export-file.src"",
+      "value": "'./export-file.src'",
     },
     {
       "loc": {
@@ -931,8 +931,8 @@ exports[`semanticInfo fixtures/isolated-file.src 1`] = `
   "comments": [],
   "loc": {
     "end": {
-      "column": 20,
-      "line": 1,
+      "column": 0,
+      "line": 2,
     },
     "start": {
       "column": 0,
@@ -941,7 +941,7 @@ exports[`semanticInfo fixtures/isolated-file.src 1`] = `
   },
   "range": [
     0,
-    20,
+    21,
   ],
   "sourceType": "script",
   "tokens": [
@@ -1179,17 +1179,17 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
             "left": {
               "loc": {
                 "end": {
-                  "column": 17,
+                  "column": 16,
                   "line": 1,
                 },
                 "start": {
-                  "column": 16,
+                  "column": 15,
                   "line": 1,
                 },
               },
               "range": [
+                15,
                 16,
-                17,
               ],
               "raw": "3",
               "type": "Literal",
@@ -1197,33 +1197,33 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
             },
             "loc": {
               "end": {
-                "column": 21,
+                "column": 20,
                 "line": 1,
               },
               "start": {
-                "column": 16,
+                "column": 15,
                 "line": 1,
               },
             },
             "operator": "+",
             "range": [
-              16,
-              21,
+              15,
+              20,
             ],
             "right": {
               "loc": {
                 "end": {
-                  "column": 21,
+                  "column": 20,
                   "line": 1,
                 },
                 "start": {
-                  "column": 20,
+                  "column": 19,
                   "line": 1,
                 },
               },
               "range": [
+                19,
                 20,
-                21,
               ],
               "raw": "5",
               "type": "Literal",
@@ -1233,7 +1233,7 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
           },
           "loc": {
             "end": {
-              "column": 22,
+              "column": 20,
               "line": 1,
             },
             "start": {
@@ -1243,7 +1243,7 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
           },
           "range": [
             6,
-            22,
+            20,
           ],
           "type": "VariableDeclarator",
         },
@@ -1252,7 +1252,7 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
       "kind": "const",
       "loc": {
         "end": {
-          "column": 23,
+          "column": 21,
           "line": 1,
         },
         "start": {
@@ -1262,7 +1262,7 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
       },
       "range": [
         0,
-        23,
+        21,
       ],
       "type": "VariableDeclaration",
     },
@@ -1287,8 +1287,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
                 },
               },
               "range": [
-                40,
-                46,
+                38,
+                44,
               ],
               "raw": "'test'",
               "type": "Literal",
@@ -1307,8 +1307,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
             "optional": false,
             "override": false,
             "range": [
-              39,
-              56,
+              37,
+              54,
             ],
             "readonly": false,
             "static": false,
@@ -1325,8 +1325,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
                 },
               },
               "range": [
-                47,
-                55,
+                45,
+                53,
               ],
               "type": "TSTypeAnnotation",
               "typeAnnotation": {
@@ -1341,8 +1341,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
                   },
                 },
                 "range": [
-                  49,
-                  55,
+                  47,
+                  53,
                 ],
                 "type": "TSStringKeyword",
               },
@@ -1361,8 +1361,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
           },
         },
         "range": [
-          35,
-          58,
+          33,
+          56,
         ],
         "type": "ClassBody",
       },
@@ -1383,8 +1383,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         "name": "Bar",
         "optional": false,
         "range": [
-          31,
-          34,
+          29,
+          32,
         ],
         "type": "Identifier",
       },
@@ -1400,8 +1400,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         },
       },
       "range": [
-        25,
-        58,
+        23,
+        56,
       ],
       "superClass": null,
       "type": "ClassDeclaration",
@@ -1420,7 +1420,7 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
   },
   "range": [
     0,
-    59,
+    57,
   ],
   "sourceType": "script",
   "tokens": [
@@ -1493,44 +1493,44 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         15,
         16,
       ],
-      "type": "Punctuator",
-      "value": "(",
-    },
-    {
-      "loc": {
-        "end": {
-          "column": 17,
-          "line": 1,
-        },
-        "start": {
-          "column": 16,
-          "line": 1,
-        },
-      },
-      "range": [
-        16,
-        17,
-      ],
       "type": "Numeric",
       "value": "3",
     },
     {
       "loc": {
         "end": {
-          "column": 19,
+          "column": 18,
           "line": 1,
         },
         "start": {
-          "column": 18,
+          "column": 17,
           "line": 1,
         },
       },
       "range": [
+        17,
         18,
-        19,
       ],
       "type": "Punctuator",
       "value": "+",
+    },
+    {
+      "loc": {
+        "end": {
+          "column": 20,
+          "line": 1,
+        },
+        "start": {
+          "column": 19,
+          "line": 1,
+        },
+      },
+      "range": [
+        19,
+        20,
+      ],
+      "type": "Numeric",
+      "value": "5",
     },
     {
       "loc": {
@@ -1547,42 +1547,6 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         20,
         21,
       ],
-      "type": "Numeric",
-      "value": "5",
-    },
-    {
-      "loc": {
-        "end": {
-          "column": 22,
-          "line": 1,
-        },
-        "start": {
-          "column": 21,
-          "line": 1,
-        },
-      },
-      "range": [
-        21,
-        22,
-      ],
-      "type": "Punctuator",
-      "value": ")",
-    },
-    {
-      "loc": {
-        "end": {
-          "column": 23,
-          "line": 1,
-        },
-        "start": {
-          "column": 22,
-          "line": 1,
-        },
-      },
-      "range": [
-        22,
-        23,
-      ],
       "type": "Punctuator",
       "value": ";",
     },
@@ -1598,8 +1562,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         },
       },
       "range": [
-        25,
-        30,
+        23,
+        28,
       ],
       "type": "Keyword",
       "value": "class",
@@ -1616,8 +1580,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         },
       },
       "range": [
-        31,
-        34,
+        29,
+        32,
       ],
       "type": "Identifier",
       "value": "Bar",
@@ -1634,8 +1598,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         },
       },
       "range": [
-        35,
-        36,
+        33,
+        34,
       ],
       "type": "Punctuator",
       "value": "{",
@@ -1652,8 +1616,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         },
       },
       "range": [
-        39,
-        40,
+        37,
+        38,
       ],
       "type": "Punctuator",
       "value": "[",
@@ -1670,8 +1634,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         },
       },
       "range": [
-        40,
-        46,
+        38,
+        44,
       ],
       "type": "String",
       "value": "'test'",
@@ -1688,8 +1652,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         },
       },
       "range": [
-        46,
-        47,
+        44,
+        45,
       ],
       "type": "Punctuator",
       "value": "]",
@@ -1706,8 +1670,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         },
       },
       "range": [
-        47,
-        48,
+        45,
+        46,
       ],
       "type": "Punctuator",
       "value": ":",
@@ -1724,8 +1688,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         },
       },
       "range": [
-        49,
-        55,
+        47,
+        53,
       ],
       "type": "Identifier",
       "value": "string",
@@ -1742,8 +1706,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         },
       },
       "range": [
-        55,
-        56,
+        53,
+        54,
       ],
       "type": "Punctuator",
       "value": ";",
@@ -1760,8 +1724,8 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         },
       },
       "range": [
-        57,
-        58,
+        55,
+        56,
       ],
       "type": "Punctuator",
       "value": "}",

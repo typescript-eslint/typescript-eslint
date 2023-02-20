@@ -34,11 +34,11 @@ export default createRule({
   create(context) {
     const globalScope = context.getScope();
     const services = getParserServices(context);
-    const types = services.program.getTypeChecker();
+    const checker = services.program.getTypeChecker();
 
     function isNumber(node: TSESTree.Node, value: number): boolean {
       const evaluated = getStaticValue(node, globalScope);
-      return evaluated !== null && evaluated.value === value;
+      return evaluated != null && evaluated.value === value;
     }
 
     function isPositiveCheck(node: TSESTree.BinaryExpression): boolean {
@@ -141,9 +141,8 @@ export default createRule({
       }
 
       // Get the symbol of `indexOf` method.
-      const tsNode = services.esTreeNodeToTSNodeMap.get(node.property);
-      const indexofMethodDeclarations = types
-        .getSymbolAtLocation(tsNode)
+      const indexofMethodDeclarations = services
+        .getSymbolAtLocation(node.property)
         ?.getDeclarations();
       if (
         indexofMethodDeclarations == null ||
@@ -156,7 +155,7 @@ export default createRule({
       // and the two methods have the same parameters.
       for (const instanceofMethodDecl of indexofMethodDeclarations) {
         const typeDecl = instanceofMethodDecl.parent;
-        const type = types.getTypeAtLocation(typeDecl);
+        const type = checker.getTypeAtLocation(typeDecl);
         const includesMethodDecl = type
           .getProperty('includes')
           ?.getDeclarations();
@@ -214,8 +213,7 @@ export default createRule({
 
         //check the argument type of test methods
         const argument = callNode.arguments[0];
-        const tsNode = services.esTreeNodeToTSNodeMap.get(argument);
-        const type = getConstrainedTypeAtLocation(types, tsNode);
+        const type = getConstrainedTypeAtLocation(services, argument);
 
         const includesMethodDecl = type
           .getProperty('includes')

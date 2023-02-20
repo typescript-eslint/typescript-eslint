@@ -1,6 +1,9 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// YOU CAN REGENERATE IT USING yarn generate:configs
+// SEE https://typescript-eslint.io/linting/configs
+//
+// For developers working in the typescript-eslint monorepo:
+// You can regenerate it using `yarn generate:configs`
 
 export = {
   extends: ['./configs/base', './configs/eslint-recommended'],
@@ -11,6 +14,8 @@ export = {
     '@typescript-eslint/ban-ts-comment': 'error',
     '@typescript-eslint/ban-tslint-comment': 'error',
     '@typescript-eslint/ban-types': 'error',
+    'block-spacing': 'off',
+    '@typescript-eslint/block-spacing': 'error',
     'brace-style': 'off',
     '@typescript-eslint/brace-style': 'error',
     '@typescript-eslint/class-literal-property-style': 'error',
@@ -37,6 +42,8 @@ export = {
     '@typescript-eslint/indent': 'error',
     'init-declarations': 'off',
     '@typescript-eslint/init-declarations': 'error',
+    'key-spacing': 'off',
+    '@typescript-eslint/key-spacing': 'error',
     'keyword-spacing': 'off',
     '@typescript-eslint/keyword-spacing': 'error',
     'lines-between-class-members': 'off',
@@ -68,6 +75,7 @@ export = {
     '@typescript-eslint/no-for-in-array': 'error',
     'no-implied-eval': 'off',
     '@typescript-eslint/no-implied-eval': 'error',
+    '@typescript-eslint/no-import-type-side-effects': 'error',
     '@typescript-eslint/no-inferrable-types': 'error',
     'no-invalid-this': 'off',
     '@typescript-eslint/no-invalid-this': 'error',
@@ -85,7 +93,6 @@ export = {
     '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'error',
     '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
     '@typescript-eslint/no-non-null-assertion': 'error',
-    '@typescript-eslint/parameter-properties': 'error',
     'no-redeclare': 'off',
     '@typescript-eslint/no-redeclare': 'error',
     '@typescript-eslint/no-redundant-type-constituents': 'error',
@@ -97,7 +104,6 @@ export = {
     '@typescript-eslint/no-this-alias': 'error',
     'no-throw-literal': 'off',
     '@typescript-eslint/no-throw-literal': 'error',
-    '@typescript-eslint/no-type-alias': 'error',
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
     '@typescript-eslint/no-unnecessary-condition': 'error',
     '@typescript-eslint/no-unnecessary-qualifier': 'error',
@@ -125,6 +131,7 @@ export = {
     '@typescript-eslint/object-curly-spacing': 'error',
     'padding-line-between-statements': 'off',
     '@typescript-eslint/padding-line-between-statements': 'error',
+    '@typescript-eslint/parameter-properties': 'error',
     '@typescript-eslint/prefer-as-const': 'error',
     '@typescript-eslint/prefer-enum-initializers': 'error',
     '@typescript-eslint/prefer-for-of': 'error',

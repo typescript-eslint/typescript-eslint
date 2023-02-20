@@ -1,0 +1,119 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics destructuring-assignment-object TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: AssignmentExpression {
+        type: "AssignmentExpression",
+        left: ObjectPattern {
+          type: "ObjectPattern",
+          decorators: Array [],
+          optional: false,
+          properties: Array [
+            Property {
+              type: "Property",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                decorators: Array [],
+                name: "foo",
+                optional: false,
+
+                range: [76, 79],
+                loc: {
+                  start: { column: 3, line: 3 },
+                  end: { column: 6, line: 3 },
+                },
+              },
+              kind: "init",
+              method: false,
+              optional: false,
+              shorthand: true,
+              value: AssignmentPattern {
+                type: "AssignmentPattern",
+                decorators: Array [],
+                left: Identifier {
+                  type: "Identifier",
+                  decorators: Array [],
+                  name: "foo",
+                  optional: false,
+
+                  range: [76, 79],
+                  loc: {
+                    start: { column: 3, line: 3 },
+                    end: { column: 6, line: 3 },
+                  },
+                },
+                optional: false,
+                right: ObjectExpression {
+                  type: "ObjectExpression",
+                  properties: Array [],
+
+                  range: [82, 84],
+                  loc: {
+                    start: { column: 9, line: 3 },
+                    end: { column: 11, line: 3 },
+                  },
+                },
+
+                range: [76, 84],
+                loc: {
+                  start: { column: 3, line: 3 },
+                  end: { column: 11, line: 3 },
+                },
+              },
+
+              range: [76, 84],
+              loc: {
+                start: { column: 3, line: 3 },
+                end: { column: 11, line: 3 },
+              },
+            },
+          ],
+
+          range: [74, 86],
+          loc: {
+            start: { column: 1, line: 3 },
+            end: { column: 13, line: 3 },
+          },
+        },
+        operator: "=",
+        right: Identifier {
+          type: "Identifier",
+          decorators: Array [],
+          name: "bar",
+          optional: false,
+
+          range: [89, 92],
+          loc: {
+            start: { column: 16, line: 3 },
+            end: { column: 19, line: 3 },
+          },
+        },
+
+        range: [74, 92],
+        loc: {
+          start: { column: 1, line: 3 },
+          end: { column: 19, line: 3 },
+        },
+      },
+
+      range: [73, 94],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 21, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 95],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

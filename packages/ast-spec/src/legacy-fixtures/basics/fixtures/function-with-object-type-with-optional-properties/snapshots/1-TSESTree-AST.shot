@@ -1,0 +1,230 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics function-with-object-type-with-optional-properties TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: Array [],
+
+        range: [124, 126],
+        loc: {
+          start: { column: 51, line: 3 },
+          end: { column: 53, line: 3 },
+        },
+      },
+      declare: false,
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: Array [],
+        name: "foo",
+        optional: false,
+
+        range: [82, 85],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 12, line: 3 },
+        },
+      },
+      params: Array [
+        ObjectPattern {
+          type: "ObjectPattern",
+          decorators: Array [],
+          optional: false,
+          properties: Array [
+            Property {
+              type: "Property",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                decorators: Array [],
+                name: "bar",
+                optional: false,
+
+                range: [88, 91],
+                loc: {
+                  start: { column: 15, line: 3 },
+                  end: { column: 18, line: 3 },
+                },
+              },
+              kind: "init",
+              method: false,
+              optional: false,
+              shorthand: true,
+              value: Identifier {
+                type: "Identifier",
+                decorators: Array [],
+                name: "bar",
+                optional: false,
+
+                range: [88, 91],
+                loc: {
+                  start: { column: 15, line: 3 },
+                  end: { column: 18, line: 3 },
+                },
+              },
+
+              range: [88, 91],
+              loc: {
+                start: { column: 15, line: 3 },
+                end: { column: 18, line: 3 },
+              },
+            },
+            Property {
+              type: "Property",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                decorators: Array [],
+                name: "baz",
+                optional: false,
+
+                range: [93, 96],
+                loc: {
+                  start: { column: 20, line: 3 },
+                  end: { column: 23, line: 3 },
+                },
+              },
+              kind: "init",
+              method: false,
+              optional: false,
+              shorthand: true,
+              value: Identifier {
+                type: "Identifier",
+                decorators: Array [],
+                name: "baz",
+                optional: false,
+
+                range: [93, 96],
+                loc: {
+                  start: { column: 20, line: 3 },
+                  end: { column: 23, line: 3 },
+                },
+              },
+
+              range: [93, 96],
+              loc: {
+                start: { column: 20, line: 3 },
+                end: { column: 23, line: 3 },
+              },
+            },
+          ],
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSTypeLiteral {
+              type: "TSTypeLiteral",
+              members: Array [
+                TSPropertySignature {
+                  type: "TSPropertySignature",
+                  computed: false,
+                  key: Identifier {
+                    type: "Identifier",
+                    decorators: Array [],
+                    name: "bar",
+                    optional: false,
+
+                    range: [102, 105],
+                    loc: {
+                      start: { column: 29, line: 3 },
+                      end: { column: 32, line: 3 },
+                    },
+                  },
+                  optional: true,
+                  readonly: false,
+                  static: false,
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSStringKeyword {
+                      type: "TSStringKeyword",
+
+                      range: [108, 114],
+                      loc: {
+                        start: { column: 35, line: 3 },
+                        end: { column: 41, line: 3 },
+                      },
+                    },
+
+                    range: [106, 114],
+                    loc: {
+                      start: { column: 33, line: 3 },
+                      end: { column: 41, line: 3 },
+                    },
+                  },
+
+                  range: [102, 115],
+                  loc: {
+                    start: { column: 29, line: 3 },
+                    end: { column: 42, line: 3 },
+                  },
+                },
+                TSPropertySignature {
+                  type: "TSPropertySignature",
+                  computed: false,
+                  key: Identifier {
+                    type: "Identifier",
+                    decorators: Array [],
+                    name: "baz",
+                    optional: false,
+
+                    range: [116, 119],
+                    loc: {
+                      start: { column: 43, line: 3 },
+                      end: { column: 46, line: 3 },
+                    },
+                  },
+                  optional: true,
+                  readonly: false,
+                  static: false,
+
+                  range: [116, 120],
+                  loc: {
+                    start: { column: 43, line: 3 },
+                    end: { column: 47, line: 3 },
+                  },
+                },
+              ],
+
+              range: [100, 122],
+              loc: {
+                start: { column: 27, line: 3 },
+                end: { column: 49, line: 3 },
+              },
+            },
+
+            range: [98, 122],
+            loc: {
+              start: { column: 25, line: 3 },
+              end: { column: 49, line: 3 },
+            },
+          },
+
+          range: [86, 122],
+          loc: {
+            start: { column: 13, line: 3 },
+            end: { column: 49, line: 3 },
+          },
+        },
+      ],
+
+      range: [73, 126],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 53, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 127],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

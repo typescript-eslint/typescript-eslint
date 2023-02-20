@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics export-as-namespace TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSNamespaceExportDeclaration {
+      type: "TSNamespaceExportDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        decorators: Array [],
+        name: "a",
+        optional: false,
+
+        range: [93, 94],
+        loc: {
+          start: { column: 20, line: 3 },
+          end: { column: 21, line: 3 },
+        },
+      },
+
+      range: [73, 95],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 22, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 96],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

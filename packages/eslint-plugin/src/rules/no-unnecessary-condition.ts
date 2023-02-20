@@ -1,13 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import {
-  getCallSignaturesOfType,
-  isBooleanLiteralType,
-  isFalsyType,
-  isLiteralType,
-  isStrictCompilerOptionEnabled,
-  unionTypeParts,
-} from 'tsutils';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
@@ -28,17 +21,19 @@ import {
 // Truthiness utilities
 // #region
 const isTruthyLiteral = (type: ts.Type): boolean =>
-  isBooleanLiteralType(type, true) || (isLiteralType(type) && !!type.value);
+  tools.isBooleanLiteralType(type, true) ||
+  (tools.isLiteralType(type) && !!type.value);
 
 const isPossiblyFalsy = (type: ts.Type): boolean =>
-  unionTypeParts(type)
+  tools
+    .unionTypeParts(type)
     // PossiblyFalsy flag includes literal values, so exclude ones that
     // are definitely truthy
     .filter(t => !isTruthyLiteral(t))
     .some(type => isTypeFlagSet(type, ts.TypeFlags.PossiblyFalsy));
 
 const isPossiblyTruthy = (type: ts.Type): boolean =>
-  unionTypeParts(type).some(type => !isFalsyType(type));
+  tools.unionTypeParts(type).some(type => !tools.isFalsyType(type));
 
 // Nullish utilities
 const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
@@ -46,19 +41,19 @@ const isNullishType = (type: ts.Type): boolean =>
   isTypeFlagSet(type, nullishFlag);
 
 const isPossiblyNullish = (type: ts.Type): boolean =>
-  unionTypeParts(type).some(isNullishType);
+  tools.unionTypeParts(type).some(isNullishType);
 
 const isAlwaysNullish = (type: ts.Type): boolean =>
-  unionTypeParts(type).every(isNullishType);
+  tools.unionTypeParts(type).every(isNullishType);
 
 // isLiteralType only covers numbers and strings, this is a more exhaustive check.
 const isLiteral = (type: ts.Type): boolean =>
-  isBooleanLiteralType(type, true) ||
-  isBooleanLiteralType(type, false) ||
+  tools.isBooleanLiteralType(type, true) ||
+  tools.isBooleanLiteralType(type, false) ||
   type.flags === ts.TypeFlags.Undefined ||
   type.flags === ts.TypeFlags.Null ||
   type.flags === ts.TypeFlags.Void ||
-  isLiteralType(type);
+  tools.isLiteralType(type);
 // #endregion
 
 export type Options = [
@@ -146,11 +141,11 @@ export default createRule<Options, MessageId>({
       },
     ],
   ) {
-    const service = getParserServices(context);
-    const checker = service.program.getTypeChecker();
+    const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
-    const compilerOptions = service.program.getCompilerOptions();
-    const isStrictNullChecks = isStrictCompilerOptionEnabled(
+    const compilerOptions = services.program.getCompilerOptions();
+    const isStrictNullChecks = tools.isStrictCompilerOptionEnabled(
       compilerOptions,
       'strictNullChecks',
     );
@@ -168,17 +163,12 @@ export default createRule<Options, MessageId>({
       });
     }
 
-    function getNodeType(node: TSESTree.Node): ts.Type {
-      const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-      return getConstrainedTypeAtLocation(checker, tsNode);
-    }
-
     function nodeIsArrayType(node: TSESTree.Expression): boolean {
-      const nodeType = getNodeType(node);
+      const nodeType = getConstrainedTypeAtLocation(services, node);
       return checker.isArrayType(nodeType);
     }
     function nodeIsTupleType(node: TSESTree.Expression): boolean {
-      const nodeType = getNodeType(node);
+      const nodeType = getConstrainedTypeAtLocation(services, node);
       return checker.isTupleType(nodeType);
     }
 
@@ -232,17 +222,19 @@ export default createRule<Options, MessageId>({
         return checkNode(node.right);
       }
 
-      const type = getNodeType(node);
+      const type = getConstrainedTypeAtLocation(services, node);
 
       // Conditional is always necessary if it involves:
-      //    `any` or `unknown` or a naked type parameter
+      //    `any` or `unknown` or a naked type variable
       if (
-        unionTypeParts(type).some(
-          part =>
-            isTypeAnyType(part) ||
-            isTypeUnknownType(part) ||
-            isTypeFlagSet(part, ts.TypeFlags.TypeParameter),
-        )
+        tools
+          .unionTypeParts(type)
+          .some(
+            part =>
+              isTypeAnyType(part) ||
+              isTypeUnknownType(part) ||
+              isTypeFlagSet(part, ts.TypeFlags.TypeVariable),
+          )
       ) {
         return;
       }
@@ -262,7 +254,7 @@ export default createRule<Options, MessageId>({
     }
 
     function checkNodeForNullish(node: TSESTree.Expression): void {
-      const type = getNodeType(node);
+      const type = getConstrainedTypeAtLocation(services, node);
       // Conditional is always necessary if it involves `any` or `unknown`
       if (isTypeAnyType(type) || isTypeUnknownType(type)) {
         return;
@@ -320,8 +312,8 @@ export default createRule<Options, MessageId>({
       if (!BOOL_OPERATORS.has(node.operator)) {
         return;
       }
-      const leftType = getNodeType(node.left);
-      const rightType = getNodeType(node.right);
+      const leftType = getConstrainedTypeAtLocation(services, node.left);
+      const rightType = getConstrainedTypeAtLocation(services, node.right);
       if (isLiteral(leftType) && isLiteral(rightType)) {
         context.report({ node, messageId: 'literalBooleanExpression' });
         return;
@@ -384,7 +376,7 @@ export default createRule<Options, MessageId>({
         | TSESTree.ForStatement
         | TSESTree.WhileStatement,
     ): void {
-      if (node.test === null) {
+      if (node.test == null) {
         // e.g. `for(;;)`
         return;
       }
@@ -397,7 +389,10 @@ export default createRule<Options, MessageId>({
        */
       if (
         allowConstantLoopConditions &&
-        isBooleanLiteralType(getNodeType(node.test), true)
+        tools.isBooleanLiteralType(
+          getConstrainedTypeAtLocation(services, node.test),
+          true,
+        )
       ) {
         return;
       }
@@ -451,9 +446,11 @@ export default createRule<Options, MessageId>({
           // (Value to complexity ratio is dubious however)
         }
         // Otherwise just do type analysis on the function as a whole.
-        const returnTypes = getCallSignaturesOfType(getNodeType(callback)).map(
-          sig => sig.getReturnType(),
-        );
+        const returnTypes = tools
+          .getCallSignaturesOfType(
+            getConstrainedTypeAtLocation(services, callback),
+          )
+          .map(sig => sig.getReturnType());
         /* istanbul ignore if */ if (returnTypes.length === 0) {
           // Not a callable function
           return;
@@ -541,12 +538,15 @@ export default createRule<Options, MessageId>({
     function isNullableOriginFromPrev(
       node: TSESTree.MemberExpression,
     ): boolean {
-      const prevType = getNodeType(node.object);
+      const prevType = getConstrainedTypeAtLocation(services, node.object);
       const property = node.property;
       if (prevType.isUnion() && isIdentifier(property)) {
         const isOwnNullable = prevType.types.some(type => {
           if (node.computed) {
-            const propertyType = getNodeType(node.property);
+            const propertyType = getConstrainedTypeAtLocation(
+              services,
+              node.property,
+            );
             return isNullablePropertyType(type, propertyType);
           }
           const propType = getTypeOfPropertyOfName(
@@ -568,18 +568,17 @@ export default createRule<Options, MessageId>({
       return false;
     }
 
-    function isOptionableExpression(
-      node: TSESTree.LeftHandSideExpression,
-    ): boolean {
-      const type = getNodeType(node);
+    function isOptionableExpression(node: TSESTree.Expression): boolean {
+      const type = getConstrainedTypeAtLocation(services, node);
       const isOwnNullable =
         node.type === AST_NODE_TYPES.MemberExpression
           ? !isNullableOriginFromPrev(node)
           : true;
+      const possiblyVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
       return (
-        isTypeAnyType(type) ||
-        isTypeUnknownType(type) ||
-        (isNullableType(type, { allowUndefined: true }) && isOwnNullable)
+        isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||
+        (isOwnNullable &&
+          (isNullableType(type, { allowUndefined: true }) || possiblyVoid))
       );
     }
 

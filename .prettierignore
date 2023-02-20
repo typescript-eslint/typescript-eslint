@@ -1,23 +1,17 @@
-**/tests/fixtures/**/*
-!packages/scope-manager/tests/fixtures/**/*
-**/tests/fixture-project/**/*
 **/dist
 **/coverage
-**/shared-fixtures
 **/.vscode
 **/.nyc_output
 **/.vs
-packages/eslint-plugin-tslint/tests/test-tslint-rules-directory/alwaysFailRule.js
-packages/eslint-plugin/src/configs/*.json
 CONTRIBUTORS.md
 packages/ast-spec/src/*/*/fixtures/_error_/*/fixture.ts
+packages/eslint-plugin/tests/fixtures/indent/
 
-# prettier doesn't yet support auto-accessors
-packages/ast-spec/src/element/AccessorProperty/fixtures
+# prettier errors on this case because it's semantically valid
+packages/ast-spec/src/element/AccessorProperty/fixtures/modifier-abstract-with-value/fixture.ts
 
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md
 
 packages/website/.docusaurus
 packages/website/build
-packages/website/src/vendor

@@ -23,7 +23,7 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration entity-name-one AST 
           },
         },
         importKind: 'value',
-        isExport: false,
++       isExport: false,
         moduleReference: Identifier {
           type: 'Identifier',
 -         decorators: Array [],

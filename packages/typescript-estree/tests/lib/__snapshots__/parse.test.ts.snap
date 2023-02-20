@@ -23,7 +23,7 @@ However, that TSConfig does not include this file. Either:
 - Change ESLint's list of included files to not include this file
 - Change that TSConfig to include this file
 - Create a new TSConfig that includes this file and include it in your parserOptions.project
-See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
 `;
 
 exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is non-empty the extension matches the file isn't included 1`] = `
@@ -32,7 +32,7 @@ However, that TSConfig does not include this file. Either:
 - Change ESLint's list of included files to not include this file
 - Change that TSConfig to include this file
 - Create a new TSConfig that includes this file and include it in your parserOptions.project
-See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
 `;
 
 exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 1`] = `
@@ -41,7 +41,7 @@ However, that TSConfig does not include this file. Either:
 - Change ESLint's list of included files to not include this file
 - Change that TSConfig to include this file
 - Create a new TSConfig that includes this file and include it in your parserOptions.project
-See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
 `;
 
 exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 2`] = `
@@ -50,7 +50,7 @@ However, that TSConfig does not include this file. Either:
 - Change ESLint's list of included files to not include this file
 - Change that TSConfig to include this file
 - Create a new TSConfig that includes this file and include it in your parserOptions.project
-See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
 `;
 
 exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 3`] = `
@@ -59,7 +59,7 @@ However, that TSConfig does not include this file. Either:
 - Change ESLint's list of included files to not include this file
 - Change that TSConfig to include this file
 - Create a new TSConfig that includes this file and include it in your parserOptions.project
-See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
 `;
 
 exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 4`] = `
@@ -68,7 +68,7 @@ However, that TSConfig does not include this file. Either:
 - Change ESLint's list of included files to not include this file
 - Change that TSConfig to include this file
 - Create a new TSConfig that includes this file and include it in your parserOptions.project
-See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
 `;
 
 exports[`parseAndGenerateServices invalid project error messages throws when non of multiple projects include the file 1`] = `
@@ -79,7 +79,7 @@ However, none of those TSConfigs include this file. Either:
 - Change ESLint's list of included files to not include this file
 - Change one of those TSConfigs to include this file
 - Create a new TSConfig that includes this file and include it in your parserOptions.project
-See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
 `;
 
 exports[`parseAndGenerateServices isolated parsing should parse .js file - with JSX content - parserOptions.jsx = false 1`] = `
@@ -370,8 +370,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -665,8 +664,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -850,8 +848,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -1035,8 +1032,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -1256,8 +1252,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .json file - wit
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -1551,8 +1546,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -1846,8 +1840,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -2031,8 +2024,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -2216,8 +2208,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -2401,8 +2392,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -2586,8 +2576,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -2881,8 +2870,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -3176,8 +3164,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -3361,8 +3348,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -3546,8 +3532,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -3841,8 +3826,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -4026,8 +4010,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -4211,8 +4194,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }

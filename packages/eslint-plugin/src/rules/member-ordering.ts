@@ -489,7 +489,7 @@ function getRank(
 ): number {
   const type = getNodeType(node);
 
-  if (type === null) {
+  if (type == null) {
     // shouldn't happen but just in case, put it on the end
     return orderConfig.length - 1;
   }
@@ -584,7 +584,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require a consistent member declaration order',
-      recommended: false,
     },
     messages: {
       incorrectOrder:
@@ -781,7 +780,7 @@ export default util.createRule<Options, MessageIds>({
           data: {
             member: getMemberName(member, context.getSourceCode()),
             optionalOrRequired:
-              optionalityOrder === 'optional-first' ? 'required' : 'optional',
+              optionalityOrder === 'required-first' ? 'required' : 'optional',
           },
         });
 
@@ -790,7 +789,7 @@ export default util.createRule<Options, MessageIds>({
       // have the correct optionality
       if (
         isMemberOptional(members[0]) !==
-        (optionalityOrder === 'required-first')
+        (optionalityOrder === 'optional-first')
       ) {
         report(members[0]);
         return false;
@@ -842,7 +841,7 @@ export default util.createRule<Options, MessageIds>({
             supportsModifiers,
           );
 
-          if (grouped === null) {
+          if (grouped == null) {
             return false;
           }
 

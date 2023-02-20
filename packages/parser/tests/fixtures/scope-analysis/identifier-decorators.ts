@@ -1,4 +1,3 @@
 export class Test {
-    constructor(@Decorator config) {
-    }
+  constructor(@Decorator config) {}
 }

@@ -23,6 +23,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-declare-no-body AST
             end: { column: 18, line: 1 },
           },
         },
+-       kind: 'module',
 
         range: [0, 19],
         loc: {

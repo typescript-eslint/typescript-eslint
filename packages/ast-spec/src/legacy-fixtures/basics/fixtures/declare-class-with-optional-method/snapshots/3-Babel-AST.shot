@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics declare-class-with-optional-method Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "bar",
+
+              range: [95, 98],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 5, line: 4 },
+              },
+            },
+            kind: "method",
+            optional: true,
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSAnyKeyword {
+                  type: "TSAnyKeyword",
+
+                  range: [103, 106],
+                  loc: {
+                    start: { column: 10, line: 4 },
+                    end: { column: 13, line: 4 },
+                  },
+                },
+
+                range: [101, 106],
+                loc: {
+                  start: { column: 8, line: 4 },
+                  end: { column: 13, line: 4 },
+                },
+              },
+
+              range: [99, 107],
+              loc: {
+                start: { column: 6, line: 4 },
+                end: { column: 14, line: 4 },
+              },
+            },
+
+            range: [95, 107],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 14, line: 4 },
+            },
+          },
+        ],
+
+        range: [91, 109],
+        loc: {
+          start: { column: 18, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      declare: true,
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [87, 90],
+        loc: {
+          start: { column: 14, line: 3 },
+          end: { column: 17, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 109],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 110],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

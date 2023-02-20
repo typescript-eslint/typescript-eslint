@@ -6,13 +6,21 @@ import { convertError } from './convert';
 import { createDefaultProgram } from './create-program/createDefaultProgram';
 import { createIsolatedProgram } from './create-program/createIsolatedProgram';
 import { createProjectProgram } from './create-program/createProjectProgram';
-import { createSourceFile } from './create-program/createSourceFile';
+import {
+  createNoProgram,
+  createSourceFile,
+} from './create-program/createSourceFile';
 import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
 import {
   createProgramFromConfigFile,
   useProvidedPrograms,
 } from './create-program/useProvidedPrograms';
-import type { ParserServices, TSESTreeOptions } from './parser-options';
+import { createParserServices } from './createParserServices';
+import type {
+  ParserServices,
+  ParserServicesNodeMaps,
+  TSESTreeOptions,
+} from './parser-options';
 import type { ParseSettings } from './parseSettings';
 import { createParseSettings } from './parseSettings/createParseSettings';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
@@ -32,27 +40,46 @@ function clearProgramCache(): void {
 
 /**
  * @param parseSettings Internal settings for parsing the file
- * @param shouldProvideParserServices True if the program should be attempted to be calculated from provided tsconfig files
+ * @param hasFullTypeInformation True if the program should be attempted to be calculated from provided tsconfig files
  * @returns Returns a source file and program corresponding to the linted code
  */
 function getProgramAndAST(
   parseSettings: ParseSettings,
-  shouldProvideParserServices: boolean,
+  hasFullTypeInformation: boolean,
 ): ASTAndProgram {
-  return (
-    (parseSettings.programs &&
-      useProvidedPrograms(parseSettings.programs, parseSettings)) ||
-    (shouldProvideParserServices && createProjectProgram(parseSettings)) ||
-    (shouldProvideParserServices &&
+  if (parseSettings.programs) {
+    const fromProvidedPrograms = useProvidedPrograms(
+      parseSettings.programs,
+      parseSettings,
+    );
+    if (fromProvidedPrograms) {
+      return fromProvidedPrograms;
+    }
+  }
+
+  if (hasFullTypeInformation) {
+    const fromProjectProgram = createProjectProgram(parseSettings);
+    if (fromProjectProgram) {
+      return fromProjectProgram;
+    }
+
+    // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+    if (parseSettings.DEPRECATED__createDefaultProgram) {
       // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-      parseSettings.DEPRECATED__createDefaultProgram &&
-      // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-      createDefaultProgram(parseSettings)) ||
-    createIsolatedProgram(parseSettings)
-  );
+      const fromDefaultProgram = createDefaultProgram(parseSettings);
+      if (fromDefaultProgram) {
+        return fromDefaultProgram;
+      }
+    }
+
+    return createIsolatedProgram(parseSettings);
+  }
+
+  // no need to waste time creating a program as the caller didn't want parser services
+  // so we can save time and just create a lonesome source file
+  return createNoProgram(parseSettings);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface EmptyObject {}
 type AST<T extends TSESTreeOptions> = TSESTree.Program &
   (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : EmptyObject) &
@@ -62,10 +89,9 @@ interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
   services: ParserServices;
 }
-interface ParseWithNodeMapsResult<T extends TSESTreeOptions> {
+interface ParseWithNodeMapsResult<T extends TSESTreeOptions>
+  extends ParserServicesNodeMaps {
   ast: AST<T>;
-  esTreeNodeToTSNodeMap: ParserServices['esTreeNodeToTSNodeMap'];
-  tsNodeToESTreeNodeMap: ParserServices['tsNodeToESTreeNodeMap'];
 }
 
 function parse<T extends TSESTreeOptions = TSESTreeOptions>(
@@ -138,16 +164,6 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
    */
   const parseSettings = createParseSettings(code, options);
 
-  if (typeof options !== 'undefined') {
-    if (
-      typeof options.errorOnTypeScriptSyntacticAndSemanticIssues ===
-        'boolean' &&
-      options.errorOnTypeScriptSyntacticAndSemanticIssues
-    ) {
-      parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
-    }
-  }
-
   /**
    * If this is a single run in which the user has not provided any existing programs but there
    * are programs which need to be created from the provided "project" option,
@@ -181,8 +197,27 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   /**
    * Generate a full ts.Program or offer provided instances in order to be able to provide parser services, such as type-checking
    */
-  const shouldProvideParserServices =
+  const hasFullTypeInformation =
     parseSettings.programs != null || parseSettings.projects?.length > 0;
+
+  if (typeof options !== 'undefined') {
+    if (
+      typeof options.errorOnTypeScriptSyntacticAndSemanticIssues ===
+        'boolean' &&
+      options.errorOnTypeScriptSyntacticAndSemanticIssues
+    ) {
+      parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues = true;
+    }
+
+    if (
+      parseSettings.errorOnTypeScriptSyntacticAndSemanticIssues &&
+      !hasFullTypeInformation
+    ) {
+      throw new Error(
+        'Cannot calculate TypeScript semantic issues without a valid project.',
+      );
+    }
+  }
 
   /**
    * If we are in singleRun mode but the parseAndGenerateServices() function has been called more than once for the current file,
@@ -202,7 +237,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
     options.filePath &&
     parseAndGenerateServicesCalls[options.filePath] > 1
       ? createIsolatedProgram(parseSettings)
-      : getProgramAndAST(parseSettings, shouldProvideParserServices)!;
+      : getProgramAndAST(parseSettings, hasFullTypeInformation)!;
 
   /**
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve
@@ -235,12 +270,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
    */
   return {
     ast: estree as AST<T>,
-    services: {
-      hasFullTypeInformation: shouldProvideParserServices,
-      program,
-      esTreeNodeToTSNodeMap: astMaps.esTreeNodeToTSNodeMap,
-      tsNodeToESTreeNodeMap: astMaps.tsNodeToESTreeNodeMap,
-    },
+    services: createParserServices(astMaps, program),
   };
 }
 

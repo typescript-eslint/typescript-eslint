@@ -35,7 +35,6 @@ function readLegacyParam(
   try {
     return toJsonConfig(JSON.parse(readQueryParam(data, '{}')), prop);
   } catch (e) {
-    // eslint-disable-next-line no-console
     console.error(e, data, prop);
   }
   return undefined;
@@ -84,7 +83,6 @@ const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
       tsconfig: tsconfig ?? '',
     };
   } catch (e) {
-    // eslint-disable-next-line no-console
     console.warn(e);
   }
   return undefined;
@@ -109,7 +107,6 @@ const writeStateToUrl = (newState: ConfigModel): string => {
       .map(item => `${encodeURIComponent(item[0])}=${item[1]}`)
       .join('&');
   } catch (e) {
-    // eslint-disable-next-line no-console
     console.warn(e);
   }
   return '';
@@ -151,7 +148,6 @@ const retrieveStateFromLocalStorage = (): Partial<ConfigModel> | undefined => {
 
     return state;
   } catch (e) {
-    // eslint-disable-next-line no-console
     console.warn(e);
   }
   return undefined;
@@ -212,7 +208,6 @@ function useHashState(
 
   const onHashChange = (): void => {
     const newHash = window.location.hash;
-    // eslint-disable-next-line no-console
     console.info('[State] hash change detected', newHash);
     setHash(newHash);
   };
@@ -225,7 +220,6 @@ function useHashState(
   }, []);
 
   const _setState = useCallback((cfg: Partial<ConfigModel>) => {
-    // eslint-disable-next-line no-console
     console.info('[State] updating config diff', cfg);
     setTmpState(cfg);
   }, []);

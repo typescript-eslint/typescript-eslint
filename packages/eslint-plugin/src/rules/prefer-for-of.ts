@@ -10,7 +10,7 @@ export default util.createRule({
     docs: {
       description:
         'Enforce the use of `for-of` loop over the standard `for` loop where possible',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
     messages: {
       preferForOf:
@@ -24,8 +24,7 @@ export default util.createRule({
       node: TSESTree.Node | null,
     ): node is TSESTree.VariableDeclaration {
       return (
-        node !== null &&
-        node.type === AST_NODE_TYPES.VariableDeclaration &&
+        node?.type === AST_NODE_TYPES.VariableDeclaration &&
         node.kind !== 'const' &&
         node.declarations.length === 1
       );
@@ -39,7 +38,7 @@ export default util.createRule({
     }
 
     function isZeroInitialized(node: TSESTree.VariableDeclarator): boolean {
-      return node.init !== null && isLiteral(node.init, 0);
+      return node.init != null && isLiteral(node.init, 0);
     }
 
     function isMatchingIdentifier(
@@ -54,8 +53,7 @@ export default util.createRule({
       name: string,
     ): TSESTree.Expression | null {
       if (
-        node !== null &&
-        node.type === AST_NODE_TYPES.BinaryExpression &&
+        node?.type === AST_NODE_TYPES.BinaryExpression &&
         node.operator === '<' &&
         isMatchingIdentifier(node.left, name) &&
         node.right.type === AST_NODE_TYPES.MemberExpression &&

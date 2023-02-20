@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures namespaces-and-modules shorthand-ambient-module-declaration AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSModuleDeclaration {
+        type: 'TSModuleDeclaration',
+        declare: true,
+-       global: false,
+        id: Literal {
+          type: 'Literal',
+          raw: '\\\\'hot-new-module\\\\'',
+          value: 'hot-new-module',
+
+          range: [88, 104],
+          loc: {
+            start: { column: 15, line: 3 },
+            end: { column: 31, line: 3 },
+          },
+        },
+-       kind: 'module',
+
+        range: [73, 105],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 32, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 106],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

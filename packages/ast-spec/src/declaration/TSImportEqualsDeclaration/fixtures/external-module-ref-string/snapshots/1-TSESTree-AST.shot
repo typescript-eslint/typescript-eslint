@@ -19,7 +19,6 @@ Program {
         },
       },
       importKind: "value",
-      isExport: false,
       moduleReference: TSExternalModuleReference {
         type: "TSExternalModuleReference",
         expression: Literal {

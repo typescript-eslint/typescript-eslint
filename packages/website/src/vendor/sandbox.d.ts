@@ -1,7 +1,16 @@
+/**********************************************
+ *      DO NOT MODIFY THIS FILE MANUALLY      *
+ *                                            *
+ *     THIS FILE HAS BEEN FETCHED FROM THE    *
+ *      TYPESCRIPT PLAYGROUND SOURCE CODE.    *
+ *                                            *
+ *    YOU CAN REGENERATE THESE FILES USING    *
+ *          yarn generate-website-dts         *
+ **********************************************/
+
 import { TypeScriptWorker } from './tsWorker';
 // import lzstring from "./vendor/lzstring.min";
 import * as tsvfs from './typescript-vfs';
-
 declare type CompilerOptions =
   import('monaco-editor').languages.typescript.CompilerOptions;
 declare type Monaco = typeof import('monaco-editor');
@@ -105,7 +114,9 @@ export declare const createTypeScriptSandbox: (
   };
   /** A list of TypeScript versions you can use with the TypeScript sandbox */
   supportedVersions: readonly [
-    '4.7.3',
+    '4.9.5',
+    '4.8.4',
+    '4.7.4',
     '4.6.4',
     '4.5.5',
     '4.4.4',
@@ -166,7 +177,7 @@ export declare const createTypeScriptSandbox: (
    * TODO: It would be good to create an easy way to have a single program instance which is updated for you
    * when the monaco model changes.
    */
-  setupTSVFS: (fsMapAdditions?: Map<string, string> | undefined) => Promise<{
+  setupTSVFS: (fsMapAdditions?: Map<string, string>) => Promise<{
     program: import('typescript').Program;
     system: import('typescript').System;
     host: {

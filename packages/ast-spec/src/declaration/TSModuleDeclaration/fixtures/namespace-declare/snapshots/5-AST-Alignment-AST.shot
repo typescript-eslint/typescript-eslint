@@ -34,6 +34,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-declare AST Alig
             end: { column: 19, line: 1 },
           },
         },
+-       kind: 'namespace',
 
         range: [0, 22],
         loc: {

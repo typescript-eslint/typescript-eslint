@@ -1,5 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-utils';
 
 import * as util from '../util';
 import { getThisExpression } from '../util';
@@ -16,7 +16,7 @@ export default util.createRule<[], MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow calling a value with type `any`',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -32,10 +32,9 @@ export default util.createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
-    const checker = program.getTypeChecker();
-    const compilerOptions = program.getCompilerOptions();
-    const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
+    const services = util.getParserServices(context);
+    const compilerOptions = services.program.getCompilerOptions();
+    const isNoImplicitThis = tools.isStrictCompilerOptionEnabled(
       compilerOptions,
       'noImplicitThis',
     );
@@ -45,8 +44,7 @@ export default util.createRule<[], MessageIds>({
       reportingNode: TSESTree.Node,
       messageId: MessageIds,
     ): void {
-      const tsNode = esTreeNodeToTSNodeMap.get(node);
-      const type = util.getConstrainedTypeAtLocation(checker, tsNode);
+      const type = util.getConstrainedTypeAtLocation(services, node);
 
       if (util.isTypeAnyType(type)) {
         if (!isNoImplicitThis) {
@@ -55,10 +53,7 @@ export default util.createRule<[], MessageIds>({
           if (
             thisExpression &&
             util.isTypeAnyType(
-              util.getConstrainedTypeAtLocation(
-                checker,
-                esTreeNodeToTSNodeMap.get(thisExpression),
-              ),
+              util.getConstrainedTypeAtLocation(services, thisExpression),
             )
           ) {
             messageId = 'unsafeCallThis';

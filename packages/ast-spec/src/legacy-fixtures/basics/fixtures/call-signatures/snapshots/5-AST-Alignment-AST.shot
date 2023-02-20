@@ -1,0 +1,175 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics call-signatures AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSTypeAliasDeclaration {
+        type: 'TSTypeAliasDeclaration',
+-       declare: false,
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'foo',
+-         optional: false,
+
+          range: [78, 81],
+          loc: {
+            start: { column: 5, line: 3 },
+            end: { column: 8, line: 3 },
+          },
+        },
+        typeAnnotation: TSTypeLiteral {
+          type: 'TSTypeLiteral',
+          members: Array [
+            TSCallSignatureDeclaration {
+              type: 'TSCallSignatureDeclaration',
+-             params: Array [
++             parameters: Array [
+                Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'a',
+-                 optional: false,
+                  typeAnnotation: TSTypeAnnotation {
+                    type: 'TSTypeAnnotation',
+                    typeAnnotation: TSStringKeyword {
+                      type: 'TSStringKeyword',
+
+                      range: [92, 98],
+                      loc: {
+                        start: { column: 6, line: 4 },
+                        end: { column: 12, line: 4 },
+                      },
+                    },
+
+                    range: [90, 98],
+                    loc: {
+                      start: { column: 4, line: 4 },
+                      end: { column: 12, line: 4 },
+                    },
+                  },
+
+                  range: [89, 98],
+                  loc: {
+                    start: { column: 3, line: 4 },
+                    end: { column: 12, line: 4 },
+                  },
+                },
+              ],
+-             returnType: TSTypeAnnotation {
++             typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [101, 107],
+                  loc: {
+                    start: { column: 15, line: 4 },
+                    end: { column: 21, line: 4 },
+                  },
+                },
+
+                range: [99, 107],
+                loc: {
+                  start: { column: 13, line: 4 },
+                  end: { column: 21, line: 4 },
+                },
+              },
+
+              range: [88, 108],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 22, line: 4 },
+              },
+            },
+            TSConstructSignatureDeclaration {
+              type: 'TSConstructSignatureDeclaration',
+-             params: Array [
++             parameters: Array [
+                Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'a',
+-                 optional: false,
+                  typeAnnotation: TSTypeAnnotation {
+                    type: 'TSTypeAnnotation',
+                    typeAnnotation: TSStringKeyword {
+                      type: 'TSStringKeyword',
+
+                      range: [119, 125],
+                      loc: {
+                        start: { column: 10, line: 5 },
+                        end: { column: 16, line: 5 },
+                      },
+                    },
+
+                    range: [117, 125],
+                    loc: {
+                      start: { column: 8, line: 5 },
+                      end: { column: 16, line: 5 },
+                    },
+                  },
+
+                  range: [116, 125],
+                  loc: {
+                    start: { column: 7, line: 5 },
+                    end: { column: 16, line: 5 },
+                  },
+                },
+              ],
+-             returnType: TSTypeAnnotation {
++             typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [128, 134],
+                  loc: {
+                    start: { column: 19, line: 5 },
+                    end: { column: 25, line: 5 },
+                  },
+                },
+
+                range: [126, 134],
+                loc: {
+                  start: { column: 17, line: 5 },
+                  end: { column: 25, line: 5 },
+                },
+              },
+
+              range: [111, 135],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 26, line: 5 },
+              },
+            },
+          ],
+
+          range: [84, 137],
+          loc: {
+            start: { column: 11, line: 3 },
+            end: { column: 1, line: 6 },
+          },
+        },
+
+        range: [73, 138],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 2, line: 6 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 139],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 7 },
+    },
+  }"
+`;

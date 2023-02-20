@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures element AccessorProperty with-annotation-with-value AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+-       abstract: false,
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+-           AccessorProperty {
+-             type: 'AccessorProperty',
++           ClassAccessorProperty {
++             type: 'ClassAccessorProperty',
+              computed: false,
+-             declare: false,
+-             decorators: Array [],
+-             definite: false,
+              key: Identifier {
+                type: 'Identifier',
+-               decorators: Array [],
+                name: 'prop',
+-               optional: false,
+
+                range: [23, 27],
+                loc: {
+                  start: { column: 11, line: 2 },
+                  end: { column: 15, line: 2 },
+                },
+              },
+-             optional: false,
+-             override: false,
+-             readonly: false,
+              static: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [29, 35],
+                  loc: {
+                    start: { column: 17, line: 2 },
+                    end: { column: 23, line: 2 },
+                  },
+                },
+
+                range: [27, 35],
+                loc: {
+                  start: { column: 15, line: 2 },
+                  end: { column: 23, line: 2 },
+                },
+              },
+              value: Literal {
+                type: 'Literal',
+                raw: '\\\\'str\\\\'',
+                value: 'str',
+
+                range: [38, 43],
+                loc: {
+                  start: { column: 26, line: 2 },
+                  end: { column: 31, line: 2 },
+                },
+              },
+
+              range: [14, 44],
+              loc: {
+                start: { column: 2, line: 2 },
+                end: { column: 32, line: 2 },
+              },
+            },
+          ],
+
+          range: [10, 46],
+          loc: {
+            start: { column: 10, line: 1 },
+            end: { column: 1, line: 3 },
+          },
+        },
+-       declare: false,
+-       decorators: Array [],
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'Foo',
+-         optional: false,
+
+          range: [6, 9],
+          loc: {
+            start: { column: 6, line: 1 },
+            end: { column: 9, line: 1 },
+          },
+        },
+-       implements: Array [],
+        superClass: null,
+
+        range: [0, 46],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 1, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 47],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

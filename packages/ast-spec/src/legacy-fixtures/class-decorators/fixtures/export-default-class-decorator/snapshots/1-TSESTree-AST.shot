@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures class-decorators export-default-class-decorator TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExportDefaultDeclaration {
+      type: "ExportDefaultDeclaration",
+      declaration: ClassDeclaration {
+        type: "ClassDeclaration",
+        abstract: false,
+        body: ClassBody {
+          type: "ClassBody",
+          body: Array [],
+
+          range: [106, 108],
+          loc: {
+            start: { column: 25, line: 4 },
+            end: { column: 27, line: 4 },
+          },
+        },
+        declare: false,
+        decorators: Array [
+          Decorator {
+            type: "Decorator",
+            expression: Identifier {
+              type: "Identifier",
+              decorators: Array [],
+              name: "sealed",
+              optional: false,
+
+              range: [74, 80],
+              loc: {
+                start: { column: 1, line: 3 },
+                end: { column: 7, line: 3 },
+              },
+            },
+
+            range: [73, 80],
+            loc: {
+              start: { column: 0, line: 3 },
+              end: { column: 7, line: 3 },
+            },
+          },
+        ],
+        id: Identifier {
+          type: "Identifier",
+          decorators: Array [],
+          name: "Qux",
+          optional: false,
+
+          range: [102, 105],
+          loc: {
+            start: { column: 21, line: 4 },
+            end: { column: 24, line: 4 },
+          },
+        },
+        implements: Array [],
+        superClass: null,
+
+        range: [96, 108],
+        loc: {
+          start: { column: 15, line: 4 },
+          end: { column: 27, line: 4 },
+        },
+      },
+      exportKind: "value",
+
+      range: [81, 108],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 27, line: 4 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 109],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 5 },
+  },
+}
+`;

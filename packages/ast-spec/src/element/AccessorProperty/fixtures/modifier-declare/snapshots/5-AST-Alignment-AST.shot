@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures element AccessorProperty modifier-declare AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+-       abstract: false,
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+-           AccessorProperty {
+-             type: 'AccessorProperty',
++           ClassAccessorProperty {
++             type: 'ClassAccessorProperty',
+              computed: false,
+              declare: true,
+-             decorators: Array [],
+-             definite: false,
+              key: Identifier {
+                type: 'Identifier',
+-               decorators: Array [],
+                name: 'foo',
+-               optional: false,
+
+                range: [31, 34],
+                loc: {
+                  start: { column: 19, line: 2 },
+                  end: { column: 22, line: 2 },
+                },
+              },
+-             optional: false,
+-             override: false,
+-             readonly: false,
+              static: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSNumberKeyword {
+                  type: 'TSNumberKeyword',
+
+                  range: [36, 42],
+                  loc: {
+                    start: { column: 24, line: 2 },
+                    end: { column: 30, line: 2 },
+                  },
+                },
+
+                range: [34, 42],
+                loc: {
+                  start: { column: 22, line: 2 },
+                  end: { column: 30, line: 2 },
+                },
+              },
+              value: null,
+
+              range: [14, 43],
+              loc: {
+                start: { column: 2, line: 2 },
+                end: { column: 31, line: 2 },
+              },
+            },
+          ],
+
+          range: [10, 45],
+          loc: {
+            start: { column: 10, line: 1 },
+            end: { column: 1, line: 3 },
+          },
+        },
+-       declare: false,
+-       decorators: Array [],
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'Foo',
+-         optional: false,
+
+          range: [6, 9],
+          loc: {
+            start: { column: 6, line: 1 },
+            end: { column: 9, line: 1 },
+          },
+        },
+-       implements: Array [],
+        superClass: null,
+
+        range: [0, 45],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 1, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 46],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

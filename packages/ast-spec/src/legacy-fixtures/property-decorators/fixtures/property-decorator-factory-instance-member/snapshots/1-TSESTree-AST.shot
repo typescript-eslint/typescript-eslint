@@ -1,0 +1,200 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-factory-instance-member TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            decorators: Array [
+              Decorator {
+                type: "Decorator",
+                expression: CallExpression {
+                  type: "CallExpression",
+                  arguments: Array [],
+                  callee: Identifier {
+                    type: "Identifier",
+                    decorators: Array [],
+                    name: "Input",
+                    optional: false,
+
+                    range: [98, 103],
+                    loc: {
+                      start: { column: 3, line: 4 },
+                      end: { column: 8, line: 4 },
+                    },
+                  },
+                  optional: false,
+
+                  range: [98, 105],
+                  loc: {
+                    start: { column: 3, line: 4 },
+                    end: { column: 10, line: 4 },
+                  },
+                },
+
+                range: [97, 105],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 10, line: 4 },
+                },
+              },
+            ],
+            definite: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: Array [],
+              name: "data",
+              optional: false,
+
+              range: [106, 110],
+              loc: {
+                start: { column: 11, line: 4 },
+                end: { column: 15, line: 4 },
+              },
+            },
+            optional: false,
+            override: false,
+            readonly: false,
+            static: false,
+            value: null,
+
+            range: [97, 111],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 16, line: 4 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            decorators: Array [
+              Decorator {
+                type: "Decorator",
+                expression: CallExpression {
+                  type: "CallExpression",
+                  arguments: Array [],
+                  callee: Identifier {
+                    type: "Identifier",
+                    decorators: Array [],
+                    name: "Output",
+                    optional: false,
+
+                    range: [115, 121],
+                    loc: {
+                      start: { column: 3, line: 5 },
+                      end: { column: 9, line: 5 },
+                    },
+                  },
+                  optional: false,
+
+                  range: [115, 123],
+                  loc: {
+                    start: { column: 3, line: 5 },
+                    end: { column: 11, line: 5 },
+                  },
+                },
+
+                range: [114, 123],
+                loc: {
+                  start: { column: 2, line: 5 },
+                  end: { column: 11, line: 5 },
+                },
+              },
+            ],
+            definite: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: Array [],
+              name: "click",
+              optional: false,
+
+              range: [126, 131],
+              loc: {
+                start: { column: 2, line: 6 },
+                end: { column: 7, line: 6 },
+              },
+            },
+            optional: false,
+            override: false,
+            readonly: false,
+            static: false,
+            value: NewExpression {
+              type: "NewExpression",
+              arguments: Array [],
+              callee: Identifier {
+                type: "Identifier",
+                decorators: Array [],
+                name: "EventEmitter",
+                optional: false,
+
+                range: [138, 150],
+                loc: {
+                  start: { column: 14, line: 6 },
+                  end: { column: 26, line: 6 },
+                },
+              },
+
+              range: [134, 152],
+              loc: {
+                start: { column: 10, line: 6 },
+                end: { column: 28, line: 6 },
+              },
+            },
+
+            range: [114, 153],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 29, line: 6 },
+            },
+          },
+        ],
+
+        range: [93, 155],
+        loc: {
+          start: { column: 20, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      declare: false,
+      decorators: Array [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: Array [],
+        name: "SomeComponent",
+        optional: false,
+
+        range: [79, 92],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 19, line: 3 },
+        },
+      },
+      implements: Array [],
+      superClass: null,
+
+      range: [73, 155],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 156],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

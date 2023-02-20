@@ -1,0 +1,59 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics short-circuiting-assignment-or-or TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: AssignmentExpression {
+        type: "AssignmentExpression",
+        left: Identifier {
+          type: "Identifier",
+          decorators: Array [],
+          name: "a",
+          optional: false,
+
+          range: [73, 74],
+          loc: {
+            start: { column: 0, line: 3 },
+            end: { column: 1, line: 3 },
+          },
+        },
+        operator: "&&=",
+        right: Identifier {
+          type: "Identifier",
+          decorators: Array [],
+          name: "b",
+          optional: false,
+
+          range: [79, 80],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 7, line: 3 },
+          },
+        },
+
+        range: [73, 80],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 7, line: 3 },
+        },
+      },
+
+      range: [73, 81],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 8, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 82],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

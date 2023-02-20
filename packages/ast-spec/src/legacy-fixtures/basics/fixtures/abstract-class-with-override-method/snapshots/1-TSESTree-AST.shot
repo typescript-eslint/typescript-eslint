@@ -1,0 +1,107 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics abstract-class-with-override-method TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: true,
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          TSAbstractMethodDefinition {
+            type: "TSAbstractMethodDefinition",
+            computed: false,
+            decorators: Array [],
+            key: Identifier {
+              type: "Identifier",
+              decorators: Array [],
+              name: "show",
+              optional: false,
+
+              range: [153, 157],
+              loc: {
+                start: { column: 20, line: 4 },
+                end: { column: 24, line: 4 },
+              },
+            },
+            kind: "method",
+            optional: false,
+            override: true,
+            static: false,
+            value: TSEmptyBodyFunctionExpression {
+              type: "TSEmptyBodyFunctionExpression",
+              async: false,
+              body: null,
+              declare: false,
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+
+              range: [157, 160],
+              loc: {
+                start: { column: 24, line: 4 },
+                end: { column: 27, line: 4 },
+              },
+            },
+
+            range: [135, 160],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 27, line: 4 },
+            },
+          },
+        ],
+
+        range: [131, 162],
+        loc: {
+          start: { column: 58, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      declare: false,
+      decorators: Array [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: Array [],
+        name: "SpecializedComponent",
+        optional: false,
+
+        range: [88, 108],
+        loc: {
+          start: { column: 15, line: 3 },
+          end: { column: 35, line: 3 },
+        },
+      },
+      implements: Array [],
+      superClass: Identifier {
+        type: "Identifier",
+        decorators: Array [],
+        name: "SomeComponent",
+        optional: false,
+
+        range: [117, 130],
+        loc: {
+          start: { column: 44, line: 3 },
+          end: { column: 57, line: 3 },
+        },
+      },
+
+      range: [73, 162],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 163],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

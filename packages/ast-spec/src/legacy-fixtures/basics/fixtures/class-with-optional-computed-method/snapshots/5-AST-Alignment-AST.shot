@@ -1,0 +1,762 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'computed1',
+-             optional: false,
+
+              range: [79, 88],
+              loc: {
+                start: { column: 6, line: 3 },
+                end: { column: 15, line: 3 },
+              },
+            },
+            init: Literal {
+              type: 'Literal',
+              raw: '\\\\'buzz\\\\'',
+              value: 'buzz',
+
+              range: [91, 97],
+              loc: {
+                start: { column: 18, line: 3 },
+                end: { column: 24, line: 3 },
+              },
+            },
+
+            range: [79, 97],
+            loc: {
+              start: { column: 6, line: 3 },
+              end: { column: 24, line: 3 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'const',
+
+        range: [73, 98],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 25, line: 3 },
+        },
+      },
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'computed2',
+-             optional: false,
+
+              range: [105, 114],
+              loc: {
+                start: { column: 6, line: 4 },
+                end: { column: 15, line: 4 },
+              },
+            },
+            init: Literal {
+              type: 'Literal',
+              raw: '\\\\'bazz\\\\'',
+              value: 'bazz',
+
+              range: [117, 123],
+              loc: {
+                start: { column: 18, line: 4 },
+                end: { column: 24, line: 4 },
+              },
+            },
+
+            range: [105, 123],
+            loc: {
+              start: { column: 6, line: 4 },
+              end: { column: 24, line: 4 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'const',
+
+        range: [99, 124],
+        loc: {
+          start: { column: 0, line: 4 },
+          end: { column: 25, line: 4 },
+        },
+      },
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'obj',
+-             optional: false,
+
+              range: [131, 134],
+              loc: {
+                start: { column: 6, line: 5 },
+                end: { column: 9, line: 5 },
+              },
+            },
+            init: ObjectExpression {
+              type: 'ObjectExpression',
+              properties: Array [
+                Property {
+                  type: 'Property',
+                  computed: false,
+                  key: Identifier {
+                    type: 'Identifier',
+-                   decorators: Array [],
+                    name: 'member',
+-                   optional: false,
+
+                    range: [141, 147],
+                    loc: {
+                      start: { column: 2, line: 6 },
+                      end: { column: 8, line: 6 },
+                    },
+                  },
+                  kind: 'init',
+                  method: false,
+-                 optional: false,
+                  shorthand: false,
+                  value: Literal {
+                    type: 'Literal',
+                    raw: '\\\\'member\\\\'',
+                    value: 'member',
+
+                    range: [149, 157],
+                    loc: {
+                      start: { column: 10, line: 6 },
+                      end: { column: 18, line: 6 },
+                    },
+                  },
+
+                  range: [141, 157],
+                  loc: {
+                    start: { column: 2, line: 6 },
+                    end: { column: 18, line: 6 },
+                  },
+                },
+                Property {
+                  type: 'Property',
+                  computed: false,
+                  key: Identifier {
+                    type: 'Identifier',
+-                   decorators: Array [],
+                    name: 'member2',
+-                   optional: false,
+
+                    range: [161, 168],
+                    loc: {
+                      start: { column: 2, line: 7 },
+                      end: { column: 9, line: 7 },
+                    },
+                  },
+                  kind: 'init',
+                  method: false,
+-                 optional: false,
+                  shorthand: false,
+                  value: Literal {
+                    type: 'Literal',
+                    raw: '\\\\'member2\\\\'',
+                    value: 'member2',
+
+                    range: [170, 179],
+                    loc: {
+                      start: { column: 11, line: 7 },
+                      end: { column: 20, line: 7 },
+                    },
+                  },
+
+                  range: [161, 179],
+                  loc: {
+                    start: { column: 2, line: 7 },
+                    end: { column: 20, line: 7 },
+                  },
+                },
+              ],
+
+              range: [137, 182],
+              loc: {
+                start: { column: 12, line: 5 },
+                end: { column: 1, line: 8 },
+              },
+            },
+
+            range: [131, 182],
+            loc: {
+              start: { column: 6, line: 5 },
+              end: { column: 1, line: 8 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'const',
+
+        range: [125, 183],
+        loc: {
+          start: { column: 0, line: 5 },
+          end: { column: 2, line: 8 },
+        },
+      },
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+-       abstract: false,
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: true,
+-             decorators: Array [],
+              key: Identifier {
+                type: 'Identifier',
+-               decorators: Array [],
+                name: 'computed1',
+-               optional: false,
+
+                range: [197, 206],
+                loc: {
+                  start: { column: 3, line: 10 },
+                  end: { column: 12, line: 10 },
+                },
+              },
+              kind: 'method',
+              optional: true,
+-             override: false,
+              static: false,
+-             value: TSEmptyBodyFunctionExpression {
+-               type: 'TSEmptyBodyFunctionExpression',
++             value: FunctionExpression {
++               type: 'FunctionExpression',
+                async: false,
+-               body: null,
+-               declare: false,
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+
+                range: [208, 211],
+                loc: {
+                  start: { column: 14, line: 10 },
+                  end: { column: 17, line: 10 },
+                },
+              },
+
+              range: [196, 211],
+              loc: {
+                start: { column: 2, line: 10 },
+                end: { column: 17, line: 10 },
+              },
+            },
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: true,
+-             decorators: Array [],
+              key: Identifier {
+                type: 'Identifier',
+-               decorators: Array [],
+                name: 'computed2',
+-               optional: false,
+
+                range: [215, 224],
+                loc: {
+                  start: { column: 3, line: 11 },
+                  end: { column: 12, line: 11 },
+                },
+              },
+              kind: 'method',
+              optional: true,
+-             override: false,
+              static: false,
+              value: FunctionExpression {
+                type: 'FunctionExpression',
+                async: false,
+                body: BlockStatement {
+                  type: 'BlockStatement',
+                  body: Array [],
+
+                  range: [229, 231],
+                  loc: {
+                    start: { column: 17, line: 11 },
+                    end: { column: 19, line: 11 },
+                  },
+                },
+-               declare: false,
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+
+                range: [226, 231],
+                loc: {
+                  start: { column: 14, line: 11 },
+                  end: { column: 19, line: 11 },
+                },
+              },
+
+              range: [214, 231],
+              loc: {
+                start: { column: 2, line: 11 },
+                end: { column: 19, line: 11 },
+              },
+            },
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: true,
+-             decorators: Array [],
+              key: Literal {
+                type: 'Literal',
+                raw: '1',
+                value: 1,
+
+                range: [235, 236],
+                loc: {
+                  start: { column: 3, line: 12 },
+                  end: { column: 4, line: 12 },
+                },
+              },
+              kind: 'method',
+              optional: true,
+-             override: false,
+              static: false,
+-             value: TSEmptyBodyFunctionExpression {
+-               type: 'TSEmptyBodyFunctionExpression',
++             value: FunctionExpression {
++               type: 'FunctionExpression',
+                async: false,
+-               body: null,
+-               declare: false,
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+
+                range: [238, 241],
+                loc: {
+                  start: { column: 6, line: 12 },
+                  end: { column: 9, line: 12 },
+                },
+              },
+
+              range: [234, 241],
+              loc: {
+                start: { column: 2, line: 12 },
+                end: { column: 9, line: 12 },
+              },
+            },
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: true,
+-             decorators: Array [],
+              key: Literal {
+                type: 'Literal',
+                raw: '2',
+                value: 2,
+
+                range: [245, 246],
+                loc: {
+                  start: { column: 3, line: 13 },
+                  end: { column: 4, line: 13 },
+                },
+              },
+              kind: 'method',
+              optional: true,
+-             override: false,
+              static: false,
+              value: FunctionExpression {
+                type: 'FunctionExpression',
+                async: false,
+                body: BlockStatement {
+                  type: 'BlockStatement',
+                  body: Array [],
+
+                  range: [251, 253],
+                  loc: {
+                    start: { column: 9, line: 13 },
+                    end: { column: 11, line: 13 },
+                  },
+                },
+-               declare: false,
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+
+                range: [248, 253],
+                loc: {
+                  start: { column: 6, line: 13 },
+                  end: { column: 11, line: 13 },
+                },
+              },
+
+              range: [244, 253],
+              loc: {
+                start: { column: 2, line: 13 },
+                end: { column: 11, line: 13 },
+              },
+            },
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: true,
+-             decorators: Array [],
+              key: Literal {
+                type: 'Literal',
+                raw: '\\\\'literal1\\\\'',
+                value: 'literal1',
+
+                range: [257, 267],
+                loc: {
+                  start: { column: 3, line: 14 },
+                  end: { column: 13, line: 14 },
+                },
+              },
+              kind: 'method',
+              optional: true,
+-             override: false,
+              static: false,
+-             value: TSEmptyBodyFunctionExpression {
+-               type: 'TSEmptyBodyFunctionExpression',
++             value: FunctionExpression {
++               type: 'FunctionExpression',
+                async: false,
+-               body: null,
+-               declare: false,
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+
+                range: [269, 272],
+                loc: {
+                  start: { column: 15, line: 14 },
+                  end: { column: 18, line: 14 },
+                },
+              },
+
+              range: [256, 272],
+              loc: {
+                start: { column: 2, line: 14 },
+                end: { column: 18, line: 14 },
+              },
+            },
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: true,
+-             decorators: Array [],
+              key: Literal {
+                type: 'Literal',
+                raw: '\\\\'literal2\\\\'',
+                value: 'literal2',
+
+                range: [276, 286],
+                loc: {
+                  start: { column: 3, line: 15 },
+                  end: { column: 13, line: 15 },
+                },
+              },
+              kind: 'method',
+              optional: true,
+-             override: false,
+              static: false,
+              value: FunctionExpression {
+                type: 'FunctionExpression',
+                async: false,
+                body: BlockStatement {
+                  type: 'BlockStatement',
+                  body: Array [],
+
+                  range: [291, 293],
+                  loc: {
+                    start: { column: 18, line: 15 },
+                    end: { column: 20, line: 15 },
+                  },
+                },
+-               declare: false,
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+
+                range: [288, 293],
+                loc: {
+                  start: { column: 15, line: 15 },
+                  end: { column: 20, line: 15 },
+                },
+              },
+
+              range: [275, 293],
+              loc: {
+                start: { column: 2, line: 15 },
+                end: { column: 20, line: 15 },
+              },
+            },
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: true,
+-             decorators: Array [],
+              key: MemberExpression {
+                type: 'MemberExpression',
+                computed: false,
+                object: Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'obj',
+-                 optional: false,
+
+                  range: [297, 300],
+                  loc: {
+                    start: { column: 3, line: 16 },
+                    end: { column: 6, line: 16 },
+                  },
+                },
+                optional: false,
+                property: Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'member',
+-                 optional: false,
+
+                  range: [301, 307],
+                  loc: {
+                    start: { column: 7, line: 16 },
+                    end: { column: 13, line: 16 },
+                  },
+                },
+
+                range: [297, 307],
+                loc: {
+                  start: { column: 3, line: 16 },
+                  end: { column: 13, line: 16 },
+                },
+              },
+              kind: 'method',
+              optional: true,
+-             override: false,
+              static: false,
+              value: FunctionExpression {
+                type: 'FunctionExpression',
+                async: false,
+                body: BlockStatement {
+                  type: 'BlockStatement',
+                  body: Array [],
+
+                  range: [312, 314],
+                  loc: {
+                    start: { column: 18, line: 16 },
+                    end: { column: 20, line: 16 },
+                  },
+                },
+-               declare: false,
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+
+                range: [309, 314],
+                loc: {
+                  start: { column: 15, line: 16 },
+                  end: { column: 20, line: 16 },
+                },
+              },
+
+              range: [296, 314],
+              loc: {
+                start: { column: 2, line: 16 },
+                end: { column: 20, line: 16 },
+              },
+            },
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: true,
+-             decorators: Array [],
+              key: MemberExpression {
+                type: 'MemberExpression',
+                computed: false,
+                object: Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'obj',
+-                 optional: false,
+
+                  range: [318, 321],
+                  loc: {
+                    start: { column: 3, line: 17 },
+                    end: { column: 6, line: 17 },
+                  },
+                },
+                optional: false,
+                property: Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'member2',
+-                 optional: false,
+
+                  range: [322, 329],
+                  loc: {
+                    start: { column: 7, line: 17 },
+                    end: { column: 14, line: 17 },
+                  },
+                },
+
+                range: [318, 329],
+                loc: {
+                  start: { column: 3, line: 17 },
+                  end: { column: 14, line: 17 },
+                },
+              },
+              kind: 'method',
+              optional: true,
+-             override: false,
+              static: false,
+-             value: TSEmptyBodyFunctionExpression {
+-               type: 'TSEmptyBodyFunctionExpression',
++             value: FunctionExpression {
++               type: 'FunctionExpression',
+                async: false,
+-               body: null,
+-               declare: false,
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+
+                range: [331, 334],
+                loc: {
+                  start: { column: 16, line: 17 },
+                  end: { column: 19, line: 17 },
+                },
+              },
+
+              range: [317, 334],
+              loc: {
+                start: { column: 2, line: 17 },
+                end: { column: 19, line: 17 },
+              },
+            },
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: true,
+-             decorators: Array [],
+              key: CallExpression {
+                type: 'CallExpression',
+                arguments: Array [],
+                callee: Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'f',
+-                 optional: false,
+
+                  range: [338, 339],
+                  loc: {
+                    start: { column: 3, line: 18 },
+                    end: { column: 4, line: 18 },
+                  },
+                },
+                optional: false,
+
+                range: [338, 341],
+                loc: {
+                  start: { column: 3, line: 18 },
+                  end: { column: 6, line: 18 },
+                },
+              },
+              kind: 'method',
+              optional: true,
+-             override: false,
+              static: false,
+              value: FunctionExpression {
+                type: 'FunctionExpression',
+                async: false,
+                body: BlockStatement {
+                  type: 'BlockStatement',
+                  body: Array [],
+
+                  range: [346, 348],
+                  loc: {
+                    start: { column: 11, line: 18 },
+                    end: { column: 13, line: 18 },
+                  },
+                },
+-               declare: false,
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+
+                range: [343, 348],
+                loc: {
+                  start: { column: 8, line: 18 },
+                  end: { column: 13, line: 18 },
+                },
+              },
+
+              range: [337, 348],
+              loc: {
+                start: { column: 2, line: 18 },
+                end: { column: 13, line: 18 },
+              },
+            },
+          ],
+
+          range: [192, 350],
+          loc: {
+            start: { column: 8, line: 9 },
+            end: { column: 1, line: 19 },
+          },
+        },
+-       declare: false,
+-       decorators: Array [],
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'X',
+-         optional: false,
+
+          range: [190, 191],
+          loc: {
+            start: { column: 6, line: 9 },
+            end: { column: 7, line: 9 },
+          },
+        },
+-       implements: Array [],
+        superClass: null,
+
+        range: [184, 350],
+        loc: {
+          start: { column: 0, line: 9 },
+          end: { column: 1, line: 19 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 351],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 20 },
+    },
+  }"
+`;

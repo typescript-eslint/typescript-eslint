@@ -23,7 +23,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require both operands of addition to be the same type and be `bigint`, `number`, or `string`',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -61,8 +61,8 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ checkCompoundAssignments, allowAny }]) {
-    const service = util.getParserServices(context);
-    const typeChecker = service.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     type BaseLiteral = 'string' | 'number' | 'bigint' | 'invalid' | 'any';
 
@@ -107,7 +107,7 @@ export default util.createRule<Options, MessageIds>({
         return 'invalid';
       }
 
-      const stringType = typeChecker.typeToString(type);
+      const stringType = checker.typeToString(type);
 
       if (
         stringType === 'number' ||
@@ -127,8 +127,7 @@ export default util.createRule<Options, MessageIds>({
     function getNodeType(
       node: TSESTree.Expression | TSESTree.PrivateIdentifier,
     ): BaseLiteral {
-      const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-      const type = util.getConstrainedTypeAtLocation(typeChecker, tsNode);
+      const type = util.getConstrainedTypeAtLocation(services, node);
 
       return getBaseTypeOfLiteralType(type);
     }

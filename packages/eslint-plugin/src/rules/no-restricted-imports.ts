@@ -110,7 +110,6 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow specified modules when loaded by `import`',
-      recommended: false,
       extendsBaseRule: true,
     },
     messages: baseRule.meta.messages,

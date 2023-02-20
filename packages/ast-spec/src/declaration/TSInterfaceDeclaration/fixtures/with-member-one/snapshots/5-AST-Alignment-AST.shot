@@ -16,7 +16,6 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration with-member-one AST Ali
             TSPropertySignature {
               type: 'TSPropertySignature',
               computed: false,
--             export: false,
               key: Identifier {
                 type: 'Identifier',
 -               decorators: Array [],

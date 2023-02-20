@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-static-member TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            decorators: Array [
+              Decorator {
+                type: "Decorator",
+                expression: Identifier {
+                  type: "Identifier",
+                  decorators: Array [],
+                  name: "baz",
+                  optional: false,
+
+                  range: [86, 89],
+                  loc: {
+                    start: { column: 3, line: 4 },
+                    end: { column: 6, line: 4 },
+                  },
+                },
+
+                range: [85, 89],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 6, line: 4 },
+                },
+              },
+            ],
+            definite: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: Array [],
+              name: "a",
+              optional: false,
+
+              range: [97, 98],
+              loc: {
+                start: { column: 14, line: 4 },
+                end: { column: 15, line: 4 },
+              },
+            },
+            optional: false,
+            override: false,
+            readonly: false,
+            static: true,
+            value: null,
+
+            range: [85, 99],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 16, line: 4 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            decorators: Array [
+              Decorator {
+                type: "Decorator",
+                expression: Identifier {
+                  type: "Identifier",
+                  decorators: Array [],
+                  name: "qux",
+                  optional: false,
+
+                  range: [103, 106],
+                  loc: {
+                    start: { column: 3, line: 5 },
+                    end: { column: 6, line: 5 },
+                  },
+                },
+
+                range: [102, 106],
+                loc: {
+                  start: { column: 2, line: 5 },
+                  end: { column: 6, line: 5 },
+                },
+              },
+            ],
+            definite: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: Array [],
+              name: "b",
+              optional: false,
+
+              range: [116, 117],
+              loc: {
+                start: { column: 9, line: 6 },
+                end: { column: 10, line: 6 },
+              },
+            },
+            optional: false,
+            override: false,
+            readonly: false,
+            static: true,
+            value: null,
+
+            range: [102, 118],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 11, line: 6 },
+            },
+          },
+        ],
+
+        range: [81, 120],
+        loc: {
+          start: { column: 8, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      declare: false,
+      decorators: Array [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: Array [],
+        name: "C",
+        optional: false,
+
+        range: [79, 80],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 7, line: 3 },
+        },
+      },
+      implements: Array [],
+      superClass: null,
+
+      range: [73, 120],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 121],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

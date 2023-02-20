@@ -4,6 +4,7 @@ import awaitThenable from './await-thenable';
 import banTsComment from './ban-ts-comment';
 import banTslintComment from './ban-tslint-comment';
 import banTypes from './ban-types';
+import blockSpacing from './block-spacing';
 import braceStyle from './brace-style';
 import classLiteralPropertyStyle from './class-literal-property-style';
 import commaDangle from './comma-dangle';
@@ -22,6 +23,7 @@ import explicitModuleBoundaryTypes from './explicit-module-boundary-types';
 import funcCallSpacing from './func-call-spacing';
 import indent from './indent';
 import initDeclarations from './init-declarations';
+import keySpacing from './key-spacing';
 import keywordSpacing from './keyword-spacing';
 import linesBetweenClassMembers from './lines-between-class-members';
 import memberDelimiterStyle from './member-delimiter-style';
@@ -45,6 +47,7 @@ import noExtraneousClass from './no-extraneous-class';
 import noFloatingPromises from './no-floating-promises';
 import noForInArray from './no-for-in-array';
 import noImpliedEval from './no-implied-eval';
+import noImportTypeSideEffects from './no-import-type-side-effects';
 import noInferrableTypes from './no-inferrable-types';
 import noInvalidThis from './no-invalid-this';
 import noInvalidVoidType from './no-invalid-void-type';
@@ -131,6 +134,7 @@ export default {
   'ban-ts-comment': banTsComment,
   'ban-tslint-comment': banTslintComment,
   'ban-types': banTypes,
+  'block-spacing': blockSpacing,
   'brace-style': braceStyle,
   'class-literal-property-style': classLiteralPropertyStyle,
   'comma-dangle': commaDangle,
@@ -149,6 +153,7 @@ export default {
   'func-call-spacing': funcCallSpacing,
   indent: indent,
   'init-declarations': initDeclarations,
+  'key-spacing': keySpacing,
   'keyword-spacing': keywordSpacing,
   'lines-between-class-members': linesBetweenClassMembers,
   'member-delimiter-style': memberDelimiterStyle,
@@ -172,6 +177,7 @@ export default {
   'no-floating-promises': noFloatingPromises,
   'no-for-in-array': noForInArray,
   'no-implied-eval': noImpliedEval,
+  'no-import-type-side-effects': noImportTypeSideEffects,
   'no-inferrable-types': noInferrableTypes,
   'no-invalid-this': noInvalidThis,
   'no-invalid-void-type': noInvalidVoidType,

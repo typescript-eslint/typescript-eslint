@@ -11,7 +11,6 @@ const rule = createRule({
     fixable: 'code',
     docs: {
       description: 'Remove useless expressions.',
-      recommended: false,
     },
     messages: {
       removeExpression: 'Remove useless expression',

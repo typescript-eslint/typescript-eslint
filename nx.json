@@ -1,22 +1,12 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
   "npmScope": "typescript-eslint",
-  "affected": {
-    "defaultBase": "main"
-  },
-  "workspaceLayout": {
-    "libsDir": "packages"
-  },
   "tasksRunnerOptions": {
     "default": {
       "runner": "@nrwl/nx-cloud",
       "options": {
         "cacheableOperations": ["build", "lint", "package", "prebuild", "test"],
-        "accessToken": "YjFjNTBhOWUtY2JmNy00ZDhiLWE5N2UtZjliNDAwNmIzOTdjfHJlYWQtd3JpdGU=",
-        "canTrackAnalytics": false,
-        "showUsageWarnings": true,
-        "runtimeCacheInputs": ["node -v", "echo $NETLIFY"],
-        "parallel": 1
+        "accessToken": "YjFjNTBhOWUtY2JmNy00ZDhiLWE5N2UtZjliNDAwNmIzOTdjfHJlYWQtd3JpdGU="
       }
     }
   },
@@ -26,11 +16,33 @@
       "inputs": ["production", "^production"]
     },
     "test": {
+      "inputs": [
+        "default",
+        "{workspaceRoot}/jest.config.js",
+        "{workspaceRoot}/jest.config.base.js"
+      ],
       "outputs": ["{projectRoot}/coverage"]
+    },
+    "lint": {
+      "inputs": [
+        "default",
+        "{workspaceRoot}/.eslintrc.js",
+        "{workspaceRoot}/yarn.lock",
+        "{workspaceRoot}/.eslintignore"
+      ]
     }
   },
   "namedInputs": {
-    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "default": [
+      "{projectRoot}/**/*",
+      "sharedGlobals",
+      {
+        "runtime": "node -v"
+      },
+      {
+        "runtime": "echo $NETLIFY"
+      }
+    ],
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"],
     "production": ["default"]
   }

@@ -1,0 +1,167 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-generic-method-default AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+-       abstract: false,
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: false,
+-             decorators: Array [],
+              key: Identifier {
+                type: 'Identifier',
+-               decorators: Array [],
+                name: 'getBar',
+-               optional: false,
+
+                range: [87, 93],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 8, line: 4 },
+                },
+              },
+              kind: 'method',
+-             optional: false,
+-             override: false,
+              static: false,
+              value: FunctionExpression {
+                type: 'FunctionExpression',
+                async: false,
+                body: BlockStatement {
+                  type: 'BlockStatement',
+                  body: Array [],
+
+                  range: [105, 107],
+                  loc: {
+                    start: { column: 20, line: 4 },
+                    end: { column: 22, line: 4 },
+                  },
+                },
+-               declare: false,
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+                typeParameters: TSTypeParameterDeclaration {
+                  type: 'TSTypeParameterDeclaration',
+                  params: Array [
+                    TSTypeParameter {
+                      type: 'TSTypeParameter',
+                      default: TSTypeReference {
+                        type: 'TSTypeReference',
+                        typeName: Identifier {
+                          type: 'Identifier',
+-                         decorators: Array [],
+                          name: 'Bar',
+-                         optional: false,
+
+                          range: [98, 101],
+                          loc: {
+                            start: { column: 13, line: 4 },
+                            end: { column: 16, line: 4 },
+                          },
+                        },
+
+                        range: [98, 101],
+                        loc: {
+                          start: { column: 13, line: 4 },
+                          end: { column: 16, line: 4 },
+                        },
+                      },
+-                     in: false,
+-                     name: Identifier {
+-                       type: 'Identifier',
+-                       decorators: Array [],
+-                       name: 'T',
+-                       optional: false,
+-
+-                       range: [94, 95],
+-                       loc: {
+-                         start: { column: 9, line: 4 },
+-                         end: { column: 10, line: 4 },
+-                       },
+-                     },
+-                     out: false,
++                     name: 'T',
+
+                      range: [94, 101],
+                      loc: {
+                        start: { column: 9, line: 4 },
+                        end: { column: 16, line: 4 },
+                      },
+                    },
+                  ],
+
+                  range: [93, 102],
+                  loc: {
+                    start: { column: 8, line: 4 },
+                    end: { column: 17, line: 4 },
+                  },
+                },
+
+-               range: [93, 107],
++               range: [102, 107],
+                loc: {
+-                 start: { column: 8, line: 4 },
++                 start: { column: 17, line: 4 },
+                  end: { column: 22, line: 4 },
+                },
+              },
+
+              range: [87, 107],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 22, line: 4 },
+              },
+            },
+          ],
+
+          range: [83, 109],
+          loc: {
+            start: { column: 10, line: 3 },
+            end: { column: 1, line: 5 },
+          },
+        },
+-       declare: false,
+-       decorators: Array [],
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'Foo',
+-         optional: false,
+
+          range: [79, 82],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 9, line: 3 },
+          },
+        },
+-       implements: Array [],
+        superClass: null,
+
+        range: [73, 109],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 110],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 6 },
+    },
+  }"
+`;

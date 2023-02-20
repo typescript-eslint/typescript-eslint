@@ -1,0 +1,165 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types tuple-named TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          definite: false,
+          id: Identifier {
+            type: "Identifier",
+            decorators: Array [],
+            name: "x",
+            optional: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTupleType {
+                type: "TSTupleType",
+                elementTypes: Array [
+                  TSNamedTupleMember {
+                    type: "TSNamedTupleMember",
+                    elementType: TSNumberKeyword {
+                      type: "TSNumberKeyword",
+
+                      range: [84, 90],
+                      loc: {
+                        start: { column: 11, line: 3 },
+                        end: { column: 17, line: 3 },
+                      },
+                    },
+                    label: Identifier {
+                      type: "Identifier",
+                      decorators: Array [],
+                      name: "a",
+                      optional: false,
+
+                      range: [81, 82],
+                      loc: {
+                        start: { column: 8, line: 3 },
+                        end: { column: 9, line: 3 },
+                      },
+                    },
+                    optional: false,
+
+                    range: [81, 90],
+                    loc: {
+                      start: { column: 8, line: 3 },
+                      end: { column: 17, line: 3 },
+                    },
+                  },
+                  TSNamedTupleMember {
+                    type: "TSNamedTupleMember",
+                    elementType: TSNumberKeyword {
+                      type: "TSNumberKeyword",
+
+                      range: [95, 101],
+                      loc: {
+                        start: { column: 22, line: 3 },
+                        end: { column: 28, line: 3 },
+                      },
+                    },
+                    label: Identifier {
+                      type: "Identifier",
+                      decorators: Array [],
+                      name: "b",
+                      optional: false,
+
+                      range: [92, 93],
+                      loc: {
+                        start: { column: 19, line: 3 },
+                        end: { column: 20, line: 3 },
+                      },
+                    },
+                    optional: false,
+
+                    range: [92, 101],
+                    loc: {
+                      start: { column: 19, line: 3 },
+                      end: { column: 28, line: 3 },
+                    },
+                  },
+                  TSNamedTupleMember {
+                    type: "TSNamedTupleMember",
+                    elementType: TSNumberKeyword {
+                      type: "TSNumberKeyword",
+
+                      range: [106, 112],
+                      loc: {
+                        start: { column: 33, line: 3 },
+                        end: { column: 39, line: 3 },
+                      },
+                    },
+                    label: Identifier {
+                      type: "Identifier",
+                      decorators: Array [],
+                      name: "c",
+                      optional: false,
+
+                      range: [103, 104],
+                      loc: {
+                        start: { column: 30, line: 3 },
+                        end: { column: 31, line: 3 },
+                      },
+                    },
+                    optional: false,
+
+                    range: [103, 112],
+                    loc: {
+                      start: { column: 30, line: 3 },
+                      end: { column: 39, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [80, 113],
+                loc: {
+                  start: { column: 7, line: 3 },
+                  end: { column: 40, line: 3 },
+                },
+              },
+
+              range: [78, 113],
+              loc: {
+                start: { column: 5, line: 3 },
+                end: { column: 40, line: 3 },
+              },
+            },
+
+            range: [77, 113],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 40, line: 3 },
+            },
+          },
+          init: null,
+
+          range: [77, 113],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 40, line: 3 },
+          },
+        },
+      ],
+      declare: false,
+      kind: "let",
+
+      range: [73, 114],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 41, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 115],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;
