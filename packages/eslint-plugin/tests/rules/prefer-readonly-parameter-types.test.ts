@@ -872,17 +872,17 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     // https://github.com/typescript-eslint/typescript-eslint/issues/3405
     {
       code: `
-    type MyType<T> = {
-      [K in keyof T]: "cat" | "dog" | T[K];
-    };
+        type MyType<T> = {
+          [K in keyof T]: 'cat' | 'dog' | T[K];
+        };
 
-    function method<A extends any[] = string[]>(value: MyType<A>) {
-      return value;
-    }
+        function method<A extends any[] = string[]>(value: MyType<A>) {
+          return value;
+        }
 
-    method(["cat", "dog"]);
-    method<"mouse"[]>(["cat", "mouse"]);
-    `,
+        method(['cat', 'dog']);
+        method<'mouse'[]>(['cat', 'mouse']);
+      `,
       errors: [{ line: 6, messageId: 'shouldBeReadonly' }],
     },
   ],
