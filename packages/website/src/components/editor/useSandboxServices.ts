@@ -145,9 +145,8 @@ export const useSandboxServices = (
         model.dispose();
       }
     };
-    // colorMode can't be reactive here, this is going to cause crash while switching dark/light mode
-    // updating of colorMode is handled in LoadedEditor
-    // jsx can't be reactive too, because it's used only on first load
+    // colorMode and jsx can't be reactive here because we don't want to force a recreation
+    // updating of colorMode and jsx is handled in LoadedEditor
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.ts, onLoaded]);
 
