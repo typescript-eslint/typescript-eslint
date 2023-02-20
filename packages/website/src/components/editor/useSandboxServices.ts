@@ -145,7 +145,10 @@ export const useSandboxServices = (
         model.dispose();
       }
     };
-  }, [props.ts, colorMode, props.jsx, onLoaded]);
+    // colorMode can't be reactive here, this is going to cause crash while switching dark/light mode
+    // updating of colorMode is handled in LoadedEditor
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.ts, props.jsx, onLoaded]);
 
   return services;
 };
