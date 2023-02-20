@@ -12,6 +12,8 @@ on:
 
 env:
   PRIMARY_NODE_VERSION: 18
+  # Only set the read-write token if we are on the main branch
+  NX_CLOUD_ACCESS_TOKEN: ${{ github.event_name == 'push' && github.ref == 'refs/heads/main' && secrets.NX_CLOUD_ACCESS_TOKEN }}
 
 defaults:
   run:
