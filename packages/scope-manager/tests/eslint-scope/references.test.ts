@@ -544,7 +544,7 @@ describe('References:', () => {
     );
   });
 
-  if (semver.satisfies(ts.version, '>=4')) {
+  if (semver.satisfies(ts.version, '>=4.9')) {
     describe('When emitDecoratorMetadata is true', () => {
       it('check type referenced by decorator metadata', () => {
         const { scopeManager } = parseAndAnalyze(

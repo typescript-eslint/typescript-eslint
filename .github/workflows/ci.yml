@@ -63,6 +63,7 @@ jobs:
     needs: [install]
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         lint-task: ['check-spelling', 'check-format', 'lint-markdown']
     steps:
@@ -82,6 +83,7 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         lint-task: ['lint', 'typecheck']
     steps:
@@ -121,6 +123,7 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
         # unfortunately you can't reference environment variables in an array :(
@@ -184,6 +187,7 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         package:
           # note that we don't regression test all packages here on purpose because most don't depend on TS directly.
@@ -236,6 +240,7 @@ jobs:
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         package:
           # note that we don't regression test all packages here on purpose because most don't depend on ESLint directly.
