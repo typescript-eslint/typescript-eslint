@@ -251,7 +251,7 @@ jobs:
             # lowest possible version
             '6.0.0',
             # somewhere in the middle for sanity check
-            '~7.32.0',
+            '7.32.0',
             # highest possible version
             '^8.0.0',
           ]

@@ -102,7 +102,10 @@ const NOOP_RULE: RuleModule<'error', []> = {
 };
 
 describe('RuleTester', () => {
-  if (semver.satisfies((ESLint as { version: string }).version, '>=8')) {
+  if (
+    'version' in (ESLint as {}) &&
+    semver.satisfies((ESLint as { version: string }).version, '>=8')
+  ) {
     it('automatically sets the filename for tests', () => {
       const ruleTester = new RuleTester({
         parser: '@typescript-eslint/parser',
