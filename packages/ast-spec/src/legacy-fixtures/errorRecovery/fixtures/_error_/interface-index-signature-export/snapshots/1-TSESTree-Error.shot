@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-index-signature-export TSESTree - Error 1`] = `[TSError: An index signature cannot have an export modifier.]`;

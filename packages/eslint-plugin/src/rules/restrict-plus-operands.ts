@@ -23,7 +23,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require both operands of addition to be the same type and be `bigint`, `number`, or `string`',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {

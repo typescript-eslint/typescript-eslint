@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-utils';
 
 import * as util from '../util';
 import { getThisExpression } from '../util';
@@ -16,7 +16,7 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description: 'Disallow member access on a value with type `any`',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -35,7 +35,7 @@ export default util.createRule({
   create(context) {
     const services = util.getParserServices(context);
     const compilerOptions = services.program.getCompilerOptions();
-    const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
+    const isNoImplicitThis = tools.isStrictCompilerOptionEnabled(
       compilerOptions,
       'noImplicitThis',
     );

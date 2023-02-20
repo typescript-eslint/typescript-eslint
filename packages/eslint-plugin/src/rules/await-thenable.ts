@@ -1,4 +1,4 @@
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-utils';
 
 import * as util from '../util';
 
@@ -7,7 +7,7 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallow awaiting a value that is not a Thenable',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -31,7 +31,7 @@ export default util.createRule({
 
         const originalNode = services.esTreeNodeToTSNodeMap.get(node);
 
-        if (!tsutils.isThenableType(checker, originalNode.expression, type)) {
+        if (!tools.isThenableType(checker, originalNode.expression, type)) {
           context.report({
             messageId: 'await',
             node,

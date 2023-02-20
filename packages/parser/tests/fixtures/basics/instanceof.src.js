@@ -1,1 +1,1 @@
-'' instanceof Set
+'' instanceof Set;

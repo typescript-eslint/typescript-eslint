@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-utils';
 import type * as ts from 'typescript';
 
 import {
@@ -28,7 +28,6 @@ export default createRule({
     docs: {
       description:
         'Enforce `RegExp#exec` over `String#match` if no global flag is provided',
-      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {
@@ -134,7 +133,7 @@ export default createRule({
 
         const argumentType = services.getTypeAtLocation(argumentNode);
         const argumentTypes = collectArgumentTypes(
-          tsutils.unionTypeParts(argumentType),
+          tools.unionTypeParts(argumentType),
         );
         switch (argumentTypes) {
           case ArgumentType.RegExp:

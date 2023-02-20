@@ -1,5 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { isTypeFlagSet, unionTypeParts } from 'tsutils';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
@@ -18,7 +18,6 @@ export default createRule({
     docs: {
       description:
         'Require switch-case statements to be exhaustive with union type',
-      recommended: false,
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
@@ -116,7 +115,7 @@ export default createRule({
       const symbolName = discriminantType.getSymbol()?.escapedName;
 
       if (discriminantType.isUnion()) {
-        const unionTypes = unionTypeParts(discriminantType);
+        const unionTypes = tools.unionTypeParts(discriminantType);
         const caseTypes: Set<ts.Type> = new Set();
         for (const switchCase of node.cases) {
           if (switchCase.test == null) {
@@ -144,7 +143,7 @@ export default createRule({
           data: {
             missingBranches: missingBranchTypes
               .map(missingType =>
-                isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
+                tools.isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
                   ? `typeof ${missingType.getSymbol()?.escapedName as string}`
                   : checker.typeToString(missingType),
               )

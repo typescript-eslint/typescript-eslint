@@ -29,17 +29,14 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
         <br />
         {interpolateCode(rule.docs.description)}
       </td>
-      <td
-        className={styles.attrCol}
-        title={
-          recommended === 'strict'
-            ? 'strict'
-            : recommended
-            ? 'recommended'
-            : undefined
-        }
-      >
-        {recommended === 'strict' ? '🔒' : recommended ? '✅' : ''}
+      <td className={styles.attrCol} title={recommended}>
+        {recommended === 'recommended'
+          ? '✅'
+          : recommended === 'strict'
+          ? '🔒'
+          : recommended
+          ? '🎨'
+          : ''}
       </td>
       <td
         className={styles.attrCol}
@@ -67,7 +64,7 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
 }
 
 const filterModes = ['neutral', 'include', 'exclude'] as const;
-type FilterMode = typeof filterModes[number];
+type FilterMode = (typeof filterModes)[number];
 
 function RuleFilterCheckBox({
   label,
@@ -125,6 +122,7 @@ export default function RulesTable({
   const rules = useRulesMeta();
   const [showRecommended, setShowRecommended] = useState<FilterMode>('neutral');
   const [showStrict, setShowStrict] = useState<FilterMode>('neutral');
+  const [showStylistic, setShowStylistic] = useState<FilterMode>('neutral');
   const [showFixable, setShowFixable] = useState<FilterMode>('neutral');
   const [showHasSuggestions, setShowHasSuggestion] =
     useState<FilterMode>('neutral');
@@ -135,11 +133,13 @@ export default function RulesTable({
         .filter(r => !!extensionRules === !!r.docs?.extendsBaseRule)
         .filter(r => {
           const opinions = [
+            match(showRecommended, r.docs?.recommended === 'recommended'),
             match(
-              showRecommended,
-              r.docs?.recommended === 'error' || r.docs?.recommended === 'warn',
+              showStrict,
+              r.docs?.recommended === 'recommended' ||
+                r.docs?.recommended === 'strict',
             ),
-            match(showStrict, r.docs?.recommended === 'strict'),
+            match(showStylistic, r.docs?.recommended === 'stylistic'),
             match(showFixable, !!r.fixable),
             match(showHasSuggestions, !!r.hasSuggestions),
             match(showTypeCheck, !!r.docs?.requiresTypeChecking),
@@ -151,6 +151,7 @@ export default function RulesTable({
       extensionRules,
       showRecommended,
       showStrict,
+      showStylistic,
       showFixable,
       showHasSuggestions,
       showTypeCheck,
@@ -158,61 +159,53 @@ export default function RulesTable({
   );
   return (
     <>
-      <ul className={clsx('clean-list', styles.checkboxList)}>
-        <RuleFilterCheckBox
-          mode={showRecommended}
-          setMode={(newMode): void => {
-            setShowRecommended(newMode);
-
-            if (newMode === 'include' && showStrict === 'include') {
-              setShowStrict('exclude');
-            }
-          }}
-          label="✅ recommended"
-        />
-        <RuleFilterCheckBox
-          mode={showStrict}
-          setMode={(newMode): void => {
-            setShowStrict(newMode);
-
-            if (newMode === 'include' && showRecommended === 'include') {
-              setShowRecommended('exclude');
-            }
-          }}
-          label="🔒 strict"
-        />
-        <RuleFilterCheckBox
-          mode={showFixable}
-          setMode={setShowFixable}
-          label="🔧 fixable"
-        />
-        <RuleFilterCheckBox
-          mode={showHasSuggestions}
-          setMode={setShowHasSuggestion}
-          label="💡 has suggestions"
-        />
-        <RuleFilterCheckBox
-          mode={showTypeCheck}
-          setMode={setShowTypeCheck}
-          label="💭 requires type information"
-        />
-      </ul>
+      <div className={styles.checkboxListArea}>
+        <em>Config Group</em>
+        <ul className={clsx('clean-list', styles.checkboxList)}>
+          <RuleFilterCheckBox
+            mode={showRecommended}
+            setMode={setShowRecommended}
+            label="✅ recommended"
+          />
+          <RuleFilterCheckBox
+            mode={showStrict}
+            setMode={setShowStrict}
+            label="🔒 strict"
+          />
+          <RuleFilterCheckBox
+            mode={showStylistic}
+            setMode={setShowStylistic}
+            label="🎨 stylistic"
+          />
+        </ul>
+      </div>
+      <div className={styles.checkboxListArea}>
+        <em>Metadata</em>
+        <ul className={clsx('clean-list', styles.checkboxList)}>
+          <RuleFilterCheckBox
+            mode={showFixable}
+            setMode={setShowFixable}
+            label="🔧 fixable"
+          />
+          <RuleFilterCheckBox
+            mode={showHasSuggestions}
+            setMode={setShowHasSuggestion}
+            label="💡 has suggestions"
+          />
+          <RuleFilterCheckBox
+            mode={showTypeCheck}
+            setMode={setShowTypeCheck}
+            label="💭 requires type information"
+          />
+        </ul>
+      </div>
       <table className={styles.rulesTable}>
         <thead>
           <tr>
             <th className={styles.ruleCol}>Rule</th>
-            <th className={styles.attrCol} title={'✅ recommended\n🔒 strict'}>
-              ✅{'\n'}🔒
-            </th>
-            <th
-              className={styles.attrCol}
-              title={'🔧 fixable\n💡 has suggestions'}
-            >
-              🔧{'\n'}💡
-            </th>
-            <th className={styles.attrCol} title="💭 requires type information">
-              💭
-            </th>
+            <th className={styles.attrCol}>Config</th>
+            <th className={styles.attrCol}>Fixer</th>
+            <th className={styles.attrCol}>Typed</th>
           </tr>
         </thead>
         <tbody>

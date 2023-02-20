@@ -2,5 +2,18 @@
   "name": "website-eslint",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
-  "implicitDependencies": []
+  "implicitDependencies": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": [
+          "packages/website-eslint/**/*.{mts,cts,ts,tsx}",
+          "packages/website-eslint/**/*.{mjs,cjs,js,jsx}"
+        ],
+        "ignorePath": ".eslintignore"
+      }
+    }
+  }
 }

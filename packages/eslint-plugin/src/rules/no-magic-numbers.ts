@@ -39,7 +39,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow magic numbers',
-      recommended: false,
       extendsBaseRule: true,
     },
     schema: [schema],

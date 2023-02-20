@@ -16,7 +16,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow function declarations that contain unsafe references inside loop statements',
-      recommended: false,
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,

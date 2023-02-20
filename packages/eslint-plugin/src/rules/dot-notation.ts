@@ -1,5 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type {
@@ -20,7 +20,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Enforce dot notation whenever possible',
-      recommended: 'strict',
+      recommended: 'stylistic',
       extendsBaseRule: true,
       requiresTypeChecking: true,
     },
@@ -75,9 +75,8 @@ export default createRule<Options, MessageIds>({
       options.allowProtectedClassPropertyAccess;
     const allowIndexSignaturePropertyAccess =
       (options.allowIndexSignaturePropertyAccess ?? false) ||
-      tsutils.isCompilerOptionEnabled(
+      tools.isCompilerOptionEnabled(
         services.program.getCompilerOptions(),
-        // @ts-expect-error - TS is refining the type to never for some reason
         'noPropertyAccessFromIndexSignature',
       );
 

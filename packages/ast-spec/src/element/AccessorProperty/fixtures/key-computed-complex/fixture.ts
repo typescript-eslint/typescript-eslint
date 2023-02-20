@@ -1,3 +1,3 @@
 class Foo {
-  accessor 1 = 2;
+  accessor [1 + 1] = 2;
 }

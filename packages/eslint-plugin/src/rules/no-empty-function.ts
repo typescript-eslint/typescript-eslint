@@ -46,7 +46,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow empty functions',
-      recommended: 'error',
+      recommended: 'stylistic',
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,

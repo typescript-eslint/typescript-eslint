@@ -9,7 +9,7 @@ export default util.createRule({
     docs: {
       description:
         'Disallow non-null assertions after an optional chain expression',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     hasSuggestions: true,
     messages: {

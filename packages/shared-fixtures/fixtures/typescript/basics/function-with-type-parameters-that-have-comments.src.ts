@@ -1,1 +1,0 @@
-function compare</*comment*/T>() {}

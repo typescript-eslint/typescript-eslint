@@ -1,0 +1,206 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-instance-member TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "greet",
+
+              range: [91, 96],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 7, line: 4 },
+              },
+            },
+            kind: "method",
+            override: false,
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: BinaryExpression {
+                      type: "BinaryExpression",
+                      left: BinaryExpression {
+                        type: "BinaryExpression",
+                        left: Literal {
+                          type: "Literal",
+                          raw: "'Hello '",
+                          value: "Hello ",
+
+                          range: [134, 142],
+                          loc: {
+                            start: { column: 11, line: 5 },
+                            end: { column: 19, line: 5 },
+                          },
+                        },
+                        operator: "+",
+                        right: Identifier {
+                          type: "Identifier",
+                          name: "name",
+
+                          range: [145, 149],
+                          loc: {
+                            start: { column: 22, line: 5 },
+                            end: { column: 26, line: 5 },
+                          },
+                        },
+
+                        range: [134, 149],
+                        loc: {
+                          start: { column: 11, line: 5 },
+                          end: { column: 26, line: 5 },
+                        },
+                      },
+                      operator: "+",
+                      right: Literal {
+                        type: "Literal",
+                        raw: "'!'",
+                        value: "!",
+
+                        range: [152, 155],
+                        loc: {
+                          start: { column: 29, line: 5 },
+                          end: { column: 32, line: 5 },
+                        },
+                      },
+
+                      range: [134, 155],
+                      loc: {
+                        start: { column: 11, line: 5 },
+                        end: { column: 32, line: 5 },
+                      },
+                    },
+
+                    range: [127, 156],
+                    loc: {
+                      start: { column: 4, line: 5 },
+                      end: { column: 33, line: 5 },
+                    },
+                  },
+                ],
+
+                range: [121, 160],
+                loc: {
+                  start: { column: 32, line: 4 },
+                  end: { column: 3, line: 6 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [
+                Identifier {
+                  type: "Identifier",
+                  decorators: Array [
+                    Decorator {
+                      type: "Decorator",
+                      expression: Identifier {
+                        type: "Identifier",
+                        name: "required",
+
+                        range: [98, 106],
+                        loc: {
+                          start: { column: 9, line: 4 },
+                          end: { column: 17, line: 4 },
+                        },
+                      },
+
+                      range: [97, 106],
+                      loc: {
+                        start: { column: 8, line: 4 },
+                        end: { column: 17, line: 4 },
+                      },
+                    },
+                  ],
+                  name: "name",
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSStringKeyword {
+                      type: "TSStringKeyword",
+
+                      range: [113, 119],
+                      loc: {
+                        start: { column: 24, line: 4 },
+                        end: { column: 30, line: 4 },
+                      },
+                    },
+
+                    range: [111, 119],
+                    loc: {
+                      start: { column: 22, line: 4 },
+                      end: { column: 30, line: 4 },
+                    },
+                  },
+
+                  range: [107, 119],
+                  loc: {
+                    start: { column: 18, line: 4 },
+                    end: { column: 30, line: 4 },
+                  },
+                },
+              ],
+
+              range: [96, 160],
+              loc: {
+                start: { column: 7, line: 4 },
+                end: { column: 3, line: 6 },
+              },
+            },
+
+            range: [91, 160],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 3, line: 6 },
+            },
+          },
+        ],
+
+        range: [87, 162],
+        loc: {
+          start: { column: 14, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Greeter",
+
+        range: [79, 86],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 13, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 162],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 163],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

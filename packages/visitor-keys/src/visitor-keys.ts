@@ -101,14 +101,14 @@ type KeysDefinedInESLintVisitorKeysCore =
 
 // strictly type the arrays of keys provided to make sure we keep this config in sync with the type defs
 type AdditionalKeys = {
-  readonly // require keys for all nodes NOT defined in `eslint-visitor-keys`
-  [T in Exclude<
+  // require keys for all nodes NOT defined in `eslint-visitor-keys`
+  readonly [T in Exclude<
     AST_NODE_TYPES,
     KeysDefinedInESLintVisitorKeysCore
   >]: readonly GetNodeTypeKeys<T>[];
 } & {
-  readonly // optionally allow keys for all nodes defined in `eslint-visitor-keys`
-  [T in KeysDefinedInESLintVisitorKeysCore]?: readonly GetNodeTypeKeys<T>[];
+  // optionally allow keys for all nodes defined in `eslint-visitor-keys`
+  readonly [T in KeysDefinedInESLintVisitorKeysCore]?: readonly GetNodeTypeKeys<T>[];
 };
 
 /**
@@ -170,7 +170,7 @@ const additionalKeys: AdditionalKeys = {
   JSXOpeningElement: ['name', 'typeParameters', 'attributes'],
   JSXOpeningFragment: [],
   JSXSpreadChild: ['expression'],
-  MethodDefinition: ['decorators', 'key', 'value', 'typeParameters'],
+  MethodDefinition: ['decorators', 'key', 'value'],
   NewExpression: ['callee', 'typeParameters', 'arguments'],
   ObjectPattern: ['decorators', 'properties', 'typeAnnotation'],
   PropertyDefinition: SharedVisitorKeys.PropertyDefinition,
@@ -227,7 +227,7 @@ const additionalKeys: AdditionalKeys = {
   TSOptionalType: ['typeAnnotation'],
   TSParameterProperty: ['decorators', 'parameter'],
   TSPrivateKeyword: [],
-  TSPropertySignature: ['typeAnnotation', 'key', 'initializer'],
+  TSPropertySignature: ['typeAnnotation', 'key'],
   TSProtectedKeyword: [],
   TSPublicKeyword: [],
   TSQualifiedName: ['left', 'right'],

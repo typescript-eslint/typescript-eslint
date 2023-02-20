@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`recommended-does-not-require-program should lint successfully 1`] = `
+[
+  {
+    "errorCount": 1,
+    "fatalErrorCount": 0,
+    "filePath": "<root>/index.ts",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": [
+      {
+        "column": 7,
+        "endColumn": 15,
+        "endLine": 1,
+        "line": 1,
+        "message": "'foo' is assigned a value but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "@typescript-eslint/no-unused-vars",
+        "severity": 2,
+      },
+    ],
+    "output": "const foo: any = true;
+",
+    "suppressedMessages": [],
+    "usedDeprecatedRules": [],
+    "warningCount": 0,
+  },
+]
+`;

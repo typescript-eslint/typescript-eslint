@@ -1,8 +1,12 @@
-// eslint-disable-next-line @typescript-eslint/consistent-type-imports
-type RulesFile = typeof import('../src/rules');
+import { fetch } from 'cross-fetch';
+import { markdownTable } from 'markdown-table';
+
+import type RulesFile from '../src/rules';
 
 interface RulesObject {
-  default: RulesFile;
+  default: {
+    default: typeof RulesFile;
+  };
 }
 
 async function main(): Promise<void> {
@@ -11,8 +15,35 @@ async function main(): Promise<void> {
   } =
     // @ts-expect-error -- We don't support ESM imports of local code yet.
     (await import('../dist/rules/index.js')) as RulesObject;
-  const { markdownTable } = await import('markdown-table');
-  const { fetch } = await import('cross-fetch');
+
+  // Annotate which rules are new since the last version
+  async function getNewRulesAsOfMajorVersion(
+    oldVersion: string,
+  ): Promise<Set<string>> {
+    // 1. Get the current list of rules (already done)
+    const newRuleNames = Object.keys(rules);
+
+    // 2. Retrieve the old version of typescript-eslint from unpkg
+    const oldUrl = `https://unpkg.com/@typescript-eslint/eslint-plugin@${oldVersion}/dist/configs/all.js`;
+    const oldFileText = await (await fetch(oldUrl)).text();
+    const oldObjectText = oldFileText.substring(
+      oldFileText.indexOf('{'),
+      oldFileText.lastIndexOf('}') + 1,
+    );
+    // Normally we wouldn't condone using the 'eval' API...
+    // But this is an internal-only script and it's the easiest way to convert
+    // the JS raw text into a runtime object. 🤷
+    let oldRulesObject!: { rules: typeof RulesFile };
+    eval('oldRulesObject = ' + oldObjectText);
+    const oldRuleNames = new Set(Object.keys(oldRulesObject.rules));
+
+    // 3. Get the keys that exist in (1) (new version) and not (2) (old version)
+    return new Set(
+      newRuleNames.filter(
+        newRuleName => !oldRuleNames.has(`@typescript-eslint/${newRuleName}`),
+      ),
+    );
+  }
 
   const newRuleNames = await getNewRulesAsOfMajorVersion('5.0.0');
 
@@ -33,8 +64,17 @@ async function main(): Promise<void> {
       <td>
         <ul>
           <li>🆕 = newly added to typescript-eslint</li>
-          <li>🙅 = deprecated in the next major</li>
-          <li>➖️ = to be removed from the plugin in the next version</li>
+          <li>🙅 = to be deprecated in the next major</li>
+          <li>💀 = currently deprecated; to be removed in the next version</li>
+        </ul>
+      </td>
+    </tr>
+    <tr>
+      <td>TC</td>
+      <td>Requires type checking?</td>
+      <td>
+        <ul>
+          <li>💭 = yes</li>
         </ul>
       </td>
     </tr>
@@ -43,31 +83,18 @@ async function main(): Promise<void> {
       <td>Extension rule?</td>
       <td>
         <ul>
-          <li>☑️ = yes</li>
+          <li>🧱 = yes</li>
         </ul>
       </td>
     </tr>
     <tr>
-      <td>R</td>
+      <td>Rec'd</td>
       <td>Recommended</td>
       <td>
         <ul>
           <li>➕ = add to recommended this version</li>
-          <li>⚠️ = recommended as warning</li>
-          <li>🛑 = recommended as an error</li>
           <li>➖️ = remove from recommended this version</li>
-        </ul>
-      </td>
-    </tr>
-    <tr>
-      <td>RWT</td>
-      <td>Recommended-requiring-type-checking</td>
-      <td>
-        <ul>
-          <li>➕ = add to recommended-with-typechecking this version</li>
-          <li>⚠️ = recommended as warning</li>
-          <li>🛑 = recommended as an error</li>
-          <li>➖️ = remove from recommended this version</li>
+          <li>🟩 = stays in recommended this version</li>
         </ul>
       </td>
     </tr>
@@ -76,12 +103,23 @@ async function main(): Promise<void> {
       <td>Strict</td>
       <td>
         <ul>
-          <li>➕ = add to strict this version</li>
-          <li>⚠️ = recommended as warning</li>
-          <li>➖️ = remove from strict this version</li>
+        <li>➕ = add to strict this version</li>
+        <li>➖️ = remove from strict this version</li>
+        <li>🔵 = stays in strict this version</li>
         </ul>
       </td>
-  </tr>
+    </tr>
+    <tr>
+      <td>Style</td>
+      <td>Style</td>
+      <td>
+        <ul>
+          <li>➕ = add to stylistic this version</li>
+          <li>➖️ = remove from stylistic this version</li>
+          <li>🔸 = stays in stylistic this version</li>
+        </ul>
+      </td>
+    </tr>
   </tbody>
 </table>
 
@@ -92,7 +130,7 @@ async function main(): Promise<void> {
 
   console.log(
     markdownTable([
-      ['Rule', 'Status', 'Ext', 'R', 'RWT', 'Strict', 'Comment'],
+      ['Rule', 'Status', 'TC', 'Ext', "Rec'd", 'Strict', 'Style', 'Comment'],
       ...Object.entries(rules).map(([ruleName, { meta }]) => {
         const { deprecated } = meta;
         const { extendsBaseRule, recommended, requiresTypeChecking } =
@@ -100,55 +138,17 @@ async function main(): Promise<void> {
 
         return [
           `[\`${ruleName}\`](https://typescript-eslint.io/rules/${ruleName})`,
-          newRuleNames.has(ruleName) ? '🆕' : deprecated ? '🙅' : '',
-          extendsBaseRule ? '☑️' : '',
-          recommended &&
-          ['error', 'warn'].includes(recommended) &&
-          !requiresTypeChecking
-            ? '🛑'
-            : '',
-          recommended &&
-          ['error', 'warn'].includes(recommended) &&
-          requiresTypeChecking
-            ? '🛑'
-            : '',
-          recommended === 'strict' ? '⚠️' : '',
+          newRuleNames.has(ruleName) ? '🆕' : deprecated ? '💀' : '',
+          requiresTypeChecking ? '💭' : '',
+          extendsBaseRule ? '🧱' : '',
+          recommended === 'recommended' ? '🟩' : '',
+          recommended === 'strict' ? '🔵' : '',
+          recommended === 'stylistic' ? '🔸' : '',
           meta.type === 'layout' ? 'layout 💩' : '(todo)',
         ];
       }),
     ]),
   );
-
-  //  Annotate which rules are new since version 5.0.0
-  async function getNewRulesAsOfMajorVersion(
-    oldVersion: string,
-  ): Promise<Set<string>> {
-    // 1. Get the current list of rules (already done)
-    const newRuleNames = Object.keys(rules);
-
-    // 2. Use some CDN thing for the 5.X version of typescript-eslint
-    const oldUrl = `https://unpkg.com/@typescript-eslint/eslint-plugin@${oldVersion}/dist/configs/all.js`;
-    const oldFileText = await (await fetch(oldUrl)).text();
-    const oldObjectText = oldFileText.substring(
-      oldFileText.indexOf('{'),
-      oldFileText.lastIndexOf('}') + 1,
-    );
-    // Normally we wouldn't condone using the 'eval' API...
-    // But this is an internal-only script and it's the easiest way to convert
-    // the JS raw text into a runtime object. 🤷
-    let oldRulesObject!: { rules: RulesFile };
-    eval('oldRulesObject = ' + oldObjectText);
-    const oldRuleNames = new Set(Object.keys(oldRulesObject.rules));
-
-    // 3. Get the keys that exist in (1) (new version) and not (2) (old version)
-    return new Set(
-      newRuleNames.filter(
-        newRuleName => !oldRuleNames.has(`@typescript-eslint/${newRuleName}`),
-      ),
-    );
-  }
-
-  await getNewRulesAsOfMajorVersion('5.0.0');
 }
 
 main().catch(error => {

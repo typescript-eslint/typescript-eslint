@@ -1,12 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import {
-  isObjectFlagSet,
-  isObjectType,
-  isStrictCompilerOptionEnabled,
-  isTypeFlagSet,
-  isVariableDeclaration,
-} from 'tsutils';
+import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -24,7 +18,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow type assertions that do not change the type of an expression',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     fixable: 'code',
@@ -100,10 +94,13 @@ export default util.createRule<Options, MessageIds>({
 
       if (
         // non-strict mode doesn't care about used before assigned errors
-        isStrictCompilerOptionEnabled(compilerOptions, 'strictNullChecks') &&
+        tools.isStrictCompilerOptionEnabled(
+          compilerOptions,
+          'strictNullChecks',
+        ) &&
         // ignore class properties as they are compile time guarded
         // also ignore function arguments as they can't be used before defined
-        isVariableDeclaration(declaration) &&
+        ts.isVariableDeclaration(declaration) &&
         // is it `const x!: number`
         declaration.initializer === undefined &&
         declaration.exclamationToken === undefined &&
@@ -244,9 +241,9 @@ export default util.createRule<Options, MessageIds>({
         const castType = services.getTypeAtLocation(node);
 
         if (
-          isTypeFlagSet(castType, ts.TypeFlags.Literal) ||
-          (isObjectType(castType) &&
-            (isObjectFlagSet(castType, ts.ObjectFlags.Tuple) ||
+          tools.isTypeFlagSet(castType, ts.TypeFlags.Literal) ||
+          (tools.isObjectType(castType) &&
+            (tools.isObjectFlagSet(castType, ts.ObjectFlags.Tuple) ||
               couldBeTupleType(castType)))
         ) {
           // It's not always safe to remove a cast to a literal type or tuple

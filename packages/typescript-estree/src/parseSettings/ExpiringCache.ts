@@ -3,15 +3,18 @@ import type { CacheDurationSeconds } from '@typescript-eslint/types';
 export const DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS = 30;
 const ZERO_HR_TIME: [number, number] = [0, 0];
 
+export interface CacheLike<Key, Value> {
+  get(key: Key): Value | void;
+  set(key: Key, value: Value): this;
+}
+
 /**
  * A map with key-level expiration.
  */
-export class ExpiringCache<TKey, TValue> {
+export class ExpiringCache<TKey, TValue> implements CacheLike<TKey, TValue> {
   readonly #cacheDurationSeconds: CacheDurationSeconds;
-  /**
-   * The mapping of path-like string to the resolved TSConfig(s)
-   */
-  protected readonly map = new Map<
+
+  readonly #map = new Map<
     TKey,
     Readonly<{
       value: TValue;
@@ -24,7 +27,7 @@ export class ExpiringCache<TKey, TValue> {
   }
 
   set(key: TKey, value: TValue): this {
-    this.map.set(key, {
+    this.#map.set(key, {
       value,
       lastSeen:
         this.#cacheDurationSeconds === 'Infinity'
@@ -36,7 +39,7 @@ export class ExpiringCache<TKey, TValue> {
   }
 
   get(key: TKey): TValue | undefined {
-    const entry = this.map.get(key);
+    const entry = this.#map.get(key);
     if (entry?.value != null) {
       if (this.#cacheDurationSeconds === 'Infinity') {
         return entry.value;
@@ -48,22 +51,14 @@ export class ExpiringCache<TKey, TValue> {
         return entry.value;
       } else {
         // key has expired - clean it up to free up memory
-        this.cleanupKey(key);
+        this.#map.delete(key);
       }
     }
     // no hit :'(
     return undefined;
   }
 
-  protected cleanupKey(key: TKey): void {
-    this.map.delete(key);
-  }
-
-  get size(): number {
-    return this.map.size;
-  }
-
   clear(): void {
-    this.map.clear();
+    this.#map.clear();
   }
 }

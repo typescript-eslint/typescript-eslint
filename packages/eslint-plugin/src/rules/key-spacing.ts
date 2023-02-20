@@ -31,7 +31,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce consistent spacing between property names and type annotations in types and interfaces',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
@@ -82,6 +81,15 @@ export default util.createRule<Options, MessageIds>({
           node.type === AST_NODE_TYPES.TSIndexSignature ||
           node.type === AST_NODE_TYPES.PropertyDefinition) &&
         !!node.typeAnnotation
+      );
+    }
+
+    function isApplicable(
+      node: TSESTree.Node,
+    ): node is KeyTypeNodeWithTypeAnnotation {
+      return (
+        isKeyTypeNode(node) &&
+        node.typeAnnotation.loc.start.line === node.loc.end.line
       );
     }
 
@@ -281,7 +289,7 @@ export default util.createRule<Options, MessageIds>({
       }
 
       for (const node of group) {
-        if (!isKeyTypeNode(node)) {
+        if (!isApplicable(node)) {
           continue;
         }
         const { typeAnnotation } = node;
@@ -356,7 +364,7 @@ export default util.createRule<Options, MessageIds>({
           ? options.multiLine.mode
           : options.mode) ?? 'strict';
 
-      if (isKeyTypeNode(node)) {
+      if (isApplicable(node)) {
         checkBeforeColon(node, expectedWhitespaceBeforeColon, mode);
         checkAfterColon(node, expectedWhitespaceAfterColon, mode);
       }

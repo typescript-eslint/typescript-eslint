@@ -1,3 +1,0 @@
-type foo = {
-  [a: string];
-}

@@ -63,7 +63,6 @@ export const rule = createRule({
     docs: {
       description:
         'Function declaration names should start with an upper-case letter.',
-      recommended: 'warn',
     },
     messages: {
       uppercase: 'Start this name with an upper-case letter.',
@@ -230,8 +229,8 @@ This rule bans for-of looping over an enum by using the TypeScript type checker 
 
 ```ts
 import { ESLintUtils } from '@typescript-eslint/utils';
+import * as tools from 'ts-api-tools';
 import * as ts from 'typescript';
-import * as tsutils from 'tsutils';
 
 export const rule = createRule({
   create(context) {
@@ -244,7 +243,7 @@ export const rule = createRule({
         const type = services.getTypeAtLocation(node);
 
         // 3. Check the TS type using the TypeScript APIs
-        if (tsutils.isTypeFlagSet(nodeType, ts.TypeFlags.EnumLike)) {
+        if (tools.isTypeFlagSet(nodeType, ts.TypeFlags.EnumLike)) {
           context.report({
             messageId: 'loopOverEnum',
             node: node.right,
@@ -256,7 +255,6 @@ export const rule = createRule({
   meta: {
     docs: {
       description: 'Avoid looping over enums.',
-      recommended: 'error',
     },
     messages: {
       loopOverEnum: 'Do not loop over enums.',

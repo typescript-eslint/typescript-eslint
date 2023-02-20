@@ -1,6 +1,9 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// YOU CAN REGENERATE IT USING yarn generate:configs
+// SEE https://typescript-eslint.io/linting/configs
+//
+// For developers working in the typescript-eslint monorepo:
+// You can regenerate it using `yarn generate:configs`
 
 export = {
   extends: ['./configs/base', './configs/eslint-recommended'],
@@ -11,6 +14,8 @@ export = {
     '@typescript-eslint/ban-ts-comment': 'error',
     '@typescript-eslint/ban-tslint-comment': 'error',
     '@typescript-eslint/ban-types': 'error',
+    'block-spacing': 'off',
+    '@typescript-eslint/block-spacing': 'error',
     'brace-style': 'off',
     '@typescript-eslint/brace-style': 'error',
     '@typescript-eslint/class-literal-property-style': 'error',

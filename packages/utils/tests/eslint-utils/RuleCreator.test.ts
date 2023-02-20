@@ -13,7 +13,7 @@ describe('RuleCreator', () => {
       meta: {
         docs: {
           description: 'some description',
-          recommended: 'error',
+          recommended: 'recommended',
           requiresTypeChecking: true,
         },
         messages: {
@@ -31,7 +31,7 @@ describe('RuleCreator', () => {
       docs: {
         description: 'some description',
         url: 'test/test',
-        recommended: 'error',
+        recommended: 'recommended',
         requiresTypeChecking: true,
       },
       messages: {

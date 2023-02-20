@@ -21,7 +21,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Require that function overload signatures be consecutive',
-      recommended: 'error',
+      recommended: 'stylistic',
     },
     schema: [],
     messages: {

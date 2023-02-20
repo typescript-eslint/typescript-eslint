@@ -15,7 +15,9 @@ type Options = [
     allowHigherOrderFunctions?: boolean;
     allowDirectConstAssertionInArrowFunctions?: boolean;
     allowConciseArrowFunctionExpressionsStartingWithVoid?: boolean;
+    allowFunctionsWithoutTypeParameters?: boolean;
     allowedNames?: string[];
+    allowIIFEs?: boolean;
   },
 ];
 type MessageIds = 'missingReturnType';
@@ -27,7 +29,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require explicit return types on functions and class methods',
-      recommended: false,
     },
     messages: {
       missingReturnType: 'Missing return type on function.',
@@ -61,6 +62,11 @@ export default util.createRule<Options, MessageIds>({
               'Whether to ignore arrow functions immediately returning a `as const` value.',
             type: 'boolean',
           },
+          allowFunctionsWithoutTypeParameters: {
+            description:
+              "Whether to ignore functions that don't have generic type parameters.",
+            type: 'boolean',
+          },
           allowedNames: {
             description:
               'An array of function/method names that will not have their arguments or return values checked.',
@@ -68,6 +74,11 @@ export default util.createRule<Options, MessageIds>({
               type: 'string',
             },
             type: 'array',
+          },
+          allowIIFEs: {
+            description:
+              'Whether to ignore immediately invoked function expressions (IIFEs).',
+            type: 'boolean',
           },
         },
         additionalProperties: false,
@@ -82,16 +93,25 @@ export default util.createRule<Options, MessageIds>({
       allowDirectConstAssertionInArrowFunctions: true,
       allowConciseArrowFunctionExpressionsStartingWithVoid: false,
       allowedNames: [],
+      allowIIFEs: false,
     },
   ],
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
-    function isAllowedName(
+    function isAllowedFunction(
       node:
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionExpression
         | TSESTree.FunctionDeclaration,
     ): boolean {
+      if (options.allowFunctionsWithoutTypeParameters && !node.typeParameters) {
+        return true;
+      }
+
+      if (options.allowIIFEs && isIIFE(node)) {
+        return true;
+      }
+
       if (!options.allowedNames?.length) {
         return false;
       }
@@ -139,6 +159,16 @@ export default util.createRule<Options, MessageIds>({
       }
       return false;
     }
+
+    function isIIFE(
+      node:
+        | TSESTree.ArrowFunctionExpression
+        | TSESTree.FunctionExpression
+        | TSESTree.FunctionDeclaration,
+    ): boolean {
+      return node.parent.type === AST_NODE_TYPES.CallExpression;
+    }
+
     return {
       'ArrowFunctionExpression, FunctionExpression'(
         node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
@@ -153,7 +183,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        if (isAllowedName(node)) {
+        if (isAllowedFunction(node)) {
           return;
         }
 
@@ -174,7 +204,7 @@ export default util.createRule<Options, MessageIds>({
         );
       },
       FunctionDeclaration(node): void {
-        if (isAllowedName(node)) {
+        if (isAllowedFunction(node)) {
           return;
         }
         if (options.allowTypedFunctionExpressions && node.returnType) {

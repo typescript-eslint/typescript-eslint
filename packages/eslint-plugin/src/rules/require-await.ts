@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-utils';
 import type * as ts from 'typescript';
 
 import * as util from '../util';
@@ -23,7 +23,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow async functions which have no `await` expression',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
       extendsBaseRule: true,
     },
@@ -88,7 +88,7 @@ export default util.createRule({
     function isThenableType(node: ts.Node): boolean {
       const type = checker.getTypeAtLocation(node);
 
-      return tsutils.isThenableType(checker, node, type);
+      return tools.isThenableType(checker, node, type);
     }
 
     /**
@@ -119,7 +119,7 @@ export default util.createRule({
       const type = services.getTypeAtLocation(node.argument);
       const typesToCheck = expandUnionOrIntersectionType(type);
       for (const type of typesToCheck) {
-        const asyncIterator = tsutils.getWellKnownSymbolPropertyOfType(
+        const asyncIterator = tools.getWellKnownSymbolPropertyOfType(
           type,
           'asyncIterator',
           checker,

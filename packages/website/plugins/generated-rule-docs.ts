@@ -4,6 +4,7 @@ import * as fs from 'fs';
 import type { JSONSchema7 } from 'json-schema';
 import type { JSONSchema } from 'json-schema-to-typescript';
 import { compile } from 'json-schema-to-typescript';
+import * as lz from 'lzstring.ts';
 import type * as mdast from 'mdast';
 import { EOL } from 'os';
 import * as path from 'path';
@@ -157,7 +158,6 @@ export const generatedRuleDocs: Plugin = () => {
     })();
 
     // 5. Add a description of how to use / options for the rule
-    const optionLevel = meta.docs.recommended === 'error' ? 'error' : 'warn';
 
     if (meta.docs.extendsBaseRule) {
       const extendsBaseRuleName =
@@ -193,34 +193,61 @@ export const generatedRuleDocs: Plugin = () => {
         type: 'paragraph',
       } as mdast.Paragraph);
 
+      /**
+       * @param withComment Whether to include a full comment note.
+       * @remarks `withComment` can't be used inside a JSON object which is needed for eslintrc in the playground
+       */
+      const getEslintrcString = (withComment: boolean): string => {
+        return `{
+  "rules": {${
+    withComment
+      ? '\n    // Note: you must disable the base rule as it can report incorrect errors'
+      : ''
+  }
+    "${extendsBaseRuleName}": "off",
+    "@typescript-eslint/${file.stem}": "error"
+  }
+}`;
+      };
+
       root.children.splice(howToUseH2Index + 1, 0, {
         lang: 'js',
         type: 'code',
         meta: 'title=".eslintrc.cjs"',
-        value: `module.exports = {
-  "rules": {
-    // Note: you must disable the base rule as it can report incorrect errors
-    "${extendsBaseRuleName}": "off",
-    "@typescript-eslint/${file.stem}": "${optionLevel}"
-  }
-};`,
+        value: `module.exports = ${getEslintrcString(true)};`,
       } as mdast.Code);
+
+      root.children.splice(howToUseH2Index + 2, 0, {
+        value: `<try-in-playground eslintrcHash="${convertToPlaygroundHash(
+          getEslintrcString(false),
+        )}" />`,
+        type: 'jsx',
+      } as unist.Node);
     } else {
       // For non-extended rules, the code snippet is placed before the first h2
       // (i.e. at the end of the initial explanation)
       const firstH2Index = root.children.findIndex(
         child => nodeIsHeading(child) && child.depth === 2,
       );
+
+      const getEslintrcString = `{
+  "rules": {
+    "@typescript-eslint/${file.stem}": "error"
+  }
+}`;
       root.children.splice(firstH2Index, 0, {
         lang: 'js',
         type: 'code',
         meta: 'title=".eslintrc.cjs"',
-        value: `module.exports = {
-  "rules": {
-    "@typescript-eslint/${file.stem}": "${optionLevel}"
-  }
-};`,
+        value: `module.exports = ${getEslintrcString};`,
       } as mdast.Code);
+
+      root.children.splice(firstH2Index + 1, 0, {
+        value: `<try-in-playground eslintrcHash="${convertToPlaygroundHash(
+          getEslintrcString,
+        )}" />`,
+        type: 'jsx',
+      } as unist.Node);
 
       if (meta.schema.length === 0) {
         root.children.splice(optionsH2Index + 1, 0, {
@@ -394,6 +421,10 @@ export const generatedRuleDocs: Plugin = () => {
     }
   };
 };
+
+function convertToPlaygroundHash(eslintrc: string): string {
+  return lz.LZString.compressToEncodedURIComponent(eslintrc);
+}
 
 function nodeIsHeading(node: unist.Node): node is mdast.Heading {
   return node.type === 'heading';

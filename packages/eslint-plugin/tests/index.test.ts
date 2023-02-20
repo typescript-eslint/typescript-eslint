@@ -19,6 +19,10 @@ describe('eslint-plugin ("./src/index.ts")', () => {
   });
 
   it('exports all available configs', () => {
-    expect(configs).toEqual(expect.arrayContaining(eslintPluginConfigKeys));
+    expect([
+      ...configs,
+      // This config is deprecated eventually will be removed
+      'recommended-requiring-type-checking',
+    ]).toEqual(expect.arrayContaining(eslintPluginConfigKeys));
   });
 });

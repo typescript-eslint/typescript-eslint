@@ -1,5 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tools from 'ts-api-utils';
 
 import * as util from '../util';
 import { getThisExpression } from '../util';
@@ -16,7 +16,7 @@ export default util.createRule<[], MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow calling a value with type `any`',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -34,7 +34,7 @@ export default util.createRule<[], MessageIds>({
   create(context) {
     const services = util.getParserServices(context);
     const compilerOptions = services.program.getCompilerOptions();
-    const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
+    const isNoImplicitThis = tools.isStrictCompilerOptionEnabled(
       compilerOptions,
       'noImplicitThis',
     );

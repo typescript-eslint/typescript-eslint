@@ -22,7 +22,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require `Array#sort` calls to always provide a `compareFunction`',
-      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {
