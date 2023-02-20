@@ -147,8 +147,9 @@ export const useSandboxServices = (
     };
     // colorMode can't be reactive here, this is going to cause crash while switching dark/light mode
     // updating of colorMode is handled in LoadedEditor
+    // jsx can't be reactive too, because it's used only on first load
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [props.ts, props.jsx, onLoaded]);
+  }, [props.ts, onLoaded]);
 
   return services;
 };
