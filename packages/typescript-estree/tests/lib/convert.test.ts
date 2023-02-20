@@ -1,4 +1,5 @@
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
+import * as semver from 'semver';
 import * as ts from 'typescript';
 
 import type { TSNode } from '../../src';
@@ -76,6 +77,9 @@ describe('convert', () => {
   });
 
   it('deeplyCopy should convert array of nodes', () => {
+    if (!semver.satisfies(ts.version, '>=4.7')) {
+      return;
+    }
     const ast = convertCode('new foo<T>()');
 
     const instance = new Converter(ast, {
