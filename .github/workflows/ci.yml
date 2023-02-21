@@ -288,6 +288,6 @@ jobs:
           git fetch --prune --unshallow
 
       - name: Publish all packages to npm
-        run: npx lerna publish premajor --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v${major}
+        run: npx lerna publish premajor --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v6
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
