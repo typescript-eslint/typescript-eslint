@@ -157,8 +157,8 @@ export default util.createRule({
       //   export enum MyEnum { B }
       // }
       if (
-        node.parent!.type === AST_NODE_TYPES.ExportNamedDeclaration &&
-        node.parent!.parent!.type === AST_NODE_TYPES.TSModuleBlock
+        node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration &&
+        node.parent.parent.type === AST_NODE_TYPES.TSModuleBlock
       ) {
         // TODO: We don't need to dip into the TypeScript type checker here!
         // Merged namespaces must all exist in the same file.
