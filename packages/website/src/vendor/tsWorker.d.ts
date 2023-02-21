@@ -1,5 +1,14 @@
-import * as ts from 'typescript';
+/**********************************************
+ *      DO NOT MODIFY THIS FILE MANUALLY      *
+ *                                            *
+ *     THIS FILE HAS BEEN FETCHED FROM THE    *
+ *      TYPESCRIPT PLAYGROUND SOURCE CODE.    *
+ *                                            *
+ *    YOU CAN REGENERATE THESE FILES USING    *
+ *          yarn generate-website-dts         *
+ **********************************************/
 
+import ts from 'typescript';
 export declare class TypeScriptWorker implements ts.LanguageServiceHost {
   private _ctx;
   private _extraLibs;
@@ -89,10 +98,8 @@ export declare class TypeScriptWorker implements ts.LanguageServiceHost {
     formatOptions: ts.FormatCodeOptions,
   ): Promise<ReadonlyArray<ts.CodeFixAction>>;
   updateExtraLibs(extraLibs: IExtraLibs): void;
-  /**
-   * https://github.com/microsoft/TypeScript-Website/blob/246798df5013036bd9b4389932b642c20ab35deb/packages/playground-worker/types.d.ts#L48
-   */
-  getLibFiles(): Promise<Record<string, string>>;
+  readFile(path: string, encoding?: string | undefined): string | undefined;
+  fileExists(path: string): boolean;
 }
 export interface IExtraLib {
   content: string;

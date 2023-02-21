@@ -1,1 +1,1 @@
-let x: [string, number?, (string | number)?]
+let x: [string, number?, (string | number)?];

@@ -1,6 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tools from 'ts-api-utils';
+import * as ts from 'typescript';
 
 import * as util from '../util';
 import { getThisExpression } from '../util';
@@ -82,9 +83,11 @@ export default util.createRule({
       // so we have to use the contextual typing in these cases, i.e.
       // const foo1: () => Set<string> = () => new Set<any>();
       // the return type of the arrow function is Set<any> even though the variable is typed as Set<string>
-      let functionType = tools.isExpression(functionTSNode)
-        ? util.getContextualType(checker, functionTSNode)
-        : services.getTypeAtLocation(functionNode);
+      let functionType =
+        ts.isFunctionExpression(functionTSNode) ||
+        ts.isArrowFunction(functionTSNode)
+          ? util.getContextualType(checker, functionTSNode)
+          : services.getTypeAtLocation(functionNode);
       if (!functionType) {
         functionType = services.getTypeAtLocation(functionNode);
       }

@@ -1,16 +1,24 @@
-import { PluginUtils } from './pluginUtils';
-import type React from 'react';
+/**********************************************
+ *      DO NOT MODIFY THIS FILE MANUALLY      *
+ *                                            *
+ *     THIS FILE HAS BEEN FETCHED FROM THE    *
+ *      TYPESCRIPT PLAYGROUND SOURCE CODE.    *
+ *                                            *
+ *    YOU CAN REGENERATE THESE FILES USING    *
+ *          yarn generate-website-dts         *
+ **********************************************/
 
 declare type Sandbox = import('./sandbox').Sandbox;
 declare type Monaco = typeof import('monaco-editor');
+import { PluginUtils } from './pluginUtils';
+import type React from 'react';
 export { PluginUtils } from './pluginUtils';
-export declare interface PluginFactory {
+export declare type PluginFactory = {
   (
     i: (key: string, components?: any) => string,
     utils: PluginUtils,
   ): PlaygroundPlugin;
-}
-
+};
 /** The interface of all sidebar plugins */
 export interface PlaygroundPlugin {
   /** Not public facing, but used by the playground to uniquely identify plugins */

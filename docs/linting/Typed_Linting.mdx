@@ -55,13 +55,46 @@ module.exports = {
 };
 ```
 
-See [the `@typescript-eslint/parser` docs for more details](https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/parser/README.md#parseroptionsproject).
+See [the `@typescript-eslint/parser` docs for more details](../architecture/Parser.mdx#project).
 
 :::note
 If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/Monorepos.mdx).
 :::
 
 ## FAQs
+
+### How can I disable type-aware linting for a subset of files?
+
+You can combine ESLint's [overrides](https://eslint.org/docs/latest/use/configure/configuration-files#configuration-based-on-glob-patterns) config in conjunction with our [`disable-type-checked`](./Configurations.mdx#disable-type-checked) config to turn off type-aware linting on specific subsets of files.
+
+```js title=".eslintrc.js"
+module.exports = {
+  extends: [
+    'eslint:recommended',
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-type-checked',
+  ],
+  plugins: ['@typescript-eslint'],
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: true,
+    tsconfigRootDir: __dirname,
+  },
+  root: true,
+  // Added lines start
+  overrides: [
+    {
+      files: ['*.js'],
+      extends: ['plugin:@typescript-eslint/disable-type-checked'],
+    },
+  ],
+  // Added lines end
+};
+```
+
+:::info
+If you use type-aware rules from other plugins, you will need to manually disable these rules or use a premade config they provide to disable them.
+:::
 
 ### How is performance?
 

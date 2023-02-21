@@ -7,12 +7,8 @@ __snapshots__
 .docusaurus
 build
 
-packages/eslint-plugin-tslint/tests
-
-packages/website/**/*.js
-packages/website/**/*.d.ts
-packages/website-eslint/**/*.js
-packages/website-eslint/**/*.d.ts
-
 # Files copied as part of the build
 packages/types/src/generated/**/*.ts
+
+# Playground types downloaded from the web
+packages/website/src/vendor

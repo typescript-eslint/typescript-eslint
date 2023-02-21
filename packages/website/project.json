@@ -8,7 +8,11 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/website/**/*.ts"]
+        "lintFilePatterns": [
+          "packages/website/**/*.{mts,cts,ts,tsx}",
+          "packages/website/**/*.{mjs,cjs,js,jsx}"
+        ],
+        "ignorePath": ".eslintignore"
       }
     }
   }

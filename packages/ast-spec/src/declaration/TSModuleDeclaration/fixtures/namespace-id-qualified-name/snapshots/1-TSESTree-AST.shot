@@ -6,64 +6,62 @@ Program {
   body: Array [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
-      body: TSModuleDeclaration {
-        type: "TSModuleDeclaration",
-        body: TSModuleDeclaration {
-          type: "TSModuleDeclaration",
-          body: TSModuleBlock {
-            type: "TSModuleBlock",
-            body: Array [],
+      body: TSModuleBlock {
+        type: "TSModuleBlock",
+        body: Array [],
 
-            range: [16, 18],
-            loc: {
-              start: { column: 16, line: 1 },
-              end: { column: 18, line: 1 },
-            },
-          },
-          id: Identifier {
-            type: "Identifier",
-            name: "C",
-
-            range: [14, 15],
-            loc: {
-              start: { column: 14, line: 1 },
-              end: { column: 15, line: 1 },
-            },
-          },
-          kind: "namespace",
-
-          range: [14, 18],
-          loc: {
-            start: { column: 14, line: 1 },
-            end: { column: 18, line: 1 },
-          },
-        },
-        id: Identifier {
-          type: "Identifier",
-          name: "B",
-
-          range: [12, 13],
-          loc: {
-            start: { column: 12, line: 1 },
-            end: { column: 13, line: 1 },
-          },
-        },
-        kind: "namespace",
-
-        range: [12, 18],
+        range: [16, 18],
         loc: {
-          start: { column: 12, line: 1 },
+          start: { column: 16, line: 1 },
           end: { column: 18, line: 1 },
         },
       },
-      id: Identifier {
-        type: "Identifier",
-        name: "A",
+      id: TSQualifiedName {
+        type: "TSQualifiedName",
+        left: TSQualifiedName {
+          type: "TSQualifiedName",
+          left: Identifier {
+            type: "Identifier",
+            name: "A",
 
-        range: [10, 11],
+            range: [10, 11],
+            loc: {
+              start: { column: 10, line: 1 },
+              end: { column: 11, line: 1 },
+            },
+          },
+          right: Identifier {
+            type: "Identifier",
+            name: "B",
+
+            range: [12, 13],
+            loc: {
+              start: { column: 12, line: 1 },
+              end: { column: 13, line: 1 },
+            },
+          },
+
+          range: [10, 13],
+          loc: {
+            start: { column: 10, line: 1 },
+            end: { column: 13, line: 1 },
+          },
+        },
+        right: Identifier {
+          type: "Identifier",
+          name: "C",
+
+          range: [14, 15],
+          loc: {
+            start: { column: 14, line: 1 },
+            end: { column: 15, line: 1 },
+          },
+        },
+
+        range: [10, 15],
         loc: {
           start: { column: 10, line: 1 },
-          end: { column: 11, line: 1 },
+          end: { column: 15, line: 1 },
         },
       },
       kind: "namespace",

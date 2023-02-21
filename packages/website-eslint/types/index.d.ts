@@ -1,8 +1,7 @@
+import type { analyze } from '@typescript-eslint/scope-manager/dist/analyze';
+import type { astConverter } from '@typescript-eslint/typescript-estree/dist/ast-converter';
+import type { getScriptKind } from '@typescript-eslint/typescript-estree/dist/create-program/getScriptKind';
 import type { TSESLint } from '@typescript-eslint/utils';
-
-import { analyze } from '@typescript-eslint/scope-manager/dist/analyze';
-import { astConverter } from '@typescript-eslint/typescript-estree/dist/ast-converter';
-import { getScriptKind } from '@typescript-eslint/typescript-estree/dist/create-program/getScriptKind';
 
 export interface LintUtils {
   createLinter: () => TSESLint.Linter;

@@ -1,3 +1,3 @@
 enum Foo {
-    BAR = 'bar'
+  BAR = 'bar',
 }

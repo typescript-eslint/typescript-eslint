@@ -40,9 +40,7 @@ async function main(): Promise<void> {
   const prettierConfig = prettier.resolveConfig.sync(__dirname);
 
   interface LinterConfigRules {
-    [name: string]:
-      | TSESLint.Linter.RuleLevel
-      | TSESLint.Linter.RuleLevelAndOptions;
+    [name: string]: TSESLint.Linter.RuleLevel;
   }
 
   interface LinterConfig extends TSESLint.Linter.Config {
@@ -79,9 +77,11 @@ async function main(): Promise<void> {
     a[0].localeCompare(b[0]),
   );
 
-  interface ruleFilter {
+  interface RuleFilter {
     deprecated?: 'exclude';
-    typeChecked?: 'exclude';
+    typeChecked?: 'exclude' | 'include-only';
+    baseRuleForExtensionRule?: 'exclude';
+    forcedRuleLevel?: TSESLint.Linter.RuleLevel;
   }
 
   /**
@@ -90,7 +90,7 @@ async function main(): Promise<void> {
   function reducer<TMessageIds extends string>(
     config: LinterConfigRules,
     entry: [string, TSESLint.RuleModule<TMessageIds, unknown[]>],
-    settings: ruleFilter = {},
+    settings: RuleFilter = {},
   ): LinterConfigRules {
     const key = entry[0];
     const value = entry[1];
@@ -107,9 +107,19 @@ async function main(): Promise<void> {
       return config;
     }
 
+    if (
+      settings.typeChecked === 'include-only' &&
+      value.meta.docs?.requiresTypeChecking !== true
+    ) {
+      return config;
+    }
+
     const ruleName = `${RULE_NAME_PREFIX}${key}`;
 
-    if (BASE_RULES_TO_BE_OVERRIDDEN.has(key)) {
+    if (
+      settings.baseRuleForExtensionRule !== 'exclude' &&
+      BASE_RULES_TO_BE_OVERRIDDEN.has(key)
+    ) {
       const baseRuleName = BASE_RULES_TO_BE_OVERRIDDEN.get(key)!;
       console.log(
         baseRuleName
@@ -125,7 +135,7 @@ async function main(): Promise<void> {
       '=',
       chalk.red('error'),
     );
-    config[ruleName] = 'error';
+    config[ruleName] = settings.forcedRuleLevel ?? 'error';
 
     return config;
   }
@@ -152,7 +162,7 @@ async function main(): Promise<void> {
   interface ExtendedConfigSettings {
     extraExtends?: string[];
     name: string;
-    filters?: ruleFilter;
+    filters?: RuleFilter;
     ruleEntries: RuleEntry[];
   }
 
@@ -250,6 +260,25 @@ async function main(): Promise<void> {
     name: 'stylistic-type-checked',
     ruleEntries: filterRuleEntriesTo('stylistic'),
   });
+
+  writeConfig(
+    () => ({
+      parserOptions: {
+        project: null,
+        program: null,
+      },
+      rules: allRuleEntries.reduce(
+        (config, entry) =>
+          reducer(config, entry, {
+            typeChecked: 'include-only',
+            baseRuleForExtensionRule: 'exclude',
+            forcedRuleLevel: 'off',
+          }),
+        {},
+      ),
+    }),
+    'disable-type-checked',
+  );
 }
 
 main().catch(error => {

@@ -161,7 +161,7 @@ function Home(): JSX.Element {
             key={idx}
             className={clsx(
               styles.features,
-              idx % 2 == 1 ? styles.lightBackground : '',
+              idx % 2 === 1 ? styles.lightBackground : '',
             )}
           >
             <div className="container">

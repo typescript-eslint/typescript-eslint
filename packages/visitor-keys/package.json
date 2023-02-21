@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/visitor-keys",
-  "version": "5.51.0",
+  "version": "5.53.0",
   "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
   "keywords": [
     "eslint",
@@ -12,7 +12,7 @@
   },
   "files": [
     "dist",
-    "_ts3.4",
+    "_ts4.2",
     "package.json",
     "README.md",
     "LICENSE"
@@ -30,16 +30,16 @@
   "types": "dist/index.d.ts",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "downlevel-dts dist _ts3.4/dist",
+    "postbuild": "downlevel-dts dist _ts4.2/dist --to=4.2",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
+    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf _ts4.2 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "nx lint",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "5.51.0",
+    "@typescript-eslint/types": "5.53.0",
     "eslint-visitor-keys": "^3.3.0"
   },
   "devDependencies": {
@@ -50,9 +50,9 @@
     "url": "https://opencollective.com/typescript-eslint"
   },
   "typesVersions": {
-    "<3.8": {
+    "<4.7": {
       "*": [
-        "_ts3.4/*"
+        "_ts4.2/*"
       ]
     }
   }

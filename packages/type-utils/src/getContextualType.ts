@@ -1,4 +1,3 @@
-import * as tools from 'ts-api-utils';
 import * as ts from 'typescript';
 
 /**
@@ -23,7 +22,7 @@ export function getContextualType(
   } else if (
     ts.isVariableDeclaration(parent) ||
     ts.isPropertyDeclaration(parent) ||
-    tools.isParameterDeclaration(parent)
+    ts.isParameter(parent)
   ) {
     return parent.type ? checker.getTypeFromTypeNode(parent.type) : undefined;
   } else if (ts.isJsxExpression(parent)) {
