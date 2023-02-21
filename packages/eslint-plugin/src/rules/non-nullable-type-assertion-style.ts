@@ -10,7 +10,7 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Enforce non-null assertions over explicit type casts',
-      recommended: 'strict',
+      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
     fixable: 'code',

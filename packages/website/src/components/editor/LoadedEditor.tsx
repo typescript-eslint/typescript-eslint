@@ -1,3 +1,4 @@
+import { useColorMode } from '@docusaurus/theme-common';
 import type Monaco from 'monaco-editor';
 import type React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -31,7 +32,6 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   code,
   tsconfig,
   eslintrc,
-  darkTheme,
   decoration,
   jsx,
   main,
@@ -47,6 +47,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   webLinter,
   activeTab,
 }) => {
+  const { colorMode } = useColorMode();
   const [_, setDecorations] = useState<string[]>([]);
 
   const codeActions = useRef(new Map<string, LintCodeAction[]>()).current;
@@ -126,7 +127,6 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
   useEffect(() => {
     const lintEditor = debounce(() => {
-      // eslint-disable-next-line no-console
       console.info('[Editor] linting triggered');
 
       webLinter.updateParserOptions(jsx, sourceType);
@@ -218,7 +218,6 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
           if (tabs.code.isAttachedToEditor()) {
             const position = sandboxInstance.editor.getPosition();
             if (position) {
-              // eslint-disable-next-line no-console
               console.info('[Editor] updating cursor', position);
               onSelect(position);
             }
@@ -333,8 +332,10 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   }, [eslintrc, tabs.eslintrc]);
 
   useEffect(() => {
-    sandboxInstance.monaco.editor.setTheme(darkTheme ? 'vs-dark' : 'vs-light');
-  }, [darkTheme, sandboxInstance]);
+    sandboxInstance.monaco.editor.setTheme(
+      colorMode === 'dark' ? 'vs-dark' : 'vs-light',
+    );
+  }, [colorMode, sandboxInstance]);
 
   useEffect(() => {
     if (sandboxInstance.editor.getModel() === tabs.code) {

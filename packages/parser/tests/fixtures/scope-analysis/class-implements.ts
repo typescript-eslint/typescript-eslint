@@ -1,3 +1,1 @@
-class Foo<Nullable> implements Component<Nullable<SomeOther>, {}>, Component2 {
-
-}
+class Foo<Nullable> implements Component<Nullable<SomeOther>, {}>, Component2 {}

@@ -11,7 +11,6 @@ const rule = createRule({
     fixable: 'code',
     docs: {
       description: 'Add void operator in random places for test purposes.',
-      recommended: false,
     },
     messages: {
       addVoid: 'Please void this',

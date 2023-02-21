@@ -178,7 +178,6 @@ export default util.createRule({
     docs: {
       description:
         'Disallow members of unions and intersections that do nothing or override type information',
-      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {

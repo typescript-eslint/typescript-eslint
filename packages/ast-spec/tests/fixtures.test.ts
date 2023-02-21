@@ -38,10 +38,18 @@ const fixturesWithErrorDifferences = {
 } as const;
 
 const VALID_FIXTURES: readonly string[] = glob.sync(
-  `${SRC_DIR}/**/fixtures/*/fixture.{ts,tsx}`,
+  `**/fixtures/*/fixture.{ts,tsx}`,
+  {
+    cwd: SRC_DIR,
+    absolute: true,
+  },
 );
 const ERROR_FIXTURES: readonly string[] = glob.sync(
-  `${SRC_DIR}/**/fixtures/_error_/*/fixture.{ts,tsx}`,
+  `**/fixtures/_error_/*/fixture.{ts,tsx}`,
+  {
+    cwd: SRC_DIR,
+    absolute: true,
+  },
 );
 
 const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
@@ -66,7 +74,7 @@ const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
       isError: absolute.includes('/_error_/'),
       isJSX: ext.endsWith('x'),
       name,
-      relative: path.relative(SRC_DIR, absolute),
+      relative: path.relative(SRC_DIR, absolute).replace(/\\/g, '/'),
       segments,
       snapshotFiles: {
         success: {

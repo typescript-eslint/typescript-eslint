@@ -55,7 +55,6 @@ export default util.createRule<Options, MessageId>({
     hasSuggestions: true,
     docs: {
       description: 'Disallow certain types in boolean expressions',
-      recommended: false,
       requiresTypeChecking: true,
     },
     schema: [

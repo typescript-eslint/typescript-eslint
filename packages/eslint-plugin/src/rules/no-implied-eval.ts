@@ -19,7 +19,7 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallow the use of `eval()`-like methods',
-      recommended: 'error',
+      recommended: 'recommended',
       extendsBaseRule: true,
       requiresTypeChecking: true,
     },

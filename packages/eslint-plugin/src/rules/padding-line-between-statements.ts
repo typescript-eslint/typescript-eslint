@@ -590,7 +590,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Require or disallow padding lines between statements',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',

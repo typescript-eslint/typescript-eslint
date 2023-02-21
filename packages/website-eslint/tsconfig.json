@@ -1,0 +1,13 @@
+{
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "allowJs": true,
+    // opt-in files for checking
+    "checkJs": false,
+    // build is done via rollup
+    "noEmit": true,
+    "skipLibCheck": true
+  },
+  "include": ["src", "types", "rollup-plugin"],
+  "references": []
+}

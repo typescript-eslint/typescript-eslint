@@ -18,7 +18,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow type assertions that do not change the type of an expression',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     fixable: 'code',

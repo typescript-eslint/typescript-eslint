@@ -1,22 +1,15 @@
 {
   "name": "@typescript-eslint/type-utils",
-  "version": "5.51.0",
+  "version": "5.53.0",
   "description": "Type utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
-    "_ts3.4",
+    "_ts4.2",
     "package.json",
     "README.md",
     "LICENSE"
   ],
   "type": "commonjs",
-  "typesVersions": {
-    "<3.8": {
-      ".": [
-        "_ts3.4/dist/index.d.ts"
-      ]
-    }
-  },
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
@@ -45,22 +38,22 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "downlevel-dts dist _ts3.4/dist",
+    "postbuild": "downlevel-dts dist _ts4.2/dist --to=4.2",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
+    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf _ts4.2 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "nx lint",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "5.51.0",
-    "@typescript-eslint/utils": "5.51.0",
+    "@typescript-eslint/typescript-estree": "5.53.0",
+    "@typescript-eslint/utils": "5.53.0",
     "debug": "^4.3.4",
-    "ts-api-utils": "^0.0.21"
+    "ts-api-utils": "^0.0.22"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "5.51.0",
+    "@typescript-eslint/parser": "5.53.0",
     "typescript": "*"
   },
   "peerDependencies": {
@@ -74,5 +67,12 @@
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
+  },
+  "typesVersions": {
+    "<4.7": {
+      "*": [
+        "_ts4.2/*"
+      ]
+    }
   }
 }

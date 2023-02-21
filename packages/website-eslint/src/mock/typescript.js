@@ -1,2 +1,3 @@
-// eslint-disable-next-line no-undef
+/* global window */
+
 module.exports = window.ts;

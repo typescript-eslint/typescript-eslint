@@ -10,7 +10,6 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallow unnecessary namespace qualifiers',
-      recommended: false,
       requiresTypeChecking: true,
     },
     fixable: 'code',

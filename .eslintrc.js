@@ -1,3 +1,5 @@
+// @ts-check
+/** @type {import('@typescript-eslint/utils').TSESLint.Linter.Config} */
 module.exports = {
   root: true,
   plugins: [
@@ -11,18 +13,44 @@ module.exports = {
     'simple-import-sort',
   ],
   env: {
-    es6: true,
+    es2020: true,
     node: true,
   },
   extends: [
     'eslint:recommended',
     'plugin:eslint-plugin/recommended',
-    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-type-checked',
+    // TODO: consider enabling strict-type-checked and/or stylistic-type-checked
   ],
   parserOptions: {
     sourceType: 'module',
+    project: [
+      './tsconfig.eslint.json',
+      './packages/*/tsconfig.json',
+      /**
+       * We are currently in the process of transitioning to nx's out of the box structure and
+       * so need to manually specify converted packages' tsconfig.build.json and tsconfig.spec.json
+       * files here for now in addition to the tsconfig.json glob pattern.
+       *
+       * TODO(#4665): Clean this up once all packages have been transitioned.
+       */
+      './packages/scope-manager/tsconfig.build.json',
+      './packages/scope-manager/tsconfig.spec.json',
+    ],
+    allowAutomaticSingleRunInference: true,
+    tsconfigRootDir: __dirname,
+    warnOnUnsupportedTypeScriptVersion: false,
+    EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
+    cacheLifetime: {
+      // we pretty well never create/change tsconfig structure - so need to ever evict the cache
+      // in the rare case that we do - just need to manually restart their IDE.
+      glob: 'Infinity',
+    },
   },
   rules: {
+    // make sure we're not leveraging any deprecated APIs
+    'deprecation/deprecation': 'error',
+
     //
     // our plugin :D
     //
@@ -42,6 +70,8 @@ module.exports = {
       'error',
       { prefer: 'type-imports', disallowTypeAnnotations: true },
     ],
+    '@typescript-eslint/explicit-function-return-type': 'error',
+    '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-empty-function': [
       'error',
       { allow: ['arrowFunctions'] },
@@ -50,12 +80,32 @@ module.exports = {
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/prefer-for-of': 'error',
+    '@typescript-eslint/prefer-nullish-coalescing': 'error',
+    '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/unbound-method': 'off',
     '@typescript-eslint/prefer-as-const': 'error',
+    '@typescript-eslint/restrict-template-expressions': [
+      'error',
+      {
+        allowNumber: true,
+        allowBoolean: true,
+        allowAny: true,
+        allowNullish: true,
+        allowRegExp: true,
+      },
+    ],
     '@typescript-eslint/no-unused-vars': [
-      'warn',
+      'error',
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
     ],
+
+    //
+    // Internal repo rules
+    //
+
+    '@typescript-eslint/internal/no-poorly-typed-ts-props': 'error',
+    '@typescript-eslint/internal/no-typescript-default-import': 'error',
+    '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
 
     //
     // eslint-base
@@ -73,7 +123,7 @@ module.exports = {
     'no-console': 'error',
     'no-process-exit': 'error',
     'no-fallthrough': [
-      'warn',
+      'error',
       { commentPattern: '.*intentional fallthrough.*' },
     ],
 
@@ -107,6 +157,7 @@ module.exports = {
           'eslint-disable-line',
           'eslint-disable-next-line',
           'eslint-enable',
+          'global',
         ],
       },
     ],
@@ -153,74 +204,16 @@ module.exports = {
     'one-var': ['error', 'never'],
   },
   overrides: [
-    // only turn on type-aware linting for TS files
-    {
-      files: ['*.ts', '*.tsx'],
-      extends: [
-        'plugin:@typescript-eslint/recommended-requiring-type-checking',
-      ],
-      parserOptions: {
-        project: [
-          './tsconfig.eslint.json',
-          './packages/*/tsconfig.json',
-          './tests/integration/tsconfig.json',
-          /**
-           * We are currently in the process of transitioning to nx's out of the box structure and
-           * so need to manually specify converted packages' tsconfig.build.json and tsconfig.spec.json
-           * files here for now in addition to the tsconfig.json glob pattern.
-           *
-           * TODO(#4665): Clean this up once all packages have been transitioned.
-           */
-          './packages/scope-manager/tsconfig.build.json',
-          './packages/scope-manager/tsconfig.spec.json',
-        ],
-        allowAutomaticSingleRunInference: true,
-        tsconfigRootDir: __dirname,
-        warnOnUnsupportedTypeScriptVersion: false,
-        EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
-        cacheLifetime: {
-          // we pretty well never create/change tsconfig structure - so need to ever evict the cache
-          // in the rare case that we do - just need to manually restart their IDE.
-          glob: 'Infinity',
-        },
-      },
-      rules: {
-        // make sure we're not leveraging any deprecated APIs
-        'deprecation/deprecation': 'error',
-
-        //
-        // our plugin :D
-        //
-        '@typescript-eslint/prefer-nullish-coalescing': 'error',
-        '@typescript-eslint/prefer-optional-chain': 'error',
-        '@typescript-eslint/restrict-template-expressions': [
-          'error',
-          {
-            allowNumber: true,
-            allowBoolean: true,
-            allowAny: true,
-            allowNullish: true,
-            allowRegExp: true,
-          },
-        ],
-        '@typescript-eslint/explicit-function-return-type': 'error',
-        '@typescript-eslint/explicit-module-boundary-types': 'off',
-        // we don't use classes enough in our codebase to warrant the numerous false positive against the TS API types etc
-        '@typescript-eslint/unbound-method': 'off',
-
-        //
-        // Internal repo rules
-        //
-
-        '@typescript-eslint/internal/no-poorly-typed-ts-props': 'error',
-        '@typescript-eslint/internal/no-typescript-default-import': 'error',
-        '@typescript-eslint/internal/prefer-ast-types-enum': 'error',
-      },
-    },
     {
       files: ['*.js'],
-      parserOptions: {
-        project: null,
+      extends: ['plugin:@typescript-eslint/disable-type-checked'],
+      rules: {
+        // turn off other type-aware rules
+        'deprecation/deprecation': 'off',
+        '@typescript-eslint/internal/no-poorly-typed-ts-props': 'off',
+
+        // turn off rules that don't apply to JS code
+        '@typescript-eslint/explicit-function-return-type': 'off',
       },
     },
     // all test files
@@ -231,9 +224,8 @@ module.exports = {
         './packages/*/tests/**/spec.ts',
         './packages/*/tests/**/test.ts',
         './packages/parser/tests/**/*.ts',
-        './tests/integration/**/*.test.ts',
-        './tests/integration/integration-test-base.ts',
-        './tests/integration/pack-packages.ts',
+        './packages/integration-tests/tools/integration-test-base.ts',
+        './packages/integration-tests/tools/pack-packages.ts',
       ],
       env: {
         'jest/globals': true,
@@ -244,7 +236,7 @@ module.exports = {
         '@typescript-eslint/no-unsafe-member-access': 'off',
         '@typescript-eslint/no-unsafe-return': 'off',
         'eslint-plugin/consistent-output': 'off', // Might eventually be removed from `eslint-plugin/recommended`: https://github.com/not-an-aardvark/eslint-plugin-eslint-plugin/issues/284
-        'jest/no-disabled-tests': 'warn',
+        'jest/no-disabled-tests': 'error',
         'jest/no-focused-tests': 'error',
         'jest/no-alias-methods': 'error',
         'jest/no-identical-title': 'error',
@@ -252,9 +244,9 @@ module.exports = {
         'jest/no-test-prefixes': 'error',
         'jest/no-done-callback': 'error',
         'jest/no-test-return-statement': 'error',
-        'jest/prefer-to-be': 'warn',
-        'jest/prefer-to-contain': 'warn',
-        'jest/prefer-to-have-length': 'warn',
+        'jest/prefer-to-be': 'error',
+        'jest/prefer-to-contain': 'error',
+        'jest/prefer-to-have-length': 'error',
         'jest/prefer-spy-on': 'error',
         'jest/valid-expect': 'error',
         'jest/no-deprecated-functions': 'error',
@@ -333,7 +325,12 @@ module.exports = {
     },
     // tools and tests
     {
-      files: ['**/tools/**/*.ts', '**/tests/**/*.ts'],
+      files: [
+        '**/tools/**/*.*t*',
+        '**/tests/**/*.ts',
+        './packages/repo-tools/**/*.*t*',
+        './packages/integration-tests/**/*.*t*',
+      ],
       rules: {
         // allow console logs in tools and tests
         'no-console': 'off',
@@ -367,7 +364,7 @@ module.exports = {
       },
     },
     {
-      files: ['./packages/website/'],
+      files: ['./packages/website/**/*.{ts,tsx,mts,cts,js,jsx}'],
       extends: [
         'plugin:jsx-a11y/recommended',
         'plugin:react/recommended',
@@ -375,9 +372,10 @@ module.exports = {
       ],
       plugins: ['jsx-a11y', 'react', 'react-hooks'],
       rules: {
+        '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
+        'import/no-default-export': 'off',
         'react/jsx-no-target-blank': 'off',
         'react/no-unescaped-entities': 'off',
-        '@typescript-eslint/internal/prefer-ast-types-enum': 'off',
         'react-hooks/exhaustive-deps': 'off', // TODO: enable it later
       },
       settings: {
@@ -392,6 +390,13 @@ module.exports = {
         'import/no-default-export': 'off',
         // allow console logs in the website to help with debugging things in production
         'no-console': 'off',
+      },
+    },
+    {
+      files: ['./packages/website-eslint/src/mock/**/*.js'],
+      rules: {
+        // mocks have to mirror their original
+        'import/no-default-export': 'off',
       },
     },
   ],

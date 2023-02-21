@@ -23,7 +23,6 @@ export function parseESLintRC(code?: string): EslintRC {
         return { ...parsed, rules: {} };
       }
     } catch (e) {
-      // eslint-disable-next-line no-console
       console.error(e);
     }
   }
@@ -38,14 +37,12 @@ export function parseTSConfig(code?: string): TSConfig {
         code,
       );
       if (parsed.error) {
-        // eslint-disable-next-line no-console
         console.error(parsed.error);
       }
       if (isRecord(parsed.config)) {
         return parsed.config as TSConfig;
       }
     } catch (e) {
-      // eslint-disable-next-line no-console
       console.error(e);
     }
   }
@@ -73,7 +70,6 @@ export function tryParseEslintModule(value: string): string {
       }
     }
   } catch (e) {
-    // eslint-disable-next-line no-console
     console.error(e);
   }
   return value;

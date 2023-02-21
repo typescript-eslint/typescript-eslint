@@ -21,7 +21,6 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Enforce consistent returning of awaited values',
-      recommended: false,
       requiresTypeChecking: true,
       extendsBaseRule: 'no-return-await',
     },

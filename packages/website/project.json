@@ -9,9 +9,10 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": [
-          "packages/website/**/*.ts",
-          "packages/website/**/*.tsx"
-        ]
+          "packages/website/**/*.{mts,cts,ts,tsx}",
+          "packages/website/**/*.{mjs,cjs,js,jsx}"
+        ],
+        "ignorePath": ".eslintignore"
       }
     }
   }

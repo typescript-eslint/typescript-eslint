@@ -16,7 +16,8 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/ast-spec/**/*.ts"]
+        "lintFilePatterns": ["packages/ast-spec/**/*.{mts,cts,ts,tsx}"],
+        "ignorePath": ".eslintignore"
       }
     }
   }

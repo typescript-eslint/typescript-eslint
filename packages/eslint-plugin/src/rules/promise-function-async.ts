@@ -24,7 +24,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require any function or method that returns a Promise to be marked async',
-      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {
@@ -112,6 +111,8 @@ export default util.createRule<Options, MessageIds>({
           returnType,
           allowAny!,
           allAllowedPromiseNames,
+          // If no return type is explicitly set, we check if any parts of the return type match a Promise (instead of requiring all to match).
+          node.returnType == null,
         )
       ) {
         // Return type is not a promise

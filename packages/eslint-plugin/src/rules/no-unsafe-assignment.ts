@@ -22,7 +22,7 @@ export default util.createRule({
     docs: {
       description:
         'Disallow assigning a value with type `any` to variables and properties',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {

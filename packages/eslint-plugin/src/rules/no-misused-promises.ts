@@ -63,7 +63,7 @@ export default util.createRule<Options, MessageId>({
   meta: {
     docs: {
       description: 'Disallow Promises in places not designed to handle them',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
