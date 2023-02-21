@@ -1716,7 +1716,7 @@ export class Converter {
           }
 
           if (superClass.types[0]?.typeArguments) {
-            result.superTypeParameters =
+            result.superTypeArguments =
               this.convertTypeArgumentsToTypeParameterInstantiation(
                 superClass.types[0].typeArguments,
                 superClass.types[0],

@@ -138,7 +138,7 @@ const SharedVisitorKeys = (() => {
       'id',
       'typeParameters',
       'superClass',
-      'superTypeParameters',
+      'superTypeArguments',
       'implements',
       'body',
     ],

@@ -61,7 +61,7 @@ export interface ClassBase extends BaseNode {
    * The generic type parameters passed to the superClass.
    * This is `undefined` if there are no generic type parameters passed.
    */
-  superTypeParameters?: TSTypeParameterInstantiation;
+  superTypeParameter?: TSTypeParameterInstantiation;
   /**
    * The generic type parameters declared for the class.
    * This is `undefined` if there are no generic type parameters declared.
