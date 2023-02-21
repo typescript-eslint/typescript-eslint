@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSModuleDeclaration {
+      type: "TSModuleDeclaration",
+      body: TSModuleBlock {
+        type: "TSModuleBlock",
+        body: Array [],
+
+        range: [18, 20],
+        loc: {
+          start: { column: 18, line: 1 },
+          end: { column: 20, line: 1 },
+        },
+      },
+      id: TSQualifiedName {
+        type: "TSQualifiedName",
+        left: Identifier {
+          type: "Identifier",
+          name: "abd",
+
+          range: [10, 13],
+          loc: {
+            start: { column: 10, line: 1 },
+            end: { column: 13, line: 1 },
+          },
+        },
+        right: Identifier {
+          type: "Identifier",
+          name: "def",
+
+          range: [14, 17],
+          loc: {
+            start: { column: 14, line: 1 },
+            end: { column: 17, line: 1 },
+          },
+        },
+
+        range: [10, 17],
+        loc: {
+          start: { column: 10, line: 1 },
+          end: { column: 17, line: 1 },
+        },
+      },
+      kind: "namespace",
+
+      range: [0, 20],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 20, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 21],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

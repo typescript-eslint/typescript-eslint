@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-name AST Alignment - AST 1`] = `
+exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice AST Alignment - AST 1`] = `
 "Snapshot Diff:
 - TSESTree
 + Babel
@@ -14,10 +14,10 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-nam
 -         type: 'TSModuleBlock',
 -         body: Array [],
 -
--         range: [16, 18],
+-         range: [22, 24],
 -         loc: {
--           start: { column: 16, line: 1 },
--           end: { column: 18, line: 1 },
+-           start: { column: 22, line: 1 },
+-           end: { column: 24, line: 1 },
 -         },
 -       },
 -       id: TSQualifiedName {
@@ -26,7 +26,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-nam
 -           type: 'TSQualifiedName',
 -           left: Identifier {
 -             type: 'Identifier',
--             name: 'A',
+-             name: 'abc',
 +       body: TSModuleDeclaration {
 +         type: 'TSModuleDeclaration',
 +         body: TSModuleDeclaration {
@@ -35,86 +35,86 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-nam
 +             type: 'TSModuleBlock',
 +             body: Array [],
 
--             range: [10, 11],
-+             range: [16, 18],
+-             range: [10, 13],
++             range: [22, 24],
               loc: {
 -               start: { column: 10, line: 1 },
--               end: { column: 11, line: 1 },
-+               start: { column: 16, line: 1 },
-+               end: { column: 18, line: 1 },
+-               end: { column: 13, line: 1 },
++               start: { column: 22, line: 1 },
++               end: { column: 24, line: 1 },
               },
             },
 -           right: Identifier {
 +           id: Identifier {
               type: 'Identifier',
--             name: 'B',
-+             name: 'C',
+-             name: 'def',
++             name: 'ghi',
 
--             range: [12, 13],
-+             range: [14, 15],
+-             range: [14, 17],
++             range: [18, 21],
               loc: {
--               start: { column: 12, line: 1 },
--               end: { column: 13, line: 1 },
-+               start: { column: 14, line: 1 },
-+               end: { column: 15, line: 1 },
+-               start: { column: 14, line: 1 },
+-               end: { column: 17, line: 1 },
++               start: { column: 18, line: 1 },
++               end: { column: 21, line: 1 },
               },
             },
 
--           range: [10, 13],
-+           range: [14, 18],
+-           range: [10, 17],
++           range: [18, 24],
             loc: {
 -             start: { column: 10, line: 1 },
--             end: { column: 13, line: 1 },
-+             start: { column: 14, line: 1 },
-+             end: { column: 18, line: 1 },
+-             end: { column: 17, line: 1 },
++             start: { column: 18, line: 1 },
++             end: { column: 24, line: 1 },
             },
           },
 -         right: Identifier {
 +         id: Identifier {
             type: 'Identifier',
--           name: 'C',
-+           name: 'B',
+-           name: 'ghi',
++           name: 'def',
 
--           range: [14, 15],
-+           range: [12, 13],
+-           range: [18, 21],
++           range: [14, 17],
             loc: {
--             start: { column: 14, line: 1 },
--             end: { column: 15, line: 1 },
-+             start: { column: 12, line: 1 },
-+             end: { column: 13, line: 1 },
+-             start: { column: 18, line: 1 },
+-             end: { column: 21, line: 1 },
++             start: { column: 14, line: 1 },
++             end: { column: 17, line: 1 },
             },
           },
 
--         range: [10, 15],
-+         range: [12, 18],
+-         range: [10, 21],
++         range: [14, 24],
 +         loc: {
-+           start: { column: 12, line: 1 },
-+           end: { column: 18, line: 1 },
++           start: { column: 14, line: 1 },
++           end: { column: 24, line: 1 },
 +         },
 +       },
 +       id: Identifier {
 +         type: 'Identifier',
-+         name: 'A',
++         name: 'abc',
 +
-+         range: [10, 11],
++         range: [10, 13],
           loc: {
             start: { column: 10, line: 1 },
--           end: { column: 15, line: 1 },
-+           end: { column: 11, line: 1 },
+-           end: { column: 21, line: 1 },
++           end: { column: 13, line: 1 },
           },
         },
 -       kind: 'namespace',
 
-        range: [0, 18],
+        range: [0, 24],
         loc: {
           start: { column: 0, line: 1 },
-          end: { column: 18, line: 1 },
+          end: { column: 24, line: 1 },
         },
       },
     ],
     sourceType: 'script',
 
-    range: [0, 19],
+    range: [0, 25],
     loc: {
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },

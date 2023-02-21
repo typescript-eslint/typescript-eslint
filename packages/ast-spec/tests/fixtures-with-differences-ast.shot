@@ -34,6 +34,8 @@ Set {
   "declaration/TSModuleDeclaration/fixtures/namespace-declare/fixture.ts",
   "declaration/TSModuleDeclaration/fixtures/namespace-id-identifier/fixture.ts",
   "declaration/TSModuleDeclaration/fixtures/namespace-id-qualified-name/fixture.ts",
+  "declaration/TSModuleDeclaration/fixtures/namespace-nested-once/fixture.ts",
+  "declaration/TSModuleDeclaration/fixtures/namespace-nested-twice/fixture.ts",
   "declaration/TSTypeAliasDeclaration/fixtures/type-param-many/fixture.ts",
   "declaration/TSTypeAliasDeclaration/fixtures/type-param-one/fixture.ts",
   "element/AccessorProperty/fixtures/key-computed-complex/fixture.ts",
