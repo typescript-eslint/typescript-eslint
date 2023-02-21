@@ -10,7 +10,13 @@ tags: [typescript, imports, exports, types, transpiling]
 title: 'Consistent Type Imports and Exports: Why and How'
 ---
 
-TypeScript 3.8 [added type-only imports and exports](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export) to the language:
+`import` and `export` statements are core features of the JavaScript language.
+They were added as part of the [ECMAScript Modules (ESM)](https://nodejs.org/api/esm.html#modules-ecmascript-modules) specification, and now are generally available in most mainstream runtimes, including all evergreen browsers and Node.js.
+
+When writing TypeScript code with ESM, it can sometimes be desirable to import or export a type only in the type system.
+Code may wish to refer to a _type_, but not actually import or export a corresponding _value_.
+
+For that purpose, TypeScript 3.8 [added type-only imports and exports](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-8.html#type-only-imports-and-export) to the TypeScript language:
 
 ```ts
 import type { SomeThing } from './some-module.js';
@@ -29,7 +35,13 @@ new SomeThing();
 // because it was imported using 'import type'.
 ```
 
-This is because type-only imports and exports are not emitted as runtime code when code is transpiled to JavaScript.
+TypeScript 4.5 also added [inline type qualifiers](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names), which allow for indicating that only some specifiers in a statement should be type-system-only:
+
+```ts
+import { type SomeType, SomeValue } from './some-module.js';
+```
+
+Type-only imports and exports are not emitted as runtime code when code is transpiled to JavaScript.
 This brings up two questions:
 
 - Why would you want to use these type-only imports and exports?
@@ -117,16 +129,58 @@ export function getAndLogValue(getter: GetString) {
 }
 ```
 
+## More Lint Rules
+
+### `import` Plugin Rules
+
+[`eslint-plugin-import`](https://github.com/import-js/eslint-plugin-import) is a handy plugin with rules that validate proper imports.
+Although some of those rules are made redundant by TypeScript, many are still relevant for TypeScript code.
+
+Two of those rules in particular can be helpful for consistent `type` imports:
+
+- [`import/consistent-type-specifier-style`](https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/consistent-type-specifier-style.md): enforces consistent use of top-level vs inline `type` qualifier
+- [`import/no-duplicates`](https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-duplicates.md#inline-type-imports): warns against unnecessary duplicate imports (and with the `inline-type-imports` option can work in tandem with `import/consistent-type-specifier-style`).
+
+In conjunction with [`@typescript-eslint/consistent-type-imports`](/rules/consistent-type-imports), [`eslint-plugin-import`](https://github.com/import-js/eslint-plugin-import)'s rules can enforce your imports are always properly qualified and are written in a standard, predictable style (eg always top-level type qualifier or always inline type-qualifier).
+
+### Verbatim Module Syntax
+
+TypeScript 5.0 additionally adds a new [`--verbatimModuleSyntax`](https://devblogs.microsoft.com/typescript/announcing-typescript-5-0-beta/#verbatimmodulesyntax) compiler option.
+`verbatimModuleSyntax` simplifies TypeScript's logic around whether to preserve imports.
+From the TypeScript release notes:
+
+> ...any imports or exports without a type modifier are left around.
+> Anything that uses the type modifier is dropped entirely.
+>
+> ```ts
+> // Erased away entirely.
+> import type { A } from 'a';
+>
+> // Rewritten to 'import { b } from 'bcd';'
+> import { b, type c, type d } from 'bcd';
+>
+> // Rewritten to 'import {} from 'xyz';'
+> import { type xyz } from 'xyz';
+> ```
+>
+> With this new option, what you see is what you get.
+
+`verbatimModuleSyntax` is useful for simplifying transpilation logic around imports - though it does mean that transpiled code such as the may end up with unnecessary import statements.
+The `import { type xyz } from 'xyz';` line from the previous code snippet is an example of this.
+For the rare case of needing to import for side effects, leaving in those statements may be desirable - but for most cases you will not want to leave behind an unnecessary side effect import.
+
+typescript-eslint now provides a [`@typescript-eslint/no-import-type-side-effects`](/rules/no-import-type-side-effects) rule to flag those cases.
+If it detects an import that only imports specifiers with inline `type` qualifiers, it will suggest rewriting the import to use a top-level `type` qualifier:
+
+```diff
+- import { type A } from 'xyz';
++ import type { A } from 'xyz';
+```
+
 ## Further Reading
 
 You can read more about the rules' configuration options in their docs pages.
 See [our Getting Started docs](/getting-started) for more information on linting your TypeScript code with typescript-eslint.
-
-TypeScript 4.5 also added [inline type qualifiers](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names), which allow for specifying type-only imports:
-
-```ts
-import { type SomeType, SomeValue } from './some-module.js';
-```
 
 ## Supporting typescript-eslint
 
