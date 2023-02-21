@@ -30,6 +30,7 @@ Program {
               end: { column: 15, line: 1 },
             },
           },
+          kind: "namespace",
 
           range: [14, 18],
           loc: {
@@ -47,6 +48,7 @@ Program {
             end: { column: 13, line: 1 },
           },
         },
+        kind: "namespace",
 
         range: [12, 18],
         loc: {
@@ -64,6 +66,7 @@ Program {
           end: { column: 11, line: 1 },
         },
       },
+      kind: "namespace",
 
       range: [0, 18],
       loc: {
