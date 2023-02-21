@@ -44,7 +44,10 @@ function createProjectProgram(
   const describeProjectFilePath = (projectFile: string): string =>
     describeFilePath(projectFile, parseSettings.tsconfigRootDir);
 
-  const describedFilePath = describeFilePath(parseSettings.filePath, parseSettings.tsconfigRootDir);
+  const describedFilePath = describeFilePath(
+    parseSettings.filePath,
+    parseSettings.tsconfigRootDir,
+  );
   const relativeProjects = parseSettings.projects.map(describeProjectFilePath);
   const describedPrograms =
     relativeProjects.length === 1
