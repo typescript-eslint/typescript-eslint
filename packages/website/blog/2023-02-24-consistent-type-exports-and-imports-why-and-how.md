@@ -11,7 +11,7 @@ title: 'Consistent Type Imports and Exports: Why and How'
 ---
 
 `import` and `export` statements are core features of the JavaScript language.
-They were added as part of the [ECMAScript Modules (ESM)](https://nodejs.org/api/esm.html#modules-ecmascript-modules) specification, and now are generally available in most mainstream runtimes, including all evergreen browsers and Node.js.
+They were added as part of the [ECMAScript Modules (ESM)](https://nodejs.org/api/esm.html#modules-ecmascript-modules) specification, and now are generally available in most mainstream JavaScript environments, including all evergreen browsers and Node.js.
 
 When writing TypeScript code with ESM, it can sometimes be desirable to import or export a type only in the type system.
 Code may wish to refer to a _type_, but not actually import or export a corresponding _value_.
