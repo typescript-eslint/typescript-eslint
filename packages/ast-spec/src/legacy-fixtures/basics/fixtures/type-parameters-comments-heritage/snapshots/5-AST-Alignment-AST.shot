@@ -40,7 +40,8 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
             end: { column: 44, line: 3 },
           },
         },
-        superTypeParameters: TSTypeParameterInstantiation {
+-       superTypeArguments: TSTypeParameterInstantiation {
++       superTypeParameters: TSTypeParameterInstantiation {
           type: 'TSTypeParameterInstantiation',
           params: Array [
             TSTypeReference {
@@ -142,7 +143,8 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
             end: { column: 13, line: 6 },
           },
         },
-        superTypeParameters: TSTypeParameterInstantiation {
+-       superTypeArguments: TSTypeParameterInstantiation {
++       superTypeParameters: TSTypeParameterInstantiation {
           type: 'TSTypeParameterInstantiation',
           params: Array [
             TSTypeReference {
@@ -195,22 +197,22 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
                 loc: {
                   start: { column: 26, line: 5 },
                   end: { column: 27, line: 5 },
-                },
-              },
+-               },
+-             },
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'A',
-+             name: 'A',
-
+-
 -               range: [168, 169],
 -               loc: {
 -                 start: { column: 12, line: 5 },
 -                 end: { column: 13, line: 5 },
--               },
--             },
+                },
+              },
 -             out: false,
--
++             name: 'A',
+
               range: [168, 183],
               loc: {
                 start: { column: 12, line: 5 },

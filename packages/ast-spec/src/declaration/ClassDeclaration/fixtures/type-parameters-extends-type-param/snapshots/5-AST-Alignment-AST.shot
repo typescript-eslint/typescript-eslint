@@ -40,7 +40,8 @@ exports[`AST Fixtures declaration ClassDeclaration type-parameters-extends-type-
             end: { column: 24, line: 1 },
           },
         },
-        superTypeParameters: TSTypeParameterInstantiation {
+-       superTypeArguments: TSTypeParameterInstantiation {
++       superTypeParameters: TSTypeParameterInstantiation {
           type: 'TSTypeParameterInstantiation',
           params: Array [
             TSTypeReference {

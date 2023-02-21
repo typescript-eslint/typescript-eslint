@@ -36,7 +36,7 @@ Program {
           end: { column: 44, line: 3 },
         },
       },
-      superTypeParameters: TSTypeParameterInstantiation {
+      superTypeArguments: TSTypeParameterInstantiation {
         type: "TSTypeParameterInstantiation",
         params: Array [
           TSTypeReference {
@@ -137,7 +137,7 @@ Program {
           end: { column: 13, line: 6 },
         },
       },
-      superTypeParameters: TSTypeParameterInstantiation {
+      superTypeArguments: TSTypeParameterInstantiation {
         type: "TSTypeParameterInstantiation",
         params: Array [
           TSTypeReference {

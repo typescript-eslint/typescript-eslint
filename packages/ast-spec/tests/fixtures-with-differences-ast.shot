@@ -2,6 +2,7 @@
 
 exports[`AST Fixtures List fixtures with AST differences 1`] = `
 Set {
+  "declaration/ClassDeclaration/fixtures/extends-type-param/fixture.ts",
   "declaration/ClassDeclaration/fixtures/implements-many/fixture.ts",
   "declaration/ClassDeclaration/fixtures/implements-one/fixture.ts",
   "declaration/ClassDeclaration/fixtures/type-param/fixture.ts",

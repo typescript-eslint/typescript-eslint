@@ -40,7 +40,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic AST Alig
             end: { column: 24, line: 3 },
           },
         },
-        superTypeParameters: TSTypeParameterInstantiation {
+-       superTypeArguments: TSTypeParameterInstantiation {
++       superTypeParameters: TSTypeParameterInstantiation {
           type: 'TSTypeParameterInstantiation',
           params: Array [
             TSTypeReference {

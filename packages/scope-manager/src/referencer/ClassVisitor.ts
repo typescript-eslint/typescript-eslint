@@ -74,7 +74,7 @@ class ClassVisitor extends Visitor {
     // visit the type param declarations
     this.visitType(node.typeParameters);
     // then the usages
-    this.visitType(node.superTypeParameters);
+    this.visitType(node.superTypeArguments);
     node.implements?.forEach(imp => this.visitType(imp));
 
     this.visit(node.body);

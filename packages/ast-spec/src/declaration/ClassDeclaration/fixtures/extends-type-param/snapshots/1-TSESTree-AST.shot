@@ -36,7 +36,7 @@ Program {
           end: { column: 21, line: 1 },
         },
       },
-      superTypeParameters: TSTypeParameterInstantiation {
+      superTypeArguments: TSTypeParameterInstantiation {
         type: "TSTypeParameterInstantiation",
         params: Array [
           TSStringKeyword {
