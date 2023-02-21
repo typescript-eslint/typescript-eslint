@@ -210,6 +210,7 @@ function typeNodeRequiresParentheses(
   return (
     node.type === AST_NODE_TYPES.TSFunctionType ||
     node.type === AST_NODE_TYPES.TSConstructorType ||
+    node.type === AST_NODE_TYPES.TSConditionalType ||
     (node.type === AST_NODE_TYPES.TSUnionType && text.startsWith('|')) ||
     (node.type === AST_NODE_TYPES.TSIntersectionType && text.startsWith('&'))
   );

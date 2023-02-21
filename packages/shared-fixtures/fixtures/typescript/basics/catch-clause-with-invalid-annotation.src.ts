@@ -1,5 +1,0 @@
-try {
-
-} catch (e: string) {
-
-}

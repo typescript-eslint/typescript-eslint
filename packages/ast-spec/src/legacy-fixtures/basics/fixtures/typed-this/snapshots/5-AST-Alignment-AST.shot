@@ -1,0 +1,209 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics typed-this AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSInterfaceDeclaration {
+        type: 'TSInterfaceDeclaration',
+        body: TSInterfaceBody {
+          type: 'TSInterfaceBody',
+          body: Array [
+            TSMethodSignature {
+              type: 'TSMethodSignature',
+              computed: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'addClickListener',
+
+                range: [97, 113],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 18, line: 4 },
+                },
+              },
+              kind: 'method',
+-             params: Array [
++             parameters: Array [
+                Identifier {
+                  type: 'Identifier',
+                  name: 'onclick',
+                  typeAnnotation: TSTypeAnnotation {
+                    type: 'TSTypeAnnotation',
+                    typeAnnotation: TSFunctionType {
+                      type: 'TSFunctionType',
+-                     params: Array [
++                     parameters: Array [
+                        Identifier {
+                          type: 'Identifier',
+                          name: 'this',
+                          typeAnnotation: TSTypeAnnotation {
+                            type: 'TSTypeAnnotation',
+                            typeAnnotation: TSVoidKeyword {
+                              type: 'TSVoidKeyword',
+
+                              range: [130, 134],
+                              loc: {
+                                start: { column: 35, line: 4 },
+                                end: { column: 39, line: 4 },
+                              },
+                            },
+
+                            range: [128, 134],
+                            loc: {
+                              start: { column: 33, line: 4 },
+                              end: { column: 39, line: 4 },
+                            },
+                          },
+
+                          range: [124, 134],
+                          loc: {
+                            start: { column: 29, line: 4 },
+                            end: { column: 39, line: 4 },
+                          },
+                        },
+                        Identifier {
+                          type: 'Identifier',
+                          name: 'e',
+                          typeAnnotation: TSTypeAnnotation {
+                            type: 'TSTypeAnnotation',
+                            typeAnnotation: TSTypeReference {
+                              type: 'TSTypeReference',
+                              typeName: Identifier {
+                                type: 'Identifier',
+                                name: 'Event',
+
+                                range: [139, 144],
+                                loc: {
+                                  start: { column: 44, line: 4 },
+                                  end: { column: 49, line: 4 },
+                                },
+                              },
+
+                              range: [139, 144],
+                              loc: {
+                                start: { column: 44, line: 4 },
+                                end: { column: 49, line: 4 },
+                              },
+                            },
+
+                            range: [137, 144],
+                            loc: {
+                              start: { column: 42, line: 4 },
+                              end: { column: 49, line: 4 },
+                            },
+                          },
+
+                          range: [136, 144],
+                          loc: {
+                            start: { column: 41, line: 4 },
+                            end: { column: 49, line: 4 },
+                          },
+                        },
+                      ],
+-                     returnType: TSTypeAnnotation {
++                     typeAnnotation: TSTypeAnnotation {
+                        type: 'TSTypeAnnotation',
+                        typeAnnotation: TSVoidKeyword {
+                          type: 'TSVoidKeyword',
+
+                          range: [149, 153],
+                          loc: {
+                            start: { column: 54, line: 4 },
+                            end: { column: 58, line: 4 },
+                          },
+                        },
+
+                        range: [146, 153],
+                        loc: {
+                          start: { column: 51, line: 4 },
+                          end: { column: 58, line: 4 },
+                        },
+                      },
+
+                      range: [123, 153],
+                      loc: {
+                        start: { column: 28, line: 4 },
+                        end: { column: 58, line: 4 },
+                      },
+                    },
+
+                    range: [121, 153],
+                    loc: {
+                      start: { column: 26, line: 4 },
+                      end: { column: 58, line: 4 },
+                    },
+                  },
+
+                  range: [114, 153],
+                  loc: {
+                    start: { column: 19, line: 4 },
+                    end: { column: 58, line: 4 },
+                  },
+                },
+              ],
+-             returnType: TSTypeAnnotation {
++             typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSVoidKeyword {
+                  type: 'TSVoidKeyword',
+
+                  range: [156, 160],
+                  loc: {
+                    start: { column: 61, line: 4 },
+                    end: { column: 65, line: 4 },
+                  },
+                },
+
+                range: [154, 160],
+                loc: {
+                  start: { column: 59, line: 4 },
+                  end: { column: 65, line: 4 },
+                },
+              },
+
+              range: [97, 161],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 66, line: 4 },
+              },
+            },
+          ],
+
+          range: [93, 163],
+          loc: {
+            start: { column: 20, line: 3 },
+            end: { column: 1, line: 5 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'UIElement',
+
+          range: [83, 92],
+          loc: {
+            start: { column: 10, line: 3 },
+            end: { column: 19, line: 3 },
+          },
+        },
+
+        range: [73, 163],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 164],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 6 },
+    },
+  }"
+`;

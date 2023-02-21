@@ -24,6 +24,23 @@ class Foo {
   a = new Foo<string>();
 }
     `,
+    `
+function foo(a: Foo = new Foo<string>()) {}
+    `,
+    `
+function foo({ a }: Foo = new Foo<string>()) {}
+    `,
+    `
+function foo([a]: Foo = new Foo<string>()) {}
+    `,
+    `
+class A {
+  constructor(a: Foo = new Foo<string>()) {}
+}
+    `,
+    `
+const a = function (a: Foo = new Foo<string>()) {};
+    `,
     // type-annotation
     {
       code: 'const a = new Foo();',
@@ -70,6 +87,50 @@ class Foo {
 class Foo {
   a: Foo<string> = new Foo();
 }
+      `,
+      options: ['type-annotation'],
+    },
+    {
+      code: `
+function foo(a: Foo<string> = new Foo()) {}
+      `,
+      options: ['type-annotation'],
+    },
+    {
+      code: `
+function foo({ a }: Foo<string> = new Foo()) {}
+      `,
+      options: ['type-annotation'],
+    },
+    {
+      code: `
+function foo([a]: Foo<string> = new Foo()) {}
+      `,
+      options: ['type-annotation'],
+    },
+    {
+      code: `
+class A {
+  constructor(a: Foo<string> = new Foo()) {}
+}
+      `,
+      options: ['type-annotation'],
+    },
+    {
+      code: `
+const a = function (a: Foo<string> = new Foo()) {};
+      `,
+      options: ['type-annotation'],
+    },
+    {
+      code: `
+const [a = new Foo<string>()] = [];
+      `,
+      options: ['type-annotation'],
+    },
+    {
+      code: `
+function a([a = new Foo<string>()]) {}
       `,
       options: ['type-annotation'],
     },
@@ -188,6 +249,75 @@ class Foo {
 class Foo {
   [a] = new Foo<string>();
 }
+      `,
+    },
+    {
+      code: `
+function foo(a: Foo<string> = new Foo()) {}
+      `,
+      errors: [
+        {
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+function foo(a = new Foo<string>()) {}
+      `,
+    },
+    {
+      code: `
+function foo({ a }: Foo<string> = new Foo()) {}
+      `,
+      errors: [
+        {
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+function foo({ a } = new Foo<string>()) {}
+      `,
+    },
+    {
+      code: `
+function foo([a]: Foo<string> = new Foo()) {}
+      `,
+      errors: [
+        {
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+function foo([a] = new Foo<string>()) {}
+      `,
+    },
+    {
+      code: `
+class A {
+  constructor(a: Foo<string> = new Foo()) {}
+}
+      `,
+      errors: [
+        {
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+class A {
+  constructor(a = new Foo<string>()) {}
+}
+      `,
+    },
+    {
+      code: `
+const a = function (a: Foo<string> = new Foo()) {};
+      `,
+      errors: [
+        {
+          messageId: 'preferConstructor',
+        },
+      ],
+      output: `
+const a = function (a = new Foo<string>()) {};
       `,
     },
     {
@@ -312,6 +442,80 @@ class Foo {
 class Foo {
   [a + b]: Foo<string> = new Foo();
 }
+      `,
+    },
+    {
+      code: `
+function foo(a = new Foo<string>()) {}
+      `,
+      options: ['type-annotation'],
+      errors: [
+        {
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      output: `
+function foo(a: Foo<string> = new Foo()) {}
+      `,
+    },
+    {
+      code: `
+function foo({ a } = new Foo<string>()) {}
+      `,
+      options: ['type-annotation'],
+      errors: [
+        {
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      output: `
+function foo({ a }: Foo<string> = new Foo()) {}
+      `,
+    },
+    {
+      code: `
+function foo([a] = new Foo<string>()) {}
+      `,
+      options: ['type-annotation'],
+      errors: [
+        {
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      output: `
+function foo([a]: Foo<string> = new Foo()) {}
+      `,
+    },
+    {
+      code: `
+class A {
+  constructor(a = new Foo<string>()) {}
+}
+      `,
+      options: ['type-annotation'],
+      errors: [
+        {
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      output: `
+class A {
+  constructor(a: Foo<string> = new Foo()) {}
+}
+      `,
+    },
+    {
+      code: `
+const a = function (a = new Foo<string>()) {};
+      `,
+      options: ['type-annotation'],
+      errors: [
+        {
+          messageId: 'preferTypeAnnotation',
+        },
+      ],
+      output: `
+const a = function (a: Foo<string> = new Foo()) {};
       `,
     },
   ],

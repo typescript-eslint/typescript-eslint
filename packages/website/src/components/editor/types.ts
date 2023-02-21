@@ -5,7 +5,6 @@ import type { SourceFile } from 'typescript';
 import type { ConfigModel, ErrorGroup, SelectedRange, TabType } from '../types';
 
 export interface CommonEditorProps extends ConfigModel {
-  readonly darkTheme: boolean;
   readonly activeTab: TabType;
   readonly decoration: SelectedRange | null;
   readonly onChange: (cfg: Partial<ConfigModel>) => void;

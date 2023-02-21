@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-readonly-property Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: true,
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            abstract: true,
+            accessibility: "public",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "foo",
+
+              range: [121, 124],
+              loc: {
+                start: { column: 27, line: 4 },
+                end: { column: 30, line: 4 },
+              },
+            },
+            readonly: true,
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [126, 132],
+                loc: {
+                  start: { column: 32, line: 4 },
+                  end: { column: 38, line: 4 },
+                },
+              },
+
+              range: [124, 132],
+              loc: {
+                start: { column: 30, line: 4 },
+                end: { column: 38, line: 4 },
+              },
+            },
+            value: null,
+
+            range: [96, 133],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 39, line: 4 },
+            },
+          },
+        ],
+
+        range: [92, 135],
+        loc: {
+          start: { column: 19, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [88, 91],
+        loc: {
+          start: { column: 15, line: 3 },
+          end: { column: 18, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 135],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 136],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

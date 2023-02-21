@@ -2,6 +2,7 @@ import glob from 'glob';
 import * as path from 'path';
 
 import { getCanonicalFileName } from '../../src/create-program/shared';
+import { createProgramFromConfigFile as createProgramFromConfigFileOriginal } from '../../src/create-program/useProvidedPrograms';
 import {
   clearParseAndGenerateServicesCalls,
   clearProgramCache,
@@ -69,9 +70,9 @@ jest.mock('../../src/create-program/getWatchProgramsForProjects', () => {
   };
 });
 
-const {
-  createProgramFromConfigFile,
-} = require('../../src/create-program/useProvidedPrograms');
+const createProgramFromConfigFile = jest.mocked(
+  createProgramFromConfigFileOriginal,
+);
 
 const FIXTURES_DIR = './tests/fixtures/semanticInfo';
 const testFiles = glob.sync(`**/*.src.ts`, {
@@ -97,7 +98,7 @@ describe('semanticInfo - singleRun', () => {
     // ensure caches are clean for each test
     clearProgramCache();
     // ensure invocations of mock are clean for each test
-    (createProgramFromConfigFile as jest.Mock).mockClear();
+    createProgramFromConfigFile.mockClear();
     // Do not track invocations per file across tests
     clearParseAndGenerateServicesCalls();
   });
@@ -232,7 +233,7 @@ describe('semanticInfo - singleRun', () => {
     const optionsWithReversedTsconfigs = {
       ...options,
       //  Now the matching tsconfig comes first
-      project: options.project.reverse(),
+      project: [...options.project].reverse(),
     };
 
     const resultProgram = parseAndGenerateServices(
@@ -248,7 +249,7 @@ describe('semanticInfo - singleRun', () => {
 
     expect(createProgramFromConfigFile).toHaveBeenNthCalledWith(
       1,
-      resolvedProject(tsconfigs[0]),
+      resolvedProject(tsconfigs[1]),
     );
 
     // Restore process data
