@@ -201,7 +201,7 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Wait for Netlify deployment
-        uses: probablyup/wait-for-netlify-action@3.2.0
+        uses: probablyup/wait-for-netlify-action@v3.4.0
         id: waitForDeployment
         with:
           site_id: '128d21c7-b2fe-45ad-b141-9878fcf5de3a'
