@@ -296,6 +296,10 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/namespace-id-qualified-name/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/namespace-nested-once/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSModuleDeclaration/fixtures/namespace-nested-twice/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSNamespaceExportDeclaration/fixtures/_error_/missing-id/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/TSNamespaceExportDeclaration/fixtures/_error_/non-identifier-name/fixture 1`] = `[Error: Cannot calculate TypeScript semantic issues without a valid project.]`;

@@ -75,6 +75,8 @@ jspm_packages/
 .DS_Store
 .idea
 dist
+_ts3.4
+_ts4.2
 *.tsbuildinfo
 .watchmanconfig
 .rollup.cache

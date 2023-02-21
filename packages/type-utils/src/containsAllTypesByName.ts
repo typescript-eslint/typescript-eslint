@@ -5,13 +5,16 @@ import { isTypeFlagSet } from './typeFlagUtils';
 
 /**
  * @param type Type being checked by name.
+ * @param allowAny Whether to consider `any` and `unknown` to match.
  * @param allowedNames Symbol names checking on the type.
- * @returns Whether the type is, extends, or contains all of the allowed names.
+ * @param matchAnyInstead Whether to instead just check if any parts match, rather than all parts.
+ * @returns Whether the type is, extends, or contains the allowed names (or all matches the allowed names, if mustMatchAll is true).
  */
 export function containsAllTypesByName(
   type: ts.Type,
   allowAny: boolean,
   allowedNames: Set<string>,
+  matchAnyInstead = false,
 ): boolean {
   if (isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
     return !allowAny;
@@ -26,16 +29,21 @@ export function containsAllTypesByName(
     return true;
   }
 
+  const predicate = (t: ts.Type): boolean =>
+    containsAllTypesByName(t, allowAny, allowedNames, matchAnyInstead);
+
   if (tsutils.isUnionOrIntersectionType(type)) {
-    return type.types.every(t =>
-      containsAllTypesByName(t, allowAny, allowedNames),
-    );
+    return matchAnyInstead
+      ? type.types.some(predicate)
+      : type.types.every(predicate);
   }
 
   const bases = type.getBaseTypes();
+
   return (
     typeof bases !== 'undefined' &&
-    bases.length > 0 &&
-    bases.every(t => containsAllTypesByName(t, allowAny, allowedNames))
+    (matchAnyInstead
+      ? bases.some(predicate)
+      : bases.length > 0 && bases.every(predicate))
   );
 }
