@@ -12,6 +12,8 @@ on:
 
 env:
   PRIMARY_NODE_VERSION: 18
+  # Only set the read-write token if we are on the main branch
+  NX_CLOUD_ACCESS_TOKEN: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') && secrets.NX_CLOUD_ACCESS_TOKEN || '' }}
 
 defaults:
   run:
@@ -179,6 +181,9 @@ jobs:
       contents: read # to fetch code (actions/checkout)
 
     name: Website tests
+    # We technically do not need to wait for build within the pipeline any more because the build we care about is happening within Netlify, however,
+    # it is highly likely that if the CI one fails, the Netlify one will as well, so in order to not waste unncessary Github Actions minutes/resources,
+    # we do still keep this requirement here.
     needs: [build]
     runs-on: ubuntu-latest
     steps:
@@ -186,19 +191,29 @@ jobs:
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
+
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
-      - name: Build
-        uses: ./.github/actions/prepare-build
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps
 
-      - name: Run Playwright tests
+      - name: Wait for Netlify deployment
+        uses: probablyup/wait-for-netlify-action@v3.4.0
+        id: waitForDeployment
+        with:
+          site_id: '128d21c7-b2fe-45ad-b141-9878fcf5de3a'
+          max_timeout: 300 # 5 minutes
+        env:
+          NETLIFY_TOKEN: ${{ secrets.NETLIFY_TOKEN }}
+
+      - name: Run Playwright tests against the Netlify deployment
         run: yarn playwright test --reporter=list
         working-directory: packages/website
+        env:
+          PLAYWRIGHT_TEST_BASE_URL: ${{ steps.waitForDeployment.outputs.url }}
 
       - if: always()
         uses: actions/upload-artifact@v3
