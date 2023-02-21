@@ -243,7 +243,7 @@ export const rule = createRule({
         const type = services.getTypeAtLocation(node);
 
         // 3. Check the TS type using the TypeScript APIs
-        if (tools.isTypeFlagSet(nodeType, ts.TypeFlags.EnumLike)) {
+        if (tsutils.isTypeFlagSet(nodeType, ts.TypeFlags.EnumLike)) {
           context.report({
             messageId: 'loopOverEnum',
             node: node.right,

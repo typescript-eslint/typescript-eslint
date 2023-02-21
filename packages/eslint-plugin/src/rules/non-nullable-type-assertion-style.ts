@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -30,18 +30,20 @@ export default util.createRule({
     const getTypesIfNotLoose = (node: TSESTree.Node): ts.Type[] | undefined => {
       const type = services.getTypeAtLocation(node);
 
-      if (tools.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+      if (
+        tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)
+      ) {
         return undefined;
       }
 
-      return tools.unionTypeParts(type);
+      return tsutils.unionTypeParts(type);
     };
 
     const couldBeNullish = (type: ts.Type): boolean => {
       if (type.flags & ts.TypeFlags.TypeParameter) {
         const constraint = type.getConstraint();
         return constraint == null || couldBeNullish(constraint);
-      } else if (tools.isUnionType(type)) {
+      } else if (tsutils.isUnionType(type)) {
         for (const part of type.types) {
           if (couldBeNullish(part)) {
             return true;

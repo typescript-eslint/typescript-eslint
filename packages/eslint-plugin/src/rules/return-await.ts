@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -187,7 +187,7 @@ export default util.createRule({
       }
 
       const type = checker.getTypeAtLocation(child);
-      const isThenable = tools.isThenableType(checker, expression, type);
+      const isThenable = tsutils.isThenableType(checker, expression, type);
 
       if (!isAwait && !isThenable) {
         return;
