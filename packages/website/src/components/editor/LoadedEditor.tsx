@@ -50,10 +50,6 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 }) => {
   const { colorMode } = useColorMode();
   const [_, setDecorations] = useState<string[]>([]);
-  const container = useRef<HTMLElement>(
-    sandboxInstance.editor.getContainerDomNode?.() ||
-      sandboxInstance.editor.getDomNode(),
-  );
 
   const codeActions = useRef(new Map<string, LintCodeAction[]>()).current;
   const [tabs] = useState<Record<TabType, Monaco.editor.ITextModel>>(() => {
@@ -277,6 +273,10 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   const resize = useMemo(() => {
     return debounce(() => sandboxInstance.editor.layout(), 1);
   }, [sandboxInstance]);
+
+  const container =
+    sandboxInstance.editor.getContainerDomNode?.() ??
+    sandboxInstance.editor.getDomNode();
 
   useResizeObserver(container, () => {
     resize();
