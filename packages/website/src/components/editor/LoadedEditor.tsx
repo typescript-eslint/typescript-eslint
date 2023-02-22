@@ -8,6 +8,7 @@ import {
   parseTSConfig,
   tryParseEslintModule,
 } from '../config/utils';
+import { useResizeObserver } from '../hooks/useResizeObserver';
 import { debounce } from '../lib/debounce';
 import type { LintCodeAction } from '../linter/utils';
 import { parseLintResults, parseMarkers } from '../linter/utils';
@@ -49,9 +50,10 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 }) => {
   const { colorMode } = useColorMode();
   const [_, setDecorations] = useState<string[]>([]);
-  const [lastCode, setLastCode] = useState<string>(() => code);
-  const [lastTSConfig, setLastTSConfig] = useState<string>(() => tsconfig);
-  const [lastEslintrc, setLastEslintrc] = useState<string>(() => eslintrc);
+  const container = useRef<HTMLElement>(
+    sandboxInstance.editor.getContainerDomNode?.() ||
+      sandboxInstance.editor.getDomNode(),
+  );
 
   const codeActions = useRef(new Map<string, LintCodeAction[]>()).current;
   const [tabs] = useState<Record<TabType, Monaco.editor.ITextModel>>(() => {
@@ -231,19 +233,16 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       ),
       tabs.eslintrc.onDidChangeContent(
         debounce(() => {
-          setLastEslintrc(tabs.eslintrc.getValue());
           onChange({ eslintrc: tabs.eslintrc.getValue() });
         }, 500),
       ),
       tabs.tsconfig.onDidChangeContent(
         debounce(() => {
-          setLastTSConfig(tabs.tsconfig.getValue());
           onChange({ tsconfig: tabs.tsconfig.getValue() });
         }, 500),
       ),
       tabs.code.onDidChangeContent(
         debounce(() => {
-          setLastCode(tabs.code.getValue());
           onChange({ code: tabs.code.getValue() });
         }, 500),
       ),
@@ -279,35 +278,15 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     return debounce(() => sandboxInstance.editor.layout(), 1);
   }, [sandboxInstance]);
 
-  useEffect(() => {
+  useResizeObserver(container, () => {
     resize();
-  }, [resize, showAST]);
-
-  const domNode = sandboxInstance.editor.getContainerDomNode();
-  const resizeObserver = useMemo(() => {
-    return new ResizeObserver(() => {
-      resize();
-    });
-  }, [resize]);
-
-  useEffect(() => {
-    if (domNode) {
-      resizeObserver.observe(domNode);
-
-      return (): void => resizeObserver.unobserve(domNode);
-    }
-    return (): void => {};
-  }, [domNode, resizeObserver]);
-
-  useEffect(() => {
-    window.addEventListener('resize', resize);
-    return (): void => {
-      window.removeEventListener('resize', resize);
-    };
   });
 
   useEffect(() => {
-    if (code !== lastCode && code !== tabs.code.getValue()) {
+    if (
+      !sandboxInstance.editor.hasTextFocus() &&
+      code !== tabs.code.getValue()
+    ) {
       tabs.code.applyEdits([
         {
           range: tabs.code.getFullModelRange(),
@@ -315,12 +294,13 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         },
       ]);
     }
-    // We do not want to update the code when lastCode changes #6336
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [code, tabs.code]);
+  }, [sandboxInstance, code, tabs.code]);
 
   useEffect(() => {
-    if (tsconfig !== lastTSConfig && tsconfig !== tabs.tsconfig.getValue()) {
+    if (
+      !sandboxInstance.editor.hasTextFocus() &&
+      tsconfig !== tabs.tsconfig.getValue()
+    ) {
       tabs.tsconfig.applyEdits([
         {
           range: tabs.tsconfig.getFullModelRange(),
@@ -328,12 +308,13 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         },
       ]);
     }
-    // We do not want to update the code when lastTSConfig changes #6336
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [tabs.tsconfig, tsconfig]);
+  }, [sandboxInstance, tabs.tsconfig, tsconfig]);
 
   useEffect(() => {
-    if (eslintrc !== lastEslintrc && eslintrc !== tabs.eslintrc.getValue()) {
+    if (
+      !sandboxInstance.editor.hasTextFocus() &&
+      eslintrc !== tabs.eslintrc.getValue()
+    ) {
       tabs.eslintrc.applyEdits([
         {
           range: tabs.eslintrc.getFullModelRange(),
@@ -341,9 +322,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         },
       ]);
     }
-    // We do not want to update the code when lastEslintrc changes #6336
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [eslintrc, tabs.eslintrc]);
+  }, [sandboxInstance, eslintrc, tabs.eslintrc]);
 
   useEffect(() => {
     sandboxInstance.monaco.editor.setTheme(
