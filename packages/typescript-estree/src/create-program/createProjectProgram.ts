@@ -4,6 +4,7 @@ import * as ts from 'typescript';
 
 import { firstDefined } from '../node-utils';
 import type { ParseSettings } from '../parseSettings';
+import { describeFilePath } from './describeFilePath';
 import { getWatchProgramsForProjects } from './getWatchProgramsForProjects';
 import type { ASTAndDefiniteProgram } from './shared';
 import { getAstFromProgram } from './shared';
@@ -41,19 +42,14 @@ function createProjectProgram(
     return astAndProgram;
   }
 
-  const describeFilePath = (filePath: string): string => {
-    const relative = path.relative(
-      parseSettings.tsconfigRootDir || process.cwd(),
-      filePath,
-    );
-    if (parseSettings.tsconfigRootDir) {
-      return `<tsconfigRootDir>/${relative}`;
-    }
-    return `<cwd>/${relative}`;
-  };
+  const describeProjectFilePath = (projectFile: string): string =>
+    describeFilePath(projectFile, parseSettings.tsconfigRootDir);
 
-  const describedFilePath = describeFilePath(parseSettings.filePath);
-  const relativeProjects = parseSettings.projects.map(describeFilePath);
+  const describedFilePath = describeFilePath(
+    parseSettings.filePath,
+    parseSettings.tsconfigRootDir,
+  );
+  const relativeProjects = parseSettings.projects.map(describeProjectFilePath);
   const describedPrograms =
     relativeProjects.length === 1
       ? relativeProjects[0]
