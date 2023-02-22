@@ -20,7 +20,7 @@
     "build": "rollup --config=rollup.config.js",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "nx lint",
-    "typecheck": "tsc -p jsconfig.json --noEmit"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@typescript-eslint/types": "5.53.0",

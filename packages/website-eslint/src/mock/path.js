@@ -216,7 +216,6 @@ export function extname(path) {
   return splitPath(path)[3];
 }
 
-// eslint-disable-next-line import/no-default-export
 export default {
   extname: extname,
   basename: basename,
