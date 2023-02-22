@@ -11,4 +11,17 @@ interface ASTFixtureConfig {
    * The value should be a description of why there isn't support - for example a github issue URL.
    */
   readonly expectBabelToNotSupport?: string;
+
+  /**
+   * Dependency version semver ranges to filter to in regression testing.
+   */
+  readonly versions?: ASTFixtureVersionsConfig;
+}
+
+/**
+ * Dependency version semver ranges to filter to in regression testing.
+ */
+interface ASTFixtureVersionsConfig {
+  readonly eslint?: string;
+  readonly typescript?: string;
 }

@@ -48,12 +48,14 @@
     "@babel/parser": "*",
     "@microsoft/api-extractor": "^7.23.2",
     "@types/babel__core": "*",
+    "eslint": "*",
     "glob": "*",
     "jest-diff": "*",
     "jest-snapshot": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
     "pretty-format": "*",
+    "semver": "*",
     "typescript": "*"
   }
 }

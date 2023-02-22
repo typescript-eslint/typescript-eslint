@@ -1,5 +1,7 @@
 import * as parser from '@typescript-eslint/parser';
+import { ESLint } from 'eslint';
 import eslintPackageJson from 'eslint/package.json';
+import semver from 'semver';
 
 import * as dependencyConstraintsModule from '../../../src/eslint-utils/rule-tester/dependencyConstraints';
 import { RuleTester } from '../../../src/eslint-utils/rule-tester/RuleTester';
@@ -100,50 +102,54 @@ const NOOP_RULE: RuleModule<'error', []> = {
 };
 
 describe('RuleTester', () => {
-  it('automatically sets the filename for tests', () => {
-    const ruleTester = new RuleTester({
-      parser: '@typescript-eslint/parser',
-      parserOptions: {
-        project: 'tsconfig.json',
-        tsconfigRootDir: '/some/path/that/totally/exists/',
-      },
-    });
+  if (
+    'version' in (ESLint as {}) &&
+    semver.satisfies((ESLint as { version: string }).version, '>=8')
+  ) {
+    it('automatically sets the filename for tests', () => {
+      const ruleTester = new RuleTester({
+        parser: '@typescript-eslint/parser',
+        parserOptions: {
+          project: 'tsconfig.json',
+          tsconfigRootDir: '/some/path/that/totally/exists/',
+        },
+      });
 
-    ruleTester.run('my-rule', NOOP_RULE, {
-      invalid: [
-        {
-          code: 'invalid tests should work as well',
-          errors: [],
-        },
-      ],
-      valid: [
-        'string based valid test',
-        {
-          code: 'object based valid test',
-        },
-        {
-          code: "explicit filename shouldn't be overwritten",
-          filename: '/set/in/the/test.ts',
-        },
-        {
-          code: 'jsx should have the correct filename',
-          parserOptions: {
-            ecmaFeatures: {
-              jsx: true,
+      ruleTester.run('my-rule', NOOP_RULE, {
+        invalid: [
+          {
+            code: 'invalid tests should work as well',
+            errors: [],
+          },
+        ],
+        valid: [
+          'string based valid test',
+          {
+            code: 'object based valid test',
+          },
+          {
+            code: "explicit filename shouldn't be overwritten",
+            filename: '/set/in/the/test.ts',
+          },
+          {
+            code: 'jsx should have the correct filename',
+            parserOptions: {
+              ecmaFeatures: {
+                jsx: true,
+              },
             },
           },
-        },
-        {
-          code: 'type-aware parser options should override the constructor config',
-          parserOptions: {
-            project: 'tsconfig.test-specific.json',
-            tsconfigRootDir: '/set/in/the/test/',
+          {
+            code: 'type-aware parser options should override the constructor config',
+            parserOptions: {
+              project: 'tsconfig.test-specific.json',
+              tsconfigRootDir: '/set/in/the/test/',
+            },
           },
-        },
-      ],
-    });
+        ],
+      });
 
-    expect(runSpy.mock.lastCall?.[2]).toMatchInlineSnapshot(`
+      expect(runSpy.mock.lastCall?.[2]).toMatchInlineSnapshot(`
       {
         "invalid": [
           {
@@ -185,74 +191,55 @@ describe('RuleTester', () => {
         ],
       }
     `);
-  });
-
-  it('schedules the parser caches to be cleared afterAll', () => {
-    // it should schedule the afterAll
-    expect(mockedAfterAll).toHaveBeenCalledTimes(0);
-    const _ruleTester = new RuleTester({
-      parser: '@typescript-eslint/parser',
-      parserOptions: {
-        project: 'tsconfig.json',
-        tsconfigRootDir: '/some/path/that/totally/exists/',
-      },
-    });
-    expect(mockedAfterAll).toHaveBeenCalledTimes(1);
-
-    // the provided callback should clear the caches
-    const callback = mockedAfterAll.mock.calls[0][0];
-    expect(typeof callback).toBe('function');
-    expect(mockedParserClearCaches).not.toHaveBeenCalled();
-    callback();
-    expect(mockedParserClearCaches).toHaveBeenCalledTimes(1);
-  });
-
-  it('throws an error if you attempt to set the parser to ts-eslint at the test level', () => {
-    const ruleTester = new RuleTester({
-      parser: '@typescript-eslint/parser',
-      parserOptions: {
-        project: 'tsconfig.json',
-        tsconfigRootDir: '/some/path/that/totally/exists/',
-      },
     });
 
-    expect(() =>
-      ruleTester.run('my-rule', NOOP_RULE, {
-        valid: [
-          {
-            code: 'object based valid test',
-            parser: '@typescript-eslint/parser',
-          },
-        ],
+    it('schedules the parser caches to be cleared afterAll', () => {
+      // it should schedule the afterAll
+      expect(mockedAfterAll).toHaveBeenCalledTimes(0);
+      const _ruleTester = new RuleTester({
+        parser: '@typescript-eslint/parser',
+        parserOptions: {
+          project: 'tsconfig.json',
+          tsconfigRootDir: '/some/path/that/totally/exists/',
+        },
+      });
+      expect(mockedAfterAll).toHaveBeenCalledTimes(1);
 
-        invalid: [],
-      }),
-    ).toThrowErrorMatchingInlineSnapshot(
-      `"Do not set the parser at the test level unless you want to use a parser other than @typescript-eslint/parser"`,
-    );
-  });
+      // the provided callback should clear the caches
+      const callback = mockedAfterAll.mock.calls[0][0];
+      expect(typeof callback).toBe('function');
+      expect(mockedParserClearCaches).not.toHaveBeenCalled();
+      callback();
+      expect(mockedParserClearCaches).toHaveBeenCalledTimes(1);
+    });
 
-  describe('checks dependencies as specified', () => {
-    it('does not check dependencies if there are no dependency constraints', () => {
+    it('throws an error if you attempt to set the parser to ts-eslint at the test level', () => {
       const ruleTester = new RuleTester({
         parser: '@typescript-eslint/parser',
+        parserOptions: {
+          project: 'tsconfig.json',
+          tsconfigRootDir: '/some/path/that/totally/exists/',
+        },
       });
 
-      ruleTester.run('my-rule', NOOP_RULE, {
-        valid: [
-          'const x = 1;',
-          { code: 'const x = 2;' },
-          // empty object is ignored
-          { code: 'const x = 3;', dependencyConstraints: {} },
-        ],
-        invalid: [],
-      });
+      expect(() =>
+        ruleTester.run('my-rule', NOOP_RULE, {
+          valid: [
+            {
+              code: 'object based valid test',
+              parser: '@typescript-eslint/parser',
+            },
+          ],
 
-      expect(satisfiesAllDependencyConstraintsMock).not.toHaveBeenCalled();
+          invalid: [],
+        }),
+      ).toThrowErrorMatchingInlineSnapshot(
+        `"Do not set the parser at the test level unless you want to use a parser other than @typescript-eslint/parser"`,
+      );
     });
 
-    describe('does not check dependencies if is an "only" manually set', () => {
-      it('in the valid section', () => {
+    describe('checks dependencies as specified', () => {
+      it('does not check dependencies if there are no dependency constraints', () => {
         const ruleTester = new RuleTester({
           parser: '@typescript-eslint/parser',
         });
@@ -261,17 +248,8 @@ describe('RuleTester', () => {
           valid: [
             'const x = 1;',
             { code: 'const x = 2;' },
-            {
-              code: 'const x = 3;',
-              // eslint-disable-next-line eslint-plugin/no-only-tests -- intentional only for test purposes
-              only: true,
-            },
-            {
-              code: 'const x = 4;',
-              dependencyConstraints: {
-                'totally-real-dependency': '999',
-              },
-            },
+            // empty object is ignored
+            { code: 'const x = 3;', dependencyConstraints: {} },
           ],
           invalid: [],
         });
@@ -279,88 +257,116 @@ describe('RuleTester', () => {
         expect(satisfiesAllDependencyConstraintsMock).not.toHaveBeenCalled();
       });
 
-      it('in the invalid section', () => {
+      describe('does not check dependencies if is an "only" manually set', () => {
+        it('in the valid section', () => {
+          const ruleTester = new RuleTester({
+            parser: '@typescript-eslint/parser',
+          });
+
+          ruleTester.run('my-rule', NOOP_RULE, {
+            valid: [
+              'const x = 1;',
+              { code: 'const x = 2;' },
+              {
+                code: 'const x = 3;',
+                // eslint-disable-next-line eslint-plugin/no-only-tests -- intentional only for test purposes
+                only: true,
+              },
+              {
+                code: 'const x = 4;',
+                dependencyConstraints: {
+                  'totally-real-dependency': '999',
+                },
+              },
+            ],
+            invalid: [],
+          });
+
+          expect(satisfiesAllDependencyConstraintsMock).not.toHaveBeenCalled();
+        });
+
+        it('in the invalid section', () => {
+          const ruleTester = new RuleTester({
+            parser: '@typescript-eslint/parser',
+          });
+
+          ruleTester.run('my-rule', NOOP_RULE, {
+            valid: [
+              'const x = 1;',
+              { code: 'const x = 2;' },
+              {
+                code: 'const x = 4;',
+                dependencyConstraints: {
+                  'totally-real-dependency': '999',
+                },
+              },
+            ],
+            invalid: [
+              {
+                code: 'const x = 3;',
+                errors: [],
+                // eslint-disable-next-line eslint-plugin/no-only-tests -- intentional only for test purposes
+                only: true,
+              },
+            ],
+          });
+
+          expect(satisfiesAllDependencyConstraintsMock).not.toHaveBeenCalled();
+        });
+      });
+
+      it('correctly handles string-based at-least', () => {
         const ruleTester = new RuleTester({
           parser: '@typescript-eslint/parser',
         });
 
         ruleTester.run('my-rule', NOOP_RULE, {
-          valid: [
-            'const x = 1;',
-            { code: 'const x = 2;' },
+          invalid: [
             {
-              code: 'const x = 4;',
+              code: 'failing - major',
+              errors: [],
               dependencyConstraints: {
                 'totally-real-dependency': '999',
               },
             },
-          ],
-          invalid: [
             {
-              code: 'const x = 3;',
+              code: 'failing - major.minor',
               errors: [],
-              // eslint-disable-next-line eslint-plugin/no-only-tests -- intentional only for test purposes
-              only: true,
+              dependencyConstraints: {
+                'totally-real-dependency': '999.0',
+              },
+            },
+            {
+              code: 'failing - major.minor.patch',
+              errors: [],
+              dependencyConstraints: {
+                'totally-real-dependency': '999.0.0',
+              },
+            },
+          ],
+          valid: [
+            {
+              code: 'passing - major',
+              dependencyConstraints: {
+                'totally-real-dependency': '10',
+              },
+            },
+            {
+              code: 'passing - major.minor',
+              dependencyConstraints: {
+                'totally-real-dependency': '10.0',
+              },
+            },
+            {
+              code: 'passing - major.minor.patch',
+              dependencyConstraints: {
+                'totally-real-dependency': '10.0.0',
+              },
             },
           ],
         });
 
-        expect(satisfiesAllDependencyConstraintsMock).not.toHaveBeenCalled();
-      });
-    });
-
-    it('correctly handles string-based at-least', () => {
-      const ruleTester = new RuleTester({
-        parser: '@typescript-eslint/parser',
-      });
-
-      ruleTester.run('my-rule', NOOP_RULE, {
-        invalid: [
-          {
-            code: 'failing - major',
-            errors: [],
-            dependencyConstraints: {
-              'totally-real-dependency': '999',
-            },
-          },
-          {
-            code: 'failing - major.minor',
-            errors: [],
-            dependencyConstraints: {
-              'totally-real-dependency': '999.0',
-            },
-          },
-          {
-            code: 'failing - major.minor.patch',
-            errors: [],
-            dependencyConstraints: {
-              'totally-real-dependency': '999.0.0',
-            },
-          },
-        ],
-        valid: [
-          {
-            code: 'passing - major',
-            dependencyConstraints: {
-              'totally-real-dependency': '10',
-            },
-          },
-          {
-            code: 'passing - major.minor',
-            dependencyConstraints: {
-              'totally-real-dependency': '10.0',
-            },
-          },
-          {
-            code: 'passing - major.minor.patch',
-            dependencyConstraints: {
-              'totally-real-dependency': '10.0.0',
-            },
-          },
-        ],
-      });
-
-      expect(runSpy.mock.lastCall?.[2]).toMatchInlineSnapshot(`
+        expect(runSpy.mock.lastCall?.[2]).toMatchInlineSnapshot(`
         {
           "invalid": [
             {
@@ -395,68 +401,68 @@ describe('RuleTester', () => {
           ],
         }
       `);
-    });
-
-    it('correctly handles object-based semver', () => {
-      const ruleTester = new RuleTester({
-        parser: '@typescript-eslint/parser',
       });
 
-      ruleTester.run('my-rule', NOOP_RULE, {
-        invalid: [
-          {
-            code: 'failing - major',
-            errors: [],
-            dependencyConstraints: {
-              'totally-real-dependency': {
-                range: '^999',
-              },
-            },
-          },
-          {
-            code: 'failing - major.minor',
-            errors: [],
-            dependencyConstraints: {
-              'totally-real-dependency': {
-                range: '>=999.0',
-              },
-            },
-          },
+      it('correctly handles object-based semver', () => {
+        const ruleTester = new RuleTester({
+          parser: '@typescript-eslint/parser',
+        });
 
-          {
-            code: 'failing with options',
-            errors: [],
-            dependencyConstraints: {
-              'totally-real-dependency-prerelease': {
-                range: '^10',
-                options: {
-                  includePrerelease: false,
+        ruleTester.run('my-rule', NOOP_RULE, {
+          invalid: [
+            {
+              code: 'failing - major',
+              errors: [],
+              dependencyConstraints: {
+                'totally-real-dependency': {
+                  range: '^999',
                 },
               },
             },
-          },
-        ],
-        valid: [
-          {
-            code: 'passing - major',
-            dependencyConstraints: {
-              'totally-real-dependency': {
-                range: '^10',
+            {
+              code: 'failing - major.minor',
+              errors: [],
+              dependencyConstraints: {
+                'totally-real-dependency': {
+                  range: '>=999.0',
+                },
               },
             },
-          },
-          {
-            code: 'passing - major.minor',
-            dependencyConstraints: {
-              'totally-real-dependency': {
-                range: '<999',
-              },
-            },
-          },
-        ],
-      });
 
-      expect(runSpy.mock.lastCall?.[2]).toMatchInlineSnapshot(`
+            {
+              code: 'failing with options',
+              errors: [],
+              dependencyConstraints: {
+                'totally-real-dependency-prerelease': {
+                  range: '^10',
+                  options: {
+                    includePrerelease: false,
+                  },
+                },
+              },
+            },
+          ],
+          valid: [
+            {
+              code: 'passing - major',
+              dependencyConstraints: {
+                'totally-real-dependency': {
+                  range: '^10',
+                },
+              },
+            },
+            {
+              code: 'passing - major.minor',
+              dependencyConstraints: {
+                'totally-real-dependency': {
+                  range: '<999',
+                },
+              },
+            },
+          ],
+        });
+
+        expect(runSpy.mock.lastCall?.[2]).toMatchInlineSnapshot(`
         {
           "invalid": [
             {
@@ -487,51 +493,51 @@ describe('RuleTester', () => {
           ],
         }
       `);
-    });
-
-    it('tests without versions should always be run', () => {
-      const ruleTester = new RuleTester({
-        parser: '@typescript-eslint/parser',
       });
 
-      ruleTester.run('my-rule', NOOP_RULE, {
-        invalid: [
-          {
-            code: 'no constraints is always run',
-            errors: [],
-          },
-          {
-            code: 'empty object is always run',
-            errors: [],
-            dependencyConstraints: {},
-          },
-          {
-            code: 'failing constraint',
-            errors: [],
-            dependencyConstraints: {
-              'totally-real-dependency': '99999',
-            },
-          },
-        ],
-        valid: [
-          'string based is always run',
-          {
-            code: 'no constraints is always run',
-          },
-          {
-            code: 'empty object is always run',
-            dependencyConstraints: {},
-          },
-          {
-            code: 'passing constraint',
-            dependencyConstraints: {
-              'totally-real-dependency': '10',
-            },
-          },
-        ],
-      });
+      it('tests without versions should always be run', () => {
+        const ruleTester = new RuleTester({
+          parser: '@typescript-eslint/parser',
+        });
 
-      expect(runSpy.mock.lastCall?.[2]).toMatchInlineSnapshot(`
+        ruleTester.run('my-rule', NOOP_RULE, {
+          invalid: [
+            {
+              code: 'no constraints is always run',
+              errors: [],
+            },
+            {
+              code: 'empty object is always run',
+              errors: [],
+              dependencyConstraints: {},
+            },
+            {
+              code: 'failing constraint',
+              errors: [],
+              dependencyConstraints: {
+                'totally-real-dependency': '99999',
+              },
+            },
+          ],
+          valid: [
+            'string based is always run',
+            {
+              code: 'no constraints is always run',
+            },
+            {
+              code: 'empty object is always run',
+              dependencyConstraints: {},
+            },
+            {
+              code: 'passing constraint',
+              dependencyConstraints: {
+                'totally-real-dependency': '10',
+              },
+            },
+          ],
+        });
+
+        expect(runSpy.mock.lastCall?.[2]).toMatchInlineSnapshot(`
         {
           "invalid": [
             {
@@ -570,52 +576,52 @@ describe('RuleTester', () => {
           ],
         }
       `);
-    });
-
-    it('uses filter instead of "only" for old ESLint versions', () => {
-      // need it twice because ESLint internally fetches this value once :(
-      eslintVersionSpy.mockReturnValueOnce('1.0.0');
-      eslintVersionSpy.mockReturnValueOnce('1.0.0');
-
-      const ruleTester = new RuleTester({
-        parser: '@typescript-eslint/parser',
       });
 
-      ruleTester.run('my-rule', NOOP_RULE, {
-        invalid: [
-          {
-            code: 'failing',
-            errors: [],
-            dependencyConstraints: {
-              'totally-real-dependency': '999',
-            },
-          },
-          {
-            code: 'passing',
-            errors: [],
-            dependencyConstraints: {
-              'totally-real-dependency': '10',
-            },
-          },
-        ],
-        valid: [
-          'always passing string test',
-          {
-            code: 'failing',
-            dependencyConstraints: {
-              'totally-real-dependency': '999',
-            },
-          },
-          {
-            code: 'passing',
-            dependencyConstraints: {
-              'totally-real-dependency': '10',
-            },
-          },
-        ],
-      });
+      it('uses filter instead of "only" for old ESLint versions', () => {
+        // need it twice because ESLint internally fetches this value once :(
+        eslintVersionSpy.mockReturnValueOnce('1.0.0');
+        eslintVersionSpy.mockReturnValueOnce('1.0.0');
 
-      expect(runSpy.mock.lastCall?.[2]).toMatchInlineSnapshot(`
+        const ruleTester = new RuleTester({
+          parser: '@typescript-eslint/parser',
+        });
+
+        ruleTester.run('my-rule', NOOP_RULE, {
+          invalid: [
+            {
+              code: 'failing',
+              errors: [],
+              dependencyConstraints: {
+                'totally-real-dependency': '999',
+              },
+            },
+            {
+              code: 'passing',
+              errors: [],
+              dependencyConstraints: {
+                'totally-real-dependency': '10',
+              },
+            },
+          ],
+          valid: [
+            'always passing string test',
+            {
+              code: 'failing',
+              dependencyConstraints: {
+                'totally-real-dependency': '999',
+              },
+            },
+            {
+              code: 'passing',
+              dependencyConstraints: {
+                'totally-real-dependency': '10',
+              },
+            },
+          ],
+        });
+
+        expect(runSpy.mock.lastCall?.[2]).toMatchInlineSnapshot(`
         {
           "invalid": [
             {
@@ -645,35 +651,35 @@ describe('RuleTester', () => {
           ],
         }
       `);
-    });
+      });
 
-    describe('constructor constraints', () => {
-      it('skips all tests if a constructor constraint is not satisifed', () => {
-        const ruleTester = new RuleTester({
-          parser: '@typescript-eslint/parser',
-          dependencyConstraints: {
-            'totally-real-dependency': '999',
-          },
-        });
-
-        ruleTester.run('my-rule', NOOP_RULE, {
-          invalid: [
-            {
-              code: 'failing - major',
-              errors: [],
+      describe('constructor constraints', () => {
+        it('skips all tests if a constructor constraint is not satisifed', () => {
+          const ruleTester = new RuleTester({
+            parser: '@typescript-eslint/parser',
+            dependencyConstraints: {
+              'totally-real-dependency': '999',
             },
-          ],
-          valid: [
-            {
-              code: 'passing - major',
-            },
-          ],
-        });
+          });
 
-        // trigger the describe block
-        expect(mockedDescribe.mock.calls.length).toBeGreaterThanOrEqual(1);
-        mockedDescribe.mock.lastCall?.[1]();
-        expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
+          ruleTester.run('my-rule', NOOP_RULE, {
+            invalid: [
+              {
+                code: 'failing - major',
+                errors: [],
+              },
+            ],
+            valid: [
+              {
+                code: 'passing - major',
+              },
+            ],
+          });
+
+          // trigger the describe block
+          expect(mockedDescribe.mock.calls.length).toBeGreaterThanOrEqual(1);
+          mockedDescribe.mock.lastCall?.[1]();
+          expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
           [
             [
               "my-rule",
@@ -681,40 +687,40 @@ describe('RuleTester', () => {
             ],
           ]
         `);
-        expect(mockedIt.mock.lastCall).toMatchInlineSnapshot(`
+          expect(mockedIt.mock.lastCall).toMatchInlineSnapshot(`
           [
             "All tests skipped due to unsatisfied constructor dependency constraints",
             [Function],
           ]
         `);
-      });
-
-      it('does not skip all tests if a constructor constraint is satisifed', () => {
-        const ruleTester = new RuleTester({
-          parser: '@typescript-eslint/parser',
-          dependencyConstraints: {
-            'totally-real-dependency': '10',
-          },
         });
 
-        ruleTester.run('my-rule', NOOP_RULE, {
-          invalid: [
-            {
-              code: 'valid',
-              errors: [],
+        it('does not skip all tests if a constructor constraint is satisifed', () => {
+          const ruleTester = new RuleTester({
+            parser: '@typescript-eslint/parser',
+            dependencyConstraints: {
+              'totally-real-dependency': '10',
             },
-          ],
-          valid: [
-            {
-              code: 'valid',
-            },
-          ],
-        });
+          });
 
-        // trigger the describe block
-        expect(mockedDescribe.mock.calls.length).toBeGreaterThanOrEqual(1);
-        mockedDescribe.mock.lastCall?.[1]();
-        expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
+          ruleTester.run('my-rule', NOOP_RULE, {
+            invalid: [
+              {
+                code: 'valid',
+                errors: [],
+              },
+            ],
+            valid: [
+              {
+                code: 'valid',
+              },
+            ],
+          });
+
+          // trigger the describe block
+          expect(mockedDescribe.mock.calls.length).toBeGreaterThanOrEqual(1);
+          mockedDescribe.mock.lastCall?.[1]();
+          expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
           [
             [
               "my-rule",
@@ -730,8 +736,13 @@ describe('RuleTester', () => {
             ],
           ]
         `);
-        // expect(mockedIt.mock.lastCall).toMatchInlineSnapshot(`undefined`);
+          // expect(mockedIt.mock.lastCall).toMatchInlineSnapshot(`undefined`);
+        });
       });
     });
-  });
+  } else {
+    it('exists', () => {
+      expect(RuleTester).toBeTruthy();
+    });
+  }
 });

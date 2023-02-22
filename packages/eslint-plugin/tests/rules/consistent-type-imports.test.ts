@@ -7,9 +7,9 @@ const ruleTester = new RuleTester({
     ecmaVersion: 2020,
     sourceType: 'module',
   },
-  // type-only imports were first added in TS3.8
+  // type-only imports were first added in TS3.8; TS4.5 added inline types
   dependencyConstraints: {
-    typescript: '3.8',
+    typescript: '4.5',
   },
 });
 
