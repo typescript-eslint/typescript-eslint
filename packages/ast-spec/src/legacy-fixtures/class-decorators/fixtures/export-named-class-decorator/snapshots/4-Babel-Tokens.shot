@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures class-decorators export-named-class-decorator Babel - Tokens 1`] = `
+Array [
+  Punctuator {
+    type: "Punctuator",
+    value: "@",
+
+    range: [73, 74],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 1, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "sealed",
+
+    range: [74, 80],
+    loc: {
+      start: { column: 1, line: 3 },
+      end: { column: 7, line: 3 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "export",
+
+    range: [81, 87],
+    loc: {
+      start: { column: 0, line: 4 },
+      end: { column: 6, line: 4 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "class",
+
+    range: [88, 93],
+    loc: {
+      start: { column: 7, line: 4 },
+      end: { column: 12, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Qux",
+
+    range: [94, 97],
+    loc: {
+      start: { column: 13, line: 4 },
+      end: { column: 16, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [98, 99],
+    loc: {
+      start: { column: 17, line: 4 },
+      end: { column: 18, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [99, 100],
+    loc: {
+      start: { column: 18, line: 4 },
+      end: { column: 19, line: 4 },
+    },
+  },
+]
+`;

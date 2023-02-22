@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics type-alias-declaration Babel - Tokens 1`] = `
+Array [
+  Identifier {
+    type: "Identifier",
+    value: "type",
+
+    range: [73, 77],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 4, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Result",
+
+    range: [78, 84],
+    loc: {
+      start: { column: 5, line: 3 },
+      end: { column: 11, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "<",
+
+    range: [84, 85],
+    loc: {
+      start: { column: 11, line: 3 },
+      end: { column: 12, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "T",
+
+    range: [85, 86],
+    loc: {
+      start: { column: 12, line: 3 },
+      end: { column: 13, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ">",
+
+    range: [86, 87],
+    loc: {
+      start: { column: 13, line: 3 },
+      end: { column: 14, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [88, 89],
+    loc: {
+      start: { column: 15, line: 3 },
+      end: { column: 16, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Success",
+
+    range: [90, 97],
+    loc: {
+      start: { column: 17, line: 3 },
+      end: { column: 24, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "<",
+
+    range: [97, 98],
+    loc: {
+      start: { column: 24, line: 3 },
+      end: { column: 25, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "T",
+
+    range: [98, 99],
+    loc: {
+      start: { column: 25, line: 3 },
+      end: { column: 26, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ">",
+
+    range: [99, 100],
+    loc: {
+      start: { column: 26, line: 3 },
+      end: { column: 27, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "|",
+
+    range: [101, 102],
+    loc: {
+      start: { column: 28, line: 3 },
+      end: { column: 29, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Failure",
+
+    range: [103, 110],
+    loc: {
+      start: { column: 30, line: 3 },
+      end: { column: 37, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [110, 111],
+    loc: {
+      start: { column: 37, line: 3 },
+      end: { column: 38, line: 3 },
+    },
+  },
+]
+`;

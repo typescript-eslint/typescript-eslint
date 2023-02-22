@@ -1,0 +1,167 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-decorator-static-member TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "bar",
+
+              range: [100, 103],
+              loc: {
+                start: { column: 9, line: 4 },
+                end: { column: 12, line: 4 },
+              },
+            },
+            kind: "method",
+            override: false,
+            static: true,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [],
+
+                range: [132, 134],
+                loc: {
+                  start: { column: 41, line: 4 },
+                  end: { column: 43, line: 4 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [
+                Identifier {
+                  type: "Identifier",
+                  decorators: Array [
+                    Decorator {
+                      type: "Decorator",
+                      expression: CallExpression {
+                        type: "CallExpression",
+                        arguments: Array [
+                          Literal {
+                            type: "Literal",
+                            raw: "true",
+                            value: true,
+
+                            range: [113, 117],
+                            loc: {
+                              start: { column: 22, line: 4 },
+                              end: { column: 26, line: 4 },
+                            },
+                          },
+                        ],
+                        callee: Identifier {
+                          type: "Identifier",
+                          name: "special",
+
+                          range: [105, 112],
+                          loc: {
+                            start: { column: 14, line: 4 },
+                            end: { column: 21, line: 4 },
+                          },
+                        },
+                        optional: false,
+
+                        range: [105, 118],
+                        loc: {
+                          start: { column: 14, line: 4 },
+                          end: { column: 27, line: 4 },
+                        },
+                      },
+
+                      range: [104, 118],
+                      loc: {
+                        start: { column: 13, line: 4 },
+                        end: { column: 27, line: 4 },
+                      },
+                    },
+                  ],
+                  name: "baz",
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSNumberKeyword {
+                      type: "TSNumberKeyword",
+
+                      range: [124, 130],
+                      loc: {
+                        start: { column: 33, line: 4 },
+                        end: { column: 39, line: 4 },
+                      },
+                    },
+
+                    range: [122, 130],
+                    loc: {
+                      start: { column: 31, line: 4 },
+                      end: { column: 39, line: 4 },
+                    },
+                  },
+
+                  range: [119, 130],
+                  loc: {
+                    start: { column: 28, line: 4 },
+                    end: { column: 39, line: 4 },
+                  },
+                },
+              ],
+
+              range: [103, 134],
+              loc: {
+                start: { column: 12, line: 4 },
+                end: { column: 43, line: 4 },
+              },
+            },
+
+            range: [93, 134],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 43, line: 4 },
+            },
+          },
+        ],
+
+        range: [89, 136],
+        loc: {
+          start: { column: 16, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "StaticFoo",
+
+        range: [79, 88],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 15, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 136],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 137],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

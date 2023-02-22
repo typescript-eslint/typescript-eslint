@@ -3,6 +3,59 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.53.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.52.0...v5.53.0) (2023-02-20)
+
+
+### Features
+
+* **typescript-estree:** expose a wrapper cache clearing function for advanced usecases ([#6476](https://github.com/typescript-eslint/typescript-eslint/issues/6476)) ([d816496](https://github.com/typescript-eslint/typescript-eslint/commit/d8164960d21336d4a726d8179b314f05fe3aeb22))
+
+
+
+
+
+# [5.52.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.51.0...v5.52.0) (2023-02-13)
+
+
+### Features
+
+* **typescript-estree:** add `.kind` to `TSModuleDeclaration` ([#6443](https://github.com/typescript-eslint/typescript-eslint/issues/6443)) ([2f948df](https://github.com/typescript-eslint/typescript-eslint/commit/2f948df35b73d916e7fe42b21343568b1617e3f1))
+* **typescript-estree:** allow specifying project: true ([#6084](https://github.com/typescript-eslint/typescript-eslint/issues/6084)) ([dcd05f0](https://github.com/typescript-eslint/typescript-eslint/commit/dcd05f0b3ab62779571294d08a4542d66ebb2294))
+
+
+
+
+
+# [5.51.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.50.0...v5.51.0) (2023-02-06)
+
+
+### Features
+
+* **typescript-estree:** cache project glob resolution ([#6367](https://github.com/typescript-eslint/typescript-eslint/issues/6367)) ([afae837](https://github.com/typescript-eslint/typescript-eslint/commit/afae8374df64101627808ccfeb5b715c865e910f))
+
+
+
+
+
+# [5.50.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.49.0...v5.50.0) (2023-01-31)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+
+
+
+
+# [5.49.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.2...v5.49.0) (2023-01-23)
+
+
+### Bug Fixes
+
+* **typescript-estree:** fix typo in FAQ link ([#6346](https://github.com/typescript-eslint/typescript-eslint/issues/6346)) ([eefc578](https://github.com/typescript-eslint/typescript-eslint/commit/eefc5781b0f455264e4e58e33c27f8a91b3ab5e3))
+
+
+
+
+
 ## [5.48.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.1...v5.48.2) (2023-01-16)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-estree

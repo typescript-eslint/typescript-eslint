@@ -1,0 +1,6 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-instance-member AST Alignment - Token 1`] = `
+"Snapshot Diff:
+Compared values have no visual difference."
+`;

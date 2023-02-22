@@ -1,4 +1,3 @@
-import { useColorMode } from '@docusaurus/theme-common';
 import ASTViewerScope from '@site/src/components/ASTViewerScope';
 import ConfigEslint from '@site/src/components/config/ConfigEslint';
 import ConfigTypeScript from '@site/src/components/config/ConfigTypeScript';
@@ -60,7 +59,6 @@ function Playground(): JSX.Element {
     tsconfig: defaultTsConfig,
     eslintrc: defaultEslintConfig,
   });
-  const { colorMode } = useColorMode();
   const [esAst, setEsAst] = useState<TSESTree.Program | null>();
   const [tsAst, setTsAST] = useState<SourceFile | null>();
   const [scope, setScope] = useState<Record<string, unknown> | null>();
@@ -150,7 +148,6 @@ function Playground(): JSX.Element {
                 code={state.code}
                 tsconfig={state.tsconfig}
                 eslintrc={state.eslintrc}
-                darkTheme={colorMode === 'dark'}
                 sourceType={state.sourceType}
                 showAST={state.showAST}
                 onEsASTChange={setEsAst}
