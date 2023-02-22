@@ -40,8 +40,7 @@ module.exports = {
 
 This works well for repositories that have a single TSConfig for all files, such as small repositories using a single `tsconfig.json` or larger monorepos that have a `tsconfig.eslint.json` specifically used for linting.
 But what if your project uses different TSConfig options for different TypeScript files in nested subdirectories?
-
-...
+Specifying the right array of relative TSConfig paths to try for each file in order can be cumbersome or downright impossible.
 
 We recently added the option to specify `parserOptions.project` as just `true` in ESLint configurations.
 This indicates to typescript-eslint that each file should be linted with the closest `tsconfig.json` file on disk.
@@ -63,6 +62,64 @@ We intend to add additional options around automatic TSConfig lookups to allow a
 `parserOptions.project = true` is available in the latest versions of typescript-eslint v5.
 But v6's internal refactors are big enough that we'd like users to also try this out too.
 :::
+
+## Developer-Facing Features
+
+:::note
+If you don't work on ESLint plugins or with custom ESLint rules, you can skip this section and go straight to _[User-Facing Breaking Changes](#user-facing-breaking-changes)_.
+:::
+
+### Type Checker Wrapper APIs
+
+As described in our [ASTs and typescript-eslint](/blog/asts-and-typescript-eslint) post, ESLint rules don't natively work with AST nodes compatible with TypeScript's API.
+Retrieving type information for an ESLint AST node in a custom rule requires code somewhat like:
+
+```ts title="custom-rule-with-v5.ts"
+{
+  // ...
+  create() {
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
+    const tsNode = services.esTreeNodeToTSNodeMap.get(esNode);
+    const type = checker.getTypeAtLocation(node);
+
+    // ...
+  }
+  // ...
+}
+```
+
+How cumbersome, just to call to a single method (`getTypeAtLocation`) on the TypeScript API!
+
+In typescript-eslint v6, we've added a set of wrapper APIs on the `services: ParserServices` object that act as shortcuts for commonly used TypeScript APIs including `getTypeAtLocation`:
+
+```ts title="custom-rule-with-v6.ts"
+{
+  // ...
+  create() {
+    const services = util.getParserServices(context);
+    const type = services.getTypeAtLocation(node);
+
+    // ...
+  }
+  // ...
+}
+```
+
+For now, the available wrapper APIs are:
+
+- `getSymbolAtLocation`: directly passes an ESTree node to TypeScript's `checker.getSymbolAtLocation`
+- `getTypeAtLocation`: directly passes an ESTree node to TypeScript's `checker.getTypeAtLocation`
+
+We hope these wrapper APIs make it more convenient to write lint rules that rely on the awesome power of TypeScript's type checking.
+In the future, we may add more wrapper APIs, and may even add internal caching to those APIs to improve performance.
+
+:::note
+Rules can still retrieve their full backing TypeScript type checker with `services.program.getTypeChecker()`.
+This can be necessary for TypeScript APIs not wrapped by the parser services.
+:::
+
+TODO: set up a v6 netlify deployment so we can link to the docs there!
 
 ## User-Facing Breaking Changes
 
