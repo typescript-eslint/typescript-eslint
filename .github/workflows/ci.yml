@@ -129,6 +129,7 @@ jobs:
             'eslint-plugin-internal',
             'eslint-plugin-tslint',
             'parser',
+            'repo-tools',
             'scope-manager',
             'type-utils',
             'typescript-estree',
@@ -288,6 +289,6 @@ jobs:
           git fetch --prune --unshallow
 
       - name: Publish all packages to npm
-        run: npx lerna publish premajor --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v${major}
+        run: npx lerna publish premajor --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v6
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

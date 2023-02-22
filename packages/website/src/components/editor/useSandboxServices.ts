@@ -148,7 +148,6 @@ export const useSandboxServices = (
     };
     // colorMode and jsx can't be reactive here because we don't want to force a recreation
     // updating of colorMode and jsx is handled in LoadedEditor
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [props.ts, onLoaded]);
 
   return services;

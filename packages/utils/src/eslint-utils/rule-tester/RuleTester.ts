@@ -1,4 +1,4 @@
-import type * as TSESLintParserType from '@typescript-eslint/parser';
+import type * as TSESTreeType from '@typescript-eslint/typescript-estree';
 import assert from 'assert';
 import { version as eslintVersion } from 'eslint/package.json';
 import * as path from 'path';
@@ -112,7 +112,7 @@ class RuleTester extends BaseRuleTester.RuleTester {
       try {
         // instead of creating a hard dependency, just use a soft require
         // a bit weird, but if they're using this tooling, it'll be installed
-        const parser = require(TS_ESLINT_PARSER) as typeof TSESLintParserType;
+        const parser = require(TS_ESLINT_PARSER) as typeof TSESTreeType;
         parser.clearCaches();
       } catch {
         // ignored on purpose

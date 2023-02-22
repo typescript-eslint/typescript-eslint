@@ -2,14 +2,34 @@
   "name": "@typescript-eslint/typescript-estree",
   "version": "5.53.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "_ts4.2",
     "README.md",
     "LICENSE"
   ],
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
+    },
+    "./package.json": {
+      "require": "./package.json"
+    },
+    "./use-at-your-own-risk/ast-converter": {
+      "types": "./dist/ast-converter.d.ts",
+      "require": "./dist/ast-converter.js"
+    },
+    "./use-at-your-own-risk/parseSettings": {
+      "types": "./dist/parseSettings/index.d.ts",
+      "require": "./dist/parseSettings/index.js"
+    },
+    "./use-at-your-own-risk/getScriptKind": {
+      "types": "./dist/create-program/getScriptKind.d.ts",
+      "require": "./dist/create-program/getScriptKind.js"
+    }
+  },
   "engines": {
     "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
   },
