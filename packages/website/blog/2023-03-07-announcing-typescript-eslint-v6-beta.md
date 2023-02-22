@@ -5,22 +5,41 @@ authors:
     title: typescript-eslint Maintainer
     url: https://github.com/JoshuaKGoldberg
 description: Describing what an AST (Abstract Syntax Tree) is and why it's useful for ESLint and TypeScript tooling.
-slug: upgrading-to-typescript-eslint-v6
+slug: announcing-typescript-eslint-v6-beta
 tags: [breaking changes, typescript-eslint, v5, v6]
-title: Upgrading to typescript-eslint v6
+title: Announcing typescript-eslint v6 Beta
 ---
 
 [typescript-eslint](https://typescript-eslint.io) is the tooling that enables standard JavaScript tools such as [ESLint](https://eslint.org) and [Prettier](https://prettier.io) to support TypeScript code.
 We've been working on a set of breaking changes and general features that we're excited to get in front of users soon.
-typescript-eslint v6 contains over a year's worth of improvements
+And now, after over two years of development, we're excited to say that typescript-eslint v6 is ready for public beta testing! 🎉
+
+Our plan for typescript-eslint v6 is to:
+
+1. Have users try out betas starting in early March of 2023
+2. Respond to user feedback for the next 1-3 months
+3. Release a stable version summer of 2023
+
+Nothing mentioned in this blog post is set in stone.
+If you feel passionately about any of the choices we've made here -positively or negatively- then do let us know on [the typescript-eslint Discord](https://hi.joshuakgoldberg.com)!
+
+<!-- Todo: figuring out what to use as the feedback CTA -->
 
 ## Trying Out v6
 
-> Todo: actual setup instructions!
+Please do try out the typescript-eslint v6 beta!
+
+If you don't yet use typescript-eslint, you can go through our [configuration steps]()
+
+First replace your package's previous versions of `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` with `@rc-v6` versions:
 
 ```shell
-npm i @typescript-eslint/eslint-plugin@rc-v6  @typescript-eslint/parser@rc-v6
+npm i @typescript-eslint/eslint-plugin@rc-v6 @typescript-eslint/parser@rc-v6 --save-dev
 ```
+
+We highly recommend then basing your ESLint configuration on the reworked typescript-eslint recommended configurations mentioned [later in this post](#configuration-breaking-changes 'reworked typescript-eslint recommended configurations mentioned later in this post') — especially if it's been a while since you've reworked your linter config.
+
+At this point, you should be seeing ESLint reports however you'd previously
 
 ## User-Facing Features
 
