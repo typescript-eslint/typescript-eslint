@@ -22,11 +22,47 @@ typescript-eslint v6 contains over a year's worth of improvements
 npm i @typescript-eslint/eslint-plugin@rc-v6  @typescript-eslint/parser@rc-v6
 ```
 
-## New Features
-
 ## User-Facing Features
 
-## User-Facing Features
+### Relative `tsconfig.json` Projects
+
+In typescript-eslint v5, in order to enable [typed linting](https://typescript-eslint.io/linting/typed-linting), your ESLint configuration must include a `parserOptions.project` property indicating which TSConfig(s) to use:
+
+```js title=".eslintrc.cjs"
+module.exports = {
+  // ...
+  parserOptions: {
+    project: ['./tsconfig.json'],
+  },
+  // ...
+};
+```
+
+This works well for repositories that have a single TSConfig for all files, such as small repositories using a single `tsconfig.json` or larger monorepos that have a `tsconfig.eslint.json` specifically used for linting.
+But what if your project uses different TSConfig options for different TypeScript files in nested subdirectories?
+
+...
+
+We recently added the option to specify `parserOptions.project` as just `true` in ESLint configurations.
+This indicates to typescript-eslint that each file should be linted with the closest `tsconfig.json` file on disk.
+
+```js title=".eslintrc.cjs"
+module.exports = {
+  // ...
+  parserOptions: {
+    project: true,
+  },
+  // ...
+};
+```
+
+We hope using `project = true` simplifies configurations for repositories with nontrivial ESLint configuration setups.
+We intend to add additional options around automatic TSConfig lookups to allow additional file names or other convenient behaviors.
+
+:::note
+`parserOptions.project = true` is available in the latest versions of typescript-eslint v5.
+But v6's internal refactors are big enough that we'd like users to also try this out too.
+:::
 
 ## User-Facing Breaking Changes
 
@@ -72,7 +108,15 @@ See [Configs: Have recommended/strict configs include lesser configs, and simpli
 
 #### Updated Configurations List
 
-See [](https://github.com/typescript-eslint/typescript-eslint/discussions/6014) for
+Every new major version of typescript-eslint comes with changes to which rules are enabled in the preset configurations - and with which options.
+Because this release also includes a reworking of the configurations themselves, the list of changes is too large to put in this blog post.
+Instead see [Changes to configurations for 6.0.0](https://github.com/typescript-eslint/typescript-eslint/discussions/6014) for a full list of the changes.
+
+Please do try out the new rule configurations presets and let us know in that discussion!
+
+:::tip
+todo: give tip on how to clear user config rules before trying out
+:::
 
 ### Rule Breaking Changes
 
@@ -125,6 +169,6 @@ If you author any ESLint rules that refer to the syntax mentioned by them, these
 - [chore(typescript-estree): remove visitor-keys backwards compat export](https://github.com/typescript-eslint/typescript-eslint/pull/6242): `visitorKeys` can now only be imported from `@typescript-eslint/visitor-keys`. Previously it was also re-exported by `@typescript-eslint/utils`.
 - [feat: add package.json exports for public packages](https://github.com/typescript-eslint/typescript-eslint/pull/6458): `@typescript-eslint/*` packages now use `exports` to prevent importing internal file paths.
 
-## Other Changes
+## Developer-Facing Features
 
 ## TODO: We'll thank everyone who contributed :)
