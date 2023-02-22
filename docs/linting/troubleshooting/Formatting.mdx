@@ -58,7 +58,7 @@ Note that even if you use a formatter other than `prettier`, you can use `eslint
 
 Most lint rules fall into one of two to three categories:
 
-- **Logical**: Rules that care about the logic in runtime behavior of code.
+- **Logical**: Rules that care about the logic in runtime behavior of code (such as missing `await`s or invalid logical checks).
 - **Stylistic**: Rules that care about style concerns which do impact runtime behavior of code, but generally not logic. These are mostly around naming or which roughly-equivalent syntax constructs to use (such as function declarations vs. arrow functions).
   - **Formatting**: Stylistic rules that care only about trivia (semicolons, whitespace, etc.) without impacting the runtime behavior of the code. These rules conflict with dedicated formatters such as Prettier.
 
