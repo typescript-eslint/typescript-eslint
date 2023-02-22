@@ -1,11 +1,19 @@
 import type { TSESLint } from '@typescript-eslint/utils';
-import chalk from 'chalk';
 import * as fs from 'fs';
 import * as path from 'path';
 import prettier from 'prettier';
 import * as url from 'url';
 
 import type RulesFile from '../src/rules';
+
+// no need for us to bring in an entire dependency for a few simple terminal colors
+const chalk = {
+  dim: (val: string): string => `\x1B[2m${val}\x1B[22m`,
+  green: (val: string): string => `\x1B[32m${val}\x1B[39m`,
+  red: (val: string): string => `\x1B[31m${val}\x1B[39m`,
+  blueBright: (val: string): string => `\x1B[94m${val}\x1B[39m`,
+  gray: (val: string): string => `\x1B[90m${val}\x1B[39m`,
+};
 
 interface RulesObject {
   default: {

@@ -1,4 +1,4 @@
-import type { JSONSchema4 } from '@typescript-eslint/utils/dist/json-schema';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import type Monaco from 'monaco-editor';
 
 import { getTypescriptOptions } from '../config/utils';
