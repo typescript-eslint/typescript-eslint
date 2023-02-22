@@ -2,6 +2,7 @@
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
     // specifically disable declarations for the plugin
+    // see reasoning in packages/eslint-plugin/rules.d.ts
     "declaration": false,
     "declarationMap": false,
     "outDir": "./dist",
