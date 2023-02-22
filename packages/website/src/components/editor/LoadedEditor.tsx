@@ -49,6 +49,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 }) => {
   const { colorMode } = useColorMode();
   const [_, setDecorations] = useState<string[]>([]);
+  const [lastCode, setLastCode] = useState<string>(() => code);
+  const [lastTSConfig, setLastTSConfig] = useState<string>(() => tsconfig);
+  const [lastEslintrc, setLastEslintrc] = useState<string>(() => eslintrc);
 
   const codeActions = useRef(new Map<string, LintCodeAction[]>()).current;
   const [tabs] = useState<Record<TabType, Monaco.editor.ITextModel>>(() => {
@@ -228,16 +231,19 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       ),
       tabs.eslintrc.onDidChangeContent(
         debounce(() => {
+          setLastEslintrc(tabs.eslintrc.getValue());
           onChange({ eslintrc: tabs.eslintrc.getValue() });
         }, 500),
       ),
       tabs.tsconfig.onDidChangeContent(
         debounce(() => {
+          setLastTSConfig(tabs.tsconfig.getValue());
           onChange({ tsconfig: tabs.tsconfig.getValue() });
         }, 500),
       ),
       tabs.code.onDidChangeContent(
         debounce(() => {
+          setLastCode(tabs.code.getValue());
           onChange({ code: tabs.code.getValue() });
         }, 500),
       ),
@@ -301,7 +307,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   });
 
   useEffect(() => {
-    if (code !== tabs.code.getValue()) {
+    if (code !== lastCode && code !== tabs.code.getValue()) {
       tabs.code.applyEdits([
         {
           range: tabs.code.getFullModelRange(),
@@ -309,10 +315,12 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         },
       ]);
     }
+    // We do not want to update the code when lastCode changes #6336
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [code, tabs.code]);
 
   useEffect(() => {
-    if (tsconfig !== tabs.tsconfig.getValue()) {
+    if (tsconfig !== lastTSConfig && tsconfig !== tabs.tsconfig.getValue()) {
       tabs.tsconfig.applyEdits([
         {
           range: tabs.tsconfig.getFullModelRange(),
@@ -320,10 +328,12 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         },
       ]);
     }
+    // We do not want to update the code when lastTSConfig changes #6336
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [tabs.tsconfig, tsconfig]);
 
   useEffect(() => {
-    if (eslintrc !== tabs.eslintrc.getValue()) {
+    if (eslintrc !== lastEslintrc && eslintrc !== tabs.eslintrc.getValue()) {
       tabs.eslintrc.applyEdits([
         {
           range: tabs.eslintrc.getFullModelRange(),
@@ -331,6 +341,8 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         },
       ]);
     }
+    // We do not want to update the code when lastEslintrc changes #6336
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [eslintrc, tabs.eslintrc]);
 
   useEffect(() => {
@@ -340,29 +352,27 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   }, [colorMode, sandboxInstance]);
 
   useEffect(() => {
-    if (sandboxInstance.editor.getModel() === tabs.code) {
-      setDecorations(prevDecorations =>
-        sandboxInstance.editor.deltaDecorations(
-          prevDecorations,
-          decoration && showAST
-            ? [
-                {
-                  range: new sandboxInstance.monaco.Range(
-                    decoration.start.line,
-                    decoration.start.column + 1,
-                    decoration.end.line,
-                    decoration.end.column + 1,
-                  ),
-                  options: {
-                    inlineClassName: 'myLineDecoration',
-                    stickiness: 1,
-                  },
+    setDecorations(prevDecorations =>
+      tabs.code.deltaDecorations(
+        prevDecorations,
+        decoration && showAST
+          ? [
+              {
+                range: new sandboxInstance.monaco.Range(
+                  decoration.start.line,
+                  decoration.start.column + 1,
+                  decoration.end.line,
+                  decoration.end.column + 1,
+                ),
+                options: {
+                  inlineClassName: 'myLineDecoration',
+                  stickiness: 1,
                 },
-              ]
-            : [],
-        ),
-      );
-    }
+              },
+            ]
+          : [],
+      ),
+    );
   }, [decoration, sandboxInstance, showAST, tabs.code]);
 
   return null;
