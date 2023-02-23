@@ -1,9 +1,13 @@
+/*
+NOTE - this file intentionally uses deep `/use-at-your-own-risk` imports into our packages.
+This is so that rollup can properly tree-shake and only include the necessary code.
+This saves us having to mock unnecessary things and reduces our bundle size.
+*/
 // @ts-check
 
 import 'vs/language/typescript/tsWorker';
 
-// @ts-expect-error -- we don't do types for the plugins
-import rules from '@typescript-eslint/eslint-plugin/dist/rules';
+import rules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import { Linter } from 'eslint';
 
 export function createLinter() {
@@ -14,7 +18,7 @@ export function createLinter() {
   return linter;
 }
 
-export { analyze } from '@typescript-eslint/scope-manager/dist/analyze';
-export { visitorKeys } from '@typescript-eslint/visitor-keys/dist/visitor-keys';
-export { astConverter } from '@typescript-eslint/typescript-estree/dist/ast-converter';
-export { getScriptKind } from '@typescript-eslint/typescript-estree/dist/create-program/getScriptKind';
+export { analyze } from '@typescript-eslint/scope-manager/use-at-your-own-risk/analyze';
+export { visitorKeys } from '@typescript-eslint/visitor-keys/use-at-your-own-risk/visitor-keys';
+export { astConverter } from '@typescript-eslint/typescript-estree/use-at-your-own-risk/ast-converter';
+export { getScriptKind } from '@typescript-eslint/typescript-estree/use-at-your-own-risk/getScriptKind';

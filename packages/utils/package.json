@@ -2,14 +2,6 @@
   "name": "@typescript-eslint/utils",
   "version": "5.53.0",
   "description": "Utilities for working with TypeScript + ESLint together",
-  "keywords": [
-    "eslint",
-    "typescript",
-    "estree"
-  ],
-  "engines": {
-    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
-  },
   "files": [
     "dist",
     "_ts4.2",
@@ -17,6 +9,39 @@
     "README.md",
     "LICENSE"
   ],
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
+    },
+    "./ast-utils": {
+      "types": "./dist/ast-utils/index.d.ts",
+      "require": "./dist/ast-utils/index.js"
+    },
+    "./eslint-utils": {
+      "types": "./dist/eslint-utils/index.d.ts",
+      "require": "./dist/eslint-utils/index.js"
+    },
+    "./eslint-utils/rule-tester": {
+      "types": "./dist/eslint-utils/rule-tester/RuleTester.d.ts",
+      "require": "./dist/eslint-utils/rule-tester/RuleTester.js"
+    },
+    "./json-schema": {
+      "types": "./dist/json-schema.d.ts",
+      "require": "./dist/json-schema.js"
+    },
+    "./ts-eslint": {
+      "types": "./dist/ts-eslint/index.d.ts",
+      "require": "./dist/ts-eslint/index.js"
+    },
+    "./package.json": {
+      "require": "./package.json"
+    }
+  },
+  "engines": {
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
@@ -26,8 +51,11 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "keywords": [
+    "eslint",
+    "typescript",
+    "estree"
+  ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
     "postbuild": "downlevel-dts dist _ts4.2/dist --to=4.2",

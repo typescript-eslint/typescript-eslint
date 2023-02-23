@@ -129,6 +129,7 @@ jobs:
             'eslint-plugin-internal',
             'eslint-plugin-tslint',
             'parser',
+            'repo-tools',
             'scope-manager',
             'type-utils',
             'typescript-estree',

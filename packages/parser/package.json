@@ -2,14 +2,22 @@
   "name": "@typescript-eslint/parser",
   "version": "5.53.0",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
   "files": [
     "dist",
     "_ts4.2",
     "README.md",
     "LICENSE"
   ],
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
+    },
+    "./package.json": {
+      "require": "./package.json"
+    }
+  },
   "engines": {
     "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
   },
