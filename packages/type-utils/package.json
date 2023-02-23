@@ -2,14 +2,6 @@
   "name": "@typescript-eslint/type-utils",
   "version": "5.53.0",
   "description": "Type utilities for working with TypeScript + ESLint together",
-  "keywords": [
-    "eslint",
-    "typescript",
-    "estree"
-  ],
-  "engines": {
-    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
-  },
   "files": [
     "dist",
     "_ts4.2",
@@ -17,6 +9,19 @@
     "README.md",
     "LICENSE"
   ],
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "require": "./dist/index.js"
+    },
+    "./package.json": {
+      "require": "./package.json"
+    }
+  },
+  "engines": {
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
@@ -26,8 +31,11 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "keywords": [
+    "eslint",
+    "typescript",
+    "estree"
+  ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
     "postbuild": "downlevel-dts dist _ts4.2/dist --to=4.2",
@@ -42,7 +50,7 @@
     "@typescript-eslint/typescript-estree": "5.53.0",
     "@typescript-eslint/utils": "5.53.0",
     "debug": "^4.3.4",
-    "ts-api-utils": "^0.0.22"
+    "ts-api-utils": "^0.0.39"
   },
   "devDependencies": {
     "@typescript-eslint/parser": "5.53.0",

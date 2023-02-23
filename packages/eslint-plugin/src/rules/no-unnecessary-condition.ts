@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
@@ -21,11 +21,12 @@ import {
 // Truthiness utilities
 // #region
 const isTruthyLiteral = (type: ts.Type): boolean =>
-  tools.isBooleanLiteralType(type, true) ||
-  (tools.isLiteralType(type) && !!type.value);
+  tsutils.isTrueLiteralType(type) ||
+  //  || type.
+  (type.isLiteral() && !!type.value);
 
 const isPossiblyFalsy = (type: ts.Type): boolean =>
-  tools
+  tsutils
     .unionTypeParts(type)
     // PossiblyFalsy flag includes literal values, so exclude ones that
     // are definitely truthy
@@ -33,7 +34,7 @@ const isPossiblyFalsy = (type: ts.Type): boolean =>
     .some(type => isTypeFlagSet(type, ts.TypeFlags.PossiblyFalsy));
 
 const isPossiblyTruthy = (type: ts.Type): boolean =>
-  tools.unionTypeParts(type).some(type => !tools.isFalsyType(type));
+  tsutils.unionTypeParts(type).some(type => !tsutils.isFalsyType(type));
 
 // Nullish utilities
 const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
@@ -41,19 +42,18 @@ const isNullishType = (type: ts.Type): boolean =>
   isTypeFlagSet(type, nullishFlag);
 
 const isPossiblyNullish = (type: ts.Type): boolean =>
-  tools.unionTypeParts(type).some(isNullishType);
+  tsutils.unionTypeParts(type).some(isNullishType);
 
 const isAlwaysNullish = (type: ts.Type): boolean =>
-  tools.unionTypeParts(type).every(isNullishType);
+  tsutils.unionTypeParts(type).every(isNullishType);
 
 // isLiteralType only covers numbers and strings, this is a more exhaustive check.
 const isLiteral = (type: ts.Type): boolean =>
-  tools.isBooleanLiteralType(type, true) ||
-  tools.isBooleanLiteralType(type, false) ||
+  tsutils.isBooleanLiteralType(type) ||
   type.flags === ts.TypeFlags.Undefined ||
   type.flags === ts.TypeFlags.Null ||
   type.flags === ts.TypeFlags.Void ||
-  tools.isLiteralType(type);
+  type.isLiteral();
 // #endregion
 
 export type Options = [
@@ -145,7 +145,7 @@ export default createRule<Options, MessageId>({
     const checker = services.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
     const compilerOptions = services.program.getCompilerOptions();
-    const isStrictNullChecks = tools.isStrictCompilerOptionEnabled(
+    const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
       'strictNullChecks',
     );
@@ -227,7 +227,7 @@ export default createRule<Options, MessageId>({
       // Conditional is always necessary if it involves:
       //    `any` or `unknown` or a naked type variable
       if (
-        tools
+        tsutils
           .unionTypeParts(type)
           .some(
             part =>
@@ -389,9 +389,8 @@ export default createRule<Options, MessageId>({
        */
       if (
         allowConstantLoopConditions &&
-        tools.isBooleanLiteralType(
+        tsutils.isTrueLiteralType(
           getConstrainedTypeAtLocation(services, node.test),
-          true,
         )
       ) {
         return;
@@ -446,7 +445,7 @@ export default createRule<Options, MessageId>({
           // (Value to complexity ratio is dubious however)
         }
         // Otherwise just do type analysis on the function as a whole.
-        const returnTypes = tools
+        const returnTypes = tsutils
           .getCallSignaturesOfType(
             getConstrainedTypeAtLocation(services, callback),
           )

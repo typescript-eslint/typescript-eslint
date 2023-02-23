@@ -15,10 +15,12 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('consistent-type-exports', rule, {
   valid: [
+    // unknown module should be ignored
     "export { Foo } from 'foo';",
-    "export type { AnalyzeOptions } from '@typescript-eslint/scope-manager';",
-    "export { BlockScope } from '@typescript-eslint/utils';",
-    "export type { BlockScope } from '@typescript-eslint/utils';",
+
+    "export type { Type1 } from './consistent-type-exports';",
+    "export { value1 } from './consistent-type-exports';",
+    "export type { value1 } from './consistent-type-exports';",
     `
 const variable = 1;
 class Class {}
@@ -53,9 +55,8 @@ export { NonTypeNS };
   ],
   invalid: [
     {
-      code: "export { AnalyzeOptions } from '@typescript-eslint/scope-manager';",
-      output:
-        "export type { AnalyzeOptions } from '@typescript-eslint/scope-manager';",
+      code: "export { Type1 } from './consistent-type-exports';",
+      output: "export type { Type1 } from './consistent-type-exports';",
       errors: [
         {
           messageId: 'typeOverValue',
@@ -65,10 +66,10 @@ export { NonTypeNS };
       ],
     },
     {
-      code: "export { AnalyzeOptions, BlockScope } from '@typescript-eslint/scope-manager';",
+      code: "export { Type1, value1 } from './consistent-type-exports';",
       output:
-        `export type { AnalyzeOptions } from '@typescript-eslint/scope-manager';\n` +
-        `export { BlockScope } from '@typescript-eslint/scope-manager';`,
+        `export type { Type1 } from './consistent-type-exports';\n` +
+        `export { value1 } from './consistent-type-exports';`,
       errors: [
         {
           messageId: 'singleExportIsType',
@@ -79,15 +80,11 @@ export { NonTypeNS };
     },
     {
       code: `
-export {
-  AnalyzeOptions,
-  BlockScope,
-  CatchScope,
-} from '@typescript-eslint/scope-manager';
+export { Type1, value1, value2 } from './consistent-type-exports';
       `,
       output: `
-export type { AnalyzeOptions } from '@typescript-eslint/scope-manager';
-export { BlockScope, CatchScope } from '@typescript-eslint/scope-manager';
+export type { Type1 } from './consistent-type-exports';
+export { value1, value2 } from './consistent-type-exports';
       `,
       errors: [
         {
@@ -99,16 +96,11 @@ export { BlockScope, CatchScope } from '@typescript-eslint/scope-manager';
     },
     {
       code: `
-export {
-  AnalyzeOptions,
-  BlockScope,
-  Definition,
-  CatchScope,
-} from '@typescript-eslint/scope-manager';
+export { Type1, value1, Type2, value2 } from './consistent-type-exports';
       `,
       output: `
-export type { AnalyzeOptions, Definition } from '@typescript-eslint/scope-manager';
-export { BlockScope, CatchScope } from '@typescript-eslint/scope-manager';
+export type { Type1, Type2 } from './consistent-type-exports';
+export { value1, value2 } from './consistent-type-exports';
       `,
       errors: [
         {
@@ -119,9 +111,8 @@ export { BlockScope, CatchScope } from '@typescript-eslint/scope-manager';
       ],
     },
     {
-      code: "export { Definition as Foo } from '@typescript-eslint/scope-manager';",
-      output:
-        "export type { Definition as Foo } from '@typescript-eslint/scope-manager';",
+      code: "export { Type2 as Foo } from './consistent-type-exports';",
+      output: "export type { Type2 as Foo } from './consistent-type-exports';",
       errors: [
         {
           messageId: 'typeOverValue',
@@ -132,14 +123,11 @@ export { BlockScope, CatchScope } from '@typescript-eslint/scope-manager';
     },
     {
       code: `
-export {
-  Definition as Foo,
-  BlockScope,
-} from '@typescript-eslint/scope-manager';
+export { Type2 as Foo, value1 } from './consistent-type-exports';
       `,
       output: `
-export type { Definition as Foo } from '@typescript-eslint/scope-manager';
-export { BlockScope } from '@typescript-eslint/scope-manager';
+export type { Type2 as Foo } from './consistent-type-exports';
+export { value1 } from './consistent-type-exports';
       `,
       errors: [
         {
@@ -152,14 +140,14 @@ export { BlockScope } from '@typescript-eslint/scope-manager';
     {
       code: `
 export {
-  Definition as Foo,
-  BlockScope as BScope,
-  CatchScope as CScope,
-} from '@typescript-eslint/scope-manager';
+  Type2 as Foo,
+  value1 as BScope,
+  value2 as CScope,
+} from './consistent-type-exports';
       `,
       output: `
-export type { Definition as Foo } from '@typescript-eslint/scope-manager';
-export { BlockScope as BScope, CatchScope as CScope } from '@typescript-eslint/scope-manager';
+export type { Type2 as Foo } from './consistent-type-exports';
+export { value1 as BScope, value2 as CScope } from './consistent-type-exports';
       `,
       errors: [
         {
@@ -171,12 +159,12 @@ export { BlockScope as BScope, CatchScope as CScope } from '@typescript-eslint/s
     },
     {
       code: `
-import { Definition } from '@typescript-eslint/scope-manager';
-export { Definition };
+import { Type2 } from './consistent-type-exports';
+export { Type2 };
       `,
       output: `
-import { Definition } from '@typescript-eslint/scope-manager';
-export type { Definition };
+import { Type2 } from './consistent-type-exports';
+export type { Type2 };
       `,
       errors: [
         {
@@ -188,13 +176,13 @@ export type { Definition };
     },
     {
       code: `
-import { CatchScope, Definition } from '@typescript-eslint/scope-manager';
-export { CatchScope, Definition };
+import { value2, Type2 } from './consistent-type-exports';
+export { value2, Type2 };
       `,
       output: `
-import { CatchScope, Definition } from '@typescript-eslint/scope-manager';
-export type { Definition };
-export { CatchScope };
+import { value2, Type2 } from './consistent-type-exports';
+export type { Type2 };
+export { value2 };
       `,
       errors: [
         {
@@ -367,15 +355,15 @@ export type { T, T };
     {
       code: `
 export {
-  AnalyzeOptions,
-  Definition as Foo,
-  type BlockScope as BScope,
-  CatchScope as CScope,
-} from '@typescript-eslint/scope-manager';
+  Type1,
+  Type2 as Foo,
+  type value1 as BScope,
+  value2 as CScope,
+} from './consistent-type-exports';
       `,
       output: `
-export type { AnalyzeOptions, Definition as Foo, BlockScope as BScope } from '@typescript-eslint/scope-manager';
-export { CatchScope as CScope } from '@typescript-eslint/scope-manager';
+export type { Type1, Type2 as Foo, value1 as BScope } from './consistent-type-exports';
+export { value2 as CScope } from './consistent-type-exports';
       `,
       dependencyConstraints: {
         typescript: '4.5',
@@ -392,19 +380,19 @@ export { CatchScope as CScope } from '@typescript-eslint/scope-manager';
     {
       code: `
 export {
-  AnalyzeOptions,
-  Definition as Foo,
-  type BlockScope as BScope,
-  CatchScope as CScope,
-} from '@typescript-eslint/scope-manager';
+  Type1,
+  Type2 as Foo,
+  type value1 as BScope,
+  value2 as CScope,
+} from './consistent-type-exports';
       `,
       output: `
 export {
-  type AnalyzeOptions,
-  type Definition as Foo,
-  type BlockScope as BScope,
-  CatchScope as CScope,
-} from '@typescript-eslint/scope-manager';
+  type Type1,
+  type Type2 as Foo,
+  type value1 as BScope,
+  value2 as CScope,
+} from './consistent-type-exports';
       `,
       dependencyConstraints: {
         typescript: '4.5',

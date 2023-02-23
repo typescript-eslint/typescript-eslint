@@ -189,19 +189,19 @@ enum Foo {
 }
     `,
     `
-import { AST_NODE_TYPES } from '@typescript-eslint/types';
+import { Enum } from './mixed-enums-decl';
 
-declare module '@typescript-eslint/types' {
-  enum AST_NODE_TYPES {
+declare module './mixed-enums-decl' {
+  enum Enum {
     StringLike = 'StringLike',
   }
 }
     `,
     `
-import { TSESTree } from '@typescript-eslint/types';
+import { Enum } from "module-that-does't-exist";
 
-declare module '@typescript-eslint/types' {
-  enum TSESTree {
+declare module "module-that-doesn't-exist" {
+  enum Enum {
     StringLike = 'StringLike',
   }
 }
@@ -552,10 +552,10 @@ namespace Different {
     },
     {
       code: `
-import { AST_NODE_TYPES } from '@typescript-eslint/types';
+import { Enum } from './mixed-enums-decl';
 
-declare module '@typescript-eslint/types' {
-  enum AST_NODE_TYPES {
+declare module './mixed-enums-decl' {
+  enum Enum {
     Numeric = 0,
   }
 }

@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -410,8 +410,8 @@ export default util.createRule<Options, MessageId>({
 function isSometimesThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
 
-  for (const subType of tools.unionTypeParts(checker.getApparentType(type))) {
-    if (tools.isThenableType(checker, node, subType)) {
+  for (const subType of tsutils.unionTypeParts(checker.getApparentType(type))) {
+    if (tsutils.isThenableType(checker, node, subType)) {
       return true;
     }
   }
@@ -426,7 +426,7 @@ function isSometimesThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
 function isAlwaysThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
 
-  for (const subType of tools.unionTypeParts(checker.getApparentType(type))) {
+  for (const subType of tsutils.unionTypeParts(checker.getApparentType(type))) {
     const thenProp = subType.getProperty('then');
 
     // If one of the alternates has no then property, it is not thenable in all
@@ -440,7 +440,7 @@ function isAlwaysThenable(checker: ts.TypeChecker, node: ts.Node): boolean {
     // be of the right form to consider it thenable.
     const thenType = checker.getTypeOfSymbolAtLocation(thenProp, node);
     let hasThenableSignature = false;
-    for (const subType of tools.unionTypeParts(thenType)) {
+    for (const subType of tsutils.unionTypeParts(thenType)) {
       for (const signature of subType.getCallSignatures()) {
         if (
           signature.parameters.length !== 0 &&
@@ -478,7 +478,7 @@ function isFunctionParam(
   const type: ts.Type | undefined = checker.getApparentType(
     checker.getTypeOfSymbolAtLocation(param, node),
   );
-  for (const subType of tools.unionTypeParts(type)) {
+  for (const subType of tsutils.unionTypeParts(type)) {
     if (subType.getCallSignatures().length !== 0) {
       return true;
     }
@@ -527,7 +527,7 @@ function voidFunctionArguments(
   // We can't use checker.getResolvedSignature because it prefers an early '() => void' over a later '() => Promise<void>'
   // See https://github.com/microsoft/TypeScript/issues/48077
 
-  for (const subType of tools.unionTypeParts(type)) {
+  for (const subType of tsutils.unionTypeParts(type)) {
     // Standard function calls and `new` have two different types of signatures
     const signatures = ts.isCallExpression(node)
       ? subType.getCallSignatures()
@@ -610,7 +610,7 @@ function anySignatureIsThenableType(
 ): boolean {
   for (const signature of type.getCallSignatures()) {
     const returnType = signature.getReturnType();
-    if (tools.isThenableType(checker, node, returnType)) {
+    if (tsutils.isThenableType(checker, node, returnType)) {
       return true;
     }
   }
@@ -626,7 +626,7 @@ function isThenableReturningFunctionType(
   node: ts.Node,
   type: ts.Type,
 ): boolean {
-  for (const subType of tools.unionTypeParts(type)) {
+  for (const subType of tsutils.unionTypeParts(type)) {
     if (anySignatureIsThenableType(checker, node, subType)) {
       return true;
     }
@@ -645,17 +645,17 @@ function isVoidReturningFunctionType(
 ): boolean {
   let hadVoidReturn = false;
 
-  for (const subType of tools.unionTypeParts(type)) {
+  for (const subType of tsutils.unionTypeParts(type)) {
     for (const signature of subType.getCallSignatures()) {
       const returnType = signature.getReturnType();
 
       // If a certain positional argument accepts both thenable and void returns,
       // a promise-returning function is valid
-      if (tools.isThenableType(checker, node, returnType)) {
+      if (tsutils.isThenableType(checker, node, returnType)) {
         return false;
       }
 
-      hadVoidReturn ||= tools.isTypeFlagSet(returnType, ts.TypeFlags.Void);
+      hadVoidReturn ||= tsutils.isTypeFlagSet(returnType, ts.TypeFlags.Void);
     }
   }
 

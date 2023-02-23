@@ -1,6 +1,6 @@
-import * as scopeManager from '@typescript-eslint/scope-manager/dist/analyze';
+import * as scopeManager from '@typescript-eslint/scope-manager';
 import type { ParserOptions } from '@typescript-eslint/types';
-import * as typescriptESTree from '@typescript-eslint/typescript-estree/dist/parser';
+import * as typescriptESTree from '@typescript-eslint/typescript-estree';
 
 import { parse, parseForESLint } from '../../src/parser';
 
