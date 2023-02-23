@@ -11,5 +11,5 @@ export interface LintUtils {
   visitorKeys: TSESLint.SourceCode.VisitorKeys;
   astConverter: typeof astConverter;
   getScriptKind: typeof getScriptKind;
-  esquery: esquery;
+  esquery: typeof esquery;
 }

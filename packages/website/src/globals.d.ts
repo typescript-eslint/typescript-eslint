@@ -3,6 +3,7 @@ import type * as TsWorker from '@site/src/vendor/tsWorker';
 import type { LintUtils } from '@typescript-eslint/website-eslint';
 import type MonacoType from 'monaco-editor';
 import type * as TSType from 'typescript';
+import type esquery from 'esquery';
 
 declare global {
   type WindowRequireCb = (
@@ -22,6 +23,6 @@ declare global {
   interface Window {
     ts: typeof TSType;
     require: WindowRequire;
-    esquery: esquery;
+    esquery: typeof esquery;
   }
 }
