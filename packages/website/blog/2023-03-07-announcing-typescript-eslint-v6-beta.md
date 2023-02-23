@@ -67,7 +67,7 @@ However, some users correctly noted two flaws in that approach:
 - Strict rules that didn't require type checking were lumped in with those that did.
 - _Stylistic_ best practices were lumped in with rules that actually find bugs.
 
-As a result, we've reworked the configurations provided by typescript-eslint into the two sections:
+As a result, we've reworked the configurations provided by typescript-eslint into these two groups:
 
 - Functional rule configurations, for best best practices and code correctness:
   - **`plugin:@typescript-eslint/recommended`**: Recommended rules that you can drop in without additional configuration.
@@ -269,7 +269,7 @@ For more information, see:
 - [feat: remove semantically invalid properties from TSEnumDeclaration, TSInterfaceDeclaration and TSModuleDeclaration](https://github.com/typescript-eslint/typescript-eslint/pull/4863): Removes some properties from those AST node types that should generally not have existed to begin with.
 - [fix(utils): removed TRuleListener generic from the createRule](https://github.com/typescript-eslint/typescript-eslint/pull/5036): Makes `createRule`-created rules more portable in the type system.
 - [feat(utils): remove (ts-)eslint-scope types](https://github.com/typescript-eslint/typescript-eslint/pull/5256): Removes no-longer-useful `TSESLintScope` types from the `@typescript-eslint/utils` package.
-- ⏳ [fix: rename typeParameters to typeArguments where needed](https://github.com/typescript-eslint/typescript-eslint/pull/5384): corrects the names of AST properties that were called _parameters_ instead of _arguments_.
+- [fix: rename typeParameters to typeArguments where needed](https://github.com/typescript-eslint/typescript-eslint/pull/5384): corrects the names of AST properties that were called _parameters_ instead of _arguments_.
   - To recap the terminology:
     - An _argument_ is something you provide to a recipient, such as a type provided explicitly to a call expression.
     - A _parameter_ is how the recipient receives what you provide, such as a function declaration's generic type parameter.
