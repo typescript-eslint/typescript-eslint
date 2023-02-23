@@ -2,20 +2,21 @@ import EditIcon from '@site/src/icons/edit.svg';
 import React from 'react';
 
 import styles from './Playground.module.css';
+import type { TabType } from './types';
 
-export interface FileTabsProps<T> {
-  readonly tabs: { value: T; label: string }[];
-  readonly activeTab: T;
-  readonly change: (tab: T) => void;
-  readonly showModal?: () => void;
+export interface FileTabsProps {
+  readonly tabs: TabType[];
+  readonly activeTab: TabType;
+  readonly change: (tab: TabType) => void;
+  readonly showModal: () => void;
 }
 
-export default function EditorTabs<T>({
+export default function EditorTabs({
   tabs,
   activeTab,
   change,
   showModal,
-}: FileTabsProps<T>): JSX.Element {
+}: FileTabsProps): JSX.Element {
   return (
     <div className={styles.tabContainer}>
       <div role="tablist">
@@ -24,17 +25,17 @@ export default function EditorTabs<T>({
             <button
               role="tab"
               className={styles.tabStyle}
-              key={item.label}
-              aria-selected={activeTab === item.value}
-              disabled={activeTab === item.value}
-              onClick={(): void => change(item.value)}
+              key={item}
+              aria-selected={activeTab === item}
+              disabled={activeTab === item}
+              onClick={(): void => change(item)}
             >
-              {item.label}
+              {item}
             </button>
           );
         })}
       </div>
-      {activeTab !== 'code' && showModal && (
+      {activeTab !== 'code' && (
         <button className={styles.tabStyle} onClick={showModal}>
           Visual Editor
           <EditIcon width={12} height={12} />

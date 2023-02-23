@@ -48,13 +48,6 @@ function rangeReducer<T extends SelectedRange | null>(
   }
   return prevState;
 }
-
-const fileTabs: { value: TabType; label: string }[] = [
-  { value: 'code', label: 'code' },
-  { value: 'tsconfig', label: 'tsconfig.json' },
-  { value: 'eslintrc', label: '.eslintrc.js' },
-];
-
 function Playground(): JSX.Element {
   const [state, setState] = useHashState({
     jsx: false,
@@ -140,7 +133,7 @@ function Playground(): JSX.Element {
             <div className={clsx(styles.sourceCode)}>
               {isLoading && <Loader />}
               <EditorTabs
-                tabs={fileTabs}
+                tabs={['code', 'tsconfig', 'eslintrc']}
                 activeTab={activeTab}
                 change={setTab}
                 showModal={(): void => setShowModal(activeTab)}
