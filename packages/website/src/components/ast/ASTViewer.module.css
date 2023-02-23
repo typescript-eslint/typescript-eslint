@@ -14,7 +14,7 @@
   box-sizing: border-box;
   margin: 0;
   padding-left: 1.5rem;
-  max-width: max-content;
+  width: max-content;
 }
 
 .selected {
@@ -24,7 +24,7 @@
 .nonExpand,
 .expand {
   border-left: 0.1rem dashed var(--ifm-color-emphasis-200);
-  max-width: max-content;
+  width: max-content;
 }
 
 .expand.open::before {
