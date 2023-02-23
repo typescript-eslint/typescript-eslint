@@ -424,8 +424,7 @@ export default util.createRule<Options, MessageIds>({
 
       return (
         (a.type === AST_NODE_TYPES.RestElement) ===
-          (b.type === AST_NODE_TYPES.RestElement) &&
-        (optionalA !== undefined) === (optionalB !== undefined)
+          (b.type === AST_NODE_TYPES.RestElement) && optionalA === optionalB
       );
     }
 

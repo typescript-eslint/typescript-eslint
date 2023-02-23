@@ -912,31 +912,18 @@ export class Converter {
               : AST_NODE_TYPES.FunctionDeclaration,
           async: hasModifier(SyntaxKind.AsyncKeyword, node),
           body: this.convertChild(node.body) || undefined,
-          declare: false,
+          declare: isDeclare,
           expression: false,
           generator: !!node.asteriskToken,
           id: this.convertChild(node.name),
           params: this.convertParameters(node.parameters),
-          returnType: undefined,
-          typeParameters: undefined,
-        });
-
-        // Process returnType
-        if (node.type) {
-          result.returnType = this.convertTypeAnnotation(node.type, node);
-        }
-
-        // Process typeParameters
-        if (node.typeParameters) {
-          result.typeParameters =
+          returnType: node.type && this.convertTypeAnnotation(node.type, node),
+          typeParameters:
+            node.typeParameters &&
             this.convertTSTypeParametersToTypeParametersDeclaration(
               node.typeParameters,
-            );
-        }
-
-        if (isDeclare) {
-          result.declare = true;
-        }
+            ),
+        });
 
         return this.fixExports(node, result);
       }
