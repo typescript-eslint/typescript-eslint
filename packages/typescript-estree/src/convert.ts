@@ -1715,6 +1715,7 @@ export class Converter {
           }
 
           if (superClass.types[0]?.typeArguments) {
+            // eslint-disable-next-line deprecation/deprecation
             result.superTypeArguments = result.superTypeParameters =
               this.convertTypeArgumentsToTypeParameterInstantiation(
                 superClass.types[0].typeArguments,
@@ -2061,6 +2062,7 @@ export class Converter {
         });
 
         if (node.typeArguments) {
+          // eslint-disable-next-line deprecation/deprecation
           result.typeArguments = result.typeParameters =
             this.convertTypeArgumentsToTypeParameterInstantiation(
               node.typeArguments,
@@ -2081,6 +2083,7 @@ export class Converter {
             : [],
         });
         if (node.typeArguments) {
+          // eslint-disable-next-line deprecation/deprecation
           result.typeArguments = result.typeParameters =
             this.convertTypeArgumentsToTypeParameterInstantiation(
               node.typeArguments,
@@ -2657,6 +2660,7 @@ export class Converter {
         });
 
         if (node.typeArguments) {
+          // eslint-disable-next-line deprecation/deprecation
           result.typeArguments = result.typeParameters =
             this.convertTypeArgumentsToTypeParameterInstantiation(
               node.typeArguments,
