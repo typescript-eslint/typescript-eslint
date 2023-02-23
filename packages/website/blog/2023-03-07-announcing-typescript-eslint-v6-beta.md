@@ -109,7 +109,7 @@ For more information on these changes, see:
 - [Configs: Have recommended/strict configs include lesser configs, and simplify type checked names](https://github.com/typescript-eslint/typescript-eslint/discussions/6019) for the discussion leading up to these configuration changes.
 - [feat(eslint-plugin): rework configs: recommended, strict, stylistic; -type-checked](https://github.com/typescript-eslint/typescript-eslint/pull/5251) for the pull request implementing the changes.
 
-#### Updated Configuration Rules
+### Updated Configuration Rules
 
 Every new major version of typescript-eslint comes with changes to which rules are enabled in the preset configurations - and with which options.
 Because this release also includes a reworking of the configurations themselves, the list of changes is too large to put in this blog post.
@@ -144,7 +144,7 @@ Miscellaneous changes to all shared configurations include:
 - [feat: bump minimum supported TS version to 4.2.4](https://github.com/typescript-eslint/typescript-eslint/pull/5915)
 - [chore: drop support for ESLint v6](https://github.com/typescript-eslint/typescript-eslint/pull/5972)
 
-## Developer-Facing Breaking Changes
+## Developer-Facing Changes
 
 typescript-eslint v6 comes with a suite of cleanups and improvements for developers as well.
 If you author any ESLint plugins or other tools that interact with TypeScript syntax, then we recommend you try out typescript-eslint v6 soon.
@@ -182,12 +182,6 @@ If you author any ESLint rules that refer to the syntax mentioned by them, these
   - As a result, the `errorOnTypeScriptSyntacticAndSemanticIssues` option will no longer be allowed if `parserOptions.project` is not provided.
 - [chore(typescript-estree): remove visitor-keys backwards compat export](https://github.com/typescript-eslint/typescript-eslint/pull/6242): `visitorKeys` can now only be imported from `@typescript-eslint/visitor-keys`. Previously it was also re-exported by `@typescript-eslint/utils`.
 - [feat: add package.json exports for public packages](https://github.com/typescript-eslint/typescript-eslint/pull/6458): `@typescript-eslint/*` packages now use `exports` to prevent importing internal file paths.
-
-## Developer-Facing Features
-
-:::note
-If you don't work on ESLint plugins or with custom ESLint rules, you can skip this section and go straight to _[User-Facing Breaking Changes](#user-facing-breaking-changes)_.
-:::
 
 ### Type Checker Wrapper APIs
 
