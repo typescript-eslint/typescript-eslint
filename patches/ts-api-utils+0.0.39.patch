@@ -10,4 +10,4 @@ index 41ee37c..e4279d1 100644
 +	"type": "commonjs",
  	"exports": {
  		".": {
- 			"types": "./lib/index.d.ts",
+ 			"types": {
