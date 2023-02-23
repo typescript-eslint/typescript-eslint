@@ -12,9 +12,9 @@
 .list,
 .subList {
   box-sizing: border-box;
-  white-space: break-spaces;
   margin: 0;
   padding-left: 1.5rem;
+  max-width: max-content;
 }
 
 .selected {
@@ -24,6 +24,7 @@
 .nonExpand,
 .expand {
   border-left: 0.1rem dashed var(--ifm-color-emphasis-200);
+  max-width: max-content;
 }
 
 .expand.open::before {
@@ -76,7 +77,7 @@
 
 .hidden {
   color: var(--token-color-comment);
-  max-width: 40%;
+  max-width: 200px;
   overflow: hidden;
   display: inline-block;
   text-overflow: ellipsis;

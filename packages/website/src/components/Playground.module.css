@@ -43,6 +43,7 @@
   height: calc(100% - var(--ifm-navbar-height));
   top: var(--ifm-navbar-height);
   z-index: calc(var(--ifm-z-index-fixed) - 1);
+  background: var(--playground-main-color);
 }
 
 .tabContainer {
@@ -53,7 +54,8 @@
 }
 
 .tabCode {
-  height: calc(100%);
+  height: calc(100% - 32px);
+  background: var(--code-editor-bg);
 }
 
 .tabStyle {
