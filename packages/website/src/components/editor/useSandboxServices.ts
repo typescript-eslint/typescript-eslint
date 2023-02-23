@@ -107,6 +107,7 @@ export const useSandboxServices = (
         }
 
         const system = sandboxInstance.tsvfs.createSystem(libEntries);
+        window.esquery = lintUtils.esquery;
 
         const webLinter = new WebLinter(system, compilerOptions, lintUtils);
 
