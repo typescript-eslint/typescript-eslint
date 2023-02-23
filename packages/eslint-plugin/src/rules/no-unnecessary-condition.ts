@@ -21,8 +21,9 @@ import {
 // Truthiness utilities
 // #region
 const isTruthyLiteral = (type: ts.Type): boolean =>
-  tsutils.isBooleanLiteralType(type, true) ||
-  (tsutils.isLiteralType(type) && !!type.value);
+  tsutils.isTrueLiteralType(type) ||
+  //  || type.
+  (type.isLiteral() && !!type.value);
 
 const isPossiblyFalsy = (type: ts.Type): boolean =>
   tsutils
@@ -48,12 +49,11 @@ const isAlwaysNullish = (type: ts.Type): boolean =>
 
 // isLiteralType only covers numbers and strings, this is a more exhaustive check.
 const isLiteral = (type: ts.Type): boolean =>
-  tsutils.isBooleanLiteralType(type, true) ||
-  tsutils.isBooleanLiteralType(type, false) ||
+  tsutils.isBooleanLiteralType(type) ||
   type.flags === ts.TypeFlags.Undefined ||
   type.flags === ts.TypeFlags.Null ||
   type.flags === ts.TypeFlags.Void ||
-  tsutils.isLiteralType(type);
+  type.isLiteral();
 // #endregion
 
 export type Options = [
@@ -389,9 +389,8 @@ export default createRule<Options, MessageId>({
        */
       if (
         allowConstantLoopConditions &&
-        tsutils.isBooleanLiteralType(
+        tsutils.isTrueLiteralType(
           getConstrainedTypeAtLocation(services, node.test),
-          true,
         )
       ) {
         return;

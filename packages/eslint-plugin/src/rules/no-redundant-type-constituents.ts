@@ -106,11 +106,11 @@ function describeLiteralType(type: ts.Type): string {
     return `${type.value.negative ? '-' : ''}${type.value.base10Value}n`;
   }
 
-  if (tsutils.isBooleanLiteralType(type, true)) {
+  if (tsutils.isTrueLiteralType(type)) {
     return 'true';
   }
 
-  if (tsutils.isBooleanLiteralType(type, false)) {
+  if (tsutils.isFalseLiteralType(type)) {
     return 'false';
   }
 
@@ -166,8 +166,8 @@ function isNodeInsideReturnType(node: TSESTree.TSUnionType): boolean {
 function unionTypePartsUnlessBoolean(type: ts.Type): ts.Type[] {
   return type.isUnion() &&
     type.types.length === 2 &&
-    tsutils.isBooleanLiteralType(type.types[0], false) &&
-    tsutils.isBooleanLiteralType(type.types[1], true)
+    tsutils.isFalseLiteralType(type.types[0]) &&
+    tsutils.isTrueLiteralType(type.types[1])
     ? [type]
     : tsutils.unionTypeParts(type);
 }

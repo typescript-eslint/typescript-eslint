@@ -140,7 +140,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression
         | TSESTree.MethodDefinition,
-    ): boolean | tsutils.ScopeBoundary {
+    ): boolean {
       if (classScopeStack.length === 0) {
         return false;
       }
