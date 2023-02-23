@@ -1265,18 +1265,6 @@ export class Converter {
         } else {
           // class
 
-          if (
-            !node.body &&
-            !node.questionToken &&
-            !hasModifier(ts.SyntaxKind.AbstractKeyword, node) &&
-            !hasModifier(ts.SyntaxKind.AbstractKeyword, node.parent)
-          ) {
-            this.#throwUnlessAllowInvalidAST(
-              node.name.pos,
-              'Function implementation is missing or not immediately following the declaration.',
-            );
-          }
-
           /**
            * Unlike in object literal methods, class method params can have decorators
            */
@@ -2832,19 +2820,19 @@ export class Converter {
                 body.type === AST_NODE_TYPES.TSModuleDeclaration
               ) {
                 this.#throwUnlessAllowInvalidAST(
-                  body?.pos ?? node.pos,
+                  (node.body ?? node).pos,
                   'Expected a valid module body',
                 );
               }
               if (id.type !== AST_NODE_TYPES.Identifier) {
                 this.#throwUnlessAllowInvalidAST(
-                  id.pos,
+                  node.name.pos,
                   'global module augmentation must have an Identifier id',
                 );
               }
               return {
                 kind: 'global',
-                body,
+                body: body as TSESTree.TSModuleBlock,
                 id,
               };
             }
@@ -2878,7 +2866,7 @@ export class Converter {
             }
 
             let name: TSESTree.Identifier | TSESTree.TSQualifiedName =
-              this.createNode<TSESTree.Identifier>(node.name, {
+              this.createNode<TSESTree.Identifier>(node.name as ts.Identifier, {
                 name: node.name.text,
                 range: [node.name.getStart(this.ast), node.name.getEnd()],
                 type: AST_NODE_TYPES.Identifier,
