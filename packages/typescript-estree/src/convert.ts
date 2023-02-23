@@ -660,8 +660,7 @@ export class Converter {
     }
 
     if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-      throw createError(
-        this.ast,
+      this.#throwUnlessAllowInvalidAST(
         node.pos,
         'A method signature cannot have an export modifier.',
       );
@@ -1673,8 +1672,7 @@ export class Converter {
         const modifiers = getModifiers(node);
         if (modifiers) {
           if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-            throw createError(
-              this.ast,
+            this.#throwUnlessAllowInvalidAST(
               node.pos,
               'A parameter cannot have an export modifier.',
             );
@@ -2547,8 +2545,7 @@ export class Converter {
         );
 
         if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-          throw createError(
-            this.ast,
+          this.#throwUnlessAllowInvalidAST(
             node.pos,
             'A property signature cannot have an export modifier.',
           );
@@ -2594,8 +2591,7 @@ export class Converter {
         }
 
         if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-          throw createError(
-            this.ast,
+          this.#throwUnlessAllowInvalidAST(
             node.pos,
             'An index signature cannot have an export modifier.',
           );
@@ -2835,10 +2831,14 @@ export class Converter {
                 body == null ||
                 body.type === AST_NODE_TYPES.TSModuleDeclaration
               ) {
-                throw new Error('Expected a valid module body');
+                this.#throwUnlessAllowInvalidAST(
+                  body?.pos ?? node.pos,
+                  'Expected a valid module body',
+                );
               }
               if (id.type !== AST_NODE_TYPES.Identifier) {
-                throw new Error(
+                this.#throwUnlessAllowInvalidAST(
+                  id.pos,
                   'global module augmentation must have an Identifier id',
                 );
               }
@@ -2865,10 +2865,16 @@ export class Converter {
             // with the innermost node's body as the actual node body.
 
             if (node.body == null) {
-              throw new Error('Expected a module body');
+              this.#throwUnlessAllowInvalidAST(
+                node.pos,
+                'Expected a module body',
+              );
             }
             if (node.name.kind !== ts.SyntaxKind.Identifier) {
-              throw new Error('`namespace`s must have an Identifier id');
+              this.#throwUnlessAllowInvalidAST(
+                node.name.pos,
+                '`namespace`s must have an Identifier id',
+              );
             }
 
             let name: TSESTree.Identifier | TSESTree.TSQualifiedName =
