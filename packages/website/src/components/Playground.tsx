@@ -69,6 +69,7 @@ function Playground(): JSX.Element {
   const [position, setPosition] = useState<Monaco.Position | null>(null);
   const [activeTab, setTab] = useState<TabType>('code');
   const [showModal, setShowModal] = useState<TabType | false>(false);
+  const [esQueryFilter, setEsQueryFilter] = useState<string>('');
   const enableSplitPanes = useMediaQuery('(min-width: 996px)');
 
   const updateModal = useCallback(
@@ -179,6 +180,8 @@ function Playground(): JSX.Element {
                   <ASTViewerESTree
                     value={esAst}
                     position={position}
+                    filter={esQueryFilter}
+                    onChangeFilter={setEsQueryFilter}
                     onSelectNode={setSelectedRange}
                   />
                 )) || <ErrorsViewer value={markers} />}
