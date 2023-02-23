@@ -1,5 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import type {
@@ -75,7 +75,7 @@ export default createRule<Options, MessageIds>({
       options.allowProtectedClassPropertyAccess;
     const allowIndexSignaturePropertyAccess =
       (options.allowIndexSignaturePropertyAccess ?? false) ||
-      tools.isCompilerOptionEnabled(
+      tsutils.isCompilerOptionEnabled(
         services.program.getCompilerOptions(),
         'noPropertyAccessFromIndexSignature',
       );

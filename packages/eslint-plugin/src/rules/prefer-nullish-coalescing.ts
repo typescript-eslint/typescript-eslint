@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -83,7 +83,7 @@ export default util.createRule<Options, MessageIds>({
     const services = util.getParserServices(context);
     const compilerOptions = services.program.getCompilerOptions();
     const sourceCode = context.getSourceCode();
-    const isStrictNullChecks = tools.isStrictCompilerOptionEnabled(
+    const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
       'strictNullChecks',
     );

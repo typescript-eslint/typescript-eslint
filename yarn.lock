@@ -13296,10 +13296,10 @@ trough@^1.0.0:
   resolved "https://registry.yarnpkg.com/trough/-/trough-1.0.5.tgz#b8b639cefad7d0bb2abd37d433ff8293efa5f406"
   integrity sha512-rvuRbTarPXmMb79SmzEp8aqXNKcK+y0XaB298IXueQ8I2PsrATcPBCSPyK/dDNa2iWOhKlfNnOjdAOTBU/nkFA==
 
-ts-api-utils@^0.0.22:
-  version "0.0.22"
-  resolved "https://registry.yarnpkg.com/ts-api-utils/-/ts-api-utils-0.0.22.tgz#c58aac346f3990e6e164b4907aca57f54d81a2e8"
-  integrity sha512-XrQNMP/CQk2gOa+NfNIxNSf60n+RsC7tAkyCxhwnkShxUFpitvwNDfDxdMIZxHtdKKqqeRi94T191sNN7pFSrg==
+ts-api-utils@^0.0.39:
+  version "0.0.39"
+  resolved "https://registry.yarnpkg.com/ts-api-utils/-/ts-api-utils-0.0.39.tgz#cd3d2dd88a68cbc8259cf9944fbd4dbd19f1d69c"
+  integrity sha512-JSEMbhv2bJCgJUhN/6y58Om6k7rmZ7BwJsklWwv0srfMc7HkhnfHA1sGpGltS6VSTMT4PVEqj/IVsCAPcU1l/g==
 
 ts-essentials@^2.0.3:
   version "2.0.12"

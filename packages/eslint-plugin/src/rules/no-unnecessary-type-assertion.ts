@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -94,7 +94,7 @@ export default util.createRule<Options, MessageIds>({
 
       if (
         // non-strict mode doesn't care about used before assigned errors
-        tools.isStrictCompilerOptionEnabled(
+        tsutils.isStrictCompilerOptionEnabled(
           compilerOptions,
           'strictNullChecks',
         ) &&
@@ -241,9 +241,9 @@ export default util.createRule<Options, MessageIds>({
         const castType = services.getTypeAtLocation(node);
 
         if (
-          tools.isTypeFlagSet(castType, ts.TypeFlags.Literal) ||
-          (tools.isObjectType(castType) &&
-            (tools.isObjectFlagSet(castType, ts.ObjectFlags.Tuple) ||
+          tsutils.isTypeFlagSet(castType, ts.TypeFlags.Literal) ||
+          (tsutils.isObjectType(castType) &&
+            (tsutils.isObjectFlagSet(castType, ts.ObjectFlags.Tuple) ||
               couldBeTupleType(castType)))
         ) {
           // It's not always safe to remove a cast to a literal type or tuple
