@@ -7,7 +7,11 @@ import type { JSXSpreadAttribute } from '../JSXSpreadAttribute/spec';
 
 export interface JSXOpeningElement extends BaseNode {
   type: AST_NODE_TYPES.JSXOpeningElement;
+  typeArguments?: TSTypeParameterInstantiation;
+
+  /** @deprecated Use {@link `typeArguments`} instead. */
   typeParameters?: TSTypeParameterInstantiation;
+
   selfClosing: boolean;
   name: JSXTagNameExpression;
   attributes: (JSXAttribute | JSXSpreadAttribute)[];

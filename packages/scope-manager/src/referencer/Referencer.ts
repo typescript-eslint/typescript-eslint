@@ -386,8 +386,8 @@ class Referencer extends Visitor {
   }
 
   protected CallExpression(node: TSESTree.CallExpression): void {
-    this.visitChildren(node, ['typeParameters']);
-    this.visitType(node.typeParameters);
+    this.visitChildren(node, ['typeArguments']);
+    this.visitType(node.typeArguments);
   }
 
   protected CatchClause(node: TSESTree.CatchClause): void {
@@ -540,7 +540,7 @@ class Referencer extends Visitor {
     } else {
       this.visit(node.name);
     }
-    this.visitType(node.typeParameters);
+    this.visitType(node.typeArguments);
     for (const attr of node.attributes) {
       this.visit(attr);
     }
@@ -562,8 +562,8 @@ class Referencer extends Visitor {
   }
 
   protected NewExpression(node: TSESTree.NewExpression): void {
-    this.visitChildren(node, ['typeParameters']);
-    this.visitType(node.typeParameters);
+    this.visitChildren(node, ['typeArguments']);
+    this.visitType(node.typeArguments);
   }
 
   protected PrivateIdentifier(): void {
@@ -613,7 +613,7 @@ class Referencer extends Visitor {
   ): void {
     this.visit(node.tag);
     this.visit(node.quasi);
-    this.visitType(node.typeParameters);
+    this.visitType(node.typeArguments);
   }
 
   protected TSAsExpression(node: TSESTree.TSAsExpression): void {
@@ -695,8 +695,8 @@ class Referencer extends Visitor {
   protected TSInstantiationExpression(
     node: TSESTree.TSInstantiationExpression,
   ): void {
-    this.visitChildren(node, ['typeParameters']);
-    this.visitType(node.typeParameters);
+    this.visitChildren(node, ['typeArguments']);
+    this.visitType(node.typeArguments);
   }
 
   protected TSInterfaceDeclaration(

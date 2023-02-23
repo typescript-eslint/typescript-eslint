@@ -74,7 +74,7 @@ class ClassVisitor extends Visitor {
     // visit the type param declarations
     this.visitType(node.typeParameters);
     // then the usages
-    this.visitType(node.superTypeParameters);
+    this.visitType(node.superTypeArguments);
     node.implements?.forEach(imp => this.visitType(imp));
 
     this.visit(node.body);
@@ -325,8 +325,8 @@ class ClassVisitor extends Visitor {
           this.#referencer.currentScope().referenceDualValueType(entityName);
         }
 
-        if (node.typeAnnotation.typeParameters) {
-          this.visitType(node.typeAnnotation.typeParameters);
+        if (node.typeAnnotation.typeArguments) {
+          this.visitType(node.typeAnnotation.typeArguments);
         }
 
         // everything is handled now

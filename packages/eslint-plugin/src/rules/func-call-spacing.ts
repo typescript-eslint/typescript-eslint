@@ -82,7 +82,7 @@ export default util.createRule<Options, MessageIds>({
 
       const closingParenToken = sourceCode.getLastToken(node)!;
       const lastCalleeTokenWithoutPossibleParens = sourceCode.getLastToken(
-        node.typeParameters ?? node.callee,
+        node.typeArguments ?? node.callee,
       )!;
       const openingParenToken = sourceCode.getFirstTokenBetween(
         lastCalleeTokenWithoutPossibleParens,

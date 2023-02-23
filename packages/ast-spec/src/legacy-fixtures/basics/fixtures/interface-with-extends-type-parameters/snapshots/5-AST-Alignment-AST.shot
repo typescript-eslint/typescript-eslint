@@ -35,6 +35,36 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-paramet
                 end: { column: 28, line: 3 },
               },
             },
+-           typeArguments: TSTypeParameterInstantiation {
+-             type: 'TSTypeParameterInstantiation',
+-             params: Array [
+-               TSTypeReference {
+-                 type: 'TSTypeReference',
+-                 typeName: Identifier {
+-                   type: 'Identifier',
+-                   name: 'J',
+-
+-                   range: [102, 103],
+-                   loc: {
+-                     start: { column: 29, line: 3 },
+-                     end: { column: 30, line: 3 },
+-                   },
+-                 },
+-
+-                 range: [102, 103],
+-                 loc: {
+-                   start: { column: 29, line: 3 },
+-                   end: { column: 30, line: 3 },
+-                 },
+-               },
+-             ],
+-
+-             range: [101, 104],
+-             loc: {
+-               start: { column: 28, line: 3 },
+-               end: { column: 31, line: 3 },
+-             },
+-           },
             typeParameters: TSTypeParameterInstantiation {
               type: 'TSTypeParameterInstantiation',
               params: Array [

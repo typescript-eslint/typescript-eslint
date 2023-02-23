@@ -41,6 +41,7 @@ Program {
             },
           },
           qualifier: null,
+          typeArguments: null,
           typeParameters: null,
 
           range: [89, 100],
@@ -105,6 +106,36 @@ Program {
           loc: {
             start: { column: 21, line: 4 },
             end: { column: 22, line: 4 },
+          },
+        },
+        typeArguments: TSTypeParameterInstantiation {
+          type: "TSTypeParameterInstantiation",
+          params: Array [
+            TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "Y",
+
+                range: [125, 126],
+                loc: {
+                  start: { column: 23, line: 4 },
+                  end: { column: 24, line: 4 },
+                },
+              },
+
+              range: [125, 126],
+              loc: {
+                start: { column: 23, line: 4 },
+                end: { column: 24, line: 4 },
+              },
+            },
+          ],
+
+          range: [124, 127],
+          loc: {
+            start: { column: 22, line: 4 },
+            end: { column: 25, line: 4 },
           },
         },
         typeParameters: TSTypeParameterInstantiation {

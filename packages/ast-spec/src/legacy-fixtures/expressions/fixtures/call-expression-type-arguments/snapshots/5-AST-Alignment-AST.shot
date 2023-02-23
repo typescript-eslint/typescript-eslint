@@ -2,5 +2,179 @@
 
 exports[`AST Fixtures legacy-fixtures expressions call-expression-type-arguments AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ExpressionStatement {
+        type: 'ExpressionStatement',
+        expression: CallExpression {
+          type: 'CallExpression',
+          arguments: Array [],
+          callee: Identifier {
+            type: 'Identifier',
+            name: 'foo',
+
+            range: [73, 76],
+            loc: {
+              start: { column: 0, line: 3 },
+              end: { column: 3, line: 3 },
+            },
+          },
+          optional: false,
+-         typeArguments: TSTypeParameterInstantiation {
+-           type: 'TSTypeParameterInstantiation',
+-           params: Array [
+-             TSTypeReference {
+-               type: 'TSTypeReference',
+-               typeName: Identifier {
+-                 type: 'Identifier',
+-                 name: 'A',
+-
+-                 range: [77, 78],
+-                 loc: {
+-                   start: { column: 4, line: 3 },
+-                   end: { column: 5, line: 3 },
+-                 },
+-               },
+-
+-               range: [77, 78],
+-               loc: {
+-                 start: { column: 4, line: 3 },
+-                 end: { column: 5, line: 3 },
+-               },
+-             },
+-           ],
+-
+-           range: [76, 79],
+-           loc: {
+-             start: { column: 3, line: 3 },
+-             end: { column: 6, line: 3 },
+-           },
+-         },
+          typeParameters: TSTypeParameterInstantiation {
+            type: 'TSTypeParameterInstantiation',
+            params: Array [
+              TSTypeReference {
+                type: 'TSTypeReference',
+                typeName: Identifier {
+                  type: 'Identifier',
+                  name: 'A',
+
+                  range: [77, 78],
+                  loc: {
+                    start: { column: 4, line: 3 },
+                    end: { column: 5, line: 3 },
+                  },
+                },
+
+                range: [77, 78],
+                loc: {
+                  start: { column: 4, line: 3 },
+                  end: { column: 5, line: 3 },
+                },
+              },
+            ],
+
+            range: [76, 79],
+            loc: {
+              start: { column: 3, line: 3 },
+              end: { column: 6, line: 3 },
+            },
+          },
+
+          range: [73, 81],
+          loc: {
+            start: { column: 0, line: 3 },
+            end: { column: 8, line: 3 },
+          },
+        },
+
+        range: [73, 82],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+      ExpressionStatement {
+        type: 'ExpressionStatement',
+        expression: CallExpression {
+          type: 'CallExpression',
+          arguments: Array [],
+          callee: Identifier {
+            type: 'Identifier',
+            name: 'foo',
+
+            range: [83, 86],
+            loc: {
+              start: { column: 0, line: 4 },
+              end: { column: 3, line: 4 },
+            },
+          },
+          optional: false,
+-         typeArguments: TSTypeParameterInstantiation {
+-           type: 'TSTypeParameterInstantiation',
+-           params: Array [
+-             TSNumberKeyword {
+-               type: 'TSNumberKeyword',
+-
+-               range: [87, 93],
+-               loc: {
+-                 start: { column: 4, line: 4 },
+-                 end: { column: 10, line: 4 },
+-               },
+-             },
+-           ],
+-
+-           range: [86, 94],
+-           loc: {
+-             start: { column: 3, line: 4 },
+-             end: { column: 11, line: 4 },
+-           },
+-         },
+          typeParameters: TSTypeParameterInstantiation {
+            type: 'TSTypeParameterInstantiation',
+            params: Array [
+              TSNumberKeyword {
+                type: 'TSNumberKeyword',
+
+                range: [87, 93],
+                loc: {
+                  start: { column: 4, line: 4 },
+                  end: { column: 10, line: 4 },
+                },
+              },
+            ],
+
+            range: [86, 94],
+            loc: {
+              start: { column: 3, line: 4 },
+              end: { column: 11, line: 4 },
+            },
+          },
+
+          range: [83, 96],
+          loc: {
+            start: { column: 0, line: 4 },
+            end: { column: 13, line: 4 },
+          },
+        },
+
+        range: [83, 97],
+        loc: {
+          start: { column: 0, line: 4 },
+          end: { column: 14, line: 4 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 98],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 5 },
+    },
+  }"
 `;

@@ -2,6 +2,7 @@
 
 exports[`AST Fixtures List fixtures with AST differences 1`] = `
 Set {
+  "declaration/ClassDeclaration/fixtures/extends-type-param/fixture.ts",
   "declaration/ClassDeclaration/fixtures/implements-many/fixture.ts",
   "declaration/ClassDeclaration/fixtures/implements-one/fixture.ts",
   "declaration/ClassDeclaration/fixtures/type-param/fixture.ts",
@@ -131,6 +132,7 @@ Set {
   "legacy-fixtures/basics/fixtures/function-with-type-parameters-that-have-comments/fixture.ts",
   "legacy-fixtures/basics/fixtures/function-with-type-parameters-with-constraint/fixture.ts",
   "legacy-fixtures/basics/fixtures/function-with-type-parameters/fixture.ts",
+  "legacy-fixtures/basics/fixtures/function-with-types-assignation/fixture.ts",
   "legacy-fixtures/basics/fixtures/import-equal-declaration/fixture.ts",
   "legacy-fixtures/basics/fixtures/import-equal-type-declaration/fixture.ts",
   "legacy-fixtures/basics/fixtures/import-export-equal-declaration/fixture.ts",
@@ -151,9 +153,13 @@ Set {
   "legacy-fixtures/basics/fixtures/interface-with-optional-properties/fixture.ts",
   "legacy-fixtures/basics/fixtures/intrinsic-keyword/fixture.ts",
   "legacy-fixtures/basics/fixtures/keyword-variables/fixture.ts",
+  "legacy-fixtures/basics/fixtures/nested-type-arguments/fixture.ts",
+  "legacy-fixtures/basics/fixtures/never-type-param/fixture.ts",
   "legacy-fixtures/basics/fixtures/object-with-escaped-properties/fixture.ts",
   "legacy-fixtures/basics/fixtures/object-with-typed-methods/fixture.ts",
   "legacy-fixtures/basics/fixtures/private-fields-in-in/fixture.ts",
+  "legacy-fixtures/basics/fixtures/readonly-arrays/fixture.ts",
+  "legacy-fixtures/basics/fixtures/symbol-type-param/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-alias-declaration-export-function-type/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-alias-declaration-export-object-type/fixture.ts",
   "legacy-fixtures/basics/fixtures/type-alias-declaration-export/fixture.ts",
@@ -178,6 +184,10 @@ Set {
   "legacy-fixtures/class-decorators/fixtures/export-named-class-decorator/fixture.ts",
   "legacy-fixtures/declare/fixtures/module/fixture.ts",
   "legacy-fixtures/declare/fixtures/namespace/fixture.ts",
+  "legacy-fixtures/expressions/fixtures/call-expression-type-arguments/fixture.ts",
+  "legacy-fixtures/expressions/fixtures/new-expression-type-arguments/fixture.ts",
+  "legacy-fixtures/expressions/fixtures/optional-call-expression-type-arguments/fixture.ts",
+  "legacy-fixtures/expressions/fixtures/tagged-template-expression-type-arguments/fixture.ts",
   "legacy-fixtures/method-decorators/fixtures/method-decorator-factory-instance-member/fixture.ts",
   "legacy-fixtures/method-decorators/fixtures/method-decorator-factory-static-member/fixture.ts",
   "legacy-fixtures/method-decorators/fixtures/method-decorator-instance-member/fixture.ts",
@@ -229,6 +239,8 @@ Set {
   "legacy-fixtures/types/fixtures/optional-variance-in-out/fixture.ts",
   "legacy-fixtures/types/fixtures/optional-variance-in/fixture.ts",
   "legacy-fixtures/types/fixtures/optional-variance-out/fixture.ts",
+  "legacy-fixtures/types/fixtures/reference-generic-nested/fixture.ts",
+  "legacy-fixtures/types/fixtures/reference-generic/fixture.ts",
   "legacy-fixtures/types/fixtures/template-literal-type-2/fixture.ts",
   "legacy-fixtures/types/fixtures/template-literal-type-3/fixture.ts",
   "legacy-fixtures/types/fixtures/template-literal-type-4/fixture.ts",
@@ -236,6 +248,7 @@ Set {
   "legacy-fixtures/types/fixtures/this-type/fixture.ts",
   "legacy-fixtures/types/fixtures/tuple-optional/fixture.ts",
   "legacy-fixtures/types/fixtures/typeof-this/fixture.ts",
+  "legacy-fixtures/types/fixtures/typeof-with-type-parameters/fixture.ts",
   "legacy-fixtures/types/fixtures/union-intersection/fixture.ts",
 }
 `;
