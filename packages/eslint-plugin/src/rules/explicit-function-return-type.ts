@@ -92,6 +92,7 @@ export default util.createRule<Options, MessageIds>({
       allowHigherOrderFunctions: true,
       allowDirectConstAssertionInArrowFunctions: true,
       allowConciseArrowFunctionExpressionsStartingWithVoid: false,
+      allowFunctionsWithoutTypeParameters: false,
       allowedNames: [],
       allowIIFEs: false,
     },

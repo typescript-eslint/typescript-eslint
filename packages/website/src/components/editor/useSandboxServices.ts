@@ -146,7 +146,9 @@ export const useSandboxServices = (
         model.dispose();
       }
     };
-  }, [props.ts, colorMode, props.jsx, onLoaded]);
+    // colorMode and jsx can't be reactive here because we don't want to force a recreation
+    // updating of colorMode and jsx is handled in LoadedEditor
+  }, [props.ts, onLoaded]);
 
   return services;
 };

@@ -1,5 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
@@ -115,7 +115,7 @@ export default createRule({
       const symbolName = discriminantType.getSymbol()?.escapedName;
 
       if (discriminantType.isUnion()) {
-        const unionTypes = tools.unionTypeParts(discriminantType);
+        const unionTypes = tsutils.unionTypeParts(discriminantType);
         const caseTypes: Set<ts.Type> = new Set();
         for (const switchCase of node.cases) {
           if (switchCase.test == null) {
@@ -143,7 +143,7 @@ export default createRule({
           data: {
             missingBranches: missingBranchTypes
               .map(missingType =>
-                tools.isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
+                tsutils.isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
                   ? `typeof ${missingType.getSymbol()?.escapedName as string}`
                   : checker.typeToString(missingType),
               )

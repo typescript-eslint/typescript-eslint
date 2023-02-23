@@ -1,4 +1,4 @@
-import * as tools from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 
 import * as util from '../util';
 
@@ -31,7 +31,7 @@ export default util.createRule({
 
         const originalNode = services.esTreeNodeToTSNodeMap.get(node);
 
-        if (!tools.isThenableType(checker, originalNode.expression, type)) {
+        if (!tsutils.isThenableType(checker, originalNode.expression, type)) {
           context.report({
             messageId: 'await',
             node,

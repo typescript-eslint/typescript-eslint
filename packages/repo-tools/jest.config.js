@@ -5,4 +5,5 @@
 module.exports = {
   ...require('../../jest.config.base.js'),
   coveragePathIgnorePatterns: ['src/index.ts$', 'src/configs/.*.ts$'],
+  passWithNoTests: true,
 };

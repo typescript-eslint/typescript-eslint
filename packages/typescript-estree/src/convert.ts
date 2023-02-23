@@ -239,12 +239,8 @@ export class Converter {
     data: Omit<TSESTree.OptionalRangeAndLoc<T>, 'parent'>,
   ): T {
     const result = data;
-    if (!result.range) {
-      result.range = getRange(node, this.ast);
-    }
-    if (!result.loc) {
-      result.loc = getLocFor(result.range[0], result.range[1], this.ast);
-    }
+    result.range ??= getRange(node, this.ast);
+    result.loc ??= getLocFor(result.range[0], result.range[1], this.ast);
 
     if (result && this.options.shouldPreserveNodeMaps) {
       this.esTreeNodeToTSNodeMap.set(result, node);
@@ -2628,20 +2624,20 @@ export class Converter {
       case SyntaxKind.ModuleDeclaration: {
         const result = this.createNode<TSESTree.TSModuleDeclaration>(node, {
           type: AST_NODE_TYPES.TSModuleDeclaration,
-
-          // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- TODO - add ignore IIFE option
-          ...(() => {
-            const id: TSESTree.Identifier | TSESTree.StringLiteral =
-              this.convertChild(node.name);
-            const body:
-              | TSESTree.TSModuleBlock
-              | TSESTree.TSModuleDeclaration
-              | null = this.convertChild(node.body);
-
+          ...((): TSESTree.OptionalRangeAndLoc<
+            Omit<TSESTree.TSModuleDeclaration, 'parent' | 'type'>
+          > => {
             // the constraints checked by this function are syntactically enforced by TS
             // the checks mostly exist for type's sake
 
             if (node.flags & ts.NodeFlags.GlobalAugmentation) {
+              const id: TSESTree.Identifier | TSESTree.StringLiteral =
+                this.convertChild(node.name);
+              const body:
+                | TSESTree.TSModuleBlock
+                | TSESTree.TSModuleDeclaration
+                | null = this.convertChild(node.body);
+
               if (
                 body == null ||
                 body.type === AST_NODE_TYPES.TSModuleDeclaration
@@ -2655,46 +2651,87 @@ export class Converter {
               }
               return {
                 kind: 'global',
-                id,
-                body,
-                declare: false,
-                global: true,
-              } satisfies TSESTree.OptionalRangeAndLoc<
-                Omit<TSESTree.TSModuleDeclarationGlobal, 'parent' | 'type'>
-              >;
-            } else if (node.flags & ts.NodeFlags.Namespace) {
-              if (body == null) {
-                throw new Error('Expected a module body');
-              }
-              if (id.type !== AST_NODE_TYPES.Identifier) {
-                throw new Error('`namespace`s must have an Identifier id');
-              }
-              return {
-                kind: 'namespace',
                 body,
                 declare: false,
                 global: false,
                 id,
-              } satisfies TSESTree.OptionalRangeAndLoc<
-                Omit<TSESTree.TSModuleDeclarationNamespace, 'parent' | 'type'>
-              >;
-            } else {
+              };
+            }
+
+            if (!(node.flags & ts.NodeFlags.Namespace)) {
+              const body: TSESTree.TSModuleBlock | null = this.convertChild(
+                node.body,
+              );
               return {
                 kind: 'module',
+                ...(body != null ? { body } : {}),
                 declare: false,
                 global: false,
-                id,
-                ...(body != null ? { body } : {}),
-              } satisfies TSESTree.OptionalRangeAndLoc<
-                Omit<TSESTree.TSModuleDeclarationModule, 'parent' | 'type'>
-              >;
+                id: this.convertChild(node.name),
+              };
             }
+
+            // Nested module declarations are stored in TypeScript as nested tree nodes.
+            // We "unravel" them here by making our own nested TSQualifiedName,
+            // with the innermost node's body as the actual node body.
+
+            if (node.body == null) {
+              throw new Error('Expected a module body');
+            }
+            if (node.name.kind !== ts.SyntaxKind.Identifier) {
+              throw new Error('`namespace`s must have an Identifier id');
+            }
+
+            let name: TSESTree.Identifier | TSESTree.TSQualifiedName =
+              this.createNode<TSESTree.Identifier>(node.name, {
+                decorators: [],
+                name: node.name.text,
+                optional: false,
+                range: [node.name.getStart(this.ast), node.name.getEnd()],
+                type: AST_NODE_TYPES.Identifier,
+                typeAnnotation: undefined,
+              });
+
+            while (
+              node.body &&
+              ts.isModuleDeclaration(node.body) &&
+              node.body.name
+            ) {
+              node = node.body;
+
+              const nextName = node.name as ts.Identifier;
+
+              const right = this.createNode<TSESTree.Identifier>(nextName, {
+                decorators: [],
+                name: nextName.text,
+                optional: false,
+                range: [nextName.getStart(this.ast), nextName.getEnd()],
+                type: AST_NODE_TYPES.Identifier,
+                typeAnnotation: undefined,
+              });
+
+              name = this.createNode<TSESTree.TSQualifiedName>(nextName, {
+                left: name,
+                right: right,
+                range: [name.range[0], right.range[1]],
+                type: AST_NODE_TYPES.TSQualifiedName,
+              });
+            }
+
+            return {
+              kind: 'namespace',
+              body: this.convertChild(node.body),
+              declare: false,
+              global: false,
+              id: name,
+            };
           })(),
         });
 
         if (hasModifier(SyntaxKind.DeclareKeyword, node)) {
           result.declare = true;
         }
+
         if (node.flags & ts.NodeFlags.GlobalAugmentation) {
           result.global = true;
         }

@@ -10,13 +10,18 @@ test.describe('Website', () => {
   test('should have no errors', async ({ page }) => {
     const errorMessages: string[] = [];
     page.on('console', msg => {
-      if (['error', 'warning'].includes(msg.type())) {
-        errorMessages.push(`[${msg.type()}] ${msg.text()}`);
+      const type = msg.type();
+      if (!['error', 'warning'].includes(type)) {
+        return;
       }
+      const text = msg.text();
+      // this log is fine because the ReactDOM usage is controlled by docusaurus, not us
+      if (text.includes('ReactDOM.render is no longer supported in React 18')) {
+        return;
+      }
+      errorMessages.push(`[${type}] ${text}`);
     });
     await page.goto('/');
-    expect(errorMessages).toStrictEqual([
-      "[error] Warning: ReactDOM.render is no longer supported in React 18. Use createRoot instead. Until you switch to the new API, your app will behave as if it's running React 17. Learn more: https://reactjs.org/link/switch-to-createroot",
-    ]);
+    expect(errorMessages).toStrictEqual([]);
   });
 });

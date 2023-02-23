@@ -1,4 +1,4 @@
-import * as eslintPlugin from '@typescript-eslint/eslint-plugin';
+import pluginRules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import * as tseslintParser from '@typescript-eslint/parser';
 import * as fs from 'fs';
 import type { JSONSchema7 } from 'json-schema';
@@ -40,7 +40,7 @@ export const generatedRuleDocs: Plugin = () => {
       return;
     }
 
-    const rule = eslintPlugin.rules[file.stem];
+    const rule = pluginRules[file.stem];
     const meta = rule?.meta;
     if (!meta?.docs) {
       return;

@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { ESLintUtils } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -61,7 +61,7 @@ export default util.createRule<
         };
 
         const argType = services.getTypeAtLocation(node.argument);
-        const unionParts = tools.unionTypeParts(argType);
+        const unionParts = tsutils.unionTypeParts(argType);
         if (
           unionParts.every(
             part => part.flags & (ts.TypeFlags.Void | ts.TypeFlags.Undefined),

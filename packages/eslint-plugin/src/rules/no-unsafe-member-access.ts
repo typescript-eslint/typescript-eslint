@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 
 import * as util from '../util';
 import { getThisExpression } from '../util';
@@ -35,7 +35,7 @@ export default util.createRule({
   create(context) {
     const services = util.getParserServices(context);
     const compilerOptions = services.program.getCompilerOptions();
-    const isNoImplicitThis = tools.isStrictCompilerOptionEnabled(
+    const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
       'noImplicitThis',
     );
