@@ -30,18 +30,18 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
 -               type: 'Literal',
 -               raw: '\\\\'A\\\\'',
 -               value: 'A',
--
++           argument: Literal {
++             type: 'Literal',
++             raw: '\\\\'A\\\\'',
++             value: 'A',
+
 -               range: [96, 99],
 -               loc: {
 -                 start: { column: 23, line: 3 },
 -                 end: { column: 26, line: 3 },
 -               },
 -             },
-+           argument: Literal {
-+             type: 'Literal',
-+             raw: '\\\\'A\\\\'',
-+             value: 'A',
-
+-
               range: [96, 99],
               loc: {
                 start: { column: 23, line: 3 },
@@ -50,6 +50,7 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
             },
 -           qualifier: null,
 -           typeArguments: null,
+-           typeParameters: null,
 
             range: [89, 100],
             loc: {
@@ -117,10 +118,39 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
             loc: {
               start: { column: 21, line: 4 },
               end: { column: 22, line: 4 },
+-           },
+-         },
+-         typeArguments: TSTypeParameterInstantiation {
+-           type: 'TSTypeParameterInstantiation',
+-           params: Array [
+-             TSTypeReference {
+-               type: 'TSTypeReference',
+-               typeName: Identifier {
+-                 type: 'Identifier',
+-                 name: 'Y',
+-
+-                 range: [125, 126],
+-                 loc: {
+-                   start: { column: 23, line: 4 },
+-                   end: { column: 24, line: 4 },
+-                 },
+-               },
+-
+-               range: [125, 126],
+-               loc: {
+-                 start: { column: 23, line: 4 },
+-                 end: { column: 24, line: 4 },
+-               },
+-             },
+-           ],
+-
+-           range: [124, 127],
+-           loc: {
+-             start: { column: 22, line: 4 },
+-             end: { column: 25, line: 4 },
             },
           },
--         typeArguments: TSTypeParameterInstantiation {
-+         typeParameters: TSTypeParameterInstantiation {
+          typeParameters: TSTypeParameterInstantiation {
             type: 'TSTypeParameterInstantiation',
             params: Array [
               TSTypeReference {

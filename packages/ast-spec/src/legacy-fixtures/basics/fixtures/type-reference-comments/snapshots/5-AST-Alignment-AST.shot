@@ -80,26 +80,26 @@ exports[`AST Fixtures legacy-fixtures basics type-reference-comments AST Alignme
                     loc: {
                       start: { column: 12, line: 4 },
                       end: { column: 29, line: 4 },
-+                   },
-+                 },
-+                 typeParameters: TSTypeParameterInstantiation {
-+                   type: 'TSTypeParameterInstantiation',
-+                   params: Array [
-+                     TSAnyKeyword {
-+                       type: 'TSAnyKeyword',
-+
-+                       range: [127, 130],
-+                       loc: {
-+                         start: { column: 30, line: 4 },
-+                         end: { column: 33, line: 4 },
-+                       },
-+                     },
-+                   ],
-+
-+                   range: [126, 147],
-+                   loc: {
-+                     start: { column: 29, line: 4 },
-+                     end: { column: 50, line: 4 },
+                    },
+                  },
+                  typeParameters: TSTypeParameterInstantiation {
+                    type: 'TSTypeParameterInstantiation',
+                    params: Array [
+                      TSAnyKeyword {
+                        type: 'TSAnyKeyword',
+
+                        range: [127, 130],
+                        loc: {
+                          start: { column: 30, line: 4 },
+                          end: { column: 33, line: 4 },
+                        },
+                      },
+                    ],
+
+                    range: [126, 147],
+                    loc: {
+                      start: { column: 29, line: 4 },
+                      end: { column: 50, line: 4 },
                     },
                   },
 

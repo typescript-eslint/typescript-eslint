@@ -62,6 +62,10 @@ export interface ClassBase extends BaseNode {
    * This is `undefined` if there are no generic type parameters passed.
    */
   superTypeArguments?: TSTypeParameterInstantiation;
+
+  /** @deprecated Use {@link `superTypeArguments`} instead. */
+  superTypeParameters?: TSTypeParameterInstantiation;
+
   /**
    * The generic type parameters declared for the class.
    * This is `undefined` if there are no generic type parameters declared.

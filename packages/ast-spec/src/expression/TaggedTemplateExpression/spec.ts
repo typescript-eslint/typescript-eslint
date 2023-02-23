@@ -7,6 +7,10 @@ import type { TemplateLiteral } from '../TemplateLiteral/spec';
 export interface TaggedTemplateExpression extends BaseNode {
   type: AST_NODE_TYPES.TaggedTemplateExpression;
   typeArguments?: TSTypeParameterInstantiation;
+
+  /** @deprecated Use {@link `typeArguments`} instead. */
+  typeParameters?: TSTypeParameterInstantiation;
+
   tag: LeftHandSideExpression;
   quasi: TemplateLiteral;
 }

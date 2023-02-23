@@ -9,4 +9,7 @@ export interface NewExpression extends BaseNode {
   callee: LeftHandSideExpression;
   arguments: CallExpressionArgument[];
   typeArguments?: TSTypeParameterInstantiation;
+
+  /** @deprecated Use {@link `typeArguments`} instead. */
+  typeParameters?: TSTypeParameterInstantiation;
 }

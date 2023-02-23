@@ -21,17 +21,36 @@ exports[`AST Fixtures legacy-fixtures types reference-generic AST Alignment - AS
                 typeAnnotation: TSTypeReference {
                   type: 'TSTypeReference',
 -                 typeArguments: TSTypeParameterInstantiation {
-+                 typeName: Identifier {
-+                   type: 'Identifier',
-+                   name: 'Array',
-+
-+                   range: [80, 85],
-+                   loc: {
-+                     start: { column: 7, line: 3 },
-+                     end: { column: 12, line: 3 },
-+                   },
-+                 },
-+                 typeParameters: TSTypeParameterInstantiation {
+-                   type: 'TSTypeParameterInstantiation',
+-                   params: Array [
+-                     TSNumberKeyword {
+-                       type: 'TSNumberKeyword',
+-
+-                       range: [86, 92],
+-                       loc: {
+-                         start: { column: 13, line: 3 },
+-                         end: { column: 19, line: 3 },
+-                       },
+-                     },
+-                   ],
+-
+-                   range: [85, 93],
+-                   loc: {
+-                     start: { column: 12, line: 3 },
+-                     end: { column: 20, line: 3 },
+-                   },
+-                 },
+                  typeName: Identifier {
+                    type: 'Identifier',
+                    name: 'Array',
+
+                    range: [80, 85],
+                    loc: {
+                      start: { column: 7, line: 3 },
+                      end: { column: 12, line: 3 },
+                    },
+                  },
+                  typeParameters: TSTypeParameterInstantiation {
                     type: 'TSTypeParameterInstantiation',
                     params: Array [
                       TSNumberKeyword {
@@ -49,16 +68,6 @@ exports[`AST Fixtures legacy-fixtures types reference-generic AST Alignment - AS
                     loc: {
                       start: { column: 12, line: 3 },
                       end: { column: 20, line: 3 },
--                   },
--                 },
--                 typeName: Identifier {
--                   type: 'Identifier',
--                   name: 'Array',
--
--                   range: [80, 85],
--                   loc: {
--                     start: { column: 7, line: 3 },
--                     end: { column: 12, line: 3 },
                     },
                   },
 

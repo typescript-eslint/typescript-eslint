@@ -41,7 +41,26 @@ exports[`AST Fixtures declaration ClassDeclaration extends-type-param AST Alignm
           },
         },
 -       superTypeArguments: TSTypeParameterInstantiation {
-+       superTypeParameters: TSTypeParameterInstantiation {
+-         type: 'TSTypeParameterInstantiation',
+-         params: Array [
+-           TSStringKeyword {
+-             type: 'TSStringKeyword',
+-
+-             range: [22, 28],
+-             loc: {
+-               start: { column: 22, line: 1 },
+-               end: { column: 28, line: 1 },
+-             },
+-           },
+-         ],
+-
+-         range: [21, 29],
+-         loc: {
+-           start: { column: 21, line: 1 },
+-           end: { column: 29, line: 1 },
+-         },
+-       },
+        superTypeParameters: TSTypeParameterInstantiation {
           type: 'TSTypeParameterInstantiation',
           params: Array [
             TSStringKeyword {

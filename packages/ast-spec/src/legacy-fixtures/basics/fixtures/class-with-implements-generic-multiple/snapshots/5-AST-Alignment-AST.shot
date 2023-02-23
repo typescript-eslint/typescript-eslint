@@ -43,10 +43,58 @@ exports[`AST Fixtures legacy-fixtures basics class-with-implements-generic-multi
               loc: {
                 start: { column: 21, line: 3 },
                 end: { column: 24, line: 3 },
+-             },
+-           },
+-           typeArguments: TSTypeParameterInstantiation {
+-             type: 'TSTypeParameterInstantiation',
+-             params: Array [
+-               TSTypeReference {
+-                 type: 'TSTypeReference',
+-                 typeName: Identifier {
+-                   type: 'Identifier',
+-                   name: 'S',
+-
+-                   range: [98, 99],
+-                   loc: {
+-                     start: { column: 25, line: 3 },
+-                     end: { column: 26, line: 3 },
+-                   },
+-                 },
+-
+-                 range: [98, 99],
+-                 loc: {
+-                   start: { column: 25, line: 3 },
+-                   end: { column: 26, line: 3 },
+-                 },
+-               },
+-               TSTypeReference {
+-                 type: 'TSTypeReference',
+-                 typeName: Identifier {
+-                   type: 'Identifier',
+-                   name: 'T',
+-
+-                   range: [101, 102],
+-                   loc: {
+-                     start: { column: 28, line: 3 },
+-                     end: { column: 29, line: 3 },
+-                   },
+-                 },
+-
+-                 range: [101, 102],
+-                 loc: {
+-                   start: { column: 28, line: 3 },
+-                   end: { column: 29, line: 3 },
+-                 },
+-               },
+-             ],
+-
+-             range: [97, 103],
+-             loc: {
+-               start: { column: 24, line: 3 },
+-               end: { column: 30, line: 3 },
               },
             },
--           typeArguments: TSTypeParameterInstantiation {
-+           typeParameters: TSTypeParameterInstantiation {
+            typeParameters: TSTypeParameterInstantiation {
               type: 'TSTypeParameterInstantiation',
               params: Array [
                 TSTypeReference {

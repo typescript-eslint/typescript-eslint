@@ -167,17 +167,57 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
               extendsType: TSTypeReference {
                 type: 'TSTypeReference',
 -               typeArguments: TSTypeParameterInstantiation {
-+               typeName: Identifier {
-+                 type: 'Identifier',
-+                 name: 'Promise',
-+
-+                 range: [162, 169],
-+                 loc: {
-+                   start: { column: 14, line: 7 },
-+                   end: { column: 21, line: 7 },
-+                 },
-+               },
-+               typeParameters: TSTypeParameterInstantiation {
+-                 type: 'TSTypeParameterInstantiation',
+-                 params: Array [
+-                   TSInferType {
+-                     type: 'TSInferType',
+-                     typeParameter: TSTypeParameter {
+-                       type: 'TSTypeParameter',
+-                       in: false,
+-                       name: Identifier {
+-                         type: 'Identifier',
+-                         name: 'U',
+-
+-                         range: [176, 177],
+-                         loc: {
+-                           start: { column: 28, line: 7 },
+-                           end: { column: 29, line: 7 },
+-                         },
+-                       },
+-                       out: false,
+-
+-                       range: [176, 177],
+-                       loc: {
+-                         start: { column: 28, line: 7 },
+-                         end: { column: 29, line: 7 },
+-                       },
+-                     },
+-
+-                     range: [170, 177],
+-                     loc: {
+-                       start: { column: 22, line: 7 },
+-                       end: { column: 29, line: 7 },
+-                     },
+-                   },
+-                 ],
+-
+-                 range: [169, 178],
+-                 loc: {
+-                   start: { column: 21, line: 7 },
+-                   end: { column: 30, line: 7 },
+-                 },
+-               },
+                typeName: Identifier {
+                  type: 'Identifier',
+                  name: 'Promise',
+
+                  range: [162, 169],
+                  loc: {
+                    start: { column: 14, line: 7 },
+                    end: { column: 21, line: 7 },
+                  },
+                },
+                typeParameters: TSTypeParameterInstantiation {
                   type: 'TSTypeParameterInstantiation',
                   params: Array [
                     TSInferType {
@@ -217,16 +257,6 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
                   loc: {
                     start: { column: 21, line: 7 },
                     end: { column: 30, line: 7 },
--                 },
--               },
--               typeName: Identifier {
--                 type: 'Identifier',
--                 name: 'Promise',
--
--                 range: [162, 169],
--                 loc: {
--                   start: { column: 14, line: 7 },
--                   end: { column: 21, line: 7 },
                   },
                 },
 

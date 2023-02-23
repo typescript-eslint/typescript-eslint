@@ -6,4 +6,7 @@ export interface TSHeritageBase extends BaseNode {
   // TODO(#1852) - this should be restricted to MemberExpression | Identifier
   expression: Expression;
   typeArguments?: TSTypeParameterInstantiation;
+
+  /** @deprecated Use {@link `typeArguments`} instead. */
+  typeParameters?: TSTypeParameterInstantiation;
 }

@@ -49,7 +49,36 @@ exports[`AST Fixtures legacy-fixtures expressions tagged-template-expression-typ
             },
           },
 -         typeArguments: TSTypeParameterInstantiation {
-+         typeParameters: TSTypeParameterInstantiation {
+-           type: 'TSTypeParameterInstantiation',
+-           params: Array [
+-             TSTypeReference {
+-               type: 'TSTypeReference',
+-               typeName: Identifier {
+-                 type: 'Identifier',
+-                 name: 'bar',
+-
+-                 range: [77, 80],
+-                 loc: {
+-                   start: { column: 4, line: 3 },
+-                   end: { column: 7, line: 3 },
+-                 },
+-               },
+-
+-               range: [77, 80],
+-               loc: {
+-                 start: { column: 4, line: 3 },
+-                 end: { column: 7, line: 3 },
+-               },
+-             },
+-           ],
+-
+-           range: [76, 81],
+-           loc: {
+-             start: { column: 3, line: 3 },
+-             end: { column: 8, line: 3 },
+-           },
+-         },
+          typeParameters: TSTypeParameterInstantiation {
             type: 'TSTypeParameterInstantiation',
             params: Array [
               TSTypeReference {

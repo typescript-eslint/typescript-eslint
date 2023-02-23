@@ -121,17 +121,37 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
               constraint: TSTypeReference {
                 type: 'TSTypeReference',
 -               typeArguments: TSTypeParameterInstantiation {
-+               typeName: Identifier {
-+                 type: 'Identifier',
-+                 name: 'Constructor',
-+
-+                 range: [94, 105],
-+                 loc: {
-+                   start: { column: 21, line: 3 },
-+                   end: { column: 32, line: 3 },
-+                 },
-+               },
-+               typeParameters: TSTypeParameterInstantiation {
+-                 type: 'TSTypeParameterInstantiation',
+-                 params: Array [
+-                   TSTypeLiteral {
+-                     type: 'TSTypeLiteral',
+-                     members: Array [],
+-
+-                     range: [106, 108],
+-                     loc: {
+-                       start: { column: 33, line: 3 },
+-                       end: { column: 35, line: 3 },
+-                     },
+-                   },
+-                 ],
+-
+-                 range: [105, 109],
+-                 loc: {
+-                   start: { column: 32, line: 3 },
+-                   end: { column: 36, line: 3 },
+-                 },
+-               },
+                typeName: Identifier {
+                  type: 'Identifier',
+                  name: 'Constructor',
+
+                  range: [94, 105],
+                  loc: {
+                    start: { column: 21, line: 3 },
+                    end: { column: 32, line: 3 },
+                  },
+                },
+                typeParameters: TSTypeParameterInstantiation {
                   type: 'TSTypeParameterInstantiation',
                   params: Array [
                     TSTypeLiteral {
@@ -152,17 +172,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
                     end: { column: 36, line: 3 },
                   },
                 },
--               typeName: Identifier {
--                 type: 'Identifier',
--                 name: 'Constructor',
 
--                 range: [94, 105],
--                 loc: {
--                   start: { column: 21, line: 3 },
--                   end: { column: 32, line: 3 },
--                 },
--               },
--
                 range: [94, 109],
                 loc: {
                   start: { column: 21, line: 3 },
@@ -275,7 +285,26 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
           },
           optional: false,
 -         typeArguments: TSTypeParameterInstantiation {
-+         typeParameters: TSTypeParameterInstantiation {
+-           type: 'TSTypeParameterInstantiation',
+-           params: Array [
+-             TSAnyKeyword {
+-               type: 'TSAnyKeyword',
+-
+-               range: [175, 178],
+-               loc: {
+-                 start: { column: 18, line: 7 },
+-                 end: { column: 21, line: 7 },
+-               },
+-             },
+-           ],
+-
+-           range: [174, 179],
+-           loc: {
+-             start: { column: 17, line: 7 },
+-             end: { column: 22, line: 7 },
+-           },
+-         },
+          typeParameters: TSTypeParameterInstantiation {
             type: 'TSTypeParameterInstantiation',
             params: Array [
               TSAnyKeyword {
