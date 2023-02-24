@@ -130,6 +130,7 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
               "type": "TSTypeReference",
               "typeArguments": undefined,
               "typeName": {
+                "decorators": [],
                 "loc": {
                   "end": {
                     "column": 9,
@@ -141,11 +142,13 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
                   },
                 },
                 "name": "T",
+                "optional": false,
                 "range": [
                   8,
                   9,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -454,6 +457,7 @@ exports[`convert deeplyCopy should convert node with type arguments correctly 1`
         "type": "TSTypeReference",
         "typeArguments": undefined,
         "typeName": {
+          "decorators": [],
           "loc": {
             "end": {
               "column": 9,
@@ -465,11 +469,13 @@ exports[`convert deeplyCopy should convert node with type arguments correctly 1`
             },
           },
           "name": "T",
+          "optional": false,
           "range": [
             8,
             9,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "typeParameters": undefined,
       },
