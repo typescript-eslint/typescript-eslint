@@ -99,10 +99,14 @@
   // MD044/proper-names - Proper names should have the correct capitalization
   "MD044": {
     "names": [
+      "eslint-scope",
+      "eslint-plugin",
+      "eslint-recommended",
       "ESLint",
       "JavaScript",
       "TSLint",
       "typescript-eslint",
+      "typescript-estree",
       "TypeScript"
     ],
     "code_blocks": false
