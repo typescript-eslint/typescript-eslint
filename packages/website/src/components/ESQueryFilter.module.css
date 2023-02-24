@@ -25,9 +25,3 @@
 .search::placeholder {
   color: var(--ifm-navbar-search-input-placeholder-color);
 }
-
-.errorContainer {
-  word-wrap: break-word;
-  white-space: break-spaces;
-  padding: 20px;
-}

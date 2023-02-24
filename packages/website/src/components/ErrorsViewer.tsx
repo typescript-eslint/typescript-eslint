@@ -11,7 +11,13 @@ export interface ErrorsViewerProps {
   readonly value?: ErrorGroup[] | Error;
 }
 
-export interface ErrorBlockProps {
+interface AlertBlockProps {
+  readonly type: 'danger' | 'warning' | 'note' | 'info' | 'success';
+  readonly children: React.ReactNode;
+  readonly fixer?: boolean;
+}
+
+interface ErrorBlockProps {
   readonly item: ErrorItem;
   readonly setIsLocked: (value: boolean) => void;
   readonly isLocked: boolean;
@@ -23,7 +29,9 @@ export interface FixButtonProps {
   readonly disabled: boolean;
 }
 
-function severityClass(severity: Monaco.MarkerSeverity): string {
+function severityClass(
+  severity: Monaco.MarkerSeverity,
+): AlertBlockProps['type'] {
   switch (severity) {
     case 8:
       return 'danger';
@@ -50,57 +58,61 @@ function FixButton(props: FixButtonProps): JSX.Element {
   );
 }
 
+function AlertBlock(props: AlertBlockProps): JSX.Element {
+  return (
+    <div className={`admonition alert alert--${props.type}`}>
+      <div className="admonition-content">{props.children}</div>
+    </div>
+  );
+}
+
 function ErrorBlock({
   item,
   setIsLocked,
   isLocked,
 }: ErrorBlockProps): JSX.Element {
   return (
-    <div className={`admonition alert alert--${severityClass(item.severity)}`}>
-      <div className="admonition-content">
-        <div className={clsx(!!item.fixer && styles.fixerContainer)}>
-          <div>
-            {item.message} {item.location}
-          </div>
-          {item.fixer && (
-            <FixButton
-              disabled={isLocked}
-              fix={item.fixer.fix}
-              setIsLocked={setIsLocked}
-            />
-          )}
+    <AlertBlock type={severityClass(item.severity)}>
+      <div className={clsx(!!item.fixer && styles.fixerContainer)}>
+        <div>
+          {item.message} {item.location}
         </div>
-        {item.suggestions.length > 0 && (
-          <div>
-            {item.suggestions.map((fixer, index) => (
-              <div
-                key={index}
-                className={clsx(styles.fixerContainer, styles.fixer)}
-              >
-                <span>&gt; {fixer.message}</span>
-                <FixButton
-                  disabled={isLocked}
-                  fix={fixer.fix}
-                  setIsLocked={setIsLocked}
-                />
-              </div>
-            ))}
-          </div>
+        {item.fixer && (
+          <FixButton
+            disabled={isLocked}
+            fix={item.fixer.fix}
+            setIsLocked={setIsLocked}
+          />
         )}
       </div>
-    </div>
+      {item.suggestions.length > 0 && (
+        <div>
+          {item.suggestions.map((fixer, index) => (
+            <div
+              key={index}
+              className={clsx(styles.fixerContainer, styles.fixer)}
+            >
+              <span>&gt; {fixer.message}</span>
+              <FixButton
+                disabled={isLocked}
+                fix={fixer.fix}
+                setIsLocked={setIsLocked}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </AlertBlock>
   );
 }
 
 function SuccessBlock(): JSX.Element {
   return (
-    <div className="admonition alert alert--success">
-      <div className="admonition-content">
-        <div className={styles.fixerContainer}>
-          <div>All is ok!</div>
-        </div>
+    <AlertBlock type="success">
+      <div className={styles.fixerContainer}>
+        <div>All is ok!</div>
       </div>
-    </div>
+    </AlertBlock>
   );
 }
 
@@ -116,9 +128,13 @@ export default function ErrorsViewer({
   if (value && !Array.isArray(value)) {
     return (
       <div className={styles.list}>
-        <div className="margin-top--sm">
-          <h4>ESLint internal error</h4>
-          {value?.stack}
+        <div className="margin-top--md">
+          <AlertBlock type="danger">
+            <div className={styles.fixerContainer}>
+              <h4>Internal error</h4>
+            </div>
+            {value?.stack}
+          </AlertBlock>
         </div>
       </div>
     );

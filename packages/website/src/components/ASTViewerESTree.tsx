@@ -1,17 +1,28 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ESQuery from 'esquery';
 import React, { useMemo } from 'react';
 
 import ASTViewer from './ast/ASTViewer';
 import { serialize } from './ast/serializer/serializer';
 import { createESTreeSerializer } from './ast/serializer/serializerESTree';
 import type { ASTViewerBaseProps } from './ast/types';
-import Text from './inputs/Text';
-import styles from './ASTViewerESTree.module.css';
 
 export interface ASTESTreeViewerProps extends ASTViewerBaseProps {
   readonly value: TSESTree.BaseNode;
-  readonly filter: string;
-  readonly onChangeFilter: (filter: string) => void;
+  readonly filter?: ESQuery.Selector;
+}
+
+function tryToApplyFilter<T>(value: T, filter?: ESQuery.Selector): T {
+  try {
+    if (window.esquery && filter) {
+      // @ts-expect-error - esquery is not correctly typed
+      return window.esquery.match(value, filter);
+    }
+  } catch (e: unknown) {
+    // eslint-disable-next-line no-console
+    console.error(e);
+  }
+  return value;
 }
 
 export default function ASTViewerESTree({
@@ -19,53 +30,12 @@ export default function ASTViewerESTree({
   position,
   onSelectNode,
   filter,
-  onChangeFilter,
 }: ASTESTreeViewerProps): JSX.Element {
   const model = useMemo(() => {
-    if (window.esquery && filter.length > 0) {
-      try {
-        const queryParsed = window.esquery.parse(filter);
-        const match = window.esquery.match(value, queryParsed);
-        return serialize(match, createESTreeSerializer());
-      } catch (e: unknown) {
-        if (e instanceof Error) {
-          return e;
-        }
-        return String(e);
-      }
-    } else {
-      return serialize(value, createESTreeSerializer());
-    }
+    return serialize(tryToApplyFilter(value, filter), createESTreeSerializer());
   }, [value, filter]);
 
   return (
-    <>
-      <div className={styles.searchContainer}>
-        <Text
-          value={filter}
-          name="esquery"
-          onChange={onChangeFilter}
-          className={styles.search}
-          placeholder="ESQuery filter"
-        />
-      </div>
-      <>
-        {model instanceof Error ? (
-          <div className={styles.errorContainer}>
-            <div className="admonition alert alert--danger">
-              <div className="admonition-content">
-                <div>{model.message}</div>
-              </div>
-            </div>
-          </div>
-        ) : (
-          <ASTViewer
-            value={model}
-            position={position}
-            onSelectNode={onSelectNode}
-          />
-        )}
-      </>
-    </>
+    <ASTViewer value={model} position={position} onSelectNode={onSelectNode} />
   );
 }
