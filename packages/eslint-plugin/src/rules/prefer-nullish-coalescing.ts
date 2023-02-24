@@ -8,15 +8,15 @@ import * as util from '../util';
 
 export type Options = [
   {
-    ignoreConditionalTests?: boolean;
-    ignoreTernaryTests?: boolean;
-    ignoreMixedLogicalExpressions?: boolean;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+    ignoreConditionalTests?: boolean;
+    ignoreMixedLogicalExpressions?: boolean;
     ignorePrimitives?: {
-      string?: boolean;
       boolean?: boolean;
       number?: boolean;
+      string?: boolean;
     };
+    ignoreTernaryTests?: boolean;
   },
 ];
 
@@ -50,25 +50,25 @@ export default util.createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          ignoreConditionalTests: {
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
             type: 'boolean',
           },
-          ignoreTernaryTests: {
+          ignoreConditionalTests: {
             type: 'boolean',
           },
           ignoreMixedLogicalExpressions: {
             type: 'boolean',
           },
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
-            type: 'boolean',
-          },
           ignorePrimitives: {
             type: 'object',
             properties: {
-              string: { type: 'boolean' },
               boolean: { type: 'boolean' },
               number: { type: 'boolean' },
+              string: { type: 'boolean' },
             },
+          },
+          ignoreTernaryTests: {
+            type: 'boolean',
           },
         },
         additionalProperties: false,
@@ -77,14 +77,14 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
+      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
       ignoreConditionalTests: true,
       ignoreTernaryTests: true,
       ignoreMixedLogicalExpressions: true,
-      allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
       ignorePrimitives: {
-        string: false,
         boolean: false,
         number: false,
+        string: false,
       },
     },
   ],
@@ -92,11 +92,11 @@ export default util.createRule<Options, MessageIds>({
     context,
     [
       {
-        ignoreConditionalTests,
-        ignoreTernaryTests,
-        ignoreMixedLogicalExpressions,
         allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
+        ignoreConditionalTests,
+        ignoreMixedLogicalExpressions,
         ignorePrimitives,
+        ignoreTernaryTests,
       },
     ],
   ) {
