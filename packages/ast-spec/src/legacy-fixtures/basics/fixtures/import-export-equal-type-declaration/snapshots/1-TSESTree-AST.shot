@@ -11,7 +11,9 @@ Program {
         type: "TSImportEqualsDeclaration",
         id: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "foo",
+          optional: false,
 
           range: [92, 95],
           loc: {

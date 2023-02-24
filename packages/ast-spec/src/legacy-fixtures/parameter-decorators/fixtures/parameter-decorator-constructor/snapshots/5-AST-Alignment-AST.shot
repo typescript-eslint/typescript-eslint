@@ -10,15 +10,19 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-c
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'constructor',
+-               optional: false,
 
                 range: [91, 102],
                 loc: {
@@ -27,6 +31,7 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-c
                 },
               },
               kind: 'constructor',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -54,7 +59,9 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-c
                           optional: false,
                           property: Identifier {
                             type: 'Identifier',
+-                           decorators: Array [],
                             name: 'title',
+-                           optional: false,
 
                             range: [153, 158],
                             loc: {
@@ -75,7 +82,9 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-c
                           computed: false,
                           object: Identifier {
                             type: 'Identifier',
+-                           decorators: Array [],
                             name: 'config',
+-                           optional: false,
 
                             range: [161, 167],
                             loc: {
@@ -86,7 +95,9 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-c
                           optional: false,
                           property: Identifier {
                             type: 'Identifier',
+-                           decorators: Array [],
                             name: 'title',
+-                           optional: false,
 
                             range: [168, 173],
                             loc: {
@@ -123,6 +134,7 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-c
                     end: { column: 3, line: 6 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -137,7 +149,9 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-c
                           arguments: Array [
                             Identifier {
                               type: 'Identifier',
+-                             decorators: Array [],
                               name: 'APP_CONFIG',
+-                             optional: false,
 
                               range: [111, 121],
                               loc: {
@@ -148,7 +162,9 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-c
                           ],
                           callee: Identifier {
                             type: 'Identifier',
+-                           decorators: Array [],
                             name: 'Inject',
+-                           optional: false,
 
                             range: [104, 110],
                             loc: {
@@ -173,13 +189,16 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-c
                       },
                     ],
                     name: 'config',
+-                   optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: 'TSTypeAnnotation',
                       typeAnnotation: TSTypeReference {
                         type: 'TSTypeReference',
                         typeName: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'AppConfig',
+-                         optional: false,
 
                           range: [131, 140],
                           loc: {
@@ -231,9 +250,13 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-c
             end: { column: 1, line: 7 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Service',
+-         optional: false,
 
           range: [79, 86],
           loc: {
@@ -241,6 +264,7 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-c
             end: { column: 13, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 180],

@@ -11,6 +11,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules shorthand-ambient-m
       TSModuleDeclaration {
         type: 'TSModuleDeclaration',
         declare: true,
+-       global: false,
         id: Literal {
           type: 'Literal',
           raw: '\\\\'hot-new-module\\\\'',

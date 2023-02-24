@@ -18,7 +18,9 @@ Program {
                 type: "UnaryExpression",
                 argument: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "x",
+                  optional: false,
 
                   range: [130, 131],
                   loc: {
@@ -69,11 +71,14 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "isString",
+        optional: false,
 
         range: [82, 90],
         loc: {
@@ -84,7 +89,9 @@ Program {
       params: Array [
         Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "x",
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSAnyKeyword {
@@ -118,7 +125,9 @@ Program {
           asserts: false,
           parameterName: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "x",
+            optional: false,
 
             range: [100, 101],
             loc: {

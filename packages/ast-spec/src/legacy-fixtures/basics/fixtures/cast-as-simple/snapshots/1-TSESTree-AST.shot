@@ -9,9 +9,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "foo",
+            optional: false,
 
             range: [79, 82],
             loc: {
@@ -23,7 +26,9 @@ Program {
             type: "TSAsExpression",
             expression: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "x",
+              optional: false,
 
               range: [85, 86],
               loc: {
@@ -55,6 +60,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [73, 94],

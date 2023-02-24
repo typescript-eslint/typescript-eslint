@@ -8,6 +8,7 @@ Program {
       type: "ExportDefaultDeclaration",
       declaration: ClassExpression {
         type: "ClassExpression",
+        abstract: false,
         body: ClassBody {
           type: "ClassBody",
           body: Array [],
@@ -18,9 +19,13 @@ Program {
             end: { column: 28, line: 1 },
           },
         },
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "Foo",
+          optional: false,
 
           range: [22, 25],
           loc: {
@@ -28,6 +33,7 @@ Program {
             end: { column: 25, line: 1 },
           },
         },
+        implements: Array [],
         superClass: null,
 
         range: [16, 28],

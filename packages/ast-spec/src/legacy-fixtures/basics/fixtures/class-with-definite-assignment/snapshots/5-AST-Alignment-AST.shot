@@ -10,6 +10,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-definite-assignment AST 
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
@@ -17,10 +18,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-definite-assignment AST 
               type: 'PropertyDefinition',
               computed: false,
 -             declare: false,
+-             decorators: Array [],
               definite: true,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'a',
+-               optional: false,
 
                 range: [85, 86],
                 loc: {
@@ -28,7 +32,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-definite-assignment AST 
                   end: { column: 3, line: 4 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -64,9 +70,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-definite-assignment AST 
             end: { column: 1, line: 5 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'X',
+-         optional: false,
 
           range: [79, 80],
           loc: {
@@ -74,6 +84,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-definite-assignment AST 
             end: { column: 7, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 98],

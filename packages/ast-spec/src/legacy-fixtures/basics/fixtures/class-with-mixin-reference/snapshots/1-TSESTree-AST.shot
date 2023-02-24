@@ -17,11 +17,14 @@ Program {
           end: { column: 48, line: 3 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "M",
+        optional: false,
 
         range: [82, 83],
         loc: {
@@ -32,14 +35,18 @@ Program {
       params: Array [
         Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "Base",
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "T",
+                optional: false,
 
                 range: [116, 117],
                 loc: {
@@ -83,7 +90,9 @@ Program {
                     type: "TSTypeReference",
                     typeName: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "M",
+                      optional: false,
 
                       range: [106, 107],
                       loc: {
@@ -108,7 +117,9 @@ Program {
               },
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "Constructor",
+                optional: false,
 
                 range: [94, 105],
                 loc: {
@@ -123,7 +134,9 @@ Program {
                     type: "TSTypeReference",
                     typeName: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "M",
+                      optional: false,
 
                       range: [106, 107],
                       loc: {
@@ -156,7 +169,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [84, 85],
               loc: {

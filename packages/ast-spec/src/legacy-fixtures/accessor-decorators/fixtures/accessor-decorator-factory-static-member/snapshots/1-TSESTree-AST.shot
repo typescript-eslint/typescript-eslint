@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
@@ -26,7 +27,9 @@ Program {
                           computed: false,
                           key: Identifier {
                             type: "Identifier",
+                            decorators: Array [],
                             name: "baz",
+                            optional: false,
 
                             range: [96, 99],
                             loc: {
@@ -36,6 +39,7 @@ Program {
                           },
                           kind: "init",
                           method: false,
+                          optional: false,
                           shorthand: false,
                           value: Literal {
                             type: "Literal",
@@ -66,7 +70,9 @@ Program {
                   ],
                   callee: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "foo",
+                    optional: false,
 
                     range: [90, 93],
                     loc: {
@@ -92,7 +98,9 @@ Program {
             ],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "bar",
+              optional: false,
 
               range: [122, 125],
               loc: {
@@ -101,6 +109,7 @@ Program {
               },
             },
             kind: "get",
+            optional: false,
             override: false,
             static: true,
             value: FunctionExpression {
@@ -126,7 +135,9 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "_bar",
+                        optional: false,
 
                         range: [146, 150],
                         loc: {
@@ -156,6 +167,7 @@ Program {
                   end: { column: 3, line: 7 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -182,9 +194,13 @@ Program {
           end: { column: 1, line: 8 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Other",
+        optional: false,
 
         range: [79, 84],
         loc: {
@@ -192,6 +208,7 @@ Program {
           end: { column: 11, line: 3 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [73, 157],

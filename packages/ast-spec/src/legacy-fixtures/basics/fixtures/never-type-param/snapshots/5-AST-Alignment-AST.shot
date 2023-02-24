@@ -13,9 +13,12 @@ exports[`AST Fixtures legacy-fixtures basics never-type-param AST Alignment - AS
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'x',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypeReference {
@@ -42,7 +45,9 @@ exports[`AST Fixtures legacy-fixtures basics never-type-param AST Alignment - AS
 -                 },
                   typeName: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'X',
+-                   optional: false,
 
                     range: [80, 81],
                     loc: {
@@ -100,6 +105,7 @@ exports[`AST Fixtures legacy-fixtures basics never-type-param AST Alignment - AS
             },
           },
         ],
+-       declare: false,
         kind: 'var',
 
         range: [73, 89],
@@ -118,7 +124,9 @@ exports[`AST Fixtures legacy-fixtures basics never-type-param AST Alignment - AS
             computed: false,
             object: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'Observable',
+-             optional: false,
 
               range: [90, 100],
               loc: {
@@ -129,7 +137,9 @@ exports[`AST Fixtures legacy-fixtures basics never-type-param AST Alignment - AS
             optional: false,
             property: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'empty',
+-             optional: false,
 
               range: [101, 106],
               loc: {

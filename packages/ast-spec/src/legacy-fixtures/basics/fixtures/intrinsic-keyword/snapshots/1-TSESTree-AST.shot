@@ -6,9 +6,12 @@ Program {
   body: Array [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Uppercase",
+        optional: false,
 
         range: [78, 87],
         loc: {
@@ -42,7 +45,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "S",
+              optional: false,
 
               range: [88, 89],
               loc: {
@@ -75,9 +80,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Lowercase",
+        optional: false,
 
         range: [124, 133],
         loc: {
@@ -111,7 +119,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "S",
+              optional: false,
 
               range: [134, 135],
               loc: {
@@ -144,9 +154,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Capitalize",
+        optional: false,
 
         range: [170, 180],
         loc: {
@@ -180,7 +193,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "S",
+              optional: false,
 
               range: [181, 182],
               loc: {
@@ -213,9 +228,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Uncapitalize",
+        optional: false,
 
         range: [217, 229],
         loc: {
@@ -249,7 +267,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "S",
+              optional: false,
 
               range: [230, 231],
               loc: {

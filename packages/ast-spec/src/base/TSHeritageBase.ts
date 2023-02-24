@@ -5,8 +5,8 @@ import type { BaseNode } from './BaseNode';
 export interface TSHeritageBase extends BaseNode {
   // TODO(#1852) - this should be restricted to MemberExpression | Identifier
   expression: Expression;
-  typeArguments?: TSTypeParameterInstantiation;
+  typeArguments: TSTypeParameterInstantiation | undefined;
 
   /** @deprecated Use {@link `typeArguments`} instead. */
-  typeParameters?: TSTypeParameterInstantiation;
+  typeParameters: TSTypeParameterInstantiation | undefined;
 }

@@ -6,15 +6,19 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "isBar",
+              optional: false,
 
               range: [87, 92],
               loc: {
@@ -23,6 +27,7 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: false,
             static: false,
             value: FunctionExpression {
@@ -47,7 +52,9 @@ Program {
                       operator: "instanceof",
                       right: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "Foo",
+                        optional: false,
 
                         range: [140, 143],
                         loc: {
@@ -77,6 +84,7 @@ Program {
                   end: { column: 3, line: 6 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -145,9 +153,13 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
+            decorators: Array [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "isBaz",
+              optional: false,
 
               range: [151, 156],
               loc: {
@@ -155,7 +167,9 @@ Program {
                 end: { column: 7, line: 7 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             value: ArrowFunctionExpression {
               type: "ArrowFunctionExpression",
@@ -179,7 +193,9 @@ Program {
                       operator: "instanceof",
                       right: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "Foo",
+                        optional: false,
 
                         range: [210, 213],
                         loc: {
@@ -281,9 +297,13 @@ Program {
           end: { column: 1, line: 10 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -291,6 +311,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [73, 221],

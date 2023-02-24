@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [],
@@ -16,9 +17,13 @@ Program {
           end: { column: 80, line: 3 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "ClassWithParentAndInterface",
+        optional: false,
 
         range: [79, 106],
         loc: {
@@ -31,7 +36,9 @@ Program {
           type: "TSClassImplements",
           expression: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "MyInterface",
+            optional: false,
 
             range: [139, 150],
             loc: {
@@ -49,7 +56,9 @@ Program {
       ],
       superClass: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "MyOtherClass",
+        optional: false,
 
         range: [115, 127],
         loc: {

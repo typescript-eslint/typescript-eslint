@@ -16,9 +16,12 @@ Program {
             MethodDefinition {
               type: "MethodDefinition",
               computed: false,
+              decorators: Array [],
               key: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "createSocket",
+                optional: false,
 
                 range: [114, 126],
                 loc: {
@@ -34,6 +37,7 @@ Program {
                 type: "TSEmptyBodyFunctionExpression",
                 async: false,
                 body: null,
+                declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -64,7 +68,9 @@ Program {
                     },
                     typeName: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "Promise",
+                      optional: false,
 
                       range: [131, 138],
                       loc: {
@@ -128,9 +134,13 @@ Program {
             end: { column: 1, line: 5 },
           },
         },
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "AbstractSocket",
+          optional: false,
 
           range: [95, 109],
           loc: {
@@ -138,6 +148,7 @@ Program {
             end: { column: 36, line: 3 },
           },
         },
+        implements: Array [],
         superClass: null,
 
         range: [80, 149],

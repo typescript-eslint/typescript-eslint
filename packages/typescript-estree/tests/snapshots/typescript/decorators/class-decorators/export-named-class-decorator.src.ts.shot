@@ -1,0 +1,276 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescript decorators class-decorators export-named-class-decorator.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "assertions": Array [],
+      "declaration": Object {
+        "abstract": false,
+        "body": Object {
+          "body": Array [],
+          "loc": Object {
+            "end": Object {
+              "column": 19,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 17,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            25,
+            27,
+          ],
+          "type": "ClassBody",
+        },
+        "declare": false,
+        "decorators": Array [
+          Object {
+            "expression": Object {
+              "decorators": Array [],
+              "loc": Object {
+                "end": Object {
+                  "column": 7,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 1,
+                  "line": 1,
+                },
+              },
+              "name": "sealed",
+              "optional": false,
+              "range": Array [
+                1,
+                7,
+              ],
+              "type": "Identifier",
+              "typeAnnotation": undefined,
+            },
+            "loc": Object {
+              "end": Object {
+                "column": 7,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 0,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              0,
+              7,
+            ],
+            "type": "Decorator",
+          },
+        ],
+        "id": Object {
+          "decorators": Array [],
+          "loc": Object {
+            "end": Object {
+              "column": 16,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 13,
+              "line": 2,
+            },
+          },
+          "name": "Qux",
+          "optional": false,
+          "range": Array [
+            21,
+            24,
+          ],
+          "type": "Identifier",
+          "typeAnnotation": undefined,
+        },
+        "implements": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 19,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 7,
+            "line": 2,
+          },
+        },
+        "range": Array [
+          15,
+          27,
+        ],
+        "superClass": null,
+        "superTypeParameters": undefined,
+        "type": "ClassDeclaration",
+        "typeParameters": undefined,
+      },
+      "exportKind": "value",
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        8,
+        27,
+      ],
+      "source": null,
+      "specifiers": Array [],
+      "type": "ExportNamedDeclaration",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 3,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    28,
+  ],
+  "sourceType": "module",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 1,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        1,
+      ],
+      "type": "Punctuator",
+      "value": "@",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 1,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        1,
+        7,
+      ],
+      "type": "Identifier",
+      "value": "sealed",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        8,
+        14,
+      ],
+      "type": "Keyword",
+      "value": "export",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        15,
+        20,
+      ],
+      "type": "Keyword",
+      "value": "class",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 16,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        21,
+        24,
+      ],
+      "type": "Identifier",
+      "value": "Qux",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 18,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 17,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        25,
+        26,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 19,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 18,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        26,
+        27,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+  ],
+  "type": "Program",
+}
+`;

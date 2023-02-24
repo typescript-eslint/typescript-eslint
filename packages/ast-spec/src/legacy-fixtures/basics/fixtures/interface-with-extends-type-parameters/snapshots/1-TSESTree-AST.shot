@@ -16,12 +16,15 @@ Program {
           end: { column: 34, line: 3 },
         },
       },
+      declare: false,
       extends: Array [
         TSInterfaceHeritage {
           type: "TSInterfaceHeritage",
           expression: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "Bar",
+            optional: false,
 
             range: [98, 101],
             loc: {
@@ -36,7 +39,9 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "J",
+                  optional: false,
 
                   range: [102, 103],
                   loc: {
@@ -66,7 +71,9 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "J",
+                  optional: false,
 
                   range: [102, 103],
                   loc: {
@@ -99,7 +106,9 @@ Program {
       ],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [83, 86],
         loc: {
@@ -115,7 +124,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [87, 88],
               loc: {

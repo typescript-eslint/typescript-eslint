@@ -17,11 +17,14 @@ Program {
           end: { column: 35, line: 3 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [82, 85],
         loc: {
@@ -32,15 +35,20 @@ Program {
       params: Array [
         AssignmentPattern {
           type: "AssignmentPattern",
+          decorators: Array [],
           left: ObjectPattern {
             type: "ObjectPattern",
+            decorators: Array [],
+            optional: false,
             properties: Array [
               Property {
                 type: "Property",
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "foo",
+                  optional: false,
 
                   range: [88, 91],
                   loc: {
@@ -50,12 +58,16 @@ Program {
                 },
                 kind: "init",
                 method: false,
+                optional: false,
                 shorthand: true,
                 value: AssignmentPattern {
                   type: "AssignmentPattern",
+                  decorators: Array [],
                   left: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "foo",
+                    optional: false,
 
                     range: [88, 91],
                     loc: {
@@ -63,6 +75,7 @@ Program {
                       end: { column: 18, line: 3 },
                     },
                   },
+                  optional: false,
                   right: ArrayExpression {
                     type: "ArrayExpression",
                     elements: Array [],
@@ -95,9 +108,12 @@ Program {
               end: { column: 25, line: 3 },
             },
           },
+          optional: false,
           right: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "bar",
+            optional: false,
 
             range: [101, 104],
             loc: {

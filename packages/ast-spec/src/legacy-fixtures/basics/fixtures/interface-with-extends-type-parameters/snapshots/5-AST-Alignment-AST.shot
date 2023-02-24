@@ -20,6 +20,7 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-paramet
             end: { column: 34, line: 3 },
           },
         },
+-       declare: false,
         extends: Array [
 -         TSInterfaceHeritage {
 -           type: 'TSInterfaceHeritage',
@@ -27,14 +28,16 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-paramet
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'Bar',
+-             optional: false,
 
               range: [98, 101],
               loc: {
                 start: { column: 25, line: 3 },
                 end: { column: 28, line: 3 },
-              },
-            },
+-             },
+-           },
 -           typeArguments: TSTypeParameterInstantiation {
 -             type: 'TSTypeParameterInstantiation',
 -             params: Array [
@@ -42,7 +45,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-paramet
 -                 type: 'TSTypeReference',
 -                 typeName: Identifier {
 -                   type: 'Identifier',
+-                   decorators: Array [],
 -                   name: 'J',
+-                   optional: false,
 -
 -                   range: [102, 103],
 -                   loc: {
@@ -63,8 +68,8 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-paramet
 -             loc: {
 -               start: { column: 28, line: 3 },
 -               end: { column: 31, line: 3 },
--             },
--           },
+              },
+            },
             typeParameters: TSTypeParameterInstantiation {
               type: 'TSTypeParameterInstantiation',
               params: Array [
@@ -72,7 +77,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-paramet
                   type: 'TSTypeReference',
                   typeName: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'J',
+-                   optional: false,
 
                     range: [102, 103],
                     loc: {
@@ -105,7 +112,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-paramet
         ],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [83, 86],
           loc: {
@@ -121,7 +130,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-type-paramet
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [87, 88],
 -               loc: {

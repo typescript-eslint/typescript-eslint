@@ -6,15 +6,19 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "foo",
+              optional: false,
 
               range: [87, 90],
               loc: {
@@ -30,6 +34,7 @@ Program {
               type: "TSEmptyBodyFunctionExpression",
               async: false,
               body: null,
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -51,9 +56,12 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "bar",
+              optional: false,
 
               range: [97, 100],
               loc: {
@@ -69,6 +77,7 @@ Program {
               type: "TSEmptyBodyFunctionExpression",
               async: false,
               body: null,
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -109,9 +118,12 @@ Program {
             type: "MethodDefinition",
             accessibility: "private",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "baz",
+              optional: false,
 
               range: [123, 126],
               loc: {
@@ -127,6 +139,7 @@ Program {
               type: "TSEmptyBodyFunctionExpression",
               async: false,
               body: null,
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -171,9 +184,13 @@ Program {
           end: { column: 1, line: 7 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -181,6 +198,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [73, 140],

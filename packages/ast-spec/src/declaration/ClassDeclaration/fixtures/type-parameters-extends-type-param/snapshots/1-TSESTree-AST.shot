@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [],
@@ -16,9 +17,13 @@ Program {
           end: { column: 30, line: 1 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [6, 9],
         loc: {
@@ -26,9 +31,12 @@ Program {
           end: { column: 9, line: 1 },
         },
       },
+      implements: Array [],
       superClass: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Set",
+        optional: false,
 
         range: [21, 24],
         loc: {
@@ -43,7 +51,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [25, 26],
               loc: {
@@ -73,7 +83,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [25, 26],
               loc: {
@@ -104,7 +116,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [10, 11],
               loc: {

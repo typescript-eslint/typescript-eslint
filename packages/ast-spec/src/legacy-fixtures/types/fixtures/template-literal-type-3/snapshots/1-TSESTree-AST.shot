@@ -6,9 +6,12 @@ Program {
   body: Array [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Color",
+        optional: false,
 
         range: [78, 83],
         loc: {
@@ -76,9 +79,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Quantity",
+        optional: false,
 
         range: [107, 115],
         loc: {
@@ -146,9 +152,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "SeussFish",
+        optional: false,
 
         range: [138, 147],
         loc: {
@@ -196,7 +205,9 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "Quantity",
+                  optional: false,
 
                   range: [153, 161],
                   loc: {
@@ -215,7 +226,9 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "Color",
+                  optional: false,
 
                   range: [164, 169],
                   loc: {

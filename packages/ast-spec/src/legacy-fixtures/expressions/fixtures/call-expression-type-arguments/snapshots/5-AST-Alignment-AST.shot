@@ -15,7 +15,9 @@ exports[`AST Fixtures legacy-fixtures expressions call-expression-type-arguments
           arguments: Array [],
           callee: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'foo',
+-           optional: false,
 
             range: [73, 76],
             loc: {
@@ -31,7 +33,9 @@ exports[`AST Fixtures legacy-fixtures expressions call-expression-type-arguments
 -               type: 'TSTypeReference',
 -               typeName: Identifier {
 -                 type: 'Identifier',
+-                 decorators: Array [],
 -                 name: 'A',
+-                 optional: false,
 -
 -                 range: [77, 78],
 -                 loc: {
@@ -61,7 +65,9 @@ exports[`AST Fixtures legacy-fixtures expressions call-expression-type-arguments
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'A',
+-                 optional: false,
 
                   range: [77, 78],
                   loc: {
@@ -105,7 +111,9 @@ exports[`AST Fixtures legacy-fixtures expressions call-expression-type-arguments
           arguments: Array [],
           callee: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'foo',
+-           optional: false,
 
             range: [83, 86],
             loc: {

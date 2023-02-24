@@ -10,6 +10,7 @@ exports[`AST Fixtures legacy-fixtures basics private-fields-in-in AST Alignment 
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
@@ -17,6 +18,8 @@ exports[`AST Fixtures legacy-fixtures basics private-fields-in-in AST Alignment 
               type: 'PropertyDefinition',
               computed: false,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: PrivateIdentifier {
                 type: 'PrivateIdentifier',
                 name: 'prop1',
@@ -27,7 +30,9 @@ exports[`AST Fixtures legacy-fixtures basics private-fields-in-in AST Alignment 
                   end: { column: 8, line: 4 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               value: null,
 
@@ -40,9 +45,12 @@ exports[`AST Fixtures legacy-fixtures basics private-fields-in-in AST Alignment 
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'method',
+-               optional: false,
 
                 range: [97, 103],
                 loc: {
@@ -51,6 +59,7 @@ exports[`AST Fixtures legacy-fixtures basics private-fields-in-in AST Alignment 
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -76,7 +85,9 @@ exports[`AST Fixtures legacy-fixtures basics private-fields-in-in AST Alignment 
                         operator: 'in',
                         right: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'arg',
+-                         optional: false,
 
                           range: [132, 135],
                           loc: {
@@ -106,13 +117,16 @@ exports[`AST Fixtures legacy-fixtures basics private-fields-in-in AST Alignment 
                     end: { column: 3, line: 7 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
                 params: Array [
                   Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'arg',
+-                   optional: false,
 
                     range: [104, 107],
                     loc: {
@@ -143,9 +157,13 @@ exports[`AST Fixtures legacy-fixtures basics private-fields-in-in AST Alignment 
             end: { column: 1, line: 8 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [79, 82],
           loc: {
@@ -153,6 +171,7 @@ exports[`AST Fixtures legacy-fixtures basics private-fields-in-in AST Alignment 
             end: { column: 9, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 142],

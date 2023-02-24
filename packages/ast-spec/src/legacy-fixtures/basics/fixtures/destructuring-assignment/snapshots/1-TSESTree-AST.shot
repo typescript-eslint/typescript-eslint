@@ -10,13 +10,17 @@ Program {
         type: "AssignmentExpression",
         left: ObjectPattern {
           type: "ObjectPattern",
+          decorators: Array [],
+          optional: false,
           properties: Array [
             Property {
               type: "Property",
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "foo",
+                optional: false,
 
                 range: [76, 79],
                 loc: {
@@ -26,12 +30,16 @@ Program {
               },
               kind: "init",
               method: false,
+              optional: false,
               shorthand: true,
               value: AssignmentPattern {
                 type: "AssignmentPattern",
+                decorators: Array [],
                 left: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "foo",
+                  optional: false,
 
                   range: [76, 79],
                   loc: {
@@ -39,6 +47,7 @@ Program {
                     end: { column: 6, line: 3 },
                   },
                 },
+                optional: false,
                 right: ArrayExpression {
                   type: "ArrayExpression",
                   elements: Array [],
@@ -74,7 +83,9 @@ Program {
         operator: "=",
         right: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "bar",
+          optional: false,
 
           range: [89, 92],
           loc: {

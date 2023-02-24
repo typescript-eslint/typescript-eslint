@@ -6,15 +6,19 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "bar",
+              optional: false,
 
               range: [87, 90],
               loc: {
@@ -23,6 +27,7 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: false,
             static: false,
             value: FunctionExpression {
@@ -38,6 +43,7 @@ Program {
                   end: { column: 37, line: 4 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -64,7 +70,9 @@ Program {
                         ],
                         callee: Identifier {
                           type: "Identifier",
+                          decorators: Array [],
                           name: "special",
+                          optional: false,
 
                           range: [92, 99],
                           loc: {
@@ -88,13 +96,16 @@ Program {
                       },
                     },
                   ],
+                  optional: false,
                   properties: Array [
                     Property {
                       type: "Property",
                       computed: false,
                       key: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "bar",
+                        optional: false,
 
                         range: [108, 111],
                         loc: {
@@ -104,10 +115,13 @@ Program {
                       },
                       kind: "init",
                       method: false,
+                      optional: false,
                       shorthand: true,
                       value: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "bar",
+                        optional: false,
 
                         range: [108, 111],
                         loc: {
@@ -171,9 +185,13 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -181,6 +199,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [73, 124],

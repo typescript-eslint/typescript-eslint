@@ -10,6 +10,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -20,9 +21,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
             end: { column: 43, line: 3 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [79, 82],
           loc: {
@@ -30,16 +35,19 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
             end: { column: 9, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Bar',
+-         optional: false,
 
           range: [104, 107],
           loc: {
             start: { column: 31, line: 3 },
             end: { column: 34, line: 3 },
-          },
-        },
+-         },
+-       },
 -       superTypeArguments: TSTypeParameterInstantiation {
 -         type: 'TSTypeParameterInstantiation',
 -         params: Array [
@@ -47,7 +55,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
 -             type: 'TSTypeReference',
 -             typeName: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'C',
+-               optional: false,
 -
 -               range: [108, 109],
 -               loc: {
@@ -66,7 +76,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
 -             type: 'TSTypeReference',
 -             typeName: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'D',
+-               optional: false,
 -
 -               range: [111, 112],
 -               loc: {
@@ -87,8 +99,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
 -         loc: {
 -           start: { column: 34, line: 3 },
 -           end: { column: 40, line: 3 },
--         },
--       },
+          },
+        },
         superTypeParameters: TSTypeParameterInstantiation {
           type: 'TSTypeParameterInstantiation',
           params: Array [
@@ -96,7 +108,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'C',
+-               optional: false,
 
                 range: [108, 109],
                 loc: {
@@ -115,7 +129,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'D',
+-               optional: false,
 
                 range: [111, 112],
                 loc: {
@@ -147,7 +163,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'B',
+-                 optional: false,
 
                   range: [93, 94],
                   loc: {
@@ -165,7 +183,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'A',
+-               optional: false,
 -
 -               range: [83, 84],
 -               loc: {

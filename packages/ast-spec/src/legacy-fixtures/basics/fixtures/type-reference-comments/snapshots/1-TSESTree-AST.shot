@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
@@ -13,9 +14,13 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
+            decorators: Array [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "mBuffers",
+              optional: false,
 
               range: [99, 107],
               loc: {
@@ -23,7 +28,9 @@ Program {
                 end: { column: 10, line: 4 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -53,7 +60,9 @@ Program {
                   type: "TSQualifiedName",
                   left: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "interop",
+                    optional: false,
 
                     range: [109, 116],
                     loc: {
@@ -63,7 +72,9 @@ Program {
                   },
                   right: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "Reference",
+                    optional: false,
 
                     range: [117, 126],
                     loc: {
@@ -128,9 +139,13 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "AudioBufferList",
+        optional: false,
 
         range: [79, 94],
         loc: {
@@ -138,6 +153,7 @@ Program {
           end: { column: 21, line: 3 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [73, 150],

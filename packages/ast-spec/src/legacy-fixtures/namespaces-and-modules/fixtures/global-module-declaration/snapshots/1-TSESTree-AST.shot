@@ -22,9 +22,12 @@ Program {
               },
             },
             declare: true,
+            global: false,
             id: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "global",
+              optional: false,
 
               range: [107, 113],
               loc: {
@@ -53,9 +56,12 @@ Program {
               },
             },
             declare: true,
+            global: false,
             id: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "global",
+              optional: false,
 
               range: [137, 143],
               loc: {
@@ -83,7 +89,9 @@ Program {
       global: true,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "global",
+        optional: false,
 
         range: [81, 87],
         loc: {

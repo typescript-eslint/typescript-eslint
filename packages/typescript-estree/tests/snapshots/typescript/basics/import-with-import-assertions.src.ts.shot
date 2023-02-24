@@ -1,0 +1,361 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescript basics import-with-import-assertions.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "assertions": Array [
+        Object {
+          "key": Object {
+            "decorators": Array [],
+            "loc": Object {
+              "end": Object {
+                "column": 35,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 31,
+                "line": 1,
+              },
+            },
+            "name": "type",
+            "optional": false,
+            "range": Array [
+              31,
+              35,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": undefined,
+          },
+          "loc": Object {
+            "end": Object {
+              "column": 43,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 31,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            31,
+            43,
+          ],
+          "type": "ImportAttribute",
+          "value": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 43,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 37,
+                "line": 1,
+              },
+            },
+            "range": Array [
+              37,
+              43,
+            ],
+            "raw": "\\"json\\"",
+            "type": "Literal",
+            "value": "json",
+          },
+        },
+      ],
+      "importKind": "value",
+      "loc": Object {
+        "end": Object {
+          "column": 46,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        46,
+      ],
+      "source": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 21,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 16,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          16,
+          21,
+        ],
+        "raw": "\\"mod\\"",
+        "type": "Literal",
+        "value": "mod",
+      },
+      "specifiers": Array [
+        Object {
+          "loc": Object {
+            "end": Object {
+              "column": 10,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 7,
+              "line": 1,
+            },
+          },
+          "local": Object {
+            "decorators": Array [],
+            "loc": Object {
+              "end": Object {
+                "column": 10,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 7,
+                "line": 1,
+              },
+            },
+            "name": "foo",
+            "optional": false,
+            "range": Array [
+              7,
+              10,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": undefined,
+          },
+          "range": Array [
+            7,
+            10,
+          ],
+          "type": "ImportDefaultSpecifier",
+        },
+      ],
+      "type": "ImportDeclaration",
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 2,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    47,
+  ],
+  "sourceType": "module",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 6,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        6,
+      ],
+      "type": "Keyword",
+      "value": "import",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        7,
+        10,
+      ],
+      "type": "Identifier",
+      "value": "foo",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 15,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        11,
+        15,
+      ],
+      "type": "Identifier",
+      "value": "from",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 21,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 16,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        16,
+        21,
+      ],
+      "type": "String",
+      "value": "\\"mod\\"",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 28,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 22,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        22,
+        28,
+      ],
+      "type": "Identifier",
+      "value": "assert",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 30,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 29,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        29,
+        30,
+      ],
+      "type": "Punctuator",
+      "value": "{",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 35,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 31,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        31,
+        35,
+      ],
+      "type": "Identifier",
+      "value": "type",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 36,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 35,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        35,
+        36,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 43,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 37,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        37,
+        43,
+      ],
+      "type": "String",
+      "value": "\\"json\\"",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 45,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 44,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        44,
+        45,
+      ],
+      "type": "Punctuator",
+      "value": "}",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 46,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 45,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        45,
+        46,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;

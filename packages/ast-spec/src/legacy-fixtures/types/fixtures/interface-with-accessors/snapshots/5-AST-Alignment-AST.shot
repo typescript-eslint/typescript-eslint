@@ -18,7 +18,9 @@ exports[`AST Fixtures legacy-fixtures types interface-with-accessors AST Alignme
               computed: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'size',
+-               optional: false,
 
                 range: [97, 101],
                 loc: {
@@ -27,7 +29,9 @@ exports[`AST Fixtures legacy-fixtures types interface-with-accessors AST Alignme
                 },
               },
               kind: 'get',
+-             optional: false,
 -             params: Array [],
+-             readonly: false,
 -             returnType: TSTypeAnnotation {
 +             parameters: Array [],
 +             typeAnnotation: TSTypeAnnotation {
@@ -48,6 +52,7 @@ exports[`AST Fixtures legacy-fixtures types interface-with-accessors AST Alignme
                   end: { column: 20, line: 4 },
                 },
               },
+-             static: false,
 
               range: [93, 112],
               loc: {
@@ -60,7 +65,9 @@ exports[`AST Fixtures legacy-fixtures types interface-with-accessors AST Alignme
               computed: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'size',
+-               optional: false,
 
                 range: [119, 123],
                 loc: {
@@ -69,11 +76,14 @@ exports[`AST Fixtures legacy-fixtures types interface-with-accessors AST Alignme
                 },
               },
               kind: 'set',
+-             optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'value',
+-                 optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSUnionType {
@@ -129,6 +139,8 @@ exports[`AST Fixtures legacy-fixtures types interface-with-accessors AST Alignme
                   },
                 },
               ],
+-             readonly: false,
+-             static: false,
 
               range: [115, 158],
               loc: {
@@ -144,9 +156,13 @@ exports[`AST Fixtures legacy-fixtures types interface-with-accessors AST Alignme
             end: { column: 1, line: 6 },
           },
         },
+-       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Thing',
+-         optional: false,
 
           range: [83, 88],
           loc: {

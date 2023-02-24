@@ -10,7 +10,9 @@ Program {
         type: "BinaryExpression",
         left: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "x",
+          optional: false,
 
           range: [73, 74],
           loc: {

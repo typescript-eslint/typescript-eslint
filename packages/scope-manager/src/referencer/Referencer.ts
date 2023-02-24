@@ -211,12 +211,16 @@ class Referencer extends Visitor {
   protected visitFunctionParameterTypeAnnotation(
     node: TSESTree.Parameter,
   ): void {
-    if ('typeAnnotation' in node) {
-      this.visitType(node.typeAnnotation);
-    } else if (node.type === AST_NODE_TYPES.AssignmentPattern) {
-      this.visitType(node.left.typeAnnotation);
-    } else if (node.type === AST_NODE_TYPES.TSParameterProperty) {
-      this.visitFunctionParameterTypeAnnotation(node.parameter);
+    switch (node.type) {
+      case AST_NODE_TYPES.AssignmentPattern:
+        this.visitType(node.left.typeAnnotation);
+        break;
+      case AST_NODE_TYPES.TSParameterProperty:
+        this.visitFunctionParameterTypeAnnotation(node.parameter);
+        break;
+      default:
+        this.visitType(node.typeAnnotation);
+        break;
     }
   }
   protected visitFunction(
@@ -265,7 +269,7 @@ class Referencer extends Visitor {
         { processRightHandNodes: true },
       );
       this.visitFunctionParameterTypeAnnotation(param);
-      param.decorators?.forEach(d => this.visit(d));
+      param.decorators.forEach(d => this.visit(d));
     }
 
     this.visitType(node.returnType);
@@ -779,13 +783,8 @@ class Referencer extends Visitor {
         { processRightHandNodes: true },
       );
 
-      if (decl.init) {
-        this.visit(decl.init);
-      }
-
-      if ('typeAnnotation' in decl.id) {
-        this.visitType(decl.id.typeAnnotation);
-      }
+      this.visit(decl.init);
+      this.visitType(decl.id.typeAnnotation);
     }
   }
 

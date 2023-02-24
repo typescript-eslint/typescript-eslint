@@ -10,15 +10,19 @@ exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-method
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'isBar',
+-               optional: false,
 
                 range: [94, 99],
                 loc: {
@@ -27,6 +31,7 @@ exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-method
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -53,6 +58,7 @@ exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-method
                     end: { column: 3, line: 6 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -121,9 +127,13 @@ exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-method
               type: 'PropertyDefinition',
               computed: false,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'isBaz',
+-               optional: false,
 
                 range: [146, 151],
                 loc: {
@@ -131,7 +141,9 @@ exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-method
                   end: { column: 7, line: 7 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               value: ArrowFunctionExpression {
                 type: 'ArrowFunctionExpression',
@@ -229,9 +241,13 @@ exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-method
             end: { column: 1, line: 10 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'AssertsFoo',
+-         optional: false,
 
           range: [79, 89],
           loc: {
@@ -239,6 +255,7 @@ exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-method
             end: { column: 16, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 204],

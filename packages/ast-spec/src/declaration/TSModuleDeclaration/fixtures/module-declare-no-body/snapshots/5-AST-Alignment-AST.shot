@@ -11,6 +11,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-declare-no-body AST
       TSModuleDeclaration {
         type: 'TSModuleDeclaration',
         declare: true,
+-       global: false,
         id: Literal {
           type: 'Literal',
           raw: '\\\\'a\\\\'',

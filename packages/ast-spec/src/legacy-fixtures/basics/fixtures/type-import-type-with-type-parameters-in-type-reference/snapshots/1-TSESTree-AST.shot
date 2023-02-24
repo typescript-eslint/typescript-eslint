@@ -6,9 +6,12 @@ Program {
   body: Array [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "X",
+        optional: false,
 
         range: [78, 79],
         loc: {
@@ -45,7 +48,9 @@ Program {
               },
               qualifier: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "B",
+                optional: false,
 
                 range: [95, 96],
                 loc: {
@@ -110,7 +115,9 @@ Program {
         },
         typeName: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "A",
+          optional: false,
 
           range: [82, 83],
           loc: {
@@ -145,7 +152,9 @@ Program {
               },
               qualifier: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "B",
+                optional: false,
 
                 range: [95, 96],
                 loc: {

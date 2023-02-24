@@ -9,9 +9,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "union",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSUnionType {
@@ -75,6 +78,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [73, 110],
@@ -88,9 +92,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "intersection",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSIntersectionType {
@@ -145,6 +152,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [111, 145],
@@ -158,9 +166,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "precedence1",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSUnionType {
@@ -235,6 +246,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [146, 191],
@@ -248,9 +260,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "precedence2",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSUnionType {
@@ -325,6 +340,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [192, 237],

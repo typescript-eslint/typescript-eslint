@@ -13,9 +13,12 @@ Program {
           TSAbstractMethodDefinition {
             type: "TSAbstractMethodDefinition",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "show",
+              optional: false,
 
               range: [153, 157],
               loc: {
@@ -24,12 +27,14 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: true,
             static: false,
             value: TSEmptyBodyFunctionExpression {
               type: "TSEmptyBodyFunctionExpression",
               async: false,
               body: null,
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -56,9 +61,13 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "SpecializedComponent",
+        optional: false,
 
         range: [88, 108],
         loc: {
@@ -66,9 +75,12 @@ Program {
           end: { column: 35, line: 3 },
         },
       },
+      implements: Array [],
       superClass: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "SomeComponent",
+        optional: false,
 
         range: [117, 130],
         loc: {

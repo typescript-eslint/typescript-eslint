@@ -16,7 +16,9 @@ Program {
             type: "BinaryExpression",
             left: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "k",
+              optional: false,
 
               range: [82, 83],
               loc: {
@@ -49,6 +51,7 @@ Program {
           params: Array [
             Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "k",
               optional: true,
 

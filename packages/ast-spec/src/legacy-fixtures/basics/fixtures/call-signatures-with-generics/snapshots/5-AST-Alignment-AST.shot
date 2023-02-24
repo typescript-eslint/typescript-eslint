@@ -10,9 +10,12 @@ exports[`AST Fixtures legacy-fixtures basics call-signatures-with-generics AST A
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'foo',
+-         optional: false,
 
           range: [78, 81],
           loc: {
@@ -29,7 +32,9 @@ exports[`AST Fixtures legacy-fixtures basics call-signatures-with-generics AST A
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'a',
+-                 optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSStringKeyword {
@@ -83,7 +88,9 @@ exports[`AST Fixtures legacy-fixtures basics call-signatures-with-generics AST A
 -                   in: false,
 -                   name: Identifier {
 -                     type: 'Identifier',
+-                     decorators: Array [],
 -                     name: 'T',
+-                     optional: false,
 -
 -                     range: [89, 90],
 -                     loc: {
@@ -121,7 +128,9 @@ exports[`AST Fixtures legacy-fixtures basics call-signatures-with-generics AST A
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'a',
+-                 optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSStringKeyword {
@@ -175,7 +184,9 @@ exports[`AST Fixtures legacy-fixtures basics call-signatures-with-generics AST A
 -                   in: false,
 -                   name: Identifier {
 -                     type: 'Identifier',
+-                     decorators: Array [],
 -                     name: 'T',
+-                     optional: false,
 -
 -                     range: [119, 120],
 -                     loc: {

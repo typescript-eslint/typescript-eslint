@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [],
@@ -16,9 +17,13 @@ Program {
           end: { column: 43, line: 3 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -26,9 +31,12 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: Array [],
       superClass: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Bar",
+        optional: false,
 
         range: [104, 107],
         loc: {
@@ -43,7 +51,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "C",
+              optional: false,
 
               range: [108, 109],
               loc: {
@@ -62,7 +72,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "D",
+              optional: false,
 
               range: [111, 112],
               loc: {
@@ -92,7 +104,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "C",
+              optional: false,
 
               range: [108, 109],
               loc: {
@@ -111,7 +125,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "D",
+              optional: false,
 
               range: [111, 112],
               loc: {
@@ -143,7 +159,9 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "B",
+                optional: false,
 
                 range: [93, 94],
                 loc: {
@@ -161,7 +179,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "A",
+              optional: false,
 
               range: [83, 84],
               loc: {

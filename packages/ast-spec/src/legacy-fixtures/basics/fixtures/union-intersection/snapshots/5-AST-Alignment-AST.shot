@@ -13,9 +13,12 @@ exports[`AST Fixtures legacy-fixtures basics union-intersection AST Alignment - 
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'union',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSUnionType {
@@ -79,6 +82,7 @@ exports[`AST Fixtures legacy-fixtures basics union-intersection AST Alignment - 
             },
           },
         ],
+-       declare: false,
         kind: 'let',
 
         range: [73, 110],
@@ -92,9 +96,12 @@ exports[`AST Fixtures legacy-fixtures basics union-intersection AST Alignment - 
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'intersection',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSIntersectionType {
@@ -149,6 +156,7 @@ exports[`AST Fixtures legacy-fixtures basics union-intersection AST Alignment - 
             },
           },
         ],
+-       declare: false,
         kind: 'let',
 
         range: [111, 145],
@@ -162,9 +170,12 @@ exports[`AST Fixtures legacy-fixtures basics union-intersection AST Alignment - 
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'precedence1',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSUnionType {
@@ -268,6 +279,7 @@ exports[`AST Fixtures legacy-fixtures basics union-intersection AST Alignment - 
             },
           },
         ],
+-       declare: false,
         kind: 'let',
 
         range: [146, 191],
@@ -281,9 +293,12 @@ exports[`AST Fixtures legacy-fixtures basics union-intersection AST Alignment - 
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'precedence2',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSUnionType {
@@ -387,6 +402,7 @@ exports[`AST Fixtures legacy-fixtures basics union-intersection AST Alignment - 
             },
           },
         ],
+-       declare: false,
         kind: 'let',
 
         range: [192, 237],
@@ -397,9 +413,12 @@ exports[`AST Fixtures legacy-fixtures basics union-intersection AST Alignment - 
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'unionLeading',
+-         optional: false,
 
           range: [244, 256],
           loc: {
@@ -445,9 +464,12 @@ exports[`AST Fixtures legacy-fixtures basics union-intersection AST Alignment - 
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'intersectionLeading',
+-         optional: false,
 
           range: [281, 300],
           loc: {
@@ -493,9 +515,12 @@ exports[`AST Fixtures legacy-fixtures basics union-intersection AST Alignment - 
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'unionLeadingSingle',
+-         optional: false,
 
           range: [325, 343],
           loc: {
@@ -521,9 +546,12 @@ exports[`AST Fixtures legacy-fixtures basics union-intersection AST Alignment - 
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'intersectionLeadingSingle',
+-         optional: false,
 
           range: [359, 384],
           loc: {

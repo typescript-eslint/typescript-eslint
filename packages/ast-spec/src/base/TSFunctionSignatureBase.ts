@@ -5,6 +5,6 @@ import type { BaseNode } from './BaseNode';
 
 export interface TSFunctionSignatureBase extends BaseNode {
   params: Parameter[];
-  returnType?: TSTypeAnnotation;
-  typeParameters?: TSTypeParameterDeclaration;
+  returnType: TSTypeAnnotation | undefined;
+  typeParameters: TSTypeParameterDeclaration | undefined;
 }

@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
@@ -13,6 +14,8 @@ Program {
             type: "AccessorProperty",
             computed: true,
             declare: false,
+            decorators: Array [],
+            definite: false,
             key: Literal {
               type: "Literal",
               raw: "'prop'",
@@ -24,7 +27,9 @@ Program {
                 end: { column: 18, line: 2 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             value: Literal {
               type: "Literal",
@@ -52,9 +57,13 @@ Program {
           end: { column: 1, line: 3 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [6, 9],
         loc: {
@@ -62,6 +71,7 @@ Program {
           end: { column: 9, line: 1 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [0, 44],

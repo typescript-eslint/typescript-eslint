@@ -21,11 +21,14 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
             end: { column: 48, line: 3 },
           },
         },
+-       declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'M',
+-         optional: false,
 
           range: [82, 83],
           loc: {
@@ -36,14 +39,18 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
         params: Array [
           Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'Base',
+-           optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeReference {
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'T',
+-                 optional: false,
 
                   range: [116, 117],
                   loc: {
@@ -87,7 +94,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
 -                     type: 'TSTypeReference',
 -                     typeName: Identifier {
 -                       type: 'Identifier',
+-                       decorators: Array [],
 -                       name: 'M',
+-                       optional: false,
 -
 -                       range: [106, 107],
 -                       loc: {
@@ -112,7 +121,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
 -               },
                 typeName: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'Constructor',
+-                 optional: false,
 
                   range: [94, 105],
                   loc: {
@@ -127,7 +138,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
                       type: 'TSTypeReference',
                       typeName: Identifier {
                         type: 'Identifier',
+-                       decorators: Array [],
                         name: 'M',
+-                       optional: false,
 
                         range: [106, 107],
                         loc: {
@@ -160,7 +173,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [84, 85],
 -               loc: {

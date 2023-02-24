@@ -2,5 +2,98 @@
 
 exports[`AST Fixtures declaration ClassDeclaration decorator-many AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+-       abstract: false,
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [],
+
+          range: [38, 40],
+          loc: {
+            start: { column: 10, line: 3 },
+            end: { column: 12, line: 3 },
+          },
+        },
+-       declare: false,
+        decorators: Array [
+          Decorator {
+            type: 'Decorator',
+            expression: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'decoratorOne',
+-             optional: false,
+
+              range: [1, 13],
+              loc: {
+                start: { column: 1, line: 1 },
+                end: { column: 13, line: 1 },
+              },
+            },
+
+            range: [0, 13],
+            loc: {
+              start: { column: 0, line: 1 },
+              end: { column: 13, line: 1 },
+            },
+          },
+          Decorator {
+            type: 'Decorator',
+            expression: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'decoratorTwo',
+-             optional: false,
+
+              range: [15, 27],
+              loc: {
+                start: { column: 1, line: 2 },
+                end: { column: 13, line: 2 },
+              },
+            },
+
+            range: [14, 27],
+            loc: {
+              start: { column: 0, line: 2 },
+              end: { column: 13, line: 2 },
+            },
+          },
+        ],
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'Foo',
+-         optional: false,
+
+          range: [34, 37],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 9, line: 3 },
+          },
+        },
+-       implements: Array [],
+        superClass: null,
+
+        range: [0, 40],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 12, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 41],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 4 },
+    },
+  }"
 `;

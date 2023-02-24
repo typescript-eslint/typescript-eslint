@@ -10,6 +10,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-modifier
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
@@ -17,9 +18,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-modifier
               type: 'MethodDefinition',
               accessibility: 'protected',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'constructor',
+-               optional: false,
 
                 range: [95, 106],
                 loc: {
@@ -28,6 +32,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-modifier
                 },
               },
               kind: 'constructor',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -43,6 +48,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-modifier
                     end: { column: 28, line: 4 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -65,6 +71,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-modifier
               type: 'MethodDefinition',
               accessibility: 'public',
               computed: true,
+-             decorators: Array [],
               key: Literal {
                 type: 'Literal',
                 raw: '\\\\'constructor\\\\'',
@@ -77,6 +84,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-modifier
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -92,6 +100,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-modifier
                     end: { column: 29, line: 6 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -118,9 +127,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-modifier
             end: { column: 1, line: 7 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'C',
+-         optional: false,
 
           range: [79, 80],
           loc: {
@@ -128,6 +141,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-modifier
             end: { column: 7, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 144],

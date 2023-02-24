@@ -6,9 +6,12 @@ Program {
   body: Array [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "EnthusiasticGreeting",
+        optional: false,
 
         range: [78, 98],
         loc: {
@@ -100,7 +103,9 @@ Program {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "T",
+                    optional: false,
 
                     range: [134, 135],
                     loc: {
@@ -125,7 +130,9 @@ Program {
             },
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "Uppercase",
+              optional: false,
 
               range: [124, 133],
               loc: {
@@ -140,7 +147,9 @@ Program {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "T",
+                    optional: false,
 
                     range: [134, 135],
                     loc: {
@@ -179,7 +188,9 @@ Program {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "T",
+                    optional: false,
 
                     range: [152, 153],
                     loc: {
@@ -204,7 +215,9 @@ Program {
             },
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "Lowercase",
+              optional: false,
 
               range: [142, 151],
               loc: {
@@ -219,7 +232,9 @@ Program {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "T",
+                    optional: false,
 
                     range: [152, 153],
                     loc: {
@@ -258,7 +273,9 @@ Program {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "T",
+                    optional: false,
 
                     range: [171, 172],
                     loc: {
@@ -283,7 +300,9 @@ Program {
             },
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "Capitalize",
+              optional: false,
 
               range: [160, 170],
               loc: {
@@ -298,7 +317,9 @@ Program {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "T",
+                    optional: false,
 
                     range: [171, 172],
                     loc: {
@@ -337,7 +358,9 @@ Program {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "T",
+                    optional: false,
 
                     range: [192, 193],
                     loc: {
@@ -362,7 +385,9 @@ Program {
             },
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "Uncapitalize",
+              optional: false,
 
               range: [179, 191],
               loc: {
@@ -377,7 +402,9 @@ Program {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "T",
+                    optional: false,
 
                     range: [192, 193],
                     loc: {
@@ -432,7 +459,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [99, 100],
               loc: {
@@ -465,9 +494,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "HELLO",
+        optional: false,
 
         range: [203, 208],
         loc: {
@@ -510,7 +542,9 @@ Program {
         },
         typeName: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "EnthusiasticGreeting",
+          optional: false,
 
           range: [211, 231],
           loc: {

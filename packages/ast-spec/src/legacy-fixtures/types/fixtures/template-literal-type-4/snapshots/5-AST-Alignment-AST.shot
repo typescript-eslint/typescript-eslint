@@ -10,9 +10,12 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'EnthusiasticGreeting',
+-         optional: false,
 
           range: [78, 98],
           loc: {
@@ -54,6 +57,20 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -               'cooked': ' - ',
 -               'raw': ' - ',
 -             },
+-
+-             range: [136, 142],
+-             loc: {
+-               start: { column: 17, line: 4 },
+-               end: { column: 23, line: 4 },
+-             },
+-           },
+-           TemplateElement {
+-             type: 'TemplateElement',
+-             tail: false,
+-             value: Object {
+-               'cooked': ' - ',
+-               'raw': ' - ',
+-             },
 +                 range: [124, 133],
 +                 loc: {
 +                   start: { column: 5, line: 4 },
@@ -69,20 +86,6 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 +                       type: 'Identifier',
 +                       name: 'T',
 
--             range: [136, 142],
--             loc: {
--               start: { column: 17, line: 4 },
--               end: { column: 23, line: 4 },
--             },
--           },
--           TemplateElement {
--             type: 'TemplateElement',
--             tail: false,
--             value: Object {
--               'cooked': ' - ',
--               'raw': ' - ',
--             },
--
 -             range: [154, 160],
 -             loc: {
 -               start: { column: 35, line: 4 },
@@ -134,7 +137,9 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -                   type: 'TSTypeReference',
 -                   typeName: Identifier {
 -                     type: 'Identifier',
+-                     decorators: Array [],
 -                     name: 'T',
+-                     optional: false,
 -
                       range: [134, 135],
                       loc: {
@@ -164,7 +169,9 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -             },
 -             typeName: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'Uppercase',
+-               optional: false,
 
 -               range: [124, 133],
 +               range: [124, 136],
@@ -181,20 +188,22 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -                   type: 'TSTypeReference',
 -                   typeName: Identifier {
 -                     type: 'Identifier',
+-                     decorators: Array [],
 -                     name: 'T',
--
--                     range: [134, 135],
--                     loc: {
--                       start: { column: 15, line: 4 },
--                       end: { column: 16, line: 4 },
--                     },
--                   },
+-                     optional: false,
 +             TSTypeReference {
 +               type: 'TSTypeReference',
 +               typeName: Identifier {
 +                 type: 'Identifier',
 +                 name: 'Lowercase',
 
+-                     range: [134, 135],
+-                     loc: {
+-                       start: { column: 15, line: 4 },
+-                       end: { column: 16, line: 4 },
+-                     },
+-                   },
+-
 -                   range: [134, 135],
 -                   loc: {
 -                     start: { column: 15, line: 4 },
@@ -237,7 +246,9 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -                   type: 'TSTypeReference',
 -                   typeName: Identifier {
 -                     type: 'Identifier',
+-                     decorators: Array [],
 -                     name: 'T',
+-                     optional: false,
 +                       range: [152, 153],
 +                       loc: {
 +                         start: { column: 33, line: 4 },
@@ -273,7 +284,9 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -             },
 -             typeName: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'Lowercase',
+-               optional: false,
 
 -               range: [142, 151],
 +               range: [142, 154],
@@ -290,7 +303,9 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -                   type: 'TSTypeReference',
 -                   typeName: Identifier {
 -                     type: 'Identifier',
+-                     decorators: Array [],
 -                     name: 'T',
+-                     optional: false,
 -
 -                     range: [152, 153],
 -                     loc: {
@@ -346,7 +361,9 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -                   type: 'TSTypeReference',
 -                   typeName: Identifier {
 -                     type: 'Identifier',
+-                     decorators: Array [],
 -                     name: 'T',
+-                     optional: false,
 +                       range: [171, 172],
 +                       loc: {
 +                         start: { column: 52, line: 4 },
@@ -382,7 +399,9 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -             },
 -             typeName: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'Capitalize',
+-               optional: false,
 
 -               range: [160, 170],
 +               range: [160, 173],
@@ -399,20 +418,22 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -                   type: 'TSTypeReference',
 -                   typeName: Identifier {
 -                     type: 'Identifier',
+-                     decorators: Array [],
 -                     name: 'T',
--
--                     range: [171, 172],
--                     loc: {
--                       start: { column: 52, line: 4 },
--                       end: { column: 53, line: 4 },
--                     },
--                   },
+-                     optional: false,
 +             TSTypeReference {
 +               type: 'TSTypeReference',
 +               typeName: Identifier {
 +                 type: 'Identifier',
 +                 name: 'Uncapitalize',
 
+-                     range: [171, 172],
+-                     loc: {
+-                       start: { column: 52, line: 4 },
+-                       end: { column: 53, line: 4 },
+-                     },
+-                   },
+-
 -                   range: [171, 172],
 -                   loc: {
 -                     start: { column: 52, line: 4 },
@@ -455,7 +476,9 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -                   type: 'TSTypeReference',
 -                   typeName: Identifier {
 -                     type: 'Identifier',
+-                     decorators: Array [],
 -                     name: 'T',
+-                     optional: false,
 +                       range: [192, 193],
 +                       loc: {
 +                         start: { column: 73, line: 4 },
@@ -494,7 +517,9 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
               },
 -             typeName: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'Uncapitalize',
+-               optional: false,
 +           ],
 +           quasis: Array [
 +             TemplateElement {
@@ -521,7 +546,9 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -                   type: 'TSTypeReference',
 -                   typeName: Identifier {
 -                     type: 'Identifier',
+-                     decorators: Array [],
 -                     name: 'T',
+-                     optional: false,
 +             TemplateElement {
 +               type: 'TemplateElement',
 +               tail: false,
@@ -631,7 +658,9 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [99, 100],
 -               loc: {
@@ -665,9 +694,12 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'HELLO',
+-         optional: false,
 
           range: [203, 208],
           loc: {
@@ -710,7 +742,9 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -         },
           typeName: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'EnthusiasticGreeting',
+-           optional: false,
 
             range: [211, 231],
             loc: {

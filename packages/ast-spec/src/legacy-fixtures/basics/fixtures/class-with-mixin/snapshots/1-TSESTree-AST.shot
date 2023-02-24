@@ -14,6 +14,7 @@ Program {
             type: "ReturnStatement",
             argument: ClassExpression {
               type: "ClassExpression",
+              abstract: false,
               body: ClassBody {
                 type: "ClassBody",
                 body: Array [],
@@ -24,10 +25,15 @@ Program {
                   end: { column: 30, line: 4 },
                 },
               },
+              declare: false,
+              decorators: Array [],
               id: null,
+              implements: Array [],
               superClass: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "Base",
+                optional: false,
 
                 range: [145, 149],
                 loc: {
@@ -57,11 +63,14 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "M",
+        optional: false,
 
         range: [82, 83],
         loc: {
@@ -72,14 +81,18 @@ Program {
       params: Array [
         Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "Base",
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "T",
+                optional: false,
 
                 range: [117, 118],
                 loc: {
@@ -139,7 +152,9 @@ Program {
               },
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "Constructor",
+                optional: false,
 
                 range: [94, 105],
                 loc: {
@@ -178,7 +193,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [84, 85],
               loc: {
@@ -211,6 +228,7 @@ Program {
     },
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [],
@@ -221,9 +239,13 @@ Program {
           end: { column: 41, line: 7 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "X",
+        optional: false,
 
         range: [163, 164],
         loc: {
@@ -236,7 +258,9 @@ Program {
           type: "TSClassImplements",
           expression: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "I",
+            optional: false,
 
             range: [194, 195],
             loc: {
@@ -257,7 +281,9 @@ Program {
         arguments: Array [
           Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "C",
+            optional: false,
 
             range: [180, 181],
             loc: {
@@ -268,7 +294,9 @@ Program {
         ],
         callee: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "M",
+          optional: false,
 
           range: [173, 174],
           loc: {
@@ -333,6 +361,7 @@ Program {
     },
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [],
@@ -343,9 +372,13 @@ Program {
           end: { column: 10, line: 9 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "C",
+        optional: false,
 
         range: [206, 207],
         loc: {
@@ -353,6 +386,7 @@ Program {
           end: { column: 7, line: 9 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [200, 210],
@@ -373,9 +407,13 @@ Program {
           end: { column: 14, line: 10 },
         },
       },
+      declare: false,
+      extends: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "I",
+        optional: false,
 
         range: [221, 222],
         loc: {
@@ -392,9 +430,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Constructor",
+        optional: false,
 
         range: [231, 242],
         loc: {
@@ -410,7 +451,9 @@ Program {
             type: "RestElement",
             argument: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "args",
+              optional: false,
 
               range: [256, 260],
               loc: {
@@ -418,6 +461,8 @@ Program {
                 end: { column: 34, line: 11 },
               },
             },
+            decorators: Array [],
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSArrayType {
@@ -459,7 +504,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [272, 273],
               loc: {
@@ -496,7 +543,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [243, 244],
               loc: {

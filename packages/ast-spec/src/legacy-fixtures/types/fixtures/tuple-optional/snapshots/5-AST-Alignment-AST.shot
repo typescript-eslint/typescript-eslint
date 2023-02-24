@@ -13,9 +13,12 @@ exports[`AST Fixtures legacy-fixtures types tuple-optional AST Alignment - AST 1
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'x',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTupleType {
@@ -146,6 +149,7 @@ exports[`AST Fixtures legacy-fixtures types tuple-optional AST Alignment - AST 1
             },
           },
         ],
+-       declare: false,
         kind: 'let',
 
         range: [73, 118],

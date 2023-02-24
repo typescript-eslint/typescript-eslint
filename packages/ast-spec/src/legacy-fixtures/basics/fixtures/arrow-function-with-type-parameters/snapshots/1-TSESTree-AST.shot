@@ -16,7 +16,9 @@ Program {
               type: "ReturnStatement",
               argument: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "b",
+                optional: false,
 
                 range: [100, 101],
                 loc: {
@@ -45,14 +47,18 @@ Program {
         params: Array [
           Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "b",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "X",
+                  optional: false,
 
                   range: [80, 81],
                   loc: {
@@ -88,7 +94,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "X",
+              optional: false,
 
               range: [84, 85],
               loc: {
@@ -118,7 +126,9 @@ Program {
               in: false,
               name: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "X",
+                optional: false,
 
                 range: [74, 75],
                 loc: {

@@ -9,9 +9,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "foo",
+            optional: false,
 
             range: [79, 82],
             loc: {
@@ -27,7 +30,9 @@ Program {
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "constructor",
+                  optional: false,
 
                   range: [89, 100],
                   loc: {
@@ -37,6 +42,7 @@ Program {
                 },
                 kind: "init",
                 method: true,
+                optional: false,
                 shorthand: false,
                 value: FunctionExpression {
                   type: "FunctionExpression",
@@ -72,6 +78,7 @@ Program {
                       end: { column: 3, line: 6 },
                     },
                   },
+                  declare: false,
                   expression: false,
                   generator: false,
                   id: null,
@@ -102,7 +109,9 @@ Program {
                         in: false,
                         name: Identifier {
                           type: "Identifier",
+                          decorators: Array [],
                           name: "T",
+                          optional: false,
 
                           range: [101, 102],
                           loc: {
@@ -145,7 +154,9 @@ Program {
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "foo",
+                  optional: false,
 
                   range: [137, 140],
                   loc: {
@@ -155,6 +166,7 @@ Program {
                 },
                 kind: "init",
                 method: true,
+                optional: false,
                 shorthand: false,
                 value: FunctionExpression {
                   type: "FunctionExpression",
@@ -190,6 +202,7 @@ Program {
                       end: { column: 3, line: 9 },
                     },
                   },
+                  declare: false,
                   expression: false,
                   generator: false,
                   id: null,
@@ -220,7 +233,9 @@ Program {
                         in: false,
                         name: Identifier {
                           type: "Identifier",
+                          decorators: Array [],
                           name: "T",
+                          optional: false,
 
                           range: [141, 142],
                           loc: {
@@ -263,7 +278,9 @@ Program {
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "a",
+                  optional: false,
 
                   range: [181, 182],
                   loc: {
@@ -273,6 +290,7 @@ Program {
                 },
                 kind: "get",
                 method: false,
+                optional: false,
                 shorthand: false,
                 value: FunctionExpression {
                   type: "FunctionExpression",
@@ -308,6 +326,7 @@ Program {
                       end: { column: 3, line: 12 },
                     },
                   },
+                  declare: false,
                   expression: false,
                   generator: false,
                   id: null,
@@ -349,7 +368,9 @@ Program {
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "a",
+                  optional: false,
 
                   range: [220, 221],
                   loc: {
@@ -359,6 +380,7 @@ Program {
                 },
                 kind: "set",
                 method: false,
+                optional: false,
                 shorthand: false,
                 value: FunctionExpression {
                   type: "FunctionExpression",
@@ -373,13 +395,16 @@ Program {
                       end: { column: 29, line: 13 },
                     },
                   },
+                  declare: false,
                   expression: false,
                   generator: false,
                   id: null,
                   params: Array [
                     Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "x",
+                      optional: false,
                       typeAnnotation: TSTypeAnnotation {
                         type: "TSTypeAnnotation",
                         typeAnnotation: TSNumberKeyword {
@@ -454,6 +479,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [73, 247],

@@ -2,5 +2,85 @@
 
 exports[`AST Fixtures legacy-fixtures types reference AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'x',
+-             optional: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSTypeReference {
+                  type: 'TSTypeReference',
+                  typeName: Identifier {
+                    type: 'Identifier',
+-                   decorators: Array [],
+                    name: 'T',
+-                   optional: false,
+
+                    range: [80, 81],
+                    loc: {
+                      start: { column: 7, line: 3 },
+                      end: { column: 8, line: 3 },
+                    },
+                  },
+
+                  range: [80, 81],
+                  loc: {
+                    start: { column: 7, line: 3 },
+                    end: { column: 8, line: 3 },
+                  },
+                },
+
+                range: [78, 81],
+                loc: {
+                  start: { column: 5, line: 3 },
+                  end: { column: 8, line: 3 },
+                },
+              },
+
+              range: [77, 81],
+              loc: {
+                start: { column: 4, line: 3 },
+                end: { column: 8, line: 3 },
+              },
+            },
+            init: null,
+
+            range: [77, 81],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 8, line: 3 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'let',
+
+        range: [73, 82],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 83],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
 `;

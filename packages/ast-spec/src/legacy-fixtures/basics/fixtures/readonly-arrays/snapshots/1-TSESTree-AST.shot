@@ -20,7 +20,9 @@ Program {
                 computed: false,
                 object: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "arr",
+                  optional: false,
 
                   range: [118, 121],
                   loc: {
@@ -31,7 +33,9 @@ Program {
                 optional: false,
                 property: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "slice",
+                  optional: false,
 
                   range: [122, 127],
                   loc: {
@@ -83,7 +87,9 @@ Program {
                 computed: false,
                 object: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "arr",
+                  optional: false,
 
                   range: [141, 144],
                   loc: {
@@ -94,7 +100,9 @@ Program {
                 optional: false,
                 property: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "push",
+                  optional: false,
 
                   range: [145, 149],
                   loc: {
@@ -132,11 +140,14 @@ Program {
           end: { column: 1, line: 6 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "foo",
+        optional: false,
 
         range: [82, 85],
         loc: {
@@ -147,7 +158,9 @@ Program {
       params: Array [
         Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "arr",
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSTypeReference {
@@ -174,7 +187,9 @@ Program {
               },
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "ReadonlyArray",
+                optional: false,
 
                 range: [91, 104],
                 loc: {
@@ -247,7 +262,9 @@ Program {
                 computed: false,
                 object: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "arr",
+                  optional: false,
 
                   range: [215, 218],
                   loc: {
@@ -258,7 +275,9 @@ Program {
                 optional: false,
                 property: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "slice",
+                  optional: false,
 
                   range: [219, 224],
                   loc: {
@@ -310,7 +329,9 @@ Program {
                 computed: false,
                 object: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "arr",
+                  optional: false,
 
                   range: [238, 241],
                   loc: {
@@ -321,7 +342,9 @@ Program {
                 optional: false,
                 property: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "push",
+                  optional: false,
 
                   range: [242, 246],
                   loc: {
@@ -359,11 +382,14 @@ Program {
           end: { column: 1, line: 11 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "foo",
+        optional: false,
 
         range: [183, 186],
         loc: {
@@ -374,7 +400,9 @@ Program {
       params: Array [
         Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "arr",
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSTypeOperator {
