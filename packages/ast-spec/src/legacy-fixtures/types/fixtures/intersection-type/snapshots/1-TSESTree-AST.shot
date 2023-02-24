@@ -68,6 +68,38 @@ Program {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSTypeReference {
                     type: "TSTypeReference",
+                    typeArguments: TSTypeParameterInstantiation {
+                      type: "TSTypeParameterInstantiation",
+                      params: Array [
+                        TSTypeReference {
+                          type: "TSTypeReference",
+                          typeName: Identifier {
+                            type: "Identifier",
+                            decorators: Array [],
+                            name: "T",
+                            optional: false,
+
+                            range: [117, 118],
+                            loc: {
+                              start: { column: 44, line: 3 },
+                              end: { column: 45, line: 3 },
+                            },
+                          },
+
+                          range: [117, 118],
+                          loc: {
+                            start: { column: 44, line: 3 },
+                            end: { column: 45, line: 3 },
+                          },
+                        },
+                      ],
+
+                      range: [116, 119],
+                      loc: {
+                        start: { column: 43, line: 3 },
+                        end: { column: 46, line: 3 },
+                      },
+                    },
                     typeName: Identifier {
                       type: "Identifier",
                       decorators: Array [],

@@ -363,6 +363,7 @@ export default util.createRule<Options, MessageIds>({
           declare: false,
           decorators: [],
           implements: [],
+          superTypeArguments: undefined,
           superTypeParameters: undefined,
           typeParameters: undefined,
 
@@ -472,6 +473,7 @@ export default util.createRule<Options, MessageIds>({
           selfClosing: false,
           name: name as any,
           attributes: attributes as any,
+          typeArguments: undefined,
           typeParameters: undefined,
 
           // location data

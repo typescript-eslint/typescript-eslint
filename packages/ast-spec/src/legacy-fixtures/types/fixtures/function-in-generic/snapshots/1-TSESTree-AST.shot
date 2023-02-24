@@ -19,6 +19,45 @@ Program {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypeReference {
                 type: "TSTypeReference",
+                typeArguments: TSTypeParameterInstantiation {
+                  type: "TSTypeParameterInstantiation",
+                  params: Array [
+                    TSFunctionType {
+                      type: "TSFunctionType",
+                      params: Array [],
+                      returnType: TSTypeAnnotation {
+                        type: "TSTypeAnnotation",
+                        typeAnnotation: TSVoidKeyword {
+                          type: "TSVoidKeyword",
+
+                          range: [92, 96],
+                          loc: {
+                            start: { column: 19, line: 3 },
+                            end: { column: 23, line: 3 },
+                          },
+                        },
+
+                        range: [89, 96],
+                        loc: {
+                          start: { column: 16, line: 3 },
+                          end: { column: 23, line: 3 },
+                        },
+                      },
+
+                      range: [86, 96],
+                      loc: {
+                        start: { column: 13, line: 3 },
+                        end: { column: 23, line: 3 },
+                      },
+                    },
+                  ],
+
+                  range: [85, 97],
+                  loc: {
+                    start: { column: 12, line: 3 },
+                    end: { column: 24, line: 3 },
+                  },
+                },
                 typeName: Identifier {
                   type: "Identifier",
                   decorators: Array [],

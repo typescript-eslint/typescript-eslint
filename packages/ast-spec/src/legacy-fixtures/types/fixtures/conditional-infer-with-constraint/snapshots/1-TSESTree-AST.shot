@@ -105,6 +105,38 @@ Program {
         },
         trueType: TSTypeReference {
           type: "TSTypeReference",
+          typeArguments: TSTypeParameterInstantiation {
+            type: "TSTypeParameterInstantiation",
+            params: Array [
+              TSTypeReference {
+                type: "TSTypeReference",
+                typeName: Identifier {
+                  type: "Identifier",
+                  decorators: Array [],
+                  name: "U",
+                  optional: false,
+
+                  range: [136, 137],
+                  loc: {
+                    start: { column: 63, line: 3 },
+                    end: { column: 64, line: 3 },
+                  },
+                },
+
+                range: [136, 137],
+                loc: {
+                  start: { column: 63, line: 3 },
+                  end: { column: 64, line: 3 },
+                },
+              },
+            ],
+
+            range: [135, 138],
+            loc: {
+              start: { column: 62, line: 3 },
+              end: { column: 65, line: 3 },
+            },
+          },
           typeName: Identifier {
             type: "Identifier",
             decorators: Array [],
@@ -346,6 +378,38 @@ Program {
         },
         trueType: TSTypeReference {
           type: "TSTypeReference",
+          typeArguments: TSTypeParameterInstantiation {
+            type: "TSTypeParameterInstantiation",
+            params: Array [
+              TSTypeReference {
+                type: "TSTypeReference",
+                typeName: Identifier {
+                  type: "Identifier",
+                  decorators: Array [],
+                  name: "U",
+                  optional: false,
+
+                  range: [237, 238],
+                  loc: {
+                    start: { column: 17, line: 5 },
+                    end: { column: 18, line: 5 },
+                  },
+                },
+
+                range: [237, 238],
+                loc: {
+                  start: { column: 17, line: 5 },
+                  end: { column: 18, line: 5 },
+                },
+              },
+            ],
+
+            range: [236, 239],
+            loc: {
+              start: { column: 16, line: 5 },
+              end: { column: 19, line: 5 },
+            },
+          },
           typeName: Identifier {
             type: "Identifier",
             decorators: Array [],
@@ -578,6 +642,38 @@ Program {
         },
         trueType: TSTypeReference {
           type: "TSTypeReference",
+          typeArguments: TSTypeParameterInstantiation {
+            type: "TSTypeParameterInstantiation",
+            params: Array [
+              TSTypeReference {
+                type: "TSTypeReference",
+                typeName: Identifier {
+                  type: "Identifier",
+                  decorators: Array [],
+                  name: "U",
+                  optional: false,
+
+                  range: [325, 326],
+                  loc: {
+                    start: { column: 17, line: 8 },
+                    end: { column: 18, line: 8 },
+                  },
+                },
+
+                range: [325, 326],
+                loc: {
+                  start: { column: 17, line: 8 },
+                  end: { column: 18, line: 8 },
+                },
+              },
+            ],
+
+            range: [324, 327],
+            loc: {
+              start: { column: 16, line: 8 },
+              end: { column: 19, line: 8 },
+            },
+          },
           typeName: Identifier {
             type: "Identifier",
             decorators: Array [],
@@ -810,6 +906,38 @@ Program {
         },
         trueType: TSTypeReference {
           type: "TSTypeReference",
+          typeArguments: TSTypeParameterInstantiation {
+            type: "TSTypeParameterInstantiation",
+            params: Array [
+              TSTypeReference {
+                type: "TSTypeReference",
+                typeName: Identifier {
+                  type: "Identifier",
+                  decorators: Array [],
+                  name: "U",
+                  optional: false,
+
+                  range: [413, 414],
+                  loc: {
+                    start: { column: 17, line: 11 },
+                    end: { column: 18, line: 11 },
+                  },
+                },
+
+                range: [413, 414],
+                loc: {
+                  start: { column: 17, line: 11 },
+                  end: { column: 18, line: 11 },
+                },
+              },
+            ],
+
+            range: [412, 415],
+            loc: {
+              start: { column: 16, line: 11 },
+              end: { column: 19, line: 11 },
+            },
+          },
           typeName: Identifier {
             type: "Identifier",
             decorators: Array [],

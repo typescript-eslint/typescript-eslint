@@ -46,6 +46,35 @@ exports[`AST Fixtures legacy-fixtures basics symbol-type-param AST Alignment - A
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeReference {
                 type: 'TSTypeReference',
+-               typeArguments: TSTypeParameterInstantiation {
+-                 type: 'TSTypeParameterInstantiation',
+-                 params: Array [
+-                   TSSymbolKeyword {
+-                     type: 'TSSymbolKeyword',
+-
+-                     range: [96, 102],
+-                     loc: {
+-                       start: { column: 23, line: 3 },
+-                       end: { column: 29, line: 3 },
+-                     },
+-                   },
+-                   TSStringKeyword {
+-                     type: 'TSStringKeyword',
+-
+-                     range: [104, 110],
+-                     loc: {
+-                       start: { column: 31, line: 3 },
+-                       end: { column: 37, line: 3 },
+-                     },
+-                   },
+-                 ],
+-
+-                 range: [95, 111],
+-                 loc: {
+-                   start: { column: 22, line: 3 },
+-                   end: { column: 38, line: 3 },
+-                 },
+-               },
                 typeName: Identifier {
                   type: 'Identifier',
 -                 decorators: Array [],

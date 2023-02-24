@@ -44,6 +44,38 @@ Program {
           end: { column: 24, line: 3 },
         },
       },
+      superTypeArguments: TSTypeParameterInstantiation {
+        type: "TSTypeParameterInstantiation",
+        params: Array [
+          TSTypeReference {
+            type: "TSTypeReference",
+            typeName: Identifier {
+              type: "Identifier",
+              decorators: Array [],
+              name: "B",
+              optional: false,
+
+              range: [98, 99],
+              loc: {
+                start: { column: 25, line: 3 },
+                end: { column: 26, line: 3 },
+              },
+            },
+
+            range: [98, 99],
+            loc: {
+              start: { column: 25, line: 3 },
+              end: { column: 26, line: 3 },
+            },
+          },
+        ],
+
+        range: [97, 100],
+        loc: {
+          start: { column: 24, line: 3 },
+          end: { column: 27, line: 3 },
+        },
+      },
       superTypeParameters: TSTypeParameterInstantiation {
         type: "TSTypeParameterInstantiation",
         params: Array [

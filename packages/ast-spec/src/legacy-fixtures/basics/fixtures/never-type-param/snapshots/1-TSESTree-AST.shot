@@ -19,6 +19,26 @@ Program {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypeReference {
                 type: "TSTypeReference",
+                typeArguments: TSTypeParameterInstantiation {
+                  type: "TSTypeParameterInstantiation",
+                  params: Array [
+                    TSNeverKeyword {
+                      type: "TSNeverKeyword",
+
+                      range: [82, 87],
+                      loc: {
+                        start: { column: 9, line: 3 },
+                        end: { column: 14, line: 3 },
+                      },
+                    },
+                  ],
+
+                  range: [81, 88],
+                  loc: {
+                    start: { column: 8, line: 3 },
+                    end: { column: 15, line: 3 },
+                  },
+                },
                 typeName: Identifier {
                   type: "Identifier",
                   decorators: Array [],
@@ -131,6 +151,26 @@ Program {
           },
         },
         optional: false,
+        typeArguments: TSTypeParameterInstantiation {
+          type: "TSTypeParameterInstantiation",
+          params: Array [
+            TSNeverKeyword {
+              type: "TSNeverKeyword",
+
+              range: [107, 112],
+              loc: {
+                start: { column: 17, line: 4 },
+                end: { column: 22, line: 4 },
+              },
+            },
+          ],
+
+          range: [106, 113],
+          loc: {
+            start: { column: 16, line: 4 },
+            end: { column: 23, line: 4 },
+          },
+        },
         typeParameters: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
           params: Array [

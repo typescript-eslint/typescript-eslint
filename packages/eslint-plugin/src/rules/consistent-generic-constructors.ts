@@ -74,10 +74,10 @@ export default createRule<Options, MessageIds>({
           return;
         }
         if (mode === 'type-annotation') {
-          if (!lhs && rhs.typeParameters) {
-            const { typeParameters, callee } = rhs;
+          if (!lhs && rhs.typeArguments) {
+            const { typeArguments, callee } = rhs;
             const typeAnnotation =
-              sourceCode.getText(callee) + sourceCode.getText(typeParameters);
+              sourceCode.getText(callee) + sourceCode.getText(typeArguments);
             context.report({
               node,
               messageId: 'preferTypeAnnotation',
@@ -96,7 +96,7 @@ export default createRule<Options, MessageIds>({
                   return sourceCode.getTokenAfter(node.key)!;
                 }
                 return [
-                  fixer.remove(typeParameters),
+                  fixer.remove(typeArguments),
                   fixer.insertTextAfter(
                     getIDToAttachAnnotation(),
                     ': ' + typeAnnotation,
@@ -108,14 +108,14 @@ export default createRule<Options, MessageIds>({
           return;
         }
         if (mode === 'constructor') {
-          if (lhs?.typeParameters && !rhs.typeParameters) {
+          if (lhs?.typeArguments && !rhs.typeArguments) {
             const hasParens =
               sourceCode.getTokenAfter(rhs.callee)?.value === '(';
             const extraComments = new Set(
               sourceCode.getCommentsInside(lhs.parent),
             );
             sourceCode
-              .getCommentsInside(lhs.typeParameters)
+              .getCommentsInside(lhs.typeArguments)
               .forEach(c => extraComments.delete(c));
             context.report({
               node,
@@ -130,7 +130,7 @@ export default createRule<Options, MessageIds>({
                 }
                 yield fixer.insertTextAfter(
                   rhs.callee,
-                  sourceCode.getText(lhs.typeParameters),
+                  sourceCode.getText(lhs.typeArguments),
                 );
                 if (!hasParens) {
                   yield fixer.insertTextAfter(rhs.callee, '()');

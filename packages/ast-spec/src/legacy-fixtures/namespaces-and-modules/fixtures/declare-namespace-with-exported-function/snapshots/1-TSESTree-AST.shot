@@ -66,6 +66,26 @@ Program {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSTypeReference {
                   type: "TSTypeReference",
+                  typeArguments: TSTypeParameterInstantiation {
+                    type: "TSTypeParameterInstantiation",
+                    params: Array [
+                      TSAnyKeyword {
+                        type: "TSAnyKeyword",
+
+                        range: [150, 153],
+                        loc: {
+                          start: { column: 54, line: 4 },
+                          end: { column: 57, line: 4 },
+                        },
+                      },
+                    ],
+
+                    range: [149, 154],
+                    loc: {
+                      start: { column: 53, line: 4 },
+                      end: { column: 58, line: 4 },
+                    },
+                  },
                   typeName: Identifier {
                     type: "Identifier",
                     decorators: Array [],
