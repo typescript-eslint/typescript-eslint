@@ -1,7 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
-import { isTypeFlagSet, isUnionOrIntersectionType } from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -299,22 +298,24 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        if (isUnionOrIntersectionType(type)) {
+        if (tsutils.isUnionOrIntersectionType(type)) {
           if (
             ignorePrimitives?.string &&
-            type.types.some(t => isTypeFlagSet(t, ts.TypeFlags.String))
+            type.types.some(t => tsutils.isTypeFlagSet(t, ts.TypeFlags.String))
           ) {
             return;
           }
           if (
             ignorePrimitives?.boolean &&
-            type.types.some(t => isTypeFlagSet(t, ts.TypeFlags.BooleanLiteral))
+            type.types.some(t =>
+              tsutils.isTypeFlagSet(t, ts.TypeFlags.BooleanLiteral),
+            )
           ) {
             return;
           }
           if (
             ignorePrimitives?.number &&
-            type.types.some(t => isTypeFlagSet(t, ts.TypeFlags.Number))
+            type.types.some(t => tsutils.isTypeFlagSet(t, ts.TypeFlags.Number))
           ) {
             return;
           }
