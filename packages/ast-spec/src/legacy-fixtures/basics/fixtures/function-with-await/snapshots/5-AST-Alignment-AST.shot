@@ -2,5 +2,99 @@
 
 exports[`AST Fixtures legacy-fixtures basics function-with-await AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      FunctionDeclaration {
+        type: 'FunctionDeclaration',
+        async: true,
+        body: BlockStatement {
+          type: 'BlockStatement',
+          body: Array [
+            ExpressionStatement {
+              type: 'ExpressionStatement',
+              expression: AwaitExpression {
+                type: 'AwaitExpression',
+                argument: Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'future',
+-                 optional: false,
+
+                  range: [111, 117],
+                  loc: {
+                    start: { column: 8, line: 4 },
+                    end: { column: 14, line: 4 },
+                  },
+                },
+
+                range: [105, 117],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 14, line: 4 },
+                },
+              },
+
+              range: [105, 118],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 15, line: 4 },
+              },
+            },
+          ],
+
+          range: [101, 120],
+          loc: {
+            start: { column: 28, line: 3 },
+            end: { column: 1, line: 5 },
+          },
+        },
+-       declare: false,
+        expression: false,
+        generator: false,
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'hope',
+-         optional: false,
+
+          range: [88, 92],
+          loc: {
+            start: { column: 15, line: 3 },
+            end: { column: 19, line: 3 },
+          },
+        },
+        params: Array [
+          Identifier {
+            type: 'Identifier',
+-           decorators: Array [],
+            name: 'future',
+-           optional: false,
+
+            range: [93, 99],
+            loc: {
+              start: { column: 20, line: 3 },
+              end: { column: 26, line: 3 },
+            },
+          },
+        ],
+
+        range: [73, 120],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 121],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 6 },
+    },
+  }"
 `;

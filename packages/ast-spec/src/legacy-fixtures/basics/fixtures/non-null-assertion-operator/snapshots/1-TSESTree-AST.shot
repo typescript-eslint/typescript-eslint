@@ -17,7 +17,9 @@ Program {
               arguments: Array [
                 Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "e",
+                  optional: false,
 
                   range: [127, 128],
                   loc: {
@@ -28,7 +30,9 @@ Program {
               ],
               callee: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "validateEntity",
+                optional: false,
 
                 range: [112, 126],
                 loc: {
@@ -56,9 +60,12 @@ Program {
             declarations: Array [
               VariableDeclarator {
                 type: "VariableDeclarator",
+                definite: false,
                 id: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "s",
+                  optional: false,
 
                   range: [137, 138],
                   loc: {
@@ -73,7 +80,9 @@ Program {
                     type: "TSNonNullExpression",
                     expression: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "e",
+                      optional: false,
 
                       range: [141, 142],
                       loc: {
@@ -91,7 +100,9 @@ Program {
                   optional: false,
                   property: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "name",
+                    optional: false,
 
                     range: [144, 148],
                     loc: {
@@ -114,6 +125,7 @@ Program {
                 },
               },
             ],
+            declare: false,
             kind: "let",
 
             range: [133, 149],
@@ -130,11 +142,14 @@ Program {
           end: { column: 1, line: 6 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "processEntity",
+        optional: false,
 
         range: [82, 95],
         loc: {
@@ -145,6 +160,7 @@ Program {
       params: Array [
         Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "e",
           optional: true,
           typeAnnotation: TSTypeAnnotation {
@@ -153,7 +169,9 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "Entity",
+                optional: false,
 
                 range: [100, 106],
                 loc: {

@@ -14,6 +14,6 @@ export interface ArrowFunctionExpression extends BaseNode {
   body: BlockStatement | Expression;
   async: boolean;
   expression: boolean;
-  returnType?: TSTypeAnnotation;
-  typeParameters?: TSTypeParameterDeclaration;
+  returnType: TSTypeAnnotation | undefined;
+  typeParameters: TSTypeParameterDeclaration | undefined;
 }

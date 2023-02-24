@@ -18,7 +18,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-jsdoc AST Alignment 
               computed: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'foo',
+-               optional: false,
 
                 range: [138, 141],
                 loc: {
@@ -27,11 +29,14 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-jsdoc AST Alignment 
                 },
               },
               kind: 'method',
+-             optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'bar',
+-                 optional: false,
 
                   range: [142, 145],
                   loc: {
@@ -40,6 +45,8 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-jsdoc AST Alignment 
                   },
                 },
               ],
+-             readonly: false,
+-             static: false,
 
               range: [138, 147],
               loc: {
@@ -55,9 +62,13 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-jsdoc AST Alignment 
             end: { column: 1, line: 9 },
           },
         },
+-       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Test',
+-         optional: false,
 
           range: [83, 87],
           loc: {

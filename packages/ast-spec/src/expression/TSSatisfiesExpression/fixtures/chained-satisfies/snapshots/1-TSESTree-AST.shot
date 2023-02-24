@@ -12,7 +12,9 @@ Program {
           type: "TSSatisfiesExpression",
           expression: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "foo",
+            optional: false,
 
             range: [0, 3],
             loc: {
@@ -24,7 +26,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "bar",
+              optional: false,
 
               range: [14, 17],
               loc: {
@@ -50,7 +54,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "baz",
+            optional: false,
 
             range: [28, 31],
             loc: {

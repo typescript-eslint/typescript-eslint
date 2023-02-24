@@ -10,9 +10,12 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer AST Alignment - AS
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Element',
+-         optional: false,
 
           range: [78, 85],
           loc: {
@@ -26,7 +29,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer AST Alignment - AS
             type: 'TSTypeReference',
             typeName: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'T',
+-             optional: false,
 
               range: [91, 92],
               loc: {
@@ -50,6 +55,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer AST Alignment - AS
 -               in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
+-                 decorators: Array [],
 +           elementType: TSParenthesizedType {
 +             type: 'TSParenthesizedType',
 +             typeAnnotation: TSInferType {
@@ -57,6 +63,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer AST Alignment - AS
 +               typeParameter: TSTypeParameter {
 +                 type: 'TSTypeParameter',
                   name: 'U',
+-                 optional: false,
 
                   range: [108, 109],
                   loc: {
@@ -95,7 +102,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer AST Alignment - AS
             type: 'TSTypeReference',
             typeName: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'T',
+-             optional: false,
 
               range: [119, 120],
               loc: {
@@ -114,7 +123,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer AST Alignment - AS
             type: 'TSTypeReference',
             typeName: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'U',
+-             optional: false,
 
               range: [115, 116],
               loc: {
@@ -144,7 +155,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer AST Alignment - AS
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [86, 87],
 -               loc: {

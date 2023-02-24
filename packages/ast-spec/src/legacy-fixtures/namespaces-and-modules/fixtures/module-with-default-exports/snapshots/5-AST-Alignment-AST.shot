@@ -17,15 +17,19 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
               type: 'ExportDefaultDeclaration',
               declaration: ClassDeclaration {
                 type: 'ClassDeclaration',
+-               abstract: false,
                 body: ClassBody {
                   type: 'ClassBody',
                   body: Array [
                     MethodDefinition {
                       type: 'MethodDefinition',
                       computed: false,
+-                     decorators: Array [],
                       key: Identifier {
                         type: 'Identifier',
+-                       decorators: Array [],
                         name: 'method',
+-                       optional: false,
 
                         range: [119, 125],
                         loc: {
@@ -34,6 +38,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
                         },
                       },
                       kind: 'method',
+-                     optional: false,
 -                     override: false,
                       static: false,
                       value: FunctionExpression {
@@ -49,6 +54,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
                             end: { column: 18, line: 5 },
                           },
                         },
+-                       declare: false,
                         expression: false,
                         generator: false,
                         id: null,
@@ -59,7 +65,9 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
                             type: 'TSTypeReference',
                             typeName: Identifier {
                               type: 'Identifier',
+-                             decorators: Array [],
                               name: 'C',
+-                             optional: false,
 
                               range: [129, 130],
                               loc: {
@@ -103,9 +111,13 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
                     end: { column: 3, line: 6 },
                   },
                 },
+-               declare: false,
+-               decorators: Array [],
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'C',
+-                 optional: false,
 
                   range: [111, 112],
                   loc: {
@@ -113,6 +125,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
                     end: { column: 24, line: 4 },
                   },
                 },
+-               implements: Array [],
                 superClass: null,
 
                 range: [105, 137],
@@ -144,11 +157,14 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
                     end: { column: 34, line: 7 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'bar',
+-                 optional: false,
 
                   range: [164, 167],
                   loc: {
@@ -180,6 +196,8 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
             end: { column: 1, line: 8 },
           },
         },
+-       declare: false,
+-       global: false,
         id: Literal {
           type: 'Literal',
           raw: '\\\\'foo\\\\'',

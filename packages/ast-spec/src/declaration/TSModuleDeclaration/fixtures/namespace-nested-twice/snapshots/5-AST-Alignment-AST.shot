@@ -20,13 +20,17 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice AST
 -           end: { column: 24, line: 1 },
 -         },
 -       },
+-       declare: false,
+-       global: false,
 -       id: TSQualifiedName {
 -         type: 'TSQualifiedName',
 -         left: TSQualifiedName {
 -           type: 'TSQualifiedName',
 -           left: Identifier {
 -             type: 'Identifier',
+-             decorators: Array [],
 -             name: 'abc',
+-             optional: false,
 +       body: TSModuleDeclaration {
 +         type: 'TSModuleDeclaration',
 +         body: TSModuleDeclaration {
@@ -47,7 +51,9 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice AST
 -           right: Identifier {
 +           id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
 -             name: 'def',
+-             optional: false,
 +             name: 'ghi',
 
 -             range: [14, 17],
@@ -72,7 +78,9 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice AST
 -         right: Identifier {
 +         id: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
 -           name: 'ghi',
+-           optional: false,
 +           name: 'def',
 
 -           range: [18, 21],

@@ -11,7 +11,9 @@ Program {
           type: "ImportAttribute",
           key: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "type",
+            optional: false,
 
             range: [102, 106],
             loc: {

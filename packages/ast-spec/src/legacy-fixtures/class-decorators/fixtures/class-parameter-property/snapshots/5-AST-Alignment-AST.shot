@@ -10,15 +10,19 @@ exports[`AST Fixtures legacy-fixtures class-decorators class-parameter-property 
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'constructor',
+-               optional: false,
 
                 range: [85, 96],
                 loc: {
@@ -27,6 +31,7 @@ exports[`AST Fixtures legacy-fixtures class-decorators class-parameter-property 
                 },
               },
               kind: 'constructor',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -42,6 +47,7 @@ exports[`AST Fixtures legacy-fixtures class-decorators class-parameter-property 
                     end: { column: 38, line: 4 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -54,7 +60,9 @@ exports[`AST Fixtures legacy-fixtures class-decorators class-parameter-property 
                         type: 'Decorator',
                         expression: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'd',
+-                         optional: false,
 
                           range: [98, 99],
                           loc: {
@@ -70,9 +78,12 @@ exports[`AST Fixtures legacy-fixtures class-decorators class-parameter-property 
                         },
                       },
                     ],
+-                   override: false,
                     parameter: Identifier {
                       type: 'Identifier',
+-                     decorators: Array [],
                       name: 'x',
+-                     optional: false,
                       typeAnnotation: TSTypeAnnotation {
                         type: 'TSTypeAnnotation',
                         typeAnnotation: TSNumberKeyword {
@@ -98,6 +109,8 @@ exports[`AST Fixtures legacy-fixtures class-decorators class-parameter-property 
                         end: { column: 34, line: 4 },
                       },
                     },
+-                   readonly: false,
+-                   static: false,
 
 -                   range: [97, 117],
 +                   range: [100, 117],
@@ -130,9 +143,13 @@ exports[`AST Fixtures legacy-fixtures class-decorators class-parameter-property 
             end: { column: 1, line: 5 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'A',
+-         optional: false,
 
           range: [79, 80],
           loc: {
@@ -140,6 +157,7 @@ exports[`AST Fixtures legacy-fixtures class-decorators class-parameter-property 
             end: { column: 7, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 123],

@@ -9,9 +9,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "assertString",
+            optional: false,
 
             range: [79, 91],
             loc: {
@@ -49,7 +52,9 @@ Program {
             params: Array [
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "x",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSAnyKeyword {
@@ -83,7 +88,9 @@ Program {
                 asserts: true,
                 parameterName: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "x",
+                  optional: false,
 
                   range: [112, 113],
                   loc: {
@@ -121,6 +128,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [73, 131],

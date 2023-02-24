@@ -24,7 +24,9 @@ exports[`AST Fixtures declaration TSModuleDeclaration global AST Alignment - AST
         global: true,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'global',
+-         optional: false,
 
           range: [8, 14],
           loc: {

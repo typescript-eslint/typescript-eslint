@@ -13,9 +13,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'computed1',
+-             optional: false,
 
               range: [79, 88],
               loc: {
@@ -42,6 +45,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             },
           },
         ],
+-       declare: false,
         kind: 'const',
 
         range: [73, 98],
@@ -55,9 +59,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'computed2',
+-             optional: false,
 
               range: [105, 114],
               loc: {
@@ -84,6 +91,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             },
           },
         ],
+-       declare: false,
         kind: 'const',
 
         range: [99, 124],
@@ -97,9 +105,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'obj',
+-             optional: false,
 
               range: [131, 134],
               loc: {
@@ -115,7 +126,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                   computed: false,
                   key: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'member',
+-                   optional: false,
 
                     range: [141, 147],
                     loc: {
@@ -125,6 +138,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                   },
                   kind: 'init',
                   method: false,
+-                 optional: false,
                   shorthand: false,
                   value: Literal {
                     type: 'Literal',
@@ -149,7 +163,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                   computed: false,
                   key: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'member2',
+-                   optional: false,
 
                     range: [161, 168],
                     loc: {
@@ -159,6 +175,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                   },
                   kind: 'init',
                   method: false,
+-                 optional: false,
                   shorthand: false,
                   value: Literal {
                     type: 'Literal',
@@ -194,6 +211,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             },
           },
         ],
+-       declare: false,
         kind: 'const',
 
         range: [125, 183],
@@ -204,15 +222,19 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
       },
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'computed1',
+-               optional: false,
 
                 range: [197, 206],
                 loc: {
@@ -230,6 +252,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -251,9 +274,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'computed2',
+-               optional: false,
 
                 range: [215, 224],
                 loc: {
@@ -278,6 +304,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                     end: { column: 19, line: 11 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -299,6 +326,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
+-             decorators: Array [],
               key: Literal {
                 type: 'Literal',
                 raw: '1',
@@ -320,6 +348,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -341,6 +370,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
+-             decorators: Array [],
               key: Literal {
                 type: 'Literal',
                 raw: '2',
@@ -369,6 +399,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                     end: { column: 11, line: 13 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -390,6 +421,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
+-             decorators: Array [],
               key: Literal {
                 type: 'Literal',
                 raw: '\\\\'literal1\\\\'',
@@ -411,6 +443,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -432,6 +465,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
+-             decorators: Array [],
               key: Literal {
                 type: 'Literal',
                 raw: '\\\\'literal2\\\\'',
@@ -460,6 +494,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                     end: { column: 20, line: 15 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -481,12 +516,15 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
+-             decorators: Array [],
               key: MemberExpression {
                 type: 'MemberExpression',
                 computed: false,
                 object: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'obj',
+-                 optional: false,
 
                   range: [297, 300],
                   loc: {
@@ -497,7 +535,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                 optional: false,
                 property: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'member',
+-                 optional: false,
 
                   range: [301, 307],
                   loc: {
@@ -529,6 +569,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                     end: { column: 20, line: 16 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -550,12 +591,15 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
+-             decorators: Array [],
               key: MemberExpression {
                 type: 'MemberExpression',
                 computed: false,
                 object: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'obj',
+-                 optional: false,
 
                   range: [318, 321],
                   loc: {
@@ -566,7 +610,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                 optional: false,
                 property: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'member2',
+-                 optional: false,
 
                   range: [322, 329],
                   loc: {
@@ -591,6 +637,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
 +               type: 'FunctionExpression',
                 async: false,
 -               body: null,
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -612,12 +659,15 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             MethodDefinition {
               type: 'MethodDefinition',
               computed: true,
+-             decorators: Array [],
               key: CallExpression {
                 type: 'CallExpression',
                 arguments: Array [],
                 callee: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'f',
+-                 optional: false,
 
                   range: [338, 339],
                   loc: {
@@ -650,6 +700,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                     end: { column: 13, line: 18 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -676,9 +727,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             end: { column: 1, line: 19 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'X',
+-         optional: false,
 
           range: [190, 191],
           loc: {
@@ -686,6 +741,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             end: { column: 7, line: 9 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [184, 350],

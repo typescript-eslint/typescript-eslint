@@ -15,9 +15,12 @@ Program {
             declarations: Array [
               VariableDeclarator {
                 type: "VariableDeclarator",
+                definite: false,
                 id: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "foo",
+                  optional: false,
 
                   range: [103, 106],
                   loc: {
@@ -44,6 +47,7 @@ Program {
                 },
               },
             ],
+            declare: false,
             kind: "var",
 
             range: [99, 115],
@@ -57,9 +61,12 @@ Program {
             declarations: Array [
               VariableDeclarator {
                 type: "VariableDeclarator",
+                definite: false,
                 id: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "bar",
+                  optional: false,
 
                   range: [122, 125],
                   loc: {
@@ -86,6 +93,7 @@ Program {
                 },
               },
             ],
+            declare: false,
             kind: "let",
 
             range: [118, 134],
@@ -99,9 +107,12 @@ Program {
             declarations: Array [
               VariableDeclarator {
                 type: "VariableDeclarator",
+                definite: false,
                 id: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "fooBar",
+                  optional: false,
 
                   range: [143, 149],
                   loc: {
@@ -128,6 +139,7 @@ Program {
                 },
               },
             ],
+            declare: false,
             kind: "const",
 
             range: [137, 161],
@@ -144,11 +156,14 @@ Program {
           end: { column: 1, line: 7 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "test",
+        optional: false,
 
         range: [88, 92],
         loc: {

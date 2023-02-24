@@ -10,7 +10,9 @@ Program {
         type: "AssignmentExpression",
         left: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "a",
+          optional: false,
 
           range: [73, 74],
           loc: {
@@ -21,7 +23,9 @@ Program {
         operator: "||=",
         right: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "b",
+          optional: false,
 
           range: [79, 80],
           loc: {

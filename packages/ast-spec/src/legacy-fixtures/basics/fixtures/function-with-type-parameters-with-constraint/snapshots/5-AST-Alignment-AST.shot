@@ -18,7 +18,9 @@ exports[`AST Fixtures legacy-fixtures basics function-with-type-parameters-with-
               type: 'ReturnStatement',
               argument: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'b',
+-               optional: false,
 
                 range: [118, 119],
                 loc: {
@@ -41,11 +43,14 @@ exports[`AST Fixtures legacy-fixtures basics function-with-type-parameters-with-
             end: { column: 1, line: 5 },
           },
         },
+-       declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'a',
+-         optional: false,
 
           range: [82, 83],
           loc: {
@@ -56,14 +61,18 @@ exports[`AST Fixtures legacy-fixtures basics function-with-type-parameters-with-
         params: Array [
           Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'b',
+-           optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeReference {
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'X',
+-                 optional: false,
 
                   range: [101, 102],
                   loc: {
@@ -99,7 +108,9 @@ exports[`AST Fixtures legacy-fixtures basics function-with-type-parameters-with-
             type: 'TSTypeReference',
             typeName: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'X',
+-             optional: false,
 
               range: [105, 106],
               loc: {
@@ -139,7 +150,9 @@ exports[`AST Fixtures legacy-fixtures basics function-with-type-parameters-with-
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'X',
+-               optional: false,
 -
 -               range: [84, 85],
 -               loc: {

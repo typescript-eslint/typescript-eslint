@@ -2,5 +2,127 @@
 
 exports[`AST Fixtures legacy-fixtures basics var-with-dotted-type AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'foo',
+-             optional: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSTypeReference {
+                  type: 'TSTypeReference',
+                  typeName: TSQualifiedName {
+                    type: 'TSQualifiedName',
+                    left: TSQualifiedName {
+                      type: 'TSQualifiedName',
+                      left: Identifier {
+                        type: 'Identifier',
+-                       decorators: Array [],
+                        name: 'A',
+-                       optional: false,
+
+                        range: [82, 83],
+                        loc: {
+                          start: { column: 9, line: 3 },
+                          end: { column: 10, line: 3 },
+                        },
+                      },
+                      right: Identifier {
+                        type: 'Identifier',
+-                       decorators: Array [],
+                        name: 'B',
+-                       optional: false,
+
+                        range: [84, 85],
+                        loc: {
+                          start: { column: 11, line: 3 },
+                          end: { column: 12, line: 3 },
+                        },
+                      },
+
+                      range: [82, 85],
+                      loc: {
+                        start: { column: 9, line: 3 },
+                        end: { column: 12, line: 3 },
+                      },
+                    },
+                    right: Identifier {
+                      type: 'Identifier',
+-                     decorators: Array [],
+                      name: 'C',
+-                     optional: false,
+
+                      range: [86, 87],
+                      loc: {
+                        start: { column: 13, line: 3 },
+                        end: { column: 14, line: 3 },
+                      },
+                    },
+
+                    range: [82, 87],
+                    loc: {
+                      start: { column: 9, line: 3 },
+                      end: { column: 14, line: 3 },
+                    },
+                  },
+
+                  range: [82, 87],
+                  loc: {
+                    start: { column: 9, line: 3 },
+                    end: { column: 14, line: 3 },
+                  },
+                },
+
+                range: [80, 87],
+                loc: {
+                  start: { column: 7, line: 3 },
+                  end: { column: 14, line: 3 },
+                },
+              },
+
+              range: [77, 87],
+              loc: {
+                start: { column: 4, line: 3 },
+                end: { column: 14, line: 3 },
+              },
+            },
+            init: null,
+
+            range: [77, 87],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 14, line: 3 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'var',
+
+        range: [73, 88],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 15, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 89],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
 `;

@@ -39,9 +39,12 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-namespace AST Alignmen
               declarations: Array [
                 VariableDeclarator {
                   type: 'VariableDeclarator',
+-                 definite: false,
                   id: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'a',
+-                   optional: false,
 
                     range: [111, 112],
                     loc: {
@@ -68,6 +71,7 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-namespace AST Alignmen
                   },
                 },
               ],
+-             declare: false,
               kind: 'var',
 
               range: [107, 117],
@@ -104,9 +108,13 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-namespace AST Alignmen
             end: { column: 1, line: 7 },
           },
         },
+-       declare: false,
+-       global: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'foo',
+-         optional: false,
 
           range: [83, 86],
           loc: {

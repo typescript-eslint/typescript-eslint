@@ -79,7 +79,7 @@ export default util.createRule<Options, MessageIds>({
 
       if (
         node.arguments.length === 1 &&
-        node.typeParameters?.params.some(
+        node.typeArguments?.params.some(
           param =>
             param.type === AST_NODE_TYPES.TSImportType ||
             param.type === AST_NODE_TYPES.TSArrayType,

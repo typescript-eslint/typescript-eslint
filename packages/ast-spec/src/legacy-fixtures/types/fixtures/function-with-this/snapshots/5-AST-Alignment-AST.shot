@@ -13,9 +13,12 @@ exports[`AST Fixtures legacy-fixtures types function-with-this AST Alignment - A
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'f',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSFunctionType {
@@ -24,7 +27,9 @@ exports[`AST Fixtures legacy-fixtures types function-with-this AST Alignment - A
 +                 parameters: Array [
                     Identifier {
                       type: 'Identifier',
+-                     decorators: Array [],
                       name: 'this',
+-                     optional: false,
                       typeAnnotation: TSTypeAnnotation {
                         type: 'TSTypeAnnotation',
                         typeAnnotation: TSNumberKeyword {
@@ -100,6 +105,7 @@ exports[`AST Fixtures legacy-fixtures types function-with-this AST Alignment - A
             },
           },
         ],
+-       declare: false,
         kind: 'let',
 
         range: [73, 103],

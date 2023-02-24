@@ -17,11 +17,14 @@ Program {
           end: { column: 23, line: 1 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "foo",
+        optional: false,
 
         range: [9, 12],
         loc: {

@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
@@ -32,7 +33,9 @@ Program {
                   ],
                   callee: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "Foo",
+                    optional: false,
 
                     range: [86, 89],
                     loc: {
@@ -58,7 +61,9 @@ Program {
             ],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "staticMethod",
+              optional: false,
 
               range: [106, 118],
               loc: {
@@ -67,6 +72,7 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: false,
             static: true,
             value: FunctionExpression {
@@ -82,6 +88,7 @@ Program {
                   end: { column: 26, line: 5 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -108,9 +115,13 @@ Program {
           end: { column: 1, line: 6 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "C",
+        optional: false,
 
         range: [79, 80],
         loc: {
@@ -118,6 +129,7 @@ Program {
           end: { column: 7, line: 3 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [73, 125],

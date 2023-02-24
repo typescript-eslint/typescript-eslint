@@ -227,7 +227,7 @@ export default util.createRule<Options, MessageIds>({
       TSTypeReference(node): void {
         checkBannedTypes(node.typeName);
 
-        if (node.typeParameters) {
+        if (node.typeArguments) {
           checkBannedTypes(node);
         }
       },

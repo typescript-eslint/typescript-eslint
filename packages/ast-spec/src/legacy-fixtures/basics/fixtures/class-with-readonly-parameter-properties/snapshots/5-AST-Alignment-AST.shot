@@ -10,15 +10,19 @@ exports[`AST Fixtures legacy-fixtures basics class-with-readonly-parameter-prope
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'constructor',
+-               optional: false,
 
                 range: [87, 98],
                 loc: {
@@ -27,6 +31,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-readonly-parameter-prope
                 },
               },
               kind: 'constructor',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -42,15 +47,20 @@ exports[`AST Fixtures legacy-fixtures basics class-with-readonly-parameter-prope
                     end: { column: 6, line: 7 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
                 params: Array [
                   TSParameterProperty {
                     type: 'TSParameterProperty',
+-                   decorators: Array [],
+-                   override: false,
                     parameter: Identifier {
                       type: 'Identifier',
+-                     decorators: Array [],
                       name: 'firstName',
+-                     optional: false,
                       typeAnnotation: TSTypeAnnotation {
                         type: 'TSTypeAnnotation',
                         typeAnnotation: TSStringKeyword {
@@ -77,6 +87,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-readonly-parameter-prope
                       },
                     },
                     readonly: true,
+-                   static: false,
 
                     range: [104, 130],
                     loc: {
@@ -86,11 +97,16 @@ exports[`AST Fixtures legacy-fixtures basics class-with-readonly-parameter-prope
                   },
                   TSParameterProperty {
                     type: 'TSParameterProperty',
+-                   decorators: Array [],
+-                   override: false,
                     parameter: AssignmentPattern {
                       type: 'AssignmentPattern',
+-                     decorators: Array [],
                       left: Identifier {
                         type: 'Identifier',
+-                       decorators: Array [],
                         name: 'lastName',
+-                       optional: false,
                         typeAnnotation: TSTypeAnnotation {
                           type: 'TSTypeAnnotation',
                           typeAnnotation: TSStringKeyword {
@@ -116,6 +132,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-readonly-parameter-prope
                           end: { column: 29, line: 6 },
                         },
                       },
+-                     optional: false,
                       right: Literal {
                         type: 'Literal',
                         raw: '\\\\'Smith\\\\'',
@@ -135,6 +152,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-readonly-parameter-prope
                       },
                     },
                     readonly: true,
+-                   static: false,
 
                     range: [136, 171],
                     loc: {
@@ -165,9 +183,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-readonly-parameter-prope
             end: { column: 1, line: 8 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [79, 82],
           loc: {
@@ -175,6 +197,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-readonly-parameter-prope
             end: { column: 9, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 181],

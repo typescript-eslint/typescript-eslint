@@ -12,9 +12,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "abstract",
+                optional: false,
 
                 range: [83, 91],
                 loc: {
@@ -41,6 +44,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [77, 96],
@@ -54,9 +58,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "as",
+                optional: false,
 
                 range: [105, 107],
                 loc: {
@@ -83,6 +90,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [99, 112],
@@ -96,9 +104,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "asserts",
+                optional: false,
 
                 range: [121, 128],
                 loc: {
@@ -125,6 +136,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [115, 133],
@@ -138,9 +150,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "any",
+                optional: false,
 
                 range: [142, 145],
                 loc: {
@@ -167,6 +182,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [136, 150],
@@ -180,9 +196,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "async",
+                optional: false,
 
                 range: [159, 164],
                 loc: {
@@ -209,6 +228,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [153, 169],
@@ -222,9 +242,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "await",
+                optional: false,
 
                 range: [178, 183],
                 loc: {
@@ -251,6 +274,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [172, 188],
@@ -264,9 +288,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "boolean",
+                optional: false,
 
                 range: [197, 204],
                 loc: {
@@ -293,6 +320,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [191, 209],
@@ -306,9 +334,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "constructor",
+                optional: false,
 
                 range: [218, 229],
                 loc: {
@@ -335,6 +366,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [212, 234],
@@ -348,9 +380,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "declare",
+                optional: false,
 
                 range: [243, 250],
                 loc: {
@@ -377,6 +412,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [237, 255],
@@ -390,9 +426,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "get",
+                optional: false,
 
                 range: [264, 267],
                 loc: {
@@ -419,6 +458,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [258, 272],
@@ -432,9 +472,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "infer",
+                optional: false,
 
                 range: [281, 286],
                 loc: {
@@ -461,6 +504,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [275, 291],
@@ -474,9 +518,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "is",
+                optional: false,
 
                 range: [300, 302],
                 loc: {
@@ -503,6 +550,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [294, 307],
@@ -516,9 +564,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "keyof",
+                optional: false,
 
                 range: [316, 321],
                 loc: {
@@ -545,6 +596,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [310, 326],
@@ -558,9 +610,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "module",
+                optional: false,
 
                 range: [335, 341],
                 loc: {
@@ -587,6 +642,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [329, 346],
@@ -600,9 +656,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "namespace",
+                optional: false,
 
                 range: [355, 364],
                 loc: {
@@ -629,6 +688,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [349, 369],
@@ -642,9 +702,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "never",
+                optional: false,
 
                 range: [378, 383],
                 loc: {
@@ -671,6 +734,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [372, 388],
@@ -684,9 +748,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "readonly",
+                optional: false,
 
                 range: [397, 405],
                 loc: {
@@ -713,6 +780,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [391, 410],
@@ -726,9 +794,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "require",
+                optional: false,
 
                 range: [419, 426],
                 loc: {
@@ -755,6 +826,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [413, 431],
@@ -768,9 +840,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "number",
+                optional: false,
 
                 range: [440, 446],
                 loc: {
@@ -797,6 +872,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [434, 451],
@@ -810,9 +886,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "object",
+                optional: false,
 
                 range: [460, 466],
                 loc: {
@@ -839,6 +918,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [454, 471],
@@ -852,9 +932,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "set",
+                optional: false,
 
                 range: [480, 483],
                 loc: {
@@ -881,6 +964,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [474, 488],
@@ -894,9 +978,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "string",
+                optional: false,
 
                 range: [497, 503],
                 loc: {
@@ -923,6 +1010,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [491, 508],
@@ -936,9 +1024,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "symbol",
+                optional: false,
 
                 range: [517, 523],
                 loc: {
@@ -965,6 +1056,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [511, 528],
@@ -978,9 +1070,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "type",
+                optional: false,
 
                 range: [537, 541],
                 loc: {
@@ -1007,6 +1102,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [531, 546],
@@ -1020,9 +1116,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "undefined",
+                optional: false,
 
                 range: [555, 564],
                 loc: {
@@ -1049,6 +1148,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [549, 569],
@@ -1062,9 +1162,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "unique",
+                optional: false,
 
                 range: [578, 584],
                 loc: {
@@ -1091,6 +1194,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [572, 589],
@@ -1104,9 +1208,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "unknown",
+                optional: false,
 
                 range: [598, 605],
                 loc: {
@@ -1133,6 +1240,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [592, 610],
@@ -1146,9 +1254,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "from",
+                optional: false,
 
                 range: [619, 623],
                 loc: {
@@ -1175,6 +1286,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [613, 628],
@@ -1188,9 +1300,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "global",
+                optional: false,
 
                 range: [637, 643],
                 loc: {
@@ -1217,6 +1332,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [631, 648],
@@ -1230,9 +1346,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "bigint",
+                optional: false,
 
                 range: [657, 663],
                 loc: {
@@ -1259,6 +1378,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [651, 668],
@@ -1272,9 +1392,12 @@ Program {
           declarations: Array [
             VariableDeclarator {
               type: "VariableDeclarator",
+              definite: false,
               id: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "of",
+                optional: false,
 
                 range: [677, 679],
                 loc: {
@@ -1301,6 +1424,7 @@ Program {
               },
             },
           ],
+          declare: false,
           kind: "const",
 
           range: [671, 684],
@@ -1337,7 +1461,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "abstract",
+            optional: false,
 
             range: [699, 707],
             loc: {
@@ -1348,7 +1474,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "abstract",
+            optional: false,
 
             range: [699, 707],
             loc: {
@@ -1367,7 +1495,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "as",
+            optional: false,
 
             range: [711, 713],
             loc: {
@@ -1378,7 +1508,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "as",
+            optional: false,
 
             range: [711, 713],
             loc: {
@@ -1397,7 +1529,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "asserts",
+            optional: false,
 
             range: [717, 724],
             loc: {
@@ -1408,7 +1542,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "asserts",
+            optional: false,
 
             range: [717, 724],
             loc: {
@@ -1427,7 +1563,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "any",
+            optional: false,
 
             range: [728, 731],
             loc: {
@@ -1438,7 +1576,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "any",
+            optional: false,
 
             range: [728, 731],
             loc: {
@@ -1457,7 +1597,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "async",
+            optional: false,
 
             range: [735, 740],
             loc: {
@@ -1468,7 +1610,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "async",
+            optional: false,
 
             range: [735, 740],
             loc: {
@@ -1487,7 +1631,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "await",
+            optional: false,
 
             range: [744, 749],
             loc: {
@@ -1498,7 +1644,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "await",
+            optional: false,
 
             range: [744, 749],
             loc: {
@@ -1517,7 +1665,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "boolean",
+            optional: false,
 
             range: [753, 760],
             loc: {
@@ -1528,7 +1678,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "boolean",
+            optional: false,
 
             range: [753, 760],
             loc: {
@@ -1547,7 +1699,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "constructor",
+            optional: false,
 
             range: [764, 775],
             loc: {
@@ -1558,7 +1712,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "constructor",
+            optional: false,
 
             range: [764, 775],
             loc: {
@@ -1577,7 +1733,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "declare",
+            optional: false,
 
             range: [779, 786],
             loc: {
@@ -1588,7 +1746,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "declare",
+            optional: false,
 
             range: [779, 786],
             loc: {
@@ -1607,7 +1767,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "get",
+            optional: false,
 
             range: [790, 793],
             loc: {
@@ -1618,7 +1780,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "get",
+            optional: false,
 
             range: [790, 793],
             loc: {
@@ -1637,7 +1801,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "infer",
+            optional: false,
 
             range: [797, 802],
             loc: {
@@ -1648,7 +1814,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "infer",
+            optional: false,
 
             range: [797, 802],
             loc: {
@@ -1667,7 +1835,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "is",
+            optional: false,
 
             range: [806, 808],
             loc: {
@@ -1678,7 +1848,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "is",
+            optional: false,
 
             range: [806, 808],
             loc: {
@@ -1697,7 +1869,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "keyof",
+            optional: false,
 
             range: [812, 817],
             loc: {
@@ -1708,7 +1882,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "keyof",
+            optional: false,
 
             range: [812, 817],
             loc: {
@@ -1727,7 +1903,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "module",
+            optional: false,
 
             range: [821, 827],
             loc: {
@@ -1738,7 +1916,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "module",
+            optional: false,
 
             range: [821, 827],
             loc: {
@@ -1757,7 +1937,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "namespace",
+            optional: false,
 
             range: [831, 840],
             loc: {
@@ -1768,7 +1950,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "namespace",
+            optional: false,
 
             range: [831, 840],
             loc: {
@@ -1787,7 +1971,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "never",
+            optional: false,
 
             range: [844, 849],
             loc: {
@@ -1798,7 +1984,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "never",
+            optional: false,
 
             range: [844, 849],
             loc: {
@@ -1817,7 +2005,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "readonly",
+            optional: false,
 
             range: [853, 861],
             loc: {
@@ -1828,7 +2018,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "readonly",
+            optional: false,
 
             range: [853, 861],
             loc: {
@@ -1847,7 +2039,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "require",
+            optional: false,
 
             range: [865, 872],
             loc: {
@@ -1858,7 +2052,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "require",
+            optional: false,
 
             range: [865, 872],
             loc: {
@@ -1877,7 +2073,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "number",
+            optional: false,
 
             range: [876, 882],
             loc: {
@@ -1888,7 +2086,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "number",
+            optional: false,
 
             range: [876, 882],
             loc: {
@@ -1907,7 +2107,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "object",
+            optional: false,
 
             range: [886, 892],
             loc: {
@@ -1918,7 +2120,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "object",
+            optional: false,
 
             range: [886, 892],
             loc: {
@@ -1937,7 +2141,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "set",
+            optional: false,
 
             range: [896, 899],
             loc: {
@@ -1948,7 +2154,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "set",
+            optional: false,
 
             range: [896, 899],
             loc: {
@@ -1967,7 +2175,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "string",
+            optional: false,
 
             range: [903, 909],
             loc: {
@@ -1978,7 +2188,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "string",
+            optional: false,
 
             range: [903, 909],
             loc: {
@@ -1997,7 +2209,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "symbol",
+            optional: false,
 
             range: [913, 919],
             loc: {
@@ -2008,7 +2222,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "symbol",
+            optional: false,
 
             range: [913, 919],
             loc: {
@@ -2027,7 +2243,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "type",
+            optional: false,
 
             range: [923, 927],
             loc: {
@@ -2038,7 +2256,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "type",
+            optional: false,
 
             range: [923, 927],
             loc: {
@@ -2057,7 +2277,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "undefined",
+            optional: false,
 
             range: [931, 940],
             loc: {
@@ -2068,7 +2290,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "undefined",
+            optional: false,
 
             range: [931, 940],
             loc: {
@@ -2087,7 +2311,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "unique",
+            optional: false,
 
             range: [944, 950],
             loc: {
@@ -2098,7 +2324,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "unique",
+            optional: false,
 
             range: [944, 950],
             loc: {
@@ -2117,7 +2345,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "unknown",
+            optional: false,
 
             range: [954, 961],
             loc: {
@@ -2128,7 +2358,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "unknown",
+            optional: false,
 
             range: [954, 961],
             loc: {
@@ -2147,7 +2379,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "from",
+            optional: false,
 
             range: [965, 969],
             loc: {
@@ -2158,7 +2392,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "from",
+            optional: false,
 
             range: [965, 969],
             loc: {
@@ -2177,7 +2413,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "global",
+            optional: false,
 
             range: [973, 979],
             loc: {
@@ -2188,7 +2426,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "global",
+            optional: false,
 
             range: [973, 979],
             loc: {
@@ -2207,7 +2447,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "bigint",
+            optional: false,
 
             range: [983, 989],
             loc: {
@@ -2218,7 +2460,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "bigint",
+            optional: false,
 
             range: [983, 989],
             loc: {
@@ -2237,7 +2481,9 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "of",
+            optional: false,
 
             range: [993, 995],
             loc: {
@@ -2248,7 +2494,9 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "of",
+            optional: false,
 
             range: [993, 995],
             loc: {
@@ -2283,9 +2531,13 @@ Program {
           end: { column: 14, line: 71 },
         },
       },
+      declare: false,
+      extends: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "X",
+        optional: false,
 
         range: [1030, 1031],
         loc: {
@@ -2302,15 +2554,19 @@ Program {
     },
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "a",
+              optional: false,
 
               range: [1067, 1068],
               loc: {
@@ -2319,6 +2575,7 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: false,
             static: true,
             value: FunctionExpression {
@@ -2334,6 +2591,7 @@ Program {
                   end: { column: 15, line: 73 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -2356,9 +2614,12 @@ Program {
             type: "MethodDefinition",
             accessibility: "private",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "b",
+              optional: false,
 
               range: [1084, 1085],
               loc: {
@@ -2367,6 +2628,7 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: false,
             static: false,
             value: FunctionExpression {
@@ -2382,6 +2644,7 @@ Program {
                   end: { column: 16, line: 74 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -2404,9 +2667,12 @@ Program {
             type: "MethodDefinition",
             accessibility: "public",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "c",
+              optional: false,
 
               range: [1100, 1101],
               loc: {
@@ -2415,6 +2681,7 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: false,
             static: false,
             value: FunctionExpression {
@@ -2430,6 +2697,7 @@ Program {
                   end: { column: 15, line: 75 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -2452,9 +2720,12 @@ Program {
             type: "MethodDefinition",
             accessibility: "protected",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "d",
+              optional: false,
 
               range: [1120, 1121],
               loc: {
@@ -2463,6 +2734,7 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: false,
             static: false,
             value: FunctionExpression {
@@ -2476,9 +2748,12 @@ Program {
                     declarations: Array [
                       VariableDeclarator {
                         type: "VariableDeclarator",
+                        definite: false,
                         id: Identifier {
                           type: "Identifier",
+                          decorators: Array [],
                           name: "x",
+                          optional: false,
 
                           range: [1134, 1135],
                           loc: {
@@ -2505,6 +2780,7 @@ Program {
                         },
                       },
                     ],
+                    declare: false,
                     kind: "let",
 
                     range: [1130, 1144],
@@ -2521,6 +2797,7 @@ Program {
                   end: { column: 3, line: 78 },
                 },
               },
+              declare: false,
               expression: false,
               generator: true,
               id: null,
@@ -2547,9 +2824,13 @@ Program {
           end: { column: 1, line: 79 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "C",
+        optional: false,
 
         range: [1041, 1042],
         loc: {
@@ -2562,7 +2843,9 @@ Program {
           type: "TSClassImplements",
           expression: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "X",
+            optional: false,
 
             range: [1054, 1055],
             loc: {

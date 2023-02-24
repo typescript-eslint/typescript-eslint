@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
@@ -14,9 +15,13 @@ Program {
             accessibility: "public",
             computed: false,
             declare: false,
+            decorators: Array [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "a",
+              optional: false,
 
               range: [92, 93],
               loc: {
@@ -24,7 +29,9 @@ Program {
                 end: { column: 10, line: 4 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -56,9 +63,12 @@ Program {
             type: "MethodDefinition",
             accessibility: "public",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "method",
+              optional: false,
 
               range: [113, 119],
               loc: {
@@ -67,6 +77,7 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: false,
             static: false,
             value: FunctionExpression {
@@ -92,7 +103,9 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "a",
+                        optional: false,
 
                         range: [158, 159],
                         loc: {
@@ -122,13 +135,16 @@ Program {
                   end: { column: 3, line: 8 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
               params: Array [
                 Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "this",
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: "TSTypeAnnotation",
                     typeAnnotation: TSThisType {
@@ -191,9 +207,12 @@ Program {
             type: "MethodDefinition",
             accessibility: "public",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "method2",
+              optional: false,
 
               range: [175, 182],
               loc: {
@@ -202,6 +221,7 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: false,
             static: false,
             value: FunctionExpression {
@@ -227,7 +247,9 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "a",
+                        optional: false,
 
                         range: [216, 217],
                         loc: {
@@ -257,20 +279,25 @@ Program {
                   end: { column: 3, line: 12 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
               params: Array [
                 Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "this",
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: "TSTypeAnnotation",
                     typeAnnotation: TSTypeReference {
                       type: "TSTypeReference",
                       typeName: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "A",
+                        optional: false,
 
                         range: [189, 190],
                         loc: {
@@ -336,9 +363,12 @@ Program {
             type: "MethodDefinition",
             accessibility: "public",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "method3",
+              optional: false,
 
               range: [233, 240],
               loc: {
@@ -347,6 +377,7 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: false,
             static: false,
             value: FunctionExpression {
@@ -360,9 +391,12 @@ Program {
                     declarations: Array [
                       VariableDeclarator {
                         type: "VariableDeclarator",
+                        definite: false,
                         id: Identifier {
                           type: "Identifier",
+                          decorators: Array [],
                           name: "fn",
+                          optional: false,
 
                           range: [271, 273],
                           loc: {
@@ -388,7 +422,9 @@ Program {
                             optional: false,
                             property: Identifier {
                               type: "Identifier",
+                              decorators: Array [],
                               name: "a",
+                              optional: false,
 
                               range: [287, 288],
                               loc: {
@@ -422,6 +458,7 @@ Program {
                         },
                       },
                     ],
+                    declare: false,
                     kind: "var",
 
                     range: [267, 289],
@@ -437,7 +474,9 @@ Program {
                       arguments: Array [],
                       callee: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "fn",
+                        optional: false,
 
                         range: [301, 303],
                         loc: {
@@ -468,13 +507,16 @@ Program {
                   end: { column: 3, line: 17 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
               params: Array [
                 Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "this",
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: "TSTypeAnnotation",
                     typeAnnotation: TSThisType {
@@ -537,9 +579,12 @@ Program {
             type: "MethodDefinition",
             accessibility: "public",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "method4",
+              optional: false,
 
               range: [321, 328],
               loc: {
@@ -548,6 +593,7 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: false,
             static: false,
             value: FunctionExpression {
@@ -561,9 +607,12 @@ Program {
                     declarations: Array [
                       VariableDeclarator {
                         type: "VariableDeclarator",
+                        definite: false,
                         id: Identifier {
                           type: "Identifier",
+                          decorators: Array [],
                           name: "fn",
+                          optional: false,
 
                           range: [356, 358],
                           loc: {
@@ -589,7 +638,9 @@ Program {
                             optional: false,
                             property: Identifier {
                               type: "Identifier",
+                              decorators: Array [],
                               name: "a",
+                              optional: false,
 
                               range: [372, 373],
                               loc: {
@@ -623,6 +674,7 @@ Program {
                         },
                       },
                     ],
+                    declare: false,
                     kind: "var",
 
                     range: [352, 374],
@@ -638,7 +690,9 @@ Program {
                       arguments: Array [],
                       callee: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "fn",
+                        optional: false,
 
                         range: [386, 388],
                         loc: {
@@ -669,20 +723,25 @@ Program {
                   end: { column: 3, line: 22 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
               params: Array [
                 Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "this",
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: "TSTypeAnnotation",
                     typeAnnotation: TSTypeReference {
                       type: "TSTypeReference",
                       typeName: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "A",
+                        optional: false,
 
                         range: [335, 336],
                         loc: {
@@ -747,9 +806,12 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "staticMethod",
+              optional: false,
 
               range: [406, 418],
               loc: {
@@ -758,6 +820,7 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: false,
             static: true,
             value: FunctionExpression {
@@ -783,7 +846,9 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "a",
+                        optional: false,
 
                         range: [454, 455],
                         loc: {
@@ -813,20 +878,25 @@ Program {
                   end: { column: 3, line: 26 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
               params: Array [
                 Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "this",
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: "TSTypeAnnotation",
                     typeAnnotation: TSTypeReference {
                       type: "TSTypeReference",
                       typeName: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "A",
+                        optional: false,
 
                         range: [425, 426],
                         loc: {
@@ -891,9 +961,12 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "typeof",
+              optional: false,
 
               range: [471, 477],
               loc: {
@@ -902,6 +975,7 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: false,
             static: true,
             value: FunctionExpression {
@@ -947,20 +1021,25 @@ Program {
                   end: { column: 3, line: 30 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
               params: Array [
                 Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "this",
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: "TSTypeAnnotation",
                     typeAnnotation: TSTypeReference {
                       type: "TSTypeReference",
                       typeName: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "A",
+                        optional: false,
 
                         range: [484, 485],
                         loc: {
@@ -1030,9 +1109,13 @@ Program {
           end: { column: 1, line: 31 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "A",
+        optional: false,
 
         range: [79, 80],
         loc: {
@@ -1040,6 +1123,7 @@ Program {
           end: { column: 7, line: 3 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [73, 524],

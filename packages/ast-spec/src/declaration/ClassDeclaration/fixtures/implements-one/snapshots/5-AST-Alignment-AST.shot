@@ -10,6 +10,7 @@ exports[`AST Fixtures declaration ClassDeclaration implements-one AST Alignment 
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -20,9 +21,13 @@ exports[`AST Fixtures declaration ClassDeclaration implements-one AST Alignment 
             end: { column: 30, line: 1 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {
@@ -37,7 +42,9 @@ exports[`AST Fixtures declaration ClassDeclaration implements-one AST Alignment 
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'Object',
+-             optional: false,
 
               range: [21, 27],
               loc: {

@@ -10,9 +10,12 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'T',
+-         optional: false,
 
           range: [5, 6],
           loc: {
@@ -48,7 +51,9 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'U',
+-               optional: false,
 -
 -               range: [7, 8],
 -               loc: {
@@ -70,8 +75,11 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'V',
--
+-               optional: false,
++             name: 'V',
+
 -               range: [10, 11],
 -               loc: {
 -                 start: { column: 10, line: 1 },
@@ -79,8 +87,7 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
 -               },
 -             },
 -             out: false,
-+             name: 'V',
-
+-
               range: [10, 11],
               loc: {
                 start: { column: 10, line: 1 },
@@ -92,7 +99,9 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'W',
+-               optional: false,
 -
 -               range: [13, 14],
 -               loc: {

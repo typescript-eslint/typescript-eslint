@@ -18,7 +18,9 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
               computed: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: '__',
+-               optional: false,
 
                 range: [76, 78],
                 loc: {
@@ -28,6 +30,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
               },
               kind: 'init',
               method: false,
+-             optional: false,
               shorthand: false,
               value: Literal {
                 type: 'Literal',
@@ -72,7 +75,9 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
               computed: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: '__',
+-               optional: false,
 
                 range: [93, 95],
                 loc: {
@@ -82,6 +87,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
               },
               kind: 'init',
               method: true,
+-             optional: false,
               shorthand: false,
               value: FunctionExpression {
                 type: 'FunctionExpression',
@@ -96,6 +102,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
                     end: { column: 10, line: 5 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -150,6 +157,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
               },
               kind: 'init',
               method: false,
+-             optional: false,
               shorthand: false,
               value: Literal {
                 type: 'Literal',
@@ -186,6 +194,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
       },
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
@@ -193,6 +202,8 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
               type: 'PropertyDefinition',
               computed: false,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: Literal {
                 type: 'Literal',
                 raw: '\\\\'__\\\\'',
@@ -204,7 +215,9 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
                   end: { column: 6, line: 10 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               value: Literal {
                 type: 'Literal',
@@ -232,9 +245,13 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
             end: { column: 1, line: 11 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'X',
+-         optional: false,
 
           range: [133, 134],
           loc: {
@@ -242,6 +259,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
             end: { column: 7, line: 9 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [127, 153],

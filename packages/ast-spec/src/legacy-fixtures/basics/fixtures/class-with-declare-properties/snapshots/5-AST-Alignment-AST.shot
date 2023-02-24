@@ -10,6 +10,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
@@ -17,9 +18,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
               type: 'PropertyDefinition',
               computed: false,
               declare: true,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'prop1',
+-               optional: false,
 
                 range: [101, 106],
                 loc: {
@@ -27,7 +32,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
                   end: { column: 15, line: 4 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -60,9 +67,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
               accessibility: 'public',
               computed: false,
               declare: true,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'prop2',
+-               optional: false,
 
                 range: [133, 138],
                 loc: {
@@ -70,7 +81,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
                   end: { column: 22, line: 5 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -102,9 +115,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
               type: 'PropertyDefinition',
               computed: false,
               declare: true,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'prop3',
+-               optional: false,
 
                 range: [165, 170],
                 loc: {
@@ -112,7 +129,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
                   end: { column: 22, line: 6 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: true,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -144,9 +163,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
               type: 'PropertyDefinition',
               computed: false,
               declare: true,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'prop3',
+-               optional: false,
 
                 range: [199, 204],
                 loc: {
@@ -154,6 +177,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
                   end: { column: 24, line: 7 },
                 },
               },
+-             optional: false,
 -             override: false,
               readonly: true,
               static: false,
@@ -188,9 +212,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
               accessibility: 'public',
               computed: false,
               declare: true,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'prop4',
+-               optional: false,
 
                 range: [240, 245],
                 loc: {
@@ -198,6 +226,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
                   end: { column: 31, line: 8 },
                 },
               },
+-             optional: false,
 -             override: false,
               readonly: true,
               static: false,
@@ -232,9 +261,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
               accessibility: 'public',
               computed: false,
               declare: true,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'prop5',
+-               optional: false,
 
                 range: [279, 284],
                 loc: {
@@ -242,7 +275,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
                   end: { column: 29, line: 9 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: true,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -275,9 +310,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
               accessibility: 'public',
               computed: false,
               declare: true,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'prop6',
+-               optional: false,
 
                 range: [327, 332],
                 loc: {
@@ -285,6 +324,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
                   end: { column: 38, line: 10 },
                 },
               },
+-             optional: false,
 -             override: false,
               readonly: true,
               static: true,
@@ -322,9 +362,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
             end: { column: 1, line: 11 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'DeclProps',
+-         optional: false,
 
           range: [79, 88],
           loc: {
@@ -332,6 +376,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties AST A
             end: { column: 15, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 343],

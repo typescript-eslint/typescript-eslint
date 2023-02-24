@@ -19,11 +19,14 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-w
               declaration: TSDeclareFunction {
                 type: 'TSDeclareFunction',
                 async: false,
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'select',
+-                 optional: false,
 
                   range: [114, 120],
                   loc: {
@@ -34,7 +37,9 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-w
                 params: Array [
                   Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'selector',
+-                   optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: 'TSTypeAnnotation',
                       typeAnnotation: TSStringKeyword {
@@ -65,9 +70,31 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-w
                   type: 'TSTypeAnnotation',
                   typeAnnotation: TSTypeReference {
                     type: 'TSTypeReference',
+-                   typeArguments: TSTypeParameterInstantiation {
+-                     type: 'TSTypeParameterInstantiation',
+-                     params: Array [
+-                       TSAnyKeyword {
+-                         type: 'TSAnyKeyword',
+-
+-                         range: [150, 153],
+-                         loc: {
+-                           start: { column: 54, line: 4 },
+-                           end: { column: 57, line: 4 },
+-                         },
+-                       },
+-                     ],
+-
+-                     range: [149, 154],
+-                     loc: {
+-                       start: { column: 53, line: 4 },
+-                       end: { column: 58, line: 4 },
+-                     },
+-                   },
                     typeName: Identifier {
                       type: 'Identifier',
+-                     decorators: Array [],
                       name: 'Selection',
+-                     optional: false,
 
                       range: [140, 149],
                       loc: {
@@ -135,9 +162,12 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-w
           },
         },
         declare: true,
+-       global: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'd3',
+-         optional: false,
 
           range: [91, 93],
           loc: {

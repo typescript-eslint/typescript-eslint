@@ -20,9 +20,13 @@ Program {
               end: { column: 15, line: 1 },
             },
           },
+          declare: false,
+          global: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "C",
+            optional: false,
 
             range: [11, 12],
             loc: {
@@ -38,9 +42,13 @@ Program {
             end: { column: 15, line: 1 },
           },
         },
+        declare: false,
+        global: false,
         id: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "B",
+          optional: false,
 
           range: [9, 10],
           loc: {
@@ -56,9 +64,13 @@ Program {
           end: { column: 15, line: 1 },
         },
       },
+      declare: false,
+      global: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "A",
+        optional: false,
 
         range: [7, 8],
         loc: {

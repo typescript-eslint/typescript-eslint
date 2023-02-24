@@ -8,6 +8,7 @@ Program {
       type: "ExportDefaultDeclaration",
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
+        abstract: false,
         body: ClassBody {
           type: "ClassBody",
           body: Array [],
@@ -18,12 +19,15 @@ Program {
             end: { column: 27, line: 4 },
           },
         },
+        declare: false,
         decorators: Array [
           Decorator {
             type: "Decorator",
             expression: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "sealed",
+              optional: false,
 
               range: [74, 80],
               loc: {
@@ -41,7 +45,9 @@ Program {
         ],
         id: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "Qux",
+          optional: false,
 
           range: [102, 105],
           loc: {
@@ -49,6 +55,7 @@ Program {
             end: { column: 24, line: 4 },
           },
         },
+        implements: Array [],
         superClass: null,
 
         range: [96, 108],

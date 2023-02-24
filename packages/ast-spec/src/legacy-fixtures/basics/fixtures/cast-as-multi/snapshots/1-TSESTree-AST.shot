@@ -12,7 +12,9 @@ Program {
           type: "TSAsExpression",
           expression: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "x",
+            optional: false,
 
             range: [73, 74],
             loc: {
@@ -40,7 +42,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "T",
+            optional: false,
 
             range: [85, 86],
             loc: {

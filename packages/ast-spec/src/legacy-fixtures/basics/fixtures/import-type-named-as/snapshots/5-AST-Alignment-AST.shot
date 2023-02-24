@@ -28,7 +28,9 @@ exports[`AST Fixtures legacy-fixtures basics import-type-named-as AST Alignment 
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'foo',
+-             optional: false,
 
               range: [87, 90],
               loc: {
@@ -39,7 +41,9 @@ exports[`AST Fixtures legacy-fixtures basics import-type-named-as AST Alignment 
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'bar',
+-             optional: false,
 
               range: [94, 97],
               loc: {

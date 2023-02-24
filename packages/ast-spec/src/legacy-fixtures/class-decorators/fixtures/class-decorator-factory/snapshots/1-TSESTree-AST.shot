@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [],
@@ -16,6 +17,7 @@ Program {
           end: { column: 21, line: 6 },
         },
       },
+      declare: false,
       decorators: Array [
         Decorator {
           type: "Decorator",
@@ -30,7 +32,9 @@ Program {
                     computed: false,
                     key: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "selector",
+                      optional: false,
 
                       range: [88, 96],
                       loc: {
@@ -40,6 +44,7 @@ Program {
                     },
                     kind: "init",
                     method: false,
+                    optional: false,
                     shorthand: false,
                     value: Literal {
                       type: "Literal",
@@ -70,7 +75,9 @@ Program {
             ],
             callee: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "Component",
+              optional: false,
 
               range: [74, 83],
               loc: {
@@ -96,7 +103,9 @@ Program {
       ],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "FooComponent",
+        optional: false,
 
         range: [114, 126],
         loc: {
@@ -104,6 +113,7 @@ Program {
           end: { column: 18, line: 6 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [73, 129],

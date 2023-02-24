@@ -10,6 +10,7 @@ exports[`AST Fixtures element AccessorProperty key-computed-complex AST Alignmen
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
@@ -19,6 +20,8 @@ exports[`AST Fixtures element AccessorProperty key-computed-complex AST Alignmen
 +             type: 'ClassAccessorProperty',
               computed: true,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: BinaryExpression {
                 type: 'BinaryExpression',
                 left: Literal {
@@ -51,7 +54,9 @@ exports[`AST Fixtures element AccessorProperty key-computed-complex AST Alignmen
                   end: { column: 17, line: 2 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               value: Literal {
                 type: 'Literal',
@@ -79,9 +84,13 @@ exports[`AST Fixtures element AccessorProperty key-computed-complex AST Alignmen
             end: { column: 1, line: 3 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {
@@ -89,6 +98,7 @@ exports[`AST Fixtures element AccessorProperty key-computed-complex AST Alignmen
             end: { column: 9, line: 1 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [0, 37],

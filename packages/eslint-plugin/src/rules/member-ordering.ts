@@ -511,7 +511,7 @@ function getRank(
   const memberGroups: BaseMemberType[] = [];
 
   if (supportsModifiers) {
-    const decorated = 'decorators' in node && node.decorators!.length > 0;
+    const decorated = 'decorators' in node && node.decorators.length > 0;
     if (
       decorated &&
       (type === 'field' ||

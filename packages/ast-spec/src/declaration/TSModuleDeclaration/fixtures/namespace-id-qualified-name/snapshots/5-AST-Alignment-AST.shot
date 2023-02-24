@@ -20,13 +20,17 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-nam
 -           end: { column: 18, line: 1 },
 -         },
 -       },
+-       declare: false,
+-       global: false,
 -       id: TSQualifiedName {
 -         type: 'TSQualifiedName',
 -         left: TSQualifiedName {
 -           type: 'TSQualifiedName',
 -           left: Identifier {
 -             type: 'Identifier',
+-             decorators: Array [],
 -             name: 'A',
+-             optional: false,
 +       body: TSModuleDeclaration {
 +         type: 'TSModuleDeclaration',
 +         body: TSModuleDeclaration {
@@ -47,7 +51,9 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-nam
 -           right: Identifier {
 +           id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
 -             name: 'B',
+-             optional: false,
 +             name: 'C',
 
 -             range: [12, 13],
@@ -72,7 +78,9 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-qualified-nam
 -         right: Identifier {
 +         id: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
 -           name: 'C',
+-           optional: false,
 +           name: 'B',
 
 -           range: [14, 15],

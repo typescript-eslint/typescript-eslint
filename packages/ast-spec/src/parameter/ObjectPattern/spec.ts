@@ -8,7 +8,7 @@ import type { RestElement } from '../RestElement/spec';
 export interface ObjectPattern extends BaseNode {
   type: AST_NODE_TYPES.ObjectPattern;
   properties: (Property | RestElement)[];
-  typeAnnotation?: TSTypeAnnotation;
-  optional?: boolean;
-  decorators?: Decorator[];
+  typeAnnotation: TSTypeAnnotation | undefined;
+  optional: boolean;
+  decorators: Decorator[];
 }

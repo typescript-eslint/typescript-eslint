@@ -33,7 +33,9 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules ambient-module-decl
                   type: 'ImportDefaultSpecifier',
                   local: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'fs',
+-                   optional: false,
 
                     range: [114, 116],
                     loc: {
@@ -65,6 +67,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules ambient-module-decl
           },
         },
         declare: true,
+-       global: false,
         id: Literal {
           type: 'Literal',
           raw: '\\\\'i-use-things\\\\'',

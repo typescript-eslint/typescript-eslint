@@ -8,7 +8,9 @@ Program {
       type: "TSExportAssignment",
       expression: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "foo",
+        optional: false,
 
         range: [82, 85],
         loc: {

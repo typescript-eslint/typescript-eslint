@@ -17,9 +17,12 @@ Program {
         },
       },
       declare: true,
+      extends: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [91, 94],
         loc: {

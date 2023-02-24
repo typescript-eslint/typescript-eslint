@@ -6,9 +6,12 @@ Program {
   body: Array [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [78, 81],
         loc: {
@@ -22,7 +25,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "T",
+            optional: false,
 
             range: [87, 88],
             loc: {
@@ -45,7 +50,9 @@ Program {
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "a",
+                optional: false,
 
                 range: [99, 100],
                 loc: {
@@ -53,6 +60,9 @@ Program {
                   end: { column: 27, line: 3 },
                 },
               },
+              optional: false,
+              readonly: false,
+              static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSInferType {
@@ -62,7 +72,9 @@ Program {
                     in: false,
                     name: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "U",
+                      optional: false,
 
                       range: [108, 109],
                       loc: {
@@ -104,7 +116,9 @@ Program {
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "b",
+                optional: false,
 
                 range: [111, 112],
                 loc: {
@@ -112,6 +126,9 @@ Program {
                   end: { column: 39, line: 3 },
                 },
               },
+              optional: false,
+              readonly: false,
+              static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSInferType {
@@ -121,7 +138,9 @@ Program {
                     in: false,
                     name: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "U",
+                      optional: false,
 
                       range: [120, 121],
                       loc: {
@@ -179,7 +198,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "U",
+            optional: false,
 
             range: [126, 127],
             loc: {
@@ -209,7 +230,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [82, 83],
               loc: {

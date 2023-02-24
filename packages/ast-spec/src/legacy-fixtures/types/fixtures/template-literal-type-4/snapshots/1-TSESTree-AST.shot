@@ -6,9 +6,12 @@ Program {
   body: Array [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "EnthusiasticGreeting",
+        optional: false,
 
         range: [78, 98],
         loc: {
@@ -93,9 +96,43 @@ Program {
         types: Array [
           TSTypeReference {
             type: "TSTypeReference",
+            typeArguments: TSTypeParameterInstantiation {
+              type: "TSTypeParameterInstantiation",
+              params: Array [
+                TSTypeReference {
+                  type: "TSTypeReference",
+                  typeName: Identifier {
+                    type: "Identifier",
+                    decorators: Array [],
+                    name: "T",
+                    optional: false,
+
+                    range: [134, 135],
+                    loc: {
+                      start: { column: 15, line: 4 },
+                      end: { column: 16, line: 4 },
+                    },
+                  },
+
+                  range: [134, 135],
+                  loc: {
+                    start: { column: 15, line: 4 },
+                    end: { column: 16, line: 4 },
+                  },
+                },
+              ],
+
+              range: [133, 136],
+              loc: {
+                start: { column: 14, line: 4 },
+                end: { column: 17, line: 4 },
+              },
+            },
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "Uppercase",
+              optional: false,
 
               range: [124, 133],
               loc: {
@@ -110,7 +147,9 @@ Program {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "T",
+                    optional: false,
 
                     range: [134, 135],
                     loc: {
@@ -142,9 +181,43 @@ Program {
           },
           TSTypeReference {
             type: "TSTypeReference",
+            typeArguments: TSTypeParameterInstantiation {
+              type: "TSTypeParameterInstantiation",
+              params: Array [
+                TSTypeReference {
+                  type: "TSTypeReference",
+                  typeName: Identifier {
+                    type: "Identifier",
+                    decorators: Array [],
+                    name: "T",
+                    optional: false,
+
+                    range: [152, 153],
+                    loc: {
+                      start: { column: 33, line: 4 },
+                      end: { column: 34, line: 4 },
+                    },
+                  },
+
+                  range: [152, 153],
+                  loc: {
+                    start: { column: 33, line: 4 },
+                    end: { column: 34, line: 4 },
+                  },
+                },
+              ],
+
+              range: [151, 154],
+              loc: {
+                start: { column: 32, line: 4 },
+                end: { column: 35, line: 4 },
+              },
+            },
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "Lowercase",
+              optional: false,
 
               range: [142, 151],
               loc: {
@@ -159,7 +232,9 @@ Program {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "T",
+                    optional: false,
 
                     range: [152, 153],
                     loc: {
@@ -191,9 +266,43 @@ Program {
           },
           TSTypeReference {
             type: "TSTypeReference",
+            typeArguments: TSTypeParameterInstantiation {
+              type: "TSTypeParameterInstantiation",
+              params: Array [
+                TSTypeReference {
+                  type: "TSTypeReference",
+                  typeName: Identifier {
+                    type: "Identifier",
+                    decorators: Array [],
+                    name: "T",
+                    optional: false,
+
+                    range: [171, 172],
+                    loc: {
+                      start: { column: 52, line: 4 },
+                      end: { column: 53, line: 4 },
+                    },
+                  },
+
+                  range: [171, 172],
+                  loc: {
+                    start: { column: 52, line: 4 },
+                    end: { column: 53, line: 4 },
+                  },
+                },
+              ],
+
+              range: [170, 173],
+              loc: {
+                start: { column: 51, line: 4 },
+                end: { column: 54, line: 4 },
+              },
+            },
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "Capitalize",
+              optional: false,
 
               range: [160, 170],
               loc: {
@@ -208,7 +317,9 @@ Program {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "T",
+                    optional: false,
 
                     range: [171, 172],
                     loc: {
@@ -240,9 +351,43 @@ Program {
           },
           TSTypeReference {
             type: "TSTypeReference",
+            typeArguments: TSTypeParameterInstantiation {
+              type: "TSTypeParameterInstantiation",
+              params: Array [
+                TSTypeReference {
+                  type: "TSTypeReference",
+                  typeName: Identifier {
+                    type: "Identifier",
+                    decorators: Array [],
+                    name: "T",
+                    optional: false,
+
+                    range: [192, 193],
+                    loc: {
+                      start: { column: 73, line: 4 },
+                      end: { column: 74, line: 4 },
+                    },
+                  },
+
+                  range: [192, 193],
+                  loc: {
+                    start: { column: 73, line: 4 },
+                    end: { column: 74, line: 4 },
+                  },
+                },
+              ],
+
+              range: [191, 194],
+              loc: {
+                start: { column: 72, line: 4 },
+                end: { column: 75, line: 4 },
+              },
+            },
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "Uncapitalize",
+              optional: false,
 
               range: [179, 191],
               loc: {
@@ -257,7 +402,9 @@ Program {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "T",
+                    optional: false,
 
                     range: [192, 193],
                     loc: {
@@ -312,7 +459,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [99, 100],
               loc: {
@@ -345,9 +494,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "HELLO",
+        optional: false,
 
         range: [203, 208],
         loc: {
@@ -357,9 +509,42 @@ Program {
       },
       typeAnnotation: TSTypeReference {
         type: "TSTypeReference",
+        typeArguments: TSTypeParameterInstantiation {
+          type: "TSTypeParameterInstantiation",
+          params: Array [
+            TSLiteralType {
+              type: "TSLiteralType",
+              literal: Literal {
+                type: "Literal",
+                raw: "'heLLo'",
+                value: "heLLo",
+
+                range: [232, 239],
+                loc: {
+                  start: { column: 34, line: 5 },
+                  end: { column: 41, line: 5 },
+                },
+              },
+
+              range: [232, 239],
+              loc: {
+                start: { column: 34, line: 5 },
+                end: { column: 41, line: 5 },
+              },
+            },
+          ],
+
+          range: [231, 240],
+          loc: {
+            start: { column: 33, line: 5 },
+            end: { column: 42, line: 5 },
+          },
+        },
         typeName: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "EnthusiasticGreeting",
+          optional: false,
 
           range: [211, 231],
           loc: {

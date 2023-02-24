@@ -36,12 +36,46 @@ Program {
         },
         tag: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "foo",
+          optional: false,
 
           range: [73, 76],
           loc: {
             start: { column: 0, line: 3 },
             end: { column: 3, line: 3 },
+          },
+        },
+        typeArguments: TSTypeParameterInstantiation {
+          type: "TSTypeParameterInstantiation",
+          params: Array [
+            TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                decorators: Array [],
+                name: "bar",
+                optional: false,
+
+                range: [77, 80],
+                loc: {
+                  start: { column: 4, line: 3 },
+                  end: { column: 7, line: 3 },
+                },
+              },
+
+              range: [77, 80],
+              loc: {
+                start: { column: 4, line: 3 },
+                end: { column: 7, line: 3 },
+              },
+            },
+          ],
+
+          range: [76, 81],
+          loc: {
+            start: { column: 3, line: 3 },
+            end: { column: 8, line: 3 },
           },
         },
         typeParameters: TSTypeParameterInstantiation {
@@ -51,7 +85,9 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "bar",
+                optional: false,
 
                 range: [77, 80],
                 loc: {

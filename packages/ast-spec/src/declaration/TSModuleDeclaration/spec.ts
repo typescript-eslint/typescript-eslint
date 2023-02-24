@@ -32,15 +32,14 @@ interface TSModuleDeclarationBase extends BaseNode {
    * ```
    */
   // TODO - remove this in the next major (we have `.kind` now)
-  global?: boolean;
+  global: boolean;
   /**
    * Whether the module is `declare`d
    * ```
    * declare namespace F {}
    * ```
    */
-  // TODO(#5020) - make this `false` if it is not `declare`d
-  declare?: boolean;
+  declare: boolean;
 
   /**
    * The keyword used to define this module declaration
@@ -64,9 +63,6 @@ export interface TSModuleDeclarationNamespace extends TSModuleDeclarationBase {
   id: Identifier | TSQualifiedName;
   // namespaces must always have a body
   body: TSModuleBlock;
-
-  // TODO - remove this in the next major (we have `.kind` now)
-  global?: undefined;
 }
 
 export interface TSModuleDeclarationGlobal extends TSModuleDeclarationBase {
@@ -76,18 +72,10 @@ export interface TSModuleDeclarationGlobal extends TSModuleDeclarationBase {
   body: TSModuleBlock;
   // this will always be an Identifier with name `global`
   id: Identifier;
-
-  // note - it's not syntactically required to have `declare`, but it semantically required
-
-  // TODO - remove this in the next major (we have `.kind` now)
-  global: true;
 }
 
 interface TSModuleDeclarationModuleBase extends TSModuleDeclarationBase {
   kind: 'module';
-
-  // TODO - remove this in the next major (we have `.kind` now)
-  global?: undefined;
 }
 
 export type TSModuleDeclarationModule =

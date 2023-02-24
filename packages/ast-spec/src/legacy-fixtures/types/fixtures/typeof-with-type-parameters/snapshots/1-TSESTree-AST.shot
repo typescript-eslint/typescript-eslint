@@ -9,9 +9,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "x",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypeQuery {
@@ -20,7 +23,9 @@ Program {
                   type: "TSQualifiedName",
                   left: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "y",
+                    optional: false,
 
                     range: [87, 88],
                     loc: {
@@ -30,7 +35,9 @@ Program {
                   },
                   right: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "z",
+                    optional: false,
 
                     range: [89, 90],
                     loc: {
@@ -45,6 +52,38 @@ Program {
                     end: { column: 17, line: 3 },
                   },
                 },
+                typeArguments: TSTypeParameterInstantiation {
+                  type: "TSTypeParameterInstantiation",
+                  params: Array [
+                    TSTypeReference {
+                      type: "TSTypeReference",
+                      typeName: Identifier {
+                        type: "Identifier",
+                        decorators: Array [],
+                        name: "w",
+                        optional: false,
+
+                        range: [91, 92],
+                        loc: {
+                          start: { column: 18, line: 3 },
+                          end: { column: 19, line: 3 },
+                        },
+                      },
+
+                      range: [91, 92],
+                      loc: {
+                        start: { column: 18, line: 3 },
+                        end: { column: 19, line: 3 },
+                      },
+                    },
+                  ],
+
+                  range: [90, 93],
+                  loc: {
+                    start: { column: 17, line: 3 },
+                    end: { column: 20, line: 3 },
+                  },
+                },
                 typeParameters: TSTypeParameterInstantiation {
                   type: "TSTypeParameterInstantiation",
                   params: Array [
@@ -52,7 +91,9 @@ Program {
                       type: "TSTypeReference",
                       typeName: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "w",
+                        optional: false,
 
                         range: [91, 92],
                         loc: {
@@ -105,6 +146,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [73, 94],

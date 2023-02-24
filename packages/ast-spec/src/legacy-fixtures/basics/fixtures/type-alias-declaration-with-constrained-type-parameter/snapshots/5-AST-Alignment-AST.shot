@@ -10,9 +10,12 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Result',
+-         optional: false,
 
           range: [78, 84],
           loc: {
@@ -25,9 +28,43 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
           types: Array [
             TSTypeReference {
               type: 'TSTypeReference',
+-             typeArguments: TSTypeParameterInstantiation {
+-               type: 'TSTypeParameterInstantiation',
+-               params: Array [
+-                 TSTypeReference {
+-                   type: 'TSTypeReference',
+-                   typeName: Identifier {
+-                     type: 'Identifier',
+-                     decorators: Array [],
+-                     name: 'T',
+-                     optional: false,
+-
+-                     range: [109, 110],
+-                     loc: {
+-                       start: { column: 36, line: 3 },
+-                       end: { column: 37, line: 3 },
+-                     },
+-                   },
+-
+-                   range: [109, 110],
+-                   loc: {
+-                     start: { column: 36, line: 3 },
+-                     end: { column: 37, line: 3 },
+-                   },
+-                 },
+-               ],
+-
+-               range: [108, 111],
+-               loc: {
+-                 start: { column: 35, line: 3 },
+-                 end: { column: 38, line: 3 },
+-               },
+-             },
               typeName: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'Success',
+-               optional: false,
 
                 range: [101, 108],
                 loc: {
@@ -42,7 +79,9 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
                     type: 'TSTypeReference',
                     typeName: Identifier {
                       type: 'Identifier',
+-                     decorators: Array [],
                       name: 'T',
+-                     optional: false,
 
                       range: [109, 110],
                       loc: {
@@ -76,7 +115,9 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'Failure',
+-               optional: false,
 
                 range: [114, 121],
                 loc: {
@@ -117,7 +158,9 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [85, 86],
 -               loc: {

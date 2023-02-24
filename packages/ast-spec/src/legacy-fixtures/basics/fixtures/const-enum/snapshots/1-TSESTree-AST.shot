@@ -7,9 +7,12 @@ Program {
     TSEnumDeclaration {
       type: "TSEnumDeclaration",
       const: true,
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [84, 87],
         loc: {
@@ -20,9 +23,12 @@ Program {
       members: Array [
         TSEnumMember {
           type: "TSEnumMember",
+          computed: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "foo",
+            optional: false,
 
             range: [92, 95],
             loc: {
@@ -50,9 +56,12 @@ Program {
         },
         TSEnumMember {
           type: "TSEnumMember",
+          computed: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "bar",
+            optional: false,
 
             range: [103, 106],
             loc: {

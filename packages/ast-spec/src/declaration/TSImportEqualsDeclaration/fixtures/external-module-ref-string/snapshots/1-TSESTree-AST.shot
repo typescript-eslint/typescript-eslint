@@ -8,7 +8,9 @@ Program {
       type: "TSImportEqualsDeclaration",
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "F",
+        optional: false,
 
         range: [7, 8],
         loc: {

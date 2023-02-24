@@ -61,9 +61,11 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
   "setExternalModuleIndicator": [Function],
   "statements": [
     {
+      "directive": undefined,
       "expression": {
         "arguments": [],
         "callee": {
+          "decorators": [],
           "loc": {
             "end": {
               "column": 7,
@@ -75,11 +77,13 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
             },
           },
           "name": "foo",
+          "optional": false,
           "range": [
             4,
             7,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": {
           "end": {
@@ -96,6 +100,65 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
           12,
         ],
         "type": "NewExpression",
+        "typeArguments": {
+          "loc": {
+            "end": {
+              "column": 10,
+              "line": 1,
+            },
+            "start": {
+              "column": 7,
+              "line": 1,
+            },
+          },
+          "params": [
+            {
+              "loc": {
+                "end": {
+                  "column": 9,
+                  "line": 1,
+                },
+                "start": {
+                  "column": 8,
+                  "line": 1,
+                },
+              },
+              "range": [
+                8,
+                9,
+              ],
+              "type": "TSTypeReference",
+              "typeArguments": undefined,
+              "typeName": {
+                "decorators": [],
+                "loc": {
+                  "end": {
+                    "column": 9,
+                    "line": 1,
+                  },
+                  "start": {
+                    "column": 8,
+                    "line": 1,
+                  },
+                },
+                "name": "T",
+                "optional": false,
+                "range": [
+                  8,
+                  9,
+                ],
+                "type": "Identifier",
+                "typeAnnotation": undefined,
+              },
+              "typeParameters": undefined,
+            },
+          ],
+          "range": [
+            7,
+            10,
+          ],
+          "type": "TSTypeParameterInstantiation",
+        },
         "typeParameters": {
           "loc": {
             "end": {
@@ -124,7 +187,9 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
                 9,
               ],
               "type": "TSTypeReference",
+              "typeArguments": undefined,
               "typeName": {
+                "decorators": [],
                 "loc": {
                   "end": {
                     "column": 9,
@@ -136,11 +201,13 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
                   },
                 },
                 "name": "T",
+                "optional": false,
                 "range": [
                   8,
                   9,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -217,6 +284,7 @@ exports[`convert deeplyCopy should convert node correctly 1`] = `
       "typeParameters": null,
     },
   ],
+  "comments": undefined,
   "loc": {
     "end": {
       "column": 35,
@@ -232,6 +300,7 @@ exports[`convert deeplyCopy should convert node correctly 1`] = `
     35,
   ],
   "sourceType": "script",
+  "tokens": undefined,
   "type": "Program",
 }
 `;
@@ -241,6 +310,7 @@ exports[`convert deeplyCopy should convert node with decorators correctly 1`] = 
   "decorators": [
     {
       "expression": {
+        "decorators": [],
         "loc": {
           "end": {
             "column": 5,
@@ -252,11 +322,13 @@ exports[`convert deeplyCopy should convert node with decorators correctly 1`] = 
           },
         },
         "name": "test",
+        "optional": false,
         "range": [
           1,
           5,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": {
         "end": {
@@ -287,6 +359,7 @@ exports[`convert deeplyCopy should convert node with decorators correctly 1`] = 
   },
   "members": [],
   "name": {
+    "decorators": [],
     "loc": {
       "end": {
         "column": 15,
@@ -298,11 +371,13 @@ exports[`convert deeplyCopy should convert node with decorators correctly 1`] = 
       },
     },
     "name": "foo",
+    "optional": false,
     "range": [
       12,
       15,
     ],
     "type": "Identifier",
+    "typeAnnotation": undefined,
   },
   "range": [
     0,
@@ -317,6 +392,7 @@ exports[`convert deeplyCopy should convert node with type arguments correctly 1`
 {
   "arguments": [],
   "expression": {
+    "decorators": [],
     "loc": {
       "end": {
         "column": 7,
@@ -328,11 +404,13 @@ exports[`convert deeplyCopy should convert node with type arguments correctly 1`
       },
     },
     "name": "foo",
+    "optional": false,
     "range": [
       4,
       7,
     ],
     "type": "Identifier",
+    "typeAnnotation": undefined,
   },
   "loc": {
     "end": {
@@ -349,6 +427,65 @@ exports[`convert deeplyCopy should convert node with type arguments correctly 1`
     12,
   ],
   "type": "TSNewExpression",
+  "typeArguments": {
+    "loc": {
+      "end": {
+        "column": 10,
+        "line": 1,
+      },
+      "start": {
+        "column": 7,
+        "line": 1,
+      },
+    },
+    "params": [
+      {
+        "loc": {
+          "end": {
+            "column": 9,
+            "line": 1,
+          },
+          "start": {
+            "column": 8,
+            "line": 1,
+          },
+        },
+        "range": [
+          8,
+          9,
+        ],
+        "type": "TSTypeReference",
+        "typeArguments": undefined,
+        "typeName": {
+          "decorators": [],
+          "loc": {
+            "end": {
+              "column": 9,
+              "line": 1,
+            },
+            "start": {
+              "column": 8,
+              "line": 1,
+            },
+          },
+          "name": "T",
+          "optional": false,
+          "range": [
+            8,
+            9,
+          ],
+          "type": "Identifier",
+          "typeAnnotation": undefined,
+        },
+        "typeParameters": undefined,
+      },
+    ],
+    "range": [
+      7,
+      10,
+    ],
+    "type": "TSTypeParameterInstantiation",
+  },
   "typeParameters": {
     "loc": {
       "end": {
@@ -377,7 +514,9 @@ exports[`convert deeplyCopy should convert node with type arguments correctly 1`
           9,
         ],
         "type": "TSTypeReference",
+        "typeArguments": undefined,
         "typeName": {
+          "decorators": [],
           "loc": {
             "end": {
               "column": 9,
@@ -389,11 +528,13 @@ exports[`convert deeplyCopy should convert node with type arguments correctly 1`
             },
           },
           "name": "T",
+          "optional": false,
           "range": [
             8,
             9,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "typeParameters": undefined,
       },
@@ -421,6 +562,7 @@ exports[`convert deeplyCopy should convert node with type parameters correctly 1
   },
   "members": [],
   "name": {
+    "decorators": [],
     "loc": {
       "end": {
         "column": 9,
@@ -432,11 +574,13 @@ exports[`convert deeplyCopy should convert node with type parameters correctly 1
       },
     },
     "name": "foo",
+    "optional": false,
     "range": [
       6,
       9,
     ],
     "type": "Identifier",
+    "typeAnnotation": undefined,
   },
   "range": [
     0,
@@ -470,6 +614,7 @@ exports[`convert deeplyCopy should convert node with type parameters correctly 1
           },
         },
         "name": {
+          "decorators": [],
           "loc": {
             "end": {
               "column": 11,
@@ -481,11 +626,13 @@ exports[`convert deeplyCopy should convert node with type parameters correctly 1
             },
           },
           "name": "T",
+          "optional": false,
           "range": [
             10,
             11,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "out": false,
         "range": [

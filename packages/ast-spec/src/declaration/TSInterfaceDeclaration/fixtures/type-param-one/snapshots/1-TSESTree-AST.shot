@@ -16,9 +16,13 @@ Program {
           end: { column: 17, line: 1 },
         },
       },
+      declare: false,
+      extends: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "F",
+        optional: false,
 
         range: [10, 11],
         loc: {
@@ -34,7 +38,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [12, 13],
               loc: {

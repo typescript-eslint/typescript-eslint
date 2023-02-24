@@ -9,9 +9,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "asserted2",
+            optional: false,
 
             range: [77, 86],
             loc: {
@@ -31,7 +34,9 @@ Program {
                     type: "ReturnStatement",
                     argument: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "n",
+                      optional: false,
 
                       range: [111, 112],
                       loc: {
@@ -60,7 +65,9 @@ Program {
               params: Array [
                 Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "n",
+                  optional: false,
 
                   range: [95, 96],
                   loc: {
@@ -100,6 +107,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "var",
 
       range: [73, 117],

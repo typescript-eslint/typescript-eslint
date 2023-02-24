@@ -10,6 +10,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-and-implements A
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -20,9 +21,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-and-implements A
             end: { column: 80, line: 3 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'ClassWithParentAndInterface',
+-         optional: false,
 
           range: [79, 106],
           loc: {
@@ -37,7 +42,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-and-implements A
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'MyInterface',
+-             optional: false,
 
               range: [139, 150],
               loc: {
@@ -55,7 +62,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-and-implements A
         ],
         superClass: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'MyOtherClass',
+-         optional: false,
 
           range: [115, 127],
           loc: {

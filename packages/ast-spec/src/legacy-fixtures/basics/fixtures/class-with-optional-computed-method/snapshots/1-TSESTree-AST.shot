@@ -9,9 +9,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "computed1",
+            optional: false,
 
             range: [79, 88],
             loc: {
@@ -38,6 +41,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [73, 98],
@@ -51,9 +55,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "computed2",
+            optional: false,
 
             range: [105, 114],
             loc: {
@@ -80,6 +87,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [99, 124],
@@ -93,9 +101,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "obj",
+            optional: false,
 
             range: [131, 134],
             loc: {
@@ -111,7 +122,9 @@ Program {
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "member",
+                  optional: false,
 
                   range: [141, 147],
                   loc: {
@@ -121,6 +134,7 @@ Program {
                 },
                 kind: "init",
                 method: false,
+                optional: false,
                 shorthand: false,
                 value: Literal {
                   type: "Literal",
@@ -145,7 +159,9 @@ Program {
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "member2",
+                  optional: false,
 
                   range: [161, 168],
                   loc: {
@@ -155,6 +171,7 @@ Program {
                 },
                 kind: "init",
                 method: false,
+                optional: false,
                 shorthand: false,
                 value: Literal {
                   type: "Literal",
@@ -190,6 +207,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [125, 183],
@@ -200,15 +218,19 @@ Program {
     },
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "computed1",
+              optional: false,
 
               range: [197, 206],
               loc: {
@@ -224,6 +246,7 @@ Program {
               type: "TSEmptyBodyFunctionExpression",
               async: false,
               body: null,
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -245,9 +268,12 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "computed2",
+              optional: false,
 
               range: [215, 224],
               loc: {
@@ -272,6 +298,7 @@ Program {
                   end: { column: 19, line: 11 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -293,6 +320,7 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
+            decorators: Array [],
             key: Literal {
               type: "Literal",
               raw: "1",
@@ -312,6 +340,7 @@ Program {
               type: "TSEmptyBodyFunctionExpression",
               async: false,
               body: null,
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -333,6 +362,7 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
+            decorators: Array [],
             key: Literal {
               type: "Literal",
               raw: "2",
@@ -361,6 +391,7 @@ Program {
                   end: { column: 11, line: 13 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -382,6 +413,7 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
+            decorators: Array [],
             key: Literal {
               type: "Literal",
               raw: "'literal1'",
@@ -401,6 +433,7 @@ Program {
               type: "TSEmptyBodyFunctionExpression",
               async: false,
               body: null,
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -422,6 +455,7 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
+            decorators: Array [],
             key: Literal {
               type: "Literal",
               raw: "'literal2'",
@@ -450,6 +484,7 @@ Program {
                   end: { column: 20, line: 15 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -471,12 +506,15 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
+            decorators: Array [],
             key: MemberExpression {
               type: "MemberExpression",
               computed: false,
               object: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "obj",
+                optional: false,
 
                 range: [297, 300],
                 loc: {
@@ -487,7 +525,9 @@ Program {
               optional: false,
               property: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "member",
+                optional: false,
 
                 range: [301, 307],
                 loc: {
@@ -519,6 +559,7 @@ Program {
                   end: { column: 20, line: 16 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -540,12 +581,15 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
+            decorators: Array [],
             key: MemberExpression {
               type: "MemberExpression",
               computed: false,
               object: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "obj",
+                optional: false,
 
                 range: [318, 321],
                 loc: {
@@ -556,7 +600,9 @@ Program {
               optional: false,
               property: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "member2",
+                optional: false,
 
                 range: [322, 329],
                 loc: {
@@ -579,6 +625,7 @@ Program {
               type: "TSEmptyBodyFunctionExpression",
               async: false,
               body: null,
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -600,12 +647,15 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
+            decorators: Array [],
             key: CallExpression {
               type: "CallExpression",
               arguments: Array [],
               callee: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "f",
+                optional: false,
 
                 range: [338, 339],
                 loc: {
@@ -638,6 +688,7 @@ Program {
                   end: { column: 13, line: 18 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -664,9 +715,13 @@ Program {
           end: { column: 1, line: 19 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "X",
+        optional: false,
 
         range: [190, 191],
         loc: {
@@ -674,6 +729,7 @@ Program {
           end: { column: 7, line: 9 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [184, 350],

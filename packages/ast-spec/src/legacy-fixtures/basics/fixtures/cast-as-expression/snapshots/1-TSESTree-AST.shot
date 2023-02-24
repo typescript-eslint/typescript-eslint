@@ -12,7 +12,9 @@ Program {
           type: "BinaryExpression",
           left: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "x",
+            optional: false,
 
             range: [74, 75],
             loc: {
@@ -23,7 +25,9 @@ Program {
           operator: "<",
           right: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "y",
+            optional: false,
 
             range: [78, 79],
             loc: {

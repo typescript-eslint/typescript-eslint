@@ -6,9 +6,12 @@ Program {
   body: Array [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "A",
+        optional: false,
 
         range: [78, 79],
         loc: {
@@ -41,6 +44,7 @@ Program {
             },
           },
           qualifier: null,
+          typeArguments: null,
           typeParameters: null,
 
           range: [89, 100],
@@ -65,9 +69,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "B",
+        optional: false,
 
         range: [107, 108],
         loc: {
@@ -99,12 +106,46 @@ Program {
         },
         qualifier: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "X",
+          optional: false,
 
           range: [123, 124],
           loc: {
             start: { column: 21, line: 4 },
             end: { column: 22, line: 4 },
+          },
+        },
+        typeArguments: TSTypeParameterInstantiation {
+          type: "TSTypeParameterInstantiation",
+          params: Array [
+            TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                decorators: Array [],
+                name: "Y",
+                optional: false,
+
+                range: [125, 126],
+                loc: {
+                  start: { column: 23, line: 4 },
+                  end: { column: 24, line: 4 },
+                },
+              },
+
+              range: [125, 126],
+              loc: {
+                start: { column: 23, line: 4 },
+                end: { column: 24, line: 4 },
+              },
+            },
+          ],
+
+          range: [124, 127],
+          loc: {
+            start: { column: 22, line: 4 },
+            end: { column: 25, line: 4 },
           },
         },
         typeParameters: TSTypeParameterInstantiation {
@@ -114,7 +155,9 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "Y",
+                optional: false,
 
                 range: [125, 126],
                 loc: {

@@ -18,7 +18,9 @@ exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-interf
               computed: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'isString',
+-               optional: false,
 
                 range: [97, 105],
                 loc: {
@@ -27,11 +29,14 @@ exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-interf
                 },
               },
               kind: 'method',
+-             optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'node',
+-                 optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSAnyKeyword {
@@ -58,6 +63,7 @@ exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-interf
                   },
                 },
               ],
+-             readonly: false,
 -             returnType: TSTypeAnnotation {
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -66,7 +72,9 @@ exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-interf
                   asserts: true,
                   parameterName: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'node',
+-                   optional: false,
 
                     range: [126, 130],
                     loc: {
@@ -106,6 +114,7 @@ exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-interf
                   end: { column: 45, line: 4 },
                 },
               },
+-             static: false,
 
               range: [97, 141],
               loc: {
@@ -121,9 +130,13 @@ exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-interf
             end: { column: 1, line: 5 },
           },
         },
+-       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'AssertFoo',
+-         optional: false,
 
           range: [83, 92],
           loc: {
