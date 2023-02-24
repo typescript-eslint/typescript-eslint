@@ -36,9 +36,10 @@ import { AST_NODE_TYPES } from './ts-estree';
 
 const SyntaxKind = ts.SyntaxKind;
 
-interface ConverterOptions {
-  errorOnUnknownASTType: boolean;
-  shouldPreserveNodeMaps: boolean;
+export interface ConverterOptions {
+  errorOnUnknownASTType?: boolean;
+  shouldPreserveNodeMaps?: boolean;
+  suppressDeprecatedPropertyWarnings?: boolean;
 }
 
 /**
@@ -75,7 +76,7 @@ export class Converter {
    * @param options additional options for the conversion
    * @returns the converted ESTreeNode
    */
-  constructor(ast: ts.SourceFile, options: ConverterOptions) {
+  constructor(ast: ts.SourceFile, options?: ConverterOptions) {
     this.ast = ast;
     this.options = { ...options };
   }
@@ -474,13 +475,18 @@ export class Converter {
           : null;
     }
     if ('typeArguments' in node) {
-      result.typeArguments = result.typeParameters =
+      result.typeArguments =
         node.typeArguments && 'pos' in node.typeArguments
           ? this.convertTypeArgumentsToTypeParameterInstantiation(
               node.typeArguments,
               node,
             )
           : null;
+      this.#addDeprecatedTypeParametersGetter(
+        result,
+        'typeParameters',
+        'typeArguments',
+      );
     }
     if ('typeParameters' in node) {
       result.typeParameters =
@@ -1077,6 +1083,7 @@ export class Converter {
       case SyntaxKind.ShorthandPropertyAssignment: {
         this.#throwErrorIfDeprecatedPropertyExists(
           node,
+
           // eslint-disable-next-line deprecation/deprecation
           node.modifiers,
           'A shorthand property assignment cannot have modifiers.',
@@ -1553,19 +1560,28 @@ export class Converter {
       }
 
       case SyntaxKind.TaggedTemplateExpression: {
-        const typeArguments = node.typeArguments
-          ? this.convertTypeArgumentsToTypeParameterInstantiation(
-              node.typeArguments,
-              node,
-            )
-          : undefined;
-        return this.createNode<TSESTree.TaggedTemplateExpression>(node, {
-          type: AST_NODE_TYPES.TaggedTemplateExpression,
-          typeArguments,
-          typeParameters: typeArguments,
-          tag: this.convertChild(node.tag),
-          quasi: this.convertChild(node.template),
-        });
+        const result = this.createNode<TSESTree.TaggedTemplateExpression>(
+          node,
+          {
+            type: AST_NODE_TYPES.TaggedTemplateExpression,
+            typeArguments: node.typeArguments
+              ? this.convertTypeArgumentsToTypeParameterInstantiation(
+                  node.typeArguments,
+                  node,
+                )
+              : undefined,
+            tag: this.convertChild(node.tag),
+            quasi: this.convertChild(node.template),
+          },
+        );
+
+        this.#addDeprecatedTypeParametersGetter(
+          result,
+          'typeParameters',
+          'typeArguments',
+        );
+
+        return result;
       }
 
       case SyntaxKind.TemplateHead:
@@ -1715,12 +1731,16 @@ export class Converter {
           }
 
           if (superClass.types[0]?.typeArguments) {
-            // eslint-disable-next-line deprecation/deprecation
-            result.superTypeArguments = result.superTypeParameters =
+            result.superTypeArguments =
               this.convertTypeArgumentsToTypeParameterInstantiation(
                 superClass.types[0].typeArguments,
                 superClass.types[0],
               );
+            this.#addDeprecatedTypeParametersGetter(
+              result,
+              'superTypeParameters',
+              'superTypeArguments',
+            );
           }
         }
 
@@ -2062,12 +2082,17 @@ export class Converter {
         });
 
         if (node.typeArguments) {
-          // eslint-disable-next-line deprecation/deprecation
-          result.typeArguments = result.typeParameters =
+          result.typeArguments =
             this.convertTypeArgumentsToTypeParameterInstantiation(
               node.typeArguments,
               node,
             );
+
+          this.#addDeprecatedTypeParametersGetter(
+            result,
+            'typeParameters',
+            'typeArguments',
+          );
         }
 
         return this.convertChainExpression(result, node);
@@ -2083,12 +2108,17 @@ export class Converter {
             : [],
         });
         if (node.typeArguments) {
-          // eslint-disable-next-line deprecation/deprecation
-          result.typeArguments = result.typeParameters =
+          result.typeArguments =
             this.convertTypeArgumentsToTypeParameterInstantiation(
               node.typeArguments,
               node,
             );
+
+          this.#addDeprecatedTypeParametersGetter(
+            result,
+            'typeParameters',
+            'typeArguments',
+          );
         }
         return result;
       }
@@ -2236,13 +2266,7 @@ export class Converter {
         });
 
       case SyntaxKind.JsxSelfClosingElement: {
-        const typeArguments = node.typeArguments
-          ? this.convertTypeArgumentsToTypeParameterInstantiation(
-              node.typeArguments,
-              node,
-            )
-          : undefined;
-        return this.createNode<TSESTree.JSXElement>(node, {
+        const result = this.createNode<TSESTree.JSXElement>(node, {
           type: AST_NODE_TYPES.JSXElement,
           /**
            * Convert SyntaxKind.JsxSelfClosingElement to SyntaxKind.JsxOpeningElement,
@@ -2250,8 +2274,12 @@ export class Converter {
            */
           openingElement: this.createNode<TSESTree.JSXOpeningElement>(node, {
             type: AST_NODE_TYPES.JSXOpeningElement,
-            typeArguments,
-            typeParameters: typeArguments,
+            typeArguments: node.typeArguments
+              ? this.convertTypeArgumentsToTypeParameterInstantiation(
+                  node.typeArguments,
+                  node,
+                )
+              : undefined,
             selfClosing: true,
             name: this.convertJSXTagName(node.tagName, node),
             attributes: node.attributes.properties.map(el =>
@@ -2262,10 +2290,18 @@ export class Converter {
           closingElement: null,
           children: [],
         });
+
+        this.#addDeprecatedTypeParametersGetter(
+          result.openingElement,
+          'typeParameters',
+          'typeArguments',
+        );
+
+        return result;
       }
 
-      case SyntaxKind.JsxOpeningElement:
-        return this.createNode<TSESTree.JSXOpeningElement>(node, {
+      case SyntaxKind.JsxOpeningElement: {
+        const result = this.createNode<TSESTree.JSXOpeningElement>(node, {
           type: AST_NODE_TYPES.JSXOpeningElement,
           typeArguments: node.typeArguments
             ? this.convertTypeArgumentsToTypeParameterInstantiation(
@@ -2279,6 +2315,15 @@ export class Converter {
             this.convertChild(el),
           ),
         });
+
+        this.#addDeprecatedTypeParametersGetter(
+          result,
+          'typeParameters',
+          'typeArguments',
+        );
+
+        return result;
+      }
 
       case SyntaxKind.JsxClosingElement:
         return this.createNode<TSESTree.JSXClosingElement>(node, {
@@ -2355,18 +2400,24 @@ export class Converter {
       // TypeScript specific
 
       case SyntaxKind.TypeReference: {
-        const typeArguments = node.typeArguments
-          ? this.convertTypeArgumentsToTypeParameterInstantiation(
-              node.typeArguments,
-              node,
-            )
-          : undefined;
-        return this.createNode<TSESTree.TSTypeReference>(node, {
+        const result = this.createNode<TSESTree.TSTypeReference>(node, {
           type: AST_NODE_TYPES.TSTypeReference,
           typeName: this.convertChild(node.typeName),
-          typeArguments,
-          typeParameters: typeArguments,
+          typeArguments: node.typeArguments
+            ? this.convertTypeArgumentsToTypeParameterInstantiation(
+                node.typeArguments,
+                node,
+              )
+            : undefined,
         });
+
+        this.#addDeprecatedTypeParametersGetter(
+          result,
+          'typeParameters',
+          'typeArguments',
+        );
+
+        return result;
       }
 
       case SyntaxKind.TypeParameter: {
@@ -2446,18 +2497,24 @@ export class Converter {
       }
 
       case SyntaxKind.TypeQuery: {
-        const typeArguments =
-          node.typeArguments &&
-          this.convertTypeArgumentsToTypeParameterInstantiation(
-            node.typeArguments,
-            node,
-          );
-        return this.createNode<TSESTree.TSTypeQuery>(node, {
+        const result = this.createNode<TSESTree.TSTypeQuery>(node, {
           type: AST_NODE_TYPES.TSTypeQuery,
           exprName: this.convertChild(node.exprName),
-          typeArguments,
-          typeParameters: typeArguments,
+          typeArguments:
+            node.typeArguments &&
+            this.convertTypeArgumentsToTypeParameterInstantiation(
+              node.typeArguments,
+              node,
+            ),
         });
+
+        this.#addDeprecatedTypeParametersGetter(
+          result,
+          'typeParameters',
+          'typeArguments',
+        );
+
+        return result;
       }
 
       case SyntaxKind.MappedType: {
@@ -2657,16 +2714,20 @@ export class Converter {
         >(node, {
           type,
           expression: this.convertChild(node.expression),
-        });
-
-        if (node.typeArguments) {
-          // eslint-disable-next-line deprecation/deprecation
-          result.typeArguments = result.typeParameters =
+          typeArguments:
+            node.typeArguments &&
             this.convertTypeArgumentsToTypeParameterInstantiation(
               node.typeArguments,
               node,
-            );
-        }
+            ),
+        });
+
+        this.#addDeprecatedTypeParametersGetter(
+          result,
+          'typeParameters',
+          'typeArguments',
+        );
+
         return result;
       }
 
@@ -2739,20 +2800,25 @@ export class Converter {
           const token = findNextToken(node.getFirstToken()!, node, this.ast)!;
           range[0] = token.getStart(this.ast);
         }
-        const typeArguments = node.typeArguments
-          ? this.convertTypeArgumentsToTypeParameterInstantiation(
-              node.typeArguments,
-              node,
-            )
-          : null;
         const result = this.createNode<TSESTree.TSImportType>(node, {
           type: AST_NODE_TYPES.TSImportType,
           argument: this.convertChild(node.argument),
           qualifier: this.convertChild(node.qualifier),
-          typeArguments,
-          typeParameters: typeArguments,
+          typeArguments: node.typeArguments
+            ? this.convertTypeArgumentsToTypeParameterInstantiation(
+                node.typeArguments,
+                node,
+              )
+            : null,
           range: range,
-        });
+        } as TSESTree.TSImportType);
+
+        this.#addDeprecatedTypeParametersGetter(
+          result,
+          'typeParameters',
+          'typeArguments',
+        );
+
         if (node.isTypeOf) {
           return this.createNode<TSESTree.TSTypeQuery>(node, {
             type: AST_NODE_TYPES.TSTypeQuery,
@@ -3088,5 +3154,36 @@ export class Converter {
     if (property) {
       throw createError(this.ast, node.pos, message);
     }
+  }
+
+  /**
+   * Creates a getter for a property under aliasKey that returns the value under
+   * valueKey. If suppressDeprecatedPropertyWarnings is not enabled, the
+   * getter also console warns about the deprecation.
+   *
+   * @see https://github.com/typescript-eslint/typescript-eslint/issues/6469
+   */
+  #addDeprecatedTypeParametersGetter<Node extends TSESTree.Node>(
+    node: Node,
+    aliasKey: keyof Node & string,
+    valueKey: keyof Node & string,
+  ): void {
+    let errored = false;
+    Object.defineProperty(node, aliasKey, {
+      get: this.options.suppressDeprecatedPropertyWarnings
+        ? (): Node[typeof valueKey] => node[valueKey]
+        : (): Node[typeof valueKey] => {
+            if (!this.options.suppressDeprecatedPropertyWarnings) {
+              if (!errored) {
+                // eslint-disable-next-line no-console
+                console.warn(
+                  `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead.`,
+                );
+                errored = true;
+              }
+            }
+            return node[valueKey];
+          },
+    });
   }
 }

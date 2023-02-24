@@ -22,6 +22,7 @@ export const parseSettings: ParseSettings = {
   errorOnTypeScriptSyntacticAndSemanticIssues: false,
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   singleRun: false,
+  suppressDeprecatedPropertyWarnings: false,
   programs: null,
   moduleResolver: '',
 };

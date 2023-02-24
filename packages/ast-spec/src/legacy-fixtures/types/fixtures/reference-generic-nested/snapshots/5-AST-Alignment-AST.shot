@@ -21,121 +21,33 @@ exports[`AST Fixtures legacy-fixtures types reference-generic-nested AST Alignme
                 typeAnnotation: TSTypeReference {
                   type: 'TSTypeReference',
 -                 typeArguments: TSTypeParameterInstantiation {
--                   type: 'TSTypeParameterInstantiation',
--                   params: Array [
--                     TSTypeReference {
--                       type: 'TSTypeReference',
--                       typeArguments: TSTypeParameterInstantiation {
--                         type: 'TSTypeParameterInstantiation',
--                         params: Array [
--                           TSNumberKeyword {
--                             type: 'TSNumberKeyword',
--
--                             range: [92, 98],
--                             loc: {
--                               start: { column: 19, line: 3 },
--                               end: { column: 25, line: 3 },
--                             },
--                           },
--                         ],
--
--                         range: [91, 99],
--                         loc: {
--                           start: { column: 18, line: 3 },
--                           end: { column: 26, line: 3 },
--                         },
--                       },
--                       typeName: Identifier {
--                         type: 'Identifier',
--                         name: 'Array',
--
--                         range: [86, 91],
--                         loc: {
--                           start: { column: 13, line: 3 },
--                           end: { column: 18, line: 3 },
--                         },
--                       },
--                       typeParameters: TSTypeParameterInstantiation {
--                         type: 'TSTypeParameterInstantiation',
--                         params: Array [
--                           TSNumberKeyword {
--                             type: 'TSNumberKeyword',
--
--                             range: [92, 98],
--                             loc: {
--                               start: { column: 19, line: 3 },
--                               end: { column: 25, line: 3 },
--                             },
--                           },
--                         ],
--
--                         range: [91, 99],
--                         loc: {
--                           start: { column: 18, line: 3 },
--                           end: { column: 26, line: 3 },
--                         },
--                       },
--
--                       range: [86, 99],
--                       loc: {
--                         start: { column: 13, line: 3 },
--                         end: { column: 26, line: 3 },
--                       },
--                     },
--                   ],
--
--                   range: [85, 100],
--                   loc: {
--                     start: { column: 12, line: 3 },
--                     end: { column: 27, line: 3 },
--                   },
--                 },
-                  typeName: Identifier {
-                    type: 'Identifier',
-                    name: 'Array',
-
-                    range: [80, 85],
-                    loc: {
-                      start: { column: 7, line: 3 },
-                      end: { column: 12, line: 3 },
-                    },
-                  },
-                  typeParameters: TSTypeParameterInstantiation {
++                 typeName: Identifier {
++                   type: 'Identifier',
++                   name: 'Array',
++
++                   range: [80, 85],
++                   loc: {
++                     start: { column: 7, line: 3 },
++                     end: { column: 12, line: 3 },
++                   },
++                 },
++                 typeParameters: TSTypeParameterInstantiation {
                     type: 'TSTypeParameterInstantiation',
                     params: Array [
                       TSTypeReference {
                         type: 'TSTypeReference',
 -                       typeArguments: TSTypeParameterInstantiation {
--                         type: 'TSTypeParameterInstantiation',
--                         params: Array [
--                           TSNumberKeyword {
--                             type: 'TSNumberKeyword',
--
--                             range: [92, 98],
--                             loc: {
--                               start: { column: 19, line: 3 },
--                               end: { column: 25, line: 3 },
--                             },
--                           },
--                         ],
--
--                         range: [91, 99],
--                         loc: {
--                           start: { column: 18, line: 3 },
--                           end: { column: 26, line: 3 },
--                         },
--                       },
-                        typeName: Identifier {
-                          type: 'Identifier',
-                          name: 'Array',
-
-                          range: [86, 91],
-                          loc: {
-                            start: { column: 13, line: 3 },
-                            end: { column: 18, line: 3 },
-                          },
-                        },
-                        typeParameters: TSTypeParameterInstantiation {
++                       typeName: Identifier {
++                         type: 'Identifier',
++                         name: 'Array',
++
++                         range: [86, 91],
++                         loc: {
++                           start: { column: 13, line: 3 },
++                           end: { column: 18, line: 3 },
++                         },
++                       },
++                       typeParameters: TSTypeParameterInstantiation {
                           type: 'TSTypeParameterInstantiation',
                           params: Array [
                             TSNumberKeyword {
@@ -155,7 +67,17 @@ exports[`AST Fixtures legacy-fixtures types reference-generic-nested AST Alignme
                             end: { column: 26, line: 3 },
                           },
                         },
+-                       typeName: Identifier {
+-                         type: 'Identifier',
+-                         name: 'Array',
 
+-                         range: [86, 91],
+-                         loc: {
+-                           start: { column: 13, line: 3 },
+-                           end: { column: 18, line: 3 },
+-                         },
+-                       },
+-
                         range: [86, 99],
                         loc: {
                           start: { column: 13, line: 3 },
@@ -168,6 +90,16 @@ exports[`AST Fixtures legacy-fixtures types reference-generic-nested AST Alignme
                     loc: {
                       start: { column: 12, line: 3 },
                       end: { column: 27, line: 3 },
+-                   },
+-                 },
+-                 typeName: Identifier {
+-                   type: 'Identifier',
+-                   name: 'Array',
+-
+-                   range: [80, 85],
+-                   loc: {
+-                     start: { column: 7, line: 3 },
+-                     end: { column: 12, line: 3 },
                     },
                   },
 

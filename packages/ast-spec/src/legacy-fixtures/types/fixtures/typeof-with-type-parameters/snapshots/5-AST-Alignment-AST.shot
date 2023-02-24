@@ -50,36 +50,7 @@ exports[`AST Fixtures legacy-fixtures types typeof-with-type-parameters AST Alig
                     },
                   },
 -                 typeArguments: TSTypeParameterInstantiation {
--                   type: 'TSTypeParameterInstantiation',
--                   params: Array [
--                     TSTypeReference {
--                       type: 'TSTypeReference',
--                       typeName: Identifier {
--                         type: 'Identifier',
--                         name: 'w',
--
--                         range: [91, 92],
--                         loc: {
--                           start: { column: 18, line: 3 },
--                           end: { column: 19, line: 3 },
--                         },
--                       },
--
--                       range: [91, 92],
--                       loc: {
--                         start: { column: 18, line: 3 },
--                         end: { column: 19, line: 3 },
--                       },
--                     },
--                   ],
--
--                   range: [90, 93],
--                   loc: {
--                     start: { column: 17, line: 3 },
--                     end: { column: 20, line: 3 },
--                   },
--                 },
-                  typeParameters: TSTypeParameterInstantiation {
++                 typeParameters: TSTypeParameterInstantiation {
                     type: 'TSTypeParameterInstantiation',
                     params: Array [
                       TSTypeReference {

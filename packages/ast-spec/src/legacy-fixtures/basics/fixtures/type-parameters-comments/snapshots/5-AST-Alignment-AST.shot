@@ -25,36 +25,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
           },
           optional: false,
 -         typeArguments: TSTypeParameterInstantiation {
--           type: 'TSTypeParameterInstantiation',
--           params: Array [
--             TSTypeReference {
--               type: 'TSTypeReference',
--               typeName: Identifier {
--                 type: 'Identifier',
--                 name: 'A',
--
--                 range: [93, 94],
--                 loc: {
--                   start: { column: 20, line: 3 },
--                   end: { column: 21, line: 3 },
--                 },
--               },
--
--               range: [93, 94],
--               loc: {
--                 start: { column: 20, line: 3 },
--                 end: { column: 21, line: 3 },
--               },
--             },
--           ],
--
--           range: [76, 111],
--           loc: {
--             start: { column: 3, line: 3 },
--             end: { column: 38, line: 3 },
--           },
--         },
-          typeParameters: TSTypeParameterInstantiation {
++         typeParameters: TSTypeParameterInstantiation {
             type: 'TSTypeParameterInstantiation',
             params: Array [
               TSTypeReference {
@@ -133,8 +104,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'A',
-+             name: 'A',
-
+-
 -               range: [138, 139],
 -               loc: {
 -                 start: { column: 23, line: 4 },
@@ -142,7 +112,8 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
 -               },
 -             },
 -             out: false,
--
++             name: 'A',
+
               range: [138, 139],
               loc: {
                 start: { column: 23, line: 4 },

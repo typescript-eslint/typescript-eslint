@@ -73,6 +73,9 @@ export function createParseSettings(
     projects: [],
     range: options.range === true,
     singleRun,
+    suppressDeprecatedPropertyWarnings:
+      options.suppressDeprecatedPropertyWarnings ??
+      process.env.NODE_ENV !== 'test',
     tokens: options.tokens === true ? [] : null,
     tsconfigMatchCache: (TSCONFIG_MATCH_CACHE ??= new ExpiringCache(
       singleRun

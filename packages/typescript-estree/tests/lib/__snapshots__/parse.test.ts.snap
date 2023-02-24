@@ -157,7 +157,6 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
                 "selfClosing": true,
                 "type": "JSXOpeningElement",
                 "typeArguments": undefined,
-                "typeParameters": undefined,
               },
               "range": [
                 10,
@@ -447,7 +446,6 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
                 "selfClosing": true,
                 "type": "JSXOpeningElement",
                 "typeArguments": undefined,
-                "typeParameters": undefined,
               },
               "range": [
                 10,
@@ -1313,7 +1311,6 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 "selfClosing": true,
                 "type": "JSXOpeningElement",
                 "typeArguments": undefined,
-                "typeParameters": undefined,
               },
               "range": [
                 10,
@@ -1603,7 +1600,6 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 "selfClosing": true,
                 "type": "JSXOpeningElement",
                 "typeArguments": undefined,
-                "typeParameters": undefined,
               },
               "range": [
                 10,
@@ -2609,7 +2605,6 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 "selfClosing": true,
                 "type": "JSXOpeningElement",
                 "typeArguments": undefined,
-                "typeParameters": undefined,
               },
               "range": [
                 10,
@@ -2899,7 +2894,6 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 "selfClosing": true,
                 "type": "JSXOpeningElement",
                 "typeArguments": undefined,
-                "typeParameters": undefined,
               },
               "range": [
                 10,
@@ -3547,7 +3541,6 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
                 "selfClosing": true,
                 "type": "JSXOpeningElement",
                 "typeArguments": undefined,
-                "typeParameters": undefined,
               },
               "range": [
                 10,

@@ -41,55 +41,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
           },
         },
 -       superTypeArguments: TSTypeParameterInstantiation {
--         type: 'TSTypeParameterInstantiation',
--         params: Array [
--           TSTypeReference {
--             type: 'TSTypeReference',
--             typeName: Identifier {
--               type: 'Identifier',
--               name: 'C',
--
--               range: [108, 109],
--               loc: {
--                 start: { column: 35, line: 3 },
--                 end: { column: 36, line: 3 },
--               },
--             },
--
--             range: [108, 109],
--             loc: {
--               start: { column: 35, line: 3 },
--               end: { column: 36, line: 3 },
--             },
--           },
--           TSTypeReference {
--             type: 'TSTypeReference',
--             typeName: Identifier {
--               type: 'Identifier',
--               name: 'D',
--
--               range: [111, 112],
--               loc: {
--                 start: { column: 38, line: 3 },
--                 end: { column: 39, line: 3 },
--               },
--             },
--
--             range: [111, 112],
--             loc: {
--               start: { column: 38, line: 3 },
--               end: { column: 39, line: 3 },
--             },
--           },
--         ],
--
--         range: [107, 113],
--         loc: {
--           start: { column: 34, line: 3 },
--           end: { column: 40, line: 3 },
--         },
--       },
-        superTypeParameters: TSTypeParameterInstantiation {
++       superTypeParameters: TSTypeParameterInstantiation {
           type: 'TSTypeParameterInstantiation',
           params: Array [
             TSTypeReference {

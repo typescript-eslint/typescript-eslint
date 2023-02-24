@@ -143,63 +143,6 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
                 ],
                 "type": "Identifier",
               },
-              "typeParameters": undefined,
-            },
-          ],
-          "range": [
-            7,
-            10,
-          ],
-          "type": "TSTypeParameterInstantiation",
-        },
-        "typeParameters": {
-          "loc": {
-            "end": {
-              "column": 10,
-              "line": 1,
-            },
-            "start": {
-              "column": 7,
-              "line": 1,
-            },
-          },
-          "params": [
-            {
-              "loc": {
-                "end": {
-                  "column": 9,
-                  "line": 1,
-                },
-                "start": {
-                  "column": 8,
-                  "line": 1,
-                },
-              },
-              "range": [
-                8,
-                9,
-              ],
-              "type": "TSTypeReference",
-              "typeArguments": undefined,
-              "typeName": {
-                "loc": {
-                  "end": {
-                    "column": 9,
-                    "line": 1,
-                  },
-                  "start": {
-                    "column": 8,
-                    "line": 1,
-                  },
-                },
-                "name": "T",
-                "range": [
-                  8,
-                  9,
-                ],
-                "type": "Identifier",
-              },
-              "typeParameters": undefined,
             },
           ],
           "range": [
@@ -453,63 +396,6 @@ exports[`convert deeplyCopy should convert node with type arguments correctly 1`
           ],
           "type": "Identifier",
         },
-        "typeParameters": undefined,
-      },
-    ],
-    "range": [
-      7,
-      10,
-    ],
-    "type": "TSTypeParameterInstantiation",
-  },
-  "typeParameters": {
-    "loc": {
-      "end": {
-        "column": 10,
-        "line": 1,
-      },
-      "start": {
-        "column": 7,
-        "line": 1,
-      },
-    },
-    "params": [
-      {
-        "loc": {
-          "end": {
-            "column": 9,
-            "line": 1,
-          },
-          "start": {
-            "column": 8,
-            "line": 1,
-          },
-        },
-        "range": [
-          8,
-          9,
-        ],
-        "type": "TSTypeReference",
-        "typeArguments": undefined,
-        "typeName": {
-          "loc": {
-            "end": {
-              "column": 9,
-              "line": 1,
-            },
-            "start": {
-              "column": 8,
-              "line": 1,
-            },
-          },
-          "name": "T",
-          "range": [
-            8,
-            9,
-          ],
-          "type": "Identifier",
-        },
-        "typeParameters": undefined,
       },
     ],
     "range": [

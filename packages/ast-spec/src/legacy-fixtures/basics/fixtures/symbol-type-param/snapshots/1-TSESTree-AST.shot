@@ -76,35 +76,6 @@ Program {
                   end: { column: 22, line: 3 },
                 },
               },
-              typeParameters: TSTypeParameterInstantiation {
-                type: "TSTypeParameterInstantiation",
-                params: Array [
-                  TSSymbolKeyword {
-                    type: "TSSymbolKeyword",
-
-                    range: [96, 102],
-                    loc: {
-                      start: { column: 23, line: 3 },
-                      end: { column: 29, line: 3 },
-                    },
-                  },
-                  TSStringKeyword {
-                    type: "TSStringKeyword",
-
-                    range: [104, 110],
-                    loc: {
-                      start: { column: 31, line: 3 },
-                      end: { column: 37, line: 3 },
-                    },
-                  },
-                ],
-
-                range: [95, 111],
-                loc: {
-                  start: { column: 22, line: 3 },
-                  end: { column: 38, line: 3 },
-                },
-              },
 
               range: [92, 111],
               loc: {
