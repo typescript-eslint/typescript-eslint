@@ -107,6 +107,7 @@
       "TSLint",
       "typescript-eslint",
       "typescript-estree",
+      "TypeScript-ESTree",
       "TypeScript"
     ],
     "code_blocks": false
