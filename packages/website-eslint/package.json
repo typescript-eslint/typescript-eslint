@@ -12,7 +12,7 @@
     "dist"
   ],
   "scripts": {
-    "build": "rollup --config=rollup.config.js",
+    "build": "rollup --config=rollup.config.mjs",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore"
   },
   "dependencies": {
@@ -20,18 +20,18 @@
     "@typescript-eslint/utils": "5.53.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^24.0.0",
+    "@rollup/plugin-commonjs": "^24.0.1",
     "@rollup/plugin-json": "^6.0.0",
-    "@rollup/plugin-node-resolve": "^15.0.0",
-    "@rollup/pluginutils": "^5.0.0",
+    "@rollup/plugin-node-resolve": "^15.0.1",
+    "@rollup/plugin-terser": "^0.4.0",
+    "@rollup/pluginutils": "^5.0.2",
     "@typescript-eslint/eslint-plugin": "5.53.0",
     "@typescript-eslint/parser": "5.53.0",
     "@typescript-eslint/scope-manager": "5.53.0",
     "@typescript-eslint/typescript-estree": "5.53.0",
     "@typescript-eslint/visitor-keys": "5.53.0",
     "eslint": "*",
-    "rollup": "^3.0.0",
-    "rollup-plugin-terser": "^7.0.2",
+    "rollup": "^3.17.2",
     "semver": "^7.3.7"
   }
 }

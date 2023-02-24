@@ -1,11 +1,10 @@
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
+import replace from './rollup-plugin/replace.js';
 
-const replace = require('./rollup-plugin/replace');
-
-module.exports = {
+export default {
   input: 'src/linter/linter.js',
   output: {
     format: 'amd',
