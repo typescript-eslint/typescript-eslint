@@ -20,7 +20,7 @@ const ruleTester = new RuleTester({
 
 const types = ['string', 'number', 'boolean', 'object'];
 const nullishTypes = ['null', 'undefined', 'null | undefined'];
-const ignorablePrimitiveTypes = ['string', 'number', 'boolean'] as const;
+const ignorablePrimitiveTypes = ['string', 'number', 'boolean'];
 
 function typeValidTest(
   cb: (type: string) => TSESLint.ValidTestCase<Options> | string,
