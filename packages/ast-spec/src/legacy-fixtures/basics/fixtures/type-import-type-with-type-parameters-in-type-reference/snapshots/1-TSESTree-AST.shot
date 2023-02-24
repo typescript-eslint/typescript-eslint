@@ -73,26 +73,6 @@ Program {
                   end: { column: 28, line: 3 },
                 },
               },
-              typeParameters: TSTypeParameterInstantiation {
-                type: "TSTypeParameterInstantiation",
-                params: Array [
-                  TSAnyKeyword {
-                    type: "TSAnyKeyword",
-
-                    range: [97, 100],
-                    loc: {
-                      start: { column: 24, line: 3 },
-                      end: { column: 27, line: 3 },
-                    },
-                  },
-                ],
-
-                range: [96, 101],
-                loc: {
-                  start: { column: 23, line: 3 },
-                  end: { column: 28, line: 3 },
-                },
-              },
 
               range: [84, 101],
               loc: {
