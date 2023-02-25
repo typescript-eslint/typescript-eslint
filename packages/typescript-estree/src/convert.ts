@@ -1672,33 +1672,39 @@ export class Converter {
 
         const result = this.createNode<
           TSESTree.ClassDeclaration | TSESTree.ClassExpression
-        >(node, {
-          type: classNodeType,
-          abstract: hasModifier(SyntaxKind.AbstractKeyword, node),
-          body: this.createNode<TSESTree.ClassBody>(node, {
-            type: AST_NODE_TYPES.ClassBody,
-            body: node.members
-              .filter(isESTreeClassMember)
-              .map(el => this.convertChild(el)),
-            range: [node.members.pos - 1, node.end],
-          }),
-          declare: hasModifier(SyntaxKind.DeclareKeyword, node),
-          decorators:
-            getDecorators(node)?.map(el => this.convertChild(el)) ?? [],
-          id: this.convertChild(node.name),
-          implements:
-            implementsClause?.types.map(el => this.convertChild(el)) ?? [],
-          superClass: superClass?.types[0]
-            ? this.convertChild(superClass.types[0].expression)
-            : null,
-          superTypeArguments: undefined,
-          superTypeParameters: undefined,
-          typeParameters:
-            node.typeParameters &&
-            this.convertTSTypeParametersToTypeParametersDeclaration(
-              node.typeParameters,
-            ),
-        });
+        >(
+          node,
+          this.#withDeprecatedAliasGetter(
+            {
+              type: classNodeType,
+              abstract: hasModifier(SyntaxKind.AbstractKeyword, node),
+              body: this.createNode<TSESTree.ClassBody>(node, {
+                type: AST_NODE_TYPES.ClassBody,
+                body: node.members
+                  .filter(isESTreeClassMember)
+                  .map(el => this.convertChild(el)),
+                range: [node.members.pos - 1, node.end],
+              }),
+              declare: hasModifier(SyntaxKind.DeclareKeyword, node),
+              decorators:
+                getDecorators(node)?.map(el => this.convertChild(el)) ?? [],
+              id: this.convertChild(node.name),
+              implements:
+                implementsClause?.types.map(el => this.convertChild(el)) ?? [],
+              superClass: superClass?.types[0]
+                ? this.convertChild(superClass.types[0].expression)
+                : null,
+              superTypeArguments: undefined,
+              typeParameters:
+                node.typeParameters &&
+                this.convertTSTypeParametersToTypeParametersDeclaration(
+                  node.typeParameters,
+                ),
+            },
+            'superTypeParameters',
+            'superTypeArguments',
+          ),
+        );
 
         if (superClass) {
           if (superClass.types.length > 1) {
@@ -1715,11 +1721,6 @@ export class Converter {
                 superClass.types[0].typeArguments,
                 superClass.types[0],
               );
-            this.#withDeprecatedAliasGetter(
-              result,
-              'superTypeParameters',
-              'superTypeArguments',
-            );
           }
         }
 
