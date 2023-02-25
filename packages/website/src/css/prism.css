@@ -13,14 +13,14 @@
   --token-color-function: #569cd6;
   --token-color-function-variable: #000000;
   --token-color-important: #e90;
-  --token-color-class-name: #2b91af;
+  --token-color-class-name: #247e7f;
   --token-color-selector: #800000;
   --token-color-regexp: #800000;
   --token-color-property: #dd0000;
   --token-color-builtin: #0000ff;
   --token-color-boolean: #0000ff;
 
-  --token-color-inserted: #36acaa;
+  --token-color-inserted: #247e81;
   --token-color-deleted: #d73a49;
   --token-color-unchanged: #a7a9a8;
 
