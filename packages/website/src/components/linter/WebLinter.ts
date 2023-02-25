@@ -63,12 +63,20 @@ export class WebLinter {
     });
   }
 
-  lint(code: string): TSESLint.Linter.LintMessage[] {
-    return this.linter.verify(code, {
+  get eslintConfig(): TSESLint.Linter.Config {
+    return {
       parser: PARSER_NAME,
       parserOptions: this.parserOptions,
       rules: this.rules,
-    });
+    };
+  }
+
+  lint(code: string): TSESLint.Linter.LintMessage[] {
+    return this.linter.verify(code, this.eslintConfig);
+  }
+
+  fix(code: string): TSESLint.Linter.FixReport {
+    return this.linter.verifyAndFix(code, this.eslintConfig, { fix: true });
   }
 
   updateRules(rules: TSESLint.Linter.RulesRecord): void {
