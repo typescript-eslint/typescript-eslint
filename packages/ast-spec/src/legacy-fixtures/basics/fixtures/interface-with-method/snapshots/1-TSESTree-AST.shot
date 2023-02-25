@@ -14,7 +14,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "h",
+              optional: false,
 
               range: [92, 93],
               loc: {
@@ -23,10 +25,13 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             params: Array [
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "bar",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSStringKeyword {
@@ -53,6 +58,7 @@ Program {
                 },
               },
             ],
+            readonly: false,
             returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSVoidKeyword {
@@ -71,6 +77,7 @@ Program {
                 end: { column: 22, line: 4 },
               },
             },
+            static: false,
 
             range: [92, 113],
             loc: {
@@ -83,7 +90,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "g",
+              optional: false,
 
               range: [116, 117],
               loc: {
@@ -92,17 +101,22 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             params: Array [
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "bar",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSTypeReference {
                     type: "TSTypeReference",
                     typeName: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "T",
+                      optional: false,
 
                       range: [126, 127],
                       loc: {
@@ -132,13 +146,16 @@ Program {
                 },
               },
             ],
+            readonly: false,
             returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "T",
+                  optional: false,
 
                   range: [130, 131],
                   loc: {
@@ -160,6 +177,7 @@ Program {
                 end: { column: 17, line: 5 },
               },
             },
+            static: false,
             typeParameters: TSTypeParameterDeclaration {
               type: "TSTypeParameterDeclaration",
               params: Array [
@@ -168,7 +186,9 @@ Program {
                   in: false,
                   name: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "T",
+                    optional: false,
 
                     range: [118, 119],
                     loc: {
@@ -207,9 +227,13 @@ Program {
           end: { column: 1, line: 6 },
         },
       },
+      declare: false,
+      extends: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "test",
+        optional: false,
 
         range: [83, 87],
         loc: {

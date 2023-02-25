@@ -10,9 +10,12 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out AST Ali
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Mapper',
+-         optional: false,
 
           range: [78, 84],
           loc: {
@@ -26,14 +29,18 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out AST Ali
 +         parameters: Array [
             Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'x',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypeReference {
                   type: 'TSTypeReference',
                   typeName: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'T',
+-                   optional: false,
 
                     range: [104, 105],
                     loc: {
@@ -70,7 +77,9 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out AST Ali
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'U',
+-               optional: false,
 
                 range: [110, 111],
                 loc: {
@@ -107,7 +116,9 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out AST Ali
               in: true,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [88, 89],
 -               loc: {
@@ -129,7 +140,9 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out AST Ali
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'U',
+-               optional: false,
 -
 -               range: [95, 96],
 -               loc: {

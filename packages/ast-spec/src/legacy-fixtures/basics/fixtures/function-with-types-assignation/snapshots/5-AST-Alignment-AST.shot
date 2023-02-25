@@ -18,7 +18,9 @@ exports[`AST Fixtures legacy-fixtures basics function-with-types-assignation AST
               type: 'ReturnStatement',
               argument: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'name',
+-               optional: false,
 
                 range: [174, 178],
                 loc: {
@@ -41,11 +43,14 @@ exports[`AST Fixtures legacy-fixtures basics function-with-types-assignation AST
             end: { column: 1, line: 9 },
           },
         },
+-       declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'message',
+-         optional: false,
 
           range: [82, 89],
           loc: {
@@ -56,7 +61,9 @@ exports[`AST Fixtures legacy-fixtures basics function-with-types-assignation AST
         params: Array [
           Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'name',
+-           optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: 'TSTypeAnnotation',
               typeAnnotation: TSStringKeyword {
@@ -84,9 +91,12 @@ exports[`AST Fixtures legacy-fixtures basics function-with-types-assignation AST
           },
           AssignmentPattern {
             type: 'AssignmentPattern',
+-           decorators: Array [],
             left: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'age',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSNumberKeyword {
@@ -112,6 +122,7 @@ exports[`AST Fixtures legacy-fixtures basics function-with-types-assignation AST
                 end: { column: 13, line: 5 },
               },
             },
+-           optional: false,
             right: Literal {
               type: 'Literal',
               raw: '100',
@@ -134,7 +145,9 @@ exports[`AST Fixtures legacy-fixtures basics function-with-types-assignation AST
             type: 'RestElement',
             argument: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'args',
+-             optional: false,
 
               range: [133, 137],
               loc: {
@@ -142,6 +155,8 @@ exports[`AST Fixtures legacy-fixtures basics function-with-types-assignation AST
                 end: { column: 9, line: 6 },
               },
             },
+-           decorators: Array [],
+-           optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeReference {
@@ -179,7 +194,9 @@ exports[`AST Fixtures legacy-fixtures basics function-with-types-assignation AST
 -               },
 -               typeName: Identifier {
 -                 type: 'Identifier',
+-                 decorators: Array [],
 -                 name: 'Array',
+-                 optional: false,
 -
 -                 range: [139, 144],
 -                 loc: {

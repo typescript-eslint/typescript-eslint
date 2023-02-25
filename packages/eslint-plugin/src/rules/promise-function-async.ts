@@ -162,7 +162,7 @@ export default util.createRule<Options, MessageIds>({
             // if there are decorators then skip past them
             if (
               method.type === AST_NODE_TYPES.MethodDefinition &&
-              method.decorators
+              method.decorators.length
             ) {
               const lastDecorator =
                 method.decorators[method.decorators.length - 1];

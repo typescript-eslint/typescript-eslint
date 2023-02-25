@@ -13,9 +13,12 @@ exports[`AST Fixtures legacy-fixtures types function-generic AST Alignment - AST
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'f',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSFunctionType {
@@ -24,14 +27,18 @@ exports[`AST Fixtures legacy-fixtures types function-generic AST Alignment - AST
 +                 parameters: Array [
                     Identifier {
                       type: 'Identifier',
+-                     decorators: Array [],
                       name: 'a',
+-                     optional: false,
                       typeAnnotation: TSTypeAnnotation {
                         type: 'TSTypeAnnotation',
                         typeAnnotation: TSTypeReference {
                           type: 'TSTypeReference',
                           typeName: Identifier {
                             type: 'Identifier',
+-                           decorators: Array [],
                             name: 'T',
+-                           optional: false,
 
                             range: [87, 88],
                             loc: {
@@ -68,7 +75,9 @@ exports[`AST Fixtures legacy-fixtures types function-generic AST Alignment - AST
                       type: 'TSTypeReference',
                       typeName: Identifier {
                         type: 'Identifier',
+-                       decorators: Array [],
                         name: 'T',
+-                       optional: false,
 
                         range: [93, 94],
                         loc: {
@@ -98,7 +107,9 @@ exports[`AST Fixtures legacy-fixtures types function-generic AST Alignment - AST
 -                       in: false,
 -                       name: Identifier {
 -                         type: 'Identifier',
+-                         decorators: Array [],
 -                         name: 'T',
+-                         optional: false,
 -
 -                         range: [81, 82],
 -                         loc: {
@@ -153,6 +164,7 @@ exports[`AST Fixtures legacy-fixtures types function-generic AST Alignment - AST
             },
           },
         ],
+-       declare: false,
         kind: 'let',
 
         range: [73, 95],

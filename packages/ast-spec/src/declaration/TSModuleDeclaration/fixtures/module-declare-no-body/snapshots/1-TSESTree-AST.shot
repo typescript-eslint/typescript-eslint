@@ -7,6 +7,7 @@ Program {
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       declare: true,
+      global: false,
       id: Literal {
         type: "Literal",
         raw: "'a'",

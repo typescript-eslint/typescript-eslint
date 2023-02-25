@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
@@ -13,9 +14,13 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
+            decorators: Array [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "a",
+              optional: false,
 
               range: [87, 88],
               loc: {
@@ -23,7 +28,9 @@ Program {
                 end: { column: 3, line: 4 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             value: Literal {
               type: "Literal",
@@ -47,9 +54,13 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
+            decorators: Array [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "b",
+              optional: false,
 
               range: [96, 97],
               loc: {
@@ -57,7 +68,9 @@ Program {
                 end: { column: 3, line: 5 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             value: ObjectExpression {
               type: "ObjectExpression",
@@ -80,9 +93,13 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
+            decorators: Array [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "c",
+              optional: false,
 
               range: [106, 107],
               loc: {
@@ -90,7 +107,9 @@ Program {
                 end: { column: 3, line: 6 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             value: ArrayExpression {
               type: "ArrayExpression",
@@ -113,9 +132,13 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
+            decorators: Array [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "d",
+              optional: false,
 
               range: [116, 117],
               loc: {
@@ -123,7 +146,9 @@ Program {
                 end: { column: 3, line: 7 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             value: Literal {
               type: "Literal",
@@ -147,9 +172,13 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
+            decorators: Array [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "e",
+              optional: false,
 
               range: [126, 127],
               loc: {
@@ -157,7 +186,9 @@ Program {
                 end: { column: 3, line: 8 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             value: NewExpression {
               type: "NewExpression",
@@ -207,7 +238,9 @@ Program {
               ],
               callee: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "Array",
+                optional: false,
 
                 range: [134, 139],
                 loc: {
@@ -237,9 +270,13 @@ Program {
           end: { column: 1, line: 9 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -247,6 +284,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [73, 155],

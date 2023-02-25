@@ -20,7 +20,9 @@ Program {
                   computed: true,
                   object: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "pair",
+                    optional: false,
 
                     range: [135, 139],
                     loc: {
@@ -53,7 +55,9 @@ Program {
                 computed: false,
                 object: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "console",
+                  optional: false,
 
                   range: [123, 130],
                   loc: {
@@ -64,7 +68,9 @@ Program {
                 optional: false,
                 property: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "log",
+                  optional: false,
 
                   range: [131, 134],
                   loc: {
@@ -103,7 +109,9 @@ Program {
                 computed: true,
                 object: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "pair",
+                  optional: false,
 
                   range: [155, 159],
                   loc: {
@@ -164,11 +172,14 @@ Program {
           end: { column: 1, line: 6 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "foo",
+        optional: false,
 
         range: [82, 85],
         loc: {
@@ -179,7 +190,9 @@ Program {
       params: Array [
         Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "pair",
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSTypeOperator {

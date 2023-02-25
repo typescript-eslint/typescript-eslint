@@ -18,7 +18,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-method AST Alignment
               computed: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'h',
+-               optional: false,
 
                 range: [92, 93],
                 loc: {
@@ -27,11 +29,14 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-method AST Alignment
                 },
               },
               kind: 'method',
+-             optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'bar',
+-                 optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSStringKeyword {
@@ -58,6 +63,7 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-method AST Alignment
                   },
                 },
               ],
+-             readonly: false,
 -             returnType: TSTypeAnnotation {
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -77,6 +83,7 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-method AST Alignment
                   end: { column: 22, line: 4 },
                 },
               },
+-             static: false,
 
               range: [92, 113],
               loc: {
@@ -89,7 +96,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-method AST Alignment
               computed: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'g',
+-               optional: false,
 
                 range: [116, 117],
                 loc: {
@@ -98,18 +107,23 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-method AST Alignment
                 },
               },
               kind: 'method',
+-             optional: false,
 -             params: Array [
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'bar',
+-                 optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSTypeReference {
                       type: 'TSTypeReference',
                       typeName: Identifier {
                         type: 'Identifier',
+-                       decorators: Array [],
                         name: 'T',
+-                       optional: false,
 
                         range: [126, 127],
                         loc: {
@@ -139,6 +153,7 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-method AST Alignment
                   },
                 },
               ],
+-             readonly: false,
 -             returnType: TSTypeAnnotation {
 +             typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -146,7 +161,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-method AST Alignment
                   type: 'TSTypeReference',
                   typeName: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'T',
+-                   optional: false,
 
                     range: [130, 131],
                     loc: {
@@ -168,6 +185,7 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-method AST Alignment
                   end: { column: 17, line: 5 },
                 },
               },
+-             static: false,
               typeParameters: TSTypeParameterDeclaration {
                 type: 'TSTypeParameterDeclaration',
                 params: Array [
@@ -176,7 +194,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-method AST Alignment
 -                   in: false,
 -                   name: Identifier {
 -                     type: 'Identifier',
+-                     decorators: Array [],
 -                     name: 'T',
+-                     optional: false,
 -
 -                     range: [118, 119],
 -                     loc: {
@@ -216,9 +236,13 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-method AST Alignment
             end: { column: 1, line: 6 },
           },
         },
+-       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'test',
+-         optional: false,
 
           range: [83, 87],
           loc: {

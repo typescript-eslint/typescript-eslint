@@ -10,6 +10,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-type-parameter AST Align
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -20,9 +21,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-type-parameter AST Align
             end: { column: 15, line: 3 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [79, 82],
           loc: {
@@ -30,6 +35,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-type-parameter AST Align
             end: { column: 9, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
         typeParameters: TSTypeParameterDeclaration {
           type: 'TSTypeParameterDeclaration',
@@ -39,7 +45,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-type-parameter AST Align
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [83, 84],
 -               loc: {

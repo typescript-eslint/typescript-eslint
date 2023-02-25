@@ -6,9 +6,12 @@ Program {
   body: Array [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Thing",
+        optional: false,
 
         range: [78, 83],
         loc: {
@@ -24,7 +27,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "size",
+              optional: false,
 
               range: [94, 98],
               loc: {
@@ -33,7 +38,9 @@ Program {
               },
             },
             kind: "get",
+            optional: false,
             params: Array [],
+            readonly: false,
             returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSNumberKeyword {
@@ -52,6 +59,7 @@ Program {
                 end: { column: 20, line: 4 },
               },
             },
+            static: false,
 
             range: [90, 109],
             loc: {
@@ -64,7 +72,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "size",
+              optional: false,
 
               range: [116, 120],
               loc: {
@@ -73,10 +83,13 @@ Program {
               },
             },
             kind: "set",
+            optional: false,
             params: Array [
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "value",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSUnionType {
@@ -132,6 +145,8 @@ Program {
                 },
               },
             ],
+            readonly: false,
+            static: false,
 
             range: [112, 155],
             loc: {

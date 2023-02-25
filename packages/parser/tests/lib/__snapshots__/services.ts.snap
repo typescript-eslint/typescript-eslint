@@ -6,7 +6,9 @@ exports[`services fixtures/isolated-file.src 1`] = `
     {
       "declarations": [
         {
+          "definite": false,
           "id": {
+            "decorators": [],
             "loc": {
               "end": {
                 "column": 7,
@@ -18,6 +20,7 @@ exports[`services fixtures/isolated-file.src 1`] = `
               },
             },
             "name": "x",
+            "optional": false,
             "range": [
               6,
               7,
@@ -117,6 +120,7 @@ exports[`services fixtures/isolated-file.src 1`] = `
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": {
         "end": {

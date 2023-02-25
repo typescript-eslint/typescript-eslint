@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
@@ -13,6 +14,8 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
+            decorators: Array [],
+            definite: false,
             key: PrivateIdentifier {
               type: "PrivateIdentifier",
               name: "prop",
@@ -25,6 +28,7 @@ Program {
             },
             optional: true,
             override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -56,6 +60,8 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
+            decorators: Array [],
+            definite: false,
             key: PrivateIdentifier {
               type: "PrivateIdentifier",
               name: "propExplicitWithValue",
@@ -68,6 +74,7 @@ Program {
             },
             optional: true,
             override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -109,6 +116,8 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
+            decorators: Array [],
+            definite: false,
             key: PrivateIdentifier {
               type: "PrivateIdentifier",
               name: "propImplicitWithValue",
@@ -121,6 +130,7 @@ Program {
             },
             optional: true,
             override: false,
+            readonly: false,
             static: false,
             value: Literal {
               type: "Literal",
@@ -148,9 +158,13 @@ Program {
           end: { column: 1, line: 7 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -158,6 +172,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [73, 176],

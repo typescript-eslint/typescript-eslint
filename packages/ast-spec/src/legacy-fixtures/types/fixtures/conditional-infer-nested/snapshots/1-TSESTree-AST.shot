@@ -6,9 +6,12 @@ Program {
   body: Array [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Unpacked",
+        optional: false,
 
         range: [78, 86],
         loc: {
@@ -22,7 +25,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "T",
+            optional: false,
 
             range: [92, 93],
             loc: {
@@ -46,7 +51,9 @@ Program {
               in: false,
               name: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "U",
+                optional: false,
 
                 range: [109, 110],
                 loc: {
@@ -82,7 +89,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [124, 125],
               loc: {
@@ -104,7 +113,9 @@ Program {
               in: false,
               name: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "U",
+                optional: false,
 
                 range: [140, 141],
                 loc: {
@@ -133,7 +144,9 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "T",
+                optional: false,
 
                 range: [152, 153],
                 loc: {
@@ -160,7 +173,9 @@ Program {
                       in: false,
                       name: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "U",
+                        optional: false,
 
                         range: [176, 177],
                         loc: {
@@ -193,7 +208,9 @@ Program {
               },
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "Promise",
+                optional: false,
 
                 range: [162, 169],
                 loc: {
@@ -212,7 +229,9 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "T",
+                optional: false,
 
                 range: [189, 190],
                 loc: {
@@ -231,7 +250,9 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "U",
+                optional: false,
 
                 range: [183, 184],
                 loc: {
@@ -257,7 +278,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "U",
+              optional: false,
 
               range: [146, 147],
               loc: {
@@ -283,7 +306,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "U",
+            optional: false,
 
             range: [118, 119],
             loc: {
@@ -313,7 +338,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [87, 88],
               loc: {

@@ -6,9 +6,12 @@ Program {
   body: Array [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "foo",
+        optional: false,
 
         range: [78, 81],
         loc: {
@@ -24,7 +27,9 @@ Program {
             parameters: Array [
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "a",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSStringKeyword {
@@ -51,6 +56,8 @@ Program {
                 },
               },
             ],
+            readonly: false,
+            static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSStringKeyword {

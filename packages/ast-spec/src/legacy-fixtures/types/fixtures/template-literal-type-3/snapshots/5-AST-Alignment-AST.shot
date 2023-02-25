@@ -10,9 +10,12 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Color',
+-         optional: false,
 
           range: [78, 83],
           loc: {
@@ -80,9 +83,12 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Quantity',
+-         optional: false,
 
           range: [107, 115],
           loc: {
@@ -150,9 +156,12 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'SeussFish',
+-         optional: false,
 
           range: [138, 147],
           loc: {
@@ -170,6 +179,20 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
 -               'cooked': '',
 -               'raw': '',
 -             },
+-
+-             range: [150, 153],
+-             loc: {
+-               start: { column: 17, line: 5 },
+-               end: { column: 20, line: 5 },
+-             },
+-           },
+-           TemplateElement {
+-             type: 'TemplateElement',
+-             tail: true,
+-             value: Object {
+-               'cooked': ' fish',
+-               'raw': ' fish',
+-             },
 +       typeAnnotation: TSLiteralType {
 +         type: 'TSLiteralType',
 +         literal: TemplateLiteral {
@@ -184,20 +207,6 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
 +                     type: 'Identifier',
 +                     name: 'Quantity',
 
--             range: [150, 153],
--             loc: {
--               start: { column: 17, line: 5 },
--               end: { column: 20, line: 5 },
--             },
--           },
--           TemplateElement {
--             type: 'TemplateElement',
--             tail: true,
--             value: Object {
--               'cooked': ' fish',
--               'raw': ' fish',
--             },
--
 -             range: [169, 176],
 -             loc: {
 -               start: { column: 36, line: 5 },
@@ -213,7 +222,9 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
 -                 type: 'TSTypeReference',
 -                 typeName: Identifier {
 -                   type: 'Identifier',
+-                   decorators: Array [],
 -                   name: 'Quantity',
+-                   optional: false,
 +                     range: [153, 161],
 +                     loc: {
 +                       start: { column: 20, line: 5 },
@@ -243,7 +254,9 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-3 AST Alignmen
 -                 type: 'TSTypeReference',
 -                 typeName: Identifier {
 -                   type: 'Identifier',
+-                   decorators: Array [],
 -                   name: 'Color',
+-                   optional: false,
 +                     range: [164, 169],
 +                     loc: {
 +                       start: { column: 31, line: 5 },

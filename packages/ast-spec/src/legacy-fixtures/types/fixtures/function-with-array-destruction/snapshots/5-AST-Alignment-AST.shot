@@ -10,9 +10,12 @@ exports[`AST Fixtures legacy-fixtures types function-with-array-destruction AST 
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'foo',
+-         optional: false,
 
           range: [78, 81],
           loc: {
@@ -26,10 +29,13 @@ exports[`AST Fixtures legacy-fixtures types function-with-array-destruction AST 
 +         parameters: Array [
             ArrayPattern {
               type: 'ArrayPattern',
+-             decorators: Array [],
               elements: Array [
                 Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'a',
+-                 optional: false,
 
                   range: [86, 87],
                   loc: {
@@ -38,6 +44,7 @@ exports[`AST Fixtures legacy-fixtures types function-with-array-destruction AST 
                   },
                 },
               ],
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSAnyKeyword {

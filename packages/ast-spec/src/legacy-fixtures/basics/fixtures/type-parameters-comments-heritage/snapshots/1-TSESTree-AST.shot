@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [],
@@ -16,9 +17,13 @@ Program {
           end: { column: 70, line: 3 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -26,9 +31,12 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: Array [],
       superClass: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "bar",
+        optional: false,
 
         range: [114, 117],
         loc: {
@@ -43,7 +51,41 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "A",
+              optional: false,
+
+              range: [128, 129],
+              loc: {
+                start: { column: 55, line: 3 },
+                end: { column: 56, line: 3 },
+              },
+            },
+
+            range: [128, 129],
+            loc: {
+              start: { column: 55, line: 3 },
+              end: { column: 56, line: 3 },
+            },
+          },
+        ],
+
+        range: [117, 140],
+        loc: {
+          start: { column: 44, line: 3 },
+          end: { column: 67, line: 3 },
+        },
+      },
+      superTypeParameters: TSTypeParameterInstantiation {
+        type: "TSTypeParameterInstantiation",
+        params: Array [
+          TSTypeReference {
+            type: "TSTypeReference",
+            typeName: Identifier {
+              type: "Identifier",
+              decorators: Array [],
+              name: "A",
+              optional: false,
 
               range: [128, 129],
               loc: {
@@ -74,7 +116,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "A",
+              optional: false,
 
               range: [93, 94],
               loc: {
@@ -107,6 +151,7 @@ Program {
     },
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [],
@@ -117,9 +162,13 @@ Program {
           end: { column: 39, line: 6 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "foo2",
+        optional: false,
 
         range: [150, 154],
         loc: {
@@ -127,9 +176,12 @@ Program {
           end: { column: 10, line: 4 },
         },
       },
+      implements: Array [],
       superClass: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "bar",
+        optional: false,
 
         range: [205, 208],
         loc: {
@@ -144,7 +196,41 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "A",
+              optional: false,
+
+              range: [219, 220],
+              loc: {
+                start: { column: 24, line: 6 },
+                end: { column: 25, line: 6 },
+              },
+            },
+
+            range: [219, 220],
+            loc: {
+              start: { column: 24, line: 6 },
+              end: { column: 25, line: 6 },
+            },
+          },
+        ],
+
+        range: [208, 231],
+        loc: {
+          start: { column: 13, line: 6 },
+          end: { column: 36, line: 6 },
+        },
+      },
+      superTypeParameters: TSTypeParameterInstantiation {
+        type: "TSTypeParameterInstantiation",
+        params: Array [
+          TSTypeReference {
+            type: "TSTypeReference",
+            typeName: Identifier {
+              type: "Identifier",
+              decorators: Array [],
+              name: "A",
+              optional: false,
 
               range: [219, 220],
               loc: {
@@ -195,7 +281,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "A",
+              optional: false,
 
               range: [168, 169],
               loc: {
@@ -238,12 +326,15 @@ Program {
           end: { column: 75, line: 7 },
         },
       },
+      declare: false,
       extends: Array [
         TSInterfaceHeritage {
           type: "TSInterfaceHeritage",
           expression: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "bar2",
+            optional: false,
 
             range: [280, 284],
             loc: {
@@ -258,7 +349,9 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "A",
+                  optional: false,
 
                   range: [295, 296],
                   loc: {
@@ -291,7 +384,9 @@ Program {
       ],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "bar",
+        optional: false,
 
         range: [245, 248],
         loc: {
@@ -307,7 +402,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "A",
+              optional: false,
 
               range: [259, 260],
               loc: {
@@ -350,12 +447,15 @@ Program {
           end: { column: 39, line: 9 },
         },
       },
+      declare: false,
       extends: Array [
         TSInterfaceHeritage {
           type: "TSInterfaceHeritage",
           expression: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "bar",
+            optional: false,
 
             range: [373, 376],
             loc: {
@@ -370,7 +470,9 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "A",
+                  optional: false,
 
                   range: [387, 388],
                   loc: {
@@ -403,7 +505,9 @@ Program {
       ],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "bar2",
+        optional: false,
 
         range: [321, 325],
         loc: {
@@ -439,7 +543,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "A",
+              optional: false,
 
               range: [336, 337],
               loc: {

@@ -20,7 +20,9 @@ exports[`AST Fixtures legacy-fixtures expressions optional-call-expression-type-
               computed: false,
               object: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'foo',
+-               optional: false,
 
                 range: [73, 76],
                 loc: {
@@ -31,7 +33,9 @@ exports[`AST Fixtures legacy-fixtures expressions optional-call-expression-type-
               optional: true,
               property: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'bar',
+-               optional: false,
 
                 range: [78, 81],
                 loc: {
@@ -55,7 +59,9 @@ exports[`AST Fixtures legacy-fixtures expressions optional-call-expression-type-
                   type: 'TSTypeReference',
                   typeName: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'A',
+-                   optional: false,
 
                     range: [82, 83],
                     loc: {
@@ -111,7 +117,9 @@ exports[`AST Fixtures legacy-fixtures expressions optional-call-expression-type-
               computed: false,
               object: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'foo',
+-               optional: false,
 
                 range: [88, 91],
                 loc: {
@@ -122,7 +130,9 @@ exports[`AST Fixtures legacy-fixtures expressions optional-call-expression-type-
               optional: true,
               property: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'bar',
+-               optional: false,
 
                 range: [93, 96],
                 loc: {

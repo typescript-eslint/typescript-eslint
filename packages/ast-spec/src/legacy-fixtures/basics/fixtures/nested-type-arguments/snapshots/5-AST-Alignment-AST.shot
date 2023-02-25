@@ -13,9 +13,12 @@ exports[`AST Fixtures legacy-fixtures basics nested-type-arguments AST Alignment
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'nestedArray',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypeReference {
@@ -81,18 +84,20 @@ exports[`AST Fixtures legacy-fixtures basics nested-type-arguments AST Alignment
                                 loc: {
                                   start: { column: 34, line: 3 },
                                   end: { column: 42, line: 3 },
--                               },
--                             },
+                                },
+                              },
 -                             typeName: Identifier {
 -                               type: 'Identifier',
+-                               decorators: Array [],
 -                               name: 'Array',
+-                               optional: false,
 -
 -                               range: [102, 107],
 -                               loc: {
 -                                 start: { column: 29, line: 3 },
 -                                 end: { column: 34, line: 3 },
-                                },
-                              },
+-                               },
+-                             },
 
                               range: [102, 115],
                               loc: {
@@ -106,19 +111,21 @@ exports[`AST Fixtures legacy-fixtures basics nested-type-arguments AST Alignment
                           loc: {
                             start: { column: 28, line: 3 },
                             end: { column: 43, line: 3 },
--                         },
--                       },
+                          },
+                        },
 -                       typeName: Identifier {
 -                         type: 'Identifier',
+-                         decorators: Array [],
 -                         name: 'Array',
--
+-                         optional: false,
+
 -                         range: [96, 101],
 -                         loc: {
 -                           start: { column: 23, line: 3 },
 -                           end: { column: 28, line: 3 },
-                          },
-                        },
-
+-                         },
+-                       },
+-
                         range: [96, 116],
                         loc: {
                           start: { column: 23, line: 3 },
@@ -135,7 +142,9 @@ exports[`AST Fixtures legacy-fixtures basics nested-type-arguments AST Alignment
 -                 },
 -                 typeName: Identifier {
 -                   type: 'Identifier',
+-                   decorators: Array [],
 -                   name: 'Array',
+-                   optional: false,
 -
 -                   range: [90, 95],
 -                   loc: {
@@ -173,6 +182,7 @@ exports[`AST Fixtures legacy-fixtures basics nested-type-arguments AST Alignment
             },
           },
         ],
+-       declare: false,
         kind: 'var',
 
         range: [73, 118],

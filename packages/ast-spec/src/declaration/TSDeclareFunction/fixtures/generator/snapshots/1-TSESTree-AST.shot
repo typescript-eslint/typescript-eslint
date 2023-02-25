@@ -12,7 +12,9 @@ Program {
       generator: true,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "foo",
+        optional: false,
 
         range: [18, 21],
         loc: {

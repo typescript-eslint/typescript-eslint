@@ -12,6 +12,7 @@ export function parseTSESTree(
       jsx: fixture.ext.endsWith('x'),
       loc: true,
       range: true,
+      suppressDeprecatedPropertyWarnings: true,
       tokens: true,
     });
     const { tokens: _, comments: __, ...program } = result;

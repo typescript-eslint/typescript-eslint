@@ -10,9 +10,12 @@ exports[`AST Fixtures legacy-fixtures types intersection-type AST Alignment - AS
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'LinkedList',
+-         optional: false,
 
           range: [78, 88],
           loc: {
@@ -27,7 +30,9 @@ exports[`AST Fixtures legacy-fixtures types intersection-type AST Alignment - AS
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'T',
+-               optional: false,
 
                 range: [94, 95],
                 loc: {
@@ -50,7 +55,9 @@ exports[`AST Fixtures legacy-fixtures types intersection-type AST Alignment - AS
                   computed: false,
                   key: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'next',
+-                   optional: false,
 
                     range: [100, 104],
                     loc: {
@@ -58,6 +65,9 @@ exports[`AST Fixtures legacy-fixtures types intersection-type AST Alignment - AS
                       end: { column: 31, line: 3 },
                     },
                   },
+-                 optional: false,
+-                 readonly: false,
+-                 static: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: 'TSTypeAnnotation',
                     typeAnnotation: TSTypeReference {
@@ -80,7 +90,9 @@ exports[`AST Fixtures legacy-fixtures types intersection-type AST Alignment - AS
                             type: 'TSTypeReference',
                             typeName: Identifier {
                               type: 'Identifier',
+-                             decorators: Array [],
                               name: 'T',
+-                             optional: false,
 
                               range: [117, 118],
                               loc: {
@@ -105,15 +117,17 @@ exports[`AST Fixtures legacy-fixtures types intersection-type AST Alignment - AS
                       },
 -                     typeName: Identifier {
 -                       type: 'Identifier',
+-                       decorators: Array [],
 -                       name: 'LinkedList',
-
+-                       optional: false,
+-
 -                       range: [106, 116],
 -                       loc: {
 -                         start: { column: 33, line: 3 },
 -                         end: { column: 43, line: 3 },
 -                       },
 -                     },
--
+
                       range: [106, 119],
                       loc: {
                         start: { column: 33, line: 3 },
@@ -158,7 +172,9 @@ exports[`AST Fixtures legacy-fixtures types intersection-type AST Alignment - AS
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [89, 90],
 -               loc: {

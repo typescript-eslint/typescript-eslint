@@ -13,9 +13,12 @@ exports[`AST Fixtures legacy-fixtures expressions new-expression-type-arguments 
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'a',
+-             optional: false,
 
               range: [79, 80],
               loc: {
@@ -28,7 +31,9 @@ exports[`AST Fixtures legacy-fixtures expressions new-expression-type-arguments 
               arguments: Array [],
               callee: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'A',
+-               optional: false,
 
                 range: [87, 88],
                 loc: {
@@ -44,7 +49,9 @@ exports[`AST Fixtures legacy-fixtures expressions new-expression-type-arguments 
                     type: 'TSTypeReference',
                     typeName: Identifier {
                       type: 'Identifier',
+-                     decorators: Array [],
                       name: 'B',
+-                     optional: false,
 
                       range: [89, 90],
                       loc: {
@@ -82,6 +89,7 @@ exports[`AST Fixtures legacy-fixtures expressions new-expression-type-arguments 
             },
           },
         ],
+-       declare: false,
         kind: 'const',
 
         range: [73, 94],

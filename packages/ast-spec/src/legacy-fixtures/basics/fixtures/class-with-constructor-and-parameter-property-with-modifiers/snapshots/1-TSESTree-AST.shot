@@ -6,15 +6,19 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "constructor",
+              optional: false,
 
               range: [126, 137],
               loc: {
@@ -23,6 +27,7 @@ Program {
               },
             },
             kind: "constructor",
+            optional: false,
             override: false,
             static: false,
             value: FunctionExpression {
@@ -38,6 +43,7 @@ Program {
                   end: { column: 59, line: 4 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -45,10 +51,13 @@ Program {
                 TSParameterProperty {
                   type: "TSParameterProperty",
                   accessibility: "protected",
+                  decorators: Array [],
                   override: true,
                   parameter: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "param",
+                    optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: "TSTypeAnnotation",
                       typeAnnotation: TSStringKeyword {
@@ -75,6 +84,7 @@ Program {
                     },
                   },
                   readonly: true,
+                  static: false,
 
                   range: [138, 179],
                   loc: {
@@ -105,9 +115,13 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "SpecializedComponent",
+        optional: false,
 
         range: [79, 99],
         loc: {
@@ -115,9 +129,12 @@ Program {
           end: { column: 26, line: 3 },
         },
       },
+      implements: Array [],
       superClass: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "SomeComponent",
+        optional: false,
 
         range: [108, 121],
         loc: {

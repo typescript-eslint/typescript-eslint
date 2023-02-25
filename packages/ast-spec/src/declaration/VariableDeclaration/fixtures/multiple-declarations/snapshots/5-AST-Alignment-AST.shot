@@ -2,5 +2,101 @@
 
 exports[`AST Fixtures declaration VariableDeclaration multiple-declarations AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'x',
+-             optional: false,
+
+              range: [4, 5],
+              loc: {
+                start: { column: 4, line: 1 },
+                end: { column: 5, line: 1 },
+              },
+            },
+            init: null,
+
+            range: [4, 5],
+            loc: {
+              start: { column: 4, line: 1 },
+              end: { column: 5, line: 1 },
+            },
+          },
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'y',
+-             optional: false,
+
+              range: [7, 8],
+              loc: {
+                start: { column: 7, line: 1 },
+                end: { column: 8, line: 1 },
+              },
+            },
+            init: null,
+
+            range: [7, 8],
+            loc: {
+              start: { column: 7, line: 1 },
+              end: { column: 8, line: 1 },
+            },
+          },
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'z',
+-             optional: false,
+
+              range: [10, 11],
+              loc: {
+                start: { column: 10, line: 1 },
+                end: { column: 11, line: 1 },
+              },
+            },
+            init: null,
+
+            range: [10, 11],
+            loc: {
+              start: { column: 10, line: 1 },
+              end: { column: 11, line: 1 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'let',
+
+        range: [0, 12],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 12, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 13],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;

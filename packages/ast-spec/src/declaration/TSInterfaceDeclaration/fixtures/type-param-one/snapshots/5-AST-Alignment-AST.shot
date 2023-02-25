@@ -20,9 +20,13 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-one AST Alig
             end: { column: 17, line: 1 },
           },
         },
+-       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'F',
+-         optional: false,
 
           range: [10, 11],
           loc: {
@@ -38,7 +42,9 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-one AST Alig
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [12, 13],
 -               loc: {

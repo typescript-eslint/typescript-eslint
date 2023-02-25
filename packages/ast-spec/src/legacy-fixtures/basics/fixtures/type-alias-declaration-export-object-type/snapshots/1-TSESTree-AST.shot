@@ -9,9 +9,12 @@ Program {
       assertions: Array [],
       declaration: TSTypeAliasDeclaration {
         type: "TSTypeAliasDeclaration",
+        declare: false,
         id: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "TestClassProps",
+          optional: false,
 
           range: [85, 99],
           loc: {
@@ -27,7 +30,9 @@ Program {
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "count",
+                optional: false,
 
                 range: [106, 111],
                 loc: {
@@ -35,6 +40,9 @@ Program {
                   end: { column: 7, line: 4 },
                 },
               },
+              optional: false,
+              readonly: false,
+              static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSNumberKeyword {

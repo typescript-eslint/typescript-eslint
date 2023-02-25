@@ -6,9 +6,13 @@ Program {
   body: Array [
     TSEnumDeclaration {
       type: "TSEnumDeclaration",
+      const: false,
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [5, 8],
         loc: {
@@ -19,9 +23,12 @@ Program {
       members: Array [
         TSEnumMember {
           type: "TSEnumMember",
+          computed: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "A",
+            optional: false,
 
             range: [13, 14],
             loc: {

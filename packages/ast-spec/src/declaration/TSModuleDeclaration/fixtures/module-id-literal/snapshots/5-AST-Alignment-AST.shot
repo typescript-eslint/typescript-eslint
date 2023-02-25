@@ -20,6 +20,8 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-id-literal AST Alig
             end: { column: 13, line: 1 },
           },
         },
+-       declare: false,
+-       global: false,
         id: Literal {
           type: 'Literal',
           raw: '\\\\'a\\\\'',

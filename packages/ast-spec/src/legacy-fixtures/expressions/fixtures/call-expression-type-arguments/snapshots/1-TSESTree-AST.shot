@@ -11,7 +11,9 @@ Program {
         arguments: Array [],
         callee: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "foo",
+          optional: false,
 
           range: [73, 76],
           loc: {
@@ -27,7 +29,9 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "A",
+                optional: false,
 
                 range: [77, 78],
                 loc: {
@@ -71,7 +75,9 @@ Program {
         arguments: Array [],
         callee: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "foo",
+          optional: false,
 
           range: [83, 86],
           loc: {

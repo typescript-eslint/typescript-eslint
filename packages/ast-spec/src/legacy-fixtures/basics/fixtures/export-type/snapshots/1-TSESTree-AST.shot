@@ -15,7 +15,9 @@ Program {
           type: "ExportSpecifier",
           exported: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "foo",
+            optional: false,
 
             range: [87, 90],
             loc: {
@@ -26,7 +28,9 @@ Program {
           exportKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "foo",
+            optional: false,
 
             range: [87, 90],
             loc: {

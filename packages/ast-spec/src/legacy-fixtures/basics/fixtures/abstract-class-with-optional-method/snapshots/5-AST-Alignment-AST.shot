@@ -20,9 +20,12 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-optional-method
               MethodDefinition {
                 type: 'MethodDefinition',
                 computed: false,
+-               decorators: Array [],
                 key: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'createSocket',
+-                 optional: false,
 
                   range: [114, 126],
                   loc: {
@@ -40,6 +43,7 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-optional-method
 +                 type: 'FunctionExpression',
                   async: false,
 -                 body: null,
+-                 declare: false,
                   expression: false,
                   generator: false,
                   id: null,
@@ -77,19 +81,21 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-optional-method
                         loc: {
                           start: { column: 26, line: 4 },
                           end: { column: 34, line: 4 },
--                       },
--                     },
+                        },
+                      },
 -                     typeName: Identifier {
 -                       type: 'Identifier',
+-                       decorators: Array [],
 -                       name: 'Promise',
--
+-                       optional: false,
+
 -                       range: [131, 138],
 -                       loc: {
 -                         start: { column: 19, line: 4 },
 -                         end: { column: 26, line: 4 },
-                        },
-                      },
-
+-                       },
+-                     },
+-
                       range: [131, 146],
                       loc: {
                         start: { column: 19, line: 4 },
@@ -125,9 +131,13 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-optional-method
               end: { column: 1, line: 5 },
             },
           },
+-         declare: false,
+-         decorators: Array [],
           id: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'AbstractSocket',
+-           optional: false,
 
             range: [95, 109],
             loc: {
@@ -135,6 +145,7 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-optional-method
               end: { column: 36, line: 3 },
             },
           },
+-         implements: Array [],
           superClass: null,
 
           range: [80, 149],

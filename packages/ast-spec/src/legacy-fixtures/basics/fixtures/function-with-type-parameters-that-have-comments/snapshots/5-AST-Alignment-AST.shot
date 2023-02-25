@@ -21,11 +21,14 @@ exports[`AST Fixtures legacy-fixtures basics function-with-type-parameters-that-
             end: { column: 36, line: 3 },
           },
         },
+-       declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'compare',
+-         optional: false,
 
           range: [82, 89],
           loc: {
@@ -42,7 +45,9 @@ exports[`AST Fixtures legacy-fixtures basics function-with-type-parameters-that-
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [102, 103],
 -               loc: {

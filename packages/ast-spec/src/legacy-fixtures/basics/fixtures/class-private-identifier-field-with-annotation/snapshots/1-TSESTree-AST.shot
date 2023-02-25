@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
@@ -13,6 +14,8 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
+            decorators: Array [],
+            definite: false,
             key: PrivateIdentifier {
               type: "PrivateIdentifier",
               name: "priv1",
@@ -23,7 +26,9 @@ Program {
                 end: { column: 8, line: 4 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -55,6 +60,8 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
+            decorators: Array [],
+            definite: false,
             key: PrivateIdentifier {
               type: "PrivateIdentifier",
               name: "priv2",
@@ -65,7 +72,9 @@ Program {
                 end: { column: 8, line: 5 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -106,9 +115,12 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "constructor",
+              optional: false,
 
               range: [128, 139],
               loc: {
@@ -117,6 +129,7 @@ Program {
               },
             },
             kind: "constructor",
+            optional: false,
             override: false,
             static: false,
             value: FunctionExpression {
@@ -193,6 +206,7 @@ Program {
                   end: { column: 3, line: 9 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -219,9 +233,13 @@ Program {
           end: { column: 1, line: 10 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -229,6 +247,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [73, 170],

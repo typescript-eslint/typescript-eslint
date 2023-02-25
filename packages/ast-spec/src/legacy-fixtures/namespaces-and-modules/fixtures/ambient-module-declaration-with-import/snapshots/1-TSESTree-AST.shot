@@ -29,7 +29,9 @@ Program {
                 type: "ImportDefaultSpecifier",
                 local: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "fs",
+                  optional: false,
 
                   range: [114, 116],
                   loc: {
@@ -61,6 +63,7 @@ Program {
         },
       },
       declare: true,
+      global: false,
       id: Literal {
         type: "Literal",
         raw: "'i-use-things'",

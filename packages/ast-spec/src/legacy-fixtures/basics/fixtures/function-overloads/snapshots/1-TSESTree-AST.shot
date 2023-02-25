@@ -10,11 +10,14 @@ Program {
       declaration: TSDeclareFunction {
         type: "TSDeclareFunction",
         async: false,
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "f",
+          optional: false,
 
           range: [89, 90],
           loc: {
@@ -25,7 +28,9 @@ Program {
         params: Array [
           Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "x",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSNumberKeyword {
@@ -93,11 +98,14 @@ Program {
       declaration: TSDeclareFunction {
         type: "TSDeclareFunction",
         async: false,
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "f",
+          optional: false,
 
           range: [127, 128],
           loc: {
@@ -108,7 +116,9 @@ Program {
         params: Array [
           Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "x",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSStringKeyword {
@@ -183,7 +193,9 @@ Program {
               type: "ReturnStatement",
               argument: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "x",
+                optional: false,
 
                 range: [215, 216],
                 loc: {
@@ -206,11 +218,14 @@ Program {
             end: { column: 1, line: 7 },
           },
         },
+        declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "f",
+          optional: false,
 
           range: [165, 166],
           loc: {
@@ -221,7 +236,9 @@ Program {
         params: Array [
           Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "x",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSUnionType {

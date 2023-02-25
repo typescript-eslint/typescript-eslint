@@ -23,9 +23,12 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-method
 +               type: 'MethodDefinition',
 +               abstract: true,
                 computed: false,
+-               decorators: Array [],
                 key: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'createSocket',
+-                 optional: false,
 
                   range: [123, 135],
                   loc: {
@@ -34,6 +37,7 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-method
                   },
                 },
                 kind: 'method',
+-               optional: false,
 -               override: false,
                 static: false,
 -               value: TSEmptyBodyFunctionExpression {
@@ -42,6 +46,7 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-method
 +                 type: 'FunctionExpression',
                   async: false,
 -                 body: null,
+-                 declare: false,
                   expression: false,
                   generator: false,
                   id: null,
@@ -83,7 +88,9 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-method
 -                     },
 -                     typeName: Identifier {
 -                       type: 'Identifier',
+-                       decorators: Array [],
 -                       name: 'Promise',
+-                       optional: false,
 -
 -                       range: [139, 146],
 -                       loc: {
@@ -127,9 +134,13 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-method
               end: { column: 1, line: 5 },
             },
           },
+-         declare: false,
+-         decorators: Array [],
           id: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'AbstractSocket',
+-           optional: false,
 
             range: [95, 109],
             loc: {
@@ -137,6 +148,7 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-method
               end: { column: 36, line: 3 },
             },
           },
+-         implements: Array [],
           superClass: null,
 
           range: [80, 157],

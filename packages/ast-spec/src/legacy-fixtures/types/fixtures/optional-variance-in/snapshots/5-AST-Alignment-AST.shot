@@ -10,9 +10,12 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in AST Alignment -
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Consumer',
+-         optional: false,
 
           range: [78, 86],
           loc: {
@@ -26,14 +29,18 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in AST Alignment -
 +         parameters: Array [
             Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'x',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypeReference {
                   type: 'TSTypeReference',
                   typeName: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'T',
+-                   optional: false,
 
                     range: [99, 100],
                     loc: {
@@ -97,7 +104,9 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in AST Alignment -
               in: true,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [90, 91],
 -               loc: {

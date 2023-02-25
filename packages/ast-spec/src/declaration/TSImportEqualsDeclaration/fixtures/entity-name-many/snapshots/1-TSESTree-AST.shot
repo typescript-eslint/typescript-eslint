@@ -8,7 +8,9 @@ Program {
       type: "TSImportEqualsDeclaration",
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "F",
+        optional: false,
 
         range: [7, 8],
         loc: {
@@ -23,7 +25,9 @@ Program {
           type: "TSQualifiedName",
           left: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "A",
+            optional: false,
 
             range: [11, 12],
             loc: {
@@ -33,7 +37,9 @@ Program {
           },
           right: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "B",
+            optional: false,
 
             range: [13, 14],
             loc: {
@@ -50,7 +56,9 @@ Program {
         },
         right: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "C",
+          optional: false,
 
           range: [15, 16],
           loc: {

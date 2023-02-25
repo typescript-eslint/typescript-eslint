@@ -12,7 +12,9 @@ exports[`AST Fixtures legacy-fixtures basics import-equal-type-declaration AST A
         type: 'TSImportEqualsDeclaration',
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'foo',
+-         optional: false,
 
           range: [85, 88],
           loc: {

@@ -6,15 +6,19 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "greet",
+              optional: false,
 
               range: [91, 96],
               loc: {
@@ -23,6 +27,7 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: false,
             static: false,
             value: FunctionExpression {
@@ -51,7 +56,9 @@ Program {
                         operator: "+",
                         right: Identifier {
                           type: "Identifier",
+                          decorators: Array [],
                           name: "name",
+                          optional: false,
 
                           range: [145, 149],
                           loc: {
@@ -100,6 +107,7 @@ Program {
                   end: { column: 3, line: 6 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -111,7 +119,9 @@ Program {
                       type: "Decorator",
                       expression: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "required",
+                        optional: false,
 
                         range: [98, 106],
                         loc: {
@@ -128,6 +138,7 @@ Program {
                     },
                   ],
                   name: "name",
+                  optional: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: "TSTypeAnnotation",
                     typeAnnotation: TSStringKeyword {
@@ -176,9 +187,13 @@ Program {
           end: { column: 1, line: 7 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Greeter",
+        optional: false,
 
         range: [79, 86],
         loc: {
@@ -186,6 +201,7 @@ Program {
           end: { column: 13, line: 3 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [73, 162],

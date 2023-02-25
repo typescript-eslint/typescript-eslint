@@ -9,10 +9,13 @@ Program {
       assertions: Array [],
       declaration: TSEnumDeclaration {
         type: "TSEnumDeclaration",
+        const: false,
         declare: true,
         id: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "Foo",
+          optional: false,
 
           range: [93, 96],
           loc: {
@@ -23,9 +26,12 @@ Program {
         members: Array [
           TSEnumMember {
             type: "TSEnumMember",
+            computed: false,
             id: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "foo",
+              optional: false,
 
               range: [101, 104],
               loc: {
@@ -53,9 +59,12 @@ Program {
           },
           TSEnumMember {
             type: "TSEnumMember",
+            computed: false,
             id: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "bar",
+              optional: false,
 
               range: [112, 115],
               loc: {

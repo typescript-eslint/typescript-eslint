@@ -10,9 +10,12 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'X',
+-         optional: false,
 
           range: [78, 79],
           loc: {
@@ -44,18 +47,18 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
 -                   type: 'Literal',
 -                   raw: '\\\\'\\\\'',
 -                   value: '',
--
++               argument: Literal {
++                 type: 'Literal',
++                 raw: '\\\\'\\\\'',
++                 value: '',
+
 -                   range: [91, 93],
 -                   loc: {
 -                     start: { column: 18, line: 3 },
 -                     end: { column: 20, line: 3 },
 -                   },
 -                 },
-+               argument: Literal {
-+                 type: 'Literal',
-+                 raw: '\\\\'\\\\'',
-+                 value: '',
-
+-
                   range: [91, 93],
                   loc: {
                     start: { column: 18, line: 3 },
@@ -64,7 +67,9 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
                 },
                 qualifier: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'B',
+-                 optional: false,
 
                   range: [95, 96],
                   loc: {
@@ -110,7 +115,9 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
 -         },
 -         typeName: Identifier {
 -           type: 'Identifier',
+-           decorators: Array [],
 -           name: 'A',
+-           optional: false,
 -
 -           range: [82, 83],
 -           loc: {

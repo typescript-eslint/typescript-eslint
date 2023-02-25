@@ -21,11 +21,14 @@ exports[`AST Fixtures legacy-fixtures basics symbol-type-param AST Alignment - A
             end: { column: 42, line: 3 },
           },
         },
+-       declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'test',
+-         optional: false,
 
           range: [82, 86],
           loc: {
@@ -36,7 +39,9 @@ exports[`AST Fixtures legacy-fixtures basics symbol-type-param AST Alignment - A
         params: Array [
           Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'abc',
+-           optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: 'TSTypeAnnotation',
               typeAnnotation: TSTypeReference {
@@ -83,7 +88,9 @@ exports[`AST Fixtures legacy-fixtures basics symbol-type-param AST Alignment - A
 -               },
 -               typeName: Identifier {
 -                 type: 'Identifier',
+-                 decorators: Array [],
 -                 name: 'Map',
+-                 optional: false,
 -
 -                 range: [92, 95],
 -                 loc: {

@@ -9,6 +9,7 @@ Program {
       assertions: Array [],
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
+        abstract: false,
         body: ClassBody {
           type: "ClassBody",
           body: Array [],
@@ -19,9 +20,13 @@ Program {
             end: { column: 19, line: 1 },
           },
         },
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "Foo",
+          optional: false,
 
           range: [13, 16],
           loc: {
@@ -29,6 +34,7 @@ Program {
             end: { column: 16, line: 1 },
           },
         },
+        implements: Array [],
         superClass: null,
 
         range: [7, 19],

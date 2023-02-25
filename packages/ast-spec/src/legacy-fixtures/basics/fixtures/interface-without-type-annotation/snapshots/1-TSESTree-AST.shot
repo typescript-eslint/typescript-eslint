@@ -14,7 +14,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "foo",
+              optional: false,
 
               range: [92, 95],
               loc: {
@@ -22,6 +24,9 @@ Program {
                 end: { column: 5, line: 4 },
               },
             },
+            optional: false,
+            readonly: false,
+            static: false,
 
             range: [92, 96],
             loc: {
@@ -37,9 +42,13 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
+      extends: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "test",
+        optional: false,
 
         range: [83, 87],
         loc: {

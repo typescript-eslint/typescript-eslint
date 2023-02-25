@@ -10,9 +10,12 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'A',
+-         optional: false,
 
           range: [78, 79],
           loc: {
@@ -30,18 +33,18 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
 -               type: 'Literal',
 -               raw: '\\\\'A\\\\'',
 -               value: 'A',
--
++           argument: Literal {
++             type: 'Literal',
++             raw: '\\\\'A\\\\'',
++             value: 'A',
+
 -               range: [96, 99],
 -               loc: {
 -                 start: { column: 23, line: 3 },
 -                 end: { column: 26, line: 3 },
 -               },
 -             },
-+           argument: Literal {
-+             type: 'Literal',
-+             raw: '\\\\'A\\\\'',
-+             value: 'A',
-
+-
               range: [96, 99],
               loc: {
                 start: { column: 23, line: 3 },
@@ -73,9 +76,12 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
       },
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'B',
+-         optional: false,
 
           range: [107, 108],
           loc: {
@@ -111,7 +117,9 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
           },
           qualifier: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'X',
+-           optional: false,
 
             range: [123, 124],
             loc: {
@@ -127,7 +135,9 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'Y',
+-                 optional: false,
 
                   range: [125, 126],
                   loc: {

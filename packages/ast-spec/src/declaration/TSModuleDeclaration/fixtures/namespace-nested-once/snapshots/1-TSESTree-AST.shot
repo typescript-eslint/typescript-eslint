@@ -16,11 +16,15 @@ Program {
           end: { column: 20, line: 1 },
         },
       },
+      declare: false,
+      global: false,
       id: TSQualifiedName {
         type: "TSQualifiedName",
         left: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "abd",
+          optional: false,
 
           range: [10, 13],
           loc: {
@@ -30,7 +34,9 @@ Program {
         },
         right: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "def",
+          optional: false,
 
           range: [14, 17],
           loc: {

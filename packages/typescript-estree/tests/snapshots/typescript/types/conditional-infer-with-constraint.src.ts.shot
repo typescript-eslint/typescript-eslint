@@ -1,0 +1,4267 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`typescript types conditional-infer-with-constraint.src 1`] = `
+Object {
+  "body": Array [
+    Object {
+      "declare": false,
+      "id": Object {
+        "decorators": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 5,
+            "line": 1,
+          },
+        },
+        "name": "X3",
+        "optional": false,
+        "range": Array [
+          5,
+          7,
+        ],
+        "type": "Identifier",
+        "typeAnnotation": undefined,
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 74,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        74,
+      ],
+      "type": "TSTypeAliasDeclaration",
+      "typeAnnotation": Object {
+        "checkType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 14,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 13,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            13,
+            14,
+          ],
+          "type": "TSTypeReference",
+          "typeName": Object {
+            "decorators": Array [],
+            "loc": Object {
+              "end": Object {
+                "column": 14,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 13,
+                "line": 1,
+              },
+            },
+            "name": "T",
+            "optional": false,
+            "range": Array [
+              13,
+              14,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": undefined,
+          },
+          "typeParameters": undefined,
+        },
+        "extendsType": Object {
+          "elementTypes": Array [
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 46,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 24,
+                  "line": 1,
+                },
+              },
+              "range": Array [
+                24,
+                46,
+              ],
+              "type": "TSInferType",
+              "typeParameter": Object {
+                "constraint": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 46,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 40,
+                      "line": 1,
+                    },
+                  },
+                  "range": Array [
+                    40,
+                    46,
+                  ],
+                  "type": "TSNumberKeyword",
+                },
+                "default": undefined,
+                "in": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 46,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 30,
+                    "line": 1,
+                  },
+                },
+                "name": Object {
+                  "decorators": Array [],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 31,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 30,
+                      "line": 1,
+                    },
+                  },
+                  "name": "U",
+                  "optional": false,
+                  "range": Array [
+                    30,
+                    31,
+                  ],
+                  "type": "Identifier",
+                  "typeAnnotation": undefined,
+                },
+                "out": false,
+                "range": Array [
+                  30,
+                  46,
+                ],
+                "type": "TSTypeParameter",
+              },
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 47,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 23,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            23,
+            47,
+          ],
+          "type": "TSTupleType",
+        },
+        "falseType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 73,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 68,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            68,
+            73,
+          ],
+          "type": "TSNeverKeyword",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 73,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 1,
+          },
+        },
+        "range": Array [
+          13,
+          73,
+        ],
+        "trueType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 65,
+              "line": 1,
+            },
+            "start": Object {
+              "column": 50,
+              "line": 1,
+            },
+          },
+          "range": Array [
+            50,
+            65,
+          ],
+          "type": "TSTypeReference",
+          "typeName": Object {
+            "decorators": Array [],
+            "loc": Object {
+              "end": Object {
+                "column": 62,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 50,
+                "line": 1,
+              },
+            },
+            "name": "MustBeNumber",
+            "optional": false,
+            "range": Array [
+              50,
+              62,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": undefined,
+          },
+          "typeParameters": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 65,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 62,
+                "line": 1,
+              },
+            },
+            "params": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 64,
+                    "line": 1,
+                  },
+                  "start": Object {
+                    "column": 63,
+                    "line": 1,
+                  },
+                },
+                "range": Array [
+                  63,
+                  64,
+                ],
+                "type": "TSTypeReference",
+                "typeName": Object {
+                  "decorators": Array [],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 64,
+                      "line": 1,
+                    },
+                    "start": Object {
+                      "column": 63,
+                      "line": 1,
+                    },
+                  },
+                  "name": "U",
+                  "optional": false,
+                  "range": Array [
+                    63,
+                    64,
+                  ],
+                  "type": "Identifier",
+                  "typeAnnotation": undefined,
+                },
+                "typeParameters": undefined,
+              },
+            ],
+            "range": Array [
+              62,
+              65,
+            ],
+            "type": "TSTypeParameterInstantiation",
+          },
+        },
+        "type": "TSConditionalType",
+      },
+      "typeParameters": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 1,
+          },
+          "start": Object {
+            "column": 7,
+            "line": 1,
+          },
+        },
+        "params": Array [
+          Object {
+            "constraint": undefined,
+            "default": undefined,
+            "in": false,
+            "loc": Object {
+              "end": Object {
+                "column": 9,
+                "line": 1,
+              },
+              "start": Object {
+                "column": 8,
+                "line": 1,
+              },
+            },
+            "name": Object {
+              "decorators": Array [],
+              "loc": Object {
+                "end": Object {
+                  "column": 9,
+                  "line": 1,
+                },
+                "start": Object {
+                  "column": 8,
+                  "line": 1,
+                },
+              },
+              "name": "T",
+              "optional": false,
+              "range": Array [
+                8,
+                9,
+              ],
+              "type": "Identifier",
+              "typeAnnotation": undefined,
+            },
+            "out": false,
+            "range": Array [
+              8,
+              9,
+            ],
+            "type": "TSTypeParameter",
+          },
+        ],
+        "range": Array [
+          7,
+          10,
+        ],
+        "type": "TSTypeParameterDeclaration",
+      },
+    },
+    Object {
+      "declare": false,
+      "id": Object {
+        "decorators": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 5,
+            "line": 2,
+          },
+        },
+        "name": "X4",
+        "optional": false,
+        "range": Array [
+          80,
+          82,
+        ],
+        "type": "Identifier",
+        "typeAnnotation": undefined,
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 98,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        75,
+        173,
+      ],
+      "type": "TSTypeAliasDeclaration",
+      "typeAnnotation": Object {
+        "checkType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 14,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 13,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            88,
+            89,
+          ],
+          "type": "TSTypeReference",
+          "typeName": Object {
+            "decorators": Array [],
+            "loc": Object {
+              "end": Object {
+                "column": 14,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 13,
+                "line": 2,
+              },
+            },
+            "name": "T",
+            "optional": false,
+            "range": Array [
+              88,
+              89,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": undefined,
+          },
+          "typeParameters": undefined,
+        },
+        "extendsType": Object {
+          "elementTypes": Array [
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 46,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 24,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                99,
+                121,
+              ],
+              "type": "TSInferType",
+              "typeParameter": Object {
+                "constraint": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 46,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 40,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    115,
+                    121,
+                  ],
+                  "type": "TSNumberKeyword",
+                },
+                "default": undefined,
+                "in": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 46,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 30,
+                    "line": 2,
+                  },
+                },
+                "name": Object {
+                  "decorators": Array [],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 31,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 30,
+                      "line": 2,
+                    },
+                  },
+                  "name": "U",
+                  "optional": false,
+                  "range": Array [
+                    105,
+                    106,
+                  ],
+                  "type": "Identifier",
+                  "typeAnnotation": undefined,
+                },
+                "out": false,
+                "range": Array [
+                  105,
+                  121,
+                ],
+                "type": "TSTypeParameter",
+              },
+            },
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 70,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 48,
+                  "line": 2,
+                },
+              },
+              "range": Array [
+                123,
+                145,
+              ],
+              "type": "TSInferType",
+              "typeParameter": Object {
+                "constraint": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 70,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 64,
+                      "line": 2,
+                    },
+                  },
+                  "range": Array [
+                    139,
+                    145,
+                  ],
+                  "type": "TSNumberKeyword",
+                },
+                "default": undefined,
+                "in": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 70,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 54,
+                    "line": 2,
+                  },
+                },
+                "name": Object {
+                  "decorators": Array [],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 55,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 54,
+                      "line": 2,
+                    },
+                  },
+                  "name": "U",
+                  "optional": false,
+                  "range": Array [
+                    129,
+                    130,
+                  ],
+                  "type": "Identifier",
+                  "typeAnnotation": undefined,
+                },
+                "out": false,
+                "range": Array [
+                  129,
+                  145,
+                ],
+                "type": "TSTypeParameter",
+              },
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 71,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 23,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            98,
+            146,
+          ],
+          "type": "TSTupleType",
+        },
+        "falseType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 97,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 92,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            167,
+            172,
+          ],
+          "type": "TSNeverKeyword",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 97,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 2,
+          },
+        },
+        "range": Array [
+          88,
+          172,
+        ],
+        "trueType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 89,
+              "line": 2,
+            },
+            "start": Object {
+              "column": 74,
+              "line": 2,
+            },
+          },
+          "range": Array [
+            149,
+            164,
+          ],
+          "type": "TSTypeReference",
+          "typeName": Object {
+            "decorators": Array [],
+            "loc": Object {
+              "end": Object {
+                "column": 86,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 74,
+                "line": 2,
+              },
+            },
+            "name": "MustBeNumber",
+            "optional": false,
+            "range": Array [
+              149,
+              161,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": undefined,
+          },
+          "typeParameters": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 89,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 86,
+                "line": 2,
+              },
+            },
+            "params": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 88,
+                    "line": 2,
+                  },
+                  "start": Object {
+                    "column": 87,
+                    "line": 2,
+                  },
+                },
+                "range": Array [
+                  162,
+                  163,
+                ],
+                "type": "TSTypeReference",
+                "typeName": Object {
+                  "decorators": Array [],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 88,
+                      "line": 2,
+                    },
+                    "start": Object {
+                      "column": 87,
+                      "line": 2,
+                    },
+                  },
+                  "name": "U",
+                  "optional": false,
+                  "range": Array [
+                    162,
+                    163,
+                  ],
+                  "type": "Identifier",
+                  "typeAnnotation": undefined,
+                },
+                "typeParameters": undefined,
+              },
+            ],
+            "range": Array [
+              161,
+              164,
+            ],
+            "type": "TSTypeParameterInstantiation",
+          },
+        },
+        "type": "TSConditionalType",
+      },
+      "typeParameters": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 2,
+          },
+          "start": Object {
+            "column": 7,
+            "line": 2,
+          },
+        },
+        "params": Array [
+          Object {
+            "constraint": undefined,
+            "default": undefined,
+            "in": false,
+            "loc": Object {
+              "end": Object {
+                "column": 9,
+                "line": 2,
+              },
+              "start": Object {
+                "column": 8,
+                "line": 2,
+              },
+            },
+            "name": Object {
+              "decorators": Array [],
+              "loc": Object {
+                "end": Object {
+                  "column": 9,
+                  "line": 2,
+                },
+                "start": Object {
+                  "column": 8,
+                  "line": 2,
+                },
+              },
+              "name": "T",
+              "optional": false,
+              "range": Array [
+                83,
+                84,
+              ],
+              "type": "Identifier",
+              "typeAnnotation": undefined,
+            },
+            "out": false,
+            "range": Array [
+              83,
+              84,
+            ],
+            "type": "TSTypeParameter",
+          },
+        ],
+        "range": Array [
+          82,
+          85,
+        ],
+        "type": "TSTypeParameterDeclaration",
+      },
+    },
+    Object {
+      "declare": false,
+      "id": Object {
+        "decorators": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 5,
+            "line": 3,
+          },
+        },
+        "name": "X5",
+        "optional": false,
+        "range": Array [
+          179,
+          181,
+        ],
+        "type": "Identifier",
+        "typeAnnotation": undefined,
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 83,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        174,
+        257,
+      ],
+      "type": "TSTypeAliasDeclaration",
+      "typeAnnotation": Object {
+        "checkType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 14,
+              "line": 3,
+            },
+            "start": Object {
+              "column": 13,
+              "line": 3,
+            },
+          },
+          "range": Array [
+            187,
+            188,
+          ],
+          "type": "TSTypeReference",
+          "typeName": Object {
+            "decorators": Array [],
+            "loc": Object {
+              "end": Object {
+                "column": 14,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 13,
+                "line": 3,
+              },
+            },
+            "name": "T",
+            "optional": false,
+            "range": Array [
+              187,
+              188,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": undefined,
+          },
+          "typeParameters": undefined,
+        },
+        "extendsType": Object {
+          "elementTypes": Array [
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 46,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 24,
+                  "line": 3,
+                },
+              },
+              "range": Array [
+                198,
+                220,
+              ],
+              "type": "TSInferType",
+              "typeParameter": Object {
+                "constraint": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 46,
+                      "line": 3,
+                    },
+                    "start": Object {
+                      "column": 40,
+                      "line": 3,
+                    },
+                  },
+                  "range": Array [
+                    214,
+                    220,
+                  ],
+                  "type": "TSNumberKeyword",
+                },
+                "default": undefined,
+                "in": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 46,
+                    "line": 3,
+                  },
+                  "start": Object {
+                    "column": 30,
+                    "line": 3,
+                  },
+                },
+                "name": Object {
+                  "decorators": Array [],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 31,
+                      "line": 3,
+                    },
+                    "start": Object {
+                      "column": 30,
+                      "line": 3,
+                    },
+                  },
+                  "name": "U",
+                  "optional": false,
+                  "range": Array [
+                    204,
+                    205,
+                  ],
+                  "type": "Identifier",
+                  "typeAnnotation": undefined,
+                },
+                "out": false,
+                "range": Array [
+                  204,
+                  220,
+                ],
+                "type": "TSTypeParameter",
+              },
+            },
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 55,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 48,
+                  "line": 3,
+                },
+              },
+              "range": Array [
+                222,
+                229,
+              ],
+              "type": "TSInferType",
+              "typeParameter": Object {
+                "constraint": undefined,
+                "default": undefined,
+                "in": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 55,
+                    "line": 3,
+                  },
+                  "start": Object {
+                    "column": 54,
+                    "line": 3,
+                  },
+                },
+                "name": Object {
+                  "decorators": Array [],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 55,
+                      "line": 3,
+                    },
+                    "start": Object {
+                      "column": 54,
+                      "line": 3,
+                    },
+                  },
+                  "name": "U",
+                  "optional": false,
+                  "range": Array [
+                    228,
+                    229,
+                  ],
+                  "type": "Identifier",
+                  "typeAnnotation": undefined,
+                },
+                "out": false,
+                "range": Array [
+                  228,
+                  229,
+                ],
+                "type": "TSTypeParameter",
+              },
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 56,
+              "line": 3,
+            },
+            "start": Object {
+              "column": 23,
+              "line": 3,
+            },
+          },
+          "range": Array [
+            197,
+            230,
+          ],
+          "type": "TSTupleType",
+        },
+        "falseType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 82,
+              "line": 3,
+            },
+            "start": Object {
+              "column": 77,
+              "line": 3,
+            },
+          },
+          "range": Array [
+            251,
+            256,
+          ],
+          "type": "TSNeverKeyword",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 82,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 3,
+          },
+        },
+        "range": Array [
+          187,
+          256,
+        ],
+        "trueType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 74,
+              "line": 3,
+            },
+            "start": Object {
+              "column": 59,
+              "line": 3,
+            },
+          },
+          "range": Array [
+            233,
+            248,
+          ],
+          "type": "TSTypeReference",
+          "typeName": Object {
+            "decorators": Array [],
+            "loc": Object {
+              "end": Object {
+                "column": 71,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 59,
+                "line": 3,
+              },
+            },
+            "name": "MustBeNumber",
+            "optional": false,
+            "range": Array [
+              233,
+              245,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": undefined,
+          },
+          "typeParameters": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 74,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 71,
+                "line": 3,
+              },
+            },
+            "params": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 73,
+                    "line": 3,
+                  },
+                  "start": Object {
+                    "column": 72,
+                    "line": 3,
+                  },
+                },
+                "range": Array [
+                  246,
+                  247,
+                ],
+                "type": "TSTypeReference",
+                "typeName": Object {
+                  "decorators": Array [],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 73,
+                      "line": 3,
+                    },
+                    "start": Object {
+                      "column": 72,
+                      "line": 3,
+                    },
+                  },
+                  "name": "U",
+                  "optional": false,
+                  "range": Array [
+                    246,
+                    247,
+                  ],
+                  "type": "Identifier",
+                  "typeAnnotation": undefined,
+                },
+                "typeParameters": undefined,
+              },
+            ],
+            "range": Array [
+              245,
+              248,
+            ],
+            "type": "TSTypeParameterInstantiation",
+          },
+        },
+        "type": "TSConditionalType",
+      },
+      "typeParameters": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 3,
+          },
+          "start": Object {
+            "column": 7,
+            "line": 3,
+          },
+        },
+        "params": Array [
+          Object {
+            "constraint": undefined,
+            "default": undefined,
+            "in": false,
+            "loc": Object {
+              "end": Object {
+                "column": 9,
+                "line": 3,
+              },
+              "start": Object {
+                "column": 8,
+                "line": 3,
+              },
+            },
+            "name": Object {
+              "decorators": Array [],
+              "loc": Object {
+                "end": Object {
+                  "column": 9,
+                  "line": 3,
+                },
+                "start": Object {
+                  "column": 8,
+                  "line": 3,
+                },
+              },
+              "name": "T",
+              "optional": false,
+              "range": Array [
+                182,
+                183,
+              ],
+              "type": "Identifier",
+              "typeAnnotation": undefined,
+            },
+            "out": false,
+            "range": Array [
+              182,
+              183,
+            ],
+            "type": "TSTypeParameter",
+          },
+        ],
+        "range": Array [
+          181,
+          184,
+        ],
+        "type": "TSTypeParameterDeclaration",
+      },
+    },
+    Object {
+      "declare": false,
+      "id": Object {
+        "decorators": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 4,
+          },
+          "start": Object {
+            "column": 5,
+            "line": 4,
+          },
+        },
+        "name": "X6",
+        "optional": false,
+        "range": Array [
+          263,
+          265,
+        ],
+        "type": "Identifier",
+        "typeAnnotation": undefined,
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 83,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        258,
+        341,
+      ],
+      "type": "TSTypeAliasDeclaration",
+      "typeAnnotation": Object {
+        "checkType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 14,
+              "line": 4,
+            },
+            "start": Object {
+              "column": 13,
+              "line": 4,
+            },
+          },
+          "range": Array [
+            271,
+            272,
+          ],
+          "type": "TSTypeReference",
+          "typeName": Object {
+            "decorators": Array [],
+            "loc": Object {
+              "end": Object {
+                "column": 14,
+                "line": 4,
+              },
+              "start": Object {
+                "column": 13,
+                "line": 4,
+              },
+            },
+            "name": "T",
+            "optional": false,
+            "range": Array [
+              271,
+              272,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": undefined,
+          },
+          "typeParameters": undefined,
+        },
+        "extendsType": Object {
+          "elementTypes": Array [
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 31,
+                  "line": 4,
+                },
+                "start": Object {
+                  "column": 24,
+                  "line": 4,
+                },
+              },
+              "range": Array [
+                282,
+                289,
+              ],
+              "type": "TSInferType",
+              "typeParameter": Object {
+                "constraint": undefined,
+                "default": undefined,
+                "in": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 31,
+                    "line": 4,
+                  },
+                  "start": Object {
+                    "column": 30,
+                    "line": 4,
+                  },
+                },
+                "name": Object {
+                  "decorators": Array [],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 31,
+                      "line": 4,
+                    },
+                    "start": Object {
+                      "column": 30,
+                      "line": 4,
+                    },
+                  },
+                  "name": "U",
+                  "optional": false,
+                  "range": Array [
+                    288,
+                    289,
+                  ],
+                  "type": "Identifier",
+                  "typeAnnotation": undefined,
+                },
+                "out": false,
+                "range": Array [
+                  288,
+                  289,
+                ],
+                "type": "TSTypeParameter",
+              },
+            },
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 55,
+                  "line": 4,
+                },
+                "start": Object {
+                  "column": 33,
+                  "line": 4,
+                },
+              },
+              "range": Array [
+                291,
+                313,
+              ],
+              "type": "TSInferType",
+              "typeParameter": Object {
+                "constraint": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 55,
+                      "line": 4,
+                    },
+                    "start": Object {
+                      "column": 49,
+                      "line": 4,
+                    },
+                  },
+                  "range": Array [
+                    307,
+                    313,
+                  ],
+                  "type": "TSNumberKeyword",
+                },
+                "default": undefined,
+                "in": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 55,
+                    "line": 4,
+                  },
+                  "start": Object {
+                    "column": 39,
+                    "line": 4,
+                  },
+                },
+                "name": Object {
+                  "decorators": Array [],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 40,
+                      "line": 4,
+                    },
+                    "start": Object {
+                      "column": 39,
+                      "line": 4,
+                    },
+                  },
+                  "name": "U",
+                  "optional": false,
+                  "range": Array [
+                    297,
+                    298,
+                  ],
+                  "type": "Identifier",
+                  "typeAnnotation": undefined,
+                },
+                "out": false,
+                "range": Array [
+                  297,
+                  313,
+                ],
+                "type": "TSTypeParameter",
+              },
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 56,
+              "line": 4,
+            },
+            "start": Object {
+              "column": 23,
+              "line": 4,
+            },
+          },
+          "range": Array [
+            281,
+            314,
+          ],
+          "type": "TSTupleType",
+        },
+        "falseType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 82,
+              "line": 4,
+            },
+            "start": Object {
+              "column": 77,
+              "line": 4,
+            },
+          },
+          "range": Array [
+            335,
+            340,
+          ],
+          "type": "TSNeverKeyword",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 82,
+            "line": 4,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 4,
+          },
+        },
+        "range": Array [
+          271,
+          340,
+        ],
+        "trueType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 74,
+              "line": 4,
+            },
+            "start": Object {
+              "column": 59,
+              "line": 4,
+            },
+          },
+          "range": Array [
+            317,
+            332,
+          ],
+          "type": "TSTypeReference",
+          "typeName": Object {
+            "decorators": Array [],
+            "loc": Object {
+              "end": Object {
+                "column": 71,
+                "line": 4,
+              },
+              "start": Object {
+                "column": 59,
+                "line": 4,
+              },
+            },
+            "name": "MustBeNumber",
+            "optional": false,
+            "range": Array [
+              317,
+              329,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": undefined,
+          },
+          "typeParameters": Object {
+            "loc": Object {
+              "end": Object {
+                "column": 74,
+                "line": 4,
+              },
+              "start": Object {
+                "column": 71,
+                "line": 4,
+              },
+            },
+            "params": Array [
+              Object {
+                "loc": Object {
+                  "end": Object {
+                    "column": 73,
+                    "line": 4,
+                  },
+                  "start": Object {
+                    "column": 72,
+                    "line": 4,
+                  },
+                },
+                "range": Array [
+                  330,
+                  331,
+                ],
+                "type": "TSTypeReference",
+                "typeName": Object {
+                  "decorators": Array [],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 73,
+                      "line": 4,
+                    },
+                    "start": Object {
+                      "column": 72,
+                      "line": 4,
+                    },
+                  },
+                  "name": "U",
+                  "optional": false,
+                  "range": Array [
+                    330,
+                    331,
+                  ],
+                  "type": "Identifier",
+                  "typeAnnotation": undefined,
+                },
+                "typeParameters": undefined,
+              },
+            ],
+            "range": Array [
+              329,
+              332,
+            ],
+            "type": "TSTypeParameterInstantiation",
+          },
+        },
+        "type": "TSConditionalType",
+      },
+      "typeParameters": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 4,
+          },
+          "start": Object {
+            "column": 7,
+            "line": 4,
+          },
+        },
+        "params": Array [
+          Object {
+            "constraint": undefined,
+            "default": undefined,
+            "in": false,
+            "loc": Object {
+              "end": Object {
+                "column": 9,
+                "line": 4,
+              },
+              "start": Object {
+                "column": 8,
+                "line": 4,
+              },
+            },
+            "name": Object {
+              "decorators": Array [],
+              "loc": Object {
+                "end": Object {
+                  "column": 9,
+                  "line": 4,
+                },
+                "start": Object {
+                  "column": 8,
+                  "line": 4,
+                },
+              },
+              "name": "T",
+              "optional": false,
+              "range": Array [
+                266,
+                267,
+              ],
+              "type": "Identifier",
+              "typeAnnotation": undefined,
+            },
+            "out": false,
+            "range": Array [
+              266,
+              267,
+            ],
+            "type": "TSTypeParameter",
+          },
+        ],
+        "range": Array [
+          265,
+          268,
+        ],
+        "type": "TSTypeParameterDeclaration",
+      },
+    },
+    Object {
+      "declare": false,
+      "id": Object {
+        "decorators": Array [],
+        "loc": Object {
+          "end": Object {
+            "column": 7,
+            "line": 5,
+          },
+          "start": Object {
+            "column": 5,
+            "line": 5,
+          },
+        },
+        "name": "X7",
+        "optional": false,
+        "range": Array [
+          347,
+          349,
+        ],
+        "type": "Identifier",
+        "typeAnnotation": undefined,
+      },
+      "loc": Object {
+        "end": Object {
+          "column": 84,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        342,
+        426,
+      ],
+      "type": "TSTypeAliasDeclaration",
+      "typeAnnotation": Object {
+        "checkType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 14,
+              "line": 5,
+            },
+            "start": Object {
+              "column": 13,
+              "line": 5,
+            },
+          },
+          "range": Array [
+            355,
+            356,
+          ],
+          "type": "TSTypeReference",
+          "typeName": Object {
+            "decorators": Array [],
+            "loc": Object {
+              "end": Object {
+                "column": 14,
+                "line": 5,
+              },
+              "start": Object {
+                "column": 13,
+                "line": 5,
+              },
+            },
+            "name": "T",
+            "optional": false,
+            "range": Array [
+              355,
+              356,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": undefined,
+          },
+          "typeParameters": undefined,
+        },
+        "extendsType": Object {
+          "elementTypes": Array [
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 46,
+                  "line": 5,
+                },
+                "start": Object {
+                  "column": 24,
+                  "line": 5,
+                },
+              },
+              "range": Array [
+                366,
+                388,
+              ],
+              "type": "TSInferType",
+              "typeParameter": Object {
+                "constraint": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 46,
+                      "line": 5,
+                    },
+                    "start": Object {
+                      "column": 40,
+                      "line": 5,
+                    },
+                  },
+                  "range": Array [
+                    382,
+                    388,
+                  ],
+                  "type": "TSStringKeyword",
+                },
+                "default": undefined,
+                "in": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 46,
+                    "line": 5,
+                  },
+                  "start": Object {
+                    "column": 30,
+                    "line": 5,
+                  },
+                },
+                "name": Object {
+                  "decorators": Array [],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 31,
+                      "line": 5,
+                    },
+                    "start": Object {
+                      "column": 30,
+                      "line": 5,
+                    },
+                  },
+                  "name": "U",
+                  "optional": false,
+                  "range": Array [
+                    372,
+                    373,
+                  ],
+                  "type": "Identifier",
+                  "typeAnnotation": undefined,
+                },
+                "out": false,
+                "range": Array [
+                  372,
+                  388,
+                ],
+                "type": "TSTypeParameter",
+              },
+            },
+            Object {
+              "loc": Object {
+                "end": Object {
+                  "column": 70,
+                  "line": 5,
+                },
+                "start": Object {
+                  "column": 48,
+                  "line": 5,
+                },
+              },
+              "range": Array [
+                390,
+                412,
+              ],
+              "type": "TSInferType",
+              "typeParameter": Object {
+                "constraint": Object {
+                  "loc": Object {
+                    "end": Object {
+                      "column": 70,
+                      "line": 5,
+                    },
+                    "start": Object {
+                      "column": 64,
+                      "line": 5,
+                    },
+                  },
+                  "range": Array [
+                    406,
+                    412,
+                  ],
+                  "type": "TSNumberKeyword",
+                },
+                "default": undefined,
+                "in": false,
+                "loc": Object {
+                  "end": Object {
+                    "column": 70,
+                    "line": 5,
+                  },
+                  "start": Object {
+                    "column": 54,
+                    "line": 5,
+                  },
+                },
+                "name": Object {
+                  "decorators": Array [],
+                  "loc": Object {
+                    "end": Object {
+                      "column": 55,
+                      "line": 5,
+                    },
+                    "start": Object {
+                      "column": 54,
+                      "line": 5,
+                    },
+                  },
+                  "name": "U",
+                  "optional": false,
+                  "range": Array [
+                    396,
+                    397,
+                  ],
+                  "type": "Identifier",
+                  "typeAnnotation": undefined,
+                },
+                "out": false,
+                "range": Array [
+                  396,
+                  412,
+                ],
+                "type": "TSTypeParameter",
+              },
+            },
+          ],
+          "loc": Object {
+            "end": Object {
+              "column": 71,
+              "line": 5,
+            },
+            "start": Object {
+              "column": 23,
+              "line": 5,
+            },
+          },
+          "range": Array [
+            365,
+            413,
+          ],
+          "type": "TSTupleType",
+        },
+        "falseType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 83,
+              "line": 5,
+            },
+            "start": Object {
+              "column": 78,
+              "line": 5,
+            },
+          },
+          "range": Array [
+            420,
+            425,
+          ],
+          "type": "TSNeverKeyword",
+        },
+        "loc": Object {
+          "end": Object {
+            "column": 83,
+            "line": 5,
+          },
+          "start": Object {
+            "column": 13,
+            "line": 5,
+          },
+        },
+        "range": Array [
+          355,
+          425,
+        ],
+        "trueType": Object {
+          "loc": Object {
+            "end": Object {
+              "column": 75,
+              "line": 5,
+            },
+            "start": Object {
+              "column": 74,
+              "line": 5,
+            },
+          },
+          "range": Array [
+            416,
+            417,
+          ],
+          "type": "TSTypeReference",
+          "typeName": Object {
+            "decorators": Array [],
+            "loc": Object {
+              "end": Object {
+                "column": 75,
+                "line": 5,
+              },
+              "start": Object {
+                "column": 74,
+                "line": 5,
+              },
+            },
+            "name": "U",
+            "optional": false,
+            "range": Array [
+              416,
+              417,
+            ],
+            "type": "Identifier",
+            "typeAnnotation": undefined,
+          },
+          "typeParameters": undefined,
+        },
+        "type": "TSConditionalType",
+      },
+      "typeParameters": Object {
+        "loc": Object {
+          "end": Object {
+            "column": 10,
+            "line": 5,
+          },
+          "start": Object {
+            "column": 7,
+            "line": 5,
+          },
+        },
+        "params": Array [
+          Object {
+            "constraint": undefined,
+            "default": undefined,
+            "in": false,
+            "loc": Object {
+              "end": Object {
+                "column": 9,
+                "line": 5,
+              },
+              "start": Object {
+                "column": 8,
+                "line": 5,
+              },
+            },
+            "name": Object {
+              "decorators": Array [],
+              "loc": Object {
+                "end": Object {
+                  "column": 9,
+                  "line": 5,
+                },
+                "start": Object {
+                  "column": 8,
+                  "line": 5,
+                },
+              },
+              "name": "T",
+              "optional": false,
+              "range": Array [
+                350,
+                351,
+              ],
+              "type": "Identifier",
+              "typeAnnotation": undefined,
+            },
+            "out": false,
+            "range": Array [
+              350,
+              351,
+            ],
+            "type": "TSTypeParameter",
+          },
+        ],
+        "range": Array [
+          349,
+          352,
+        ],
+        "type": "TSTypeParameterDeclaration",
+      },
+    },
+  ],
+  "comments": Array [],
+  "loc": Object {
+    "end": Object {
+      "column": 0,
+      "line": 6,
+    },
+    "start": Object {
+      "column": 0,
+      "line": 1,
+    },
+  },
+  "range": Array [
+    0,
+    427,
+  ],
+  "sourceType": "script",
+  "tokens": Array [
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        0,
+        4,
+      ],
+      "type": "Identifier",
+      "value": "type",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        5,
+        7,
+      ],
+      "type": "Identifier",
+      "value": "X3",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        7,
+        8,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        8,
+        9,
+      ],
+      "type": "Identifier",
+      "value": "T",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        9,
+        10,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        11,
+        12,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        13,
+        14,
+      ],
+      "type": "Identifier",
+      "value": "T",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 22,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 15,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        15,
+        22,
+      ],
+      "type": "Keyword",
+      "value": "extends",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 23,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        23,
+        24,
+      ],
+      "type": "Punctuator",
+      "value": "[",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 29,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 24,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        24,
+        29,
+      ],
+      "type": "Identifier",
+      "value": "infer",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 31,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 30,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        30,
+        31,
+      ],
+      "type": "Identifier",
+      "value": "U",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 39,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 32,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        32,
+        39,
+      ],
+      "type": "Keyword",
+      "value": "extends",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 46,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 40,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        40,
+        46,
+      ],
+      "type": "Identifier",
+      "value": "number",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 47,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 46,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        46,
+        47,
+      ],
+      "type": "Punctuator",
+      "value": "]",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 49,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 48,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        48,
+        49,
+      ],
+      "type": "Punctuator",
+      "value": "?",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 62,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 50,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        50,
+        62,
+      ],
+      "type": "Identifier",
+      "value": "MustBeNumber",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 63,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 62,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        62,
+        63,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 64,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 63,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        63,
+        64,
+      ],
+      "type": "Identifier",
+      "value": "U",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 65,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 64,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        64,
+        65,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 67,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 66,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        66,
+        67,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 73,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 68,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        68,
+        73,
+      ],
+      "type": "Identifier",
+      "value": "never",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 74,
+          "line": 1,
+        },
+        "start": Object {
+          "column": 73,
+          "line": 1,
+        },
+      },
+      "range": Array [
+        73,
+        74,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        75,
+        79,
+      ],
+      "type": "Identifier",
+      "value": "type",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        80,
+        82,
+      ],
+      "type": "Identifier",
+      "value": "X4",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        82,
+        83,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        83,
+        84,
+      ],
+      "type": "Identifier",
+      "value": "T",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        84,
+        85,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        86,
+        87,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        88,
+        89,
+      ],
+      "type": "Identifier",
+      "value": "T",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 22,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 15,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        90,
+        97,
+      ],
+      "type": "Keyword",
+      "value": "extends",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 23,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        98,
+        99,
+      ],
+      "type": "Punctuator",
+      "value": "[",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 29,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 24,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        99,
+        104,
+      ],
+      "type": "Identifier",
+      "value": "infer",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 31,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 30,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        105,
+        106,
+      ],
+      "type": "Identifier",
+      "value": "U",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 39,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 32,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        107,
+        114,
+      ],
+      "type": "Keyword",
+      "value": "extends",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 46,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 40,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        115,
+        121,
+      ],
+      "type": "Identifier",
+      "value": "number",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 47,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 46,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        121,
+        122,
+      ],
+      "type": "Punctuator",
+      "value": ",",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 53,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 48,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        123,
+        128,
+      ],
+      "type": "Identifier",
+      "value": "infer",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 55,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 54,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        129,
+        130,
+      ],
+      "type": "Identifier",
+      "value": "U",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 63,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 56,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        131,
+        138,
+      ],
+      "type": "Keyword",
+      "value": "extends",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 70,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 64,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        139,
+        145,
+      ],
+      "type": "Identifier",
+      "value": "number",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 71,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 70,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        145,
+        146,
+      ],
+      "type": "Punctuator",
+      "value": "]",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 73,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 72,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        147,
+        148,
+      ],
+      "type": "Punctuator",
+      "value": "?",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 86,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 74,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        149,
+        161,
+      ],
+      "type": "Identifier",
+      "value": "MustBeNumber",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 87,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 86,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        161,
+        162,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 88,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 87,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        162,
+        163,
+      ],
+      "type": "Identifier",
+      "value": "U",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 89,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 88,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        163,
+        164,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 91,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 90,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        165,
+        166,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 97,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 92,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        167,
+        172,
+      ],
+      "type": "Identifier",
+      "value": "never",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 98,
+          "line": 2,
+        },
+        "start": Object {
+          "column": 97,
+          "line": 2,
+        },
+      },
+      "range": Array [
+        172,
+        173,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        174,
+        178,
+      ],
+      "type": "Identifier",
+      "value": "type",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        179,
+        181,
+      ],
+      "type": "Identifier",
+      "value": "X5",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        181,
+        182,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        182,
+        183,
+      ],
+      "type": "Identifier",
+      "value": "T",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        183,
+        184,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        185,
+        186,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        187,
+        188,
+      ],
+      "type": "Identifier",
+      "value": "T",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 22,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 15,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        189,
+        196,
+      ],
+      "type": "Keyword",
+      "value": "extends",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 23,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        197,
+        198,
+      ],
+      "type": "Punctuator",
+      "value": "[",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 29,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 24,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        198,
+        203,
+      ],
+      "type": "Identifier",
+      "value": "infer",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 31,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 30,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        204,
+        205,
+      ],
+      "type": "Identifier",
+      "value": "U",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 39,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 32,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        206,
+        213,
+      ],
+      "type": "Keyword",
+      "value": "extends",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 46,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 40,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        214,
+        220,
+      ],
+      "type": "Identifier",
+      "value": "number",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 47,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 46,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        220,
+        221,
+      ],
+      "type": "Punctuator",
+      "value": ",",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 53,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 48,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        222,
+        227,
+      ],
+      "type": "Identifier",
+      "value": "infer",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 55,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 54,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        228,
+        229,
+      ],
+      "type": "Identifier",
+      "value": "U",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 56,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 55,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        229,
+        230,
+      ],
+      "type": "Punctuator",
+      "value": "]",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 58,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 57,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        231,
+        232,
+      ],
+      "type": "Punctuator",
+      "value": "?",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 71,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 59,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        233,
+        245,
+      ],
+      "type": "Identifier",
+      "value": "MustBeNumber",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 72,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 71,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        245,
+        246,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 73,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 72,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        246,
+        247,
+      ],
+      "type": "Identifier",
+      "value": "U",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 74,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 73,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        247,
+        248,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 76,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 75,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        249,
+        250,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 82,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 77,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        251,
+        256,
+      ],
+      "type": "Identifier",
+      "value": "never",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 83,
+          "line": 3,
+        },
+        "start": Object {
+          "column": 82,
+          "line": 3,
+        },
+      },
+      "range": Array [
+        256,
+        257,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        258,
+        262,
+      ],
+      "type": "Identifier",
+      "value": "type",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        263,
+        265,
+      ],
+      "type": "Identifier",
+      "value": "X6",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        265,
+        266,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        266,
+        267,
+      ],
+      "type": "Identifier",
+      "value": "T",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        267,
+        268,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        269,
+        270,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        271,
+        272,
+      ],
+      "type": "Identifier",
+      "value": "T",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 22,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 15,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        273,
+        280,
+      ],
+      "type": "Keyword",
+      "value": "extends",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 23,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        281,
+        282,
+      ],
+      "type": "Punctuator",
+      "value": "[",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 29,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 24,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        282,
+        287,
+      ],
+      "type": "Identifier",
+      "value": "infer",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 31,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 30,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        288,
+        289,
+      ],
+      "type": "Identifier",
+      "value": "U",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 32,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 31,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        289,
+        290,
+      ],
+      "type": "Punctuator",
+      "value": ",",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 38,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 33,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        291,
+        296,
+      ],
+      "type": "Identifier",
+      "value": "infer",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 40,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 39,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        297,
+        298,
+      ],
+      "type": "Identifier",
+      "value": "U",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 48,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 41,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        299,
+        306,
+      ],
+      "type": "Keyword",
+      "value": "extends",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 55,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 49,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        307,
+        313,
+      ],
+      "type": "Identifier",
+      "value": "number",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 56,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 55,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        313,
+        314,
+      ],
+      "type": "Punctuator",
+      "value": "]",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 58,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 57,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        315,
+        316,
+      ],
+      "type": "Punctuator",
+      "value": "?",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 71,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 59,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        317,
+        329,
+      ],
+      "type": "Identifier",
+      "value": "MustBeNumber",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 72,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 71,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        329,
+        330,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 73,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 72,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        330,
+        331,
+      ],
+      "type": "Identifier",
+      "value": "U",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 74,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 73,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        331,
+        332,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 76,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 75,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        333,
+        334,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 82,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 77,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        335,
+        340,
+      ],
+      "type": "Identifier",
+      "value": "never",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 83,
+          "line": 4,
+        },
+        "start": Object {
+          "column": 82,
+          "line": 4,
+        },
+      },
+      "range": Array [
+        340,
+        341,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 4,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 0,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        342,
+        346,
+      ],
+      "type": "Identifier",
+      "value": "type",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 7,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 5,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        347,
+        349,
+      ],
+      "type": "Identifier",
+      "value": "X7",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 8,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 7,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        349,
+        350,
+      ],
+      "type": "Punctuator",
+      "value": "<",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 9,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 8,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        350,
+        351,
+      ],
+      "type": "Identifier",
+      "value": "T",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 10,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 9,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        351,
+        352,
+      ],
+      "type": "Punctuator",
+      "value": ">",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 12,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 11,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        353,
+        354,
+      ],
+      "type": "Punctuator",
+      "value": "=",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 14,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 13,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        355,
+        356,
+      ],
+      "type": "Identifier",
+      "value": "T",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 22,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 15,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        357,
+        364,
+      ],
+      "type": "Keyword",
+      "value": "extends",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 24,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 23,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        365,
+        366,
+      ],
+      "type": "Punctuator",
+      "value": "[",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 29,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 24,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        366,
+        371,
+      ],
+      "type": "Identifier",
+      "value": "infer",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 31,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 30,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        372,
+        373,
+      ],
+      "type": "Identifier",
+      "value": "U",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 39,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 32,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        374,
+        381,
+      ],
+      "type": "Keyword",
+      "value": "extends",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 46,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 40,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        382,
+        388,
+      ],
+      "type": "Identifier",
+      "value": "string",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 47,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 46,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        388,
+        389,
+      ],
+      "type": "Punctuator",
+      "value": ",",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 53,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 48,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        390,
+        395,
+      ],
+      "type": "Identifier",
+      "value": "infer",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 55,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 54,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        396,
+        397,
+      ],
+      "type": "Identifier",
+      "value": "U",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 63,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 56,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        398,
+        405,
+      ],
+      "type": "Keyword",
+      "value": "extends",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 70,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 64,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        406,
+        412,
+      ],
+      "type": "Identifier",
+      "value": "number",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 71,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 70,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        412,
+        413,
+      ],
+      "type": "Punctuator",
+      "value": "]",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 73,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 72,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        414,
+        415,
+      ],
+      "type": "Punctuator",
+      "value": "?",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 75,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 74,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        416,
+        417,
+      ],
+      "type": "Identifier",
+      "value": "U",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 77,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 76,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        418,
+        419,
+      ],
+      "type": "Punctuator",
+      "value": ":",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 83,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 78,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        420,
+        425,
+      ],
+      "type": "Identifier",
+      "value": "never",
+    },
+    Object {
+      "loc": Object {
+        "end": Object {
+          "column": 84,
+          "line": 5,
+        },
+        "start": Object {
+          "column": 83,
+          "line": 5,
+        },
+      },
+      "range": Array [
+        425,
+        426,
+      ],
+      "type": "Punctuator",
+      "value": ";",
+    },
+  ],
+  "type": "Program",
+}
+`;

@@ -2,5 +2,73 @@
 
 exports[`AST Fixtures legacy-fixtures declare variable AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'foo',
+-             optional: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSAnyKeyword {
+                  type: 'TSAnyKeyword',
+
+                  range: [90, 93],
+                  loc: {
+                    start: { column: 17, line: 3 },
+                    end: { column: 20, line: 3 },
+                  },
+                },
+
+                range: [88, 93],
+                loc: {
+                  start: { column: 15, line: 3 },
+                  end: { column: 20, line: 3 },
+                },
+              },
+
+              range: [85, 93],
+              loc: {
+                start: { column: 12, line: 3 },
+                end: { column: 20, line: 3 },
+              },
+            },
+            init: null,
+
+            range: [85, 93],
+            loc: {
+              start: { column: 12, line: 3 },
+              end: { column: 20, line: 3 },
+            },
+          },
+        ],
+        declare: true,
+        kind: 'var',
+
+        range: [73, 94],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 21, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 95],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
 `;

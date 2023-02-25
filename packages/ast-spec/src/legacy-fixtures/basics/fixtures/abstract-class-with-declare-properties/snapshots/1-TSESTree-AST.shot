@@ -14,9 +14,13 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: true,
+            decorators: Array [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "prop1",
+              optional: false,
 
               range: [118, 123],
               loc: {
@@ -24,7 +28,9 @@ Program {
                 end: { column: 15, line: 4 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -56,9 +62,13 @@ Program {
             type: "TSAbstractPropertyDefinition",
             computed: false,
             declare: true,
+            decorators: Array [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "prop2",
+              optional: false,
 
               range: [152, 157],
               loc: {
@@ -66,7 +76,9 @@ Program {
                 end: { column: 24, line: 5 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -99,9 +111,13 @@ Program {
             accessibility: "public",
             computed: false,
             declare: true,
+            decorators: Array [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "prop3",
+              optional: false,
 
               range: [193, 198],
               loc: {
@@ -109,7 +125,9 @@ Program {
                 end: { column: 31, line: 6 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -141,9 +159,13 @@ Program {
             type: "TSAbstractPropertyDefinition",
             computed: false,
             declare: true,
+            decorators: Array [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "prop4",
+              optional: false,
 
               range: [236, 241],
               loc: {
@@ -151,6 +173,7 @@ Program {
                 end: { column: 33, line: 7 },
               },
             },
+            optional: false,
             override: false,
             readonly: true,
             static: false,
@@ -185,9 +208,13 @@ Program {
             accessibility: "public",
             computed: false,
             declare: true,
+            decorators: Array [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "prop5",
+              optional: false,
 
               range: [286, 291],
               loc: {
@@ -195,6 +222,7 @@ Program {
                 end: { column: 40, line: 8 },
               },
             },
+            optional: false,
             override: false,
             readonly: true,
             static: false,
@@ -232,9 +260,13 @@ Program {
           end: { column: 1, line: 9 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "AbstractDeclProps",
+        optional: false,
 
         range: [88, 105],
         loc: {
@@ -242,6 +274,7 @@ Program {
           end: { column: 32, line: 3 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [73, 302],

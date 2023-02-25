@@ -10,15 +10,19 @@ exports[`AST Fixtures legacy-fixtures types this-type AST Alignment - AST 1`] = 
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'clone',
+-               optional: false,
 
                 range: [91, 96],
                 loc: {
@@ -27,6 +31,7 @@ exports[`AST Fixtures legacy-fixtures types this-type AST Alignment - AST 1`] = 
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -61,6 +66,7 @@ exports[`AST Fixtures legacy-fixtures types this-type AST Alignment - AST 1`] = 
                     end: { column: 3, line: 6 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -105,9 +111,13 @@ exports[`AST Fixtures legacy-fixtures types this-type AST Alignment - AST 1`] = 
             end: { column: 1, line: 7 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Message',
+-         optional: false,
 
           range: [79, 86],
           loc: {
@@ -115,6 +125,7 @@ exports[`AST Fixtures legacy-fixtures types this-type AST Alignment - AST 1`] = 
             end: { column: 13, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 129],

@@ -6,9 +6,12 @@ Program {
   body: Array [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "LinkedList",
+        optional: false,
 
         range: [78, 88],
         loc: {
@@ -23,7 +26,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [94, 95],
               loc: {
@@ -46,7 +51,9 @@ Program {
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "next",
+                  optional: false,
 
                   range: [100, 104],
                   loc: {
@@ -54,6 +61,9 @@ Program {
                     end: { column: 31, line: 3 },
                   },
                 },
+                optional: false,
+                readonly: false,
+                static: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSTypeReference {
@@ -65,7 +75,9 @@ Program {
                           type: "TSTypeReference",
                           typeName: Identifier {
                             type: "Identifier",
+                            decorators: Array [],
                             name: "T",
+                            optional: false,
 
                             range: [117, 118],
                             loc: {
@@ -90,7 +102,9 @@ Program {
                     },
                     typeName: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "LinkedList",
+                      optional: false,
 
                       range: [106, 116],
                       loc: {
@@ -143,7 +157,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "T",
+              optional: false,
 
               range: [89, 90],
               loc: {
