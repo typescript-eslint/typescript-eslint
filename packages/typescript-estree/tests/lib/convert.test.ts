@@ -270,7 +270,7 @@ describe('convert', () => {
       esCallExpression.typeParameters;
 
       expect(warn).toHaveBeenCalledWith(
-        `The 'typeParameters' property is deprecated on CallExpression nodes. Use 'typeArguments' instead.`,
+        `The 'typeParameters' property is deprecated on CallExpression nodes. Use 'typeArguments' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
       );
     });
 

@@ -3070,7 +3070,7 @@ export class Converter {
               if (!errored) {
                 // eslint-disable-next-line no-console
                 console.warn(
-                  `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead.`,
+                  `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
                 );
                 errored = true;
               }
