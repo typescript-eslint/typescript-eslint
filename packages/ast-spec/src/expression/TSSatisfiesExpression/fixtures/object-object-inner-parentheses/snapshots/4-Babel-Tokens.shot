@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures expression TSSatisfiesExpression object-object-inner-parentheses Babel - Tokens 1`] = `
+Array [
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [0, 1],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 1, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [1, 2],
+    loc: {
+      start: { column: 1, line: 1 },
+      end: { column: 2, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "prop",
+
+    range: [3, 7],
+    loc: {
+      start: { column: 3, line: 1 },
+      end: { column: 7, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [7, 8],
+    loc: {
+      start: { column: 7, line: 1 },
+      end: { column: 8, line: 1 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'string'",
+
+    range: [9, 17],
+    loc: {
+      start: { column: 9, line: 1 },
+      end: { column: 17, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [18, 19],
+    loc: {
+      start: { column: 18, line: 1 },
+      end: { column: 19, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "satisfies",
+
+    range: [20, 29],
+    loc: {
+      start: { column: 20, line: 1 },
+      end: { column: 29, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [30, 31],
+    loc: {
+      start: { column: 30, line: 1 },
+      end: { column: 31, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "prop",
+
+    range: [32, 36],
+    loc: {
+      start: { column: 32, line: 1 },
+      end: { column: 36, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [36, 37],
+    loc: {
+      start: { column: 36, line: 1 },
+      end: { column: 37, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "string",
+
+    range: [38, 44],
+    loc: {
+      start: { column: 38, line: 1 },
+      end: { column: 44, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [45, 46],
+    loc: {
+      start: { column: 45, line: 1 },
+      end: { column: 46, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [46, 47],
+    loc: {
+      start: { column: 46, line: 1 },
+      end: { column: 47, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [47, 48],
+    loc: {
+      start: { column: 47, line: 1 },
+      end: { column: 48, line: 1 },
+    },
+  },
+]
+`;

@@ -405,6 +405,57 @@ void doSomething();
       `,
       options: [{ ignoreIIFE: true }],
     },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = true;
+  void (condition && myPromise());
+}
+      `,
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = true;
+  await (condition && myPromise());
+}
+      `,
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = true;
+  condition && void myPromise();
+}
+      `,
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = true;
+  condition && (await myPromise());
+}
+      `,
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  let condition = false;
+  condition && myPromise();
+  condition = true;
+  condition || myPromise();
+  condition ?? myPromise();
+}
+      `,
+      options: [{ ignoreVoid: false }],
+    },
   ],
 
   invalid: [
@@ -656,6 +707,147 @@ async function test() {
         {
           line: 3,
           messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function test() {
+  await Promise.resolve();
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function test() {
+  const promise = new Promise((resolve, reject) => resolve('value'));
+  promise;
+}
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 4,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function test() {
+  const promise = new Promise((resolve, reject) => resolve('value'));
+  await promise;
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function returnsPromise() {
+  return 'value';
+}
+void returnsPromise();
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 5,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function returnsPromise() {
+  return 'value';
+}
+await returnsPromise();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: `
+async function returnsPromise() {
+  return 'value';
+}
+void /* ... */ returnsPromise();
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 5,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function returnsPromise() {
+  return 'value';
+}
+await /* ... */ returnsPromise();
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function returnsPromise() {
+  return 'value';
+}
+1, returnsPromise();
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 5,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function returnsPromise() {
+  return 'value';
+}
+await (1, returnsPromise());
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function returnsPromise() {
+  return 'value';
+}
+bool ? returnsPromise() : null;
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 5,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function returnsPromise() {
+  return 'value';
+}
+await (bool ? returnsPromise() : null);
+      `,
+            },
+          ],
         },
       ],
     },
@@ -973,6 +1165,265 @@ async function test() {
         {
           line: 7,
           messageId: 'floatingVoid',
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = true;
+
+  void condition || myPromise();
+}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = true;
+
+  void (void condition || myPromise());
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = true;
+
+  (await condition) && myPromise();
+}
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 6,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = true;
+
+  await ((await condition) && myPromise());
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = true;
+
+  condition && myPromise();
+}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = true;
+
+  void (condition && myPromise());
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = false;
+
+  condition || myPromise();
+}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = false;
+
+  void (condition || myPromise());
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = null;
+
+  condition ?? myPromise();
+}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = null;
+
+  void (condition ?? myPromise());
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = Promise.resolve(true);
+  let condition = true;
+  condition && myPromise;
+}
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 5,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function foo() {
+  const myPromise = Promise.resolve(true);
+  let condition = true;
+  await (condition && myPromise);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = Promise.resolve(true);
+  let condition = false;
+  condition || myPromise;
+}
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 5,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function foo() {
+  const myPromise = Promise.resolve(true);
+  let condition = false;
+  await (condition || myPromise);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = Promise.resolve(true);
+  let condition = null;
+  condition ?? myPromise;
+}
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 5,
+          messageId: 'floating',
+          suggestions: [
+            {
+              messageId: 'floatingFixAwait',
+              output: `
+async function foo() {
+  const myPromise = Promise.resolve(true);
+  let condition = null;
+  await (condition ?? myPromise);
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = false;
+
+  condition || condition || myPromise();
+}
+      `,
+      errors: [
+        {
+          line: 6,
+          messageId: 'floatingVoid',
+          suggestions: [
+            {
+              messageId: 'floatingFixVoid',
+              output: `
+async function foo() {
+  const myPromise = async () => void 0;
+  const condition = false;
+
+  void (condition || condition || myPromise());
+}
+      `,
+            },
+          ],
         },
       ],
     },

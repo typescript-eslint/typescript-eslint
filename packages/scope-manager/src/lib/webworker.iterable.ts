@@ -8,6 +8,8 @@ import { TYPE } from './base-config';
 
 export const webworker_iterable = {
   Cache: TYPE,
+  CanvasPath: TYPE,
+  CanvasPathDrawingStyles: TYPE,
   DOMStringList: TYPE,
   FileList: TYPE,
   FontFaceSet: TYPE,

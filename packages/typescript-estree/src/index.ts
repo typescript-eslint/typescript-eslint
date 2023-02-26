@@ -5,16 +5,15 @@ export {
   parseWithNodeMaps,
   ParseAndGenerateServicesResult,
   ParseWithNodeMapsResult,
-  clearProgramCache,
 } from './parser';
 export { ParserServices, TSESTreeOptions } from './parser-options';
 export { simpleTraverse } from './simple-traverse';
 export * from './ts-estree';
-export { clearWatchCaches as clearCaches } from './create-program/createWatchProgram';
 export { createProgramFromConfigFile as createProgram } from './create-program/useProvidedPrograms';
 export * from './create-program/getScriptKind';
 export { typescriptVersionIsAtLeast } from './version-check';
 export * from './getModifiers';
+export * from './clear-caches';
 
 // re-export for backwards-compat
 export { visitorKeys } from '@typescript-eslint/visitor-keys';

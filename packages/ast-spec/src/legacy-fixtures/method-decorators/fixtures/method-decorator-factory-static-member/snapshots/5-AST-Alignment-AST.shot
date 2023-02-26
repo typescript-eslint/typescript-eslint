@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures method-decorators method-decorator-factory-static-member AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: false,
+              decorators: Array [
+                Decorator {
+                  type: 'Decorator',
+                  expression: CallExpression {
+                    type: 'CallExpression',
+                    arguments: Array [
+                      Literal {
+                        type: 'Literal',
+                        raw: 'false',
+                        value: false,
+
+                        range: [90, 95],
+                        loc: {
+                          start: { column: 7, line: 4 },
+                          end: { column: 12, line: 4 },
+                        },
+                      },
+                    ],
+                    callee: Identifier {
+                      type: 'Identifier',
+                      name: 'Foo',
+
+                      range: [86, 89],
+                      loc: {
+                        start: { column: 3, line: 4 },
+                        end: { column: 6, line: 4 },
+                      },
+                    },
+                    optional: false,
+
+                    range: [86, 96],
+                    loc: {
+                      start: { column: 3, line: 4 },
+                      end: { column: 13, line: 4 },
+                    },
+                  },
+
+                  range: [85, 96],
+                  loc: {
+                    start: { column: 2, line: 4 },
+                    end: { column: 13, line: 4 },
+                  },
+                },
+              ],
+              key: Identifier {
+                type: 'Identifier',
+                name: 'staticMethod',
+
+                range: [106, 118],
+                loc: {
+                  start: { column: 9, line: 5 },
+                  end: { column: 21, line: 5 },
+                },
+              },
+              kind: 'method',
+-             override: false,
+              static: true,
+              value: FunctionExpression {
+                type: 'FunctionExpression',
+                async: false,
+                body: BlockStatement {
+                  type: 'BlockStatement',
+                  body: Array [],
+
+                  range: [121, 123],
+                  loc: {
+                    start: { column: 24, line: 5 },
+                    end: { column: 26, line: 5 },
+                  },
+                },
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+
+                range: [118, 123],
+                loc: {
+                  start: { column: 21, line: 5 },
+                  end: { column: 26, line: 5 },
+                },
+              },
+
+              range: [85, 123],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 26, line: 5 },
+              },
+            },
+          ],
+
+          range: [81, 125],
+          loc: {
+            start: { column: 8, line: 3 },
+            end: { column: 1, line: 6 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'C',
+
+          range: [79, 80],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 7, line: 3 },
+          },
+        },
+        superClass: null,
+
+        range: [73, 125],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 126],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 7 },
+    },
+  }"
+`;

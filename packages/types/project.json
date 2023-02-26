@@ -1,5 +1,15 @@
 {
+  "name": "types",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
-  "implicitDependencies": ["@typescript-eslint/ast-spec"]
+  "implicitDependencies": ["ast-spec"],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/types/**/*.ts"]
+      }
+    }
+  }
 }

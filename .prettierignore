@@ -3,7 +3,6 @@
 **/tests/fixture-project/**/*
 **/dist
 **/coverage
-**/shared-fixtures
 **/.vscode
 **/.nyc_output
 **/.vs
@@ -11,6 +10,9 @@ packages/eslint-plugin-tslint/tests/test-tslint-rules-directory/alwaysFailRule.j
 packages/eslint-plugin/src/configs/*.json
 CONTRIBUTORS.md
 packages/ast-spec/src/*/*/fixtures/_error_/*/fixture.ts
+
+# prettier doesn't yet support auto-accessors
+packages/ast-spec/src/element/AccessorProperty/fixtures
 
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md

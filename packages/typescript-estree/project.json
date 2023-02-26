@@ -1,5 +1,15 @@
 {
+  "name": "typescript-estree",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
-  "implicitDependencies": ["@typescript-eslint/types"]
+  "implicitDependencies": ["types"],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/typescript-estree/**/*.ts"]
+      }
+    }
+  }
 }

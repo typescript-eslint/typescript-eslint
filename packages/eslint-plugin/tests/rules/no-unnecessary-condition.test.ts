@@ -346,6 +346,10 @@ do {} while (true);
       options: [{ allowConstantLoopConditions: true }],
     },
     `
+let variable = 'abc' as string | void;
+variable?.[0];
+    `,
+    `
 let foo: undefined | { bar: true };
 foo?.bar;
     `,
@@ -525,6 +529,54 @@ if (x) {
       ],
       parserOptions: {
         tsconfigRootDir: path.join(rootPath, 'unstrict'),
+      },
+    },
+    `
+interface Foo {
+  [key: string]: [string] | undefined;
+}
+
+type OptionalFoo = Foo | undefined;
+declare const foo: OptionalFoo;
+foo?.test?.length;
+    `,
+    `
+interface Foo {
+  [key: number]: [string] | undefined;
+}
+
+type OptionalFoo = Foo | undefined;
+declare const foo: OptionalFoo;
+foo?.[1]?.length;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6264
+    `
+function get<Obj, Key extends keyof Obj>(obj: Obj, key: Key) {
+  const value = obj[key];
+  if (value) {
+    return value;
+  }
+  throw new Error('BOOM!');
+}
+
+get({ foo: null }, 'foo');
+    `,
+    {
+      code: `
+function getElem(dict: Record<string, { foo: string }>, key: string) {
+  if (dict[key]) {
+    return dict[key].foo;
+  } else {
+    return '';
+  }
+}
+      `,
+      parserOptions: {
+        tsconfigRootDir: getFixturesRootDir(),
+        project: './tsconfig.noUncheckedIndexedAccess.json',
+      },
+      dependencyConstraints: {
+        typescript: '4.1',
       },
     },
   ],
@@ -1547,6 +1599,82 @@ if (x) {
       parserOptions: {
         tsconfigRootDir: path.join(rootPath, 'unstrict'),
       },
+    },
+    {
+      code: `
+interface Foo {
+  test: string;
+  [key: string]: [string] | undefined;
+}
+
+type OptionalFoo = Foo | undefined;
+declare const foo: OptionalFoo;
+foo?.test?.length;
+      `,
+      output: `
+interface Foo {
+  test: string;
+  [key: string]: [string] | undefined;
+}
+
+type OptionalFoo = Foo | undefined;
+declare const foo: OptionalFoo;
+foo?.test.length;
+      `,
+      errors: [
+        {
+          messageId: 'neverOptionalChain',
+          line: 9,
+          endLine: 9,
+          column: 10,
+          endColumn: 12,
+        },
+      ],
+    },
+    {
+      code: `
+function pick<Obj extends Record<string, 1 | 2 | 3>, Key extends keyof Obj>(
+  obj: Obj,
+  key: Key,
+): Obj[Key] {
+  const k = obj[key];
+  if (obj[key]) {
+    return obj[key];
+  }
+  throw new Error('Boom!');
+}
+
+pick({ foo: 1, bar: 2 }, 'bar');
+      `,
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 7,
+          endLine: 7,
+          column: 7,
+          endColumn: 15,
+        },
+      ],
+    },
+    {
+      code: `
+function getElem(dict: Record<string, { foo: string }>, key: string) {
+  if (dict[key]) {
+    return dict[key].foo;
+  } else {
+    return '';
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 3,
+          endLine: 3,
+          column: 7,
+          endColumn: 16,
+        },
+      ],
     },
   ],
 });

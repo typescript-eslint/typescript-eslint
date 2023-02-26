@@ -1,0 +1,175 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types tuple-named-optional Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "x",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTupleType {
+                type: "TSTupleType",
+                elementTypes: Array [
+                  TSNamedTupleMember {
+                    type: "TSNamedTupleMember",
+                    elementType: TSStringKeyword {
+                      type: "TSStringKeyword",
+
+                      range: [84, 90],
+                      loc: {
+                        start: { column: 11, line: 3 },
+                        end: { column: 17, line: 3 },
+                      },
+                    },
+                    label: Identifier {
+                      type: "Identifier",
+                      name: "a",
+
+                      range: [81, 82],
+                      loc: {
+                        start: { column: 8, line: 3 },
+                        end: { column: 9, line: 3 },
+                      },
+                    },
+                    optional: false,
+
+                    range: [81, 90],
+                    loc: {
+                      start: { column: 8, line: 3 },
+                      end: { column: 17, line: 3 },
+                    },
+                  },
+                  TSNamedTupleMember {
+                    type: "TSNamedTupleMember",
+                    elementType: TSNumberKeyword {
+                      type: "TSNumberKeyword",
+
+                      range: [96, 102],
+                      loc: {
+                        start: { column: 23, line: 3 },
+                        end: { column: 29, line: 3 },
+                      },
+                    },
+                    label: Identifier {
+                      type: "Identifier",
+                      name: "b",
+
+                      range: [92, 93],
+                      loc: {
+                        start: { column: 19, line: 3 },
+                        end: { column: 20, line: 3 },
+                      },
+                    },
+                    optional: true,
+
+                    range: [92, 102],
+                    loc: {
+                      start: { column: 19, line: 3 },
+                      end: { column: 29, line: 3 },
+                    },
+                  },
+                  TSNamedTupleMember {
+                    type: "TSNamedTupleMember",
+                    elementType: TSUnionType {
+                      type: "TSUnionType",
+                      types: Array [
+                        TSStringKeyword {
+                          type: "TSStringKeyword",
+
+                          range: [108, 114],
+                          loc: {
+                            start: { column: 35, line: 3 },
+                            end: { column: 41, line: 3 },
+                          },
+                        },
+                        TSNumberKeyword {
+                          type: "TSNumberKeyword",
+
+                          range: [117, 123],
+                          loc: {
+                            start: { column: 44, line: 3 },
+                            end: { column: 50, line: 3 },
+                          },
+                        },
+                      ],
+
+                      range: [108, 123],
+                      loc: {
+                        start: { column: 35, line: 3 },
+                        end: { column: 50, line: 3 },
+                      },
+                    },
+                    label: Identifier {
+                      type: "Identifier",
+                      name: "c",
+
+                      range: [104, 105],
+                      loc: {
+                        start: { column: 31, line: 3 },
+                        end: { column: 32, line: 3 },
+                      },
+                    },
+                    optional: true,
+
+                    range: [104, 123],
+                    loc: {
+                      start: { column: 31, line: 3 },
+                      end: { column: 50, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [80, 124],
+                loc: {
+                  start: { column: 7, line: 3 },
+                  end: { column: 51, line: 3 },
+                },
+              },
+
+              range: [78, 124],
+              loc: {
+                start: { column: 5, line: 3 },
+                end: { column: 51, line: 3 },
+              },
+            },
+
+            range: [77, 124],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 51, line: 3 },
+            },
+          },
+          init: null,
+
+          range: [77, 124],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 51, line: 3 },
+          },
+        },
+      ],
+      kind: "let",
+
+      range: [73, 125],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 52, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 126],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

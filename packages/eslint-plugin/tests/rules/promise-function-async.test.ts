@@ -102,6 +102,13 @@ const invalidAsyncModifiers = {
         constructor() {}
       }
     `,
+    `
+class Foo {
+  async catch<T>(arg: Promise<T>) {
+    return arg;
+  }
+}
+    `,
     {
       code: `
 function returnsAny(): any {
@@ -158,6 +165,23 @@ abstract class Test {
 }
       `,
     },
+    `
+function promiseInUnionWithExplicitReturnType(
+  p: boolean,
+): Promise<number> | number {
+  return p ? Promise.resolve(5) : 5;
+}
+    `,
+    `
+function explicitReturnWithPromiseInUnion(): Promise<number> | number {
+  return 5;
+}
+    `,
+    `
+async function asyncFunctionReturningUnion(p: boolean) {
+  return p ? Promise.resolve(5) : 5;
+}
+    `,
   ],
   invalid: [
     {
@@ -667,6 +691,98 @@ class Test {
   private async ['baz']() {
     return Promise.resolve(3);
   }
+}
+      `,
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/5729
+    {
+      code: `
+class Foo {
+  catch() {
+    return Promise.resolve(1);
+  }
+
+  public default() {
+    return Promise.resolve(2);
+  }
+
+  @decorator
+  private case<T>() {
+    return Promise.resolve(3);
+  }
+}
+      `,
+      output: `
+class Foo {
+  async catch() {
+    return Promise.resolve(1);
+  }
+
+  public async default() {
+    return Promise.resolve(2);
+  }
+
+  @decorator
+  private async case<T>() {
+    return Promise.resolve(3);
+  }
+}
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 3,
+          messageId,
+        },
+        {
+          line: 7,
+          column: 3,
+          messageId,
+        },
+        {
+          line: 12,
+          column: 3,
+          messageId,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = {
+  catch() {
+    return Promise.resolve(1);
+  },
+};
+      `,
+      output: `
+const foo = {
+  async catch() {
+    return Promise.resolve(1);
+  },
+};
+      `,
+      errors: [
+        {
+          line: 3,
+          column: 3,
+          messageId,
+        },
+      ],
+    },
+    {
+      code: `
+function promiseInUnionWithoutExplicitReturnType(p: boolean) {
+  return p ? Promise.resolve(5) : 5;
+}
+      `,
+      errors: [
+        {
+          messageId,
+        },
+      ],
+      output: `
+async function promiseInUnionWithoutExplicitReturnType(p: boolean) {
+  return p ? Promise.resolve(5) : 5;
 }
       `,
     },
