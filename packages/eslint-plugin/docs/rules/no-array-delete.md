@@ -6,8 +6,8 @@ description: 'Disallow delete operator for arrays.'
 >
 > See **https://typescript-eslint.io/rules/no-array-delete** for documentation.
 
-In JavaScript `delete` operator in arrays makes the given index empty, and leaves the array length as is. this may
-cause a problem for optimizing and undefined behaviors like getting `undefined` when accessing that index.
+In JavaScript `delete` operator in arrays makes the given index empty, and leaves the array length unchanged.
+This can sometimes cause problems with performance and unexpected behaviors around array loops and index accesses.
 
 ## Examples
 
@@ -16,7 +16,7 @@ cause a problem for optimizing and undefined behaviors like getting `undefined` 
 ### ❌ Incorrect
 
 ```ts
-declare const array: any[];
+declare const array: unknown[];
 declare const index: number;
 
 delete array[index];
@@ -25,7 +25,7 @@ delete array[index];
 ### ✅ Correct
 
 ```js
-declare const array: any[];
+declare const array: unknown[];
 declare const index: number;
 
 array.splice(index, 1);
