@@ -181,9 +181,27 @@ export function getLocFor(
   end: number,
   ast: ts.SourceFile,
 ): TSESTree.SourceLocation {
+  let locStart: TSESTree.Position | null = null;
+  let locEnd: TSESTree.Position | null = null;
   return {
-    start: getLineAndCharacterFor(start, ast),
-    end: getLineAndCharacterFor(end, ast),
+    get start(): TSESTree.Position {
+      if (locStart == null) {
+        locStart = getLineAndCharacterFor(start, ast);
+      }
+      return locStart;
+    },
+    set start(val: TSESTree.Position) {
+      locStart = val;
+    },
+    get end(): TSESTree.Position {
+      if (locEnd == null) {
+        locEnd = getLineAndCharacterFor(end, ast);
+      }
+      return locEnd;
+    },
+    set end(val: TSESTree.Position) {
+      locEnd = val;
+    },
   };
 }
 
@@ -522,6 +540,17 @@ export function getTokenType(
   return AST_TOKEN_TYPES.Identifier;
 }
 
+export type OptionalLoc<T> = Pick<T, Exclude<keyof T, 'loc'>> & {
+  loc?: TSESTree.SourceLocation;
+};
+export type OptionalRangeAndLoc<T> = Pick<
+  T,
+  Exclude<keyof T, 'loc' | 'range'>
+> & {
+  range?: TSESTree.Range;
+  loc?: TSESTree.SourceLocation;
+};
+
 /**
  * Extends and formats a given ts.Token, for a given AST
  * @param token the ts.Token
@@ -541,26 +570,27 @@ export function convertToken(
   const tokenType = getTokenType(token);
 
   if (tokenType === AST_TOKEN_TYPES.RegularExpression) {
-    return {
-      type: tokenType,
+    const newToken: TSESTree.RegularExpressionToken = {
+      type: AST_TOKEN_TYPES.RegularExpression,
       value,
       range: [start, end],
-      loc: getLocFor(start, end, ast),
       regex: {
         pattern: value.slice(1, value.lastIndexOf('/')),
         flags: value.slice(value.lastIndexOf('/') + 1),
       },
-    };
-  } else {
-    // @ts-expect-error TS is complaining about `value` not being the correct
-    // type but it is
-    return {
-      type: tokenType,
-      value,
-      range: [start, end],
       loc: getLocFor(start, end, ast),
     };
+    return newToken;
   }
+
+  // @ts-expect-error TS is complaining about `value` not being the correct type but it is
+  const newToken: Exclude<TSESTree.Token, TSESTree.RegularExpressionToken> = {
+    type: tokenType,
+    value,
+    range: [start, end],
+    loc: getLocFor(start, end, ast),
+  };
+  return newToken;
 }
 
 /**

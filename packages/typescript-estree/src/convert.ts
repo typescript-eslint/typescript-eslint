@@ -3,7 +3,7 @@
 import * as ts from 'typescript';
 
 import { getDecorators, getModifiers } from './getModifiers';
-import type { TSError } from './node-utils';
+import type { OptionalRangeAndLoc, TSError } from './node-utils';
 import {
   canContainDirective,
   createError,
@@ -251,7 +251,7 @@ export class Converter {
 
   private createNode<T extends TSESTree.Node = TSESTree.Node>(
     node: TSESTreeToTSNode<T>,
-    data: TSESTree.OptionalRangeAndLoc<T>,
+    data: OptionalRangeAndLoc<T>,
   ): T {
     const result = data;
     if (!result.range) {
@@ -2820,7 +2820,7 @@ export class Converter {
                 id,
                 body,
                 global: true,
-              } satisfies TSESTree.OptionalRangeAndLoc<
+              } satisfies OptionalRangeAndLoc<
                 Omit<TSESTree.TSModuleDeclarationGlobal, 'type'>
               >;
             } else if (node.flags & ts.NodeFlags.Namespace) {
@@ -2834,7 +2834,7 @@ export class Converter {
                 kind: 'namespace',
                 id,
                 body,
-              } satisfies TSESTree.OptionalRangeAndLoc<
+              } satisfies OptionalRangeAndLoc<
                 Omit<TSESTree.TSModuleDeclarationNamespace, 'type'>
               >;
             } else {
@@ -2842,7 +2842,7 @@ export class Converter {
                 kind: 'module',
                 id,
                 ...(body != null ? { body } : {}),
-              } satisfies TSESTree.OptionalRangeAndLoc<
+              } satisfies OptionalRangeAndLoc<
                 Omit<TSESTree.TSModuleDeclarationModule, 'type'>
               >;
             }

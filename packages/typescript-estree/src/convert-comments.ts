@@ -26,7 +26,6 @@ export function convertComments(
           ? AST_TOKEN_TYPES.Line
           : AST_TOKEN_TYPES.Block;
       const range: TSESTree.Range = [comment.pos, comment.end];
-      const loc = getLocFor(range[0], range[1], ast);
 
       // both comments start with 2 characters - /* or //
       const textStart = range[0] + 2;
@@ -40,7 +39,7 @@ export function convertComments(
         type,
         value: code.slice(textStart, textStart + textEnd),
         range,
-        loc,
+        loc: getLocFor(range[0], range[1], ast),
       });
     },
     ast,

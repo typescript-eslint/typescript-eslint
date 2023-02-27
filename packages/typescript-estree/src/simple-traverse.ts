@@ -13,7 +13,8 @@ function getVisitorKeysForNode(
   node: TSESTree.Node,
 ): readonly (keyof TSESTree.Node)[] {
   const keys = allVisitorKeys[node.type];
-  return (keys ?? []) as never;
+  // @ts-expect-error -- keys will provably be of the correct type - it's just not possible to type
+  return keys ?? [];
 }
 
 type SimpleTraverseOptions =
