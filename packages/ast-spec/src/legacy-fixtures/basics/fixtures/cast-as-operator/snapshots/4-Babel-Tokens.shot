@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics cast-as-operator Babel - Tokens 1`] = `
+Array [
+  Identifier {
+    type: "Identifier",
+    value: "x",
+
+    range: [73, 74],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 1, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "===",
+
+    range: [75, 78],
+    loc: {
+      start: { column: 2, line: 3 },
+      end: { column: 5, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [79, 80],
+    loc: {
+      start: { column: 6, line: 3 },
+      end: { column: 7, line: 3 },
+    },
+  },
+  Numeric {
+    type: "Numeric",
+    value: "1",
+
+    range: [80, 81],
+    loc: {
+      start: { column: 7, line: 3 },
+      end: { column: 8, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "as",
+
+    range: [82, 84],
+    loc: {
+      start: { column: 9, line: 3 },
+      end: { column: 11, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "number",
+
+    range: [85, 91],
+    loc: {
+      start: { column: 12, line: 3 },
+      end: { column: 18, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [91, 92],
+    loc: {
+      start: { column: 18, line: 3 },
+      end: { column: 19, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [92, 93],
+    loc: {
+      start: { column: 19, line: 3 },
+      end: { column: 20, line: 3 },
+    },
+  },
+]
+`;

@@ -1,2 +1,0 @@
-function X () {}
-new X;

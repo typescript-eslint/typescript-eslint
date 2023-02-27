@@ -2,6 +2,7 @@ import type * as ts from 'typescript';
 
 import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTree } from '../ts-estree';
+import type { CacheLike } from './ExpiringCache';
 
 type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
 
@@ -114,6 +115,11 @@ export interface MutableParseSettings {
    * If the `tokens` parse option is enabled, retrieved tokens.
    */
   tokens: null | TSESTree.Token[];
+
+  /**
+   * Caches searches for TSConfigs from project directories.
+   */
+  tsconfigMatchCache: CacheLike<string, string>;
 
   /**
    * The absolute path to the root directory for all provided `project`s.

@@ -85,6 +85,15 @@ export default util.createRule<Options, MessageIds>({
       );
     }
 
+    function isApplicable(
+      node: TSESTree.Node,
+    ): node is KeyTypeNodeWithTypeAnnotation {
+      return (
+        isKeyTypeNode(node) &&
+        node.typeAnnotation.loc.start.line === node.loc.end.line
+      );
+    }
+
     /**
      * To handle index signatures, to get the whole text for the parameters
      */
@@ -281,7 +290,7 @@ export default util.createRule<Options, MessageIds>({
       }
 
       for (const node of group) {
-        if (!isKeyTypeNode(node)) {
+        if (!isApplicable(node)) {
           continue;
         }
         const { typeAnnotation } = node;
@@ -356,7 +365,7 @@ export default util.createRule<Options, MessageIds>({
           ? options.multiLine.mode
           : options.mode) ?? 'strict';
 
-      if (isKeyTypeNode(node)) {
+      if (isApplicable(node)) {
         checkBeforeColon(node, expectedWhitespaceBeforeColon, mode);
         checkAfterColon(node, expectedWhitespaceAfterColon, mode);
       }

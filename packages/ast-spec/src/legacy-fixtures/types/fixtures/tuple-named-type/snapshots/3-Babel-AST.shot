@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types tuple-named-type Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [78, 81],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 8, line: 3 },
+        },
+      },
+      typeAnnotation: TSTupleType {
+        type: "TSTupleType",
+        elementTypes: Array [
+          TSNamedTupleMember {
+            type: "TSNamedTupleMember",
+            elementType: TSStringKeyword {
+              type: "TSStringKeyword",
+
+              range: [88, 94],
+              loc: {
+                start: { column: 15, line: 3 },
+                end: { column: 21, line: 3 },
+              },
+            },
+            label: Identifier {
+              type: "Identifier",
+              name: "a",
+
+              range: [85, 86],
+              loc: {
+                start: { column: 12, line: 3 },
+                end: { column: 13, line: 3 },
+              },
+            },
+            optional: false,
+
+            range: [85, 94],
+            loc: {
+              start: { column: 12, line: 3 },
+              end: { column: 21, line: 3 },
+            },
+          },
+          TSNamedTupleMember {
+            type: "TSNamedTupleMember",
+            elementType: TSStringKeyword {
+              type: "TSStringKeyword",
+
+              range: [100, 106],
+              loc: {
+                start: { column: 27, line: 3 },
+                end: { column: 33, line: 3 },
+              },
+            },
+            label: Identifier {
+              type: "Identifier",
+              name: "b",
+
+              range: [96, 97],
+              loc: {
+                start: { column: 23, line: 3 },
+                end: { column: 24, line: 3 },
+              },
+            },
+            optional: true,
+
+            range: [96, 106],
+            loc: {
+              start: { column: 23, line: 3 },
+              end: { column: 33, line: 3 },
+            },
+          },
+        ],
+
+        range: [84, 107],
+        loc: {
+          start: { column: 11, line: 3 },
+          end: { column: 34, line: 3 },
+        },
+      },
+
+      range: [73, 108],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 35, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 109],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

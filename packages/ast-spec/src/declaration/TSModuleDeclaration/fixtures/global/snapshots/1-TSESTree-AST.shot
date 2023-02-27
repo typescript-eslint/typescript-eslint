@@ -28,6 +28,7 @@ Program {
           end: { column: 14, line: 1 },
         },
       },
+      kind: "global",
 
       range: [0, 17],
       loc: {

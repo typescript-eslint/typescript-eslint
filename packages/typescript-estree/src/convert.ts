@@ -2791,16 +2791,65 @@ export class Converter {
       case SyntaxKind.ModuleDeclaration: {
         const result = this.createNode<TSESTree.TSModuleDeclaration>(node, {
           type: AST_NODE_TYPES.TSModuleDeclaration,
-          id: this.convertChild(node.name),
+          // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- TODO - add ignore IIFE option
+          ...(() => {
+            const id: TSESTree.Identifier | TSESTree.StringLiteral =
+              this.convertChild(node.name);
+            const body:
+              | TSESTree.TSModuleBlock
+              | TSESTree.TSModuleDeclaration
+              | null = this.convertChild(node.body);
+
+            // the constraints checked by this function are syntactically enforced by TS
+            // the checks mostly exist for type's sake
+
+            if (node.flags & ts.NodeFlags.GlobalAugmentation) {
+              if (
+                body == null ||
+                body.type === AST_NODE_TYPES.TSModuleDeclaration
+              ) {
+                throw new Error('Expected a valid module body');
+              }
+              if (id.type !== AST_NODE_TYPES.Identifier) {
+                throw new Error(
+                  'global module augmentation must have an Identifier id',
+                );
+              }
+              return {
+                kind: 'global',
+                id,
+                body,
+                global: true,
+              } satisfies TSESTree.OptionalRangeAndLoc<
+                Omit<TSESTree.TSModuleDeclarationGlobal, 'type'>
+              >;
+            } else if (node.flags & ts.NodeFlags.Namespace) {
+              if (body == null) {
+                throw new Error('Expected a module body');
+              }
+              if (id.type !== AST_NODE_TYPES.Identifier) {
+                throw new Error('`namespace`s must have an Identifier id');
+              }
+              return {
+                kind: 'namespace',
+                id,
+                body,
+              } satisfies TSESTree.OptionalRangeAndLoc<
+                Omit<TSESTree.TSModuleDeclarationNamespace, 'type'>
+              >;
+            } else {
+              return {
+                kind: 'module',
+                id,
+                ...(body != null ? { body } : {}),
+              } satisfies TSESTree.OptionalRangeAndLoc<
+                Omit<TSESTree.TSModuleDeclarationModule, 'type'>
+              >;
+            }
+          })(),
         });
-        if (node.body) {
-          result.body = this.convertChild(node.body);
-        }
-        // apply modifiers first...
         this.applyModifiersToResult(result, getModifiers(node));
-        if (node.flags & ts.NodeFlags.GlobalAugmentation) {
-          result.global = true;
-        }
+
         // ...then check for exports
         return this.fixExports(node, result);
       }
