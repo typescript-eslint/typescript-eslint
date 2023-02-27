@@ -132,6 +132,7 @@ export = {
     '@typescript-eslint/padding-line-between-statements': 'error',
     '@typescript-eslint/parameter-properties': 'error',
     '@typescript-eslint/prefer-as-const': 'error',
+    '@typescript-eslint/prefer-at': 'error',
     '@typescript-eslint/prefer-enum-initializers': 'error',
     '@typescript-eslint/prefer-for-of': 'error',
     '@typescript-eslint/prefer-function-type': 'error',
