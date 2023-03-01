@@ -85,9 +85,10 @@ const declarations: Array<Declaration> = [
   },
 ];
 
-const additionalDeclarations: Array<Declaration | number> = [
+const additionalDeclarations: Array<
+  (Declaration & { type: 'number' }) | number
+> = [
   1,
-  2,
   123,
   {
     name: 'i',
@@ -95,73 +96,151 @@ const additionalDeclarations: Array<Declaration | number> = [
   },
 ];
 
-function generateDeclaration(declaration: Declaration): string {
-  return `declare const ${declaration.name}: ${declaration.type};`;
+interface InvalidCodeWithMetadata {
+  code: string;
+  line: number;
+  pos: {
+    start: number;
+    end: number;
+  };
 }
 
-class VariableDeclarationGenerator {
-  public constructor(private name: string, private right: string) {}
+interface CodeGenerator {
+  valid: string;
+  invalid: InvalidCodeWithMetadata;
+  name: string;
+}
+
+class VariableDeclaration implements CodeGenerator {
+  public constructor(public name: string, private right: string) {}
 
   public get valid(): string {
     return `const lastItem = ${this.name}.at(-${this.right});`;
   }
 
-  public get invalid(): string {
-    return `const lastItem = ${this.name}[${this.name}.length - ${this.right}];`;
+  public get invalid(): InvalidCodeWithMetadata {
+    const code = `const lastItem = ${this.name}[${this.name}.length - ${this.right}];`;
+    return {
+      code,
+      line: 1,
+      pos: {
+        start: 18,
+        end: code.length,
+      },
+    };
   }
 }
 
 abstract class TestCasesGenerator<T extends ValidTestCase<TOptions>> {
-  protected abstract generateTestCasesForCode(
-    baseCode: string,
+  protected abstract generateTestCases(
+    declaration: Declaration,
     accessor: string,
   ): Generator<T>;
 
-  protected *generateTestCasesForDeclaration(
-    declaration: Declaration,
-  ): Generator<T> {
-    // plain variable
-    yield* this.generateTestCasesForCode(
-      generateDeclaration(declaration),
-      declaration.name,
-    );
-    // object with array variable
-    yield* this.generateTestCasesForCode(
-      generateDeclaration({
-        name: 'obj',
-        type: `Record<string, ${declaration.type}>`,
-      }),
-      `obj.${declaration.name}`,
-    );
-    // array with array variable
-    yield* this.generateTestCasesForCode(
-      generateDeclaration({
-        name: 'matrix',
-        type: `Array<${declaration.type}>`,
-      }),
-      `matrix[0]`,
-    );
-  }
-
   protected *generateCode(
-    baseCode: string,
-  ): Generator<[right: string, code: Array<string>]> {
+    declaration: Declaration,
+    name: string,
+  ): Generator<CodeGenerator> {
     for (const additionalDeclaration of additionalDeclarations) {
-      const code = [baseCode];
       let right: string;
       if (typeof additionalDeclaration === 'number') {
         right = String(additionalDeclaration);
       } else {
-        code.push(generateDeclaration(additionalDeclaration));
         right = additionalDeclaration.name;
       }
-      yield [right, code];
+      {
+        const variableDeclaration = new VariableDeclaration(name, right);
+        const additionalCode =
+          typeof additionalDeclaration === 'number'
+            ? ''
+            : `\ndeclare const ${additionalDeclaration.name}: number;`;
+        const baseCode = `declare const ${declaration.name}: ${declaration.type};${additionalCode}`;
+        const invalidDeclaration = variableDeclaration.invalid;
+        yield {
+          valid: `${baseCode}\n${variableDeclaration.valid}`,
+          invalid: {
+            code: `${baseCode}\n${invalidDeclaration.code}`,
+            line: invalidDeclaration.line + baseCode.split('\n').length,
+            pos: invalidDeclaration.pos,
+          },
+          name: variableDeclaration.name,
+        };
+      }
+      {
+        const variableDeclaration = new VariableDeclaration(
+          `this.${name}`,
+          right,
+        );
+        const additionalCode =
+          typeof additionalDeclaration === 'number'
+            ? ''
+            : `\n\t\tconst ${additionalDeclaration.name}: number = 0;`;
+        const generateCode = (code: string): string =>
+          `class A {\n\t${declaration.name}!: ${declaration.type};\n\tmethod() {${additionalCode}\n\t\t${code}\n\t}\n}`;
+        const invalidDeclaration = variableDeclaration.invalid;
+        const invalidCode = generateCode(invalidDeclaration.code);
+        yield {
+          valid: generateCode(variableDeclaration.valid),
+          invalid: {
+            code: invalidCode,
+            line: generateCode('').split('\n').length - 2,
+            pos: {
+              start: invalidDeclaration.pos.start + 2,
+              end: invalidDeclaration.pos.end + 2,
+            },
+          },
+          name: variableDeclaration.name,
+        };
+      }
+      {
+        const variableDeclaration = new VariableDeclaration(
+          `this.#${name}`,
+          right,
+        );
+        const additionalCode =
+          typeof additionalDeclaration === 'number'
+            ? ''
+            : `\n\t\tconst ${additionalDeclaration.name}: number = 0;`;
+        const generateCode = (code: string): string =>
+          `class A {\n\t#${declaration.name}!: ${declaration.type};\n\tmethod() {${additionalCode}\n\t\t${code}\n\t}\n}`;
+        const invalidDeclaration = variableDeclaration.invalid;
+        const invalidCode = generateCode(invalidDeclaration.code);
+        yield {
+          valid: generateCode(variableDeclaration.valid),
+          invalid: {
+            code: invalidCode,
+            line: generateCode('').split('\n').length - 2,
+            pos: {
+              start: invalidDeclaration.pos.start + 2,
+              end: invalidDeclaration.pos.end + 2,
+            },
+          },
+          name: variableDeclaration.name,
+        };
+      }
     }
   }
 
   public *[Symbol.iterator](): Generator<T> {
     for (const declaration of declarations) {
-      yield* this.generateTestCasesForDeclaration(declaration);
+      // plain variable
+      yield* this.generateTestCases(declaration, declaration.name);
+      // object with array variable
+      yield* this.generateTestCases(
+        {
+          name: 'obj',
+          type: `Record<string, ${declaration.type}>`,
+        },
+        `obj.${declaration.name}`,
+      );
+      // array with array variable
+      yield* this.generateTestCases(
+        {
+          name: 'matrix',
+          type: `Array<${declaration.type}>`,
+        },
+        `matrix[0]`,
+      );
     }
   }
 }
@@ -169,18 +248,13 @@ abstract class TestCasesGenerator<T extends ValidTestCase<TOptions>> {
 class ValidTestCasesGenerator extends TestCasesGenerator<
   ValidTestCase<TOptions>
 > {
-  protected *generateTestCasesForCode(
-    baseCode: string,
+  protected *generateTestCases(
+    declaration: Declaration,
     accessor: string,
   ): Generator<ValidTestCase<TOptions>> {
-    for (const [right, code] of this.generateCode(baseCode)) {
-      const variableDeclarationGenerator = new VariableDeclarationGenerator(
-        accessor,
-        right,
-      );
-      const validCode = [...code, variableDeclarationGenerator.valid];
+    for (const generator of this.generateCode(declaration, accessor)) {
       yield {
-        code: validCode.join('\n'),
+        code: generator.valid,
       };
     }
   }
@@ -189,156 +263,32 @@ class ValidTestCasesGenerator extends TestCasesGenerator<
 class InvalidTestCasesGenerator extends TestCasesGenerator<
   InvalidTestCase<TMessageIds, TOptions>
 > {
-  protected *generateTestCasesForCode(
-    baseCode: string,
-    accessor: string,
+  protected *generateTestCases(
+    declaration: Declaration,
+    name: string,
   ): Generator<InvalidTestCase<TMessageIds, TOptions>> {
-    for (const [right, code] of this.generateCode(baseCode)) {
-      const variableDeclarationGenerator = new VariableDeclarationGenerator(
-        accessor,
-        right,
-      );
-      const invalidCode = [...code, variableDeclarationGenerator.invalid];
-      const validCode = [...code, variableDeclarationGenerator.valid];
+    for (const generator of this.generateCode(declaration, name)) {
       yield {
-        code: invalidCode.join('\n'),
+        code: generator.invalid.code,
         errors: [
           {
             messageId: 'preferAt',
             data: {
-              name: accessor,
+              name: generator.name,
             },
-            line: invalidCode.length,
-            endLine: invalidCode.length,
-            column: 18,
-            endColumn: variableDeclarationGenerator.invalid.length,
+            line: generator.invalid.line,
+            endLine: generator.invalid.line,
+            column: generator.invalid.pos.start,
+            endColumn: generator.invalid.pos.end,
           },
         ],
-        output: validCode.join('\n'),
+        output: generator.valid,
       };
     }
   }
 }
 
 ruleTester.run('prefer-at', rule, {
-  valid: [
-    ...new ValidTestCasesGenerator(),
-    // `
-    //   declare const arr: Array<string>;
-    //   const a = arr[arr.length + 1];
-    // `,
-    // `
-    //   declare const arr: Array<string>;
-    //   declare const i: number;
-    //   const a = arr[arr.length - i];
-    // `,
-    // `
-    //   declare const obj: Record<string, Array<string>>;
-    //   declare const i: number;
-    //   const a = obj.arr[obj.arr.length - i];
-    // `,
-    // 'const a = this.arr.at(-1);',
-    // 'const a = this.#arr.at(-1);',
-    // 'const a = this.#prop.arr.at(-1);',
-    // 'const a = arr[arr.length + 1];',
-    // `
-    //   class MyArray {
-    //     public length: number;
-    //   }
-    //
-    //   const arr = new MyArray();
-    //   const a = arr[arr.length - 1];
-    // `,
-    // {
-    //   code: `
-    //     class MyArray extends Array {
-    //       public length: number;
-    //     }
-    //
-    //     const arr = new MyArray();
-    //     const a = arr[arr.length - 1];
-    //   `,
-    //   only: true,
-    // },
-    // 'const a = (arr ? b : c)[arr.length - 1];',
-  ],
-  invalid: [
-    ...new InvalidTestCasesGenerator(),
-    // ...generateInvalidTestCasesForDeclaration({
-    //   name: 'arr',
-    //   type: 'Array<string>',
-    // }),
-    // {
-    //   code: `
-    //     declare const str: string;
-    //     declare const i: number;
-    //     const a = str[str.length - i];
-    //   `,
-    //   errors: [
-    //     {
-    //       messageId: 'preferAt',
-    //       data: {
-    //         name: 'str',
-    //       },
-    //       line: 4,
-    //       column: 19,
-    //       endLine: 4,
-    //       endColumn: 38,
-    //     },
-    //   ],
-    //   output: `
-    //     declare const str: string;
-    //     declare const i: number;
-    //     const a = str.at(-i);
-    //   `,
-    // },
-    // {
-    //   code: 'const a = arr[arr.length - 1];',
-    //   errors: [
-    //     {
-    //       messageId: 'preferAt',
-    //       data: {
-    //         name: 'arr',
-    //       },
-    //     },
-    //   ],
-    //   output: 'const a = arr.at(-1);',
-    // },
-    // {
-    //   code: 'const a = this.arr[this.arr.length - 1];',
-    //   errors: [
-    //     {
-    //       messageId: 'preferAt',
-    //       data: {
-    //         name: 'this.arr',
-    //       },
-    //     },
-    //   ],
-    //   output: 'const a = this.arr.at(-1);',
-    // },
-    // {
-    //   code: 'const a = this.#arr[this.#arr.length - 1];',
-    //   errors: [
-    //     {
-    //       messageId: 'preferAt',
-    //       data: {
-    //         name: 'this.#arr',
-    //       },
-    //     },
-    //   ],
-    //   output: 'const a = this.#arr.at(-1);',
-    // },
-    // {
-    //   code: 'const a = this.#prop.arr[this.#prop.arr.length - 1];',
-    //   errors: [
-    //     {
-    //       messageId: 'preferAt',
-    //       data: {
-    //         name: 'this.#prop.arr',
-    //       },
-    //     },
-    //   ],
-    //   output: 'const a = this.#prop.arr.at(-1);',
-    // },
-  ],
+  valid: [...new ValidTestCasesGenerator()],
+  invalid: [...new InvalidTestCasesGenerator()],
 });

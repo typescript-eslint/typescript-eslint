@@ -140,8 +140,8 @@ export default util.createRule({
       node: TSESTree.BinaryExpression,
     ): boolean {
       const type = getTypeAtLocation(node.right);
-      // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
       return (
+        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
         type?.isNumberLiteral() || type?.getFlags() === ts.TypeFlags.Number
       );
     }
