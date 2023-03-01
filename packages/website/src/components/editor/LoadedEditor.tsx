@@ -8,6 +8,7 @@ import {
   parseTSConfig,
   tryParseEslintModule,
 } from '../config/utils';
+import { useResizeObserver } from '../hooks/useResizeObserver';
 import { debounce } from '../lib/debounce';
 import type { LintCodeAction } from '../linter/utils';
 import { parseLintResults, parseMarkers } from '../linter/utils';
@@ -301,35 +302,19 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     return debounce(() => sandboxInstance.editor.layout(), 1);
   }, [sandboxInstance]);
 
-  useEffect(() => {
+  const container =
+    sandboxInstance.editor.getContainerDomNode?.() ??
+    sandboxInstance.editor.getDomNode();
+
+  useResizeObserver(container, () => {
     resize();
-  }, [resize, showAST]);
-
-  const domNode = sandboxInstance.editor.getContainerDomNode();
-  const resizeObserver = useMemo(() => {
-    return new ResizeObserver(() => {
-      resize();
-    });
-  }, [resize]);
-
-  useEffect(() => {
-    if (domNode) {
-      resizeObserver.observe(domNode);
-
-      return (): void => resizeObserver.unobserve(domNode);
-    }
-    return (): void => {};
-  }, [domNode, resizeObserver]);
-
-  useEffect(() => {
-    window.addEventListener('resize', resize);
-    return (): void => {
-      window.removeEventListener('resize', resize);
-    };
   });
 
   useEffect(() => {
-    if (code !== tabs.code.getValue()) {
+    if (
+      !sandboxInstance.editor.hasTextFocus() &&
+      code !== tabs.code.getValue()
+    ) {
       tabs.code.applyEdits([
         {
           range: tabs.code.getFullModelRange(),
@@ -337,10 +322,13 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         },
       ]);
     }
-  }, [code, tabs.code]);
+  }, [sandboxInstance, code, tabs.code]);
 
   useEffect(() => {
-    if (tsconfig !== tabs.tsconfig.getValue()) {
+    if (
+      !sandboxInstance.editor.hasTextFocus() &&
+      tsconfig !== tabs.tsconfig.getValue()
+    ) {
       tabs.tsconfig.applyEdits([
         {
           range: tabs.tsconfig.getFullModelRange(),
@@ -348,10 +336,13 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         },
       ]);
     }
-  }, [tabs.tsconfig, tsconfig]);
+  }, [sandboxInstance, tabs.tsconfig, tsconfig]);
 
   useEffect(() => {
-    if (eslintrc !== tabs.eslintrc.getValue()) {
+    if (
+      !sandboxInstance.editor.hasTextFocus() &&
+      eslintrc !== tabs.eslintrc.getValue()
+    ) {
       tabs.eslintrc.applyEdits([
         {
           range: tabs.eslintrc.getFullModelRange(),
@@ -359,7 +350,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         },
       ]);
     }
-  }, [eslintrc, tabs.eslintrc]);
+  }, [sandboxInstance, eslintrc, tabs.eslintrc]);
 
   useEffect(() => {
     sandboxInstance.monaco.editor.setTheme(
@@ -368,29 +359,27 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   }, [colorMode, sandboxInstance]);
 
   useEffect(() => {
-    if (sandboxInstance.editor.getModel() === tabs.code) {
-      setDecorations(prevDecorations =>
-        sandboxInstance.editor.deltaDecorations(
-          prevDecorations,
-          decoration && showAST
-            ? [
-                {
-                  range: new sandboxInstance.monaco.Range(
-                    decoration.start.line,
-                    decoration.start.column + 1,
-                    decoration.end.line,
-                    decoration.end.column + 1,
-                  ),
-                  options: {
-                    inlineClassName: 'myLineDecoration',
-                    stickiness: 1,
-                  },
+    setDecorations(prevDecorations =>
+      tabs.code.deltaDecorations(
+        prevDecorations,
+        decoration && showAST
+          ? [
+              {
+                range: new sandboxInstance.monaco.Range(
+                  decoration.start.line,
+                  decoration.start.column + 1,
+                  decoration.end.line,
+                  decoration.end.column + 1,
+                ),
+                options: {
+                  inlineClassName: 'myLineDecoration',
+                  stickiness: 1,
                 },
-              ]
-            : [],
-        ),
-      );
-    }
+              },
+            ]
+          : [],
+      ),
+    );
   }, [decoration, sandboxInstance, showAST, tabs.code]);
 
   return null;
