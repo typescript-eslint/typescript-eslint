@@ -26,7 +26,6 @@ export function createProvideCodeActions(
         const messages = fixes.get(createURI(marker)) ?? [];
         for (const message of messages) {
           const editOperation = createEditOperation(model, message);
-
           actions.push({
             title: message.message + (message.code ? ` (${message.code})` : ''),
             diagnostics: [marker],
