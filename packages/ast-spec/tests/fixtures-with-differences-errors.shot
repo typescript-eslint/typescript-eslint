@@ -61,7 +61,6 @@ Object {
     "legacy-fixtures/errorRecovery/fixtures/_error_/enum-with-keywords/fixture.ts",
     "legacy-fixtures/errorRecovery/fixtures/_error_/index-signature-parameters/fixture.ts",
     "legacy-fixtures/errorRecovery/fixtures/_error_/interface-empty-extends/fixture.ts",
-    "legacy-fixtures/errorRecovery/fixtures/_error_/interface-implements/fixture.ts",
     "legacy-fixtures/errorRecovery/fixtures/_error_/interface-index-signature-private/fixture.ts",
     "legacy-fixtures/errorRecovery/fixtures/_error_/interface-index-signature-protected/fixture.ts",
     "legacy-fixtures/errorRecovery/fixtures/_error_/interface-index-signature-public/fixture.ts",
