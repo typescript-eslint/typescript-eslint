@@ -6,17 +6,6 @@ title: What About Formatting?
 We strongly recommend against using ESLint for formatting.
 We strongly recommend using [Prettier](https://prettier.io), [dprint](https://dprint.dev), or an equivalent instead.
 
-## ESLint Core and Formatting
-
-Per [ESLint's 2020 Changes to Rule Policies blog post](https://eslint.org/blog/2020/05/changes-to-rules-policies#what-are-the-changes):
-
-> Stylistic rules are frozen - we won't be adding any more options to stylistic rules.
-> We've learned that there's no way to satisfy everyone's personal preferences, and most of the rules already have a lot of difficult-to-understand options.
-> Stylistic rules are those related to spacing, conventions, and generally anything that does not highlight an error or a better way to do something.
-
-We support the ESLint team's decision and backing logic to move away from stylistic rules.
-With the exception of bug fixes, no new formatting-related pull requests will be accepted into typescript-eslint.
-
 ## Formatters vs. Linters
 
 **Formatters** are tools that verify and correct whitespace issues in code, such as spacing and newlines.
@@ -40,7 +29,10 @@ Modern formatters such as Prettier are architected in a way that applies formatt
 
 ### Suggested Usage - Prettier
 
-We recommend using [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) to disable formatting rules in your ESLint configuration.
+Neither typescript-eslint nor ESLint core enable any formatting-related rules in any recommended presets.
+However, some third party plugin configurations may still enable that bad practice.
+
+If you see formatting rules enabled in your ESLint configuration, we recommend using [`eslint-config-prettier`](https://github.com/prettier/eslint-config-prettier) to disable formatting rules in your ESLint configuration.
 You can then configure your formatter separately from ESLint.
 
 Using this config by adding it to the end of your `extends`:
@@ -50,6 +42,7 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:@typescript-eslint/recommended',
+    'other-configuration-that-enables-formatting-rules',
     // Add this line
     'prettier',
   ],
@@ -59,4 +52,21 @@ module.exports = {
 };
 ```
 
-Note that even if you don't use `prettier`, you can use `eslint-config-prettier` as it exclusively turns **off** all formatting rules.
+Note that even if you use a formatter other than `prettier`, you can use `eslint-config-prettier` as it exclusively turns **off** all formatting rules.
+
+## ESLint Core and Formatting
+
+Most lint rules fall into one of two to three categories:
+
+- **Logical**: Rules that care about the logic in runtime behavior of code (such as missing `await`s or invalid logical checks).
+- **Stylistic**: Rules that care about style concerns which do impact runtime behavior of code, but generally not logic. These are mostly around naming or which roughly-equivalent syntax constructs to use (such as function declarations vs. arrow functions).
+  - **Formatting**: Stylistic rules that care only about trivia (semicolons, whitespace, etc.) without impacting the runtime behavior of the code. These rules conflict with dedicated formatters such as Prettier.
+
+Per [ESLint's 2020 Changes to Rule Policies blog post](https://eslint.org/blog/2020/05/changes-to-rules-policies#what-are-the-changes), ESLint itself has moved away from _stylistic_ rules, including _formatting_ rules:
+
+> Stylistic rules are frozen - we won't be adding any more options to stylistic rules.
+> We've learned that there's no way to satisfy everyone's personal preferences, and most of the rules already have a lot of difficult-to-understand options.
+> Stylistic rules are those related to spacing, conventions, and generally anything that does not highlight an error or a better way to do something.
+
+We support the ESLint team's decision and backing logic to move away from _formatting_ and _stylistic_ rules.
+With the exception of bug fixes, no new formatting- or stylistic-related pull requests will be accepted into typescript-eslint.
