@@ -12,22 +12,22 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.js"
+      "default": "./dist/index.js"
     },
     "./package.json": {
-      "require": "./package.json"
+      "default": "./package.json"
     },
     "./use-at-your-own-risk/ast-converter": {
       "types": "./dist/ast-converter.d.ts",
-      "require": "./dist/ast-converter.js"
+      "default": "./dist/ast-converter.js"
     },
     "./use-at-your-own-risk/parseSettings": {
       "types": "./dist/parseSettings/index.d.ts",
-      "require": "./dist/parseSettings/index.js"
+      "default": "./dist/parseSettings/index.js"
     },
     "./use-at-your-own-risk/getScriptKind": {
       "types": "./dist/create-program/getScriptKind.d.ts",
-      "require": "./dist/create-program/getScriptKind.js"
+      "default": "./dist/create-program/getScriptKind.js"
     }
   },
   "engines": {

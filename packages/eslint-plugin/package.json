@@ -14,14 +14,14 @@
   "exports": {
     ".": {
       "types": "./index.d.ts",
-      "require": "./dist/index.js"
+      "default": "./dist/index.js"
     },
     "./package.json": {
-      "require": "./package.json"
+      "default": "./package.json"
     },
     "./use-at-your-own-risk/rules": {
       "types": "./rules.d.ts",
-      "require": "./dist/rules/index.js"
+      "default": "./dist/rules/index.js"
     }
   },
   "engines": {
