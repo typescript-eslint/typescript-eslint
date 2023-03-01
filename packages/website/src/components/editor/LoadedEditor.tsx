@@ -226,6 +226,34 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
           }
         }, 150),
       ),
+      sandboxInstance.editor.addAction({
+        id: 'fix-eslint-problems',
+        label: 'Fix eslint problems',
+        keybindings: [
+          sandboxInstance.monaco.KeyMod.CtrlCmd |
+            sandboxInstance.monaco.KeyCode.KeyS,
+        ],
+        contextMenuGroupId: 'snippets',
+        contextMenuOrder: 1.5,
+        run(editor) {
+          const editorModel = editor.getModel();
+          if (editorModel) {
+            const fixed = webLinter.fix(editor.getValue());
+            if (fixed.fixed) {
+              editorModel.pushEditOperations(
+                null,
+                [
+                  {
+                    range: editorModel.getFullModelRange(),
+                    text: fixed.output,
+                  },
+                ],
+                () => null,
+              );
+            }
+          }
+        },
+      }),
       tabs.eslintrc.onDidChangeContent(
         debounce(() => {
           onChange({ eslintrc: tabs.eslintrc.getValue() });

@@ -25,6 +25,7 @@ export function createProvideCodeActions(
       for (const marker of context.markers) {
         const messages = fixes.get(createURI(marker)) ?? [];
         for (const message of messages) {
+          const editOperation = createEditOperation(model, message);
           actions.push({
             title: message.message + (message.code ? ` (${message.code})` : ''),
             diagnostics: [marker],
@@ -34,7 +35,11 @@ export function createProvideCodeActions(
               edits: [
                 {
                   resource: model.uri,
-                  edit: createEditOperation(model, message),
+                  // monaco for ts >= 4.8
+                  // @ts-expect-error types are wrong
+                  textEdit: editOperation,
+                  // monaco for ts < 4.8
+                  edit: editOperation,
                 },
               ],
             },
