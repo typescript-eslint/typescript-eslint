@@ -16,9 +16,7 @@
       "types": "./index.d.ts",
       "default": "./dist/index.js"
     },
-    "./package.json": {
-      "default": "./package.json"
-    },
+    "./package.json": "./package.json",
     "./use-at-your-own-risk/rules": {
       "types": "./rules.d.ts",
       "default": "./dist/rules/index.js"

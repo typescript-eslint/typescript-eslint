@@ -14,9 +14,7 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./package.json": {
-      "default": "./package.json"
-    }
+    "./package.json": "./package.json"
   },
   "engines": {
     "node": "^14.18.0 || ^16.0.0 || >=18.0.0"

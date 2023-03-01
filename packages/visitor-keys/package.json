@@ -15,9 +15,7 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./package.json": {
-      "default": "./package.json"
-    },
+    "./package.json": "./package.json",
     "./use-at-your-own-risk/visitor-keys": {
       "types": "./dist/visitor-keys.d.ts",
       "default": "./dist/visitor-keys.js"

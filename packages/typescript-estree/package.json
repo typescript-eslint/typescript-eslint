@@ -14,9 +14,7 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./package.json": {
-      "default": "./package.json"
-    },
+    "./package.json": "./package.json",
     "./use-at-your-own-risk/ast-converter": {
       "types": "./dist/ast-converter.d.ts",
       "default": "./dist/ast-converter.js"
