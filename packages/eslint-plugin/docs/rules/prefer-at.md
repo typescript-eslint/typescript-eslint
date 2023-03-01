@@ -1,5 +1,5 @@
 ---
-description: 'Enforce the use of `array.at(-1)` instead of `array[array.length - 1]`'
+description: 'Enforce the use of `array.at(-1)` instead of `array[array.length - 1]`.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
