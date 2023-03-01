@@ -48,7 +48,6 @@ function rangeReducer<T extends SelectedRange | null>(
   }
   return prevState;
 }
-
 function Playground(): JSX.Element {
   const [state, setState] = useHashState({
     jsx: false,
@@ -129,6 +128,7 @@ function Playground(): JSX.Element {
             split="vertical"
             minSize="10%"
             defaultSize="50%"
+            pane2Style={{ overflow: 'hidden' }}
           >
             <div className={clsx(styles.sourceCode)}>
               {isLoading && <Loader />}
