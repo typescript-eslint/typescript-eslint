@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration ImportDeclaration _error_ default-non-identifier TSESTree - Error 1`] = `[TSError: Declaration or statement expected.]`;
+exports[`AST Fixtures declaration ImportDeclaration _error_ default-non-identifier TSESTree - Error 1`] = `
+"TSError
+> 1 | import 1 from 'mod';
+    | ^ Declaration or statement expected.
+  2 |"
+`;

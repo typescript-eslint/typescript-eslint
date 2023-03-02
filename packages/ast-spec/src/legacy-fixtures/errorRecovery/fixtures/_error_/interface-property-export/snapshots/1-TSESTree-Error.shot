@@ -1,3 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-property-export TSESTree - Error 1`] = `[TSError: A property signature cannot have an export modifier.]`;
+exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-property-export TSESTree - Error 1`] = `
+"TSError
+  1 | // TODO: This fixture might be too large, and if so should be split up.
+  2 |
+> 3 | interface Foo {
+    |                ^ A property signature cannot have an export modifier.
+  4 |   export a: string;
+  5 | }
+  6 |"
+`;

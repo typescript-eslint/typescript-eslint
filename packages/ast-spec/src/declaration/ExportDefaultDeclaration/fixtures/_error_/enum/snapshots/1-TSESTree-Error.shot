@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration ExportDefaultDeclaration _error_ enum TSESTree - Error 1`] = `[TSError: Expression expected.]`;
+exports[`AST Fixtures declaration ExportDefaultDeclaration _error_ enum TSESTree - Error 1`] = `
+"TSError
+> 1 | export default enum Foo {}
+    |                ^ Expression expected.
+  2 |"
+`;
