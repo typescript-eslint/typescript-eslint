@@ -13,6 +13,7 @@ import {
   getLastModifier,
   getLineAndCharacterFor,
   getLocFor,
+  getModifier,
   getRange,
   getTextForTokenKind,
   getTSNodeAccessibility,
@@ -588,13 +589,13 @@ export class Converter {
         if (node.name.kind === SyntaxKind.PrivateIdentifier) {
           // This is one of the few times where TS explicitly errors, and doesn't even gracefully handle the syntax.
           // So we shouldn't ever get into this state to begin with.
-          throw new Error('Non-private identifier expected.');
+          this.#throwError(node.name, 'Non-private identifier expected.');
         }
 
         result = this.createNode<TSESTree.JSXMemberExpression>(node, {
           type: AST_NODE_TYPES.JSXMemberExpression,
           object: this.convertJSXTagName(node.expression, parent),
-          property: this.convertJSXIdentifier(node.name),
+          property: this.convertJSXIdentifier(node.name as ts.Identifier),
         });
         break;
 
@@ -614,9 +615,10 @@ export class Converter {
       | ts.GetAccessorDeclaration
       | ts.SetAccessorDeclaration,
   ): TSESTree.TSMethodSignature {
-    if (hasModifier(SyntaxKind.ExportKeyword, node)) {
+    const exportKeyword = getModifier(SyntaxKind.ExportKeyword, node);
+    if (exportKeyword) {
       this.#throwError(
-        node,
+        exportKeyword,
         'A method signature cannot have an export modifier.',
       );
     }
@@ -1612,9 +1614,10 @@ export class Converter {
 
         const modifiers = getModifiers(node);
         if (modifiers) {
-          if (hasModifier(SyntaxKind.ExportKeyword, node)) {
+          const exportKeyword = getModifier(SyntaxKind.ExportKeyword, node);
+          if (exportKeyword) {
             this.#throwError(
-              node,
+              exportKeyword,
               'A parameter cannot have an export modifier.',
             );
           }
@@ -2461,9 +2464,10 @@ export class Converter {
           );
         }
 
-        if (hasModifier(SyntaxKind.ExportKeyword, node)) {
+        const exportKeyword = getModifier(SyntaxKind.ExportKeyword, node);
+        if (exportKeyword) {
           this.#throwError(
-            node,
+            exportKeyword,
             'A property signature cannot have an export modifier.',
           );
         }
@@ -2482,9 +2486,10 @@ export class Converter {
       }
 
       case SyntaxKind.IndexSignature: {
-        if (hasModifier(SyntaxKind.ExportKeyword, node)) {
+        const exportKeyword = getModifier(SyntaxKind.ExportKeyword, node);
+        if (exportKeyword) {
           this.#throwError(
-            node,
+            exportKeyword,
             'An index signature cannot have an export modifier.',
           );
         }
@@ -2987,8 +2992,8 @@ export class Converter {
       start = node;
       end = node;
     } else {
-      start = node.pos;
-      end = node.end;
+      start = node.getStart();
+      end = node.getEnd();
     }
 
     throw createError(message, this.ast, start, end);

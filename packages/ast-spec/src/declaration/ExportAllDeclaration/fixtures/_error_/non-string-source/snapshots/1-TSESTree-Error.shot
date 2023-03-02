@@ -3,6 +3,6 @@
 exports[`AST Fixtures declaration ExportAllDeclaration _error_ non-string-source TSESTree - Error 1`] = `
 "TSError
 > 1 | export * from module;
-    |              ^^^^^^^ Module specifier must be a string literal.
+    |               ^^^^^^ Module specifier must be a string literal.
   2 |"
 `;

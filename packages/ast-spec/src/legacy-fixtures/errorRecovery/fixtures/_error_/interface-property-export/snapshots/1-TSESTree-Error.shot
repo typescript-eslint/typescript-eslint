@@ -2,12 +2,10 @@
 
 exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-property-export TSESTree - Error 1`] = `
 "TSError
-  1 | // TODO: This fixture might be too large, and if so should be split up.
   2 |
-> 3 | interface Foo {
-    |                ^
+  3 | interface Foo {
 > 4 |   export a: string;
-    | ^^^^^^^^^^^^^^^^^^^^ A property signature cannot have an export modifier.
+    |   ^^^^^^ A property signature cannot have an export modifier.
   5 | }
   6 |
   7 |"

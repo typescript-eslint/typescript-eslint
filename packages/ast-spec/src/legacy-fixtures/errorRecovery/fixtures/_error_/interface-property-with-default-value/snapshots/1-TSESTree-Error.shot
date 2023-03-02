@@ -5,7 +5,7 @@ exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-property-w
   2 |
   3 | interface Foo {
 > 4 |   bar: string = 'a';
-    |                ^^^^ A property signature cannot have an initializer.
+    |                 ^^^ A property signature cannot have an initializer.
   5 | }
   6 |"
 `;
