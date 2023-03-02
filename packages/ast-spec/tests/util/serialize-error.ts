@@ -10,13 +10,21 @@ export function serializeError(
     return error;
   }
 
-  const { message, lineNumber: line, column, name } = error;
+  const {
+    name,
+    message,
+    location: { start, end },
+  } = error;
+
   return (
     name +
     '\n' +
     codeFrameColumns(
       contents,
-      { start: { line, column: column + 1 } },
+      {
+        start: { line: start.line, column: start.column + 1 },
+        end: { line: end.line, column: end.column + 1 },
+      },
       { highlightCode: false, message },
     )
   );

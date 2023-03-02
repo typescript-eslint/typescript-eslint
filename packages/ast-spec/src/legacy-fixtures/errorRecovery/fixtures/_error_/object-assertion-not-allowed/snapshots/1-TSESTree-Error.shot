@@ -5,6 +5,6 @@ exports[`AST Fixtures legacy-fixtures errorRecovery _error_ object-assertion-not
   1 | // TODO: This fixture might be too large, and if so should be split up.
   2 |
 > 3 | ({a!} = {})
-    |   ^ A shorthand property assignment cannot have an exclamation token.
+    |    ^ A shorthand property assignment cannot have an exclamation token.
   4 |"
 `;

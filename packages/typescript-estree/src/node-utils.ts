@@ -600,9 +600,18 @@ export class TSError extends Error {
   constructor(
     message: string,
     public readonly fileName: string,
-    public readonly index: number,
-    public readonly lineNumber: number,
-    public readonly column: number,
+    public readonly location: {
+      start: {
+        line: number;
+        column: number;
+        offset: number;
+      };
+      end: {
+        line: number;
+        column: number;
+        offset: number;
+      };
+    },
   ) {
     super(message);
     Object.defineProperty(this, 'name', {
@@ -611,21 +620,39 @@ export class TSError extends Error {
       configurable: true,
     });
   }
+
+  get index(): number {
+    return this.location.start.offset;
+  }
+
+  get lineNumber(): number {
+    return this.location.start.line;
+  }
+
+  get column(): number {
+    return this.location.start.column;
+  }
 }
 
 /**
  * @param ast     the AST object
  * @param start   the index at which the error starts
+ * @param end     the index at which the error ends
  * @param message the error message
  * @returns converted error object
  */
 export function createError(
-  ast: ts.SourceFile,
-  start: number,
   message: string,
+  ast: ts.SourceFile,
+  startIndex: number,
+  endIndex: number = startIndex,
 ): TSError {
-  const loc = ast.getLineAndCharacterOfPosition(start);
-  return new TSError(message, ast.fileName, start, loc.line + 1, loc.character);
+  const [start, end] = [startIndex, endIndex].map(offset => {
+    const { line, character: column } =
+      ast.getLineAndCharacterOfPosition(offset);
+    return { line: line + 1, column, offset };
+  });
+  return new TSError(message, ast.fileName, { start, end });
 }
 
 /**

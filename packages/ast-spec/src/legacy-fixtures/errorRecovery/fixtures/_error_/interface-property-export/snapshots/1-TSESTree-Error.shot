@@ -5,8 +5,10 @@ exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-property-e
   1 | // TODO: This fixture might be too large, and if so should be split up.
   2 |
 > 3 | interface Foo {
-    |                ^ A property signature cannot have an export modifier.
-  4 |   export a: string;
+    |                ^
+> 4 |   export a: string;
+    | ^^^^^^^^^^^^^^^^^^^^ A property signature cannot have an export modifier.
   5 | }
-  6 |"
+  6 |
+  7 |"
 `;

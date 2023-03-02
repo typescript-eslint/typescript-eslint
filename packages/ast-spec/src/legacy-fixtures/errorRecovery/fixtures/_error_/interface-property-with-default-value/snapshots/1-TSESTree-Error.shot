@@ -2,11 +2,10 @@
 
 exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-property-with-default-value TSESTree - Error 1`] = `
 "TSError
-  1 | // TODO: This fixture might be too large, and if so should be split up.
   2 |
-> 3 | interface Foo {
-    |                ^ A property signature cannot have an initializer.
-  4 |   bar: string = 'a';
+  3 | interface Foo {
+> 4 |   bar: string = 'a';
+    |                ^^^^ A property signature cannot have an initializer.
   5 | }
   6 |"
 `;

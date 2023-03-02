@@ -50,9 +50,9 @@ export function convertError(
   error: ts.DiagnosticWithLocation | SemanticOrSyntacticError,
 ): TSError {
   return createError(
+    ('message' in error && error.message) || (error.messageText as string),
     error.file!,
     error.start!,
-    ('message' in error && error.message) || (error.messageText as string),
   );
 }
 
@@ -444,9 +444,8 @@ export class Converter {
    */
   private deeplyCopy(node: TSNode): any {
     if (node.kind === ts.SyntaxKind.JSDocFunctionType) {
-      throw createError(
-        this.ast,
-        node.pos,
+      this.#throwError(
+        node,
         'JSDoc types can only be used inside documentation comments.',
       );
     }
@@ -616,9 +615,8 @@ export class Converter {
       | ts.SetAccessorDeclaration,
   ): TSESTree.TSMethodSignature {
     if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-      throw createError(
-        this.ast,
-        node.pos,
+      this.#throwError(
+        node,
         'A method signature cannot have an export modifier.',
       );
     }
@@ -685,20 +683,15 @@ export class Converter {
     allowNull: boolean,
   ): void {
     if (!allowNull && node.moduleSpecifier == null) {
-      throw createError(
-        this.ast,
-        node.pos,
-        'Module specifier must be a string literal.',
-      );
+      this.#throwError(node, 'Module specifier must be a string literal.');
     }
 
     if (
       node.moduleSpecifier &&
       node.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
     ) {
-      throw createError(
-        this.ast,
-        node.moduleSpecifier.pos,
+      this.#throwError(
+        node.moduleSpecifier,
         'Module specifier must be a string literal.',
       );
     }
@@ -1019,20 +1012,23 @@ export class Converter {
         }
       }
 
-      case SyntaxKind.PropertyAssignment:
-        this.#throwErrorIfDeprecatedPropertyExists(
-          node,
-          // eslint-disable-next-line deprecation/deprecation
-          node.questionToken,
-          'A property assignment cannot have a question token.',
-        );
+      case SyntaxKind.PropertyAssignment: {
+        // eslint-disable-next-line deprecation/deprecation
+        const { questionToken, exclamationToken } = node;
 
-        this.#throwErrorIfDeprecatedPropertyExists(
-          node,
-          // eslint-disable-next-line deprecation/deprecation
-          node.exclamationToken,
-          'A property assignment cannot have an exclamation token.',
-        );
+        if (questionToken) {
+          this.#throwError(
+            questionToken,
+            'A property assignment cannot have a question token.',
+          );
+        }
+
+        if (exclamationToken) {
+          this.#throwError(
+            exclamationToken,
+            'A property assignment cannot have a question token.',
+          );
+        }
 
         return this.createNode<TSESTree.Property>(node, {
           type: AST_NODE_TYPES.Property,
@@ -1044,28 +1040,32 @@ export class Converter {
           shorthand: false,
           kind: 'init',
         });
+      }
 
       case SyntaxKind.ShorthandPropertyAssignment: {
-        this.#throwErrorIfDeprecatedPropertyExists(
-          node,
-          // eslint-disable-next-line deprecation/deprecation
-          node.modifiers,
-          'A shorthand property assignment cannot have modifiers.',
-        );
+        // eslint-disable-next-line deprecation/deprecation
+        const { modifiers, questionToken, exclamationToken } = node;
 
-        this.#throwErrorIfDeprecatedPropertyExists(
-          node,
-          // eslint-disable-next-line deprecation/deprecation
-          node.questionToken,
-          'A shorthand property assignment cannot have a question token.',
-        );
+        if (modifiers) {
+          this.#throwError(
+            modifiers[0],
+            'A shorthand property assignment cannot have modifiers.',
+          );
+        }
 
-        this.#throwErrorIfDeprecatedPropertyExists(
-          node,
-          // eslint-disable-next-line deprecation/deprecation
-          node.exclamationToken,
-          'A shorthand property assignment cannot have an exclamation token.',
-        );
+        if (questionToken) {
+          this.#throwError(
+            questionToken,
+            'A shorthand property assignment cannot have a question token.',
+          );
+        }
+
+        if (exclamationToken) {
+          this.#throwError(
+            exclamationToken,
+            'A shorthand property assignment cannot have an exclamation token.',
+          );
+        }
 
         if (node.objectAssignmentInitializer) {
           return this.createNode<TSESTree.Property>(node, {
@@ -1613,9 +1613,8 @@ export class Converter {
         const modifiers = getModifiers(node);
         if (modifiers) {
           if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-            throw createError(
-              this.ast,
-              node.pos,
+            this.#throwError(
+              node,
               'A parameter cannot have an export modifier.',
             );
           }
@@ -1648,9 +1647,8 @@ export class Converter {
         );
 
         if (superClass?.types && superClass.types.length > 1) {
-          throw createError(
-            this.ast,
-            superClass.types[1].pos,
+          this.#throwError(
+            superClass.types[1],
             'Classes can only extend a single class.',
           );
         }
@@ -1691,9 +1689,8 @@ export class Converter {
 
         if (superClass) {
           if (superClass.types.length > 1) {
-            throw createError(
-              this.ast,
-              superClass.types[1].pos,
+            this.#throwError(
+              superClass.types[1],
               'Classes can only extend a single class.',
             );
           }
@@ -1987,9 +1984,8 @@ export class Converter {
       case SyntaxKind.CallExpression: {
         if (node.expression.kind === SyntaxKind.ImportKeyword) {
           if (node.arguments.length !== 1 && node.arguments.length !== 2) {
-            throw createError(
-              this.ast,
-              node.arguments.pos,
+            this.#throwError(
+              node,
               'Dynamic import requires exactly one or two arguments.',
             );
           }
@@ -2456,17 +2452,18 @@ export class Converter {
       }
 
       case SyntaxKind.PropertySignature: {
-        this.#throwErrorIfDeprecatedPropertyExists(
-          node,
-          // eslint-disable-next-line deprecation/deprecation
-          node.initializer,
-          'A property signature cannot have an initializer.',
-        );
+        // eslint-disable-next-line deprecation/deprecation
+        const { initializer } = node;
+        if (initializer) {
+          this.#throwError(
+            initializer,
+            'A property signature cannot have an initializer.',
+          );
+        }
 
         if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-          throw createError(
-            this.ast,
-            node.pos,
+          this.#throwError(
+            node,
             'A property signature cannot have an export modifier.',
           );
         }
@@ -2486,9 +2483,8 @@ export class Converter {
 
       case SyntaxKind.IndexSignature: {
         if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-          throw createError(
-            this.ast,
-            node.pos,
+          this.#throwError(
+            node,
             'An index signature cannot have an export modifier.',
           );
         }
@@ -2518,13 +2514,16 @@ export class Converter {
         });
       }
 
-      case SyntaxKind.FunctionType:
-        this.#throwErrorIfDeprecatedPropertyExists(
-          node,
-          // eslint-disable-next-line deprecation/deprecation
-          node.modifiers,
-          'A function type cannot have modifiers.',
-        );
+      case SyntaxKind.FunctionType: {
+        // eslint-disable-next-line deprecation/deprecation
+        const { modifiers } = node;
+        if (modifiers) {
+          this.#throwError(
+            modifiers[0],
+            'A function type cannot have modifiers.',
+          );
+        }
+      }
       // intentional fallthrough
       case SyntaxKind.ConstructSignature:
       case SyntaxKind.CallSignature: {
@@ -2981,13 +2980,17 @@ export class Converter {
     }
   }
 
-  #throwErrorIfDeprecatedPropertyExists<Node extends ts.Node>(
-    node: Node,
-    property: unknown,
-    message: string,
-  ): void {
-    if (property) {
-      throw createError(this.ast, node.pos, message);
+  #throwError(node: ts.Node | number, message: string): void {
+    let start: number;
+    let end: number;
+    if (typeof node === 'number') {
+      start = node;
+      end = node;
+    } else {
+      start = node.pos;
+      end = node.end;
     }
+
+    throw createError(message, this.ast, start, end);
   }
 }
