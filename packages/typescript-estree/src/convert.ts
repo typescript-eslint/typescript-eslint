@@ -2985,10 +2985,7 @@ export class Converter {
     }
   }
 
-  #throwError(
-    node: ts.Node | number,
-    message: string,
-  ): asserts node is never {
+  #throwError(node: ts.Node | number, message: string): asserts node is never {
     let start: number;
     let end: number;
     if (typeof node === 'number') {
