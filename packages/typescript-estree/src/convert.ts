@@ -595,7 +595,7 @@ export class Converter {
         result = this.createNode<TSESTree.JSXMemberExpression>(node, {
           type: AST_NODE_TYPES.JSXMemberExpression,
           object: this.convertJSXTagName(node.expression, parent),
-          property: this.convertJSXIdentifier(node.name as ts.Identifier),
+          property: this.convertJSXIdentifier(node.name),
         });
         break;
 
