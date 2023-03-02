@@ -1,5 +1,6 @@
 import { codeFrameColumns } from '@babel/code-frame';
-import { TSError } from '@typescript-eslint/typescript-estree';
+
+import { TSError } from './parsers/typescript-estree-import';
 
 export function serializeError(
   error: unknown,

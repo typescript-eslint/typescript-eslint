@@ -12,8 +12,8 @@ import type {
 } from './util/parsers/parser-types';
 import { ParserResponseType } from './util/parsers/parser-types';
 import { parseTSESTree } from './util/parsers/typescript-estree';
-import { diffHasChanges, snapshotDiff } from './util/snapshot-diff';
 import { serializeError } from './util/serialize-error';
+import { diffHasChanges, snapshotDiff } from './util/snapshot-diff';
 
 const PACKAGE_ROOT = path.resolve(__dirname, '..');
 const SRC_DIR = path.resolve(PACKAGE_ROOT, 'src');

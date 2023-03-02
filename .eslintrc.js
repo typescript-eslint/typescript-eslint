@@ -358,6 +358,19 @@ module.exports = {
       },
     },
     {
+      files: ['./packages/ast-spec/**/*.ts'],
+      rules: {
+        'no-restricted-imports': [
+          'error',
+          {
+            name: '@typescript-eslint/typescript-estree',
+            message:
+              'To prevent nx build errors, all `typescript-estree` imports should be done via `packages/ast-spec/tests/util/parsers/typescript-estree-import.ts`.',
+          },
+        ],
+      },
+    },
+    {
       files: ['rollup.config.ts'],
       rules: {
         'import/no-default-export': 'off',
