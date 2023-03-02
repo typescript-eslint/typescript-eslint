@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration ClassDeclaration _error_ missing-body TSESTree - Error 1`] = `[TSError: '{' expected.]`;
+exports[`AST Fixtures declaration ClassDeclaration _error_ missing-body TSESTree - Error 1`] = `
+"TSError
+> 1 | class Foo;
+    |          ^ '{' expected.
+  2 |"
+`;

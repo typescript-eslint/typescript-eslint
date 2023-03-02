@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration ExportAllDeclaration _error_ missing-source TSESTree - Error 1`] = `[TSError: Expression expected.]`;
+exports[`AST Fixtures declaration ExportAllDeclaration _error_ missing-source TSESTree - Error 1`] = `
+"TSError
+> 1 | export * from;
+    |              ^ Expression expected.
+  2 |"
+`;
