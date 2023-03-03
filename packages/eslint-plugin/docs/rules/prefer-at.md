@@ -13,7 +13,63 @@ There are two ways to get the last item of the array:
 
 `arr.at(-1)` is a cleaner equivalent to `arr[arr.length - 1]`.
 
+This rule supports the following types:
+
+- `string` or `String`
+- `Array`
+- `Int8Array`
+- `Uint8Array`
+- `Uint8ClampedArray`
+- `Int16Array`
+- `Uint16Array`
+- `Int32Array`
+- `Float32Array`
+- `Uint32Array`
+- `Float64Array`
+- `BigInt64Array`
+- `BigUint64Array`
+
+## Options
+
+```ts
+interface Options {
+  ignoreFunctions?: boolean;
+}
+```
+
 ## Examples
+
+### `ignoreFunctions = false` (default)
+
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+let arr = [1, 2, 3];
+let a = arr[arr.length - 1];
+
+function getArr(): Array<number> {
+  return arr;
+}
+let b = getArr()[getArr().length - 1];
+```
+
+### ✅ Correct
+
+```ts
+let arr = [1, 2, 3];
+let a = arr.at(-1);
+
+function getArr(): Array<number> {
+  return arr;
+}
+let b = getArr().at(-1);
+```
+
+<!--/tabs-->
+
+### `ignoreFunctions = true`
 
 <!--tabs-->
 
@@ -29,6 +85,11 @@ let a = arr[arr.length - 1];
 ```ts
 let arr = [1, 2, 3];
 let a = arr.at(-1);
+
+function getArr(): Array<number> {
+  return arr;
+}
+let b = getArr()[getArr().length - 1];
 ```
 
 <!--/tabs-->

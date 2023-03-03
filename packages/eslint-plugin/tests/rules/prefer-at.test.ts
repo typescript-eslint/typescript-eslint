@@ -22,6 +22,7 @@ type TOptions = typeof rule extends RuleModule<string, infer T> ? T : never;
 
 interface Declaration {
   name: string;
+
   type: string;
 }
 
@@ -98,7 +99,9 @@ const additionalDeclarations: Array<
 
 interface InvalidCodeWithMetadata {
   code: string;
+
   line: number;
+
   pos: {
     start: number;
     end: number;
@@ -107,7 +110,9 @@ interface InvalidCodeWithMetadata {
 
 interface CodeGenerator {
   valid: string;
+
   invalid: InvalidCodeWithMetadata;
+
   name: string;
 }
 
@@ -132,6 +137,12 @@ class VariableDeclaration implements CodeGenerator {
 }
 
 abstract class TestCasesGenerator<T extends ValidTestCase<TOptions>> {
+  public *[Symbol.iterator](): Generator<T> {
+    for (const declaration of declarations) {
+      yield* this.generateTestCasesForDeclaration(declaration);
+    }
+  }
+
   protected abstract generateTestCases(
     declaration: Declaration,
     accessor: string,
@@ -221,33 +232,84 @@ abstract class TestCasesGenerator<T extends ValidTestCase<TOptions>> {
     }
   }
 
-  public *[Symbol.iterator](): Generator<T> {
-    for (const declaration of declarations) {
-      // plain variable
-      yield* this.generateTestCases(declaration, declaration.name);
-      // object with array variable
-      yield* this.generateTestCases(
-        {
-          name: 'obj',
-          type: `Record<string, ${declaration.type}>`,
-        },
-        `obj.${declaration.name}`,
-      );
-      // array with array variable
-      yield* this.generateTestCases(
-        {
-          name: 'matrix',
-          type: `Array<${declaration.type}>`,
-        },
-        `matrix[0]`,
-      );
-    }
+  protected *generateTestCasesForDeclaration(
+    declaration: Declaration,
+  ): Generator<T> {
+    // plain variable
+    yield* this.generateTestCases(declaration, declaration.name);
+    // object variable
+    yield* this.generateTestCases(
+      {
+        name: 'obj',
+        type: `Record<string, ${declaration.type}>`,
+      },
+      `obj.${declaration.name}`,
+    );
+    // array variable
+    yield* this.generateTestCases(
+      {
+        name: 'matrix',
+        type: `Array<${declaration.type}>`,
+      },
+      `matrix[0]`,
+    );
   }
 }
 
 class ValidTestCasesGenerator extends TestCasesGenerator<
   ValidTestCase<TOptions>
 > {
+  public override *generateTestCasesForDeclaration(
+    declaration: Declaration,
+  ): Generator<ValidTestCase<TOptions>> {
+    yield* super.generateTestCasesForDeclaration(declaration);
+
+    // plain variable from function
+    yield* this.generateTestCasesWithIgnoreFunctions(
+      {
+        name: `getValue`,
+        type: `() => ${declaration.type}`,
+      },
+      'getValue()',
+    );
+
+    // object from function
+    yield* this.generateTestCasesWithIgnoreFunctions(
+      {
+        name: `getValues`,
+        type: `() => Record<string, ${declaration.type}>`,
+      },
+      'getValues().obj',
+    );
+
+    // object with function
+    yield* this.generateTestCasesWithIgnoreFunctions(
+      {
+        name: `getters`,
+        type: `Record<string, () => ${declaration.type}>`,
+      },
+      'getters.getValues()',
+    );
+
+    // array from function
+    yield* this.generateTestCasesWithIgnoreFunctions(
+      {
+        name: `getValues`,
+        type: `() => Array<${declaration.type}>`,
+      },
+      'getValues()[0]',
+    );
+
+    // array with function
+    yield* this.generateTestCasesWithIgnoreFunctions(
+      {
+        name: `getters`,
+        type: `Array<() => ${declaration.type}>`,
+      },
+      'getters[0]()',
+    );
+  }
+
   protected *generateTestCases(
     declaration: Declaration,
     accessor: string,
@@ -258,11 +320,78 @@ class ValidTestCasesGenerator extends TestCasesGenerator<
       };
     }
   }
+
+  protected *generateTestCasesWithIgnoreFunctions(
+    declaration: Declaration,
+    accessor: string,
+  ): Generator<ValidTestCase<TOptions>> {
+    for (const generator of this.generateCode(declaration, accessor)) {
+      yield {
+        code: generator.invalid.code,
+        options: [
+          {
+            ignoreFunctions: true,
+          },
+        ],
+      };
+    }
+  }
 }
 
 class InvalidTestCasesGenerator extends TestCasesGenerator<
   InvalidTestCase<TMessageIds, TOptions>
 > {
+  public override *generateTestCasesForDeclaration(
+    declaration: Declaration,
+  ): Generator<InvalidTestCase<TMessageIds, TOptions>> {
+    yield* super.generateTestCasesForDeclaration(declaration);
+
+    // plain variable from function
+    yield* this.generateTestCases(
+      {
+        name: `getValue`,
+        type: `() => ${declaration.type}`,
+      },
+      'getValue()',
+    );
+
+    // object from function
+    yield* this.generateTestCases(
+      {
+        name: `getValues`,
+        type: `() => Record<string, ${declaration.type}>`,
+      },
+      'getValues().obj',
+    );
+
+    // object with function
+    yield* this.generateTestCases(
+      {
+        name: `getters`,
+        type: `Record<string, () => ${declaration.type}>`,
+      },
+      'getters.getValues()',
+    );
+
+    // array from function
+    yield* this.generateTestCases(
+      {
+        name: `getValues`,
+        type: `() => Array<${declaration.type}>`,
+      },
+      'getValues()[0]',
+    );
+
+    // array with function
+    yield* this.generateTestCases(
+      {
+        name: `getters`,
+        type: `Array<() => ${declaration.type}>`,
+      },
+      'getters[0]()',
+    );
+  }
+
   protected *generateTestCases(
     declaration: Declaration,
     name: string,

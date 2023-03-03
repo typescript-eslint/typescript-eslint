@@ -20,10 +20,29 @@ export default util.createRule({
       preferAt:
         'Expected a `{{name}}.at(-1)` instead of `{{name}}[{{name}}.length - 1]`.',
     },
-    schema: [],
+    schema: [
+      {
+        oneOf: [
+          {
+            type: 'object',
+            properties: {
+              ignoreFunctions: {
+                type: 'boolean',
+              },
+            },
+            additionalProperties: false,
+            required: ['ignoreFunctions'],
+          },
+        ],
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      ignoreFunctions: false,
+    },
+  ],
+  create(context, [options]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
@@ -58,6 +77,8 @@ export default util.createRule({
           return node.raw;
         case AST_NODE_TYPES.ThisExpression:
           return 'this';
+        case AST_NODE_TYPES.CallExpression:
+          return `${getFullName(node.callee)}()`;
         case AST_NODE_TYPES.MemberExpression:
           if (node.property.type === AST_NODE_TYPES.Literal) {
             return `${getFullName(node.object)}[${node.property.raw}]`;
@@ -66,6 +87,14 @@ export default util.createRule({
         default:
           throw new UnknownNodeError(node);
       }
+    }
+
+    function hasCallExpression(node: TSESTree.MemberExpression): boolean {
+      return (
+        node.object.type === AST_NODE_TYPES.CallExpression ||
+        (node.object.type === AST_NODE_TYPES.MemberExpression &&
+          hasCallExpression(node.object))
+      );
     }
 
     function getTypeAtLocation(node: TSESTree.Node): ts.Type | undefined {
@@ -109,7 +138,10 @@ export default util.createRule({
     }
 
     function isExpectedObject(node: TSESTree.Node): boolean {
-      if (node.type !== AST_NODE_TYPES.MemberExpression) {
+      if (
+        node.type !== AST_NODE_TYPES.MemberExpression ||
+        (options.ignoreFunctions && hasCallExpression(node))
+      ) {
         return false;
       }
       const type = getTypeAtLocation(node.object);
