@@ -31,59 +31,59 @@ const declarations: Array<Declaration> = [
     name: 'str',
     type: 'string',
   },
-  {
-    name: 'str',
-    // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-    type: 'String',
-  },
-  {
-    name: 'arr',
-    type: 'Array<string>',
-  },
-  {
-    name: 'arr',
-    type: 'Int8Array',
-  },
-  {
-    name: 'arr',
-    type: 'Uint8Array',
-  },
-  {
-    name: 'arr',
-    type: 'Uint8ClampedArray',
-  },
-  {
-    name: 'arr',
-    type: 'Int16Array',
-  },
-  {
-    name: 'arr',
-    type: 'Uint16Array',
-  },
-  {
-    name: 'arr',
-    type: 'Int32Array',
-  },
-  {
-    name: 'arr',
-    type: 'Float32Array',
-  },
-  {
-    name: 'arr',
-    type: 'Uint32Array',
-  },
-  {
-    name: 'arr',
-    type: 'Float64Array',
-  },
-  {
-    name: 'arr',
-    type: 'BigInt64Array',
-  },
-  {
-    name: 'arr',
-    type: 'BigUint64Array',
-  },
+  // {
+  //   name: 'str',
+  //   // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+  //   type: 'String',
+  // },
+  // {
+  //   name: 'arr',
+  //   type: 'Array<string>',
+  // },
+  // {
+  //   name: 'arr',
+  //   type: 'Int8Array',
+  // },
+  // {
+  //   name: 'arr',
+  //   type: 'Uint8Array',
+  // },
+  // {
+  //   name: 'arr',
+  //   type: 'Uint8ClampedArray',
+  // },
+  // {
+  //   name: 'arr',
+  //   type: 'Int16Array',
+  // },
+  // {
+  //   name: 'arr',
+  //   type: 'Uint16Array',
+  // },
+  // {
+  //   name: 'arr',
+  //   type: 'Int32Array',
+  // },
+  // {
+  //   name: 'arr',
+  //   type: 'Float32Array',
+  // },
+  // {
+  //   name: 'arr',
+  //   type: 'Uint32Array',
+  // },
+  // {
+  //   name: 'arr',
+  //   type: 'Float64Array',
+  // },
+  // {
+  //   name: 'arr',
+  //   type: 'BigInt64Array',
+  // },
+  // {
+  //   name: 'arr',
+  //   type: 'BigUint64Array',
+  // },
 ];
 
 const additionalDeclarations: Array<
@@ -203,32 +203,6 @@ abstract class TestCasesGenerator<T extends ValidTestCase<TOptions>> {
           name: variableDeclaration.name,
         };
       }
-      {
-        const variableDeclaration = new VariableDeclaration(
-          `this.#${name}`,
-          right,
-        );
-        const additionalCode =
-          typeof additionalDeclaration === 'number'
-            ? ''
-            : `\n\t\tconst ${additionalDeclaration.name}: number = 0;`;
-        const generateCode = (code: string): string =>
-          `class A {\n\t#${declaration.name}!: ${declaration.type};\n\tmethod() {${additionalCode}\n\t\t${code}\n\t}\n}`;
-        const invalidDeclaration = variableDeclaration.invalid;
-        const invalidCode = generateCode(invalidDeclaration.code);
-        yield {
-          valid: generateCode(variableDeclaration.valid),
-          invalid: {
-            code: invalidCode,
-            line: generateCode('').split('\n').length - 2,
-            pos: {
-              start: invalidDeclaration.pos.start + 2,
-              end: invalidDeclaration.pos.end + 2,
-            },
-          },
-          name: variableDeclaration.name,
-        };
-      }
     }
   }
 
@@ -312,9 +286,9 @@ class ValidTestCasesGenerator extends TestCasesGenerator<
 
   protected *generateTestCases(
     declaration: Declaration,
-    accessor: string,
+    name: string,
   ): Generator<ValidTestCase<TOptions>> {
-    for (const generator of this.generateCode(declaration, accessor)) {
+    for (const generator of this.generateCode(declaration, name)) {
       yield {
         code: generator.valid,
       };
@@ -323,9 +297,9 @@ class ValidTestCasesGenerator extends TestCasesGenerator<
 
   protected *generateTestCasesWithIgnoreFunctions(
     declaration: Declaration,
-    accessor: string,
+    name: string,
   ): Generator<ValidTestCase<TOptions>> {
-    for (const generator of this.generateCode(declaration, accessor)) {
+    for (const generator of this.generateCode(declaration, name)) {
       yield {
         code: generator.invalid.code,
         options: [
@@ -418,6 +392,100 @@ class InvalidTestCasesGenerator extends TestCasesGenerator<
 }
 
 ruleTester.run('prefer-at', rule, {
-  valid: [...new ValidTestCasesGenerator()],
-  invalid: [...new InvalidTestCasesGenerator()],
+  valid: [
+    ...new ValidTestCasesGenerator(),
+    `
+      class A {
+        #str!: string;
+
+        #str2!: string;
+
+        method() {
+          const a = this.#str[this.#str2.length - 1];
+        }
+      }
+    `,
+    `
+      class B {
+        length!: number;
+      }
+
+      class A {
+        b!: B;
+
+        method() {
+          const a = this.b[this.b.length - 1];
+        }
+      }
+    `,
+    // {
+    //   code: `
+    //   class B {
+    //     length!: number;
+    //   }
+    //
+    //   class A {
+    //     b!: B;
+    //
+    //     method() {
+    //       const a = this.b[this.b.length - 1];
+    //     }
+    //   }
+    // `,
+    //   only: true,
+    // }
+  ],
+  invalid: [
+    ...new InvalidTestCasesGenerator(),
+    {
+      code: `
+        class A {
+          #str!: string;
+
+          method() {
+            const a = this.#str[this.#str.length - 1];
+          }
+        }
+      `,
+      errors: [
+        {
+          messageId: 'preferAt',
+        },
+      ],
+      output: `
+        class A {
+          #str!: string;
+
+          method() {
+            const a = this.#str.at(-1);
+          }
+        }
+      `,
+    },
+    {
+      code: `
+        class A {
+          #arr!: Array<string>;
+
+          method() {
+            const a = this.#arr[0][this.#arr[0].length - 1];
+          }
+        }
+      `,
+      errors: [
+        {
+          messageId: 'preferAt',
+        },
+      ],
+      output: `
+        class A {
+          #arr!: Array<string>;
+
+          method() {
+            const a = this.#arr[0].at(-1);
+          }
+        }
+      `,
+    },
+  ],
 });

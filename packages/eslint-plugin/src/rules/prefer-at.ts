@@ -54,12 +54,8 @@ export default util.createRule({
 
     function getName(node: TSESTree.Node): string {
       switch (node.type) {
-        case AST_NODE_TYPES.PrivateIdentifier:
-          return `#${node.name}`;
         case AST_NODE_TYPES.Identifier:
           return node.name;
-        case AST_NODE_TYPES.ThisExpression:
-          return 'this';
         case AST_NODE_TYPES.MemberExpression:
           return getName(node.property);
         default:
@@ -137,7 +133,9 @@ export default util.createRule({
       return supporterObjects.some(check => check(type));
     }
 
-    function isExpectedObject(node: TSESTree.Node): boolean {
+    function isExpectedObject(
+      node: TSESTree.Node,
+    ): node is TSESTree.MemberExpression {
       if (
         node.type !== AST_NODE_TYPES.MemberExpression ||
         (options.ignoreFunctions && hasCallExpression(node))
@@ -178,7 +176,9 @@ export default util.createRule({
       );
     }
 
-    function isExpectedExpression(node: TSESTree.BinaryExpression): boolean {
+    function isExpectedExpression<T extends TSESTree.BinaryExpression>(
+      node: T,
+    ): node is T & { left: TSESTree.MemberExpression } {
       return isExpectedExpressionRight(node) && isExpectedExpressionLeft(node);
     }
 
@@ -193,6 +193,10 @@ export default util.createRule({
             return;
           }
           const objectName = getFullName(node.object);
+          const memberName = getFullName(node.property.left.object);
+          if (objectName !== memberName) {
+            return;
+          }
           const rightName = getFullName(node.property.right);
           context.report({
             messageId: 'preferAt',
