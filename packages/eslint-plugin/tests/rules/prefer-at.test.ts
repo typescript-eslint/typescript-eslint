@@ -31,59 +31,59 @@ const declarations: Array<Declaration> = [
     name: 'str',
     type: 'string',
   },
-  // {
-  //   name: 'str',
-  //   // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-  //   type: 'String',
-  // },
-  // {
-  //   name: 'arr',
-  //   type: 'Array<string>',
-  // },
-  // {
-  //   name: 'arr',
-  //   type: 'Int8Array',
-  // },
-  // {
-  //   name: 'arr',
-  //   type: 'Uint8Array',
-  // },
-  // {
-  //   name: 'arr',
-  //   type: 'Uint8ClampedArray',
-  // },
-  // {
-  //   name: 'arr',
-  //   type: 'Int16Array',
-  // },
-  // {
-  //   name: 'arr',
-  //   type: 'Uint16Array',
-  // },
-  // {
-  //   name: 'arr',
-  //   type: 'Int32Array',
-  // },
-  // {
-  //   name: 'arr',
-  //   type: 'Float32Array',
-  // },
-  // {
-  //   name: 'arr',
-  //   type: 'Uint32Array',
-  // },
-  // {
-  //   name: 'arr',
-  //   type: 'Float64Array',
-  // },
-  // {
-  //   name: 'arr',
-  //   type: 'BigInt64Array',
-  // },
-  // {
-  //   name: 'arr',
-  //   type: 'BigUint64Array',
-  // },
+  {
+    name: 'str',
+    // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
+    type: 'String',
+  },
+  {
+    name: 'arr',
+    type: 'Array<string>',
+  },
+  {
+    name: 'arr',
+    type: 'Int8Array',
+  },
+  {
+    name: 'arr',
+    type: 'Uint8Array',
+  },
+  {
+    name: 'arr',
+    type: 'Uint8ClampedArray',
+  },
+  {
+    name: 'arr',
+    type: 'Int16Array',
+  },
+  {
+    name: 'arr',
+    type: 'Uint16Array',
+  },
+  {
+    name: 'arr',
+    type: 'Int32Array',
+  },
+  {
+    name: 'arr',
+    type: 'Float32Array',
+  },
+  {
+    name: 'arr',
+    type: 'Uint32Array',
+  },
+  {
+    name: 'arr',
+    type: 'Float64Array',
+  },
+  {
+    name: 'arr',
+    type: 'BigInt64Array',
+  },
+  {
+    name: 'arr',
+    type: 'BigUint64Array',
+  },
 ];
 
 const additionalDeclarations: Array<
@@ -418,22 +418,6 @@ ruleTester.run('prefer-at', rule, {
         }
       }
     `,
-    // {
-    //   code: `
-    //   class B {
-    //     length!: number;
-    //   }
-    //
-    //   class A {
-    //     b!: B;
-    //
-    //     method() {
-    //       const a = this.b[this.b.length - 1];
-    //     }
-    //   }
-    // `,
-    //   only: true,
-    // }
   ],
   invalid: [
     ...new InvalidTestCasesGenerator(),
