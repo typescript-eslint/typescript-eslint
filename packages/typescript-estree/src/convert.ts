@@ -822,11 +822,20 @@ export class Converter {
 
       // Exceptions
 
-      case SyntaxKind.ThrowStatement:
+      case SyntaxKind.ThrowStatement: {
+        const { expression } = node;
+        if (
+          expression.kind === SyntaxKind.Identifier &&
+          !(expression as ts.Identifier).text
+        ) {
+          throw createError(this.ast, node.end, 'Expression expected.');
+        }
+
         return this.createNode<TSESTree.ThrowStatement>(node, {
           type: AST_NODE_TYPES.ThrowStatement,
-          argument: this.convertChild(node.expression),
+          argument: this.convertChild(expression),
         });
+      }
 
       case SyntaxKind.TryStatement:
         return this.createNode<TSESTree.TryStatement>(node, {

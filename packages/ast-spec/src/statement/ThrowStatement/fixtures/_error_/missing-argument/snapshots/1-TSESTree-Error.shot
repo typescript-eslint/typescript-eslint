@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures statement ThrowStatement _error_ missing-argument TSESTree - Error 1`] = `
+"TSError
+> 1 | function a() {throw}
+    |                    ^ Expression expected.
+  2 |"
+`;
