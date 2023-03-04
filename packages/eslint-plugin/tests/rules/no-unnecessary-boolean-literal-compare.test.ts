@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-unnecessary-boolean-literal-compare';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -255,6 +255,74 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
       output: `
         declare const varBoolean: boolean;
         if (!varBoolean) {
+        }
+      `,
+    },
+    {
+      code: noFormat`
+        declare const x;
+        if ((x instanceof Error) === false) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'direct',
+        },
+      ],
+      output: `
+        declare const x;
+        if (!(x instanceof Error)) {
+        }
+      `,
+    },
+    {
+      code: noFormat`
+        declare const x;
+        if (false === (x instanceof Error)) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'direct',
+        },
+      ],
+      output: `
+        declare const x;
+        if (!(x instanceof Error)) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const x;
+        if (x instanceof Error === false) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'direct',
+        },
+      ],
+      output: `
+        declare const x;
+        if (!(x instanceof Error)) {
+        }
+      `,
+    },
+    {
+      code: noFormat`
+        declare const x;
+        if (typeof x === 'string' === false) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'direct',
+        },
+      ],
+      output: `
+        declare const x;
+        if (!(typeof x === 'string')) {
         }
       `,
     },

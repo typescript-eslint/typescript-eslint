@@ -1,5 +1,9 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import {
+  AST_NODE_TYPES,
+  AST_TOKEN_TYPES,
+  ASTUtils,
+} from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
@@ -82,6 +86,7 @@ export default util.createRule<Options, MessageIds>({
   create(context, [options]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
+    const sourceCode = context.getSourceCode();
 
     function getBooleanComparison(
       node: TSESTree.BinaryExpression,
@@ -180,6 +185,17 @@ export default util.createRule<Options, MessageIds>({
         const { value: literalBooleanInComparison } = against;
         const negated = !comparisonType.isPositive;
 
+        const nodes =
+          expression.range[0] < against.range[0]
+            ? [expression, against]
+            : [against, expression];
+
+        const tokens = sourceCode.getFirstTokenBetween(nodes[0], nodes[1], {
+          filter: token =>
+            token.type === AST_TOKEN_TYPES.Punctuator &&
+            (token.value === '(' || token.value === ')'),
+        });
+
         return {
           literalBooleanInComparison,
           forTruthy: literalBooleanInComparison ? !negated : negated,
@@ -187,8 +203,8 @@ export default util.createRule<Options, MessageIds>({
           negated,
           range:
             expression.range[0] < against.range[0]
-              ? [expression.range[1], against.range[1]]
-              : [against.range[0], expression.range[0]],
+              ? [tokens?.range[1] ?? expression.range[1], against.range[1]]
+              : [against.range[0], tokens?.range[0] ?? expression.range[0]],
         };
       }
 
@@ -236,7 +252,15 @@ export default util.createRule<Options, MessageIds>({
               comparison.literalBooleanInComparison
             ) {
               if (!comparison.forTruthy) {
-                yield fixer.insertTextBefore(node, '!');
+                if (
+                  !util.isStrongPrecedenceNode(comparison.expression) &&
+                  !ASTUtils.isParenthesized(comparison.expression, sourceCode)
+                ) {
+                  yield fixer.insertTextBefore(node, '!(');
+                  yield fixer.insertTextAfter(node, ')');
+                } else {
+                  yield fixer.insertTextBefore(node, '!');
+                }
               }
               return;
             }
