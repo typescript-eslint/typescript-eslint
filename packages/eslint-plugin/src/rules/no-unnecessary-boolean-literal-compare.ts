@@ -1,9 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import {
-  AST_NODE_TYPES,
-  AST_TOKEN_TYPES,
-  ASTUtils,
-} from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
@@ -28,7 +24,6 @@ interface BooleanComparison {
   literalBooleanInComparison: boolean;
   forTruthy: boolean;
   negated: boolean;
-  range: [number, number];
 }
 
 interface BooleanComparisonWithTypeInformation extends BooleanComparison {
@@ -185,26 +180,11 @@ export default util.createRule<Options, MessageIds>({
         const { value: literalBooleanInComparison } = against;
         const negated = !comparisonType.isPositive;
 
-        const nodes =
-          expression.range[0] < against.range[0]
-            ? [expression, against]
-            : [against, expression];
-
-        const tokens = sourceCode.getFirstTokenBetween(nodes[0], nodes[1], {
-          filter: token =>
-            token.type === AST_TOKEN_TYPES.Punctuator &&
-            (token.value === '(' || token.value === ')'),
-        });
-
         return {
           literalBooleanInComparison,
           forTruthy: literalBooleanInComparison ? !negated : negated,
           expression,
           negated,
-          range:
-            expression.range[0] < against.range[0]
-              ? [tokens?.range[1] ?? expression.range[1], against.range[1]]
-              : [against.range[0], tokens?.range[0] ?? expression.range[0]],
         };
       }
 
@@ -243,7 +223,10 @@ export default util.createRule<Options, MessageIds>({
 
         context.report({
           fix: function* (fixer) {
-            yield fixer.removeRange(comparison.range);
+            yield fixer.replaceText(
+              node,
+              sourceCode.getText(comparison.expression),
+            );
 
             // if the expression `exp` isn't nullable, or we're comparing to `true`,
             // we can just replace the entire comparison with `exp` or `!exp`
@@ -252,10 +235,7 @@ export default util.createRule<Options, MessageIds>({
               comparison.literalBooleanInComparison
             ) {
               if (!comparison.forTruthy) {
-                if (
-                  !util.isStrongPrecedenceNode(comparison.expression) &&
-                  !ASTUtils.isParenthesized(comparison.expression, sourceCode)
-                ) {
+                if (!util.isStrongPrecedenceNode(comparison.expression)) {
                   yield fixer.insertTextBefore(node, '!(');
                   yield fixer.insertTextAfter(node, ')');
                 } else {

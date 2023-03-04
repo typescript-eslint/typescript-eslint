@@ -326,5 +326,39 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         }
       `,
     },
+    {
+      code: noFormat`
+        declare const x;
+        if (x instanceof Error === (false)) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'direct',
+        },
+      ],
+      output: `
+        declare const x;
+        if (!(x instanceof Error)) {
+        }
+      `,
+    },
+    {
+      code: noFormat`
+        declare const x;
+        if ((false) === x instanceof Error) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'direct',
+        },
+      ],
+      output: `
+        declare const x;
+        if (!(x instanceof Error)) {
+        }
+      `,
+    },
   ],
 });
