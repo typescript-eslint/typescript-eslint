@@ -235,11 +235,10 @@ export default util.createRule<Options, MessageIds>({
               comparison.literalBooleanInComparison
             ) {
               if (!comparison.forTruthy) {
+                yield fixer.insertTextBefore(node, '!');
                 if (!util.isStrongPrecedenceNode(comparison.expression)) {
-                  yield fixer.insertTextBefore(node, '!(');
+                  yield fixer.insertTextBefore(node, '(');
                   yield fixer.insertTextAfter(node, ')');
-                } else {
-                  yield fixer.insertTextBefore(node, '!');
                 }
               }
               return;
