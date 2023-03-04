@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration TSDeclareFunction _error_ non-identifier-name TSESTree - Error 1`] = `[TSError: Identifier expected.]`;
+exports[`AST Fixtures declaration TSDeclareFunction _error_ non-identifier-name TSESTree - Error 1`] = `
+"TSError
+> 1 | declare function 1();
+    |                  ^ Identifier expected.
+  2 |"
+`;

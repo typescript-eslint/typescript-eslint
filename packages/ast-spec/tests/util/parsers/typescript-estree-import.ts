@@ -13,4 +13,5 @@
  * This should be the only place in the package that we import from typescript-estree.
  */
 
-export { parse } from '@typescript-eslint/typescript-estree';
+// eslint-disable-next-line no-restricted-imports -- the only safe and valid import from typescript-estree in this package
+export { parse, TSError } from '@typescript-eslint/typescript-estree';
