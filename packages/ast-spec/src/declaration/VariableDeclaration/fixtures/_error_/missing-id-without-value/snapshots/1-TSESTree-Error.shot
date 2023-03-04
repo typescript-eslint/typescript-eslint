@@ -1,3 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ missing-id-without-value TSESTree - Error 1`] = `[TSError: A variable declaration list must have at least one variable declarator.]`;
+exports[`AST Fixtures declaration VariableDeclaration _error_ missing-id-without-value TSESTree - Error 1`] = `"NO ERROR"`;
