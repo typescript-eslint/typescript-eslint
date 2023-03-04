@@ -1,9 +1,9 @@
 import Link from '@docusaurus/Link';
-import { useHistory, useLocation } from '@docusaurus/router';
+import { useIsomorphicLayoutEffect } from '@docusaurus/theme-common';
 import type { RulesMeta } from '@site/rulesMeta';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
 import clsx from 'clsx';
-import React, { useMemo } from 'react';
+import React, { useMemo, useState } from 'react';
 
 import styles from './styles.module.css';
 
@@ -223,38 +223,37 @@ const neutralFiltersState: FiltersState = {
 function useRulesFilters(
   paramsKey: string,
 ): [FiltersState, (category: FilterCategory, mode: FilterMode) => void] {
-  const history = useHistory();
-  const location = useLocation();
-  const search = new URLSearchParams(location.search);
-  const paramValue = search.get(paramsKey);
-  const state = {
-    ...neutralFiltersState,
-    ...(paramValue && parseFiltersState(paramValue)),
-  };
+  const [state, setState] = useState(neutralFiltersState);
+
+  useIsomorphicLayoutEffect(() => {
+    const search = new URLSearchParams(window.location.search);
+    const str = search.get(paramsKey);
+    if (str) {
+      setState(s => ({ ...s, ...parseFiltersState(str) }));
+    }
+  }, [paramsKey]);
 
   const changeFilter = (category: FilterCategory, mode: FilterMode): void => {
-    const newState = { ...state, [category]: mode };
+    setState(oldState => {
+      const newState = { ...oldState, [category]: mode };
 
-    if (
-      category === 'strict' &&
-      mode === 'include' &&
-      state.recommended === 'include'
-    ) {
-      newState.recommended = 'exclude';
-    } else if (
-      category === 'recommended' &&
-      mode === 'include' &&
-      state.strict === 'include'
-    ) {
-      newState.strict = 'exclude';
-    }
+      if (
+        category === 'strict' &&
+        mode === 'include' &&
+        oldState.recommended === 'include'
+      ) {
+        newState.recommended = 'exclude';
+      } else if (
+        category === 'recommended' &&
+        mode === 'include' &&
+        oldState.strict === 'include'
+      ) {
+        newState.strict = 'exclude';
+      }
 
-    history.replace({
-      search: replaceFiltersInSearchParams(
-        location.search,
-        paramsKey,
-        newState,
-      ),
+      replaceFiltersInURL(paramsKey, newState);
+
+      return newState;
     });
   };
 
@@ -263,19 +262,15 @@ function useRulesFilters(
 
 const NEGATION_SYMBOL = 'x';
 
-function replaceFiltersInSearchParams(
-  oldSearch: string,
-  paramsKey: string,
-  filters: FiltersState,
-): string {
-  const res = new URLSearchParams(oldSearch);
+function replaceFiltersInURL(paramsKey: string, filters: FiltersState): void {
+  const url = new URL(window.location.href);
   const filtersString = stringifyFiltersState(filters);
   if (filtersString) {
-    res.set(paramsKey, filtersString);
+    url.searchParams.set(paramsKey, filtersString);
   } else {
-    res.delete(paramsKey);
+    url.searchParams.delete(paramsKey);
   }
-  return res.toString();
+  window.history.replaceState({}, '', url.toString());
 }
 
 function stringifyFiltersState(filters: FiltersState): string {
