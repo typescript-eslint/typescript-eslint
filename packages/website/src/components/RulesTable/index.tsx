@@ -1,4 +1,5 @@
 import Link from '@docusaurus/Link';
+import { useIsomorphicLayoutEffect } from '@docusaurus/theme-common';
 import type { RulesMeta } from '@site/rulesMeta';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
 import clsx from 'clsx';
@@ -122,13 +123,11 @@ export default function RulesTable({
 }: {
   extensionRules?: boolean;
 }): JSX.Element {
+  const [filters, changeFilter] = useRulesFilters(
+    extensionRules ? 'extension-rules' : 'supported-rules',
+  );
+
   const rules = useRulesMeta();
-  const [showRecommended, setShowRecommended] = useState<FilterMode>('neutral');
-  const [showStrict, setShowStrict] = useState<FilterMode>('neutral');
-  const [showFixable, setShowFixable] = useState<FilterMode>('neutral');
-  const [showHasSuggestions, setShowHasSuggestion] =
-    useState<FilterMode>('neutral');
-  const [showTypeCheck, setShowTypeCheck] = useState<FilterMode>('neutral');
   const relevantRules = useMemo(
     () =>
       rules
@@ -136,64 +135,45 @@ export default function RulesTable({
         .filter(r => {
           const opinions = [
             match(
-              showRecommended,
+              filters.recommended,
               r.docs?.recommended === 'error' || r.docs?.recommended === 'warn',
             ),
-            match(showStrict, r.docs?.recommended === 'strict'),
-            match(showFixable, !!r.fixable),
-            match(showHasSuggestions, !!r.hasSuggestions),
-            match(showTypeCheck, !!r.docs?.requiresTypeChecking),
+            match(filters.strict, r.docs?.recommended === 'strict'),
+            match(filters.fixable, !!r.fixable),
+            match(filters.suggestions, !!r.hasSuggestions),
+            match(filters.typeInformation, !!r.docs?.requiresTypeChecking),
           ].filter((o): o is boolean => o !== undefined);
           return opinions.every(o => o);
         }),
-    [
-      rules,
-      extensionRules,
-      showRecommended,
-      showStrict,
-      showFixable,
-      showHasSuggestions,
-      showTypeCheck,
-    ],
+    [rules, extensionRules, filters],
   );
+
   return (
     <>
       <ul className={clsx('clean-list', styles.checkboxList)}>
         <RuleFilterCheckBox
-          mode={showRecommended}
-          setMode={(newMode): void => {
-            setShowRecommended(newMode);
-
-            if (newMode === 'include' && showStrict === 'include') {
-              setShowStrict('exclude');
-            }
-          }}
+          mode={filters.recommended}
+          setMode={(newMode): void => changeFilter('recommended', newMode)}
           label="✅ recommended"
         />
         <RuleFilterCheckBox
-          mode={showStrict}
-          setMode={(newMode): void => {
-            setShowStrict(newMode);
-
-            if (newMode === 'include' && showRecommended === 'include') {
-              setShowRecommended('exclude');
-            }
-          }}
+          mode={filters.strict}
+          setMode={(newMode): void => changeFilter('strict', newMode)}
           label="🔒 strict"
         />
         <RuleFilterCheckBox
-          mode={showFixable}
-          setMode={setShowFixable}
+          mode={filters.fixable}
+          setMode={(newMode): void => changeFilter('fixable', newMode)}
           label="🔧 fixable"
         />
         <RuleFilterCheckBox
-          mode={showHasSuggestions}
-          setMode={setShowHasSuggestion}
+          mode={filters.suggestions}
+          setMode={(newMode): void => changeFilter('suggestions', newMode)}
           label="💡 has suggestions"
         />
         <RuleFilterCheckBox
-          mode={showTypeCheck}
-          setMode={setShowTypeCheck}
+          mode={filters.typeInformation}
+          setMode={(newMode): void => changeFilter('typeInformation', newMode)}
           label="💭 requires type information"
         />
       </ul>
@@ -223,4 +203,99 @@ export default function RulesTable({
       </table>
     </>
   );
+}
+
+type FilterCategory =
+  | 'recommended'
+  | 'strict'
+  | 'fixable'
+  | 'suggestions'
+  | 'typeInformation';
+type FiltersState = Record<FilterCategory, FilterMode>;
+const neutralFiltersState: FiltersState = {
+  recommended: 'neutral',
+  strict: 'neutral',
+  fixable: 'neutral',
+  suggestions: 'neutral',
+  typeInformation: 'neutral',
+};
+
+function useRulesFilters(
+  paramsKey: string,
+): [FiltersState, (category: FilterCategory, mode: FilterMode) => void] {
+  const [state, setState] = useState(neutralFiltersState);
+
+  useIsomorphicLayoutEffect(() => {
+    const search = new URLSearchParams(window.location.search);
+    const str = search.get(paramsKey);
+    if (str) {
+      setState(s => ({ ...s, ...parseFiltersState(str) }));
+    }
+  }, [paramsKey]);
+
+  const changeFilter = (category: FilterCategory, mode: FilterMode): void => {
+    setState(oldState => {
+      const newState = { ...oldState, [category]: mode };
+
+      if (
+        category === 'strict' &&
+        mode === 'include' &&
+        oldState.recommended === 'include'
+      ) {
+        newState.recommended = 'exclude';
+      } else if (
+        category === 'recommended' &&
+        mode === 'include' &&
+        oldState.strict === 'include'
+      ) {
+        newState.strict = 'exclude';
+      }
+
+      replaceFiltersInURL(paramsKey, newState);
+
+      return newState;
+    });
+  };
+
+  return [state, changeFilter];
+}
+
+const NEGATION_SYMBOL = 'x';
+
+function replaceFiltersInURL(paramsKey: string, filters: FiltersState): void {
+  const url = new URL(window.location.href);
+  const filtersString = stringifyFiltersState(filters);
+  if (filtersString) {
+    url.searchParams.set(paramsKey, filtersString);
+  } else {
+    url.searchParams.delete(paramsKey);
+  }
+  window.history.replaceState({}, '', url.toString());
+}
+
+function stringifyFiltersState(filters: FiltersState): string {
+  return Object.entries(filters)
+    .map(([key, value]) =>
+      value === 'include'
+        ? key
+        : value === 'exclude'
+        ? `${NEGATION_SYMBOL}${key}`
+        : '',
+    )
+    .filter(Boolean)
+    .join('-');
+}
+
+function parseFiltersState(str: string): Partial<FiltersState> {
+  const res: Partial<FiltersState> = {};
+
+  for (const part of str.split('-')) {
+    const exclude = part.startsWith(NEGATION_SYMBOL);
+    const key = exclude ? part.slice(1) : part;
+    if (Object.hasOwn(neutralFiltersState, key)) {
+      res[key] = exclude ? 'exclude' : 'include';
+    }
+  }
+
+  return res;
 }
