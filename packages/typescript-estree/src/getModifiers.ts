@@ -23,8 +23,11 @@ export function getModifiers(
   }
 
   return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore intentional fallback for older TS versions
-    node.modifiers?.filter((m): m is ts.Modifier => !ts.isDecorator(m))
+    (node.modifiers as ts.Modifier[])?.filter(
+      (m): m is ts.Modifier => !ts.isDecorator(m),
+    )
   );
 }
 
@@ -47,7 +50,8 @@ export function getDecorators(
   }
 
   return (
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
     // @ts-ignore intentional fallback for older TS versions
-    node.decorators?.filter(ts.isDecorator)
+    (node.decorators as ts.Node[])?.filter(ts.isDecorator)
   );
 }
