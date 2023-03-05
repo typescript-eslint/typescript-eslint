@@ -24,6 +24,7 @@ import {
   isESTreeClassMember,
   isOptional,
   isThisInTypeQuery,
+  nodeHasIllegalDecorators,
   unescapeStringLiteralText,
 } from './node-utils';
 import type {
@@ -37,8 +38,9 @@ import { AST_NODE_TYPES } from './ts-estree';
 const SyntaxKind = ts.SyntaxKind;
 
 interface ConverterOptions {
-  errorOnUnknownASTType: boolean;
-  shouldPreserveNodeMaps: boolean;
+  allowInvalidAST?: boolean;
+  errorOnUnknownASTType?: boolean;
+  shouldPreserveNodeMaps?: boolean;
 }
 
 /**
@@ -75,7 +77,7 @@ export class Converter {
    * @param options additional options for the conversion
    * @returns the converted ESTreeNode
    */
-  constructor(ast: ts.SourceFile, options: ConverterOptions) {
+  constructor(ast: ts.SourceFile, options: ConverterOptions = {}) {
     this.ast = ast;
     this.options = { ...options };
   }
@@ -616,8 +618,7 @@ export class Converter {
       | ts.SetAccessorDeclaration,
   ): TSESTree.TSMethodSignature {
     if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-      throw createError(
-        this.ast,
+      this.#throwUnlessAllowInvalidAST(
         node.pos,
         'A method signature cannot have an export modifier.',
       );
@@ -685,8 +686,7 @@ export class Converter {
     allowNull: boolean,
   ): void {
     if (!allowNull && node.moduleSpecifier == null) {
-      throw createError(
-        this.ast,
+      this.#throwUnlessAllowInvalidAST(
         node.pos,
         'Module specifier must be a string literal.',
       );
@@ -696,8 +696,7 @@ export class Converter {
       node.moduleSpecifier &&
       node.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
     ) {
-      throw createError(
-        this.ast,
+      this.#throwUnlessAllowInvalidAST(
         node.moduleSpecifier.pos,
         'Module specifier must be a string literal.',
       );
@@ -823,6 +822,13 @@ export class Converter {
       // Exceptions
 
       case SyntaxKind.ThrowStatement:
+        if (node.expression.end === node.expression.pos) {
+          this.#throwUnlessAllowInvalidAST(
+            node.pos,
+            'A throw statement must throw an expression.',
+          );
+        }
+
         return this.createNode<TSESTree.ThrowStatement>(node, {
           type: AST_NODE_TYPES.ThrowStatement,
           argument: this.convertChild(node.expression),
@@ -941,6 +947,8 @@ export class Converter {
       }
 
       case SyntaxKind.VariableStatement: {
+        this.#checkIllegalDecorators(node);
+
         const result = this.createNode<TSESTree.VariableDeclaration>(node, {
           type: AST_NODE_TYPES.VariableDeclaration,
           declarations: node.declarationList.declarations.map(el =>
@@ -949,6 +957,13 @@ export class Converter {
           declare: hasModifier(SyntaxKind.DeclareKeyword, node),
           kind: getDeclarationKind(node.declarationList),
         });
+
+        if (!result.declarations.length) {
+          this.#throwUnlessAllowInvalidAST(
+            node.pos,
+            'A variable declaration list must have at least one variable declarator.',
+          );
+        }
 
         /**
          * Semantically, decorators are not allowed on variable declarations,
@@ -1613,8 +1628,7 @@ export class Converter {
         const modifiers = getModifiers(node);
         if (modifiers) {
           if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-            throw createError(
-              this.ast,
+            this.#throwUnlessAllowInvalidAST(
               node.pos,
               'A parameter cannot have an export modifier.',
             );
@@ -1636,6 +1650,17 @@ export class Converter {
       // Classes
 
       case SyntaxKind.ClassDeclaration:
+        if (
+          !node.name &&
+          (!hasModifier(ts.SyntaxKind.ExportKeyword, node) ||
+            !hasModifier(ts.SyntaxKind.DefaultKeyword, node))
+        ) {
+          this.#throwUnlessAllowInvalidAST(
+            node.pos,
+            "A class declaration without the 'default' modifier must have a name.",
+          );
+        }
+      /* intentional fallthrough */
       case SyntaxKind.ClassExpression: {
         const heritageClauses = node.heritageClauses ?? [];
         const classNodeType =
@@ -1647,9 +1672,8 @@ export class Converter {
           clause => clause.token === SyntaxKind.ExtendsKeyword,
         );
 
-        if (superClass?.types && superClass.types.length > 1) {
-          throw createError(
-            this.ast,
+        if (superClass && superClass.types.length > 1) {
+          this.#throwUnlessAllowInvalidAST(
             superClass.types[1].pos,
             'Classes can only extend a single class.',
           );
@@ -1691,8 +1715,7 @@ export class Converter {
 
         if (superClass) {
           if (superClass.types.length > 1) {
-            throw createError(
-              this.ast,
+            this.#throwUnlessAllowInvalidAST(
               superClass.types[1].pos,
               'Classes can only extend a single class.',
             );
@@ -1987,8 +2010,7 @@ export class Converter {
       case SyntaxKind.CallExpression: {
         if (node.expression.kind === SyntaxKind.ImportKeyword) {
           if (node.arguments.length !== 1 && node.arguments.length !== 2) {
-            throw createError(
-              this.ast,
+            this.#throwUnlessAllowInvalidAST(
               node.arguments.pos,
               'Dynamic import requires exactly one or two arguments.',
             );
@@ -2436,6 +2458,8 @@ export class Converter {
         return this.convertChild(node.expression, parent);
 
       case SyntaxKind.TypeAliasDeclaration: {
+        this.#checkIllegalDecorators(node);
+
         const result = this.createNode<TSESTree.TSTypeAliasDeclaration>(node, {
           type: AST_NODE_TYPES.TSTypeAliasDeclaration,
           declare: hasModifier(SyntaxKind.DeclareKeyword, node),
@@ -2464,8 +2488,7 @@ export class Converter {
         );
 
         if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-          throw createError(
-            this.ast,
+          this.#throwUnlessAllowInvalidAST(
             node.pos,
             'A property signature cannot have an export modifier.',
           );
@@ -2486,8 +2509,7 @@ export class Converter {
 
       case SyntaxKind.IndexSignature: {
         if (hasModifier(SyntaxKind.ExportKeyword, node)) {
-          throw createError(
-            this.ast,
+          this.#throwUnlessAllowInvalidAST(
             node.pos,
             'An index signature cannot have an export modifier.',
           );
@@ -2582,6 +2604,8 @@ export class Converter {
       }
 
       case SyntaxKind.InterfaceDeclaration: {
+        this.#checkIllegalDecorators(node);
+
         const interfaceHeritageClauses = node.heritageClauses ?? [];
         const result = this.createNode<TSESTree.TSInterfaceDeclaration>(node, {
           type: AST_NODE_TYPES.TSInterfaceDeclaration,
@@ -2664,6 +2688,8 @@ export class Converter {
       }
 
       case SyntaxKind.EnumDeclaration: {
+        this.#checkIllegalDecorators(node);
+
         const result = this.createNode<TSESTree.TSEnumDeclaration>(node, {
           type: AST_NODE_TYPES.TSEnumDeclaration,
           const: hasModifier(SyntaxKind.ConstKeyword, node),
@@ -2705,16 +2731,20 @@ export class Converter {
                 body == null ||
                 body.type === AST_NODE_TYPES.TSModuleDeclaration
               ) {
-                throw new Error('Expected a valid module body');
+                this.#throwUnlessAllowInvalidAST(
+                  (node.body ?? node).pos,
+                  'Expected a valid module body',
+                );
               }
               if (id.type !== AST_NODE_TYPES.Identifier) {
-                throw new Error(
+                this.#throwUnlessAllowInvalidAST(
+                  node.name.pos,
                   'global module augmentation must have an Identifier id',
                 );
               }
               return {
                 kind: 'global',
-                body,
+                body: body as TSESTree.TSModuleBlock,
                 declare: false,
                 global: false,
                 id,
@@ -2739,14 +2769,20 @@ export class Converter {
             // with the innermost node's body as the actual node body.
 
             if (node.body == null) {
-              throw new Error('Expected a module body');
+              this.#throwUnlessAllowInvalidAST(
+                node.pos,
+                'Expected a module body',
+              );
             }
             if (node.name.kind !== ts.SyntaxKind.Identifier) {
-              throw new Error('`namespace`s must have an Identifier id');
+              this.#throwUnlessAllowInvalidAST(
+                node.name.pos,
+                '`namespace`s must have an Identifier id',
+              );
             }
 
             let name: TSESTree.Identifier | TSESTree.TSQualifiedName =
-              this.createNode<TSESTree.Identifier>(node.name, {
+              this.createNode<TSESTree.Identifier>(node.name as ts.Identifier, {
                 decorators: [],
                 name: node.name.text,
                 optional: false,
@@ -2978,6 +3014,21 @@ export class Converter {
 
       default:
         return this.deeplyCopy(node);
+    }
+  }
+
+  #checkIllegalDecorators(node: ts.Node): void {
+    if (nodeHasIllegalDecorators(node)) {
+      this.#throwUnlessAllowInvalidAST(
+        node.pos,
+        'Decorators are not valid here.',
+      );
+    }
+  }
+
+  #throwUnlessAllowInvalidAST(pos: number, message: string): void {
+    if (!this.options.allowInvalidAST) {
+      throw createError(this.ast, pos, message);
     }
   }
 
