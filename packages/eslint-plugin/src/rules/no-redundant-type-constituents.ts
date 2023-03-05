@@ -83,6 +83,12 @@ function describeLiteralType(type: ts.Type): string {
   }
 
   if (type.isLiteral()) {
+    if (typeof type.value === 'object') {
+      // Print ts.PseudoBigInt
+      return `${
+        type.value.negative ? '-' : ''
+      }${type.value.base10Value.toString()}n`;
+    }
     return type.value.toString();
   }
 
