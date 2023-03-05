@@ -447,7 +447,7 @@ export class Converter {
    */
   private deeplyCopy(node: TSNode): any {
     if (node.kind === ts.SyntaxKind.JSDocFunctionType) {
-      this.#throwUnlessAllowInvalidAST(
+      this.#throwError(
         node,
         'JSDoc types can only be used inside documentation comments.',
       );
@@ -591,10 +591,7 @@ export class Converter {
         if (node.name.kind === SyntaxKind.PrivateIdentifier) {
           // This is one of the few times where TS explicitly errors, and doesn't even gracefully handle the syntax.
           // So we shouldn't ever get into this state to begin with.
-          this.#throwUnlessAllowInvalidAST(
-            node.name,
-            'Non-private identifier expected.',
-          );
+          this.#throwError(node.name, 'Non-private identifier expected.');
         }
 
         result = this.createNode<TSESTree.JSXMemberExpression>(node, {
