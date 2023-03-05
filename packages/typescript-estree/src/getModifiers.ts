@@ -23,7 +23,7 @@ export function getModifiers(
   }
 
   return (
-    // eslint-disable-next-line deprecation/deprecation -- intentional fallback for older TS versions
+    // @ts-ignore intentional fallback for older TS versions
     node.modifiers?.filter((m): m is ts.Modifier => !ts.isDecorator(m))
   );
 }
@@ -47,7 +47,7 @@ export function getDecorators(
   }
 
   return (
-    // eslint-disable-next-line deprecation/deprecation -- intentional fallback for older TS versions
+    // @ts-ignore intentional fallback for older TS versions
     node.decorators?.filter(ts.isDecorator)
   );
 }

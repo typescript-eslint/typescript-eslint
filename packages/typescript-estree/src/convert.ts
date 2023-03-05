@@ -2553,7 +2553,7 @@ export class Converter {
             : undefined,
           initializer:
             this.convertChild(
-              // eslint-disable-next-line deprecation/deprecation -- TODO breaking change remove this from the AST
+              // @ts-ignore TODO breaking change remove this from the AST
               node.initializer,
             ) || undefined,
           readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
