@@ -4,10 +4,11 @@
 // npx nx generate-lib @typescript-eslint/scope-manager
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { es2023 } from './es2023';
-import { esnext_intl } from './esnext.intl';
+import { TYPE } from './base-config';
 
-export const esnext = {
-  ...es2023,
-  ...esnext_intl,
+export const es2022_regexp = {
+  RegExpMatchArray: TYPE,
+  RegExpExecArray: TYPE,
+  RegExpIndicesArray: TYPE,
+  RegExp: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;

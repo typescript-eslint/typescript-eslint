@@ -4,10 +4,16 @@
 // npx nx generate-lib @typescript-eslint/scope-manager
 
 import type { ImplicitLibVariableOptions } from '../variable';
+import { dom } from './dom';
+import { dom_iterable } from './dom.iterable';
 import { es2023 } from './es2023';
-import { esnext_intl } from './esnext.intl';
+import { scripthost } from './scripthost';
+import { webworker_importscripts } from './webworker.importscripts';
 
-export const esnext = {
+export const es2023_full = {
   ...es2023,
-  ...esnext_intl,
+  ...dom,
+  ...webworker_importscripts,
+  ...scripthost,
+  ...dom_iterable,
 } as Record<string, ImplicitLibVariableOptions>;
