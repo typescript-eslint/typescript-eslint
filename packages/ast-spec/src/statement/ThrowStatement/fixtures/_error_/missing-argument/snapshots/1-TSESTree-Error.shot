@@ -1,3 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures statement ThrowStatement _error_ missing-argument TSESTree - Error 1`] = `"NO ERROR"`;
+exports[`AST Fixtures statement ThrowStatement _error_ missing-argument TSESTree - Error 1`] = `
+"TSError
+> 1 | {
+    |  ^ A throw statement must throw an expression.
+  2 |     throw
+  3 | }
+  4 |"
+`;

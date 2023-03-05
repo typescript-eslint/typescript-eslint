@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ no-variables TSESTree - Error 1`] = `"NO ERROR"`;
+exports[`AST Fixtures declaration VariableDeclaration _error_ no-variables TSESTree - Error 1`] = `
+"TSError
+> 1 | const;
+    | ^ A variable declaration list must have at least one variable declarator.
+  2 |"
+`;
