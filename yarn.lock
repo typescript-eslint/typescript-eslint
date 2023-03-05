@@ -6116,10 +6116,10 @@ dotenv@~10.0.0:
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-10.0.0.tgz#3d4227b8fb95f81096cdd2b66653fb2c7085ba81"
   integrity sha512-rlBi9d8jpv9Sf1klPjNfFAuWDjKLwTIJJ/VxtoTwIR6hnZxcEOQCZg2oIL3MWBYw5GpUDKOEnND7LXTbIpQ03Q==
 
-downlevel-dts@>=0.10.0:
-  version "0.10.0"
-  resolved "https://registry.yarnpkg.com/downlevel-dts/-/downlevel-dts-0.10.0.tgz#d2be7b4408a1f9eb3a39e15a361f8ea4f175facc"
-  integrity sha512-AZ7tnUy4XJArsjv6Bcuivvxx+weMvOGHF6seu7e7PVOqMDHMSlfgMl1kt+F4Y2+5TmDwKWHOdimM1DZKihQs8Q==
+downlevel-dts@>=0.11.0:
+  version "0.11.0"
+  resolved "https://registry.yarnpkg.com/downlevel-dts/-/downlevel-dts-0.11.0.tgz#514a2d723009c5845730c1db6c994484c596ed9c"
+  integrity sha512-vo835pntK7kzYStk7xUHDifiYJvXxVhUapt85uk2AI94gUUAQX9HNRtrcMHNSc3YHJUEHGbYIGsM99uIbgAtxw==
   dependencies:
     semver "^7.3.2"
     shelljs "^0.8.3"
