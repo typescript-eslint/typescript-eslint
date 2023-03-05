@@ -758,8 +758,6 @@ const div: JQuery<HTMLElement> = $('<div>')
       `,
       options: [2, { VariableDeclarator: { const: 3 } }],
     },
-    // https://github.com/typescript-eslint/typescript-eslint/issues/441
-    'const;',
 
     // https://github.com/typescript-eslint/typescript-eslint/issues/1115
     {

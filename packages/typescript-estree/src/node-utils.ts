@@ -653,10 +653,10 @@ export class TSError extends Error {
 }
 
 /**
- * @param ast     the AST object
- * @param start   the index at which the error starts
- * @param end     the index at which the error ends
  * @param message the error message
+ * @param ast the AST object
+ * @param startIndex the index at which the error starts
+ * @param endIndex the index at which the error ends
  * @returns converted error object
  */
 export function createError(
@@ -671,6 +671,13 @@ export function createError(
     return { line: line + 1, column, offset };
   });
   return new TSError(message, ast.fileName, { start, end });
+}
+
+export function nodeHasIllegalDecorators(node: ts.Node): boolean {
+  return !!(
+    'illegalDecorators' in node &&
+    (node.illegalDecorators as unknown[] | undefined)?.length
+  );
 }
 
 /**

@@ -26,20 +26,14 @@ describe('convert', () => {
 
     ts.forEachChild(ast, fakeUnknownKind);
 
-    const instance = new Converter(ast, {
-      errorOnUnknownASTType: false,
-      shouldPreserveNodeMaps: false,
-    });
+    const instance = new Converter(ast);
     expect(instance.convertProgram()).toMatchSnapshot();
   });
 
   it('deeplyCopy should convert node with decorators correctly', () => {
     const ast = convertCode('@test class foo {}');
 
-    const instance = new Converter(ast, {
-      errorOnUnknownASTType: false,
-      shouldPreserveNodeMaps: false,
-    });
+    const instance = new Converter(ast);
 
     expect(
       instance['deeplyCopy'](ast.statements[0] as ts.ClassDeclaration),
@@ -49,10 +43,7 @@ describe('convert', () => {
   it('deeplyCopy should convert node with type parameters correctly', () => {
     const ast = convertCode('class foo<T> {}');
 
-    const instance = new Converter(ast, {
-      errorOnUnknownASTType: false,
-      shouldPreserveNodeMaps: false,
-    });
+    const instance = new Converter(ast);
 
     expect(
       instance['deeplyCopy'](ast.statements[0] as ts.ClassDeclaration),
@@ -62,10 +53,7 @@ describe('convert', () => {
   it('deeplyCopy should convert node with type arguments correctly', () => {
     const ast = convertCode('new foo<T>()');
 
-    const instance = new Converter(ast, {
-      errorOnUnknownASTType: false,
-      shouldPreserveNodeMaps: false,
-    });
+    const instance = new Converter(ast);
 
     expect(
       instance['deeplyCopy'](
@@ -78,10 +66,7 @@ describe('convert', () => {
   it('deeplyCopy should convert array of nodes', () => {
     const ast = convertCode('new foo<T>()');
 
-    const instance = new Converter(ast, {
-      errorOnUnknownASTType: false,
-      shouldPreserveNodeMaps: false,
-    });
+    const instance = new Converter(ast);
     expect(instance['deeplyCopy'](ast)).toMatchSnapshot();
   });
 
@@ -90,7 +75,6 @@ describe('convert', () => {
 
     const instance = new Converter(ast, {
       errorOnUnknownASTType: true,
-      shouldPreserveNodeMaps: false,
     });
 
     expect(() => instance['deeplyCopy'](ast)).toThrow(
@@ -107,7 +91,6 @@ describe('convert', () => {
     `);
 
     const instance = new Converter(ast, {
-      errorOnUnknownASTType: false,
       shouldPreserveNodeMaps: true,
     });
     instance.convertProgram();
@@ -140,7 +123,6 @@ describe('convert', () => {
     const ast = convertCode(`<a.b.c.d.e></a.b.c.d.e>`);
 
     const instance = new Converter(ast, {
-      errorOnUnknownASTType: false,
       shouldPreserveNodeMaps: true,
     });
     instance.convertProgram();
@@ -172,7 +154,6 @@ describe('convert', () => {
     const ast = convertCode(`export function foo () {}`);
 
     const instance = new Converter(ast, {
-      errorOnUnknownASTType: false,
       shouldPreserveNodeMaps: true,
     });
     const program = instance.convertProgram();
@@ -203,7 +184,6 @@ describe('convert', () => {
   it('should correctly create node with range and loc set', () => {
     const ast = convertCode('');
     const instance = new Converter(ast, {
-      errorOnUnknownASTType: false,
       shouldPreserveNodeMaps: true,
     });
 
@@ -252,13 +232,34 @@ describe('convert', () => {
     for (const code of jsDocCode) {
       const ast = convertCode(code);
 
-      const instance = new Converter(ast, {
-        errorOnUnknownASTType: false,
-        shouldPreserveNodeMaps: false,
-      });
+      const instance = new Converter(ast);
       expect(() => instance.convertProgram()).toThrow(
         'JSDoc types can only be used inside documentation comments.',
       );
     }
+  });
+
+  describe('allowInvalidAST', () => {
+    const code = 'const;';
+
+    it(`throws an error for an invalid AST when allowInvalidAST is false`, () => {
+      const ast = convertCode(code);
+
+      const instance = new Converter(ast);
+
+      expect(() => instance.convertProgram()).toThrow(
+        'A variable declaration list must have at least one variable declarator.',
+      );
+    });
+
+    it(`does not throw an error for an invalid AST when allowInvalidAST is true`, () => {
+      const ast = convertCode(code);
+
+      const instance = new Converter(ast, {
+        allowInvalidAST: true,
+      });
+
+      expect(() => instance.convertProgram()).not.toThrow();
+    });
   });
 });
