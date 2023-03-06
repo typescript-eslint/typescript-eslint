@@ -23,8 +23,7 @@ export function getModifiers(
   }
 
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore intentional fallback for older TS versions
+    // @ts-expect-error intentional fallback for older TS versions
     (node.modifiers as ts.Modifier[])?.filter(
       (m): m is ts.Modifier => !ts.isDecorator(m),
     )
@@ -50,8 +49,7 @@ export function getDecorators(
   }
 
   return (
-    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-    // @ts-ignore intentional fallback for older TS versions
+    // @ts-expect-error intentional fallback for older TS versions
     (node.decorators as ts.Node[])?.filter(ts.isDecorator)
   );
 }
