@@ -167,7 +167,7 @@ export class Converter {
         ? findNextToken(nextModifier, this.ast, this.ast)
         : findNextToken(exportKeyword, this.ast, this.ast);
 
-      result.range[0] = varToken!.getStart(this.ast);
+      result.range[0] = varToken!.getStart();
       result.loc = getLocFor(result.range[0], result.range[1], this.ast);
 
       if (declarationIsDefault) {
@@ -176,7 +176,7 @@ export class Converter {
           {
             type: AST_NODE_TYPES.ExportDefaultDeclaration,
             declaration: result as TSESTree.DefaultExportDeclarations,
-            range: [exportKeyword.getStart(this.ast), result.range[1]],
+            range: [exportKeyword.getStart(), result.range[1]],
             exportKind: 'value',
           },
         );
@@ -192,7 +192,7 @@ export class Converter {
           specifiers: [],
           source: null,
           exportKind: isType || isDeclare ? 'type' : 'value',
-          range: [exportKeyword.getStart(this.ast), result.range[1]],
+          range: [exportKeyword.getStart(), result.range[1]],
           assertions: [],
         });
       }
@@ -241,7 +241,7 @@ export class Converter {
     data: Omit<TSESTree.OptionalRangeAndLoc<T>, 'parent'>,
   ): T {
     const result = data;
-    result.range ??= getRange(node, this.ast);
+    result.range ??= getRange(node);
     result.loc ??= getLocFor(result.range[0], result.range[1], this.ast);
 
     if (result && this.options.shouldPreserveNodeMaps) {
@@ -553,7 +553,7 @@ export class Converter {
     const colonIndex = text.indexOf(':');
     // this is intentional we can ignore conversion if `:` is in first character
     if (colonIndex > 0) {
-      const range = getRange(node, this.ast);
+      const range = getRange(node);
       const result = this.createNode<TSESTree.JSXNamespacedName>(node, {
         type: AST_NODE_TYPES.JSXNamespacedName,
         namespace: this.createNode<TSESTree.JSXIdentifier>(node, {
@@ -718,7 +718,7 @@ export class Converter {
           type: AST_NODE_TYPES.Program,
           body: this.convertBodyExpressions(node.statements, node),
           comments: undefined,
-          range: [node.getStart(this.ast), node.endOfFileToken.end],
+          range: [node.getStart(), node.endOfFileToken.end],
           sourceType: node.externalModuleIndicator ? 'module' : 'script',
           tokens: undefined,
         });
@@ -1311,7 +1311,7 @@ export class Converter {
           decorators: [],
           name: 'constructor',
           optional: false,
-          range: [constructorToken.getStart(this.ast), constructorToken.end],
+          range: [constructorToken.getStart(), constructorToken.end],
           typeAnnotation: undefined,
         });
 
@@ -1439,7 +1439,7 @@ export class Converter {
               decorators: [],
               left: this.convertChild(node.name),
               optional: false,
-              range: [node.name.getStart(this.ast), node.initializer.end],
+              range: [node.name.getStart(), node.initializer.end],
               right: this.convertChild(node.initializer),
               typeAnnotation: undefined,
             });
@@ -1488,10 +1488,7 @@ export class Converter {
             this.createNode<TSESTree.TemplateElement>(node, {
               type: AST_NODE_TYPES.TemplateElement,
               value: {
-                raw: this.ast.text.slice(
-                  node.getStart(this.ast) + 1,
-                  node.end - 1,
-                ),
+                raw: this.ast.text.slice(node.getStart() + 1, node.end - 1),
                 cooked: node.text,
               },
               tail: true,
@@ -1542,7 +1539,7 @@ export class Converter {
           type: AST_NODE_TYPES.TemplateElement,
           value: {
             raw: this.ast.text.slice(
-              node.getStart(this.ast) + 1,
+              node.getStart() + 1,
               node.end - (tail ? 1 : 2),
             ),
             cooked: node.text,
@@ -2120,7 +2117,7 @@ export class Converter {
       }
 
       case SyntaxKind.BigIntLiteral: {
-        const range = getRange(node, this.ast);
+        const range = getRange(node);
         const rawValue = this.ast.text.slice(range[0], range[1]);
         const bigint = rawValue
           // remove suffix `n`
@@ -2232,7 +2229,7 @@ export class Converter {
             attributes: node.attributes.properties.map(el =>
               this.convertChild(el),
             ),
-            range: getRange(node, this.ast),
+            range: getRange(node),
           }),
           closingElement: null,
           children: [],
@@ -2280,7 +2277,7 @@ export class Converter {
           ? this.convertChild(node.expression)
           : this.createNode<TSESTree.JSXEmptyExpression>(node, {
               type: AST_NODE_TYPES.JSXEmptyExpression,
-              range: [node.getStart(this.ast) + 1, node.getEnd() - 1],
+              range: [node.getStart() + 1, node.getEnd() - 1],
             });
 
         if (node.dotDotDotToken) {
@@ -2657,10 +2654,10 @@ export class Converter {
       }
 
       case SyntaxKind.ImportType: {
-        const range = getRange(node, this.ast);
+        const range = getRange(node);
         if (node.isTypeOf) {
           const token = findNextToken(node.getFirstToken()!, node, this.ast)!;
-          range[0] = token.getStart(this.ast);
+          range[0] = token.getStart();
         }
         const typeArguments = node.typeArguments
           ? this.convertTypeArgumentsToTypeParameterInstantiation(
@@ -2786,7 +2783,7 @@ export class Converter {
                 decorators: [],
                 name: node.name.text,
                 optional: false,
-                range: [node.name.getStart(this.ast), node.name.getEnd()],
+                range: [node.name.getStart(), node.name.getEnd()],
                 type: AST_NODE_TYPES.Identifier,
                 typeAnnotation: undefined,
               });
@@ -2804,7 +2801,7 @@ export class Converter {
                 decorators: [],
                 name: nextName.text,
                 optional: false,
-                range: [nextName.getStart(this.ast), nextName.getEnd()],
+                range: [nextName.getStart(), nextName.getEnd()],
                 type: AST_NODE_TYPES.Identifier,
                 typeAnnotation: undefined,
               });

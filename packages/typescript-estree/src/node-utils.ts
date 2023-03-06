@@ -219,14 +219,12 @@ export function canContainDirective(
 /**
  * Returns range for the given ts.Node
  * @param node the ts.Node or ts.Token
- * @param ast the AST object
  * @returns the range data
  */
 export function getRange(
   node: Pick<ts.Node, 'getEnd' | 'getStart'>,
-  ast: ts.SourceFile,
 ): [number, number] {
-  return [node.getStart(ast), node.getEnd()];
+  return [node.getStart(), node.getEnd()];
 }
 
 /**
@@ -535,9 +533,7 @@ export function convertToken(
   ast: ts.SourceFile,
 ): TSESTree.Token {
   const start =
-    token.kind === SyntaxKind.JsxText
-      ? token.getFullStart()
-      : token.getStart(ast);
+    token.kind === SyntaxKind.JsxText ? token.getFullStart() : token.getStart();
   const end = token.getEnd();
   const value = ast.text.slice(start, end);
   const tokenType = getTokenType(token);
