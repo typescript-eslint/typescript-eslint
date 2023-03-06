@@ -55,6 +55,7 @@ module.exports = {
     // our plugin :D
     //
 
+    '@typescript-eslint/array-type': 'error',
     '@typescript-eslint/ban-ts-comment': [
       'error',
       {

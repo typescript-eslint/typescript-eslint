@@ -9,7 +9,7 @@ const writeFile = promisify(fs.writeFile);
 // the promisify util will eat the stderr logs
 async function execAsync(
   command: string,
-  args: ReadonlyArray<string>,
+  args: readonly string[],
   options: childProcess.SpawnOptions,
 ): Promise<void> {
   return new Promise((resolve, reject) => {

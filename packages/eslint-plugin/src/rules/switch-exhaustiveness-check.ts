@@ -38,7 +38,7 @@ export default createRule({
     function fixSwitch(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.SwitchStatement,
-      missingBranchTypes: Array<ts.Type>,
+      missingBranchTypes: ts.Type[],
       symbolName?: string,
     ): TSESLint.RuleFix | null {
       const lastCase =
