@@ -3033,8 +3033,8 @@ export class Converter {
   #checkIllegalDecorators(node: ts.Node): void {
     if (nodeHasIllegalDecorators(node)) {
       this.#throwUnlessAllowInvalidAST(
-        // eslint-disable-next-line deprecation/deprecation
-        node.decorators?.[0] ?? node,
+        // @ts-expect-error -- this is safe as it's guarded
+        node.illegalDecorators?.[0] ?? node,
         'Decorators are not valid here.',
       );
     }

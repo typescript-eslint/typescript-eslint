@@ -5,7 +5,6 @@ exports[`AST Fixtures legacy-fixtures errorRecovery _error_ decorator-on-interfa
   1 | // TODO: This fixture might be too large, and if so should be split up.
   2 |
 > 3 | @deco()
-    | ^^^^^^^
-> 4 | interface M {}
-    | ^^^^^^^^^^^^^^^ Decorators are not valid here."
+    | ^^^^^^^ Decorators are not valid here.
+  4 | interface M {}"
 `;
