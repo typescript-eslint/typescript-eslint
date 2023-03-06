@@ -3,6 +3,6 @@
 exports[`AST Fixtures declaration TSInterfaceDeclaration _error_ decorator TSESTree - Error 1`] = `
 "TSError
 > 1 | @decl interface Test {}
-    | ^ Decorators are not valid here.
+    | ^^^^^ Decorators are not valid here.
   2 |"
 `;

@@ -2,8 +2,8 @@
 
 exports[`AST Fixtures legacy-fixtures errorRecovery _error_ solo-const TSESTree - Error 1`] = `
 "TSError
-> 1 | // TODO: This fixture might be too large, and if so should be split up.
-    | ^ A variable declaration list must have at least one variable declarator.
+  1 | // TODO: This fixture might be too large, and if so should be split up.
   2 |
-  3 | const"
+> 3 | const
+    | ^^^^^ A variable declaration list must have at least one variable declarator."
 `;

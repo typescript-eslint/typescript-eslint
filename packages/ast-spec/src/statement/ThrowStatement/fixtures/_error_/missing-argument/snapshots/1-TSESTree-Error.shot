@@ -2,9 +2,9 @@
 
 exports[`AST Fixtures statement ThrowStatement _error_ missing-argument TSESTree - Error 1`] = `
 "TSError
-> 1 | {
-    |  ^ A throw statement must throw an expression.
-  2 |     throw
+  1 | {
+> 2 |     throw
+    |     ^^^^^ A throw statement must throw an expression.
   3 | }
   4 |"
 `;

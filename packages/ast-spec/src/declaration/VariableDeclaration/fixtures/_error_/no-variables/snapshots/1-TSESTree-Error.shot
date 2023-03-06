@@ -3,6 +3,6 @@
 exports[`AST Fixtures declaration VariableDeclaration _error_ no-variables TSESTree - Error 1`] = `
 "TSError
 > 1 | const;
-    | ^ A variable declaration list must have at least one variable declarator.
+    | ^^^^^^ A variable declaration list must have at least one variable declarator.
   2 |"
 `;

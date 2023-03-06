@@ -3,6 +3,6 @@
 exports[`AST Fixtures declaration VariableDeclaration _error_ decorator TSESTree - Error 1`] = `
 "TSError
 > 1 | @decl type Test = {};
-    | ^ Decorators are not valid here.
+    | ^^^^^ Decorators are not valid here.
   2 |"
 `;

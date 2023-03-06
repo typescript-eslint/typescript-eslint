@@ -5,7 +5,7 @@ exports[`AST Fixtures legacy-fixtures basics _error_ class-with-export-parameter
   2 |
   3 | class Foo {
 > 4 |     constructor(export a: string) {
-    |                 ^ A parameter cannot have an export modifier.
+    |                 ^^^^^^ A parameter cannot have an export modifier.
   5 |
   6 |     }
   7 | }"
