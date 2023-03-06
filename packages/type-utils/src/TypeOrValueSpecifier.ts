@@ -139,7 +139,11 @@ function specifierNameMatches(type: ts.Type, name: string | string[]): boolean {
   if (typeof name === 'string') {
     name = [name];
   }
-  return name.some(item => item === type.getSymbol()?.escapedName);
+  const symbol = type.getSymbol();
+  if (symbol === undefined) {
+    return false;
+  }
+  return name.some(item => item === symbol.escapedName);
 }
 
 function typeDeclaredInFile(
