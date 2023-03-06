@@ -53,7 +53,7 @@
 }
 
 .tabCode {
-  height: calc(100%);
+  height: calc(100% - 32px);
 }
 
 .tabStyle {
