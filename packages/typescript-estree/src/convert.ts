@@ -2553,9 +2553,8 @@ export class Converter {
             : undefined,
           initializer:
             this.convertChild(
-              // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-              // @ts-ignore TODO breaking change remove this from the AST
-              node.initializer as unknown as ts.Node,
+              // @ts-expect-error TODO breaking change remove this from the AST
+              node.initializer as ts.Node,
             ) || undefined,
           readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
           static: hasModifier(SyntaxKind.StaticKeyword, node) || undefined,
