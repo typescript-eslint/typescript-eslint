@@ -3,18 +3,18 @@ import type * as ts from 'typescript';
 
 interface FileSpecifier {
   from: 'file';
-  name: string | Array<string>;
+  name: string | string[];
   source?: string;
 }
 
 interface LibSpecifier {
   from: 'lib';
-  name: string | Array<string>;
+  name: string | string[];
 }
 
 interface PackageSpecifier {
   from: 'package';
-  name: string | Array<string>;
+  name: string | string[];
   source: string;
 }
 
@@ -135,10 +135,7 @@ export const typeOrValueSpecifierSchema = {
   ],
 };
 
-function specifierNameMatches(
-  type: ts.Type,
-  name: string | Array<string>,
-): boolean {
+function specifierNameMatches(type: ts.Type, name: string | string[]): boolean {
   if (typeof name === 'string') {
     name = [name];
   }
@@ -147,7 +144,7 @@ function specifierNameMatches(
 
 function typeDeclaredInFile(
   relativePath: string | undefined,
-  declarationFiles: Array<ts.SourceFile>,
+  declarationFiles: ts.SourceFile[],
   program: ts.Program,
 ): boolean {
   if (relativePath === undefined) {

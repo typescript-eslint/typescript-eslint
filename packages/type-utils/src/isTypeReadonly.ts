@@ -20,7 +20,7 @@ const enum Readonlyness {
 
 export interface ReadonlynessOptions {
   readonly treatMethodsAsReadonly?: boolean;
-  readonly allow?: Array<TypeOrValueSpecifier>;
+  readonly allow?: TypeOrValueSpecifier[];
 }
 
 export const readonlynessOptionsSchema = {
