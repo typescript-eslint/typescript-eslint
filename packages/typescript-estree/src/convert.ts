@@ -2596,7 +2596,10 @@ export class Converter {
 
           for (const heritageType of heritageClause.types) {
             interfaceExtends.push(
-              this.convertChild(heritageType, node) as TSESTree.TSInterfaceHeritage,
+              this.convertChild(
+                heritageType,
+                node,
+              ) as TSESTree.TSInterfaceHeritage,
             );
           }
         }
