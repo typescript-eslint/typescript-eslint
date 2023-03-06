@@ -3033,7 +3033,6 @@ export class Converter {
   #checkIllegalDecorators(node: ts.Node): void {
     if (nodeHasIllegalDecorators(node)) {
       this.#throwUnlessAllowInvalidAST(
-        // @ts-expect-error -- this is safe as it's guarded
         node.illegalDecorators[0],
         'Decorators are not valid here.',
       );

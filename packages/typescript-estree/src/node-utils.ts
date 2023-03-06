@@ -673,7 +673,9 @@ export function createError(
   return new TSError(message, ast.fileName, { start, end });
 }
 
-export function nodeHasIllegalDecorators(node: ts.Node): boolean {
+export function nodeHasIllegalDecorators(
+  node: ts.Node,
+): node is ts.Node & { illegalDecorators: ts.Node[] } {
   return !!(
     'illegalDecorators' in node &&
     (node.illegalDecorators as unknown[] | undefined)?.length
