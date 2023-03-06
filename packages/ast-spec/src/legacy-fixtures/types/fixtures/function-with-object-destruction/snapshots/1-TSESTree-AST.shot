@@ -6,9 +6,12 @@ Program {
   body: Array [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "foo",
+        optional: false,
 
         range: [78, 81],
         loc: {
@@ -21,13 +24,17 @@ Program {
         params: Array [
           ObjectPattern {
             type: "ObjectPattern",
+            decorators: Array [],
+            optional: false,
             properties: Array [
               Property {
                 type: "Property",
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "a",
+                  optional: false,
 
                   range: [87, 88],
                   loc: {
@@ -37,10 +44,13 @@ Program {
                 },
                 kind: "init",
                 method: false,
+                optional: false,
                 shorthand: true,
                 value: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "a",
+                  optional: false,
 
                   range: [87, 88],
                   loc: {

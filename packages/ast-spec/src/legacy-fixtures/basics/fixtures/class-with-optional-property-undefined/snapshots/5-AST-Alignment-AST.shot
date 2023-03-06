@@ -10,6 +10,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-property-undefi
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
@@ -18,9 +19,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-property-undefi
               accessibility: 'private',
               computed: false,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'foo',
+-               optional: false,
 
                 range: [93, 96],
                 loc: {
@@ -30,10 +35,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-property-undefi
               },
               optional: true,
 -             override: false,
+-             readonly: false,
               static: false,
               value: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'undefined',
+-               optional: false,
 
                 range: [100, 109],
                 loc: {
@@ -56,9 +64,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-property-undefi
             end: { column: 1, line: 5 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'X',
+-         optional: false,
 
           range: [79, 80],
           loc: {
@@ -66,6 +78,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-property-undefi
             end: { column: 7, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 112],

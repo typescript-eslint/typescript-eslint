@@ -2,5 +2,194 @@
 
 exports[`AST Fixtures legacy-fixtures basics async-function-with-var-declaration AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      FunctionDeclaration {
+        type: 'FunctionDeclaration',
+        async: true,
+        body: BlockStatement {
+          type: 'BlockStatement',
+          body: Array [
+            VariableDeclaration {
+              type: 'VariableDeclaration',
+              declarations: Array [
+                VariableDeclarator {
+                  type: 'VariableDeclarator',
+-                 definite: false,
+                  id: Identifier {
+                    type: 'Identifier',
+-                   decorators: Array [],
+                    name: 'foo',
+-                   optional: false,
+
+                    range: [103, 106],
+                    loc: {
+                      start: { column: 6, line: 4 },
+                      end: { column: 9, line: 4 },
+                    },
+                  },
+                  init: Literal {
+                    type: 'Literal',
+                    raw: '\\\\'foo\\\\'',
+                    value: 'foo',
+
+                    range: [109, 114],
+                    loc: {
+                      start: { column: 12, line: 4 },
+                      end: { column: 17, line: 4 },
+                    },
+                  },
+
+                  range: [103, 114],
+                  loc: {
+                    start: { column: 6, line: 4 },
+                    end: { column: 17, line: 4 },
+                  },
+                },
+              ],
+-             declare: false,
+              kind: 'var',
+
+              range: [99, 115],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 18, line: 4 },
+              },
+            },
+            VariableDeclaration {
+              type: 'VariableDeclaration',
+              declarations: Array [
+                VariableDeclarator {
+                  type: 'VariableDeclarator',
+-                 definite: false,
+                  id: Identifier {
+                    type: 'Identifier',
+-                   decorators: Array [],
+                    name: 'bar',
+-                   optional: false,
+
+                    range: [122, 125],
+                    loc: {
+                      start: { column: 6, line: 5 },
+                      end: { column: 9, line: 5 },
+                    },
+                  },
+                  init: Literal {
+                    type: 'Literal',
+                    raw: '\\\\'bar\\\\'',
+                    value: 'bar',
+
+                    range: [128, 133],
+                    loc: {
+                      start: { column: 12, line: 5 },
+                      end: { column: 17, line: 5 },
+                    },
+                  },
+
+                  range: [122, 133],
+                  loc: {
+                    start: { column: 6, line: 5 },
+                    end: { column: 17, line: 5 },
+                  },
+                },
+              ],
+-             declare: false,
+              kind: 'let',
+
+              range: [118, 134],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 18, line: 5 },
+              },
+            },
+            VariableDeclaration {
+              type: 'VariableDeclaration',
+              declarations: Array [
+                VariableDeclarator {
+                  type: 'VariableDeclarator',
+-                 definite: false,
+                  id: Identifier {
+                    type: 'Identifier',
+-                   decorators: Array [],
+                    name: 'fooBar',
+-                   optional: false,
+
+                    range: [143, 149],
+                    loc: {
+                      start: { column: 8, line: 6 },
+                      end: { column: 14, line: 6 },
+                    },
+                  },
+                  init: Literal {
+                    type: 'Literal',
+                    raw: '\\\\'fooBar\\\\'',
+                    value: 'fooBar',
+
+                    range: [152, 160],
+                    loc: {
+                      start: { column: 17, line: 6 },
+                      end: { column: 25, line: 6 },
+                    },
+                  },
+
+                  range: [143, 160],
+                  loc: {
+                    start: { column: 8, line: 6 },
+                    end: { column: 25, line: 6 },
+                  },
+                },
+              ],
+-             declare: false,
+              kind: 'const',
+
+              range: [137, 161],
+              loc: {
+                start: { column: 2, line: 6 },
+                end: { column: 26, line: 6 },
+              },
+            },
+          ],
+
+          range: [95, 163],
+          loc: {
+            start: { column: 22, line: 3 },
+            end: { column: 1, line: 7 },
+          },
+        },
+-       declare: false,
+        expression: false,
+        generator: false,
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'test',
+-         optional: false,
+
+          range: [88, 92],
+          loc: {
+            start: { column: 15, line: 3 },
+            end: { column: 19, line: 3 },
+          },
+        },
+        params: Array [],
+
+        range: [73, 163],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 164],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 8 },
+    },
+  }"
 `;

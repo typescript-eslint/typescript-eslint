@@ -20,9 +20,13 @@ exports[`AST Fixtures legacy-fixtures basics interface-type-parameters AST Align
             end: { column: 19, line: 3 },
           },
         },
+-       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [83, 86],
           loc: {
@@ -38,7 +42,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-type-parameters AST Align
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [87, 88],
 -               loc: {

@@ -6,9 +6,12 @@ Program {
   body: Array [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "X",
+        optional: false,
 
         range: [78, 79],
         loc: {
@@ -18,9 +21,103 @@ Program {
       },
       typeAnnotation: TSTypeReference {
         type: "TSTypeReference",
+        typeArguments: TSTypeParameterInstantiation {
+          type: "TSTypeParameterInstantiation",
+          params: Array [
+            TSImportType {
+              type: "TSImportType",
+              argument: TSLiteralType {
+                type: "TSLiteralType",
+                literal: Literal {
+                  type: "Literal",
+                  raw: "''",
+                  value: "",
+
+                  range: [91, 93],
+                  loc: {
+                    start: { column: 18, line: 3 },
+                    end: { column: 20, line: 3 },
+                  },
+                },
+
+                range: [91, 93],
+                loc: {
+                  start: { column: 18, line: 3 },
+                  end: { column: 20, line: 3 },
+                },
+              },
+              qualifier: Identifier {
+                type: "Identifier",
+                decorators: Array [],
+                name: "B",
+                optional: false,
+
+                range: [95, 96],
+                loc: {
+                  start: { column: 22, line: 3 },
+                  end: { column: 23, line: 3 },
+                },
+              },
+              typeArguments: TSTypeParameterInstantiation {
+                type: "TSTypeParameterInstantiation",
+                params: Array [
+                  TSAnyKeyword {
+                    type: "TSAnyKeyword",
+
+                    range: [97, 100],
+                    loc: {
+                      start: { column: 24, line: 3 },
+                      end: { column: 27, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [96, 101],
+                loc: {
+                  start: { column: 23, line: 3 },
+                  end: { column: 28, line: 3 },
+                },
+              },
+              typeParameters: TSTypeParameterInstantiation {
+                type: "TSTypeParameterInstantiation",
+                params: Array [
+                  TSAnyKeyword {
+                    type: "TSAnyKeyword",
+
+                    range: [97, 100],
+                    loc: {
+                      start: { column: 24, line: 3 },
+                      end: { column: 27, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [96, 101],
+                loc: {
+                  start: { column: 23, line: 3 },
+                  end: { column: 28, line: 3 },
+                },
+              },
+
+              range: [84, 101],
+              loc: {
+                start: { column: 11, line: 3 },
+                end: { column: 28, line: 3 },
+              },
+            },
+          ],
+
+          range: [83, 102],
+          loc: {
+            start: { column: 10, line: 3 },
+            end: { column: 29, line: 3 },
+          },
+        },
         typeName: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "A",
+          optional: false,
 
           range: [82, 83],
           loc: {
@@ -55,12 +152,34 @@ Program {
               },
               qualifier: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "B",
+                optional: false,
 
                 range: [95, 96],
                 loc: {
                   start: { column: 22, line: 3 },
                   end: { column: 23, line: 3 },
+                },
+              },
+              typeArguments: TSTypeParameterInstantiation {
+                type: "TSTypeParameterInstantiation",
+                params: Array [
+                  TSAnyKeyword {
+                    type: "TSAnyKeyword",
+
+                    range: [97, 100],
+                    loc: {
+                      start: { column: 24, line: 3 },
+                      end: { column: 27, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [96, 101],
+                loc: {
+                  start: { column: 23, line: 3 },
+                  end: { column: 28, line: 3 },
                 },
               },
               typeParameters: TSTypeParameterInstantiation {

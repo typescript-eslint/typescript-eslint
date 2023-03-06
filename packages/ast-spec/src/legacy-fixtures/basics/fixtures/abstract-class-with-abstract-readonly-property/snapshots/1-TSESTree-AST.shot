@@ -15,9 +15,13 @@ Program {
             accessibility: "public",
             computed: false,
             declare: false,
+            decorators: Array [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "foo",
+              optional: false,
 
               range: [121, 124],
               loc: {
@@ -25,6 +29,7 @@ Program {
                 end: { column: 30, line: 4 },
               },
             },
+            optional: false,
             override: false,
             readonly: true,
             static: false,
@@ -62,9 +67,13 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [88, 91],
         loc: {
@@ -72,6 +81,7 @@ Program {
           end: { column: 18, line: 3 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [73, 135],

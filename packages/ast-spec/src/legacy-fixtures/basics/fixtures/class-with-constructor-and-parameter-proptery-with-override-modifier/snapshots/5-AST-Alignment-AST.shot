@@ -10,15 +10,19 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-paramete
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'constructor',
+-               optional: false,
 
                 range: [126, 137],
                 loc: {
@@ -27,6 +31,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-paramete
                 },
               },
               kind: 'constructor',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -72,16 +77,20 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-paramete
                     end: { column: 3, line: 6 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
                 params: Array [
                   TSParameterProperty {
                     type: 'TSParameterProperty',
+-                   decorators: Array [],
                     override: true,
                     parameter: Identifier {
                       type: 'Identifier',
+-                     decorators: Array [],
                       name: 'param',
+-                     optional: false,
                       typeAnnotation: TSTypeAnnotation {
                         type: 'TSTypeAnnotation',
                         typeAnnotation: TSStringKeyword {
@@ -107,6 +116,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-paramete
                         end: { column: 36, line: 4 },
                       },
                     },
+-                   readonly: false,
+-                   static: false,
 
                     range: [138, 160],
                     loc: {
@@ -137,9 +148,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-paramete
             end: { column: 1, line: 7 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'SpecializedComponent',
+-         optional: false,
 
           range: [79, 99],
           loc: {
@@ -147,9 +162,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-paramete
             end: { column: 26, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'SomeComponent',
+-         optional: false,
 
           range: [108, 121],
           loc: {

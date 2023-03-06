@@ -1,7 +1,5 @@
-import { noFormat } from '@typescript-eslint/utils/src/eslint-utils';
-
 import rule from '../../src/rules/promise-function-async';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 const messageId = 'missingAsync';
@@ -165,6 +163,23 @@ abstract class Test {
 }
       `,
     },
+    `
+function promiseInUnionWithExplicitReturnType(
+  p: boolean,
+): Promise<number> | number {
+  return p ? Promise.resolve(5) : 5;
+}
+    `,
+    `
+function explicitReturnWithPromiseInUnion(): Promise<number> | number {
+  return 5;
+}
+    `,
+    `
+async function asyncFunctionReturningUnion(p: boolean) {
+  return p ? Promise.resolve(5) : 5;
+}
+    `,
   ],
   invalid: [
     {
@@ -751,6 +766,23 @@ const foo = {
           messageId,
         },
       ],
+    },
+    {
+      code: `
+function promiseInUnionWithoutExplicitReturnType(p: boolean) {
+  return p ? Promise.resolve(5) : 5;
+}
+      `,
+      errors: [
+        {
+          messageId,
+        },
+      ],
+      output: `
+async function promiseInUnionWithoutExplicitReturnType(p: boolean) {
+  return p ? Promise.resolve(5) : 5;
+}
+      `,
     },
   ],
 });

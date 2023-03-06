@@ -1,16 +1,7 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "5.52.0",
+  "version": "5.54.0",
   "description": "TypeScript plugin for ESLint",
-  "keywords": [
-    "eslint",
-    "eslintplugin",
-    "eslint-plugin",
-    "typescript"
-  ],
-  "engines": {
-    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
-  },
   "files": [
     "dist",
     "docs",
@@ -19,6 +10,21 @@
     "README.md",
     "LICENSE"
   ],
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json",
+    "./use-at-your-own-risk/rules": {
+      "types": "./rules.d.ts",
+      "default": "./dist/rules/index.js"
+    }
+  },
+  "engines": {
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
@@ -28,8 +34,12 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "index.d.ts",
+  "keywords": [
+    "eslint",
+    "eslintplugin",
+    "eslint-plugin",
+    "typescript"
+  ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
     "check-docs": "jest tests/docs.test.ts --runTestsByPath --silent --runInBand",
@@ -37,23 +47,23 @@
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate:breaking-changes": "yarn tsx tools/generate-breaking-changes.ts",
+    "generate:breaking-changes": "yarn tsx tools/generate-breaking-changes.mts",
     "generate:configs": "yarn tsx tools/generate-configs.ts",
     "lint": "nx lint",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/scope-manager": "5.52.0",
-    "@typescript-eslint/type-utils": "5.52.0",
-    "@typescript-eslint/utils": "5.52.0",
+    "@typescript-eslint/scope-manager": "5.54.0",
+    "@typescript-eslint/type-utils": "5.54.0",
+    "@typescript-eslint/utils": "5.54.0",
     "debug": "^4.3.4",
     "grapheme-splitter": "^1.0.4",
     "ignore": "^5.2.0",
     "natural-compare-lite": "^1.4.0",
     "regexpp": "^3.2.0",
     "semver": "^7.3.7",
-    "ts-api-utils": "^0.0.22"
+    "ts-api-utils": "^0.0.39"
   },
   "devDependencies": {
     "@types/debug": "*",
@@ -61,9 +71,7 @@
     "@types/marked": "*",
     "@types/natural-compare-lite": "^1.4.0",
     "@types/prettier": "*",
-    "chalk": "^5.0.1",
     "cross-fetch": "*",
-    "grapheme-splitter": "^1.0.4",
     "json-schema": "*",
     "markdown-table": "^3.0.2",
     "marked": "^4.0.15",

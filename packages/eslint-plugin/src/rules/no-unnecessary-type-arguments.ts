@@ -1,5 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -179,7 +179,7 @@ function getAliasedSymbol(
   symbol: ts.Symbol,
   checker: ts.TypeChecker,
 ): ts.Symbol {
-  return tools.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
+  return tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.Alias)
     ? checker.getAliasedSymbol(symbol)
     : symbol;
 }

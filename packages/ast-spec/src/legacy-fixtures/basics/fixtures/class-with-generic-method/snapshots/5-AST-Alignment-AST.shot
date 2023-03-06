@@ -10,15 +10,19 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Align
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'getBar',
+-               optional: false,
 
                 range: [87, 93],
                 loc: {
@@ -27,6 +31,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Align
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -42,6 +47,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Align
                     end: { column: 16, line: 4 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -54,7 +60,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Align
 -                     in: false,
 -                     name: Identifier {
 -                       type: 'Identifier',
+-                       decorators: Array [],
 -                       name: 'T',
+-                       optional: false,
 -
 -                       range: [94, 95],
 -                       loc: {
@@ -103,9 +111,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Align
             end: { column: 1, line: 5 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [79, 82],
           loc: {
@@ -113,6 +125,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-generic-method AST Align
             end: { column: 9, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 103],

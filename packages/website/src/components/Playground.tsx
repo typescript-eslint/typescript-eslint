@@ -1,4 +1,3 @@
-import { useColorMode } from '@docusaurus/theme-common';
 import ASTViewerScope from '@site/src/components/ASTViewerScope';
 import ConfigEslint from '@site/src/components/config/ConfigEslint';
 import ConfigTypeScript from '@site/src/components/config/ConfigTypeScript';
@@ -49,7 +48,6 @@ function rangeReducer<T extends SelectedRange | null>(
   }
   return prevState;
 }
-
 function Playground(): JSX.Element {
   const [state, setState] = useHashState({
     jsx: false,
@@ -60,7 +58,6 @@ function Playground(): JSX.Element {
     tsconfig: defaultTsConfig,
     eslintrc: defaultEslintConfig,
   });
-  const { colorMode } = useColorMode();
   const [esAst, setEsAst] = useState<TSESTree.Program | null>();
   const [tsAst, setTsAST] = useState<SourceFile | null>();
   const [scope, setScope] = useState<Record<string, unknown> | null>();
@@ -131,6 +128,7 @@ function Playground(): JSX.Element {
             split="vertical"
             minSize="10%"
             defaultSize="50%"
+            pane2Style={{ overflow: 'hidden' }}
           >
             <div className={clsx(styles.sourceCode)}>
               {isLoading && <Loader />}
@@ -150,7 +148,6 @@ function Playground(): JSX.Element {
                 code={state.code}
                 tsconfig={state.tsconfig}
                 eslintrc={state.eslintrc}
-                darkTheme={colorMode === 'dark'}
                 sourceType={state.sourceType}
                 showAST={state.showAST}
                 onEsASTChange={setEsAst}

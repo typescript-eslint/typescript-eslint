@@ -1,4 +1,4 @@
-import type { RuleRecommendation } from '@typescript-eslint/utils/src/ts-eslint';
+import type { RuleRecommendation } from '@typescript-eslint/utils/ts-eslint';
 
 import plugin from '../src/index';
 import rules from '../src/rules';

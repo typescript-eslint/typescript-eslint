@@ -22,7 +22,9 @@ Program {
                   computed: false,
                   object: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "one",
+                    optional: false,
 
                     range: [117, 120],
                     loc: {
@@ -33,7 +35,9 @@ Program {
                   optional: true,
                   property: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "fn",
+                    optional: false,
 
                     range: [122, 124],
                     loc: {
@@ -85,7 +89,9 @@ Program {
                     computed: false,
                     object: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "one",
+                      optional: false,
 
                       range: [130, 133],
                       loc: {
@@ -96,7 +102,9 @@ Program {
                     optional: true,
                     property: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "two",
+                      optional: false,
 
                       range: [135, 138],
                       loc: {
@@ -114,7 +122,9 @@ Program {
                   optional: false,
                   property: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "fn",
+                    optional: false,
 
                     range: [139, 141],
                     loc: {
@@ -166,7 +176,9 @@ Program {
                     computed: false,
                     object: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "one",
+                      optional: false,
 
                       range: [147, 150],
                       loc: {
@@ -177,7 +189,9 @@ Program {
                     optional: false,
                     property: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "two",
+                      optional: false,
 
                       range: [151, 154],
                       loc: {
@@ -195,7 +209,9 @@ Program {
                   optional: true,
                   property: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "fn",
+                    optional: false,
 
                     range: [156, 158],
                     loc: {
@@ -250,7 +266,9 @@ Program {
                       computed: false,
                       object: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "one",
+                        optional: false,
 
                         range: [164, 167],
                         loc: {
@@ -261,7 +279,9 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "two",
+                        optional: false,
 
                         range: [168, 171],
                         loc: {
@@ -279,7 +299,9 @@ Program {
                     optional: true,
                     property: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "three",
+                      optional: false,
 
                       range: [173, 178],
                       loc: {
@@ -297,7 +319,9 @@ Program {
                   optional: false,
                   property: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "fn",
+                    optional: false,
 
                     range: [179, 181],
                     loc: {
@@ -352,7 +376,9 @@ Program {
                       computed: false,
                       object: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "one",
+                        optional: false,
 
                         range: [187, 190],
                         loc: {
@@ -363,7 +389,9 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
+                        decorators: Array [],
                         name: "two",
+                        optional: false,
 
                         range: [191, 194],
                         loc: {
@@ -381,7 +409,9 @@ Program {
                     optional: true,
                     property: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "three",
+                      optional: false,
 
                       range: [196, 201],
                       loc: {
@@ -399,7 +429,9 @@ Program {
                   optional: true,
                   property: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "fn",
+                    optional: false,
 
                     range: [203, 205],
                     loc: {
@@ -445,7 +477,9 @@ Program {
                 arguments: Array [],
                 callee: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "one",
+                  optional: false,
 
                   range: [212, 215],
                   loc: {
@@ -487,7 +521,9 @@ Program {
                   arguments: Array [],
                   callee: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "one",
+                    optional: false,
 
                     range: [223, 226],
                     loc: {
@@ -537,7 +573,9 @@ Program {
                   arguments: Array [],
                   callee: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "one",
+                    optional: false,
 
                     range: [236, 239],
                     loc: {
@@ -587,7 +625,9 @@ Program {
                   arguments: Array [],
                   callee: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "one",
+                    optional: false,
 
                     range: [252, 255],
                     loc: {
@@ -606,7 +646,9 @@ Program {
                 optional: false,
                 property: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "two",
+                  optional: false,
 
                   range: [260, 263],
                   loc: {
@@ -643,11 +685,14 @@ Program {
           end: { column: 1, line: 15 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "processOptionalCall",
+        optional: false,
 
         range: [82, 101],
         loc: {
@@ -658,6 +703,7 @@ Program {
       params: Array [
         Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "one",
           optional: true,
           typeAnnotation: TSTypeAnnotation {

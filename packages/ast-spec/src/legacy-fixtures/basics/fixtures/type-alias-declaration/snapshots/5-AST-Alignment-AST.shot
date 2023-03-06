@@ -10,9 +10,12 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration AST Alignmen
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Result',
+-         optional: false,
 
           range: [78, 84],
           loc: {
@@ -25,9 +28,43 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration AST Alignmen
           types: Array [
             TSTypeReference {
               type: 'TSTypeReference',
+-             typeArguments: TSTypeParameterInstantiation {
+-               type: 'TSTypeParameterInstantiation',
+-               params: Array [
+-                 TSTypeReference {
+-                   type: 'TSTypeReference',
+-                   typeName: Identifier {
+-                     type: 'Identifier',
+-                     decorators: Array [],
+-                     name: 'T',
+-                     optional: false,
+-
+-                     range: [98, 99],
+-                     loc: {
+-                       start: { column: 25, line: 3 },
+-                       end: { column: 26, line: 3 },
+-                     },
+-                   },
+-
+-                   range: [98, 99],
+-                   loc: {
+-                     start: { column: 25, line: 3 },
+-                     end: { column: 26, line: 3 },
+-                   },
+-                 },
+-               ],
+-
+-               range: [97, 100],
+-               loc: {
+-                 start: { column: 24, line: 3 },
+-                 end: { column: 27, line: 3 },
+-               },
+-             },
               typeName: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'Success',
+-               optional: false,
 
                 range: [90, 97],
                 loc: {
@@ -42,7 +79,9 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration AST Alignmen
                     type: 'TSTypeReference',
                     typeName: Identifier {
                       type: 'Identifier',
+-                     decorators: Array [],
                       name: 'T',
+-                     optional: false,
 
                       range: [98, 99],
                       loc: {
@@ -76,7 +115,9 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration AST Alignmen
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'Failure',
+-               optional: false,
 
                 range: [103, 110],
                 loc: {
@@ -107,7 +148,9 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration AST Alignmen
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [85, 86],
 -               loc: {

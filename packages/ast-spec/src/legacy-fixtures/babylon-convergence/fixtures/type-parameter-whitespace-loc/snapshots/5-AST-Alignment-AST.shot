@@ -21,11 +21,14 @@ exports[`AST Fixtures legacy-fixtures babylon-convergence type-parameter-whitesp
             end: { column: 18, line: 3 },
           },
         },
+-       declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'f',
+-         optional: false,
 
           range: [82, 83],
           loc: {
@@ -42,7 +45,9 @@ exports[`AST Fixtures legacy-fixtures babylon-convergence type-parameter-whitesp
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [84, 85],
 -               loc: {

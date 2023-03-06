@@ -14,7 +14,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "foo",
+              optional: false,
 
               range: [92, 95],
               loc: {
@@ -23,6 +25,8 @@ Program {
               },
             },
             optional: true,
+            readonly: false,
+            static: false,
 
             range: [92, 97],
             loc: {
@@ -35,7 +39,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "bar",
+              optional: false,
 
               range: [100, 103],
               loc: {
@@ -44,6 +50,8 @@ Program {
               },
             },
             optional: true,
+            readonly: false,
+            static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSStringKeyword {
@@ -74,7 +82,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "baz",
+              optional: false,
 
               range: [116, 119],
               loc: {
@@ -87,7 +97,9 @@ Program {
             params: Array [
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "foo",
+                optional: false,
 
                 range: [121, 124],
                 loc: {
@@ -97,6 +109,7 @@ Program {
               },
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "bar",
                 optional: true,
                 typeAnnotation: TSTypeAnnotation {
@@ -126,6 +139,7 @@ Program {
               },
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "baz",
                 optional: true,
 
@@ -136,6 +150,8 @@ Program {
                 },
               },
             ],
+            readonly: false,
+            static: false,
 
             range: [116, 146],
             loc: {
@@ -151,9 +167,13 @@ Program {
           end: { column: 1, line: 7 },
         },
       },
+      declare: false,
+      extends: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "test",
+        optional: false,
 
         range: [83, 87],
         loc: {

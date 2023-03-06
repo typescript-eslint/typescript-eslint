@@ -17,11 +17,14 @@ Program {
           end: { column: 51, line: 3 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "foo",
+        optional: false,
 
         range: [82, 85],
         loc: {
@@ -32,13 +35,17 @@ Program {
       params: Array [
         ObjectPattern {
           type: "ObjectPattern",
+          decorators: Array [],
+          optional: false,
           properties: Array [
             Property {
               type: "Property",
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "bar",
+                optional: false,
 
                 range: [88, 91],
                 loc: {
@@ -48,10 +55,13 @@ Program {
               },
               kind: "init",
               method: false,
+              optional: false,
               shorthand: true,
               value: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "bar",
+                optional: false,
 
                 range: [88, 91],
                 loc: {
@@ -71,7 +81,9 @@ Program {
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "baz",
+                optional: false,
 
                 range: [93, 96],
                 loc: {
@@ -81,10 +93,13 @@ Program {
               },
               kind: "init",
               method: false,
+              optional: false,
               shorthand: true,
               value: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "baz",
+                optional: false,
 
                 range: [93, 96],
                 loc: {
@@ -110,7 +125,9 @@ Program {
                   computed: false,
                   key: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "bar",
+                    optional: false,
 
                     range: [102, 105],
                     loc: {
@@ -118,6 +135,9 @@ Program {
                       end: { column: 32, line: 3 },
                     },
                   },
+                  optional: false,
+                  readonly: false,
+                  static: false,
                   typeAnnotation: TSTypeAnnotation {
                     type: "TSTypeAnnotation",
                     typeAnnotation: TSStringKeyword {
@@ -148,7 +168,9 @@ Program {
                   computed: false,
                   key: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "baz",
+                    optional: false,
 
                     range: [115, 118],
                     loc: {
@@ -156,6 +178,9 @@ Program {
                       end: { column: 45, line: 3 },
                     },
                   },
+                  optional: false,
+                  readonly: false,
+                  static: false,
 
                   range: [115, 118],
                   loc: {

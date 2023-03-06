@@ -8,5 +8,10 @@
     "lib": ["es2015", "es2017", "esnext"],
     "experimentalDecorators": true
   },
-  "include": ["file.ts", "react.tsx"]
+  "include": [
+    "file.ts",
+    "consistent-type-exports.ts",
+    "mixed-enums-decl.ts",
+    "react.tsx"
+  ]
 }

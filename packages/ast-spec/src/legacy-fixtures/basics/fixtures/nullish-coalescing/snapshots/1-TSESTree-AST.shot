@@ -15,9 +15,12 @@ Program {
             declarations: Array [
               VariableDeclarator {
                 type: "VariableDeclarator",
+                definite: false,
                 id: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "len",
+                  optional: false,
 
                   range: [125, 128],
                   loc: {
@@ -29,7 +32,9 @@ Program {
                   type: "LogicalExpression",
                   left: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "s",
+                    optional: false,
 
                     range: [131, 132],
                     loc: {
@@ -64,6 +69,7 @@ Program {
                 },
               },
             ],
+            declare: false,
             kind: "let",
 
             range: [121, 139],
@@ -80,11 +86,14 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "processNullishCoalesce",
+        optional: false,
 
         range: [82, 104],
         loc: {
@@ -95,6 +104,7 @@ Program {
       params: Array [
         Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "s",
           optional: true,
           typeAnnotation: TSTypeAnnotation {

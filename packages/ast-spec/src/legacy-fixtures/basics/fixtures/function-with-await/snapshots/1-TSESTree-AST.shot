@@ -16,7 +16,9 @@ Program {
               type: "AwaitExpression",
               argument: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "future",
+                optional: false,
 
                 range: [111, 117],
                 loc: {
@@ -46,11 +48,14 @@ Program {
           end: { column: 1, line: 5 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "hope",
+        optional: false,
 
         range: [88, 92],
         loc: {
@@ -61,7 +66,9 @@ Program {
       params: Array [
         Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "future",
+          optional: false,
 
           range: [93, 99],
           loc: {

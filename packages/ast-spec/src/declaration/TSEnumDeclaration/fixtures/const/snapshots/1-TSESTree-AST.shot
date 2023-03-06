@@ -7,9 +7,12 @@ Program {
     TSEnumDeclaration {
       type: "TSEnumDeclaration",
       const: true,
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [11, 14],
         loc: {

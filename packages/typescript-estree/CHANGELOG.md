@@ -3,6 +3,28 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.54.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.53.0...v5.54.0) (2023-02-27)
+
+
+### Bug Fixes
+
+* **typescript-estree:** check for relative/root paths in printing file path errors ([#6491](https://github.com/typescript-eslint/typescript-eslint/issues/6491)) ([dc14242](https://github.com/typescript-eslint/typescript-eslint/commit/dc1424298493f1ee2e5a357e103c504655546d61))
+
+
+
+
+
+# [5.53.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.52.0...v5.53.0) (2023-02-20)
+
+
+### Features
+
+* **typescript-estree:** expose a wrapper cache clearing function for advanced usecases ([#6476](https://github.com/typescript-eslint/typescript-eslint/issues/6476)) ([d816496](https://github.com/typescript-eslint/typescript-eslint/commit/d8164960d21336d4a726d8179b314f05fe3aeb22))
+
+
+
+
+
 # [5.52.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.51.0...v5.52.0) (2023-02-13)
 
 

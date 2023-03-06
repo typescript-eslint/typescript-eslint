@@ -8,7 +8,9 @@ Program {
       type: "TSImportEqualsDeclaration",
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "F",
+        optional: false,
 
         range: [7, 8],
         loc: {
@@ -19,7 +21,9 @@ Program {
       importKind: "value",
       moduleReference: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "A",
+        optional: false,
 
         range: [11, 12],
         loc: {

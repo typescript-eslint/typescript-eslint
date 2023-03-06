@@ -511,7 +511,7 @@ function getRank(
   const memberGroups: BaseMemberType[] = [];
 
   if (supportsModifiers) {
-    const decorated = 'decorators' in node && node.decorators!.length > 0;
+    const decorated = 'decorators' in node && node.decorators.length > 0;
     if (
       decorated &&
       (type === 'field' ||
@@ -655,9 +655,9 @@ export default util.createRule<Options, MessageIds>({
       members: Member[],
       groupOrder: MemberType[],
       supportsModifiers: boolean,
-    ): Array<Member[]> | null {
+    ): Member[][] | null {
       const previousRanks: number[] = [];
-      const memberGroups: Array<Member[]> = [];
+      const memberGroups: Member[][] = [];
       let isCorrectlySorted = true;
 
       // Find first member which isn't correctly sorted

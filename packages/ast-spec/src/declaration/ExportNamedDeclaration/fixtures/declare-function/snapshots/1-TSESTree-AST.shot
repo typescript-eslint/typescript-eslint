@@ -15,7 +15,9 @@ Program {
         generator: false,
         id: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "foo",
+          optional: false,
 
           range: [24, 27],
           loc: {

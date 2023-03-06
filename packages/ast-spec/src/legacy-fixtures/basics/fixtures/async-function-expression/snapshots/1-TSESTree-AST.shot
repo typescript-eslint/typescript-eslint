@@ -22,11 +22,14 @@ Program {
               end: { column: 25, line: 3 },
             },
           },
+          declare: false,
           expression: false,
           generator: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "test",
+            optional: false,
 
             range: [89, 93],
             loc: {

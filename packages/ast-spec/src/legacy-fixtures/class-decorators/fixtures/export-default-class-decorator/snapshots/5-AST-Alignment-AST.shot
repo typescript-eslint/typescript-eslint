@@ -12,6 +12,7 @@ exports[`AST Fixtures legacy-fixtures class-decorators export-default-class-deco
         type: 'ExportDefaultDeclaration',
         declaration: ClassDeclaration {
           type: 'ClassDeclaration',
+-         abstract: false,
           body: ClassBody {
             type: 'ClassBody',
             body: Array [],
@@ -22,12 +23,15 @@ exports[`AST Fixtures legacy-fixtures class-decorators export-default-class-deco
               end: { column: 27, line: 4 },
             },
           },
+-         declare: false,
           decorators: Array [
             Decorator {
               type: 'Decorator',
               expression: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'sealed',
+-               optional: false,
 
                 range: [74, 80],
                 loc: {
@@ -45,7 +49,9 @@ exports[`AST Fixtures legacy-fixtures class-decorators export-default-class-deco
           ],
           id: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'Qux',
+-           optional: false,
 
             range: [102, 105],
             loc: {
@@ -53,6 +59,7 @@ exports[`AST Fixtures legacy-fixtures class-decorators export-default-class-deco
               end: { column: 24, line: 4 },
             },
           },
+-         implements: Array [],
           superClass: null,
 
 -         range: [96, 108],

@@ -10,6 +10,7 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-ins
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
@@ -22,7 +23,9 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-ins
                   type: 'Decorator',
                   expression: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'foo',
+-                   optional: false,
 
                     range: [86, 89],
                     loc: {
@@ -38,9 +41,12 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-ins
                   },
                 },
               ],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'x',
+-               optional: false,
 
                 range: [90, 91],
                 loc: {
@@ -48,7 +54,9 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-ins
                   end: { column: 8, line: 4 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               value: null,
 
@@ -67,7 +75,9 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-ins
                   type: 'Decorator',
                   expression: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'bar',
+-                   optional: false,
 
                     range: [96, 99],
                     loc: {
@@ -83,9 +93,12 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-ins
                   },
                 },
               ],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'y',
+-               optional: false,
 
                 range: [102, 103],
                 loc: {
@@ -93,7 +106,9 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-ins
                   end: { column: 3, line: 6 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               value: null,
 
@@ -111,9 +126,13 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-ins
             end: { column: 1, line: 7 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'B',
+-         optional: false,
 
           range: [79, 80],
           loc: {
@@ -121,6 +140,7 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-ins
             end: { column: 7, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 106],

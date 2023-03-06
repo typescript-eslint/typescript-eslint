@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.54.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.53.0...v5.54.0) (2023-02-27)
+
+
+### Features
+
+* **eslint-plugin:** [promise-function-async] check for promises in implicit return types ([#6330](https://github.com/typescript-eslint/typescript-eslint/issues/6330)) ([de1e5ce](https://github.com/typescript-eslint/typescript-eslint/commit/de1e5ce11250b259f1f809859eeb7eaa162e897f)), closes [#6329](https://github.com/typescript-eslint/typescript-eslint/issues/6329)
+
+
+
+
+
+# [5.53.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.52.0...v5.53.0) (2023-02-20)
+
+
+### Features
+
+* **eslint-plugin:** [consistent-generic-constructors] handle default parameters ([#6484](https://github.com/typescript-eslint/typescript-eslint/issues/6484)) ([e8cebce](https://github.com/typescript-eslint/typescript-eslint/commit/e8cebce972a5009f192034304ba6e768a9bcdbb6))
+* **eslint-plugin:** [no-mixed-enums] add rule ([#6102](https://github.com/typescript-eslint/typescript-eslint/issues/6102)) ([16144d1](https://github.com/typescript-eslint/typescript-eslint/commit/16144d1d6a37668393f731913a306008f33eeac6))
+
+
+
+
+
 # [5.52.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.51.0...v5.52.0) (2023-02-13)
 
 

@@ -3,6 +3,36 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.54.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.53.0...v5.54.0) (2023-02-27)
+
+
+### Bug Fixes
+
+* **typescript-estree:** check for relative/root paths in printing file path errors ([#6491](https://github.com/typescript-eslint/typescript-eslint/issues/6491)) ([dc14242](https://github.com/typescript-eslint/typescript-eslint/commit/dc1424298493f1ee2e5a357e103c504655546d61))
+* **website:** corect playground build issue ([#6506](https://github.com/typescript-eslint/typescript-eslint/issues/6506)) ([6aad7d3](https://github.com/typescript-eslint/typescript-eslint/commit/6aad7d3957c28e408235eb1e5d7fedccc594280f))
+
+
+### Features
+
+* **eslint-plugin:** [promise-function-async] check for promises in implicit return types ([#6330](https://github.com/typescript-eslint/typescript-eslint/issues/6330)) ([de1e5ce](https://github.com/typescript-eslint/typescript-eslint/commit/de1e5ce11250b259f1f809859eeb7eaa162e897f)), closes [#6329](https://github.com/typescript-eslint/typescript-eslint/issues/6329)
+
+
+
+
+
+# [5.53.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.52.0...v5.53.0) (2023-02-20)
+
+
+### Features
+
+* **eslint-plugin:** [consistent-generic-constructors] handle default parameters ([#6484](https://github.com/typescript-eslint/typescript-eslint/issues/6484)) ([e8cebce](https://github.com/typescript-eslint/typescript-eslint/commit/e8cebce972a5009f192034304ba6e768a9bcdbb6))
+* **eslint-plugin:** [no-mixed-enums] add rule ([#6102](https://github.com/typescript-eslint/typescript-eslint/issues/6102)) ([16144d1](https://github.com/typescript-eslint/typescript-eslint/commit/16144d1d6a37668393f731913a306008f33eeac6))
+* **typescript-estree:** expose a wrapper cache clearing function for advanced usecases ([#6476](https://github.com/typescript-eslint/typescript-eslint/issues/6476)) ([d816496](https://github.com/typescript-eslint/typescript-eslint/commit/d8164960d21336d4a726d8179b314f05fe3aeb22))
+
+
+
+
+
 # [5.52.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.51.0...v5.52.0) (2023-02-13)
 
 

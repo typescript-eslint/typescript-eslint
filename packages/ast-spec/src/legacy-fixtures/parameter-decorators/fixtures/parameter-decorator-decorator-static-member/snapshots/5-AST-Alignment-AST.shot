@@ -10,15 +10,19 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-d
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'bar',
+-               optional: false,
 
                 range: [100, 103],
                 loc: {
@@ -27,6 +31,7 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-d
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: true,
               value: FunctionExpression {
@@ -42,6 +47,7 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-d
                     end: { column: 43, line: 4 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -68,7 +74,9 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-d
                           ],
                           callee: Identifier {
                             type: 'Identifier',
+-                           decorators: Array [],
                             name: 'special',
+-                           optional: false,
 
                             range: [105, 112],
                             loc: {
@@ -93,6 +101,7 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-d
                       },
                     ],
                     name: 'baz',
+-                   optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: 'TSTypeAnnotation',
                       typeAnnotation: TSNumberKeyword {
@@ -141,9 +150,13 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-d
             end: { column: 1, line: 5 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'StaticFoo',
+-         optional: false,
 
           range: [79, 88],
           loc: {
@@ -151,6 +164,7 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-d
             end: { column: 15, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 136],

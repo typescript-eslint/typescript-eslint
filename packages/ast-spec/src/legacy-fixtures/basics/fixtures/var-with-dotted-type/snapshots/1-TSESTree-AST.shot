@@ -9,9 +9,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "foo",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypeReference {
@@ -22,7 +25,9 @@ Program {
                     type: "TSQualifiedName",
                     left: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "A",
+                      optional: false,
 
                       range: [82, 83],
                       loc: {
@@ -32,7 +37,9 @@ Program {
                     },
                     right: Identifier {
                       type: "Identifier",
+                      decorators: Array [],
                       name: "B",
+                      optional: false,
 
                       range: [84, 85],
                       loc: {
@@ -49,7 +56,9 @@ Program {
                   },
                   right: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "C",
+                    optional: false,
 
                     range: [86, 87],
                     loc: {
@@ -94,6 +103,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "var",
 
       range: [73, 88],

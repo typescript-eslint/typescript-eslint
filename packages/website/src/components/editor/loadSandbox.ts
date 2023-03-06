@@ -1,9 +1,9 @@
-import type { LintUtils } from '@typescript-eslint/website-eslint';
 import type MonacoType from 'monaco-editor';
 import type * as TSType from 'typescript';
 
 import type * as SandboxFactory from '../../vendor/sandbox';
 import type * as TsWorker from '../../vendor/tsWorker';
+import type { LintUtils } from '../linter/WebLinter';
 
 type Monaco = typeof MonacoType;
 type TS = typeof TSType;

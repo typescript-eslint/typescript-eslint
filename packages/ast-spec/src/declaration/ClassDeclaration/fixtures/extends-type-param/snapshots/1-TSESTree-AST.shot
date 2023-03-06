@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [],
@@ -16,9 +17,13 @@ Program {
           end: { column: 32, line: 1 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [6, 9],
         loc: {
@@ -26,14 +31,37 @@ Program {
           end: { column: 9, line: 1 },
         },
       },
+      implements: Array [],
       superClass: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Set",
+        optional: false,
 
         range: [18, 21],
         loc: {
           start: { column: 18, line: 1 },
           end: { column: 21, line: 1 },
+        },
+      },
+      superTypeArguments: TSTypeParameterInstantiation {
+        type: "TSTypeParameterInstantiation",
+        params: Array [
+          TSStringKeyword {
+            type: "TSStringKeyword",
+
+            range: [22, 28],
+            loc: {
+              start: { column: 22, line: 1 },
+              end: { column: 28, line: 1 },
+            },
+          },
+        ],
+
+        range: [21, 29],
+        loc: {
+          start: { column: 21, line: 1 },
+          end: { column: 29, line: 1 },
         },
       },
       superTypeParameters: TSTypeParameterInstantiation {

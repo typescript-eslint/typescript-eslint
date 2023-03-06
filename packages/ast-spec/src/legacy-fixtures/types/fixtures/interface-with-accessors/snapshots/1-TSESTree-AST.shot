@@ -14,7 +14,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "size",
+              optional: false,
 
               range: [97, 101],
               loc: {
@@ -23,7 +25,9 @@ Program {
               },
             },
             kind: "get",
+            optional: false,
             params: Array [],
+            readonly: false,
             returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSNumberKeyword {
@@ -42,6 +46,7 @@ Program {
                 end: { column: 20, line: 4 },
               },
             },
+            static: false,
 
             range: [93, 112],
             loc: {
@@ -54,7 +59,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "size",
+              optional: false,
 
               range: [119, 123],
               loc: {
@@ -63,10 +70,13 @@ Program {
               },
             },
             kind: "set",
+            optional: false,
             params: Array [
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "value",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSUnionType {
@@ -122,6 +132,8 @@ Program {
                 },
               },
             ],
+            readonly: false,
+            static: false,
 
             range: [115, 158],
             loc: {
@@ -137,9 +149,13 @@ Program {
           end: { column: 1, line: 6 },
         },
       },
+      declare: false,
+      extends: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Thing",
+        optional: false,
 
         range: [83, 88],
         loc: {

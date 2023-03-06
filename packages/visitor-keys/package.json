@@ -1,15 +1,7 @@
 {
   "name": "@typescript-eslint/visitor-keys",
-  "version": "5.52.0",
+  "version": "5.54.0",
   "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
-  "keywords": [
-    "eslint",
-    "typescript",
-    "estree"
-  ],
-  "engines": {
-    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
-  },
   "files": [
     "dist",
     "_ts4.2",
@@ -17,6 +9,21 @@
     "README.md",
     "LICENSE"
   ],
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json",
+    "./use-at-your-own-risk/visitor-keys": {
+      "types": "./dist/visitor-keys.d.ts",
+      "default": "./dist/visitor-keys.js"
+    }
+  },
+  "engines": {
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
@@ -26,8 +33,11 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "keywords": [
+    "eslint",
+    "typescript",
+    "estree"
+  ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
     "postbuild": "downlevel-dts dist _ts4.2/dist --to=4.2",
@@ -39,7 +49,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "5.52.0",
+    "@typescript-eslint/types": "5.54.0",
     "eslint-visitor-keys": "^3.3.0"
   },
   "devDependencies": {

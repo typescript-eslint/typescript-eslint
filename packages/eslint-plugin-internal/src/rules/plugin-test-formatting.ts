@@ -528,7 +528,7 @@ export default createRule<Options, MessageIds>({
         }
 
         const typeString = checker.typeToString(type);
-        if (/^RunTests\b/.test(typeString)) {
+        if (/^(TSESLint\.)?RunTests\b/.test(typeString)) {
           checkedObjects.add(node);
 
           for (const prop of node.properties) {
@@ -558,12 +558,12 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (/^ValidTestCase\b/.test(typeString)) {
+        if (/^(TSESLint\.)?ValidTestCase\b/.test(typeString)) {
           checkInvalidTest(node);
           return;
         }
 
-        if (/^InvalidTestCase\b/.test(typeString)) {
+        if (/^(TSESLint\.)?InvalidTestCase\b/.test(typeString)) {
           checkInvalidTest(node);
           for (const testProp of node.properties) {
             if (

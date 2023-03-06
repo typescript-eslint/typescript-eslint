@@ -14,7 +14,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "baa",
+              optional: false,
 
               range: [91, 94],
               loc: {
@@ -22,6 +24,9 @@ Program {
                 end: { column: 5, line: 4 },
               },
             },
+            optional: false,
+            readonly: false,
+            static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSNumberKeyword {
@@ -52,7 +57,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "bar",
+              optional: false,
 
               range: [106, 109],
               loc: {
@@ -61,6 +68,8 @@ Program {
               },
             },
             optional: true,
+            readonly: false,
+            static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSNumberKeyword {
@@ -91,7 +100,9 @@ Program {
             computed: true,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "bax",
+              optional: false,
 
               range: [123, 126],
               loc: {
@@ -99,6 +110,9 @@ Program {
                 end: { column: 6, line: 6 },
               },
             },
+            optional: false,
+            readonly: false,
+            static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSStringKeyword {
@@ -129,7 +143,9 @@ Program {
             computed: true,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "baz",
+              optional: false,
 
               range: [140, 143],
               loc: {
@@ -138,6 +154,8 @@ Program {
               },
             },
             optional: true,
+            readonly: false,
+            static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSStringKeyword {
@@ -168,7 +186,9 @@ Program {
             parameters: Array [
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "eee",
+                optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSNumberKeyword {
@@ -195,6 +215,8 @@ Program {
                 },
               },
             ],
+            readonly: false,
+            static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSStringKeyword {
@@ -225,7 +247,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "doo",
+              optional: false,
 
               range: [182, 185],
               loc: {
@@ -234,7 +258,9 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             params: Array [],
+            readonly: false,
             returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSVoidKeyword {
@@ -253,6 +279,7 @@ Program {
                 end: { column: 13, line: 9 },
               },
             },
+            static: false,
 
             range: [182, 194],
             loc: {
@@ -265,7 +292,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "coo",
+              optional: false,
 
               range: [197, 200],
               loc: {
@@ -278,7 +307,9 @@ Program {
             params: Array [
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "a",
+                optional: false,
 
                 range: [202, 203],
                 loc: {
@@ -288,7 +319,9 @@ Program {
               },
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "b",
+                optional: false,
 
                 range: [205, 206],
                 loc: {
@@ -298,7 +331,9 @@ Program {
               },
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "c",
+                optional: false,
 
                 range: [208, 209],
                 loc: {
@@ -307,6 +342,7 @@ Program {
                 },
               },
             ],
+            readonly: false,
             returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSVoidKeyword {
@@ -325,6 +361,7 @@ Program {
                 end: { column: 21, line: 10 },
               },
             },
+            static: false,
 
             range: [197, 217],
             loc: {
@@ -337,7 +374,9 @@ Program {
             computed: true,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "loo",
+              optional: false,
 
               range: [221, 224],
               loc: {
@@ -350,7 +389,9 @@ Program {
             params: Array [
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "a",
+                optional: false,
 
                 range: [227, 228],
                 loc: {
@@ -360,7 +401,9 @@ Program {
               },
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "b",
+                optional: false,
 
                 range: [230, 231],
                 loc: {
@@ -370,7 +413,9 @@ Program {
               },
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "c",
+                optional: false,
 
                 range: [233, 234],
                 loc: {
@@ -379,6 +424,7 @@ Program {
                 },
               },
             ],
+            readonly: false,
             returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSVoidKeyword {
@@ -397,6 +443,7 @@ Program {
                 end: { column: 23, line: 11 },
               },
             },
+            static: false,
 
             range: [220, 242],
             loc: {
@@ -409,7 +456,9 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "boo",
+              optional: false,
 
               range: [245, 248],
               loc: {
@@ -418,10 +467,13 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             params: Array [
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "a",
+                optional: false,
 
                 range: [252, 253],
                 loc: {
@@ -431,7 +483,9 @@ Program {
               },
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "b",
+                optional: false,
 
                 range: [255, 256],
                 loc: {
@@ -441,7 +495,9 @@ Program {
               },
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "c",
+                optional: false,
 
                 range: [258, 259],
                 loc: {
@@ -450,6 +506,7 @@ Program {
                 },
               },
             ],
+            readonly: false,
             returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSVoidKeyword {
@@ -468,6 +525,7 @@ Program {
                 end: { column: 23, line: 12 },
               },
             },
+            static: false,
             typeParameters: TSTypeParameterDeclaration {
               type: "TSTypeParameterDeclaration",
               params: Array [
@@ -476,7 +534,9 @@ Program {
                   in: false,
                   name: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "J",
+                    optional: false,
 
                     range: [249, 250],
                     loc: {
@@ -512,7 +572,9 @@ Program {
             params: Array [
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "a",
+                optional: false,
 
                 range: [275, 276],
                 loc: {
@@ -522,6 +584,7 @@ Program {
               },
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "b",
                 optional: true,
 
@@ -562,7 +625,9 @@ Program {
             params: Array [
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "a",
+                optional: false,
 
                 range: [301, 302],
                 loc: {
@@ -572,6 +637,7 @@ Program {
               },
               Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "b",
                 optional: true,
 
@@ -608,7 +674,9 @@ Program {
                   in: false,
                   name: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "F",
+                    optional: false,
 
                     range: [298, 299],
                     loc: {
@@ -647,9 +715,13 @@ Program {
           end: { column: 1, line: 15 },
         },
       },
+      declare: false,
+      extends: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [83, 86],
         loc: {

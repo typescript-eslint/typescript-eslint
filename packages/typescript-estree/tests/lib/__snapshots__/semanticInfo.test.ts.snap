@@ -352,6 +352,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
             },
           },
           "local": {
+            "decorators": [],
             "loc": {
               "end": {
                 "column": 10,
@@ -363,6 +364,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
               },
             },
             "name": "arr",
+            "optional": false,
             "range": [
               7,
               10,
@@ -433,6 +435,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
             },
           },
           "object": {
+            "decorators": [],
             "loc": {
               "end": {
                 "column": 3,
@@ -444,6 +447,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
               },
             },
             "name": "arr",
+            "optional": false,
             "range": [
               37,
               40,
@@ -452,6 +456,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
           },
           "optional": false,
           "property": {
+            "decorators": [],
             "loc": {
               "end": {
                 "column": 8,
@@ -463,6 +468,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
               },
             },
             "name": "push",
+            "optional": false,
             "range": [
               41,
               45,
@@ -789,7 +795,9 @@ exports[`semanticInfo fixtures/isolated-file.src 1`] = `
     {
       "declarations": [
         {
+          "definite": false,
           "id": {
+            "decorators": [],
             "loc": {
               "end": {
                 "column": 7,
@@ -801,6 +809,7 @@ exports[`semanticInfo fixtures/isolated-file.src 1`] = `
               },
             },
             "name": "x",
+            "optional": false,
             "range": [
               6,
               7,
@@ -900,6 +909,7 @@ exports[`semanticInfo fixtures/isolated-file.src 1`] = `
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": {
         "end": {
@@ -1144,7 +1154,9 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
     {
       "declarations": [
         {
+          "definite": false,
           "id": {
+            "decorators": [],
             "loc": {
               "end": {
                 "column": 12,
@@ -1156,6 +1168,7 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
               },
             },
             "name": "binExp",
+            "optional": false,
             "range": [
               6,
               12,
@@ -1235,6 +1248,7 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": {
         "end": {
@@ -1253,11 +1267,14 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
       "type": "VariableDeclaration",
     },
     {
+      "abstract": false,
       "body": {
         "body": [
           {
             "computed": true,
             "declare": false,
+            "decorators": [],
+            "definite": false,
             "key": {
               "loc": {
                 "end": {
@@ -1287,11 +1304,13 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
                 "line": 4,
               },
             },
+            "optional": false,
             "override": false,
             "range": [
               37,
               54,
             ],
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": {
@@ -1347,7 +1366,10 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": [],
       "id": {
+        "decorators": [],
         "loc": {
           "end": {
             "column": 9,
@@ -1359,12 +1381,14 @@ exports[`semanticInfo fixtures/non-existent-estree-nodes.src 1`] = `
           },
         },
         "name": "Bar",
+        "optional": false,
         "range": [
           29,
           32,
         ],
         "type": "Identifier",
       },
+      "implements": [],
       "loc": {
         "end": {
           "column": 1,

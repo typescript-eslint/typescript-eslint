@@ -9,9 +9,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "a",
+            optional: false,
 
             range: [79, 80],
             loc: {
@@ -24,12 +27,46 @@ Program {
             arguments: Array [],
             callee: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "A",
+              optional: false,
 
               range: [87, 88],
               loc: {
                 start: { column: 14, line: 3 },
                 end: { column: 15, line: 3 },
+              },
+            },
+            typeArguments: TSTypeParameterInstantiation {
+              type: "TSTypeParameterInstantiation",
+              params: Array [
+                TSTypeReference {
+                  type: "TSTypeReference",
+                  typeName: Identifier {
+                    type: "Identifier",
+                    decorators: Array [],
+                    name: "B",
+                    optional: false,
+
+                    range: [89, 90],
+                    loc: {
+                      start: { column: 16, line: 3 },
+                      end: { column: 17, line: 3 },
+                    },
+                  },
+
+                  range: [89, 90],
+                  loc: {
+                    start: { column: 16, line: 3 },
+                    end: { column: 17, line: 3 },
+                  },
+                },
+              ],
+
+              range: [88, 91],
+              loc: {
+                start: { column: 15, line: 3 },
+                end: { column: 18, line: 3 },
               },
             },
             typeParameters: TSTypeParameterInstantiation {
@@ -39,7 +76,9 @@ Program {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "B",
+                    optional: false,
 
                     range: [89, 90],
                     loc: {
@@ -77,6 +116,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [73, 94],

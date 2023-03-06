@@ -2,5 +2,271 @@
 
 exports[`AST Fixtures legacy-fixtures basics readonly-tuples AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      FunctionDeclaration {
+        type: 'FunctionDeclaration',
+        async: false,
+        body: BlockStatement {
+          type: 'BlockStatement',
+          body: Array [
+            ExpressionStatement {
+              type: 'ExpressionStatement',
+              expression: CallExpression {
+                type: 'CallExpression',
+                arguments: Array [
+                  MemberExpression {
+                    type: 'MemberExpression',
+                    computed: true,
+                    object: Identifier {
+                      type: 'Identifier',
+-                     decorators: Array [],
+                      name: 'pair',
+-                     optional: false,
+
+                      range: [135, 139],
+                      loc: {
+                        start: { column: 14, line: 4 },
+                        end: { column: 18, line: 4 },
+                      },
+                    },
+                    optional: false,
+                    property: Literal {
+                      type: 'Literal',
+                      raw: '0',
+                      value: 0,
+
+                      range: [140, 141],
+                      loc: {
+                        start: { column: 19, line: 4 },
+                        end: { column: 20, line: 4 },
+                      },
+                    },
+
+                    range: [135, 142],
+                    loc: {
+                      start: { column: 14, line: 4 },
+                      end: { column: 21, line: 4 },
+                    },
+                  },
+                ],
+                callee: MemberExpression {
+                  type: 'MemberExpression',
+                  computed: false,
+                  object: Identifier {
+                    type: 'Identifier',
+-                   decorators: Array [],
+                    name: 'console',
+-                   optional: false,
+
+                    range: [123, 130],
+                    loc: {
+                      start: { column: 2, line: 4 },
+                      end: { column: 9, line: 4 },
+                    },
+                  },
+                  optional: false,
+                  property: Identifier {
+                    type: 'Identifier',
+-                   decorators: Array [],
+                    name: 'log',
+-                   optional: false,
+
+                    range: [131, 134],
+                    loc: {
+                      start: { column: 10, line: 4 },
+                      end: { column: 13, line: 4 },
+                    },
+                  },
+
+                  range: [123, 134],
+                  loc: {
+                    start: { column: 2, line: 4 },
+                    end: { column: 13, line: 4 },
+                  },
+                },
+                optional: false,
+
+                range: [123, 143],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 22, line: 4 },
+                },
+              },
+
+              range: [123, 144],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 23, line: 4 },
+              },
+            },
+            ExpressionStatement {
+              type: 'ExpressionStatement',
+              expression: AssignmentExpression {
+                type: 'AssignmentExpression',
+                left: MemberExpression {
+                  type: 'MemberExpression',
+                  computed: true,
+                  object: Identifier {
+                    type: 'Identifier',
+-                   decorators: Array [],
+                    name: 'pair',
+-                   optional: false,
+
+                    range: [155, 159],
+                    loc: {
+                      start: { column: 2, line: 5 },
+                      end: { column: 6, line: 5 },
+                    },
+                  },
+                  optional: false,
+                  property: Literal {
+                    type: 'Literal',
+                    raw: '1',
+                    value: 1,
+
+                    range: [160, 161],
+                    loc: {
+                      start: { column: 7, line: 5 },
+                      end: { column: 8, line: 5 },
+                    },
+                  },
+
+                  range: [155, 162],
+                  loc: {
+                    start: { column: 2, line: 5 },
+                    end: { column: 9, line: 5 },
+                  },
+                },
+                operator: '=',
+                right: Literal {
+                  type: 'Literal',
+                  raw: '\\\\'hello!\\\\'',
+                  value: 'hello!',
+
+                  range: [165, 173],
+                  loc: {
+                    start: { column: 12, line: 5 },
+                    end: { column: 20, line: 5 },
+                  },
+                },
+
+                range: [155, 173],
+                loc: {
+                  start: { column: 2, line: 5 },
+                  end: { column: 20, line: 5 },
+                },
+              },
+
+              range: [155, 174],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 21, line: 5 },
+              },
+            },
+          ],
+
+          range: [119, 185],
+          loc: {
+            start: { column: 46, line: 3 },
+            end: { column: 1, line: 6 },
+          },
+        },
+-       declare: false,
+        expression: false,
+        generator: false,
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'foo',
+-         optional: false,
+
+          range: [82, 85],
+          loc: {
+            start: { column: 9, line: 3 },
+            end: { column: 12, line: 3 },
+          },
+        },
+        params: Array [
+          Identifier {
+            type: 'Identifier',
+-           decorators: Array [],
+            name: 'pair',
+-           optional: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: 'TSTypeAnnotation',
+              typeAnnotation: TSTypeOperator {
+                type: 'TSTypeOperator',
+                operator: 'readonly',
+                typeAnnotation: TSTupleType {
+                  type: 'TSTupleType',
+                  elementTypes: Array [
+                    TSStringKeyword {
+                      type: 'TSStringKeyword',
+
+                      range: [102, 108],
+                      loc: {
+                        start: { column: 29, line: 3 },
+                        end: { column: 35, line: 3 },
+                      },
+                    },
+                    TSStringKeyword {
+                      type: 'TSStringKeyword',
+
+                      range: [110, 116],
+                      loc: {
+                        start: { column: 37, line: 3 },
+                        end: { column: 43, line: 3 },
+                      },
+                    },
+                  ],
+
+                  range: [101, 117],
+                  loc: {
+                    start: { column: 28, line: 3 },
+                    end: { column: 44, line: 3 },
+                  },
+                },
+
+                range: [92, 117],
+                loc: {
+                  start: { column: 19, line: 3 },
+                  end: { column: 44, line: 3 },
+                },
+              },
+
+              range: [90, 117],
+              loc: {
+                start: { column: 17, line: 3 },
+                end: { column: 44, line: 3 },
+              },
+            },
+
+            range: [86, 117],
+            loc: {
+              start: { column: 13, line: 3 },
+              end: { column: 44, line: 3 },
+            },
+          },
+        ],
+
+        range: [73, 185],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 186],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 7 },
+    },
+  }"
 `;

@@ -55,6 +55,7 @@ module.exports = {
     // our plugin :D
     //
 
+    '@typescript-eslint/array-type': 'error',
     '@typescript-eslint/ban-ts-comment': [
       'error',
       {
@@ -355,6 +356,19 @@ module.exports = {
         // disallow ALL unused vars
         '@typescript-eslint/no-unused-vars': 'error',
         '@typescript-eslint/sort-type-constituents': 'error',
+      },
+    },
+    {
+      files: ['./packages/ast-spec/**/*.ts'],
+      rules: {
+        'no-restricted-imports': [
+          'error',
+          {
+            name: '@typescript-eslint/typescript-estree',
+            message:
+              'To prevent nx build errors, all `typescript-estree` imports should be done via `packages/ast-spec/tests/util/parsers/typescript-estree-import.ts`.',
+          },
+        ],
       },
     },
     {

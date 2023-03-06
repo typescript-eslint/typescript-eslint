@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration ExportAllDeclaration _error_ named-non-identifier TSESTree - Error 1`] = `[TSError: Identifier expected.]`;
+exports[`AST Fixtures declaration ExportAllDeclaration _error_ named-non-identifier TSESTree - Error 1`] = `
+"TSError
+> 1 | export * as 'foo' from 'module';
+    |             ^ Identifier expected.
+  2 |"
+`;

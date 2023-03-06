@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tools from 'ts-api-utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -281,7 +281,7 @@ function checkMethod(
           !thisArgIsVoid &&
           !(
             ignoreStatic &&
-            tools.hasModifier(
+            tsutils.hasModifier(
               getModifiers(valueDeclaration),
               ts.SyntaxKind.StaticKeyword,
             )

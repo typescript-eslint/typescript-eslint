@@ -6,15 +6,19 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
+            decorators: Array [],
             key: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "constructor",
+              optional: false,
 
               range: [85, 96],
               loc: {
@@ -23,6 +27,7 @@ Program {
               },
             },
             kind: "constructor",
+            optional: false,
             override: false,
             static: false,
             value: FunctionExpression {
@@ -38,6 +43,7 @@ Program {
                   end: { column: 26, line: 4 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -77,6 +83,7 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
+            decorators: Array [],
             key: Literal {
               type: "Literal",
               raw: "'constructor'",
@@ -89,6 +96,7 @@ Program {
               },
             },
             kind: "method",
+            optional: false,
             override: false,
             static: false,
             value: FunctionExpression {
@@ -104,6 +112,7 @@ Program {
                   end: { column: 30, line: 6 },
                 },
               },
+              declare: false,
               expression: false,
               generator: false,
               id: null,
@@ -148,9 +157,13 @@ Program {
           end: { column: 1, line: 7 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "C",
+        optional: false,
 
         range: [79, 80],
         loc: {
@@ -158,6 +171,7 @@ Program {
           end: { column: 7, line: 3 },
         },
       },
+      implements: Array [],
       superClass: null,
 
       range: [73, 143],

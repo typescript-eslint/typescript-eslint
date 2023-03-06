@@ -3,19 +3,10 @@ import type { BaseNode } from '../../base/BaseNode';
 import type { Identifier } from '../../expression/Identifier/spec';
 import type { StringLiteral } from '../../expression/literal/StringLiteral/spec';
 import type { TSModuleBlock } from '../../special/TSModuleBlock/spec';
+import type { TSQualifiedName } from '../../type/spec';
+import type { Literal } from '../../unions/Literal';
 
 export type TSModuleDeclarationKind = 'global' | 'module' | 'namespace';
-
-/*
-TODO(#4966) - we currently emit this due to bad parser handling of nested modules
-namespace Foo.Bar {}
-^^^^^^^^^^^^^^^^^^^^ TSModuleDeclaration
-              ^^^^^^ TSModuleDeclaration
-                  ^^ TSModuleBlock
-
-This should instead emit a TSQualifiedName for the `id` and not emit an inner TSModuleDeclaration
-*/
-type ModuleBody_TODOFixThis = TSModuleBlock | TSModuleDeclaration;
 
 interface TSModuleDeclarationBase extends BaseNode {
   type: AST_NODE_TYPES.TSModuleDeclaration;
@@ -27,13 +18,13 @@ interface TSModuleDeclarationBase extends BaseNode {
    * module 'a' {}
    * ```
    */
-  id: Identifier | StringLiteral;
+  id: Identifier | Literal | TSQualifiedName;
   /**
    * The body of the module.
    * This can only be `undefined` for the code `declare module 'mod';`
    * This will be a `TSModuleDeclaration` if the name is "nested" (`Foo.Bar`).
    */
-  body?: ModuleBody_TODOFixThis;
+  body?: TSModuleBlock;
   /**
    * Whether this is a global declaration
    * ```
@@ -41,15 +32,14 @@ interface TSModuleDeclarationBase extends BaseNode {
    * ```
    */
   // TODO - remove this in the next major (we have `.kind` now)
-  global?: boolean;
+  global: boolean;
   /**
    * Whether the module is `declare`d
    * ```
    * declare namespace F {}
    * ```
    */
-  // TODO(#5020) - make this `false` if it is not `declare`d
-  declare?: boolean;
+  declare: boolean;
 
   /**
    * The keyword used to define this module declaration
@@ -70,12 +60,9 @@ interface TSModuleDeclarationBase extends BaseNode {
 export interface TSModuleDeclarationNamespace extends TSModuleDeclarationBase {
   kind: 'namespace';
   // namespaces cannot have literal IDs
-  id: Identifier;
+  id: Identifier | TSQualifiedName;
   // namespaces must always have a body
-  body: ModuleBody_TODOFixThis;
-
-  // TODO - remove this in the next major (we have `.kind` now)
-  global?: undefined;
+  body: TSModuleBlock;
 }
 
 export interface TSModuleDeclarationGlobal extends TSModuleDeclarationBase {
@@ -85,18 +72,10 @@ export interface TSModuleDeclarationGlobal extends TSModuleDeclarationBase {
   body: TSModuleBlock;
   // this will always be an Identifier with name `global`
   id: Identifier;
-
-  // note - it's not syntactically required to have `declare`, but it semantically required
-
-  // TODO - remove this in the next major (we have `.kind` now)
-  global: true;
 }
 
 interface TSModuleDeclarationModuleBase extends TSModuleDeclarationBase {
   kind: 'module';
-
-  // TODO - remove this in the next major (we have `.kind` now)
-  global?: undefined;
 }
 
 export type TSModuleDeclarationModule =
@@ -126,7 +105,7 @@ export interface TSModuleDeclarationModuleWithIdentifierId
   kind: 'module';
   id: Identifier;
   // modules with an Identifier must always have a body
-  body: ModuleBody_TODOFixThis;
+  body: TSModuleBlock;
 }
 
 export type TSModuleDeclaration =

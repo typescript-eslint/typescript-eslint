@@ -31,6 +31,7 @@ export function createParseSettings(
       ? options.tsconfigRootDir
       : process.cwd();
   const parseSettings: MutableParseSettings = {
+    allowInvalidAST: options.allowInvalidAST === true,
     code,
     codeFullText,
     comment: options.comment === true,
@@ -125,6 +126,10 @@ export function createParseSettings(
   warnAboutTSVersion(parseSettings);
 
   return parseSettings;
+}
+
+export function clearTSConfigMatchCache(): void {
+  TSCONFIG_MATCH_CACHE?.clear();
 }
 
 /**

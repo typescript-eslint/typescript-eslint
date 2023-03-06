@@ -16,7 +16,9 @@ Program {
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "method1",
+                optional: false,
 
                 range: [104, 111],
                 loc: {
@@ -25,7 +27,9 @@ Program {
                 },
               },
               kind: "method",
+              optional: false,
               params: Array [],
+              readonly: false,
               returnType: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSVoidKeyword {
@@ -44,6 +48,7 @@ Program {
                   end: { column: 17, line: 4 },
                 },
               },
+              static: false,
 
               range: [104, 120],
               loc: {
@@ -59,9 +64,13 @@ Program {
             end: { column: 1, line: 5 },
           },
         },
+        declare: false,
+        extends: Array [],
         id: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "T",
+          optional: false,
 
           range: [98, 99],
           loc: {

@@ -6,6 +6,7 @@ Program {
   body: Array [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: Array [],
@@ -16,9 +17,13 @@ Program {
           end: { column: 33, line: 3 },
         },
       },
+      declare: false,
+      decorators: Array [],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -31,7 +36,9 @@ Program {
           type: "TSClassImplements",
           expression: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "Bar",
+            optional: false,
 
             range: [94, 97],
             loc: {
@@ -39,14 +46,16 @@ Program {
               end: { column: 24, line: 3 },
             },
           },
-          typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
             params: Array [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "S",
+                  optional: false,
 
                   range: [98, 99],
                   loc: {
@@ -65,7 +74,62 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: Array [],
                   name: "T",
+                  optional: false,
+
+                  range: [101, 102],
+                  loc: {
+                    start: { column: 28, line: 3 },
+                    end: { column: 29, line: 3 },
+                  },
+                },
+
+                range: [101, 102],
+                loc: {
+                  start: { column: 28, line: 3 },
+                  end: { column: 29, line: 3 },
+                },
+              },
+            ],
+
+            range: [97, 103],
+            loc: {
+              start: { column: 24, line: 3 },
+              end: { column: 30, line: 3 },
+            },
+          },
+          typeParameters: TSTypeParameterInstantiation {
+            type: "TSTypeParameterInstantiation",
+            params: Array [
+              TSTypeReference {
+                type: "TSTypeReference",
+                typeName: Identifier {
+                  type: "Identifier",
+                  decorators: Array [],
+                  name: "S",
+                  optional: false,
+
+                  range: [98, 99],
+                  loc: {
+                    start: { column: 25, line: 3 },
+                    end: { column: 26, line: 3 },
+                  },
+                },
+
+                range: [98, 99],
+                loc: {
+                  start: { column: 25, line: 3 },
+                  end: { column: 26, line: 3 },
+                },
+              },
+              TSTypeReference {
+                type: "TSTypeReference",
+                typeName: Identifier {
+                  type: "Identifier",
+                  decorators: Array [],
+                  name: "T",
+                  optional: false,
 
                   range: [101, 102],
                   loc: {

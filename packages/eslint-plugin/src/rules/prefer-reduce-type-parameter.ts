@@ -86,7 +86,7 @@ export default util.createRule({
                 ]),
               ];
 
-              if (!callee.parent.typeParameters) {
+              if (!callee.parent.typeArguments) {
                 fixes.push(
                   fixer.insertTextAfter(
                     callee,

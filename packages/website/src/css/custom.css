@@ -71,20 +71,93 @@ html[data-theme='dark']:root {
   --gray-border-shadow: var(--ifm-color-secondary-dark);
 }
 
-.header-github-link:hover {
-  opacity: 0.6;
+.bug-report-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
 }
-
-.header-github-link:before {
+.bug-report-link:before {
   content: '';
-  width: 24px;
-  height: 24px;
+  display: flex;
+  background: url('/img/bug-report.svg') no-repeat;
+}
+.github-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+.github-link:before {
+  content: '';
   display: flex;
   background: url('/img/github.svg') no-repeat;
 }
+.mastodon-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+.mastodon-link:before {
+  content: '';
+  display: flex;
+  background: url('/img/mastodon.svg') no-repeat;
+}
+.stack-overflow-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+.stack-overflow-link:before {
+  content: '';
+  display: flex;
+  background: url('/img/stack-overflow.svg') no-repeat;
+}
+.stack-overflow-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+.stack-overflow-link:before {
+  content: '';
+  display: flex;
+  background: url('/img/stack-overflow.svg') no-repeat;
+}
+.twitter-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: start;
+}
+.twitter-link:before {
+  content: '';
+  display: flex;
+  background: url('/img/twitter.svg') no-repeat;
+}
+/* assumes icons are black by default and inverts them for dark mode so they're white */
+html[data-theme='dark'] .bug-report-link:before,
+html[data-theme='dark'] .github-link:before,
+html[data-theme='dark'] .mastodon-link:before,
+html[data-theme='dark'] .stack-overflow-link:before,
+html[data-theme='dark'] .twitter-link:before {
+  filter: invert(100%);
+}
 
-html[data-theme='dark'] .header-github-link:before {
-  background: url('/img/github-dark.svg') no-repeat;
+.header-github-link:hover {
+  opacity: 0.6;
+}
+.header-github-link:before {
+  height: 24px;
+  width: 24px;
+}
+
+.social-link-icon:before {
+  height: 20px;
+  margin-right: 4px;
+  width: 20px;
 }
 
 .theme-doc-sidebar-item-link-level-1 > a,

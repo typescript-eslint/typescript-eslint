@@ -14,7 +14,9 @@ Program {
             type: "ReturnStatement",
             argument: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "name",
+              optional: false,
 
               range: [174, 178],
               loc: {
@@ -37,11 +39,14 @@ Program {
           end: { column: 1, line: 9 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "message",
+        optional: false,
 
         range: [82, 89],
         loc: {
@@ -52,7 +57,9 @@ Program {
       params: Array [
         Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "name",
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSStringKeyword {
@@ -80,9 +87,12 @@ Program {
         },
         AssignmentPattern {
           type: "AssignmentPattern",
+          decorators: Array [],
           left: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "age",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSNumberKeyword {
@@ -108,6 +118,7 @@ Program {
               end: { column: 13, line: 5 },
             },
           },
+          optional: false,
           right: Literal {
             type: "Literal",
             raw: "100",
@@ -130,7 +141,9 @@ Program {
           type: "RestElement",
           argument: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "args",
+            optional: false,
 
             range: [133, 137],
             loc: {
@@ -138,13 +151,37 @@ Program {
               end: { column: 9, line: 6 },
             },
           },
+          decorators: Array [],
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSTypeReference {
               type: "TSTypeReference",
+              typeArguments: TSTypeParameterInstantiation {
+                type: "TSTypeParameterInstantiation",
+                params: Array [
+                  TSStringKeyword {
+                    type: "TSStringKeyword",
+
+                    range: [145, 151],
+                    loc: {
+                      start: { column: 17, line: 6 },
+                      end: { column: 23, line: 6 },
+                    },
+                  },
+                ],
+
+                range: [144, 152],
+                loc: {
+                  start: { column: 16, line: 6 },
+                  end: { column: 24, line: 6 },
+                },
+              },
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "Array",
+                optional: false,
 
                 range: [139, 144],
                 loc: {

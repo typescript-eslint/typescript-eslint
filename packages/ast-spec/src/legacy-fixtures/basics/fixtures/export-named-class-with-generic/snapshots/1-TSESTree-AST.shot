@@ -9,6 +9,7 @@ Program {
       assertions: Array [],
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
+        abstract: false,
         body: ClassBody {
           type: "ClassBody",
           body: Array [],
@@ -19,9 +20,13 @@ Program {
             end: { column: 22, line: 3 },
           },
         },
+        declare: false,
+        decorators: Array [],
         id: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "Foo",
+          optional: false,
 
           range: [86, 89],
           loc: {
@@ -29,6 +34,7 @@ Program {
             end: { column: 16, line: 3 },
           },
         },
+        implements: Array [],
         superClass: null,
         typeParameters: TSTypeParameterDeclaration {
           type: "TSTypeParameterDeclaration",
@@ -38,7 +44,9 @@ Program {
               in: false,
               name: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "T",
+                optional: false,
 
                 range: [90, 91],
                 loc: {

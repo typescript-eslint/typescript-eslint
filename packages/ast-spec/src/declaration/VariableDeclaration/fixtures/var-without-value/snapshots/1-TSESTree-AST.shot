@@ -9,9 +9,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "x",
+            optional: false,
 
             range: [4, 5],
             loc: {
@@ -28,6 +31,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "var",
 
       range: [0, 6],

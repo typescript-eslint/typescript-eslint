@@ -1,15 +1,7 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "5.52.0",
+  "version": "5.54.0",
   "description": "Types for the TypeScript-ESTree AST spec",
-  "keywords": [
-    "eslint",
-    "typescript",
-    "estree"
-  ],
-  "engines": {
-    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
-  },
   "files": [
     "dist",
     "_ts4.2",
@@ -17,6 +9,17 @@
     "README.md",
     "LICENSE"
   ],
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
@@ -26,8 +29,11 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "keywords": [
+    "eslint",
+    "typescript",
+    "estree"
+  ],
   "scripts": {
     "prebuild": "tsx ./tools/copy-ast-spec.ts",
     "build": "tsc -b tsconfig.build.json",
@@ -66,6 +72,9 @@
       }
     }
   },
+  "devDependencies": {
+    "typescript": "*"
+  },
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
@@ -76,8 +85,5 @@
         "_ts4.2/*"
       ]
     }
-  },
-  "devDependencies": {
-    "typescript": "*"
   }
 }

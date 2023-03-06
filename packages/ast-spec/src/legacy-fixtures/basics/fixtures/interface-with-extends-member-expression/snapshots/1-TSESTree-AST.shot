@@ -16,6 +16,7 @@ Program {
           end: { column: 32, line: 3 },
         },
       },
+      declare: false,
       extends: Array [
         TSInterfaceHeritage {
           type: "TSInterfaceHeritage",
@@ -24,7 +25,9 @@ Program {
             computed: false,
             object: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "bar",
+              optional: false,
 
               range: [95, 98],
               loc: {
@@ -35,7 +38,9 @@ Program {
             optional: false,
             property: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "baz",
+              optional: false,
 
               range: [99, 102],
               loc: {
@@ -60,7 +65,9 @@ Program {
       ],
       id: Identifier {
         type: "Identifier",
+        decorators: Array [],
         name: "foo",
+        optional: false,
 
         range: [83, 86],
         loc: {

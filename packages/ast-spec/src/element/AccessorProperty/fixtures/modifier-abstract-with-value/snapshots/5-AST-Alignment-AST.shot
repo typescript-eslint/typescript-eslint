@@ -21,9 +21,13 @@ exports[`AST Fixtures element AccessorProperty modifier-abstract-with-value AST 
 +             abstract: true,
               computed: false,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'foo',
+-               optional: false,
 
                 range: [41, 44],
                 loc: {
@@ -31,7 +35,9 @@ exports[`AST Fixtures element AccessorProperty modifier-abstract-with-value AST 
                   end: { column: 23, line: 2 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -49,9 +55,8 @@ exports[`AST Fixtures element AccessorProperty modifier-abstract-with-value AST 
                 loc: {
                   start: { column: 23, line: 2 },
                   end: { column: 31, line: 2 },
-                },
-              },
--             value: null,
++               },
++             },
 +             value: Literal {
 +               type: 'Literal',
 +               raw: '1',
@@ -61,8 +66,9 @@ exports[`AST Fixtures element AccessorProperty modifier-abstract-with-value AST 
 +               loc: {
 +                 start: { column: 34, line: 2 },
 +                 end: { column: 35, line: 2 },
-+               },
-+             },
+                },
+              },
+-             value: null,
 
               range: [23, 57],
               loc: {
@@ -78,9 +84,13 @@ exports[`AST Fixtures element AccessorProperty modifier-abstract-with-value AST 
             end: { column: 1, line: 3 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [15, 18],
           loc: {
@@ -88,6 +98,7 @@ exports[`AST Fixtures element AccessorProperty modifier-abstract-with-value AST 
             end: { column: 18, line: 1 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [0, 59],

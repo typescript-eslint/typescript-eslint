@@ -14,7 +14,9 @@ Program {
             type: "TSAsExpression",
             expression: Identifier {
               type: "Identifier",
+              decorators: Array [],
               name: "a",
+              optional: false,
 
               range: [74, 75],
               loc: {

@@ -15,7 +15,9 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
           arguments: Array [],
           callee: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'foo',
+-           optional: false,
 
             range: [73, 76],
             loc: {
@@ -24,6 +26,38 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
             },
           },
           optional: false,
+-         typeArguments: TSTypeParameterInstantiation {
+-           type: 'TSTypeParameterInstantiation',
+-           params: Array [
+-             TSTypeReference {
+-               type: 'TSTypeReference',
+-               typeName: Identifier {
+-                 type: 'Identifier',
+-                 decorators: Array [],
+-                 name: 'A',
+-                 optional: false,
+-
+-                 range: [93, 94],
+-                 loc: {
+-                   start: { column: 20, line: 3 },
+-                   end: { column: 21, line: 3 },
+-                 },
+-               },
+-
+-               range: [93, 94],
+-               loc: {
+-                 start: { column: 20, line: 3 },
+-                 end: { column: 21, line: 3 },
+-               },
+-             },
+-           ],
+-
+-           range: [76, 111],
+-           loc: {
+-             start: { column: 3, line: 3 },
+-             end: { column: 38, line: 3 },
+-           },
+-         },
           typeParameters: TSTypeParameterInstantiation {
             type: 'TSTypeParameterInstantiation',
             params: Array [
@@ -31,7 +65,9 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'A',
+-                 optional: false,
 
                   range: [93, 94],
                   loc: {
@@ -81,11 +117,14 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
             end: { column: 40, line: 4 },
           },
         },
+-       declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'bar',
+-         optional: false,
 
           range: [124, 127],
           loc: {
@@ -102,7 +141,9 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'A',
+-               optional: false,
 -
 -               range: [138, 139],
 -               loc: {
@@ -147,11 +188,14 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
             end: { column: 46, line: 5 },
           },
         },
+-       declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'baz',
+-         optional: false,
 
           range: [165, 168],
           loc: {
@@ -169,7 +213,9 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'Foo',
+-                 optional: false,
 
                   range: [193, 196],
                   loc: {
@@ -182,19 +228,21 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
                 loc: {
                   start: { column: 37, line: 5 },
                   end: { column: 40, line: 5 },
--               },
--             },
+                },
+              },
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'A',
+-               optional: false,
 -
 -               range: [179, 180],
 -               loc: {
 -                 start: { column: 23, line: 5 },
 -                 end: { column: 24, line: 5 },
-                },
-              },
+-               },
+-             },
 -             out: false,
 +             name: 'A',
 

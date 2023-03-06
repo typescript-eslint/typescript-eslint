@@ -369,7 +369,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         interface Obj {
           readonly [K: string]: Obj;
         }
-        
+
         function foo(event: Obj): void {}
       `,
       options: [
@@ -386,11 +386,11 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         interface Obj1 {
           readonly [K: string]: Obj2;
         }
-        
+
         interface Obj2 {
           readonly [K: string]: Obj1;
         }
-        
+
         function foo(event: Obj1): void {}
       `,
       options: [
@@ -945,6 +945,22 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           endColumn: 33,
         },
       ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3405
+    {
+      code: `
+        type MyType<T> = {
+          [K in keyof T]: 'cat' | 'dog' | T[K];
+        };
+
+        function method<A extends any[] = string[]>(value: MyType<A>) {
+          return value;
+        }
+
+        method(['cat', 'dog']);
+        method<'mouse'[]>(['cat', 'mouse']);
+      `,
+      errors: [{ line: 6, messageId: 'shouldBeReadonly' }],
     },
     // Allowlist
     {

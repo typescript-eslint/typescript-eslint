@@ -9,9 +9,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "self",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypeQuery {
@@ -55,6 +58,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [73, 95],
@@ -68,9 +72,12 @@ Program {
       declarations: Array [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: Array [],
             name: "foo",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypeQuery {
@@ -88,7 +95,9 @@ Program {
                   },
                   right: Identifier {
                     type: "Identifier",
+                    decorators: Array [],
                     name: "foo",
+                    optional: false,
 
                     range: [117, 120],
                     loc: {
@@ -133,6 +142,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [96, 121],

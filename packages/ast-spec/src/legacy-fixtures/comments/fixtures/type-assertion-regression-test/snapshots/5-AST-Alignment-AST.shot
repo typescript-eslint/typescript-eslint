@@ -2,5 +2,96 @@
 
 exports[`AST Fixtures legacy-fixtures comments type-assertion-regression-test AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'foo',
+-             optional: false,
+
+              range: [79, 82],
+              loc: {
+                start: { column: 6, line: 3 },
+                end: { column: 9, line: 3 },
+              },
+            },
+            init: TSTypeAssertion {
+              type: 'TSTypeAssertion',
+              expression: Identifier {
+                type: 'Identifier',
+-               decorators: Array [],
+                name: 'bar',
+-               optional: false,
+
+                range: [102, 105],
+                loc: {
+                  start: { column: 1, line: 5 },
+                  end: { column: 4, line: 5 },
+                },
+              },
+              typeAnnotation: TSTypeReference {
+                type: 'TSTypeReference',
+                typeName: Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'Foo',
+-                 optional: false,
+
+                  range: [89, 92],
+                  loc: {
+                    start: { column: 2, line: 4 },
+                    end: { column: 5, line: 4 },
+                  },
+                },
+
+                range: [89, 92],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 5, line: 4 },
+                },
+              },
+
+              range: [85, 105],
+              loc: {
+                start: { column: 12, line: 3 },
+                end: { column: 4, line: 5 },
+              },
+            },
+
+            range: [79, 105],
+            loc: {
+              start: { column: 6, line: 3 },
+              end: { column: 4, line: 5 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'const',
+
+        range: [73, 106],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 5, line: 5 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 107],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 6 },
+    },
+  }"
 `;

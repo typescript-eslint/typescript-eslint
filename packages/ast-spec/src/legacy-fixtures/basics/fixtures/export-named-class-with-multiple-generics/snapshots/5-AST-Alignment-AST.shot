@@ -13,6 +13,7 @@ exports[`AST Fixtures legacy-fixtures basics export-named-class-with-multiple-ge
         assertions: Array [],
         declaration: ClassDeclaration {
           type: 'ClassDeclaration',
+-         abstract: false,
           body: ClassBody {
             type: 'ClassBody',
             body: Array [],
@@ -23,9 +24,13 @@ exports[`AST Fixtures legacy-fixtures basics export-named-class-with-multiple-ge
               end: { column: 25, line: 3 },
             },
           },
+-         declare: false,
+-         decorators: Array [],
           id: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'Foo',
+-           optional: false,
 
             range: [86, 89],
             loc: {
@@ -33,6 +38,7 @@ exports[`AST Fixtures legacy-fixtures basics export-named-class-with-multiple-ge
               end: { column: 16, line: 3 },
             },
           },
+-         implements: Array [],
           superClass: null,
           typeParameters: TSTypeParameterDeclaration {
             type: 'TSTypeParameterDeclaration',
@@ -42,7 +48,9 @@ exports[`AST Fixtures legacy-fixtures basics export-named-class-with-multiple-ge
 -               in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
+-                 decorators: Array [],
 -                 name: 'T',
+-                 optional: false,
 -
 -                 range: [90, 91],
 -                 loc: {
@@ -64,7 +72,9 @@ exports[`AST Fixtures legacy-fixtures basics export-named-class-with-multiple-ge
 -               in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
+-                 decorators: Array [],
 -                 name: 'U',
+-                 optional: false,
 -
 -                 range: [93, 94],
 -                 loc: {

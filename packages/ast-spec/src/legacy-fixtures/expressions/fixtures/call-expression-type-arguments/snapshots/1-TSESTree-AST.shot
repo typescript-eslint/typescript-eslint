@@ -11,7 +11,9 @@ Program {
         arguments: Array [],
         callee: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "foo",
+          optional: false,
 
           range: [73, 76],
           loc: {
@@ -20,6 +22,38 @@ Program {
           },
         },
         optional: false,
+        typeArguments: TSTypeParameterInstantiation {
+          type: "TSTypeParameterInstantiation",
+          params: Array [
+            TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                decorators: Array [],
+                name: "A",
+                optional: false,
+
+                range: [77, 78],
+                loc: {
+                  start: { column: 4, line: 3 },
+                  end: { column: 5, line: 3 },
+                },
+              },
+
+              range: [77, 78],
+              loc: {
+                start: { column: 4, line: 3 },
+                end: { column: 5, line: 3 },
+              },
+            },
+          ],
+
+          range: [76, 79],
+          loc: {
+            start: { column: 3, line: 3 },
+            end: { column: 6, line: 3 },
+          },
+        },
         typeParameters: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
           params: Array [
@@ -27,7 +61,9 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: Array [],
                 name: "A",
+                optional: false,
 
                 range: [77, 78],
                 loc: {
@@ -71,7 +107,9 @@ Program {
         arguments: Array [],
         callee: Identifier {
           type: "Identifier",
+          decorators: Array [],
           name: "foo",
+          optional: false,
 
           range: [83, 86],
           loc: {
@@ -80,6 +118,26 @@ Program {
           },
         },
         optional: false,
+        typeArguments: TSTypeParameterInstantiation {
+          type: "TSTypeParameterInstantiation",
+          params: Array [
+            TSNumberKeyword {
+              type: "TSNumberKeyword",
+
+              range: [87, 93],
+              loc: {
+                start: { column: 4, line: 4 },
+                end: { column: 10, line: 4 },
+              },
+            },
+          ],
+
+          range: [86, 94],
+          loc: {
+            start: { column: 3, line: 4 },
+            end: { column: 11, line: 4 },
+          },
+        },
         typeParameters: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
           params: Array [

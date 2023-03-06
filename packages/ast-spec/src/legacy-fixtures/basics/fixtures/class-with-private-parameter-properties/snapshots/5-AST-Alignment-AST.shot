@@ -10,15 +10,19 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-parameter-proper
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'constructor',
+-               optional: false,
 
                 range: [87, 98],
                 loc: {
@@ -27,6 +31,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-parameter-proper
                 },
               },
               kind: 'constructor',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -42,6 +47,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-parameter-proper
                     end: { column: 6, line: 9 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -49,9 +55,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-parameter-proper
                   TSParameterProperty {
                     type: 'TSParameterProperty',
                     accessibility: 'private',
+-                   decorators: Array [],
+-                   override: false,
                     parameter: Identifier {
                       type: 'Identifier',
+-                     decorators: Array [],
                       name: 'firstName',
+-                     optional: false,
                       typeAnnotation: TSTypeAnnotation {
                         type: 'TSTypeAnnotation',
                         typeAnnotation: TSStringKeyword {
@@ -77,6 +87,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-parameter-proper
                         end: { column: 29, line: 5 },
                       },
                     },
+-                   readonly: false,
+-                   static: false,
 
                     range: [104, 129],
                     loc: {
@@ -87,9 +99,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-parameter-proper
                   TSParameterProperty {
                     type: 'TSParameterProperty',
                     accessibility: 'private',
+-                   decorators: Array [],
+-                   override: false,
                     parameter: Identifier {
                       type: 'Identifier',
+-                     decorators: Array [],
                       name: 'lastName',
+-                     optional: false,
                       typeAnnotation: TSTypeAnnotation {
                         type: 'TSTypeAnnotation',
                         typeAnnotation: TSStringKeyword {
@@ -116,6 +132,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-parameter-proper
                       },
                     },
                     readonly: true,
+-                   static: false,
 
                     range: [135, 168],
                     loc: {
@@ -126,11 +143,16 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-parameter-proper
                   TSParameterProperty {
                     type: 'TSParameterProperty',
                     accessibility: 'private',
+-                   decorators: Array [],
+-                   override: false,
                     parameter: AssignmentPattern {
                       type: 'AssignmentPattern',
+-                     decorators: Array [],
                       left: Identifier {
                         type: 'Identifier',
+-                       decorators: Array [],
                         name: 'age',
+-                       optional: false,
                         typeAnnotation: TSTypeAnnotation {
                           type: 'TSTypeAnnotation',
                           typeAnnotation: TSNumberKeyword {
@@ -156,6 +178,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-parameter-proper
                           end: { column: 23, line: 7 },
                         },
                       },
+-                     optional: false,
                       right: Literal {
                         type: 'Literal',
                         raw: '30',
@@ -174,6 +197,8 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-parameter-proper
                         end: { column: 28, line: 7 },
                       },
                     },
+-                   readonly: false,
+-                   static: false,
 
                     range: [174, 198],
                     loc: {
@@ -184,11 +209,16 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-parameter-proper
                   TSParameterProperty {
                     type: 'TSParameterProperty',
                     accessibility: 'private',
+-                   decorators: Array [],
+-                   override: false,
                     parameter: AssignmentPattern {
                       type: 'AssignmentPattern',
+-                     decorators: Array [],
                       left: Identifier {
                         type: 'Identifier',
+-                       decorators: Array [],
                         name: 'student',
+-                       optional: false,
                         typeAnnotation: TSTypeAnnotation {
                           type: 'TSTypeAnnotation',
                           typeAnnotation: TSBooleanKeyword {
@@ -214,6 +244,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-parameter-proper
                           end: { column: 37, line: 8 },
                         },
                       },
+-                     optional: false,
                       right: Literal {
                         type: 'Literal',
                         raw: 'false',
@@ -233,6 +264,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-parameter-proper
                       },
                     },
                     readonly: true,
+-                   static: false,
 
                     range: [204, 245],
                     loc: {
@@ -263,9 +295,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-parameter-proper
             end: { column: 1, line: 10 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [79, 82],
           loc: {
@@ -273,6 +309,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-parameter-proper
             end: { column: 9, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 255],

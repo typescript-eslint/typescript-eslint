@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.54.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.53.0...v5.54.0) (2023-02-27)
+
+
+### Bug Fixes
+
+* **website:** corect playground build issue ([#6506](https://github.com/typescript-eslint/typescript-eslint/issues/6506)) ([6aad7d3](https://github.com/typescript-eslint/typescript-eslint/commit/6aad7d3957c28e408235eb1e5d7fedccc594280f))
+
+
+
+
+
+# [5.53.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.52.0...v5.53.0) (2023-02-20)
+
+**Note:** Version bump only for package @typescript-eslint/website-eslint
+
+
+
+
+
 # [5.52.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.51.0...v5.52.0) (2023-02-13)
 
 **Note:** Version bump only for package @typescript-eslint/website-eslint
