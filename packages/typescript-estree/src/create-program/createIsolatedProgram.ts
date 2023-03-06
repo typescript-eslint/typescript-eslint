@@ -66,7 +66,6 @@ function createIsolatedProgram(parseSettings: ParseSettings): ASTAndProgram {
       noResolve: true,
       target: ts.ScriptTarget.Latest,
       jsx: parseSettings.jsx ? ts.JsxEmit.Preserve : undefined,
-      experimentalDecorators: true,
       ...createDefaultCompilerOptionsFromExtra(parseSettings),
     },
     compilerHost,
