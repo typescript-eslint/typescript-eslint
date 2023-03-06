@@ -1352,7 +1352,14 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/class-decorators/fixtures/class-decorator-factory/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/class-decorators/fixtures/class-parameter-property/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/class-decorators/fixtures/class-parameter-property/fixture 1`] = `
+TSError {
+  "column": 14,
+  "index": 97,
+  "lineNumber": 4,
+  "message": "Decorators are not valid here.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/class-decorators/fixtures/export-default-class-decorator/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -1797,21 +1804,77 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/namespaces-and-modules/fixtures/shorthand-ambient-module-declaration/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-array-pattern-decorator/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-array-pattern-decorator/fixture 1`] = `
+TSError {
+  "column": 6,
+  "index": 91,
+  "lineNumber": 4,
+  "message": "Decorators are not valid here.",
+}
+`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-rest-element-decorator/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-rest-element-decorator/fixture 1`] = `
+TSError {
+  "column": 6,
+  "index": 91,
+  "lineNumber": 4,
+  "message": "Decorators are not valid here.",
+}
+`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-decorator-constructor/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-decorator-constructor/fixture 1`] = `
+TSError {
+  "column": 14,
+  "index": 103,
+  "lineNumber": 4,
+  "message": "Decorators are not valid here.",
+}
+`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-decorator-decorator-instance-member/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-decorator-decorator-instance-member/fixture 1`] = `
+TSError {
+  "column": 6,
+  "index": 91,
+  "lineNumber": 4,
+  "message": "Decorators are not valid here.",
+}
+`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-decorator-decorator-static-member/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-decorator-decorator-static-member/fixture 1`] = `
+TSError {
+  "column": 13,
+  "index": 104,
+  "lineNumber": 4,
+  "message": "Decorators are not valid here.",
+}
+`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-decorator-instance-member/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-decorator-instance-member/fixture 1`] = `
+TSError {
+  "column": 8,
+  "index": 97,
+  "lineNumber": 4,
+  "message": "Decorators are not valid here.",
+}
+`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-decorator-static-member/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-decorator-static-member/fixture 1`] = `
+TSError {
+  "column": 15,
+  "index": 110,
+  "lineNumber": 4,
+  "message": "Decorators are not valid here.",
+}
+`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-object-pattern-decorator/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/parameter-decorators/fixtures/parameter-object-pattern-decorator/fixture 1`] = `
+TSError {
+  "column": 6,
+  "index": 91,
+  "lineNumber": 4,
+  "message": "Decorators are not valid here.",
+}
+`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/property-decorators/fixtures/property-decorator-factory-instance-member/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
