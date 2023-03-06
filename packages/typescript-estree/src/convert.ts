@@ -2594,11 +2594,11 @@ export class Converter {
             );
           }
 
-          interfaceExtends.push(
-            ...heritageClause.types.map(
-              n => this.convertChild(n, node) as TSESTree.TSInterfaceHeritage,
-            ),
-          );
+          for (const heritageType of heritageClause.types) {
+            interfaceExtends.push(
+              this.convertChild(heritageType, node) as TSESTree.TSInterfaceHeritage,
+            );
+          }
         }
 
         const result = this.createNode<TSESTree.TSInterfaceDeclaration>(node, {
