@@ -2627,9 +2627,8 @@ export class Converter {
 
         for (const heritageClause of interfaceHeritageClauses) {
           if (heritageClause.token !== SyntaxKind.ExtendsKeyword) {
-            throw createError(
-              this.ast,
-              heritageClause.pos,
+            this.#throwError(
+              heritageClause,
               "Interface declaration cannot have 'implements' clause.",
             );
           }
