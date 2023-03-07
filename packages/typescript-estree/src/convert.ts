@@ -2629,7 +2629,9 @@ export class Converter {
           if (heritageClause.token !== SyntaxKind.ExtendsKeyword) {
             this.#throwError(
               heritageClause,
-              "Interface declaration cannot have 'implements' clause.",
+              heritageClause.token === SyntaxKind.ImplementsKeyword
+                ? "Interface declaration cannot have 'implements' clause."
+                : 'Unexpected token.',
             );
           }
 
