@@ -135,7 +135,7 @@ Some complex types cannot easily be made readonly, for example the `HTMLElement`
 
 Each item must be one of:
 
-- A type defined in a file (`{from: "file", name: "Foo", source: "src/foo-file.ts"}` with `source` being optional)
+- A type defined in a file (`{from: "file", name: "Foo", source: "src/foo-file.ts"}` with `source` being an optional path relative to the project root directory)
 - A type from the default library (`{from: "lib", name: "Foo"}`)
 - A type from a package (`{from: "package", name: "Foo", source: "foo-lib"}`, this also works for types defined in a typings package).
 
