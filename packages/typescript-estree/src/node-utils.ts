@@ -88,6 +88,21 @@ export function hasModifier(
 }
 
 /**
+ * Get a modifier from a ts.Node
+ * @param modifierKind TypeScript SyntaxKind modifier
+ * @param node TypeScript AST node
+ * @returns matched modifier if present or null
+ */
+export function getModifier(
+  modifierKind: ts.KeywordSyntaxKind,
+  node: ts.Node,
+): ts.Modifier | null {
+  return (
+    getModifiers(node)?.find(modifier => modifier.kind === modifierKind) ?? null
+  );
+}
+
+/**
  * Get last last modifier in ast
  * @param node TypeScript AST node
  * @returns returns last modifier if present or null
@@ -600,9 +615,18 @@ export class TSError extends Error {
   constructor(
     message: string,
     public readonly fileName: string,
-    public readonly index: number,
-    public readonly lineNumber: number,
-    public readonly column: number,
+    public readonly location: {
+      start: {
+        line: number;
+        column: number;
+        offset: number;
+      };
+      end: {
+        line: number;
+        column: number;
+        offset: number;
+      };
+    },
   ) {
     super(message);
     Object.defineProperty(this, 'name', {
@@ -611,21 +635,51 @@ export class TSError extends Error {
       configurable: true,
     });
   }
+
+  // For old version of ESLint https://github.com/typescript-eslint/typescript-eslint/pull/6556#discussion_r1123237311
+  get index(): number {
+    return this.location.start.offset;
+  }
+
+  // https://github.com/eslint/eslint/blob/b09a512107249a4eb19ef5a37b0bd672266eafdb/lib/linter/linter.js#L853
+  get lineNumber(): number {
+    return this.location.start.line;
+  }
+
+  // https://github.com/eslint/eslint/blob/b09a512107249a4eb19ef5a37b0bd672266eafdb/lib/linter/linter.js#L854
+  get column(): number {
+    return this.location.start.column;
+  }
 }
 
 /**
- * @param ast     the AST object
- * @param start   the index at which the error starts
  * @param message the error message
+ * @param ast the AST object
+ * @param startIndex the index at which the error starts
+ * @param endIndex the index at which the error ends
  * @returns converted error object
  */
 export function createError(
-  ast: ts.SourceFile,
-  start: number,
   message: string,
+  ast: ts.SourceFile,
+  startIndex: number,
+  endIndex: number = startIndex,
 ): TSError {
-  const loc = ast.getLineAndCharacterOfPosition(start);
-  return new TSError(message, ast.fileName, start, loc.line + 1, loc.character);
+  const [start, end] = [startIndex, endIndex].map(offset => {
+    const { line, character: column } =
+      ast.getLineAndCharacterOfPosition(offset);
+    return { line: line + 1, column, offset };
+  });
+  return new TSError(message, ast.fileName, { start, end });
+}
+
+export function nodeHasIllegalDecorators(
+  node: ts.Node,
+): node is ts.Node & { illegalDecorators: ts.Node[] } {
+  return !!(
+    'illegalDecorators' in node &&
+    (node.illegalDecorators as unknown[] | undefined)?.length
+  );
 }
 
 /**

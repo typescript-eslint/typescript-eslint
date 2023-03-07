@@ -12,6 +12,7 @@ import type {
 } from './util/parsers/parser-types';
 import { ParserResponseType } from './util/parsers/parser-types';
 import { parseTSESTree } from './util/parsers/typescript-estree';
+import { serializeError } from './util/serialize-error';
 import { diffHasChanges, snapshotDiff } from './util/snapshot-diff';
 
 const PACKAGE_ROOT = path.resolve(__dirname, '..');
@@ -171,7 +172,9 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
         }
 
         it('TSESTree - Error', () => {
-          expect(tsestreeParsed.error).toMatchSpecificSnapshot(
+          expect(
+            serializeError(tsestreeParsed.error, contents),
+          ).toMatchSpecificSnapshot(
             fixture.snapshotFiles.error.tsestree(snapshotCounter++),
           );
         });

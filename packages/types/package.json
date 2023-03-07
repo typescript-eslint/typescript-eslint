@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "5.53.0",
+  "version": "5.54.0",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
@@ -13,11 +13,9 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.js"
+      "default": "./dist/index.js"
     },
-    "./package.json": {
-      "require": "./package.json"
-    }
+    "./package.json": "./package.json"
   },
   "engines": {
     "node": "^14.18.0 || ^16.0.0 || >=18.0.0"

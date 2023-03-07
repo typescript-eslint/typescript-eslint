@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/utils",
-  "version": "5.53.0",
+  "version": "5.54.0",
   "description": "Utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
@@ -13,31 +13,29 @@
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",
-      "require": "./dist/index.js"
+      "default": "./dist/index.js"
     },
     "./ast-utils": {
       "types": "./dist/ast-utils/index.d.ts",
-      "require": "./dist/ast-utils/index.js"
+      "default": "./dist/ast-utils/index.js"
     },
     "./eslint-utils": {
       "types": "./dist/eslint-utils/index.d.ts",
-      "require": "./dist/eslint-utils/index.js"
+      "default": "./dist/eslint-utils/index.js"
     },
     "./eslint-utils/rule-tester": {
       "types": "./dist/eslint-utils/rule-tester/RuleTester.d.ts",
-      "require": "./dist/eslint-utils/rule-tester/RuleTester.js"
+      "default": "./dist/eslint-utils/rule-tester/RuleTester.js"
     },
     "./json-schema": {
       "types": "./dist/json-schema.d.ts",
-      "require": "./dist/json-schema.js"
+      "default": "./dist/json-schema.js"
     },
     "./ts-eslint": {
       "types": "./dist/ts-eslint/index.d.ts",
-      "require": "./dist/ts-eslint/index.js"
+      "default": "./dist/ts-eslint/index.js"
     },
-    "./package.json": {
-      "require": "./package.json"
-    }
+    "./package.json": "./package.json"
   },
   "engines": {
     "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
@@ -69,9 +67,9 @@
   "dependencies": {
     "@types/json-schema": "^7.0.9",
     "@types/semver": "^7.3.12",
-    "@typescript-eslint/scope-manager": "5.53.0",
-    "@typescript-eslint/types": "5.53.0",
-    "@typescript-eslint/typescript-estree": "5.53.0",
+    "@typescript-eslint/scope-manager": "5.54.0",
+    "@typescript-eslint/types": "5.54.0",
+    "@typescript-eslint/typescript-estree": "5.54.0",
     "eslint-scope": "^5.1.1",
     "eslint-utils": "^3.0.0",
     "semver": "^7.3.7"
@@ -80,7 +78,7 @@
     "eslint": "^7.0.0 || ^8.0.0"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "5.53.0",
+    "@typescript-eslint/parser": "5.54.0",
     "typescript": "*"
   },
   "funding": {

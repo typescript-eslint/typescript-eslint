@@ -12,6 +12,12 @@ import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 
 interface ParseOptions {
   /**
+   * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
+   * This case only usually occurs when attempting to lint invalid code.
+   */
+  allowInvalidAST?: boolean;
+
+  /**
    * create a top-level comments array containing all comments
    */
   comment?: boolean;
