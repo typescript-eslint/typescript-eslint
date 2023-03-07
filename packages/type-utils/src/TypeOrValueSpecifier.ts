@@ -113,25 +113,6 @@ export const typeOrValueSpecifierSchema = {
       },
       required: ['from', 'name', 'source'],
     },
-    {
-      type: 'object',
-      additionalProperties: false,
-      properties: {
-        from: {
-          type: 'array',
-          minItems: 1,
-          uniqueItems: true,
-          items: {
-            type: 'string',
-            enum: ['file', 'lib', 'package'],
-          },
-        },
-        name: {
-          type: 'string',
-        },
-      },
-      required: ['from', 'name'],
-    },
   ],
 };
 

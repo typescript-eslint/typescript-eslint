@@ -101,6 +101,10 @@ describe('TypeOrValueSpecifier', () => {
       [{ from: 'package', name: 'MyType' }],
       [{ from: 'package', source: './filename.js' }],
       [{ from: 'package', name: 'MyType', source: 42 }],
+      [{ from: [], name: 'MyType' }],
+      [{ from: ['file'], name: 'MyType' }],
+      [{ from: ['lib'], name: 'MyType' }],
+      [{ from: ['package'], name: 'MyType' }],
       [
         {
           from: 'package',
@@ -117,26 +121,6 @@ describe('TypeOrValueSpecifier', () => {
         },
       ],
     ])("doesn't match a malformed package specifier", runTestNegative);
-
-    it.each([
-      [{ from: ['file'], name: 'MyType' }],
-      [{ from: ['lib'], name: 'MyType' }],
-      [{ from: ['package'], name: 'MyType' }],
-      [{ from: ['file', 'lib'], name: 'MyType' }],
-      [{ from: ['file', 'package'], name: 'MyType' }],
-      [{ from: ['lib', 'package'], name: 'MyType' }],
-      [{ from: ['file', 'lib', 'package'], name: 'MyType' }],
-    ])('matches a multi-source specifier', runTestPositive);
-
-    it.each([
-      [{ from: [], name: 'MyType' }],
-      [{ from: ['invalid'], name: 'MyType' }],
-      [{ from: ['file', 'invalid'], name: 'MyType' }],
-      [{ from: ['file', 'file'], name: 'MyType' }],
-      [{ from: ['file'], name: 42 }],
-      [{ from: ['file'] }],
-      [{ from: ['file'], name: 'MyType', unrelatedProperty: '' }],
-    ])("doesn't match a malformed multi-source specifier", runTestNegative);
   });
 
   describe('typeMatchesSpecifier', () => {
