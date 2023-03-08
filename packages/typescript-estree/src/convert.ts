@@ -1677,20 +1677,52 @@ export class Converter {
             ? AST_NODE_TYPES.ClassDeclaration
             : AST_NODE_TYPES.ClassExpression;
 
-        const superClass = heritageClauses.find(
-          clause => clause.token === SyntaxKind.ExtendsKeyword,
-        );
+        let extendsClause: ts.HeritageClause | undefined;
+        let implementsClause: ts.HeritageClause | undefined;
+        for (const heritageClause of heritageClauses) {
+          const { token, types } = heritageClause;
 
-        if (superClass && superClass.types.length > 1) {
-          this.#throwUnlessAllowInvalidAST(
-            superClass.types[1],
-            'Classes can only extend a single class.',
-          );
+          if (types.length === 0) {
+            this.#throwUnlessAllowInvalidAST(
+              heritageClause,
+              `'${ts.tokenToString(token)}' list cannot be empty.`,
+            );
+          }
+
+          if (token === SyntaxKind.ExtendsKeyword) {
+            if (extendsClause) {
+              this.#throwUnlessAllowInvalidAST(
+                heritageClause,
+                "'extends' clause already seen.",
+              );
+            }
+
+            if (implementsClause) {
+              this.#throwUnlessAllowInvalidAST(
+                heritageClause,
+                "'extends' clause must precede 'implements' clause.",
+              );
+            }
+
+            if (types.length > 1) {
+              this.#throwUnlessAllowInvalidAST(
+                types[1],
+                'Classes can only extend a single class.',
+              );
+            }
+
+            extendsClause ??= heritageClause;
+          } else if (token === SyntaxKind.ImplementsKeyword) {
+            if (implementsClause) {
+              this.#throwUnlessAllowInvalidAST(
+                heritageClause,
+                "'implements' clause already seen.",
+              );
+            }
+
+            implementsClause ??= heritageClause;
+          }
         }
-
-        const implementsClause = heritageClauses.find(
-          clause => clause.token === SyntaxKind.ImplementsKeyword,
-        );
 
         const result = this.createNode<
           TSESTree.ClassDeclaration | TSESTree.ClassExpression
@@ -1710,8 +1742,8 @@ export class Converter {
           id: this.convertChild(node.name),
           implements:
             implementsClause?.types.map(el => this.convertChild(el)) ?? [],
-          superClass: superClass?.types[0]
-            ? this.convertChild(superClass.types[0].expression)
+          superClass: extendsClause?.types[0]
+            ? this.convertChild(extendsClause.types[0].expression)
             : null,
           superTypeArguments: undefined,
           superTypeParameters: undefined,
@@ -1722,22 +1754,13 @@ export class Converter {
             ),
         });
 
-        if (superClass) {
-          if (superClass.types.length > 1) {
-            this.#throwUnlessAllowInvalidAST(
-              superClass.types[1],
-              'Classes can only extend a single class.',
+        if (extendsClause?.types[0]?.typeArguments) {
+          // eslint-disable-next-line deprecation/deprecation
+          result.superTypeArguments = result.superTypeParameters =
+            this.convertTypeArgumentsToTypeParameterInstantiation(
+              extendsClause.types[0].typeArguments,
+              extendsClause.types[0],
             );
-          }
-
-          if (superClass.types[0]?.typeArguments) {
-            // eslint-disable-next-line deprecation/deprecation
-            result.superTypeArguments = result.superTypeParameters =
-              this.convertTypeArgumentsToTypeParameterInstantiation(
-                superClass.types[0].typeArguments,
-                superClass.types[0],
-              );
-          }
         }
 
         return this.fixExports(node, result);
