@@ -2623,6 +2623,28 @@ export class Converter {
         this.#checkIllegalDecorators(node);
 
         const interfaceHeritageClauses = node.heritageClauses ?? [];
+        const interfaceExtends: TSESTree.TSInterfaceHeritage[] = [];
+
+        for (const heritageClause of interfaceHeritageClauses) {
+          if (heritageClause.token !== SyntaxKind.ExtendsKeyword) {
+            this.#throwError(
+              heritageClause,
+              heritageClause.token === SyntaxKind.ImplementsKeyword
+                ? "Interface declaration cannot have 'implements' clause."
+                : 'Unexpected token.',
+            );
+          }
+
+          for (const heritageType of heritageClause.types) {
+            interfaceExtends.push(
+              this.convertChild(
+                heritageType,
+                node,
+              ) as TSESTree.TSInterfaceHeritage,
+            );
+          }
+        }
+
         const result = this.createNode<TSESTree.TSInterfaceDeclaration>(node, {
           type: AST_NODE_TYPES.TSInterfaceDeclaration,
           body: this.createNode<TSESTree.TSInterfaceBody>(node, {
@@ -2631,17 +2653,7 @@ export class Converter {
             range: [node.members.pos - 1, node.end],
           }),
           declare: hasModifier(SyntaxKind.DeclareKeyword, node),
-          extends: interfaceHeritageClauses
-            .filter(
-              heritageClause =>
-                heritageClause.token === SyntaxKind.ExtendsKeyword,
-            )
-            .flatMap(heritageClause =>
-              heritageClause.types.map(
-                n => this.convertChild(n, node) as TSESTree.TSInterfaceHeritage,
-              ),
-            ),
-
+          extends: interfaceExtends,
           id: this.convertChild(node.name),
           typeParameters:
             node.typeParameters &&
