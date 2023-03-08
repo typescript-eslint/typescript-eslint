@@ -1,1 +1,0 @@
-export private public protected static readonly abstract async enum X {}

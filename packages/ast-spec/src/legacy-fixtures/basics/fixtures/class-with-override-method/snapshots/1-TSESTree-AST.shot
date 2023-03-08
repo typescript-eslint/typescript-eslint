@@ -1,0 +1,103 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-override-method TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "show",
+
+              range: [135, 139],
+              loc: {
+                start: { column: 11, line: 4 },
+                end: { column: 15, line: 4 },
+              },
+            },
+            kind: "method",
+            override: true,
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [],
+
+                range: [142, 158],
+                loc: {
+                  start: { column: 18, line: 4 },
+                  end: { column: 3, line: 6 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+
+              range: [139, 158],
+              loc: {
+                start: { column: 15, line: 4 },
+                end: { column: 3, line: 6 },
+              },
+            },
+
+            range: [126, 158],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 3, line: 6 },
+            },
+          },
+        ],
+
+        range: [122, 160],
+        loc: {
+          start: { column: 49, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "SpecializedComponent",
+
+        range: [79, 99],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 26, line: 3 },
+        },
+      },
+      superClass: Identifier {
+        type: "Identifier",
+        name: "SomeComponent",
+
+        range: [108, 121],
+        loc: {
+          start: { column: 35, line: 3 },
+          end: { column: 48, line: 3 },
+        },
+      },
+
+      range: [73, 160],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 161],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

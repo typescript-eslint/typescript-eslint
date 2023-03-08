@@ -1,0 +1,451 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-optional-properties TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "computed",
+
+            range: [79, 87],
+            loc: {
+              start: { column: 6, line: 3 },
+              end: { column: 14, line: 3 },
+            },
+          },
+          init: Literal {
+            type: "Literal",
+            raw: "'buzz'",
+            value: "buzz",
+
+            range: [90, 96],
+            loc: {
+              start: { column: 17, line: 3 },
+              end: { column: 23, line: 3 },
+            },
+          },
+
+          range: [79, 96],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 23, line: 3 },
+          },
+        },
+      ],
+      kind: "const",
+
+      range: [73, 97],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 24, line: 3 },
+      },
+    },
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: Array [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "computed2",
+
+            range: [104, 113],
+            loc: {
+              start: { column: 6, line: 4 },
+              end: { column: 15, line: 4 },
+            },
+          },
+          init: Literal {
+            type: "Literal",
+            raw: "'bazz'",
+            value: "bazz",
+
+            range: [116, 122],
+            loc: {
+              start: { column: 18, line: 4 },
+              end: { column: 24, line: 4 },
+            },
+          },
+
+          range: [104, 122],
+          loc: {
+            start: { column: 6, line: 4 },
+            end: { column: 24, line: 4 },
+          },
+        },
+      ],
+      kind: "const",
+
+      range: [98, 123],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 25, line: 4 },
+      },
+    },
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "foo",
+
+              range: [138, 141],
+              loc: {
+                start: { column: 2, line: 6 },
+                end: { column: 5, line: 6 },
+              },
+            },
+            optional: true,
+            override: false,
+            static: false,
+            value: null,
+
+            range: [138, 143],
+            loc: {
+              start: { column: 2, line: 6 },
+              end: { column: 7, line: 6 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "bar",
+
+              range: [146, 149],
+              loc: {
+                start: { column: 2, line: 7 },
+                end: { column: 5, line: 7 },
+              },
+            },
+            optional: true,
+            override: false,
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [152, 158],
+                loc: {
+                  start: { column: 8, line: 7 },
+                  end: { column: 14, line: 7 },
+                },
+              },
+
+              range: [150, 158],
+              loc: {
+                start: { column: 6, line: 7 },
+                end: { column: 14, line: 7 },
+              },
+            },
+            value: null,
+
+            range: [146, 159],
+            loc: {
+              start: { column: 2, line: 7 },
+              end: { column: 15, line: 7 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            accessibility: "private",
+            computed: false,
+            declare: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "baz",
+
+              range: [170, 173],
+              loc: {
+                start: { column: 10, line: 8 },
+                end: { column: 13, line: 8 },
+              },
+            },
+            optional: true,
+            override: false,
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [176, 182],
+                loc: {
+                  start: { column: 16, line: 8 },
+                  end: { column: 22, line: 8 },
+                },
+              },
+
+              range: [174, 182],
+              loc: {
+                start: { column: 14, line: 8 },
+                end: { column: 22, line: 8 },
+              },
+            },
+            value: null,
+
+            range: [162, 183],
+            loc: {
+              start: { column: 2, line: 8 },
+              end: { column: 23, line: 8 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: true,
+            declare: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "computed",
+
+              range: [187, 195],
+              loc: {
+                start: { column: 3, line: 9 },
+                end: { column: 11, line: 9 },
+              },
+            },
+            optional: true,
+            override: false,
+            static: false,
+            value: null,
+
+            range: [186, 198],
+            loc: {
+              start: { column: 2, line: 9 },
+              end: { column: 14, line: 9 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: true,
+            declare: false,
+            key: Literal {
+              type: "Literal",
+              raw: "'literal'",
+              value: "literal",
+
+              range: [202, 211],
+              loc: {
+                start: { column: 3, line: 10 },
+                end: { column: 12, line: 10 },
+              },
+            },
+            optional: true,
+            override: false,
+            static: false,
+            value: null,
+
+            range: [201, 214],
+            loc: {
+              start: { column: 2, line: 10 },
+              end: { column: 15, line: 10 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: true,
+            declare: false,
+            key: Literal {
+              type: "Literal",
+              raw: "1",
+              value: 1,
+
+              range: [218, 219],
+              loc: {
+                start: { column: 3, line: 11 },
+                end: { column: 4, line: 11 },
+              },
+            },
+            optional: true,
+            override: false,
+            static: false,
+            value: null,
+
+            range: [217, 222],
+            loc: {
+              start: { column: 2, line: 11 },
+              end: { column: 7, line: 11 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: true,
+            declare: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "computed2",
+
+              range: [226, 235],
+              loc: {
+                start: { column: 3, line: 12 },
+                end: { column: 12, line: 12 },
+              },
+            },
+            optional: true,
+            override: false,
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [239, 245],
+                loc: {
+                  start: { column: 16, line: 12 },
+                  end: { column: 22, line: 12 },
+                },
+              },
+
+              range: [237, 245],
+              loc: {
+                start: { column: 14, line: 12 },
+                end: { column: 22, line: 12 },
+              },
+            },
+            value: null,
+
+            range: [225, 246],
+            loc: {
+              start: { column: 2, line: 12 },
+              end: { column: 23, line: 12 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: true,
+            declare: false,
+            key: Literal {
+              type: "Literal",
+              raw: "'literal2'",
+              value: "literal2",
+
+              range: [250, 260],
+              loc: {
+                start: { column: 3, line: 13 },
+                end: { column: 13, line: 13 },
+              },
+            },
+            optional: true,
+            override: false,
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [264, 270],
+                loc: {
+                  start: { column: 17, line: 13 },
+                  end: { column: 23, line: 13 },
+                },
+              },
+
+              range: [262, 270],
+              loc: {
+                start: { column: 15, line: 13 },
+                end: { column: 23, line: 13 },
+              },
+            },
+            value: null,
+
+            range: [249, 271],
+            loc: {
+              start: { column: 2, line: 13 },
+              end: { column: 24, line: 13 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: true,
+            declare: false,
+            key: Literal {
+              type: "Literal",
+              raw: "2",
+              value: 2,
+
+              range: [275, 276],
+              loc: {
+                start: { column: 3, line: 14 },
+                end: { column: 4, line: 14 },
+              },
+            },
+            optional: true,
+            override: false,
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [280, 286],
+                loc: {
+                  start: { column: 8, line: 14 },
+                  end: { column: 14, line: 14 },
+                },
+              },
+
+              range: [278, 286],
+              loc: {
+                start: { column: 6, line: 14 },
+                end: { column: 14, line: 14 },
+              },
+            },
+            value: null,
+
+            range: [274, 287],
+            loc: {
+              start: { column: 2, line: 14 },
+              end: { column: 15, line: 14 },
+            },
+          },
+        ],
+
+        range: [134, 289],
+        loc: {
+          start: { column: 10, line: 5 },
+          end: { column: 1, line: 15 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [130, 133],
+        loc: {
+          start: { column: 6, line: 5 },
+          end: { column: 9, line: 5 },
+        },
+      },
+      superClass: null,
+
+      range: [124, 289],
+      loc: {
+        start: { column: 0, line: 5 },
+        end: { column: 1, line: 15 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 290],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 16 },
+  },
+}
+`;

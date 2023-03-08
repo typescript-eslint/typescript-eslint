@@ -1,9 +1,15 @@
+import { join, resolve } from 'path';
+
 import type {
   ParseAndGenerateServicesResult,
   TSESTree,
   TSESTreeOptions,
 } from '../src';
-import { parse as parserParse, parseAndGenerateServices } from '../src';
+import {
+  clearCaches,
+  parse as parserParse,
+  parseAndGenerateServices,
+} from '../src';
 
 export function parseCodeAndGenerateServices(
   code: string,
@@ -86,7 +92,7 @@ type UnknownObject = Record<string, unknown>;
 
 function isObjectLike(value: unknown | null): value is UnknownObject {
   return (
-    typeof value === 'object' && !(value instanceof RegExp) && value !== null
+    typeof value === 'object' && !(value instanceof RegExp) && value != null
   );
 }
 
@@ -126,7 +132,7 @@ export function omitDeep<T = UnknownObject>(
 
     for (const prop in node) {
       if (Object.prototype.hasOwnProperty.call(node, prop)) {
-        if (shouldOmit(prop, node[prop]) || typeof node[prop] === 'undefined') {
+        if (shouldOmit(prop, node[prop]) || node[prop] === undefined) {
           delete node[prop];
           continue;
         }
@@ -152,4 +158,42 @@ export function omitDeep<T = UnknownObject>(
   }
 
   return visit(root as UnknownObject, null);
+}
+
+interface CreateAndPrepareParseConfig {
+  code: string;
+  config: TSESTreeOptions;
+  projectDirectory: string;
+}
+
+const FIXTURES_DIR = join(__dirname, '../tests/fixtures/simpleProject');
+
+export function createAndPrepareParseConfig(): CreateAndPrepareParseConfig {
+  beforeEach(() => {
+    clearCaches();
+  });
+
+  const projectDirectory = resolve(FIXTURES_DIR, '../moduleResolver');
+
+  const code = `
+    import { something } from '__PLACEHOLDER__';
+
+    something();
+  `;
+
+  const config: TSESTreeOptions = {
+    comment: true,
+    filePath: resolve(projectDirectory, 'file.ts'),
+    loc: true,
+    project: './tsconfig.json',
+    range: true,
+    tokens: true,
+    tsconfigRootDir: projectDirectory,
+  };
+
+  return {
+    code,
+    config,
+    projectDirectory,
+  };
 }

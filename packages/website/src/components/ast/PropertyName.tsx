@@ -1,3 +1,4 @@
+import Link from '@docusaurus/Link';
 import type { MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
@@ -32,27 +33,27 @@ export default function PropertyName(props: PropertyNameProps): JSX.Element {
   return props.onClick || props.onHover ? (
     <>
       {props.propName && (
-        <a
-          href={`#${props.propName}`}
+        <Link
+          to={`#${props.propName}`}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
           onClick={onClick}
           className={styles.propName}
         >
           {props.propName}
-        </a>
+        </Link>
       )}
       {props.propName && <span>: </span>}
       {props.typeName && (
-        <a
-          href={`#${props.typeName}`}
+        <Link
+          to={`#${props.typeName}`}
           onMouseEnter={onMouseEnter}
           onMouseLeave={onMouseLeave}
           onClick={onClick}
           className={styles.tokenName}
         >
           {props.typeName}
-        </a>
+        </Link>
       )}
       {props.typeName && <span> </span>}
     </>

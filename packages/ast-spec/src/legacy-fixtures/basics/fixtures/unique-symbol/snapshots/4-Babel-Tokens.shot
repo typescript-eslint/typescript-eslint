@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics unique-symbol Babel - Tokens 1`] = `
+Array [
+  Identifier {
+    type: "Identifier",
+    value: "type",
+
+    range: [73, 77],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 4, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "A",
+
+    range: [78, 79],
+    loc: {
+      start: { column: 5, line: 3 },
+      end: { column: 6, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [80, 81],
+    loc: {
+      start: { column: 7, line: 3 },
+      end: { column: 8, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "unique",
+
+    range: [82, 88],
+    loc: {
+      start: { column: 9, line: 3 },
+      end: { column: 15, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "symbol",
+
+    range: [89, 95],
+    loc: {
+      start: { column: 16, line: 3 },
+      end: { column: 22, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [95, 96],
+    loc: {
+      start: { column: 22, line: 3 },
+      end: { column: 23, line: 3 },
+    },
+  },
+]
+`;

@@ -13,6 +13,7 @@ export type Options = [
     allowNullableBoolean?: boolean;
     allowNullableString?: boolean;
     allowNullableNumber?: boolean;
+    allowNullableEnum?: boolean;
     allowAny?: boolean;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
   },
@@ -29,6 +30,7 @@ export type MessageId =
   | 'conditionErrorNullableNumber'
   | 'conditionErrorObject'
   | 'conditionErrorNullableObject'
+  | 'conditionErrorNullableEnum'
   | 'noStrictNullCheck'
   | 'conditionFixDefaultFalse'
   | 'conditionFixDefaultEmptyString'
@@ -63,6 +65,7 @@ export default util.createRule<Options, MessageId>({
           allowNullableBoolean: { type: 'boolean' },
           allowNullableString: { type: 'boolean' },
           allowNullableNumber: { type: 'boolean' },
+          allowNullableEnum: { type: 'boolean' },
           allowAny: { type: 'boolean' },
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
             type: 'boolean',
@@ -102,6 +105,9 @@ export default util.createRule<Options, MessageId>({
       conditionErrorNullableObject:
         'Unexpected nullable object value in conditional. ' +
         'An explicit null check is required.',
+      conditionErrorNullableEnum:
+        'Unexpected nullable enum value in conditional. ' +
+        'Please handle the nullish/zero/NaN cases explicitly.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
 
@@ -137,6 +143,7 @@ export default util.createRule<Options, MessageId>({
       allowNullableBoolean: false,
       allowNullableString: false,
       allowNullableNumber: false,
+      allowNullableEnum: true,
       allowAny: false,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
     },
@@ -718,6 +725,35 @@ export default util.createRule<Options, MessageId>({
         return;
       }
 
+      // nullable enum
+      if (is('nullish', 'number', 'enum') || is('nullish', 'string', 'enum')) {
+        if (!options.allowNullableEnum) {
+          if (isLogicalNegationExpression(node.parent!)) {
+            context.report({
+              node,
+              messageId: 'conditionErrorNullableEnum',
+              fix: util.getWrappingFixer({
+                sourceCode,
+                node: node.parent,
+                innerNode: node,
+                wrap: code => `${code} == null`,
+              }),
+            });
+          } else {
+            context.report({
+              node,
+              messageId: 'conditionErrorNullableEnum',
+              fix: util.getWrappingFixer({
+                sourceCode,
+                node,
+                wrap: code => `${code} != null`,
+              }),
+            });
+          }
+        }
+        return;
+      }
+
       // any
       if (is('any')) {
         if (!options.allowAny) {
@@ -753,6 +789,7 @@ export default util.createRule<Options, MessageId>({
       | 'number'
       | 'truthy number'
       | 'object'
+      | 'enum'
       | 'any'
       | 'never';
 
@@ -812,6 +849,12 @@ export default util.createRule<Options, MessageId>({
         } else {
           variantTypes.add('number');
         }
+      }
+
+      if (
+        types.some(type => tsutils.isTypeFlagSet(type, ts.TypeFlags.EnumLike))
+      ) {
+        variantTypes.add('enum');
       }
 
       if (
