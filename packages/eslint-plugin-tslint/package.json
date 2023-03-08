@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin-tslint",
-  "version": "5.54.0",
+  "version": "5.54.1",
   "description": "ESLint plugin that wraps a TSLint configuration and lints the whole source using TSLint",
   "files": [
     "dist",
@@ -44,7 +44,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/utils": "5.54.0",
+    "@typescript-eslint/utils": "5.54.1",
     "lodash": "^4.17.21"
   },
   "peerDependencies": {
@@ -54,7 +54,7 @@
   },
   "devDependencies": {
     "@types/lodash": "*",
-    "@typescript-eslint/parser": "5.54.0"
+    "@typescript-eslint/parser": "5.54.1"
   },
   "funding": {
     "type": "opencollective",
