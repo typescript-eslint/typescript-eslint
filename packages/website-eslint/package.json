@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/website-eslint",
-  "version": "5.54.0",
+  "version": "5.54.1",
   "private": true,
   "description": "ESLint which works in browsers.",
   "files": [
@@ -23,19 +23,19 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "5.54.0",
-    "@typescript-eslint/utils": "5.54.0"
+    "@typescript-eslint/types": "5.54.1",
+    "@typescript-eslint/utils": "5.54.1"
   },
   "devDependencies": {
     "@rollup/plugin-commonjs": "^23.0.0",
     "@rollup/plugin-json": "^5.0.0",
     "@rollup/plugin-node-resolve": "^15.0.0",
     "@rollup/pluginutils": "^5.0.0",
-    "@typescript-eslint/eslint-plugin": "5.54.0",
-    "@typescript-eslint/parser": "5.54.0",
-    "@typescript-eslint/scope-manager": "5.54.0",
-    "@typescript-eslint/typescript-estree": "5.54.0",
-    "@typescript-eslint/visitor-keys": "5.54.0",
+    "@typescript-eslint/eslint-plugin": "5.54.1",
+    "@typescript-eslint/parser": "5.54.1",
+    "@typescript-eslint/scope-manager": "5.54.1",
+    "@typescript-eslint/typescript-estree": "5.54.1",
+    "@typescript-eslint/visitor-keys": "5.54.1",
     "eslint": "*",
     "magic-string": "0.25.9",
     "rollup": "^2.75.4",

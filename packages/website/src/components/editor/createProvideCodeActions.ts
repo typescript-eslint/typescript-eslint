@@ -34,9 +34,9 @@ export function createProvideCodeActions(
               edits: [
                 {
                   resource: model.uri,
-                  // monaco for ts >= 4.8
+                  // @ts-expect-error monaco for ts >= 4.8
                   textEdit: editOperation,
-                  // @ts-expect-error monaco for ts < 4.8
+                  // monaco for ts < 4.8
                   edit: editOperation,
                 },
               ],
