@@ -170,22 +170,6 @@ function foo() {}
       ],
     },
     {
-      code: noFormat`
-@decorator()
-function foo() {}
-      `,
-      errors: [
-        {
-          messageId: 'unexpected',
-          data: {
-            name: "function 'foo'",
-          },
-          line: 3,
-          column: 16,
-        },
-      ],
-    },
-    {
       code: `
 class Foo {
   @decorator()
