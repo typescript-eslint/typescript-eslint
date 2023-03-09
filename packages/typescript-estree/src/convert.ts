@@ -1027,12 +1027,30 @@ export class Converter {
             properties: node.properties.map(el => this.convertPattern(el)),
             typeAnnotation: undefined,
           });
-        } else {
-          return this.createNode<TSESTree.ObjectExpression>(node, {
-            type: AST_NODE_TYPES.ObjectExpression,
-            properties: node.properties.map(el => this.convertChild(el)),
-          });
         }
+
+        const properties: TSESTree.Property[] = [];
+        for (const property of node.properties) {
+          if (
+            (property.kind === SyntaxKind.GetAccessor ||
+              property.kind === SyntaxKind.SetAccessor ||
+              property.kind === SyntaxKind.MethodDeclaration) &&
+            !property.body
+          ) {
+            // TypeScript throws `'{' expected.`
+            this.#throwUnlessAllowInvalidAST(
+              property,
+              'Unexpected object property value.',
+            );
+          }
+
+          properties.push(this.convertChild(property) as TSESTree.Property);
+        }
+
+        return this.createNode<TSESTree.ObjectExpression>(node, {
+          type: AST_NODE_TYPES.ObjectExpression,
+          properties,
+        });
       }
 
       case SyntaxKind.PropertyAssignment: {
