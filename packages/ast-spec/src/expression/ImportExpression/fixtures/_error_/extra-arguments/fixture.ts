@@ -1,5 +1,5 @@
 import(
   "./source.json",
-  {type: "json"},
+  {assert: {type: "json"}},
   extraArgument
 );
