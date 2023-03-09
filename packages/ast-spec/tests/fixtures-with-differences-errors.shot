@@ -38,7 +38,6 @@ Object {
     "legacy-fixtures/basics/fixtures/_error_/interface-with-construct-signature-with-parameter-accessibility/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/new-target-in-arrow-function-body/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/var-with-definite-assignment/fixture.ts",
-    "legacy-fixtures/errorRecovery/fixtures/_error_/decorator-on-function/fixture.ts",
     "legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-arguments-in-call-expression/fixture.ts",
     "legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-arguments-in-new-expression/fixture.ts",
     "legacy-fixtures/errorRecovery/fixtures/_error_/empty-type-arguments/fixture.ts",
