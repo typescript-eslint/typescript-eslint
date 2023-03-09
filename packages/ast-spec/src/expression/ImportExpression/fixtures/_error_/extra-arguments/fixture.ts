@@ -1,1 +1,5 @@
-import("source.json", {type: "json"}, extraArgument);
+import(
+  "source.json",
+  {type: "json"},
+  extraArgument
+);
