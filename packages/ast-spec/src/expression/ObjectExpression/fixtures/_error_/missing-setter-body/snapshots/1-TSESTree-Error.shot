@@ -3,6 +3,6 @@
 exports[`AST Fixtures expression ObjectExpression _error_ missing-setter-body TSESTree - Error 1`] = `
 "TSError
 > 1 | ({set foo(value);})
-    |   ^^^^^^^^^^^^^^^ Unexpected object property value.
+    |                 ^ '{' expected.
   2 |"
 `;
