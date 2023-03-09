@@ -2,7 +2,7 @@
 
 exports[`AST Fixtures expression ImportExpression _error_ extra-arguments TSESTree - Error 1`] = `
 "TSError
-  2 |   \\"source.json\\",
+  2 |   \\"./source.json\\",
   3 |   {type: \\"json\\"},
 > 4 |   extraArgument
     |   ^^^^^^^^^^^^^ Dynamic import requires exactly one or two arguments.

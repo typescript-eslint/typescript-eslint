@@ -1,5 +1,5 @@
 import(
-  "source.json",
+  "./source.json",
   {type: "json"},
   extraArgument
 );
