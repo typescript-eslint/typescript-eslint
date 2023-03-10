@@ -12,10 +12,13 @@ export interface ASTESTreeViewerProps extends ASTViewerBaseProps {
   readonly filter?: ESQuery.Selector;
 }
 
-function tryToApplyFilter<T>(value: T, filter?: ESQuery.Selector): T {
+function tryToApplyFilter<T extends TSESTree.BaseNode>(
+  value: T,
+  filter?: ESQuery.Selector,
+): T | T[] {
   try {
     if (window.esquery && filter) {
-      // @ts-expect-error - esquery is not correctly typed
+      // @ts-expect-error - esquery requires js ast types
       return window.esquery.match(value, filter);
     }
   } catch (e: unknown) {

@@ -6,7 +6,7 @@ import {
   defaultTsConfig,
 } from '@site/src/components/config/utils';
 import EditorTabs from '@site/src/components/EditorTabs';
-import ErrorsViewer from '@site/src/components/ErrorsViewer';
+import { ErrorsViewer, ErrorViewer } from '@site/src/components/ErrorsViewer';
 import { ESQueryFilter } from '@site/src/components/ESQueryFilter';
 import type { TSESTree } from '@typescript-eslint/utils';
 import clsx from 'clsx';
@@ -186,7 +186,11 @@ function Playground(): JSX.Element {
                   />
                 )) ||
                 (state.showAST === 'es' && esQueryError && (
-                  <ErrorsViewer value={esQueryError} />
+                  <ErrorViewer
+                    type="warning"
+                    title="Invalid Selector"
+                    value={esQueryError}
+                  />
                 )) ||
                 (state.showAST === 'es' && esAst && (
                   <ASTViewerESTree

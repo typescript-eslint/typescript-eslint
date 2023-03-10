@@ -117,12 +117,12 @@ module.exports = {
           replace: 'true',
         },
         {
-          // replace all process.env.IGNORE_TEST_WIN32 with true
-          test: /process\.cwd()/u,
+          // replace all process.cwd with "/"
+          test: /process\.cwd\(\)/u,
           replace: '"/"',
         },
         {
-          // replace all process.env.IGNORE_TEST_WIN32 with true
+          // replace all process.emitWarning with console.warn
           test: /process.emitWarning/u,
           replace: 'console.warn',
         },

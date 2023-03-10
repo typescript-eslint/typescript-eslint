@@ -11,6 +11,12 @@ export interface ErrorsViewerProps {
   readonly value?: ErrorGroup[] | Error;
 }
 
+export interface ErrorViewerProps {
+  readonly value: Error;
+  readonly title: string;
+  readonly type: AlertBlockProps['type'];
+}
+
 interface AlertBlockProps {
   readonly type: 'danger' | 'warning' | 'note' | 'info' | 'success';
   readonly children: React.ReactNode;
@@ -116,9 +122,26 @@ function SuccessBlock(): JSX.Element {
   );
 }
 
-export default function ErrorsViewer({
+export function ErrorViewer({
   value,
-}: ErrorsViewerProps): JSX.Element {
+  title,
+  type,
+}: ErrorViewerProps): JSX.Element {
+  return (
+    <div className={styles.list}>
+      <div className="margin-top--md">
+        <AlertBlock type={type}>
+          <div className={styles.fixerContainer}>
+            <h4>{title}</h4>
+          </div>
+          {type === 'danger' ? value.stack : value.message}
+        </AlertBlock>
+      </div>
+    </div>
+  );
+}
+
+export function ErrorsViewer({ value }: ErrorsViewerProps): JSX.Element {
   const [isLocked, setIsLocked] = useState(false);
 
   useEffect(() => {
@@ -126,18 +149,7 @@ export default function ErrorsViewer({
   }, [value]);
 
   if (value && !Array.isArray(value)) {
-    return (
-      <div className={styles.list}>
-        <div className="margin-top--md">
-          <AlertBlock type="danger">
-            <div className={styles.fixerContainer}>
-              <h4>Internal error</h4>
-            </div>
-            {value?.stack}
-          </AlertBlock>
-        </div>
-      </div>
-    );
+    return <ErrorViewer type="danger" title="Internal error" value={value} />;
   }
 
   return (

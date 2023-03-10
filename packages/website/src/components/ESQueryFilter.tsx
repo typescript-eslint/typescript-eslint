@@ -29,9 +29,9 @@ export function ESQueryFilter({
     <div className={styles.searchContainer}>
       <Text
         value={value}
+        type="search"
         name="esquery"
         onChange={changeEvent}
-        className={styles.search}
         placeholder="ESQuery filter"
       />
     </div>

@@ -1,4 +1,7 @@
+import clsx from 'clsx';
 import React from 'react';
+
+import styles from './Text.module.css';
 
 export interface DropdownProps {
   readonly onChange: (value: string) => void;
@@ -17,7 +20,7 @@ const Text = React.forwardRef<HTMLInputElement, DropdownProps>(
         value={props.value}
         onChange={(e): void => props.onChange(e.target.value)}
         name={props.name}
-        className={props.className}
+        className={clsx(styles.textInput, props.className)}
         type={props.type ?? 'text'}
         placeholder={props.placeholder}
         ref={ref}
