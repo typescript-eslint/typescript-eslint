@@ -21,9 +21,7 @@ Our plan for typescript-eslint v6 is to:
 3. Release a stable version summer of 2023
 
 Nothing mentioned in this blog post is set in stone.
-If you feel passionately about any of the choices we've made here -positively or negatively- then do let us know on [the typescript-eslint Discord's `v6` channel](https://hi.joshuakgoldberg.com)!
-
-<!-- Todo: figuring out what to use as the feedback CTA -->
+If you feel passionately about any of the choices we've made here -positively or negatively- then do let us know on [the typescript-eslint Discord's `v6` channel](https://discord.com/channels/1026804805894672454/1084245444676292688)!
 
 ## Trying Out v6
 
@@ -162,7 +160,7 @@ If you author any ESLint plugins or other tools that interact with TypeScript sy
 It includes some breaking changes that you may need to accommodate for.
 
 :::tip
-If you're having trouble working with the changes, please let us know on [the typescript-eslint Discord's `v6` channel](https://hi.joshuakgoldberg.com)!
+If you're having trouble working with the changes, please let us know on [the typescript-eslint Discord's `v6` channel](https://discord.com/channels/1026804805894672454/1084245444676292688)!
 :::
 
 ### Type Checker Wrapper APIs
@@ -285,12 +283,22 @@ For more information, see:
 ## Appreciation
 
 We'd like to extend a sincere _thank you_ to everybody who pitched in to make typescript-eslint v6 possible.
-We couldn't have done it without you!
 
-See the [v6.0.0 pull request](https://github.com/typescript-eslint/typescript-eslint/pull/5886) for a list of collaborators and merged pull request commits.
+- Ourselves on the maintenance team:
+  - [Armano](https://github.com/armano2)
+  - [Brad Zacher](https://github.com/bradzacher)
+  - [James Henry](https://github.com/JamesHenry)
+  - [Josh Goldberg](https://github.com/JoshuaKGoldberg)
+  - [Joshua Chen](https://github.com/Josh-Cena)
+- Community contributors whose PRs were merged into the 6.0.0 release:
+  - [Bryan Mishkin](https://github.com/bmish)
+  - [fisker Cheung](https://github.com/fisker)
+  - [Juan García](https://github.com/juank1809)
+  - [Kevin Ball](https://github.com/kball)
+  - [Marek Dědič](https://github.com/marekdedic)
+  - [Mateusz Burzyński](https://github.com/Andarist)
 
-> Beware: there are >400k line changes across >1.5k files.
-> The github.com file viewer generally cannot handle viewing the _Files_ tab.
+See the [v6.0.0 milestone](https://github.com/typescript-eslint/typescript-eslint/milestone/8) for the list of issues and associated merged pull requests.
 
 ## Supporting typescript-eslint
 
