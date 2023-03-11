@@ -291,12 +291,14 @@ We'd like to extend a sincere _thank you_ to everybody who pitched in to make ty
   - [Josh Goldberg](https://github.com/JoshuaKGoldberg)
   - [Joshua Chen](https://github.com/Josh-Cena)
 - Community contributors whose PRs were merged into the 6.0.0 release:
+  <!-- cspell:disable -->
   - [Bryan Mishkin](https://github.com/bmish)
   - [fisker Cheung](https://github.com/fisker)
   - [Juan García](https://github.com/juank1809)
   - [Kevin Ball](https://github.com/kball)
   - [Marek Dědič](https://github.com/marekdedic)
   - [Mateusz Burzyński](https://github.com/Andarist)
+  <!-- cspell:enable -->
 
 See the [v6.0.0 milestone](https://github.com/typescript-eslint/typescript-eslint/milestone/8) for the list of issues and associated merged pull requests.
 
