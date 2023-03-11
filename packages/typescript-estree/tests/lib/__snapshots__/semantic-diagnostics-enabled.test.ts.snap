@@ -73,8 +73,6 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ClassDeclaration/fixtures/with-member-one/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/_error_/kind-type/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
-
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/_error_/missing-source/fixture 1`] = `
 TSError {
   "column": 13,
@@ -102,11 +100,13 @@ TSError {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/_error_/type-kind/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
-
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/assertion/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/kind-type/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/named/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/type-kind/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/declaration/ExportAllDeclaration/fixtures/unnamed/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
@@ -918,8 +918,6 @@ TSError {
 }
 `;
 
-exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/export-type-star-from/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
-
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/export-with-import-assertions/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/_error_/import-type-error/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
@@ -1135,6 +1133,8 @@ exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" e
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-type-from/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-type-from-as/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
+
+exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/export-type-star-from/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
 exports[`Parse all fixtures with "errorOnTypeScriptSyntacticAndSemanticIssues" enabled fixtures/legacy-fixtures/basics/fixtures/function-anonymus-with-type-parameters/fixture 1`] = `"TEST OUTPUT: No semantic or syntactic issues found"`;
 
