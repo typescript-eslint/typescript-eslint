@@ -1,0 +1,15 @@
+{
+  "name": "experimental-utils",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "type": "library",
+  "implicitDependencies": [],
+  "targets": {
+    "lint": {
+      "executor": "@nrwl/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/experimental-utils/**/*.ts"]
+      }
+    }
+  }
+}
