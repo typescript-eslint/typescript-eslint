@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.54.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.54.0...v5.54.1) (2023-03-06)
+
+
+### Bug Fixes
+
+* **typescript-estree:** do not call export of clearProgramCache ([#6540](https://github.com/typescript-eslint/typescript-eslint/issues/6540)) ([181e705](https://github.com/typescript-eslint/typescript-eslint/commit/181e705887e9e07f0fa28195644cc94e5b4f039d))
+
+
+
+
+
 # [5.54.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.53.0...v5.54.0) (2023-02-27)
 
 
