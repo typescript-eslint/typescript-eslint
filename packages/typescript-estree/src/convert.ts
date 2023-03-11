@@ -2407,6 +2407,7 @@ export class Converter {
           default: node.default ? this.convertType(node.default) : undefined,
           in: hasModifier(SyntaxKind.InKeyword, node),
           out: hasModifier(SyntaxKind.OutKeyword, node),
+          const: hasModifier(SyntaxKind.ConstKeyword, node),
         });
       }
 
