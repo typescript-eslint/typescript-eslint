@@ -43,6 +43,7 @@ Program {
             type: "TSInferType",
             typeParameter: TSTypeParameter {
               type: "TSTypeParameter",
+              const: false,
               in: false,
               name: Identifier {
                 type: "Identifier",
@@ -101,6 +102,7 @@ Program {
             type: "TSInferType",
             typeParameter: TSTypeParameter {
               type: "TSTypeParameter",
+              const: false,
               in: false,
               name: Identifier {
                 type: "Identifier",
@@ -167,6 +169,7 @@ Program {
                     type: "TSInferType",
                     typeParameter: TSTypeParameter {
                       type: "TSTypeParameter",
+                      const: false,
                       in: false,
                       name: Identifier {
                         type: "Identifier",
@@ -310,6 +313,7 @@ Program {
         params: Array [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",

@@ -28,6 +28,7 @@ Program {
                 },
                 typeParameter: TSTypeParameter {
                   type: "TSTypeParameter",
+                  const: false,
                   constraint: TSStringKeyword {
                     type: "TSStringKeyword",
 

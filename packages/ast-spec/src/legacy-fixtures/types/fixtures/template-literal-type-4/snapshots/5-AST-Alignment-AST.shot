@@ -256,44 +256,35 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 +                 start: { column: 23, line: 4 },
                   end: { column: 35, line: 4 },
                 },
-              },
-+             TSTypeReference {
-+               type: 'TSTypeReference',
-+               typeName: Identifier {
-+                 type: 'Identifier',
-+                 name: 'Capitalize',
-
+-             },
+-
 -             range: [142, 154],
 -             loc: {
 -               start: { column: 23, line: 4 },
 -               end: { column: 35, line: 4 },
--             },
+              },
 -           },
 -           TSTypeReference {
 -             type: 'TSTypeReference',
 -             typeName: Identifier {
 -               type: 'Identifier',
 -               name: 'Capitalize',
-+                 range: [160, 170],
-+                 loc: {
-+                   start: { column: 41, line: 4 },
-+                   end: { column: 51, line: 4 },
-+                 },
-+               },
-+               typeParameters: TSTypeParameterInstantiation {
-+                 type: 'TSTypeParameterInstantiation',
-+                 params: Array [
-+                   TSTypeReference {
-+                     type: 'TSTypeReference',
-+                     typeName: Identifier {
-+                       type: 'Identifier',
-+                       name: 'T',
++             TSTypeReference {
++               type: 'TSTypeReference',
++               typeName: Identifier {
++                 type: 'Identifier',
++                 name: 'Capitalize',
 
 -               range: [160, 170],
 -               loc: {
 -                 start: { column: 41, line: 4 },
 -                 end: { column: 51, line: 4 },
--               },
++                 range: [160, 170],
++                 loc: {
++                   start: { column: 41, line: 4 },
++                   end: { column: 51, line: 4 },
++                 },
+                },
 -             },
 -             typeParameters: TSTypeParameterInstantiation {
 -               type: 'TSTypeParameterInstantiation',
@@ -303,13 +294,22 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -                   typeName: Identifier {
 -                     type: 'Identifier',
 -                     name: 'T',
++               typeParameters: TSTypeParameterInstantiation {
++                 type: 'TSTypeParameterInstantiation',
++                 params: Array [
++                   TSTypeReference {
++                     type: 'TSTypeReference',
++                     typeName: Identifier {
++                       type: 'Identifier',
++                       name: 'T',
+
 +                       range: [171, 172],
 +                       loc: {
 +                         start: { column: 52, line: 4 },
 +                         end: { column: 53, line: 4 },
 +                       },
 +                     },
-
++
                       range: [171, 172],
                       loc: {
                         start: { column: 52, line: 4 },
@@ -338,44 +338,35 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 +                 start: { column: 41, line: 4 },
                   end: { column: 54, line: 4 },
                 },
-              },
-+             TSTypeReference {
-+               type: 'TSTypeReference',
-+               typeName: Identifier {
-+                 type: 'Identifier',
-+                 name: 'Uncapitalize',
-
+-             },
+-
 -             range: [160, 173],
 -             loc: {
 -               start: { column: 41, line: 4 },
 -               end: { column: 54, line: 4 },
--             },
+              },
 -           },
 -           TSTypeReference {
 -             type: 'TSTypeReference',
 -             typeName: Identifier {
 -               type: 'Identifier',
 -               name: 'Uncapitalize',
-+                 range: [179, 191],
-+                 loc: {
-+                   start: { column: 60, line: 4 },
-+                   end: { column: 72, line: 4 },
-+                 },
-+               },
-+               typeParameters: TSTypeParameterInstantiation {
-+                 type: 'TSTypeParameterInstantiation',
-+                 params: Array [
-+                   TSTypeReference {
-+                     type: 'TSTypeReference',
-+                     typeName: Identifier {
-+                       type: 'Identifier',
-+                       name: 'T',
++             TSTypeReference {
++               type: 'TSTypeReference',
++               typeName: Identifier {
++                 type: 'Identifier',
++                 name: 'Uncapitalize',
 
 -               range: [179, 191],
 -               loc: {
 -                 start: { column: 60, line: 4 },
 -                 end: { column: 72, line: 4 },
--               },
++                 range: [179, 191],
++                 loc: {
++                   start: { column: 60, line: 4 },
++                   end: { column: 72, line: 4 },
++                 },
+                },
 -             },
 -             typeParameters: TSTypeParameterInstantiation {
 -               type: 'TSTypeParameterInstantiation',
@@ -385,6 +376,15 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
 -                   typeName: Identifier {
 -                     type: 'Identifier',
 -                     name: 'T',
++               typeParameters: TSTypeParameterInstantiation {
++                 type: 'TSTypeParameterInstantiation',
++                 params: Array [
++                   TSTypeReference {
++                     type: 'TSTypeReference',
++                     typeName: Identifier {
++                       type: 'Identifier',
++                       name: 'T',
++
 +                       range: [192, 193],
 +                       loc: {
 +                         start: { column: 73, line: 4 },
@@ -518,6 +518,7 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSStringKeyword {
                 type: 'TSStringKeyword',
 

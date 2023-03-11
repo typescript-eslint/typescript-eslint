@@ -19,6 +19,7 @@ Program {
                 nameType: null,
                 typeParameter: TSTypeParameter {
                   type: "TSTypeParameter",
+                  const: false,
                   constraint: TSStringKeyword {
                     type: "TSStringKeyword",
 

@@ -122,6 +122,7 @@ Program {
         params: Array [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSTypeLiteral {
               type: "TSTypeLiteral",
               members: Array [],

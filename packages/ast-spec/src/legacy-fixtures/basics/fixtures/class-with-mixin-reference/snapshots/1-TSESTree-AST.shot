@@ -74,6 +74,7 @@ Program {
         params: Array [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
