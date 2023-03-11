@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics export-type-star-from Babel - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "export",
+
+    range: [73, 79],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 6, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "type",
+
+    range: [80, 84],
+    loc: {
+      start: { column: 7, line: 3 },
+      end: { column: 11, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "*",
+
+    range: [85, 86],
+    loc: {
+      start: { column: 12, line: 3 },
+      end: { column: 13, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "from",
+
+    range: [87, 91],
+    loc: {
+      start: { column: 14, line: 3 },
+      end: { column: 18, line: 3 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'bar'",
+
+    range: [92, 97],
+    loc: {
+      start: { column: 19, line: 3 },
+      end: { column: 24, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [97, 98],
+    loc: {
+      start: { column: 24, line: 3 },
+      end: { column: 25, line: 3 },
+    },
+  },
+]
+`;
