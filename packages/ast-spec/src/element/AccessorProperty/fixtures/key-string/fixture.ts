@@ -1,3 +1,3 @@
 class Foo {
-  accessor 'prop' = 'value';
+  accessor prop = 'value';
 }
