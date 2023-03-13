@@ -907,6 +907,8 @@ export class Converter {
       // Declarations
 
       case SyntaxKind.FunctionDeclaration: {
+        this.#checkIllegalDecorators(node);
+
         const isDeclare = hasModifier(SyntaxKind.DeclareKeyword, node);
 
         const result = this.createNode<
