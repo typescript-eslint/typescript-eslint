@@ -10,7 +10,6 @@ import {
   createDefaultCompilerOptionsFromExtra,
   createHash,
   getCanonicalFileName,
-  getModuleResolver,
 } from './shared';
 import type { WatchCompilerHostOfConfigFile } from './WatchCompilerHostOfConfigFile';
 
@@ -267,12 +266,6 @@ function createWatchProgram(
     diagnosticReporter,
     /*reportWatchStatus*/ () => {},
   ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
-
-  if (parseSettings.moduleResolver) {
-    watchCompilerHost.resolveModuleNames = getModuleResolver(
-      parseSettings.moduleResolver,
-    ).resolveModuleNames;
-  }
 
   // ensure readFile reads the code being linted instead of the copy on disk
   const oldReadFile = watchCompilerHost.readFile;

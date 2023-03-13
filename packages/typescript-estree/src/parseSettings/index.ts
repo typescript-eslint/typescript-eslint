@@ -94,11 +94,6 @@ export interface MutableParseSettings {
   log: (message: string) => void;
 
   /**
-   * Path for a module resolver to use for the compiler host's `resolveModuleNames`.
-   */
-  moduleResolver: string;
-
-  /**
    * Whether two-way AST node maps are preserved during the AST conversion process.
    */
   preserveNodeMaps?: boolean;

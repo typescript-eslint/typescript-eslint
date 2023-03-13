@@ -16,7 +16,6 @@ export const parseSettings: ParseSettings = {
   jsx: false,
   loc: true,
   log: console.log,
-  moduleResolver: '',
   preserveNodeMaps: true,
   programs: null,
   projects: [],

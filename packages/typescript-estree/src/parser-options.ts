@@ -188,11 +188,6 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
      */
     glob?: CacheDurationSeconds;
   };
-
-  /**
-   * Path to a file exporting a custom `ModuleResolver`.
-   */
-  moduleResolver?: string;
 }
 
 export type TSESTreeOptions = ParseAndGenerateServicesOptions;
@@ -228,14 +223,3 @@ export interface ParserServicesWithoutTypeInformation
 export type ParserServices =
   | ParserServicesWithTypeInformation
   | ParserServicesWithoutTypeInformation;
-
-export interface ModuleResolver {
-  version: 1;
-  resolveModuleNames(
-    moduleNames: string[],
-    containingFile: string,
-    reusedNames: string[] | undefined,
-    redirectedReference: ts.ResolvedProjectReference | undefined,
-    options: ts.CompilerOptions,
-  ): (ts.ResolvedModule | undefined)[];
-}
