@@ -76,38 +76,6 @@ Program {
           end: { column: 67, line: 3 },
         },
       },
-      superTypeParameters: TSTypeParameterInstantiation {
-        type: "TSTypeParameterInstantiation",
-        params: Array [
-          TSTypeReference {
-            type: "TSTypeReference",
-            typeName: Identifier {
-              type: "Identifier",
-              decorators: Array [],
-              name: "A",
-              optional: false,
-
-              range: [128, 129],
-              loc: {
-                start: { column: 55, line: 3 },
-                end: { column: 56, line: 3 },
-              },
-            },
-
-            range: [128, 129],
-            loc: {
-              start: { column: 55, line: 3 },
-              end: { column: 56, line: 3 },
-            },
-          },
-        ],
-
-        range: [117, 140],
-        loc: {
-          start: { column: 44, line: 3 },
-          end: { column: 67, line: 3 },
-        },
-      },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
         params: Array [
@@ -190,38 +158,6 @@ Program {
         },
       },
       superTypeArguments: TSTypeParameterInstantiation {
-        type: "TSTypeParameterInstantiation",
-        params: Array [
-          TSTypeReference {
-            type: "TSTypeReference",
-            typeName: Identifier {
-              type: "Identifier",
-              decorators: Array [],
-              name: "A",
-              optional: false,
-
-              range: [219, 220],
-              loc: {
-                start: { column: 24, line: 6 },
-                end: { column: 25, line: 6 },
-              },
-            },
-
-            range: [219, 220],
-            loc: {
-              start: { column: 24, line: 6 },
-              end: { column: 25, line: 6 },
-            },
-          },
-        ],
-
-        range: [208, 231],
-        loc: {
-          start: { column: 13, line: 6 },
-          end: { column: 36, line: 6 },
-        },
-      },
-      superTypeParameters: TSTypeParameterInstantiation {
         type: "TSTypeParameterInstantiation",
         params: Array [
           TSTypeReference {
