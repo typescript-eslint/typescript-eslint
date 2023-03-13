@@ -145,9 +145,6 @@ export const generatedRuleDocs: Plugin = () => {
       return [headingIndices[0], headingIndices[1]];
     })();
 
-    // 5. Add a description of how to use / options for the rule
-    const optionLevel = meta.docs.recommended === 'error' ? 'error' : 'warn';
-
     if (meta.docs.extendsBaseRule) {
       const extendsBaseRuleName =
         typeof meta.docs.extendsBaseRule === 'string'
@@ -194,7 +191,7 @@ export const generatedRuleDocs: Plugin = () => {
       : ''
   }
     "${extendsBaseRuleName}": "off",
-    "@typescript-eslint/${file.stem}": "${optionLevel}"
+    "@typescript-eslint/${file.stem}": "error"
   }
 }`;
       };
@@ -224,7 +221,7 @@ export const generatedRuleDocs: Plugin = () => {
 
       const getEslintrcString = `{
   "rules": {
-    "@typescript-eslint/${file.stem}": "${optionLevel}"
+    "@typescript-eslint/${file.stem}": "error"
   }
 }`;
       children.splice(
@@ -322,7 +319,7 @@ export const generatedRuleDocs: Plugin = () => {
       }
     }
 
-    // 6. Add a link to view the rule's source and test code
+    // 5. Add a link to view the rule's source and test code
     children.push(
       {
         children: [
@@ -381,7 +378,7 @@ export const generatedRuleDocs: Plugin = () => {
       } as mdast.List,
     );
 
-    // 7. Also add a notice about coming from ESLint core for extension rules
+    // 6. Also add a notice about coming from ESLint core for extension rules
     if (meta.docs.extendsBaseRule) {
       children.push({
         children: [
