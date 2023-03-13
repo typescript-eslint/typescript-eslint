@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics private-fields-in-in TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
@@ -54,7 +54,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ReturnStatement {
                     type: "ReturnStatement",
                     argument: BinaryExpression {
@@ -105,7 +105,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [
+              params: [
                 Identifier {
                   type: "Identifier",
                   name: "arg",

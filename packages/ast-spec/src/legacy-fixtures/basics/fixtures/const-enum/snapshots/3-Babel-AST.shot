@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics const-enum Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSEnumDeclaration {
       type: "TSEnumDeclaration",
       const: true,
@@ -17,7 +17,7 @@ Program {
           end: { column: 14, line: 3 },
         },
       },
-      members: Array [
+      members: [
         TSEnumMember {
           type: "TSEnumMember",
           id: Identifier {

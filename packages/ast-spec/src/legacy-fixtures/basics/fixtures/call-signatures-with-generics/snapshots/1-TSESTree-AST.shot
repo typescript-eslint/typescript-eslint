@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics call-signatures-with-generics TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -18,10 +18,10 @@ Program {
       },
       typeAnnotation: TSTypeLiteral {
         type: "TSTypeLiteral",
-        members: Array [
+        members: [
           TSCallSignatureDeclaration {
             type: "TSCallSignatureDeclaration",
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
                 name: "a",
@@ -71,7 +71,7 @@ Program {
             },
             typeParameters: TSTypeParameterDeclaration {
               type: "TSTypeParameterDeclaration",
-              params: Array [
+              params: [
                 TSTypeParameter {
                   type: "TSTypeParameter",
                   const: false,
@@ -111,7 +111,7 @@ Program {
           },
           TSConstructSignatureDeclaration {
             type: "TSConstructSignatureDeclaration",
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
                 name: "a",
@@ -161,7 +161,7 @@ Program {
             },
             typeParameters: TSTypeParameterDeclaration {
               type: "TSTypeParameterDeclaration",
-              params: Array [
+              params: [
                 TSTypeParameter {
                   type: "TSTypeParameter",
                   const: false,

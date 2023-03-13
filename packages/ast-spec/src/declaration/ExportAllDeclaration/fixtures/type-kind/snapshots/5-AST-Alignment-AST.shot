@@ -15,7 +15,7 @@ exports[`AST Fixtures declaration ExportAllDeclaration type-kind AST Alignment -
         exportKind: 'type',
         source: Literal {
           type: 'Literal',
-          raw: '\\\\'a\\\\'',
+          raw: '\\'a\\'',
           value: 'a',
 
           range: [19, 22],

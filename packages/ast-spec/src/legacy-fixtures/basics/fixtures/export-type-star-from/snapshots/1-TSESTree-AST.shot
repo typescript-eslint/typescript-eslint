@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures basics export-type-star-from TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportAllDeclaration {
       type: "ExportAllDeclaration",
-      assertions: Array [],
+      assertions: [],
       exported: null,
       exportKind: "type",
       source: Literal {

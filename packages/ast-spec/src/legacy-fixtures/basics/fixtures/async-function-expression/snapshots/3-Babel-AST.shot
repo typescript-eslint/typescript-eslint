@@ -3,18 +3,18 @@
 exports[`AST Fixtures legacy-fixtures basics async-function-expression Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: CallExpression {
         type: "CallExpression",
-        arguments: Array [],
+        arguments: [],
         callee: FunctionExpression {
           type: "FunctionExpression",
           async: true,
           body: BlockStatement {
             type: "BlockStatement",
-            body: Array [],
+            body: [],
 
             range: [96, 98],
             loc: {
@@ -34,7 +34,7 @@ Program {
               end: { column: 20, line: 3 },
             },
           },
-          params: Array [],
+          params: [],
 
           range: [74, 98],
           loc: {

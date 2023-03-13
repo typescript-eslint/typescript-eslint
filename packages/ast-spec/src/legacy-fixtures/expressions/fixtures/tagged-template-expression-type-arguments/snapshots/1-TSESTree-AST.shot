@@ -3,19 +3,19 @@
 exports[`AST Fixtures legacy-fixtures expressions tagged-template-expression-type-arguments TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: TaggedTemplateExpression {
         type: "TaggedTemplateExpression",
         quasi: TemplateLiteral {
           type: "TemplateLiteral",
-          expressions: Array [],
-          quasis: Array [
+          expressions: [],
+          quasis: [
             TemplateElement {
               type: "TemplateElement",
               tail: true,
-              value: Object {
+              value: {
                 "cooked": "baz",
                 "raw": "baz",
               },
@@ -46,7 +46,7 @@ Program {
         },
         typeParameters: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
-          params: Array [
+          params: [
             TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {

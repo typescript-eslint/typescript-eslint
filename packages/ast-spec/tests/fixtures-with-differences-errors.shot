@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AST Fixtures List fixtures with Error differences 1`] = `
-Object {
+{
   "Babel errored but TSESTree didn't": Set {
     "declaration/ClassDeclaration/fixtures/_error_/implements-non-identifier/fixture.ts",
     "declaration/ClassDeclaration/fixtures/_error_/missing-extends-type-param/fixture.ts",

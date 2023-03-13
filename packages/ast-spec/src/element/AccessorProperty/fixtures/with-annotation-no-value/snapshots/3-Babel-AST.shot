@@ -3,12 +3,12 @@
 exports[`AST Fixtures element AccessorProperty with-annotation-no-value Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           ClassAccessorProperty {
             type: "ClassAccessorProperty",
             computed: false,
