@@ -152,6 +152,7 @@ Several rules were changed in significant enough ways to be considered breaking 
 - [feat: drop support for node v12](https://github.com/typescript-eslint/typescript-eslint/pull/5918)
 - [feat: bump minimum supported TS version to 4.2.4](https://github.com/typescript-eslint/typescript-eslint/pull/5915): this matches [DefinitelyTyped's 2-year support window](https://github.com/DefinitelyTyped/DefinitelyTyped#support-window).
 - [chore: drop support for ESLint v6](https://github.com/typescript-eslint/typescript-eslint/pull/5972)
+- ⏳ [feat(eslint-plugin): [prefer-readonly-parameter-types] added an optional type allowlist](https://github.com/typescript-eslint/typescript-eslint/4436): changes the public `isTypeReadonlyArrayOrTuple` function's first argument from a `checker: ts.TypeChecker` to a full `program: ts.Program`
 
 ## Developer-Facing Changes
 
@@ -232,7 +233,7 @@ If you author any ESLint rules that refer to the syntax mentioned by them, these
   - `TSPropertySignatureBase` no longer has an `initializer` property.
 - [fix(typescript-estree): account for namespace nesting in AST conversion](https://github.com/typescript-eslint/typescript-eslint/pull/6272): Namespaces with qualified names like `Abc.Def` now use a `TSQualifiedName` node, instead of a nested body structure.
 
-### ⏳ Errors on Invalid AST Parsing
+### Errors on Invalid AST Parsing
 
 :::note
 These changes only impact API consumers of typescript-eslint that work at parsing level.
@@ -271,12 +272,12 @@ For more information, see:
   - To recap the terminology:
     - An _argument_ is something you provide to a recipient, such as a type provided explicitly to a call expression.
     - A _parameter_ is how the recipient receives what you provide, such as a function declaration's generic type parameter.
-  - ⏳ [Enhancement: Add test-only console warnings to deprecated AST properties](https://github.com/typescript-eslint/typescript-eslint/issues/6469): The properties will include a `console.log` that triggers only in test environments, to encourage developers to move off of them.
+  - [Enhancement: Add test-only console warnings to deprecated AST properties](https://github.com/typescript-eslint/typescript-eslint/issues/6469): The properties will include a `console.log` that triggers only in test environments, to encourage developers to move off of them.
 - [feat(scope-manager): ignore ECMA version](https://github.com/typescript-eslint/typescript-eslint/pull/5889): `@typescript-eslint/scope-manager` no longer includes properties referring to `ecmaVersion`, `isES6`, or other ECMA versioning options. It instead now always assumes ESNext.
 - [feat: remove partial type-information program](https://github.com/typescript-eslint/typescript-eslint/pull/6066): When user configurations don't provide a `parserOptions.project`, parser services will no longer include a `program` with incomplete type information. `program` will be `null` instead.
 - [feat(experimental-utils): console.warn on import of experimental-utils](https://github.com/typescript-eslint/typescript-eslint/pull/6179): The `@typescript-eslint/experimental-utils` package has since been renamed to `@typescript-eslint/utils`. The old package name now includes a `console.warn` message to indicate you should switch to the new package name.
   - As a result, the `errorOnTypeScriptSyntacticAndSemanticIssues` option will no longer be allowed if `parserOptions.project` is not provided.
-- ⏳ [feat(typescript-estree): remove optionality from AST boolean properties](https://github.com/typescript-eslint/typescript-eslint/pull/6274): Switches most AST properties marked as `?: boolean` to `: boolean`, as well as some properties marked as `?:` optional to `| undefined`. This results in more predictable AST node object shapes.
+- [feat(typescript-estree): remove optionality from AST boolean properties](https://github.com/typescript-eslint/typescript-eslint/pull/6274): Switches most AST properties marked as `?: boolean` to `: boolean`, as well as some properties marked as `?:` optional to `| undefined`. This results in more predictable AST node object shapes.
 - [chore(typescript-estree): remove visitor-keys backwards compat export](https://github.com/typescript-eslint/typescript-eslint/pull/6242): `visitorKeys` can now only be imported from `@typescript-eslint/visitor-keys`. Previously it was also re-exported by `@typescript-eslint/utils`.
 - [feat: add package.json exports for public packages](https://github.com/typescript-eslint/typescript-eslint/pull/6458): `@typescript-eslint/*` packages now use `exports` to prevent importing internal file paths.
 
