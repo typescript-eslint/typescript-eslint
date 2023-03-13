@@ -1145,6 +1145,15 @@ export class Converter {
         const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
         const isAccessor = hasModifier(SyntaxKind.AccessorKeyword, node);
 
+        if (isAbstract && node.initializer) {
+          this.#throwError(
+            node.initializer,
+            `Property '${ts.declarationNameToString(
+              node.name,
+            )}' cannot have an initializer because it is marked abstract.`,
+          );
+        }
+
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- TODO - add ignore IIFE option
         const type = (() => {
           if (isAccessor) {
