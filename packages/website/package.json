@@ -45,6 +45,7 @@
     "@axe-core/playwright": "^4.4.5",
     "@docusaurus/module-type-aliases": "~2.2.0",
     "@playwright/test": "^1.27.1",
+    "@types/esquery": "^1.0.2",
     "@types/react": "^18.0.9",
     "@types/react-helmet": "^6.1.5",
     "@types/react-router-dom": "^5.3.3",
