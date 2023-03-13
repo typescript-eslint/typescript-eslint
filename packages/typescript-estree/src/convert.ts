@@ -1029,12 +1029,26 @@ export class Converter {
             properties: node.properties.map(el => this.convertPattern(el)),
             typeAnnotation: undefined,
           });
-        } else {
-          return this.createNode<TSESTree.ObjectExpression>(node, {
-            type: AST_NODE_TYPES.ObjectExpression,
-            properties: node.properties.map(el => this.convertChild(el)),
-          });
         }
+
+        const properties: TSESTree.Property[] = [];
+        for (const property of node.properties) {
+          if (
+            (property.kind === SyntaxKind.GetAccessor ||
+              property.kind === SyntaxKind.SetAccessor ||
+              property.kind === SyntaxKind.MethodDeclaration) &&
+            !property.body
+          ) {
+            this.#throwUnlessAllowInvalidAST(property.end - 1, "'{' expected.");
+          }
+
+          properties.push(this.convertChild(property) as TSESTree.Property);
+        }
+
+        return this.createNode<TSESTree.ObjectExpression>(node, {
+          type: AST_NODE_TYPES.ObjectExpression,
+          properties,
+        });
       }
 
       case SyntaxKind.PropertyAssignment: {
@@ -3077,7 +3091,7 @@ export class Converter {
   }
 
   #throwUnlessAllowInvalidAST(
-    node: ts.Node,
+    node: ts.Node | number,
     message: string,
   ): asserts node is never {
     if (!this.options.allowInvalidAST) {
@@ -3085,7 +3099,16 @@ export class Converter {
     }
   }
 
-  #throwError(node: ts.Node, message: string): asserts node is never {
-    throw createError(message, this.ast, node.getStart(), node.getEnd());
+  #throwError(node: ts.Node | number, message: string): asserts node is never {
+    let start;
+    let end;
+    if (typeof node === 'number') {
+      start = end = node;
+    } else {
+      start = node.getStart(this.ast);
+      end = node.getEnd();
+    }
+
+    throw createError(message, this.ast, start, end);
   }
 }
