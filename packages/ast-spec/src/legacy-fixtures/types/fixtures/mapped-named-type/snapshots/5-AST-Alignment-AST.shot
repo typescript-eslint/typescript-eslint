@@ -26,7 +26,7 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
             type: 'TSLiteralType',
             literal: Literal {
               type: 'Literal',
-              raw: '\\\\'a\\\\'',
+              raw: '\\'a\\'',
               value: 'a',
 
               range: [109, 112],

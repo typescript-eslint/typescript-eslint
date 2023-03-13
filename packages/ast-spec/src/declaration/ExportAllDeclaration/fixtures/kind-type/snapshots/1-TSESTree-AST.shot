@@ -3,10 +3,10 @@
 exports[`AST Fixtures declaration ExportAllDeclaration kind-type TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportAllDeclaration {
       type: "ExportAllDeclaration",
-      assertions: Array [],
+      assertions: [],
       exported: Identifier {
         type: "Identifier",
         name: "x",

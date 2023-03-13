@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics arrow-function-with-type-parameters TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: ArrowFunctionExpression {
@@ -11,7 +11,7 @@ Program {
         async: false,
         body: BlockStatement {
           type: "BlockStatement",
-          body: Array [
+          body: [
             ReturnStatement {
               type: "ReturnStatement",
               argument: Identifier {
@@ -42,7 +42,7 @@ Program {
         expression: false,
         generator: false,
         id: null,
-        params: Array [
+        params: [
           Identifier {
             type: "Identifier",
             name: "b",
@@ -112,7 +112,7 @@ Program {
         },
         typeParameters: TSTypeParameterDeclaration {
           type: "TSTypeParameterDeclaration",
-          params: Array [
+          params: [
             TSTypeParameter {
               type: "TSTypeParameter",
               const: false,

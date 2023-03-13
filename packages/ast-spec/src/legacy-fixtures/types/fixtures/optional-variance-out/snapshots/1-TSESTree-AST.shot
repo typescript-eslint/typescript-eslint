@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures types optional-variance-out TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -18,7 +18,7 @@ Program {
       },
       typeAnnotation: TSFunctionType {
         type: "TSFunctionType",
-        params: Array [],
+        params: [],
         returnType: TSTypeAnnotation {
           type: "TSTypeAnnotation",
           typeAnnotation: TSTypeReference {
@@ -56,7 +56,7 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
             const: false,

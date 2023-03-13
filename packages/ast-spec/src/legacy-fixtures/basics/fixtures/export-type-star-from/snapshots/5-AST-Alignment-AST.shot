@@ -15,7 +15,7 @@ exports[`AST Fixtures legacy-fixtures basics export-type-star-from AST Alignment
         exportKind: 'type',
         source: Literal {
           type: 'Literal',
-          raw: '\\\\'bar\\\\'',
+          raw: '\\'bar\\'',
           value: 'bar',
 
           range: [92, 97],
