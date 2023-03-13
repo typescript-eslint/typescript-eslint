@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures element AccessorProperty _error_ modifier-abstract-with-value Babel - Error 1`] = `"NO ERROR"`;
