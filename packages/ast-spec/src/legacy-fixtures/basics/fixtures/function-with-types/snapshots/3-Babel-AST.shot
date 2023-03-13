@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics function-with-types Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           ReturnStatement {
             type: "ReturnStatement",
             argument: Identifier {
@@ -49,7 +49,7 @@ Program {
           end: { column: 16, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
           name: "name",

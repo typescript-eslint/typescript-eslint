@@ -3,20 +3,20 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-mixin TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           ReturnStatement {
             type: "ReturnStatement",
             argument: ClassExpression {
               type: "ClassExpression",
               body: ClassBody {
                 type: "ClassBody",
-                body: Array [],
+                body: [],
 
                 range: [150, 152],
                 loc: {
@@ -69,7 +69,7 @@ Program {
           end: { column: 10, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
           name: "Base",
@@ -111,7 +111,7 @@ Program {
       ],
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
             const: false,
@@ -129,10 +129,10 @@ Program {
               },
               typeParameters: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
-                params: Array [
+                params: [
                   TSTypeLiteral {
                     type: "TSTypeLiteral",
-                    members: Array [],
+                    members: [],
 
                     range: [106, 108],
                     loc: {
@@ -193,7 +193,7 @@ Program {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [],
+        body: [],
 
         range: [196, 198],
         loc: {
@@ -211,7 +211,7 @@ Program {
           end: { column: 7, line: 7 },
         },
       },
-      implements: Array [
+      implements: [
         TSClassImplements {
           type: "TSClassImplements",
           expression: Identifier {
@@ -234,7 +234,7 @@ Program {
       ],
       superClass: CallExpression {
         type: "CallExpression",
-        arguments: Array [
+        arguments: [
           Identifier {
             type: "Identifier",
             name: "C",
@@ -259,7 +259,7 @@ Program {
         optional: false,
         typeParameters: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
-          params: Array [
+          params: [
             TSAnyKeyword {
               type: "TSAnyKeyword",
 
@@ -295,7 +295,7 @@ Program {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [],
+        body: [],
 
         range: [208, 210],
         loc: {
@@ -325,7 +325,7 @@ Program {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [],
+        body: [],
 
         range: [223, 225],
         loc: {
@@ -365,7 +365,7 @@ Program {
       typeAnnotation: TSConstructorType {
         type: "TSConstructorType",
         abstract: false,
-        params: Array [
+        params: [
           RestElement {
             type: "RestElement",
             argument: Identifier {
@@ -450,7 +450,7 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
             const: false,

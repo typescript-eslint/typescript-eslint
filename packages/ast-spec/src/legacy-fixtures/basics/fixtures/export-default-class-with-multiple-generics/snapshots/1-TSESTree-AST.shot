@@ -3,14 +3,14 @@
 exports[`AST Fixtures legacy-fixtures basics export-default-class-with-multiple-generics TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportDefaultDeclaration {
       type: "ExportDefaultDeclaration",
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
         body: ClassBody {
           type: "ClassBody",
-          body: Array [],
+          body: [],
 
           range: [100, 102],
           loc: {
@@ -22,7 +22,7 @@ Program {
         superClass: null,
         typeParameters: TSTypeParameterDeclaration {
           type: "TSTypeParameterDeclaration",
-          params: Array [
+          params: [
             TSTypeParameter {
               type: "TSTypeParameter",
               const: false,

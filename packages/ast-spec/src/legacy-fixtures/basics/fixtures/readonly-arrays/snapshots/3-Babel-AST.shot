@@ -3,18 +3,18 @@
 exports[`AST Fixtures legacy-fixtures basics readonly-arrays Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           ExpressionStatement {
             type: "ExpressionStatement",
             expression: CallExpression {
               type: "CallExpression",
-              arguments: Array [],
+              arguments: [],
               callee: MemberExpression {
                 type: "MemberExpression",
                 computed: false,
@@ -65,7 +65,7 @@ Program {
             type: "ExpressionStatement",
             expression: CallExpression {
               type: "CallExpression",
-              arguments: Array [
+              arguments: [
                 Literal {
                   type: "Literal",
                   raw: "'hello!'",
@@ -144,7 +144,7 @@ Program {
           end: { column: 12, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
           name: "arr",
@@ -164,7 +164,7 @@ Program {
               },
               typeParameters: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
-                params: Array [
+                params: [
                   TSStringKeyword {
                     type: "TSStringKeyword",
 
@@ -216,12 +216,12 @@ Program {
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           ExpressionStatement {
             type: "ExpressionStatement",
             expression: CallExpression {
               type: "CallExpression",
-              arguments: Array [],
+              arguments: [],
               callee: MemberExpression {
                 type: "MemberExpression",
                 computed: false,
@@ -272,7 +272,7 @@ Program {
             type: "ExpressionStatement",
             expression: CallExpression {
               type: "CallExpression",
-              arguments: Array [
+              arguments: [
                 Literal {
                   type: "Literal",
                   raw: "'hello!'",
@@ -351,7 +351,7 @@ Program {
           end: { column: 12, line: 8 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
           name: "arr",

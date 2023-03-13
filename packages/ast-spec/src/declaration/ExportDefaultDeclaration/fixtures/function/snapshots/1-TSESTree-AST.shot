@@ -3,7 +3,7 @@
 exports[`AST Fixtures declaration ExportDefaultDeclaration function TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportDefaultDeclaration {
       type: "ExportDefaultDeclaration",
       declaration: FunctionDeclaration {
@@ -11,7 +11,7 @@ Program {
         async: false,
         body: BlockStatement {
           type: "BlockStatement",
-          body: Array [],
+          body: [],
 
           range: [30, 32],
           loc: {
@@ -31,7 +31,7 @@ Program {
             end: { column: 27, line: 1 },
           },
         },
-        params: Array [],
+        params: [],
 
         range: [15, 32],
         loc: {

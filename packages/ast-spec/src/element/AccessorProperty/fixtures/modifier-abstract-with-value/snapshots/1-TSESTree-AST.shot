@@ -3,13 +3,13 @@
 exports[`AST Fixtures element AccessorProperty modifier-abstract-with-value TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: true,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           TSAbstractAccessorProperty {
             type: "TSAbstractAccessorProperty",
             computed: false,

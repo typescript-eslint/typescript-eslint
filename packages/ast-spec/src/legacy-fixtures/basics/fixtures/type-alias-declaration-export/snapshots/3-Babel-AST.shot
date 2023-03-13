@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: TSTypeAliasDeclaration {
         type: "TSTypeAliasDeclaration",
         id: Identifier {
@@ -21,7 +21,7 @@ Program {
         },
         typeAnnotation: TSUnionType {
           type: "TSUnionType",
-          types: Array [
+          types: [
             TSStringKeyword {
               type: "TSStringKeyword",
 
@@ -57,7 +57,7 @@ Program {
       },
       exportKind: "type",
       source: null,
-      specifiers: Array [],
+      specifiers: [],
 
       range: [73, 113],
       loc: {

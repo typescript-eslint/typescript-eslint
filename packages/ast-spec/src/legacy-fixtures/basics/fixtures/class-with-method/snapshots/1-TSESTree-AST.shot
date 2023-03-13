@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-method TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
@@ -30,7 +30,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [99, 101],
                 loc: {
@@ -41,7 +41,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
               returnType: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSNumberKeyword {
@@ -95,7 +95,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [113, 115],
                 loc: {
@@ -106,10 +106,10 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
               typeParameters: TSTypeParameterDeclaration {
                 type: "TSTypeParameterDeclaration",
-                params: Array [
+                params: [
                   TSTypeParameter {
                     type: "TSTypeParameter",
                     const: false,
@@ -175,7 +175,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [124, 126],
                 loc: {
@@ -186,7 +186,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [121, 126],
               loc: {

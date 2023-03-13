@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics type-parameters-comments TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: CallExpression {
         type: "CallExpression",
-        arguments: Array [],
+        arguments: [],
         callee: Identifier {
           type: "Identifier",
           name: "foo",
@@ -22,7 +22,7 @@ Program {
         optional: false,
         typeParameters: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
-          params: Array [
+          params: [
             TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
@@ -69,7 +69,7 @@ Program {
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [],
+        body: [],
 
         range: [153, 155],
         loc: {
@@ -89,10 +89,10 @@ Program {
           end: { column: 12, line: 4 },
         },
       },
-      params: Array [],
+      params: [],
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
             const: false,
@@ -135,7 +135,7 @@ Program {
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [],
+        body: [],
 
         range: [200, 202],
         loc: {
@@ -155,10 +155,10 @@ Program {
           end: { column: 12, line: 5 },
         },
       },
-      params: Array [],
+      params: [],
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
             const: false,

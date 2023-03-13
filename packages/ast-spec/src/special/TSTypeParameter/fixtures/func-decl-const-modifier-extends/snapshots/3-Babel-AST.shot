@@ -3,13 +3,13 @@
 exports[`AST Fixtures special TSTypeParameter func-decl-const-modifier-extends Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [],
+        body: [],
 
         range: [32, 34],
         loc: {
@@ -29,10 +29,10 @@ Program {
           end: { column: 10, line: 1 },
         },
       },
-      params: Array [],
+      params: [],
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
             const: true,

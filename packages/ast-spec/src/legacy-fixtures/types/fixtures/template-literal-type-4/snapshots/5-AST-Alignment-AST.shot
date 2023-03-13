@@ -594,7 +594,7 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-4 AST Alignmen
                 type: 'TSLiteralType',
                 literal: Literal {
                   type: 'Literal',
-                  raw: '\\\\'heLLo\\\\'',
+                  raw: '\\'heLLo\\'',
                   value: 'heLLo',
 
                   range: [232, 239],

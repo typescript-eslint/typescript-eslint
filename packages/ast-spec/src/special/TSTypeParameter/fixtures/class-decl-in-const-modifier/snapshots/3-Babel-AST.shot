@@ -3,12 +3,12 @@
 exports[`AST Fixtures special TSTypeParameter class-decl-in-const-modifier Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [],
+        body: [],
 
         range: [20, 22],
         loc: {
@@ -29,7 +29,7 @@ Program {
       superClass: null,
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
             const: true,

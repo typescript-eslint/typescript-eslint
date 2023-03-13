@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [],
+        body: [],
 
         range: [119, 121],
         loc: {
@@ -29,7 +29,7 @@ Program {
           end: { column: 10, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
           name: "Base",
@@ -71,7 +71,7 @@ Program {
       ],
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
             constraint: TSTypeReference {
@@ -88,7 +88,7 @@ Program {
               },
               typeParameters: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
-                params: Array [
+                params: [
                   TSTypeReference {
                     type: "TSTypeReference",
                     typeName: Identifier {

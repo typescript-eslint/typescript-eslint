@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures basics never-type-param TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           id: Identifier {
@@ -28,7 +28,7 @@ Program {
                 },
                 typeParameters: TSTypeParameterInstantiation {
                   type: "TSTypeParameterInstantiation",
-                  params: Array [
+                  params: [
                     TSNeverKeyword {
                       type: "TSNeverKeyword",
 
@@ -88,7 +88,7 @@ Program {
       type: "ExpressionStatement",
       expression: CallExpression {
         type: "CallExpression",
-        arguments: Array [],
+        arguments: [],
         callee: MemberExpression {
           type: "MemberExpression",
           computed: false,
@@ -123,7 +123,7 @@ Program {
         optional: false,
         typeParameters: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
-          params: Array [
+          params: [
             TSNeverKeyword {
               type: "TSNeverKeyword",
 
