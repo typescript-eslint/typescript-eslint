@@ -70,7 +70,7 @@ Object {
   "TSESTree errored but Babel didn't": Set {
     "declaration/ExportAllDeclaration/fixtures/_error_/named-non-identifier/fixture.ts",
     "declaration/ExportNamedDeclaration/fixtures/_error_/aliased-literal/fixture.ts",
-    "element/AccessorProperty/fixtures/_error_/modifier-abstract-with-value/fixture.ts",
+    "element/AccessorProperty/fixtures/_error_/modifier-abstract-accessor-with-value/fixture.ts",
     "legacy-fixtures/expressions/fixtures/_error_/instantiation-expression/fixture.ts",
   },
 }

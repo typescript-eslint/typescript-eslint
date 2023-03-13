@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures element AccessorProperty _error_ modifier-abstract-with-value TSESTree - Error 1`] = `
+exports[`AST Fixtures element AccessorProperty _error_ modifier-abstract-accessor-with-value TSESTree - Error 1`] = `
 "TSError
   1 | abstract class Foo {
 > 2 |   abstract accessor foo: number = 1;
