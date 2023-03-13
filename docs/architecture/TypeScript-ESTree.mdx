@@ -241,11 +241,6 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
      */
     glob?: number | 'Infinity';
   };
-
-  /**
-   * Path to a file exporting a custom `ModuleResolver`.
-   */
-  moduleResolver?: string;
 }
 
 interface ParserServices {
@@ -288,23 +283,6 @@ const { ast, services } = parseAndGenerateServices(code, {
   project: './tsconfig.json',
   range: true,
 });
-```
-
-##### `ModuleResolver`
-
-The `moduleResolver` option allows you to specify the path to a module with a custom module resolver implementation. The module is expected to adhere to the following interface:
-
-```ts
-interface ModuleResolver {
-  version: 1;
-  resolveModuleNames(
-    moduleNames: string[],
-    containingFile: string,
-    reusedNames: string[] | undefined,
-    redirectedReference: ts.ResolvedProjectReference | undefined,
-    options: ts.CompilerOptions,
-  ): (ts.ResolvedModule | undefined)[];
-}
 ```
 
 #### `parseWithNodeMaps(code, options)`

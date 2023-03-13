@@ -68,7 +68,6 @@ export function createParseSettings(
         : options.loggerFn === false
         ? (): void => {}
         : console.log, // eslint-disable-line no-console
-    moduleResolver: options.moduleResolver ?? '',
     preserveNodeMaps: options.preserveNodeMaps !== false,
     programs: Array.isArray(options.programs) ? options.programs : null,
     projects: [],

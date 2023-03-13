@@ -2,7 +2,6 @@ import path from 'path';
 import type { Program } from 'typescript';
 import * as ts from 'typescript';
 
-import type { ModuleResolver } from '../parser-options';
 import type { ParseSettings } from '../parseSettings';
 
 interface ASTAndNoProgram {
@@ -112,23 +111,6 @@ function getAstFromProgram(
   return ast && { ast, program: currentProgram };
 }
 
-function getModuleResolver(moduleResolverPath: string): ModuleResolver {
-  let moduleResolver: ModuleResolver;
-
-  try {
-    moduleResolver = require(moduleResolverPath) as ModuleResolver;
-  } catch (error) {
-    const errorLines = [
-      'Could not find the provided parserOptions.moduleResolver.',
-      'Hint: use an absolute path if you are not in control over where the ESLint instance runs.',
-    ];
-
-    throw new Error(errorLines.join('\n'));
-  }
-
-  return moduleResolver;
-}
-
 /**
  * Hash content for compare content.
  * @param content hashed contend
@@ -154,5 +136,4 @@ export {
   ensureAbsolutePath,
   getCanonicalFileName,
   getAstFromProgram,
-  getModuleResolver,
 };
