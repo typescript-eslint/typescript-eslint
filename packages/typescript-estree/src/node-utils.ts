@@ -737,7 +737,7 @@ function nodeIsMissing(node: ts.Node | undefined): boolean {
   return (
     node.pos === node.end &&
     node.pos >= 0 &&
-    node.kind !== 1 /* SyntaxKind.EndOfFileToken */
+    node.kind !== SyntaxKind.EndOfFileToken
   );
 }
 
