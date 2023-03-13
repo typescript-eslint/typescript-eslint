@@ -3,16 +3,16 @@
 exports[`AST Fixtures legacy-fixtures types constructor-with-rest TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           definite: false,
           id: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "f",
             optional: false,
             typeAnnotation: TSTypeAnnotation {
@@ -20,12 +20,12 @@ Program {
               typeAnnotation: TSConstructorType {
                 type: "TSConstructorType",
                 abstract: false,
-                params: Array [
+                params: [
                   RestElement {
                     type: "RestElement",
                     argument: Identifier {
                       type: "Identifier",
-                      decorators: Array [],
+                      decorators: [],
                       name: "a",
                       optional: false,
 
@@ -35,7 +35,7 @@ Program {
                         end: { column: 16, line: 3 },
                       },
                     },
-                    decorators: Array [],
+                    decorators: [],
                     optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: "TSTypeAnnotation",

@@ -86,6 +86,7 @@ exports[`AST Fixtures declaration ClassDeclaration type-parameters-extends-type-
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',

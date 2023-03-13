@@ -3,18 +3,18 @@
 exports[`AST Fixtures legacy-fixtures basics typed-this TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSInterfaceDeclaration {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [
+        body: [
           TSMethodSignature {
             type: "TSMethodSignature",
             computed: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "addClickListener",
               optional: false,
 
@@ -26,20 +26,20 @@ Program {
             },
             kind: "method",
             optional: false,
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "onclick",
                 optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSFunctionType {
                     type: "TSFunctionType",
-                    params: Array [
+                    params: [
                       Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "this",
                         optional: false,
                         typeAnnotation: TSTypeAnnotation {
@@ -69,7 +69,7 @@ Program {
                       },
                       Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "e",
                         optional: false,
                         typeAnnotation: TSTypeAnnotation {
@@ -78,7 +78,7 @@ Program {
                             type: "TSTypeReference",
                             typeName: Identifier {
                               type: "Identifier",
-                              decorators: Array [],
+                              decorators: [],
                               name: "Event",
                               optional: false,
 
@@ -186,10 +186,10 @@ Program {
         },
       },
       declare: false,
-      extends: Array [],
+      extends: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "UIElement",
         optional: false,
 

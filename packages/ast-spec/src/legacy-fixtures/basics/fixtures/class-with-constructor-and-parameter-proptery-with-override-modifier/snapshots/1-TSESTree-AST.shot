@@ -3,20 +3,20 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-parameter-proptery-with-override-modifier TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "constructor",
               optional: false,
 
@@ -35,12 +35,12 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ExpressionStatement {
                     type: "ExpressionStatement",
                     expression: CallExpression {
                       type: "CallExpression",
-                      arguments: Array [],
+                      arguments: [],
                       callee: Super {
                         type: "Super",
 
@@ -77,14 +77,14 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [
+              params: [
                 TSParameterProperty {
                   type: "TSParameterProperty",
-                  decorators: Array [],
+                  decorators: [],
                   override: true,
                   parameter: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "param",
                     optional: false,
                     typeAnnotation: TSTypeAnnotation {
@@ -145,10 +145,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "SpecializedComponent",
         optional: false,
 
@@ -158,10 +158,10 @@ Program {
           end: { column: 26, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "SomeComponent",
         optional: false,
 

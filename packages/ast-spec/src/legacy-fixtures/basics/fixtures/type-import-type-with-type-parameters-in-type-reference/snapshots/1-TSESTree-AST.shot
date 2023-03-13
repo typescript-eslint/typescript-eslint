@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-parameters-in-type-reference TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "X",
         optional: false,
 
@@ -23,7 +23,7 @@ Program {
         type: "TSTypeReference",
         typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
-          params: Array [
+          params: [
             TSImportType {
               type: "TSImportType",
               argument: TSLiteralType {
@@ -48,7 +48,7 @@ Program {
               },
               qualifier: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "B",
                 optional: false,
 
@@ -60,7 +60,7 @@ Program {
               },
               typeArguments: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
-                params: Array [
+                params: [
                   TSAnyKeyword {
                     type: "TSAnyKeyword",
 
@@ -95,7 +95,7 @@ Program {
         },
         typeName: Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "A",
           optional: false,
 

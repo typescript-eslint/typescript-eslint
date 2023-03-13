@@ -51,7 +51,7 @@ exports[`AST Fixtures expression TSSatisfiesExpression identifier-object-type AS
                     type: 'TSLiteralType',
                     literal: Literal {
                       type: 'Literal',
-                      raw: '\\\\'value\\\\'',
+                      raw: '\\'value\\'',
                       value: 'value',
 
                       range: [22, 29],

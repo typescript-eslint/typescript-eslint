@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [],
+        body: [],
 
         range: [114, 116],
         loc: {
@@ -18,10 +18,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Foo",
         optional: false,
 
@@ -31,10 +31,10 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Bar",
         optional: false,
 
@@ -46,12 +46,12 @@ Program {
       },
       superTypeArguments: TSTypeParameterInstantiation {
         type: "TSTypeParameterInstantiation",
-        params: Array [
+        params: [
           TSTypeReference {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "C",
               optional: false,
 
@@ -72,7 +72,7 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "D",
               optional: false,
 
@@ -99,14 +99,15 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "B",
                 optional: false,
 
@@ -126,7 +127,7 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "A",
               optional: false,
 

@@ -3,18 +3,18 @@
 exports[`AST Fixtures legacy-fixtures basics function-with-types-assignation TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           ReturnStatement {
             type: "ReturnStatement",
             argument: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "name",
               optional: false,
 
@@ -44,7 +44,7 @@ Program {
       generator: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "message",
         optional: false,
 
@@ -54,10 +54,10 @@ Program {
           end: { column: 16, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "name",
           optional: false,
           typeAnnotation: TSTypeAnnotation {
@@ -87,10 +87,10 @@ Program {
         },
         AssignmentPattern {
           type: "AssignmentPattern",
-          decorators: Array [],
+          decorators: [],
           left: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "age",
             optional: false,
             typeAnnotation: TSTypeAnnotation {
@@ -141,7 +141,7 @@ Program {
           type: "RestElement",
           argument: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "args",
             optional: false,
 
@@ -151,7 +151,7 @@ Program {
               end: { column: 9, line: 6 },
             },
           },
-          decorators: Array [],
+          decorators: [],
           optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
@@ -159,7 +159,7 @@ Program {
               type: "TSTypeReference",
               typeArguments: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
-                params: Array [
+                params: [
                   TSStringKeyword {
                     type: "TSStringKeyword",
 
@@ -179,7 +179,7 @@ Program {
               },
               typeName: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "Array",
                 optional: false,
 

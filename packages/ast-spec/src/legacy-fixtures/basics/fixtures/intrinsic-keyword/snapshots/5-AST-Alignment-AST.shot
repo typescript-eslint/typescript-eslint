@@ -37,6 +37,7 @@ exports[`AST Fixtures legacy-fixtures basics intrinsic-keyword AST Alignment - A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSStringKeyword {
                 type: 'TSStringKeyword',
 
@@ -112,6 +113,7 @@ exports[`AST Fixtures legacy-fixtures basics intrinsic-keyword AST Alignment - A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSStringKeyword {
                 type: 'TSStringKeyword',
 
@@ -187,6 +189,7 @@ exports[`AST Fixtures legacy-fixtures basics intrinsic-keyword AST Alignment - A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSStringKeyword {
                 type: 'TSStringKeyword',
 
@@ -262,6 +265,7 @@ exports[`AST Fixtures legacy-fixtures basics intrinsic-keyword AST Alignment - A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSStringKeyword {
                 type: 'TSStringKeyword',
 

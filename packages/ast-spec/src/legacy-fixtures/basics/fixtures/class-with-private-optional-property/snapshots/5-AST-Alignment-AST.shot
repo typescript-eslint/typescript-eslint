@@ -100,7 +100,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-optional-propert
               },
               value: Literal {
                 type: 'Literal',
-                raw: '\\\\'\\\\'',
+                raw: '\\'\\'',
                 value: '',
 
                 range: [139, 141],
@@ -138,7 +138,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-optional-propert
               static: false,
               value: Literal {
                 type: 'Literal',
-                raw: '\\\\'\\\\'',
+                raw: '\\'\\'',
                 value: '',
 
                 range: [171, 173],

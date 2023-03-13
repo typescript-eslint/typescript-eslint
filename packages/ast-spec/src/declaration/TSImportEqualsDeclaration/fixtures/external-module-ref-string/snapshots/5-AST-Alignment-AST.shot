@@ -28,7 +28,7 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration external-module-ref-
           type: 'TSExternalModuleReference',
           expression: Literal {
             type: 'Literal',
-            raw: '\\\\'mod\\\\'',
+            raw: '\\'mod\\'',
             value: 'mod',
 
             range: [19, 24],

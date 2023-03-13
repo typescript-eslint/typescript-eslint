@@ -3,23 +3,23 @@
 exports[`AST Fixtures legacy-fixtures types tuple-named-rest TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           definite: false,
           id: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "x",
             optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTupleType {
                 type: "TSTupleType",
-                elementTypes: Array [
+                elementTypes: [
                   TSNamedTupleMember {
                     type: "TSNamedTupleMember",
                     elementType: TSStringKeyword {
@@ -33,7 +33,7 @@ Program {
                     },
                     label: Identifier {
                       type: "Identifier",
-                      decorators: Array [],
+                      decorators: [],
                       name: "a",
                       optional: false,
 
@@ -75,7 +75,7 @@ Program {
                       },
                       label: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "b",
                         optional: false,
 

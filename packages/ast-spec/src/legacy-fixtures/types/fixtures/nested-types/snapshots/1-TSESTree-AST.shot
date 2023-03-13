@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures types nested-types TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Foo",
         optional: false,
 
@@ -21,10 +21,10 @@ Program {
       },
       typeAnnotation: TSUnionType {
         type: "TSUnionType",
-        types: Array [
+        types: [
           TSTupleType {
             type: "TSTupleType",
-            elementTypes: Array [
+            elementTypes: [
               TSNumberKeyword {
                 type: "TSNumberKeyword",
 
@@ -80,13 +80,13 @@ Program {
           },
           TSIntersectionType {
             type: "TSIntersectionType",
-            types: Array [
+            types: [
               TSTupleType {
                 type: "TSTupleType",
-                elementTypes: Array [
+                elementTypes: [
                   TSTypeLiteral {
                     type: "TSTypeLiteral",
-                    members: Array [],
+                    members: [],
 
                     range: [122, 124],
                     loc: {
@@ -96,10 +96,10 @@ Program {
                   },
                   TSUnionType {
                     type: "TSUnionType",
-                    types: Array [
+                    types: [
                       TSTupleType {
                         type: "TSTupleType",
-                        elementTypes: Array [
+                        elementTypes: [
                           TSOptionalType {
                             type: "TSOptionalType",
                             typeAnnotation: TSNumberKeyword {
@@ -128,7 +128,7 @@ Program {
                       },
                       TSIntersectionType {
                         type: "TSIntersectionType",
-                        types: Array [
+                        types: [
                           TSNullKeyword {
                             type: "TSNullKeyword",
 
@@ -182,7 +182,7 @@ Program {
               },
               TSTypeLiteral {
                 type: "TSTypeLiteral",
-                members: Array [],
+                members: [],
 
                 range: [160, 162],
                 loc: {

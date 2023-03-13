@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures special TSTypeParameter class-decl-const-in-modifier TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: [],
+
+        range: [20, 22],
+        loc: {
+          start: { column: 20, line: 1 },
+          end: { column: 22, line: 1 },
+        },
+      },
+      declare: false,
+      decorators: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "E",
+        optional: false,
+
+        range: [6, 7],
+        loc: {
+          start: { column: 6, line: 1 },
+          end: { column: 7, line: 1 },
+        },
+      },
+      implements: [],
+      superClass: null,
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            const: true,
+            in: true,
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "T",
+              optional: false,
+
+              range: [17, 18],
+              loc: {
+                start: { column: 17, line: 1 },
+                end: { column: 18, line: 1 },
+              },
+            },
+            out: false,
+
+            range: [8, 18],
+            loc: {
+              start: { column: 8, line: 1 },
+              end: { column: 18, line: 1 },
+            },
+          },
+        ],
+
+        range: [7, 19],
+        loc: {
+          start: { column: 7, line: 1 },
+          end: { column: 19, line: 1 },
+        },
+      },
+
+      range: [0, 22],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 22, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 23],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

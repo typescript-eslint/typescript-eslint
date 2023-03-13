@@ -3,22 +3,22 @@
 exports[`AST Fixtures legacy-fixtures basics class-static-blocks TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "count",
               optional: false,
 
@@ -52,20 +52,20 @@ Program {
           },
           StaticBlock {
             type: "StaticBlock",
-            body: Array [
+            body: [
               IfStatement {
                 type: "IfStatement",
                 alternate: null,
                 consequent: BlockStatement {
                   type: "BlockStatement",
-                  body: Array [
+                  body: [
                     ExpressionStatement {
                       type: "ExpressionStatement",
                       expression: UpdateExpression {
                         type: "UpdateExpression",
                         argument: Identifier {
                           type: "Identifier",
-                          decorators: Array [],
+                          decorators: [],
                           name: "count",
                           optional: false,
 
@@ -101,10 +101,10 @@ Program {
                 },
                 test: CallExpression {
                   type: "CallExpression",
-                  arguments: Array [],
+                  arguments: [],
                   callee: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "someCondition",
                     optional: false,
 
@@ -146,10 +146,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Foo",
         optional: false,
 
@@ -159,7 +159,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 169],

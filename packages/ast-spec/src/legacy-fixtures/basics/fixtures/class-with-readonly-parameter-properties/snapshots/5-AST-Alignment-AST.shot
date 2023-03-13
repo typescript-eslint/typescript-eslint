@@ -135,7 +135,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-readonly-parameter-prope
 -                     optional: false,
                       right: Literal {
                         type: 'Literal',
-                        raw: '\\\\'Smith\\\\'',
+                        raw: '\\'Smith\\'',
                         value: 'Smith',
 
                         range: [164, 171],

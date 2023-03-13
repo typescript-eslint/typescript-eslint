@@ -3,16 +3,16 @@
 exports[`AST Fixtures legacy-fixtures types reference-generic-nested TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           definite: false,
           id: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "x",
             optional: false,
             typeAnnotation: TSTypeAnnotation {
@@ -21,12 +21,12 @@ Program {
                 type: "TSTypeReference",
                 typeArguments: TSTypeParameterInstantiation {
                   type: "TSTypeParameterInstantiation",
-                  params: Array [
+                  params: [
                     TSTypeReference {
                       type: "TSTypeReference",
                       typeArguments: TSTypeParameterInstantiation {
                         type: "TSTypeParameterInstantiation",
-                        params: Array [
+                        params: [
                           TSNumberKeyword {
                             type: "TSNumberKeyword",
 
@@ -46,7 +46,7 @@ Program {
                       },
                       typeName: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "Array",
                         optional: false,
 
@@ -73,7 +73,7 @@ Program {
                 },
                 typeName: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "Array",
                   optional: false,
 

@@ -107,6 +107,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -178,6 +179,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               default: TSTypeReference {
                 type: 'TSTypeReference',
                 typeName: Identifier {

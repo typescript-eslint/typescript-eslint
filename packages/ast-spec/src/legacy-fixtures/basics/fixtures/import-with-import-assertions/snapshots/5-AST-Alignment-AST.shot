@@ -27,7 +27,7 @@ exports[`AST Fixtures legacy-fixtures basics import-with-import-assertions AST A
             },
             value: Literal {
               type: 'Literal',
-              raw: '\\\\'json\\\\'',
+              raw: '\\'json\\'',
               value: 'json',
 
               range: [110, 116],
@@ -47,7 +47,7 @@ exports[`AST Fixtures legacy-fixtures basics import-with-import-assertions AST A
         importKind: 'value',
         source: Literal {
           type: 'Literal',
-          raw: '\\\\'mod\\\\'',
+          raw: '\\'mod\\'',
           value: 'mod',
 
           range: [89, 94],

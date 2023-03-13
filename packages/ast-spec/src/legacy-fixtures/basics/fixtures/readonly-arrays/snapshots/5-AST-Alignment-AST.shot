@@ -76,7 +76,7 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
                 arguments: Array [
                   Literal {
                     type: 'Literal',
-                    raw: '\\\\'hello!\\\\'',
+                    raw: '\\'hello!\\'',
                     value: 'hello!',
 
                     range: [150, 158],
@@ -309,7 +309,7 @@ exports[`AST Fixtures legacy-fixtures basics readonly-arrays AST Alignment - AST
                 arguments: Array [
                   Literal {
                     type: 'Literal',
-                    raw: '\\\\'hello!\\\\'',
+                    raw: '\\'hello!\\'',
                     value: 'hello!',
 
                     range: [247, 255],

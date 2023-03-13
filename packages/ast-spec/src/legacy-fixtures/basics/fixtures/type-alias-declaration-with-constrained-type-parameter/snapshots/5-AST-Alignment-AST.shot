@@ -69,21 +69,21 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
                 loc: {
                   start: { column: 35, line: 3 },
                   end: { column: 38, line: 3 },
--               },
--             },
+                },
+              },
 -             typeName: Identifier {
 -               type: 'Identifier',
 -               decorators: Array [],
 -               name: 'Success',
 -               optional: false,
--
+
 -               range: [101, 108],
 -               loc: {
 -                 start: { column: 28, line: 3 },
 -                 end: { column: 35, line: 3 },
-                },
-              },
-
+-               },
+-             },
+-
               range: [101, 111],
               loc: {
                 start: { column: 28, line: 3 },
@@ -124,6 +124,7 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSTypeLiteral {
                 type: 'TSTypeLiteral',
                 members: Array [],

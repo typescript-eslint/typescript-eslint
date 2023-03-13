@@ -109,7 +109,7 @@ export default util.createRule<Options, MessageIds>({
     function isNodeValidArrayTSTypeReference(node: TSESTree.Node): boolean {
       return (
         node.type === AST_NODE_TYPES.TSTypeReference &&
-        typeof node.typeName !== 'undefined' &&
+        node.typeName !== undefined &&
         node.typeName.type === AST_NODE_TYPES.Identifier &&
         ['Array', 'ReadonlyArray'].includes(node.typeName.name)
       );

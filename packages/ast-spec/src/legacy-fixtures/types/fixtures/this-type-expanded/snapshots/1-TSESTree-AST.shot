@@ -3,23 +3,23 @@
 exports[`AST Fixtures legacy-fixtures types this-type-expanded TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             accessibility: "public",
             computed: false,
             declare: false,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "a",
               optional: false,
 
@@ -63,10 +63,10 @@ Program {
             type: "MethodDefinition",
             accessibility: "public",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "method",
               optional: false,
 
@@ -85,7 +85,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ReturnStatement {
                     type: "ReturnStatement",
                     argument: MemberExpression {
@@ -103,7 +103,7 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "a",
                         optional: false,
 
@@ -139,10 +139,10 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [
+              params: [
                 Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "this",
                   optional: false,
                   typeAnnotation: TSTypeAnnotation {
@@ -207,10 +207,10 @@ Program {
             type: "MethodDefinition",
             accessibility: "public",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "method2",
               optional: false,
 
@@ -229,7 +229,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ReturnStatement {
                     type: "ReturnStatement",
                     argument: MemberExpression {
@@ -247,7 +247,7 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "a",
                         optional: false,
 
@@ -283,10 +283,10 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [
+              params: [
                 Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "this",
                   optional: false,
                   typeAnnotation: TSTypeAnnotation {
@@ -295,7 +295,7 @@ Program {
                       type: "TSTypeReference",
                       typeName: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "A",
                         optional: false,
 
@@ -363,10 +363,10 @@ Program {
             type: "MethodDefinition",
             accessibility: "public",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "method3",
               optional: false,
 
@@ -385,16 +385,16 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   VariableDeclaration {
                     type: "VariableDeclaration",
-                    declarations: Array [
+                    declarations: [
                       VariableDeclarator {
                         type: "VariableDeclarator",
                         definite: false,
                         id: Identifier {
                           type: "Identifier",
-                          decorators: Array [],
+                          decorators: [],
                           name: "fn",
                           optional: false,
 
@@ -422,7 +422,7 @@ Program {
                             optional: false,
                             property: Identifier {
                               type: "Identifier",
-                              decorators: Array [],
+                              decorators: [],
                               name: "a",
                               optional: false,
 
@@ -442,7 +442,7 @@ Program {
                           expression: true,
                           generator: false,
                           id: null,
-                          params: Array [],
+                          params: [],
 
                           range: [276, 288],
                           loc: {
@@ -471,10 +471,10 @@ Program {
                     type: "ReturnStatement",
                     argument: CallExpression {
                       type: "CallExpression",
-                      arguments: Array [],
+                      arguments: [],
                       callee: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "fn",
                         optional: false,
 
@@ -511,10 +511,10 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [
+              params: [
                 Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "this",
                   optional: false,
                   typeAnnotation: TSTypeAnnotation {
@@ -579,10 +579,10 @@ Program {
             type: "MethodDefinition",
             accessibility: "public",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "method4",
               optional: false,
 
@@ -601,16 +601,16 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   VariableDeclaration {
                     type: "VariableDeclaration",
-                    declarations: Array [
+                    declarations: [
                       VariableDeclarator {
                         type: "VariableDeclarator",
                         definite: false,
                         id: Identifier {
                           type: "Identifier",
-                          decorators: Array [],
+                          decorators: [],
                           name: "fn",
                           optional: false,
 
@@ -638,7 +638,7 @@ Program {
                             optional: false,
                             property: Identifier {
                               type: "Identifier",
-                              decorators: Array [],
+                              decorators: [],
                               name: "a",
                               optional: false,
 
@@ -658,7 +658,7 @@ Program {
                           expression: true,
                           generator: false,
                           id: null,
-                          params: Array [],
+                          params: [],
 
                           range: [361, 373],
                           loc: {
@@ -687,10 +687,10 @@ Program {
                     type: "ReturnStatement",
                     argument: CallExpression {
                       type: "CallExpression",
-                      arguments: Array [],
+                      arguments: [],
                       callee: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "fn",
                         optional: false,
 
@@ -727,10 +727,10 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [
+              params: [
                 Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "this",
                   optional: false,
                   typeAnnotation: TSTypeAnnotation {
@@ -739,7 +739,7 @@ Program {
                       type: "TSTypeReference",
                       typeName: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "A",
                         optional: false,
 
@@ -806,10 +806,10 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "staticMethod",
               optional: false,
 
@@ -828,7 +828,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ReturnStatement {
                     type: "ReturnStatement",
                     argument: MemberExpression {
@@ -846,7 +846,7 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "a",
                         optional: false,
 
@@ -882,10 +882,10 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [
+              params: [
                 Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "this",
                   optional: false,
                   typeAnnotation: TSTypeAnnotation {
@@ -894,7 +894,7 @@ Program {
                       type: "TSTypeReference",
                       typeName: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "A",
                         optional: false,
 
@@ -961,10 +961,10 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "typeof",
               optional: false,
 
@@ -983,7 +983,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ReturnStatement {
                     type: "ReturnStatement",
                     argument: UnaryExpression {
@@ -1025,10 +1025,10 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [
+              params: [
                 Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "this",
                   optional: false,
                   typeAnnotation: TSTypeAnnotation {
@@ -1037,7 +1037,7 @@ Program {
                       type: "TSTypeReference",
                       typeName: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "A",
                         optional: false,
 
@@ -1110,10 +1110,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "A",
         optional: false,
 
@@ -1123,7 +1123,7 @@ Program {
           end: { column: 7, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 524],

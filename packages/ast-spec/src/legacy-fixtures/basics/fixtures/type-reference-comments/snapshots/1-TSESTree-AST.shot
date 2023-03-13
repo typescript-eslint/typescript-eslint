@@ -3,22 +3,22 @@
 exports[`AST Fixtures legacy-fixtures basics type-reference-comments TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "mBuffers",
               optional: false,
 
@@ -38,7 +38,7 @@ Program {
                 type: "TSTypeReference",
                 typeArguments: TSTypeParameterInstantiation {
                   type: "TSTypeParameterInstantiation",
-                  params: Array [
+                  params: [
                     TSAnyKeyword {
                       type: "TSAnyKeyword",
 
@@ -60,7 +60,7 @@ Program {
                   type: "TSQualifiedName",
                   left: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "interop",
                     optional: false,
 
@@ -72,7 +72,7 @@ Program {
                   },
                   right: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "Reference",
                     optional: false,
 
@@ -120,10 +120,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "AudioBufferList",
         optional: false,
 
@@ -133,7 +133,7 @@ Program {
           end: { column: 21, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 150],

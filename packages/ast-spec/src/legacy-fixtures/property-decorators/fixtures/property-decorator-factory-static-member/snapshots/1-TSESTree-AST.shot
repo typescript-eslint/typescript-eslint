@@ -3,23 +3,23 @@
 exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-factory-static-member TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
-            decorators: Array [
+            decorators: [
               Decorator {
                 type: "Decorator",
                 expression: CallExpression {
                   type: "CallExpression",
-                  arguments: Array [
+                  arguments: [
                     Literal {
                       type: "Literal",
                       raw: "true",
@@ -34,7 +34,7 @@ Program {
                   ],
                   callee: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "configurable",
                     optional: false,
 
@@ -63,7 +63,7 @@ Program {
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "prop1",
               optional: false,
 
@@ -89,12 +89,12 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
-            decorators: Array [
+            decorators: [
               Decorator {
                 type: "Decorator",
                 expression: CallExpression {
                   type: "CallExpression",
-                  arguments: Array [
+                  arguments: [
                     Literal {
                       type: "Literal",
                       raw: "false",
@@ -109,7 +109,7 @@ Program {
                   ],
                   callee: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "configurable",
                     optional: false,
 
@@ -138,7 +138,7 @@ Program {
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "prop2",
               optional: false,
 
@@ -169,10 +169,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "A",
         optional: false,
 
@@ -182,7 +182,7 @@ Program {
           end: { column: 7, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 160],

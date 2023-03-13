@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics import-export-equal-type-declaration Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSImportEqualsDeclaration {
       type: "TSImportEqualsDeclaration",
       id: Identifier {

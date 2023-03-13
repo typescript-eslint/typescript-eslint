@@ -11,6 +11,7 @@ module.exports = {
     'import',
     'jest',
     'simple-import-sort',
+    'unicorn',
   ],
   env: {
     es2020: true,
@@ -203,6 +204,8 @@ module.exports = {
     'simple-import-sort/imports': 'error',
 
     'one-var': ['error', 'never'],
+
+    'unicorn/no-typeof-undefined': 'error',
   },
   overrides: [
     {

@@ -1,11 +1,3 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures legacy-fixtures errorRecovery _error_ decorator-on-function TSESTree - Error 1`] = `
-"TSError
-  1 | // TODO: This fixture might be too large, and if so should be split up.
-  2 |
-> 3 | @dec
-    | ^^^^ Decorators are not valid here.
-  4 | function b(){}
-  5 |"
-`;
+exports[`AST Fixtures legacy-fixtures errorRecovery _error_ decorator-on-function TSESTree - Error 1`] = `"NO ERROR"`;

@@ -42,6 +42,7 @@ exports[`AST Fixtures legacy-fixtures babylon-convergence type-parameters AST Al
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSObjectKeyword {
                 type: 'TSObjectKeyword',
 

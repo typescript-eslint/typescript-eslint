@@ -3,15 +3,15 @@
 exports[`AST Fixtures legacy-fixtures expressions call-expression-type-arguments TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: CallExpression {
         type: "CallExpression",
-        arguments: Array [],
+        arguments: [],
         callee: Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "foo",
           optional: false,
 
@@ -24,12 +24,12 @@ Program {
         optional: false,
         typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
-          params: Array [
+          params: [
             TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "A",
                 optional: false,
 
@@ -72,10 +72,10 @@ Program {
       type: "ExpressionStatement",
       expression: CallExpression {
         type: "CallExpression",
-        arguments: Array [],
+        arguments: [],
         callee: Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "foo",
           optional: false,
 
@@ -88,7 +88,7 @@ Program {
         optional: false,
         typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
-          params: Array [
+          params: [
             TSNumberKeyword {
               type: "TSNumberKeyword",
 

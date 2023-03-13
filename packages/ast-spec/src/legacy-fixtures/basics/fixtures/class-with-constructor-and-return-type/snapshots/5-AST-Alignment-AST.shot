@@ -90,7 +90,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-return-t
 -             decorators: Array [],
               key: Literal {
                 type: 'Literal',
-                raw: '\\\\'constructor\\\\'',
+                raw: '\\'constructor\\'',
                 value: 'constructor',
 
                 range: [114, 127],

@@ -27,7 +27,7 @@ exports[`AST Fixtures declaration ImportDeclaration assertion AST Alignment - AS
             },
             value: Literal {
               type: 'Literal',
-              raw: '\\\\'json\\\\'',
+              raw: '\\'json\\'',
               value: 'json',
 
               range: [40, 46],
@@ -47,7 +47,7 @@ exports[`AST Fixtures declaration ImportDeclaration assertion AST Alignment - AS
         importKind: 'value',
         source: Literal {
           type: 'Literal',
-          raw: '\\\\'mod\\\\'',
+          raw: '\\'mod\\'',
           value: 'mod',
 
           range: [19, 24],

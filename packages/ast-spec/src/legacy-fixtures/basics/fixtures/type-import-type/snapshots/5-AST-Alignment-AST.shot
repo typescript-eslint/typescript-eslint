@@ -31,11 +31,11 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
 -             type: 'TSLiteralType',
 -             literal: Literal {
 -               type: 'Literal',
--               raw: '\\\\'A\\\\'',
+-               raw: '\\'A\\'',
 -               value: 'A',
 +           argument: Literal {
 +             type: 'Literal',
-+             raw: '\\\\'A\\\\'',
++             raw: '\\'A\\'',
 +             value: 'A',
 
 -               range: [96, 99],
@@ -95,7 +95,7 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
 -           type: 'TSLiteralType',
 -           literal: Literal {
 -             type: 'Literal',
--             raw: '\\\\'B\\\\'',
+-             raw: '\\'B\\'',
 -             value: 'B',
 -
 -             range: [118, 121],
@@ -106,7 +106,7 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type AST Alignment - AS
 -           },
 +         argument: Literal {
 +           type: 'Literal',
-+           raw: '\\\\'B\\\\'',
++           raw: '\\'B\\'',
 +           value: 'B',
 
             range: [118, 121],

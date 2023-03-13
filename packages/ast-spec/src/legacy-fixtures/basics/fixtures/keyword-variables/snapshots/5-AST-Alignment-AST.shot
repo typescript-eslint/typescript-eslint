@@ -1451,7 +1451,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
         importKind: 'value',
         source: Literal {
           type: 'Literal',
-          raw: '\\\\'fake-module\\\\'',
+          raw: '\\'fake-module\\'',
           value: 'fake-module',
 
           range: [1004, 1017],

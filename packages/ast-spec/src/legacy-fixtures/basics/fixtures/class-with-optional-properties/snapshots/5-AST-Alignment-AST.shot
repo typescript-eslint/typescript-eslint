@@ -28,7 +28,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-properties AST 
             },
             init: Literal {
               type: 'Literal',
-              raw: '\\\\'buzz\\\\'',
+              raw: '\\'buzz\\'',
               value: 'buzz',
 
               range: [90, 96],
@@ -74,7 +74,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-properties AST 
             },
             init: Literal {
               type: 'Literal',
-              raw: '\\\\'bazz\\\\'',
+              raw: '\\'bazz\\'',
               value: 'bazz',
 
               range: [116, 122],
@@ -271,7 +271,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-properties AST 
 -             definite: false,
               key: Literal {
                 type: 'Literal',
-                raw: '\\\\'literal\\\\'',
+                raw: '\\'literal\\'',
                 value: 'literal',
 
                 range: [202, 211],
@@ -377,7 +377,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-properties AST 
 -             definite: false,
               key: Literal {
                 type: 'Literal',
-                raw: '\\\\'literal2\\\\'',
+                raw: '\\'literal2\\'',
                 value: 'literal2',
 
                 range: [250, 260],

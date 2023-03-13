@@ -3,19 +3,19 @@
 exports[`AST Fixtures declaration ExportNamedDeclaration variable-declaration TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: VariableDeclaration {
         type: "VariableDeclaration",
-        declarations: Array [
+        declarations: [
           VariableDeclarator {
             type: "VariableDeclarator",
             definite: false,
             id: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "x",
               optional: false,
 
@@ -55,7 +55,7 @@ Program {
       },
       exportKind: "value",
       source: null,
-      specifiers: Array [],
+      specifiers: [],
 
       range: [0, 19],
       loc: {

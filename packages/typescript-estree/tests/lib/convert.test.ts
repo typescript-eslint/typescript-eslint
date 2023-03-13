@@ -23,6 +23,7 @@ describe('convert', () => {
     function fakeUnknownKind(node: ts.Node): void {
       ts.forEachChild(node, fakeUnknownKind);
       // @ts-expect-error -- intentionally writing to a readonly field
+      // eslint-disable-next-line deprecation/deprecation
       node.kind = ts.SyntaxKind.UnparsedPrologue;
     }
 

@@ -549,6 +549,18 @@ type OptionalFoo = Foo | undefined;
 declare const foo: OptionalFoo;
 foo?.[1]?.length;
     `,
+    `
+declare let foo: number | null;
+foo ??= 1;
+    `,
+    `
+declare let foo: number;
+foo ||= 1;
+    `,
+    `
+declare let foo: number;
+foo &&= 1;
+    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/6264
     `
 function get<Obj, Key extends keyof Obj>(obj: Obj, key: Key) {
@@ -1673,6 +1685,111 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
           endLine: 3,
           column: 7,
           endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+declare let foo: {};
+foo ??= 1;
+      `,
+      errors: [
+        {
+          messageId: 'neverNullish',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare let foo: number;
+foo ??= 1;
+      `,
+      errors: [
+        {
+          messageId: 'neverNullish',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare let foo: null;
+foo ??= null;
+      `,
+      errors: [
+        {
+          messageId: 'alwaysNullish',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare let foo: {};
+foo ||= 1;
+      `,
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare let foo: null;
+foo ||= null;
+      `,
+      errors: [
+        {
+          messageId: 'alwaysFalsy',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare let foo: {};
+foo &&= 1;
+      `,
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare let foo: null;
+foo &&= null;
+      `,
+      errors: [
+        {
+          messageId: 'alwaysFalsy',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 4,
         },
       ],
     },

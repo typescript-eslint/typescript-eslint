@@ -46,7 +46,7 @@ exports[`AST Fixtures legacy-fixtures basics var-with-type AST Alignment - AST 1
             },
             init: Literal {
               type: 'Literal',
-              raw: '\\\\'Nicholas\\\\'',
+              raw: '\\'Nicholas\\'',
               value: 'Nicholas',
 
               range: [92, 102],
@@ -110,7 +110,7 @@ exports[`AST Fixtures legacy-fixtures basics var-with-type AST Alignment - AST 1
             },
             init: Literal {
               type: 'Literal',
-              raw: '\\\\'Bar\\\\'',
+              raw: '\\'Bar\\'',
               value: 'Bar',
 
               range: [122, 127],

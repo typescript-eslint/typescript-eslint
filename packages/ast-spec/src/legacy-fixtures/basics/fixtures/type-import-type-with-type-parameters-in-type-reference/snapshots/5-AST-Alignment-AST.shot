@@ -45,11 +45,11 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
 -                 type: 'TSLiteralType',
 -                 literal: Literal {
 -                   type: 'Literal',
--                   raw: '\\\\'\\\\'',
+-                   raw: '\\'\\'',
 -                   value: '',
 +               argument: Literal {
 +                 type: 'Literal',
-+                 raw: '\\\\'\\\\'',
++                 raw: '\\'\\'',
 +                 value: '',
 
 -                   range: [91, 93],
