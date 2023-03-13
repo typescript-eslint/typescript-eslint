@@ -30,6 +30,7 @@ Program {
         params: Array [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSStringKeyword {
               type: "TSStringKeyword",
 
@@ -99,6 +100,7 @@ Program {
         params: Array [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSStringKeyword {
               type: "TSStringKeyword",
 
@@ -168,6 +170,7 @@ Program {
         params: Array [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSStringKeyword {
               type: "TSStringKeyword",
 
@@ -237,6 +240,7 @@ Program {
         params: Array [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSStringKeyword {
               type: "TSStringKeyword",
 

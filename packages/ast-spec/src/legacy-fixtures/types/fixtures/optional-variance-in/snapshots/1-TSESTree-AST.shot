@@ -88,6 +88,7 @@ Program {
         params: Array [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: true,
             name: Identifier {
               type: "Identifier",

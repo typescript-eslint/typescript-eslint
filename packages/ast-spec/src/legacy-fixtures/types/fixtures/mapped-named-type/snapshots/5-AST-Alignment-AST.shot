@@ -91,6 +91,7 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
           },
           typeParameter: TSTypeParameter {
             type: 'TSTypeParameter',
+-           const: false,
             constraint: TSTypeOperator {
               type: 'TSTypeOperator',
               operator: 'keyof',
@@ -152,6 +153,7 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
