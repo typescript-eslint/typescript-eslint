@@ -5,30 +5,10 @@
 
 import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE } from './base-config';
-import { es2015_symbol } from './es2015.symbol';
 
-export const es2015_symbol_wellknown = {
-  ...es2015_symbol,
-  SymbolConstructor: TYPE,
-  Symbol: TYPE,
+export const es2023_array = {
   Array: TYPE,
   ReadonlyArray: TYPE,
-  Date: TYPE,
-  Map: TYPE,
-  WeakMap: TYPE,
-  Set: TYPE,
-  WeakSet: TYPE,
-  JSON: TYPE,
-  Function: TYPE,
-  GeneratorFunction: TYPE,
-  Math: TYPE,
-  Promise: TYPE,
-  PromiseConstructor: TYPE,
-  RegExp: TYPE,
-  RegExpConstructor: TYPE,
-  String: TYPE,
-  ArrayBuffer: TYPE,
-  DataView: TYPE,
   Int8Array: TYPE,
   Uint8Array: TYPE,
   Uint8ClampedArray: TYPE,
@@ -38,8 +18,6 @@ export const es2015_symbol_wellknown = {
   Uint32Array: TYPE,
   Float32Array: TYPE,
   Float64Array: TYPE,
-  ArrayConstructor: TYPE,
-  MapConstructor: TYPE,
-  SetConstructor: TYPE,
-  ArrayBufferConstructor: TYPE,
+  BigInt64Array: TYPE,
+  BigUint64Array: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;
