@@ -88,50 +88,17 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
               constraint: TSTypeReference {
                 type: 'TSTypeReference',
 -               typeArguments: TSTypeParameterInstantiation {
--                 type: 'TSTypeParameterInstantiation',
--                 params: Array [
--                   TSTypeReference {
--                     type: 'TSTypeReference',
--                     typeName: Identifier {
--                       type: 'Identifier',
--                       decorators: Array [],
--                       name: 'M',
--                       optional: false,
--
--                       range: [106, 107],
--                       loc: {
--                         start: { column: 33, line: 3 },
--                         end: { column: 34, line: 3 },
--                       },
--                     },
--
--                     range: [106, 107],
--                     loc: {
--                       start: { column: 33, line: 3 },
--                       end: { column: 34, line: 3 },
--                     },
--                   },
--                 ],
--
--                 range: [105, 108],
--                 loc: {
--                   start: { column: 32, line: 3 },
--                   end: { column: 35, line: 3 },
--                 },
--               },
-                typeName: Identifier {
-                  type: 'Identifier',
--                 decorators: Array [],
-                  name: 'Constructor',
--                 optional: false,
-
-                  range: [94, 105],
-                  loc: {
-                    start: { column: 21, line: 3 },
-                    end: { column: 32, line: 3 },
-                  },
-                },
-                typeParameters: TSTypeParameterInstantiation {
++               typeName: Identifier {
++                 type: 'Identifier',
++                 name: 'Constructor',
++
++                 range: [94, 105],
++                 loc: {
++                   start: { column: 21, line: 3 },
++                   end: { column: 32, line: 3 },
++                 },
++               },
++               typeParameters: TSTypeParameterInstantiation {
                   type: 'TSTypeParameterInstantiation',
                   params: Array [
                     TSTypeReference {
@@ -161,6 +128,18 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
                   loc: {
                     start: { column: 32, line: 3 },
                     end: { column: 35, line: 3 },
+-                 },
+-               },
+-               typeName: Identifier {
+-                 type: 'Identifier',
+-                 decorators: Array [],
+-                 name: 'Constructor',
+-                 optional: false,
+-
+-                 range: [94, 105],
+-                 loc: {
+-                   start: { column: 21, line: 3 },
+-                   end: { column: 32, line: 3 },
                   },
                 },
 

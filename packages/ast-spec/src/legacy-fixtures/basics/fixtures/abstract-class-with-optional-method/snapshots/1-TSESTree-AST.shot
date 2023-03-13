@@ -78,26 +78,6 @@ Program {
                         end: { column: 26, line: 4 },
                       },
                     },
-                    typeParameters: TSTypeParameterInstantiation {
-                      type: "TSTypeParameterInstantiation",
-                      params: Array [
-                        TSStringKeyword {
-                          type: "TSStringKeyword",
-
-                          range: [139, 145],
-                          loc: {
-                            start: { column: 27, line: 4 },
-                            end: { column: 33, line: 4 },
-                          },
-                        },
-                      ],
-
-                      range: [138, 146],
-                      loc: {
-                        start: { column: 26, line: 4 },
-                        end: { column: 34, line: 4 },
-                      },
-                    },
 
                     range: [131, 146],
                     loc: {

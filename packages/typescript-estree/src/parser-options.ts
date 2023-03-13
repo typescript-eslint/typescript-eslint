@@ -81,6 +81,11 @@ interface ParseOptions {
    * Set to true to create a top-level array containing all tokens from the file.
    */
   tokens?: boolean;
+
+  /**
+   * Whether deprecated AST properties should skip calling console.warn on accesses.
+   */
+  suppressDeprecatedPropertyWarnings?: boolean;
 }
 
 interface ParseAndGenerateServicesOptions extends ParseOptions {

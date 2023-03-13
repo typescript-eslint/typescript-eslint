@@ -26,110 +26,17 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
         typeAnnotation: TSTypeReference {
           type: 'TSTypeReference',
 -         typeArguments: TSTypeParameterInstantiation {
--           type: 'TSTypeParameterInstantiation',
--           params: Array [
--             TSImportType {
--               type: 'TSImportType',
--               argument: TSLiteralType {
--                 type: 'TSLiteralType',
--                 literal: Literal {
--                   type: 'Literal',
--                   raw: '\\\\'\\\\'',
--                   value: '',
--
--                   range: [91, 93],
--                   loc: {
--                     start: { column: 18, line: 3 },
--                     end: { column: 20, line: 3 },
--                   },
--                 },
--
--                 range: [91, 93],
--                 loc: {
--                   start: { column: 18, line: 3 },
--                   end: { column: 20, line: 3 },
--                 },
--               },
--               qualifier: Identifier {
--                 type: 'Identifier',
--                 decorators: Array [],
--                 name: 'B',
--                 optional: false,
--
--                 range: [95, 96],
--                 loc: {
--                   start: { column: 22, line: 3 },
--                   end: { column: 23, line: 3 },
--                 },
--               },
--               typeArguments: TSTypeParameterInstantiation {
--                 type: 'TSTypeParameterInstantiation',
--                 params: Array [
--                   TSAnyKeyword {
--                     type: 'TSAnyKeyword',
--
--                     range: [97, 100],
--                     loc: {
--                       start: { column: 24, line: 3 },
--                       end: { column: 27, line: 3 },
--                     },
--                   },
--                 ],
--
--                 range: [96, 101],
--                 loc: {
--                   start: { column: 23, line: 3 },
--                   end: { column: 28, line: 3 },
--                 },
--               },
--               typeParameters: TSTypeParameterInstantiation {
--                 type: 'TSTypeParameterInstantiation',
--                 params: Array [
--                   TSAnyKeyword {
--                     type: 'TSAnyKeyword',
--
--                     range: [97, 100],
--                     loc: {
--                       start: { column: 24, line: 3 },
--                       end: { column: 27, line: 3 },
--                     },
--                   },
--                 ],
--
--                 range: [96, 101],
--                 loc: {
--                   start: { column: 23, line: 3 },
--                   end: { column: 28, line: 3 },
--                 },
--               },
--
--               range: [84, 101],
--               loc: {
--                 start: { column: 11, line: 3 },
--                 end: { column: 28, line: 3 },
--               },
--             },
--           ],
--
--           range: [83, 102],
--           loc: {
--             start: { column: 10, line: 3 },
--             end: { column: 29, line: 3 },
--           },
--         },
-          typeName: Identifier {
-            type: 'Identifier',
--           decorators: Array [],
-            name: 'A',
--           optional: false,
-
-            range: [82, 83],
-            loc: {
-              start: { column: 9, line: 3 },
-              end: { column: 10, line: 3 },
-            },
-          },
-          typeParameters: TSTypeParameterInstantiation {
++         typeName: Identifier {
++           type: 'Identifier',
++           name: 'A',
++
++           range: [82, 83],
++           loc: {
++             start: { column: 9, line: 3 },
++             end: { column: 10, line: 3 },
++           },
++         },
++         typeParameters: TSTypeParameterInstantiation {
             type: 'TSTypeParameterInstantiation',
             params: Array [
               TSImportType {
@@ -140,18 +47,18 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
 -                   type: 'Literal',
 -                   raw: '\\\\'\\\\'',
 -                   value: '',
--
++               argument: Literal {
++                 type: 'Literal',
++                 raw: '\\\\'\\\\'',
++                 value: '',
+
 -                   range: [91, 93],
 -                   loc: {
 -                     start: { column: 18, line: 3 },
 -                     end: { column: 20, line: 3 },
 -                   },
 -                 },
-+               argument: Literal {
-+                 type: 'Literal',
-+                 raw: '\\\\'\\\\'',
-+                 value: '',
-
+-
                   range: [91, 93],
                   loc: {
                     start: { column: 18, line: 3 },
@@ -168,29 +75,10 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
                   loc: {
                     start: { column: 22, line: 3 },
                     end: { column: 23, line: 3 },
--                 },
--               },
--               typeArguments: TSTypeParameterInstantiation {
--                 type: 'TSTypeParameterInstantiation',
--                 params: Array [
--                   TSAnyKeyword {
--                     type: 'TSAnyKeyword',
--
--                     range: [97, 100],
--                     loc: {
--                       start: { column: 24, line: 3 },
--                       end: { column: 27, line: 3 },
--                     },
--                   },
--                 ],
--
--                 range: [96, 101],
--                 loc: {
--                   start: { column: 23, line: 3 },
--                   end: { column: 28, line: 3 },
                   },
                 },
-                typeParameters: TSTypeParameterInstantiation {
+-               typeArguments: TSTypeParameterInstantiation {
++               typeParameters: TSTypeParameterInstantiation {
                   type: 'TSTypeParameterInstantiation',
                   params: Array [
                     TSAnyKeyword {
@@ -223,6 +111,18 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
             loc: {
               start: { column: 10, line: 3 },
               end: { column: 29, line: 3 },
+-           },
+-         },
+-         typeName: Identifier {
+-           type: 'Identifier',
+-           decorators: Array [],
+-           name: 'A',
+-           optional: false,
+-
+-           range: [82, 83],
+-           loc: {
+-             start: { column: 9, line: 3 },
+-             end: { column: 10, line: 3 },
             },
           },
 
