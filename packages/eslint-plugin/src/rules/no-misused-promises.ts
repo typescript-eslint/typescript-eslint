@@ -240,10 +240,12 @@ export default util.createRule<Options, MessageId>({
         return;
       }
 
-      context.report({
-        messageId: 'voidReturnVariable',
-        node: node.right,
-      });
+      if (returnsThenable(checker, tsNode.right)) {
+        context.report({
+          messageId: 'voidReturnVariable',
+          node: node.right,
+        });
+      }
     }
 
     function checkVariableDeclaration(node: TSESTree.VariableDeclarator): void {
@@ -274,7 +276,8 @@ export default util.createRule<Options, MessageId>({
             checker,
             tsNode.initializer,
             contextualType,
-          )
+          ) &&
+          returnsThenable(checker, tsNode.initializer)
         ) {
           context.report({
             messageId: 'voidReturnProperty',
@@ -285,7 +288,8 @@ export default util.createRule<Options, MessageId>({
         const contextualType = checker.getContextualType(tsNode.name);
         if (
           contextualType !== undefined &&
-          isVoidReturningFunctionType(checker, tsNode.name, contextualType)
+          isVoidReturningFunctionType(checker, tsNode.name, contextualType) &&
+          returnsThenable(checker, tsNode.name)
         ) {
           context.report({
             messageId: 'voidReturnProperty',
@@ -346,7 +350,12 @@ export default util.createRule<Options, MessageId>({
       const contextualType = checker.getContextualType(tsNode.expression);
       if (
         contextualType !== undefined &&
-        isVoidReturningFunctionType(checker, tsNode.expression, contextualType)
+        isVoidReturningFunctionType(
+          checker,
+          tsNode.expression,
+          contextualType,
+        ) &&
+        returnsThenable(checker, tsNode.expression)
       ) {
         context.report({
           messageId: 'voidReturnReturnValue',
