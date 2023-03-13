@@ -228,9 +228,8 @@ export default util.createRule<Options, MessageIds>({
             const isUnaryNegation =
               node.parent != null && nodeIsUnaryNegation(node.parent);
 
-            const shouldNegate = comparison.literalBooleanInComparison
-              ? !comparison.negated
-              : comparison.negated;
+            const shouldNegate =
+              comparison.negated !== comparison.literalBooleanInComparison;
 
             const mutatedNode = isUnaryNegation ? node.parent! : node;
 
@@ -239,8 +238,8 @@ export default util.createRule<Options, MessageIds>({
               sourceCode.getText(comparison.expression),
             );
 
-            // if (XOR) `isUnaryNegation ^ literalBooleanInComparison ^ negated` is true - negate the expression
-            if (isUnaryNegation === shouldNegate) {
+            // if `isUnaryNegation === literalBooleanInComparison === !negated` is true - negate the expression
+            if (shouldNegate === isUnaryNegation) {
               yield fixer.insertTextBefore(mutatedNode, '!');
 
               // if the expression `exp` is not a strong precedence node, wrap it in parentheses
