@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.55.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.54.1...v5.55.0) (2023-03-13)
+
+
+### Features
+
+* **parser:** add exported meta object ([#6586](https://github.com/typescript-eslint/typescript-eslint/issues/6586)) ([d05c3d8](https://github.com/typescript-eslint/typescript-eslint/commit/d05c3d8aa4093e88ffdfc2dbcff522eafbd455fb))
+
+
+
+
+
 ## [5.54.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.54.0...v5.54.1) (2023-03-06)
 
 **Note:** Version bump only for package @typescript-eslint/parser
