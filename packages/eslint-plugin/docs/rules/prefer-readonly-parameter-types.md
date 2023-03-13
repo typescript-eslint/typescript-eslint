@@ -149,7 +149,7 @@ Examples of code for this rule with:
     "$",
     { "source": "file", "name": "Foo" },
     { "source": "lib", "name": "HTMLElement" },
-    { "from": "package", "name": "Bar", "source": "bar-lib" }
+    { "from": "package", "name": "Bar", "package": "bar-lib" }
   ]
 }
 ```
