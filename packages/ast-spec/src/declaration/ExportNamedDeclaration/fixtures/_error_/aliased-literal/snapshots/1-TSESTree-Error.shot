@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration ExportNamedDeclaration _error_ aliased-literal TSESTree - Error 1`] = `[TSError: Identifier expected.]`;
+exports[`AST Fixtures declaration ExportNamedDeclaration _error_ aliased-literal TSESTree - Error 1`] = `
+"TSError
+> 1 | export { a as 'a' };
+    |               ^ Identifier expected.
+  2 |"
+`;

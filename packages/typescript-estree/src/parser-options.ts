@@ -12,6 +12,12 @@ import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 
 interface ParseOptions {
   /**
+   * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
+   * This case only usually occurs when attempting to lint invalid code.
+   */
+  allowInvalidAST?: boolean;
+
+  /**
    * create a top-level comments array containing all comments
    */
   comment?: boolean;
@@ -187,11 +193,6 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
      */
     glob?: CacheDurationSeconds;
   };
-
-  /**
-   * Path to a file exporting a custom `ModuleResolver`.
-   */
-  moduleResolver?: string;
 }
 
 export type TSESTreeOptions = ParseAndGenerateServicesOptions;
@@ -227,14 +228,3 @@ export interface ParserServicesWithoutTypeInformation
 export type ParserServices =
   | ParserServicesWithTypeInformation
   | ParserServicesWithoutTypeInformation;
-
-export interface ModuleResolver {
-  version: 1;
-  resolveModuleNames(
-    moduleNames: string[],
-    containingFile: string,
-    reusedNames: string[] | undefined,
-    redirectedReference: ts.ResolvedProjectReference | undefined,
-    options: ts.CompilerOptions,
-  ): (ts.ResolvedModule | undefined)[];
-}

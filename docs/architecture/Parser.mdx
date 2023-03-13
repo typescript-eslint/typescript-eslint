@@ -43,7 +43,6 @@ interface ParserOptions {
   jsxFragmentName?: string | null;
   jsxPragma?: string | null;
   lib?: string[];
-  moduleResolver?: string;
   program?: import('typescript').Program;
   project?: string | string[] | true;
   projectFolderIgnoreList?: string[];
@@ -149,25 +148,6 @@ For valid options, see the [TypeScript compiler options](https://www.typescriptl
 Specifies the TypeScript `lib`s that are available. This is used by the scope analyser to ensure there are global variables declared for the types exposed by TypeScript.
 
 If you provide `parserOptions.project`, you do not need to set this, as it will automatically detected from the compiler.
-
-### `moduleResolver`
-
-> Default `undefined`.
-
-This option allows you to provide a custom module resolution. The value should point to a JS file that default exports (`export default`, or `module.exports =`, or `export =`) a file with the following interface:
-
-```ts
-interface ModuleResolver {
-  version: 1;
-  resolveModuleNames(
-    moduleNames: string[],
-    containingFile: string,
-    reusedNames: string[] | undefined,
-    redirectedReference: ts.ResolvedProjectReference | undefined,
-    options: ts.CompilerOptions,
-  ): (ts.ResolvedModule | undefined)[];
-}
-```
 
 ### `program`
 

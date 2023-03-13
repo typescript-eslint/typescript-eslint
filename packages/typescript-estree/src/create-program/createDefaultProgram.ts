@@ -4,10 +4,7 @@ import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
 import type { ASTAndDefiniteProgram } from './shared';
-import {
-  createDefaultCompilerOptionsFromExtra,
-  getModuleResolver,
-} from './shared';
+import { createDefaultCompilerOptionsFromExtra } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createDefaultProgram');
 
@@ -46,12 +43,6 @@ function createDefaultProgram(
     commandLine.options,
     /* setParentNodes */ true,
   );
-
-  if (parseSettings.moduleResolver) {
-    compilerHost.resolveModuleNames = getModuleResolver(
-      parseSettings.moduleResolver,
-    ).resolveModuleNames;
-  }
 
   const oldReadFile = compilerHost.readFile;
   compilerHost.readFile = (fileName: string): string | undefined =>

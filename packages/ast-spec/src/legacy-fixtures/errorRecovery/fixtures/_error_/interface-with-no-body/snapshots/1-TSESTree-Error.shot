@@ -1,3 +1,9 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-with-no-body TSESTree - Error 1`] = `[TSError: '{' expected.]`;
+exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-with-no-body TSESTree - Error 1`] = `
+"TSError
+  2 |
+  3 | interface Foo
+> 4 |
+    | ^ '{' expected."
+`;

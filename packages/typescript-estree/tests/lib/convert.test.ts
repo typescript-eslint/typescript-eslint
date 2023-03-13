@@ -241,6 +241,30 @@ describe('convert', () => {
     }
   });
 
+  describe('allowInvalidAST', () => {
+    const code = 'const;';
+
+    it(`throws an error for an invalid AST when allowInvalidAST is false`, () => {
+      const ast = convertCode(code);
+
+      const instance = new Converter(ast);
+
+      expect(() => instance.convertProgram()).toThrow(
+        'A variable declaration list must have at least one variable declarator.',
+      );
+    });
+
+    it(`does not throw an error for an invalid AST when allowInvalidAST is true`, () => {
+      const ast = convertCode(code);
+
+      const instance = new Converter(ast, {
+        allowInvalidAST: true,
+      });
+
+      expect(() => instance.convertProgram()).not.toThrow();
+    });
+  });
+
   describe('suppressDeprecatedPropertyWarnings', () => {
     const getEsCallExpression = (
       converterOptions: ConverterOptions,

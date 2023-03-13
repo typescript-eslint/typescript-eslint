@@ -114,6 +114,7 @@
     "typescript": ">=4.2.4 <5.0.0"
   },
   "resolutions": {
+    "@typescript-eslint/experimental-utils": "link:./packages/utils",
     "typescript": "~4.9.5",
     "@types/node": "^18.11.9",
     "@jest/reporters": "^29",
@@ -122,16 +123,16 @@
     "jest-resolve": "^29",
     "jest-util": "^29",
     "pretty-format": "^29",
-    "@swc/core-android-arm-eabi": "file:./tools/dummypkg",
-    "@swc/core-android-arm64": "file:./tools/dummypkg",
-    "@swc/core-freebsd-x64": "file:./tools/dummypkg",
-    "@swc/core-linux-arm-gnueabihf": "file:./tools/dummypkg",
-    "@swc/core-linux-arm64-gnu": "file:./tools/dummypkg",
-    "@swc/core-linux-arm64-musl": "file:./tools/dummypkg",
-    "@swc/core-win32-arm64-msvc": "file:./tools/dummypkg",
-    "@swc/core-win32-ia32-msvc": "file:./tools/dummypkg",
-    "@types/eslint": "file:./tools/dummypkg",
-    "@types/eslint-scope": "file:./tools/dummypkg",
-    "@types/estree": "file:./tools/dummypkg"
+    "@swc/core-android-arm-eabi": "link:./tools/dummypkg",
+    "@swc/core-android-arm64": "link:./tools/dummypkg",
+    "@swc/core-freebsd-x64": "link:./tools/dummypkg",
+    "@swc/core-linux-arm-gnueabihf": "link:./tools/dummypkg",
+    "@swc/core-linux-arm64-gnu": "link:./tools/dummypkg",
+    "@swc/core-linux-arm64-musl": "link:./tools/dummypkg",
+    "@swc/core-win32-arm64-msvc": "link:./tools/dummypkg",
+    "@swc/core-win32-ia32-msvc": "link:./tools/dummypkg",
+    "@types/eslint": "link:./tools/dummypkg",
+    "@types/eslint-scope": "link:./tools/dummypkg",
+    "@types/estree": "link:./tools/dummypkg"
   }
 }

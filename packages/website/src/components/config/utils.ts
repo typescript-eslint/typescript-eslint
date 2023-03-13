@@ -1,6 +1,6 @@
 import { isRecord } from '@site/src/components/ast/utils';
 import type { EslintRC, TSConfig } from '@site/src/components/types';
-import { parse } from 'json5';
+import json5 from 'json5';
 
 export interface OptionDeclarations {
   name: string;
@@ -15,7 +15,7 @@ export interface OptionDeclarations {
 export function parseESLintRC(code?: string): EslintRC {
   if (code) {
     try {
-      const parsed: unknown = parse(code);
+      const parsed: unknown = json5.parse(code);
       if (isRecord(parsed)) {
         if ('rules' in parsed && isRecord(parsed.rules)) {
           return parsed as EslintRC;

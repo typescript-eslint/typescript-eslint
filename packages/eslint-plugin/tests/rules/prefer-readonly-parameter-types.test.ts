@@ -290,7 +290,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         new (arg: readonly string[]): void;
       }
     `, // TSConstructSignatureDeclaration
-    noFormat`const x = { foo(arg: readonly string[]): void; };`, // TSEmptyBodyFunctionExpression
+    noFormat`class Foo { foo(arg: readonly string[]): void; };`, // TSEmptyBodyFunctionExpression
     'function foo(arg: readonly string[]);', // TSDeclareFunction
     'type Foo = (arg: readonly string[]) => void;', // TSFunctionType
     `
@@ -667,7 +667,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
     {
       // TSEmptyBodyFunctionExpression
-      code: noFormat`const x = { foo(arg: string[]): void; };`,
+      code: noFormat`class Foo { foo(arg: string[]): void; };`,
       errors: [
         {
           messageId: 'shouldBeReadonly',

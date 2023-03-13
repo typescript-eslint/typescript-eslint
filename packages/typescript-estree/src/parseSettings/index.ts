@@ -11,6 +11,11 @@ type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
  */
 export interface MutableParseSettings {
   /**
+   * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
+   */
+  allowInvalidAST: boolean;
+
+  /**
    * Code of the file being parsed, or raw source file containing it.
    */
   code: string | ts.SourceFile;
@@ -87,11 +92,6 @@ export interface MutableParseSettings {
    * Log function, if not `console.log`.
    */
   log: (message: string) => void;
-
-  /**
-   * Path for a module resolver to use for the compiler host's `resolveModuleNames`.
-   */
-  moduleResolver: string;
 
   /**
    * Whether two-way AST node maps are preserved during the AST conversion process.

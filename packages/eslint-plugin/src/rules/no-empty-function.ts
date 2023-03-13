@@ -166,13 +166,6 @@ export default util.createRule<Options, MessageIds>({
 
         rules.FunctionExpression(node);
       },
-      FunctionDeclaration(node): void {
-        if (isAllowedEmptyDecoratedFunctions(node)) {
-          return;
-        }
-
-        rules.FunctionDeclaration(node);
-      },
     };
   },
 });
