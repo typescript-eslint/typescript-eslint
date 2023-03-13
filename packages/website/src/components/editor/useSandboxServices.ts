@@ -1,5 +1,4 @@
 import { useColorMode } from '@docusaurus/theme-common';
-import { createCompilerOptions } from '@site/src/components/editor/config';
 import type Monaco from 'monaco-editor';
 import { useEffect, useState } from 'react';
 
@@ -9,8 +8,10 @@ import type {
 } from '../../vendor/sandbox';
 import { WebLinter } from '../linter/WebLinter';
 import type { RuleDetails } from '../types';
+import { createCompilerOptions } from './config';
 import { editorEmbedId } from './EditorEmbed';
 import { sandboxSingleton } from './loadSandbox';
+import type { CommonEditorProps } from './types';
 
 export interface SandboxServicesProps {
   readonly jsx?: boolean;
@@ -30,7 +31,7 @@ export interface SandboxServices {
 }
 
 export const useSandboxServices = (
-  props: SandboxServicesProps,
+  props: CommonEditorProps & SandboxServicesProps,
 ): Error | SandboxServices | undefined => {
   const { onLoaded } = props;
   const [services, setServices] = useState<Error | SandboxServices>();
@@ -52,7 +53,7 @@ export const useSandboxServices = (
         const compilerOptions = createCompilerOptions(props.jsx);
 
         const sandboxConfig: Partial<SandboxConfig> = {
-          text: '',
+          text: props.code,
           monacoSettings: {
             minimap: { enabled: false },
             fontSize: 13,
@@ -107,7 +108,9 @@ export const useSandboxServices = (
         }
 
         const system = sandboxInstance.tsvfs.createSystem(libEntries);
+        window.esquery = lintUtils.esquery;
 
+        // @ts-expect-error Monaco typescript.CompilerOptions is incompatible with typescript 5.0 types
         const webLinter = new WebLinter(system, compilerOptions, lintUtils);
 
         onLoaded(
@@ -145,7 +148,10 @@ export const useSandboxServices = (
         model.dispose();
       }
     };
-  }, [props.ts, colorMode, props.jsx, onLoaded]);
+    // colorMode and jsx can't be reactive here because we don't want to force a recreation
+    // updating of colorMode and jsx is handled in LoadedEditor
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [props.ts, onLoaded]);
 
   return services;
 };

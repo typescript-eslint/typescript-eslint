@@ -45,6 +45,14 @@ ruleTester.run('ts-expect-error', rule, {
         },
       ],
     },
+    {
+      code: noFormat`// @ts-expect-error 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      options: [
+        {
+          'ts-expect-error': 'allow-with-description',
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -228,6 +236,22 @@ if (false) {
         },
       ],
     },
+    {
+      code: noFormat`// @ts-expect-error 👨‍👩‍👧‍👦`,
+      options: [
+        {
+          'ts-expect-error': 'allow-with-description',
+        },
+      ],
+      errors: [
+        {
+          data: { directive: 'expect-error', minimumDescriptionLength: 3 },
+          messageId: 'tsDirectiveCommentRequiresDescription',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
   ],
 });
 
@@ -263,6 +287,14 @@ ruleTester.run('ts-ignore', rule, {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
           minimumDescriptionLength: 10,
+        },
+      ],
+    },
+    {
+      code: noFormat`// @ts-ignore 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      options: [
+        {
+          'ts-ignore': 'allow-with-description',
         },
       ],
     },
@@ -460,6 +492,22 @@ if (false) {
         },
       ],
     },
+    {
+      code: noFormat`// @ts-ignore 👨‍👩‍👧‍👦`,
+      options: [
+        {
+          'ts-ignore': 'allow-with-description',
+        },
+      ],
+      errors: [
+        {
+          data: { directive: 'ignore', minimumDescriptionLength: 3 },
+          messageId: 'tsDirectiveCommentRequiresDescription',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
   ],
 });
 
@@ -495,6 +543,14 @@ ruleTester.run('ts-nocheck', rule, {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
           minimumDescriptionLength: 10,
+        },
+      ],
+    },
+    {
+      code: noFormat`// @ts-nocheck 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      options: [
+        {
+          'ts-nocheck': 'allow-with-description',
         },
       ],
     },
@@ -668,6 +724,22 @@ if (false) {
         },
       ],
     },
+    {
+      code: noFormat`// @ts-nocheck 👨‍👩‍👧‍👦`,
+      options: [
+        {
+          'ts-nocheck': 'allow-with-description',
+        },
+      ],
+      errors: [
+        {
+          data: { directive: 'nocheck', minimumDescriptionLength: 3 },
+          messageId: 'tsDirectiveCommentRequiresDescription',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
   ],
 });
 
@@ -697,6 +769,14 @@ ruleTester.run('ts-check', rule, {
             descriptionFormat: '^: TS\\d+ because .+$',
           },
           minimumDescriptionLength: 10,
+        },
+      ],
+    },
+    {
+      code: noFormat`// @ts-check 👨‍👩‍👧‍👦👨‍👩‍👧‍👦👨‍👩‍👧‍👦`,
+      options: [
+        {
+          'ts-check': 'allow-with-description',
         },
       ],
     },
@@ -858,6 +938,22 @@ if (false) {
         {
           data: { directive: 'check', format: '^: TS\\d+ because .+$' },
           messageId: 'tsDirectiveCommentDescriptionNotMatchPattern',
+          line: 1,
+          column: 1,
+        },
+      ],
+    },
+    {
+      code: noFormat`// @ts-check 👨‍👩‍👧‍👦`,
+      options: [
+        {
+          'ts-check': 'allow-with-description',
+        },
+      ],
+      errors: [
+        {
+          data: { directive: 'check', minimumDescriptionLength: 3 },
+          messageId: 'tsDirectiveCommentRequiresDescription',
           line: 1,
           column: 1,
         },

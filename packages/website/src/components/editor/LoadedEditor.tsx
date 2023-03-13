@@ -1,3 +1,4 @@
+import { useColorMode } from '@docusaurus/theme-common';
 import type Monaco from 'monaco-editor';
 import type React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
@@ -7,6 +8,7 @@ import {
   parseTSConfig,
   tryParseEslintModule,
 } from '../config/utils';
+import { useResizeObserver } from '../hooks/useResizeObserver';
 import { debounce } from '../lib/debounce';
 import type { LintCodeAction } from '../linter/utils';
 import { parseLintResults, parseMarkers } from '../linter/utils';
@@ -31,7 +33,6 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   code,
   tsconfig,
   eslintrc,
-  darkTheme,
   decoration,
   jsx,
   main,
@@ -47,6 +48,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   webLinter,
   activeTab,
 }) => {
+  const { colorMode } = useColorMode();
   const [_, setDecorations] = useState<string[]>([]);
 
   const codeActions = useRef(new Map<string, LintCodeAction[]>()).current;
@@ -111,6 +113,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       jsx,
       parseTSConfig(tsconfig).compilerOptions,
     );
+    // @ts-expect-error Monaco typescript.CompilerOptions is incompatible with typescript 5.0 types
     webLinter.updateCompilerOptions(config);
     sandboxInstance.setCompilerSettings(config);
   }, [jsx, sandboxInstance, tsconfig, webLinter]);
@@ -225,6 +228,34 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
           }
         }, 150),
       ),
+      sandboxInstance.editor.addAction({
+        id: 'fix-eslint-problems',
+        label: 'Fix eslint problems',
+        keybindings: [
+          sandboxInstance.monaco.KeyMod.CtrlCmd |
+            sandboxInstance.monaco.KeyCode.KeyS,
+        ],
+        contextMenuGroupId: 'snippets',
+        contextMenuOrder: 1.5,
+        run(editor) {
+          const editorModel = editor.getModel();
+          if (editorModel) {
+            const fixed = webLinter.fix(editor.getValue());
+            if (fixed.fixed) {
+              editorModel.pushEditOperations(
+                null,
+                [
+                  {
+                    range: editorModel.getFullModelRange(),
+                    text: fixed.output,
+                  },
+                ],
+                () => null,
+              );
+            }
+          }
+        },
+      }),
       tabs.eslintrc.onDidChangeContent(
         debounce(() => {
           onChange({ eslintrc: tabs.eslintrc.getValue() });
@@ -272,35 +303,19 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     return debounce(() => sandboxInstance.editor.layout(), 1);
   }, [sandboxInstance]);
 
-  useEffect(() => {
+  const container =
+    sandboxInstance.editor.getContainerDomNode?.() ??
+    sandboxInstance.editor.getDomNode();
+
+  useResizeObserver(container, () => {
     resize();
-  }, [resize, showAST]);
-
-  const domNode = sandboxInstance.editor.getContainerDomNode();
-  const resizeObserver = useMemo(() => {
-    return new ResizeObserver(() => {
-      resize();
-    });
-  }, [resize]);
-
-  useEffect(() => {
-    if (domNode) {
-      resizeObserver.observe(domNode);
-
-      return (): void => resizeObserver.unobserve(domNode);
-    }
-    return (): void => {};
-  }, [domNode, resizeObserver]);
-
-  useEffect(() => {
-    window.addEventListener('resize', resize);
-    return (): void => {
-      window.removeEventListener('resize', resize);
-    };
   });
 
   useEffect(() => {
-    if (code !== tabs.code.getValue()) {
+    if (
+      !sandboxInstance.editor.hasTextFocus() &&
+      code !== tabs.code.getValue()
+    ) {
       tabs.code.applyEdits([
         {
           range: tabs.code.getFullModelRange(),
@@ -308,10 +323,13 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         },
       ]);
     }
-  }, [code, tabs.code]);
+  }, [sandboxInstance, code, tabs.code]);
 
   useEffect(() => {
-    if (tsconfig !== tabs.tsconfig.getValue()) {
+    if (
+      !sandboxInstance.editor.hasTextFocus() &&
+      tsconfig !== tabs.tsconfig.getValue()
+    ) {
       tabs.tsconfig.applyEdits([
         {
           range: tabs.tsconfig.getFullModelRange(),
@@ -319,10 +337,13 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         },
       ]);
     }
-  }, [tabs.tsconfig, tsconfig]);
+  }, [sandboxInstance, tabs.tsconfig, tsconfig]);
 
   useEffect(() => {
-    if (eslintrc !== tabs.eslintrc.getValue()) {
+    if (
+      !sandboxInstance.editor.hasTextFocus() &&
+      eslintrc !== tabs.eslintrc.getValue()
+    ) {
       tabs.eslintrc.applyEdits([
         {
           range: tabs.eslintrc.getFullModelRange(),
@@ -330,36 +351,36 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         },
       ]);
     }
-  }, [eslintrc, tabs.eslintrc]);
+  }, [sandboxInstance, eslintrc, tabs.eslintrc]);
 
   useEffect(() => {
-    sandboxInstance.monaco.editor.setTheme(darkTheme ? 'vs-dark' : 'vs-light');
-  }, [darkTheme, sandboxInstance]);
+    sandboxInstance.monaco.editor.setTheme(
+      colorMode === 'dark' ? 'vs-dark' : 'vs-light',
+    );
+  }, [colorMode, sandboxInstance]);
 
   useEffect(() => {
-    if (sandboxInstance.editor.getModel() === tabs.code) {
-      setDecorations(prevDecorations =>
-        sandboxInstance.editor.deltaDecorations(
-          prevDecorations,
-          decoration && showAST
-            ? [
-                {
-                  range: new sandboxInstance.monaco.Range(
-                    decoration.start.line,
-                    decoration.start.column + 1,
-                    decoration.end.line,
-                    decoration.end.column + 1,
-                  ),
-                  options: {
-                    inlineClassName: 'myLineDecoration',
-                    stickiness: 1,
-                  },
+    setDecorations(prevDecorations =>
+      tabs.code.deltaDecorations(
+        prevDecorations,
+        decoration && showAST
+          ? [
+              {
+                range: new sandboxInstance.monaco.Range(
+                  decoration.start.line,
+                  decoration.start.column + 1,
+                  decoration.end.line,
+                  decoration.end.column + 1,
+                ),
+                options: {
+                  inlineClassName: 'myLineDecoration',
+                  stickiness: 1,
                 },
-              ]
-            : [],
-        ),
-      );
-    }
+              },
+            ]
+          : [],
+      ),
+    );
   }, [decoration, sandboxInstance, showAST, tabs.code]);
 
   return null;

@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics typed-keyword-bigint Babel - Tokens 1`] = `
+Array [
+  Identifier {
+    type: "Identifier",
+    value: "type",
+
+    range: [73, 77],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 4, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "Foo",
+
+    range: [78, 81],
+    loc: {
+      start: { column: 5, line: 3 },
+      end: { column: 8, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [82, 83],
+    loc: {
+      start: { column: 9, line: 3 },
+      end: { column: 10, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "bigint",
+
+    range: [84, 90],
+    loc: {
+      start: { column: 11, line: 3 },
+      end: { column: 17, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [90, 91],
+    loc: {
+      start: { column: 17, line: 3 },
+      end: { column: 18, line: 3 },
+    },
+  },
+]
+`;

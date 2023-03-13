@@ -10,9 +10,9 @@ import { serializer } from '../../tools/tserror-serializer';
  * Process all fixtures, we will only snapshot the ones that have semantic errors
  * which are ignored by default parsing logic.
  */
-const FIXTURES_DIR = path.join(__dirname, '../../../shared-fixtures/fixtures');
+const FIXTURES_DIR = path.join(__dirname, '../../../ast-spec/src');
 
-const testFiles = glob.sync('**/*.src.*', {
+const testFiles = glob.sync('**/fixture.ts', {
   cwd: FIXTURES_DIR,
 });
 

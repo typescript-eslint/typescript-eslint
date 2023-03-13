@@ -1,7 +1,7 @@
+import type { AST as RegExpAST } from '@eslint-community/regexpp';
+import { RegExpParser } from '@eslint-community/regexpp';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import type { AST as RegExpAST } from 'regexpp';
-import { RegExpParser } from 'regexpp';
 
 import {
   createRule,
@@ -60,7 +60,7 @@ export default createRule({
      */
     function isNull(node: TSESTree.Node): node is TSESTree.Literal {
       const evaluated = getStaticValue(node, globalScope);
-      return evaluated != null && evaluated.value === null;
+      return evaluated != null && evaluated.value == null;
     }
 
     /**

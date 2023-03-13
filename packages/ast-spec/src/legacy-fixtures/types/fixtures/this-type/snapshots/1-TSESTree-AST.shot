@@ -1,0 +1,131 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types this-type TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: Array [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "clone",
+
+              range: [91, 96],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 7, line: 4 },
+              },
+            },
+            kind: "method",
+            override: false,
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: Array [
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: ThisExpression {
+                      type: "ThisExpression",
+
+                      range: [118, 122],
+                      loc: {
+                        start: { column: 11, line: 5 },
+                        end: { column: 15, line: 5 },
+                      },
+                    },
+
+                    range: [111, 123],
+                    loc: {
+                      start: { column: 4, line: 5 },
+                      end: { column: 16, line: 5 },
+                    },
+                  },
+                ],
+
+                range: [105, 127],
+                loc: {
+                  start: { column: 16, line: 4 },
+                  end: { column: 3, line: 6 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSThisType {
+                  type: "TSThisType",
+
+                  range: [100, 104],
+                  loc: {
+                    start: { column: 11, line: 4 },
+                    end: { column: 15, line: 4 },
+                  },
+                },
+
+                range: [98, 104],
+                loc: {
+                  start: { column: 9, line: 4 },
+                  end: { column: 15, line: 4 },
+                },
+              },
+
+              range: [96, 127],
+              loc: {
+                start: { column: 7, line: 4 },
+                end: { column: 3, line: 6 },
+              },
+            },
+
+            range: [91, 127],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 3, line: 6 },
+            },
+          },
+        ],
+
+        range: [87, 129],
+        loc: {
+          start: { column: 14, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Message",
+
+        range: [79, 86],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 13, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 129],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 130],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

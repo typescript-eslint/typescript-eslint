@@ -9,6 +9,8 @@ description: 'Enforce consistent usage of type imports.'
 TypeScript allows specifying a `type` keyword on imports to indicate that the export exists only in the type system, not at runtime.
 This allows transpilers to drop imports without knowing the types of the dependencies.
 
+> See [Blog > Consistent Type Exports and Imports: Why and How](/blog/consistent-type-imports-and-exports-why-and-how) for more details.
+
 ## Options
 
 ### `prefer`
@@ -95,3 +97,9 @@ If you are using [type-aware linting](https://typescript-eslint.io/linting/typed
 ## When Not To Use It
 
 - If you specifically want to use both import kinds for stylistic reasons, you can disable this rule.
+
+## Related To
+
+- [`no-import-type-side-effects`](./no-import-type-side-effects.md)
+- [`import/consistent-type-specifier-style`](https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/consistent-type-specifier-style.md)
+- [`import/no-duplicates` with `{"prefer-inline": true}`](https://github.com/import-js/eslint-plugin-import/blob/main/docs/rules/no-duplicates.md#inline-type-imports)

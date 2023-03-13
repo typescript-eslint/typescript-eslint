@@ -41,6 +41,7 @@ Object {
         ],
         "type": "Identifier",
       },
+      "kind": "namespace",
       "loc": Object {
         "end": Object {
           "column": 1,

@@ -92,7 +92,7 @@ type UnknownObject = Record<string, unknown>;
 
 function isObjectLike(value: unknown | null): value is UnknownObject {
   return (
-    typeof value === 'object' && !(value instanceof RegExp) && value !== null
+    typeof value === 'object' && !(value instanceof RegExp) && value != null
   );
 }
 
@@ -132,7 +132,7 @@ export function omitDeep<T = UnknownObject>(
 
     for (const prop in node) {
       if (Object.prototype.hasOwnProperty.call(node, prop)) {
-        if (shouldOmit(prop, node[prop]) || typeof node[prop] === 'undefined') {
+        if (shouldOmit(prop, node[prop]) || node[prop] === undefined) {
           delete node[prop];
           continue;
         }

@@ -507,7 +507,7 @@ function getRank(
 ): number {
   const type = getNodeType(node);
 
-  if (type === null) {
+  if (type == null) {
     // shouldn't happen but just in case, put it on the end
     return orderConfig.length - 1;
   }
@@ -911,7 +911,7 @@ export default util.createRule<Options, MessageIds>({
             supportsModifiers,
           );
 
-          if (grouped === null) {
+          if (grouped == null) {
             return false;
           }
 

@@ -79,11 +79,10 @@ export default util.createRule({
       if (
         (member.type === AST_NODE_TYPES.TSCallSignatureDeclaration ||
           member.type === AST_NODE_TYPES.TSConstructSignatureDeclaration) &&
-        typeof member.returnType !== 'undefined'
+        member.returnType !== undefined
       ) {
         if (
-          tsThisTypes !== null &&
-          tsThisTypes.length > 0 &&
+          tsThisTypes?.length &&
           node.type === AST_NODE_TYPES.TSInterfaceDeclaration
         ) {
           // the message can be confusing if we don't point directly to the `this` node instead of the whole member
@@ -124,7 +123,7 @@ export default util.createRule({
               }
 
               if (node.type === AST_NODE_TYPES.TSInterfaceDeclaration) {
-                if (typeof node.typeParameters !== 'undefined') {
+                if (node.typeParameters !== undefined) {
                   suggestion = `type ${sourceCode
                     .getText()
                     .slice(
@@ -205,7 +204,7 @@ export default util.createRule({
         // inside an interface keep track of all ThisType references.
         // unless it's inside a nested type literal in which case it's invalid code anyway
         // we don't want to incorrectly say "it refers to name" while typescript says it's completely invalid.
-        if (literalNesting === 0 && tsThisTypes !== null) {
+        if (literalNesting === 0 && tsThisTypes != null) {
           tsThisTypes.push(node);
         }
       },

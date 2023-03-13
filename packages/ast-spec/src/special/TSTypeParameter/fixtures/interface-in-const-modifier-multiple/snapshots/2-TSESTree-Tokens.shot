@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures special TSTypeParameter interface-in-const-modifier-multiple TSESTree - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "interface",
+
+    range: [0, 9],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 9, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "L",
+
+    range: [10, 11],
+    loc: {
+      start: { column: 10, line: 1 },
+      end: { column: 11, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "<",
+
+    range: [11, 12],
+    loc: {
+      start: { column: 11, line: 1 },
+      end: { column: 12, line: 1 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "in",
+
+    range: [12, 14],
+    loc: {
+      start: { column: 12, line: 1 },
+      end: { column: 14, line: 1 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "const",
+
+    range: [15, 20],
+    loc: {
+      start: { column: 15, line: 1 },
+      end: { column: 20, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "T",
+
+    range: [21, 22],
+    loc: {
+      start: { column: 21, line: 1 },
+      end: { column: 22, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ">",
+
+    range: [22, 23],
+    loc: {
+      start: { column: 22, line: 1 },
+      end: { column: 23, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [24, 25],
+    loc: {
+      start: { column: 24, line: 1 },
+      end: { column: 25, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [25, 26],
+    loc: {
+      start: { column: 25, line: 1 },
+      end: { column: 26, line: 1 },
+    },
+  },
+]
+`;

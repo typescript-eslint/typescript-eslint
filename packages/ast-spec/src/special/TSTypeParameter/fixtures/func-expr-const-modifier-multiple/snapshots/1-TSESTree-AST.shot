@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures special TSTypeParameter func-expr-const-modifier-multiple TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: FunctionExpression {
+        type: "FunctionExpression",
+        async: false,
+        body: BlockStatement {
+          type: "BlockStatement",
+          body: Array [],
+
+          range: [25, 27],
+          loc: {
+            start: { column: 25, line: 1 },
+            end: { column: 27, line: 1 },
+          },
+        },
+        expression: false,
+        generator: false,
+        id: null,
+        params: Array [],
+        typeParameters: TSTypeParameterDeclaration {
+          type: "TSTypeParameterDeclaration",
+          params: Array [
+            TSTypeParameter {
+              type: "TSTypeParameter",
+              const: false,
+              in: false,
+              name: Identifier {
+                type: "Identifier",
+                name: "T",
+
+                range: [11, 12],
+                loc: {
+                  start: { column: 11, line: 1 },
+                  end: { column: 12, line: 1 },
+                },
+              },
+              out: false,
+
+              range: [11, 12],
+              loc: {
+                start: { column: 11, line: 1 },
+                end: { column: 12, line: 1 },
+              },
+            },
+            TSTypeParameter {
+              type: "TSTypeParameter",
+              const: true,
+              in: false,
+              name: Identifier {
+                type: "Identifier",
+                name: "U",
+
+                range: [20, 21],
+                loc: {
+                  start: { column: 20, line: 1 },
+                  end: { column: 21, line: 1 },
+                },
+              },
+              out: false,
+
+              range: [14, 21],
+              loc: {
+                start: { column: 14, line: 1 },
+                end: { column: 21, line: 1 },
+              },
+            },
+          ],
+
+          range: [10, 22],
+          loc: {
+            start: { column: 10, line: 1 },
+            end: { column: 22, line: 1 },
+          },
+        },
+
+        range: [1, 27],
+        loc: {
+          start: { column: 1, line: 1 },
+          end: { column: 27, line: 1 },
+        },
+      },
+
+      range: [0, 29],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 29, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 30],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

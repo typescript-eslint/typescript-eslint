@@ -1,0 +1,123 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [],
+
+          range: [101, 103],
+          loc: {
+            start: { column: 28, line: 3 },
+            end: { column: 30, line: 3 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'Foo',
+
+          range: [79, 82],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 9, line: 3 },
+          },
+        },
+        superClass: Identifier {
+          type: 'Identifier',
+          name: 'Bar',
+
+          range: [94, 97],
+          loc: {
+            start: { column: 21, line: 3 },
+            end: { column: 24, line: 3 },
+          },
+        },
+        superTypeParameters: TSTypeParameterInstantiation {
+          type: 'TSTypeParameterInstantiation',
+          params: Array [
+            TSTypeReference {
+              type: 'TSTypeReference',
+              typeName: Identifier {
+                type: 'Identifier',
+                name: 'B',
+
+                range: [98, 99],
+                loc: {
+                  start: { column: 25, line: 3 },
+                  end: { column: 26, line: 3 },
+                },
+              },
+
+              range: [98, 99],
+              loc: {
+                start: { column: 25, line: 3 },
+                end: { column: 26, line: 3 },
+              },
+            },
+          ],
+
+          range: [97, 100],
+          loc: {
+            start: { column: 24, line: 3 },
+            end: { column: 27, line: 3 },
+          },
+        },
+        typeParameters: TSTypeParameterDeclaration {
+          type: 'TSTypeParameterDeclaration',
+          params: Array [
+            TSTypeParameter {
+              type: 'TSTypeParameter',
+-             const: false,
+-             in: false,
+-             name: Identifier {
+-               type: 'Identifier',
+-               name: 'A',
+-
+-               range: [83, 84],
+-               loc: {
+-                 start: { column: 10, line: 3 },
+-                 end: { column: 11, line: 3 },
+-               },
+-             },
+-             out: false,
++             name: 'A',
+
+              range: [83, 84],
+              loc: {
+                start: { column: 10, line: 3 },
+                end: { column: 11, line: 3 },
+              },
+            },
+          ],
+
+          range: [82, 85],
+          loc: {
+            start: { column: 9, line: 3 },
+            end: { column: 12, line: 3 },
+          },
+        },
+
+        range: [73, 103],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 30, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 104],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

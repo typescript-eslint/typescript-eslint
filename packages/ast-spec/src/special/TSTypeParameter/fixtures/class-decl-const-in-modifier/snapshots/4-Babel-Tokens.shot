@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures special TSTypeParameter class-decl-const-in-modifier Babel - Tokens 1`] = `
+Array [
+  Keyword {
+    type: "Keyword",
+    value: "class",
+
+    range: [0, 5],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 5, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "E",
+
+    range: [6, 7],
+    loc: {
+      start: { column: 6, line: 1 },
+      end: { column: 7, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "<",
+
+    range: [7, 8],
+    loc: {
+      start: { column: 7, line: 1 },
+      end: { column: 8, line: 1 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "const",
+
+    range: [8, 13],
+    loc: {
+      start: { column: 8, line: 1 },
+      end: { column: 13, line: 1 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "in",
+
+    range: [14, 16],
+    loc: {
+      start: { column: 14, line: 1 },
+      end: { column: 16, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "T",
+
+    range: [17, 18],
+    loc: {
+      start: { column: 17, line: 1 },
+      end: { column: 18, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ">",
+
+    range: [18, 19],
+    loc: {
+      start: { column: 18, line: 1 },
+      end: { column: 19, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [20, 21],
+    loc: {
+      start: { column: 20, line: 1 },
+      end: { column: 21, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [21, 22],
+    loc: {
+      start: { column: 21, line: 1 },
+      end: { column: 22, line: 1 },
+    },
+  },
+]
+`;

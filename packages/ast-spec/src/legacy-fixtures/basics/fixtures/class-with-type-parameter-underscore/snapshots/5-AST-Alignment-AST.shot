@@ -1,0 +1,84 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-type-parameter-underscore AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [],
+
+          range: [86, 88],
+          loc: {
+            start: { column: 13, line: 3 },
+            end: { column: 15, line: 3 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'A',
+
+          range: [79, 80],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 7, line: 3 },
+          },
+        },
+        superClass: null,
+        typeParameters: TSTypeParameterDeclaration {
+          type: 'TSTypeParameterDeclaration',
+          params: Array [
+            TSTypeParameter {
+              type: 'TSTypeParameter',
+-             const: false,
+-             in: false,
+-             name: Identifier {
+-               type: 'Identifier',
+-               name: '__P',
+-
+-               range: [81, 84],
+-               loc: {
+-                 start: { column: 8, line: 3 },
+-                 end: { column: 11, line: 3 },
+-               },
+-             },
+-             out: false,
++             name: '__P',
+
+              range: [81, 84],
+              loc: {
+                start: { column: 8, line: 3 },
+                end: { column: 11, line: 3 },
+              },
+            },
+          ],
+
+          range: [80, 85],
+          loc: {
+            start: { column: 7, line: 3 },
+            end: { column: 12, line: 3 },
+          },
+        },
+
+        range: [73, 88],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 15, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 89],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;
