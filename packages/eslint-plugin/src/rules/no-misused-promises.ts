@@ -240,12 +240,10 @@ export default util.createRule<Options, MessageId>({
         return;
       }
 
-      if (returnsThenable(checker, tsNode.right)) {
-        context.report({
-          messageId: 'voidReturnVariable',
-          node: node.right,
-        });
-      }
+      context.report({
+        messageId: 'voidReturnVariable',
+        node: node.right,
+      });
     }
 
     function checkVariableDeclaration(node: TSESTree.VariableDeclarator): void {
@@ -269,9 +267,6 @@ export default util.createRule<Options, MessageId>({
     function checkProperty(node: TSESTree.Property): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       if (ts.isPropertyAssignment(tsNode)) {
-        if (!returnsThenable(checker, tsNode.initializer)) {
-          return;
-        }
         const contextualType = checker.getContextualType(tsNode.initializer);
         if (
           contextualType !== undefined &&
@@ -287,9 +282,6 @@ export default util.createRule<Options, MessageId>({
           });
         }
       } else if (ts.isShorthandPropertyAssignment(tsNode)) {
-        if (!returnsThenable(checker, tsNode.name)) {
-          return;
-        }
         const contextualType = checker.getContextualType(tsNode.name);
         if (
           contextualType !== undefined &&
@@ -351,9 +343,6 @@ export default util.createRule<Options, MessageId>({
       if (tsNode.expression === undefined || node.argument === null) {
         return;
       }
-      if (!returnsThenable(checker, tsNode.expression)) {
-        return;
-      }
       const contextualType = checker.getContextualType(tsNode.expression);
       if (
         contextualType !== undefined &&
@@ -375,9 +364,6 @@ export default util.createRule<Options, MessageId>({
         !ts.isJsxExpression(value) ||
         value.expression === undefined
       ) {
-        return;
-      }
-      if (!returnsThenable(checker, value.expression)) {
         return;
       }
       const contextualType = checker.getContextualType(value);
