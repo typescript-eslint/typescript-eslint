@@ -132,7 +132,7 @@ export function omitDeep<T = UnknownObject>(
 
     for (const prop in node) {
       if (Object.prototype.hasOwnProperty.call(node, prop)) {
-        if (shouldOmit(prop, node[prop]) || typeof node[prop] === 'undefined') {
+        if (shouldOmit(prop, node[prop]) || node[prop] === undefined) {
           delete node[prop];
           continue;
         }

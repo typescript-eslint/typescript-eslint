@@ -157,9 +157,6 @@ export const generatedRuleDocs: Plugin = () => {
       return [howToUseH2Index, optionsH2Index];
     })();
 
-    // 5. Add a description of how to use / options for the rule
-    const optionLevel = meta.docs.recommended === 'error' ? 'error' : 'warn';
-
     if (meta.docs.extendsBaseRule) {
       const extendsBaseRuleName =
         typeof meta.docs.extendsBaseRule === 'string'
@@ -206,7 +203,7 @@ export const generatedRuleDocs: Plugin = () => {
       : ''
   }
     "${extendsBaseRuleName}": "off",
-    "@typescript-eslint/${file.stem}": "${optionLevel}"
+    "@typescript-eslint/${file.stem}": "error"
   }
 }`;
       };
@@ -233,7 +230,7 @@ export const generatedRuleDocs: Plugin = () => {
 
       const getEslintrcString = `{
   "rules": {
-    "@typescript-eslint/${file.stem}": "${optionLevel}"
+    "@typescript-eslint/${file.stem}": "error"
   }
 }`;
       root.children.splice(firstH2Index, 0, {
@@ -326,7 +323,7 @@ export const generatedRuleDocs: Plugin = () => {
       }
     }
 
-    // 6. Add a link to view the rule's source and test code
+    // 5. Add a link to view the rule's source and test code
     root.children.push(
       {
         children: [
@@ -385,7 +382,7 @@ export const generatedRuleDocs: Plugin = () => {
       } as mdast.List,
     );
 
-    // 7. Also add a notice about coming from ESLint core for extension rules
+    // 6. Also add a notice about coming from ESLint core for extension rules
     if (meta.docs.extendsBaseRule) {
       root.children.push({
         children: [
