@@ -202,8 +202,8 @@ In typescript-eslint v6, we've added a set of wrapper APIs on the `services: Par
 
 For now, the available wrapper APIs are:
 
-- `getSymbolAtLocation`: directly passes an ESTree node to TypeScript's `checker.getSymbolAtLocation`
-- `getTypeAtLocation`: directly passes an ESTree node to TypeScript's `checker.getTypeAtLocation`
+- `getSymbolAtLocation`: passes an ESTree's equivalent TypeScript node to `checker.getSymbolAtLocation`
+- `getTypeAtLocation`: passes an ESTree node's equivalent TypeScript node to `checker.getTypeAtLocation`
 
 We hope these wrapper APIs make it more convenient to write lint rules that rely on the awesome power of TypeScript's type checking.
 In the future, we may add more wrapper APIs, and may even add internal caching to those APIs to improve performance.
