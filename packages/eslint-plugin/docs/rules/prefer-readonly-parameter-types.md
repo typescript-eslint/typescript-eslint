@@ -135,20 +135,18 @@ Some complex types cannot easily be made readonly, for example the `HTMLElement`
 
 Each item must be one of:
 
-- A type defined in a file (`{from: "file", name: "Foo", source: "src/foo-file.ts"}` with `source` being an optional path relative to the project root directory)
+- A type defined in a file (`{from: "file", name: "Foo", path: "src/foo-file.ts"}` with `path` being an optional path relative to the project root directory)
 - A type from the default library (`{from: "lib", name: "Foo"}`)
-- A type from a package (`{from: "package", name: "Foo", source: "foo-lib"}`, this also works for types defined in a typings package).
+- A type from a package (`{from: "package", name: "Foo", package: "foo-lib"}`, this also works for types defined in a typings package).
 
-Two additional formats are supported:
-
-- Multiple sources, as an array for `from` (`{from: ["file", "package"], name: "Foo"}`)
-- A type may be defined just as a simple string, which then matches the type independently of its origin.
+Additionally, a type may be defined just as a simple string, which then matches the type independently of its origin.
 
 Examples of code for this rule with:
 
 ```json
 {
   "allow": [
+    "$",
     { "source": "file", "name": "Foo" },
     { "source": "lib", "name": "HTMLElement" },
     { "from": "package", "name": "Bar", "source": "bar-lib" }
