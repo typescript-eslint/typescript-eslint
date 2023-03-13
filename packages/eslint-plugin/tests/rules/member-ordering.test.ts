@@ -3940,7 +3940,7 @@ class Foo {
   C: number;
   [A: string]: number;
   public static D(): {};
-  private static [B: string]: number;
+  static [B: string]: number;
 }
       `,
       options: [
