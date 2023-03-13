@@ -1148,9 +1148,7 @@ export class Converter {
         if (isAbstract && node.initializer) {
           this.#throwError(
             node.initializer,
-            `Property '${ts.declarationNameToString(
-              node.name,
-            )}' cannot have an initializer because it is marked abstract.`,
+            `Abstract property cannot have an initializer.`,
           );
         }
 
