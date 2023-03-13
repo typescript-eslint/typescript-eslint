@@ -4,7 +4,7 @@ import type * as ts from 'typescript';
 interface FileSpecifier {
   from: 'file';
   name: string | string[];
-  source?: string;
+  path?: string;
 }
 
 interface LibSpecifier {
@@ -15,7 +15,7 @@ interface LibSpecifier {
 interface PackageSpecifier {
   from: 'package';
   name: string | string[];
-  source: string;
+  package: string;
 }
 
 export type TypeOrValueSpecifier =
@@ -52,7 +52,7 @@ export const typeOrValueSpecifierSchema = {
             },
           ],
         },
-        source: {
+        path: {
           type: 'string',
         },
       },
@@ -107,11 +107,11 @@ export const typeOrValueSpecifierSchema = {
             },
           ],
         },
-        source: {
+        package: {
           type: 'string',
         },
       },
-      required: ['from', 'name', 'source'],
+      required: ['from', 'name', 'package'],
     },
   ],
 };
@@ -161,7 +161,7 @@ export function typeMatchesSpecifier(
       ?.map(declaration => declaration.getSourceFile()) ?? [];
   switch (specifier.from) {
     case 'file':
-      return typeDeclaredInFile(specifier.source, declarationFiles, program);
+      return typeDeclaredInFile(specifier.path, declarationFiles, program);
     case 'lib':
       return declarationFiles.some(declaration =>
         program.isSourceFileDefaultLibrary(declaration),
@@ -169,9 +169,9 @@ export function typeMatchesSpecifier(
     case 'package':
       return declarationFiles.some(
         declaration =>
-          declaration.fileName.includes(`node_modules/${specifier.source}/`) ||
+          declaration.fileName.includes(`node_modules/${specifier.package}/`) ||
           declaration.fileName.includes(
-            `node_modules/@types/${specifier.source}/`,
+            `node_modules/@types/${specifier.package}/`,
           ),
       );
   }
