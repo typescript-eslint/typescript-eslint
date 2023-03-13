@@ -2,17 +2,17 @@
 
 exports[`functions arrow inherited-scope 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"parentScoped">,
           node: VariableDeclarator$1,
         },
       ],
       name: "parentScoped",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"parentScoped">,
           init: true,
@@ -36,11 +36,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$3,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -49,7 +49,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
       ],
@@ -57,13 +57,13 @@ ScopeManager {
     FunctionScope$2 {
       block: ArrowFunctionExpression$4,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$2,
       ],
       set: Map {},
       type: "function",
       upper: GlobalScope$1,
-      variables: Array [],
+      variables: [],
     },
   ],
 }

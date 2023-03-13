@@ -3,22 +3,22 @@
 exports[`AST Fixtures legacy-fixtures basics async-function-with-var-declaration TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: true,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           VariableDeclaration {
             type: "VariableDeclaration",
-            declarations: Array [
+            declarations: [
               VariableDeclarator {
                 type: "VariableDeclarator",
                 definite: false,
                 id: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "foo",
                   optional: false,
 
@@ -58,13 +58,13 @@ Program {
           },
           VariableDeclaration {
             type: "VariableDeclaration",
-            declarations: Array [
+            declarations: [
               VariableDeclarator {
                 type: "VariableDeclarator",
                 definite: false,
                 id: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "bar",
                   optional: false,
 
@@ -104,13 +104,13 @@ Program {
           },
           VariableDeclaration {
             type: "VariableDeclaration",
-            declarations: Array [
+            declarations: [
               VariableDeclarator {
                 type: "VariableDeclarator",
                 definite: false,
                 id: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "fooBar",
                   optional: false,
 
@@ -161,7 +161,7 @@ Program {
       generator: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "test",
         optional: false,
 
@@ -171,7 +171,7 @@ Program {
           end: { column: 19, line: 3 },
         },
       },
-      params: Array [],
+      params: [],
 
       range: [73, 163],
       loc: {

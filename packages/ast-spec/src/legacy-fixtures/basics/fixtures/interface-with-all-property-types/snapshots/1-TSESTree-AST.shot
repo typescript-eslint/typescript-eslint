@@ -3,18 +3,18 @@
 exports[`AST Fixtures legacy-fixtures basics interface-with-all-property-types TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSInterfaceDeclaration {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [
+        body: [
           TSPropertySignature {
             type: "TSPropertySignature",
             computed: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "baa",
               optional: false,
 
@@ -57,7 +57,7 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "bar",
               optional: false,
 
@@ -100,7 +100,7 @@ Program {
             computed: true,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "bax",
               optional: false,
 
@@ -143,7 +143,7 @@ Program {
             computed: true,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "baz",
               optional: false,
 
@@ -183,10 +183,10 @@ Program {
           },
           TSIndexSignature {
             type: "TSIndexSignature",
-            parameters: Array [
+            parameters: [
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "eee",
                 optional: false,
                 typeAnnotation: TSTypeAnnotation {
@@ -247,7 +247,7 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "doo",
               optional: false,
 
@@ -259,7 +259,7 @@ Program {
             },
             kind: "method",
             optional: false,
-            params: Array [],
+            params: [],
             readonly: false,
             returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -292,7 +292,7 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "coo",
               optional: false,
 
@@ -304,10 +304,10 @@ Program {
             },
             kind: "method",
             optional: true,
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "a",
                 optional: false,
 
@@ -319,7 +319,7 @@ Program {
               },
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "b",
                 optional: false,
 
@@ -331,7 +331,7 @@ Program {
               },
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "c",
                 optional: false,
 
@@ -374,7 +374,7 @@ Program {
             computed: true,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "loo",
               optional: false,
 
@@ -386,10 +386,10 @@ Program {
             },
             kind: "method",
             optional: true,
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "a",
                 optional: false,
 
@@ -401,7 +401,7 @@ Program {
               },
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "b",
                 optional: false,
 
@@ -413,7 +413,7 @@ Program {
               },
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "c",
                 optional: false,
 
@@ -456,7 +456,7 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "boo",
               optional: false,
 
@@ -468,10 +468,10 @@ Program {
             },
             kind: "method",
             optional: false,
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "a",
                 optional: false,
 
@@ -483,7 +483,7 @@ Program {
               },
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "b",
                 optional: false,
 
@@ -495,7 +495,7 @@ Program {
               },
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "c",
                 optional: false,
 
@@ -528,13 +528,14 @@ Program {
             static: false,
             typeParameters: TSTypeParameterDeclaration {
               type: "TSTypeParameterDeclaration",
-              params: Array [
+              params: [
                 TSTypeParameter {
                   type: "TSTypeParameter",
+                  const: false,
                   in: false,
                   name: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "J",
                     optional: false,
 
@@ -569,10 +570,10 @@ Program {
           },
           TSConstructSignatureDeclaration {
             type: "TSConstructSignatureDeclaration",
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "a",
                 optional: false,
 
@@ -584,7 +585,7 @@ Program {
               },
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "b",
                 optional: true,
 
@@ -622,10 +623,10 @@ Program {
           },
           TSConstructSignatureDeclaration {
             type: "TSConstructSignatureDeclaration",
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "a",
                 optional: false,
 
@@ -637,7 +638,7 @@ Program {
               },
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "b",
                 optional: true,
 
@@ -668,13 +669,14 @@ Program {
             },
             typeParameters: TSTypeParameterDeclaration {
               type: "TSTypeParameterDeclaration",
-              params: Array [
+              params: [
                 TSTypeParameter {
                   type: "TSTypeParameter",
+                  const: false,
                   in: false,
                   name: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "F",
                     optional: false,
 
@@ -716,10 +718,10 @@ Program {
         },
       },
       declare: false,
-      extends: Array [],
+      extends: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Foo",
         optional: false,
 

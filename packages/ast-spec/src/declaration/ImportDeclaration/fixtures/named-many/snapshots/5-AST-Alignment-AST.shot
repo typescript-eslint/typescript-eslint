@@ -14,7 +14,7 @@ exports[`AST Fixtures declaration ImportDeclaration named-many AST Alignment - A
         importKind: 'value',
         source: Literal {
           type: 'Literal',
-          raw: '\\\\'mod\\\\'',
+          raw: '\\'mod\\'',
           value: 'mod',
 
           range: [24, 29],

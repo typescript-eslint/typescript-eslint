@@ -3,22 +3,22 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-property-function TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "foo",
               optional: false,
 
@@ -36,7 +36,7 @@ Program {
               type: "TSTypeAnnotation",
               typeAnnotation: TSFunctionType {
                 type: "TSFunctionType",
-                params: Array [],
+                params: [],
                 returnType: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSBooleanKeyword {
@@ -86,7 +86,7 @@ Program {
               expression: true,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
               returnType: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSBooleanKeyword {
@@ -123,11 +123,11 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "bar",
               optional: false,
 
@@ -164,7 +164,7 @@ Program {
               async: false,
               body: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "test",
                 optional: false,
 
@@ -177,7 +177,7 @@ Program {
               expression: true,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [145, 155],
               loc: {
@@ -201,10 +201,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Foo",
         optional: false,
 
@@ -214,7 +214,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 158],

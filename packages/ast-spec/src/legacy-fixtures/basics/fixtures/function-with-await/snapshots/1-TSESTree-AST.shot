@@ -3,20 +3,20 @@
 exports[`AST Fixtures legacy-fixtures basics function-with-await TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: true,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           ExpressionStatement {
             type: "ExpressionStatement",
             expression: AwaitExpression {
               type: "AwaitExpression",
               argument: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "future",
                 optional: false,
 
@@ -53,7 +53,7 @@ Program {
       generator: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "hope",
         optional: false,
 
@@ -63,10 +63,10 @@ Program {
           end: { column: 19, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "future",
           optional: false,
 

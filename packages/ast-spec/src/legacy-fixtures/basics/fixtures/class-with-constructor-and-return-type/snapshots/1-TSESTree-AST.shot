@@ -3,20 +3,20 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-return-type TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "constructor",
               optional: false,
 
@@ -35,7 +35,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [107, 109],
                 loc: {
@@ -47,7 +47,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
               returnType: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSNumberKeyword {
@@ -83,7 +83,7 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
-            decorators: Array [],
+            decorators: [],
             key: Literal {
               type: "Literal",
               raw: "'constructor'",
@@ -104,7 +104,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [139, 141],
                 loc: {
@@ -116,7 +116,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
               returnType: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSNumberKeyword {
@@ -158,10 +158,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "C",
         optional: false,
 
@@ -171,7 +171,7 @@ Program {
           end: { column: 7, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 143],

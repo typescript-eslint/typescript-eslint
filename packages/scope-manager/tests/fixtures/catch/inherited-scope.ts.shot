@@ -2,17 +2,17 @@
 
 exports[`catch inherited-scope 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"a">,
           node: VariableDeclarator$1,
         },
       ],
       name: "a",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"a">,
           init: true,
@@ -36,23 +36,23 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         CatchClauseDefinition$2 {
           name: Identifier<"e">,
           node: CatchClause$3,
         },
       ],
       name: "e",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$4,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -61,7 +61,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
       ],
@@ -69,35 +69,35 @@ ScopeManager {
     BlockScope$2 {
       block: BlockStatement$5,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {},
       type: "block",
       upper: GlobalScope$1,
-      variables: Array [],
+      variables: [],
     },
     CatchScope$3 {
       block: CatchClause$3,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "e" => Variable$3,
       },
       type: "catch",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
       ],
     },
     BlockScope$4 {
       block: BlockStatement$6,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$2,
       ],
       set: Map {},
       type: "block",
       upper: CatchScope$3,
-      variables: Array [],
+      variables: [],
     },
   ],
 }

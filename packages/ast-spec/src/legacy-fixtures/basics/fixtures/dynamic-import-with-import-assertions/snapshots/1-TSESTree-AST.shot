@@ -3,20 +3,20 @@
 exports[`AST Fixtures legacy-fixtures basics dynamic-import-with-import-assertions TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: ImportExpression {
         type: "ImportExpression",
         attributes: ObjectExpression {
           type: "ObjectExpression",
-          properties: Array [
+          properties: [
             Property {
               type: "Property",
               computed: false,
               key: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "assert",
                 optional: false,
 
@@ -32,13 +32,13 @@ Program {
               shorthand: false,
               value: ObjectExpression {
                 type: "ObjectExpression",
-                properties: Array [
+                properties: [
                   Property {
                     type: "Property",
                     computed: false,
                     key: Identifier {
                       type: "Identifier",
-                      decorators: Array [],
+                      decorators: [],
                       name: "type",
                       optional: false,
 

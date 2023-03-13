@@ -3,7 +3,7 @@
 exports[`AST Fixtures declaration ExportDefaultDeclaration class-expression TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportDefaultDeclaration {
       type: "ExportDefaultDeclaration",
       declaration: ClassExpression {
@@ -11,7 +11,7 @@ Program {
         abstract: false,
         body: ClassBody {
           type: "ClassBody",
-          body: Array [],
+          body: [],
 
           range: [26, 28],
           loc: {
@@ -20,10 +20,10 @@ Program {
           },
         },
         declare: false,
-        decorators: Array [],
+        decorators: [],
         id: Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "Foo",
           optional: false,
 
@@ -33,7 +33,7 @@ Program {
             end: { column: 25, line: 1 },
           },
         },
-        implements: Array [],
+        implements: [],
         superClass: null,
 
         range: [16, 28],

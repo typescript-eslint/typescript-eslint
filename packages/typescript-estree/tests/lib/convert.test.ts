@@ -1,7 +1,9 @@
+import type { TSESTree } from '@typescript-eslint/types';
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 import * as ts from 'typescript';
 
 import type { TSNode } from '../../src';
+import type { ConverterOptions } from '../../src/convert';
 import { Converter } from '../../src/convert';
 
 describe('convert', () => {
@@ -21,6 +23,7 @@ describe('convert', () => {
     function fakeUnknownKind(node: ts.Node): void {
       ts.forEachChild(node, fakeUnknownKind);
       // @ts-expect-error -- intentionally writing to a readonly field
+      // eslint-disable-next-line deprecation/deprecation
       node.kind = ts.SyntaxKind.UnparsedPrologue;
     }
 
@@ -260,6 +263,66 @@ describe('convert', () => {
       });
 
       expect(() => instance.convertProgram()).not.toThrow();
+    });
+  });
+
+  describe('suppressDeprecatedPropertyWarnings', () => {
+    const getEsCallExpression = (
+      converterOptions: ConverterOptions,
+    ): TSESTree.CallExpression => {
+      const ast = convertCode(`callee<T>();`);
+      const tsCallExpression = (ast.statements[0] as ts.ExpressionStatement)
+        .expression as ts.CallExpression;
+      const instance = new Converter(ast, {
+        shouldPreserveNodeMaps: true,
+        ...converterOptions,
+      });
+
+      instance.convertProgram();
+
+      const maps = instance.getASTMaps();
+
+      return maps.tsNodeToESTreeNodeMap.get(tsCallExpression);
+    };
+
+    it('logs on a deprecated property access when suppressDeprecatedPropertyWarnings is false', () => {
+      const warn = jest.spyOn(console, 'warn').mockImplementation();
+      const esCallExpression = getEsCallExpression({
+        suppressDeprecatedPropertyWarnings: false,
+      });
+
+      // eslint-disable-next-line deprecation/deprecation
+      esCallExpression.typeParameters;
+
+      expect(warn).toHaveBeenCalledWith(
+        `The 'typeParameters' property is deprecated on CallExpression nodes. Use 'typeArguments' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+      );
+    });
+
+    it('does not log on a subsequent deprecated property access when suppressDeprecatedPropertyWarnings is false', () => {
+      const warn = jest.spyOn(console, 'warn').mockImplementation();
+      const esCallExpression = getEsCallExpression({
+        suppressDeprecatedPropertyWarnings: false,
+      });
+
+      /* eslint-disable deprecation/deprecation */
+      esCallExpression.typeParameters;
+      esCallExpression.typeParameters;
+      /* eslint-enable deprecation/deprecation */
+
+      expect(warn).toHaveBeenCalledTimes(1);
+    });
+
+    it('does not log on a deprecated property access when suppressDeprecatedPropertyWarnings is true', () => {
+      const warn = jest.spyOn(console, 'warn').mockImplementation();
+      const esCallExpression = getEsCallExpression({
+        suppressDeprecatedPropertyWarnings: true,
+      });
+
+      // eslint-disable-next-line deprecation/deprecation
+      esCallExpression.typeParameters;
+
+      expect(warn).not.toHaveBeenCalled();
     });
   });
 });

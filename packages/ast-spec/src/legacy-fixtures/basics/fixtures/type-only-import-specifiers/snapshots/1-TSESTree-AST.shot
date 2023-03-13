@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures basics type-only-import-specifiers TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ImportDeclaration {
       type: "ImportDeclaration",
-      assertions: Array [],
+      assertions: [],
       importKind: "value",
       source: Literal {
         type: "Literal",
@@ -19,12 +19,12 @@ Program {
           end: { column: 36, line: 3 },
         },
       },
-      specifiers: Array [
+      specifiers: [
         ImportSpecifier {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "A",
             optional: false,
 
@@ -37,7 +37,7 @@ Program {
           importKind: "type",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "A",
             optional: false,
 
@@ -58,7 +58,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "B",
             optional: false,
 
@@ -71,7 +71,7 @@ Program {
           importKind: "type",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "B",
             optional: false,
 

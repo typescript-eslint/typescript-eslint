@@ -81,6 +81,11 @@ interface ParseOptions {
    * Set to true to create a top-level array containing all tokens from the file.
    */
   tokens?: boolean;
+
+  /**
+   * Whether deprecated AST properties should skip calling console.warn on accesses.
+   */
+  suppressDeprecatedPropertyWarnings?: boolean;
 }
 
 interface ParseAndGenerateServicesOptions extends ParseOptions {
@@ -188,11 +193,6 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
      */
     glob?: CacheDurationSeconds;
   };
-
-  /**
-   * Path to a file exporting a custom `ModuleResolver`.
-   */
-  moduleResolver?: string;
 }
 
 export type TSESTreeOptions = ParseAndGenerateServicesOptions;
@@ -228,14 +228,3 @@ export interface ParserServicesWithoutTypeInformation
 export type ParserServices =
   | ParserServicesWithTypeInformation
   | ParserServicesWithoutTypeInformation;
-
-export interface ModuleResolver {
-  version: 1;
-  resolveModuleNames(
-    moduleNames: string[],
-    containingFile: string,
-    reusedNames: string[] | undefined,
-    redirectedReference: ts.ResolvedProjectReference | undefined,
-    options: ts.CompilerOptions,
-  ): (ts.ResolvedModule | undefined)[];
-}

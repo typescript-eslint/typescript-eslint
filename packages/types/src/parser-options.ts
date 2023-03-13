@@ -59,7 +59,6 @@ interface ParserOptions {
   tokens?: boolean;
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
-  moduleResolver?: string;
   cacheLifetime?: {
     glob?: CacheDurationSeconds;
   };

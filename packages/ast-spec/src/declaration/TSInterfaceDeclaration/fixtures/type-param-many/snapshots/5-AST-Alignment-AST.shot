@@ -39,6 +39,7 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -63,6 +64,7 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -87,6 +89,7 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',

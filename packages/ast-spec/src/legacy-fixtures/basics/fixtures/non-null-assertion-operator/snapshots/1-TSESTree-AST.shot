@@ -3,21 +3,21 @@
 exports[`AST Fixtures legacy-fixtures basics non-null-assertion-operator TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           ExpressionStatement {
             type: "ExpressionStatement",
             expression: CallExpression {
               type: "CallExpression",
-              arguments: Array [
+              arguments: [
                 Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "e",
                   optional: false,
 
@@ -30,7 +30,7 @@ Program {
               ],
               callee: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "validateEntity",
                 optional: false,
 
@@ -57,13 +57,13 @@ Program {
           },
           VariableDeclaration {
             type: "VariableDeclaration",
-            declarations: Array [
+            declarations: [
               VariableDeclarator {
                 type: "VariableDeclarator",
                 definite: false,
                 id: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "s",
                   optional: false,
 
@@ -80,7 +80,7 @@ Program {
                     type: "TSNonNullExpression",
                     expression: Identifier {
                       type: "Identifier",
-                      decorators: Array [],
+                      decorators: [],
                       name: "e",
                       optional: false,
 
@@ -100,7 +100,7 @@ Program {
                   optional: false,
                   property: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "name",
                     optional: false,
 
@@ -147,7 +147,7 @@ Program {
       generator: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "processEntity",
         optional: false,
 
@@ -157,10 +157,10 @@ Program {
           end: { column: 22, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "e",
           optional: true,
           typeAnnotation: TSTypeAnnotation {
@@ -169,7 +169,7 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "Entity",
                 optional: false,
 

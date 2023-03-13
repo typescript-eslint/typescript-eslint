@@ -3,19 +3,19 @@
 exports[`AST Fixtures legacy-fixtures basics export-type-as TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: null,
       exportKind: "type",
       source: null,
-      specifiers: Array [
+      specifiers: [
         ExportSpecifier {
           type: "ExportSpecifier",
           exported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "B",
             optional: false,
 
@@ -28,7 +28,7 @@ Program {
           exportKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "A",
             optional: false,
 

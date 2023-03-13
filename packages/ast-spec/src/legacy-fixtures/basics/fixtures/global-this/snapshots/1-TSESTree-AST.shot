@@ -3,16 +3,16 @@
 exports[`AST Fixtures legacy-fixtures basics global-this TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           definite: false,
           id: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "abc",
             optional: false,
 
@@ -59,7 +59,7 @@ Program {
           computed: false,
           object: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "globalThis",
             optional: false,
 
@@ -72,7 +72,7 @@ Program {
           optional: false,
           property: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "abc",
             optional: false,
 
@@ -117,13 +117,13 @@ Program {
     },
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           definite: false,
           id: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "answer",
             optional: false,
 
@@ -170,7 +170,7 @@ Program {
           computed: false,
           object: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "globalThis",
             optional: false,
 
@@ -183,7 +183,7 @@ Program {
           optional: false,
           property: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "answer",
             optional: false,
 

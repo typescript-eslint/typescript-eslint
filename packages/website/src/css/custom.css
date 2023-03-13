@@ -32,7 +32,7 @@ html:root {
 
 html[data-theme='dark']:root {
   --ifm-color-feedback-background: #f0f8ff;
-  --ifm-color-primary: #3255bb;
+  --ifm-color-primary: #6582d9;
   --ifm-color-primary-dark: #1f459d;
   --ifm-color-primary-darker: #1f417f;
   --ifm-color-primary-darkest: #163162;

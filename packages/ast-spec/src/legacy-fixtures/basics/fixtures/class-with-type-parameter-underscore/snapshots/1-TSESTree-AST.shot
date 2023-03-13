@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-type-parameter-underscore TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [],
+        body: [],
 
         range: [86, 88],
         loc: {
@@ -18,10 +18,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "A",
         optional: false,
 
@@ -31,17 +31,18 @@ Program {
           end: { column: 7, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "__P",
               optional: false,
 

@@ -3,16 +3,16 @@
 exports[`AST Fixtures legacy-fixtures basics export-named-class-with-multiple-generics TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
         abstract: false,
         body: ClassBody {
           type: "ClassBody",
-          body: Array [],
+          body: [],
 
           range: [96, 98],
           loc: {
@@ -21,10 +21,10 @@ Program {
           },
         },
         declare: false,
-        decorators: Array [],
+        decorators: [],
         id: Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "Foo",
           optional: false,
 
@@ -34,17 +34,18 @@ Program {
             end: { column: 16, line: 3 },
           },
         },
-        implements: Array [],
+        implements: [],
         superClass: null,
         typeParameters: TSTypeParameterDeclaration {
           type: "TSTypeParameterDeclaration",
-          params: Array [
+          params: [
             TSTypeParameter {
               type: "TSTypeParameter",
+              const: false,
               in: false,
               name: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "T",
                 optional: false,
 
@@ -64,10 +65,11 @@ Program {
             },
             TSTypeParameter {
               type: "TSTypeParameter",
+              const: false,
               in: false,
               name: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "U",
                 optional: false,
 
@@ -102,7 +104,7 @@ Program {
       },
       exportKind: "value",
       source: null,
-      specifiers: Array [],
+      specifiers: [],
 
       range: [73, 98],
       loc: {

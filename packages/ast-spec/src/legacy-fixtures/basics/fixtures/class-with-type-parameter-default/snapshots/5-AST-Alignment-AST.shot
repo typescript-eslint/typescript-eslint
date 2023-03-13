@@ -42,6 +42,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-type-parameter-default A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               default: TSTypeReference {
                 type: 'TSTypeReference',
                 typeName: Identifier {

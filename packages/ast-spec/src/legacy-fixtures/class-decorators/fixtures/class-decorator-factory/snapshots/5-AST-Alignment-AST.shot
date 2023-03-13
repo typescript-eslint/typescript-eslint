@@ -52,7 +52,7 @@ exports[`AST Fixtures legacy-fixtures class-decorators class-decorator-factory A
                       shorthand: false,
                       value: Literal {
                         type: 'Literal',
-                        raw: '\\\\'foo\\\\'',
+                        raw: '\\'foo\\'',
                         value: 'foo',
 
                         range: [98, 103],

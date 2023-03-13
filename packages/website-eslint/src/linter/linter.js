@@ -9,6 +9,7 @@ import 'vs/language/typescript/tsWorker';
 
 import rules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import { Linter } from 'eslint';
+import esquery from 'esquery';
 
 export function createLinter() {
   const linter = new Linter();
@@ -22,3 +23,5 @@ export { analyze } from '@typescript-eslint/scope-manager/use-at-your-own-risk/a
 export { visitorKeys } from '@typescript-eslint/visitor-keys/use-at-your-own-risk/visitor-keys';
 export { astConverter } from '@typescript-eslint/typescript-estree/use-at-your-own-risk/ast-converter';
 export { getScriptKind } from '@typescript-eslint/typescript-estree/use-at-your-own-risk/getScriptKind';
+
+export { esquery };

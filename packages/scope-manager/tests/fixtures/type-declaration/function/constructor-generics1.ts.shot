@@ -2,17 +2,17 @@
 
 exports[`type-declaration function constructor-generics1 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TypeDefinition$1 {
           name: Identifier<"T">,
           node: TSTypeAliasDeclaration$1,
         },
       ],
       name: "T",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"T">,
           isRead: true,
@@ -26,26 +26,26 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         TypeDefinition$2 {
           name: Identifier<"A">,
           node: TSTypeAliasDeclaration$2,
         },
       ],
       name: "A",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         TypeDefinition$3 {
           name: Identifier<"U">,
           node: TSTypeParameter$3,
         },
       ],
       name: "U",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"U">,
           isRead: true,
@@ -59,23 +59,23 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         ParameterDefinition$4 {
           name: Identifier<"arg">,
           node: TSConstructorType$4,
         },
       ],
       name: "arg",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$5,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
         "T" => Variable$2,
@@ -83,7 +83,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
@@ -92,20 +92,20 @@ ScopeManager {
     TypeScope$2 {
       block: TSTypeAliasDeclaration$2,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "U" => Variable$4,
       },
       type: "type",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$4,
       ],
     },
     FunctionTypeScope$3 {
       block: TSConstructorType$4,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
       ],
@@ -114,7 +114,7 @@ ScopeManager {
       },
       type: "functionType",
       upper: TypeScope$2,
-      variables: Array [
+      variables: [
         Variable$5,
       ],
     },

@@ -2,17 +2,17 @@
 
 exports[`type-declaration literal-type3 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TypeDefinition$1 {
           name: Identifier<"VerticalAlignment">,
           node: TSTypeAliasDeclaration$1,
         },
       ],
       name: "VerticalAlignment",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"VerticalAlignment">,
           isRead: true,
@@ -26,14 +26,14 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         TypeDefinition$2 {
           name: Identifier<"HorizontalAlignment">,
           node: TSTypeAliasDeclaration$2,
         },
       ],
       name: "HorizontalAlignment",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"HorizontalAlignment">,
           isRead: true,
@@ -47,42 +47,42 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         FunctionNameDefinition$3 {
           name: Identifier<"setAlignment">,
           node: TSDeclareFunction$3,
         },
       ],
       name: "setAlignment",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
     Variable$5 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$6 {
-      defs: Array [
+      defs: [
         ParameterDefinition$4 {
           name: Identifier<"value">,
           node: TSDeclareFunction$3,
         },
       ],
       name: "value",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$4,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
         "VerticalAlignment" => Variable$2,
@@ -91,7 +91,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
@@ -101,7 +101,7 @@ ScopeManager {
     FunctionScope$2 {
       block: TSDeclareFunction$3,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
       ],
@@ -111,7 +111,7 @@ ScopeManager {
       },
       type: "function",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$5,
         Variable$6,
       ],

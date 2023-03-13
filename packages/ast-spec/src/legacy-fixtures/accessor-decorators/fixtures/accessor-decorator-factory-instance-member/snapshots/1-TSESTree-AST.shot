@@ -3,22 +3,22 @@
 exports[`AST Fixtures legacy-fixtures accessor-decorators accessor-decorator-factory-instance-member TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
-            decorators: Array [
+            decorators: [
               Decorator {
                 type: "Decorator",
                 expression: CallExpression {
                   type: "CallExpression",
-                  arguments: Array [
+                  arguments: [
                     Literal {
                       type: "Literal",
                       raw: "false",
@@ -33,7 +33,7 @@ Program {
                   ],
                   callee: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "configurable",
                     optional: false,
 
@@ -61,7 +61,7 @@ Program {
             ],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "x",
               optional: false,
 
@@ -80,7 +80,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ReturnStatement {
                     type: "ReturnStatement",
                     argument: MemberExpression {
@@ -98,7 +98,7 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "_x",
                         optional: false,
 
@@ -134,7 +134,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [117, 145],
               loc: {
@@ -158,10 +158,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Point",
         optional: false,
 
@@ -171,7 +171,7 @@ Program {
           end: { column: 11, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 147],

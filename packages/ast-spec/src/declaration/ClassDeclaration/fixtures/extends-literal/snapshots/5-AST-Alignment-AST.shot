@@ -38,7 +38,7 @@ exports[`AST Fixtures declaration ClassDeclaration extends-literal AST Alignment
 -       implements: Array [],
         superClass: Literal {
           type: 'Literal',
-          raw: '\\\\'Thing\\\\'',
+          raw: '\\'Thing\\'',
           value: 'Thing',
 
           range: [18, 25],

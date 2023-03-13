@@ -3,14 +3,14 @@
 exports[`AST Fixtures declaration TSEnumDeclaration with-member-one TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSEnumDeclaration {
       type: "TSEnumDeclaration",
       const: false,
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Foo",
         optional: false,
 
@@ -20,13 +20,13 @@ Program {
           end: { column: 8, line: 1 },
         },
       },
-      members: Array [
+      members: [
         TSEnumMember {
           type: "TSEnumMember",
           computed: false,
           id: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "A",
             optional: false,
 

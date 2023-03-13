@@ -2,17 +2,17 @@
 
 exports[`jsx generic-type-param 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TypeDefinition$1 {
           name: Identifier<"T">,
           node: TSTypeAliasDeclaration$1,
         },
       ],
       name: "T",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"T">,
           isRead: true,
@@ -26,11 +26,11 @@ ScopeManager {
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$2,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1 {
           identifier: JSXIdentifier$3,
           isRead: true,
@@ -47,7 +47,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
       ],

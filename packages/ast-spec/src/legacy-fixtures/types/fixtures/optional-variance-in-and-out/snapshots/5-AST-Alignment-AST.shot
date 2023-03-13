@@ -113,6 +113,7 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out AST Ali
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               in: true,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -137,6 +138,7 @@ exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out AST Ali
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',

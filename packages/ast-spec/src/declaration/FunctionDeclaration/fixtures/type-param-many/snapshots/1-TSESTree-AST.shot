@@ -3,13 +3,13 @@
 exports[`AST Fixtures declaration FunctionDeclaration type-param-many TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [],
+        body: [],
 
         range: [24, 26],
         loc: {
@@ -22,7 +22,7 @@ Program {
       generator: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "foo",
         optional: false,
 
@@ -32,16 +32,17 @@ Program {
           end: { column: 12, line: 1 },
         },
       },
-      params: Array [],
+      params: [],
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "T",
               optional: false,
 
@@ -61,10 +62,11 @@ Program {
           },
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "U",
               optional: false,
 
@@ -84,10 +86,11 @@ Program {
           },
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "V",
               optional: false,
 

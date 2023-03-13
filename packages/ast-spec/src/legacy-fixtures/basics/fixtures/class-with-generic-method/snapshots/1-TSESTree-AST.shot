@@ -3,20 +3,20 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-generic-method TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "getBar",
               optional: false,
 
@@ -35,7 +35,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [99, 101],
                 loc: {
@@ -47,16 +47,17 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
               typeParameters: TSTypeParameterDeclaration {
                 type: "TSTypeParameterDeclaration",
-                params: Array [
+                params: [
                   TSTypeParameter {
                     type: "TSTypeParameter",
+                    const: false,
                     in: false,
                     name: Identifier {
                       type: "Identifier",
-                      decorators: Array [],
+                      decorators: [],
                       name: "T",
                       optional: false,
 
@@ -105,10 +106,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Foo",
         optional: false,
 
@@ -118,7 +119,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 103],

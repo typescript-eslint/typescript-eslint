@@ -3,16 +3,16 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           definite: false,
           id: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "computed1",
             optional: false,
 
@@ -52,13 +52,13 @@ Program {
     },
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           definite: false,
           id: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "computed2",
             optional: false,
 
@@ -98,13 +98,13 @@ Program {
     },
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           definite: false,
           id: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "obj",
             optional: false,
 
@@ -116,13 +116,13 @@ Program {
           },
           init: ObjectExpression {
             type: "ObjectExpression",
-            properties: Array [
+            properties: [
               Property {
                 type: "Property",
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "member",
                   optional: false,
 
@@ -159,7 +159,7 @@ Program {
                 computed: false,
                 key: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "member2",
                   optional: false,
 
@@ -221,14 +221,14 @@ Program {
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "computed1",
               optional: false,
 
@@ -250,7 +250,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [208, 211],
               loc: {
@@ -268,10 +268,10 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "computed2",
               optional: false,
 
@@ -290,7 +290,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [229, 231],
                 loc: {
@@ -302,7 +302,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [226, 231],
               loc: {
@@ -320,7 +320,7 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
-            decorators: Array [],
+            decorators: [],
             key: Literal {
               type: "Literal",
               raw: "1",
@@ -344,7 +344,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [238, 241],
               loc: {
@@ -362,7 +362,7 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
-            decorators: Array [],
+            decorators: [],
             key: Literal {
               type: "Literal",
               raw: "2",
@@ -383,7 +383,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [251, 253],
                 loc: {
@@ -395,7 +395,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [248, 253],
               loc: {
@@ -413,7 +413,7 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
-            decorators: Array [],
+            decorators: [],
             key: Literal {
               type: "Literal",
               raw: "'literal1'",
@@ -437,7 +437,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [269, 272],
               loc: {
@@ -455,7 +455,7 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
-            decorators: Array [],
+            decorators: [],
             key: Literal {
               type: "Literal",
               raw: "'literal2'",
@@ -476,7 +476,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [291, 293],
                 loc: {
@@ -488,7 +488,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [288, 293],
               loc: {
@@ -506,13 +506,13 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
-            decorators: Array [],
+            decorators: [],
             key: MemberExpression {
               type: "MemberExpression",
               computed: false,
               object: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "obj",
                 optional: false,
 
@@ -525,7 +525,7 @@ Program {
               optional: false,
               property: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "member",
                 optional: false,
 
@@ -551,7 +551,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [312, 314],
                 loc: {
@@ -563,7 +563,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [309, 314],
               loc: {
@@ -581,13 +581,13 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
-            decorators: Array [],
+            decorators: [],
             key: MemberExpression {
               type: "MemberExpression",
               computed: false,
               object: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "obj",
                 optional: false,
 
@@ -600,7 +600,7 @@ Program {
               optional: false,
               property: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "member2",
                 optional: false,
 
@@ -629,7 +629,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [331, 334],
               loc: {
@@ -647,13 +647,13 @@ Program {
           MethodDefinition {
             type: "MethodDefinition",
             computed: true,
-            decorators: Array [],
+            decorators: [],
             key: CallExpression {
               type: "CallExpression",
-              arguments: Array [],
+              arguments: [],
               callee: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "f",
                 optional: false,
 
@@ -680,7 +680,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [346, 348],
                 loc: {
@@ -692,7 +692,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [343, 348],
               loc: {
@@ -716,10 +716,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "X",
         optional: false,
 
@@ -729,7 +729,7 @@ Program {
           end: { column: 7, line: 9 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [184, 350],

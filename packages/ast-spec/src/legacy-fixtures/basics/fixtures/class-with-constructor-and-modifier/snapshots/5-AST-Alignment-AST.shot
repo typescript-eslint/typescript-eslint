@@ -74,7 +74,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-modifier
 -             decorators: Array [],
               key: Literal {
                 type: 'Literal',
-                raw: '\\\\'constructor\\\\'',
+                raw: '\\'constructor\\'',
                 value: 'constructor',
 
                 range: [123, 136],

@@ -28,7 +28,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             },
             init: Literal {
               type: 'Literal',
-              raw: '\\\\'buzz\\\\'',
+              raw: '\\'buzz\\'',
               value: 'buzz',
 
               range: [91, 97],
@@ -74,7 +74,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
             },
             init: Literal {
               type: 'Literal',
-              raw: '\\\\'bazz\\\\'',
+              raw: '\\'bazz\\'',
               value: 'bazz',
 
               range: [117, 123],
@@ -142,7 +142,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                   shorthand: false,
                   value: Literal {
                     type: 'Literal',
-                    raw: '\\\\'member\\\\'',
+                    raw: '\\'member\\'',
                     value: 'member',
 
                     range: [149, 157],
@@ -179,7 +179,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
                   shorthand: false,
                   value: Literal {
                     type: 'Literal',
-                    raw: '\\\\'member2\\\\'',
+                    raw: '\\'member2\\'',
                     value: 'member2',
 
                     range: [170, 179],
@@ -424,7 +424,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
 -             decorators: Array [],
               key: Literal {
                 type: 'Literal',
-                raw: '\\\\'literal1\\\\'',
+                raw: '\\'literal1\\'',
                 value: 'literal1',
 
                 range: [257, 267],
@@ -468,7 +468,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-method
 -             decorators: Array [],
               key: Literal {
                 type: 'Literal',
-                raw: '\\\\'literal2\\\\'',
+                raw: '\\'literal2\\'',
                 value: 'literal2',
 
                 range: [276, 286],

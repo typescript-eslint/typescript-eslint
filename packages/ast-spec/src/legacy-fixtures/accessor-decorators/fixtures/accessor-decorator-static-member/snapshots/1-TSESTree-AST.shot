@@ -3,22 +3,22 @@
 exports[`AST Fixtures legacy-fixtures accessor-decorators accessor-decorator-static-member TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
-            decorators: Array [
+            decorators: [
               Decorator {
                 type: "Decorator",
                 expression: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "adminonly",
                   optional: false,
 
@@ -38,7 +38,7 @@ Program {
             ],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "y",
               optional: false,
 
@@ -57,7 +57,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ExpressionStatement {
                     type: "ExpressionStatement",
                     expression: AssignmentExpression {
@@ -77,7 +77,7 @@ Program {
                         optional: false,
                         property: Identifier {
                           type: "Identifier",
-                          decorators: Array [],
+                          decorators: [],
                           name: "_y",
                           optional: false,
 
@@ -97,7 +97,7 @@ Program {
                       operator: "=",
                       right: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "a",
                         optional: false,
 
@@ -133,10 +133,10 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [
+              params: [
                 Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "a",
                   optional: false,
 
@@ -170,10 +170,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "User",
         optional: false,
 
@@ -183,7 +183,7 @@ Program {
           end: { column: 10, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 141],

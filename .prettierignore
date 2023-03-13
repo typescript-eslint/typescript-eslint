@@ -10,6 +10,9 @@ packages/eslint-plugin/tests/fixtures/indent/
 # prettier errors on this case because it's semantically valid
 packages/ast-spec/src/element/AccessorProperty/fixtures/modifier-abstract-with-value/fixture.ts
 
+# prettier doesn't yet support `const` modifiers for type parameters
+packages/ast-spec/src/special/TSTypeParameter/fixtures
+
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md
 

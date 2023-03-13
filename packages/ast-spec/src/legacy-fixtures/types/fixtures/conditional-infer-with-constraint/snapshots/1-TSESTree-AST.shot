@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "X3",
         optional: false,
 
@@ -25,7 +25,7 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "T",
             optional: false,
 
@@ -44,11 +44,12 @@ Program {
         },
         extendsType: TSTupleType {
           type: "TSTupleType",
-          elementTypes: Array [
+          elementTypes: [
             TSInferType {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -61,7 +62,7 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "U",
                   optional: false,
 
@@ -107,12 +108,12 @@ Program {
           type: "TSTypeReference",
           typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
-            params: Array [
+            params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "U",
                   optional: false,
 
@@ -139,7 +140,7 @@ Program {
           },
           typeName: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "MustBeNumber",
             optional: false,
 
@@ -147,38 +148,6 @@ Program {
             loc: {
               start: { column: 50, line: 3 },
               end: { column: 62, line: 3 },
-            },
-          },
-          typeParameters: TSTypeParameterInstantiation {
-            type: "TSTypeParameterInstantiation",
-            params: Array [
-              TSTypeReference {
-                type: "TSTypeReference",
-                typeName: Identifier {
-                  type: "Identifier",
-                  decorators: Array [],
-                  name: "U",
-                  optional: false,
-
-                  range: [136, 137],
-                  loc: {
-                    start: { column: 63, line: 3 },
-                    end: { column: 64, line: 3 },
-                  },
-                },
-
-                range: [136, 137],
-                loc: {
-                  start: { column: 63, line: 3 },
-                  end: { column: 64, line: 3 },
-                },
-              },
-            ],
-
-            range: [135, 138],
-            loc: {
-              start: { column: 62, line: 3 },
-              end: { column: 65, line: 3 },
             },
           },
 
@@ -197,13 +166,14 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "T",
               optional: false,
 
@@ -241,7 +211,7 @@ Program {
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "X4",
         optional: false,
 
@@ -257,7 +227,7 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "T",
             optional: false,
 
@@ -276,11 +246,12 @@ Program {
         },
         extendsType: TSTupleType {
           type: "TSTupleType",
-          elementTypes: Array [
+          elementTypes: [
             TSInferType {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -293,7 +264,7 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "U",
                   optional: false,
 
@@ -322,6 +293,7 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -334,7 +306,7 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "U",
                   optional: false,
 
@@ -380,12 +352,12 @@ Program {
           type: "TSTypeReference",
           typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
-            params: Array [
+            params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "U",
                   optional: false,
 
@@ -412,7 +384,7 @@ Program {
           },
           typeName: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "MustBeNumber",
             optional: false,
 
@@ -420,38 +392,6 @@ Program {
             loc: {
               start: { column: 4, line: 5 },
               end: { column: 16, line: 5 },
-            },
-          },
-          typeParameters: TSTypeParameterInstantiation {
-            type: "TSTypeParameterInstantiation",
-            params: Array [
-              TSTypeReference {
-                type: "TSTypeReference",
-                typeName: Identifier {
-                  type: "Identifier",
-                  decorators: Array [],
-                  name: "U",
-                  optional: false,
-
-                  range: [237, 238],
-                  loc: {
-                    start: { column: 17, line: 5 },
-                    end: { column: 18, line: 5 },
-                  },
-                },
-
-                range: [237, 238],
-                loc: {
-                  start: { column: 17, line: 5 },
-                  end: { column: 18, line: 5 },
-                },
-              },
-            ],
-
-            range: [236, 239],
-            loc: {
-              start: { column: 16, line: 5 },
-              end: { column: 19, line: 5 },
             },
           },
 
@@ -470,13 +410,14 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "T",
               optional: false,
 
@@ -514,7 +455,7 @@ Program {
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "X5",
         optional: false,
 
@@ -530,7 +471,7 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "T",
             optional: false,
 
@@ -549,11 +490,12 @@ Program {
         },
         extendsType: TSTupleType {
           type: "TSTupleType",
-          elementTypes: Array [
+          elementTypes: [
             TSInferType {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -566,7 +508,7 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "U",
                   optional: false,
 
@@ -595,10 +537,11 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 in: false,
                 name: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "U",
                   optional: false,
 
@@ -644,12 +587,12 @@ Program {
           type: "TSTypeReference",
           typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
-            params: Array [
+            params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "U",
                   optional: false,
 
@@ -676,7 +619,7 @@ Program {
           },
           typeName: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "MustBeNumber",
             optional: false,
 
@@ -684,38 +627,6 @@ Program {
             loc: {
               start: { column: 4, line: 8 },
               end: { column: 16, line: 8 },
-            },
-          },
-          typeParameters: TSTypeParameterInstantiation {
-            type: "TSTypeParameterInstantiation",
-            params: Array [
-              TSTypeReference {
-                type: "TSTypeReference",
-                typeName: Identifier {
-                  type: "Identifier",
-                  decorators: Array [],
-                  name: "U",
-                  optional: false,
-
-                  range: [325, 326],
-                  loc: {
-                    start: { column: 17, line: 8 },
-                    end: { column: 18, line: 8 },
-                  },
-                },
-
-                range: [325, 326],
-                loc: {
-                  start: { column: 17, line: 8 },
-                  end: { column: 18, line: 8 },
-                },
-              },
-            ],
-
-            range: [324, 327],
-            loc: {
-              start: { column: 16, line: 8 },
-              end: { column: 19, line: 8 },
             },
           },
 
@@ -734,13 +645,14 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "T",
               optional: false,
 
@@ -778,7 +690,7 @@ Program {
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "X6",
         optional: false,
 
@@ -794,7 +706,7 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "T",
             optional: false,
 
@@ -813,15 +725,16 @@ Program {
         },
         extendsType: TSTupleType {
           type: "TSTupleType",
-          elementTypes: Array [
+          elementTypes: [
             TSInferType {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 in: false,
                 name: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "U",
                   optional: false,
 
@@ -850,6 +763,7 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -862,7 +776,7 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "U",
                   optional: false,
 
@@ -908,12 +822,12 @@ Program {
           type: "TSTypeReference",
           typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
-            params: Array [
+            params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "U",
                   optional: false,
 
@@ -940,7 +854,7 @@ Program {
           },
           typeName: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "MustBeNumber",
             optional: false,
 
@@ -948,38 +862,6 @@ Program {
             loc: {
               start: { column: 4, line: 11 },
               end: { column: 16, line: 11 },
-            },
-          },
-          typeParameters: TSTypeParameterInstantiation {
-            type: "TSTypeParameterInstantiation",
-            params: Array [
-              TSTypeReference {
-                type: "TSTypeReference",
-                typeName: Identifier {
-                  type: "Identifier",
-                  decorators: Array [],
-                  name: "U",
-                  optional: false,
-
-                  range: [413, 414],
-                  loc: {
-                    start: { column: 17, line: 11 },
-                    end: { column: 18, line: 11 },
-                  },
-                },
-
-                range: [413, 414],
-                loc: {
-                  start: { column: 17, line: 11 },
-                  end: { column: 18, line: 11 },
-                },
-              },
-            ],
-
-            range: [412, 415],
-            loc: {
-              start: { column: 16, line: 11 },
-              end: { column: 19, line: 11 },
             },
           },
 
@@ -998,13 +880,14 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "T",
               optional: false,
 
@@ -1042,7 +925,7 @@ Program {
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "X7",
         optional: false,
 
@@ -1058,7 +941,7 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "T",
             optional: false,
 
@@ -1077,11 +960,12 @@ Program {
         },
         extendsType: TSTupleType {
           type: "TSTupleType",
-          elementTypes: Array [
+          elementTypes: [
             TSInferType {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSStringKeyword {
                   type: "TSStringKeyword",
 
@@ -1094,7 +978,7 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "U",
                   optional: false,
 
@@ -1123,6 +1007,7 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -1135,7 +1020,7 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "U",
                   optional: false,
 
@@ -1181,7 +1066,7 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "U",
             optional: false,
 
@@ -1207,13 +1092,14 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "T",
               optional: false,
 

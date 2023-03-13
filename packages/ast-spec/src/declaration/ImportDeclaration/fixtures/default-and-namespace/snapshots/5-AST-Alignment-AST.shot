@@ -14,7 +14,7 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-namespace AST Al
         importKind: 'value',
         source: Literal {
           type: 'Literal',
-          raw: '\\\\'mod\\\\'',
+          raw: '\\'mod\\'',
           value: 'mod',
 
           range: [22, 27],

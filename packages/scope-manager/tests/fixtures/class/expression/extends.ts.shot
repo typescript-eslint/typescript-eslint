@@ -2,17 +2,17 @@
 
 exports[`class expression extends 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$1 {
           name: Identifier<"A">,
           node: ClassDeclaration$1,
         },
       ],
       name: "A",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"A">,
           isRead: true,
@@ -26,26 +26,26 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$2 {
           name: Identifier<"A">,
           node: ClassDeclaration$1,
         },
       ],
       name: "A",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         VariableDefinition$3 {
           name: Identifier<"B">,
           node: VariableDeclarator$2,
         },
       ],
       name: "B",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"B">,
           init: true,
@@ -61,11 +61,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$4,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -75,7 +75,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$4,
@@ -84,26 +84,26 @@ ScopeManager {
     ClassScope$2 {
       block: ClassDeclaration$1,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "A" => Variable$3,
       },
       type: "class",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
       ],
     },
     ClassScope$3 {
       block: ClassExpression$3,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$2,
       ],
       set: Map {},
       type: "class",
       upper: GlobalScope$1,
-      variables: Array [],
+      variables: [],
     },
   ],
 }

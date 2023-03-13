@@ -3,14 +3,14 @@
 exports[`AST Fixtures legacy-fixtures basics cast-as-operator TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: BinaryExpression {
         type: "BinaryExpression",
         left: Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "x",
           optional: false,
 

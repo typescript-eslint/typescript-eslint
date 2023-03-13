@@ -18,7 +18,7 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-module AST Alignment -
 -             directive: 'use strict',
               expression: Literal {
                 type: 'Literal',
-                raw: '\\\\'use strict\\\\'',
+                raw: '\\'use strict\\'',
                 value: 'use strict',
 
                 range: [88, 100],
@@ -84,7 +84,7 @@ exports[`AST Fixtures legacy-fixtures basics directive-in-module AST Alignment -
               type: 'ExpressionStatement',
               expression: Literal {
                 type: 'Literal',
-                raw: '\\\\'use strict\\\\'',
+                raw: '\\'use strict\\'',
                 value: 'use strict',
 
                 range: [117, 129],

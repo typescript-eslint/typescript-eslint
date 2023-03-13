@@ -46,6 +46,8 @@ export = {
     '@typescript-eslint/key-spacing': 'error',
     'keyword-spacing': 'off',
     '@typescript-eslint/keyword-spacing': 'error',
+    'lines-around-comment': 'off',
+    '@typescript-eslint/lines-around-comment': 'error',
     'lines-between-class-members': 'off',
     '@typescript-eslint/lines-between-class-members': 'error',
     '@typescript-eslint/member-delimiter-style': 'error',

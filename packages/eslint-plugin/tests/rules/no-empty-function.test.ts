@@ -1,5 +1,5 @@
 import rule from '../../src/rules/no-empty-function';
-import { noFormat, RuleTester } from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -165,22 +165,6 @@ function foo() {}
             name: "function 'foo'",
           },
           line: 2,
-          column: 16,
-        },
-      ],
-    },
-    {
-      code: noFormat`
-@decorator()
-function foo() {}
-      `,
-      errors: [
-        {
-          messageId: 'unexpected',
-          data: {
-            name: "function 'foo'",
-          },
-          line: 3,
           column: 16,
         },
       ],

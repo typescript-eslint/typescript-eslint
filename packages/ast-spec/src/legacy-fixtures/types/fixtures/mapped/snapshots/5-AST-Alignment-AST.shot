@@ -35,6 +35,7 @@ exports[`AST Fixtures legacy-fixtures types mapped AST Alignment - AST 1`] = `
                   },
                   typeParameter: TSTypeParameter {
                     type: 'TSTypeParameter',
+-                   const: false,
                     constraint: TSStringKeyword {
                       type: 'TSStringKeyword',
 
@@ -50,7 +51,8 @@ exports[`AST Fixtures legacy-fixtures types mapped AST Alignment - AST 1`] = `
 -                     decorators: Array [],
 -                     name: 'P',
 -                     optional: false,
--
++                   name: 'P',
+
 -                     range: [85, 86],
 -                     loc: {
 -                       start: { column: 12, line: 3 },
@@ -58,8 +60,7 @@ exports[`AST Fixtures legacy-fixtures types mapped AST Alignment - AST 1`] = `
 -                     },
 -                   },
 -                   out: false,
-+                   name: 'P',
-
+-
                     range: [85, 96],
                     loc: {
                       start: { column: 12, line: 3 },

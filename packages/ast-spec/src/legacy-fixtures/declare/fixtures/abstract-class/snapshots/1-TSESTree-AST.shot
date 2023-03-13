@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures declare abstract-class TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: true,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [],
+        body: [],
 
         range: [100, 102],
         loc: {
@@ -18,10 +18,10 @@ Program {
         },
       },
       declare: true,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Foo",
         optional: false,
 
@@ -31,7 +31,7 @@ Program {
           end: { column: 26, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 102],

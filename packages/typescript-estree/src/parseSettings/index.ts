@@ -94,11 +94,6 @@ export interface MutableParseSettings {
   log: (message: string) => void;
 
   /**
-   * Path for a module resolver to use for the compiler host's `resolveModuleNames`.
-   */
-  moduleResolver: string;
-
-  /**
    * Whether two-way AST node maps are preserved during the AST conversion process.
    */
   preserveNodeMaps?: boolean;
@@ -122,6 +117,11 @@ export interface MutableParseSettings {
    * Whether this is part of a single run, rather than a long-running process.
    */
   singleRun: boolean;
+
+  /**
+   * Whether deprecated AST properties should skip calling console.warn on accesses.
+   */
+  suppressDeprecatedPropertyWarnings: boolean;
 
   /**
    * If the `tokens` parse option is enabled, retrieved tokens.
