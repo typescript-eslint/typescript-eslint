@@ -8942,10 +8942,10 @@ jest-snapshot@*, jest-snapshot@^29, jest-snapshot@^29.0.0, jest-snapshot@^29.0.3
     pretty-format "^29.1.2"
     semver "^7.3.5"
 
-jest-specific-snapshot@*, jest-specific-snapshot@^7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/jest-specific-snapshot/-/jest-specific-snapshot-7.0.0.tgz#c8851bc263b780c0fa750462f61bd98fe956fc64"
-  integrity sha512-Ut2YItOYFC88Pir/JPN8Cgjvf60N4ZPmIqGJ2iZI+c9SLR27hwJxaEngKpW4RurPb+p45BbSuZoKe9SlVIylQA==
+jest-specific-snapshot@*, jest-specific-snapshot@^8.0.0:
+  version "8.0.0"
+  resolved "https://registry.yarnpkg.com/jest-specific-snapshot/-/jest-specific-snapshot-8.0.0.tgz#c80af21dcd95b6c46b73f71618f887ef3825a44c"
+  integrity sha512-PjK0cqPbN3ZGU1pdP78YBEFMsS1AsV28hIHg249E0v/bTtGAJqDm7lNDLj0Cs0O26P2sulbXbgEQU9xLm34WmA==
   dependencies:
     jest-snapshot "^29.0.0"
 
