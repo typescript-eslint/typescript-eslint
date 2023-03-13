@@ -427,6 +427,39 @@ function restTuple(..._args: string[]): void {}
 restTuple();
 restTuple('Hello');
     `,
+    `
+      let value: Record<string, () => void>;
+      value.sync = () => {};
+    `,
+    `
+      type ReturnsRecord = () => Record<string, () => void>;
+
+      const test: ReturnsRecord = () => {
+        return { sync: () => {} };
+      };
+    `,
+    `
+      type ReturnsRecord = () => Record<string, () => void>;
+
+      function sync() {}
+
+      const test: ReturnsRecord = () => {
+        return { sync };
+      };
+    `,
+    `
+      function withTextRecurser<Text extends string>(
+        recurser: (text: Text) => void,
+      ): (text: Text) => void {
+        return (text: Text): void => {
+          if (text.length) {
+            return;
+          }
+
+          return recurser(node);
+        };
+      }
+    `,
   ],
 
   invalid: [
@@ -1117,6 +1150,35 @@ restTuple();
 restTuple(true, () => Promise.resolve(1));
       `,
       errors: [{ line: 7, messageId: 'voidReturnArgument' }],
+    },
+    {
+      code: `
+type ReturnsRecord = () => Record<string, () => void>;
+
+const test: ReturnsRecord = () => {
+  return { asynchronous: async () => {} };
+};
+      `,
+      errors: [{ line: 5, messageId: 'voidReturnProperty' }],
+    },
+    {
+      code: `
+let value: Record<string, () => void>;
+value.asynchronous = async () => {};
+      `,
+      errors: [{ line: 3, messageId: 'voidReturnVariable' }],
+    },
+    {
+      code: `
+type ReturnsRecord = () => Record<string, () => void>;
+
+async function asynchronous() {}
+
+const test: ReturnsRecord = () => {
+  return { asynchronous };
+};
+      `,
+      errors: [{ line: 7, messageId: 'voidReturnProperty' }],
     },
   ],
 });
