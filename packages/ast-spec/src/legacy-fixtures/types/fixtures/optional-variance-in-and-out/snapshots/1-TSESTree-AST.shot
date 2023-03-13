@@ -1,0 +1,167 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types optional-variance-in-and-out TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "Mapper",
+
+        range: [78, 84],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 11, line: 3 },
+        },
+      },
+      typeAnnotation: TSFunctionType {
+        type: "TSFunctionType",
+        params: Array [
+          Identifier {
+            type: "Identifier",
+            name: "x",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTypeReference {
+                type: "TSTypeReference",
+                typeName: Identifier {
+                  type: "Identifier",
+                  name: "T",
+
+                  range: [104, 105],
+                  loc: {
+                    start: { column: 31, line: 3 },
+                    end: { column: 32, line: 3 },
+                  },
+                },
+
+                range: [104, 105],
+                loc: {
+                  start: { column: 31, line: 3 },
+                  end: { column: 32, line: 3 },
+                },
+              },
+
+              range: [102, 105],
+              loc: {
+                start: { column: 29, line: 3 },
+                end: { column: 32, line: 3 },
+              },
+            },
+
+            range: [101, 105],
+            loc: {
+              start: { column: 28, line: 3 },
+              end: { column: 32, line: 3 },
+            },
+          },
+        ],
+        returnType: TSTypeAnnotation {
+          type: "TSTypeAnnotation",
+          typeAnnotation: TSTypeReference {
+            type: "TSTypeReference",
+            typeName: Identifier {
+              type: "Identifier",
+              name: "U",
+
+              range: [110, 111],
+              loc: {
+                start: { column: 37, line: 3 },
+                end: { column: 38, line: 3 },
+              },
+            },
+
+            range: [110, 111],
+            loc: {
+              start: { column: 37, line: 3 },
+              end: { column: 38, line: 3 },
+            },
+          },
+
+          range: [107, 111],
+          loc: {
+            start: { column: 34, line: 3 },
+            end: { column: 38, line: 3 },
+          },
+        },
+
+        range: [100, 111],
+        loc: {
+          start: { column: 27, line: 3 },
+          end: { column: 38, line: 3 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: Array [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            const: false,
+            in: true,
+            name: Identifier {
+              type: "Identifier",
+              name: "T",
+
+              range: [88, 89],
+              loc: {
+                start: { column: 15, line: 3 },
+                end: { column: 16, line: 3 },
+              },
+            },
+            out: false,
+
+            range: [85, 89],
+            loc: {
+              start: { column: 12, line: 3 },
+              end: { column: 16, line: 3 },
+            },
+          },
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            const: false,
+            in: false,
+            name: Identifier {
+              type: "Identifier",
+              name: "U",
+
+              range: [95, 96],
+              loc: {
+                start: { column: 22, line: 3 },
+                end: { column: 23, line: 3 },
+              },
+            },
+            out: true,
+
+            range: [91, 96],
+            loc: {
+              start: { column: 18, line: 3 },
+              end: { column: 23, line: 3 },
+            },
+          },
+        ],
+
+        range: [84, 97],
+        loc: {
+          start: { column: 11, line: 3 },
+          end: { column: 24, line: 3 },
+        },
+      },
+
+      range: [73, 112],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 39, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 113],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

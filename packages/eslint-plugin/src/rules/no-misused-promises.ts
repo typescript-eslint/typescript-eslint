@@ -248,7 +248,7 @@ export default util.createRule<Options, MessageId>({
 
     function checkVariableDeclaration(node: TSESTree.VariableDeclarator): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      if (tsNode.initializer === undefined || node.init === null) {
+      if (tsNode.initializer === undefined || node.init == null) {
         return;
       }
       const varType = checker.getTypeAtLocation(tsNode.name);
@@ -340,7 +340,7 @@ export default util.createRule<Options, MessageId>({
 
     function checkReturnStatement(node: TSESTree.ReturnStatement): void {
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      if (tsNode.expression === undefined || node.argument === null) {
+      if (tsNode.expression === undefined || node.argument == null) {
         return;
       }
       const contextualType = checker.getContextualType(tsNode.expression);
@@ -359,7 +359,7 @@ export default util.createRule<Options, MessageId>({
       const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
       const value = tsNode.initializer;
       if (
-        node.value === null ||
+        node.value == null ||
         value === undefined ||
         !ts.isJsxExpression(value) ||
         value.expression === undefined

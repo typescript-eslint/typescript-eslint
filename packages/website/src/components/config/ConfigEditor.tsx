@@ -92,7 +92,7 @@ function ConfigEditor(props: ConfigEditorProps): JSX.Element {
   const { onClose: onCloseProps, isOpen, values } = props;
   const [filter, setFilter] = useState<string>('');
   const [config, setConfig] = useReducer(reducerObject, {});
-  const [filterInput, setFilterFocus] = useFocus();
+  const [filterInput, setFilterFocus] = useFocus<HTMLInputElement>();
 
   const onClose = useCallback(() => {
     onCloseProps(config);

@@ -9,6 +9,7 @@ module.exports = {
     'import',
     'jest',
     'simple-import-sort',
+    'unicorn',
   ],
   env: {
     es6: true,
@@ -40,6 +41,11 @@ module.exports = {
     tsconfigRootDir: __dirname,
     warnOnUnsupportedTypeScriptVersion: false,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
+    cacheLifetime: {
+      // we pretty well never create/change tsconfig structure - so need to ever evict the cache
+      // in the rare case that we do - just need to manually restart their IDE.
+      glob: 'Infinity',
+    },
   },
   rules: {
     // make sure we're not leveraging any deprecated APIs
@@ -106,6 +112,13 @@ module.exports = {
     //
 
     curly: ['error', 'all'],
+    eqeqeq: [
+      'error',
+      'always',
+      {
+        null: 'never',
+      },
+    ],
     'no-mixed-operators': 'error',
     'no-console': 'error',
     'no-process-exit': 'error',
@@ -186,6 +199,10 @@ module.exports = {
 
     // enforce a sort order across the codebase
     'simple-import-sort/imports': 'error',
+
+    'one-var': ['error', 'never'],
+
+    'unicorn/no-typeof-undefined': 'error',
   },
   overrides: [
     // all test files
@@ -214,7 +231,6 @@ module.exports = {
         'jest/no-alias-methods': 'error',
         'jest/no-identical-title': 'error',
         'jest/no-jasmine-globals': 'error',
-        'jest/no-jest-import': 'error',
         'jest/no-test-prefixes': 'error',
         'jest/no-done-callback': 'error',
         'jest/no-test-return-statement': 'error',

@@ -1083,7 +1083,7 @@ function addOptional<
   function makeOptional(code: string): string;
   function makeOptional(code: string | null | undefined): string | null;
   function makeOptional(code: string | null | undefined): string | null {
-    if (code === null || code === undefined) {
+    if (code == null) {
       return null;
     }
     return (

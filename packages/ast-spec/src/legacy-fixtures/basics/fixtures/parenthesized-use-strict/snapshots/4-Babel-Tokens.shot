@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics parenthesized-use-strict Babel - Tokens 1`] = `
+Array [
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [118, 119],
+    loc: {
+      start: { column: 0, line: 4 },
+      end: { column: 1, line: 4 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'use strict'",
+
+    range: [119, 131],
+    loc: {
+      start: { column: 1, line: 4 },
+      end: { column: 13, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [131, 132],
+    loc: {
+      start: { column: 13, line: 4 },
+      end: { column: 14, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [132, 133],
+    loc: {
+      start: { column: 14, line: 4 },
+      end: { column: 15, line: 4 },
+    },
+  },
+]
+`;

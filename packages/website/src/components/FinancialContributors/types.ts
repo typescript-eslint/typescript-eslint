@@ -7,8 +7,3 @@ export interface SponsorData {
   totalDonations: number;
   website?: string;
 }
-
-export interface SponsorIncludeOptions {
-  link?: boolean;
-  name?: boolean;
-}

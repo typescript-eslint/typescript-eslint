@@ -15,6 +15,7 @@ type Lib =
   | 'es2020'
   | 'es2021'
   | 'es2022'
+  | 'es2023'
   | 'esnext'
   | 'dom'
   | 'dom.iterable'
@@ -65,6 +66,8 @@ type Lib =
   | 'es2022.object'
   | 'es2022.sharedmemory'
   | 'es2022.string'
+  | 'es2022.regexp'
+  | 'es2023.array'
   | 'esnext.array'
   | 'esnext.symbol'
   | 'esnext.asynciterable'
@@ -73,6 +76,8 @@ type Lib =
   | 'esnext.string'
   | 'esnext.promise'
   | 'esnext.weakref'
+  | 'decorators'
+  | 'decorators.legacy'
   | 'es2016.full'
   | 'es2017.full'
   | 'es2018.full'
@@ -80,6 +85,7 @@ type Lib =
   | 'es2020.full'
   | 'es2021.full'
   | 'es2022.full'
+  | 'es2023.full'
   | 'esnext.full'
   | 'lib';
 

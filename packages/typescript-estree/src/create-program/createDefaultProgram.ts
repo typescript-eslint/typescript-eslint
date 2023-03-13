@@ -45,6 +45,7 @@ function createDefaultProgram(
   );
 
   if (parseSettings.moduleResolver) {
+    // eslint-disable-next-line deprecation/deprecation -- intentional for older TS versions
     compilerHost.resolveModuleNames = getModuleResolver(
       parseSettings.moduleResolver,
     ).resolveModuleNames;

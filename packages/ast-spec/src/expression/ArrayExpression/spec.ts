@@ -5,5 +5,8 @@ import type { Expression } from '../../unions/Expression';
 
 export interface ArrayExpression extends BaseNode {
   type: AST_NODE_TYPES.ArrayExpression;
-  elements: (Expression | SpreadElement)[];
+  /**
+   * an element will be `null` in the case of a sparse array: `[1, ,3]`
+   */
+  elements: (Expression | SpreadElement | null)[];
 }

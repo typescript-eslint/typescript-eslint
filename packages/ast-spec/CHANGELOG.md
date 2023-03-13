@@ -3,6 +3,102 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.54.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.54.0...v5.54.1) (2023-03-06)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+
+
+
+
+# [5.54.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.53.0...v5.54.0) (2023-02-27)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+
+
+
+
+# [5.53.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.52.0...v5.53.0) (2023-02-20)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+
+
+
+
+# [5.52.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.51.0...v5.52.0) (2023-02-13)
+
+
+### Features
+
+* **typescript-estree:** add `.kind` to `TSModuleDeclaration` ([#6443](https://github.com/typescript-eslint/typescript-eslint/issues/6443)) ([2f948df](https://github.com/typescript-eslint/typescript-eslint/commit/2f948df35b73d916e7fe42b21343568b1617e3f1))
+
+
+
+
+
+# [5.51.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.50.0...v5.51.0) (2023-02-06)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+
+
+
+
+# [5.50.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.49.0...v5.50.0) (2023-01-31)
+
+
+### Bug Fixes
+
+* **ast-spec:** a JSXEmptyExpression is not a possible JSXExpression ([#6321](https://github.com/typescript-eslint/typescript-eslint/issues/6321)) ([4b27777](https://github.com/typescript-eslint/typescript-eslint/commit/4b27777ed26cc83d6efc52a89b2d3fc6c01bc0d7))
+
+
+
+
+
+# [5.49.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.2...v5.49.0) (2023-01-23)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+
+
+
+
+## [5.48.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.1...v5.48.2) (2023-01-16)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+
+
+
+
+## [5.48.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.0...v5.48.1) (2023-01-09)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+
+
+
+
+# [5.48.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.47.1...v5.48.0) (2023-01-02)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+## [5.47.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.47.0...v5.47.1) (2022-12-26)
+
+### Bug Fixes
+
+- **ast-spec:** correct some incorrect ast types ([#6257](https://github.com/typescript-eslint/typescript-eslint/issues/6257)) ([0f3f645](https://github.com/typescript-eslint/typescript-eslint/commit/0f3f64571ea5d938081b1a9f3fd1495765201700))
+
+# [5.47.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.46.1...v5.47.0) (2022-12-19)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
+## [5.46.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.46.0...v5.46.1) (2022-12-12)
+
+**Note:** Version bump only for package @typescript-eslint/ast-spec
+
 # [5.46.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.45.1...v5.46.0) (2022-12-08)
 
 **Note:** Version bump only for package @typescript-eslint/ast-spec
