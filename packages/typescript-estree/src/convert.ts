@@ -13,7 +13,6 @@ import {
   getLastModifier,
   getLineAndCharacterFor,
   getLocFor,
-  getModifier,
   getRange,
   getTextForTokenKind,
   getTSNodeAccessibility,
@@ -619,14 +618,6 @@ export class Converter {
       | ts.GetAccessorDeclaration
       | ts.SetAccessorDeclaration,
   ): TSESTree.TSMethodSignature {
-    const exportKeyword = getModifier(SyntaxKind.ExportKeyword, node);
-    if (exportKeyword) {
-      this.#throwUnlessAllowInvalidAST(
-        exportKeyword,
-        'A method signature cannot have an export modifier.',
-      );
-    }
-
     return this.createNode<TSESTree.TSMethodSignature>(node, {
       type: AST_NODE_TYPES.TSMethodSignature,
       accessibility: getTSNodeAccessibility(node),
@@ -1649,14 +1640,6 @@ export class Converter {
 
         const modifiers = getModifiers(node);
         if (modifiers) {
-          const exportKeyword = getModifier(SyntaxKind.ExportKeyword, node);
-          if (exportKeyword) {
-            this.#throwUnlessAllowInvalidAST(
-              exportKeyword,
-              'A parameter cannot have an export modifier.',
-            );
-          }
-
           return this.createNode<TSESTree.TSParameterProperty>(node, {
             type: AST_NODE_TYPES.TSParameterProperty,
             accessibility: getTSNodeAccessibility(node),
@@ -2533,14 +2516,6 @@ export class Converter {
           );
         }
 
-        const exportKeyword = getModifier(SyntaxKind.ExportKeyword, node);
-        if (exportKeyword) {
-          this.#throwUnlessAllowInvalidAST(
-            exportKeyword,
-            'A property signature cannot have an export modifier.',
-          );
-        }
-
         return this.createNode<TSESTree.TSPropertySignature>(node, {
           type: AST_NODE_TYPES.TSPropertySignature,
           accessibility: getTSNodeAccessibility(node),
@@ -2555,14 +2530,6 @@ export class Converter {
       }
 
       case SyntaxKind.IndexSignature: {
-        const exportKeyword = getModifier(SyntaxKind.ExportKeyword, node);
-        if (exportKeyword) {
-          this.#throwUnlessAllowInvalidAST(
-            exportKeyword,
-            'An index signature cannot have an export modifier.',
-          );
-        }
-
         return this.createNode<TSESTree.TSIndexSignature>(node, {
           type: AST_NODE_TYPES.TSIndexSignature,
           accessibility: getTSNodeAccessibility(node),

@@ -88,21 +88,6 @@ export function hasModifier(
 }
 
 /**
- * Get a modifier from a ts.Node
- * @param modifierKind TypeScript SyntaxKind modifier
- * @param node TypeScript AST node
- * @returns matched modifier if present or null
- */
-export function getModifier(
-  modifierKind: ts.KeywordSyntaxKind,
-  node: ts.Node,
-): ts.Modifier | null {
-  return (
-    getModifiers(node)?.find(modifier => modifier.kind === modifierKind) ?? null
-  );
-}
-
-/**
  * Get last last modifier in ast
  * @param node TypeScript AST node
  * @returns returns last modifier if present or null
