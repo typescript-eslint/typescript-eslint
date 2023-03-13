@@ -3221,7 +3221,7 @@ export class Converter {
       if (
         node.kind === SyntaxKind.Parameter &&
         // @ts-expect-error -- internal?
-        ts.hasSyntacticModifier(
+        ts.hasSyntacticModifier?.(
           node,
           ts.ModifierFlags.ParameterPropertyModifier,
         )
