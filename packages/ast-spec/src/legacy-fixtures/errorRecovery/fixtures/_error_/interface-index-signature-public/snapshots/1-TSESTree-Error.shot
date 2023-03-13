@@ -1,3 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-index-signature-public TSESTree - Error 1`] = `"NO ERROR"`;
+exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-index-signature-public TSESTree - Error 1`] = `
+"TSError
+  2 |
+  3 | interface Foo {
+> 4 |   public [baz: string]: string;
+    |   ^^^^^^ 'public' modifier cannot appear on an index signature
+  5 | }
+  6 |
+  7 |"
+`;

@@ -133,7 +133,6 @@ Set {
   "legacy-fixtures/accessor-decorators/fixtures/accessor-decorator-static-member/fixture.ts",
   "legacy-fixtures/babylon-convergence/fixtures/type-parameter-whitespace-loc/fixture.ts",
   "legacy-fixtures/babylon-convergence/fixtures/type-parameters/fixture.ts",
-  "legacy-fixtures/basics/fixtures/abstract-class-with-abstract-constructor/fixture.ts",
   "legacy-fixtures/basics/fixtures/abstract-class-with-abstract-method/fixture.ts",
   "legacy-fixtures/basics/fixtures/abstract-class-with-abstract-properties/fixture.ts",
   "legacy-fixtures/basics/fixtures/abstract-class-with-abstract-readonly-property/fixture.ts",
