@@ -9,6 +9,7 @@ import {
   createError,
   findNextToken,
   getBinaryExpressionType,
+  getContainingFunction,
   getDeclarationKind,
   getLastModifier,
   getLineAndCharacterFor,
@@ -25,6 +26,7 @@ import {
   isOptional,
   isThisInTypeQuery,
   nodeHasIllegalDecorators,
+  nodeIsPresent,
   unescapeStringLiteralText,
 } from './node-utils';
 import type {
@@ -3224,15 +3226,10 @@ export class Converter {
           ts.ModifierFlags.ParameterPropertyModifier,
         )
       ) {
-        const func =
-          // @ts-expect-error -- internal?
-          ts.getContainingFunction(node);
+        const func = getContainingFunction(node)!;
+
         if (
-          !(
-            func.kind === SyntaxKind.Constructor &&
-            // @ts-expect-error -- internal?
-            ts.nodeIsPresent(func.body)
-          )
+          !(func.kind === SyntaxKind.Constructor && nodeIsPresent(func.body))
         ) {
           this.#throwError(
             modifier,
