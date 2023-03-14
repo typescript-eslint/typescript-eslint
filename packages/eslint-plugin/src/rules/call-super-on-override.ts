@@ -3,9 +3,13 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as utils from '../util';
 
-type MessageIds = 'missingSuperMethodCall';
+/**
+ * TODO:
+ * 1. Grabbing the type of the extended class
+ * 2. Checking whether it has a method / function property under the same name
+ */
 
-export default utils.createRule<[], MessageIds>({
+export default utils.createRule({
   name: 'call-super-on-override',
   meta: {
     type: 'suggestion',
@@ -13,24 +17,13 @@ export default utils.createRule<[], MessageIds>({
       description:
         'Require overridden methods to call super.method in their body',
       recommended: false,
-      requiresTypeChecking: false,
     },
     messages: {
       missingSuperMethodCall:
         "Use 'super{{property}}{{parameterTuple}}' to avoid missing super class method implementations",
     },
     fixable: 'code',
-    schema: [
-      {
-        type: 'object',
-        properties: {
-          topLevel: {
-            type: 'boolean',
-          },
-        },
-        additionalProperties: false,
-      },
-    ],
+    schema: [],
   },
   defaultOptions: [],
   create(context) {
@@ -38,24 +31,19 @@ export default utils.createRule<[], MessageIds>({
       'MethodDefinition[override=true][kind="method"]'(
         node: TSESTree.MethodDefinition,
       ): void {
-        let methodName = '',
-          methodNameIsLiteral = false,
-          methodNameIsNull = false; // don't add quotes for error message on [null] case
+        const methodName =
+          node.key.type === AST_NODE_TYPES.Identifier
+            ? node.key.name
+            : (node.key as TSESTree.Literal).value?.toString() ?? 'null';
+        const methodNameIsLiteral = node.key.type === AST_NODE_TYPES.Identifier;
+        const methodNameIsNull =
+          node.key.type !== AST_NODE_TYPES.Identifier
+            ? (node.key as TSESTree.Literal).value == null
+            : false;
 
-        if (node.key.type === AST_NODE_TYPES.Identifier) {
-          methodName = node.key.name;
-        } else {
-          methodNameIsLiteral = true;
-          // null & undefined can be used as property names, undefined counted as Identifier & null as Literal
-          methodName =
-            (node.key as TSESTree.Literal).value?.toString() ?? 'null';
-          methodNameIsNull = (node.key as TSESTree.Literal).value == null;
-        }
+        const { computed: isComputed } = node;
+        const bodyStatements = node.value.body!.body;
 
-        const { computed: isComputed } = node,
-          bodyStatements = node.value.body!.body;
-
-        // Search for super method call
         for (const statement of bodyStatements) {
           if (
             isSuperMethodCall(
@@ -64,11 +52,10 @@ export default utils.createRule<[], MessageIds>({
               !methodNameIsLiteral && isComputed,
             )
           ) {
-            return; // We are done here, no missingSuperMethodCall error
+            return;
           }
         }
 
-        // Raise if not found
         context.report({
           messageId: 'missingSuperMethodCall',
           node: node,
