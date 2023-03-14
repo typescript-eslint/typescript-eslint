@@ -33,6 +33,8 @@ Its documentation site is hosted on a preview deploy link: **[v6--typescript-esl
 If you don't yet use typescript-eslint, you can go through our [configuration steps on the v6 _Getting Started_ docs](https://v6--typescript-eslint.netlify.app/getting-started).
 It'll walk you through setting up typescript-eslint in a project.
 
+To use v6 specifically, see the following section for an updated install command.
+
 ### As An Existing User
 
 If you already use typescript-eslint, you'll need to first replace your package's previous versions of `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` with `@rc-v6` versions:
@@ -55,9 +57,9 @@ These are the changes that users of typescript-eslint -generally, any developer 
 The biggest configuration change in typescript-eslint v6 is that we've reworked the names of our [provided user configuration files](https://typescript-eslint.io/linting/configs).
 typescript-eslint v5 provided three recommended configurations:
 
-- [`plugin:@typescript-eslint/recommended`](https://typescript-eslint.io/linting/configs#recommended): Recommended rules for code correctness that you can drop in without additional configuration.
-- [`plugin:@typescript-eslint/recommended-requiring-type-checking`](https://typescript-eslint.io/linting/configs#recommended-requiring-type-checking): Additional recommended rules that require type information.
-- [`plugin:@typescript-eslint/strict`](https://typescript-eslint.io/linting/configs#strict): Additional strict rules that can also catch bugs but are more opinionated than recommended rules.
+- [`recommended`](https://typescript-eslint.io/linting/configs#recommended): Recommended rules for code correctness that you can drop in without additional configuration.
+- [`recommended-requiring-type-checking`](https://typescript-eslint.io/linting/configs#recommended-requiring-type-checking): Additional recommended rules that require type information.
+- [`strict`](https://typescript-eslint.io/linting/configs#strict): Additional strict rules that can also catch bugs but are more opinionated than recommended rules.
 
 Those configurations worked well for most projects.
 However, some users correctly noted two flaws in that approach:
@@ -68,15 +70,15 @@ However, some users correctly noted two flaws in that approach:
 As a result, we've reworked the configurations provided by typescript-eslint into these two groups:
 
 - Functional rule configurations, for best best practices and code correctness:
-  - **`plugin:@typescript-eslint/recommended`**: Recommended rules that you can drop in without additional configuration.
-  - **`plugin:@typescript-eslint/recommended-type-checked`**: Additional recommended rules that require type information.
-  - **`plugin:@typescript-eslint/strict`**: Additional strict rules that can also catch bugs but are more opinionated than recommended rules _(without type information)_.
-  - **`plugin:@typescript-eslint/strict-type-checked`**: Additional strict rules that do require type information.
+  - **`recommended`**: Recommended rules that you can drop in without additional configuration.
+  - **`recommended-type-checked`**: Additional recommended rules that require type information.
+  - **`strict`**: Additional strict rules that can also catch bugs but are more opinionated than recommended rules _(without type information)_.
+  - **`strict-type-checked`**: Additional strict rules that do require type information.
 - Stylistic rule configurations, for consistent and predictable syntax usage:
-  - **`plugin:@typescript-eslint/stylistic`**: Stylistic rules you can drop in without additional configuration.
-  - **`plugin:@typescript-eslint/stylistic-type-checked`**: Additional stylistic rules that require type information.
+  - **`stylistic`**: Stylistic rules you can drop in without additional configuration.
+  - **`stylistic-type-checked`**: Additional stylistic rules that require type information.
 
-> `plugin:@typescript-eslint/recommended-requiring-type-checking` is now an alias for `plugin:@typescript-eslint/recommended-type-checked`.
+> `recommended-requiring-type-checking` is now an alias for `recommended-type-checked`.
 > The alias will be removed in a future major version.
 
 As of v6, we recommend that projects enable two configs from the above:
@@ -84,18 +86,27 @@ As of v6, we recommend that projects enable two configs from the above:
 - If you are _not_ using typed linting, enable `stylistic` and either `recommended` or `strict`, depending on how intensely you'd like your lint rules to scrutinize your code.
 - If you _are_ using typed linting, enable `stylistic-type-checked` and either `recommended-type-checked` or `strict-type-checked`, depending on how intensely you'd like your lint rules to scrutinize your code.
 
-For example, a typical project that enables typed linting might have an ESLint configuration file like:
+For example, a typical project that enables typed linting might have an ESLint configuration file that changes like:
 
 ```js title=".eslintrc.cjs"
 module.exports = {
   extends: [
     'eslint:recommended',
+    // Removed lines start
+    'plugin:@typescript-eslint/recommended',
+    'plugin:@typescript-eslint/recommended-requiring-type-checking',
+    // Removed lines end
+    // Added lines start
     'plugin:@typescript-eslint/recommended-type-checked',
     'plugin:@typescript-eslint/stylistic-type-checked',
+    // Added lines end
   ],
   plugins: ['@typescript-eslint'],
   parser: '@typescript-eslint/parser',
   parserOptions: {
+    // Remove this line
+    project: './tsconfig.json',
+    // Add this line
     project: true,
     tsconfigRootDir: __dirname,
   },
@@ -143,7 +154,6 @@ Several rules were changed in significant enough ways to be considered breaking 
   - `@typescript-eslint/no-parameter-properties`
   - `@typescript-eslint/sort-type-union-intersection-members`
 - [feat(eslint-plugin): [prefer-nullish-coalescing]: add support for assignment expressions](https://github.com/typescript-eslint/typescript-eslint/pull/5234): Enhances the [`@typescript-eslint/prefer-nullish-coalescing`](https://typescript-eslint.io/prefer-nullish-coalescing) rule to also check `||=` expressions.
-- [fix(eslint-plugin): [prefer-function-type] check for merges with type checking](https://github.com/typescript-eslint/typescript-eslint/pull/6104): Fixes edge case bugs in the [`@typescript-eslint/prefer-function-type`](https://typescript-eslint.io/prefer-function-type) rule around function type merges, at the cost of making it require type information.
 - ⏳ [feat(eslint-plugin): [prefer-optional-chain] use type checking for strict falsiness](https://github.com/typescript-eslint/typescript-eslint/pull/6240): Fixes edge case bugs in the [`@typescript-eslint/prefer-optional-chain`](https://typescript-eslint.io/prefer-optional-chain) rule around false positives, at the cost of making it require type information.
 
 ### Tooling Breaking Changes
@@ -267,7 +277,7 @@ For more information, see:
 
 - [feat: remove semantically invalid properties from TSEnumDeclaration, TSInterfaceDeclaration and TSModuleDeclaration](https://github.com/typescript-eslint/typescript-eslint/pull/4863): Removes some properties from those AST node types that should generally not have existed to begin with.
 - [fix(utils): removed TRuleListener generic from the createRule](https://github.com/typescript-eslint/typescript-eslint/pull/5036): Makes `createRule`-created rules more portable in the type system.
-- [feat(utils): remove (ts-)eslint-scope types](https://github.com/typescript-eslint/typescript-eslint/pull/5256): Removes no-longer-useful `TSESLintScope` types from the `@typescript-eslint/utils` package.
+- [feat(utils): remove (ts-)eslint-scope types](https://github.com/typescript-eslint/typescript-eslint/pull/5256): Removes no-longer-useful `TSESLintScope` types from the `@typescript-eslint/utils` package. Use `@typescript-eslint/scope-manager` directly instead.
 - [fix: rename typeParameters to typeArguments where needed](https://github.com/typescript-eslint/typescript-eslint/pull/5384): corrects the names of AST properties that were called _parameters_ instead of _arguments_.
   - To recap the terminology:
     - An _argument_ is something you provide to a recipient, such as a type provided explicitly to a call expression.
@@ -275,7 +285,7 @@ For more information, see:
   - [Enhancement: Add test-only console warnings to deprecated AST properties](https://github.com/typescript-eslint/typescript-eslint/issues/6469): The properties will include a `console.log` that triggers only in test environments, to encourage developers to move off of them.
 - [feat(scope-manager): ignore ECMA version](https://github.com/typescript-eslint/typescript-eslint/pull/5889): `@typescript-eslint/scope-manager` no longer includes properties referring to `ecmaVersion`, `isES6`, or other ECMA versioning options. It instead now always assumes ESNext.
 - [feat: remove partial type-information program](https://github.com/typescript-eslint/typescript-eslint/pull/6066): When user configurations don't provide a `parserOptions.project`, parser services will no longer include a `program` with incomplete type information. `program` will be `null` instead.
-- [feat(experimental-utils): console.warn on import of experimental-utils](https://github.com/typescript-eslint/typescript-eslint/pull/6179): The `@typescript-eslint/experimental-utils` package has since been renamed to `@typescript-eslint/utils`. The old package name now includes a `console.warn` message to indicate you should switch to the new package name.
+- [feat: remove experimental-utils](https://github.com/typescript-eslint/typescript-eslint/pull/6468): The `@typescript-eslint/experimental-utils` package has since been renamed to `@typescript-eslint/utils`.
   - As a result, the `errorOnTypeScriptSyntacticAndSemanticIssues` option will no longer be allowed if `parserOptions.project` is not provided.
 - [feat(typescript-estree): remove optionality from AST boolean properties](https://github.com/typescript-eslint/typescript-eslint/pull/6274): Switches most AST properties marked as `?: boolean` to `: boolean`, as well as some properties marked as `?:` optional to `| undefined`. This results in more predictable AST node object shapes.
 - [chore(typescript-estree): remove visitor-keys backwards compat export](https://github.com/typescript-eslint/typescript-eslint/pull/6242): `visitorKeys` can now only be imported from `@typescript-eslint/visitor-keys`. Previously it was also re-exported by `@typescript-eslint/utils`.
