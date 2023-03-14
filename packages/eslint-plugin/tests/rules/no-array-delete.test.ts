@@ -43,10 +43,10 @@ delete arr[i];
       `,
       errors: [
         {
-          messageId: 'arrayDeleteViolation',
+          messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDeleteViolation',
+              messageId: 'arrayDelete',
               output: `
 declare const arr: unknown[];
 declare const i: number;
@@ -66,10 +66,10 @@ delete arr[10];
       `,
       errors: [
         {
-          messageId: 'arrayDeleteViolation',
+          messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDeleteViolation',
+              messageId: 'arrayDelete',
               output: `
 declare const arr: unknown[];
 
@@ -93,10 +93,10 @@ delete arr[Enum.X];
       `,
       errors: [
         {
-          messageId: 'arrayDeleteViolation',
+          messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDeleteViolation',
+              messageId: 'arrayDelete',
               output: `
 declare const arr: unknown[];
 
@@ -121,10 +121,10 @@ delete arr[i];
       `,
       errors: [
         {
-          messageId: 'arrayDeleteViolation',
+          messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDeleteViolation',
+              messageId: 'arrayDelete',
               output: `
 declare const arr: Array<unknown>;
 declare const i: number;
@@ -145,10 +145,10 @@ delete obj.prop.arr[indexObj.i];
       `,
       errors: [
         {
-          messageId: 'arrayDeleteViolation',
+          messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDeleteViolation',
+              messageId: 'arrayDelete',
               output: `
 declare const obj: { prop: { arr: unknown[] } };
 declare const indexObj: { i: number };
@@ -169,10 +169,10 @@ delete getTarget()[i];
       `,
       errors: [
         {
-          messageId: 'arrayDeleteViolation',
+          messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDeleteViolation',
+              messageId: 'arrayDelete',
               output: `
 declare const i: number;
 declare function getTarget(): unknown[];
@@ -193,10 +193,10 @@ delete data[getKey()];
       `,
       errors: [
         {
-          messageId: 'arrayDeleteViolation',
+          messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDeleteViolation',
+              messageId: 'arrayDelete',
               output: `
 declare const data: unknown[];
 declare function getKey(): number;
@@ -217,10 +217,10 @@ delete mayBeArr[i];
       `,
       errors: [
         {
-          messageId: 'arrayDeleteViolation',
+          messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDeleteViolation',
+              messageId: 'arrayDelete',
               output: `
 declare const mayBeArr: number | number[];
 declare const i: number;
@@ -241,10 +241,10 @@ delete multiDimesnional[i][i][i][i][i];
       `,
       errors: [
         {
-          messageId: 'arrayDeleteViolation',
+          messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDeleteViolation',
+              messageId: 'arrayDelete',
               output: `
 declare const multiDimesnional: Array<unknown>[][][][];
 declare const i: number;
@@ -266,10 +266,10 @@ function trickyCase<T extends unknown[]>(t: T) {
       `,
       errors: [
         {
-          messageId: 'arrayDeleteViolation',
+          messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDeleteViolation',
+              messageId: 'arrayDelete',
               output: `
 declare const i: number;
 
@@ -292,10 +292,10 @@ function trickyCase1<T extends unknown>(t: T[]) {
       `,
       errors: [
         {
-          messageId: 'arrayDeleteViolation',
+          messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDeleteViolation',
+              messageId: 'arrayDelete',
               output: `
 declare const i: number;
 

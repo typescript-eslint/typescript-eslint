@@ -10,12 +10,11 @@ export default util.createRule({
     hasSuggestions: true,
     docs: {
       description: 'Disallow delete operator for arrays',
-      recommended: 'error',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {
-      arrayDeleteViolation:
-        'Using the delete operator on an array is dangerous.',
+      arrayDelete: 'Using the delete operator on an array is dangerous.',
     },
     schema: [],
     type: 'problem',
@@ -33,11 +32,16 @@ export default util.createRule({
         const checker = parserServices.program.getTypeChecker();
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
 
-        const target = originalNode.getChildAt(0),
-          key = originalNode.getChildAt(2);
+        const target = originalNode.getChildAt(0);
+        const key = originalNode.getChildAt(2);
 
-        const targetType = util.getConstrainedTypeAtLocation(checker, target),
-          keyType = util.getConstrainedTypeAtLocation(checker, key);
+        const targetType = util.getConstrainedTypeAtLocation(checker, target);
+
+        if (!util.isTypeAnyArrayType) {
+          return;
+        }
+
+        const keyType = util.getConstrainedTypeAtLocation(checker, key);
 
         if (
           !isTypeArrayTypeOrArrayInUnionOfTypes(targetType, checker) ||
@@ -48,10 +52,10 @@ export default util.createRule({
 
         context.report({
           node,
-          messageId: 'arrayDeleteViolation',
+          messageId: 'arrayDelete',
           suggest: [
             {
-              messageId: 'arrayDeleteViolation',
+              messageId: 'arrayDelete',
               fix(fixer): TSESLint.RuleFix {
                 return fixer.replaceText(
                   node.parent,
@@ -70,21 +74,12 @@ function isTypeArrayTypeOrArrayInUnionOfTypes(
   type: ts.Type,
   checker: ts.TypeChecker,
 ): boolean {
-  for (const t of unionTypeParts(type)) {
-    if (checker.isArrayType(t)) {
-      return true;
-    }
-  }
-
-  return false;
+  return unionTypeParts(type).some(checker.isArrayType);
 }
 
 function isTypeNumberOrNumberLiteralOrNumberLikeType(type: ts.Type): boolean {
-  return (
-    (type.flags &
-      (ts.TypeFlags.Number |
-        ts.TypeFlags.NumberLiteral |
-        ts.TypeFlags.NumberLike)) !==
-    0
+  return util.isTypeFlagSet(
+    type,
+    ts.TypeFlags.Number | ts.TypeFlags.NumberLiteral | ts.TypeFlags.NumberLike,
   );
 }
