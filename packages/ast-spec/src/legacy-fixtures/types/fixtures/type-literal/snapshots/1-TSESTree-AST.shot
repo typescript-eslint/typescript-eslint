@@ -3,29 +3,29 @@
 exports[`AST Fixtures legacy-fixtures types type-literal TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           definite: false,
           id: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "obj",
             optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypeLiteral {
                 type: "TSTypeLiteral",
-                members: Array [
+                members: [
                   TSPropertySignature {
                     type: "TSPropertySignature",
                     computed: false,
                     key: Identifier {
                       type: "Identifier",
-                      decorators: Array [],
+                      decorators: [],
                       name: "x",
                       optional: false,
 

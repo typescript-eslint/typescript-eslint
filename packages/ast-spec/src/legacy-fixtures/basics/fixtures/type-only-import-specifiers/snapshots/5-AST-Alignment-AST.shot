@@ -14,7 +14,7 @@ exports[`AST Fixtures legacy-fixtures basics type-only-import-specifiers AST Ali
         importKind: 'value',
         source: Literal {
           type: 'Literal',
-          raw: '\\\\'mod\\\\'',
+          raw: '\\'mod\\'',
           value: 'mod',
 
           range: [104, 109],

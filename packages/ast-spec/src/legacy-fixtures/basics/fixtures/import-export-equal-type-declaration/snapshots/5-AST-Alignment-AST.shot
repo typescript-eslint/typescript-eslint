@@ -39,7 +39,7 @@ exports[`AST Fixtures legacy-fixtures basics import-export-equal-type-declaratio
 -           type: 'TSExternalModuleReference',
 -           expression: Literal {
 -             type: 'Literal',
--             raw: '\\\\'bar\\\\'',
+-             raw: '\\'bar\\'',
 -             value: 'bar',
 -
 -             range: [106, 111],
@@ -55,7 +55,7 @@ exports[`AST Fixtures legacy-fixtures basics import-export-equal-type-declaratio
 +         type: 'TSExternalModuleReference',
 +         expression: Literal {
 +           type: 'Literal',
-+           raw: '\\\\'bar\\\\'',
++           raw: '\\'bar\\'',
 +           value: 'bar',
 
 -           range: [98, 112],

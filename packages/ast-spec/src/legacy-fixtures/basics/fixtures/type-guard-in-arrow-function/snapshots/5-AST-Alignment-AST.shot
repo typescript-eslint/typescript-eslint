@@ -62,7 +62,7 @@ exports[`AST Fixtures legacy-fixtures basics type-guard-in-arrow-function AST Al
                       operator: '===',
                       right: Literal {
                         type: 'Literal',
-                        raw: '\\\\'string\\\\'',
+                        raw: '\\'string\\'',
                         value: 'string',
 
                         range: [139, 147],

@@ -3,24 +3,24 @@
 exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-module TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       body: TSModuleBlock {
         type: "TSModuleBlock",
-        body: Array [
+        body: [
           ExportNamedDeclaration {
             type: "ExportNamedDeclaration",
-            assertions: Array [],
+            assertions: [],
             declaration: VariableDeclaration {
               type: "VariableDeclaration",
-              declarations: Array [
+              declarations: [
                 VariableDeclarator {
                   type: "VariableDeclarator",
                   definite: false,
                   id: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "x",
                     optional: false,
 
@@ -60,7 +60,7 @@ Program {
             },
             exportKind: "value",
             source: null,
-            specifiers: Array [],
+            specifiers: [],
 
             range: [86, 115],
             loc: {
@@ -70,20 +70,20 @@ Program {
           },
           ExportNamedDeclaration {
             type: "ExportNamedDeclaration",
-            assertions: Array [],
+            assertions: [],
             declaration: ClassDeclaration {
               type: "ClassDeclaration",
               abstract: false,
               body: ClassBody {
                 type: "ClassBody",
-                body: Array [
+                body: [
                   MethodDefinition {
                     type: "MethodDefinition",
                     computed: false,
-                    decorators: Array [],
+                    decorators: [],
                     key: Identifier {
                       type: "Identifier",
-                      decorators: Array [],
+                      decorators: [],
                       name: "constructor",
                       optional: false,
 
@@ -102,7 +102,7 @@ Program {
                       async: false,
                       body: BlockStatement {
                         type: "BlockStatement",
-                        body: Array [],
+                        body: [],
 
                         range: [191, 193],
                         loc: {
@@ -114,15 +114,15 @@ Program {
                       expression: false,
                       generator: false,
                       id: null,
-                      params: Array [
+                      params: [
                         TSParameterProperty {
                           type: "TSParameterProperty",
                           accessibility: "public",
-                          decorators: Array [],
+                          decorators: [],
                           override: false,
                           parameter: Identifier {
                             type: "Identifier",
-                            decorators: Array [],
+                            decorators: [],
                             name: "x",
                             optional: false,
                             typeAnnotation: TSTypeAnnotation {
@@ -162,11 +162,11 @@ Program {
                         TSParameterProperty {
                           type: "TSParameterProperty",
                           accessibility: "public",
-                          decorators: Array [],
+                          decorators: [],
                           override: false,
                           parameter: Identifier {
                             type: "Identifier",
-                            decorators: Array [],
+                            decorators: [],
                             name: "y",
                             optional: false,
                             typeAnnotation: TSTypeAnnotation {
@@ -227,10 +227,10 @@ Program {
                 },
               },
               declare: false,
-              decorators: Array [],
+              decorators: [],
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "Point",
                 optional: false,
 
@@ -240,7 +240,7 @@ Program {
                   end: { column: 20, line: 5 },
                 },
               },
-              implements: Array [],
+              implements: [],
               superClass: null,
 
               range: [125, 197],
@@ -251,7 +251,7 @@ Program {
             },
             exportKind: "value",
             source: null,
-            specifiers: Array [],
+            specifiers: [],
 
             range: [118, 197],
             loc: {
@@ -261,26 +261,26 @@ Program {
           },
           ExportNamedDeclaration {
             type: "ExportNamedDeclaration",
-            assertions: Array [],
+            assertions: [],
             declaration: TSModuleDeclaration {
               type: "TSModuleDeclaration",
               body: TSModuleBlock {
                 type: "TSModuleBlock",
-                body: Array [
+                body: [
                   ExportNamedDeclaration {
                     type: "ExportNamedDeclaration",
-                    assertions: Array [],
+                    assertions: [],
                     declaration: TSInterfaceDeclaration {
                       type: "TSInterfaceDeclaration",
                       body: TSInterfaceBody {
                         type: "TSInterfaceBody",
-                        body: Array [
+                        body: [
                           TSPropertySignature {
                             type: "TSPropertySignature",
                             computed: false,
                             key: Identifier {
                               type: "Identifier",
-                              decorators: Array [],
+                              decorators: [],
                               name: "name",
                               optional: false,
 
@@ -327,10 +327,10 @@ Program {
                         },
                       },
                       declare: false,
-                      extends: Array [],
+                      extends: [],
                       id: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "Id",
                         optional: false,
 
@@ -349,7 +349,7 @@ Program {
                     },
                     exportKind: "type",
                     source: null,
-                    specifiers: Array [],
+                    specifiers: [],
 
                     range: [222, 269],
                     loc: {
@@ -369,7 +369,7 @@ Program {
               global: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "B",
                 optional: false,
 
@@ -389,7 +389,7 @@ Program {
             },
             exportKind: "value",
             source: null,
-            specifiers: Array [],
+            specifiers: [],
 
             range: [200, 273],
             loc: {
@@ -409,7 +409,7 @@ Program {
       global: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "A",
         optional: false,
 

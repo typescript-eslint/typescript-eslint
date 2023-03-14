@@ -3,10 +3,10 @@
 exports[`AST Fixtures declaration ImportDeclaration named-many TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ImportDeclaration {
       type: "ImportDeclaration",
-      assertions: Array [],
+      assertions: [],
       importKind: "value",
       source: Literal {
         type: "Literal",
@@ -19,12 +19,12 @@ Program {
           end: { column: 29, line: 1 },
         },
       },
-      specifiers: Array [
+      specifiers: [
         ImportSpecifier {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "a",
             optional: false,
 
@@ -37,7 +37,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "a",
             optional: false,
 
@@ -58,7 +58,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "b",
             optional: false,
 
@@ -71,7 +71,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "b",
             optional: false,
 
@@ -92,7 +92,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "c",
             optional: false,
 
@@ -105,7 +105,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "c",
             optional: false,
 

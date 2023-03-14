@@ -3,22 +3,22 @@
 exports[`AST Fixtures legacy-fixtures basics nullish-coalescing TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           VariableDeclaration {
             type: "VariableDeclaration",
-            declarations: Array [
+            declarations: [
               VariableDeclarator {
                 type: "VariableDeclarator",
                 definite: false,
                 id: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "len",
                   optional: false,
 
@@ -32,7 +32,7 @@ Program {
                   type: "LogicalExpression",
                   left: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "s",
                     optional: false,
 
@@ -91,7 +91,7 @@ Program {
       generator: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "processNullishCoalesce",
         optional: false,
 
@@ -101,10 +101,10 @@ Program {
           end: { column: 31, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "s",
           optional: true,
           typeAnnotation: TSTypeAnnotation {

@@ -3,10 +3,10 @@
 exports[`AST Fixtures declaration ImportDeclaration default-and-namespace TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ImportDeclaration {
       type: "ImportDeclaration",
-      assertions: Array [],
+      assertions: [],
       importKind: "value",
       source: Literal {
         type: "Literal",
@@ -19,12 +19,12 @@ Program {
           end: { column: 27, line: 1 },
         },
       },
-      specifiers: Array [
+      specifiers: [
         ImportDefaultSpecifier {
           type: "ImportDefaultSpecifier",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "a",
             optional: false,
 
@@ -45,7 +45,7 @@ Program {
           type: "ImportNamespaceSpecifier",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "b",
             optional: false,
 

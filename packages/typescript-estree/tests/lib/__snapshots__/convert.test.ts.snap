@@ -2,11 +2,14 @@
 
 exports[`convert deeplyCopy should convert array of nodes 1`] = `
 {
+  "ambientModuleNames": undefined,
   "amdDependencies": [],
   "bindDiagnostics": [],
   "bindSuggestionDiagnostics": undefined,
   "checkJsDirective": undefined,
+  "classifiableNames": undefined,
   "commentDirectives": undefined,
+  "endFlowNode": undefined,
   "endOfFileToken": {
     "loc": {
       "end": {
@@ -32,6 +35,8 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
     "foo" => "foo",
     "T" => "T",
   },
+  "impliedNodeFormat": undefined,
+  "imports": undefined,
   "isDeclarationFile": false,
   "languageVariant": 1,
   "languageVersion": 99,
@@ -49,14 +54,21 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
       "line": 1,
     },
   },
+  "moduleAugmentations": undefined,
   "nodeCount": 8,
+  "originalFileName": "",
+  "packageJsonLocations": undefined,
+  "packageJsonScope": undefined,
   "parseDiagnostics": [],
+  "path": "",
   "pragmas": Map {},
   "range": [
     0,
     12,
   ],
   "referencedFiles": [],
+  "resolvedModules": undefined,
+  "resolvedPath": "",
   "scriptKind": 4,
   "setExternalModuleIndicator": [Function],
   "statements": [
@@ -150,66 +162,6 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
                 "type": "Identifier",
                 "typeAnnotation": undefined,
               },
-              "typeParameters": undefined,
-            },
-          ],
-          "range": [
-            7,
-            10,
-          ],
-          "type": "TSTypeParameterInstantiation",
-        },
-        "typeParameters": {
-          "loc": {
-            "end": {
-              "column": 10,
-              "line": 1,
-            },
-            "start": {
-              "column": 7,
-              "line": 1,
-            },
-          },
-          "params": [
-            {
-              "loc": {
-                "end": {
-                  "column": 9,
-                  "line": 1,
-                },
-                "start": {
-                  "column": 8,
-                  "line": 1,
-                },
-              },
-              "range": [
-                8,
-                9,
-              ],
-              "type": "TSTypeReference",
-              "typeArguments": undefined,
-              "typeName": {
-                "decorators": [],
-                "loc": {
-                  "end": {
-                    "column": 9,
-                    "line": 1,
-                  },
-                  "start": {
-                    "column": 8,
-                    "line": 1,
-                  },
-                },
-                "name": "T",
-                "optional": false,
-                "range": [
-                  8,
-                  9,
-                ],
-                "type": "Identifier",
-                "typeAnnotation": undefined,
-              },
-              "typeParameters": undefined,
             },
           ],
           "range": [
@@ -236,6 +188,7 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
       "type": "ExpressionStatement",
     },
   ],
+  "symbolCount": 0,
   "text": "new foo<T>()",
   "type": "TSSourceFile",
   "typeReferenceDirectives": [],
@@ -258,6 +211,7 @@ exports[`convert deeplyCopy should convert node correctly 1`] = `
       },
       "name": {
         "escapedText": "foo",
+        "flowNode": undefined,
         "loc": {
           "end": {
             "column": 8,
@@ -268,7 +222,6 @@ exports[`convert deeplyCopy should convert node correctly 1`] = `
             "line": 1,
           },
         },
-        "originalKeywordKind": undefined,
         "range": [
           5,
           8,
@@ -477,66 +430,6 @@ exports[`convert deeplyCopy should convert node with type arguments correctly 1`
           "type": "Identifier",
           "typeAnnotation": undefined,
         },
-        "typeParameters": undefined,
-      },
-    ],
-    "range": [
-      7,
-      10,
-    ],
-    "type": "TSTypeParameterInstantiation",
-  },
-  "typeParameters": {
-    "loc": {
-      "end": {
-        "column": 10,
-        "line": 1,
-      },
-      "start": {
-        "column": 7,
-        "line": 1,
-      },
-    },
-    "params": [
-      {
-        "loc": {
-          "end": {
-            "column": 9,
-            "line": 1,
-          },
-          "start": {
-            "column": 8,
-            "line": 1,
-          },
-        },
-        "range": [
-          8,
-          9,
-        ],
-        "type": "TSTypeReference",
-        "typeArguments": undefined,
-        "typeName": {
-          "decorators": [],
-          "loc": {
-            "end": {
-              "column": 9,
-              "line": 1,
-            },
-            "start": {
-              "column": 8,
-              "line": 1,
-            },
-          },
-          "name": "T",
-          "optional": false,
-          "range": [
-            8,
-            9,
-          ],
-          "type": "Identifier",
-          "typeAnnotation": undefined,
-        },
-        "typeParameters": undefined,
       },
     ],
     "range": [
@@ -600,6 +493,7 @@ exports[`convert deeplyCopy should convert node with type parameters correctly 1
     },
     "params": [
       {
+        "const": false,
         "constraint": undefined,
         "default": undefined,
         "in": false,

@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics intrinsic-keyword TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Uppercase",
         optional: false,
 
@@ -30,9 +30,10 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSStringKeyword {
               type: "TSStringKeyword",
 
@@ -45,7 +46,7 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "S",
               optional: false,
 
@@ -83,7 +84,7 @@ Program {
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Lowercase",
         optional: false,
 
@@ -104,9 +105,10 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSStringKeyword {
               type: "TSStringKeyword",
 
@@ -119,7 +121,7 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "S",
               optional: false,
 
@@ -157,7 +159,7 @@ Program {
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Capitalize",
         optional: false,
 
@@ -178,9 +180,10 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSStringKeyword {
               type: "TSStringKeyword",
 
@@ -193,7 +196,7 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "S",
               optional: false,
 
@@ -231,7 +234,7 @@ Program {
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Uncapitalize",
         optional: false,
 
@@ -252,9 +255,10 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSStringKeyword {
               type: "TSStringKeyword",
 
@@ -267,7 +271,7 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "S",
               optional: false,
 

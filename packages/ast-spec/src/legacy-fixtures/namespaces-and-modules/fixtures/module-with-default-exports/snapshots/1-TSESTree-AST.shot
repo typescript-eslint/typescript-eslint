@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default-exports TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       body: TSModuleBlock {
         type: "TSModuleBlock",
-        body: Array [
+        body: [
           ExportDefaultDeclaration {
             type: "ExportDefaultDeclaration",
             declaration: ClassDeclaration {
@@ -16,14 +16,14 @@ Program {
               abstract: false,
               body: ClassBody {
                 type: "ClassBody",
-                body: Array [
+                body: [
                   MethodDefinition {
                     type: "MethodDefinition",
                     computed: false,
-                    decorators: Array [],
+                    decorators: [],
                     key: Identifier {
                       type: "Identifier",
-                      decorators: Array [],
+                      decorators: [],
                       name: "method",
                       optional: false,
 
@@ -42,7 +42,7 @@ Program {
                       async: false,
                       body: BlockStatement {
                         type: "BlockStatement",
-                        body: Array [],
+                        body: [],
 
                         range: [131, 133],
                         loc: {
@@ -54,14 +54,14 @@ Program {
                       expression: false,
                       generator: false,
                       id: null,
-                      params: Array [],
+                      params: [],
                       returnType: TSTypeAnnotation {
                         type: "TSTypeAnnotation",
                         typeAnnotation: TSTypeReference {
                           type: "TSTypeReference",
                           typeName: Identifier {
                             type: "Identifier",
-                            decorators: Array [],
+                            decorators: [],
                             name: "C",
                             optional: false,
 
@@ -108,10 +108,10 @@ Program {
                 },
               },
               declare: false,
-              decorators: Array [],
+              decorators: [],
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "C",
                 optional: false,
 
@@ -121,7 +121,7 @@ Program {
                   end: { column: 24, line: 4 },
                 },
               },
-              implements: Array [],
+              implements: [],
               superClass: null,
 
               range: [105, 137],
@@ -145,7 +145,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [170, 172],
                 loc: {
@@ -158,7 +158,7 @@ Program {
               generator: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "bar",
                 optional: false,
 
@@ -168,7 +168,7 @@ Program {
                   end: { column: 29, line: 7 },
                 },
               },
-              params: Array [],
+              params: [],
 
               range: [155, 172],
               loc: {

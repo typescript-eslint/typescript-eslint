@@ -3,14 +3,14 @@
 exports[`AST Fixtures legacy-fixtures declare enum TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSEnumDeclaration {
       type: "TSEnumDeclaration",
       const: false,
       declare: true,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Foo",
         optional: false,
 
@@ -20,13 +20,13 @@ Program {
           end: { column: 16, line: 3 },
         },
       },
-      members: Array [
+      members: [
         TSEnumMember {
           type: "TSEnumMember",
           computed: false,
           id: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "Bar",
             optional: false,
 
@@ -48,7 +48,7 @@ Program {
           computed: false,
           id: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "Baz",
             optional: false,
 

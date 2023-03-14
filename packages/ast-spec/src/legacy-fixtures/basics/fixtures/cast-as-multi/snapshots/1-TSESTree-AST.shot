@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics cast-as-multi TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: TSAsExpression {
@@ -12,7 +12,7 @@ Program {
           type: "TSAsExpression",
           expression: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "x",
             optional: false,
 
@@ -42,7 +42,7 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "T",
             optional: false,
 

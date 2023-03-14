@@ -24,7 +24,7 @@ exports[`AST Fixtures element AccessorProperty key-string AST Alignment - AST 1`
 -             definite: false,
               key: Literal {
                 type: 'Literal',
-                raw: '\\\\'quoted-prop\\\\'',
+                raw: '\\'quoted-prop\\'',
                 value: 'quoted-prop',
 
                 range: [23, 36],
@@ -39,7 +39,7 @@ exports[`AST Fixtures element AccessorProperty key-string AST Alignment - AST 1`
               static: false,
               value: Literal {
                 type: 'Literal',
-                raw: '\\\\'value\\\\'',
+                raw: '\\'value\\'',
                 value: 'value',
 
                 range: [39, 46],

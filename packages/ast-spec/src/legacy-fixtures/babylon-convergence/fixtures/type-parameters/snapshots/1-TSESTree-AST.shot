@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures babylon-convergence type-parameters TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [],
+        body: [],
 
         range: [113, 115],
         loc: {
@@ -22,7 +22,7 @@ Program {
       generator: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "f",
         optional: false,
 
@@ -32,12 +32,13 @@ Program {
           end: { column: 10, line: 3 },
         },
       },
-      params: Array [],
+      params: [],
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSObjectKeyword {
               type: "TSObjectKeyword",
 
@@ -59,7 +60,7 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "T",
               optional: false,
 

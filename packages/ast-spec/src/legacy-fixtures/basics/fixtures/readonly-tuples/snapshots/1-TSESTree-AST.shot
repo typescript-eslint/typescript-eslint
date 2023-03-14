@@ -3,24 +3,24 @@
 exports[`AST Fixtures legacy-fixtures basics readonly-tuples TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           ExpressionStatement {
             type: "ExpressionStatement",
             expression: CallExpression {
               type: "CallExpression",
-              arguments: Array [
+              arguments: [
                 MemberExpression {
                   type: "MemberExpression",
                   computed: true,
                   object: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "pair",
                     optional: false,
 
@@ -55,7 +55,7 @@ Program {
                 computed: false,
                 object: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "console",
                   optional: false,
 
@@ -68,7 +68,7 @@ Program {
                 optional: false,
                 property: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "log",
                   optional: false,
 
@@ -109,7 +109,7 @@ Program {
                 computed: true,
                 object: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "pair",
                   optional: false,
 
@@ -177,7 +177,7 @@ Program {
       generator: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "foo",
         optional: false,
 
@@ -187,10 +187,10 @@ Program {
           end: { column: 12, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "pair",
           optional: false,
           typeAnnotation: TSTypeAnnotation {
@@ -200,7 +200,7 @@ Program {
               operator: "readonly",
               typeAnnotation: TSTupleType {
                 type: "TSTupleType",
-                elementTypes: Array [
+                elementTypes: [
                   TSStringKeyword {
                     type: "TSStringKeyword",
 

@@ -41,7 +41,7 @@ exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-
                       optional: true,
                       property: Literal {
                         type: 'Literal',
-                        raw: '\\\\'two\\\\'',
+                        raw: '\\'two\\'',
                         value: 'two',
 
                         range: [119, 124],
@@ -125,7 +125,7 @@ exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-
                       optional: true,
                       property: Literal {
                         type: 'Literal',
-                        raw: '\\\\'two\\\\'',
+                        raw: '\\'two\\'',
                         value: 'two',
 
                         range: [143, 148],
@@ -209,7 +209,7 @@ exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-
                       optional: true,
                       property: Literal {
                         type: 'Literal',
-                        raw: '\\\\'two\\\\'',
+                        raw: '\\'two\\'',
                         value: 'two',
 
                         range: [168, 173],
@@ -320,7 +320,7 @@ exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-
                   optional: false,
                   property: Literal {
                     type: 'Literal',
-                    raw: '\\\\'three\\\\'',
+                    raw: '\\'three\\'',
                     value: 'three',
 
                     range: [196, 203],
@@ -411,7 +411,7 @@ exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-
                 optional: false,
                 property: Literal {
                   type: 'Literal',
-                  raw: '\\\\'three\\\\'',
+                  raw: '\\'three\\'',
                   value: 'three',
 
                   range: [220, 227],
@@ -495,7 +495,7 @@ exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-
                 optional: false,
                 property: Literal {
                   type: 'Literal',
-                  raw: '\\\\'three\\\\'',
+                  raw: '\\'three\\'',
                   value: 'three',
 
                   range: [244, 251],

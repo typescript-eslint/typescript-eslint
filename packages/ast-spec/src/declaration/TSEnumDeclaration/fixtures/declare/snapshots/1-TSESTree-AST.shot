@@ -3,14 +3,14 @@
 exports[`AST Fixtures declaration TSEnumDeclaration declare TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSEnumDeclaration {
       type: "TSEnumDeclaration",
       const: false,
       declare: true,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Foo",
         optional: false,
 
@@ -20,7 +20,7 @@ Program {
           end: { column: 16, line: 1 },
         },
       },
-      members: Array [],
+      members: [],
 
       range: [0, 19],
       loc: {

@@ -49,38 +49,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
           },
         },
 -       superTypeArguments: TSTypeParameterInstantiation {
--         type: 'TSTypeParameterInstantiation',
--         params: Array [
--           TSTypeReference {
--             type: 'TSTypeReference',
--             typeName: Identifier {
--               type: 'Identifier',
--               decorators: Array [],
--               name: 'A',
--               optional: false,
--
--               range: [128, 129],
--               loc: {
--                 start: { column: 55, line: 3 },
--                 end: { column: 56, line: 3 },
--               },
--             },
--
--             range: [128, 129],
--             loc: {
--               start: { column: 55, line: 3 },
--               end: { column: 56, line: 3 },
--             },
--           },
--         ],
--
--         range: [117, 140],
--         loc: {
--           start: { column: 44, line: 3 },
--           end: { column: 67, line: 3 },
--         },
--       },
-        superTypeParameters: TSTypeParameterInstantiation {
++       superTypeParameters: TSTypeParameterInstantiation {
           type: 'TSTypeParameterInstantiation',
           params: Array [
             TSTypeReference {
@@ -117,6 +86,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -195,38 +165,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
           },
         },
 -       superTypeArguments: TSTypeParameterInstantiation {
--         type: 'TSTypeParameterInstantiation',
--         params: Array [
--           TSTypeReference {
--             type: 'TSTypeReference',
--             typeName: Identifier {
--               type: 'Identifier',
--               decorators: Array [],
--               name: 'A',
--               optional: false,
--
--               range: [219, 220],
--               loc: {
--                 start: { column: 24, line: 6 },
--                 end: { column: 25, line: 6 },
--               },
--             },
--
--             range: [219, 220],
--             loc: {
--               start: { column: 24, line: 6 },
--               end: { column: 25, line: 6 },
--             },
--           },
--         ],
--
--         range: [208, 231],
--         loc: {
--           start: { column: 13, line: 6 },
--           end: { column: 36, line: 6 },
--         },
--       },
-        superTypeParameters: TSTypeParameterInstantiation {
++       superTypeParameters: TSTypeParameterInstantiation {
           type: 'TSTypeParameterInstantiation',
           params: Array [
             TSTypeReference {
@@ -263,6 +202,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               default: TSLiteralType {
                 type: 'TSLiteralType',
                 literal: Literal {
@@ -351,38 +291,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
               },
             },
 -           typeArguments: TSTypeParameterInstantiation {
--             type: 'TSTypeParameterInstantiation',
--             params: Array [
--               TSTypeReference {
--                 type: 'TSTypeReference',
--                 typeName: Identifier {
--                   type: 'Identifier',
--                   decorators: Array [],
--                   name: 'A',
--                   optional: false,
--
--                   range: [295, 296],
--                   loc: {
--                     start: { column: 60, line: 7 },
--                     end: { column: 61, line: 7 },
--                   },
--                 },
--
--                 range: [295, 296],
--                 loc: {
--                   start: { column: 60, line: 7 },
--                   end: { column: 61, line: 7 },
--                 },
--               },
--             ],
--
--             range: [284, 307],
--             loc: {
--               start: { column: 49, line: 7 },
--               end: { column: 72, line: 7 },
--             },
--           },
-            typeParameters: TSTypeParameterInstantiation {
++           typeParameters: TSTypeParameterInstantiation {
               type: 'TSTypeParameterInstantiation',
               params: Array [
                 TSTypeReference {
@@ -439,6 +348,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -504,41 +414,10 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
               loc: {
                 start: { column: 10, line: 9 },
                 end: { column: 13, line: 9 },
--             },
--           },
--           typeArguments: TSTypeParameterInstantiation {
--             type: 'TSTypeParameterInstantiation',
--             params: Array [
--               TSTypeReference {
--                 type: 'TSTypeReference',
--                 typeName: Identifier {
--                   type: 'Identifier',
--                   decorators: Array [],
--                   name: 'A',
--                   optional: false,
--
--                   range: [387, 388],
--                   loc: {
--                     start: { column: 24, line: 9 },
--                     end: { column: 25, line: 9 },
--                   },
--                 },
--
--                 range: [387, 388],
--                 loc: {
--                   start: { column: 24, line: 9 },
--                   end: { column: 25, line: 9 },
--                 },
--               },
--             ],
--
--             range: [376, 399],
--             loc: {
--               start: { column: 13, line: 9 },
--               end: { column: 36, line: 9 },
               },
             },
-            typeParameters: TSTypeParameterInstantiation {
+-           typeArguments: TSTypeParameterInstantiation {
++           typeParameters: TSTypeParameterInstantiation {
               type: 'TSTypeParameterInstantiation',
               params: Array [
                 TSTypeReference {
@@ -595,6 +474,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               default: TSLiteralType {
                 type: 'TSLiteralType',
                 literal: Literal {

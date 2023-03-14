@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics abstract-class-with-declare-properties Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: true,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,

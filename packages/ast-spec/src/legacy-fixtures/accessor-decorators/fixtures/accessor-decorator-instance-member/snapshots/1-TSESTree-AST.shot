@@ -3,22 +3,22 @@
 exports[`AST Fixtures legacy-fixtures accessor-decorators accessor-decorator-instance-member TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
-            decorators: Array [
+            decorators: [
               Decorator {
                 type: "Decorator",
                 expression: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "hidden",
                   optional: false,
 
@@ -38,7 +38,7 @@ Program {
             ],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "z",
               optional: false,
 
@@ -57,7 +57,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ReturnStatement {
                     type: "ReturnStatement",
                     argument: MemberExpression {
@@ -75,7 +75,7 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "_z",
                         optional: false,
 
@@ -111,7 +111,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [100, 128],
               loc: {
@@ -135,10 +135,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "P",
         optional: false,
 
@@ -148,7 +148,7 @@ Program {
           end: { column: 7, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 130],

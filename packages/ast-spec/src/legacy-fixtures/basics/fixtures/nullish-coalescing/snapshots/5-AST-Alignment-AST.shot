@@ -49,7 +49,7 @@ exports[`AST Fixtures legacy-fixtures basics nullish-coalescing AST Alignment - 
                     operator: '??',
                     right: Literal {
                       type: 'Literal',
-                      raw: '\\\\'\\\\'',
+                      raw: '\\'\\'',
                       value: '',
 
                       range: [136, 138],

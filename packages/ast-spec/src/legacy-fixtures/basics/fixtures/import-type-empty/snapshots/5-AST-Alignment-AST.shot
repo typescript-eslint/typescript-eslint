@@ -14,7 +14,7 @@ exports[`AST Fixtures legacy-fixtures basics import-type-empty AST Alignment - A
         importKind: 'value',
         source: Literal {
           type: 'Literal',
-          raw: '\\\\'./foo\\\\'',
+          raw: '\\'./foo\\'',
           value: './foo',
 
           range: [145, 152],

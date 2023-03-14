@@ -3,18 +3,18 @@
 exports[`AST Fixtures legacy-fixtures basics interface-without-type-annotation TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSInterfaceDeclaration {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [
+        body: [
           TSPropertySignature {
             type: "TSPropertySignature",
             computed: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "foo",
               optional: false,
 
@@ -43,10 +43,10 @@ Program {
         },
       },
       declare: false,
-      extends: Array [],
+      extends: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "test",
         optional: false,
 

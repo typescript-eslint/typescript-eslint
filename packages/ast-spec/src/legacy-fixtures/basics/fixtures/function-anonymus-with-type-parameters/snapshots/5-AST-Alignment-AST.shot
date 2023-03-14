@@ -102,14 +102,14 @@ exports[`AST Fixtures legacy-fixtures basics function-anonymus-with-type-paramet
                 params: Array [
                   TSTypeParameter {
                     type: 'TSTypeParameter',
+-                   const: false,
 -                   in: false,
 -                   name: Identifier {
 -                     type: 'Identifier',
 -                     decorators: Array [],
 -                     name: 'T',
 -                     optional: false,
-+                   name: 'T',
-
+-
 -                     range: [93, 94],
 -                     loc: {
 -                       start: { column: 20, line: 3 },
@@ -117,7 +117,8 @@ exports[`AST Fixtures legacy-fixtures basics function-anonymus-with-type-paramet
 -                     },
 -                   },
 -                   out: false,
--
++                   name: 'T',
+
                     range: [93, 94],
                     loc: {
                       start: { column: 20, line: 3 },

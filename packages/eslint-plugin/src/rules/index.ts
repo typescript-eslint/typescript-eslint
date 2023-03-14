@@ -25,6 +25,7 @@ import indent from './indent';
 import initDeclarations from './init-declarations';
 import keySpacing from './key-spacing';
 import keywordSpacing from './keyword-spacing';
+import linesAroundComment from './lines-around-comment';
 import linesBetweenClassMembers from './lines-between-class-members';
 import memberDelimiterStyle from './member-delimiter-style';
 import memberOrdering from './member-ordering';
@@ -156,6 +157,7 @@ export default {
   'init-declarations': initDeclarations,
   'key-spacing': keySpacing,
   'keyword-spacing': keywordSpacing,
+  'lines-around-comment': linesAroundComment,
   'lines-between-class-members': linesBetweenClassMembers,
   'member-delimiter-style': memberDelimiterStyle,
   'member-ordering': memberOrdering,

@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures types template-literal-type-3 TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Color",
         optional: false,
 
@@ -21,7 +21,7 @@ Program {
       },
       typeAnnotation: TSUnionType {
         type: "TSUnionType",
-        types: Array [
+        types: [
           TSLiteralType {
             type: "TSLiteralType",
             literal: Literal {
@@ -82,7 +82,7 @@ Program {
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Quantity",
         optional: false,
 
@@ -94,7 +94,7 @@ Program {
       },
       typeAnnotation: TSUnionType {
         type: "TSUnionType",
-        types: Array [
+        types: [
           TSLiteralType {
             type: "TSLiteralType",
             literal: Literal {
@@ -155,7 +155,7 @@ Program {
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "SeussFish",
         optional: false,
 
@@ -167,11 +167,11 @@ Program {
       },
       typeAnnotation: TSTemplateLiteralType {
         type: "TSTemplateLiteralType",
-        quasis: Array [
+        quasis: [
           TemplateElement {
             type: "TemplateElement",
             tail: false,
-            value: Object {
+            value: {
               "cooked": "",
               "raw": "",
             },
@@ -185,7 +185,7 @@ Program {
           TemplateElement {
             type: "TemplateElement",
             tail: true,
-            value: Object {
+            value: {
               "cooked": " fish",
               "raw": " fish",
             },
@@ -197,15 +197,15 @@ Program {
             },
           },
         ],
-        types: Array [
+        types: [
           TSUnionType {
             type: "TSUnionType",
-            types: Array [
+            types: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "Quantity",
                   optional: false,
 
@@ -226,7 +226,7 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "Color",
                   optional: false,
 

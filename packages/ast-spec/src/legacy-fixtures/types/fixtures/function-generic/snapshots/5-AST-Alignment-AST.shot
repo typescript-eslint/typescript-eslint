@@ -104,6 +104,7 @@ exports[`AST Fixtures legacy-fixtures types function-generic AST Alignment - AST
                     params: Array [
                       TSTypeParameter {
                         type: 'TSTypeParameter',
+-                       const: false,
 -                       in: false,
 -                       name: Identifier {
 -                         type: 'Identifier',

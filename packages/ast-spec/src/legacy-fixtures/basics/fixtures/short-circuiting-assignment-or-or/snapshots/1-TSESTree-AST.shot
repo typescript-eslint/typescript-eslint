@@ -3,14 +3,14 @@
 exports[`AST Fixtures legacy-fixtures basics short-circuiting-assignment-or-or TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: AssignmentExpression {
         type: "AssignmentExpression",
         left: Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "a",
           optional: false,
 
@@ -23,7 +23,7 @@ Program {
         operator: "&&=",
         right: Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "b",
           optional: false,
 

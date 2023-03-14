@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures types template-literal-type-1 TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "T",
         optional: false,
 
@@ -23,12 +23,12 @@ Program {
         type: "TSLiteralType",
         literal: TemplateLiteral {
           type: "TemplateLiteral",
-          expressions: Array [],
-          quasis: Array [
+          expressions: [],
+          quasis: [
             TemplateElement {
               type: "TemplateElement",
               tail: true,
-              value: Object {
+              value: {
                 "cooked": "foo",
                 "raw": "foo",
               },
