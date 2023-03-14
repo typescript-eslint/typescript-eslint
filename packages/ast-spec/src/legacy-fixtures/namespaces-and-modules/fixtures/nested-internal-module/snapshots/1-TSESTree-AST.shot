@@ -3,18 +3,18 @@
 exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-module TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       body: TSModuleBlock {
         type: "TSModuleBlock",
-        body: Array [
+        body: [
           ExportNamedDeclaration {
             type: "ExportNamedDeclaration",
-            assertions: Array [],
+            assertions: [],
             declaration: VariableDeclaration {
               type: "VariableDeclaration",
-              declarations: Array [
+              declarations: [
                 VariableDeclarator {
                   type: "VariableDeclarator",
                   id: Identifier {
@@ -56,7 +56,7 @@ Program {
             },
             exportKind: "value",
             source: null,
-            specifiers: Array [],
+            specifiers: [],
 
             range: [86, 115],
             loc: {
@@ -66,12 +66,12 @@ Program {
           },
           ExportNamedDeclaration {
             type: "ExportNamedDeclaration",
-            assertions: Array [],
+            assertions: [],
             declaration: ClassDeclaration {
               type: "ClassDeclaration",
               body: ClassBody {
                 type: "ClassBody",
-                body: Array [
+                body: [
                   MethodDefinition {
                     type: "MethodDefinition",
                     computed: false,
@@ -93,7 +93,7 @@ Program {
                       async: false,
                       body: BlockStatement {
                         type: "BlockStatement",
-                        body: Array [],
+                        body: [],
 
                         range: [191, 193],
                         loc: {
@@ -104,7 +104,7 @@ Program {
                       expression: false,
                       generator: false,
                       id: null,
-                      params: Array [
+                      params: [
                         TSParameterProperty {
                           type: "TSParameterProperty",
                           accessibility: "public",
@@ -224,7 +224,7 @@ Program {
             },
             exportKind: "value",
             source: null,
-            specifiers: Array [],
+            specifiers: [],
 
             range: [118, 197],
             loc: {
@@ -234,20 +234,20 @@ Program {
           },
           ExportNamedDeclaration {
             type: "ExportNamedDeclaration",
-            assertions: Array [],
+            assertions: [],
             declaration: TSModuleDeclaration {
               type: "TSModuleDeclaration",
               body: TSModuleBlock {
                 type: "TSModuleBlock",
-                body: Array [
+                body: [
                   ExportNamedDeclaration {
                     type: "ExportNamedDeclaration",
-                    assertions: Array [],
+                    assertions: [],
                     declaration: TSInterfaceDeclaration {
                       type: "TSInterfaceDeclaration",
                       body: TSInterfaceBody {
                         type: "TSInterfaceBody",
-                        body: Array [
+                        body: [
                           TSPropertySignature {
                             type: "TSPropertySignature",
                             computed: false,
@@ -313,7 +313,7 @@ Program {
                     },
                     exportKind: "type",
                     source: null,
-                    specifiers: Array [],
+                    specifiers: [],
 
                     range: [222, 269],
                     loc: {
@@ -349,7 +349,7 @@ Program {
             },
             exportKind: "value",
             source: null,
-            specifiers: Array [],
+            specifiers: [],
 
             range: [200, 273],
             loc: {

@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics cast-as-multi TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: TSAsExpression {

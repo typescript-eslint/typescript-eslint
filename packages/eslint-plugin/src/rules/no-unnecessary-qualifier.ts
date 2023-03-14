@@ -81,7 +81,7 @@ export default util.createRule({
       const namespaceSymbol = checker.getSymbolAtLocation(tsQualifier);
 
       if (
-        typeof namespaceSymbol === 'undefined' ||
+        namespaceSymbol === undefined ||
         !symbolIsNamespaceInScope(namespaceSymbol)
       ) {
         return false;
@@ -89,7 +89,7 @@ export default util.createRule({
 
       const accessedSymbol = checker.getSymbolAtLocation(tsName);
 
-      if (typeof accessedSymbol === 'undefined') {
+      if (accessedSymbol === undefined) {
         return false;
       }
 
@@ -101,8 +101,7 @@ export default util.createRule({
       );
 
       return (
-        typeof fromScope === 'undefined' ||
-        symbolsAreEqual(accessedSymbol, fromScope)
+        fromScope === undefined || symbolsAreEqual(accessedSymbol, fromScope)
       );
     }
 

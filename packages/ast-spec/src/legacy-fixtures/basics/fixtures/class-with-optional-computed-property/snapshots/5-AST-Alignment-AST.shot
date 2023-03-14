@@ -20,7 +20,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-proper
 -             declare: false,
               key: Literal {
                 type: 'Literal',
-                raw: '\\\\'foo\\\\'',
+                raw: '\\'foo\\'',
                 value: 'foo',
 
                 range: [94, 99],

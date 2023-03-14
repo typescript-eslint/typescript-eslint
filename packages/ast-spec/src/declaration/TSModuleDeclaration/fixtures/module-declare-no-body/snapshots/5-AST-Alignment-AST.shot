@@ -13,7 +13,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration module-declare-no-body AST
         declare: true,
         id: Literal {
           type: 'Literal',
-          raw: '\\\\'a\\\\'',
+          raw: '\\'a\\'',
           value: 'a',
 
           range: [15, 18],

@@ -3,10 +3,10 @@
 exports[`AST Fixtures declaration ImportDeclaration assertion TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ImportDeclaration {
       type: "ImportDeclaration",
-      assertions: Array [
+      assertions: [
         ImportAttribute {
           type: "ImportAttribute",
           key: Identifier {
@@ -50,7 +50,7 @@ Program {
           end: { column: 24, line: 1 },
         },
       },
-      specifiers: Array [
+      specifiers: [
         ImportNamespaceSpecifier {
           type: "ImportNamespaceSpecifier",
           local: Identifier {

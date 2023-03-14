@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             accessibility: "private",
@@ -117,7 +117,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ReturnStatement {
                     type: "ReturnStatement",
                     argument: MemberExpression {
@@ -168,7 +168,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [152, 181],
               loc: {
@@ -205,7 +205,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ExpressionStatement {
                     type: "ExpressionStatement",
                     expression: AssignmentExpression {
@@ -276,7 +276,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [
+              params: [
                 Identifier {
                   type: "Identifier",
                   name: "bar",

@@ -182,7 +182,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules module-with-default
         },
         id: Literal {
           type: 'Literal',
-          raw: '\\\\'foo\\\\'',
+          raw: '\\'foo\\'',
           value: 'foo',
 
           range: [80, 85],

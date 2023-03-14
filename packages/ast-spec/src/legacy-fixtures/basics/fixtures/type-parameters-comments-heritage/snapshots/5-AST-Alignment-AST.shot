@@ -75,6 +75,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -177,6 +178,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               default: TSLiteralType {
                 type: 'TSLiteralType',
                 literal: Literal {
@@ -201,7 +203,8 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
 -             name: Identifier {
 -               type: 'Identifier',
 -               name: 'A',
--
++             name: 'A',
+
 -               range: [168, 169],
 -               loc: {
 -                 start: { column: 12, line: 5 },
@@ -209,8 +212,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
 -               },
 -             },
 -             out: false,
-+             name: 'A',
-
+-
               range: [168, 183],
               loc: {
                 start: { column: 12, line: 5 },
@@ -312,6 +314,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -427,6 +430,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments-heritage A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               default: TSLiteralType {
                 type: 'TSLiteralType',
                 literal: Literal {

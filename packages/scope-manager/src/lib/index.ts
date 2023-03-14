@@ -3,6 +3,8 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib @typescript-eslint/scope-manager
 
+import { decorators } from './decorators';
+import { decorators_legacy } from './decorators.legacy';
 import { dom } from './dom';
 import { dom_iterable } from './dom.iterable';
 import { es5 } from './es5';
@@ -64,8 +66,12 @@ import { es2022_error } from './es2022.error';
 import { es2022_full } from './es2022.full';
 import { es2022_intl } from './es2022.intl';
 import { es2022_object } from './es2022.object';
+import { es2022_regexp } from './es2022.regexp';
 import { es2022_sharedmemory } from './es2022.sharedmemory';
 import { es2022_string } from './es2022.string';
+import { es2023 } from './es2023';
+import { es2023_array } from './es2023.array';
+import { es2023_full } from './es2023.full';
 import { esnext } from './esnext';
 import { esnext_array } from './esnext.array';
 import { esnext_asynciterable } from './esnext.asynciterable';
@@ -94,6 +100,7 @@ const lib = {
   es2020,
   es2021,
   es2022,
+  es2023,
   esnext,
   dom,
   'dom.iterable': dom_iterable,
@@ -144,6 +151,8 @@ const lib = {
   'es2022.object': es2022_object,
   'es2022.sharedmemory': es2022_sharedmemory,
   'es2022.string': es2022_string,
+  'es2022.regexp': es2022_regexp,
+  'es2023.array': es2023_array,
   'esnext.array': esnext_array,
   'esnext.symbol': esnext_symbol,
   'esnext.asynciterable': esnext_asynciterable,
@@ -152,6 +161,8 @@ const lib = {
   'esnext.string': esnext_string,
   'esnext.promise': esnext_promise,
   'esnext.weakref': esnext_weakref,
+  decorators,
+  'decorators.legacy': decorators_legacy,
   'es2016.full': es2016_full,
   'es2017.full': es2017_full,
   'es2018.full': es2018_full,
@@ -159,6 +170,7 @@ const lib = {
   'es2020.full': es2020_full,
   'es2021.full': es2021_full,
   'es2022.full': es2022_full,
+  'es2023.full': es2023_full,
   'esnext.full': esnext_full,
   lib: libBase,
 } as const;

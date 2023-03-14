@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -39,11 +39,12 @@ Program {
         },
         extendsType: TSTupleType {
           type: "TSTupleType",
-          elementTypes: Array [
+          elementTypes: [
             TSInferType {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -110,7 +111,7 @@ Program {
           },
           typeParameters: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
-            params: Array [
+            params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
@@ -154,9 +155,10 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",
@@ -226,11 +228,12 @@ Program {
         },
         extendsType: TSTupleType {
           type: "TSTupleType",
-          elementTypes: Array [
+          elementTypes: [
             TSInferType {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -270,6 +273,7 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -336,7 +340,7 @@ Program {
           },
           typeParameters: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
-            params: Array [
+            params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
@@ -380,9 +384,10 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",
@@ -452,11 +457,12 @@ Program {
         },
         extendsType: TSTupleType {
           type: "TSTupleType",
-          elementTypes: Array [
+          elementTypes: [
             TSInferType {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -496,6 +502,7 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 in: false,
                 name: Identifier {
                   type: "Identifier",
@@ -553,7 +560,7 @@ Program {
           },
           typeParameters: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
-            params: Array [
+            params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
@@ -597,9 +604,10 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",
@@ -669,11 +677,12 @@ Program {
         },
         extendsType: TSTupleType {
           type: "TSTupleType",
-          elementTypes: Array [
+          elementTypes: [
             TSInferType {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 in: false,
                 name: Identifier {
                   type: "Identifier",
@@ -704,6 +713,7 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -770,7 +780,7 @@ Program {
           },
           typeParameters: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
-            params: Array [
+            params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
@@ -814,9 +824,10 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",
@@ -886,11 +897,12 @@ Program {
         },
         extendsType: TSTupleType {
           type: "TSTupleType",
-          elementTypes: Array [
+          elementTypes: [
             TSInferType {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSStringKeyword {
                   type: "TSStringKeyword",
 
@@ -930,6 +942,7 @@ Program {
               type: "TSInferType",
               typeParameter: TSTypeParameter {
                 type: "TSTypeParameter",
+                const: false,
                 constraint: TSNumberKeyword {
                   type: "TSNumberKeyword",
 
@@ -1010,9 +1023,10 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",

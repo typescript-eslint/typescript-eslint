@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics type-import-type TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -102,7 +102,7 @@ Program {
         },
         typeParameters: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
-          params: Array [
+          params: [
             TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {

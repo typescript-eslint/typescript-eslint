@@ -1,0 +1,39 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ExportAllDeclaration type-kind Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExportAllDeclaration {
+      type: "ExportAllDeclaration",
+      assertions: [],
+      exported: null,
+      exportKind: "type",
+      source: Literal {
+        type: "Literal",
+        raw: "'a'",
+        value: "a",
+
+        range: [19, 22],
+        loc: {
+          start: { column: 19, line: 1 },
+          end: { column: 22, line: 1 },
+        },
+      },
+
+      range: [0, 23],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 23, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 24],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;
