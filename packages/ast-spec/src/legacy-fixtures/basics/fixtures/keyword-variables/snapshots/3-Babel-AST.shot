@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics keyword-variables Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     BlockStatement {
       type: "BlockStatement",
-      body: Array [
+      body: [
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -51,7 +51,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -93,7 +93,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -135,7 +135,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -177,7 +177,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -219,7 +219,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -261,7 +261,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -303,7 +303,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -345,7 +345,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -387,7 +387,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -429,7 +429,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -471,7 +471,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -513,7 +513,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -555,7 +555,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -597,7 +597,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -639,7 +639,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -681,7 +681,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -723,7 +723,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -765,7 +765,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -807,7 +807,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -849,7 +849,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -891,7 +891,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -933,7 +933,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -975,7 +975,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -1017,7 +1017,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -1059,7 +1059,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -1101,7 +1101,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -1143,7 +1143,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -1185,7 +1185,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -1227,7 +1227,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -1269,7 +1269,7 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               id: Identifier {
@@ -1319,7 +1319,7 @@ Program {
     },
     ImportDeclaration {
       type: "ImportDeclaration",
-      assertions: Array [],
+      assertions: [],
       importKind: "value",
       source: Literal {
         type: "Literal",
@@ -1332,7 +1332,7 @@ Program {
           end: { column: 20, line: 69 },
         },
       },
-      specifiers: Array [
+      specifiers: [
         ImportSpecifier {
           type: "ImportSpecifier",
           imported: Identifier {
@@ -2275,7 +2275,7 @@ Program {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [],
+        body: [],
 
         range: [1032, 1034],
         loc: {
@@ -2304,7 +2304,7 @@ Program {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
@@ -2325,7 +2325,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [1071, 1073],
                 loc: {
@@ -2336,7 +2336,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [1068, 1073],
               loc: {
@@ -2372,7 +2372,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [1088, 1090],
                 loc: {
@@ -2383,7 +2383,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [1085, 1090],
               loc: {
@@ -2419,7 +2419,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [1104, 1106],
                 loc: {
@@ -2430,7 +2430,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [1101, 1106],
               loc: {
@@ -2466,10 +2466,10 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   VariableDeclaration {
                     type: "VariableDeclaration",
-                    declarations: Array [
+                    declarations: [
                       VariableDeclarator {
                         type: "VariableDeclarator",
                         id: Identifier {
@@ -2520,7 +2520,7 @@ Program {
               expression: false,
               generator: true,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [1121, 1148],
               loc: {
@@ -2553,7 +2553,7 @@ Program {
           end: { column: 7, line: 72 },
         },
       },
-      implements: Array [
+      implements: [
         TSExpressionWithTypeArguments {
           type: "TSExpressionWithTypeArguments",
           expression: Identifier {

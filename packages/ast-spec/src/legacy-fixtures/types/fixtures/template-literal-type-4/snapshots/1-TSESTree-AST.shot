@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures types template-literal-type-4 TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -18,11 +18,11 @@ Program {
       },
       typeAnnotation: TSTemplateLiteralType {
         type: "TSTemplateLiteralType",
-        quasis: Array [
+        quasis: [
           TemplateElement {
             type: "TemplateElement",
             tail: false,
-            value: Object {
+            value: {
               "cooked": "",
               "raw": "",
             },
@@ -36,7 +36,7 @@ Program {
           TemplateElement {
             type: "TemplateElement",
             tail: false,
-            value: Object {
+            value: {
               "cooked": " - ",
               "raw": " - ",
             },
@@ -50,7 +50,7 @@ Program {
           TemplateElement {
             type: "TemplateElement",
             tail: false,
-            value: Object {
+            value: {
               "cooked": " - ",
               "raw": " - ",
             },
@@ -64,7 +64,7 @@ Program {
           TemplateElement {
             type: "TemplateElement",
             tail: false,
-            value: Object {
+            value: {
               "cooked": " - ",
               "raw": " - ",
             },
@@ -78,7 +78,7 @@ Program {
           TemplateElement {
             type: "TemplateElement",
             tail: true,
-            value: Object {
+            value: {
               "cooked": "",
               "raw": "",
             },
@@ -90,7 +90,7 @@ Program {
             },
           },
         ],
-        types: Array [
+        types: [
           TSTypeReference {
             type: "TSTypeReference",
             typeName: Identifier {
@@ -105,7 +105,7 @@ Program {
             },
             typeParameters: TSTypeParameterInstantiation {
               type: "TSTypeParameterInstantiation",
-              params: Array [
+              params: [
                 TSTypeReference {
                   type: "TSTypeReference",
                   typeName: Identifier {
@@ -154,7 +154,7 @@ Program {
             },
             typeParameters: TSTypeParameterInstantiation {
               type: "TSTypeParameterInstantiation",
-              params: Array [
+              params: [
                 TSTypeReference {
                   type: "TSTypeReference",
                   typeName: Identifier {
@@ -203,7 +203,7 @@ Program {
             },
             typeParameters: TSTypeParameterInstantiation {
               type: "TSTypeParameterInstantiation",
-              params: Array [
+              params: [
                 TSTypeReference {
                   type: "TSTypeReference",
                   typeName: Identifier {
@@ -252,7 +252,7 @@ Program {
             },
             typeParameters: TSTypeParameterInstantiation {
               type: "TSTypeParameterInstantiation",
-              params: Array [
+              params: [
                 TSTypeReference {
                   type: "TSTypeReference",
                   typeName: Identifier {
@@ -297,9 +297,10 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSStringKeyword {
               type: "TSStringKeyword",
 
@@ -369,7 +370,7 @@ Program {
         },
         typeParameters: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
-          params: Array [
+          params: [
             TSLiteralType {
               type: "TSLiteralType",
               literal: Literal {

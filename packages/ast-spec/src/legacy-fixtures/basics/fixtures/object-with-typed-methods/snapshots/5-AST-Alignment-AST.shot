@@ -117,18 +117,19 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                       loc: {
                         start: { column: 18, line: 4 },
                         end: { column: 26, line: 4 },
-                      },
-                    },
+-                     },
+-                   },
 -                   typeParameters: TSTypeParameterDeclaration {
 -                     type: 'TSTypeParameterDeclaration',
 -                     params: Array [
 -                       TSTypeParameter {
 -                         type: 'TSTypeParameter',
+-                         const: false,
 -                         in: false,
 -                         name: Identifier {
 -                           type: 'Identifier',
 -                           name: 'T',
-
+-
 -                           range: [101, 102],
 -                           loc: {
 -                             start: { column: 14, line: 4 },
@@ -149,9 +150,9 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
 -                     loc: {
 -                       start: { column: 13, line: 4 },
 -                       end: { column: 16, line: 4 },
--                     },
--                   },
--
+                      },
+                    },
+
 -                   range: [100, 133],
 +                   range: [103, 133],
                     loc: {
@@ -258,18 +259,19 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
                       loc: {
                         start: { column: 10, line: 7 },
                         end: { column: 18, line: 7 },
--                     },
--                   },
+                      },
+                    },
 -                   typeParameters: TSTypeParameterDeclaration {
 -                     type: 'TSTypeParameterDeclaration',
 -                     params: Array [
 -                       TSTypeParameter {
 -                         type: 'TSTypeParameter',
+-                         const: false,
 -                         in: false,
 -                         name: Identifier {
 -                           type: 'Identifier',
 -                           name: 'T',
--
+
 -                           range: [141, 142],
 -                           loc: {
 -                             start: { column: 6, line: 7 },
@@ -290,9 +292,9 @@ exports[`AST Fixtures legacy-fixtures basics object-with-typed-methods AST Align
 -                     loc: {
 -                       start: { column: 5, line: 7 },
 -                       end: { column: 8, line: 7 },
-                      },
-                    },
-
+-                     },
+-                   },
+-
 -                   range: [140, 173],
 +                   range: [143, 173],
                     loc: {

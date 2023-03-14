@@ -3,13 +3,13 @@
 exports[`AST Fixtures declaration ExportNamedDeclaration variable-declaration Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: VariableDeclaration {
         type: "VariableDeclaration",
-        declarations: Array [
+        declarations: [
           VariableDeclarator {
             type: "VariableDeclarator",
             id: Identifier {
@@ -51,7 +51,7 @@ Program {
       },
       exportKind: "value",
       source: null,
-      specifiers: Array [],
+      specifiers: [],
 
       range: [0, 19],
       loc: {

@@ -2,17 +2,17 @@
 
 exports[`type-declaration literal-type2 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TypeDefinition$1 {
           name: Identifier<"EnthusiasticGreeting">,
           node: TSTypeAliasDeclaration$1,
         },
       ],
       name: "EnthusiasticGreeting",
-      references: Array [
+      references: [
         Reference$9 {
           identifier: Identifier<"EnthusiasticGreeting">,
           isRead: true,
@@ -26,14 +26,14 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         TypeDefinition$2 {
           name: Identifier<"T">,
           node: TSTypeParameter$2,
         },
       ],
       name: "T",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"T">,
           isRead: true,
@@ -71,23 +71,23 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         TypeDefinition$3 {
           name: Identifier<"HELLO">,
           node: TSTypeAliasDeclaration$3,
         },
       ],
       name: "HELLO",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$4,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$9,
       ],
       set: Map {
@@ -97,7 +97,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$4,
@@ -106,7 +106,7 @@ ScopeManager {
     TypeScope$2 {
       block: TSTypeAliasDeclaration$1,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"Uppercase">,
           isRead: true,
@@ -149,7 +149,7 @@ ScopeManager {
       },
       type: "type",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
       ],
     },

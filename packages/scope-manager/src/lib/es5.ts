@@ -5,8 +5,12 @@
 
 import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE, TYPE_VALUE } from './base-config';
+import { decorators } from './decorators';
+import { decorators_legacy } from './decorators.legacy';
 
 export const es5 = {
+  ...decorators,
+  ...decorators_legacy,
   Symbol: TYPE,
   PropertyKey: TYPE,
   PropertyDescriptor: TYPE,
@@ -57,10 +61,6 @@ export const es5 = {
   Array: TYPE_VALUE,
   ArrayConstructor: TYPE,
   TypedPropertyDescriptor: TYPE,
-  ClassDecorator: TYPE,
-  PropertyDecorator: TYPE,
-  MethodDecorator: TYPE,
-  ParameterDecorator: TYPE,
   PromiseConstructorLike: TYPE,
   PromiseLike: TYPE,
   Promise: TYPE,

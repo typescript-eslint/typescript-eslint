@@ -2,17 +2,17 @@
 
 exports[`instantiation-expressions type-arguments2 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         FunctionNameDefinition$1 {
           name: Identifier<"makeBox">,
           node: FunctionDeclaration$1,
         },
       ],
       name: "makeBox",
-      references: Array [
+      references: [
         Reference$3 {
           identifier: Identifier<"makeBox">,
           isRead: true,
@@ -34,21 +34,21 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         ParameterDefinition$2 {
           name: Identifier<"value">,
           node: FunctionDeclaration$1,
         },
       ],
       name: "value",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"value">,
           isRead: true,
@@ -62,14 +62,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         TypeDefinition$3 {
           name: Identifier<"T">,
           node: TSTypeParameter$2,
         },
       ],
       name: "T",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"T">,
           isRead: true,
@@ -83,26 +83,26 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$6 {
-      defs: Array [
+      defs: [
         TypeDefinition$4 {
           name: Identifier<"BoxFunc">,
           node: TSTypeAliasDeclaration$3,
         },
       ],
       name: "BoxFunc",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$7 {
-      defs: Array [
+      defs: [
         TypeDefinition$5 {
           name: Identifier<"T">,
           node: TSTypeParameter$4,
         },
       ],
       name: "T",
-      references: Array [
+      references: [
         Reference$4 {
           identifier: Identifier<"T">,
           isRead: true,
@@ -116,14 +116,14 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$8 {
-      defs: Array [
+      defs: [
         VariableDefinition$6 {
           name: Identifier<"makeStringBox">,
           node: VariableDeclarator$5,
         },
       ],
       name: "makeStringBox",
-      references: Array [
+      references: [
         Reference$5 {
           identifier: Identifier<"makeStringBox">,
           init: true,
@@ -139,11 +139,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$7,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$5,
         Reference$6,
       ],
@@ -155,7 +155,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$6,
@@ -165,7 +165,7 @@ ScopeManager {
     FunctionScope$2 {
       block: FunctionDeclaration$1,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
       ],
@@ -176,7 +176,7 @@ ScopeManager {
       },
       type: "function",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
         Variable$4,
         Variable$5,
@@ -185,7 +185,7 @@ ScopeManager {
     TypeScope$3 {
       block: TSTypeAliasDeclaration$3,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$3,
         Reference$4,
       ],
@@ -194,7 +194,7 @@ ScopeManager {
       },
       type: "type",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$7,
       ],
     },

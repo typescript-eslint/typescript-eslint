@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures types tuple-named-type Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -18,7 +18,7 @@ Program {
       },
       typeAnnotation: TSTupleType {
         type: "TSTupleType",
-        elementTypes: Array [
+        elementTypes: [
           TSNamedTupleMember {
             type: "TSNamedTupleMember",
             elementType: TSStringKeyword {

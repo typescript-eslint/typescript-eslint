@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures types conditional-infer-nested TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -43,6 +43,7 @@ Program {
             type: "TSInferType",
             typeParameter: TSTypeParameter {
               type: "TSTypeParameter",
+              const: false,
               in: false,
               name: Identifier {
                 type: "Identifier",
@@ -101,6 +102,7 @@ Program {
             type: "TSInferType",
             typeParameter: TSTypeParameter {
               type: "TSTypeParameter",
+              const: false,
               in: false,
               name: Identifier {
                 type: "Identifier",
@@ -162,11 +164,12 @@ Program {
               },
               typeParameters: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
-                params: Array [
+                params: [
                   TSInferType {
                     type: "TSInferType",
                     typeParameter: TSTypeParameter {
                       type: "TSTypeParameter",
+                      const: false,
                       in: false,
                       name: Identifier {
                         type: "Identifier",
@@ -307,9 +310,10 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",

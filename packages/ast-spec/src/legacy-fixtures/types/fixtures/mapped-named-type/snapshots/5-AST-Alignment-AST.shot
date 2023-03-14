@@ -26,7 +26,7 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
             type: 'TSLiteralType',
             literal: Literal {
               type: 'Literal',
-              raw: '\\\\'a\\\\'',
+              raw: '\\'a\\'',
               value: 'a',
 
               range: [109, 112],
@@ -91,6 +91,7 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
           },
           typeParameter: TSTypeParameter {
             type: 'TSTypeParameter',
+-           const: false,
             constraint: TSTypeOperator {
               type: 'TSTypeOperator',
               operator: 'keyof',
@@ -152,6 +153,7 @@ exports[`AST Fixtures legacy-fixtures types mapped-named-type AST Alignment - AS
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',

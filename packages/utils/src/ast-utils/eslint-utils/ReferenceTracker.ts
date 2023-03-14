@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-namespace */
-import * as eslintUtils from 'eslint-utils';
+import * as eslintUtils from '@eslint-community/eslint-utils';
 
 import type * as TSESLint from '../../ts-eslint';
 import type { TSESTree } from '../../ts-estree';
@@ -15,7 +15,7 @@ interface ReferenceTracker {
    * Iterate the references that the given `traceMap` determined.
    * This method starts to search from global variables.
    *
-   * @see {@link https://eslint-utils.mysticatea.dev/api/scope-utils.html#tracker-iterateglobalreferences}
+   * @see {@link https://eslint-community.github.io/eslint-utils/api/scope-utils.html#tracker-iterateglobalreferences}
    */
   iterateGlobalReferences<T>(
     traceMap: ReferenceTracker.TraceMap<T>,
@@ -25,7 +25,7 @@ interface ReferenceTracker {
    * Iterate the references that the given `traceMap` determined.
    * This method starts to search from `require()` expression.
    *
-   * @see {@link https://eslint-utils.mysticatea.dev/api/scope-utils.html#tracker-iteratecjsreferences}
+   * @see {@link https://eslint-community.github.io/eslint-utils/api/scope-utils.html#tracker-iteratecjsreferences}
    */
   iterateCjsReferences<T>(
     traceMap: ReferenceTracker.TraceMap<T>,
@@ -35,7 +35,7 @@ interface ReferenceTracker {
    * Iterate the references that the given `traceMap` determined.
    * This method starts to search from `import`/`export` declarations.
    *
-   * @see {@link https://eslint-utils.mysticatea.dev/api/scope-utils.html#tracker-iterateesmreferences}
+   * @see {@link https://eslint-community.github.io/eslint-utils/api/scope-utils.html#tracker-iterateesmreferences}
    */
   iterateEsmReferences<T>(
     traceMap: ReferenceTracker.TraceMap<T>,
@@ -91,7 +91,7 @@ namespace ReferenceTracker {
 /**
  * The tracker for references. This provides reference tracking for global variables, CommonJS modules, and ES modules.
  *
- * @see {@link https://eslint-utils.mysticatea.dev/api/scope-utils.html#referencetracker-class}
+ * @see {@link https://eslint-community.github.io/eslint-utils/api/scope-utils.html#referencetracker-class}
  */
 const ReferenceTracker = eslintUtils.ReferenceTracker as ReferenceTrackerStatic;
 

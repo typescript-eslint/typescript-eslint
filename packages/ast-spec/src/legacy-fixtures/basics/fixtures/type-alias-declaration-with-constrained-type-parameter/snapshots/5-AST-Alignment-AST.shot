@@ -104,6 +104,7 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constra
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSTypeLiteral {
                 type: 'TSTypeLiteral',
                 members: Array [],

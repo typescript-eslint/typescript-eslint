@@ -2,17 +2,17 @@
 
 exports[`type-declaration interface2 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TypeDefinition$1 {
           name: Identifier<"A">,
           node: TSInterfaceDeclaration$1,
         },
       ],
       name: "A",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"A">,
           isRead: true,
@@ -26,23 +26,23 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         TypeDefinition$2 {
           name: Identifier<"B">,
           node: TSTypeAliasDeclaration$2,
         },
       ],
       name: "B",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$3,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -52,7 +52,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,

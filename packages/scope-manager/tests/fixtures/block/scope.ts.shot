@@ -2,17 +2,17 @@
 
 exports[`block scope 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"i">,
           node: VariableDeclarator$1,
         },
       ],
       name: "i",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"i">,
           init: true,
@@ -36,14 +36,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         VariableDefinition$2 {
           name: Identifier<"j">,
           node: VariableDeclarator$3,
         },
       ],
       name: "j",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"j">,
           init: true,
@@ -59,11 +59,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$5,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$4 {
           identifier: Identifier<"j">,
           isRead: true,
@@ -78,14 +78,14 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
       ],
     },
     BlockScope$2 {
       block: BlockStatement$6,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
         Reference$3,
@@ -96,7 +96,7 @@ ScopeManager {
       },
       type: "block",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$2,
         Variable$3,
       ],
