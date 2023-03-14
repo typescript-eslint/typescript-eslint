@@ -308,5 +308,69 @@ function trickyCase1<T extends unknown>(t: T[]) {
         },
       ],
     },
+    {
+      code: `
+declare const arr: unknown[];
+delete arr[Math.random() ? 1 : 1];
+        `,
+      errors: [
+        {
+          messageId: 'arrayDelete',
+          suggestions: [
+            {
+              messageId: 'arrayDelete',
+              output: `
+declare const arr: unknown[];
+arr.splice(Math.random() ? 1 : 1, 1);
+        `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: unknown[];
+delete arr[Math.random() ? 1 : "prop"];
+        `,
+      errors: [
+        {
+          messageId: 'arrayDelete',
+          suggestions: [
+            {
+              messageId: 'arrayDelete',
+              output: `
+declare const arr: unknown[];
+arr.splice(Math.random() ? 1 : "prop", 1);
+        `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: unknown[];
+declare function something(): unknown;
+
+delete arr[something(), 1];
+        `,
+      errors: [
+        {
+          messageId: 'arrayDelete',
+          suggestions: [
+            {
+              messageId: 'arrayDelete',
+              output: `
+declare const arr: unknown[];
+declare function something(): unknown;
+
+arr.splice((something(), 1), 1);
+        `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });

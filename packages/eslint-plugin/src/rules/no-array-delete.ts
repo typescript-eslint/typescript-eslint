@@ -1,4 +1,4 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { unionTypeParts } from 'tsutils';
 import * as ts from 'typescript';
 
@@ -57,9 +57,15 @@ export default util.createRule({
             {
               messageId: 'arrayDelete',
               fix(fixer): TSESLint.RuleFix {
+                const requiresParens =
+                  node.property.type === AST_NODE_TYPES.SequenceExpression;
+                const keyText = key.getText();
+
                 return fixer.replaceText(
                   node.parent,
-                  `${target.getText()}.splice(${key.getText()}, 1)`,
+                  `${target.getText()}.splice(${
+                    requiresParens ? `(${keyText})` : keyText
+                  }, 1)`,
                 );
               },
             },
