@@ -119,15 +119,14 @@ function match(mode: FilterMode, value: boolean): boolean | undefined {
 }
 
 export default function RulesTable({
-  extensionRules,
+  ruleset,
 }: {
-  extensionRules?: boolean;
+  ruleset: 'extension-rules' | 'supported-rules';
 }): JSX.Element {
-  const [filters, changeFilter] = useRulesFilters(
-    extensionRules ? 'extension-rules' : 'supported-rules',
-  );
+  const [filters, changeFilter] = useRulesFilters(ruleset);
 
   const rules = useRulesMeta();
+  const extensionRules = ruleset === 'extension-rules';
   const relevantRules = useMemo(
     () =>
       rules
