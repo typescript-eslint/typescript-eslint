@@ -6,7 +6,8 @@ description: 'Require overridden methods to call super.method in their body.'
 >
 > See **https://typescript-eslint.io/rules/call-super-on-override** for documentation.
 
-This rule enforces that overridden methods are calling exact super method to avoid missing super class method implementations.
+This rule enforces that overridden methods call their corresponding `super` method.
+Doing so can be useful in architectures where base class methods are meant to always be called by child classes.
 
 ## Rule Details
 
