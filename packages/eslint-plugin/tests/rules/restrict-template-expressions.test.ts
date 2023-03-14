@@ -231,8 +231,8 @@ ruleTester.run('restrict-template-expressions', rule, {
     {
       options: [{ allowNever: true }],
       code: `
-      declare const value: never;
-      const stringy = \`\${value}\`;
+        declare const value: never;
+        const stringy = \`\${value}\`;
       `,
     },
     {
@@ -466,8 +466,8 @@ ruleTester.run('restrict-template-expressions', rule, {
     {
       options: [{ allowNever: false }],
       code: `
-      declare const value: never;
-      const stringy = \`\${value}\`;
+        declare const value: never;
+        const stringy = \`\${value}\`;
       `,
       errors: [
         {
