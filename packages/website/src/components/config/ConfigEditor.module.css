@@ -1,17 +1,4 @@
 .search {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
-  background: var(--ifm-navbar-search-input-background-color)
-    var(--ifm-navbar-search-input-icon) no-repeat 0.75rem center / 1rem 1rem;
-  border: none;
-  color: var(--ifm-navbar-search-input-color);
-  cursor: text;
-  display: inline-block;
-  height: 2rem;
-  padding: 0 0.5rem 0 2.25rem;
-  font-size: 0.9rem;
-  flex: 1;
   border-radius: 0.2rem;
 }
 

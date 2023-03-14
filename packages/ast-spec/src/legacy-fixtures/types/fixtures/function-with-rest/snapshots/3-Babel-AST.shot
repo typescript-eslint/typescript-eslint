@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures types function-with-rest Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           id: Identifier {
@@ -16,7 +16,7 @@ Program {
               type: "TSTypeAnnotation",
               typeAnnotation: TSFunctionType {
                 type: "TSFunctionType",
-                parameters: Array [
+                parameters: [
                   RestElement {
                     type: "RestElement",
                     argument: Identifier {

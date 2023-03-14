@@ -2,17 +2,17 @@
 
 exports[`implicit implicit1 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"x">,
           node: VariableDeclarator$1,
         },
       ],
       name: "x",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"x">,
           init: true,
@@ -28,11 +28,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$2,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2 {
           identifier: Identifier<"y">,
@@ -49,7 +49,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
       ],

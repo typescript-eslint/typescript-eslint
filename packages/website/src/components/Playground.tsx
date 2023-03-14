@@ -6,9 +6,11 @@ import {
   defaultTsConfig,
 } from '@site/src/components/config/utils';
 import EditorTabs from '@site/src/components/EditorTabs';
-import ErrorsViewer from '@site/src/components/ErrorsViewer';
+import { ErrorsViewer, ErrorViewer } from '@site/src/components/ErrorsViewer';
+import { ESQueryFilter } from '@site/src/components/ESQueryFilter';
 import type { TSESTree } from '@typescript-eslint/utils';
 import clsx from 'clsx';
+import type * as ESQuery from 'esquery';
 import type Monaco from 'monaco-editor';
 import React, { useCallback, useReducer, useState } from 'react';
 import type { SourceFile } from 'typescript';
@@ -48,7 +50,6 @@ function rangeReducer<T extends SelectedRange | null>(
   }
   return prevState;
 }
-
 function Playground(): JSX.Element {
   const [state, setState] = useHashState({
     jsx: false,
@@ -70,6 +71,8 @@ function Playground(): JSX.Element {
   const [position, setPosition] = useState<Monaco.Position | null>(null);
   const [activeTab, setTab] = useState<TabType>('code');
   const [showModal, setShowModal] = useState<TabType | false>(false);
+  const [esQueryFilter, setEsQueryFilter] = useState<ESQuery.Selector>();
+  const [esQueryError, setEsQueryError] = useState<Error>();
   const enableSplitPanes = useMediaQuery('(min-width: 996px)');
 
   const updateModal = useCallback(
@@ -129,6 +132,7 @@ function Playground(): JSX.Element {
             split="vertical"
             minSize="10%"
             defaultSize="50%"
+            pane2Style={{ overflow: 'hidden' }}
           >
             <div className={clsx(styles.sourceCode)}>
               {isLoading && <Loader />}
@@ -161,6 +165,12 @@ function Playground(): JSX.Element {
               />
             </div>
             <div className={styles.astViewer}>
+              {state.showAST === 'es' && (
+                <ESQueryFilter
+                  onChange={setEsQueryFilter}
+                  onError={setEsQueryError}
+                />
+              )}
               {(state.showAST === 'ts' && tsAst && (
                 <ASTViewerTS
                   value={tsAst}
@@ -175,10 +185,18 @@ function Playground(): JSX.Element {
                     onSelectNode={setSelectedRange}
                   />
                 )) ||
+                (state.showAST === 'es' && esQueryError && (
+                  <ErrorViewer
+                    type="warning"
+                    title="Invalid Selector"
+                    value={esQueryError}
+                  />
+                )) ||
                 (state.showAST === 'es' && esAst && (
                   <ASTViewerESTree
                     value={esAst}
                     position={position}
+                    filter={esQueryFilter}
                     onSelectNode={setSelectedRange}
                   />
                 )) || <ErrorsViewer value={markers} />}

@@ -34,6 +34,7 @@ exports[`AST Fixtures legacy-fixtures basics intrinsic-keyword AST Alignment - A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSStringKeyword {
                 type: 'TSStringKeyword',
 
@@ -104,6 +105,7 @@ exports[`AST Fixtures legacy-fixtures basics intrinsic-keyword AST Alignment - A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSStringKeyword {
                 type: 'TSStringKeyword',
 
@@ -111,8 +113,8 @@ exports[`AST Fixtures legacy-fixtures basics intrinsic-keyword AST Alignment - A
                 loc: {
                   start: { column: 25, line: 4 },
                   end: { column: 31, line: 4 },
--               },
--             },
+                },
+              },
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -122,8 +124,8 @@ exports[`AST Fixtures legacy-fixtures basics intrinsic-keyword AST Alignment - A
 -               loc: {
 -                 start: { column: 15, line: 4 },
 -                 end: { column: 16, line: 4 },
-                },
-              },
+-               },
+-             },
 -             out: false,
 +             name: 'S',
 
@@ -174,6 +176,7 @@ exports[`AST Fixtures legacy-fixtures basics intrinsic-keyword AST Alignment - A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSStringKeyword {
                 type: 'TSStringKeyword',
 
@@ -181,8 +184,8 @@ exports[`AST Fixtures legacy-fixtures basics intrinsic-keyword AST Alignment - A
                 loc: {
                   start: { column: 26, line: 5 },
                   end: { column: 32, line: 5 },
--               },
--             },
+                },
+              },
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -192,8 +195,8 @@ exports[`AST Fixtures legacy-fixtures basics intrinsic-keyword AST Alignment - A
 -               loc: {
 -                 start: { column: 16, line: 5 },
 -                 end: { column: 17, line: 5 },
-                },
-              },
+-               },
+-             },
 -             out: false,
 +             name: 'S',
 
@@ -244,6 +247,7 @@ exports[`AST Fixtures legacy-fixtures basics intrinsic-keyword AST Alignment - A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSStringKeyword {
                 type: 'TSStringKeyword',
 

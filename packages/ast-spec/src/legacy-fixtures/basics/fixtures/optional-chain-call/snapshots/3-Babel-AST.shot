@@ -3,20 +3,20 @@
 exports[`AST Fixtures legacy-fixtures basics optional-chain-call Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           ExpressionStatement {
             type: "ExpressionStatement",
             expression: ChainExpression {
               type: "ChainExpression",
               expression: CallExpression {
                 type: "CallExpression",
-                arguments: Array [],
+                arguments: [],
                 callee: MemberExpression {
                   type: "MemberExpression",
                   computed: false,
@@ -76,7 +76,7 @@ Program {
               type: "ChainExpression",
               expression: CallExpression {
                 type: "CallExpression",
-                arguments: Array [],
+                arguments: [],
                 callee: MemberExpression {
                   type: "MemberExpression",
                   computed: false,
@@ -157,7 +157,7 @@ Program {
               type: "ChainExpression",
               expression: CallExpression {
                 type: "CallExpression",
-                arguments: Array [],
+                arguments: [],
                 callee: MemberExpression {
                   type: "MemberExpression",
                   computed: false,
@@ -238,7 +238,7 @@ Program {
               type: "ChainExpression",
               expression: CallExpression {
                 type: "CallExpression",
-                arguments: Array [],
+                arguments: [],
                 callee: MemberExpression {
                   type: "MemberExpression",
                   computed: false,
@@ -340,7 +340,7 @@ Program {
               type: "ChainExpression",
               expression: CallExpression {
                 type: "CallExpression",
-                arguments: Array [],
+                arguments: [],
                 callee: MemberExpression {
                   type: "MemberExpression",
                   computed: false,
@@ -442,7 +442,7 @@ Program {
               type: "ChainExpression",
               expression: CallExpression {
                 type: "CallExpression",
-                arguments: Array [],
+                arguments: [],
                 callee: Identifier {
                   type: "Identifier",
                   name: "one",
@@ -481,10 +481,10 @@ Program {
               type: "ChainExpression",
               expression: CallExpression {
                 type: "CallExpression",
-                arguments: Array [],
+                arguments: [],
                 callee: CallExpression {
                   type: "CallExpression",
-                  arguments: Array [],
+                  arguments: [],
                   callee: Identifier {
                     type: "Identifier",
                     name: "one",
@@ -531,10 +531,10 @@ Program {
               type: "ChainExpression",
               expression: CallExpression {
                 type: "CallExpression",
-                arguments: Array [],
+                arguments: [],
                 callee: CallExpression {
                   type: "CallExpression",
-                  arguments: Array [],
+                  arguments: [],
                   callee: Identifier {
                     type: "Identifier",
                     name: "one",
@@ -584,7 +584,7 @@ Program {
                 computed: false,
                 object: CallExpression {
                   type: "CallExpression",
-                  arguments: Array [],
+                  arguments: [],
                   callee: Identifier {
                     type: "Identifier",
                     name: "one",
@@ -655,7 +655,7 @@ Program {
           end: { column: 28, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
           name: "one",

@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures types typeof-with-type-parameters TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           id: Identifier {
@@ -47,7 +47,7 @@ Program {
                 },
                 typeParameters: TSTypeParameterInstantiation {
                   type: "TSTypeParameterInstantiation",
-                  params: Array [
+                  params: [
                     TSTypeReference {
                       type: "TSTypeReference",
                       typeName: Identifier {

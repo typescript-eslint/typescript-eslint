@@ -205,6 +205,7 @@ export default util.createRule<Options, MessageId>({
             suggest: [{ messageId: 'voidExprWrapVoid', fix: wrapVoidFix }],
           });
         }
+
         context.report({
           node,
           messageId: 'invalidVoidExpr',
@@ -225,6 +226,11 @@ export default util.createRule<Options, MessageId>({
         node.parent,
         util.NullThrowsReasons.MissingParent,
       );
+      if (parent.type === AST_NODE_TYPES.SequenceExpression) {
+        if (node !== parent.expressions[parent.expressions.length - 1]) {
+          return null;
+        }
+      }
 
       if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
         // e.g. `{ console.log("foo"); }`

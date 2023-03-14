@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics interface-with-all-property-types TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSInterfaceDeclaration {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [
+        body: [
           TSPropertySignature {
             type: "TSPropertySignature",
             computed: false,
@@ -165,7 +165,7 @@ Program {
           },
           TSIndexSignature {
             type: "TSIndexSignature",
-            parameters: Array [
+            parameters: [
               Identifier {
                 type: "Identifier",
                 name: "eee",
@@ -234,7 +234,7 @@ Program {
               },
             },
             kind: "method",
-            params: Array [],
+            params: [],
             returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSVoidKeyword {
@@ -275,7 +275,7 @@ Program {
             },
             kind: "method",
             optional: true,
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
                 name: "a",
@@ -347,7 +347,7 @@ Program {
             },
             kind: "method",
             optional: true,
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
                 name: "a",
@@ -418,7 +418,7 @@ Program {
               },
             },
             kind: "method",
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
                 name: "a",
@@ -470,9 +470,10 @@ Program {
             },
             typeParameters: TSTypeParameterDeclaration {
               type: "TSTypeParameterDeclaration",
-              params: Array [
+              params: [
                 TSTypeParameter {
                   type: "TSTypeParameter",
+                  const: false,
                   in: false,
                   name: Identifier {
                     type: "Identifier",
@@ -509,7 +510,7 @@ Program {
           },
           TSConstructSignatureDeclaration {
             type: "TSConstructSignatureDeclaration",
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
                 name: "a",
@@ -559,7 +560,7 @@ Program {
           },
           TSConstructSignatureDeclaration {
             type: "TSConstructSignatureDeclaration",
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
                 name: "a",
@@ -602,9 +603,10 @@ Program {
             },
             typeParameters: TSTypeParameterDeclaration {
               type: "TSTypeParameterDeclaration",
-              params: Array [
+              params: [
                 TSTypeParameter {
                   type: "TSTypeParameter",
+                  const: false,
                   in: false,
                   name: Identifier {
                     type: "Identifier",

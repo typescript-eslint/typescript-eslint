@@ -2,17 +2,17 @@
 
 exports[`destructuring array-assignment 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"obj">,
           node: VariableDeclarator$1,
         },
       ],
       name: "obj",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"obj">,
           init: true,
@@ -36,14 +36,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         VariableDefinition$2 {
           name: Identifier<"b">,
           node: VariableDeclarator$3,
         },
       ],
       name: "b",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"b">,
           init: false,
@@ -59,14 +59,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         VariableDefinition$3 {
           name: Identifier<"c">,
           node: VariableDeclarator$5,
         },
       ],
       name: "c",
-      references: Array [
+      references: [
         Reference$3 {
           identifier: Identifier<"c">,
           init: false,
@@ -82,11 +82,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$6,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
         Reference$3,
@@ -100,7 +100,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
