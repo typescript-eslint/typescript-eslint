@@ -2,17 +2,17 @@
 
 exports[`instantiation-expressions type-arguments1 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$1 {
           name: Identifier<"Foo">,
           node: ClassDeclaration$1,
         },
       ],
       name: "Foo",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"Foo">,
           isRead: true,
@@ -26,26 +26,26 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$2 {
           name: Identifier<"Foo">,
           node: ClassDeclaration$1,
         },
       ],
       name: "Foo",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         TypeDefinition$3 {
           name: Identifier<"T">,
           node: TSTypeParameter$2,
         },
       ],
       name: "T",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"T">,
           isRead: true,
@@ -59,14 +59,14 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$4 {
           name: Identifier<"Bar">,
           node: ClassDeclaration$3,
         },
       ],
       name: "Bar",
-      references: Array [
+      references: [
         Reference$4 {
           identifier: Identifier<"Bar">,
           isRead: true,
@@ -80,26 +80,26 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$6 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$5 {
           name: Identifier<"Bar">,
           node: ClassDeclaration$3,
         },
       ],
       name: "Bar",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$7 {
-      defs: Array [
+      defs: [
         TypeDefinition$6 {
           name: Identifier<"T">,
           node: TSTypeParameter$4,
         },
       ],
       name: "T",
-      references: Array [
+      references: [
         Reference$3 {
           identifier: Identifier<"T">,
           isRead: true,
@@ -113,11 +113,11 @@ ScopeManager {
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$5,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$4,
       ],
       set: Map {
@@ -127,7 +127,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$5,
@@ -136,7 +136,7 @@ ScopeManager {
     ClassScope$2 {
       block: ClassDeclaration$1,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -145,7 +145,7 @@ ScopeManager {
       },
       type: "class",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
         Variable$4,
       ],
@@ -153,14 +153,14 @@ ScopeManager {
     ClassScope$3 {
       block: ClassDeclaration$3,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "Bar" => Variable$6,
         "T" => Variable$7,
       },
       type: "class",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$6,
         Variable$7,
       ],
@@ -168,14 +168,14 @@ ScopeManager {
     ClassFieldInitializerScope$4 {
       block: TSInstantiationExpression$6,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$2,
         Reference$3,
       ],
       set: Map {},
       type: "class-field-initializer",
       upper: ClassScope$3,
-      variables: Array [],
+      variables: [],
     },
   ],
 }

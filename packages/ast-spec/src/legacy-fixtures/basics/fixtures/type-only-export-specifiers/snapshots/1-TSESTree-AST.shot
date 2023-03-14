@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures basics type-only-export-specifiers TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: null,
       exportKind: "value",
       source: Literal {
@@ -20,7 +20,7 @@ Program {
           end: { column: 36, line: 3 },
         },
       },
-      specifiers: Array [
+      specifiers: [
         ExportSpecifier {
           type: "ExportSpecifier",
           exported: Identifier {

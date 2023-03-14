@@ -2,29 +2,29 @@
 
 exports[`type-declaration conditional1 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TypeDefinition$1 {
           name: Identifier<"T">,
           node: TSTypeAliasDeclaration$1,
         },
       ],
       name: "T",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         TypeDefinition$2 {
           name: Identifier<"U">,
           node: TSTypeParameter$2,
         },
       ],
       name: "U",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"U">,
           isRead: true,
@@ -38,14 +38,14 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         TypeDefinition$3 {
           name: Identifier<"V">,
           node: TSTypeParameter$3,
         },
       ],
       name: "V",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"V">,
           isRead: true,
@@ -59,23 +59,23 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         TypeDefinition$4 {
           name: Identifier<"Unresolved">,
           node: TSTypeAliasDeclaration$4,
         },
       ],
       name: "Unresolved",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$5,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$3 {
           identifier: Identifier<"V">,
           isRead: true,
@@ -92,7 +92,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$5,
@@ -101,20 +101,20 @@ ScopeManager {
     TypeScope$2 {
       block: TSTypeAliasDeclaration$1,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "U" => Variable$3,
       },
       type: "type",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
       ],
     },
     ConditionalTypeScope$3 {
       block: TSConditionalType$6,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
       ],
@@ -123,7 +123,7 @@ ScopeManager {
       },
       type: "conditionalType",
       upper: TypeScope$2,
-      variables: Array [
+      variables: [
         Variable$4,
       ],
     },

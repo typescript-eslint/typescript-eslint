@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics destructuring-assignment-property TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [],
+        body: [],
 
         range: [106, 108],
         loc: {
@@ -29,12 +29,12 @@ Program {
           end: { column: 12, line: 3 },
         },
       },
-      params: Array [
+      params: [
         AssignmentPattern {
           type: "AssignmentPattern",
           left: ObjectPattern {
             type: "ObjectPattern",
-            properties: Array [
+            properties: [
               Property {
                 type: "Property",
                 computed: false,
@@ -65,7 +65,7 @@ Program {
                   },
                   right: ArrayExpression {
                     type: "ArrayExpression",
-                    elements: Array [],
+                    elements: [],
 
                     range: [94, 96],
                     loc: {

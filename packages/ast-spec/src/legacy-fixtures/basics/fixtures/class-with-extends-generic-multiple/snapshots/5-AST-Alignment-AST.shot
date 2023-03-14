@@ -94,6 +94,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSTypeReference {
                 type: 'TSTypeReference',
                 typeName: Identifier {

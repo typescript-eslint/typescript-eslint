@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures basics export-star-as-ns-from Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportAllDeclaration {
       type: "ExportAllDeclaration",
-      assertions: Array [],
+      assertions: [],
       exported: Identifier {
         type: "Identifier",
         name: "foo",

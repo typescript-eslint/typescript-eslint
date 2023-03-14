@@ -2,17 +2,17 @@
 
 exports[`class emit-metadata method-deco 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         FunctionNameDefinition$1 {
           name: Identifier<"deco">,
           node: FunctionDeclaration$1,
         },
       ],
       name: "deco",
-      references: Array [
+      references: [
         Reference$6 {
           identifier: Identifier<"deco">,
           isRead: true,
@@ -26,33 +26,33 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         ParameterDefinition$2 {
           name: Identifier<"param">,
           node: FunctionDeclaration$1,
         },
       ],
       name: "param",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$3 {
           name: Identifier<"T">,
           node: ClassDeclaration$2,
         },
       ],
       name: "T",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"T">,
           isRead: true,
@@ -98,97 +98,97 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$6 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$4 {
           name: Identifier<"T">,
           node: ClassDeclaration$2,
         },
       ],
       name: "T",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$7 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$5 {
           name: Identifier<"A">,
           node: ClassDeclaration$3,
         },
       ],
       name: "A",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$8 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$6 {
           name: Identifier<"A">,
           node: ClassDeclaration$3,
         },
       ],
       name: "A",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$9 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$10 {
-      defs: Array [
+      defs: [
         ParameterDefinition$7 {
           name: Identifier<"a">,
           node: FunctionExpression$4,
         },
       ],
       name: "a",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
     Variable$11 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$12 {
-      defs: Array [
+      defs: [
         ParameterDefinition$8 {
           name: Identifier<"a">,
           node: FunctionExpression$5,
         },
       ],
       name: "a",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
     Variable$13 {
-      defs: Array [
+      defs: [
         ParameterDefinition$9 {
           name: Identifier<"b">,
           node: FunctionExpression$5,
         },
       ],
       name: "b",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$6,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
         "deco" => Variable$2,
@@ -197,7 +197,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$5,
@@ -207,14 +207,14 @@ ScopeManager {
     FunctionScope$2 {
       block: FunctionDeclaration$1,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "arguments" => Variable$3,
         "param" => Variable$4,
       },
       type: "function",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
         Variable$4,
       ],
@@ -222,20 +222,20 @@ ScopeManager {
     ClassScope$3 {
       block: ClassDeclaration$2,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "T" => Variable$6,
       },
       type: "class",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$6,
       ],
     },
     ClassScope$4 {
       block: ClassDeclaration$3,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$6,
       ],
       set: Map {
@@ -243,14 +243,14 @@ ScopeManager {
       },
       type: "class",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$8,
       ],
     },
     FunctionScope$5 {
       block: FunctionExpression$4,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
       ],
@@ -260,7 +260,7 @@ ScopeManager {
       },
       type: "function",
       upper: ClassScope$4,
-      variables: Array [
+      variables: [
         Variable$9,
         Variable$10,
       ],
@@ -268,7 +268,7 @@ ScopeManager {
     FunctionScope$6 {
       block: FunctionExpression$5,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$3,
         Reference$4,
         Reference$5,
@@ -280,7 +280,7 @@ ScopeManager {
       },
       type: "function",
       upper: ClassScope$4,
-      variables: Array [
+      variables: [
         Variable$11,
         Variable$12,
         Variable$13,

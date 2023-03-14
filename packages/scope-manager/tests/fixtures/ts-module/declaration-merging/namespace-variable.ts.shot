@@ -2,10 +2,10 @@
 
 exports[`ts-module declaration-merging namespace-variable 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TSModuleNameDefinition$1 {
           name: Identifier<"Foo">,
           node: TSModuleDeclaration$1,
@@ -16,7 +16,7 @@ ScopeManager {
         },
       ],
       name: "Foo",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"Foo">,
           init: true,
@@ -40,14 +40,14 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         VariableDefinition$3 {
           name: Identifier<"usage">,
           node: VariableDeclarator$4,
         },
       ],
       name: "usage",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"usage">,
           init: true,
@@ -63,11 +63,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$5,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
         Reference$3,
@@ -79,7 +79,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
@@ -88,11 +88,11 @@ ScopeManager {
     TSModuleScope$2 {
       block: TSModuleDeclaration$1,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {},
       type: "tsModule",
       upper: GlobalScope$1,
-      variables: Array [],
+      variables: [],
     },
   ],
 }

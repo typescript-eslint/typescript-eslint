@@ -80,7 +80,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-readonly-property AST Al
     },
     String {
       type: 'String',
-      value: '\\\\'string\\\\'',
+      value: '\\'string\\'',
 
       range: [109, 117],
       loc: {

@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures types union-type Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -18,7 +18,7 @@ Program {
       },
       typeAnnotation: TSIntersectionType {
         type: "TSIntersectionType",
-        types: Array [
+        types: [
           TSStringKeyword {
             type: "TSStringKeyword",
 

@@ -2,11 +2,14 @@
 
 exports[`convert deeplyCopy should convert array of nodes 1`] = `
 {
+  "ambientModuleNames": undefined,
   "amdDependencies": [],
   "bindDiagnostics": [],
   "bindSuggestionDiagnostics": undefined,
   "checkJsDirective": undefined,
+  "classifiableNames": undefined,
   "commentDirectives": undefined,
+  "endFlowNode": undefined,
   "endOfFileToken": {
     "loc": {
       "end": {
@@ -32,6 +35,8 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
     "foo" => "foo",
     "T" => "T",
   },
+  "impliedNodeFormat": undefined,
+  "imports": undefined,
   "isDeclarationFile": false,
   "languageVariant": 1,
   "languageVersion": 99,
@@ -49,14 +54,21 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
       "line": 1,
     },
   },
+  "moduleAugmentations": undefined,
   "nodeCount": 8,
+  "originalFileName": "",
+  "packageJsonLocations": undefined,
+  "packageJsonScope": undefined,
   "parseDiagnostics": [],
+  "path": "",
   "pragmas": Map {},
   "range": [
     0,
     12,
   ],
   "referencedFiles": [],
+  "resolvedModules": undefined,
+  "resolvedPath": "",
   "scriptKind": 4,
   "setExternalModuleIndicator": [Function],
   "statements": [
@@ -169,6 +181,7 @@ exports[`convert deeplyCopy should convert array of nodes 1`] = `
       "type": "ExpressionStatement",
     },
   ],
+  "symbolCount": 0,
   "text": "new foo<T>()",
   "type": "TSSourceFile",
   "typeReferenceDirectives": [],
@@ -191,6 +204,7 @@ exports[`convert deeplyCopy should convert node correctly 1`] = `
       },
       "name": {
         "escapedText": "foo",
+        "flowNode": undefined,
         "loc": {
           "end": {
             "column": 8,
@@ -201,7 +215,6 @@ exports[`convert deeplyCopy should convert node correctly 1`] = `
             "line": 1,
           },
         },
-        "originalKeywordKind": undefined,
         "range": [
           5,
           8,
@@ -456,6 +469,7 @@ exports[`convert deeplyCopy should convert node with type parameters correctly 1
     },
     "params": [
       {
+        "const": false,
         "constraint": undefined,
         "default": undefined,
         "in": false,

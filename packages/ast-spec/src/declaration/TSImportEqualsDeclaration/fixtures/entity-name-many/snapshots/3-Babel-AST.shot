@@ -3,7 +3,7 @@
 exports[`AST Fixtures declaration TSImportEqualsDeclaration entity-name-many Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSImportEqualsDeclaration {
       type: "TSImportEqualsDeclaration",
       id: Identifier {

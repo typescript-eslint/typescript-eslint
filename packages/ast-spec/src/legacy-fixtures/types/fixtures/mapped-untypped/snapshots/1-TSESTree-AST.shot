@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures types mapped-untypped TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           id: Identifier {
@@ -19,6 +19,7 @@ Program {
                 nameType: null,
                 typeParameter: TSTypeParameter {
                   type: "TSTypeParameter",
+                  const: false,
                   constraint: TSStringKeyword {
                     type: "TSStringKeyword",
 
