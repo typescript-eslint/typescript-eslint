@@ -23,7 +23,7 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "scripts": {
-    "build": "nx run-many --target=build --parallel --exclude website",
+    "build": "nx run-many --target=build --parallel --exclude website --exclude website-eslint",
     "check-clean-workspace-after-install": "git diff --quiet --exit-code",
     "check-configs": "nx run-many --target=check-configs --parallel",
     "check-docs": "nx run-many --target=check-docs --parallel",
@@ -44,8 +44,9 @@
     "postinstall": "nx run repo-tools:postinstall-script",
     "pre-commit": "yarn lint-staged",
     "start": "nx run website:start",
-    "test": "nx run-many --target=test --parallel --exclude integration-tests",
+    "test": "nx run-many --target=test --parallel --exclude integration-tests --exclude website --exclude website-eslint",
     "test-integration": "nx run integration-tests:test",
+    "test-website": "nx run-many --target=test --projects=website,website-eslint",
     "typecheck": "nx run-many --target=typecheck --parallel"
   },
   "engines": {
