@@ -3,14 +3,14 @@
 exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       body: TSModuleDeclaration {
         type: "TSModuleDeclaration",
         body: TSModuleBlock {
           type: "TSModuleBlock",
-          body: Array [],
+          body: [],
 
           range: [18, 20],
           loc: {

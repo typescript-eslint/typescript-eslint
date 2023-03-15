@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics import-equal-declaration TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSImportEqualsDeclaration {
       type: "TSImportEqualsDeclaration",
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "foo",
         optional: false,
 

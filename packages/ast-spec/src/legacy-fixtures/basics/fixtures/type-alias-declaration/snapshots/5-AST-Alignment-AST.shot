@@ -29,50 +29,17 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration AST Alignmen
             TSTypeReference {
               type: 'TSTypeReference',
 -             typeArguments: TSTypeParameterInstantiation {
--               type: 'TSTypeParameterInstantiation',
--               params: Array [
--                 TSTypeReference {
--                   type: 'TSTypeReference',
--                   typeName: Identifier {
--                     type: 'Identifier',
--                     decorators: Array [],
--                     name: 'T',
--                     optional: false,
--
--                     range: [98, 99],
--                     loc: {
--                       start: { column: 25, line: 3 },
--                       end: { column: 26, line: 3 },
--                     },
--                   },
--
--                   range: [98, 99],
--                   loc: {
--                     start: { column: 25, line: 3 },
--                     end: { column: 26, line: 3 },
--                   },
--                 },
--               ],
--
--               range: [97, 100],
--               loc: {
--                 start: { column: 24, line: 3 },
--                 end: { column: 27, line: 3 },
--               },
--             },
-              typeName: Identifier {
-                type: 'Identifier',
--               decorators: Array [],
-                name: 'Success',
--               optional: false,
-
-                range: [90, 97],
-                loc: {
-                  start: { column: 17, line: 3 },
-                  end: { column: 24, line: 3 },
-                },
-              },
-              typeParameters: TSTypeParameterInstantiation {
++             typeName: Identifier {
++               type: 'Identifier',
++               name: 'Success',
++
++               range: [90, 97],
++               loc: {
++                 start: { column: 17, line: 3 },
++                 end: { column: 24, line: 3 },
++               },
++             },
++             typeParameters: TSTypeParameterInstantiation {
                 type: 'TSTypeParameterInstantiation',
                 params: Array [
                   TSTypeReference {
@@ -104,7 +71,19 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration AST Alignmen
                   end: { column: 27, line: 3 },
                 },
               },
+-             typeName: Identifier {
+-               type: 'Identifier',
+-               decorators: Array [],
+-               name: 'Success',
+-               optional: false,
 
+-               range: [90, 97],
+-               loc: {
+-                 start: { column: 17, line: 3 },
+-                 end: { column: 24, line: 3 },
+-               },
+-             },
+-
               range: [90, 100],
               loc: {
                 start: { column: 17, line: 3 },
@@ -145,6 +124,7 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration AST Alignmen
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',

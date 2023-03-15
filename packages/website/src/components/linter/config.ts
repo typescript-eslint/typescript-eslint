@@ -21,6 +21,7 @@ export const parseSettings: ParseSettings = {
   projects: [],
   range: true,
   singleRun: false,
+  suppressDeprecatedPropertyWarnings: false,
   tokens: [],
   tsconfigMatchCache: new Map(),
   tsconfigRootDir: '/',

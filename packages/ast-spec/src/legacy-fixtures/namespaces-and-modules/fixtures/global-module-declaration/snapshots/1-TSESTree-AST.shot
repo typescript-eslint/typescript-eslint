@@ -3,17 +3,17 @@
 exports[`AST Fixtures legacy-fixtures namespaces-and-modules global-module-declaration TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       body: TSModuleBlock {
         type: "TSModuleBlock",
-        body: Array [
+        body: [
           TSModuleDeclaration {
             type: "TSModuleDeclaration",
             body: TSModuleBlock {
               type: "TSModuleBlock",
-              body: Array [],
+              body: [],
 
               range: [114, 116],
               loc: {
@@ -25,7 +25,7 @@ Program {
             global: false,
             id: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "global",
               optional: false,
 
@@ -47,7 +47,7 @@ Program {
             type: "TSModuleDeclaration",
             body: TSModuleBlock {
               type: "TSModuleBlock",
-              body: Array [],
+              body: [],
 
               range: [144, 146],
               loc: {
@@ -59,7 +59,7 @@ Program {
             global: false,
             id: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "global",
               optional: false,
 
@@ -89,7 +89,7 @@ Program {
       global: true,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "global",
         optional: false,
 

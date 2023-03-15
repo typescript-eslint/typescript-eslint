@@ -119,6 +119,11 @@ export interface MutableParseSettings {
   singleRun: boolean;
 
   /**
+   * Whether deprecated AST properties should skip calling console.warn on accesses.
+   */
+  suppressDeprecatedPropertyWarnings: boolean;
+
+  /**
    * If the `tokens` parse option is enabled, retrieved tokens.
    */
   tokens: null | TSESTree.Token[];

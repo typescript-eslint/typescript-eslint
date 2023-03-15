@@ -3,23 +3,23 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             accessibility: "private",
             computed: false,
             declare: false,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "bar",
               optional: false,
 
@@ -64,11 +64,11 @@ Program {
             accessibility: "public",
             computed: false,
             declare: false,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "baz",
               optional: false,
 
@@ -112,10 +112,10 @@ Program {
             type: "MethodDefinition",
             accessibility: "public",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "getBar",
               optional: false,
 
@@ -134,7 +134,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ReturnStatement {
                     type: "ReturnStatement",
                     argument: MemberExpression {
@@ -152,7 +152,7 @@ Program {
                       optional: false,
                       property: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "bar",
                         optional: false,
 
@@ -188,7 +188,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [152, 181],
               loc: {
@@ -207,10 +207,10 @@ Program {
             type: "MethodDefinition",
             accessibility: "protected",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "setBar",
               optional: false,
 
@@ -229,7 +229,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ExpressionStatement {
                     type: "ExpressionStatement",
                     expression: AssignmentExpression {
@@ -249,7 +249,7 @@ Program {
                         optional: false,
                         property: Identifier {
                           type: "Identifier",
-                          decorators: Array [],
+                          decorators: [],
                           name: "bar",
                           optional: false,
 
@@ -269,7 +269,7 @@ Program {
                       operator: "=",
                       right: Identifier {
                         type: "Identifier",
-                        decorators: Array [],
+                        decorators: [],
                         name: "bar",
                         optional: false,
 
@@ -305,10 +305,10 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [
+              params: [
                 Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "bar",
                   optional: false,
                   typeAnnotation: TSTypeAnnotation {
@@ -360,10 +360,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Foo",
         optional: false,
 
@@ -373,7 +373,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 241],

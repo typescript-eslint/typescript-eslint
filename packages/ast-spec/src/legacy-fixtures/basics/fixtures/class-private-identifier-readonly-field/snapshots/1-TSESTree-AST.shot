@@ -3,18 +3,18 @@
 exports[`AST Fixtures legacy-fixtures basics class-private-identifier-readonly-field TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: PrivateIdentifier {
               type: "PrivateIdentifier",
@@ -65,10 +65,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Foo",
         optional: false,
 
@@ -78,7 +78,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 112],

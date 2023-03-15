@@ -56,7 +56,7 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-2 AST Alignmen
 +               type: 'TSLiteralType',
 +               literal: Literal {
 +                 type: 'Literal',
-+                 raw: '\\\\'bar\\\\'',
++                 raw: '\\'bar\\'',
 +                 value: 'bar',
 
 -             range: [93, 95],
@@ -71,7 +71,7 @@ exports[`AST Fixtures legacy-fixtures types template-literal-type-2 AST Alignmen
 -             type: 'TSLiteralType',
 -             literal: Literal {
 -               type: 'Literal',
--               raw: '\\\\'bar\\\\'',
+-               raw: '\\'bar\\'',
 -               value: 'bar',
 +                 range: [88, 93],
 +                 loc: {

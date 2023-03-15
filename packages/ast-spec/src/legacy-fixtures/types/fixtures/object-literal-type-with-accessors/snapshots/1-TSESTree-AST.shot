@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures types object-literal-type-with-accessors TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Thing",
         optional: false,
 
@@ -21,13 +21,13 @@ Program {
       },
       typeAnnotation: TSTypeLiteral {
         type: "TSTypeLiteral",
-        members: Array [
+        members: [
           TSMethodSignature {
             type: "TSMethodSignature",
             computed: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "size",
               optional: false,
 
@@ -39,7 +39,7 @@ Program {
             },
             kind: "get",
             optional: false,
-            params: Array [],
+            params: [],
             readonly: false,
             returnType: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -72,7 +72,7 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "size",
               optional: false,
 
@@ -84,17 +84,17 @@ Program {
             },
             kind: "set",
             optional: false,
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "value",
                 optional: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSUnionType {
                     type: "TSUnionType",
-                    types: Array [
+                    types: [
                       TSNumberKeyword {
                         type: "TSNumberKeyword",
 

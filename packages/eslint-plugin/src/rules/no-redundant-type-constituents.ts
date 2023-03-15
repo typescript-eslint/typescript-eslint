@@ -82,6 +82,10 @@ function describeLiteralType(type: ts.Type): string {
     return JSON.stringify(type.value);
   }
 
+  if (util.isTypeBigIntLiteralType(type)) {
+    return `${type.value.negative ? '-' : ''}${type.value.base10Value}n`;
+  }
+
   if (type.isLiteral()) {
     return type.value.toString();
   }

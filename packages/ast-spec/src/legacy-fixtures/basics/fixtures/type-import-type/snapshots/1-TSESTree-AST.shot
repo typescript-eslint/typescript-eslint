@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics type-import-type TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "A",
         optional: false,
 
@@ -45,7 +45,6 @@ Program {
           },
           qualifier: null,
           typeArguments: null,
-          typeParameters: null,
 
           range: [89, 100],
           loc: {
@@ -72,7 +71,7 @@ Program {
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "B",
         optional: false,
 
@@ -106,7 +105,7 @@ Program {
         },
         qualifier: Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "X",
           optional: false,
 
@@ -118,44 +117,12 @@ Program {
         },
         typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
-          params: Array [
+          params: [
             TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
-                decorators: Array [],
-                name: "Y",
-                optional: false,
-
-                range: [125, 126],
-                loc: {
-                  start: { column: 23, line: 4 },
-                  end: { column: 24, line: 4 },
-                },
-              },
-
-              range: [125, 126],
-              loc: {
-                start: { column: 23, line: 4 },
-                end: { column: 24, line: 4 },
-              },
-            },
-          ],
-
-          range: [124, 127],
-          loc: {
-            start: { column: 22, line: 4 },
-            end: { column: 25, line: 4 },
-          },
-        },
-        typeParameters: TSTypeParameterInstantiation {
-          type: "TSTypeParameterInstantiation",
-          params: Array [
-            TSTypeReference {
-              type: "TSTypeReference",
-              typeName: Identifier {
-                type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "Y",
                 optional: false,
 

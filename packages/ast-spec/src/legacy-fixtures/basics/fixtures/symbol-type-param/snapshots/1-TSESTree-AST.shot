@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics symbol-type-param TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [],
+        body: [],
 
         range: [113, 115],
         loc: {
@@ -22,7 +22,7 @@ Program {
       generator: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "test",
         optional: false,
 
@@ -32,10 +32,10 @@ Program {
           end: { column: 13, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "abc",
           optional: false,
           typeAnnotation: TSTypeAnnotation {
@@ -44,7 +44,7 @@ Program {
               type: "TSTypeReference",
               typeArguments: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
-                params: Array [
+                params: [
                   TSSymbolKeyword {
                     type: "TSSymbolKeyword",
 
@@ -73,7 +73,7 @@ Program {
               },
               typeName: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "Map",
                 optional: false,
 
@@ -81,35 +81,6 @@ Program {
                 loc: {
                   start: { column: 19, line: 3 },
                   end: { column: 22, line: 3 },
-                },
-              },
-              typeParameters: TSTypeParameterInstantiation {
-                type: "TSTypeParameterInstantiation",
-                params: Array [
-                  TSSymbolKeyword {
-                    type: "TSSymbolKeyword",
-
-                    range: [96, 102],
-                    loc: {
-                      start: { column: 23, line: 3 },
-                      end: { column: 29, line: 3 },
-                    },
-                  },
-                  TSStringKeyword {
-                    type: "TSStringKeyword",
-
-                    range: [104, 110],
-                    loc: {
-                      start: { column: 31, line: 3 },
-                      end: { column: 37, line: 3 },
-                    },
-                  },
-                ],
-
-                range: [95, 111],
-                loc: {
-                  start: { column: 22, line: 3 },
-                  end: { column: 38, line: 3 },
                 },
               },
 

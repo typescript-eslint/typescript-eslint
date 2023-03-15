@@ -4,6 +4,9 @@ import { getModifiers } from './getModifiers';
 import { xhtmlEntities } from './jsx/xhtml-entities';
 import type { TSESTree } from './ts-estree';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from './ts-estree';
+import { typescriptVersionIsAtLeast } from './version-check';
+
+const isAtLeast50 = typescriptVersionIsAtLeast['5.0'];
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -436,12 +439,19 @@ export function isChildUnwrappableOptionalChain(
 export function getTokenType(
   token: ts.Identifier | ts.Token<ts.SyntaxKind>,
 ): Exclude<AST_TOKEN_TYPES, AST_TOKEN_TYPES.Line | AST_TOKEN_TYPES.Block> {
-  if ('originalKeywordKind' in token && token.originalKeywordKind) {
-    if (token.originalKeywordKind === SyntaxKind.NullKeyword) {
+  let keywordKind: ts.SyntaxKind | undefined;
+  if (isAtLeast50 && token.kind === SyntaxKind.Identifier) {
+    keywordKind = ts.identifierToKeywordKind(token as ts.Identifier);
+  } else if ('originalKeywordKind' in token) {
+    // eslint-disable-next-line deprecation/deprecation -- intentional fallback for older TS versions
+    keywordKind = token.originalKeywordKind;
+  }
+  if (keywordKind) {
+    if (keywordKind === SyntaxKind.NullKeyword) {
       return AST_TOKEN_TYPES.Null;
     } else if (
-      token.originalKeywordKind >= SyntaxKind.FirstFutureReservedWord &&
-      token.originalKeywordKind <= SyntaxKind.LastKeyword
+      keywordKind >= SyntaxKind.FirstFutureReservedWord &&
+      keywordKind <= SyntaxKind.LastKeyword
     ) {
       return AST_TOKEN_TYPES.Identifier;
     }
@@ -704,7 +714,11 @@ export function firstDefined<T, U>(
 }
 
 export function identifierIsThisKeyword(id: ts.Identifier): boolean {
-  return id.originalKeywordKind === SyntaxKind.ThisKeyword;
+  return (
+    // eslint-disable-next-line deprecation/deprecation -- intentional for older TS versions
+    (isAtLeast50 ? ts.identifierToKeywordKind(id) : id.originalKeywordKind) ===
+    SyntaxKind.ThisKeyword
+  );
 }
 
 export function isThisIdentifier(

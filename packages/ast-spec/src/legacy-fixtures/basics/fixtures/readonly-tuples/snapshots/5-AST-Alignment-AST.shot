@@ -145,7 +145,7 @@ exports[`AST Fixtures legacy-fixtures basics readonly-tuples AST Alignment - AST
                 operator: '=',
                 right: Literal {
                   type: 'Literal',
-                  raw: '\\\\'hello!\\\\'',
+                  raw: '\\'hello!\\'',
                   value: 'hello!',
 
                   range: [165, 173],

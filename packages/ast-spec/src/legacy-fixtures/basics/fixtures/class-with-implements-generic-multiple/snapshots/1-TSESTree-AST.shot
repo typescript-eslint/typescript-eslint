@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-implements-generic-multiple TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [],
+        body: [],
 
         range: [104, 106],
         loc: {
@@ -18,10 +18,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Foo",
         optional: false,
 
@@ -31,12 +31,12 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
-      implements: Array [
+      implements: [
         TSClassImplements {
           type: "TSClassImplements",
           expression: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "Bar",
             optional: false,
 
@@ -48,12 +48,12 @@ Program {
           },
           typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
-            params: Array [
+            params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "S",
                   optional: false,
 
@@ -74,60 +74,7 @@ Program {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
-                  name: "T",
-                  optional: false,
-
-                  range: [101, 102],
-                  loc: {
-                    start: { column: 28, line: 3 },
-                    end: { column: 29, line: 3 },
-                  },
-                },
-
-                range: [101, 102],
-                loc: {
-                  start: { column: 28, line: 3 },
-                  end: { column: 29, line: 3 },
-                },
-              },
-            ],
-
-            range: [97, 103],
-            loc: {
-              start: { column: 24, line: 3 },
-              end: { column: 30, line: 3 },
-            },
-          },
-          typeParameters: TSTypeParameterInstantiation {
-            type: "TSTypeParameterInstantiation",
-            params: Array [
-              TSTypeReference {
-                type: "TSTypeReference",
-                typeName: Identifier {
-                  type: "Identifier",
-                  decorators: Array [],
-                  name: "S",
-                  optional: false,
-
-                  range: [98, 99],
-                  loc: {
-                    start: { column: 25, line: 3 },
-                    end: { column: 26, line: 3 },
-                  },
-                },
-
-                range: [98, 99],
-                loc: {
-                  start: { column: 25, line: 3 },
-                  end: { column: 26, line: 3 },
-                },
-              },
-              TSTypeReference {
-                type: "TSTypeReference",
-                typeName: Identifier {
-                  type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "T",
                   optional: false,
 

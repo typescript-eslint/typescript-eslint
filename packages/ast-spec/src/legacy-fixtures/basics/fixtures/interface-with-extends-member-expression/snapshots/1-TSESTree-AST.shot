@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics interface-with-extends-member-expression TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSInterfaceDeclaration {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [],
+        body: [],
 
         range: [103, 105],
         loc: {
@@ -17,7 +17,7 @@ Program {
         },
       },
       declare: false,
-      extends: Array [
+      extends: [
         TSInterfaceHeritage {
           type: "TSInterfaceHeritage",
           expression: MemberExpression {
@@ -25,7 +25,7 @@ Program {
             computed: false,
             object: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "bar",
               optional: false,
 
@@ -38,7 +38,7 @@ Program {
             optional: false,
             property: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "baz",
               optional: false,
 
@@ -65,7 +65,7 @@ Program {
       ],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "foo",
         optional: false,
 

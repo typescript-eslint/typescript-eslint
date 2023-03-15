@@ -53,38 +53,17 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-optional-method
                     typeAnnotation: TSTypeReference {
                       type: 'TSTypeReference',
 -                     typeArguments: TSTypeParameterInstantiation {
--                       type: 'TSTypeParameterInstantiation',
--                       params: Array [
--                         TSStringKeyword {
--                           type: 'TSStringKeyword',
--
--                           range: [139, 145],
--                           loc: {
--                             start: { column: 27, line: 4 },
--                             end: { column: 33, line: 4 },
--                           },
--                         },
--                       ],
--
--                       range: [138, 146],
--                       loc: {
--                         start: { column: 26, line: 4 },
--                         end: { column: 34, line: 4 },
--                       },
--                     },
-                      typeName: Identifier {
-                        type: 'Identifier',
--                       decorators: Array [],
-                        name: 'Promise',
--                       optional: false,
-
-                        range: [131, 138],
-                        loc: {
-                          start: { column: 19, line: 4 },
-                          end: { column: 26, line: 4 },
-                        },
-                      },
-                      typeParameters: TSTypeParameterInstantiation {
++                     typeName: Identifier {
++                       type: 'Identifier',
++                       name: 'Promise',
++
++                       range: [131, 138],
++                       loc: {
++                         start: { column: 19, line: 4 },
++                         end: { column: 26, line: 4 },
++                       },
++                     },
++                     typeParameters: TSTypeParameterInstantiation {
                         type: 'TSTypeParameterInstantiation',
                         params: Array [
                           TSStringKeyword {
@@ -104,7 +83,19 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-optional-method
                           end: { column: 34, line: 4 },
                         },
                       },
+-                     typeName: Identifier {
+-                       type: 'Identifier',
+-                       decorators: Array [],
+-                       name: 'Promise',
+-                       optional: false,
 
+-                       range: [131, 138],
+-                       loc: {
+-                         start: { column: 19, line: 4 },
+-                         end: { column: 26, line: 4 },
+-                       },
+-                     },
+-
                       range: [131, 146],
                       loc: {
                         start: { column: 19, line: 4 },

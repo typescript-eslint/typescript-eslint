@@ -3,20 +3,20 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-readonly-parameter-properties TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "constructor",
               optional: false,
 
@@ -35,7 +35,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [177, 179],
                 loc: {
@@ -47,14 +47,14 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [
+              params: [
                 TSParameterProperty {
                   type: "TSParameterProperty",
-                  decorators: Array [],
+                  decorators: [],
                   override: false,
                   parameter: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "firstName",
                     optional: false,
                     typeAnnotation: TSTypeAnnotation {
@@ -93,14 +93,14 @@ Program {
                 },
                 TSParameterProperty {
                   type: "TSParameterProperty",
-                  decorators: Array [],
+                  decorators: [],
                   override: false,
                   parameter: AssignmentPattern {
                     type: "AssignmentPattern",
-                    decorators: Array [],
+                    decorators: [],
                     left: Identifier {
                       type: "Identifier",
-                      decorators: Array [],
+                      decorators: [],
                       name: "lastName",
                       optional: false,
                       typeAnnotation: TSTypeAnnotation {
@@ -180,10 +180,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Foo",
         optional: false,
 
@@ -193,7 +193,7 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 181],

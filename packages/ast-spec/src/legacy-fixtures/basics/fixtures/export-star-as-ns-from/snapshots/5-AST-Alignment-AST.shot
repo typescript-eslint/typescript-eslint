@@ -26,7 +26,7 @@ exports[`AST Fixtures legacy-fixtures basics export-star-as-ns-from AST Alignmen
         exportKind: 'value',
         source: Literal {
           type: 'Literal',
-          raw: '\\\\'bar\\\\'',
+          raw: '\\'bar\\'',
           value: 'bar',
 
           range: [94, 99],

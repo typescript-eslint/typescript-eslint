@@ -3,22 +3,22 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
             declare: true,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "prop1",
               optional: false,
 
@@ -63,11 +63,11 @@ Program {
             accessibility: "public",
             computed: false,
             declare: true,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "prop2",
               optional: false,
 
@@ -111,11 +111,11 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: true,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "prop3",
               optional: false,
 
@@ -159,11 +159,11 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: true,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "prop3",
               optional: false,
 
@@ -208,11 +208,11 @@ Program {
             accessibility: "public",
             computed: false,
             declare: true,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "prop4",
               optional: false,
 
@@ -257,11 +257,11 @@ Program {
             accessibility: "public",
             computed: false,
             declare: true,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "prop5",
               optional: false,
 
@@ -306,11 +306,11 @@ Program {
             accessibility: "public",
             computed: false,
             declare: true,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "prop6",
               optional: false,
 
@@ -359,10 +359,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "DeclProps",
         optional: false,
 
@@ -372,7 +372,7 @@ Program {
           end: { column: 15, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 343],

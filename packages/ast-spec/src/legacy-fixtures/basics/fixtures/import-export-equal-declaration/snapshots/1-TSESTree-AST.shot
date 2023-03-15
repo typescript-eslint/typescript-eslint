@@ -3,15 +3,15 @@
 exports[`AST Fixtures legacy-fixtures basics import-export-equal-declaration TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: TSImportEqualsDeclaration {
         type: "TSImportEqualsDeclaration",
         id: Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "foo",
           optional: false,
 
@@ -51,7 +51,7 @@ Program {
       },
       exportKind: "value",
       source: null,
-      specifiers: Array [],
+      specifiers: [],
 
       range: [73, 108],
       loc: {

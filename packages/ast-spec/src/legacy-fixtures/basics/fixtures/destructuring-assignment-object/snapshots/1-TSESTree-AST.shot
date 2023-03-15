@@ -3,22 +3,22 @@
 exports[`AST Fixtures legacy-fixtures basics destructuring-assignment-object TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: AssignmentExpression {
         type: "AssignmentExpression",
         left: ObjectPattern {
           type: "ObjectPattern",
-          decorators: Array [],
+          decorators: [],
           optional: false,
-          properties: Array [
+          properties: [
             Property {
               type: "Property",
               computed: false,
               key: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "foo",
                 optional: false,
 
@@ -34,10 +34,10 @@ Program {
               shorthand: true,
               value: AssignmentPattern {
                 type: "AssignmentPattern",
-                decorators: Array [],
+                decorators: [],
                 left: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "foo",
                   optional: false,
 
@@ -50,7 +50,7 @@ Program {
                 optional: false,
                 right: ObjectExpression {
                   type: "ObjectExpression",
-                  properties: Array [],
+                  properties: [],
 
                   range: [82, 84],
                   loc: {
@@ -83,7 +83,7 @@ Program {
         operator: "=",
         right: Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "bar",
           optional: false,
 

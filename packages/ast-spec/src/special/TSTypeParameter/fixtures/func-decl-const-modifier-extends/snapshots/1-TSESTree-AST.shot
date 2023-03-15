@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures special TSTypeParameter func-decl-const-modifier-extends TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [32, 34],
+        loc: {
+          start: { column: 32, line: 1 },
+          end: { column: 34, line: 1 },
+        },
+      },
+      declare: false,
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "b",
+        optional: false,
+
+        range: [9, 10],
+        loc: {
+          start: { column: 9, line: 1 },
+          end: { column: 10, line: 1 },
+        },
+      },
+      params: [],
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            const: true,
+            constraint: TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "U",
+                optional: false,
+
+                range: [27, 28],
+                loc: {
+                  start: { column: 27, line: 1 },
+                  end: { column: 28, line: 1 },
+                },
+              },
+
+              range: [27, 28],
+              loc: {
+                start: { column: 27, line: 1 },
+                end: { column: 28, line: 1 },
+              },
+            },
+            in: false,
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "T",
+              optional: false,
+
+              range: [17, 18],
+              loc: {
+                start: { column: 17, line: 1 },
+                end: { column: 18, line: 1 },
+              },
+            },
+            out: false,
+
+            range: [11, 28],
+            loc: {
+              start: { column: 11, line: 1 },
+              end: { column: 28, line: 1 },
+            },
+          },
+        ],
+
+        range: [10, 29],
+        loc: {
+          start: { column: 10, line: 1 },
+          end: { column: 29, line: 1 },
+        },
+      },
+
+      range: [0, 34],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 34, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 35],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

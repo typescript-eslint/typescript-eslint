@@ -44,7 +44,7 @@ exports[`AST Fixtures legacy-fixtures basics type-guard-in-function AST Alignmen
                 operator: '===',
                 right: Literal {
                   type: 'Literal',
-                  raw: '\\\\'string\\\\'',
+                  raw: '\\'string\\'',
                   value: 'string',
 
                   range: [136, 144],

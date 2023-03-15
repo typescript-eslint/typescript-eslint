@@ -3,16 +3,16 @@
 exports[`AST Fixtures legacy-fixtures basics never-type-param TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           definite: false,
           id: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "x",
             optional: false,
             typeAnnotation: TSTypeAnnotation {
@@ -21,7 +21,7 @@ Program {
                 type: "TSTypeReference",
                 typeArguments: TSTypeParameterInstantiation {
                   type: "TSTypeParameterInstantiation",
-                  params: Array [
+                  params: [
                     TSNeverKeyword {
                       type: "TSNeverKeyword",
 
@@ -41,7 +41,7 @@ Program {
                 },
                 typeName: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "X",
                   optional: false,
 
@@ -49,26 +49,6 @@ Program {
                   loc: {
                     start: { column: 7, line: 3 },
                     end: { column: 8, line: 3 },
-                  },
-                },
-                typeParameters: TSTypeParameterInstantiation {
-                  type: "TSTypeParameterInstantiation",
-                  params: Array [
-                    TSNeverKeyword {
-                      type: "TSNeverKeyword",
-
-                      range: [82, 87],
-                      loc: {
-                        start: { column: 9, line: 3 },
-                        end: { column: 14, line: 3 },
-                      },
-                    },
-                  ],
-
-                  range: [81, 88],
-                  loc: {
-                    start: { column: 8, line: 3 },
-                    end: { column: 15, line: 3 },
                   },
                 },
 
@@ -114,13 +94,13 @@ Program {
       type: "ExpressionStatement",
       expression: CallExpression {
         type: "CallExpression",
-        arguments: Array [],
+        arguments: [],
         callee: MemberExpression {
           type: "MemberExpression",
           computed: false,
           object: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "Observable",
             optional: false,
 
@@ -133,7 +113,7 @@ Program {
           optional: false,
           property: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "empty",
             optional: false,
 
@@ -153,27 +133,7 @@ Program {
         optional: false,
         typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
-          params: Array [
-            TSNeverKeyword {
-              type: "TSNeverKeyword",
-
-              range: [107, 112],
-              loc: {
-                start: { column: 17, line: 4 },
-                end: { column: 22, line: 4 },
-              },
-            },
-          ],
-
-          range: [106, 113],
-          loc: {
-            start: { column: 16, line: 4 },
-            end: { column: 23, line: 4 },
-          },
-        },
-        typeParameters: TSTypeParameterInstantiation {
-          type: "TSTypeParameterInstantiation",
-          params: Array [
+          params: [
             TSNeverKeyword {
               type: "TSNeverKeyword",
 

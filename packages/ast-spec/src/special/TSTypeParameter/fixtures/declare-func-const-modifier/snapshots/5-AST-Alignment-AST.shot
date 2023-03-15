@@ -1,0 +1,82 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures special TSTypeParameter declare-func-const-modifier AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSDeclareFunction {
+        type: 'TSDeclareFunction',
+        async: false,
+        declare: true,
+        expression: false,
+        generator: false,
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'd',
+-         optional: false,
+
+          range: [17, 18],
+          loc: {
+            start: { column: 17, line: 1 },
+            end: { column: 18, line: 1 },
+          },
+        },
+        params: Array [],
+        typeParameters: TSTypeParameterDeclaration {
+          type: 'TSTypeParameterDeclaration',
+          params: Array [
+            TSTypeParameter {
+              type: 'TSTypeParameter',
+              const: true,
+-             in: false,
+-             name: Identifier {
+-               type: 'Identifier',
+-               decorators: Array [],
+-               name: 'T',
+-               optional: false,
+-
+-               range: [25, 26],
+-               loc: {
+-                 start: { column: 25, line: 1 },
+-                 end: { column: 26, line: 1 },
+-               },
+-             },
+-             out: false,
++             name: 'T',
+
+              range: [19, 26],
+              loc: {
+                start: { column: 19, line: 1 },
+                end: { column: 26, line: 1 },
+              },
+            },
+          ],
+
+          range: [18, 27],
+          loc: {
+            start: { column: 18, line: 1 },
+            end: { column: 27, line: 1 },
+          },
+        },
+
+        range: [0, 30],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 30, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 31],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
+`;

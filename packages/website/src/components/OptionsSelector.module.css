@@ -37,15 +37,17 @@
   font-weight: 500;
   font-family: inherit;
   border-radius: 6px;
-  -webkit-appearance: none;
+  appearance: none;
   color: var(--ifm-font-color-secondary);
   border: 1px solid var(--ifm-color-emphasis-100);
   background: var(--ifm-color-emphasis-200);
   transition: border 0.3s ease;
 }
+
 .optionInput::placeholder {
   color: var(--ifm-color-emphasis-700);
 }
+
 .optionInput:focus {
   outline: none;
   border-color: var(--ifm-color-primary);

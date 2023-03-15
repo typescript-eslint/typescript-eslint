@@ -34,7 +34,7 @@ exports[`AST Fixtures legacy-fixtures basics async-function-with-var-declaration
                   },
                   init: Literal {
                     type: 'Literal',
-                    raw: '\\\\'foo\\\\'',
+                    raw: '\\'foo\\'',
                     value: 'foo',
 
                     range: [109, 114],
@@ -80,7 +80,7 @@ exports[`AST Fixtures legacy-fixtures basics async-function-with-var-declaration
                   },
                   init: Literal {
                     type: 'Literal',
-                    raw: '\\\\'bar\\\\'',
+                    raw: '\\'bar\\'',
                     value: 'bar',
 
                     range: [128, 133],
@@ -126,7 +126,7 @@ exports[`AST Fixtures legacy-fixtures basics async-function-with-var-declaration
                   },
                   init: Literal {
                     type: 'Literal',
-                    raw: '\\\\'fooBar\\\\'',
+                    raw: '\\'fooBar\\'',
                     value: 'fooBar',
 
                     range: [152, 160],

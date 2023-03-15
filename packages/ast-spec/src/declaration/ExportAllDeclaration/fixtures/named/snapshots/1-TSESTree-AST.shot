@@ -3,13 +3,13 @@
 exports[`AST Fixtures declaration ExportAllDeclaration named TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportAllDeclaration {
       type: "ExportAllDeclaration",
-      assertions: Array [],
+      assertions: [],
       exported: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "mod",
         optional: false,
 

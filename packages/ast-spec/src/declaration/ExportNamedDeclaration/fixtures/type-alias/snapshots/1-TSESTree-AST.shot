@@ -3,16 +3,16 @@
 exports[`AST Fixtures declaration ExportNamedDeclaration type-alias TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: TSTypeAliasDeclaration {
         type: "TSTypeAliasDeclaration",
         declare: false,
         id: Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "A",
           optional: false,
 
@@ -51,7 +51,7 @@ Program {
       },
       exportKind: "type",
       source: null,
-      specifiers: Array [],
+      specifiers: [],
 
       range: [0, 18],
       loc: {

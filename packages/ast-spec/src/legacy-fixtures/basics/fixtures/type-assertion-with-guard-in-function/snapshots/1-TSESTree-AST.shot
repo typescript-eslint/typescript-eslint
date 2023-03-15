@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-function TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           ReturnStatement {
             type: "ReturnStatement",
             argument: null,
@@ -33,7 +33,7 @@ Program {
       generator: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "assertsStringGuard",
         optional: false,
 
@@ -43,10 +43,10 @@ Program {
           end: { column: 27, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "x",
           optional: false,
           typeAnnotation: TSTypeAnnotation {
@@ -82,7 +82,7 @@ Program {
           asserts: true,
           parameterName: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "x",
             optional: false,
 

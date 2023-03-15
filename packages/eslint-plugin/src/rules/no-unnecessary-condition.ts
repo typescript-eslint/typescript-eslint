@@ -635,7 +635,20 @@ export default createRule<Options, MessageId>({
       checkOptionalChain(node, node.callee, '');
     }
 
+    function checkAssignmentExpression(
+      node: TSESTree.AssignmentExpression,
+    ): void {
+      // Similar to checkLogicalExpressionForUnnecessaryConditionals, since
+      // a ||= b is equivalent to a || (a = b)
+      if (['||=', '&&='].includes(node.operator)) {
+        checkNode(node.left);
+      } else if (node.operator === '??=') {
+        checkNodeForNullish(node.left);
+      }
+    }
+
     return {
+      AssignmentExpression: checkAssignmentExpression,
       BinaryExpression: checkIfBinaryExpressionIsNecessaryConditional,
       CallExpression: checkCallExpression,
       ConditionalExpression: (node): void => checkNode(node.test),

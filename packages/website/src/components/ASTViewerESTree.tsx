@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type * as ESQuery from 'esquery';
 import React, { useMemo } from 'react';
 
 import ASTViewer from './ast/ASTViewer';
@@ -7,18 +8,33 @@ import { createESTreeSerializer } from './ast/serializer/serializerESTree';
 import type { ASTViewerBaseProps } from './ast/types';
 
 export interface ASTESTreeViewerProps extends ASTViewerBaseProps {
-  readonly value: TSESTree.BaseNode | TSESTree.Program;
+  readonly value: TSESTree.Node | TSESTree.Program;
+  readonly filter?: ESQuery.Selector;
+}
+
+function tryToApplyFilter<T extends TSESTree.Node>(
+  value: T,
+  filter?: ESQuery.Selector,
+): T | T[] {
+  try {
+    if (window.esquery && filter) {
+      return window.esquery.match(value, filter) as T[];
+    }
+  } catch (e: unknown) {
+    console.error(e);
+  }
+  return value;
 }
 
 export default function ASTViewerESTree({
   value,
   position,
   onSelectNode,
+  filter,
 }: ASTESTreeViewerProps): JSX.Element {
-  const model = useMemo(
-    () => serialize(value, createESTreeSerializer()),
-    [value],
-  );
+  const model = useMemo(() => {
+    return serialize(tryToApplyFilter(value, filter), createESTreeSerializer());
+  }, [value, filter]);
 
   return (
     <ASTViewer value={model} position={position} onSelectNode={onSelectNode} />

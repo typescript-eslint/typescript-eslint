@@ -3,18 +3,18 @@
 exports[`AST Fixtures legacy-fixtures basics function-with-types TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           ReturnStatement {
             type: "ReturnStatement",
             argument: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "name",
               optional: false,
 
@@ -44,7 +44,7 @@ Program {
       generator: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "message",
         optional: false,
 
@@ -54,10 +54,10 @@ Program {
           end: { column: 16, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "name",
           optional: false,
           typeAnnotation: TSTypeAnnotation {

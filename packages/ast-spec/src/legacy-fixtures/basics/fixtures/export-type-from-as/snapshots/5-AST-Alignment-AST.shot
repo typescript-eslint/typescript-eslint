@@ -15,7 +15,7 @@ exports[`AST Fixtures legacy-fixtures basics export-type-from-as AST Alignment -
         exportKind: 'type',
         source: Literal {
           type: 'Literal',
-          raw: '\\\\'./a\\\\'',
+          raw: '\\'./a\\'',
           value: './a',
 
           range: [101, 106],

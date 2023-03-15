@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics optional-chain-with-non-null-assertion TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           ExpressionStatement {
             type: "ExpressionStatement",
             expression: ChainExpression {
@@ -24,7 +24,7 @@ Program {
                     computed: false,
                     object: Identifier {
                       type: "Identifier",
-                      decorators: Array [],
+                      decorators: [],
                       name: "one",
                       optional: false,
 
@@ -37,7 +37,7 @@ Program {
                     optional: true,
                     property: Identifier {
                       type: "Identifier",
-                      decorators: Array [],
+                      decorators: [],
                       name: "two",
                       optional: false,
 
@@ -64,7 +64,7 @@ Program {
                 optional: false,
                 property: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "three",
                   optional: false,
 
@@ -109,7 +109,7 @@ Program {
                     computed: false,
                     object: Identifier {
                       type: "Identifier",
-                      decorators: Array [],
+                      decorators: [],
                       name: "one",
                       optional: false,
 
@@ -122,7 +122,7 @@ Program {
                     optional: true,
                     property: Identifier {
                       type: "Identifier",
-                      decorators: Array [],
+                      decorators: [],
                       name: "two",
                       optional: false,
 
@@ -156,7 +156,7 @@ Program {
               optional: false,
               property: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "three",
                 optional: false,
 
@@ -194,7 +194,7 @@ Program {
                     computed: false,
                     object: Identifier {
                       type: "Identifier",
-                      decorators: Array [],
+                      decorators: [],
                       name: "one",
                       optional: false,
 
@@ -207,7 +207,7 @@ Program {
                     optional: true,
                     property: Identifier {
                       type: "Identifier",
-                      decorators: Array [],
+                      decorators: [],
                       name: "two",
                       optional: false,
 
@@ -241,7 +241,7 @@ Program {
               optional: false,
               property: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "three",
                 optional: false,
 
@@ -278,7 +278,7 @@ Program {
       generator: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "processOptional",
         optional: false,
 
@@ -288,10 +288,10 @@ Program {
           end: { column: 24, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "one",
           optional: true,
           typeAnnotation: TSTypeAnnotation {

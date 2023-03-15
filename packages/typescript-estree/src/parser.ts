@@ -200,7 +200,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   const hasFullTypeInformation =
     parseSettings.programs != null || parseSettings.projects?.length > 0;
 
-  if (typeof options !== 'undefined') {
+  if (options !== undefined) {
     if (
       typeof options.errorOnTypeScriptSyntacticAndSemanticIssues ===
         'boolean' &&

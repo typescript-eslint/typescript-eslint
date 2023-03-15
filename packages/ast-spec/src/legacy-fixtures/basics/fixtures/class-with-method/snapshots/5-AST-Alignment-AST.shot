@@ -127,6 +127,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-method AST Alignment - A
                   params: Array [
                     TSTypeParameter {
                       type: 'TSTypeParameter',
+-                     const: false,
 -                     in: false,
 -                     name: Identifier {
 -                       type: 'Identifier',

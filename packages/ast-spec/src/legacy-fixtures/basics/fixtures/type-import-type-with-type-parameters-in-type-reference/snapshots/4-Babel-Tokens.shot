@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-parameters-in-type-reference Babel - Tokens 1`] = `
-Array [
+[
   Identifier {
     type: "Identifier",
     value: "type",

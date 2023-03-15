@@ -3,18 +3,18 @@
 exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: ObjectExpression {
         type: "ObjectExpression",
-        properties: Array [
+        properties: [
           Property {
             type: "Property",
             computed: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "__",
               optional: false,
 
@@ -65,13 +65,13 @@ Program {
       type: "ExpressionStatement",
       expression: ObjectExpression {
         type: "ObjectExpression",
-        properties: Array [
+        properties: [
           Property {
             type: "Property",
             computed: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "__",
               optional: false,
 
@@ -90,7 +90,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [98, 100],
                 loc: {
@@ -102,7 +102,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [95, 100],
               loc: {
@@ -136,7 +136,7 @@ Program {
       type: "ExpressionStatement",
       expression: ObjectExpression {
         type: "ObjectExpression",
-        properties: Array [
+        properties: [
           Property {
             type: "Property",
             computed: true,
@@ -193,12 +193,12 @@ Program {
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Literal {
               type: "Literal",
@@ -242,10 +242,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "X",
         optional: false,
 
@@ -255,7 +255,7 @@ Program {
           end: { column: 7, line: 9 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [127, 153],

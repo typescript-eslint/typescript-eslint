@@ -3,23 +3,23 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-optional-property-undefined TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             accessibility: "private",
             computed: false,
             declare: false,
-            decorators: Array [],
+            decorators: [],
             definite: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "foo",
               optional: false,
 
@@ -35,7 +35,7 @@ Program {
             static: false,
             value: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "undefined",
               optional: false,
 
@@ -61,10 +61,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "X",
         optional: false,
 
@@ -74,7 +74,7 @@ Program {
           end: { column: 7, line: 3 },
         },
       },
-      implements: Array [],
+      implements: [],
       superClass: null,
 
       range: [73, 112],

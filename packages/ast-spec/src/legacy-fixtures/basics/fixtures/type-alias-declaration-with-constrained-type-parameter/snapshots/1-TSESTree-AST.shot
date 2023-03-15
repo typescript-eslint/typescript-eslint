@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-with-constrained-type-parameter TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       declare: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Result",
         optional: false,
 
@@ -21,17 +21,17 @@ Program {
       },
       typeAnnotation: TSUnionType {
         type: "TSUnionType",
-        types: Array [
+        types: [
           TSTypeReference {
             type: "TSTypeReference",
             typeArguments: TSTypeParameterInstantiation {
               type: "TSTypeParameterInstantiation",
-              params: Array [
+              params: [
                 TSTypeReference {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "T",
                     optional: false,
 
@@ -58,7 +58,7 @@ Program {
             },
             typeName: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "Success",
               optional: false,
 
@@ -66,38 +66,6 @@ Program {
               loc: {
                 start: { column: 28, line: 3 },
                 end: { column: 35, line: 3 },
-              },
-            },
-            typeParameters: TSTypeParameterInstantiation {
-              type: "TSTypeParameterInstantiation",
-              params: Array [
-                TSTypeReference {
-                  type: "TSTypeReference",
-                  typeName: Identifier {
-                    type: "Identifier",
-                    decorators: Array [],
-                    name: "T",
-                    optional: false,
-
-                    range: [109, 110],
-                    loc: {
-                      start: { column: 36, line: 3 },
-                      end: { column: 37, line: 3 },
-                    },
-                  },
-
-                  range: [109, 110],
-                  loc: {
-                    start: { column: 36, line: 3 },
-                    end: { column: 37, line: 3 },
-                  },
-                },
-              ],
-
-              range: [108, 111],
-              loc: {
-                start: { column: 35, line: 3 },
-                end: { column: 38, line: 3 },
               },
             },
 
@@ -111,7 +79,7 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "Failure",
               optional: false,
 
@@ -138,12 +106,13 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             constraint: TSTypeLiteral {
               type: "TSTypeLiteral",
-              members: Array [],
+              members: [],
 
               range: [95, 97],
               loc: {
@@ -154,7 +123,7 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "T",
               optional: false,
 

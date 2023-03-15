@@ -24,7 +24,6 @@ interface BooleanComparison {
   literalBooleanInComparison: boolean;
   forTruthy: boolean;
   negated: boolean;
-  range: [number, number];
 }
 
 interface BooleanComparisonWithTypeInformation extends BooleanComparison {
@@ -81,6 +80,7 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const services = util.getParserServices(context);
+    const sourceCode = context.getSourceCode();
 
     function getBooleanComparison(
       node: TSESTree.BinaryExpression,
@@ -182,10 +182,6 @@ export default util.createRule<Options, MessageIds>({
           forTruthy: literalBooleanInComparison ? !negated : negated,
           expression,
           negated,
-          range:
-            expression.range[0] < against.range[0]
-              ? [expression.range[1], against.range[1]]
-              : [against.range[0], expression.range[0]],
         };
       }
 
@@ -224,7 +220,10 @@ export default util.createRule<Options, MessageIds>({
 
         context.report({
           fix: function* (fixer) {
-            yield fixer.removeRange(comparison.range);
+            yield fixer.replaceText(
+              node,
+              sourceCode.getText(comparison.expression),
+            );
 
             // if the expression `exp` isn't nullable, or we're comparing to `true`,
             // we can just replace the entire comparison with `exp` or `!exp`
@@ -234,6 +233,10 @@ export default util.createRule<Options, MessageIds>({
             ) {
               if (!comparison.forTruthy) {
                 yield fixer.insertTextBefore(node, '!');
+                if (!util.isStrongPrecedenceNode(comparison.expression)) {
+                  yield fixer.insertTextBefore(node, '(');
+                  yield fixer.insertTextAfter(node, ')');
+                }
               }
               return;
             }

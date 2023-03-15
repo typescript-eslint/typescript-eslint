@@ -28,7 +28,7 @@ exports[`AST Fixtures legacy-fixtures basics import-equal-type-declaration AST A
           type: 'TSExternalModuleReference',
           expression: Literal {
             type: 'Literal',
-            raw: '\\\\'bar\\\\'',
+            raw: '\\'bar\\'',
             value: 'bar',
 
             range: [99, 104],

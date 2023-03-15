@@ -39,7 +39,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-readonly-property AST Al
               static: false,
               value: Literal {
                 type: 'Literal',
-                raw: '\\\\'string\\\\'',
+                raw: '\\'string\\'',
                 value: 'string',
 
                 range: [109, 117],

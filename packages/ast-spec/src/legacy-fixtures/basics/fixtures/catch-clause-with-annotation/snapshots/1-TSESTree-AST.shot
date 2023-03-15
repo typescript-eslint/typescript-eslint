@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics catch-clause-with-annotation TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TryStatement {
       type: "TryStatement",
       block: BlockStatement {
         type: "BlockStatement",
-        body: Array [],
+        body: [],
 
         range: [77, 80],
         loc: {
@@ -21,7 +21,7 @@ Program {
         type: "CatchClause",
         body: BlockStatement {
           type: "BlockStatement",
-          body: Array [],
+          body: [],
 
           range: [96, 98],
           loc: {
@@ -31,7 +31,7 @@ Program {
         },
         param: Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "e",
           optional: false,
           typeAnnotation: TSTypeAnnotation {
@@ -77,7 +77,7 @@ Program {
       type: "TryStatement",
       block: BlockStatement {
         type: "BlockStatement",
-        body: Array [],
+        body: [],
 
         range: [104, 107],
         loc: {
@@ -90,7 +90,7 @@ Program {
         type: "CatchClause",
         body: BlockStatement {
           type: "BlockStatement",
-          body: Array [],
+          body: [],
 
           range: [127, 129],
           loc: {
@@ -100,7 +100,7 @@ Program {
         },
         param: Identifier {
           type: "Identifier",
-          decorators: Array [],
+          decorators: [],
           name: "e",
           optional: false,
           typeAnnotation: TSTypeAnnotation {

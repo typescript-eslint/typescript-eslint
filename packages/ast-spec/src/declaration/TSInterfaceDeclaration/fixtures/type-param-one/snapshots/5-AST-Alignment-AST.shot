@@ -39,6 +39,7 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-one AST Alig
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',

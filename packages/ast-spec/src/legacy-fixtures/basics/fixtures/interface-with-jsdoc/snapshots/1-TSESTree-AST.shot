@@ -3,18 +3,18 @@
 exports[`AST Fixtures legacy-fixtures basics interface-with-jsdoc TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSInterfaceDeclaration {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [
+        body: [
           TSMethodSignature {
             type: "TSMethodSignature",
             computed: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "foo",
               optional: false,
 
@@ -26,10 +26,10 @@ Program {
             },
             kind: "method",
             optional: false,
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "bar",
                 optional: false,
 
@@ -58,10 +58,10 @@ Program {
         },
       },
       declare: false,
-      extends: Array [],
+      extends: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "Test",
         optional: false,
 

@@ -1,0 +1,84 @@
+diff --git a/node_modules/typescript/lib/typescript.d.ts b/node_modules/typescript/lib/typescript.d.ts
+index 2201712..b8975b1 100644
+--- a/node_modules/typescript/lib/typescript.d.ts
++++ b/node_modules/typescript/lib/typescript.d.ts
+@@ -368,8 +368,8 @@ declare namespace ts {
+         JSDocFunctionType = 320,
+         JSDocVariadicType = 321,
+         JSDocNamepathType = 322,
++        /** @deprecated This was only added in 4.7 */
+         JSDoc = 323,
+-        /** @deprecated Use SyntaxKind.JSDoc */
+         JSDocComment = 323,
+         JSDocText = 324,
+         JSDocTypeLiteral = 325,
+@@ -734,6 +734,8 @@ declare namespace ts {
+         readonly name: PropertyName;
+         readonly questionToken?: QuestionToken;
+         readonly type?: TypeNode;
++        /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
++        readonly initializer?: Expression | undefined;
+     }
+     interface PropertyDeclaration extends ClassElement, JSDocContainer {
+         readonly kind: SyntaxKind.PropertyDeclaration;
+@@ -759,6 +761,10 @@ declare namespace ts {
+         readonly parent: ObjectLiteralExpression;
+         readonly name: PropertyName;
+         readonly initializer: Expression;
++        /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
++        readonly questionToken?: QuestionToken | undefined;
++        /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
++        readonly exclamationToken?: ExclamationToken | undefined;
+     }
+     interface ShorthandPropertyAssignment extends ObjectLiteralElement, JSDocContainer {
+         readonly kind: SyntaxKind.ShorthandPropertyAssignment;
+@@ -766,6 +772,12 @@ declare namespace ts {
+         readonly name: Identifier;
+         readonly equalsToken?: EqualsToken;
+         readonly objectAssignmentInitializer?: Expression;
++        /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
++        readonly modifiers?: NodeArray<Modifier> | undefined;
++        /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
++        readonly questionToken?: QuestionToken | undefined;
++        /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
++        readonly exclamationToken?: ExclamationToken | undefined;
+     }
+     interface SpreadAssignment extends ObjectLiteralElement, JSDocContainer {
+         readonly kind: SyntaxKind.SpreadAssignment;
+@@ -888,6 +900,8 @@ declare namespace ts {
+     }
+     interface FunctionTypeNode extends FunctionOrConstructorTypeNodeBase, LocalsContainer {
+         readonly kind: SyntaxKind.FunctionType;
++        /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
++        readonly modifiers?: NodeArray<Modifier> | undefined;
+     }
+     interface ConstructorTypeNode extends FunctionOrConstructorTypeNodeBase, LocalsContainer {
+         readonly kind: SyntaxKind.ConstructorType;
+@@ -4517,7 +4531,13 @@ declare namespace ts {
+     function symbolName(symbol: Symbol): string;
+     function getNameOfJSDocTypedef(declaration: JSDocTypedefTag): Identifier | PrivateIdentifier | undefined;
+     function getNameOfDeclaration(declaration: Declaration | Expression | undefined): DeclarationName | undefined;
++    /**
++     * @deprecated don't use this directly as it does not exist pre-4.8; instead use getDecorators from `@typescript-eslint/type-utils`.
++     */
+     function getDecorators(node: HasDecorators): readonly Decorator[] | undefined;
++    /**
++     * @deprecated don't use this directly as it does not exist pre-4.8; instead use getModifiers from `@typescript-eslint/type-utils`.
++     */
+     function getModifiers(node: HasModifiers): readonly Modifier[] | undefined;
+     /**
+      * Gets the JSDoc parameter tags for the node if present.
+@@ -5022,7 +5042,13 @@ declare namespace ts {
+     function isModuleName(node: Node): node is ModuleName;
+     function isBinaryOperatorToken(node: Node): node is BinaryOperatorToken;
+     function setTextRange<T extends TextRange>(range: T, location: TextRange | undefined): T;
++    /**
++     * @deprecated don't use this directly as it does not exist pre-4.8; instead use getModifiers from `@typescript-eslint/type-utils`.
++     */
+     function canHaveModifiers(node: Node): node is HasModifiers;
++    /**
++     * @deprecated don't use this directly as it does not exist pre-4.8; instead use getDecorators from `@typescript-eslint/type-utils`.
++     */
+     function canHaveDecorators(node: Node): node is HasDecorators;
+     /**
+      * Invokes a callback for each child of the given node. The 'cbNode' callback is invoked for all child nodes

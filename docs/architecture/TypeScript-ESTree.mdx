@@ -43,6 +43,11 @@ interface ParseOptions {
   comment?: boolean;
 
   /**
+   * Whether deprecated AST properties should skip calling console.warn on accesses.
+   */
+  suppressDeprecatedPropertyWarnings?: boolean;
+
+  /**
    * An array of modules to turn explicit debugging on for.
    * - 'typescript-eslint' is the same as setting the env var `DEBUG=typescript-eslint:*`
    * - 'eslint' is the same as setting the env var `DEBUG=eslint:*`

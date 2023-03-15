@@ -3,16 +3,16 @@
 exports[`AST Fixtures legacy-fixtures types constructor-in-generic TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           definite: false,
           id: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "x",
             optional: false,
             typeAnnotation: TSTypeAnnotation {
@@ -21,11 +21,11 @@ Program {
                 type: "TSTypeReference",
                 typeArguments: TSTypeParameterInstantiation {
                   type: "TSTypeParameterInstantiation",
-                  params: Array [
+                  params: [
                     TSConstructorType {
                       type: "TSConstructorType",
                       abstract: false,
-                      params: Array [],
+                      params: [],
                       returnType: TSTypeAnnotation {
                         type: "TSTypeAnnotation",
                         typeAnnotation: TSStringKeyword {
@@ -61,7 +61,7 @@ Program {
                 },
                 typeName: Identifier {
                   type: "Identifier",
-                  decorators: Array [],
+                  decorators: [],
                   name: "Array",
                   optional: false,
 
@@ -69,46 +69,6 @@ Program {
                   loc: {
                     start: { column: 7, line: 3 },
                     end: { column: 12, line: 3 },
-                  },
-                },
-                typeParameters: TSTypeParameterInstantiation {
-                  type: "TSTypeParameterInstantiation",
-                  params: Array [
-                    TSConstructorType {
-                      type: "TSConstructorType",
-                      abstract: false,
-                      params: Array [],
-                      returnType: TSTypeAnnotation {
-                        type: "TSTypeAnnotation",
-                        typeAnnotation: TSStringKeyword {
-                          type: "TSStringKeyword",
-
-                          range: [96, 102],
-                          loc: {
-                            start: { column: 23, line: 3 },
-                            end: { column: 29, line: 3 },
-                          },
-                        },
-
-                        range: [93, 102],
-                        loc: {
-                          start: { column: 20, line: 3 },
-                          end: { column: 29, line: 3 },
-                        },
-                      },
-
-                      range: [86, 102],
-                      loc: {
-                        start: { column: 13, line: 3 },
-                        end: { column: 29, line: 3 },
-                      },
-                    },
-                  ],
-
-                  range: [85, 103],
-                  loc: {
-                    start: { column: 12, line: 3 },
-                    end: { column: 30, line: 3 },
                   },
                 },
 

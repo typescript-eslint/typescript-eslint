@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics function-with-object-type-with-optional-properties TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [],
+        body: [],
 
         range: [124, 126],
         loc: {
@@ -22,7 +22,7 @@ Program {
       generator: false,
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "foo",
         optional: false,
 
@@ -32,18 +32,18 @@ Program {
           end: { column: 12, line: 3 },
         },
       },
-      params: Array [
+      params: [
         ObjectPattern {
           type: "ObjectPattern",
-          decorators: Array [],
+          decorators: [],
           optional: false,
-          properties: Array [
+          properties: [
             Property {
               type: "Property",
               computed: false,
               key: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "bar",
                 optional: false,
 
@@ -59,7 +59,7 @@ Program {
               shorthand: true,
               value: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "bar",
                 optional: false,
 
@@ -81,7 +81,7 @@ Program {
               computed: false,
               key: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "baz",
                 optional: false,
 
@@ -97,7 +97,7 @@ Program {
               shorthand: true,
               value: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "baz",
                 optional: false,
 
@@ -119,13 +119,13 @@ Program {
             type: "TSTypeAnnotation",
             typeAnnotation: TSTypeLiteral {
               type: "TSTypeLiteral",
-              members: Array [
+              members: [
                 TSPropertySignature {
                   type: "TSPropertySignature",
                   computed: false,
                   key: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "bar",
                     optional: false,
 
@@ -168,7 +168,7 @@ Program {
                   computed: false,
                   key: Identifier {
                     type: "Identifier",
-                    decorators: Array [],
+                    decorators: [],
                     name: "baz",
                     optional: false,
 

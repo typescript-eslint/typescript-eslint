@@ -3,18 +3,18 @@
 exports[`AST Fixtures legacy-fixtures basics interface-with-optional-properties TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSInterfaceDeclaration {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [
+        body: [
           TSPropertySignature {
             type: "TSPropertySignature",
             computed: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "foo",
               optional: false,
 
@@ -39,7 +39,7 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "bar",
               optional: false,
 
@@ -82,7 +82,7 @@ Program {
             computed: false,
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "baz",
               optional: false,
 
@@ -94,10 +94,10 @@ Program {
             },
             kind: "method",
             optional: true,
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "foo",
                 optional: false,
 
@@ -109,7 +109,7 @@ Program {
               },
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "bar",
                 optional: true,
                 typeAnnotation: TSTypeAnnotation {
@@ -139,7 +139,7 @@ Program {
               },
               Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "baz",
                 optional: true,
 
@@ -168,10 +168,10 @@ Program {
         },
       },
       declare: false,
-      extends: Array [],
+      extends: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "test",
         optional: false,
 

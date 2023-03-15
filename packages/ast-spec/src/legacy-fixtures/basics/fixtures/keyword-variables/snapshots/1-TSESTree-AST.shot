@@ -3,19 +3,19 @@
 exports[`AST Fixtures legacy-fixtures basics keyword-variables TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     BlockStatement {
       type: "BlockStatement",
-      body: Array [
+      body: [
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "abstract",
                 optional: false,
 
@@ -55,13 +55,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "as",
                 optional: false,
 
@@ -101,13 +101,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "asserts",
                 optional: false,
 
@@ -147,13 +147,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "any",
                 optional: false,
 
@@ -193,13 +193,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "async",
                 optional: false,
 
@@ -239,13 +239,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "await",
                 optional: false,
 
@@ -285,13 +285,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "boolean",
                 optional: false,
 
@@ -331,13 +331,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "constructor",
                 optional: false,
 
@@ -377,13 +377,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "declare",
                 optional: false,
 
@@ -423,13 +423,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "get",
                 optional: false,
 
@@ -469,13 +469,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "infer",
                 optional: false,
 
@@ -515,13 +515,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "is",
                 optional: false,
 
@@ -561,13 +561,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "keyof",
                 optional: false,
 
@@ -607,13 +607,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "module",
                 optional: false,
 
@@ -653,13 +653,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "namespace",
                 optional: false,
 
@@ -699,13 +699,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "never",
                 optional: false,
 
@@ -745,13 +745,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "readonly",
                 optional: false,
 
@@ -791,13 +791,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "require",
                 optional: false,
 
@@ -837,13 +837,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "number",
                 optional: false,
 
@@ -883,13 +883,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "object",
                 optional: false,
 
@@ -929,13 +929,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "set",
                 optional: false,
 
@@ -975,13 +975,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "string",
                 optional: false,
 
@@ -1021,13 +1021,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "symbol",
                 optional: false,
 
@@ -1067,13 +1067,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "type",
                 optional: false,
 
@@ -1113,13 +1113,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "undefined",
                 optional: false,
 
@@ -1159,13 +1159,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "unique",
                 optional: false,
 
@@ -1205,13 +1205,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "unknown",
                 optional: false,
 
@@ -1251,13 +1251,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "from",
                 optional: false,
 
@@ -1297,13 +1297,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "global",
                 optional: false,
 
@@ -1343,13 +1343,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "bigint",
                 optional: false,
 
@@ -1389,13 +1389,13 @@ Program {
         },
         VariableDeclaration {
           type: "VariableDeclaration",
-          declarations: Array [
+          declarations: [
             VariableDeclarator {
               type: "VariableDeclarator",
               definite: false,
               id: Identifier {
                 type: "Identifier",
-                decorators: Array [],
+                decorators: [],
                 name: "of",
                 optional: false,
 
@@ -1443,7 +1443,7 @@ Program {
     },
     ImportDeclaration {
       type: "ImportDeclaration",
-      assertions: Array [],
+      assertions: [],
       importKind: "value",
       source: Literal {
         type: "Literal",
@@ -1456,12 +1456,12 @@ Program {
           end: { column: 20, line: 69 },
         },
       },
-      specifiers: Array [
+      specifiers: [
         ImportSpecifier {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "abstract",
             optional: false,
 
@@ -1474,7 +1474,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "abstract",
             optional: false,
 
@@ -1495,7 +1495,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "as",
             optional: false,
 
@@ -1508,7 +1508,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "as",
             optional: false,
 
@@ -1529,7 +1529,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "asserts",
             optional: false,
 
@@ -1542,7 +1542,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "asserts",
             optional: false,
 
@@ -1563,7 +1563,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "any",
             optional: false,
 
@@ -1576,7 +1576,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "any",
             optional: false,
 
@@ -1597,7 +1597,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "async",
             optional: false,
 
@@ -1610,7 +1610,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "async",
             optional: false,
 
@@ -1631,7 +1631,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "await",
             optional: false,
 
@@ -1644,7 +1644,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "await",
             optional: false,
 
@@ -1665,7 +1665,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "boolean",
             optional: false,
 
@@ -1678,7 +1678,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "boolean",
             optional: false,
 
@@ -1699,7 +1699,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "constructor",
             optional: false,
 
@@ -1712,7 +1712,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "constructor",
             optional: false,
 
@@ -1733,7 +1733,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "declare",
             optional: false,
 
@@ -1746,7 +1746,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "declare",
             optional: false,
 
@@ -1767,7 +1767,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "get",
             optional: false,
 
@@ -1780,7 +1780,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "get",
             optional: false,
 
@@ -1801,7 +1801,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "infer",
             optional: false,
 
@@ -1814,7 +1814,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "infer",
             optional: false,
 
@@ -1835,7 +1835,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "is",
             optional: false,
 
@@ -1848,7 +1848,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "is",
             optional: false,
 
@@ -1869,7 +1869,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "keyof",
             optional: false,
 
@@ -1882,7 +1882,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "keyof",
             optional: false,
 
@@ -1903,7 +1903,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "module",
             optional: false,
 
@@ -1916,7 +1916,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "module",
             optional: false,
 
@@ -1937,7 +1937,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "namespace",
             optional: false,
 
@@ -1950,7 +1950,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "namespace",
             optional: false,
 
@@ -1971,7 +1971,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "never",
             optional: false,
 
@@ -1984,7 +1984,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "never",
             optional: false,
 
@@ -2005,7 +2005,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "readonly",
             optional: false,
 
@@ -2018,7 +2018,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "readonly",
             optional: false,
 
@@ -2039,7 +2039,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "require",
             optional: false,
 
@@ -2052,7 +2052,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "require",
             optional: false,
 
@@ -2073,7 +2073,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "number",
             optional: false,
 
@@ -2086,7 +2086,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "number",
             optional: false,
 
@@ -2107,7 +2107,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "object",
             optional: false,
 
@@ -2120,7 +2120,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "object",
             optional: false,
 
@@ -2141,7 +2141,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "set",
             optional: false,
 
@@ -2154,7 +2154,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "set",
             optional: false,
 
@@ -2175,7 +2175,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "string",
             optional: false,
 
@@ -2188,7 +2188,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "string",
             optional: false,
 
@@ -2209,7 +2209,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "symbol",
             optional: false,
 
@@ -2222,7 +2222,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "symbol",
             optional: false,
 
@@ -2243,7 +2243,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "type",
             optional: false,
 
@@ -2256,7 +2256,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "type",
             optional: false,
 
@@ -2277,7 +2277,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "undefined",
             optional: false,
 
@@ -2290,7 +2290,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "undefined",
             optional: false,
 
@@ -2311,7 +2311,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "unique",
             optional: false,
 
@@ -2324,7 +2324,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "unique",
             optional: false,
 
@@ -2345,7 +2345,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "unknown",
             optional: false,
 
@@ -2358,7 +2358,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "unknown",
             optional: false,
 
@@ -2379,7 +2379,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "from",
             optional: false,
 
@@ -2392,7 +2392,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "from",
             optional: false,
 
@@ -2413,7 +2413,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "global",
             optional: false,
 
@@ -2426,7 +2426,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "global",
             optional: false,
 
@@ -2447,7 +2447,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "bigint",
             optional: false,
 
@@ -2460,7 +2460,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "bigint",
             optional: false,
 
@@ -2481,7 +2481,7 @@ Program {
           type: "ImportSpecifier",
           imported: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "of",
             optional: false,
 
@@ -2494,7 +2494,7 @@ Program {
           importKind: "value",
           local: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "of",
             optional: false,
 
@@ -2523,7 +2523,7 @@ Program {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [],
+        body: [],
 
         range: [1032, 1034],
         loc: {
@@ -2532,10 +2532,10 @@ Program {
         },
       },
       declare: false,
-      extends: Array [],
+      extends: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "X",
         optional: false,
 
@@ -2557,14 +2557,14 @@ Program {
       abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "a",
               optional: false,
 
@@ -2583,7 +2583,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [1071, 1073],
                 loc: {
@@ -2595,7 +2595,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [1068, 1073],
               loc: {
@@ -2614,10 +2614,10 @@ Program {
             type: "MethodDefinition",
             accessibility: "private",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "b",
               optional: false,
 
@@ -2636,7 +2636,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [1088, 1090],
                 loc: {
@@ -2648,7 +2648,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [1085, 1090],
               loc: {
@@ -2667,10 +2667,10 @@ Program {
             type: "MethodDefinition",
             accessibility: "public",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "c",
               optional: false,
 
@@ -2689,7 +2689,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [1104, 1106],
                 loc: {
@@ -2701,7 +2701,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [1101, 1106],
               loc: {
@@ -2720,10 +2720,10 @@ Program {
             type: "MethodDefinition",
             accessibility: "protected",
             computed: false,
-            decorators: Array [],
+            decorators: [],
             key: Identifier {
               type: "Identifier",
-              decorators: Array [],
+              decorators: [],
               name: "d",
               optional: false,
 
@@ -2742,16 +2742,16 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   VariableDeclaration {
                     type: "VariableDeclaration",
-                    declarations: Array [
+                    declarations: [
                       VariableDeclarator {
                         type: "VariableDeclarator",
                         definite: false,
                         id: Identifier {
                           type: "Identifier",
-                          decorators: Array [],
+                          decorators: [],
                           name: "x",
                           optional: false,
 
@@ -2801,7 +2801,7 @@ Program {
               expression: false,
               generator: true,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [1121, 1148],
               loc: {
@@ -2825,10 +2825,10 @@ Program {
         },
       },
       declare: false,
-      decorators: Array [],
+      decorators: [],
       id: Identifier {
         type: "Identifier",
-        decorators: Array [],
+        decorators: [],
         name: "C",
         optional: false,
 
@@ -2838,12 +2838,12 @@ Program {
           end: { column: 7, line: 72 },
         },
       },
-      implements: Array [
+      implements: [
         TSClassImplements {
           type: "TSClassImplements",
           expression: Identifier {
             type: "Identifier",
-            decorators: Array [],
+            decorators: [],
             name: "X",
             optional: false,
 
