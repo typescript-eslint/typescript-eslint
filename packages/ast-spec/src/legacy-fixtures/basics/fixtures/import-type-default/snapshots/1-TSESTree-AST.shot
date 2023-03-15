@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures basics import-type-default TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ImportDeclaration {
       type: "ImportDeclaration",
-      assertions: Array [],
+      assertions: [],
       importKind: "type",
       source: Literal {
         type: "Literal",
@@ -19,7 +19,7 @@ Program {
           end: { column: 26, line: 3 },
         },
       },
-      specifiers: Array [
+      specifiers: [
         ImportDefaultSpecifier {
           type: "ImportDefaultSpecifier",
           local: Identifier {

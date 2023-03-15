@@ -126,6 +126,7 @@ exports[`AST Fixtures legacy-fixtures basics function-with-type-parameters-with-
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSTypeLiteral {
                 type: 'TSTypeLiteral',
                 members: Array [],

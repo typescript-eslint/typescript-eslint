@@ -25,6 +25,7 @@ const versions = [
   '4.7',
   '4.8',
   '4.9',
+  '5.0',
 ] as const;
 type Versions = typeof versions extends ArrayLike<infer U> ? U : never;
 

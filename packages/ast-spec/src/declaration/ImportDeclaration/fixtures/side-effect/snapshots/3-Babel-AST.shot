@@ -3,10 +3,10 @@
 exports[`AST Fixtures declaration ImportDeclaration side-effect Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ImportDeclaration {
       type: "ImportDeclaration",
-      assertions: Array [],
+      assertions: [],
       importKind: "value",
       source: Literal {
         type: "Literal",
@@ -19,7 +19,7 @@ Program {
           end: { column: 12, line: 1 },
         },
       },
-      specifiers: Array [],
+      specifiers: [],
 
       range: [0, 13],
       loc: {

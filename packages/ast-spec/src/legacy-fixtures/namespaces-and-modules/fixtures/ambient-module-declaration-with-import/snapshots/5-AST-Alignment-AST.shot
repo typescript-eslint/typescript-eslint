@@ -19,7 +19,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules ambient-module-decl
               importKind: 'value',
               source: Literal {
                 type: 'Literal',
-                raw: '\\\\'fs\\\\'',
+                raw: '\\'fs\\'',
                 value: 'fs',
 
                 range: [122, 126],
@@ -67,7 +67,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules ambient-module-decl
         declare: true,
         id: Literal {
           type: 'Literal',
-          raw: '\\\\'i-use-things\\\\'',
+          raw: '\\'i-use-things\\'',
           value: 'i-use-things',
 
           range: [88, 102],

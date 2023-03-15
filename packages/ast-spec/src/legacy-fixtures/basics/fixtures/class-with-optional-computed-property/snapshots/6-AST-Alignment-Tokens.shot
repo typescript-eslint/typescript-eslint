@@ -60,7 +60,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-computed-proper
     },
     String {
       type: 'String',
-      value: '\\\\'foo\\\\'',
+      value: '\\'foo\\'',
 
       range: [94, 99],
       loc: {

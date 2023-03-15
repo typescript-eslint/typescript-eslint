@@ -29,6 +29,7 @@ exports[`AST Fixtures legacy-fixtures basics export-default-class-with-generic A
             params: Array [
               TSTypeParameter {
                 type: 'TSTypeParameter',
+-               const: false,
 -               in: false,
 -               name: Identifier {
 -                 type: 'Identifier',

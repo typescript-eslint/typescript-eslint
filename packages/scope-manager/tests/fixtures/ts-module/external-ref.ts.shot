@@ -2,17 +2,17 @@
 
 exports[`ts-module external-ref 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TSModuleNameDefinition$1 {
           name: Identifier<"Foo">,
           node: TSModuleDeclaration$1,
         },
       ],
       name: "Foo",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"Foo">,
           isRead: true,
@@ -26,14 +26,14 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         VariableDefinition$2 {
           name: Identifier<"x">,
           node: VariableDeclarator$2,
         },
       ],
       name: "x",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"x">,
           init: true,
@@ -49,11 +49,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$4,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$2,
       ],
       set: Map {
@@ -62,7 +62,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
       ],
@@ -70,7 +70,7 @@ ScopeManager {
     TSModuleScope$2 {
       block: TSModuleDeclaration$1,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -78,7 +78,7 @@ ScopeManager {
       },
       type: "tsModule",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
       ],
     },
