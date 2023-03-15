@@ -91,21 +91,6 @@ export function hasModifier(
 }
 
 /**
- * Get a modifier from a ts.Node
- * @param modifierKind TypeScript SyntaxKind modifier
- * @param node TypeScript AST node
- * @returns matched modifier if present or null
- */
-export function getModifier(
-  modifierKind: ts.KeywordSyntaxKind,
-  node: ts.Node,
-): ts.Modifier | null {
-  return (
-    getModifiers(node)?.find(modifier => modifier.kind === modifierKind) ?? null
-  );
-}
-
-/**
  * Get last last modifier in ast
  * @param node TypeScript AST node
  * @returns returns last modifier if present or null
@@ -756,4 +741,28 @@ export function isThisInTypeQuery(node: ts.Node): boolean {
   }
 
   return node.parent.kind === SyntaxKind.TypeQuery;
+}
+
+// `ts.nodeIsMissing`
+function nodeIsMissing(node: ts.Node | undefined): boolean {
+  if (node === undefined) {
+    return true;
+  }
+  return (
+    node.pos === node.end &&
+    node.pos >= 0 &&
+    node.kind !== SyntaxKind.EndOfFileToken
+  );
+}
+
+// `ts.nodeIsPresent`
+export function nodeIsPresent(node: ts.Node | undefined): node is ts.Node {
+  return !nodeIsMissing(node);
+}
+
+// `ts.getContainingFunction`
+export function getContainingFunction(
+  node: ts.Node,
+): ts.SignatureDeclaration | undefined {
+  return ts.findAncestor(node.parent, ts.isFunctionLike);
 }

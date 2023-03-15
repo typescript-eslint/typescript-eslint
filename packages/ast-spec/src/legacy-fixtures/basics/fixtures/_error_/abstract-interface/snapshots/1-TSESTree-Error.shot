@@ -1,3 +1,10 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures legacy-fixtures basics _error_ abstract-interface TSESTree - Error 1`] = `"NO ERROR"`;
+exports[`AST Fixtures legacy-fixtures basics _error_ abstract-interface TSESTree - Error 1`] = `
+"TSError
+  1 | // TODO: This fixture might be too large, and if so should be split up.
+  2 |
+> 3 | export abstract interface I {
+    |        ^^^^^^^^ 'abstract' modifier can only appear on a class, method, or property declaration.
+  4 | }"
+`;

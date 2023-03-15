@@ -76,10 +76,10 @@ interface Test {
         interface Test { f<T>(a: T): T }
         interface Test { ['f']<T extends {}>(a: T, b: T): T }
         interface Test { 'f!'</* a */>(/* b */ x: any /* c */): void }
-        type Test = { readonly f(a: string): number }
+        type Test = { f(a: string): number }
         type Test = { ['f']?(a: boolean): void }
-        type Test = { readonly f?<T>(a?: T): T }
-        type Test = { readonly ['f']?<T>(a: T, b: T): T }
+        type Test = { f?<T>(a?: T): T }
+        type Test = { ['f']?<T>(a: T, b: T): T }
       `,
     }),
     ...batchedSingleLineTests({
@@ -103,10 +103,10 @@ interface Test {
         interface Test { f<T>(a: T): T }
         interface Test { ['f']<T extends {}>(a: T, b: T): T }
         interface Test { 'f!'</* a */>(/* b */ x: any /* c */): void }
-        type Test = { readonly f(a: string): number }
+        type Test = { f(a: string): number }
         type Test = { ['f']?(a: boolean): void }
-        type Test = { readonly f?<T>(a?: T): T }
-        type Test = { readonly ['f']?<T>(a: T, b: T): T }
+        type Test = { f?<T>(a?: T): T }
+        type Test = { ['f']?<T>(a: T, b: T): T }
       `,
       errors: [
         { messageId: 'errorMethod', line: 2 },
@@ -125,10 +125,10 @@ interface Test {
         interface Test { f: <T>(a: T) => T }
         interface Test { ['f']: <T extends {}>(a: T, b: T) => T }
         interface Test { 'f!': </* a */>(/* b */ x: any /* c */) => void }
-        type Test = { readonly f: (a: string) => number }
+        type Test = { f: (a: string) => number }
         type Test = { ['f']?: (a: boolean) => void }
-        type Test = { readonly f?: <T>(a?: T) => T }
-        type Test = { readonly ['f']?: <T>(a: T, b: T) => T }
+        type Test = { f?: <T>(a?: T) => T }
+        type Test = { ['f']?: <T>(a: T, b: T) => T }
       `,
     }),
     ...batchedSingleLineTests({
@@ -139,10 +139,10 @@ interface Test {
         interface Test { f: <T>(a: T) => T }
         interface Test { ['f']: <T extends {}>(a: T, b: T) => T }
         interface Test { 'f!': </* a */>(/* b */ x: any /* c */) => void }
-        type Test = { readonly f: (a: string) => number }
+        type Test = { f: (a: string) => number }
         type Test = { ['f']?: (a: boolean) => void }
-        type Test = { readonly f?: <T>(a?: T) => T }
-        type Test = { readonly ['f']?: <T>(a: T, b: T) => T }
+        type Test = { f?: <T>(a?: T) => T }
+        type Test = { ['f']?: <T>(a: T, b: T) => T }
       `,
       errors: [
         { messageId: 'errorProperty', line: 2 },
@@ -161,10 +161,10 @@ interface Test {
         interface Test { f<T>(a: T): T }
         interface Test { ['f']<T extends {}>(a: T, b: T): T }
         interface Test { 'f!'</* a */>(/* b */ x: any /* c */): void }
-        type Test = { readonly f(a: string): number }
+        type Test = { f(a: string): number }
         type Test = { ['f']?(a: boolean): void }
-        type Test = { readonly f?<T>(a?: T): T }
-        type Test = { readonly ['f']?<T>(a: T, b: T): T }
+        type Test = { f?<T>(a?: T): T }
+        type Test = { ['f']?<T>(a: T, b: T): T }
       `,
     }),
     {

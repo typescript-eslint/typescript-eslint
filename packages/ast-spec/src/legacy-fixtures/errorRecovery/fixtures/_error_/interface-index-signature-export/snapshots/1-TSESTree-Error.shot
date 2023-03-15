@@ -5,7 +5,7 @@ exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-index-sign
   2 |
   3 | interface Foo {
 > 4 |   export [baz: string]: string;
-    |   ^^^^^^ An index signature cannot have an export modifier.
+    |   ^^^^^^ 'export' modifier cannot appear on an index signature
   5 | }
   6 |
   7 |"

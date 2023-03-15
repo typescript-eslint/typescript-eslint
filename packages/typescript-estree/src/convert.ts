@@ -9,11 +9,11 @@ import {
   createError,
   findNextToken,
   getBinaryExpressionType,
+  getContainingFunction,
   getDeclarationKind,
   getLastModifier,
   getLineAndCharacterFor,
   getLocFor,
-  getModifier,
   getRange,
   getTextForTokenKind,
   getTSNodeAccessibility,
@@ -26,6 +26,7 @@ import {
   isOptional,
   isThisInTypeQuery,
   nodeHasIllegalDecorators,
+  nodeIsPresent,
   unescapeStringLiteralText,
 } from './node-utils';
 import type {
@@ -113,6 +114,8 @@ export class Converter {
     if (!node) {
       return null;
     }
+
+    this.#checkModifiers(node);
 
     const pattern = this.allowPattern;
     if (allowPattern !== undefined) {
@@ -623,14 +626,6 @@ export class Converter {
       | ts.GetAccessorDeclaration
       | ts.SetAccessorDeclaration,
   ): TSESTree.TSMethodSignature {
-    const exportKeyword = getModifier(SyntaxKind.ExportKeyword, node);
-    if (exportKeyword) {
-      this.#throwUnlessAllowInvalidAST(
-        exportKeyword,
-        'A method signature cannot have an export modifier.',
-      );
-    }
-
     return this.createNode<TSESTree.TSMethodSignature>(node, {
       type: AST_NODE_TYPES.TSMethodSignature,
       accessibility: getTSNodeAccessibility(node),
@@ -913,8 +908,6 @@ export class Converter {
       // Declarations
 
       case SyntaxKind.FunctionDeclaration: {
-        this.#checkIllegalDecorators(node);
-
         const isDeclare = hasModifier(SyntaxKind.DeclareKeyword, node);
 
         const result = this.createNode<
@@ -956,8 +949,6 @@ export class Converter {
       }
 
       case SyntaxKind.VariableStatement: {
-        this.#checkIllegalDecorators(node);
-
         const result = this.createNode<TSESTree.VariableDeclaration>(node, {
           type: AST_NODE_TYPES.VariableDeclaration,
           declarations: node.declarationList.declarations.map(el =>
@@ -1668,14 +1659,6 @@ export class Converter {
 
         const modifiers = getModifiers(node);
         if (modifiers) {
-          const exportKeyword = getModifier(SyntaxKind.ExportKeyword, node);
-          if (exportKeyword) {
-            this.#throwUnlessAllowInvalidAST(
-              exportKeyword,
-              'A parameter cannot have an export modifier.',
-            );
-          }
-
           return this.createNode<TSESTree.TSParameterProperty>(node, {
             type: AST_NODE_TYPES.TSParameterProperty,
             accessibility: getTSNodeAccessibility(node),
@@ -2558,8 +2541,6 @@ export class Converter {
         return this.convertChild(node.expression, parent);
 
       case SyntaxKind.TypeAliasDeclaration: {
-        this.#checkIllegalDecorators(node);
-
         const result = this.createNode<TSESTree.TSTypeAliasDeclaration>(node, {
           type: AST_NODE_TYPES.TSTypeAliasDeclaration,
           declare: hasModifier(SyntaxKind.DeclareKeyword, node),
@@ -2589,14 +2570,6 @@ export class Converter {
           );
         }
 
-        const exportKeyword = getModifier(SyntaxKind.ExportKeyword, node);
-        if (exportKeyword) {
-          this.#throwUnlessAllowInvalidAST(
-            exportKeyword,
-            'A property signature cannot have an export modifier.',
-          );
-        }
-
         return this.createNode<TSESTree.TSPropertySignature>(node, {
           type: AST_NODE_TYPES.TSPropertySignature,
           accessibility: getTSNodeAccessibility(node),
@@ -2611,14 +2584,6 @@ export class Converter {
       }
 
       case SyntaxKind.IndexSignature: {
-        const exportKeyword = getModifier(SyntaxKind.ExportKeyword, node);
-        if (exportKeyword) {
-          this.#throwUnlessAllowInvalidAST(
-            exportKeyword,
-            'An index signature cannot have an export modifier.',
-          );
-        }
-
         return this.createNode<TSESTree.TSIndexSignature>(node, {
           type: AST_NODE_TYPES.TSIndexSignature,
           accessibility: getTSNodeAccessibility(node),
@@ -2713,8 +2678,6 @@ export class Converter {
       }
 
       case SyntaxKind.InterfaceDeclaration: {
-        this.#checkIllegalDecorators(node);
-
         const interfaceHeritageClauses = node.heritageClauses ?? [];
         const interfaceExtends: TSESTree.TSInterfaceHeritage[] = [];
 
@@ -2815,8 +2778,6 @@ export class Converter {
       }
 
       case SyntaxKind.EnumDeclaration: {
-        this.#checkIllegalDecorators(node);
-
         const result = this.createNode<TSESTree.TSEnumDeclaration>(node, {
           type: AST_NODE_TYPES.TSEnumDeclaration,
           const: hasModifier(SyntaxKind.ConstKeyword, node),
@@ -3141,12 +3102,195 @@ export class Converter {
     }
   }
 
-  #checkIllegalDecorators(node: ts.Node): void {
+  #checkModifiers(node: ts.Node): void {
+    if (this.options.allowInvalidAST) {
+      return;
+    }
+
     if (nodeHasIllegalDecorators(node)) {
-      this.#throwUnlessAllowInvalidAST(
+      this.#throwError(
         node.illegalDecorators[0],
         'Decorators are not valid here.',
       );
+    }
+
+    for (const modifier of getModifiers(node) ?? []) {
+      if (modifier.kind !== SyntaxKind.ReadonlyKeyword) {
+        if (
+          node.kind === SyntaxKind.PropertySignature ||
+          node.kind === SyntaxKind.MethodSignature
+        ) {
+          this.#throwError(
+            modifier,
+            `'${ts.tokenToString(
+              modifier.kind,
+            )}' modifier cannot appear on a type member`,
+          );
+        }
+
+        if (
+          node.kind === SyntaxKind.IndexSignature &&
+          (modifier.kind !== SyntaxKind.StaticKeyword ||
+            !ts.isClassLike(node.parent))
+        ) {
+          this.#throwError(
+            modifier,
+            `'${ts.tokenToString(
+              modifier.kind,
+            )}' modifier cannot appear on an index signature`,
+          );
+        }
+      }
+
+      if (
+        modifier.kind !== SyntaxKind.InKeyword &&
+        modifier.kind !== SyntaxKind.OutKeyword &&
+        modifier.kind !== SyntaxKind.ConstKeyword &&
+        node.kind === SyntaxKind.TypeParameter
+      ) {
+        this.#throwError(
+          modifier,
+          `'${ts.tokenToString(
+            modifier.kind,
+          )}' modifier cannot appear on a type parameter`,
+        );
+      }
+
+      if (
+        (modifier.kind === SyntaxKind.InKeyword ||
+          modifier.kind === SyntaxKind.OutKeyword) &&
+        (node.kind !== SyntaxKind.TypeParameter ||
+          !(
+            ts.isInterfaceDeclaration(node.parent) ||
+            ts.isClassLike(node.parent) ||
+            ts.isTypeAliasDeclaration(node.parent)
+          ))
+      ) {
+        this.#throwError(
+          modifier,
+          `'${ts.tokenToString(
+            modifier.kind,
+          )}' modifier can only appear on a type parameter of a class, interface or type alias`,
+        );
+      }
+
+      if (
+        modifier.kind === SyntaxKind.ReadonlyKeyword &&
+        node.kind !== SyntaxKind.PropertyDeclaration &&
+        node.kind !== SyntaxKind.PropertySignature &&
+        node.kind !== SyntaxKind.IndexSignature &&
+        node.kind !== SyntaxKind.Parameter
+      ) {
+        this.#throwError(
+          modifier,
+          "'readonly' modifier can only appear on a property declaration or index signature.",
+        );
+      }
+
+      if (
+        modifier.kind === SyntaxKind.DeclareKeyword &&
+        ts.isClassLike(node.parent) &&
+        !ts.isPropertyDeclaration(node)
+      ) {
+        this.#throwError(
+          modifier,
+          `'${ts.tokenToString(
+            modifier.kind,
+          )}' modifier cannot appear on class elements of this kind.`,
+        );
+      }
+
+      if (
+        modifier.kind === SyntaxKind.AbstractKeyword &&
+        node.kind !== SyntaxKind.ClassDeclaration &&
+        node.kind !== SyntaxKind.ConstructorType &&
+        node.kind !== SyntaxKind.MethodDeclaration &&
+        node.kind !== SyntaxKind.PropertyDeclaration &&
+        node.kind !== SyntaxKind.GetAccessor &&
+        node.kind !== SyntaxKind.SetAccessor
+      ) {
+        this.#throwError(
+          modifier,
+          `'${ts.tokenToString(
+            modifier.kind,
+          )}' modifier can only appear on a class, method, or property declaration.`,
+        );
+      }
+
+      if (
+        (modifier.kind === SyntaxKind.StaticKeyword ||
+          modifier.kind === SyntaxKind.PublicKeyword ||
+          modifier.kind === SyntaxKind.ProtectedKeyword ||
+          modifier.kind === SyntaxKind.PrivateKeyword) &&
+        (node.parent.kind === SyntaxKind.ModuleBlock ||
+          node.parent.kind === SyntaxKind.SourceFile)
+      ) {
+        this.#throwError(
+          modifier,
+          `'${ts.tokenToString(
+            modifier.kind,
+          )}' modifier cannot appear on a module or namespace element.`,
+        );
+      }
+
+      if (
+        modifier.kind === SyntaxKind.AccessorKeyword &&
+        node.kind !== SyntaxKind.PropertyDeclaration
+      ) {
+        this.#throwError(
+          modifier,
+          "'accessor' modifier can only appear on a property declaration.",
+        );
+      }
+
+      // `checkGrammarAsyncModifier` function in `typescript`
+      if (
+        modifier.kind === SyntaxKind.AsyncKeyword &&
+        node.kind !== SyntaxKind.MethodDeclaration &&
+        node.kind !== SyntaxKind.FunctionDeclaration &&
+        node.kind !== SyntaxKind.FunctionExpression &&
+        node.kind !== SyntaxKind.ArrowFunction
+      ) {
+        this.#throwError(modifier, "'async' modifier cannot be used here.");
+      }
+
+      // `checkGrammarModifiers` function in `typescript`
+      if (
+        node.kind === SyntaxKind.Parameter &&
+        (modifier.kind === SyntaxKind.StaticKeyword ||
+          modifier.kind === SyntaxKind.ExportKeyword ||
+          modifier.kind === SyntaxKind.DeclareKeyword ||
+          modifier.kind === SyntaxKind.AsyncKeyword)
+      ) {
+        this.#throwError(
+          modifier,
+          `'${ts.tokenToString(
+            modifier.kind,
+          )}' modifier cannot appear on a parameter.`,
+        );
+      }
+
+      // `checkParameter` function in `typescript`
+      if (
+        node.kind === SyntaxKind.Parameter &&
+        // In `typescript` package, it's `ts.hasSyntacticModifier(node, ts.ModifierFlags.ParameterPropertyModifier)`
+        // https://github.com/typescript-eslint/typescript-eslint/pull/6615#discussion_r1136489935
+        (modifier.kind === SyntaxKind.PublicKeyword ||
+          modifier.kind === SyntaxKind.PrivateKeyword ||
+          modifier.kind === SyntaxKind.ProtectedKeyword ||
+          modifier.kind === SyntaxKind.ReadonlyKeyword)
+      ) {
+        const func = getContainingFunction(node)!;
+
+        if (
+          !(func.kind === SyntaxKind.Constructor && nodeIsPresent(func.body))
+        ) {
+          this.#throwError(
+            modifier,
+            'A parameter property is only allowed in a constructor implementation.',
+          );
+        }
+      }
     }
   }
 
