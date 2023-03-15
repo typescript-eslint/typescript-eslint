@@ -268,6 +268,18 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 2,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithAnnotation',
+              data: { cast: 'Foo<int>' },
+              output: 'const x: Foo<int> = {};',
+            },
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo<int>' },
+              output: 'const x = {} satisfies Foo<int>;',
+            },
+          ],
         },
       ],
     }),
@@ -283,6 +295,18 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 2,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithAnnotation',
+              data: { cast: 'Foo<int>' },
+              output: 'const x: Foo<int> = {};',
+            },
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo<int>' },
+              output: 'const x = {} satisfies Foo<int>;',
+            },
+          ],
         },
       ],
     }),
@@ -298,34 +322,95 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 2,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithAnnotation',
+              data: { cast: 'Foo<int>' },
+              output: 'const x: Foo<int> = {};',
+            },
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo<int>' },
+              output: 'const x = {} satisfies Foo<int>;',
+            },
+          ],
         },
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 3,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo' },
+              output: 'print({ bar: 5 } satisfies Foo)',
+            },
+          ],
         },
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 4,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo' },
+              output: 'new print({ bar: 5 } satisfies Foo)',
+            },
+          ],
         },
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 5,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo' },
+              output: 'function foo() { throw { bar: 5 } satisfies Foo }',
+            },
+          ],
         },
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 6,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo.Bar' },
+              output: 'function b(x = {} satisfies Foo.Bar) {}',
+            },
+          ],
         },
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 7,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo' },
+              output: 'function c(x = {} satisfies Foo) {}',
+            },
+          ],
         },
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 8,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo' },
+              output: 'print?.({ bar: 5 } satisfies Foo)',
+            },
+          ],
         },
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 9,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo' },
+              output: 'print?.call({ bar: 5 } satisfies Foo)',
+            },
+          ],
         },
       ],
     }),
@@ -341,26 +426,73 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 2,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithAnnotation',
+              data: { cast: 'Foo<int>' },
+              output: 'const x: Foo<int> = {};',
+            },
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo<int>' },
+              output: 'const x = {} satisfies Foo<int>;',
+            },
+          ],
         },
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 3,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo' },
+              output: 'print({ bar: 5 } satisfies Foo)',
+            },
+          ],
         },
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 4,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo' },
+              output: 'new print({ bar: 5 } satisfies Foo)',
+            },
+          ],
         },
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 5,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo' },
+              output: 'function foo() { throw { bar: 5 } satisfies Foo }',
+            },
+          ],
         },
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 6,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo' },
+              output: 'print?.({ bar: 5 } satisfies Foo)',
+            },
+          ],
         },
         {
           messageId: 'unexpectedObjectTypeAssertion',
           line: 7,
+          suggestions: [
+            {
+              messageId: 'replaceObjectTypeAssertionWithSatisfies',
+              data: { cast: 'Foo' },
+              output: 'print?.call({ bar: 5 } satisfies Foo)',
+            },
+          ],
         },
       ],
     }),
