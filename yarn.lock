@@ -3460,13 +3460,6 @@
   version "0.0.0"
   uid ""
 
-"@types/esquery@^1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@types/esquery/-/esquery-1.0.2.tgz#ccab4b6bd1aec356d5daa5b3abc55eac703c332d"
-  integrity sha512-qeAoHiWfqF4ST6An3DM2r1743bWL7B5hW4oNR9tWkdOjFUR1aK2j0jnYvW6h30VGDeXQ+1bWOYTej4JVo/5+PA==
-  dependencies:
-    "@types/estree" "*"
-
 "@types/estree@*":
   version "0.0.0"
   uid ""

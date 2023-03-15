@@ -177,6 +177,25 @@ jobs:
           # Sadly 1 day is the minimum
           retention-days: 1
 
+  website_build:
+    name: Build Website
+    needs: [install, build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build Base
+        uses: ./.github/actions/prepare-build
+
+      - name: Build Website
+        shell: bash
+        run: |
+          npx nx run-many --target=build --projects=website-eslint,website
+
   ## TODO - re-enable once we fix them
   # https://github.com/typescript-eslint/typescript-eslint/issues/6508
   # website_tests:
@@ -187,7 +206,7 @@ jobs:
   #   # We technically do not need to wait for build within the pipeline any more because the build we care about is happening within Netlify, however,
   #   # it is highly likely that if the CI one fails, the Netlify one will as well, so in order to not waste unncessary Github Actions minutes/resources,
   #   # we do still keep this requirement here.
-  #   needs: [build]
+  #   needs: [website_build]
   #   runs-on: ubuntu-latest
   #   steps:
   #     - name: Checkout
