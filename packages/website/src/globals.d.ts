@@ -1,9 +1,10 @@
 import type * as SandboxFactory from '@site/src/vendor/sandbox';
 import type * as TsWorker from '@site/src/vendor/tsWorker';
-import type { LintUtils } from '@typescript-eslint/website-eslint';
 import type esquery from 'esquery';
 import type MonacoType from 'monaco-editor';
 import type * as TSType from 'typescript';
+
+import type { LintUtils } from './components/linter/WebLinter';
 
 declare global {
   type WindowRequireCb = (

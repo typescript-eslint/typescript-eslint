@@ -378,7 +378,8 @@ export default util.createRule<Options, MessageId>({
       const contextualType = checker.getContextualType(value);
       if (
         contextualType !== undefined &&
-        isVoidReturningFunctionType(checker, value, contextualType)
+        isVoidReturningFunctionType(checker, value, contextualType) &&
+        returnsThenable(checker, value)
       ) {
         context.report({
           messageId: 'voidReturnAttribute',

@@ -5,6 +5,7 @@ import type { ParserOptions } from '@typescript-eslint/types';
 import type { astConverter } from '@typescript-eslint/typescript-estree/use-at-your-own-risk/ast-converter';
 import type { getScriptKind } from '@typescript-eslint/typescript-estree/use-at-your-own-risk/getScriptKind';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type esquery from 'esquery';
 import type {
   CompilerHost,
   CompilerOptions,
@@ -20,6 +21,7 @@ export interface LintUtils {
   visitorKeys: TSESLint.SourceCode.VisitorKeys;
   astConverter: typeof astConverter;
   getScriptKind: typeof getScriptKind;
+  esquery: typeof esquery;
 }
 
 export class WebLinter {
