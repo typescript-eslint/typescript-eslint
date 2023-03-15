@@ -195,6 +195,12 @@ ruleTester.run('consistent-type-assertions', rule, {
           line: 6,
         },
       ],
+      output: `
+const x = new Generic<int>() as Foo;
+const x = b as A;
+const x = [1] as readonly number[];
+const x = 'string' as a | b;
+const x = { key: 'value' } as const;`,
     }),
     ...batchedSingleLineTests({
       code: AS_TESTS_EXCEPT_CONST_CASE,

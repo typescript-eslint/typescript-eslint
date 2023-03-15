@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
@@ -23,6 +23,7 @@ export default util.createRule<Options, MessageIds>({
   name: 'consistent-type-assertions',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     docs: {
       description: 'Enforce consistent usage of type assertions',
       recommended: 'strict',
@@ -100,6 +101,19 @@ export default util.createRule<Options, MessageIds>({
           messageId !== 'never'
             ? { cast: sourceCode.getText(node.typeAnnotation) }
             : {},
+        fix:
+          messageId === 'as'
+            ? (fixer): TSESLint.RuleFix[] => [
+                fixer.replaceText(
+                  node,
+                  context.getSourceCode().getText(node.expression),
+                ),
+                fixer.insertTextAfter(
+                  node,
+                  ` as ${context.getSourceCode().getText(node.typeAnnotation)}`,
+                ),
+              ]
+            : undefined,
       });
     }
 
