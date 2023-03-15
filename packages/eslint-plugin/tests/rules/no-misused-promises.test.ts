@@ -6,7 +6,6 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 2018,
-    ecmaFeatures: { jsx: true },
     tsconfigRootDir: rootDir,
     project: './tsconfig.json',
   },
