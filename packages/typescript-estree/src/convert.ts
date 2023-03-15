@@ -3266,11 +3266,12 @@ export class Converter {
       // `checkParameter` function in `typescript`
       if (
         node.kind === SyntaxKind.Parameter &&
-        // @ts-expect-error -- internal?
-        ts.hasSyntacticModifier?.(
-          node,
-          ts.ModifierFlags.ParameterPropertyModifier,
-        )
+        // In `typescript` package, it's `ts.hasSyntacticModifier(node, ts.ModifierFlags.ParameterPropertyModifier)`
+        // https://github.com/typescript-eslint/typescript-eslint/pull/6615#discussion_r1136489935
+        (modifier.kind === SyntaxKind.PublicKeyword ||
+          modifier.kind === SyntaxKind.PrivateKeyword ||
+          modifier.kind === SyntaxKind.ProtectedKeyword ||
+          modifier.kind === SyntaxKind.ReadonlyKeyword)
       ) {
         const func = getContainingFunction(node)!;
 
