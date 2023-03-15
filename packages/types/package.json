@@ -35,7 +35,7 @@
     "estree"
   ],
   "scripts": {
-    "prebuild": "tsx ./tools/copy-ast-spec.ts",
+    "copy-ast-spec": "tsx ./tools/copy-ast-spec.ts",
     "build": "tsc -b tsconfig.build.json",
     "postbuild": "downlevel-dts dist _ts4.2/dist --to=4.2",
     "clean": "tsc -b tsconfig.build.json --clean",
@@ -47,7 +47,7 @@
   },
   "nx": {
     "targets": {
-      "prebuild": {
+      "copy-ast-spec": {
         "dependsOn": [
           {
             "target": "build",
@@ -65,7 +65,7 @@
             "projects": "dependencies"
           },
           {
-            "target": "prebuild",
+            "target": "copy-ast-spec",
             "projects": "self"
           }
         ]

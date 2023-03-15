@@ -1,5 +1,5 @@
 // @ts-check
-/** @type {import('@typescript-eslint/utils').TSESLint.Linter.Config} */
+/** @type {import('./packages/utils/src/ts-eslint/Linter').Linter.Config} */
 module.exports = {
   root: true,
   plugins: [
@@ -410,9 +410,9 @@ module.exports = {
       },
     },
     {
-      files: ['./packages/website-eslint/src/mock/**/*.js'],
+      files: ['./packages/website-eslint/src/mock/**/*.js', '*.d.ts'],
       rules: {
-        // mocks have to mirror their original
+        // mocks and declaration files have to mirror their original package
         'import/no-default-export': 'off',
       },
     },
