@@ -6,6 +6,7 @@ const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
   parserOptions: {
     ecmaVersion: 2018,
+    ecmaFeatures: { jsx: true },
     tsconfigRootDir: rootDir,
     project: './tsconfig.json',
   },
@@ -460,6 +461,23 @@ restTuple('Hello');
         };
       }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6637
+    {
+      code: `
+        type OnSelectNodeFn = (node: string | null) => void;
+
+        interface ASTViewerBaseProps {
+          readonly onSelectNode?: OnSelectNodeFn;
+        }
+
+        declare function ASTViewer(props: ASTViewerBaseProps): null;
+        declare const onSelectFn: OnSelectNodeFn;
+
+        <ASTViewer onSelectNode={onSelectFn} />;
+      `,
+      filename: 'react.tsx',
+      options: [{ checksVoidReturn: { attributes: true } }],
+    },
   ],
 
   invalid: [
