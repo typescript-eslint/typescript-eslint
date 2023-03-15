@@ -313,6 +313,30 @@ ruleTester.run('naming-convention', rule, {
         { selector: 'variable', format: ['camelCase'] },
       ],
     },
+    // treat properties with function expressions as typeMethod
+    {
+      code: `
+        interface SOME_INTERFACE {
+          SomeMethod: () => void;
+
+          some_property: string;
+        }
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['UPPER_CASE'],
+        },
+        {
+          selector: 'typeMethod',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'typeProperty',
+          format: ['snake_case'],
+        },
+      ],
+    },
     {
       code: `
         const camelCaseVar = 1;
