@@ -1035,7 +1035,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allow: [{ from: 'package', name: 'Foo', source: 'foo-lib' }],
+          allow: [{ from: 'package', name: 'Foo', package: 'foo-lib' }],
         },
       ],
       errors: [
@@ -1071,7 +1071,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
       `,
       options: [
         {
-          allow: [{ from: 'package', name: 'RegExp', source: 'regexp-lib' }],
+          allow: [{ from: 'package', name: 'RegExp', package: 'regexp-lib' }],
         },
       ],
       errors: [
