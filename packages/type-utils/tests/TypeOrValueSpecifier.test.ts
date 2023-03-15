@@ -77,29 +77,29 @@ describe('TypeOrValueSpecifier', () => {
     ])("doesn't match a malformed lib specifier: %s", runTestNegative);
 
     it.each([
-      [{ from: 'package', name: 'MyType', path: './filename.js' }],
+      [{ from: 'package', name: 'MyType', package: 'jquery' }],
       [
         {
           from: 'package',
           name: ['MyType', 'myValue'],
-          path: './filename.js',
+          package: 'jquery',
         },
       ],
     ])('matches a package specifier: %s', runTestPositive);
 
     it.each([
-      [{ from: 'package', name: 42, path: './filename.js' }],
-      [{ from: 'package', name: ['MyType', 42], path: './filename.js' }],
+      [{ from: 'package', name: 42, package: 'jquery' }],
+      [{ from: 'package', name: ['MyType', 42], package: 'jquery' }],
       [
         {
           from: 'package',
           name: ['MyType', 'MyType'],
-          path: './filename.js',
+          package: 'jquery',
         },
       ],
-      [{ from: 'package', name: [], path: './filename.js' }],
+      [{ from: 'package', name: [], package: 'jquery' }],
       [{ from: 'package', name: 'MyType' }],
-      [{ from: 'package', path: './filename.js' }],
+      [{ from: 'package', package: 'jquery' }],
       [{ from: 'package', name: 'MyType', package: 42 }],
       [{ from: [], name: 'MyType' }],
       [{ from: ['file'], name: 'MyType' }],
@@ -109,14 +109,14 @@ describe('TypeOrValueSpecifier', () => {
         {
           from: 'package',
           name: ['MyType', 'myValue'],
-          package: ['./filename.js', './another-file.js'],
+          package: ['jquery', './another-file.js'],
         },
       ],
       [
         {
           from: 'package',
           name: 'MyType',
-          path: './filename.js',
+          package: 'jquery',
           unrelatedProperty: '',
         },
       ],
