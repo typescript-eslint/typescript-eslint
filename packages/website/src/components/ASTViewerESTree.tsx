@@ -8,21 +8,19 @@ import { createESTreeSerializer } from './ast/serializer/serializerESTree';
 import type { ASTViewerBaseProps } from './ast/types';
 
 export interface ASTESTreeViewerProps extends ASTViewerBaseProps {
-  readonly value: TSESTree.BaseNode | TSESTree.Program;
+  readonly value: TSESTree.Node | TSESTree.Program;
   readonly filter?: ESQuery.Selector;
 }
 
-function tryToApplyFilter<T extends TSESTree.BaseNode>(
+function tryToApplyFilter<T extends TSESTree.Node>(
   value: T,
   filter?: ESQuery.Selector,
 ): T | T[] {
   try {
     if (window.esquery && filter) {
-      // @ts-expect-error - esquery requires js ast types
-      return window.esquery.match(value, filter);
+      return window.esquery.match(value, filter) as T[];
     }
   } catch (e: unknown) {
-    // eslint-disable-next-line no-console
     console.error(e);
   }
   return value;

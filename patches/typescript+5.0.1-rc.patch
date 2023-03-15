@@ -1,5 +1,5 @@
 diff --git a/node_modules/typescript/lib/typescript.d.ts b/node_modules/typescript/lib/typescript.d.ts
-index 2201712..6e04c82 100644
+index 2201712..b8975b1 100644
 --- a/node_modules/typescript/lib/typescript.d.ts
 +++ b/node_modules/typescript/lib/typescript.d.ts
 @@ -368,8 +368,8 @@ declare namespace ts {
@@ -12,7 +12,49 @@ index 2201712..6e04c82 100644
          JSDocComment = 323,
          JSDocText = 324,
          JSDocTypeLiteral = 325,
-@@ -4517,7 +4517,13 @@ declare namespace ts {
+@@ -734,6 +734,8 @@ declare namespace ts {
+         readonly name: PropertyName;
+         readonly questionToken?: QuestionToken;
+         readonly type?: TypeNode;
++        /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
++        readonly initializer?: Expression | undefined;
+     }
+     interface PropertyDeclaration extends ClassElement, JSDocContainer {
+         readonly kind: SyntaxKind.PropertyDeclaration;
+@@ -759,6 +761,10 @@ declare namespace ts {
+         readonly parent: ObjectLiteralExpression;
+         readonly name: PropertyName;
+         readonly initializer: Expression;
++        /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
++        readonly questionToken?: QuestionToken | undefined;
++        /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
++        readonly exclamationToken?: ExclamationToken | undefined;
+     }
+     interface ShorthandPropertyAssignment extends ObjectLiteralElement, JSDocContainer {
+         readonly kind: SyntaxKind.ShorthandPropertyAssignment;
+@@ -766,6 +772,12 @@ declare namespace ts {
+         readonly name: Identifier;
+         readonly equalsToken?: EqualsToken;
+         readonly objectAssignmentInitializer?: Expression;
++        /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
++        readonly modifiers?: NodeArray<Modifier> | undefined;
++        /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
++        readonly questionToken?: QuestionToken | undefined;
++        /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
++        readonly exclamationToken?: ExclamationToken | undefined;
+     }
+     interface SpreadAssignment extends ObjectLiteralElement, JSDocContainer {
+         readonly kind: SyntaxKind.SpreadAssignment;
+@@ -888,6 +900,8 @@ declare namespace ts {
+     }
+     interface FunctionTypeNode extends FunctionOrConstructorTypeNodeBase, LocalsContainer {
+         readonly kind: SyntaxKind.FunctionType;
++        /** @deprecated removed in 5.0 but we want to keep it for backwards compatibility checks! */
++        readonly modifiers?: NodeArray<Modifier> | undefined;
+     }
+     interface ConstructorTypeNode extends FunctionOrConstructorTypeNodeBase, LocalsContainer {
+         readonly kind: SyntaxKind.ConstructorType;
+@@ -4517,7 +4531,13 @@ declare namespace ts {
      function symbolName(symbol: Symbol): string;
      function getNameOfJSDocTypedef(declaration: JSDocTypedefTag): Identifier | PrivateIdentifier | undefined;
      function getNameOfDeclaration(declaration: Declaration | Expression | undefined): DeclarationName | undefined;
@@ -26,7 +68,7 @@ index 2201712..6e04c82 100644
      function getModifiers(node: HasModifiers): readonly Modifier[] | undefined;
      /**
       * Gets the JSDoc parameter tags for the node if present.
-@@ -5022,7 +5028,13 @@ declare namespace ts {
+@@ -5022,7 +5042,13 @@ declare namespace ts {
      function isModuleName(node: Node): node is ModuleName;
      function isBinaryOperatorToken(node: Node): node is BinaryOperatorToken;
      function setTextRange<T extends TextRange>(range: T, location: TextRange | undefined): T;

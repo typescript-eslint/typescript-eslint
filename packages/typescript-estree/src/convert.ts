@@ -1058,6 +1058,23 @@ export class Converter {
       }
 
       case SyntaxKind.PropertyAssignment: {
+        // eslint-disable-next-line deprecation/deprecation
+        const { questionToken, exclamationToken } = node;
+
+        if (questionToken) {
+          this.#throwError(
+            questionToken,
+            'A property assignment cannot have a question token.',
+          );
+        }
+
+        if (exclamationToken) {
+          this.#throwError(
+            exclamationToken,
+            'A property assignment cannot have an exclamation token.',
+          );
+        }
+
         return this.createNode<TSESTree.Property>(node, {
           type: AST_NODE_TYPES.Property,
           key: this.convertChild(node.name),
@@ -1071,6 +1088,30 @@ export class Converter {
       }
 
       case SyntaxKind.ShorthandPropertyAssignment: {
+        // eslint-disable-next-line deprecation/deprecation
+        const { modifiers, questionToken, exclamationToken } = node;
+
+        if (modifiers) {
+          this.#throwError(
+            modifiers[0],
+            'A shorthand property assignment cannot have modifiers.',
+          );
+        }
+
+        if (questionToken) {
+          this.#throwError(
+            questionToken,
+            'A shorthand property assignment cannot have a question token.',
+          );
+        }
+
+        if (exclamationToken) {
+          this.#throwError(
+            exclamationToken,
+            'A shorthand property assignment cannot have an exclamation token.',
+          );
+        }
+
         if (node.objectAssignmentInitializer) {
           return this.createNode<TSESTree.Property>(node, {
             type: AST_NODE_TYPES.Property,
@@ -2539,6 +2580,15 @@ export class Converter {
       }
 
       case SyntaxKind.PropertySignature: {
+        // eslint-disable-next-line deprecation/deprecation
+        const { initializer } = node;
+        if (initializer) {
+          this.#throwError(
+            initializer,
+            'A property signature cannot have an initializer.',
+          );
+        }
+
         const exportKeyword = getModifier(SyntaxKind.ExportKeyword, node);
         if (exportKeyword) {
           this.#throwUnlessAllowInvalidAST(
@@ -2594,7 +2644,17 @@ export class Converter {
         });
       }
 
-      case SyntaxKind.FunctionType:
+      case SyntaxKind.FunctionType: {
+        // eslint-disable-next-line deprecation/deprecation
+        const { modifiers } = node;
+        if (modifiers) {
+          this.#throwError(
+            modifiers[0],
+            'A function type cannot have modifiers.',
+          );
+        }
+      }
+      // intentional fallthrough
       case SyntaxKind.ConstructSignature:
       case SyntaxKind.CallSignature: {
         const type =

@@ -312,6 +312,9 @@ export default util.createRule<Options, MessageId>({
           return;
         }
 
+        if (!returnsThenable(checker, tsNode)) {
+          return;
+        }
         const objType = checker.getContextualType(obj);
         if (objType === undefined) {
           return;
@@ -329,10 +332,7 @@ export default util.createRule<Options, MessageId>({
           tsNode.name,
         );
 
-        if (
-          isVoidReturningFunctionType(checker, tsNode.name, contextualType) &&
-          returnsThenable(checker, tsNode)
-        ) {
+        if (isVoidReturningFunctionType(checker, tsNode.name, contextualType)) {
           context.report({
             messageId: 'voidReturnProperty',
             node: node.value,
@@ -379,7 +379,7 @@ export default util.createRule<Options, MessageId>({
       if (
         contextualType !== undefined &&
         isVoidReturningFunctionType(checker, value, contextualType) &&
-        returnsThenable(checker, value.expression)
+        returnsThenable(checker, value)
       ) {
         context.report({
           messageId: 'voidReturnAttribute',
