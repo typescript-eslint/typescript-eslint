@@ -1,3 +1,12 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-property-private TSESTree - Error 1`] = `"NO ERROR"`;
+exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-property-private TSESTree - Error 1`] = `
+"TSError
+  2 |
+  3 | interface Foo {
+> 4 |   private b: string;
+    |   ^^^^^^^ 'private' modifier cannot appear on a type member
+  5 | }
+  6 |
+  7 |"
+`;

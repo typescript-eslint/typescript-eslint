@@ -1469,7 +1469,6 @@ class Test {
       filename: 'test.ts',
       code: noFormat`
 class Test {
-  @public
   public /*public*/constructor(private foo: string) {}
 }
       `,
@@ -1487,7 +1486,6 @@ class Test {
       ],
       output: `
 class Test {
-  @public
   /*public*/constructor(private foo: string) {}
 }
       `,
@@ -1577,7 +1575,7 @@ class Test {
       filename: 'test.ts',
       code: noFormat`
 class Test {
-  contructor(public/* Hi there */ readonly foo);
+  constructor(public/* Hi there */ readonly foo) {}
 }
       `,
       options: [
@@ -1590,12 +1588,12 @@ class Test {
         {
           messageId: 'unwantedPublicAccessibility',
           line: 3,
-          column: 14,
+          column: 15,
         },
       ],
       output: `
 class Test {
-  contructor(/* Hi there */ readonly foo);
+  constructor(/* Hi there */ readonly foo) {}
 }
       `,
     },
@@ -1603,7 +1601,7 @@ class Test {
       filename: 'test.ts',
       code: `
 class Test {
-  contructor(public readonly foo: string);
+  constructor(public readonly foo: string) {}
 }
       `,
       options: [
@@ -1615,12 +1613,12 @@ class Test {
         {
           messageId: 'unwantedPublicAccessibility',
           line: 3,
-          column: 14,
+          column: 15,
         },
       ],
       output: `
 class Test {
-  contructor(readonly foo: string);
+  constructor(readonly foo: string) {}
 }
       `,
     },

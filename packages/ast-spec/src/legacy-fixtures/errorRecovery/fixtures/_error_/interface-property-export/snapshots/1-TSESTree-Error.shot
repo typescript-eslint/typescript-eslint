@@ -5,7 +5,7 @@ exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-property-e
   2 |
   3 | interface Foo {
 > 4 |   export a: string;
-    |   ^^^^^^ A property signature cannot have an export modifier.
+    |   ^^^^^^ 'export' modifier cannot appear on a type member
   5 | }
   6 |
   7 |"
