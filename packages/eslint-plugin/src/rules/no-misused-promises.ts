@@ -365,20 +365,27 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkJSXAttribute(node: TSESTree.JSXAttribute): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const value = tsNode.initializer;
       if (
         node.value == null ||
-        value === undefined ||
-        !ts.isJsxExpression(value) ||
-        value.expression === undefined
+        node.value.type !== AST_NODE_TYPES.JSXExpressionContainer
       ) {
         return;
       }
-      const contextualType = checker.getContextualType(value);
+      const expressionContainer = parserServices.esTreeNodeToTSNodeMap.get(
+        node.value,
+      );
+      const expression = parserServices.esTreeNodeToTSNodeMap.get(
+        node.value.expression,
+      );
+      const contextualType = checker.getContextualType(expressionContainer);
       if (
         contextualType !== undefined &&
-        isVoidReturningFunctionType(checker, value, contextualType)
+        isVoidReturningFunctionType(
+          checker,
+          expressionContainer,
+          contextualType,
+        ) &&
+        returnsThenable(checker, expression)
       ) {
         context.report({
           messageId: 'voidReturnAttribute',
