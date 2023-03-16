@@ -6,7 +6,6 @@ export = {
   extends: ['./configs/base', './configs/eslint-recommended'],
   rules: {
     '@typescript-eslint/await-thenable': 'error',
-    '@typescript-eslint/no-array-delete': 'error',
     '@typescript-eslint/no-floating-promises': 'error',
     '@typescript-eslint/no-for-in-array': 'error',
     'no-implied-eval': 'off',
