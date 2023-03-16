@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics interface-with-optional-properties TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSInterfaceDeclaration {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [
+        body: [
           TSPropertySignature {
             type: "TSPropertySignature",
             computed: false,
@@ -84,7 +84,7 @@ Program {
             },
             kind: "method",
             optional: true,
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
                 name: "foo",

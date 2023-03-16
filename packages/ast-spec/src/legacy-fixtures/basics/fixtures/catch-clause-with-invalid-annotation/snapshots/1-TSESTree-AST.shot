@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics catch-clause-with-invalid-annotation TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TryStatement {
       type: "TryStatement",
       block: BlockStatement {
         type: "BlockStatement",
-        body: Array [],
+        body: [],
 
         range: [77, 80],
         loc: {
@@ -21,7 +21,7 @@ Program {
         type: "CatchClause",
         body: BlockStatement {
           type: "BlockStatement",
-          body: Array [],
+          body: [],
 
           range: [99, 101],
           loc: {

@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-property-function TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
@@ -29,7 +29,7 @@ Program {
               type: "TSTypeAnnotation",
               typeAnnotation: TSFunctionType {
                 type: "TSFunctionType",
-                params: Array [],
+                params: [],
                 returnType: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSBooleanKeyword {
@@ -79,7 +79,7 @@ Program {
               expression: true,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
               returnType: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSBooleanKeyword {
@@ -162,7 +162,7 @@ Program {
               expression: true,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [145, 155],
               loc: {

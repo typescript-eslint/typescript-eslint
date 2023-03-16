@@ -126,6 +126,7 @@ exports[`AST Fixtures legacy-fixtures basics function-with-type-parameters AST A
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',

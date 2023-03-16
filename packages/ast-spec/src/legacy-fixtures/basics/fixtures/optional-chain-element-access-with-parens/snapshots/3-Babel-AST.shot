@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-parens Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           ExpressionStatement {
             type: "ExpressionStatement",
             expression: ChainExpression {
@@ -528,7 +528,7 @@ Program {
           end: { column: 37, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
           name: "one",

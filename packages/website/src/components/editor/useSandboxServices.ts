@@ -108,7 +108,9 @@ export const useSandboxServices = (
         }
 
         const system = sandboxInstance.tsvfs.createSystem(libEntries);
+        window.esquery = lintUtils.esquery;
 
+        // @ts-expect-error Monaco typescript.CompilerOptions is incompatible with typescript 5.0 types
         const webLinter = new WebLinter(system, compilerOptions, lintUtils);
 
         onLoaded(

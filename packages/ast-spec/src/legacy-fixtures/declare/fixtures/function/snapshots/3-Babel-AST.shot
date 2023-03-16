@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures declare function Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSDeclareFunction {
       type: "TSDeclareFunction",
       async: false,
@@ -20,7 +20,7 @@ Program {
           end: { column: 20, line: 3 },
         },
       },
-      params: Array [],
+      params: [],
       returnType: TSTypeAnnotation {
         type: "TSTypeAnnotation",
         typeAnnotation: TSVoidKeyword {

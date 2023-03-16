@@ -5,6 +5,7 @@ import * as ts from 'typescript';
  * Gets all of the type flags in a type, iterating through unions automatically
  */
 export function getTypeFlags(type: ts.Type): ts.TypeFlags {
+  // @ts-expect-error Since typescript 5.0, this is invalid, but uses 0 as the default value of TypeFlags.
   let flags: ts.TypeFlags = 0;
   for (const t of unionTypeParts(type)) {
     flags |= t.flags;

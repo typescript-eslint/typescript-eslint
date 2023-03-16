@@ -10,4 +10,5 @@ export interface TSTypeParameter extends BaseNode {
   default?: TypeNode;
   in: boolean;
   out: boolean;
+  const: boolean;
 }
