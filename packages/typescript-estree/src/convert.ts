@@ -1140,8 +1140,15 @@ export class Converter {
 
       case SyntaxKind.PropertyDeclaration: {
         const isAbstract = hasModifier(SyntaxKind.AbstractKeyword, node);
-        const isAccessor = hasModifier(SyntaxKind.AccessorKeyword, node);
 
+        if (isAbstract && node.initializer) {
+          this.#throwError(
+            node.initializer,
+            `Abstract property cannot have an initializer.`,
+          );
+        }
+
+        const isAccessor = hasModifier(SyntaxKind.AccessorKeyword, node);
         // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- TODO - add ignore IIFE option
         const type = (() => {
           if (isAccessor) {
