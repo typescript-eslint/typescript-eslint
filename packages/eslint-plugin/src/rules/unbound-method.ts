@@ -281,7 +281,7 @@ function checkMethod(
           !thisArgIsVoid &&
           !(
             ignoreStatic &&
-            tsutils.hasModifier(
+            tsutils.includesModifier(
               getModifiers(valueDeclaration),
               ts.SyntaxKind.StaticKeyword,
             )
