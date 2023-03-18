@@ -119,21 +119,27 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
         title: 'Community',
         items: [
           {
-            label: 'Stack Overflow',
-            href: 'https://stackoverflow.com/questions/tagged/typescript-eslint',
-            className: 'stack-overflow-link social-link-icon',
-          },
-          {
-            label: 'Twitter',
-            href: 'https://twitter.com/tseslint',
-            rel: 'me noopener',
-            className: 'twitter-link social-link-icon',
+            label: 'Discord',
+            href: 'https://discord.gg/FSxKq8Tdyg',
+            rel: 'noopener',
+            className: 'image-link discord-link social-link-icon',
           },
           {
             label: 'Mastodon',
             href: 'https://fosstodon.org/@tseslint',
             rel: 'me noopener',
-            className: 'mastodon-link social-link-icon',
+            className: 'image-link mastodon-link social-link-icon',
+          },
+          {
+            label: 'Stack Overflow',
+            href: 'https://stackoverflow.com/questions/tagged/typescript-eslint',
+            className: 'image-link stack-overflow-link social-link-icon',
+          },
+          {
+            label: 'Twitter',
+            href: 'https://twitter.com/tseslint',
+            rel: 'me noopener',
+            className: 'image-link twitter-link social-link-icon',
           },
         ],
       },
