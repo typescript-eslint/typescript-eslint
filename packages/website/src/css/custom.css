@@ -75,7 +75,7 @@ html[data-theme='dark']:root {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
 }
 
 .image-link:before {
