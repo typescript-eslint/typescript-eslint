@@ -93,6 +93,7 @@ html[data-theme='dark'] .image-link:before {
 }
 .discord-link:before {
   background: url('/img/discord.svg') no-repeat;
+  background-position: center;
 }
 .github-link:before {
   background: url('/img/github.svg') no-repeat;
