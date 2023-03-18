@@ -952,6 +952,8 @@ export default util.createRule<Options, MessageIds>({
         }
         checkOrder(members.slice(0, switchIndex));
         checkOrder(members.slice(switchIndex));
+      } else {
+        checkOrder(members);
       }
     }
 
