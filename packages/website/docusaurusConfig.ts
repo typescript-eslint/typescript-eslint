@@ -103,7 +103,7 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
       {
         href: githubUrl,
         position: 'right',
-        className: 'github-link header-github-link',
+        className: 'github-link image-link header-github-link',
         'aria-label': 'GitHub repository',
       },
     ],
