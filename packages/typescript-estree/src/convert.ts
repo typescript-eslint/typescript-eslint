@@ -3319,23 +3319,33 @@ export class Converter {
     aliasKey: AliasKey,
     valueKey: ValueKey,
   ): Properties & Record<AliasKey, Properties[ValueKey]> {
-    let errored = false;
+    if (this.options.suppressDeprecatedPropertyWarnings) {
+      (node as any)[aliasKey] = node[valueKey];
+      return node as Properties & Record<AliasKey, Properties[ValueKey]>;
+    }
+
+    let warned = false;
 
     Object.defineProperty(node, aliasKey, {
-      get: this.options.suppressDeprecatedPropertyWarnings
-        ? (): Properties[typeof valueKey] => node[valueKey]
-        : (): Properties[typeof valueKey] => {
-            if (!this.options.suppressDeprecatedPropertyWarnings) {
-              if (!errored) {
-                // eslint-disable-next-line no-console
-                console.warn(
-                  `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
-                );
-                errored = true;
-              }
-            }
-            return node[valueKey];
-          },
+      configurable: true,
+      get(): Properties[typeof valueKey] {
+        if (!warned) {
+          // eslint-disable-next-line no-console
+          console.warn(
+            `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+          );
+          warned = true;
+        }
+
+        return node[valueKey];
+      },
+      set(value): void {
+        Object.defineProperty(node, aliasKey, {
+          enumerable: true,
+          writable: true,
+          value,
+        });
+      },
     });
 
     return node as Properties & Record<AliasKey, Properties[ValueKey]>;
