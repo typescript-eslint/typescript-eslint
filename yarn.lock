@@ -5320,9 +5320,9 @@ console-control-strings@^1.1.0:
   integrity sha1-PXz0Rk22RG6mRL9LOVB/mFEAjo4=
 
 console-fail-test@^0.1.7:
-  version "0.1.7"
-  resolved "https://registry.yarnpkg.com/console-fail-test/-/console-fail-test-0.1.7.tgz#f21ee5f944fb42c0d176a56c5b4744cb2f8d86c8"
-  integrity sha512-WZ9unWXJSqDGMt/06wOSPNHwAIAdIJvhgSD2MepJHG5B7b3PD3b8q0NMpaqegGmGFgZUiru+0xEsyvpvg/CM+A==
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/console-fail-test/-/console-fail-test-0.1.8.tgz#55d317b050b9bcd7536f012bfe1acc7e2b4f193e"
+  integrity sha512-iB2ym9CglQy36RHMY8GWydzufleVJjFcgDwihHGpHUOhesn5UBvmOSy56NgG2N1LBiHtZF9wNQTpymPyPCOv2g==
 
 content-disposition@0.5.2:
   version "0.5.2"
