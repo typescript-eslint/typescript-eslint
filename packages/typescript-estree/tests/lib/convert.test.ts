@@ -268,7 +268,7 @@ describe('convert', () => {
 
   describe('suppressDeprecatedPropertyWarnings', () => {
     const getEsCallExpression = (
-      converterOptions: ConverterOptions,
+      converterOptions?: ConverterOptions,
     ): TSESTree.CallExpression => {
       const ast = convertCode(`callee<T>();`);
       const tsCallExpression = (ast.statements[0] as ts.ExpressionStatement)
@@ -323,6 +323,23 @@ describe('convert', () => {
       esCallExpression.typeParameters;
 
       expect(warn).not.toHaveBeenCalled();
+    });
+
+    it('does not allow enumeration of deprecated properties', () => {
+      const esCallExpression = getEsCallExpression();
+
+      expect(Object.keys(esCallExpression)).not.toContain('typeParameters');
+    });
+
+    it('allows writing to the deprecated property as a new enumerable value', () => {
+      const esCallExpression = getEsCallExpression();
+
+      // eslint-disable-next-line deprecation/deprecation
+      esCallExpression.typeParameters = undefined;
+
+      // eslint-disable-next-line deprecation/deprecation
+      expect(esCallExpression.typeParameters).toBeUndefined();
+      expect(Object.keys(esCallExpression)).toContain('typeParameters');
     });
   });
 });
