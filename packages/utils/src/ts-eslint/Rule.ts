@@ -38,6 +38,7 @@ interface RuleMetaDataDocs {
    */
   extendsBaseRule?: boolean | string;
 }
+
 interface RuleMetaData<TMessageIds extends string> {
   /**
    * True if the rule is deprecated, false otherwise
@@ -262,12 +263,39 @@ interface RuleContext<
   report(descriptor: ReportDescriptor<TMessageIds>): void;
 }
 
+interface CodePath {
+  id: string;
+  initialSegment: CodePathSegment;
+  finalSegments: CodePathSegment[];
+  returnedSegments: CodePathSegment[];
+  thrownSegments: CodePathSegment[];
+  currentSegments: CodePathSegment[];
+  upper: CodePath | null;
+  childCodePaths: CodePath[];
+}
+
+interface CodePathSegment {
+  id: string;
+  nextSegments: CodePathSegment[];
+  prevSegments: CodePathSegment[];
+  reachable: boolean;
+}
+
+type CodePathFunction =
+  | ((codePath: CodePath, node: TSESTree.Node) => void)
+  | ((segment: CodePathSegment, node: TSESTree.Node) => void)
+  | ((
+      fromSegment: CodePathSegment,
+      toSegment: CodePathSegment,
+      node: TSESTree.Node,
+    ) => void);
+
 // This isn't the correct signature, but it makes it easier to do custom unions within reusable listeners
 // never will break someone's code unless they specifically type the function argument
 type RuleFunction<T extends TSESTree.BaseNode = never> = (node: T) => void;
 
 interface RuleListener {
-  [nodeSelector: string]: RuleFunction | undefined;
+  [nodeSelector: string]: RuleFunction | CodePathFunction | undefined;
   ArrayExpression?: RuleFunction<TSESTree.ArrayExpression>;
   ArrayPattern?: RuleFunction<TSESTree.ArrayPattern>;
   ArrowFunctionExpression?: RuleFunction<TSESTree.ArrowFunctionExpression>;
@@ -425,6 +453,22 @@ interface RuleListener {
   WhileStatement?: RuleFunction<TSESTree.WhileStatement>;
   WithStatement?: RuleFunction<TSESTree.WithStatement>;
   YieldExpression?: RuleFunction<TSESTree.YieldExpression>;
+
+  onCodePathStart?: (codePath: CodePath, node: TSESTree.Node) => void;
+  onCodePathEnd?: (codePath: CodePath, node: TSESTree.Node) => void;
+  onCodePathSegmentStart?: (
+    segment: CodePathSegment,
+    node: TSESTree.Node,
+  ) => void;
+  onCodePathSegmentEnd?: (
+    segment: CodePathSegment,
+    node: TSESTree.Node,
+  ) => void;
+  onCodePathSegmentLoop?: (
+    fromSegment: CodePathSegment,
+    toSegment: CodePathSegment,
+    node: TSESTree.Node,
+  ) => void;
 }
 
 interface RuleModule<
@@ -458,6 +502,9 @@ type RuleCreateFunction<
 > = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => TRuleListener;
 
 export {
+  CodePath,
+  CodePathSegment,
+  CodePathFunction,
   ReportDescriptor,
   ReportFixFunction,
   ReportSuggestionArray,
