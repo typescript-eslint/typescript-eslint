@@ -3323,21 +3323,19 @@ export class Converter {
 
     Object.defineProperty(node, aliasKey, {
       configurable: true,
-      get(): Properties[typeof valueKey] {
-        if (this.options.suppressDeprecatedPropertyWarnings) {
-          (node as any)[aliasKey] = node[valueKey];
-        }
+      get: this.options.suppressDeprecatedPropertyWarnings
+        ? (): Properties[typeof valueKey] => node[valueKey]
+        : (): Properties[typeof valueKey] => {
+            if (!warned) {
+              // eslint-disable-next-line no-console
+              console.warn(
+                `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+              );
+              warned = true;
+            }
 
-        if (!warned) {
-          // eslint-disable-next-line no-console
-          console.warn(
-            `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
-          );
-          warned = true;
-        }
-
-        return node[valueKey];
-      },
+            return node[valueKey];
+          },
       set(value): void {
         Object.defineProperty(node, aliasKey, {
           enumerable: true,
