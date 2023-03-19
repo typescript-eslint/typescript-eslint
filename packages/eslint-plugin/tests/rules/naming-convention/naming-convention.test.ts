@@ -339,6 +339,22 @@ ruleTester.run('naming-convention', rule, {
     },
     {
       code: `
+        type Ignored = {
+          ignored_due_to_modifiers: string;
+          readonly FOO: string;
+        };
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'typeProperty',
+          modifiers: ['readonly'],
+          format: ['UPPER_CASE'],
+        },
+      ],
+    },
+    {
+      code: `
         const camelCaseVar = 1;
         enum camelCaseEnum {}
         class camelCaseClass {}
