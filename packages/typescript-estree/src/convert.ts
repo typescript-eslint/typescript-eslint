@@ -3319,16 +3319,15 @@ export class Converter {
     aliasKey: AliasKey,
     valueKey: ValueKey,
   ): Properties & Record<AliasKey, Properties[ValueKey]> {
-    if (this.options.suppressDeprecatedPropertyWarnings) {
-      (node as any)[aliasKey] = node[valueKey];
-      return node as Properties & Record<AliasKey, Properties[ValueKey]>;
-    }
-
     let warned = false;
 
     Object.defineProperty(node, aliasKey, {
       configurable: true,
       get(): Properties[typeof valueKey] {
+        if (this.options.suppressDeprecatedPropertyWarnings) {
+          (node as any)[aliasKey] = node[valueKey];
+        }
+
         if (!warned) {
           // eslint-disable-next-line no-console
           console.warn(
