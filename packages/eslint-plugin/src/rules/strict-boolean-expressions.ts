@@ -836,11 +836,11 @@ export default util.createRule<Options, MessageId>({
 
       if (strings.length) {
         if (
-          strings.some(type => !type.isStringLiteral() || type.value === '')
+          strings.every(type => type.isStringLiteral() && type.value !== '')
         ) {
-          variantTypes.add('string');
-        } else {
           variantTypes.add('truthy string');
+        } else {
+          variantTypes.add('string');
         }
       }
 
@@ -852,10 +852,10 @@ export default util.createRule<Options, MessageId>({
       );
 
       if (numbers.length) {
-        if (numbers.some(type => !type.isNumberLiteral() || type.value === 0)) {
-          variantTypes.add('number');
-        } else {
+        if (numbers.every(type => type.isNumberLiteral() && type.value !== 0)) {
           variantTypes.add('truthy number');
+        } else {
+          variantTypes.add('number');
         }
       }
 
