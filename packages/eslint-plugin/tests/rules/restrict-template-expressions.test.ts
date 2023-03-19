@@ -474,7 +474,7 @@ ruleTester.run('restrict-template-expressions', rule, {
           messageId: 'invalidType',
           data: { type: 'never' },
           line: 3,
-          column: 26,
+          column: 28,
         },
       ],
     },
