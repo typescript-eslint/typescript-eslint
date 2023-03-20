@@ -28,7 +28,6 @@ export function createCompilerOptions(
   const options = config.options as Monaco.languages.typescript.CompilerOptions;
 
   if (!options.lib) {
-    // @ts-expect-error Monaco typescript.CompilerOptions is incompatible with typescript 5.0 types
     options.lib = [window.ts.getDefaultLibFileName(options)];
   }
 
