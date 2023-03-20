@@ -15,7 +15,7 @@ describe('isTypeReadonly', () => {
   describe('TSTypeAliasDeclaration ', () => {
     function getType(code: string): {
       type: ts.Type;
-      checker: ts.TypeChecker;
+      program: ts.Program;
     } {
       const { ast, services } = parseForESLint(code, {
         project: './tsconfig.json',
@@ -23,15 +23,15 @@ describe('isTypeReadonly', () => {
         tsconfigRootDir: rootDir,
       });
       expectToHaveParserServices(services);
-      const checker = services.program.getTypeChecker();
+      const program = services.program;
       const esTreeNodeToTSNodeMap = services.esTreeNodeToTSNodeMap;
 
       const declaration = ast.body[0] as TSESTree.TSTypeAliasDeclaration;
       return {
-        type: checker.getTypeAtLocation(
-          esTreeNodeToTSNodeMap.get(declaration.id),
-        ),
-        checker,
+        type: program
+          .getTypeChecker()
+          .getTypeAtLocation(esTreeNodeToTSNodeMap.get(declaration.id)),
+        program,
       };
     }
 
@@ -40,9 +40,9 @@ describe('isTypeReadonly', () => {
       options: ReadonlynessOptions | undefined,
       expected: boolean,
     ): void {
-      const { type, checker } = getType(code);
+      const { type, program } = getType(code);
 
-      const result = isTypeReadonly(checker, type, options);
+      const result = isTypeReadonly(program, type, options);
       expect(result).toBe(expected);
     }
 
@@ -308,6 +308,53 @@ describe('isTypeReadonly', () => {
           ['type Test = ReadonlySet<string>;'],
           ['type Test = ReadonlyMap<string, string>;'],
         ])('handles non fully readonly sets and maps', runTests);
+      });
+    });
+
+    describe('allowlist', () => {
+      const options: ReadonlynessOptions = {
+        allow: [
+          {
+            from: 'lib',
+            name: 'RegExp',
+          },
+          {
+            from: 'file',
+            name: 'Foo',
+          },
+        ],
+      };
+
+      function runTestIsReadonly(code: string): void {
+        runTestForAliasDeclaration(code, options, true);
+      }
+
+      function runTestIsNotReadonly(code: string): void {
+        runTestForAliasDeclaration(code, options, false);
+      }
+
+      describe('is readonly', () => {
+        it.each([
+          [
+            'interface Foo {readonly prop: RegExp}; type Test = (arg: Foo) => void;',
+          ],
+          [
+            'interface Foo {prop: RegExp}; type Test = (arg: Readonly<Foo>) => void;',
+          ],
+          ['interface Foo {prop: string}; type Test = (arg: Foo) => void;'],
+        ])('correctly marks allowlisted types as readonly', runTestIsReadonly);
+      });
+
+      describe('is not readonly', () => {
+        it.each([
+          [
+            'interface Bar {prop: RegExp}; type Test = (arg: Readonly<Bar>) => void;',
+          ],
+          ['interface Bar {prop: string}; type Test = (arg: Bar) => void;'],
+        ])(
+          'correctly marks allowlisted types as readonly',
+          runTestIsNotReadonly,
+        );
       });
     });
   });

@@ -52,6 +52,7 @@
   },
   "devDependencies": {
     "@typescript-eslint/parser": "5.55.0",
+    "ajv": "^8.12.0",
     "typescript": "*"
   },
   "peerDependencies": {

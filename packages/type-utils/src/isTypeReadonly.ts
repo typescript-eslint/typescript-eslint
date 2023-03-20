@@ -3,6 +3,11 @@ import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { getTypeOfPropertyOfType } from './propertyTypes';
+import type { TypeOrValueSpecifier } from './TypeOrValueSpecifier';
+import {
+  typeMatchesSpecifier,
+  typeOrValueSpecifierSchema,
+} from './TypeOrValueSpecifier';
 
 const enum Readonlyness {
   /** the type cannot be handled by the function */
@@ -15,6 +20,7 @@ const enum Readonlyness {
 
 export interface ReadonlynessOptions {
   readonly treatMethodsAsReadonly?: boolean;
+  readonly allow?: TypeOrValueSpecifier[];
 }
 
 export const readonlynessOptionsSchema = {
@@ -24,11 +30,16 @@ export const readonlynessOptionsSchema = {
     treatMethodsAsReadonly: {
       type: 'boolean',
     },
+    allow: {
+      type: 'array',
+      items: typeOrValueSpecifierSchema,
+    },
   },
 };
 
 export const readonlynessOptionsDefaults: ReadonlynessOptions = {
   treatMethodsAsReadonly: false,
+  allow: [],
 };
 
 function hasSymbol(node: ts.Node): node is ts.Node & { symbol: ts.Symbol } {
@@ -36,11 +47,12 @@ function hasSymbol(node: ts.Node): node is ts.Node & { symbol: ts.Symbol } {
 }
 
 function isTypeReadonlyArrayOrTuple(
-  checker: ts.TypeChecker,
+  program: ts.Program,
   type: ts.Type,
   options: ReadonlynessOptions,
   seenTypes: Set<ts.Type>,
 ): Readonlyness {
+  const checker = program.getTypeChecker();
   function checkTypeArguments(arrayType: ts.TypeReference): Readonlyness {
     const typeArguments =
       // getTypeArguments was only added in TS3.7
@@ -59,7 +71,7 @@ function isTypeReadonlyArrayOrTuple(
     if (
       typeArguments.some(
         typeArg =>
-          isTypeReadonlyRecurser(checker, typeArg, options, seenTypes) ===
+          isTypeReadonlyRecurser(program, typeArg, options, seenTypes) ===
           Readonlyness.Mutable,
       )
     ) {
@@ -93,11 +105,12 @@ function isTypeReadonlyArrayOrTuple(
 }
 
 function isTypeReadonlyObject(
-  checker: ts.TypeChecker,
+  program: ts.Program,
   type: ts.Type,
   options: ReadonlynessOptions,
   seenTypes: Set<ts.Type>,
 ): Readonlyness {
+  const checker = program.getTypeChecker();
   function checkIndexSignature(kind: ts.IndexKind): Readonlyness {
     const indexInfo = checker.getIndexInfoOfType(type, kind);
     if (indexInfo) {
@@ -110,7 +123,7 @@ function isTypeReadonlyObject(
       }
 
       return isTypeReadonlyRecurser(
-        checker,
+        program,
         indexInfo.type,
         options,
         seenTypes,
@@ -190,7 +203,7 @@ function isTypeReadonlyObject(
       }
 
       if (
-        isTypeReadonlyRecurser(checker, propertyType, options, seenTypes) ===
+        isTypeReadonlyRecurser(program, propertyType, options, seenTypes) ===
         Readonlyness.Mutable
       ) {
         return Readonlyness.Mutable;
@@ -213,12 +226,21 @@ function isTypeReadonlyObject(
 
 // a helper function to ensure the seenTypes map is always passed down, except by the external caller
 function isTypeReadonlyRecurser(
-  checker: ts.TypeChecker,
+  program: ts.Program,
   type: ts.Type,
   options: ReadonlynessOptions,
   seenTypes: Set<ts.Type>,
 ): Readonlyness.Readonly | Readonlyness.Mutable {
+  const checker = program.getTypeChecker();
   seenTypes.add(type);
+
+  if (
+    options.allow?.some(specifier =>
+      typeMatchesSpecifier(type, specifier, program),
+    )
+  ) {
+    return Readonlyness.Readonly;
+  }
 
   if (tsutils.isUnionType(type)) {
     // all types in the union must be readonly
@@ -227,7 +249,7 @@ function isTypeReadonlyRecurser(
       .every(
         t =>
           seenTypes.has(t) ||
-          isTypeReadonlyRecurser(checker, t, options, seenTypes) ===
+          isTypeReadonlyRecurser(program, t, options, seenTypes) ===
             Readonlyness.Readonly,
       );
     const readonlyness = result ? Readonlyness.Readonly : Readonlyness.Mutable;
@@ -242,7 +264,7 @@ function isTypeReadonlyRecurser(
       const allReadonlyParts = type.types.every(
         t =>
           seenTypes.has(t) ||
-          isTypeReadonlyRecurser(checker, t, options, seenTypes) ===
+          isTypeReadonlyRecurser(program, t, options, seenTypes) ===
             Readonlyness.Readonly,
       );
       return allReadonlyParts ? Readonlyness.Readonly : Readonlyness.Mutable;
@@ -250,7 +272,7 @@ function isTypeReadonlyRecurser(
 
     // Normal case.
     const isReadonlyObject = isTypeReadonlyObject(
-      checker,
+      program,
       type,
       options,
       seenTypes,
@@ -266,7 +288,7 @@ function isTypeReadonlyRecurser(
       .every(
         t =>
           seenTypes.has(t) ||
-          isTypeReadonlyRecurser(checker, t, options, seenTypes) ===
+          isTypeReadonlyRecurser(program, t, options, seenTypes) ===
             Readonlyness.Readonly,
       );
 
@@ -289,7 +311,7 @@ function isTypeReadonlyRecurser(
   }
 
   const isReadonlyArray = isTypeReadonlyArrayOrTuple(
-    checker,
+    program,
     type,
     options,
     seenTypes,
@@ -299,7 +321,7 @@ function isTypeReadonlyRecurser(
   }
 
   const isReadonlyObject = isTypeReadonlyObject(
-    checker,
+    program,
     type,
     options,
     seenTypes,
@@ -317,12 +339,12 @@ function isTypeReadonlyRecurser(
  * Checks if the given type is readonly
  */
 function isTypeReadonly(
-  checker: ts.TypeChecker,
+  program: ts.Program,
   type: ts.Type,
   options: ReadonlynessOptions = readonlynessOptionsDefaults,
 ): boolean {
   return (
-    isTypeReadonlyRecurser(checker, type, options, new Set()) ===
+    isTypeReadonlyRecurser(program, type, options, new Set()) ===
     Readonlyness.Readonly
   );
 }

@@ -401,6 +401,83 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         },
       ],
     },
+    // Allowlist
+    {
+      code: `
+        interface Foo {
+          readonly prop: RegExp;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'RegExp' }],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          prop: RegExp;
+        }
+
+        function foo(arg: Readonly<Foo>) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'RegExp' }],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          prop: string;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Foo' }],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Bar {
+          prop: string;
+        }
+        interface Foo {
+          readonly prop: Bar;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Foo' }],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Bar {
+          prop: string;
+        }
+        interface Foo {
+          readonly prop: Bar;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Bar' }],
+        },
+      ],
+    },
   ],
   invalid: [
     // arrays
@@ -884,6 +961,127 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         method<'mouse'[]>(['cat', 'mouse']);
       `,
       errors: [{ line: 6, messageId: 'shouldBeReadonly' }],
+    },
+    // Allowlist
+    {
+      code: `
+        function foo(arg: RegExp) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Foo' }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 2,
+          column: 22,
+          endColumn: 33,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          readonly prop: RegExp;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Bar' }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 6,
+          column: 22,
+          endColumn: 30,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          readonly prop: RegExp;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'Foo' }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 6,
+          column: 22,
+          endColumn: 30,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          readonly prop: RegExp;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'package', name: 'Foo', package: 'foo-lib' }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 6,
+          column: 22,
+          endColumn: 30,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo(arg: RegExp) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'RegExp' }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 2,
+          column: 22,
+          endColumn: 33,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo(arg: RegExp) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'package', name: 'RegExp', package: 'regexp-lib' }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 2,
+          column: 22,
+          endColumn: 33,
+        },
+      ],
     },
   ],
 });

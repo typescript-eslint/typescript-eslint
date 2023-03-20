@@ -5,9 +5,11 @@ import * as util from '../util';
 
 type Options = [
   {
+    allow?: util.TypeOrValueSpecifier[];
     checkParameterProperties?: boolean;
     ignoreInferredTypes?: boolean;
-  } & util.ReadonlynessOptions,
+    treatMethodsAsReadonly?: boolean;
+  },
 ];
 type MessageIds = 'shouldBeReadonly';
 
@@ -25,13 +27,15 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
+          allow: util.readonlynessOptionsSchema.properties.allow,
           checkParameterProperties: {
             type: 'boolean',
           },
           ignoreInferredTypes: {
             type: 'boolean',
           },
-          ...util.readonlynessOptionsSchema.properties,
+          treatMethodsAsReadonly:
+            util.readonlynessOptionsSchema.properties.treatMethodsAsReadonly,
         },
       },
     ],
@@ -41,17 +45,25 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
+      allow: util.readonlynessOptionsDefaults.allow,
       checkParameterProperties: true,
       ignoreInferredTypes: false,
-      ...util.readonlynessOptionsDefaults,
+      treatMethodsAsReadonly:
+        util.readonlynessOptionsDefaults.treatMethodsAsReadonly,
     },
   ],
   create(
     context,
-    [{ checkParameterProperties, ignoreInferredTypes, treatMethodsAsReadonly }],
+    [
+      {
+        allow,
+        checkParameterProperties,
+        ignoreInferredTypes,
+        treatMethodsAsReadonly,
+      },
+    ],
   ) {
     const services = util.getParserServices(context);
-    const checker = services.program.getTypeChecker();
 
     return {
       [[
@@ -94,8 +106,9 @@ export default util.createRule<Options, MessageIds>({
           }
 
           const type = services.getTypeAtLocation(actualParam);
-          const isReadOnly = util.isTypeReadonly(checker, type, {
+          const isReadOnly = util.isTypeReadonly(services.program, type, {
             treatMethodsAsReadonly: treatMethodsAsReadonly!,
+            allow,
           });
 
           if (!isReadOnly) {
