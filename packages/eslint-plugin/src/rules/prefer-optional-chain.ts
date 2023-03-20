@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -38,6 +39,7 @@ export default util.createRule({
       description:
         'Enforce using concise optional chain expressions instead of chained logical ands, negated logical ors, or empty objects',
       recommended: 'stylistic',
+      requiresTypeChecking: true,
     },
     hasSuggestions: true,
     messages: {
@@ -45,12 +47,101 @@ export default util.createRule({
         "Prefer using an optional chain expression instead, as it's more concise and easier to read.",
       optionalChainSuggest: 'Change to an optional chain.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          looseFalsiness: {
+            description: 'Whether to consider all nullable values equivalent',
+            type: 'boolean',
+          },
+        },
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      looseFalsiness: false,
+    },
+  ],
+  create(context, [{ looseFalsiness }]) {
     const sourceCode = context.getSourceCode();
-    const services = util.getParserServices(context, true);
+    const services = util.getParserServices(context);
+
+    interface ReportIfMoreThanOneOptions {
+      expressionCount: number;
+      initialNodeForType: TSESTree.Node;
+      previous: TSESTree.LogicalExpression;
+      optionallyChainedCode: string;
+      shouldHandleChainedAnds: boolean;
+    }
+
+    function reportIfMoreThanOne({
+      expressionCount,
+      initialNodeForType,
+      previous,
+      optionallyChainedCode,
+      shouldHandleChainedAnds,
+    }: ReportIfMoreThanOneOptions): void {
+      if (expressionCount <= 1) {
+        return;
+      }
+
+      if (!looseFalsiness) {
+        const initialType = services.getTypeAtLocation(initialNodeForType);
+
+        if (
+          util.isTypeFlagSet(
+            initialType,
+            ts.TypeFlags.BigIntLike |
+              ts.TypeFlags.Null |
+              ts.TypeFlags.NumberLike |
+              ts.TypeFlags.StringLike,
+          ) ||
+          tsutils
+            .unionTypeParts(initialType)
+            .some(subType => util.isTypeIntrinsic(subType, 'false'))
+        ) {
+          return;
+        }
+      }
+
+      if (
+        shouldHandleChainedAnds &&
+        previous.right.type === AST_NODE_TYPES.BinaryExpression
+      ) {
+        let operator = previous.right.operator;
+        if (
+          previous.right.operator === '!==' &&
+          // TODO(#4820): Use the type checker to know whether this is `null`
+          previous.right.right.type === AST_NODE_TYPES.Literal &&
+          previous.right.right.raw === 'null'
+        ) {
+          // case like foo !== null && foo.bar !== null
+          operator = '!=';
+        }
+        // case like foo && foo.bar !== someValue
+        optionallyChainedCode += ` ${operator} ${sourceCode.getText(
+          previous.right.right,
+        )}`;
+      }
+
+      context.report({
+        node: previous,
+        messageId: 'preferOptionalChain',
+        suggest: [
+          {
+            messageId: 'optionalChainSuggest',
+            fix: (fixer): TSESLint.RuleFix[] => [
+              fixer.replaceText(
+                previous,
+                `${shouldHandleChainedAnds ? '' : '!'}${optionallyChainedCode}`,
+              ),
+            ],
+          },
+        ],
+      });
+    }
 
     return {
       'LogicalExpression[operator="||"], LogicalExpression[operator="??"]'(
@@ -187,10 +278,9 @@ export default util.createRule({
 
         reportIfMoreThanOne({
           expressionCount,
+          initialNodeForType: initialIdentifierOrNotEqualsExpr,
           previous,
           optionallyChainedCode,
-          sourceCode,
-          context,
           shouldHandleChainedAnds: false,
         });
       },
@@ -271,10 +361,9 @@ export default util.createRule({
 
         reportIfMoreThanOne({
           expressionCount,
+          initialNodeForType: initialIdentifierOrNotEqualsExpr,
           previous,
           optionallyChainedCode,
-          sourceCode,
-          context,
           shouldHandleChainedAnds: true,
         });
       },
@@ -471,67 +560,6 @@ const ALLOWED_NON_COMPUTED_PROP_TYPES: ReadonlySet<AST_NODE_TYPES> = new Set([
   AST_NODE_TYPES.Identifier,
   AST_NODE_TYPES.PrivateIdentifier,
 ]);
-
-interface ReportIfMoreThanOneOptions {
-  expressionCount: number;
-  previous: TSESTree.LogicalExpression;
-  optionallyChainedCode: string;
-  sourceCode: Readonly<TSESLint.SourceCode>;
-  context: Readonly<
-    TSESLint.RuleContext<
-      'preferOptionalChain' | 'optionalChainSuggest',
-      never[]
-    >
-  >;
-  shouldHandleChainedAnds: boolean;
-}
-
-function reportIfMoreThanOne({
-  expressionCount,
-  previous,
-  optionallyChainedCode,
-  sourceCode,
-  context,
-  shouldHandleChainedAnds,
-}: ReportIfMoreThanOneOptions): void {
-  if (expressionCount > 1) {
-    if (
-      shouldHandleChainedAnds &&
-      previous.right.type === AST_NODE_TYPES.BinaryExpression
-    ) {
-      let operator = previous.right.operator;
-      if (
-        previous.right.operator === '!==' &&
-        // TODO(#4820): Use the type checker to know whether this is `null`
-        previous.right.right.type === AST_NODE_TYPES.Literal &&
-        previous.right.right.raw === 'null'
-      ) {
-        // case like foo !== null && foo.bar !== null
-        operator = '!=';
-      }
-      // case like foo && foo.bar !== someValue
-      optionallyChainedCode += ` ${operator} ${sourceCode.getText(
-        previous.right.right,
-      )}`;
-    }
-
-    context.report({
-      node: previous,
-      messageId: 'preferOptionalChain',
-      suggest: [
-        {
-          messageId: 'optionalChainSuggest',
-          fix: (fixer): TSESLint.RuleFix[] => [
-            fixer.replaceText(
-              previous,
-              `${shouldHandleChainedAnds ? '' : '!'}${optionallyChainedCode}`,
-            ),
-          ],
-        },
-      ],
-    });
-  }
-}
 
 interface NormalizedPattern {
   invalidOptionallyChainedPrivateProperty: boolean;

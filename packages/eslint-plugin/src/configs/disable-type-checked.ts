@@ -35,6 +35,7 @@ export = {
     '@typescript-eslint/non-nullable-type-assertion-style': 'off',
     '@typescript-eslint/prefer-includes': 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
+    '@typescript-eslint/prefer-optional-chain': 'off',
     '@typescript-eslint/prefer-readonly': 'off',
     '@typescript-eslint/prefer-readonly-parameter-types': 'off',
     '@typescript-eslint/prefer-reduce-type-parameter': 'off',

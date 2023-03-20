@@ -6,6 +6,7 @@ export * from './getSourceFileOfNode';
 export * from './getTokenAtPosition';
 export * from './getTypeArguments';
 export * from './getTypeName';
+export * from './isTypeIntrinsic';
 export * from './isTypeReadonly';
 export * from './isUnsafeAssignment';
 export * from './predicates';

@@ -57,9 +57,35 @@ foo?.a?.b?.c?.d?.e;
 
 <!--/tabs-->
 
-:::note
-There are a few edge cases where this rule will false positive. Use your best judgement when evaluating reported errors.
-:::
+## Options
+
+### `looseFalsiness`
+
+By default, this rule will ignore cases that could result with different result values when switched to optional chaining.
+For example, the following `box != null && box.value` would not be flagged by default.
+
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+declare const box: { value: number } | null;
+// Type: false | number
+box != null && box.value;
+```
+
+### ✅ Correct
+
+```ts
+declare const box: { value: number } | null;
+// Type: undefined | number
+box?.value;
+```
+
+<!--/tabs-->
+
+If you don't mind your code considering all falsy values the same (e.g. the `false` and `undefined` above), you can enable `looseFalsiness: true`.
+Doing so makes the rule slightly incorrect - but speeds it by not having to ask TypeScript's type checker for information.
 
 ## When Not To Use It
 
