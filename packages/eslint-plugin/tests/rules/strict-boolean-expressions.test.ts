@@ -894,7 +894,7 @@ if (y) {
         declare const x: string | null; if (x) {}
         (x?: string) => !x;
         <T extends string | null | undefined>(x: T) => x ? 1 : 0;
-        function foo(x: '' | 'bar' | null) { if(!x) {} }
+        function foo(x: '' | 'bar' | null) { if (!x) {} }
       `,
       errors: [
         {
@@ -960,22 +960,22 @@ if (y) {
         {
           messageId: 'conditionErrorNullableString',
           line: 5,
-          column: 50,
+          column: 51,
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
               output:
-                "        function foo(x: '' | 'bar' | null) { if(x == null) {} }",
+                "        function foo(x: '' | 'bar' | null) { if (x == null) {} }",
             },
             {
               messageId: 'conditionFixDefaultEmptyString',
               output:
-                "        function foo(x: '' | 'bar' | null) { if(!(x ?? \"\")) {} }",
+                "        function foo(x: '' | 'bar' | null) { if (!(x ?? \"\")) {} }",
             },
             {
               messageId: 'conditionFixCastBoolean',
               output:
-                "        function foo(x: '' | 'bar' | null) { if(!Boolean(x)) {} }",
+                "        function foo(x: '' | 'bar' | null) { if (!Boolean(x)) {} }",
             },
           ],
         },
@@ -988,7 +988,7 @@ if (y) {
         declare const x: number | null; if (x) {}
         (x?: number) => !x;
         <T extends number | null | undefined>(x: T) => x ? 1 : 0;
-        function foo(x: 0 | 1 | null) { if(!x) {} }
+        function foo(x: 0 | 1 | null) { if (!x) {} }
       `,
       errors: [
         {
@@ -1054,22 +1054,22 @@ if (y) {
         {
           messageId: 'conditionErrorNullableNumber',
           line: 5,
-          column: 45,
+          column: 46,
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
               output:
-                '        function foo(x: 0 | 1 | null) { if(x == null) {} }',
+                '        function foo(x: 0 | 1 | null) { if (x == null) {} }',
             },
             {
               messageId: 'conditionFixDefaultZero',
               output:
-                '        function foo(x: 0 | 1 | null) { if(!(x ?? 0)) {} }',
+                '        function foo(x: 0 | 1 | null) { if (!(x ?? 0)) {} }',
             },
             {
               messageId: 'conditionFixCastBoolean',
               output:
-                '        function foo(x: 0 | 1 | null) { if(!Boolean(x)) {} }',
+                '        function foo(x: 0 | 1 | null) { if (!Boolean(x)) {} }',
             },
           ],
         },
