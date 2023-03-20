@@ -9,7 +9,12 @@ const ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE = `
 const x = <Foo>new Generic<int>();
 const x = <A>b;
 const x = <readonly number[]>[1];
-const x = <a | b>('string');`;
+const x = <a | b>('string');
+const x = <A>!'string';
+const x = <A>a + b;
+const x = <(A)>a + (b);
+const x = <Foo>(new Generic<string>());
+const x = (new (<Foo>Generic<string>)());`;
 
 const ANGLE_BRACKET_TESTS = `${ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE}
 const x = <const>{ key: 'value' };
@@ -19,7 +24,12 @@ const AS_TESTS_EXCEPT_CONST_CASE = `
 const x = new Generic<int>() as Foo;
 const x = b as A;
 const x = [1] as readonly number[];
-const x = ('string') as a | b;`;
+const x = ('string') as a | b;
+const x = !'string' as A;
+const x = a as A + b;
+const x = a as (A) + (b);
+const x = (new Generic<string>()) as Foo;
+const x = (new (Generic<string> as Foo)());`;
 
 const AS_TESTS = `${AS_TESTS_EXCEPT_CONST_CASE}
 const x = { key: 'value' } as const;
@@ -164,6 +174,26 @@ ruleTester.run('consistent-type-assertions', rule, {
           messageId: 'angle-bracket',
           line: 6,
         },
+        {
+          messageId: 'angle-bracket',
+          line: 7,
+        },
+        {
+          messageId: 'angle-bracket',
+          line: 8,
+        },
+        {
+          messageId: 'angle-bracket',
+          line: 9,
+        },
+        {
+          messageId: 'angle-bracket',
+          line: 10,
+        },
+        {
+          messageId: 'angle-bracket',
+          line: 11,
+        },
       ],
     }),
     ...batchedSingleLineTests({
@@ -194,13 +224,28 @@ ruleTester.run('consistent-type-assertions', rule, {
           messageId: 'as',
           line: 6,
         },
+        {
+          messageId: 'as',
+          line: 7,
+        },
+        {
+          messageId: 'as',
+          line: 8,
+        },
+        {
+          messageId: 'as',
+          line: 9,
+        },
+        {
+          messageId: 'as',
+          line: 10,
+        },
+        {
+          messageId: 'as',
+          line: 11,
+        },
       ],
-      output: `
-const x = new Generic<int>() as Foo;
-const x = b as A;
-const x = [1] as readonly number[];
-const x = 'string' as a | b;
-const x = { key: 'value' } as const;`,
+      output: AS_TESTS,
     }),
     ...batchedSingleLineTests({
       code: AS_TESTS_EXCEPT_CONST_CASE,
@@ -229,6 +274,22 @@ const x = { key: 'value' } as const;`,
         {
           messageId: 'never',
           line: 6,
+        },
+        {
+          messageId: 'never',
+          line: 7,
+        },
+        {
+          messageId: 'never',
+          line: 8,
+        },
+        {
+          messageId: 'never',
+          line: 9,
+        },
+        {
+          messageId: 'never',
+          line: 10,
         },
       ],
     }),
@@ -259,6 +320,22 @@ const x = { key: 'value' } as const;`,
         {
           messageId: 'never',
           line: 6,
+        },
+        {
+          messageId: 'never',
+          line: 7,
+        },
+        {
+          messageId: 'never',
+          line: 8,
+        },
+        {
+          messageId: 'never',
+          line: 9,
+        },
+        {
+          messageId: 'never',
+          line: 10,
         },
       ],
     }),
