@@ -133,13 +133,16 @@ function typeDeclaredInFile(
   program: ts.Program,
 ): boolean {
   if (relativePath === undefined) {
+    const cwd = program.getCurrentDirectory().toLowerCase();
     return declarationFiles.some(declaration =>
-      declaration.fileName.startsWith(program.getCurrentDirectory()),
+      declaration.fileName.toLowerCase().startsWith(cwd),
     );
   }
-  const absolutePath = path.join(program.getCurrentDirectory(), relativePath);
+  const absolutePath = path
+    .join(program.getCurrentDirectory(), relativePath)
+    .toLowerCase();
   return declarationFiles.some(
-    declaration => declaration.fileName === absolutePath,
+    declaration => declaration.fileName.toLowerCase() === absolutePath,
   );
 }
 
