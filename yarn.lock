@@ -2234,11 +2234,11 @@
     strip-ansi "^6.0.0"
 
 "@jest/create-cache-key-function@^27.4.2", "@jest/create-cache-key-function@^29":
-  version "29.1.2"
-  resolved "https://registry.yarnpkg.com/@jest/create-cache-key-function/-/create-cache-key-function-29.1.2.tgz#ba72143479abccc5ce7705e00fcbe89e4d6e1873"
-  integrity sha512-s7yfOwnDZhqTzLWOwWjv/Lbg9CkJ7bItz5OVrMa0d+g2bP+rFwDs7FpsKuYpym5tpdbDaXHnF3cbl/e01ZeUcw==
+  version "29.5.0"
+  resolved "https://registry.yarnpkg.com/@jest/create-cache-key-function/-/create-cache-key-function-29.5.0.tgz#24e019d03e634be4affe8bcee787d75a36ae57a2"
+  integrity sha512-LIDZyZgnZss7uikvBKBB/USWwG+GO8+GnwRWT+YkCGDGsqLQlhm9BC3z6+7+eMs1kUlvXQIWEzBR8Q2Pnvx6lg==
   dependencies:
-    "@jest/types" "^29.1.2"
+    "@jest/types" "^29.5.0"
 
 "@jest/environment@^29.1.2":
   version "29.1.2"
@@ -2375,7 +2375,7 @@
     slash "^3.0.0"
     write-file-atomic "^4.0.1"
 
-"@jest/types@^29.1.2":
+"@jest/types@^29.1.2", "@jest/types@^29.5.0":
   version "29.5.0"
   resolved "https://registry.yarnpkg.com/@jest/types/-/types-29.5.0.tgz#f59ef9b031ced83047c67032700d8c807d6e1593"
   integrity sha512-qbu7kN6czmVRc3xWFQcAN03RAUamgppVUdXrvl1Wr3jlNF93o9mJbGcDWrwGB6ht44u7efB1qCFgVQmca24Uog==
