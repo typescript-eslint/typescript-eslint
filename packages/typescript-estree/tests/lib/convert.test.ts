@@ -7,6 +7,10 @@ import type { ConverterOptions } from '../../src/convert';
 import { Converter } from '../../src/convert';
 
 describe('convert', () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
+
   function convertCode(code: string): ts.SourceFile {
     return ts.createSourceFile(
       'text.ts',
@@ -285,8 +289,10 @@ describe('convert', () => {
       return maps.tsNodeToESTreeNodeMap.get(tsCallExpression);
     };
 
-    it('logs on a deprecated property access when suppressDeprecatedPropertyWarnings is false', () => {
-      const warn = jest.spyOn(console, 'warn').mockImplementation();
+    it('warns on a deprecated property access when suppressDeprecatedPropertyWarnings is false', () => {
+      const emitWarning = jest
+        .spyOn(process, 'emitWarning')
+        .mockImplementation();
       const esCallExpression = getEsCallExpression({
         suppressDeprecatedPropertyWarnings: false,
       });
@@ -294,13 +300,16 @@ describe('convert', () => {
       // eslint-disable-next-line deprecation/deprecation
       esCallExpression.typeParameters;
 
-      expect(warn).toHaveBeenCalledWith(
+      expect(emitWarning).toHaveBeenCalledWith(
         `The 'typeParameters' property is deprecated on CallExpression nodes. Use 'typeArguments' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+        'DeprecationWarning',
       );
     });
 
-    it('does not log on a subsequent deprecated property access when suppressDeprecatedPropertyWarnings is false', () => {
-      const warn = jest.spyOn(console, 'warn').mockImplementation();
+    it('does not warn on a subsequent deprecated property access when suppressDeprecatedPropertyWarnings is false', () => {
+      const emitWarning = jest
+        .spyOn(process, 'emitWarning')
+        .mockImplementation();
       const esCallExpression = getEsCallExpression({
         suppressDeprecatedPropertyWarnings: false,
       });
@@ -310,11 +319,13 @@ describe('convert', () => {
       esCallExpression.typeParameters;
       /* eslint-enable deprecation/deprecation */
 
-      expect(warn).toHaveBeenCalledTimes(1);
+      expect(emitWarning).toHaveBeenCalledTimes(1);
     });
 
-    it('does not log on a deprecated property access when suppressDeprecatedPropertyWarnings is true', () => {
-      const warn = jest.spyOn(console, 'warn').mockImplementation();
+    it('does not warn on a deprecated property access when suppressDeprecatedPropertyWarnings is true', () => {
+      const emitWarning = jest
+        .spyOn(process, 'emitWarning')
+        .mockImplementation();
       const esCallExpression = getEsCallExpression({
         suppressDeprecatedPropertyWarnings: true,
       });
@@ -322,7 +333,7 @@ describe('convert', () => {
       // eslint-disable-next-line deprecation/deprecation
       esCallExpression.typeParameters;
 
-      expect(warn).not.toHaveBeenCalled();
+      expect(emitWarning).not.toHaveBeenCalled();
     });
 
     it('does not allow enumeration of deprecated properties', () => {
