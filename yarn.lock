@@ -2334,12 +2334,12 @@
     graceful-fs "^4.2.9"
 
 "@jest/test-result@28.1.1", "@jest/test-result@^29", "@jest/test-result@^29.1.2", "@jest/test-result@^29.5.0":
-  version "29.1.2"
-  resolved "https://registry.yarnpkg.com/@jest/test-result/-/test-result-29.1.2.tgz#6a8d006eb2b31ce0287d1fc10d12b8ff8504f3c8"
-  integrity sha512-jjYYjjumCJjH9hHCoMhA8PCl1OxNeGgAoZ7yuGYILRJX9NjgzTN0pCT5qAoYR4jfOP8htIByvAlz9vfNSSBoVg==
+  version "29.5.0"
+  resolved "https://registry.yarnpkg.com/@jest/test-result/-/test-result-29.5.0.tgz#7c856a6ca84f45cc36926a4e9c6b57f1973f1408"
+  integrity sha512-fGl4rfitnbfLsrfx1uUpDEESS7zM8JdgZgOCQuxQvL1Sn/I6ijeAVQWGfXI9zb1i9Mzo495cIpVZhA0yr60PkQ==
   dependencies:
-    "@jest/console" "^29.1.2"
-    "@jest/types" "^29.1.2"
+    "@jest/console" "^29.5.0"
+    "@jest/types" "^29.5.0"
     "@types/istanbul-lib-coverage" "^2.0.0"
     collect-v8-coverage "^1.0.0"
 
