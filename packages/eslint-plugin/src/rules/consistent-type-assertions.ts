@@ -128,6 +128,34 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
+    function removeAssertionText(
+      fixer: TSESLint.RuleFixer,
+      node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
+    ): TSESLint.RuleFix {
+      // Capture parentheses before and after the expression
+      let beforeCount = 0;
+      let afterCount = 0;
+
+      if (util.isParenthesized(node.expression, sourceCode)) {
+        const bodyOpeningParen = sourceCode.getTokenBefore(
+          node.expression,
+          util.isOpeningParenToken,
+        )!;
+        const bodyClosingParen = sourceCode.getTokenAfter(
+          node.expression,
+          util.isClosingParenToken,
+        )!;
+
+        beforeCount = node.expression.range[0] - bodyOpeningParen.range[0];
+        afterCount = bodyClosingParen.range[1] - node.expression.range[1];
+      }
+
+      return fixer.replaceText(
+        node,
+        sourceCode.getText(node.expression, beforeCount, afterCount),
+      );
+    }
+
     function checkExpression(
       node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
     ): void {
@@ -157,8 +185,7 @@ export default util.createRule<Options, MessageIds>({
       ) {
         const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
         if (
-          node.parent &&
-          node.parent.type === AST_NODE_TYPES.VariableDeclarator &&
+          node.parent?.type === AST_NODE_TYPES.VariableDeclarator &&
           !node.parent.id.typeAnnotation
         ) {
           const { parent } = node;
@@ -168,12 +195,9 @@ export default util.createRule<Options, MessageIds>({
             fix: fixer => [
               fixer.insertTextAfter(
                 parent.id,
-                `: ${context.getSourceCode().getText(node.typeAnnotation)}`,
+                `: ${sourceCode.getText(node.typeAnnotation)}`,
               ),
-              fixer.replaceText(
-                node,
-                context.getSourceCode().getText(node.expression),
-              ),
+              removeAssertionText(fixer, node),
             ],
           });
         }
@@ -181,10 +205,7 @@ export default util.createRule<Options, MessageIds>({
           messageId: 'replaceObjectTypeAssertionWithSatisfies',
           data: { cast: sourceCode.getText(node.typeAnnotation) },
           fix: fixer => [
-            fixer.replaceText(
-              node,
-              context.getSourceCode().getText(node.expression),
-            ),
+            removeAssertionText(fixer, node),
             fixer.insertTextAfter(
               node,
               ` satisfies ${context
