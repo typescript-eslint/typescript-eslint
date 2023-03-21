@@ -2,7 +2,7 @@ import * as ts from 'typescript';
 
 import { getModifiers } from './getModifiers';
 import { xhtmlEntities } from './jsx/xhtml-entities';
-import type { TSESTree } from './ts-estree';
+import type { TSESTree, TSNode } from './ts-estree';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from './ts-estree';
 import { typescriptVersionIsAtLeast } from './version-check';
 
@@ -767,17 +767,94 @@ export function getContainingFunction(
   return ts.findAncestor(node.parent, ts.isFunctionLike);
 }
 
-// `ts.nodeCanBeDecorated`
-export function nodeCanBeDecorated(node: ts.Node): boolean {
-  return [true, false].some(
-    useLegacyDecorators =>
-      // @ts-expect-error -- internal api
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-      ts.nodeCanBeDecorated?.(
-        useLegacyDecorators,
-        node,
-        node.parent,
-        node.parent.parent,
-      ) ?? true,
-  );
+// `ts.hasAbstractModifier`
+function hasAbstractModifier(node: TSNode): boolean {
+  return hasModifier(SyntaxKind.AbstractKeyword, node);
+}
+
+// `ts.hasAmbientModifier`
+function hasAmbientModifier(node: TSNode): boolean {
+  return false;
+}
+
+// `ts.getThisParameter`
+function getThisParameter(
+  signature: ts.SignatureDeclaration,
+): ts.ParameterDeclaration | null {
+  if (signature.parameters.length && !ts.isJSDocSignature(signature)) {
+    const thisParameter = signature.parameters[0];
+    if (parameterIsThisKeyword(thisParameter)) {
+      return thisParameter;
+    }
+  }
+
+  return null;
+}
+
+// `ts.parameterIsThisKeyword`
+function parameterIsThisKeyword(parameter: ts.ParameterDeclaration): boolean {
+  return isThisIdentifier(parameter.name);
+}
+
+// Rewrite version of `ts.nodeCanBeDecorated`
+// Returns `true` for both `useLegacyDecorators: true` and `useLegacyDecorators: false`
+export function nodeCanBeDecorated(node: TSNode): boolean {
+  switch (node.kind) {
+    case SyntaxKind.ClassDeclaration:
+      return true;
+    case SyntaxKind.ClassExpression:
+      // `ts.nodeCanBeDecorated` returns `false` if `useLegacyDecorators: true`
+      return true;
+    case SyntaxKind.PropertyDeclaration: {
+      const { parent } = node;
+
+      // `ts.nodeCanBeDecorated` uses this if `useLegacyDecorators: true`
+      if (ts.isClassDeclaration(parent)) {
+        return true;
+      }
+
+      // `ts.nodeCanBeDecorated` uses this if `useLegacyDecorators: false`
+      if (
+        ts.isClassLike(parent) &&
+        !hasAbstractModifier(node) &&
+        !hasAmbientModifier(node)
+      ) {
+        return true;
+      }
+
+      return false;
+    }
+    case SyntaxKind.GetAccessor:
+    case SyntaxKind.SetAccessor:
+    case SyntaxKind.MethodDeclaration: {
+      const { parent } = node;
+      // In `ts.nodeCanBeDecorated`
+      // when `useLegacyDecorators: true` uses `ts.isClassDeclaration`
+      // when `useLegacyDecorators: true` uses `ts.isClassLike`
+      return (
+        Boolean(node.body) &&
+        (ts.isClassDeclaration(parent) || ts.isClassLike(parent))
+      );
+    }
+    case SyntaxKind.Parameter: {
+      // `ts.nodeCanBeDecorated` returns `false` if `useLegacyDecorators: true`
+
+      const { parent } = node;
+      const grandparent = parent.parent;
+
+      return (
+        Boolean(parent) &&
+        'body' in parent &&
+        Boolean(parent.body) &&
+        (parent.kind === SyntaxKind.Constructor ||
+          parent.kind === SyntaxKind.MethodDeclaration ||
+          parent.kind === SyntaxKind.SetAccessor) &&
+        getThisParameter(parent) !== node &&
+        Boolean(grandparent) &&
+        grandparent.kind === SyntaxKind.ClassDeclaration
+      );
+    }
+  }
+
+  return false;
 }
