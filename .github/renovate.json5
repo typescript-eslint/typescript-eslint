@@ -82,7 +82,7 @@
     {
       extends: ['monorepo:jest'],
       matchPackageNames: ['ts-jest', 'pretty-format'],
-      matchPackagePrefixes: ['@types/jest'],
+      matchPackagePrefixes: ['@types/jest', 'jest-', '@jest/'],
       groupName: 'jest',
     },
     {
