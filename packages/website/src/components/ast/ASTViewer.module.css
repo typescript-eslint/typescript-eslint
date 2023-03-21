@@ -7,6 +7,12 @@
   line-height: 18px;
   letter-spacing: 0;
   font-feature-settings: 'liga' 0, 'calt' 0;
+  position: relative;
+  min-width: 100%;
+}
+
+.list * {
+  vertical-align: top;
 }
 
 .list,
@@ -47,6 +53,17 @@
   color: var(--token-color-class-name);
 }
 
+.propNumber,
+.propEmpty,
+.propRegExp,
+.propClass,
+.propBoolean,
+.propError,
+.propString {
+  display: inline-block;
+  max-width: 600px;
+}
+
 .propName {
   color: var(--token-color-property);
 }
@@ -69,6 +86,10 @@
 
 .propBoolean {
   color: var(--token-color-boolean);
+}
+
+.propError {
+  color: var(--token-color-deleted);
 }
 
 .propString {

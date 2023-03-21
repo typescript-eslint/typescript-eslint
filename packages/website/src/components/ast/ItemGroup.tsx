@@ -1,41 +1,39 @@
-import { scrollIntoViewIfNeeded } from '@site/src/components/lib/scroll-into';
 import clsx from 'clsx';
-import type { MouseEvent } from 'react';
-import React, { useEffect, useRef } from 'react';
+import React, { type MouseEvent, useRef } from 'react';
 
 import styles from './ASTViewer.module.css';
 import PropertyName from './PropertyName';
-import type { ASTViewerModelMap } from './types';
 
 export interface ItemGroupProps {
-  readonly data: ASTViewerModelMap;
+  readonly level: string;
+  readonly propName?: string;
+  readonly typeName?: string;
   readonly isSelected?: boolean;
   readonly isExpanded?: boolean;
   readonly canExpand?: boolean;
   readonly onClick?: (e: MouseEvent<HTMLElement>) => void;
+  readonly onClickType?: (e: MouseEvent<HTMLElement>) => void;
   readonly onHover?: (e: boolean) => void;
   readonly children: JSX.Element | false | (JSX.Element | false)[];
 }
 
 export default function ItemGroup({
-  data,
+  level,
+  propName,
+  typeName,
   isSelected,
   isExpanded,
   canExpand,
   onClick,
+  onClickType,
   onHover,
   children,
 }: ItemGroupProps): JSX.Element {
   const listItem = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    if (listItem.current && isSelected) {
-      scrollIntoViewIfNeeded(listItem.current);
-    }
-  }, [isSelected, listItem]);
-
   return (
     <div
+      data-level={level}
       ref={listItem}
       className={clsx(
         canExpand ? styles.expand : styles.nonExpand,
@@ -44,9 +42,10 @@ export default function ItemGroup({
       )}
     >
       <PropertyName
-        propName={data.key}
-        typeName={data.model.name}
+        propName={propName}
+        typeName={typeName}
         onHover={onHover}
+        onClickType={onClickType}
         onClick={(canExpand && onClick) || undefined}
       />
       {React.Children.map(children, child => child)}

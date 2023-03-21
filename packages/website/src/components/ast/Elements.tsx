@@ -1,109 +1,167 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 
+import Tooltip from '../inputs/Tooltip';
 import styles from './ASTViewer.module.css';
 import HiddenItem from './HiddenItem';
 import ItemGroup from './ItemGroup';
-import { SimpleItem } from './SimpleItem';
+import PropertyValue from './PropertyValue';
 import type {
-  ASTViewerModelMap,
-  ASTViewerModelMapComplex,
-  ASTViewerModelMapSimple,
-  GenericParams,
+  GetTooltipLabelFn,
+  GetTypeNameFN,
+  OnClickNodeFn,
+  OnHoverNodeFn,
+  ParentNodeType,
 } from './types';
-import { hasChildInRange, isArrayInRange, isInRange } from './utils';
+import { filterProperties, getNodeType, getRange, objType } from './utils';
 
-export function ComplexItem({
-  data,
-  onSelectNode,
-  level,
-  selection,
-}: GenericParams<ASTViewerModelMapComplex>): JSX.Element {
-  const [isExpanded, setIsExpanded] = useState<boolean>(() => level === 'ast');
-  const [isSelected, setIsSelected] = useState<boolean>(false);
+export interface ElementItemProps {
+  readonly getTypeName: GetTypeNameFN;
+  readonly getTooltipLabel: GetTooltipLabelFn;
+  readonly propName?: string;
+  readonly level: string;
+  readonly value: unknown;
+  readonly onHoverNode?: OnHoverNodeFn;
+  readonly onClickNode?: OnClickNodeFn;
+  readonly parentNodeType?: ParentNodeType;
+  readonly selectedPath?: string;
+}
 
-  const onHover = useCallback(
-    (state: boolean) => {
-      if (onSelectNode) {
-        const range = data.model.range;
-        if (range) {
-          onSelectNode(state ? range : null);
-        }
-      }
-    },
-    [data.model.range, onSelectNode],
-  );
+interface ComputedValueIterable {
+  type: string;
+  group: 'iterable';
+  typeName: string | undefined;
+  nodeType: ParentNodeType;
+  value: [string, unknown][];
+  range?: [number, number];
+}
 
-  useEffect(() => {
-    const selected = selection
-      ? data.model.type === 'array'
-        ? isArrayInRange(selection, data.model)
-        : isInRange(selection, data.model)
-      : false;
+interface ComputedValueSimple {
+  type: string;
+  group: 'simple';
+  tooltip?: string;
+}
 
-    setIsSelected(
-      level !== 'ast' && selected && !hasChildInRange(selection, data.model),
-    );
+type ComputedValue = ComputedValueIterable | ComputedValueSimple;
 
-    if (selected) {
-      setIsExpanded(selected);
-    }
-  }, [selection, data, level]);
-
-  return (
-    <ItemGroup
-      data={data}
-      isExpanded={isExpanded}
-      isSelected={isSelected}
-      canExpand={true}
-      onHover={onHover}
-      onClick={(): void => setIsExpanded(!isExpanded)}
-    >
-      <span>{data.model.type === 'array' ? '[' : '{'}</span>
-      {isExpanded ? (
-        <div className={styles.subList}>
-          {data.model.value.map((item, index) => (
-            <ElementItem
-              level={`${level}_${item.key}[${index}]`}
-              key={`${level}_${item.key}[${index}]`}
-              selection={selection}
-              data={item}
-              onSelectNode={onSelectNode}
-            />
-          ))}
-        </div>
-      ) : (
-        <HiddenItem
-          level={level}
-          isArray={data.model.type === 'array'}
-          value={data.model.value}
-        />
-      )}
-      <span>{data.model.type === 'array' ? ']' : '}'}</span>
-    </ItemGroup>
-  );
+function getValues(value: object | unknown[]): [string, unknown][] {
+  if (value instanceof Map) {
+    return Array.from(value.entries()) as [string, unknown][];
+  }
+  if (value instanceof Set) {
+    return Array.from(value.entries()) as [string, unknown][];
+  }
+  return Object.entries(value);
 }
 
 export function ElementItem({
   level,
-  selection,
-  data,
-  onSelectNode,
-}: GenericParams<ASTViewerModelMap>): JSX.Element {
-  if (data.model.type === 'array' || data.model.type === 'object') {
+  selectedPath,
+  propName,
+  value,
+  onHoverNode,
+  getTypeName,
+  getTooltipLabel,
+  parentNodeType,
+  onClickNode,
+}: ElementItemProps): JSX.Element {
+  const [isExpanded, setIsExpanded] = useState<boolean>(() => level === 'ast');
+  const isSelected = useMemo(() => {
+    return selectedPath === level && level !== 'ast';
+  }, [selectedPath, level]);
+
+  const computedValue = useMemo((): ComputedValue => {
+    const type = objType(value);
+    if (value instanceof Error) {
+      return {
+        type: type,
+        group: 'simple',
+      };
+    } else if ((value && typeof value === 'object') || Array.isArray(value)) {
+      const nodeType = getNodeType(type, value);
+      return {
+        type: type,
+        group: 'iterable',
+        typeName: getTypeName(type, value, propName, nodeType),
+        nodeType: nodeType,
+        value: getValues(value).filter(item =>
+          filterProperties(item[0], item[1], nodeType),
+        ),
+        range: getRange(value, nodeType),
+      };
+    } else {
+      return {
+        type: type,
+        group: 'simple',
+        tooltip: getTooltipLabel(type, value, propName, parentNodeType),
+      };
+    }
+  }, [value, propName, getTypeName, getTooltipLabel, parentNodeType]);
+
+  useEffect(() => {
+    const shouldOpen = !!selectedPath && selectedPath.startsWith(level);
+    if (shouldOpen) {
+      setIsExpanded(current => current || shouldOpen);
+    }
+  }, [selectedPath, level]);
+
+  if (computedValue.group === 'iterable') {
     return (
-      <ComplexItem
+      <ItemGroup
         level={level}
-        selection={selection}
-        onSelectNode={onSelectNode}
-        data={data as ASTViewerModelMapComplex}
-      />
+        propName={propName}
+        typeName={computedValue.typeName}
+        isExpanded={isExpanded}
+        isSelected={isSelected}
+        onHover={(v): void =>
+          onHoverNode?.(v ? computedValue.range : undefined)
+        }
+        canExpand={true}
+        onClickType={(): void => onClickNode?.(value)}
+        onClick={(): void => setIsExpanded(!isExpanded)}
+      >
+        <span>{computedValue.type === 'Array' ? '[' : '{'}</span>
+        {isExpanded ? (
+          <>
+            <div className={styles.subList}>
+              {computedValue.value.map(([key, item]) => (
+                <ElementItem
+                  level={`${level}.${key}`}
+                  key={`${level}.${key}`}
+                  selectedPath={selectedPath}
+                  value={item}
+                  propName={key}
+                  onClickNode={onClickNode}
+                  onHoverNode={onHoverNode}
+                  getTypeName={getTypeName}
+                  getTooltipLabel={getTooltipLabel}
+                  parentNodeType={computedValue.nodeType}
+                />
+              ))}
+            </div>
+          </>
+        ) : (
+          <>
+            <HiddenItem
+              level={level}
+              isArray={computedValue.type === 'Array'}
+              value={computedValue.value}
+            />
+          </>
+        )}
+        <span>{computedValue.type === 'Array' ? ']' : '}'}</span>
+      </ItemGroup>
     );
   } else {
     return (
-      <SimpleItem
-        data={data as ASTViewerModelMapSimple}
-        onSelectNode={onSelectNode}
-      />
+      <ItemGroup level={level} propName={propName}>
+        {computedValue.tooltip ? (
+          <Tooltip hover={true} position="right" text={computedValue.tooltip}>
+            <PropertyValue value={value} />
+          </Tooltip>
+        ) : (
+          <PropertyValue value={value} />
+        )}
+      </ItemGroup>
     );
   }
 }

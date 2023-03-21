@@ -1,28 +1,21 @@
-import ASTViewerScope from '@site/src/components/ASTViewerScope';
-import ConfigEslint from '@site/src/components/config/ConfigEslint';
-import ConfigTypeScript from '@site/src/components/config/ConfigTypeScript';
-import {
-  defaultEslintConfig,
-  defaultTsConfig,
-} from '@site/src/components/config/utils';
-import EditorTabs from '@site/src/components/EditorTabs';
-import { ErrorsViewer, ErrorViewer } from '@site/src/components/ErrorsViewer';
-import { ESQueryFilter } from '@site/src/components/ESQueryFilter';
 import type { TSESTree } from '@typescript-eslint/utils';
 import clsx from 'clsx';
 import type * as ESQuery from 'esquery';
-import type Monaco from 'monaco-editor';
-import React, { useCallback, useReducer, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import type { SourceFile } from 'typescript';
 
 import { useMediaQuery } from '../hooks/useMediaQuery';
-import ASTViewerESTree from './ASTViewerESTree';
-import ASTViewerTS from './ASTViewerTS';
+import ASTViewer from './ast/ASTViewer';
+import ConfigEslint from './config/ConfigEslint';
+import ConfigTypeScript from './config/ConfigTypeScript';
+import { defaultEslintConfig, defaultTsConfig } from './config/utils';
 import { EditorEmbed } from './editor/EditorEmbed';
 import { LoadingEditor } from './editor/LoadingEditor';
+import EditorTabs from './EditorTabs';
+import { ErrorsViewer, ErrorViewer } from './ErrorsViewer';
+import { ESQueryFilter } from './ESQueryFilter';
 import useHashState from './hooks/useHashState';
 import Loader from './layout/Loader';
-import { shallowEqual } from './lib/shallowEqual';
 import OptionsSelector from './OptionsSelector';
 import styles from './Playground.module.css';
 import ConditionalSplitPane from './SplitPane/ConditionalSplitPane';
@@ -34,22 +27,6 @@ import type {
   TabType,
 } from './types';
 
-function rangeReducer<T extends SelectedRange | null>(
-  prevState: T,
-  action: T,
-): T {
-  if (prevState !== action) {
-    if (
-      !prevState ||
-      !action ||
-      !shallowEqual(prevState.start, action.start) ||
-      !shallowEqual(prevState.end, action.end)
-    ) {
-      return action;
-    }
-  }
-  return prevState;
-}
 function Playground(): JSX.Element {
   const [state, setState] = useHashState({
     jsx: false,
@@ -67,8 +44,8 @@ function Playground(): JSX.Element {
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
-  const [selectedRange, setSelectedRange] = useReducer(rangeReducer, null);
-  const [position, setPosition] = useState<Monaco.Position | null>(null);
+  const [selectedRange, setSelectedRange] = useState<SelectedRange>();
+  const [position, setPosition] = useState<number>();
   const [activeTab, setTab] = useState<TabType>('code');
   const [showModal, setShowModal] = useState<TabType | false>(false);
   const [esQueryFilter, setEsQueryFilter] = useState<ESQuery.Selector>();
@@ -158,7 +135,7 @@ function Playground(): JSX.Element {
                 onTsASTChange={setTsAST}
                 onScopeChange={setScope}
                 onMarkersChange={setMarkers}
-                decoration={selectedRange}
+                selectedRange={selectedRange}
                 onChange={setState}
                 onLoaded={onLoaded}
                 onSelect={setPosition}
@@ -171,33 +148,27 @@ function Playground(): JSX.Element {
                   onError={setEsQueryError}
                 />
               )}
-              {(state.showAST === 'ts' && tsAst && (
-                <ASTViewerTS
-                  value={tsAst}
-                  position={position}
-                  onSelectNode={setSelectedRange}
+              {(state.showAST === 'es' && esQueryError && (
+                <ErrorViewer
+                  type="warning"
+                  title="Invalid Selector"
+                  value={esQueryError}
                 />
               )) ||
-                (state.showAST === 'scope' && scope && (
-                  <ASTViewerScope
-                    value={scope}
-                    position={position}
-                    onSelectNode={setSelectedRange}
-                  />
-                )) ||
-                (state.showAST === 'es' && esQueryError && (
-                  <ErrorViewer
-                    type="warning"
-                    title="Invalid Selector"
-                    value={esQueryError}
-                  />
-                )) ||
-                (state.showAST === 'es' && esAst && (
-                  <ASTViewerESTree
-                    value={esAst}
-                    position={position}
-                    filter={esQueryFilter}
-                    onSelectNode={setSelectedRange}
+                (state.showAST && (
+                  <ASTViewer
+                    key={String(state.showAST)}
+                    filter={state.showAST === 'es' ? esQueryFilter : undefined}
+                    value={
+                      state.showAST === 'ts'
+                        ? tsAst
+                        : state.showAST === 'scope'
+                        ? scope
+                        : esAst
+                    }
+                    enableScrolling={true}
+                    cursorPosition={position}
+                    onHoverNode={setSelectedRange}
                   />
                 )) || <ErrorsViewer value={markers} />}
             </div>

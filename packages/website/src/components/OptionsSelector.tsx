@@ -6,7 +6,7 @@ import {
 import CopyIcon from '@site/src/icons/copy.svg';
 import React, { useCallback } from 'react';
 
-import useDebouncedToggle from './hooks/useDebouncedToggle';
+import { useClipboard } from '../hooks/useClipboard';
 import Checkbox from './inputs/Checkbox';
 import Dropdown from './inputs/Dropdown';
 import Tooltip from './inputs/Tooltip';
@@ -35,8 +35,12 @@ function OptionsSelectorContent({
   tsVersions,
   isLoading,
 }: OptionsSelectorParams): JSX.Element {
-  const [copyLink, setCopyLink] = useDebouncedToggle<boolean>(false);
-  const [copyMarkdown, setCopyMarkdown] = useDebouncedToggle<boolean>(false);
+  const [copyLink, copyLinkToClipboard] = useClipboard(() =>
+    document.location.toString(),
+  );
+  const [copyMarkdown, copyMarkdownToClipboard] = useClipboard(() =>
+    createMarkdown(state),
+  );
 
   const updateTS = useCallback(
     (version: string) => {
@@ -44,23 +48,6 @@ function OptionsSelectorContent({
     },
     [setState],
   );
-
-  const copyLinkToClipboard = useCallback(() => {
-    void navigator.clipboard
-      .writeText(document.location.toString())
-      .then(() => {
-        setCopyLink(true);
-      });
-  }, [setCopyLink]);
-
-  const copyMarkdownToClipboard = useCallback(() => {
-    if (isLoading) {
-      return;
-    }
-    void navigator.clipboard.writeText(createMarkdown(state)).then(() => {
-      setCopyMarkdown(true);
-    });
-  }, [isLoading, state, setCopyMarkdown]);
 
   const openIssue = useCallback(() => {
     if (isLoading) {
