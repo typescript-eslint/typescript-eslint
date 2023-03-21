@@ -778,8 +778,10 @@ export interface Event<T> {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2369
     `
-export default function (@Optional() value = []) {
-  return value;
+export class Test {
+    constructor(@Optional() value: number[] = []) {
+        console.log(value);
+    }
 }
 
 function Optional() {
