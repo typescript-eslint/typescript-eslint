@@ -769,16 +769,16 @@ export function getContainingFunction(
 
 // `ts.nodeCanBeDecorated`
 export function nodeCanBeDecorated(node: ts.Node): boolean {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-return
-  return (
-    // @ts-expect-error -- internal api
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    ts.nodeCanBeDecorated?.(
-      /* useLegacyDecorators */ true,
-      node,
-      node.parent,
-      node.parent.parent,
-    ) ?? true
+  return [true, false].some(
+    useLegacyDecorators =>
+      // @ts-expect-error -- internal api
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-call
+      ts.nodeCanBeDecorated?.(
+        useLegacyDecorators,
+        node,
+        node.parent,
+        node.parent.parent,
+      ) ?? true,
   );
 }
 

@@ -3119,8 +3119,7 @@ export class Converter {
     }
 
     // @ts-expect-error -- this is safe as it's guarded
-    // eslint-disable-next-line deprecation/deprecation -- this is safe as it's guarded
-    const modifiers = node.modifiers;
+    const modifiers: ts.ModifierLike[] = node.modifiers;
 
     if (!modifiers) {
       return;
