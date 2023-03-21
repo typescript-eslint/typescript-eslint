@@ -1,3 +1,4 @@
+// eslint-disable-next-line no-undef,import/no-amd
 define(['exports', 'vs/language/typescript/tsWorker'], function (e, _t) {
   const eslintPlugin = require('@typescript-eslint/eslint-plugin');
   const Linter = require('eslint').Linter;
