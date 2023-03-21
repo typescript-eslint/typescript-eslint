@@ -59,7 +59,7 @@ const splitPath = function (filename) {
 
 // path.resolve([from ...], to)
 // posix version
-export function resolve() {
+function resolve() {
   let resolvedPath = '';
   let resolvedAbsolute = false;
 
@@ -93,7 +93,7 @@ export function resolve() {
 
 // path.normalize(path)
 // posix version
-export function normalize(path) {
+function normalize(path) {
   let isPathAbsolute = isAbsolute(path);
   let trailingSlash = path.endsWith('/');
 
@@ -116,12 +116,12 @@ export function normalize(path) {
 }
 
 // posix version
-export function isAbsolute(path) {
+function isAbsolute(path) {
   return path.charAt(0) === '/';
 }
 
 // posix version
-export function join() {
+function join() {
   const paths = Array.prototype.slice.call(arguments, 0);
   return normalize(
     filter(paths, function (p) {
@@ -135,7 +135,7 @@ export function join() {
 
 // path.relative(from, to)
 // posix version
-export function relative(from, to) {
+function relative(from, to) {
   from = resolve(from).slice(1);
   to = resolve(to).slice(1);
 
@@ -182,10 +182,10 @@ export function relative(from, to) {
   return outputParts.join('/');
 }
 
-export const sep = '/';
-export const delimiter = ':';
+const sep = '/';
+const delimiter = ':';
 
-export function dirname(path) {
+function dirname(path) {
   const result = splitPath(path);
   const root = result[0];
   let dir = result[1];
@@ -203,7 +203,7 @@ export function dirname(path) {
   return root + dir;
 }
 
-export function basename(path, ext) {
+function basename(path, ext) {
   let f = splitPath(path)[2];
   // TODO: make this comparison case-insensitive on windows?
   if (ext && f.slice(-1 * ext.length) === ext) {
@@ -212,11 +212,11 @@ export function basename(path, ext) {
   return f;
 }
 
-export function extname(path) {
+function extname(path) {
   return splitPath(path)[3];
 }
 
-export default {
+module.exports = {
   extname: extname,
   basename: basename,
   dirname: dirname,

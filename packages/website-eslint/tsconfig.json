@@ -8,6 +8,6 @@
     "noEmit": true,
     "skipLibCheck": true
   },
-  "include": ["src", "types", "rollup-plugin"],
+  "include": ["src", "types", "build.ts"],
   "references": []
 }
