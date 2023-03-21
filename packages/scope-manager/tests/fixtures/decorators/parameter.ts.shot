@@ -58,28 +58,40 @@ ScopeManager {
     },
     Variable$4 {
       defs: [
-        FunctionNameDefinition$2 {
-          name: Identifier<"foo">,
-          node: FunctionDeclaration$2,
+        ClassNameDefinition$2 {
+          name: Identifier<"A">,
+          node: ClassDeclaration$2,
         },
       ],
-      name: "foo",
+      name: "A",
       references: [],
       isValueVariable: true,
-      isTypeVariable: false,
+      isTypeVariable: true,
     },
     Variable$5 {
+      defs: [
+        ClassNameDefinition$3 {
+          name: Identifier<"A">,
+          node: ClassDeclaration$2,
+        },
+      ],
+      name: "A",
+      references: [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$6 {
       defs: [],
       name: "arguments",
       references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
-    Variable$6 {
+    Variable$7 {
       defs: [
-        ParameterDefinition$3 {
+        ParameterDefinition$4 {
           name: Identifier<"a">,
-          node: FunctionDeclaration$2,
+          node: FunctionExpression$3,
         },
       ],
       name: "a",
@@ -87,11 +99,11 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$7 {
+    Variable$8 {
       defs: [
-        ParameterDefinition$4 {
+        ParameterDefinition$5 {
           name: Identifier<"b">,
-          node: FunctionDeclaration$2,
+          node: FunctionExpression$3,
         },
       ],
       name: "b",
@@ -99,11 +111,11 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$8 {
+    Variable$9 {
       defs: [
-        ParameterDefinition$5 {
+        ParameterDefinition$6 {
           name: Identifier<"c">,
-          node: FunctionDeclaration$2,
+          node: FunctionExpression$3,
         },
       ],
       name: "c",
@@ -111,11 +123,11 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: false,
     },
-    Variable$9 {
+    Variable$10 {
       defs: [
-        ParameterDefinition$6 {
+        ParameterDefinition$7 {
           name: Identifier<"d">,
-          node: FunctionDeclaration$2,
+          node: FunctionExpression$3,
         },
       ],
       name: "d",
@@ -127,8 +139,8 @@ ScopeManager {
           isTypeReference: false,
           isValueReference: true,
           isWrite: true,
-          resolved: Variable$9,
-          writeExpr: Literal$3,
+          resolved: Variable$10,
+          writeExpr: Literal$4,
         },
       ],
       isValueVariable: true,
@@ -137,13 +149,13 @@ ScopeManager {
   ],
   scopes: [
     GlobalScope$1 {
-      block: Program$4,
+      block: Program$5,
       isStrict: false,
       references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
         "decorator" => Variable$2,
-        "foo" => Variable$4,
+        "A" => Variable$4,
       },
       type: "global",
       upper: null,
@@ -166,9 +178,22 @@ ScopeManager {
         Variable$3,
       ],
     },
-    FunctionScope$3 {
-      block: FunctionDeclaration$2,
-      isStrict: false,
+    ClassScope$3 {
+      block: ClassDeclaration$2,
+      isStrict: true,
+      references: [],
+      set: Map {
+        "A" => Variable$5,
+      },
+      type: "class",
+      upper: GlobalScope$1,
+      variables: [
+        Variable$5,
+      ],
+    },
+    FunctionScope$4 {
+      block: FunctionExpression$3,
+      isStrict: true,
       references: [
         Reference$1,
         Reference$2,
@@ -177,20 +202,20 @@ ScopeManager {
         Reference$5,
       ],
       set: Map {
-        "arguments" => Variable$5,
-        "a" => Variable$6,
-        "b" => Variable$7,
-        "c" => Variable$8,
-        "d" => Variable$9,
+        "arguments" => Variable$6,
+        "a" => Variable$7,
+        "b" => Variable$8,
+        "c" => Variable$9,
+        "d" => Variable$10,
       },
       type: "function",
-      upper: GlobalScope$1,
+      upper: ClassScope$3,
       variables: [
-        Variable$5,
         Variable$6,
         Variable$7,
         Variable$8,
         Variable$9,
+        Variable$10,
       ],
     },
   ],

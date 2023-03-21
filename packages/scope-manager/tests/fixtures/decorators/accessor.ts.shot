@@ -78,10 +78,22 @@ ScopeManager {
       isValueVariable: true,
       isTypeVariable: true,
     },
+    Variable$8 {
+      defs: [
+        ParameterDefinition$4 {
+          name: Identifier<"value">,
+          node: FunctionExpression$3,
+        },
+      ],
+      name: "value",
+      references: [],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
   ],
   scopes: [
     GlobalScope$1 {
-      block: Program$3,
+      block: Program$4,
       isStrict: false,
       references: [],
       set: Map {
@@ -127,7 +139,7 @@ ScopeManager {
       ],
     },
     FunctionScope$4 {
-      block: FunctionExpression$4,
+      block: FunctionExpression$5,
       isStrict: true,
       references: [],
       set: Map {
@@ -140,16 +152,18 @@ ScopeManager {
       ],
     },
     FunctionScope$5 {
-      block: FunctionExpression$5,
+      block: FunctionExpression$3,
       isStrict: true,
       references: [],
       set: Map {
         "arguments" => Variable$7,
+        "value" => Variable$8,
       },
       type: "function",
       upper: ClassScope$3,
       variables: [
         Variable$7,
+        Variable$8,
       ],
     },
   ],
