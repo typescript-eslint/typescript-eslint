@@ -59,4 +59,18 @@ describe('applyDefault', () => {
     expect(result).not.toBe(defaults);
     expect(result).not.toBe(user);
   });
+
+  it('should work when default option is null', () => {
+    const defaults: unknown[] = [null];
+    const user: unknown[] = [
+      {
+        prop: 'setting1',
+        other: 'other',
+      },
+    ];
+    const result = ESLintUtils.applyDefault(defaults, user);
+    expect(result).toStrictEqual(user);
+    expect(result).not.toBe(defaults);
+    expect(result).not.toBe(user);
+  });
 });
