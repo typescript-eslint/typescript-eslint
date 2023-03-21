@@ -3126,7 +3126,7 @@ export class Converter {
     for (const modifier of modifiers) {
       if (ts.isDecorator(modifier)) {
         // `checkGrammarModifiers` function in typescript
-        if (!nodeCanBeDecorated(node)) {
+        if (!nodeCanBeDecorated(node as TSNode)) {
           if (ts.isMethodDeclaration(node) && !nodeIsPresent(node.body)) {
             this.#throwError(
               modifier,

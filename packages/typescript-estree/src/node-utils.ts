@@ -768,12 +768,12 @@ export function getContainingFunction(
 }
 
 // `ts.hasAbstractModifier`
-function hasAbstractModifier(node: TSNode): boolean {
+function hasAbstractModifier(node: ts.Node): boolean {
   return hasModifier(SyntaxKind.AbstractKeyword, node);
 }
 
 // `ts.hasAmbientModifier`
-function hasAmbientModifier(_node: TSNode): boolean {
+function hasAmbientModifier(_node: ts.Node): boolean {
   return false;
 }
 
