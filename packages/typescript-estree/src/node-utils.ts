@@ -837,7 +837,7 @@ export function nodeCanBeDecorated(node: TSNode): boolean {
       );
     }
     case SyntaxKind.Parameter: {
-      // `ts.nodeCanBeDecorated` returns `false` if `useLegacyDecorators: true`
+      // `ts.nodeCanBeDecorated` returns `false` if `useLegacyDecorators: false`
 
       const { parent } = node;
       const grandparent = parent.parent;
