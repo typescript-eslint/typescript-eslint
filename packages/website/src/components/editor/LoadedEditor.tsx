@@ -113,7 +113,6 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       jsx,
       parseTSConfig(tsconfig).compilerOptions,
     );
-    // @ts-expect-error Monaco typescript.CompilerOptions is incompatible with typescript 5.0 types
     webLinter.updateCompilerOptions(config);
     sandboxInstance.setCompilerSettings(config);
   }, [jsx, sandboxInstance, tsconfig, webLinter]);
