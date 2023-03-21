@@ -26,7 +26,7 @@ function applyDefault<TUser extends readonly unknown[], TDefault extends TUser>(
     if (userOptions[i] !== undefined) {
       const userOpt = userOptions[i];
       if (isObjectNotArray(userOpt) && isObjectNotArray(opt)) {
-        options[i] = deepMerge(opt || {}, userOpt);
+        options[i] = deepMerge(opt, userOpt);
       } else {
         options[i] = userOpt;
       }
