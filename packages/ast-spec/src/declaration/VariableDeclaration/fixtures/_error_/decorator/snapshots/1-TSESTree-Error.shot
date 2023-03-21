@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ decorator TSESTree - Error 1`] = `"NO ERROR"`;
+exports[`AST Fixtures declaration VariableDeclaration _error_ decorator TSESTree - Error 1`] = `
+"TSError
+> 1 | @decl type Test = {};
+    | ^^^^^ Decorators are not valid here.
+  2 |"
+`;

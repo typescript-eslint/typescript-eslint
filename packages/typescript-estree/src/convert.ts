@@ -8,6 +8,7 @@ import {
   canContainDirective,
   createError,
   findNextToken,
+  getAllAccessorDeclarations,
   getBinaryExpressionType,
   getContainingFunction,
   getDeclarationKind,
@@ -17,6 +18,7 @@ import {
   getRange,
   getTextForTokenKind,
   getTSNodeAccessibility,
+  hasDecorators,
   hasModifier,
   isChainExpression,
   isChildUnwrappableOptionalChain,
@@ -25,6 +27,7 @@ import {
   isESTreeClassMember,
   isOptional,
   isThisInTypeQuery,
+  nodeCanBeDecorated,
   nodeHasIllegalDecorators,
   nodeIsPresent,
   unescapeStringLiteralText,
@@ -3107,6 +3110,7 @@ export class Converter {
       return;
     }
 
+    // typescript<5.0.0
     if (nodeHasIllegalDecorators(node)) {
       this.#throwError(
         node.illegalDecorators[0],
@@ -3114,7 +3118,38 @@ export class Converter {
       );
     }
 
-    for (const modifier of getModifiers(node) ?? []) {
+    // @ts-expect-error -- this is safe as it's guarded
+    // eslint-disable-next-line deprecation/deprecation -- this is safe as it's guarded
+    const modifiers = node.modifiers;
+
+    if (!modifiers) {
+      return;
+    }
+
+    for (const modifier of modifiers) {
+      if (ts.isDecorator(modifier)) {
+        // `checkGrammarModifiers` function in typescript
+        if (!nodeCanBeDecorated(node)) {
+          if (ts.isMethodDeclaration(node) && !nodeIsPresent(node.body)) {
+            this.#throwError(
+              modifier,
+              'A decorator can only decorate a method implementation, not an overload.',
+            );
+          } else {
+            this.#throwError(modifier, 'Decorators are not valid here.');
+          }
+        } else if (ts.isSetAccessor(node) || ts.isGetAccessor(node)) {
+          const { firstAccessor, secondAccessor } =
+            getAllAccessorDeclarations(node);
+          if (hasDecorators(firstAccessor) && node === secondAccessor) {
+            this.#throwError(
+              modifier,
+              'Decorators cannot be applied to multiple get/set accessors of the same name.',
+            );
+          }
+        }
+      }
+
       if (modifier.kind !== SyntaxKind.ReadonlyKeyword) {
         if (
           node.kind === SyntaxKind.PropertySignature ||
