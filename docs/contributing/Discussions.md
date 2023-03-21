@@ -23,6 +23,5 @@ We can always move an issue to a discussion if it becomes unexpectedly deep.
 
 :::caution
 Please don't use Discussions as a support forum.
-We don't have the maintainer-budget to handle that.
 See [Issues > Questions and Support Requests](./Issues.mdx#questions-and-support-requests).
 :::
