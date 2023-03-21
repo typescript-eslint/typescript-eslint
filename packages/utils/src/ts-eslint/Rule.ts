@@ -117,11 +117,13 @@ type ReportFixFunction = (
 type ReportSuggestionArray<TMessageIds extends string> =
   SuggestionReportDescriptor<TMessageIds>[];
 
+type ReportDescriptorMessageData = Readonly<Record<string, unknown>>;
+
 interface ReportDescriptorBase<TMessageIds extends string> {
   /**
    * The parameters for the message string associated with `messageId`.
    */
-  readonly data?: Readonly<Record<string, unknown>>;
+  readonly data?: ReportDescriptorMessageData;
   /**
    * The fixer function.
    */
@@ -264,8 +266,7 @@ type RuleFunction<T extends TSESTree.NodeOrTokenData = never> = (
   node: T,
 ) => void;
 
-interface RuleListener {
-  [nodeSelector: string]: RuleFunction | undefined;
+interface RuleListenerBaseSelectors {
   ArrayExpression?: RuleFunction<TSESTree.ArrayExpression>;
   ArrayPattern?: RuleFunction<TSESTree.ArrayPattern>;
   ArrowFunctionExpression?: RuleFunction<TSESTree.ArrowFunctionExpression>;
@@ -424,6 +425,19 @@ interface RuleListener {
   WithStatement?: RuleFunction<TSESTree.WithStatement>;
   YieldExpression?: RuleFunction<TSESTree.YieldExpression>;
 }
+type RuleListenerExitSelectors = {
+  [K in keyof RuleListenerBaseSelectors as `${K}:exit`]: RuleListenerBaseSelectors[K];
+};
+interface RuleListenerCatchAllBaseCase {
+  [nodeSelector: string]: RuleFunction | undefined;
+}
+// Interface to merge into for anyone that wants to add more selectors
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface RuleListenerExtension {}
+
+type RuleListener = RuleListenerBaseSelectors &
+  RuleListenerExitSelectors &
+  RuleListenerCatchAllBaseCase;
 
 interface RuleModule<
   TMessageIds extends string,
@@ -447,6 +461,7 @@ interface RuleModule<
    */
   create(context: Readonly<RuleContext<TMessageIds, TOptions>>): TRuleListener;
 }
+type AnyRuleModule = RuleModule<string, readonly unknown[]>;
 
 type RuleCreateFunction<
   TMessageIds extends string = never,
@@ -454,7 +469,9 @@ type RuleCreateFunction<
 > = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => RuleListener;
 
 export {
+  AnyRuleModule,
   ReportDescriptor,
+  ReportDescriptorMessageData,
   ReportFixFunction,
   ReportSuggestionArray,
   RuleContext,
@@ -463,6 +480,7 @@ export {
   RuleFixer,
   RuleFunction,
   RuleListener,
+  RuleListenerExtension,
   RuleMetaData,
   RuleMetaDataDocs,
   RuleModule,

@@ -1,12 +1,10 @@
 {
-  "name": "@typescript-eslint/eslint-plugin-tslint",
+  "name": "@typescript-eslint/rule-tester",
   "version": "5.56.0",
-  "main": "dist/index.js",
-  "typings": "src/index.ts",
-  "description": "ESLint plugin that wraps a TSLint configuration and lints the whole source using TSLint",
+  "description": "Tooling to test ESLint rules",
   "files": [
     "dist",
-    "package.json",
+    "_ts4.2",
     "README.md",
     "LICENSE"
   ],
@@ -24,7 +22,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
-    "directory": "packages/eslint-plugin-tslint"
+    "directory": "packages/rule-tester"
   },
   "bugs": {
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
@@ -32,33 +30,49 @@
   "license": "MIT",
   "keywords": [
     "eslint",
-    "eslintplugin",
-    "eslint-plugin",
-    "tslint"
+    "typescript",
+    "estree"
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
+    "postbuild": "downlevel-dts dist _ts4.2/dist --to=4.2",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf coverage",
+    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "nx lint",
+    "pretest-eslint-base": "tsc -b tsconfig.build.json",
+    "test-eslint-base": "mocha --require source-map-support/register ./tests/eslint-base/eslint-base.test.js",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
+  "//": "NOTE - AJV is out-of-date, but it's intentionally synced with ESLint - https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/package.json#L70",
   "dependencies": {
-    "@typescript-eslint/utils": "5.56.0"
+    "@typescript-eslint/typescript-estree": "5.56.0",
+    "@typescript-eslint/utils": "5.56.0",
+    "lodash.merge": "4.6.2",
+    "semver": "^7.3.7",
+    "ajv": "^6.10.0"
   },
   "peerDependencies": {
-    "eslint": "^7.0.0 || ^8.0.0",
-    "tslint": "^5.0.0 || ^6.0.0",
-    "typescript": "*"
+    "@eslint/eslintrc": ">=2",
+    "eslint": ">=8"
   },
   "devDependencies": {
-    "@types/lodash": "*",
-    "@typescript-eslint/parser": "5.56.0"
+    "@types/lodash.merge": "4.6.7",
+    "chai": "^4.0.1",
+    "mocha": "^8.3.2",
+    "sinon": "^11.0.0",
+    "source-map-support": "^0.5.21"
   },
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
+  },
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "_ts3.4/*"
+      ]
+    }
   }
 }

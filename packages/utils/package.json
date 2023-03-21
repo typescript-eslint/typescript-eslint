@@ -67,7 +67,6 @@
   "dependencies": {
     "@eslint-community/eslint-utils": "^4.2.0",
     "@types/json-schema": "^7.0.9",
-    "@types/semver": "^7.3.12",
     "@typescript-eslint/scope-manager": "5.56.0",
     "@typescript-eslint/types": "5.56.0",
     "@typescript-eslint/typescript-estree": "5.56.0",

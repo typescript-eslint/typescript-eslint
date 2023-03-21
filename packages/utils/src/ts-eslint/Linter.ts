@@ -13,6 +13,12 @@ import type {
 import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
 
+export type MinimalRuleModule<
+  TMessageIds extends string = string,
+  TOptions extends readonly unknown[] = [],
+> = Pick<RuleModule<TMessageIds, TOptions>, 'create'> &
+  Partial<Omit<RuleModule<TMessageIds, TOptions>, 'create'>>;
+
 declare class LinterBase {
   /**
    * Initialize the Linter.
@@ -34,7 +40,7 @@ declare class LinterBase {
    */
   defineRule<TMessageIds extends string, TOptions extends readonly unknown[]>(
     ruleId: string,
-    ruleModule: RuleModule<TMessageIds, TOptions> | RuleCreateFunction,
+    ruleModule: MinimalRuleModule<TMessageIds, TOptions> | RuleCreateFunction,
   ): void;
 
   /**
@@ -44,7 +50,7 @@ declare class LinterBase {
   defineRules<TMessageIds extends string, TOptions extends readonly unknown[]>(
     rulesToDefine: Record<
       string,
-      RuleModule<TMessageIds, TOptions> | RuleCreateFunction
+      MinimalRuleModule<TMessageIds, TOptions> | RuleCreateFunction
     >,
   ): void;
 
@@ -52,7 +58,7 @@ declare class LinterBase {
    * Gets an object with all loaded rules.
    * @returns All loaded rules
    */
-  getRules(): Map<string, RuleModule<string, unknown[]>>;
+  getRules(): Map<string, MinimalRuleModule<string, unknown[]>>;
 
   /**
    * Gets the `SourceCode` object representing the parsed source.
@@ -120,7 +126,15 @@ namespace Linter {
   export type RuleEntry = RuleLevel | RuleLevelAndOptions;
   export type RulesRecord = Partial<Record<string, RuleEntry>>;
 
-  export type GlobalVariableOption = 'readonly' | 'writable' | 'off' | boolean;
+  export type GlobalVariableOptionBase = 'readonly' | 'writable' | 'off';
+  export type GlobalVariableOption = GlobalVariableOptionBase | boolean;
+
+  export interface GlobalsConfig {
+    [name: string]: GlobalVariableOption;
+  }
+  export interface EnvironmentConfig {
+    [name: string]: boolean;
+  }
 
   // https://github.com/eslint/eslint/blob/v6.8.0/conf/config-schema.js
   interface BaseConfig {
@@ -128,7 +142,7 @@ namespace Linter {
     /**
      * The environment settings.
      */
-    env?: { [name: string]: boolean };
+    env?: EnvironmentConfig;
     /**
      * The path to other config files or the package name of shareable configs.
      */
@@ -136,7 +150,7 @@ namespace Linter {
     /**
      * The global variable settings.
      */
-    globals?: { [name: string]: GlobalVariableOption };
+    globals?: GlobalsConfig;
     /**
      * The flag that disables directive comments.
      */
