@@ -1454,7 +1454,7 @@ class Foo {
       code: `
 class Foo {
   constructor() {}
-  @Dec() public A(): void {};
+  @Dec() public A(): void {}
   @Dec() private B: string;
   private C(): void;
   private D: string;
@@ -1473,7 +1473,7 @@ class Foo {
     {
       code: `
 class Foo {
-  @Dec() private A(): void {};
+  @Dec() private A(): void {}
   @Dec() private B: string;
   constructor() {}
   private C(): void;
@@ -1510,7 +1510,7 @@ class Foo {
       code: `
 class Foo {
   public A(): string;
-  @Dec() public B(): string {};
+  @Dec() public B(): string {}
   public C(): string;
 
   d: string;
