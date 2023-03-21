@@ -4,7 +4,7 @@ import * as fs from 'fs';
 import type { JSONSchema7 } from 'json-schema';
 import type { JSONSchema } from 'json-schema-to-typescript';
 import { compile } from 'json-schema-to-typescript';
-import * as lz from 'lzstring.ts';
+import * as lz from 'lz-string';
 import type * as mdast from 'mdast';
 import { EOL } from 'os';
 import * as path from 'path';
@@ -417,7 +417,7 @@ export const generatedRuleDocs: Plugin = () => {
 };
 
 function convertToPlaygroundHash(eslintrc: string): string {
-  return lz.LZString.compressToEncodedURIComponent(eslintrc);
+  return lz.compressToEncodedURIComponent(eslintrc);
 }
 
 function nodeIsHeading(node: unist.Node): node is mdast.Heading {
