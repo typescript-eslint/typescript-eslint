@@ -781,26 +781,3 @@ export function nodeCanBeDecorated(node: ts.Node): boolean {
       ) ?? true,
   );
 }
-
-// `ts.hasDecorators`
-export function hasDecorators(node: ts.Node | undefined): boolean {
-  // @ts-expect-error -- internal api
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return
-  return Boolean(node) && (ts.hasDecorators?.(node) ?? false);
-}
-
-// `ts.getAllAccessorDeclarations`
-export function getAllAccessorDeclarations(
-  accessor: ts.GetAccessorDeclaration | ts.SetAccessorDeclaration,
-): {
-  firstAccessor?: ts.Node;
-  secondAccessor?: ts.Node;
-} {
-  // eslint-disable-next-line  @typescript-eslint/no-unsafe-return
-  return (
-    // @ts-expect-error -- internal api
-    // eslint-disable-next-line @typescript-eslint/no-unsafe-call
-    ts.getAllAccessorDeclarations?.(accessor.parent.members ?? [], accessor) ??
-    {}
-  );
-}

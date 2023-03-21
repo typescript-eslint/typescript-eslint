@@ -8,7 +8,6 @@ import {
   canContainDirective,
   createError,
   findNextToken,
-  getAllAccessorDeclarations,
   getBinaryExpressionType,
   getContainingFunction,
   getDeclarationKind,
@@ -18,7 +17,6 @@ import {
   getRange,
   getTextForTokenKind,
   getTSNodeAccessibility,
-  hasDecorators,
   hasModifier,
   isChainExpression,
   isChildUnwrappableOptionalChain,
@@ -3137,16 +3135,9 @@ export class Converter {
           } else {
             this.#throwError(modifier, 'Decorators are not valid here.');
           }
-        } else if (ts.isSetAccessor(node) || ts.isGetAccessor(node)) {
-          const { firstAccessor, secondAccessor } =
-            getAllAccessorDeclarations(node);
-          if (hasDecorators(firstAccessor) && node === secondAccessor) {
-            this.#throwError(
-              modifier,
-              'Decorators cannot be applied to multiple get/set accessors of the same name.',
-            );
-          }
         }
+
+        continue;
       }
 
       if (modifier.kind !== SyntaxKind.ReadonlyKeyword) {
