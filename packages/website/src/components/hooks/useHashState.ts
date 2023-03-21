@@ -1,5 +1,5 @@
 import { toJsonConfig } from '@site/src/components/config/utils';
-import * as lz from 'lzstring.ts';
+import * as lz from 'lz-string';
 import { useCallback, useEffect, useState } from 'react';
 
 import { hasOwnProperty } from '../lib/has-own-property';
@@ -7,12 +7,12 @@ import { shallowEqual } from '../lib/shallowEqual';
 import type { ConfigModel } from '../types';
 
 function writeQueryParam(value: string): string {
-  return lz.LZString.compressToEncodedURIComponent(value);
+  return lz.compressToEncodedURIComponent(value);
 }
 
 function readQueryParam(value: string | null, fallback: string): string {
   return value
-    ? lz.LZString.decompressFromEncodedURIComponent(value) ?? fallback
+    ? lz.decompressFromEncodedURIComponent(value) ?? fallback
     : fallback;
 }
 
