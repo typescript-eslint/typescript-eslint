@@ -116,7 +116,7 @@ export class Converter {
       return null;
     }
 
-    this.#checkModifiers(node);
+    this.#checkModifiers(node as TSNode);
 
     const pattern = this.allowPattern;
     if (allowPattern !== undefined) {
@@ -3103,7 +3103,7 @@ export class Converter {
     }
   }
 
-  #checkModifiers(node: ts.Node): void {
+  #checkModifiers(node: TSNode): void {
     if (this.options.allowInvalidAST) {
       return;
     }

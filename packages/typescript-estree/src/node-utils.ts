@@ -773,7 +773,7 @@ function hasAbstractModifier(node: TSNode): boolean {
 }
 
 // `ts.hasAmbientModifier`
-function hasAmbientModifier(node: TSNode): boolean {
+function hasAmbientModifier(_node: TSNode): boolean {
   return false;
 }
 
