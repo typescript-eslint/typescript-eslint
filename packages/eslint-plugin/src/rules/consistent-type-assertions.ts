@@ -25,6 +25,7 @@ export default util.createRule<Options, MessageIds>({
   name: 'consistent-type-assertions',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
     hasSuggestions: true,
     docs: {
       description: 'Enforce consistent usage of type assertions',
@@ -129,6 +130,19 @@ export default util.createRule<Options, MessageIds>({
           messageId !== 'never'
             ? { cast: sourceCode.getText(node.typeAnnotation) }
             : {},
+        fix:
+          messageId === 'as'
+            ? (fixer): TSESLint.RuleFix[] => [
+                fixer.replaceText(
+                  node,
+                  getTextWithParentheses(node.expression),
+                ),
+                fixer.insertTextAfter(
+                  node,
+                  ` as ${getTextWithParentheses(node.typeAnnotation)}`,
+                ),
+              ]
+            : undefined,
       });
     }
 

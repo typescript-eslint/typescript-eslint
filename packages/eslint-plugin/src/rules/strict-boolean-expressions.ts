@@ -835,7 +835,9 @@ export default util.createRule<Options, MessageId>({
       );
 
       if (strings.length) {
-        if (strings.some(type => type.isStringLiteral() && type.value !== '')) {
+        if (
+          strings.every(type => type.isStringLiteral() && type.value !== '')
+        ) {
           variantTypes.add('truthy string');
         } else {
           variantTypes.add('string');
@@ -848,8 +850,9 @@ export default util.createRule<Options, MessageId>({
           ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
         ),
       );
+
       if (numbers.length) {
-        if (numbers.some(type => type.isNumberLiteral() && type.value !== 0)) {
+        if (numbers.every(type => type.isNumberLiteral() && type.value !== 0)) {
           variantTypes.add('truthy number');
         } else {
           variantTypes.add('number');

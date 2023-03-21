@@ -16,6 +16,16 @@
     '@nrwl/jest',
     '@nrwl/nx-cloud',
     '@nrwl/tao',
+    // TODO - once we bump pass the major, we can remove these. Currently renovate is creating broken, immortal PRs
+    '@rollup/plugin-babel',
+    '@rollup/plugin-commonjs',
+    '@rollup/plugin-json',
+    '@rollup/plugin-node-resolve',
+    '@rollup/plugin-replace',
+    '@rollup/plugin-terser',
+    '@rollup/pluginutils',
+    'rollup-plugin-terser',
+    'rollup',
   ],
   ignorePaths: [
     // integration test package.json's should never be updated as they're purposely fixed tests
@@ -72,7 +82,7 @@
     {
       extends: ['monorepo:jest'],
       matchPackageNames: ['ts-jest', 'pretty-format'],
-      matchPackagePrefixes: ['@types/jest'],
+      matchPackagePrefixes: ['@types/jest', 'jest-', '@jest/'],
       groupName: 'jest',
     },
     {
