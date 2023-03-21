@@ -759,6 +759,7 @@ declare module 'eslint/lib/rules/lines-around-comment' {
         allowModuleEnd?: boolean;
         ignorePattern?: string;
         applyDefaultIgnorePatterns?: boolean;
+        afterHashbangComment?: boolean;
       }?,
     ],
     {

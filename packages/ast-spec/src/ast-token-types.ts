@@ -14,4 +14,5 @@ export enum AST_TOKEN_TYPES {
   // comment types
   Block = 'Block',
   Line = 'Line',
+  Shebang = 'Shebang',
 }

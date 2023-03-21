@@ -1,4 +1,5 @@
 export * from './BlockComment/spec';
+export * from './ShebangComment/spec';
 export * from './BooleanToken/spec';
 export * from './IdentifierToken/spec';
 export * from './JSXIdentifierToken/spec';

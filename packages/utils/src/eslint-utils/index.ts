@@ -6,3 +6,4 @@ export * from './RuleCreator';
 export * from './rule-tester/RuleTester';
 export * from './deepMerge';
 export * from './nullThrows';
+export * from './extendSchema';

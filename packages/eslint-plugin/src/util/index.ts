@@ -19,6 +19,7 @@ export * from '@typescript-eslint/type-utils';
 const {
   applyDefault,
   deepMerge,
+  extendSchema,
   isObjectNotArray,
   getParserServices,
   nullThrows,
@@ -31,6 +32,7 @@ type InferOptionsTypeFromRule<T> = ESLintUtils.InferOptionsTypeFromRule<T>;
 export {
   applyDefault,
   deepMerge,
+  extendSchema,
   isObjectNotArray,
   getParserServices,
   nullThrows,

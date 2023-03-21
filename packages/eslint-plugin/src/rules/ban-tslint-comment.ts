@@ -36,6 +36,11 @@ export default util.createRule({
       Program(): void {
         const comments = sourceCode.getAllComments();
         comments.forEach(c => {
+          // edge case to support
+          if (c.type === AST_TOKEN_TYPES.Shebang) {
+            return;
+          }
+
           if (ENABLE_DISABLE_REGEX.test(c.value)) {
             context.report({
               data: { text: toText(c.value, c.type) },

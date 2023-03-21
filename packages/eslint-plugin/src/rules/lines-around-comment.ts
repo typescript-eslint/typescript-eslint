@@ -51,89 +51,34 @@ export default util.createRule<Options, MessageIds>({
       recommended: false,
       extendsBaseRule: true,
     },
-    schema: {
-      type: 'array',
-      items: [
-        {
-          type: 'object',
-          properties: {
-            beforeBlockComment: {
-              type: 'boolean',
-              default: true,
-            },
-            afterBlockComment: {
-              type: 'boolean',
-              default: false,
-            },
-            beforeLineComment: {
-              type: 'boolean',
-              default: false,
-            },
-            afterLineComment: {
-              type: 'boolean',
-              default: false,
-            },
-            allowBlockStart: {
-              type: 'boolean',
-              default: false,
-            },
-            allowBlockEnd: {
-              type: 'boolean',
-              default: false,
-            },
-            allowClassStart: {
-              type: 'boolean',
-            },
-            allowClassEnd: {
-              type: 'boolean',
-            },
-            allowObjectStart: {
-              type: 'boolean',
-            },
-            allowObjectEnd: {
-              type: 'boolean',
-            },
-            allowArrayStart: {
-              type: 'boolean',
-            },
-            allowArrayEnd: {
-              type: 'boolean',
-            },
-            allowInterfaceStart: {
-              type: 'boolean',
-            },
-            allowInterfaceEnd: {
-              type: 'boolean',
-            },
-            allowTypeStart: {
-              type: 'boolean',
-            },
-            allowTypeEnd: {
-              type: 'boolean',
-            },
-            allowEnumStart: {
-              type: 'boolean',
-            },
-            allowEnumEnd: {
-              type: 'boolean',
-            },
-            allowModuleStart: {
-              type: 'boolean',
-            },
-            allowModuleEnd: {
-              type: 'boolean',
-            },
-            ignorePattern: {
-              type: 'string',
-            },
-            applyDefaultIgnorePatterns: {
-              type: 'boolean',
-            },
-          },
-          additionalProperties: false,
+    schema: util.extendSchema(baseRule.meta.schema, {
+      properties: {
+        allowInterfaceStart: {
+          type: 'boolean',
         },
-      ],
-    },
+        allowInterfaceEnd: {
+          type: 'boolean',
+        },
+        allowTypeStart: {
+          type: 'boolean',
+        },
+        allowTypeEnd: {
+          type: 'boolean',
+        },
+        allowEnumStart: {
+          type: 'boolean',
+        },
+        allowEnumEnd: {
+          type: 'boolean',
+        },
+        allowModuleStart: {
+          type: 'boolean',
+        },
+        allowModuleEnd: {
+          type: 'boolean',
+        },
+      },
+    }),
     fixable: baseRule.meta.fixable,
     hasSuggestions: baseRule.meta.hasSuggestions,
     messages: baseRule.meta.messages,
@@ -400,7 +345,8 @@ export default util.createRule<Options, MessageIds>({
       if ('node' in descriptor) {
         if (
           descriptor.node.type === AST_TOKEN_TYPES.Line ||
-          descriptor.node.type === AST_TOKEN_TYPES.Block
+          descriptor.node.type === AST_TOKEN_TYPES.Block ||
+          descriptor.node.type === AST_TOKEN_TYPES.Shebang
         ) {
           if (isCommentNearTSConstruct(descriptor.node)) {
             return;
@@ -448,6 +394,8 @@ export default util.createRule<Options, MessageIds>({
                 before: options.beforeBlockComment,
               });
             }
+          } else if (token.type === AST_TOKEN_TYPES.Shebang) {
+            // do we want to do anything here?
           }
         });
       },
