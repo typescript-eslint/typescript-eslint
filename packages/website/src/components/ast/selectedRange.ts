@@ -1,19 +1,20 @@
+import type { ParentNodeType } from './types';
 import { filterProperties, isESNode, isRecord, isTSNode } from './utils';
 
-function isInRange(offset: number, range: [number, number]): boolean {
-  return offset > range[0] && offset <= range[1];
+function isInRange(offset: number, value: object): boolean {
+  const range = getRangeFromNode(value);
+  return !!range && offset > range[0] && offset <= range[1];
+}
+
+function geNodeType(value: unknown): ParentNodeType {
+  if (isRecord(value)) {
+    return isESNode(value) ? 'esNode' : isTSNode(value) ? 'tsNode' : undefined;
+  }
+  return undefined;
 }
 
 function isIterable(key: string, value: unknown): boolean {
-  if (isRecord(value)) {
-    return filterProperties(
-      key,
-      value,
-      isESNode(value) ? 'esNode' : isTSNode(value) ? 'tsNode' : undefined,
-    );
-  }
-
-  return filterProperties(key, value, undefined);
+  return filterProperties(key, value, geNodeType(value));
 }
 
 function getRangeFromNode(value: object): null | [number, number] {
@@ -42,8 +43,7 @@ function findInObject(
     visited.add(iter);
 
     if (isRecord(child)) {
-      const range = getRangeFromNode(child);
-      if (range && isInRange(cursorPosition, range)) {
+      if (isInRange(cursorPosition, child)) {
         return {
           key: [name],
           value: child,
@@ -54,8 +54,7 @@ function findInObject(
         const arrayChild: unknown = child[index];
         // typescript array like elements have other iterable items
         if (typeof index === 'number' && isRecord(arrayChild)) {
-          const range = getRangeFromNode(arrayChild);
-          if (range && isInRange(cursorPosition, range)) {
+          if (isInRange(cursorPosition, arrayChild)) {
             return {
               key: [name, String(index)],
               value: arrayChild,
