@@ -5,6 +5,8 @@ import type Monaco from 'monaco-editor';
 import React, { useEffect, useState } from 'react';
 
 import styles from './ErrorsViewer.module.css';
+import type { AlertBlockProps } from './layout/AlertBlock';
+import AlertBlock from './layout/AlertBlock';
 import type { ErrorGroup, ErrorItem } from './types';
 
 export interface ErrorsViewerProps {
@@ -17,13 +19,7 @@ export interface ErrorViewerProps {
   readonly type: AlertBlockProps['type'];
 }
 
-interface AlertBlockProps {
-  readonly type: 'danger' | 'warning' | 'note' | 'info' | 'success';
-  readonly children: React.ReactNode;
-  readonly fixer?: boolean;
-}
-
-interface ErrorBlockProps {
+export interface ErrorBlockProps {
   readonly item: ErrorItem;
   readonly setIsLocked: (value: boolean) => void;
   readonly isLocked: boolean;
@@ -64,14 +60,6 @@ function FixButton(props: FixButtonProps): JSX.Element {
   );
 }
 
-function AlertBlock(props: AlertBlockProps): JSX.Element {
-  return (
-    <div className={`admonition alert alert--${props.type}`}>
-      <div className="admonition-content">{props.children}</div>
-    </div>
-  );
-}
-
 function ErrorBlock({
   item,
   setIsLocked,
@@ -80,9 +68,9 @@ function ErrorBlock({
   return (
     <AlertBlock type={severityClass(item.severity)}>
       <div className={clsx(!!item.fixer && styles.fixerContainer)}>
-        <div>
+        <pre className={styles.errorPre}>
           {item.message} {item.location}
-        </div>
+        </pre>
         {item.fixer && (
           <FixButton
             disabled={isLocked}
@@ -95,7 +83,7 @@ function ErrorBlock({
         <div>
           {item.suggestions.map((fixer, index) => (
             <div
-              key={index}
+              key={String(index)}
               className={clsx(styles.fixerContainer, styles.fixer)}
             >
               <span>&gt; {fixer.message}</span>
@@ -112,16 +100,6 @@ function ErrorBlock({
   );
 }
 
-function SuccessBlock(): JSX.Element {
-  return (
-    <AlertBlock type="success">
-      <div className={styles.fixerContainer}>
-        <div>All is ok!</div>
-      </div>
-    </AlertBlock>
-  );
-}
-
 export function ErrorViewer({
   value,
   title,
@@ -134,7 +112,9 @@ export function ErrorViewer({
           <div className={styles.fixerContainer}>
             <h4>{title}</h4>
           </div>
-          {type === 'danger' ? value.stack : value.message}
+          <pre className={styles.errorPre}>
+            {type === 'danger' ? value?.stack : value.message}
+          </pre>
         </AlertBlock>
       </div>
     </div>
@@ -170,19 +150,22 @@ export function ErrorsViewer({ value }: ErrorsViewerProps): JSX.Element {
                 )}
               </h4>
               {items.map((item, index) => (
-                <ErrorBlock
-                  isLocked={isLocked}
-                  setIsLocked={setIsLocked}
-                  item={item}
-                  key={index}
-                />
+                <div className="margin-bottom--sm" key={String(index)}>
+                  <ErrorBlock
+                    isLocked={isLocked}
+                    setIsLocked={setIsLocked}
+                    item={item}
+                  />
+                </div>
               ))}
             </div>
           );
         })
       ) : (
         <div className="margin-top--md">
-          <SuccessBlock />
+          <AlertBlock type="success">
+            <div>All is ok!</div>
+          </AlertBlock>
         </div>
       )}
     </div>
