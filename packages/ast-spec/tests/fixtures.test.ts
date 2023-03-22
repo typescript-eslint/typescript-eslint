@@ -84,17 +84,23 @@ const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
               path.join(snapshotPath, `${i}-TSESTree-AST.shot`),
             tokens: (i: number) =>
               path.join(snapshotPath, `${i}-TSESTree-Tokens.shot`),
+            comments: (i: number) =>
+              path.join(snapshotPath, `${i}-TSESTree-Comments.shot`),
           },
           babel: {
             ast: (i: number) => path.join(snapshotPath, `${i}-Babel-AST.shot`),
             tokens: (i: number) =>
               path.join(snapshotPath, `${i}-Babel-Tokens.shot`),
+            comments: (i: number) =>
+              path.join(snapshotPath, `${i}-Babel-Comments.shot`),
           },
           alignment: {
             ast: (i: number) =>
               path.join(snapshotPath, `${i}-AST-Alignment-AST.shot`),
             tokens: (i: number) =>
               path.join(snapshotPath, `${i}-AST-Alignment-Tokens.shot`),
+            comments: (i: number) =>
+              path.join(snapshotPath, `${i}-AST-Alignment-Comments.shot`),
           },
         },
         error: {
@@ -207,6 +213,17 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
           );
         });
 
+        if (fixture.config.comment) {
+          it('TSESTree - Comments', () => {
+            expectSuccessResponse(tsestreeParsed);
+            expect(tsestreeParsed.comments).toMatchSpecificSnapshot(
+              fixture.snapshotFiles.success.tsestree.comments(
+                snapshotCounter++,
+              ),
+            );
+          });
+        }
+
         if (fixture.config.expectBabelToNotSupport != null) {
           fixturesConfiguredToExpectBabelToNotSupport.set(
             fixture.relative,
@@ -234,6 +251,12 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
             expectSuccessResponse(babelParsed);
             expect(babelParsed.tokens).toMatchSpecificSnapshot(
               fixture.snapshotFiles.success.babel.tokens(snapshotCounter++),
+            );
+          });
+          it('Babel - Comments', () => {
+            expectSuccessResponse(babelParsed);
+            expect(babelParsed.comments).toMatchSpecificSnapshot(
+              fixture.snapshotFiles.success.babel.comments(snapshotCounter++),
             );
           });
           it('AST Alignment - AST', () => {
@@ -264,6 +287,25 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
             );
             expect(diffResult).toMatchSpecificSnapshot(
               fixture.snapshotFiles.success.alignment.tokens(snapshotCounter++),
+            );
+
+            if (diffHasChanges(diffResult)) {
+              fixturesWithTokenDifferences.add(fixture.relative);
+            }
+          });
+          it('AST Alignment - Comment', () => {
+            expectSuccessResponse(tsestreeParsed);
+            expectSuccessResponse(babelParsed);
+            const diffResult = snapshotDiff(
+              'TSESTree',
+              tsestreeParsed.comments,
+              'Babel',
+              babelParsed.comments,
+            );
+            expect(diffResult).toMatchSpecificSnapshot(
+              fixture.snapshotFiles.success.alignment.comments(
+                snapshotCounter++,
+              ),
             );
 
             if (diffHasChanges(diffResult)) {

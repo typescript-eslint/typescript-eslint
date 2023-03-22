@@ -3,6 +3,7 @@ type SnapshotPathFn = (i: number) => string;
 interface SuccessSnapshotPaths {
   readonly ast: SnapshotPathFn;
   readonly tokens: SnapshotPathFn;
+  readonly comments: SnapshotPathFn;
 }
 
 export interface Fixture {
@@ -40,6 +41,7 @@ export interface ParserResponseSuccess {
   // this exists for the error alignment test snapshots
   readonly error: 'NO ERROR';
   readonly tokens: unknown;
+  readonly comments?: unknown;
 }
 export interface ParserResponseError {
   readonly type: ParserResponseType.Error;

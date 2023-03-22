@@ -17,4 +17,9 @@ interface ASTFixtureConfig {
    * The value should be a description of why there isn't support - for example a github issue URL.
    */
   readonly expectBabelToNotSupport?: string;
+
+  /**
+   * Include comments in AST
+   */
+  readonly comment?: boolean;
 }

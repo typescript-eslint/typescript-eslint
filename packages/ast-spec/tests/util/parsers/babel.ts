@@ -34,14 +34,20 @@ export function parseBabel(fixture: Fixture, contents: string): ParserResponse {
       requireConfigFile: false,
       sourceType: 'unambiguous',
     });
-    const { tokens: _, comments: __, ...program } = result;
+    const { tokens, comments, ...program } = result;
 
-    return {
+    const response = {
       type: ParserResponseType.NoError,
       ast: program,
       error: 'NO ERROR',
-      tokens: result.tokens,
+      tokens: tokens,
     };
+
+    if (fixture.config.comment) {
+      response.comments = comments;
+    }
+
+    return response;
   } catch (error: unknown) {
     return {
       type: ParserResponseType.Error,
