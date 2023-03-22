@@ -28,32 +28,26 @@ export function extractEnum(
   return result;
 }
 
-declare global {
-  interface Window {
-    tsEnum: TsParsedEnums;
-  }
-}
+let tsEnumCache: TsParsedEnums | undefined;
 
 export function getTsEnum(type: keyof TsParsedEnums): Record<number, string> {
-  if (!window.tsEnum) {
-    window.tsEnum = {
-      SyntaxKind: extractEnum(window.ts.SyntaxKind),
-      NodeFlags: extractEnum(window.ts.NodeFlags),
-      TokenFlags: extractEnum(window.ts.TokenFlags),
-      ModifierFlags: extractEnum(window.ts.ModifierFlags),
-      ObjectFlags: extractEnum(window.ts.ObjectFlags),
-      SymbolFlags: extractEnum(window.ts.SymbolFlags),
-      FlowFlags: extractEnum(window.ts.FlowFlags),
-      TypeFlags: extractEnum(window.ts.TypeFlags),
-      ScriptKind: extractEnum(window.ts.ScriptKind),
-      ScriptTarget: extractEnum(window.ts.ScriptTarget),
-      LanguageVariant: extractEnum(window.ts.LanguageVariant),
-      // @ts-expect-error: non public API
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      TransformFlags: extractEnum(window.ts.TransformFlags),
-    };
-  }
-  return window.tsEnum[type];
+  tsEnumCache ??= {
+    SyntaxKind: extractEnum(window.ts.SyntaxKind),
+    NodeFlags: extractEnum(window.ts.NodeFlags),
+    TokenFlags: extractEnum(window.ts.TokenFlags),
+    ModifierFlags: extractEnum(window.ts.ModifierFlags),
+    ObjectFlags: extractEnum(window.ts.ObjectFlags),
+    SymbolFlags: extractEnum(window.ts.SymbolFlags),
+    FlowFlags: extractEnum(window.ts.FlowFlags),
+    TypeFlags: extractEnum(window.ts.TypeFlags),
+    ScriptKind: extractEnum(window.ts.ScriptKind),
+    ScriptTarget: extractEnum(window.ts.ScriptTarget),
+    LanguageVariant: extractEnum(window.ts.LanguageVariant),
+    // @ts-expect-error: non public API
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
+    TransformFlags: extractEnum(window.ts.TransformFlags),
+  };
+  return tsEnumCache[type];
 }
 
 export function tsEnumValue(
