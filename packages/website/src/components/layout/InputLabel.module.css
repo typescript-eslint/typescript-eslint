@@ -1,0 +1,25 @@
+.optionLabel {
+  cursor: pointer;
+  align-items: center;
+  display: flex;
+  flex: 0 0 1.5rem;
+  flex-direction: row;
+  font-size: 0.75rem;
+  margin: 0;
+  padding: 0.4rem 0.8rem;
+  transition: background-color var(--ifm-transition-fast)
+      var(--ifm-transition-timing-default),
+    color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
+  color: var(--ifm-font-color-secondary);
+  justify-content: space-between;
+  border: none;
+  background: transparent;
+  font-family: var(--ifm-font-family-base);
+  box-sizing: border-box;
+  line-height: var(--ifm-line-height-base);
+}
+
+.optionLabel:hover {
+  background-color: var(--ifm-color-emphasis-100);
+  color: var(--ifm-font-color-primary);
+}
