@@ -83,7 +83,7 @@ function ErrorBlock({
         <div>
           {item.suggestions.map((fixer, index) => (
             <div
-              key={String(index)}
+              key={index}
               className={clsx(styles.fixerContainer, styles.fixer)}
             >
               <span>&gt; {fixer.message}</span>
@@ -150,7 +150,7 @@ export function ErrorsViewer({ value }: ErrorsViewerProps): JSX.Element {
                 )}
               </h4>
               {items.map((item, index) => (
-                <div className="margin-bottom--sm" key={String(index)}>
+                <div className="margin-bottom--sm" key={index}>
                   <ErrorBlock
                     isLocked={isLocked}
                     setIsLocked={setIsLocked}
