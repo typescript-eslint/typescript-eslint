@@ -1,0 +1,1 @@
+export default { comment: true };

@@ -1,0 +1,16 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures token HashbangComment hashbang TSESTree - Comments 1`] = `
+[
+  Hashbang {
+    type: "Hashbang",
+    value: "#!/usr/bin/env node",
+
+    range: [0, 19],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 19, line: 1 },
+    },
+  },
+]
+`;

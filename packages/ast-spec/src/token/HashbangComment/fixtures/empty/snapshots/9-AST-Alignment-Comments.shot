@@ -1,0 +1,21 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures token HashbangComment empty AST Alignment - Comment 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+- Array [
+-   Hashbang {
+-     type: 'Hashbang',
+-     value: '#!',
+-
+-     range: [0, 2],
+-     loc: {
+-       start: { column: 0, line: 1 },
+-       end: { column: 2, line: 1 },
+-     },
+-   },
+- ]
++ Array []"
+`;

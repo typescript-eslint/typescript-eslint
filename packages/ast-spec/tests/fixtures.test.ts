@@ -253,12 +253,14 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
               fixture.snapshotFiles.success.babel.tokens(snapshotCounter++),
             );
           });
-          it('Babel - Comments', () => {
-            expectSuccessResponse(babelParsed);
-            expect(babelParsed.comments).toMatchSpecificSnapshot(
-              fixture.snapshotFiles.success.babel.comments(snapshotCounter++),
-            );
-          });
+          if (fixture.config.comment) {
+            it('Babel - Comments', () => {
+              expectSuccessResponse(babelParsed);
+              expect(babelParsed.comments).toMatchSpecificSnapshot(
+                fixture.snapshotFiles.success.babel.comments(snapshotCounter++),
+              );
+            });
+          }
           it('AST Alignment - AST', () => {
             expectSuccessResponse(tsestreeParsed);
             expectSuccessResponse(babelParsed);
@@ -293,25 +295,27 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
               fixturesWithTokenDifferences.add(fixture.relative);
             }
           });
-          it('AST Alignment - Comment', () => {
-            expectSuccessResponse(tsestreeParsed);
-            expectSuccessResponse(babelParsed);
-            const diffResult = snapshotDiff(
-              'TSESTree',
-              tsestreeParsed.comments,
-              'Babel',
-              babelParsed.comments,
-            );
-            expect(diffResult).toMatchSpecificSnapshot(
-              fixture.snapshotFiles.success.alignment.comments(
-                snapshotCounter++,
-              ),
-            );
+          if (fixture.config.comment) {
+            it('AST Alignment - Comment', () => {
+              expectSuccessResponse(tsestreeParsed);
+              expectSuccessResponse(babelParsed);
+              const diffResult = snapshotDiff(
+                'TSESTree',
+                tsestreeParsed.comments,
+                'Babel',
+                babelParsed.comments,
+              );
+              expect(diffResult).toMatchSpecificSnapshot(
+                fixture.snapshotFiles.success.alignment.comments(
+                  snapshotCounter++,
+                ),
+              );
 
-            if (diffHasChanges(diffResult)) {
-              fixturesWithTokenDifferences.add(fixture.relative);
-            }
-          });
+              if (diffHasChanges(diffResult)) {
+                fixturesWithTokenDifferences.add(fixture.relative);
+              }
+            });
+          }
         }
 
         it('Should parse with no errors', () => {
