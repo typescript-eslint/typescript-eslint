@@ -4,6 +4,7 @@ import {
   useWindowSize,
 } from '@docusaurus/theme-common';
 import CopyIcon from '@site/src/icons/copy.svg';
+import IconExternalLink from '@theme/Icon/ExternalLink';
 import React, { useCallback } from 'react';
 
 import { useClipboard } from '../hooks/useClipboard';
@@ -119,7 +120,7 @@ function OptionsSelectorContent({
         <button className={styles.optionLabel} onClick={copyLinkToClipboard}>
           Copy Link
           <Tooltip open={copyLink} text="Copied">
-            <CopyIcon />
+            <CopyIcon width="13.5" height="13.5" />
           </Tooltip>
         </button>
         <button
@@ -128,12 +129,12 @@ function OptionsSelectorContent({
         >
           Copy Markdown
           <Tooltip open={copyMarkdown} text="Copied">
-            <CopyIcon />
+            <CopyIcon width="13.5" height="13.5" />
           </Tooltip>
         </button>
         <button className={styles.optionLabel} onClick={openIssue}>
           Report as Issue
-          <CopyIcon />
+          <IconExternalLink width="13.5" height="13.5" />
         </button>
       </Expander>
     </>
