@@ -13,5 +13,6 @@ export enum AST_TOKEN_TYPES {
 
   // comment types
   Block = 'Block',
+  Hashbang = 'Hashbang',
   Line = 'Line',
 }

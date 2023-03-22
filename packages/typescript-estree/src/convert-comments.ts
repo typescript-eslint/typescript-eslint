@@ -18,6 +18,16 @@ export function convertComments(
 ): TSESTree.Comment[] {
   const comments: TSESTree.Comment[] = [];
 
+  const hashbang = ts.getShebang(code);
+  if (hashbang) {
+    comments.push({
+      type: AST_TOKEN_TYPES.Hashbang,
+      value: hashbang,
+      range: [0, hashbang.length],
+      loc: getLocFor(0, hashbang.length, ast),
+    });
+  }
+
   tsutils.forEachComment(
     ast,
     (_, comment) => {
