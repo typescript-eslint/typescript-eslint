@@ -3278,7 +3278,8 @@ export class Converter {
         (modifier.kind === SyntaxKind.PublicKeyword ||
           modifier.kind === SyntaxKind.PrivateKeyword ||
           modifier.kind === SyntaxKind.ProtectedKeyword ||
-          modifier.kind === SyntaxKind.ReadonlyKeyword)
+          modifier.kind === SyntaxKind.ReadonlyKeyword ||
+          modifier.kind === SyntaxKind.OverrideKeyword)
       ) {
         const func = getContainingFunction(node)!;
 
