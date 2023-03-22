@@ -8,7 +8,7 @@ exports[`AST Fixtures token HashbangComment hashbang AST Alignment - Comment 1`]
 - Array [
 -   Hashbang {
 -     type: 'Hashbang',
--     value: '#!/usr/bin/env node',
+-     value: '/usr/bin/env node',
 -
 -     range: [0, 19],
 -     loc: {

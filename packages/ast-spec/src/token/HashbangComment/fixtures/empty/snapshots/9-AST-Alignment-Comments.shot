@@ -8,7 +8,7 @@ exports[`AST Fixtures token HashbangComment empty AST Alignment - Comment 1`] = 
 - Array [
 -   Hashbang {
 -     type: 'Hashbang',
--     value: '#!',
+-     value: '',
 -
 -     range: [0, 2],
 -     loc: {

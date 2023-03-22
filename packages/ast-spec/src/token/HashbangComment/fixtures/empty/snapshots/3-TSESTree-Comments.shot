@@ -4,7 +4,7 @@ exports[`AST Fixtures token HashbangComment empty TSESTree - Comments 1`] = `
 [
   Hashbang {
     type: "Hashbang",
-    value: "#!",
+    value: "",
 
     range: [0, 2],
     loc: {

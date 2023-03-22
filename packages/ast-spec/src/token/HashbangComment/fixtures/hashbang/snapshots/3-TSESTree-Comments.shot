@@ -4,7 +4,7 @@ exports[`AST Fixtures token HashbangComment hashbang TSESTree - Comments 1`] = `
 [
   Hashbang {
     type: "Hashbang",
-    value: "#!/usr/bin/env node",
+    value: "/usr/bin/env node",
 
     range: [0, 19],
     loc: {

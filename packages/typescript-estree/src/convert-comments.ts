@@ -22,7 +22,7 @@ export function convertComments(
   if (hashbang !== undefined) {
     comments.push({
       type: AST_TOKEN_TYPES.Hashbang,
-      value: hashbang,
+      value: hashbang.slice(2),
       range: [0, hashbang.length],
       loc: getLocFor(0, hashbang.length, ast),
     });
