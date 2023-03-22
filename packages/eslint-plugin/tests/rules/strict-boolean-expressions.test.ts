@@ -198,6 +198,53 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       options: [{ allowNullableEnum: true }],
     },
+
+    // nullable mixed enum in boolean context
+    {
+      // falsy number and truthy string
+      code: `
+        enum ExampleEnum {
+          This = 0,
+          That = 'one',
+        }
+        (value?: ExampleEnum) => (value ? 1 : 0);
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+    {
+      // falsy string and truthy number
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 1,
+        }
+        (value?: ExampleEnum) => (!value ? 1 : 0);
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+    {
+      // truthy string and truthy number
+      code: `
+        enum ExampleEnum {
+          This = 'this',
+          That = 1,
+        }
+        (value?: ExampleEnum) => (!value ? 1 : 0);
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+    {
+      // falsy string and falsy number
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 0,
+        }
+        (value?: ExampleEnum) => (!value ? 1 : 0);
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+
     {
       code: `
 declare const x: string[] | null;
@@ -1287,6 +1334,117 @@ if (y) {
         }
       `,
     },
+
+    // nullable mixed enum in boolean context
+    {
+      // falsy number and truthy string
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This = 0,
+          That = 'one',
+        }
+        (value?: ExampleEnum) => (value ? 1 : 0);
+      `,
+      errors: [
+        {
+          line: 6,
+          column: 35,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 6,
+          endColumn: 40,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This = 0,
+          That = 'one',
+        }
+        (value?: ExampleEnum) => ((value != null) ? 1 : 0);
+      `,
+    },
+    {
+      // falsy string and truthy number
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 1,
+        }
+        (value?: ExampleEnum) => (!value ? 1 : 0);
+      `,
+      errors: [
+        {
+          line: 6,
+          column: 36,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 6,
+          endColumn: 41,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This = '',
+          That = 1,
+        }
+        (value?: ExampleEnum) => ((value == null) ? 1 : 0);
+      `,
+    },
+    {
+      // truthy string and truthy number
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This = 'this',
+          That = 1,
+        }
+        (value?: ExampleEnum) => (!value ? 1 : 0);
+      `,
+      errors: [
+        {
+          line: 6,
+          column: 36,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 6,
+          endColumn: 41,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This = 'this',
+          That = 1,
+        }
+        (value?: ExampleEnum) => ((value == null) ? 1 : 0);
+      `,
+    },
+    {
+      // falsy string and falsy number
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 0,
+        }
+        (value?: ExampleEnum) => (!value ? 1 : 0);
+      `,
+      errors: [
+        {
+          line: 6,
+          column: 36,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 6,
+          endColumn: 41,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This = '',
+          That = 0,
+        }
+        (value?: ExampleEnum) => ((value == null) ? 1 : 0);
+      `,
+    },
+
     // any in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       code: noFormat`
