@@ -41,7 +41,7 @@ export interface ParserResponseSuccess {
   // this exists for the error alignment test snapshots
   readonly error: 'NO ERROR';
   readonly tokens: unknown;
-  readonly comments?: unknown;
+  readonly comments: unknown;
 }
 export interface ParserResponseError {
   readonly type: ParserResponseType.Error;

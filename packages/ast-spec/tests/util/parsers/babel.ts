@@ -36,18 +36,13 @@ export function parseBabel(fixture: Fixture, contents: string): ParserResponse {
     });
     const { tokens, comments, ...program } = result;
 
-    const response = {
+    return {
       type: ParserResponseType.NoError,
       ast: program,
       error: 'NO ERROR',
-      tokens: tokens,
+      tokens,
+      comments,
     };
-
-    if (fixture.config.comment) {
-      response.comments = comments;
-    }
-
-    return response;
   } catch (error: unknown) {
     return {
       type: ParserResponseType.Error,
