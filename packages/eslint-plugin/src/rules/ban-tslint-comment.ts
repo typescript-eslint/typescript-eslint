@@ -36,7 +36,10 @@ export default util.createRule({
       Program(): void {
         const comments = sourceCode.getAllComments();
         comments.forEach(c => {
-          if (ENABLE_DISABLE_REGEX.test(c.value)) {
+          if (
+            c.type !== AST_TOKEN_TYPES.Hashbang &&
+            ENABLE_DISABLE_REGEX.test(c.value)
+          ) {
             context.report({
               data: { text: toText(c.value, c.type) },
               node: c,
