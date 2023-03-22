@@ -2,17 +2,17 @@
 
 exports[`type-annotation variable-const 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TypeDefinition$1 {
           name: Identifier<"T">,
           node: TSTypeAliasDeclaration$1,
         },
       ],
       name: "T",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"T">,
           isRead: true,
@@ -26,14 +26,14 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         VariableDefinition$2 {
           name: Identifier<"x">,
           node: VariableDeclarator$2,
         },
       ],
       name: "x",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"x">,
           init: true,
@@ -49,11 +49,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$4,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
       ],
@@ -64,7 +64,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,

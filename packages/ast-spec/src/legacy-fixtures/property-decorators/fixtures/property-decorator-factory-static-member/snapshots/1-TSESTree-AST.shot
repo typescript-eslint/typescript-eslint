@@ -3,22 +3,22 @@
 exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-factory-static-member TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
-            decorators: Array [
+            decorators: [
               Decorator {
                 type: "Decorator",
                 expression: CallExpression {
                   type: "CallExpression",
-                  arguments: Array [
+                  arguments: [
                     Literal {
                       type: "Literal",
                       raw: "true",
@@ -81,12 +81,12 @@ Program {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
-            decorators: Array [
+            decorators: [
               Decorator {
                 type: "Decorator",
                 expression: CallExpression {
                   type: "CallExpression",
-                  arguments: Array [
+                  arguments: [
                     Literal {
                       type: "Literal",
                       raw: "false",

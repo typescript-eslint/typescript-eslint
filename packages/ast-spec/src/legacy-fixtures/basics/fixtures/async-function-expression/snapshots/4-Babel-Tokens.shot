@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AST Fixtures legacy-fixtures basics async-function-expression Babel - Tokens 1`] = `
-Array [
+[
   Punctuator {
     type: "Punctuator",
     value: "(",

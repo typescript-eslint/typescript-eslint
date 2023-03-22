@@ -43,7 +43,7 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-s
                           type: 'BinaryExpression',
                           left: Literal {
                             type: 'Literal',
-                            raw: '\\\\'Hello \\\\'',
+                            raw: '\\'Hello \\'',
                             value: 'Hello ',
 
                             range: [147, 155],
@@ -73,7 +73,7 @@ exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-s
                         operator: '+',
                         right: Literal {
                           type: 'Literal',
-                          raw: '\\\\'!\\\\'',
+                          raw: '\\'!\\'',
                           value: '!',
 
                           range: [165, 168],

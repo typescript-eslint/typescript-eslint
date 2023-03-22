@@ -3,6 +3,48 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.56.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.55.0...v5.56.0) (2023-03-20)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [member-ordering] check order when optionalityOrder is present with no optional members ([#6619](https://github.com/typescript-eslint/typescript-eslint/issues/6619)) ([6aff431](https://github.com/typescript-eslint/typescript-eslint/commit/6aff431668eb0d25aa74b527cbe458f9dcd0d92a))
+* **eslint-plugin:** [no-misused-promises] avoid unnecessary calls to getContextualType ([#6193](https://github.com/typescript-eslint/typescript-eslint/issues/6193)) ([745cfe4](https://github.com/typescript-eslint/typescript-eslint/commit/745cfe4a35319416b3c307ee9fd57c63bf1660cd))
+* **eslint-plugin:** [no-misused-promises] fix incorrect detection of void functions in JSX attributes ([#6638](https://github.com/typescript-eslint/typescript-eslint/issues/6638)) ([9e41cee](https://github.com/typescript-eslint/typescript-eslint/commit/9e41ceeaea3bf266e5114cfb1855e70a1a13284b))
+* **eslint-plugin:** [strict-boolean-expression] support falsy and truthy literals simultaneously ([#6672](https://github.com/typescript-eslint/typescript-eslint/issues/6672)) ([62ef487](https://github.com/typescript-eslint/typescript-eslint/commit/62ef487a99010827e99a792db5e565ad7c1d6220))
+* **eslint-plugin:** [strict-boolean-expressions] handle truthy enums ([#6618](https://github.com/typescript-eslint/typescript-eslint/issues/6618)) ([0d0639f](https://github.com/typescript-eslint/typescript-eslint/commit/0d0639fb25e5ac8d7b5e4ceac4273e17e8ee0249))
+* **eslint-plugin:** add TSPropertySignature with TSFunctionType annotation to typeMethod selector ([#6645](https://github.com/typescript-eslint/typescript-eslint/issues/6645)) ([3fc5c63](https://github.com/typescript-eslint/typescript-eslint/commit/3fc5c63f87bfd9d95f7e51fddc7ef16a6c3c5662))
+
+
+### Features
+
+* **eslint-plugin:** add allowNever support to restrict-template-expressions ([#6554](https://github.com/typescript-eslint/typescript-eslint/issues/6554)) ([423f164](https://github.com/typescript-eslint/typescript-eslint/commit/423f1642424293488fa03a52777c0df73a40e5fd))
+
+
+
+
+
+# [5.55.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.54.1...v5.55.0) (2023-03-13)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-confusing-void-expression] check sequence expressions for void is in last position ([#6597](https://github.com/typescript-eslint/typescript-eslint/issues/6597)) ([d73d7d3](https://github.com/typescript-eslint/typescript-eslint/commit/d73d7d3904a088e2bf7127240dd1f1cefe325e69))
+* **eslint-plugin:** [no-unnecessary-boolean-literal-compare] fixer should handle parentheses ([#6569](https://github.com/typescript-eslint/typescript-eslint/issues/6569)) ([2d8c196](https://github.com/typescript-eslint/typescript-eslint/commit/2d8c196294bcbe4989e310ec056a1a9000967600))
+
+
+### Features
+
+* **eslint-plugin:** [lines-around-comment] add extension rule ([#5327](https://github.com/typescript-eslint/typescript-eslint/issues/5327)) ([d55211c](https://github.com/typescript-eslint/typescript-eslint/commit/d55211caf63e4731f103e94237b3449e88322bb9))
+* **eslint-plugin:** [member-ordering] add support for grouping readonly fields ([#6349](https://github.com/typescript-eslint/typescript-eslint/issues/6349)) ([9d3bdfc](https://github.com/typescript-eslint/typescript-eslint/commit/9d3bdfcb2fe3d2b2c0b82d9587d52f0e2ef4e344))
+* **eslint-plugin:** [no-unnecessary-cond] check logical assignments ([#6594](https://github.com/typescript-eslint/typescript-eslint/issues/6594)) ([dbc203a](https://github.com/typescript-eslint/typescript-eslint/commit/dbc203aeb64833a4d67bc62a578aa5533083af3d))
+* update TypeScript to 5.0 RC ([#6570](https://github.com/typescript-eslint/typescript-eslint/issues/6570)) ([36ef0e1](https://github.com/typescript-eslint/typescript-eslint/commit/36ef0e16f31810c27dda299e739d1610b689d3ad))
+* use [@eslint-community](https://github.com/eslint-community) dependencies ([#6603](https://github.com/typescript-eslint/typescript-eslint/issues/6603)) ([5f6ed73](https://github.com/typescript-eslint/typescript-eslint/commit/5f6ed738a2b8c08878999e24477e3c206a0ade1b))
+
+
+
+
+
 ## [5.54.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.54.0...v5.54.1) (2023-03-06)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin

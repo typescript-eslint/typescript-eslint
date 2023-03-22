@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures types conditional-infer-simple Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -39,7 +39,7 @@ Program {
         },
         extendsType: TSTypeLiteral {
           type: "TSTypeLiteral",
-          members: Array [
+          members: [
             TSPropertySignature {
               type: "TSPropertySignature",
               computed: false,
@@ -181,7 +181,7 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
             name: "T",
