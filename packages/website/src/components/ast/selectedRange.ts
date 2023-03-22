@@ -1,16 +1,26 @@
-import { isESNode, isRecord, isTSNode } from './utils';
+import { filterProperties, isESNode, isRecord, isTSNode } from './utils';
 
 function isInRange(offset: number, range: [number, number]): boolean {
   return offset > range[0] && offset <= range[1];
+}
+
+function isIterable(key: string, value: unknown): boolean {
+  if (isRecord(value)) {
+    return filterProperties(
+      key,
+      value,
+      isESNode(value) ? 'esNode' : isTSNode(value) ? 'tsNode' : undefined,
+    );
+  }
+
+  return filterProperties(key, value, undefined);
 }
 
 function getRangeFromNode(value: object): null | [number, number] {
   if (isESNode(value)) {
     return value.range;
   } else if (isTSNode(value)) {
-    if (value.kind >= window.ts.SyntaxKind.FirstNode) {
-      return [value.pos, value.end];
-    }
+    return [value.pos, value.end];
   }
   return null;
 }
@@ -26,7 +36,7 @@ function findInObject(
   const children = Object.entries(iter);
   for (const [name, child] of children) {
     // we do not want to select parents in case if we do filter with esquery
-    if (visited.has(child) || name === 'parent') {
+    if (visited.has(child) || name === 'parent' || !isIterable(name, child)) {
       continue;
     }
     visited.add(iter);
