@@ -71,6 +71,15 @@ function Playground(): JSX.Element {
     [],
   );
 
+  const astToShow =
+    state.showAST === 'ts'
+      ? tsAst
+      : state.showAST === 'scope'
+      ? scope
+      : state.showAST === 'es'
+      ? esAst
+      : undefined;
+
   return (
     <div className={styles.codeContainer}>
       {ruleNames.length > 0 && (
@@ -155,17 +164,11 @@ function Playground(): JSX.Element {
                   value={esQueryError}
                 />
               )) ||
-                (state.showAST && (
+                (state.showAST && astToShow && (
                   <ASTViewer
                     key={String(state.showAST)}
                     filter={state.showAST === 'es' ? esQueryFilter : undefined}
-                    value={
-                      state.showAST === 'ts'
-                        ? tsAst
-                        : state.showAST === 'scope'
-                        ? scope
-                        : esAst
-                    }
+                    value={astToShow}
                     enableScrolling={true}
                     cursorPosition={position}
                     onHoverNode={setSelectedRange}
