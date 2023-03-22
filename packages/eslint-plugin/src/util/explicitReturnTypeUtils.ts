@@ -343,4 +343,5 @@ export {
   isTypedFunctionExpression,
   isValidFunctionExpressionReturnType,
   ancestorHasReturnType,
+  isFunctionArgument,
 };

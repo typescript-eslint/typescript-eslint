@@ -575,6 +575,16 @@ get({ foo: null }, 'foo');
     `,
     {
       code: `
+        function assert(condition: unknown): asserts condition {
+          // do something with condition
+        }
+        const obj = {};
+        assert(obj != null);
+      `,
+      options: [{ allowAssertTypePredicateParameterConditions: true }],
+    },
+    {
+      code: `
 function getElem(dict: Record<string, { foo: string }>, key: string) {
   if (dict[key]) {
     return dict[key].foo;

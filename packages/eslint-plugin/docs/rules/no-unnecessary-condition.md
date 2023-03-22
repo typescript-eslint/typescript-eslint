@@ -83,6 +83,18 @@ for (; true; ) {}
 do {} while (true);
 ```
 
+### `allowAssertTypePredicateParameterConditions`
+
+Example of correct code for `{ allowAssertTypePredicateParameterConditions: true }`:
+
+```ts
+function assert(condition: unknown): asserts condition {
+  // do something with condition
+}
+const obj = {};
+assert(obj != null);
+```
+
 ### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
 
 If this is set to `false`, then the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.

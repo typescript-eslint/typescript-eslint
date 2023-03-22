@@ -24,6 +24,7 @@ import {
   nullThrows,
   NullThrowsReasons,
 } from '../util';
+import { isFunctionArgument } from '../util/explicitReturnTypeUtils';
 
 // Truthiness utilities
 // #region
@@ -64,6 +65,7 @@ const isLiteral = (type: ts.Type): boolean =>
 export type Options = [
   {
     allowConstantLoopConditions?: boolean;
+    allowAssertTypePredicateParameterConditions?: boolean;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
   },
 ];
@@ -100,6 +102,11 @@ export default createRule<Options, MessageId>({
               'Whether to ignore constant loop conditions, such as `while (true)`.',
             type: 'boolean',
           },
+          allowAssertTypePredicateParameterConditions: {
+            description:
+              'Whether to ignore parameters in assert type predicate calls.',
+            type: 'boolean',
+          },
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
             description:
               'Whether to not error when running with a tsconfig that has strictNullChecks turned.',
@@ -133,6 +140,7 @@ export default createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
+      allowAssertTypePredicateParameterConditions: false,
       allowConstantLoopConditions: false,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
     },
@@ -141,6 +149,7 @@ export default createRule<Options, MessageId>({
     context,
     [
       {
+        allowAssertTypePredicateParameterConditions,
         allowConstantLoopConditions,
         allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
       },
@@ -294,6 +303,32 @@ export default createRule<Options, MessageId>({
       }
     }
 
+    function isCalleeAnAssertTypePredicate(
+      node: TSESTree.Node | undefined,
+    ): boolean {
+      if (!node || !isFunctionArgument(node)) {
+        return false;
+      }
+
+      const tsNode = service.esTreeNodeToTSNodeMap.get(node.callee);
+      const valueDeclaration = checker
+        .getTypeAtLocation(tsNode)
+        .getSymbol()?.valueDeclaration;
+
+      if (
+        !valueDeclaration ||
+        !ts.isFunctionDeclaration(valueDeclaration) ||
+        !valueDeclaration.type
+      ) {
+        return false;
+      }
+
+      return (
+        ts.isTypePredicateNode(valueDeclaration.type) &&
+        valueDeclaration.type.assertsModifier != null
+      );
+    }
+
     /**
      * Checks that a binary expression is necessarily conditional, reports otherwise.
      * If both sides of the binary expression are literal values, it's not a necessary condition.
@@ -320,6 +355,14 @@ export default createRule<Options, MessageId>({
       if (!BOOL_OPERATORS.has(node.operator)) {
         return;
       }
+
+      if (
+        allowAssertTypePredicateParameterConditions &&
+        isCalleeAnAssertTypePredicate(node.parent)
+      ) {
+        return;
+      }
+
       const leftType = getNodeType(node.left);
       const rightType = getNodeType(node.right);
       if (isLiteral(leftType) && isLiteral(rightType)) {
