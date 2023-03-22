@@ -80,7 +80,7 @@ function ASTViewer({
         selectedPath={selectedPath}
         getTooltipLabel={getTooltipLabel}
       />
-      {!hideCopyButton && <CopyButton className="margin--sm" value={model} />}
+      {!hideCopyButton && <CopyButton value={model} />}
     </div>
   );
 }

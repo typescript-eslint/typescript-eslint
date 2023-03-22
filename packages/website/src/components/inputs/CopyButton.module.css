@@ -1,5 +1,17 @@
+.copyButtonContainer {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-family: var(--ifm-font-family-base);
+  box-sizing: border-box;
+  line-height: var(--ifm-line-height-base);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
 .copyButton {
-  --ifm-button-padding-horizontal: 1rem;
+  --ifm-button-padding-vertical: 0.4rem;
+  --ifm-button-padding-horizontal: 0.4rem;
   --ifm-button-background-color: var(--ifm-background-surface-color);
   --ifm-button-color: var(--ifm-color-emphasis-700);
   --ifm-button-border-color: var(--ifm-color-emphasis-200);
@@ -7,13 +19,9 @@
   --copy-button-icon-copy: 1;
 
   font-size: 0.75rem;
-  position: absolute;
-  top: 0;
-  right: 0;
   align-items: center;
   display: flex;
   line-height: 0;
-  padding: 0.4rem;
   transition: opacity 0.2s ease-in-out, border-color 0.4s ease-in-out,
     color 0.4s ease-in-out;
 }
@@ -43,20 +51,4 @@
 .checkIcon {
   opacity: var(--copy-button-icon-check);
   transition: opacity 0.2s ease-in-out;
-}
-
-.copyButtonTooltip::before {
-  margin-right: 7px;
-}
-
-.copyButtonTooltip::after {
-  min-height: 25px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  right: 23px !important;
-  font-family: var(--ifm-font-family-base);
-  box-sizing: border-box;
-  line-height: var(--ifm-line-height-base);
-  font-size: 0.75rem;
 }
