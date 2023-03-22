@@ -98,7 +98,7 @@ export function ElementItem({
   }, [value, propName, getTypeName, getTooltipLabel, parentNodeType]);
 
   useEffect(() => {
-    const shouldOpen = !!selectedPath && selectedPath.startsWith(level);
+    const shouldOpen = !!selectedPath?.startsWith(level);
     if (shouldOpen) {
       setIsExpanded(current => current || shouldOpen);
     }
