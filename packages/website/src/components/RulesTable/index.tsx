@@ -4,7 +4,10 @@ import type { RulesMeta } from '@site/rulesMeta';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
-import { HistorySelector, useHistorySelector } from '../lib/useHistorySelector';
+import {
+  HistorySelector,
+  useHistorySelector,
+} from '../../hooks/useHistorySelector';
 
 import styles from './styles.module.css';
 
