@@ -1,9 +1,10 @@
 import Link from '@docusaurus/Link';
-import { useIsomorphicLayoutEffect } from '@docusaurus/theme-common';
+import { useHistory } from '@docusaurus/router';
 import type { RulesMeta } from '@site/rulesMeta';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
 import clsx from 'clsx';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
+import { HistorySelector, useHistorySelector } from '../lib/useHistorySelector';
 
 import styles from './styles.module.css';
 
@@ -219,58 +220,57 @@ const neutralFiltersState: FiltersState = {
   typeInformation: 'neutral',
 };
 
+const selectSearch: HistorySelector<string> = history =>
+  history.location.search;
+const getServerSnapshot = () => '';
+
 function useRulesFilters(
   paramsKey: string,
 ): [FiltersState, (category: FilterCategory, mode: FilterMode) => void] {
-  const [state, setState] = useState(neutralFiltersState);
+  const history = useHistory();
+  const search = useHistorySelector(selectSearch, getServerSnapshot);
 
-  useIsomorphicLayoutEffect(() => {
-    const search = new URLSearchParams(window.location.search);
-    const str = search.get(paramsKey);
-    if (str) {
-      setState(s => ({ ...s, ...parseFiltersState(str) }));
-    }
-  }, [paramsKey]);
+  const paramValue = new URLSearchParams(search).get(paramsKey) || '';
+  // We can't compute this in selectSearch, because we need the snapshot to be
+  // comparable by value.
+  const filtersState = useMemo(
+    () => parseFiltersState(paramValue),
+    [paramValue],
+  );
 
   const changeFilter = (category: FilterCategory, mode: FilterMode): void => {
-    setState(oldState => {
-      const newState = { ...oldState, [category]: mode };
+    const newState = { ...filtersState, [category]: mode };
 
-      if (
-        category === 'strict' &&
-        mode === 'include' &&
-        oldState.recommended === 'include'
-      ) {
-        newState.recommended = 'exclude';
-      } else if (
-        category === 'recommended' &&
-        mode === 'include' &&
-        oldState.strict === 'include'
-      ) {
-        newState.strict = 'exclude';
-      }
+    if (
+      category === 'strict' &&
+      mode === 'include' &&
+      filtersState.recommended === 'include'
+    ) {
+      newState.recommended = 'exclude';
+    } else if (
+      category === 'recommended' &&
+      mode === 'include' &&
+      filtersState.strict === 'include'
+    ) {
+      newState.strict = 'exclude';
+    }
 
-      replaceFiltersInURL(paramsKey, newState);
+    const searchParams = new URLSearchParams(history.location.search);
+    const filtersString = stringifyFiltersState(newState);
 
-      return newState;
-    });
+    if (filtersString) {
+      searchParams.set(paramsKey, filtersString);
+    } else {
+      searchParams.delete(paramsKey);
+    }
+
+    history.replace({ search: searchParams.toString() });
   };
 
-  return [state, changeFilter];
+  return [filtersState, changeFilter];
 }
 
 const NEGATION_SYMBOL = 'x';
-
-function replaceFiltersInURL(paramsKey: string, filters: FiltersState): void {
-  const url = new URL(window.location.href);
-  const filtersString = stringifyFiltersState(filters);
-  if (filtersString) {
-    url.searchParams.set(paramsKey, filtersString);
-  } else {
-    url.searchParams.delete(paramsKey);
-  }
-  window.history.replaceState({}, '', url.toString());
-}
 
 function stringifyFiltersState(filters: FiltersState): string {
   return Object.entries(filters)
@@ -285,8 +285,8 @@ function stringifyFiltersState(filters: FiltersState): string {
     .join('-');
 }
 
-function parseFiltersState(str: string): Partial<FiltersState> {
-  const res: Partial<FiltersState> = {};
+function parseFiltersState(str: string): FiltersState {
+  const res: FiltersState = { ...neutralFiltersState };
 
   for (const part of str.split('-')) {
     const exclude = part.startsWith(NEGATION_SYMBOL);
