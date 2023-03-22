@@ -1,0 +1,15 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures token HashbangComment empty TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [],
+  sourceType: "script",
+
+  range: [3, 3],
+  loc: {
+    start: { column: 0, line: 2 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

@@ -459,5 +459,7 @@ Set {
   "special/TSTypeParameter/fixtures/interface-const-modifier/fixture.ts",
   "special/TSTypeParameter/fixtures/interface-in-const-modifier-multiple/fixture.ts",
   "special/TSTypeParameter/fixtures/method-const-modifiers/fixture.ts",
+  "token/HashbangComment/fixtures/empty/fixture.ts",
+  "token/HashbangComment/fixtures/hashbang/fixture.ts",
 }
 `;

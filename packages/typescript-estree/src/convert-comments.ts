@@ -19,7 +19,7 @@ export function convertComments(
   const comments: TSESTree.Comment[] = [];
 
   const hashbang = ts.getShebang(code);
-  if (hashbang) {
+  if (hashbang !== undefined) {
     comments.push({
       type: AST_TOKEN_TYPES.Hashbang,
       value: hashbang,

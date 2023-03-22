@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures token HashbangComment _error_ invalid Babel - Error 1`] = `[SyntaxError: Unexpected token (2:0)]`;

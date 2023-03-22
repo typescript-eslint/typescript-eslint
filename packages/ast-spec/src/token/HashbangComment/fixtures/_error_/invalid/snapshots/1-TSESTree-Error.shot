@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures token HashbangComment _error_ invalid TSESTree - Error 1`] = `
+"TSError
+  1 |
+> 2 | #!invalid
+    | ^ '#!' can only be used at the start of a file.
+  3 |"
+`;
