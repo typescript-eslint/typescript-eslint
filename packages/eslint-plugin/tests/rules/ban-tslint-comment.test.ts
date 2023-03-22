@@ -66,6 +66,7 @@ ruleTester.run('ban-tslint-comment', rule, {
     {
       code: '/* another comment that mentions tslint */',
     },
+    '#!tslint:disable',
   ],
   invalid: [...PALANTIR_EXAMPLES, ...MORE_EXAMPLES].map(
     ({ code, column, line, output, text }) => ({

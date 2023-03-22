@@ -37,7 +37,9 @@ export default util.createRule({
         const comments = sourceCode.getAllComments();
         comments.forEach(c => {
           if (
-            c.type !== AST_TOKEN_TYPES.Hashbang &&
+            // comment.type can be `Shebang`
+            (c.type === AST_TOKEN_TYPES.Block ||
+              c.type === AST_TOKEN_TYPES.Line) &&
             ENABLE_DISABLE_REGEX.test(c.value)
           ) {
             context.report({
