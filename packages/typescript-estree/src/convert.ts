@@ -1637,7 +1637,7 @@ export class Converter {
           if (modifiers) {
             // AssignmentPattern should not contain modifiers in range
             result.range[0] = parameter.range[0];
-            result.loc = getLocFor(result, this.ast);
+            result.loc = getLocFor(result.range, this.ast);
           }
         } else {
           parameter = result = this.convertChild(node.name, parent);
