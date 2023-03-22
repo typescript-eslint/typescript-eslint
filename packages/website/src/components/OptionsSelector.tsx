@@ -22,13 +22,6 @@ export interface OptionsSelectorParams {
   readonly isLoading: boolean;
 }
 
-const ASTOptions = [
-  { value: false, label: 'Disabled' },
-  { value: 'es', label: 'ESTree' },
-  { value: 'ts', label: 'TypeScript' },
-  { value: 'scope', label: 'Scope' },
-] as const;
-
 function OptionsSelectorContent({
   state,
   setState,
@@ -107,15 +100,6 @@ function OptionsSelectorContent({
             checked={state.jsx}
             onChange={(e): void => setState({ jsx: e })}
             className={styles.optionCheckbox}
-          />
-        </label>
-        <label className={styles.optionLabel}>
-          AST Viewer
-          <Dropdown
-            name="showAST"
-            value={state.showAST}
-            onChange={(e): void => setState({ showAST: e })}
-            options={ASTOptions}
           />
         </label>
         <label className={styles.optionLabel}>
