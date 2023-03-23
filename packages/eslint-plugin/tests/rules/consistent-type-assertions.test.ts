@@ -72,6 +72,16 @@ const x = [Math.random() ? 'a' : 'b'] as 'a'[];
 const ARRAY_LITERAL_ANGLE_BRACKET_CASTS = `
 const x = <string[]>[];
 const x = <string[]>['a'];
+const x = <Array<string>>[];
+const x = <Array<string>>['a'];
+const x = <'a'[]>[Math.random() ? 'a' : 'b'];
+`;
+const ARRAY_LITERAL_DECLARATIONS = `
+const x: string[] = [];
+const x: string[] = ['a'];
+const x: Array<string> = [];
+const x: Array<string> = ['a'];
+const x: 'a'[] = [Math.random() ? 'a' : 'b'];
 `;
 
 ruleTester.run('consistent-type-assertions', rule, {
@@ -130,6 +140,22 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
+    ...batchedSingleLineTests({
+      code: ARRAY_LITERAL_AS_CASTS,
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+    }),
+    ...batchedSingleLineTests({
+      code: ARRAY_LITERAL_ANGLE_BRACKET_CASTS,
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
+        },
+      ],
+    }),
     {
       code: 'const x = <const>[1];',
       options: [
@@ -157,22 +183,6 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           assertionStyle: 'as',
           objectLiteralTypeAssertions: 'allow-as-parameter',
-        },
-      ],
-    },
-    {
-      code: ARRAY_LITERAL_AS_CASTS,
-      options: [
-        {
-          assertionStyle: 'as',
-        },
-      ],
-    },
-    {
-      code: ARRAY_LITERAL_ANGLE_BRACKET_CASTS,
-      options: [
-        {
-          assertionStyle: 'angle-bracket',
         },
       ],
     },
@@ -784,13 +794,25 @@ ruleTester.run('consistent-type-assertions', rule, {
           messageId: 'never',
           line: 3,
         },
+        {
+          messageId: 'never',
+          line: 4,
+        },
+        {
+          messageId: 'never',
+          line: 5,
+        },
+        {
+          messageId: 'never',
+          line: 6,
+        },
       ],
     },
     {
       code: ARRAY_LITERAL_AS_CASTS,
       options: [
         {
-          assertionStyle: 'angle',
+          assertionStyle: 'angle-bracket',
         },
       ],
       errors: [
@@ -815,6 +837,7 @@ ruleTester.run('consistent-type-assertions', rule, {
           line: 6,
         },
       ],
+      output: null,
     },
     {
       code: ARRAY_LITERAL_ANGLE_BRACKET_CASTS,
@@ -832,7 +855,20 @@ ruleTester.run('consistent-type-assertions', rule, {
           messageId: 'as',
           line: 3,
         },
+        {
+          messageId: 'as',
+          line: 4,
+        },
+        {
+          messageId: 'as',
+          line: 5,
+        },
+        {
+          messageId: 'as',
+          line: 6,
+        },
       ],
+      output: ARRAY_LITERAL_AS_CASTS,
     },
   ],
 });
