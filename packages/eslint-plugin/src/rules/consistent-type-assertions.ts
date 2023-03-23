@@ -11,7 +11,9 @@ type MessageIds =
   | 'unexpectedObjectTypeAssertion'
   | 'unexpectedArrayTypeAssertion'
   | 'replaceObjectTypeAssertionWithAnnotation'
-  | 'replaceObjectTypeAssertionWithSatisfies';
+  | 'replaceObjectTypeAssertionWithSatisfies'
+  | 'replaceArrayTypeAssertionWithAnnotation'
+  | 'replaceArrayTypeAssertionWithSatisfies';
 type OptUnion =
   | {
       assertionStyle: 'as' | 'angle-bracket';
@@ -43,6 +45,10 @@ export default util.createRule<Options, MessageIds>({
         'Use const x: {{cast}} = { ... } instead.',
       replaceObjectTypeAssertionWithSatisfies:
         'Use const x = { ... } satisfies {{cast}} instead.',
+      replaceArrayTypeAssertionWithAnnotation:
+        'Use const x: [{cast}] = [ ... ] instead.',
+      replaceArrayTypeAssertionWithSatisfies:
+        'Use const x = [ ... ] satisfies [{cast}] instead.',
     },
     schema: [
       {
@@ -253,7 +259,6 @@ export default util.createRule<Options, MessageIds>({
         checkType(node.typeAnnotation) &&
         node.expression.type === AST_NODE_TYPES.ArrayExpression
       ) {
-        /*
         const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
         if (
           node.parent?.type === AST_NODE_TYPES.VariableDeclarator &&
@@ -261,7 +266,7 @@ export default util.createRule<Options, MessageIds>({
         ) {
           const { parent } = node;
           suggest.push({
-            messageId: 'replaceObjectTypeAssertionWithAnnotation',
+            messageId: 'replaceArrayTypeAssertionWithAnnotation',
             data: { cast: sourceCode.getText(node.typeAnnotation) },
             fix: fixer => [
               fixer.insertTextAfter(
@@ -273,7 +278,7 @@ export default util.createRule<Options, MessageIds>({
           });
         }
         suggest.push({
-          messageId: 'replaceObjectTypeAssertionWithSatisfies',
+          messageId: 'replaceArrayTypeAssertionWithAnnotation',
           data: { cast: sourceCode.getText(node.typeAnnotation) },
           fix: fixer => [
             fixer.replaceText(node, getTextWithParentheses(node.expression)),
@@ -285,12 +290,11 @@ export default util.createRule<Options, MessageIds>({
             ),
           ],
         });
-        */
 
         context.report({
           node,
           messageId: 'unexpectedArrayTypeAssertion',
-          suggest: [],
+          suggest,
         });
       }
     }

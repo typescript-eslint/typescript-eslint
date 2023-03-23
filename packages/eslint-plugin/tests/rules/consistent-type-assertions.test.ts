@@ -874,6 +874,7 @@ ruleTester.run('consistent-type-assertions', rule, {
     },
     ...batchedSingleLineTests({
       code: ARRAY_LITERAL_AS_CASTS,
+      only: true,
       options: [
         {
           assertionStyle: 'as',
@@ -884,6 +885,18 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           messageId: 'unexpectedArrayTypeAssertion',
           line: 2,
+          suggestions: [
+            {
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              data: { cast: 'string' },
+              output: 'const x: string[] = [];',
+            },
+            {
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              data: { cast: 'string' },
+              output: 'const x = [] satisfies string[];',
+            },
+          ],
         },
         {
           messageId: 'unexpectedArrayTypeAssertion',
