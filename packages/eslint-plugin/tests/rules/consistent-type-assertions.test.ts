@@ -62,6 +62,15 @@ print?.(<Foo>{ bar: 5 })
 print?.call(<Foo>{ bar: 5 })
 `;
 
+const ARRAY_LITERAL_AS_CASTS = `
+const errorMessages = [] as string[];
+const errorMessages = ['a'] as string[];
+`;
+const ARRAY_LITERAL_ANGLE_BRACKET_CASTS = `
+const errorMessages = <string[]>[];
+const errorMessages = <string[]>['a'];
+`;
+
 ruleTester.run('consistent-type-assertions', rule, {
   valid: [
     ...batchedSingleLineTests({
@@ -145,6 +154,22 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           assertionStyle: 'as',
           objectLiteralTypeAssertions: 'allow-as-parameter',
+        },
+      ],
+    },
+    {
+      code: ARRAY_LITERAL_AS_CASTS,
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+    },
+    {
+      code: ARRAY_LITERAL_ANGLE_BRACKET_CASTS,
+      options: [
+        {
+          assertionStyle: 'angle-bracket',
         },
       ],
     },
