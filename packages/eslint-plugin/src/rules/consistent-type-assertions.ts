@@ -177,6 +177,45 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
+    function getReplacementSuggestions(
+      node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
+      annotationMessageId: MessageIds,
+      satisfiesMessageId: MessageIds,
+    ): TSESLint.ReportSuggestionArray<MessageIds> {
+      const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
+      if (
+        node.parent?.type === AST_NODE_TYPES.VariableDeclarator &&
+        !node.parent.id.typeAnnotation
+      ) {
+        const { parent } = node;
+        suggest.push({
+          messageId: annotationMessageId,
+          data: { cast: sourceCode.getText(node.typeAnnotation) },
+          fix: fixer => [
+            fixer.insertTextAfter(
+              parent.id,
+              `: ${sourceCode.getText(node.typeAnnotation)}`,
+            ),
+            fixer.replaceText(node, getTextWithParentheses(node.expression)),
+          ],
+        });
+      }
+      suggest.push({
+        messageId: satisfiesMessageId,
+        data: { cast: sourceCode.getText(node.typeAnnotation) },
+        fix: fixer => [
+          fixer.replaceText(node, getTextWithParentheses(node.expression)),
+          fixer.insertTextAfter(
+            node,
+            ` satisfies ${context
+              .getSourceCode()
+              .getText(node.typeAnnotation)}`,
+          ),
+        ],
+      });
+      return suggest;
+    }
+
     function checkExpressionForObjectAssertion(
       node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
     ): void {
@@ -204,37 +243,11 @@ export default util.createRule<Options, MessageIds>({
         checkType(node.typeAnnotation) &&
         node.expression.type === AST_NODE_TYPES.ObjectExpression
       ) {
-        const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
-        if (
-          node.parent?.type === AST_NODE_TYPES.VariableDeclarator &&
-          !node.parent.id.typeAnnotation
-        ) {
-          const { parent } = node;
-          suggest.push({
-            messageId: 'replaceObjectTypeAssertionWithAnnotation',
-            data: { cast: sourceCode.getText(node.typeAnnotation) },
-            fix: fixer => [
-              fixer.insertTextAfter(
-                parent.id,
-                `: ${sourceCode.getText(node.typeAnnotation)}`,
-              ),
-              fixer.replaceText(node, getTextWithParentheses(node.expression)),
-            ],
-          });
-        }
-        suggest.push({
-          messageId: 'replaceObjectTypeAssertionWithSatisfies',
-          data: { cast: sourceCode.getText(node.typeAnnotation) },
-          fix: fixer => [
-            fixer.replaceText(node, getTextWithParentheses(node.expression)),
-            fixer.insertTextAfter(
-              node,
-              ` satisfies ${context
-                .getSourceCode()
-                .getText(node.typeAnnotation)}`,
-            ),
-          ],
-        });
+        const suggest = getReplacementSuggestions(
+          node,
+          'replaceObjectTypeAssertionWithAnnotation',
+          'replaceObjectTypeAssertionWithSatisfies',
+        );
 
         context.report({
           node,
@@ -259,37 +272,11 @@ export default util.createRule<Options, MessageIds>({
         checkType(node.typeAnnotation) &&
         node.expression.type === AST_NODE_TYPES.ArrayExpression
       ) {
-        const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
-        if (
-          node.parent?.type === AST_NODE_TYPES.VariableDeclarator &&
-          !node.parent.id.typeAnnotation
-        ) {
-          const { parent } = node;
-          suggest.push({
-            messageId: 'replaceArrayTypeAssertionWithAnnotation',
-            data: { cast: sourceCode.getText(node.typeAnnotation) },
-            fix: fixer => [
-              fixer.insertTextAfter(
-                parent.id,
-                `: ${sourceCode.getText(node.typeAnnotation)}`,
-              ),
-              fixer.replaceText(node, getTextWithParentheses(node.expression)),
-            ],
-          });
-        }
-        suggest.push({
-          messageId: 'replaceArrayTypeAssertionWithAnnotation',
-          data: { cast: sourceCode.getText(node.typeAnnotation) },
-          fix: fixer => [
-            fixer.replaceText(node, getTextWithParentheses(node.expression)),
-            fixer.insertTextAfter(
-              node,
-              ` satisfies ${context
-                .getSourceCode()
-                .getText(node.typeAnnotation)}`,
-            ),
-          ],
-        });
+        const suggest = getReplacementSuggestions(
+          node,
+          'replaceArrayTypeAssertionWithAnnotation',
+          'replaceArrayTypeAssertionWithSatisfies',
+        );
 
         context.report({
           node,

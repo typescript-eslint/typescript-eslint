@@ -882,7 +882,7 @@ ruleTester.run('consistent-type-assertions', rule, {
               output: 'const x: string[] = [];',
             },
             {
-              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
               data: { cast: 'string' },
               output: 'const x = [] satisfies string[];',
             },
@@ -898,7 +898,7 @@ ruleTester.run('consistent-type-assertions', rule, {
               output: `const x: string[] = ['a'];`,
             },
             {
-              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
               data: { cast: 'string' },
               output: `const x = ['a'] satisfies string[];`,
             },
@@ -914,7 +914,7 @@ ruleTester.run('consistent-type-assertions', rule, {
               output: 'const x: Array<string> = [];',
             },
             {
-              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
               data: { cast: 'string' },
               output: 'const x = [] satisfies Array<string>;',
             },
@@ -930,7 +930,7 @@ ruleTester.run('consistent-type-assertions', rule, {
               output: `const x: Array<string> = ['a'];`,
             },
             {
-              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
               data: { cast: 'string' },
               output: `const x = ['a'] satisfies Array<string>;`,
             },
@@ -946,7 +946,7 @@ ruleTester.run('consistent-type-assertions', rule, {
               output: `const x: 'a'[] = [Math.random() ? 'a' : 'b'];`,
             },
             {
-              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              messageId: 'replaceArrayTypeAssertionWithSatisfies',
               data: { cast: 'string' },
               output: `const x = [Math.random() ? 'a' : 'b'] satisfies 'a'[];`,
             },
@@ -974,7 +974,7 @@ ruleTester.run('consistent-type-assertions', rule, {
             output: 'const x: string[] = [];',
           },
           {
-            messageId: 'replaceArrayTypeAssertionWithAnnotation',
+            messageId: 'replaceArrayTypeAssertionWithSatisfies',
             data: { cast: 'string' },
             output: 'const x = [] satisfies string[];',
           },
@@ -990,7 +990,7 @@ ruleTester.run('consistent-type-assertions', rule, {
             output: `const x: string[] = ['a'];`,
           },
           {
-            messageId: 'replaceArrayTypeAssertionWithAnnotation',
+            messageId: 'replaceArrayTypeAssertionWithSatisfies',
             data: { cast: 'string' },
             output: `const x = ['a'] satisfies string[];`,
           },
@@ -1006,7 +1006,7 @@ ruleTester.run('consistent-type-assertions', rule, {
             output: 'const x: Array<string> = [];',
           },
           {
-            messageId: 'replaceArrayTypeAssertionWithAnnotation',
+            messageId: 'replaceArrayTypeAssertionWithSatisfies',
             data: { cast: 'string' },
             output: 'const x = [] satisfies Array<string>;',
           },
@@ -1022,7 +1022,7 @@ ruleTester.run('consistent-type-assertions', rule, {
             output: `const x: Array<string> = ['a'];`,
           },
           {
-            messageId: 'replaceArrayTypeAssertionWithAnnotation',
+            messageId: 'replaceArrayTypeAssertionWithSatisfies',
             data: { cast: 'string' },
             output: `const x = ['a'] satisfies Array<string>;`,
           },
@@ -1038,7 +1038,7 @@ ruleTester.run('consistent-type-assertions', rule, {
             output: `const x: 'a'[] = [Math.random() ? 'a' : 'b'];`,
           },
           {
-            messageId: 'replaceArrayTypeAssertionWithAnnotation',
+            messageId: 'replaceArrayTypeAssertionWithSatisfies',
             data: { cast: 'string' },
             output: `const x = [Math.random() ? 'a' : 'b'] satisfies 'a'[];`,
           },
