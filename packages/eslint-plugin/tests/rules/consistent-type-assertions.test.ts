@@ -63,12 +63,15 @@ print?.call(<Foo>{ bar: 5 })
 `;
 
 const ARRAY_LITERAL_AS_CASTS = `
-const errorMessages = [] as string[];
-const errorMessages = ['a'] as string[];
+const x = [] as string[];
+const x = ['a'] as string[];
+const x = [] as Array<string>;
+const x = ['a'] as Array<string>;
+const x = [Math.random() ? 'a' : 'b'] as 'a'[];
 `;
 const ARRAY_LITERAL_ANGLE_BRACKET_CASTS = `
-const errorMessages = <string[]>[];
-const errorMessages = <string[]>['a'];
+const x = <string[]>[];
+const x = <string[]>['a'];
 `;
 
 ruleTester.run('consistent-type-assertions', rule, {
@@ -732,6 +735,54 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           messageId: 'never',
           line: 1,
+        },
+      ],
+    },
+    {
+      code: ARRAY_LITERAL_AS_CASTS,
+      options: [
+        {
+          assertionStyle: 'never',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'never',
+          line: 2,
+        },
+        {
+          messageId: 'never',
+          line: 3,
+        },
+        {
+          messageId: 'never',
+          line: 4,
+        },
+        {
+          messageId: 'never',
+          line: 5,
+        },
+        {
+          messageId: 'never',
+          line: 6,
+        },
+      ],
+    },
+    {
+      code: ARRAY_LITERAL_ANGLE_BRACKET_CASTS,
+      options: [
+        {
+          assertionStyle: 'never',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'never',
+          line: 2,
+        },
+        {
+          messageId: 'never',
+          line: 3,
         },
       ],
     },
