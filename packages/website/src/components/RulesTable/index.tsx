@@ -4,11 +4,11 @@ import type { RulesMeta } from '@site/rulesMeta';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
 import clsx from 'clsx';
 import React, { useMemo } from 'react';
+
 import {
-  HistorySelector,
+  type HistorySelector,
   useHistorySelector,
 } from '../../hooks/useHistorySelector';
-
 import styles from './styles.module.css';
 
 function interpolateCode(text: string): (JSX.Element | string)[] | string {
@@ -225,7 +225,7 @@ const neutralFiltersState: FiltersState = {
 
 const selectSearch: HistorySelector<string> = history =>
   history.location.search;
-const getServerSnapshot = () => '';
+const getServerSnapshot = (): string => '';
 
 function useRulesFilters(
   paramsKey: string,
@@ -233,7 +233,7 @@ function useRulesFilters(
   const history = useHistory();
   const search = useHistorySelector(selectSearch, getServerSnapshot);
 
-  const paramValue = new URLSearchParams(search).get(paramsKey) || '';
+  const paramValue = new URLSearchParams(search).get(paramsKey) ?? '';
   // We can't compute this in selectSearch, because we need the snapshot to be
   // comparable by value.
   const filtersState = useMemo(
