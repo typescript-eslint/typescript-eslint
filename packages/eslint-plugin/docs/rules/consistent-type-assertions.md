@@ -103,6 +103,34 @@ const foo = <Foo props={{ ... } as Bar}/>;
 
 <!--/tabs-->
 
+### `arrayLiteralTypeAssertions`
+
+Always prefer `const x: T[] = [ ... ];` to `const x = [ ... ] as T[];` (or similar with angle brackets). The rationale for this is exactly the same as for `objectLiteralTypeAssertions`.
+
+The const assertion `const x = [1, 2, 3] as const`, introduced in TypeScript 3.4, is considered beneficial and is ignored by this option.
+
+Assertions to `any` are also ignored by this option.
+
+Examples of code for `{ assertionStyle: 'as', arrayLiteralTypeAssertions: 'never' }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+const x = [] as string[];
+const y = ['a'] as string[];
+```
+
+#### ✅ Correct
+
+```ts
+const x: string[] = [];
+const y: string[] = ['a'];
+```
+
+<!--/tabs-->
+
 ## When Not To Use It
 
 If you do not want to enforce consistent type assertions.
