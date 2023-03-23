@@ -76,15 +76,6 @@ const x = <Array<string>>[];
 const x = <Array<string>>['a'];
 const x = <'a'[]>[Math.random() ? 'a' : 'b'];
 `;
-/*
-const ARRAY_LITERAL_DECLARATIONS = `
-const x: string[] = [];
-const x: string[] = ['a'];
-const x: Array<string> = [];
-const x: Array<string> = ['a'];
-const x: 'a'[] = [Math.random() ? 'a' : 'b'];
-`;
-*/
 
 ruleTester.run('consistent-type-assertions', rule, {
   valid: [
@@ -874,7 +865,6 @@ ruleTester.run('consistent-type-assertions', rule, {
     },
     ...batchedSingleLineTests({
       code: ARRAY_LITERAL_AS_CASTS,
-      only: true,
       options: [
         {
           assertionStyle: 'as',
@@ -901,18 +891,66 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           messageId: 'unexpectedArrayTypeAssertion',
           line: 3,
+          suggestions: [
+            {
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              data: { cast: 'string' },
+              output: `const x: string[] = ['a'];`,
+            },
+            {
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              data: { cast: 'string' },
+              output: `const x = ['a'] satisfies string[];`,
+            },
+          ],
         },
         {
           messageId: 'unexpectedArrayTypeAssertion',
           line: 4,
+          suggestions: [
+            {
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              data: { cast: 'string' },
+              output: 'const x: Array<string> = [];',
+            },
+            {
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              data: { cast: 'string' },
+              output: 'const x = [] satisfies Array<string>;',
+            },
+          ],
         },
         {
           messageId: 'unexpectedArrayTypeAssertion',
           line: 5,
+          suggestions: [
+            {
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              data: { cast: 'string' },
+              output: `const x: Array<string> = ['a'];`,
+            },
+            {
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              data: { cast: 'string' },
+              output: `const x = ['a'] satisfies Array<string>;`,
+            },
+          ],
         },
         {
           messageId: 'unexpectedArrayTypeAssertion',
           line: 6,
+          suggestions: [
+            {
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              data: { cast: 'string' },
+              output: `const x: 'a'[] = [Math.random() ? 'a' : 'b'];`,
+            },
+            {
+              messageId: 'replaceArrayTypeAssertionWithAnnotation',
+              data: { cast: 'string' },
+              output: `const x = [Math.random() ? 'a' : 'b'] satisfies 'a'[];`,
+            },
+          ],
         },
       ],
     }),
@@ -929,22 +967,82 @@ ruleTester.run('consistent-type-assertions', rule, {
       {
         messageId: 'unexpectedArrayTypeAssertion',
         line: 2,
+        suggestions: [
+          {
+            messageId: 'replaceArrayTypeAssertionWithAnnotation',
+            data: { cast: 'string' },
+            output: 'const x: string[] = [];',
+          },
+          {
+            messageId: 'replaceArrayTypeAssertionWithAnnotation',
+            data: { cast: 'string' },
+            output: 'const x = [] satisfies string[];',
+          },
+        ],
       },
       {
         messageId: 'unexpectedArrayTypeAssertion',
         line: 3,
+        suggestions: [
+          {
+            messageId: 'replaceArrayTypeAssertionWithAnnotation',
+            data: { cast: 'string' },
+            output: `const x: string[] = ['a'];`,
+          },
+          {
+            messageId: 'replaceArrayTypeAssertionWithAnnotation',
+            data: { cast: 'string' },
+            output: `const x = ['a'] satisfies string[];`,
+          },
+        ],
       },
       {
         messageId: 'unexpectedArrayTypeAssertion',
         line: 4,
+        suggestions: [
+          {
+            messageId: 'replaceArrayTypeAssertionWithAnnotation',
+            data: { cast: 'string' },
+            output: 'const x: Array<string> = [];',
+          },
+          {
+            messageId: 'replaceArrayTypeAssertionWithAnnotation',
+            data: { cast: 'string' },
+            output: 'const x = [] satisfies Array<string>;',
+          },
+        ],
       },
       {
         messageId: 'unexpectedArrayTypeAssertion',
         line: 5,
+        suggestions: [
+          {
+            messageId: 'replaceArrayTypeAssertionWithAnnotation',
+            data: { cast: 'string' },
+            output: `const x: Array<string> = ['a'];`,
+          },
+          {
+            messageId: 'replaceArrayTypeAssertionWithAnnotation',
+            data: { cast: 'string' },
+            output: `const x = ['a'] satisfies Array<string>;`,
+          },
+        ],
       },
       {
         messageId: 'unexpectedArrayTypeAssertion',
         line: 6,
+        suggestions: [
+          {
+            messageId: 'replaceArrayTypeAssertionWithAnnotation',
+            data: { cast: 'string' },
+            output: `const x: 'a'[] = [Math.random() ? 'a' : 'b'];`,
+          },
+          {
+            messageId: 'replaceArrayTypeAssertionWithAnnotation',
+            data: { cast: 'string' },
+            output: `const x = [Math.random() ? 'a' : 'b'] satisfies 'a'[];`,
+          },
+        ],
       },
     ],
   }),
