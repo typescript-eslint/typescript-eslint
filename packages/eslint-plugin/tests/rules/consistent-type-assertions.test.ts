@@ -786,5 +786,53 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     },
+    {
+      code: ARRAY_LITERAL_AS_CASTS,
+      options: [
+        {
+          assertionStyle: 'angle',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'angle-bracket',
+          line: 2,
+        },
+        {
+          messageId: 'angle-bracket',
+          line: 3,
+        },
+        {
+          messageId: 'angle-bracket',
+          line: 4,
+        },
+        {
+          messageId: 'angle-bracket',
+          line: 5,
+        },
+        {
+          messageId: 'angle-bracket',
+          line: 6,
+        },
+      ],
+    },
+    {
+      code: ARRAY_LITERAL_ANGLE_BRACKET_CASTS,
+      options: [
+        {
+          assertionStyle: 'as',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'as',
+          line: 2,
+        },
+        {
+          messageId: 'as',
+          line: 3,
+        },
+      ],
+    },
   ],
 });
