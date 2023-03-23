@@ -904,4 +904,35 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
     }),
   ],
+  ...batchedSingleLineTests({
+    code: ARRAY_LITERAL_ANGLE_BRACKET_CASTS,
+    options: [
+      {
+        assertionStyle: 'angle-brackets',
+        arrayLiteralTypeAssertions: 'never',
+      },
+    ],
+    errors: [
+      {
+        messageId: 'unexpectedArrayTypeAssertion',
+        line: 2,
+      },
+      {
+        messageId: 'unexpectedArrayTypeAssertion',
+        line: 3,
+      },
+      {
+        messageId: 'unexpectedArrayTypeAssertion',
+        line: 4,
+      },
+      {
+        messageId: 'unexpectedArrayTypeAssertion',
+        line: 5,
+      },
+      {
+        messageId: 'unexpectedArrayTypeAssertion',
+        line: 6,
+      },
+    ],
+  }),
 });
