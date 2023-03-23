@@ -741,7 +741,7 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     },
-    {
+    ...batchedSingleLineTests({
       code: ARRAY_LITERAL_AS_CASTS,
       options: [
         {
@@ -770,8 +770,8 @@ ruleTester.run('consistent-type-assertions', rule, {
           line: 6,
         },
       ],
-    },
-    {
+    }),
+    ...batchedSingleLineTests({
       code: ARRAY_LITERAL_ANGLE_BRACKET_CASTS,
       options: [
         {
@@ -800,8 +800,8 @@ ruleTester.run('consistent-type-assertions', rule, {
           line: 6,
         },
       ],
-    },
-    {
+    }),
+    ...batchedSingleLineTests({
       code: ARRAY_LITERAL_AS_CASTS,
       options: [
         {
@@ -831,8 +831,8 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
       output: null,
-    },
-    {
+    }),
+    ...batchedSingleLineTests({
       code: ARRAY_LITERAL_ANGLE_BRACKET_CASTS,
       options: [
         {
@@ -862,7 +862,7 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
       output: ARRAY_LITERAL_AS_CASTS,
-    },
+    }),
     ...batchedSingleLineTests({
       code: ARRAY_LITERAL_AS_CASTS,
       options: [
