@@ -76,6 +76,7 @@ const x = <Array<string>>[];
 const x = <Array<string>>['a'];
 const x = <'a'[]>[Math.random() ? 'a' : 'b'];
 `;
+/*
 const ARRAY_LITERAL_DECLARATIONS = `
 const x: string[] = [];
 const x: string[] = ['a'];
@@ -83,6 +84,7 @@ const x: Array<string> = [];
 const x: Array<string> = ['a'];
 const x: 'a'[] = [Math.random() ? 'a' : 'b'];
 `;
+*/
 
 ruleTester.run('consistent-type-assertions', rule, {
   valid: [
@@ -870,5 +872,36 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
       output: ARRAY_LITERAL_AS_CASTS,
     },
+    ...batchedSingleLineTests({
+      code: ARRAY_LITERAL_AS_CASTS,
+      options: [
+        {
+          assertionStyle: 'as',
+          arrayLiteralTypeAssertions: 'never',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'unexpectedArrayTypeAssertion',
+          line: 2,
+        },
+        {
+          messageId: 'unexpectedArrayTypeAssertion',
+          line: 3,
+        },
+        {
+          messageId: 'unexpectedArrayTypeAssertion',
+          line: 4,
+        },
+        {
+          messageId: 'unexpectedArrayTypeAssertion',
+          line: 5,
+        },
+        {
+          messageId: 'unexpectedArrayTypeAssertion',
+          line: 6,
+        },
+      ],
+    }),
   ],
 });

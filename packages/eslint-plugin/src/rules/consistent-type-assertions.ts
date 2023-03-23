@@ -9,12 +9,14 @@ type MessageIds =
   | 'angle-bracket'
   | 'never'
   | 'unexpectedObjectTypeAssertion'
+  | 'unexpectedArrayTypeAssertion'
   | 'replaceObjectTypeAssertionWithAnnotation'
   | 'replaceObjectTypeAssertionWithSatisfies';
 type OptUnion =
   | {
       assertionStyle: 'as' | 'angle-bracket';
       objectLiteralTypeAssertions?: 'allow' | 'allow-as-parameter' | 'never';
+      arrayLiteralTypeAssertions?: 'allow' | 'never';
     }
   | {
       assertionStyle: 'never';
@@ -36,6 +38,7 @@ export default util.createRule<Options, MessageIds>({
       'angle-bracket': "Use '<{{cast}}>' instead of 'as {{cast}}'.",
       never: 'Do not use any type assertions.',
       unexpectedObjectTypeAssertion: 'Always prefer const x: T = { ... }.',
+      unexpectedArrayTypeAssertion: 'Always prefer const x: T[] = [ ... ].',
       replaceObjectTypeAssertionWithAnnotation:
         'Use const x: {{cast}} = { ... } instead.',
       replaceObjectTypeAssertionWithSatisfies:
@@ -63,6 +66,9 @@ export default util.createRule<Options, MessageIds>({
               objectLiteralTypeAssertions: {
                 enum: ['allow', 'allow-as-parameter', 'never'],
               },
+              arrayLiteralTypeAssertions: {
+                enum: ['allow', 'never'],
+              },
             },
             additionalProperties: false,
             required: ['assertionStyle'],
@@ -75,6 +81,7 @@ export default util.createRule<Options, MessageIds>({
     {
       assertionStyle: 'as',
       objectLiteralTypeAssertions: 'allow',
+      arrayLiteralTypeAssertions: 'allow',
     },
   ],
   create(context, [options]) {
@@ -164,7 +171,7 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
-    function checkExpression(
+    function checkExpressionForObjectAssertion(
       node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
     ): void {
       if (
@@ -231,6 +238,63 @@ export default util.createRule<Options, MessageIds>({
       }
     }
 
+    function checkExpressionForArrayAssertion(
+      node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
+    ): void {
+      if (
+        options.assertionStyle === 'never' ||
+        options.arrayLiteralTypeAssertions === 'allow' ||
+        node.expression.type !== AST_NODE_TYPES.ArrayExpression
+      ) {
+        return;
+      }
+
+      if (
+        checkType(node.typeAnnotation) &&
+        node.expression.type === AST_NODE_TYPES.ArrayExpression
+      ) {
+        /*
+        const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
+        if (
+          node.parent?.type === AST_NODE_TYPES.VariableDeclarator &&
+          !node.parent.id.typeAnnotation
+        ) {
+          const { parent } = node;
+          suggest.push({
+            messageId: 'replaceObjectTypeAssertionWithAnnotation',
+            data: { cast: sourceCode.getText(node.typeAnnotation) },
+            fix: fixer => [
+              fixer.insertTextAfter(
+                parent.id,
+                `: ${sourceCode.getText(node.typeAnnotation)}`,
+              ),
+              fixer.replaceText(node, getTextWithParentheses(node.expression)),
+            ],
+          });
+        }
+        suggest.push({
+          messageId: 'replaceObjectTypeAssertionWithSatisfies',
+          data: { cast: sourceCode.getText(node.typeAnnotation) },
+          fix: fixer => [
+            fixer.replaceText(node, getTextWithParentheses(node.expression)),
+            fixer.insertTextAfter(
+              node,
+              ` satisfies ${context
+                .getSourceCode()
+                .getText(node.typeAnnotation)}`,
+            ),
+          ],
+        });
+        */
+
+        context.report({
+          node,
+          messageId: 'unexpectedArrayTypeAssertion',
+          suggest: [],
+        });
+      }
+    }
+
     return {
       TSTypeAssertion(node): void {
         if (options.assertionStyle !== 'angle-bracket') {
@@ -238,7 +302,8 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        checkExpression(node);
+        checkExpressionForObjectAssertion(node);
+        checkExpressionForArrayAssertion(node);
       },
       TSAsExpression(node): void {
         if (options.assertionStyle !== 'as') {
@@ -246,7 +311,8 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        checkExpression(node);
+        checkExpressionForObjectAssertion(node);
+        checkExpressionForArrayAssertion(node);
       },
     };
   },
