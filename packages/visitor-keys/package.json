@@ -15,11 +15,7 @@
       "types": "./dist/index.d.ts",
       "default": "./dist/index.js"
     },
-    "./package.json": "./package.json",
-    "./use-at-your-own-risk/visitor-keys": {
-      "types": "./dist/visitor-keys.d.ts",
-      "default": "./dist/visitor-keys.js"
-    }
+    "./package.json": "./package.json"
   },
   "engines": {
     "node": "^14.18.0 || ^16.0.0 || >=18.0.0"

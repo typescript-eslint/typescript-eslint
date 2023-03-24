@@ -26,6 +26,16 @@ function makeFilter(filePath: string | string[]): { filter: RegExp } {
   return { filter: new RegExp('(' + norm.join('|') + ')$') };
 }
 
+function createResolve(
+  targetPath: string,
+  join: string,
+): esbuild.OnResolveResult {
+  const resolvedPackage = requireResolved(targetPath + '/package.json');
+  return {
+    path: path.join(resolvedPackage, '../src/', join),
+  };
+}
+
 async function buildPackage(name: string, file: string): Promise<void> {
   const eslintRoot = requireResolved('eslint/package.json');
   const linterPath = path.join(eslintRoot, '../lib/linter/linter.js');
@@ -56,8 +66,6 @@ async function buildPackage(name: string, file: string): Promise<void> {
       'process.env.TIMING': 'undefined',
       'define.amd': 'false',
       global: 'window',
-      // 'process.env': 'undefined',
-      // process: 'undefined',
     },
     alias: {
       util: requireResolved('./src/mock/util.js'),
@@ -72,25 +80,28 @@ async function buildPackage(name: string, file: string): Promise<void> {
         setup(build): void {
           build.onLoad(
             makeFilter([
-              '/eslint-utils/rule-tester/RuleTester.js',
-              '/utils/dist/ts-eslint/ESLint.js',
-              '/utils/dist/ts-eslint/RuleTester.js',
-              '/utils/dist/ts-eslint/CLIEngine.js',
+              '/eslint-utils/rule-tester/RuleTester.ts',
+              '/ts-eslint/ESLint.ts',
+              '/ts-eslint/RuleTester.ts',
+              '/ts-eslint/CLIEngine.ts',
             ]),
             async args => {
               console.log('onLoad:replace', args.path);
-              const text = await requireMock('./src/mock/empty.js');
-              return { contents: text, loader: 'js' };
+              const contents = await requireMock('./src/mock/empty.js');
+              return { contents, loader: 'js' };
             },
           );
           build.onLoad(
             makeFilter('/eslint/lib/unsupported-api.js'),
             async args => {
               console.log('onLoad:eslint:unsupported-api', args.path);
-              let text = await requireMock('./src/mock/eslint-rules.js');
+              let contents = await requireMock('./src/mock/eslint-rules.js');
               // this is needed to bypass system module resolver
-              text = text.replace('vt:eslint/rules', normalizePath(rulesPath));
-              return { contents: text, loader: 'js' };
+              contents = contents.replace(
+                'vt:eslint/rules',
+                normalizePath(rulesPath),
+              );
+              return { contents, loader: 'js' };
             },
           );
           build.onLoad(makeFilter('/eslint/lib/api.js'), async args => {
@@ -100,30 +111,35 @@ async function buildPackage(name: string, file: string): Promise<void> {
             text = text.replace('vt:eslint/linter', normalizePath(linterPath));
             return { contents: text, loader: 'js' };
           });
-          build.onLoad(
-            makeFilter('/typescript-estree/dist/index.js'),
-            async args => {
-              console.log('onLoad:typescript-estree', args.path);
-              const text = await requireMock('./src/mock/ts-estree.js');
-              return { contents: text, loader: 'js' };
-            },
+          build.onResolve(
+            makeFilter([
+              '@typescript-eslint/typescript-estree',
+              '@typescript-eslint/typescript-estree/use-at-your-own-risk',
+            ]),
+            () =>
+              createResolve(
+                '@typescript-eslint/typescript-estree',
+                'use-at-your-own-risk.ts',
+              ),
+          );
+          build.onResolve(
+            makeFilter('@typescript-eslint/utils/ast-utils'),
+            () =>
+              createResolve('@typescript-eslint/utils', 'ast-utils/index.ts'),
+          );
+          build.onResolve(makeFilter('@typescript-eslint/[a-z-]+'), args =>
+            createResolve(args.path, 'index.ts'),
           );
         },
       },
     ],
   });
 
-  if (output.errors) {
-    for (const error of output.errors) {
-      console.error(error);
-    }
-    for (const warning of output.warnings) {
-      console.warn(warning);
-    }
-
-    if (output.errors.length > 0) {
-      throw new Error('error occurred');
-    }
+  for (const error of output.errors) {
+    console.error(error);
+  }
+  for (const warning of output.warnings) {
+    console.warn(warning);
   }
 }
 
