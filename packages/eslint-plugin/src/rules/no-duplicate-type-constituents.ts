@@ -83,6 +83,7 @@ export default util.createRule<Options, MessageIds>({
     schema: [
       {
         additionalProperties: false,
+        type: 'object',
         properties: {
           ignoreIntersections: {
             type: 'boolean',
