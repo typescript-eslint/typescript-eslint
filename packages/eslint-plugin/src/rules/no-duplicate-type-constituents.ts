@@ -168,7 +168,7 @@ export default util.createRule<Options, MessageIds>({
         { count: bracketBeforeTokens.length },
       );
       const reportLocation: TSESTree.SourceLocation = {
-        start: beforeUnionOrIntersectionToken.loc.start,
+        start: duplicateConstituent.duplicated.loc.start,
         end:
           bracketAfterTokens.length > 0
             ? bracketAfterTokens[bracketAfterTokens.length - 1].loc.end
