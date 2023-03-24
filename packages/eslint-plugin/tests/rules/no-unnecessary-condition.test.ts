@@ -575,6 +575,13 @@ get({ foo: null }, 'foo');
     `,
     {
       code: `
+        function foo(val: unknown) {}
+        foo([] === true);
+      `,
+      options: [{ allowAssertTypePredicateParameterConditions: true }],
+    },
+    {
+      code: `
         function assert(condition: unknown): asserts condition {
           // do something with condition
         }
@@ -1800,6 +1807,54 @@ foo &&= null;
           endLine: 3,
           column: 1,
           endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+        if (true == true) {
+        }
+      `,
+      options: [{ allowAssertTypePredicateParameterConditions: true }],
+      errors: [
+        {
+          messageId: 'literalBooleanExpression',
+          line: 2,
+          endLine: 2,
+          column: 13,
+          endColumn: 25,
+        },
+      ],
+    },
+    {
+      code: `
+        const f = (value: boolean) => value;
+        f(true === true);
+      `,
+      options: [{ allowAssertTypePredicateParameterConditions: true }],
+      errors: [
+        {
+          messageId: 'literalBooleanExpression',
+          line: 3,
+          endLine: 3,
+          column: 11,
+          endColumn: 24,
+        },
+      ],
+    },
+    {
+      code: `
+        const f = (value: unknown): value is boolean => true;
+        f(false == 'false');
+      `,
+      options: [{ allowAssertTypePredicateParameterConditions: true }],
+      errors: [
+        {
+          messageId: 'literalBooleanExpression',
+          line: 3,
+          endLine: 3,
+          column: 11,
+          endColumn: 27,
         },
       ],
     },
