@@ -9,6 +9,7 @@ export type Options = [
   {
     allowString?: boolean;
     allowNumber?: boolean;
+    allowEnum?: boolean;
     allowNullableObject?: boolean;
     allowNullableBoolean?: boolean;
     allowNullableString?: boolean;
@@ -61,6 +62,7 @@ export default util.createRule<Options, MessageId>({
         properties: {
           allowString: { type: 'boolean' },
           allowNumber: { type: 'boolean' },
+          allowEnum: { type: 'boolean' },
           allowNullableObject: { type: 'boolean' },
           allowNullableBoolean: { type: 'boolean' },
           allowNullableString: { type: 'boolean' },
@@ -139,6 +141,7 @@ export default util.createRule<Options, MessageId>({
     {
       allowString: true,
       allowNumber: true,
+      allowEnum: false,
       allowNullableObject: true,
       allowNullableBoolean: false,
       allowNullableString: false,
@@ -725,13 +728,36 @@ export default util.createRule<Options, MessageId>({
         return;
       }
 
-      // nullable enum
+      // Known edge case: enums with truthy members and nullish values are always valid boolean expressions
       if (
-        is('nullish', 'number', 'enum') ||
-        is('nullish', 'string', 'enum') ||
-        is('nullish', 'truthy number', 'enum') ||
-        is('nullish', 'truthy string', 'enum')
+        options.allowEnum &&
+        (is('nullish', 'truthy number', 'enum') ||
+          is('nullish', 'truthy string', 'enum') ||
+          is('nullish', 'truthy number', 'truthy string', 'enum'))
       ) {
+        return;
+      }
+
+      // enum
+      if (
+        is('number', 'enum') ||
+        is('string', 'enum') ||
+        is('truthy number', 'enum') ||
+        is('truthy string', 'enum') ||
+        is('truthy string', 'number', 'enum') ||
+        is('truthy number', 'string', 'enum') ||
+        is('truthy string', 'truthy number', 'enum') ||
+        is('string', 'number', 'enum')
+      ) {
+        if (!options.allowEnum) {
+          // TODO: report errors for enums
+        }
+
+        return;
+      }
+
+      // nullable enum
+      if (is('nullish', 'number', 'enum') || is('nullish', 'string', 'enum')) {
         if (!options.allowNullableEnum) {
           if (isLogicalNegationExpression(node.parent!)) {
             context.report({
