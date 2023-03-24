@@ -1,4 +1,5 @@
 import type * as ts from 'typescript';
+import type * as tsserverlibrary from 'typescript/lib/tsserverlibrary';
 
 import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTree } from '../ts-estree';
@@ -10,6 +11,9 @@ type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
  * Internal settings used by the parser to run on a file.
  */
 export interface MutableParseSettings {
+  // todo
+  projectService: tsserverlibrary.server.ProjectService | undefined;
+
   /**
    * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
    */
@@ -56,6 +60,9 @@ export interface MutableParseSettings {
    * Whether to error if an unknown AST node type is encountered.
    */
   errorOnUnknownASTType: boolean;
+
+  // todo
+  EXPERIMENTAL_useProjectService: boolean;
 
   /**
    * Whether TS should use the source files for referenced projects instead of the compiled .d.ts files.

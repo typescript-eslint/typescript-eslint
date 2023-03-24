@@ -28,10 +28,12 @@ const DEFAULT_EXTRA_FILE_EXTENSIONS = [
  */
 function createProjectProgram(
   parseSettings: ParseSettings,
+  programsForProjects: readonly ts.Program[],
 ): ASTAndDefiniteProgram | undefined {
   log('Creating project program for: %s', parseSettings.filePath);
 
-  const programsForProjects = getWatchProgramsForProjects(parseSettings);
+  // const programsForProjects = getWatchProgramsForProjects(parseSettings);
+  // const programsForProjects = createPrograms(parseSettings);
   const astAndProgram = firstDefined(programsForProjects, currentProgram =>
     getAstFromProgram(currentProgram, parseSettings),
   );

@@ -6,10 +6,12 @@ import { convertError } from './convert';
 import { createDefaultProgram } from './create-program/createDefaultProgram';
 import { createIsolatedProgram } from './create-program/createIsolatedProgram';
 import { createProjectProgram } from './create-program/createProjectProgram';
+import { createProjectService } from './create-program/createProjectService';
 import {
   createNoProgram,
   createSourceFile,
 } from './create-program/createSourceFile';
+import { getWatchProgramsForProjects } from './create-program/getWatchProgramsForProjects';
 import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
 import {
   createProgramFromConfigFile,
@@ -57,8 +59,43 @@ function getProgramAndAST(
     }
   }
 
+  // todo; wrap in function or some such
+  if (parseSettings.projectService) {
+    parseSettings.projectService.openClientFile(
+      parseSettings.filePath,
+      parseSettings.codeFullText,
+    );
+
+    // todo: maybe we'll slap this into the parseSEttings as a property?
+    // const projectService = createProjectServiceProgram(/* parseSettings */);
+    const program = parseSettings.projectService
+      .getScriptInfo(parseSettings.filePath)!
+      .getDefaultProject()
+      .getLanguageService(/*ensureSynchronized*/ true)
+      .getProgram();
+
+    // TODO "Eventually, close the file"
+    // what does this actually do?
+    //
+
+    if (program) {
+      const projectServiceProgram = createProjectProgram(parseSettings, [
+        // LOL TYPES
+        // This'll hoepfully be resolved once they fully move to modules
+        // right now it's two separate files that get dumped out
+        program as ts.Program,
+      ]);
+      if (projectServiceProgram) {
+        return projectServiceProgram;
+      }
+    }
+  }
+
   if (hasFullTypeInformation) {
-    const fromProjectProgram = createProjectProgram(parseSettings);
+    const fromProjectProgram = createProjectProgram(
+      parseSettings,
+      getWatchProgramsForProjects(parseSettings),
+    );
     if (fromProjectProgram) {
       return fromProjectProgram;
     }
@@ -284,3 +321,16 @@ export {
   clearProgramCache,
   clearParseAndGenerateServicesCalls,
 };
+
+// next steps
+// 0. clean up comments
+// 1. ping jake with questions
+//   * what does closing a file do
+// 2. create versions of test suite tailored to this new fancy form
+// 3. testing the bujeezus out of it
+
+// aside:
+// * performance testing - need to work on that
+//    (see TS folks - they do both memory usage and runtime)
+//    memory usage: makes bigger people happy (OOMs)
+//    runtime: more people can use it

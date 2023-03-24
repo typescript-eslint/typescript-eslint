@@ -1,5 +1,6 @@
 import debug from 'debug';
 import type * as ts from 'typescript';
+import { createProjectService } from '../create-program/createProjectService';
 
 import { ensureAbsolutePath } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
@@ -31,6 +32,10 @@ export function createParseSettings(
       ? options.tsconfigRootDir
       : process.cwd();
   const parseSettings: MutableParseSettings = {
+    // todo: sometimes
+    projectService: createProjectService(),
+    EXPERIMENTAL_useProjectService: true,
+
     allowInvalidAST: options.allowInvalidAST === true,
     code,
     codeFullText,
