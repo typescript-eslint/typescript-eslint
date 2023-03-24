@@ -110,8 +110,8 @@ export default util.createRule<Options, MessageIds>({
     ): void {
       const cachedTypeMap: Map<TSESTree.TypeNode, Type> = new Map();
       node.types.reduce<TSESTree.TypeNode[]>(
-        (uniqConstituents, constituentNode) => {
-          const duplicatedPreviousConstituentInAst = uniqConstituents.find(
+        (uniqueConstituents, constituentNode) => {
+          const duplicatedPreviousConstituentInAst = uniqueConstituents.find(
             ele => isSameAstNode(ele, constituentNode),
           );
           if (duplicatedPreviousConstituentInAst) {
@@ -122,7 +122,7 @@ export default util.createRule<Options, MessageIds>({
               },
               node,
             );
-            return uniqConstituents;
+            return uniqueConstituents;
           }
           const constituentNodeType = checker.getTypeAtLocation(
             parserServices.esTreeNodeToTSNodeMap.get(constituentNode),
@@ -140,10 +140,10 @@ export default util.createRule<Options, MessageIds>({
               },
               node,
             );
-            return uniqConstituents;
+            return uniqueConstituents;
           }
           cachedTypeMap.set(constituentNode, constituentNodeType);
-          return [...uniqConstituents, constituentNode];
+          return [...uniqueConstituents, constituentNode];
         },
         [],
       );
