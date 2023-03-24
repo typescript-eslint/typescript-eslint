@@ -318,15 +318,41 @@ if (returnsArr?.()[42]) {
 }
 returnsArr?.()[42]?.toUpperCase();
     `,
-    // nullish + array index
+    // nullish + index signature
     `
 declare const arr: string[][];
+declare const x: any;
 arr[x] ?? [];
     `,
-    // nullish + optional array index
     `
 declare const arr: { foo: number }[];
 const bar = arr[42]?.foo ?? 0;
+    `,
+    `
+declare const foo: Record<string, number>;
+declare const bar: string;
+
+foo[bar] ??= 0;
+    `,
+    `
+declare const foo: Record<string, number>;
+declare const bar: string;
+
+foo[bar] ?? 0;
+    `,
+    `
+function getElem(dict: Record<string, { foo: string }>, key: string) {
+  if (dict[key]) {
+    return dict[key].foo;
+  } else {
+    return '';
+  }
+}
+    `,
+    `
+declare const dict: Record<string, object>;
+if (dict['mightNotExist']) {
+}
     `,
     // Doesn't check the right-hand side of a logical expression
     //  in a non-conditional context
@@ -896,27 +922,17 @@ function nothing3(x: [string, string]) {
     },
     // Indexing cases
     {
-      // This is an error because 'dict' doesn't represent
-      //  the potential for undefined in its types
-      code: `
-declare const dict: Record<string, object>;
-if (dict['mightNotExist']) {
-}
-      `,
-      errors: [ruleError(3, 5, 'alwaysTruthy')],
-    },
-    {
       // Should still check tuples when accessed with literal numbers, since they don't have
       //   unsound index signatures
       code: `
-const x = [{}] as [{ foo: string }];
+declare const x: [{ foo: string }];
 if (x[0]) {
 }
 if (x[0]?.foo) {
 }
       `,
       output: `
-const x = [{}] as [{ foo: string }];
+declare const x: [{ foo: string }];
 if (x[0]) {
 }
 if (x[0].foo) {
@@ -1665,26 +1681,6 @@ pick({ foo: 1, bar: 2 }, 'bar');
           endLine: 7,
           column: 7,
           endColumn: 15,
-        },
-      ],
-    },
-    {
-      code: `
-function getElem(dict: Record<string, { foo: string }>, key: string) {
-  if (dict[key]) {
-    return dict[key].foo;
-  } else {
-    return '';
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'alwaysTruthy',
-          line: 3,
-          endLine: 3,
-          column: 7,
-          endColumn: 16,
         },
       ],
     },
