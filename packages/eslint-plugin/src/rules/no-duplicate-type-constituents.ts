@@ -78,8 +78,7 @@ export default util.createRule<Options, MessageIds>({
     },
     fixable: 'code',
     messages: {
-      duplicate:
-        '{{type}} type constituents {{duplicated}} is duplicated with {{previous}}.',
+      duplicate: '{{type}} type constituent is duplicated with {{previous}}.',
     },
     schema: [
       {
@@ -180,7 +179,6 @@ export default util.createRule<Options, MessageIds>({
       };
       context.report({
         data: {
-          duplicated: sourceCode.getText(duplicateConstituent.duplicated),
           type:
             parentNode.type === AST_NODE_TYPES.TSIntersectionType
               ? 'Intersection'
