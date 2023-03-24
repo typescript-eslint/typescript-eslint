@@ -13,7 +13,7 @@ export type Options = [
 
 export type MessageIds = 'duplicate';
 
-const astIgnoreKeys = ['range', 'loc', 'parent'];
+const astIgnoreKeys = new Set(['range', 'loc', 'parent']);
 
 const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
   if (actualNode === expectedNode) {
@@ -34,10 +34,10 @@ const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
       );
     }
     const actualNodeKeys = Object.keys(actualNode).filter(
-      key => !astIgnoreKeys.includes(key),
+      key => !astIgnoreKeys.has(key),
     );
     const expectedNodeKeys = Object.keys(expectedNode).filter(
-      key => !astIgnoreKeys.includes(key),
+      key => !astIgnoreKeys.has(key),
     );
     if (actualNodeKeys.length !== expectedNodeKeys.length) {
       return false;
