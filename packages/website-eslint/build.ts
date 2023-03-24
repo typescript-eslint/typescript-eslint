@@ -41,7 +41,7 @@ async function buildPackage(name: string, file: string): Promise<void> {
   const linterPath = path.join(eslintRoot, '../lib/linter/linter.js');
   const rulesPath = path.join(eslintRoot, '../lib/rules/index.js');
 
-  const output = await esbuild.build({
+  await esbuild.build({
     entryPoints: {
       [name]: requireResolved(file),
     },
@@ -130,17 +130,18 @@ async function buildPackage(name: string, file: string): Promise<void> {
           build.onResolve(makeFilter('@typescript-eslint/[a-z-]+'), args =>
             createResolve(args.path, 'index.ts'),
           );
+          build.onEnd(e => {
+            for (const error of e.errors) {
+              console.error(error);
+            }
+            for (const warning of e.warnings) {
+              console.warn(warning);
+            }
+          });
         },
       },
     ],
   });
-
-  for (const error of output.errors) {
-    console.error(error);
-  }
-  for (const warning of output.warnings) {
-    console.warn(warning);
-  }
 }
 
 console.time('building eslint for web');
@@ -149,7 +150,7 @@ buildPackage('index', './src/index.js')
   .then(() => {
     console.timeEnd('building eslint for web');
   })
-  .catch(e => {
-    console.error(e);
+  .catch((e: unknown) => {
+    console.error(String(e));
     process.exit(1);
   });
