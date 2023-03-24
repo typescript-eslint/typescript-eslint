@@ -108,7 +108,7 @@ export default util.createRule<Options, MessageIds>({
     function checkDuplicate(
       node: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
     ): void {
-      const cachedTypeMap: Map<TSESTree.TypeNode, Type> = new Map();
+      const cachedTypeMap: Map<Type, TSESTree.TypeNode> = new Map();
       node.types.reduce<TSESTree.TypeNode[]>(
         (uniqueConstituents, constituentNode) => {
           const duplicatedPreviousConstituentInAst = uniqueConstituents.find(
@@ -127,11 +127,8 @@ export default util.createRule<Options, MessageIds>({
           const constituentNodeType = checker.getTypeAtLocation(
             parserServices.esTreeNodeToTSNodeMap.get(constituentNode),
           );
-          const duplicatedPreviousConstituentInType = [
-            ...cachedTypeMap.entries(),
-          ].find(([, type]) => {
-            return type === constituentNodeType;
-          })?.[0];
+          const duplicatedPreviousConstituentInType =
+            cachedTypeMap.get(constituentNodeType);
           if (duplicatedPreviousConstituentInType) {
             reportDuplicate(
               {
@@ -142,7 +139,7 @@ export default util.createRule<Options, MessageIds>({
             );
             return uniqueConstituents;
           }
-          cachedTypeMap.set(constituentNode, constituentNodeType);
+          cachedTypeMap.set(constituentNodeType, constituentNode);
           return [...uniqueConstituents, constituentNode];
         },
         [],
