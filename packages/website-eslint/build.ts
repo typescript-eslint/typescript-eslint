@@ -130,11 +130,14 @@ async function buildPackage(name: string, file: string): Promise<void> {
                 'use-at-your-own-risk.ts',
               ),
           );
-          build.onResolve(
-            makeFilter('@typescript-eslint/utils/ast-utils'),
-            () =>
-              createResolve('@typescript-eslint/utils', 'ast-utils/index.ts'),
-          );
+          const anyAlias = /^(@typescript-eslint\/[a-z-]+)\/([a-z-]+)$/;
+          build.onResolve({ filter: anyAlias }, args => {
+            const parts = args.path.match(anyAlias);
+            if (parts) {
+              return createResolve(parts[1], `${parts[2]}/index.ts`);
+            }
+            return null;
+          });
           build.onResolve(makeFilter('@typescript-eslint/[a-z-]+'), args =>
             createResolve(args.path, 'index.ts'),
           );
