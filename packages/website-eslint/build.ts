@@ -45,7 +45,7 @@ async function buildPackage(name: string, file: string): Promise<void> {
     entryPoints: {
       [name]: requireResolved(file),
     },
-    format: 'cjs',
+    format: 'iife',
     platform: 'browser',
     bundle: true,
     external: [],
