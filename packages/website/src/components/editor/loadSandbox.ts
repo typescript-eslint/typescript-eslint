@@ -38,24 +38,22 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
       });
 
       // Grab a copy of monaco, TypeScript and the sandbox
-      window.require<[Monaco, TsWorker, SandboxFactory]>(
+      window.require<[Monaco, TsWorker, SandboxFactory, LintUtils]>(
         [
           'vs/editor/editor.main',
           'vs/language/typescript/tsWorker',
           'sandbox/index',
+          'linter/index',
         ],
-        (main, tsWorker, sandboxFactory) => {
+        (main, tsWorker, sandboxFactory, lintUtils) => {
           const isOK = main && window.ts && sandboxFactory;
           if (isOK) {
-            // https://github.com/evanw/esbuild/issues/819 - update linter/index to proper amd to fix this
-            window.require<[LintUtils]>(['linter/index'], lintUtils => {
-              resolve({
-                main,
-                tsWorker,
-                sandboxFactory,
-                ts: window.ts,
-                lintUtils,
-              });
+            resolve({
+              main,
+              tsWorker,
+              sandboxFactory,
+              ts: window.ts,
+              lintUtils,
             });
           } else {
             reject(

@@ -45,7 +45,7 @@ async function buildPackage(name: string, file: string): Promise<void> {
     entryPoints: {
       [name]: requireResolved(file),
     },
-    format: 'iife',
+    format: 'cjs',
     platform: 'browser',
     bundle: true,
     external: [],
@@ -56,6 +56,14 @@ async function buildPackage(name: string, file: string): Promise<void> {
     sourcemap: 'linked',
     outdir: './dist/',
     supported: {},
+    banner: {
+      // https://github.com/evanw/esbuild/issues/819
+      js: `define(['exports', 'vs/language/typescript/tsWorker'], function (exports) {`,
+    },
+    footer: {
+      // https://github.com/evanw/esbuild/issues/819
+      js: `});`,
+    },
     define: {
       'process.env.NODE_ENV': '"production"',
       'process.env.NODE_DEBUG': 'false',
