@@ -184,14 +184,16 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     // configure the JSON language support with schemas and schema associations
     sandboxInstance.monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
       validate: true,
+      enableSchemaRequest: false,
+      allowComments: true,
       schemas: [
         {
-          uri: 'eslint-schema.json', // id of the first schema
+          uri: sandboxInstance.monaco.Uri.file('eslint-schema.json').toString(), // id of the first schema
           fileMatch: [tabs.eslintrc.uri.toString()], // associate with our model
           schema: getEslintSchema(webLinter.ruleNames),
         },
         {
-          uri: 'ts-schema.json', // id of the first schema
+          uri: sandboxInstance.monaco.Uri.file('ts-schema.json').toString(), // id of the first schema
           fileMatch: [tabs.tsconfig.uri.toString()], // associate with our model
           schema: getTsConfigSchema(),
         },
