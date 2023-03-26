@@ -1,17 +1,16 @@
-import type MonacoType from 'monaco-editor';
+import type MonacoEditor from 'monaco-editor';
 import type * as TSType from 'typescript';
 
 import type * as SandboxFactory from '../../vendor/sandbox';
-import type * as TsWorker from '../../vendor/tsWorker';
 import type { LintUtils } from '../linter/WebLinter';
 
-type Monaco = typeof MonacoType;
+type Monaco = typeof MonacoEditor;
+type Sandbox = typeof SandboxFactory;
 type TS = typeof TSType;
 
 export interface SandboxModel {
   main: Monaco;
-  tsWorker: typeof TsWorker;
-  sandboxFactory: typeof SandboxFactory;
+  sandboxFactory: Sandbox;
   ts: TS;
   lintUtils: LintUtils;
 }
@@ -36,19 +35,18 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
       });
 
       // Grab a copy of monaco, TypeScript and the sandbox
-      window.require(
+      window.require<[Monaco, unknown, Sandbox, LintUtils]>(
         [
           'vs/editor/editor.main',
           'vs/language/typescript/tsWorker',
           'sandbox/index',
           'linter/index',
         ],
-        (main, tsWorker, sandboxFactory, lintUtils) => {
+        (main, _, sandboxFactory, lintUtils) => {
           const isOK = main && window.ts && sandboxFactory;
           if (isOK) {
             resolve({
               main,
-              tsWorker,
               sandboxFactory,
               ts: window.ts,
               lintUtils,

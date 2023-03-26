@@ -24,7 +24,6 @@ import type { CommonEditorProps } from './types';
 import type { SandboxInstance } from './useSandboxServices';
 
 export interface LoadedEditorProps extends CommonEditorProps {
-  readonly main: typeof Monaco;
   readonly sandboxInstance: SandboxInstance;
   readonly webLinter: WebLinter;
 }
@@ -35,7 +34,6 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   eslintrc,
   decoration,
   jsx,
-  main,
   onEsASTChange,
   onScopeChange,
   onTsASTChange,
@@ -201,7 +199,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     });
 
     const subscriptions = [
-      main.languages.registerCodeActionProvider(
+      sandboxInstance.monaco.languages.registerCodeActionProvider(
         'typescript',
         createProvideCodeActions(codeActions),
       ),
@@ -283,7 +281,6 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     };
   }, [
     codeActions,
-    main.languages,
     onChange,
     onSelect,
     sandboxInstance.editor,
