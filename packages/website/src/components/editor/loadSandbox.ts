@@ -1,17 +1,14 @@
 import type MonacoEditor from 'monaco-editor';
-import type * as TSType from 'typescript';
 
 import type * as SandboxFactory from '../../vendor/sandbox';
 import type { LintUtils } from '../linter/WebLinter';
 
 type Monaco = typeof MonacoEditor;
 type Sandbox = typeof SandboxFactory;
-type TS = typeof TSType;
 
 export interface SandboxModel {
   main: Monaco;
   sandboxFactory: Sandbox;
-  ts: TS;
   lintUtils: LintUtils;
 }
 
@@ -35,29 +32,15 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
       });
 
       // Grab a copy of monaco, TypeScript and the sandbox
-      window.require<[Monaco, unknown, Sandbox, LintUtils]>(
-        [
-          'vs/editor/editor.main',
-          'vs/language/typescript/tsWorker',
-          'sandbox/index',
-          'linter/index',
-        ],
-        (main, _, sandboxFactory, lintUtils) => {
-          const isOK = main && window.ts && sandboxFactory;
-          if (isOK) {
-            resolve({
-              main,
-              sandboxFactory,
-              ts: window.ts,
-              lintUtils,
-            });
-          } else {
-            reject(
-              new Error(
-                'Could not get all the dependencies of sandbox set up!',
-              ),
-            );
-          }
+      window.require<[Monaco, Sandbox, LintUtils]>(
+        ['vs/editor/editor.main', 'sandbox/index', 'linter/index'],
+        (main, sandboxFactory, lintUtils) => {
+          resolve({ main, sandboxFactory, lintUtils });
+        },
+        () => {
+          reject(
+            new Error('Could not get all the dependencies of sandbox set up!'),
+          );
         },
       );
     };

@@ -47,7 +47,7 @@ export const useSandboxServices = (
     setLoadedTs(props.ts);
 
     sandboxSingleton(props.ts)
-      .then(async ({ main, sandboxFactory, ts, lintUtils }) => {
+      .then(async ({ main, sandboxFactory, lintUtils }) => {
         const compilerOptions = createCompilerOptions(props.jsx);
 
         const sandboxConfig: Partial<SandboxConfig> = {
@@ -72,7 +72,7 @@ export const useSandboxServices = (
         sandboxInstance = sandboxFactory.createTypeScriptSandbox(
           sandboxConfig,
           main,
-          ts,
+          window.ts,
         );
         sandboxInstance.monaco.editor.setTheme(
           colorMode === 'dark' ? 'vs-dark' : 'vs-light',
