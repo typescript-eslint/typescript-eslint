@@ -279,6 +279,15 @@ describe('TypeOrValueSpecifier', () => {
         'import {SemVer} from "semver"; type Test = SemVer;',
         { from: 'package', name: 'SemVer', package: 'semver' },
       ],
+      // The following type is available from the org-scoped @types/babel__code-frame package.
+      [
+        'import {BabelCodeFrameOptions} from "@babel/code-frame"; type Test = BabelCodeFrameOptions;',
+        {
+          from: 'package',
+          name: 'BabelCodeFrameOptions',
+          package: '@babel/code-frame',
+        },
+      ],
     ])('matches a matching package specifier: %s', runTestPositive);
 
     it.each<[string, TypeOrValueSpecifier]>([
