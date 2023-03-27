@@ -279,7 +279,7 @@ describe('TypeOrValueSpecifier', () => {
         'import {SemVer} from "semver"; type Test = SemVer;',
         { from: 'package', name: 'SemVer', package: 'semver' },
       ],
-      // The following type is available from the org-scoped @types/babel__code-frame package.
+      // The following type is available from the scoped @types/babel__code-frame package.
       [
         'import {BabelCodeFrameOptions} from "@babel/code-frame"; type Test = BabelCodeFrameOptions;',
         {

@@ -146,6 +146,22 @@ function typeDeclaredInFile(
   );
 }
 
+function typeDeclaredInPackage(
+  packageName: string,
+  declarationFiles: ts.SourceFile[],
+): boolean {
+  const typesPackageName =
+    '@types/' +
+    (packageName[0] === '@'
+      ? packageName.substring(1).replaceAll('/', '__')
+      : packageName);
+  return declarationFiles.some(
+    declaration =>
+      declaration.fileName.includes(`node_modules/${packageName}/`) ||
+      declaration.fileName.includes(`node_modules/${typesPackageName}/`),
+  );
+}
+
 export function typeMatchesSpecifier(
   type: ts.Type,
   specifier: TypeOrValueSpecifier,
@@ -170,12 +186,6 @@ export function typeMatchesSpecifier(
         program.isSourceFileDefaultLibrary(declaration),
       );
     case 'package':
-      return declarationFiles.some(
-        declaration =>
-          declaration.fileName.includes(`node_modules/${specifier.package}/`) ||
-          declaration.fileName.includes(
-            `node_modules/@types/${specifier.package}/`,
-          ),
-      );
+      return typeDeclaredInPackage(specifier.package, declarationFiles);
   }
 }
