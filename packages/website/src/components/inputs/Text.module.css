@@ -1,5 +1,4 @@
 .textInput {
-  appearance: none;
   background-color: var(--ifm-color-emphasis-200);
   border: 1px solid var(--ifm-color-emphasis-100);
   color: var(--ifm-font-color-secondary);
@@ -7,12 +6,14 @@
   cursor: text;
   display: inline-block;
   height: 2rem;
-  padding: 0 0.5rem 0 2.25rem;
+  padding: 0 0.5rem;
   font-size: 0.9rem;
+  border-radius: 0.2rem;
   flex: 1;
 }
 
 .textInput[type='search'] {
+  padding-left: 2.25rem;
   background: var(--ifm-color-emphasis-200) var(--ifm-navbar-search-input-icon)
     no-repeat 0.75rem center / 1rem 1rem;
 }

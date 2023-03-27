@@ -113,10 +113,9 @@ function ConfigEditor(props: ConfigEditorProps): JSX.Element {
       <div className={styles.searchBar}>
         <Text
           ref={filterInput}
-          type="text"
+          type="search"
           name="config-filter"
           value={filter}
-          className={styles.search}
           onChange={setFilter}
         />
       </div>
