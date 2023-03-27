@@ -1,3 +1,4 @@
+import { getCanonicalFileName } from '@typescript-eslint/typescript-estree';
 import path from 'path';
 import type * as ts from 'typescript';
 
@@ -133,16 +134,16 @@ function typeDeclaredInFile(
   program: ts.Program,
 ): boolean {
   if (relativePath === undefined) {
-    const cwd = program.getCurrentDirectory().toLowerCase();
+    const cwd = getCanonicalFileName(program.getCurrentDirectory());
     return declarationFiles.some(declaration =>
-      declaration.fileName.toLowerCase().startsWith(cwd),
+      getCanonicalFileName(declaration.fileName).startsWith(cwd),
     );
   }
-  const absolutePath = path
-    .join(program.getCurrentDirectory(), relativePath)
-    .toLowerCase();
+  const absolutePath = getCanonicalFileName(
+    path.join(program.getCurrentDirectory(), relativePath),
+  );
   return declarationFiles.some(
-    declaration => declaration.fileName.toLowerCase() === absolutePath,
+    declaration => getCanonicalFileName(declaration.fileName) === absolutePath,
   );
 }
 
