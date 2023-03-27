@@ -23,6 +23,8 @@ Our plan for typescript-eslint v6 is to:
 Nothing mentioned in this blog post is set in stone.
 If you feel passionately about any of the choices we've made here -positively or negatively- then do let us know on [the typescript-eslint Discord's `v6` channel](https://discord.com/channels/1026804805894672454/1084245444676292688)!
 
+<!--truncate-->
+
 ## Trying Out v6
 
 Please do try out the typescript-eslint v6 beta!
@@ -54,12 +56,12 @@ These are the changes that users of typescript-eslint -generally, any developer 
 
 ### Reworked Configuration Names
 
-The biggest configuration change in typescript-eslint v6 is that we've reworked the names of our [provided user configuration files](https://typescript-eslint.io/linting/configs).
+The biggest configuration change in typescript-eslint v6 is that we've reworked the names of our [provided user configuration files](https://v6--typescript-eslint.netlify.app/linting/configs).
 typescript-eslint v5 provided three recommended configurations:
 
-- [`recommended`](https://typescript-eslint.io/linting/configs#recommended): Recommended rules for code correctness that you can drop in without additional configuration.
-- [`recommended-requiring-type-checking`](https://typescript-eslint.io/linting/configs#recommended-requiring-type-checking): Additional recommended rules that require type information.
-- [`strict`](https://typescript-eslint.io/linting/configs#strict): Additional strict rules that can also catch bugs but are more opinionated than recommended rules.
+- [`recommended`](https://v6--typescript-eslint.netlify.app/linting/configs#recommended): Recommended rules for code correctness that you can drop in without additional configuration.
+- [`recommended-requiring-type-checking`](https://v6--typescript-eslint.netlify.app/linting/configs#recommended-requiring-type-checking): Additional recommended rules that require type information.
+- [`strict`](https://v6--typescript-eslint.netlify.app/linting/configs#strict): Additional strict rules that can also catch bugs but are more opinionated than recommended rules.
 
 Those configurations worked well for most projects.
 However, some users correctly noted two flaws in that approach:
@@ -153,8 +155,8 @@ Several rules were changed in significant enough ways to be considered breaking 
   - `@typescript-eslint/no-implicit-any-catch`
   - `@typescript-eslint/no-parameter-properties`
   - `@typescript-eslint/sort-type-union-intersection-members`
-- [feat(eslint-plugin): [prefer-nullish-coalescing]: add support for assignment expressions](https://github.com/typescript-eslint/typescript-eslint/pull/5234): Enhances the [`@typescript-eslint/prefer-nullish-coalescing`](https://typescript-eslint.io/prefer-nullish-coalescing) rule to also check `||=` expressions.
-- ⏳ [feat(eslint-plugin): [prefer-optional-chain] use type checking for strict falsiness](https://github.com/typescript-eslint/typescript-eslint/pull/6240): Fixes edge case bugs in the [`@typescript-eslint/prefer-optional-chain`](https://typescript-eslint.io/prefer-optional-chain) rule around false positives, at the cost of making it require type information.
+- [feat(eslint-plugin): [prefer-nullish-coalescing]: add support for assignment expressions](https://github.com/typescript-eslint/typescript-eslint/pull/5234): Enhances the [`@typescript-eslint/prefer-nullish-coalescing`](https://v6--typescript-eslint.netlify.app/prefer-nullish-coalescing) rule to also check `||=` expressions.
+- ⏳ [feat(eslint-plugin): [prefer-optional-chain] use type checking for strict falsiness](https://github.com/typescript-eslint/typescript-eslint/pull/6240): Fixes edge case bugs in the [`@typescript-eslint/prefer-optional-chain`](https://v6--typescript-eslint.netlify.app/prefer-optional-chain) rule around false positives, at the cost of making it require type information.
 
 ### Tooling Breaking Changes
 
