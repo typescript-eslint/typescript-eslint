@@ -139,7 +139,8 @@ describe('TypeOrValueSpecifier', () => {
         .program!.getTypeChecker()
         .getTypeAtLocation(
           services.esTreeNodeToTSNodeMap.get(
-            (ast.body[0] as TSESTree.TSTypeAliasDeclaration).id,
+            (ast.body[ast.body.length - 1] as TSESTree.TSTypeAliasDeclaration)
+              .id,
           ),
         );
       expect(typeMatchesSpecifier(type, specifier, services.program!)).toBe(
