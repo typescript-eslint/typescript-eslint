@@ -7,13 +7,12 @@ import { scrollIntoViewIfNeeded } from '../lib/scroll-into';
 import styles from './ASTViewer.module.css';
 import { ElementItem } from './Elements';
 import { findSelectionPath } from './selectedRange';
-import type { OnClickNodeFn, OnHoverNodeFn } from './types';
+import type { OnHoverNodeFn } from './types';
 import { getTooltipLabel, getTypeName } from './utils';
 
 export interface ASTViewerProps {
   readonly cursorPosition?: number;
   readonly onHoverNode?: OnHoverNodeFn;
-  readonly onClickNode?: OnClickNodeFn;
   readonly value: unknown;
   readonly filter?: ESQuery.Selector;
   readonly enableScrolling?: boolean;
@@ -35,7 +34,6 @@ function tryToApplyFilter<T>(value: T, filter?: ESQuery.Selector): T | T[] {
 function ASTViewer({
   cursorPosition,
   onHoverNode,
-  onClickNode,
   value,
   filter,
   enableScrolling,
@@ -75,7 +73,6 @@ function ASTViewer({
         getTypeName={getTypeName}
         value={model}
         level="ast"
-        onClickNode={onClickNode}
         onHoverNode={onHoverNode}
         selectedPath={selectedPath}
         getTooltipLabel={getTooltipLabel}

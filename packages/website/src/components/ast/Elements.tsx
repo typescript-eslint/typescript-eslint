@@ -8,7 +8,6 @@ import PropertyValue from './PropertyValue';
 import type {
   GetTooltipLabelFn,
   GetTypeNameFN,
-  OnClickNodeFn,
   OnHoverNodeFn,
   ParentNodeType,
 } from './types';
@@ -21,7 +20,6 @@ export interface ElementItemProps {
   readonly level: string;
   readonly value: unknown;
   readonly onHoverNode?: OnHoverNodeFn;
-  readonly onClickNode?: OnClickNodeFn;
   readonly parentNodeType?: ParentNodeType;
   readonly selectedPath?: string;
 }
@@ -62,7 +60,6 @@ export function ElementItem({
   getTypeName,
   getTooltipLabel,
   parentNodeType,
-  onClickNode,
 }: ElementItemProps): JSX.Element {
   const [isExpanded, setIsExpanded] = useState<boolean>(() => level === 'ast');
   const isSelected = useMemo(() => {
@@ -116,7 +113,6 @@ export function ElementItem({
           onHoverNode?.(v ? computedValue.range : undefined)
         }
         canExpand={true}
-        onClickType={(): void => onClickNode?.(value)}
         onClick={(): void => setIsExpanded(!isExpanded)}
       >
         <span>{computedValue.type === 'Array' ? '[' : '{'}</span>
@@ -130,7 +126,6 @@ export function ElementItem({
                   selectedPath={selectedPath}
                   value={item}
                   propName={key}
-                  onClickNode={onClickNode}
                   onHoverNode={onHoverNode}
                   getTypeName={getTypeName}
                   getTooltipLabel={getTooltipLabel}
