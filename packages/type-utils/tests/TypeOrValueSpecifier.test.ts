@@ -235,6 +235,76 @@ describe('TypeOrValueSpecifier', () => {
 
     it.each<[string, TypeOrValueSpecifier]>([
       [
+        'import type {Node} from "typescript"; type Test = Node;',
+        { from: 'package', name: 'Node', package: 'typescript' },
+      ],
+      [
+        'import type {Node} from "typescript"; type Test = Node;',
+        { from: 'package', name: ['Node', 'Symbol'], package: 'typescript' },
+      ],
+      [
+        'import {Node} from "typescript"; type Test = Node;',
+        { from: 'package', name: 'Node', package: 'typescript' },
+      ],
+      [
+        'import {Node} from "typescript"; type Test = Node;',
+        { from: 'package', name: ['Node', 'Symbol'], package: 'typescript' },
+      ],
+      [
+        'import * as ts from "typescript"; type Test = ts.Node;',
+        { from: 'package', name: 'Node', package: 'typescript' },
+      ],
+      [
+        'import * as ts from "typescript"; type Test = ts.Node;',
+        { from: 'package', name: ['Node', 'Symbol'], package: 'typescript' },
+      ],
+      [
+        'import type * as ts from "typescript"; type Test = ts.Node;',
+        { from: 'package', name: 'Node', package: 'typescript' },
+      ],
+      [
+        'import type * as ts from "typescript"; type Test = ts.Node;',
+        { from: 'package', name: ['Node', 'Symbol'], package: 'typescript' },
+      ],
+      [
+        'import type {Node as TsNode} from "typescript"; type Test = TsNode;',
+        { from: 'package', name: 'Node', package: 'typescript' },
+      ],
+      [
+        'import type {Node as TsNode} from "typescript"; type Test = TsNode;',
+        { from: 'package', name: ['Node', 'Symbol'], package: 'typescript' },
+      ],
+    ])('matches a matching package specifier: %s', runTestPositive);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      [
+        'import type {Node} from "typescript"; type Test = Node;',
+        { from: 'package', name: 'Symbol', package: 'typescript' },
+      ],
+      [
+        'import type {Node} from "typescript"; type Test = Node;',
+        { from: 'package', name: ['Symbol', 'Checker'], package: 'typescript' },
+      ],
+      [
+        'import type {Node} from "typescript"; type Test = Node;',
+        { from: 'package', name: 'Node', package: 'other-package' },
+      ],
+      [
+        'import type {Node} from "typescript"; type Test = Node;',
+        { from: 'package', name: ['Node', 'Symbol'], package: 'other-package' },
+      ],
+      [
+        'interface Node {prop: string}; type Test = Node;',
+        { from: 'package', name: 'Node', package: 'typescript' },
+      ],
+      [
+        'import type {Node as TsNode} from "typescript"; type Test = TsNode;',
+        { from: 'package', name: 'TsNode', package: 'typescript' },
+      ],
+    ])("doesn't match a mismatched lib specifier: %s", runTestNegative);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      [
         'interface Foo {prop: string}; type Test = Foo;',
         { from: 'lib', name: 'Foo' },
       ],
