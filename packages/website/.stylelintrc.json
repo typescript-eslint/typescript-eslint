@@ -1,0 +1,14 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-config-recommended"],
+  "plugins": ["stylelint-order"],
+  "rules": {
+    "order/order": ["custom-properties", "declarations"],
+    "selector-class-pattern": null,
+    "no-descending-specificity": null,
+    "selector-pseudo-class-no-unknown": [
+      true,
+      { "ignorePseudoClasses": ["global"] }
+    ]
+  },
+  "ignoreFiles": ["dist/**/*", "node_modules/**/*", "**/*.min.css"]
+}

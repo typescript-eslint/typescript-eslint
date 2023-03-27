@@ -6,14 +6,15 @@
  */
 
 .hero {
+  --ifm-font-color-base: var(--ifm-color-white);
+  --ifm-button-color: var(--ifm-color-white);
+
   background-color: var(--color-blurple-shadow);
   background-image: linear-gradient(
     135deg,
     var(--color-blurple) 0%,
     var(--color-blurple-shadow) 100%
   );
-  --ifm-font-color-base: var(--ifm-color-white);
-  --ifm-button-color: var(--ifm-color-white);
   text-align: center;
 }
 
@@ -28,6 +29,7 @@
 
 .buttons {
   --ifm-button-size-multiplier: 1.6;
+
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -37,7 +39,8 @@
 .buttons a {
   --ifm-font-color-base: var(--ifm-color-white);
   --ifm-button-color: var(--ifm-color-white);
-  margin: 1rem 1rem;
+
+  margin: 1rem;
 }
 
 .buttonCentered {
