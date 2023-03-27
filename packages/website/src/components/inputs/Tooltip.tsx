@@ -4,12 +4,11 @@ import React from 'react';
 import styles from './Tooltip.module.css';
 
 export interface TooltipProps {
-  readonly children: React.ReactNode;
+  readonly children: JSX.Element | (JSX.Element | false)[];
   readonly text: string;
   readonly position?: 'left' | 'right';
   readonly open?: boolean;
   readonly hover?: boolean;
-  readonly className?: string;
 }
 
 function Tooltip(props: TooltipProps): JSX.Element {
@@ -17,7 +16,6 @@ function Tooltip(props: TooltipProps): JSX.Element {
     <span
       aria-label={((props.open || props.hover) && props.text) || undefined}
       className={clsx(
-        props.className,
         styles.tooltip,
         props.position === 'right' ? styles.tooltipRight : styles.tooltipLeft,
         props.open && styles.visible,

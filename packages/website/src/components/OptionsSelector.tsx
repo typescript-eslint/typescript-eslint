@@ -1,4 +1,3 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import {
   NavbarSecondaryMenuFiller,
   useWindowSize,
@@ -11,9 +10,10 @@ import { useClipboard } from '../hooks/useClipboard';
 import Checkbox from './inputs/Checkbox';
 import Dropdown from './inputs/Dropdown';
 import Tooltip from './inputs/Tooltip';
+import ActionLabel from './layout/ActionLabel';
 import Expander from './layout/Expander';
+import InputLabel from './layout/InputLabel';
 import { createMarkdown, createMarkdownParams } from './lib/markdown';
-import styles from './OptionsSelector.module.css';
 import type { ConfigModel } from './types';
 
 export interface OptionsSelectorParams {
@@ -22,13 +22,6 @@ export interface OptionsSelectorParams {
   readonly tsVersions: readonly string[];
   readonly isLoading: boolean;
 }
-
-const ASTOptions = [
-  { value: false, label: 'Disabled' },
-  { value: 'es', label: 'ESTree' },
-  { value: 'ts', label: 'TypeScript' },
-  { value: 'scope', label: 'Scope' },
-] as const;
 
 function OptionsSelectorContent({
   state,
@@ -67,8 +60,7 @@ function OptionsSelectorContent({
   return (
     <>
       <Expander label="Info">
-        <label className={styles.optionLabel}>
-          TypeScript
+        <InputLabel name="TypeScript">
           <Dropdown
             name="ts"
             className="text--right"
@@ -77,65 +69,41 @@ function OptionsSelectorContent({
             onChange={updateTS}
             options={(tsVersions.length && tsVersions) || [state.ts]}
           />
-        </label>
-        <label className={styles.optionLabel}>
-          Eslint
-          <span>{process.env.ESLINT_VERSION}</span>
-        </label>
-        <label className={styles.optionLabel}>
-          TSEslint
-          <span>{process.env.TS_ESLINT_VERSION}</span>
-        </label>
+        </InputLabel>
+        <InputLabel name="Eslint">{process.env.ESLINT_VERSION}</InputLabel>
+        <InputLabel name="TSEslint">{process.env.TS_ESLINT_VERSION}</InputLabel>
       </Expander>
       <Expander label="Options">
-        <label className={styles.optionLabel}>
-          Enable jsx
+        <InputLabel name="Enable jsx">
           <Checkbox
             name="jsx"
             checked={state.jsx}
             onChange={(e): void => setState({ jsx: e })}
-            className={styles.optionCheckbox}
           />
-        </label>
-        <label className={styles.optionLabel}>
-          AST Viewer
-          <Dropdown
-            name="showAST"
-            value={state.showAST}
-            onChange={(e): void => setState({ showAST: e })}
-            options={ASTOptions}
-          />
-        </label>
-        <label className={styles.optionLabel}>
-          Source type
+        </InputLabel>
+        <InputLabel name="Source type">
           <Dropdown
             name="sourceType"
             value={state.sourceType}
             onChange={(e): void => setState({ sourceType: e })}
             options={['script', 'module']}
           />
-        </label>
+        </InputLabel>
       </Expander>
       <Expander label="Actions">
-        <button className={styles.optionLabel} onClick={copyLinkToClipboard}>
-          Copy Link
+        <ActionLabel name="Copy link" onClick={copyLinkToClipboard}>
           <Tooltip open={copyLink} text="Copied">
             <CopyIcon width="13.5" height="13.5" />
           </Tooltip>
-        </button>
-        <button
-          className={styles.optionLabel}
-          onClick={copyMarkdownToClipboard}
-        >
-          Copy Markdown
+        </ActionLabel>
+        <ActionLabel name="Copy Markdown" onClick={copyMarkdownToClipboard}>
           <Tooltip open={copyMarkdown} text="Copied">
             <CopyIcon width="13.5" height="13.5" />
           </Tooltip>
-        </button>
-        <button className={styles.optionLabel} onClick={openIssue}>
-          Report as Issue
+        </ActionLabel>
+        <ActionLabel name="Report as Issue" onClick={openIssue}>
           <IconExternalLink width="13.5" height="13.5" />
-        </button>
+        </ActionLabel>
       </Expander>
     </>
   );

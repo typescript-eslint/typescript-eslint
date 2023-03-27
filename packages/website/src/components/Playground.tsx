@@ -1,20 +1,21 @@
+import { useWindowSize } from '@docusaurus/theme-common';
 import type { TSESTree } from '@typescript-eslint/utils';
 import clsx from 'clsx';
 import type * as ESQuery from 'esquery';
 import React, { useCallback, useState } from 'react';
 import type { SourceFile } from 'typescript';
 
-import { useMediaQuery } from '../hooks/useMediaQuery';
 import ASTViewer from './ast/ASTViewer';
+import { detailTabs } from './config';
 import ConfigEslint from './config/ConfigEslint';
 import ConfigTypeScript from './config/ConfigTypeScript';
 import { defaultEslintConfig, defaultTsConfig } from './config/utils';
 import { EditorEmbed } from './editor/EditorEmbed';
 import { LoadingEditor } from './editor/LoadingEditor';
-import EditorTabs from './EditorTabs';
 import { ErrorsViewer, ErrorViewer } from './ErrorsViewer';
 import { ESQueryFilter } from './ESQueryFilter';
 import useHashState from './hooks/useHashState';
+import EditorTabs from './layout/EditorTabs';
 import Loader from './layout/Loader';
 import OptionsSelector from './OptionsSelector';
 import styles from './Playground.module.css';
@@ -50,7 +51,7 @@ function Playground(): JSX.Element {
   const [showModal, setShowModal] = useState<TabType | false>(false);
   const [esQueryFilter, setEsQueryFilter] = useState<ESQuery.Selector>();
   const [esQueryError, setEsQueryError] = useState<Error>();
-  const enableSplitPanes = useMediaQuery('(min-width: 996px)');
+  const windowSize = useWindowSize();
 
   const updateModal = useCallback(
     (config?: Partial<ConfigModel>) => {
@@ -97,7 +98,7 @@ function Playground(): JSX.Element {
       />
       <div className={styles.codeBlocks}>
         <ConditionalSplitPane
-          render={enableSplitPanes}
+          render={windowSize !== 'mobile'}
           split="vertical"
           minSize="10%"
           defaultSize="20rem"
@@ -114,7 +115,7 @@ function Playground(): JSX.Element {
             />
           </div>
           <ConditionalSplitPane
-            render={enableSplitPanes}
+            render={windowSize !== 'mobile'}
             split="vertical"
             minSize="10%"
             defaultSize="50%"
@@ -124,8 +125,9 @@ function Playground(): JSX.Element {
               {isLoading && <Loader />}
               <EditorTabs
                 tabs={['code', 'tsconfig', 'eslintrc']}
-                activeTab={activeTab}
+                active={activeTab}
                 change={setTab}
+                showVisualEditor={activeTab !== 'code'}
                 showModal={(): void => setShowModal(activeTab)}
               />
               <div className={styles.tabCode}>
@@ -151,12 +153,20 @@ function Playground(): JSX.Element {
               />
             </div>
             <div className={styles.astViewer}>
-              {state.showAST === 'es' && (
-                <ESQueryFilter
-                  onChange={setEsQueryFilter}
-                  onError={setEsQueryError}
+              <div className={styles.playgroundInfoHeader}>
+                <EditorTabs
+                  tabs={detailTabs}
+                  active={state.showAST ?? false}
+                  change={(v): void => setState({ showAST: v })}
                 />
-              )}
+                {state.showAST === 'es' && (
+                  <ESQueryFilter
+                    onChange={setEsQueryFilter}
+                    onError={setEsQueryError}
+                  />
+                )}
+              </div>
+
               {(state.showAST === 'es' && esQueryError && (
                 <ErrorViewer
                   type="warning"
