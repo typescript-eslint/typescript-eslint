@@ -45,37 +45,15 @@
   z-index: calc(var(--ifm-z-index-fixed) - 1);
 }
 
-.tabContainer {
-  display: flex;
-  justify-content: space-between;
-  background: var(--playground-main-color);
-  border-bottom: 1px solid var(--playground-secondary-color);
+.playgroundInfoHeader {
+  position: sticky;
+  top: 0;
+  left: 0;
+  z-index: 1;
 }
 
 .tabCode {
   height: calc(100% - 32px);
-}
-
-.tabStyle {
-  border: none;
-  border-right: 1px solid var(--playground-secondary-color);
-  background: var(--playground-main-color);
-  color: var(--ifm-color-emphasis-700);
-  padding: 0.5rem 1rem;
-  cursor: pointer;
-}
-
-.tabStyle svg {
-  margin-left: 0.3rem;
-}
-
-.tabStyle:hover {
-  background: var(--playground-secondary-color);
-}
-
-.tabStyle:disabled {
-  background: var(--playground-secondary-color);
-  color: var(--ifm-color-emphasis-900);
 }
 
 @media only screen and (max-width: 996px) {
