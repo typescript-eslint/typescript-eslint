@@ -127,7 +127,7 @@ export class WebLinter {
 
     const { estree: ast, astMaps } = this.lintUtils.astConverter(
       tsAst,
-      { ...parseSettings, code, jsx: isJsx },
+      { ...parseSettings, code, codeFullText: code, jsx: isJsx },
       true,
     );
 
