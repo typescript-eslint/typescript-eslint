@@ -153,7 +153,7 @@ function typeDeclaredInPackage(
   const typesPackageName =
     '@types/' +
     (packageName[0] === '@'
-      ? packageName.substring(1).replaceAll('/', '__')
+      ? packageName.substring(1).replace('/', '__')
       : packageName);
   return declarationFiles.some(
     declaration =>
