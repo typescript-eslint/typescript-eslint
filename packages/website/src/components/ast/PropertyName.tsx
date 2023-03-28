@@ -29,6 +29,7 @@ export default function PropertyName(props: PropertyNameProps): JSX.Element {
   const onKeyDown = useCallback(
     (e: KeyboardEvent<HTMLElement>) => {
       if (e.code === 'Space') {
+        e.preventDefault();
         props.onClick?.();
       }
     },
@@ -38,7 +39,7 @@ export default function PropertyName(props: PropertyNameProps): JSX.Element {
   return (
     <Link
       className={props.className}
-      href={'#'}
+      href={`#${props.value}`}
       role="button"
       onClick={onClick}
       onKeyDown={onKeyDown}
