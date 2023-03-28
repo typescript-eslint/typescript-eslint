@@ -6,29 +6,31 @@ import type { Linter, SourceCode } from '@typescript-eslint/utils/ts-eslint';
  * List every parameters possible on a test case that are not related to eslint
  * configuration
  */
-export const RuleTesterParameters = [
-  'name',
+export const RULE_TESTER_PARAMETERS = [
   'code',
-  'filename',
-  'options',
+  'defaultFilenames',
+  'dependencyConstraints',
   'errors',
-  'output',
+  'filename',
+  'name',
   'only',
+  'options',
+  'output',
 ] as const;
 
 /*
  * All allowed property names in error objects.
  */
 export const ERROR_OBJECT_PARAMETERS: ReadonlySet<string> = new Set([
+  'column',
+  'data',
+  'endColumn',
+  'endLine',
+  'line',
   'message',
   'messageId',
-  'data',
-  'type',
-  'line',
-  'column',
-  'endLine',
-  'endColumn',
   'suggestions',
+  'type',
 ]);
 export const FRIENDLY_ERROR_OBJECT_PARAMETER_LIST = `[${[
   ...ERROR_OBJECT_PARAMETERS,
@@ -40,9 +42,9 @@ export const FRIENDLY_ERROR_OBJECT_PARAMETER_LIST = `[${[
  * All allowed property names in suggestion objects.
  */
 export const SUGGESTION_OBJECT_PARAMETERS: ReadonlySet<string> = new Set([
+  'data',
   'desc',
   'messageId',
-  'data',
   'output',
 ]);
 export const FRIENDLY_SUGGESTION_OBJECT_PARAMETER_LIST = `[${[

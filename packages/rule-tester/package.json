@@ -58,6 +58,7 @@
     "eslint": ">=8"
   },
   "devDependencies": {
+    "@typescript-eslint/parser": "5.56.0",
     "@types/lodash.merge": "4.6.7",
     "chai": "^4.0.1",
     "mocha": "^8.3.2",

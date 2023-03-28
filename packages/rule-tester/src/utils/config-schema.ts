@@ -2,11 +2,27 @@
 
 import type { JSONSchema } from '@typescript-eslint/utils';
 
-const baseConfigProperties: JSONSchema.JSONSchema4Object = {
+const baseConfigProperties: JSONSchema.JSONSchema4['properties'] = {
   $schema: { type: 'string' },
+  defaultFilenames: {
+    type: 'object',
+    properties: {
+      ts: { type: 'string' },
+      tsx: { type: 'string' },
+    },
+    required: ['ts', 'tsx'],
+    additionalProperties: false,
+  },
+  dependencyConstraints: {
+    type: 'object',
+    additionalProperties: {
+      type: 'string',
+    },
+  },
   env: { type: 'object' },
   extends: { $ref: '#/definitions/stringOrStrings' },
   globals: { type: 'object' },
+  noInlineConfig: { type: 'boolean' },
   overrides: {
     type: 'array',
     items: { $ref: '#/definitions/overrideConfig' },
@@ -16,10 +32,9 @@ const baseConfigProperties: JSONSchema.JSONSchema4Object = {
   parserOptions: { type: 'object' },
   plugins: { type: 'array' },
   processor: { type: 'string' },
+  reportUnusedDisableDirectives: { type: 'boolean' },
   rules: { type: 'object' },
   settings: { type: 'object' },
-  noInlineConfig: { type: 'boolean' },
-  reportUnusedDisableDirectives: { type: 'boolean' },
 
   ecmaFeatures: { type: 'object' }, // deprecated; logs a warning when used
 };
