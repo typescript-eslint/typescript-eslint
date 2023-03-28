@@ -77,7 +77,7 @@ function RenderExpandableObject({
         }
       }
     },
-    [onHover],
+    [onHover, value, nodeType],
   );
 
   useEffect(() => {
@@ -85,7 +85,7 @@ function RenderExpandableObject({
     if (shouldOpen) {
       setExpanded(current => current || shouldOpen);
     }
-  }, [selectedPath, level]);
+  }, [selectedPath, level, setExpanded]);
 
   const lastIndex = data.length - 1;
 
