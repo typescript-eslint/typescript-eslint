@@ -25,8 +25,8 @@ export function isTSNode(value: object): value is ts.Node {
   return 'kind' in value && 'pos' in value && 'flags' in value;
 }
 
-export function getNodeType(typeName: string, value: unknown): ParentNodeType {
-  if (typeName === 'Object' && Boolean(value) && isRecord(value)) {
+export function getNodeType(value: unknown): ParentNodeType {
+  if (Boolean(value) && isRecord(value)) {
     if (isESNode(value)) {
       return 'esNode';
     } else if ('$id' in value && 'childScopes' in value && 'type' in value) {
@@ -78,51 +78,44 @@ export function ucFirst(value: string): string {
 }
 
 export function getTypeName(
-  typeName: string,
-  value: unknown,
-  _propName?: string,
-  valueType?: ParentNodeType,
+  value: Record<string, unknown>,
+  valueType: ParentNodeType,
 ): string | undefined {
-  if (typeName === 'Object' && Boolean(value) && isRecord(value)) {
-    switch (valueType) {
-      case 'esNode':
-        return String(value.type);
-      case 'tsNode':
-        return tsEnumValue('SyntaxKind', value.kind);
-      case 'scopeManager':
-        return 'ScopeManager';
-      case 'scope':
-        return `${ucFirst(String(value.type))}Scope$${String(value.$id)}`;
-      case 'scopeDefinition':
-        return `Definition#${String(value.type)}$${String(value.$id)}`;
-      case 'scopeVariable':
-        return `Variable#${String(value.name)}$${String(value.$id)}`;
-      case 'scopeReference':
-        return `Reference#${String(
-          isRecord(value.identifier) ? value.identifier.name : 'unknown',
-        )}$${String(value.$id)}`;
-      case 'tsType':
-        return '[Type]';
-      case 'tsSymbol':
-        return `Symbol(${String(value.escapedName)})`;
-      case 'tsSignature':
-        return '[Signature]';
-      case 'tsFlow':
-        return '[FlowNode]';
-    }
-  } else if (typeName !== 'Array') {
-    return typeName;
+  switch (valueType) {
+    case 'esNode':
+      return String(value.type);
+    case 'tsNode':
+      return tsEnumValue('SyntaxKind', value.kind);
+    case 'scopeManager':
+      return 'ScopeManager';
+    case 'scope':
+      return `${ucFirst(String(value.type))}Scope$${String(value.$id)}`;
+    case 'scopeDefinition':
+      return `Definition#${String(value.type)}$${String(value.$id)}`;
+    case 'scopeVariable':
+      return `Variable#${String(value.name)}$${String(value.$id)}`;
+    case 'scopeReference':
+      return `Reference#${String(
+        isRecord(value.identifier) ? value.identifier.name : 'unknown',
+      )}$${String(value.$id)}`;
+    case 'tsType':
+      return '[Type]';
+    case 'tsSymbol':
+      return `Symbol(${String(value.escapedName)})`;
+    case 'tsSignature':
+      return '[Signature]';
+    case 'tsFlow':
+      return '[FlowNode]';
   }
   return undefined;
 }
 
 export function getTooltipLabel(
-  typeName: string,
   value: unknown,
   propName?: string,
   parentType?: ParentNodeType,
 ): string | undefined {
-  if (typeName === 'Number') {
+  if (typeof value === 'number') {
     switch (parentType) {
       case 'tsNode': {
         switch (propName) {

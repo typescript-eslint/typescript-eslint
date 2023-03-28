@@ -5,10 +5,9 @@ import CopyButton from '../inputs/CopyButton';
 import { debounce } from '../lib/debounce';
 import { scrollIntoViewIfNeeded } from '../lib/scroll-into';
 import styles from './ASTViewer.module.css';
-import { ElementItem } from './Elements';
+import DataRender from './DataRenderer';
 import { findSelectionPath } from './selectedRange';
 import type { OnHoverNodeFn } from './types';
-import { getTooltipLabel, getTypeName } from './utils';
 
 export interface ASTViewerProps {
   readonly cursorPosition?: number;
@@ -69,13 +68,12 @@ function ASTViewer({
 
   return (
     <div className={styles.list}>
-      <ElementItem
-        getTypeName={getTypeName}
-        value={model}
+      <DataRender
         level="ast"
-        onHoverNode={onHoverNode}
+        value={model}
+        lastElement={true}
         selectedPath={selectedPath}
-        getTooltipLabel={getTooltipLabel}
+        onHover={onHoverNode}
       />
       {!hideCopyButton && <CopyButton value={model} />}
     </div>
