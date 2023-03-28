@@ -8,20 +8,8 @@ export interface PropertyValueProps {
   readonly value: unknown;
 }
 
-export type ASTViewerModelTypeSimple =
-  | 'ref'
-  | 'string'
-  | 'number'
-  | 'class'
-  | 'boolean'
-  | 'bigint'
-  | 'regexp'
-  | 'undefined'
-  | 'error';
-
 export interface SimpleModel {
   readonly value: string;
-  readonly type: ASTViewerModelTypeSimple;
   readonly className: string;
   shortValue?: string;
 }
@@ -30,49 +18,41 @@ export function getSimpleModel(data: unknown): SimpleModel {
   if (typeof data === 'string') {
     return {
       value: JSON.stringify(data),
-      type: 'string',
       className: styles.propString,
     };
   } else if (typeof data === 'number') {
     return {
       value: String(data),
-      type: 'number',
       className: styles.propNumber,
     };
   } else if (typeof data === 'bigint') {
     return {
       value: `${data}n`,
-      type: 'bigint',
       className: styles.propNumber,
     };
   } else if (data instanceof RegExp) {
     return {
       value: String(data),
-      type: 'regexp',
       className: styles.propRegExp,
     };
   } else if (data == null) {
     return {
       value: String(data),
-      type: 'undefined',
       className: styles.propEmpty,
     };
   } else if (typeof data === 'boolean') {
     return {
       value: data ? 'true' : 'false',
-      type: 'boolean',
       className: styles.propBoolean,
     };
   } else if (data instanceof Error) {
     return {
       value: `Error: ${data.message}`,
-      type: 'error',
       className: styles.propError,
     };
   }
   return {
     value: objType(data),
-    type: 'class',
     className: styles.propClass,
   };
 }
