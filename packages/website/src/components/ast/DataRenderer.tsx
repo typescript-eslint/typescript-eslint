@@ -1,7 +1,7 @@
 import clsx from 'clsx';
-import type { Dispatch, SetStateAction } from 'react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo } from 'react';
 
+import { useBool } from '../../hooks/useBool';
 import Tooltip from '../inputs/Tooltip';
 import styles from './ASTViewer.module.css';
 import HiddenItem from './HiddenItem';
@@ -33,16 +33,6 @@ export interface ExpandableRenderProps
   readonly data: [string, unknown][];
   readonly openBracket: string;
   readonly closeBracket: string;
-}
-
-function useBool(
-  initialValueCreator: () => boolean,
-): [boolean, () => void, Dispatch<SetStateAction<boolean>>] {
-  const [value, setValue] = useState(initialValueCreator());
-
-  const toggle = (): void => setValue(currentValue => !currentValue);
-
-  return [value, toggle, setValue];
 }
 
 function RenderExpandableObject({
