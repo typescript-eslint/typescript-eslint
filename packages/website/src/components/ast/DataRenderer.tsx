@@ -59,7 +59,7 @@ function RenderExpandableObject({
   selectedPath,
 }: ExpandableRenderProps): JSX.Element {
   const [expanded, toggleExpanded, setExpanded] = useBool(
-    () => selectedPath === level && level !== 'ast',
+    () => level === 'ast' || !!selectedPath?.startsWith(level),
   );
 
   const isActive = useMemo(
