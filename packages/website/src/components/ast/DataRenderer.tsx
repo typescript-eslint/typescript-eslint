@@ -186,8 +186,8 @@ function JsonIterable(props: JsonRenderProps<Iterable<unknown>>): JSX.Element {
     <RenderExpandableObject
       {...props}
       data={Object.entries(props.value)}
-      openBracket="{"
-      closeBracket="}"
+      openBracket="("
+      closeBracket=")"
     />
   );
 }
