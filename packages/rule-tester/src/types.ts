@@ -6,7 +6,7 @@ import type {
   SharedConfigurationSettings,
 } from '@typescript-eslint/utils/ts-eslint';
 
-import type { DependencyConstraint } from './dependencyConstraints';
+import type { DependencyConstraint } from './utils/dependencyConstraints';
 
 export interface RuleTesterConfig extends Linter.Config {
   /**

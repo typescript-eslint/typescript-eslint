@@ -19,7 +19,7 @@ import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import { SourceCode } from 'eslint';
 import merge from 'lodash.merge';
 
-import { satisfiesAllDependencyConstraints } from './dependencyConstraints';
+import { satisfiesAllDependencyConstraints } from './utils/dependencyConstraints';
 import { TestFramework } from './TestFramework';
 import type {
   InvalidTestCase,

@@ -7,3 +7,9 @@ export type {
   TestCaseError,
   ValidTestCase,
 } from './types';
+export type {
+  AtLeastVersionConstraint,
+  DependencyConstraint,
+  SemverVersionConstraint,
+  VersionConstraint,
+} from './utils/dependencyConstraints';
