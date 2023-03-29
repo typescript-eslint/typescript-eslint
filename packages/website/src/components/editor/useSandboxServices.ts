@@ -1,5 +1,4 @@
 import { useColorMode } from '@docusaurus/theme-common';
-import type Monaco from 'monaco-editor';
 import { useEffect, useState } from 'react';
 
 import type {
@@ -25,7 +24,6 @@ export interface SandboxServicesProps {
 export type SandboxInstance = ReturnType<typeof createTypeScriptSandbox>;
 
 export interface SandboxServices {
-  main: typeof Monaco;
   sandboxInstance: SandboxInstance;
   webLinter: WebLinter;
 }
@@ -49,7 +47,7 @@ export const useSandboxServices = (
     setLoadedTs(props.ts);
 
     sandboxSingleton(props.ts)
-      .then(async ({ main, sandboxFactory, ts, lintUtils }) => {
+      .then(async ({ main, sandboxFactory, lintUtils }) => {
         const compilerOptions = createCompilerOptions(props.jsx);
 
         const sandboxConfig: Partial<SandboxConfig> = {
@@ -74,37 +72,18 @@ export const useSandboxServices = (
         sandboxInstance = sandboxFactory.createTypeScriptSandbox(
           sandboxConfig,
           main,
-          ts,
+          window.ts,
         );
         sandboxInstance.monaco.editor.setTheme(
           colorMode === 'dark' ? 'vs-dark' : 'vs-light',
         );
 
-        let libEntries: Map<string, string> | undefined;
+        const libEntries = new Map<string, string>();
         const worker = await sandboxInstance.getWorkerProcess();
-        if ('getLibFiles' in worker && worker.getLibFiles) {
-          libEntries = new Map(
-            Object.entries(
-              (await (
-                worker.getLibFiles as () => Promise<Record<string, string>>
-              )()) ?? {},
-            ).map(item => ['/' + item[0], item[1]]),
-          );
-        } else {
-          // for some older version of playground we do not have definitions available
-          libEntries = await sandboxInstance.tsvfs.createDefaultMapFromCDN(
-            {
-              lib: Array.from(window.ts.libMap.keys()),
-            },
-            props.ts,
-            true,
-            window.ts,
-          );
-          for (const pair of libEntries) {
-            sandboxInstance.languageServiceDefaults.addExtraLib(
-              pair[1],
-              'ts:' + pair[0],
-            );
+        if (worker.getLibFiles) {
+          const libs = await worker.getLibFiles();
+          for (const [key, value] of Object.entries(libs)) {
+            libEntries.set('/' + key, value);
           }
         }
 
@@ -118,12 +97,11 @@ export const useSandboxServices = (
           Array.from(
             new Set([...sandboxInstance.supportedVersions, window.ts.version]),
           )
-            .filter(item => parseFloat(item) >= 3.3)
+            .filter(item => parseFloat(item) >= 4.2)
             .sort((a, b) => b.localeCompare(a)),
         );
 
         setServices({
-          main,
           sandboxInstance,
           webLinter,
         });
