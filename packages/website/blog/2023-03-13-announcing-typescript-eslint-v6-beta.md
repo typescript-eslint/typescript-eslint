@@ -21,7 +21,7 @@ Our plan for typescript-eslint v6 is to:
 3. Release a stable version summer of 2023
 
 Nothing mentioned in this blog post is set in stone.
-If you feel passionately about any of the choices we've made here -positively or negatively- then do let us know on [the typescript-eslint Discord's `v6` channel](https://discord.com/channels/1026804805894672454/1084245444676292688)!
+If you feel passionately about any of the choices we've made here -positively or negatively- then do let us know on [the typescript-eslint Discord](https://discord.gg/FSxKq8Tdyg)'s `#v6` channel!
 
 <!--truncate-->
 
@@ -164,7 +164,7 @@ Several rules were changed in significant enough ways to be considered breaking 
 - [feat: drop support for node v12](https://github.com/typescript-eslint/typescript-eslint/pull/5918)
 - [feat: bump minimum supported TS version to 4.2.4](https://github.com/typescript-eslint/typescript-eslint/pull/5915): this matches [DefinitelyTyped's 2-year support window](https://github.com/DefinitelyTyped/DefinitelyTyped#support-window).
 - [chore: drop support for ESLint v6](https://github.com/typescript-eslint/typescript-eslint/pull/5972)
-- ⏳ [feat(eslint-plugin): [prefer-readonly-parameter-types] added an optional type allowlist](https://github.com/typescript-eslint/typescript-eslint/4436): changes the public `isTypeReadonlyArrayOrTuple` function's first argument from a `checker: ts.TypeChecker` to a full `program: ts.Program`
+- [feat(eslint-plugin): [prefer-readonly-parameter-types] added an optional type allowlist](https://github.com/typescript-eslint/typescript-eslint/pull/4436): changes the public `isTypeReadonlyArrayOrTuple` function's first argument from a `checker: ts.TypeChecker` to a full `program: ts.Program`
 
 ## Developer-Facing Changes
 
@@ -173,7 +173,7 @@ If you author any ESLint plugins or other tools that interact with TypeScript sy
 It includes some breaking changes that you may need to accommodate for.
 
 :::tip
-If you're having trouble working with the changes, please let us know on [the typescript-eslint Discord's `v6` channel](https://discord.com/channels/1026804805894672454/1084245444676292688)!
+If you're having trouble working with the changes, please let us know on [the typescript-eslint Discord](https://discord.gg/FSxKq8Tdyg)'s `#v6` channel!
 :::
 
 ### Type Checker Wrapper APIs
