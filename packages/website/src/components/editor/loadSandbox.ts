@@ -1,20 +1,14 @@
-import type MonacoType from 'monaco-editor';
-import type * as TSType from 'typescript';
+import type MonacoEditor from 'monaco-editor';
 
-import type * as SandboxFactoryType from '../../vendor/sandbox';
-import type * as TsWorkerType from '../../vendor/tsWorker';
+import type * as SandboxFactory from '../../vendor/sandbox';
 import type { LintUtils } from '../linter/WebLinter';
 
-type Monaco = typeof MonacoType;
-type TS = typeof TSType;
-type TsWorker = typeof TsWorkerType;
-type SandboxFactory = typeof SandboxFactoryType;
+type Monaco = typeof MonacoEditor;
+type Sandbox = typeof SandboxFactory;
 
 export interface SandboxModel {
   main: Monaco;
-  tsWorker: TsWorker;
-  sandboxFactory: SandboxFactory;
-  ts: TS;
+  sandboxFactory: Sandbox;
   lintUtils: LintUtils;
 }
 
@@ -38,30 +32,15 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
       });
 
       // Grab a copy of monaco, TypeScript and the sandbox
-      window.require<[Monaco, TsWorker, SandboxFactory, LintUtils]>(
-        [
-          'vs/editor/editor.main',
-          'vs/language/typescript/tsWorker',
-          'sandbox/index',
-          'linter/index',
-        ],
-        (main, tsWorker, sandboxFactory, lintUtils) => {
-          const isOK = main && window.ts && sandboxFactory;
-          if (isOK) {
-            resolve({
-              main,
-              tsWorker,
-              sandboxFactory,
-              ts: window.ts,
-              lintUtils,
-            });
-          } else {
-            reject(
-              new Error(
-                'Could not get all the dependencies of sandbox set up!',
-              ),
-            );
-          }
+      window.require<[Monaco, Sandbox, LintUtils]>(
+        ['vs/editor/editor.main', 'sandbox/index', 'linter/index'],
+        (main, sandboxFactory, lintUtils) => {
+          resolve({ main, sandboxFactory, lintUtils });
+        },
+        () => {
+          reject(
+            new Error('Could not get all the dependencies of sandbox set up!'),
+          );
         },
       );
     };

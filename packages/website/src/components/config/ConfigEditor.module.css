@@ -1,7 +1,3 @@
-.search {
-  border-radius: 0.2rem;
-}
-
 .searchResult,
 .searchResultGroup {
   align-items: center;
@@ -15,7 +11,7 @@
 }
 
 .searchResult {
-  margin: 0 0;
+  margin: 0;
   transition: background-color var(--ifm-transition-fast)
       var(--ifm-transition-timing-default),
     color var(--ifm-transition-fast) var(--ifm-transition-timing-default);

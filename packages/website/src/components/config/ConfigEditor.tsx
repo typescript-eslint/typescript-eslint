@@ -1,5 +1,5 @@
 import Dropdown from '@site/src/components/inputs/Dropdown';
-import Modal from '@site/src/components/modals/Modal';
+import Modal from '@site/src/components/layout/Modal';
 import clsx from 'clsx';
 import React, { useCallback, useEffect, useReducer, useState } from 'react';
 
@@ -113,10 +113,9 @@ function ConfigEditor(props: ConfigEditorProps): JSX.Element {
       <div className={styles.searchBar}>
         <Text
           ref={filterInput}
-          type="text"
+          type="search"
           name="config-filter"
           value={filter}
-          className={styles.search}
           onChange={setFilter}
         />
       </div>

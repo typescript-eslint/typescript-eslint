@@ -1,9 +1,13 @@
 import type esquery from 'esquery';
-import type * as TSType from 'typescript';
+import type * as ts from 'typescript';
 
 declare global {
   interface WindowRequire {
-    <T>(files: string[], cb: (...arg: T) => void): void;
+    <T extends unknown[]>(
+      files: string[],
+      success?: (...arg: T) => void,
+      error?: (e: Error) => void,
+    ): void;
     config: (arg: {
       paths?: Record<string, string>;
       ignoreDuplicateModules?: string[];
@@ -11,7 +15,7 @@ declare global {
   }
 
   interface Window {
-    ts: typeof TSType;
+    ts: typeof ts;
     require: WindowRequire;
     esquery: typeof esquery;
   }

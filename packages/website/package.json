@@ -7,6 +7,8 @@
     "clear": "docusaurus clear",
     "format": "prettier --write \"./**/*.{md,mdx,ts,js,tsx,jsx}\" --ignore-path ../../.prettierignore",
     "generate-website-dts": "tsx ./tools/generate-website-dts.ts",
+    "stylelint": "stylelint \"src/**/*.css\"",
+    "stylelint:fix": "stylelint \"src/**/*.css\" --fix",
     "lint": "nx lint",
     "serve": "docusaurus serve",
     "start": "docusaurus start",
@@ -58,6 +60,10 @@
     "make-dir": "*",
     "monaco-editor": "^0.33.0",
     "rimraf": "*",
+    "stylelint": "^15.3.0",
+    "stylelint-config-recommended": "^11.0.0",
+    "stylelint-config-standard": "^31.0.0",
+    "stylelint-order": "^6.0.3",
     "webpack": "^5.74.0"
   },
   "browserslist": {
