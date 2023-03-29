@@ -1,11 +1,13 @@
-export const detailTabs = [
-  { value: false as const, label: 'Errors' },
-  { value: 'es' as const, label: 'ESTree' },
-  { value: 'ts' as const, label: 'TypeScript' },
-  { value: 'scope' as const, label: 'Scope' },
+import type { ConfigFileType, ConfigShowAst } from './types';
+
+export const detailTabs: { value: ConfigShowAst; label: string }[] = [
+  { value: false, label: 'Errors' },
+  { value: 'es', label: 'ESTree' },
+  { value: 'ts', label: 'TypeScript' },
+  { value: 'scope', label: 'Scope' },
 ];
 
-export const fileTypes = [
+export const fileTypes: ConfigFileType[] = [
   'ts',
   'tsx',
   'js',
@@ -15,4 +17,4 @@ export const fileTypes = [
   'mjs',
   'cts',
   'mts',
-] as const;
+];

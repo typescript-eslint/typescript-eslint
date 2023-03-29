@@ -1,7 +1,5 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 
-import type { detailTabs, fileTypes } from './config';
-
 export type CompilerFlags = Record<string, unknown>;
 
 export type SourceType = TSESLint.SourceType;
@@ -16,14 +14,27 @@ export interface RuleDetails {
 
 export type TabType = 'code' | 'tsconfig' | 'eslintrc';
 
+export type ConfigFileType =
+  | 'ts'
+  | 'tsx'
+  | 'js'
+  | 'jsx'
+  | 'd.ts'
+  | 'cjs'
+  | 'mjs'
+  | 'cts'
+  | 'mts';
+
+export type ConfigShowAst = false | 'es' | 'ts' | 'scope';
+
 export interface ConfigModel {
-  fileType?: (typeof fileTypes)[number];
+  fileType?: ConfigFileType;
   sourceType?: SourceType;
   eslintrc: string;
   tsconfig: string;
   code: string;
   ts: string;
-  showAST?: (typeof detailTabs)[number]['value'];
+  showAST?: ConfigShowAst;
 }
 
 export interface SelectedPosition {

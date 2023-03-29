@@ -1,9 +1,10 @@
 import * as lz from 'lz-string';
 import { useCallback, useState } from 'react';
 
+import { fileTypes } from '../config';
 import { toJson } from '../config/utils';
 import { hasOwnProperty } from '../lib/has-own-property';
-import type { ConfigModel } from '../types';
+import type { ConfigFileType, ConfigModel, ConfigShowAst } from '../types';
 
 function writeQueryParam(value: string | null): string {
   return (value && lz.compressToEncodedURIComponent(value)) ?? '';
@@ -13,7 +14,7 @@ function readQueryParam(value: string | null, fallback: string): string {
   return (value && lz.decompressFromEncodedURIComponent(value)) ?? fallback;
 }
 
-function readShowAST(value: string | null): ConfigModel['showAST'] {
+function readShowAST(value: string | null): ConfigShowAst {
   switch (value) {
     case 'es':
     case 'ts':
@@ -23,14 +24,9 @@ function readShowAST(value: string | null): ConfigModel['showAST'] {
   return value ? 'es' : false;
 }
 
-function readFileType(value: string | null): ConfigModel['fileType'] {
-  switch (value) {
-    case 'ts':
-    case 'tsx':
-    case 'd.ts':
-    case 'js':
-    case 'jsx':
-      return value;
+function readFileType(value: string | null): ConfigFileType {
+  if (value && (fileTypes as string[]).includes(value)) {
+    return value as ConfigFileType;
   }
   return 'ts';
 }
