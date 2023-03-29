@@ -28,12 +28,25 @@ export interface LoadedEditorProps extends CommonEditorProps {
   readonly webLinter: WebLinter;
 }
 
+export function determineLanguage(file: string): string {
+  if (/\.[mc]?ts(x)?$/.test(file)) {
+    return 'typescript';
+  }
+  if (/\.[mc]?js(x)?$/.test(file)) {
+    return 'javascript';
+  }
+  if (/\.(json|eslintrc)$/.test(file)) {
+    return 'json';
+  }
+  return 'plaintext';
+}
+
 export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   code,
   tsconfig,
   eslintrc,
   decoration,
-  jsx,
+  fileType,
   onEsASTChange,
   onScopeChange,
   onTsASTChange,
@@ -84,11 +97,11 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   ]);
 
   useEffect(() => {
-    const newPath = jsx ? '/input.tsx' : '/input.ts';
+    const newPath = `/input.${fileType}`;
     if (tabs.code.uri.path !== newPath) {
       const newModel = sandboxInstance.monaco.editor.createModel(
         tabs.code.getValue(),
-        'typescript',
+        determineLanguage(newPath),
         sandboxInstance.monaco.Uri.file(newPath),
       );
       newModel.updateOptions({ tabSize: 2, insertSpaces: true });
@@ -98,22 +111,15 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       tabs.code.dispose();
       tabs.code = newModel;
     }
-  }, [
-    jsx,
-    sandboxInstance.editor,
-    sandboxInstance.monaco.Uri,
-    sandboxInstance.monaco.editor,
-    tabs,
-  ]);
+  }, [fileType, sandboxInstance.editor, sandboxInstance.monaco, tabs]);
 
   useEffect(() => {
     const config = createCompilerOptions(
-      jsx,
       parseTSConfig(tsconfig).compilerOptions,
     );
     webLinter.updateCompilerOptions(config);
     sandboxInstance.setCompilerSettings(config);
-  }, [jsx, sandboxInstance, tsconfig, webLinter]);
+  }, [sandboxInstance, tsconfig, webLinter]);
 
   useEffect(() => {
     webLinter.updateRules(parseESLintRC(eslintrc).rules);
@@ -128,10 +134,10 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     const lintEditor = debounce(() => {
       console.info('[Editor] linting triggered');
 
-      webLinter.updateParserOptions(jsx, sourceType);
+      webLinter.updateParserOptions(sourceType);
 
       try {
-        const messages = webLinter.lint(code);
+        const messages = webLinter.lint(code, tabs.code.uri.path);
 
         const markers = parseLintResults(messages, codeActions, ruleId =>
           sandboxInstance.monaco.Uri.parse(
@@ -162,7 +168,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     lintEditor();
   }, [
     code,
-    jsx,
+    fileType,
     tsconfig,
     eslintrc,
     sourceType,
@@ -237,7 +243,10 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         run(editor) {
           const editorModel = editor.getModel();
           if (editorModel) {
-            const fixed = webLinter.fix(editor.getValue());
+            const fixed = webLinter.fix(
+              editor.getValue(),
+              editorModel.uri.path,
+            );
             if (fixed.fixed) {
               editorModel.pushEditOperations(
                 null,

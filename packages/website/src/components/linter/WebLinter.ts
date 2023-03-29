@@ -34,9 +34,10 @@ export class WebLinter {
   private compilerOptions: CompilerOptions;
   private readonly parserOptions: ParserOptions = {
     ecmaFeatures: {
-      jsx: false,
+      jsx: true,
       globalReturn: false,
     },
+    comment: true,
     ecmaVersion: 'latest',
     project: ['./tsconfig.json'],
     sourceType: 'module',
@@ -83,20 +84,24 @@ export class WebLinter {
     };
   }
 
-  lint(code: string): TSESLint.Linter.LintMessage[] {
-    return this.linter.verify(code, this.eslintConfig);
+  lint(code: string, filename: string): TSESLint.Linter.LintMessage[] {
+    return this.linter.verify(code, this.eslintConfig, {
+      filename: filename,
+    });
   }
 
-  fix(code: string): TSESLint.Linter.FixReport {
-    return this.linter.verifyAndFix(code, this.eslintConfig, { fix: true });
+  fix(code: string, filename: string): TSESLint.Linter.FixReport {
+    return this.linter.verifyAndFix(code, this.eslintConfig, {
+      filename: filename,
+      fix: true,
+    });
   }
 
   updateRules(rules: TSESLint.Linter.RulesRecord): void {
     this.rules = rules;
   }
 
-  updateParserOptions(jsx?: boolean, sourceType?: TSESLint.SourceType): void {
-    this.parserOptions.ecmaFeatures!.jsx = jsx ?? false;
+  updateParserOptions(sourceType?: TSESLint.SourceType): void {
     this.parserOptions.sourceType = sourceType ?? 'module';
   }
 
@@ -108,14 +113,13 @@ export class WebLinter {
     code: string,
     eslintOptions: ParserOptions = {},
   ): TSESLint.Linter.ESLintParseResult {
-    const isJsx = eslintOptions?.ecmaFeatures?.jsx ?? false;
-    const fileName = isJsx ? '/demo.tsx' : '/demo.ts';
+    const fileName = eslintOptions.filePath ?? '/input.ts';
 
     this.storedAST = undefined;
     this.storedTsAST = undefined;
     this.storedScope = undefined;
 
-    this.host.writeFile(fileName, code, false);
+    this.host.writeFile(fileName, code || '\n', false);
 
     const program = window.ts.createProgram({
       rootNames: [fileName],
@@ -127,7 +131,7 @@ export class WebLinter {
 
     const { estree: ast, astMaps } = this.lintUtils.astConverter(
       tsAst,
-      { ...parseSettings, code, codeFullText: code, jsx: isJsx },
+      { ...parseSettings, code, codeFullText: code },
       true,
     );
 

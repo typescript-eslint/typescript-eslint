@@ -7,7 +7,7 @@ import IconExternalLink from '@theme/Icon/ExternalLink';
 import React, { useCallback } from 'react';
 
 import { useClipboard } from '../hooks/useClipboard';
-import Checkbox from './inputs/Checkbox';
+import { fileTypes } from './config';
 import Dropdown from './inputs/Dropdown';
 import Tooltip from './inputs/Tooltip';
 import ActionLabel from './layout/ActionLabel';
@@ -74,11 +74,12 @@ function OptionsSelectorContent({
         <InputLabel name="TSEslint">{process.env.TS_ESLINT_VERSION}</InputLabel>
       </Expander>
       <Expander label="Options">
-        <InputLabel name="Enable jsx">
-          <Checkbox
-            name="jsx"
-            checked={state.jsx}
-            onChange={(e): void => setState({ jsx: e })}
+        <InputLabel name="File type">
+          <Dropdown
+            name="fileType"
+            value={state.fileType ?? 'ts'}
+            onChange={(fileType): void => setState({ fileType })}
+            options={fileTypes}
           />
         </InputLabel>
         <InputLabel name="Source type">
