@@ -2147,18 +2147,18 @@
     eslint-visitor-keys "^3.3.0"
 
 "@eslint-community/regexpp@^4.4.0":
-  version "4.4.0"
-  resolved "https://registry.yarnpkg.com/@eslint-community/regexpp/-/regexpp-4.4.0.tgz#3e61c564fcd6b921cb789838631c5ee44df09403"
-  integrity sha512-A9983Q0LnDGdLPjxyXQ00sbV+K+O+ko2Dr+CZigbHWtX9pNfxlaBkMR8X1CztI73zuEyEBXTVjx7CE+/VSwDiQ==
+  version "4.5.0"
+  resolved "https://registry.yarnpkg.com/@eslint-community/regexpp/-/regexpp-4.5.0.tgz#f6f729b02feee2c749f57e334b7a1b5f40a81724"
+  integrity sha512-vITaYzIcNmjn5tF5uxcZ/ft7/RXGrMUIS9HalWckEOF6ESiwXKoMzAQf2UW0aVd6rnOeExTJVd5hmWXucBKGXQ==
 
 "@eslint/eslintrc@^2.0.1":
-  version "2.0.1"
-  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-2.0.1.tgz#7888fe7ec8f21bc26d646dbd2c11cd776e21192d"
-  integrity sha512-eFRmABvW2E5Ho6f5fHLqgena46rOj7r7OKHYfLElqcBfGFHHpjBhivyi5+jOEQuSpdc/1phIZJlbC2te+tZNIw==
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/@eslint/eslintrc/-/eslintrc-2.0.2.tgz#01575e38707add677cf73ca1589abba8da899a02"
+  integrity sha512-3W4f5tDUra+pA+FzgugqL2pRimUTDJWKr7BINqOpkZrC0uYI0NIc0/JFgBROCU07HR6GieA5m3/rsPIhDmCXTQ==
   dependencies:
     ajv "^6.12.4"
     debug "^4.3.2"
-    espree "^9.5.0"
+    espree "^9.5.1"
     globals "^13.19.0"
     ignore "^5.2.0"
     import-fresh "^3.2.1"
@@ -6766,10 +6766,10 @@ eslint-visitor-keys@^2.0.0, eslint-visitor-keys@^2.1.0:
   resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-2.1.0.tgz#f65328259305927392c938ed44eb0a5c9b2bd303"
   integrity sha512-0rSmRBzXgDzIsD6mGdJgevzgezI534Cer5L/vyMX0kHzT/jiB43jRhd9YUlMGYLQy2zprNmoT8qasCGtY+QaKw==
 
-eslint-visitor-keys@^3.3.0:
-  version "3.3.0"
-  resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-3.3.0.tgz#f6480fa6b1f30efe2d1968aa8ac745b862469826"
-  integrity sha512-mQ+suqKJVyeuwGYHAdjMFqjCyfl8+Ldnxuyp3ldiMBFKkvytrXUZWaiPCEav8qDHKty44bD+qV1IP4T+w+xXRA==
+eslint-visitor-keys@^3.3.0, eslint-visitor-keys@^3.4.0:
+  version "3.4.0"
+  resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-3.4.0.tgz#c7f0f956124ce677047ddbc192a68f999454dedc"
+  integrity sha512-HPpKPUBQcAsZOsHAFwTtIKcYlCje62XB7SEAcxjtmW6TD1WVpkS6i6/hOVtTZIl4zGj/mBqpFVGvaDneik+VoQ==
 
 eslint@*, eslint@^8.15.0:
   version "8.36.0"
@@ -6817,14 +6817,14 @@ eslint@*, eslint@^8.15.0:
     strip-json-comments "^3.1.0"
     text-table "^0.2.0"
 
-espree@^9.5.0:
-  version "9.5.0"
-  resolved "https://registry.yarnpkg.com/espree/-/espree-9.5.0.tgz#3646d4e3f58907464edba852fa047e6a27bdf113"
-  integrity sha512-JPbJGhKc47++oo4JkEoTe2wjy4fmMwvFpgJT9cQzmfXKp22Dr6Hf1tdCteLz1h0P3t+mGvWZ+4Uankvh8+c6zw==
+espree@^9.5.0, espree@^9.5.1:
+  version "9.5.1"
+  resolved "https://registry.yarnpkg.com/espree/-/espree-9.5.1.tgz#4f26a4d5f18905bf4f2e0bd99002aab807e96dd4"
+  integrity sha512-5yxtHSZXRSW5pvv3hAlXM5+/Oswi1AUFqBmbibKb5s6bp3rGIDkyXU6xCoyuuLhijr4SFwPrXRoZjz0AZDN9tg==
   dependencies:
     acorn "^8.8.0"
     acorn-jsx "^5.3.2"
-    eslint-visitor-keys "^3.3.0"
+    eslint-visitor-keys "^3.4.0"
 
 esprima@^4.0.0, esprima@^4.0.1:
   version "4.0.1"
