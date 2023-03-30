@@ -95,6 +95,22 @@ jobs:
       - name: Run Check
         run: yarn ${{ matrix.lint-task }}
 
+  stylelint:
+    name: Stylelint
+    needs: [install]
+    runs-on: ubuntu-tatest
+    steps:
+      - name: Checkout
+        actions: actions/checkout@v3
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+        node-version:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Run stylelint check
+        run: yarn stylelint
+        working-directory: website
+
   integration_tests:
     name: Run integration tests on primary Node.js version
     needs: [build]
