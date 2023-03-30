@@ -77,7 +77,7 @@ function OptionsSelectorContent({
         <InputLabel name="File type">
           <Dropdown
             name="fileType"
-            value={state.fileType ?? 'ts'}
+            value={state.fileType}
             onChange={(fileType): void => setState({ fileType })}
             options={fileTypes}
           />
