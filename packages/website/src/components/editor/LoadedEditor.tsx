@@ -28,19 +28,6 @@ export interface LoadedEditorProps extends CommonEditorProps {
   readonly webLinter: WebLinter;
 }
 
-export function determineLanguage(file: string): string {
-  if (/\.[mc]?ts(x)?$/.test(file)) {
-    return 'typescript';
-  }
-  if (/\.[mc]?js(x)?$/.test(file)) {
-    return 'javascript';
-  }
-  if (/\.(json|eslintrc)$/.test(file)) {
-    return 'json';
-  }
-  return 'plaintext';
-}
-
 export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   code,
   tsconfig,
@@ -101,7 +88,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     if (tabs.code.uri.path !== newPath) {
       const newModel = sandboxInstance.monaco.editor.createModel(
         tabs.code.getValue(),
-        determineLanguage(newPath),
+        undefined,
         sandboxInstance.monaco.Uri.file(newPath),
       );
       newModel.updateOptions({ tabSize: 2, insertSpaces: true });
