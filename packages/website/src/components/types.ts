@@ -1,4 +1,5 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
 
 export type CompilerFlags = Record<string, unknown>;
 
@@ -14,16 +15,7 @@ export interface RuleDetails {
 
 export type TabType = 'code' | 'tsconfig' | 'eslintrc';
 
-export type ConfigFileType =
-  | 'ts'
-  | 'tsx'
-  | 'js'
-  | 'jsx'
-  | 'd.ts'
-  | 'cjs'
-  | 'mjs'
-  | 'cts'
-  | 'mts';
+export type ConfigFileType = `${ts.Extension}`;
 
 export type ConfigShowAst = false | 'es' | 'ts' | 'scope';
 

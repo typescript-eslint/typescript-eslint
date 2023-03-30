@@ -28,7 +28,7 @@ function readFileType(value: string | null): ConfigFileType {
   if (value && (fileTypes as string[]).includes(value)) {
     return value as ConfigFileType;
   }
-  return 'ts';
+  return '.ts';
 }
 
 function toJsonConfig(cfg: unknown, prop: string): string {
@@ -74,7 +74,7 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
 
     let fileType = readFileType(searchParams.get('fileType'));
     if (searchParams.get('jsx') === 'true') {
-      fileType = 'tsx';
+      fileType = '.tsx';
     }
 
     const code = searchParams.has('code')

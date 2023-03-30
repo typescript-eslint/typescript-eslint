@@ -8,13 +8,13 @@ export const detailTabs: { value: ConfigShowAst; label: string }[] = [
 ];
 
 export const fileTypes: ConfigFileType[] = [
-  'ts',
-  'tsx',
-  'js',
-  'jsx',
-  'd.ts',
-  'cjs',
-  'mjs',
-  'cts',
-  'mts',
+  '.ts',
+  '.tsx',
+  '.js',
+  '.jsx',
+  '.d.ts',
+  '.cjs',
+  '.mjs',
+  '.cts',
+  '.mts',
 ];

@@ -84,7 +84,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   ]);
 
   useEffect(() => {
-    const newPath = `/input.${fileType}`;
+    const newPath = `/input${fileType}`;
     if (tabs.code.uri.path !== newPath) {
       const newModel = sandboxInstance.monaco.editor.createModel(
         tabs.code.getValue(),
