@@ -15,17 +15,9 @@
       "default": "./dist/index.js"
     },
     "./package.json": "./package.json",
-    "./use-at-your-own-risk/ast-converter": {
-      "types": "./dist/ast-converter.d.ts",
-      "default": "./dist/ast-converter.js"
-    },
-    "./use-at-your-own-risk/parseSettings": {
-      "types": "./dist/parseSettings/index.d.ts",
-      "default": "./dist/parseSettings/index.js"
-    },
-    "./use-at-your-own-risk/getScriptKind": {
-      "types": "./dist/create-program/getScriptKind.d.ts",
-      "default": "./dist/create-program/getScriptKind.js"
+    "./use-at-your-own-risk": {
+      "types": "./dist/use-at-your-own-risk.d.ts",
+      "default": "./dist/use-at-your-own-risk.js"
     }
   },
   "engines": {
