@@ -1,3 +1,7 @@
+import {
+  getLanguageVariant,
+  getScriptKind,
+} from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as semver from 'semver';
@@ -60,7 +64,14 @@ export default util.createRule({
         ])
       : new Map([[AST_NODE_TYPES.TSUnknownKeyword, 'unknown']]);
 
-    const inJsx = context.getFilename().toLowerCase().endsWith('tsx');
+    const inJsx =
+      getLanguageVariant(
+        getScriptKind(
+          context.getFilename(),
+          !!context.parserOptions.ecmaFeatures?.jsx,
+        ),
+      ) === ts.LanguageVariant.JSX;
+
     const source = context.getSourceCode();
 
     const checkNode = (

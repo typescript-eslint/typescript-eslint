@@ -16,4 +16,6 @@ export {
   getDecorators,
   getModifiers,
   typescriptVersionIsAtLeast,
+  getScriptKind,
+  getLanguageVariant,
 } from '@typescript-eslint/typescript-estree';
