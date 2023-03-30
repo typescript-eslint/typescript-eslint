@@ -107,7 +107,7 @@ const writeStateToUrl = (newState: ConfigModel): string | undefined => {
     if (newState.showAST) {
       searchParams.set('showAST', newState.showAST);
     }
-    if (newState.fileType && newState.fileType !== 'ts') {
+    if (newState.fileType) {
       searchParams.set('fileType', newState.fileType);
     }
     searchParams.set('code', writeQueryParam(newState.code));
