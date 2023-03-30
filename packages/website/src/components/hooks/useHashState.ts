@@ -1,3 +1,4 @@
+import { useHistory } from '@docusaurus/router';
 import * as lz from 'lz-string';
 import { useCallback, useState } from 'react';
 
@@ -172,31 +173,34 @@ const writeStateToLocalStorage = (newState: ConfigModel): void => {
 function useHashState(
   initialState: ConfigModel,
 ): [ConfigModel, (cfg: Partial<ConfigModel>) => void] {
+  const history = useHistory();
   const [state, setState] = useState<ConfigModel>(() => ({
     ...initialState,
     ...retrieveStateFromLocalStorage(),
     ...parseStateFromUrl(window.location.hash.slice(1)),
   }));
 
-  const updateState = useCallback((cfg: Partial<ConfigModel>) => {
-    console.info('[State] updating config diff', cfg);
+  const updateState = useCallback(
+    (cfg: Partial<ConfigModel>) => {
+      console.info('[State] updating config diff', cfg);
+      setState(oldState => {
+        const newState = { ...oldState, ...cfg };
 
-    setState(oldState => {
-      const newState = { ...oldState, ...cfg };
-      const newHash = writeStateToUrl(newState);
+        writeStateToLocalStorage(newState);
 
-      writeStateToLocalStorage(newState);
-      const url = `${window.location.pathname}#${newHash}`;
+        history.replace({
+          ...history.location,
+          hash: writeStateToUrl(newState),
+        });
 
-      if (cfg.ts) {
-        window.location.href = url;
-        window.location.reload();
-      } else {
-        window.history.replaceState(undefined, document.title, url);
-      }
-      return newState;
-    });
-  }, []);
+        if (cfg.ts) {
+          window.location.reload();
+        }
+        return newState;
+      });
+    },
+    [setState, history],
+  );
 
   return [state, updateState];
 }
