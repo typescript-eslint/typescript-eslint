@@ -5,7 +5,8 @@ This saves us having to mock unnecessary things and reduces our bundle size.
 */
 // @ts-check
 
-import { rules } from '@typescript-eslint/eslint-plugin';
+import eslintJs from '@eslint/js';
+import * as plugin from '@typescript-eslint/eslint-plugin';
 import { analyze } from '@typescript-eslint/scope-manager';
 import {
   astConverter,
@@ -24,8 +25,27 @@ exports.esquery = esquery;
 
 exports.createLinter = function () {
   const linter = new Linter();
-  for (const name in rules) {
-    linter.defineRule(`@typescript-eslint/${name}`, rules[name]);
+  for (const name in plugin.rules) {
+    linter.defineRule(`@typescript-eslint/${name}`, plugin.rules[name]);
   }
   return linter;
 };
+
+/** @type {Record<string, unknown>} */
+const configs = {};
+
+for (const name in eslintJs.configs) {
+  configs[`eslint:${name}`] = eslintJs.configs[name];
+}
+
+for (const name in plugin.configs) {
+  const value = plugin.configs[name];
+  if (value.extends && Array.isArray(value.extends)) {
+    value.extends = value.extends.map(name =>
+      name.replace(/^\.\/configs\//, 'plugin:@typescript-eslint/'),
+    );
+  }
+  configs[`plugin:@typescript-eslint/${name}`] = value;
+}
+
+exports.configs = configs;

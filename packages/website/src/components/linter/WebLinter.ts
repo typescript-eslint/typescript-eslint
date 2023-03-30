@@ -1,5 +1,3 @@
-import { createVirtualCompilerHost } from '@site/src/components/linter/CompilerHost';
-import { parseSettings } from '@site/src/components/linter/config';
 import type { analyze } from '@typescript-eslint/scope-manager';
 import type { ParserOptions } from '@typescript-eslint/types';
 import type {
@@ -8,14 +6,19 @@ import type {
 } from '@typescript-eslint/typescript-estree/use-at-your-own-risk';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type esquery from 'esquery';
-import type {
-  CompilerHost,
-  CompilerOptions,
-  SourceFile,
-  System,
-} from 'typescript';
+import type * as ts from 'typescript';
 
-const PARSER_NAME = '@typescript-eslint/parser';
+import type { EslintRC } from '../types';
+import { createVirtualCompilerHost } from './CompilerHost';
+import { eslintConfig, PARSER_NAME, parseSettings } from './config';
+
+export interface RuleDetails {
+  name: string;
+  description?: string;
+  url?: string;
+}
+
+export type RulesMap = Map<string, RuleDetails>;
 
 export interface LintUtils {
   createLinter: () => TSESLint.Linter;
@@ -24,36 +27,28 @@ export interface LintUtils {
   astConverter: typeof astConverter;
   getScriptKind: typeof getScriptKind;
   esquery: typeof esquery;
+  configs: Record<string, TSESLint.Linter.Config>;
 }
 
 export class WebLinter {
-  private readonly host: CompilerHost;
+  private readonly host: ts.CompilerHost;
 
   public storedAST?: TSESTree.Program;
-  public storedTsAST?: SourceFile;
+  public storedTsAST?: ts.SourceFile;
   public storedScope?: Record<string, unknown>;
 
-  private compilerOptions: CompilerOptions;
-  private readonly parserOptions: ParserOptions = {
-    ecmaFeatures: {
-      jsx: false,
-      globalReturn: false,
-    },
-    ecmaVersion: 'latest',
-    project: ['./tsconfig.json'],
-    sourceType: 'module',
-  };
+  private compilerOptions: ts.CompilerOptions;
+  private eslintConfig = eslintConfig;
 
   private linter: TSESLint.Linter;
   private lintUtils: LintUtils;
-  private rules: TSESLint.Linter.RulesRecord = {};
 
-  public readonly ruleNames: { name: string; description?: string }[] = [];
-  public readonly rulesUrl = new Map<string, string | undefined>();
+  public readonly rulesMap: RulesMap = new Map();
+  public readonly configs: Record<string, TSESLint.Linter.Config> = {};
 
   constructor(
-    system: System,
-    compilerOptions: CompilerOptions,
+    system: ts.System,
+    compilerOptions: ts.CompilerOptions,
     lintUtils: LintUtils,
   ) {
     this.compilerOptions = compilerOptions;
@@ -68,41 +63,45 @@ export class WebLinter {
       },
     });
 
+    this.configs = lintUtils.configs;
+
     this.linter.getRules().forEach((item, name) => {
-      this.ruleNames.push({
+      this.rulesMap.set(name, {
         name: name,
         description: item.meta?.docs?.description,
+        url: item.meta?.docs?.url,
       });
-      this.rulesUrl.set(name, item.meta?.docs?.url);
     });
   }
 
-  get eslintConfig(): TSESLint.Linter.Config {
-    return {
-      parser: PARSER_NAME,
-      parserOptions: this.parserOptions,
-      rules: this.rules,
-    };
+  lint(code: string, filename: string): TSESLint.Linter.LintMessage[] {
+    return this.linter.verify(code, this.eslintConfig, {
+      filename,
+    });
   }
 
-  lint(code: string): TSESLint.Linter.LintMessage[] {
-    return this.linter.verify(code, this.eslintConfig);
+  fix(code: string, filename: string): TSESLint.Linter.FixReport {
+    return this.linter.verifyAndFix(code, this.eslintConfig, {
+      fix: true,
+      filename,
+    });
   }
 
-  fix(code: string): TSESLint.Linter.FixReport {
-    return this.linter.verifyAndFix(code, this.eslintConfig, { fix: true });
-  }
-
-  updateRules(rules: TSESLint.Linter.RulesRecord): void {
-    this.rules = rules;
+  updateEslintConfig(config: EslintRC): void {
+    const resolvedConfig = this.resolveEslintConfig(config);
+    this.eslintConfig.rules = resolvedConfig.rules;
+    // TODO: overrides are not fully supported yet
+    this.eslintConfig.overrides = resolvedConfig.overrides;
   }
 
   updateParserOptions(jsx?: boolean, sourceType?: TSESLint.SourceType): void {
-    this.parserOptions.ecmaFeatures!.jsx = jsx ?? false;
-    this.parserOptions.sourceType = sourceType ?? 'module';
+    this.eslintConfig.parserOptions ??= {};
+    this.eslintConfig.parserOptions.ecmaFeatures ??= {};
+    this.eslintConfig.parserOptions.ecmaFeatures.jsx = jsx ?? false;
+    this.eslintConfig.parserOptions.sourceType = sourceType ?? 'module';
   }
 
-  updateCompilerOptions(options: CompilerOptions = {}): void {
+  updateCompilerOptions(options: ts.CompilerOptions = {}): void {
     this.compilerOptions = options;
   }
 
@@ -156,5 +155,37 @@ export class WebLinter {
       scopeManager,
       visitorKeys: this.lintUtils.visitorKeys,
     };
+  }
+
+  private resolveEslintConfig(
+    cfg: Partial<TSESLint.Linter.Config>,
+  ): TSESLint.Linter.Config {
+    const config = {
+      rules: {},
+      overrides: [],
+    };
+    if (cfg.extends) {
+      const cfgExtends = Array.isArray(cfg.extends)
+        ? cfg.extends
+        : [cfg.extends];
+      for (const extendsName of cfgExtends) {
+        if (typeof extendsName === 'string' && extendsName in this.configs) {
+          const resolved = this.resolveEslintConfig(this.configs[extendsName]);
+          if (resolved.rules) {
+            Object.assign(config.rules, resolved.rules);
+          }
+          if (resolved.overrides) {
+            Object.assign(config.overrides, resolved.overrides);
+          }
+        }
+      }
+    }
+    if (cfg.rules) {
+      Object.assign(config.rules, cfg.rules);
+    }
+    if (cfg.overrides) {
+      Object.assign(config.overrides, cfg.overrides);
+    }
+    return config;
   }
 }

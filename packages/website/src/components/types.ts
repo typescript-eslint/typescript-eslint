@@ -7,10 +7,7 @@ export type SourceType = TSESLint.SourceType;
 export type RulesRecord = TSESLint.Linter.RulesRecord;
 export type RuleEntry = TSESLint.Linter.RuleEntry;
 
-export interface RuleDetails {
-  name: string;
-  description?: string;
-}
+export type { RuleDetails } from './linter/WebLinter';
 
 export type TabType = 'code' | 'tsconfig' | 'eslintrc';
 

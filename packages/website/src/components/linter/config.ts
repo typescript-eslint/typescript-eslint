@@ -1,4 +1,7 @@
 import type { ParseSettings } from '@typescript-eslint/typescript-estree/use-at-your-own-risk';
+import type { TSESLint } from '@typescript-eslint/utils';
+
+export const PARSER_NAME = '@typescript-eslint/parser';
 
 export const parseSettings: ParseSettings = {
   allowInvalidAST: false,
@@ -25,4 +28,18 @@ export const parseSettings: ParseSettings = {
   tokens: [],
   tsconfigMatchCache: new Map(),
   tsconfigRootDir: '/',
+};
+
+export const eslintConfig: TSESLint.Linter.Config = {
+  parser: PARSER_NAME,
+  parserOptions: {
+    ecmaFeatures: {
+      jsx: false,
+      globalReturn: false,
+    },
+    ecmaVersion: 'latest',
+    project: ['./tsconfig.json'],
+    sourceType: 'module',
+  },
+  rules: {},
 };

@@ -93,7 +93,7 @@ export const useSandboxServices = (
         const webLinter = new WebLinter(system, compilerOptions, lintUtils);
 
         onLoaded(
-          webLinter.ruleNames,
+          Array.from(webLinter.rulesMap.values()),
           Array.from(
             new Set([...sandboxInstance.supportedVersions, window.ts.version]),
           )

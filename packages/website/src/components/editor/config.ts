@@ -2,6 +2,7 @@ import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import type Monaco from 'monaco-editor';
 
 import { getTypescriptOptions } from '../config/utils';
+import type { WebLinter } from '../linter/WebLinter';
 
 export function createCompilerOptions(
   jsx = false,
@@ -34,37 +35,45 @@ export function createCompilerOptions(
   return options;
 }
 
-export function getEslintSchema(
-  rules: { name: string; description?: string }[],
-): JSONSchema4 {
-  const properties = rules.reduce<Record<string, JSONSchema4>>(
-    (rules, item) => {
-      rules[item.name] = {
-        description: item.description,
-        oneOf: [
-          {
-            type: ['string', 'number'],
-            enum: ['off', 'warn', 'error', 0, 1, 2],
-          },
-          {
-            type: 'array',
-            items: [
-              {
-                type: ['string', 'number'],
-                enum: ['off', 'warn', 'error', 0, 1, 2],
-              },
-            ],
-          },
-        ],
-      };
-      return rules;
-    },
-    {},
-  );
+export function getEslintSchema(linter: WebLinter): JSONSchema4 {
+  const properties: Record<string, JSONSchema4> = {};
+
+  for (const [, item] of linter.rulesMap) {
+    properties[item.name] = {
+      description: `${item.description}\n ${item.url}`,
+      title: item.name.startsWith('@typescript') ? 'Rules' : 'Core rules',
+      default: 'off',
+      oneOf: [
+        {
+          type: ['string', 'number'],
+          enum: ['off', 'warn', 'error', 0, 1, 2],
+        },
+        {
+          type: 'array',
+          items: [
+            {
+              type: ['string', 'number'],
+              enum: ['off', 'warn', 'error', 0, 1, 2],
+            },
+          ],
+        },
+      ],
+    };
+  }
 
   return {
     type: 'object',
     properties: {
+      extends: {
+        oneOf: [
+          { type: 'string' },
+          {
+            type: 'array',
+            items: { type: 'string', enum: Object.keys(linter.configs) },
+            uniqueItems: true,
+          },
+        ],
+      },
       rules: {
         type: 'object',
         properties: properties,
