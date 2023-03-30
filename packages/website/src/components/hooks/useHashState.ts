@@ -162,6 +162,7 @@ const retrieveStateFromLocalStorage = (): Partial<ConfigModel> | undefined => {
 const writeStateToLocalStorage = (newState: ConfigModel): void => {
   const config: Partial<ConfigModel> = {
     ts: newState.ts,
+    fileType: newState.fileType,
     sourceType: newState.sourceType,
     showAST: newState.showAST,
   };
