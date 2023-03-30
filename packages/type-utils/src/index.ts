@@ -18,5 +18,5 @@ export {
   typescriptVersionIsAtLeast,
   getScriptKind,
   getLanguageVariant,
-  isNewModuleExtension,
+  isNodeNextModuleExtension,
 } from '@typescript-eslint/typescript-estree';

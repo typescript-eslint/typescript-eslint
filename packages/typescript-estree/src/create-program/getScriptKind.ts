@@ -1,7 +1,7 @@
 import path from 'path';
 import * as ts from 'typescript';
 
-function isNewModuleExtension(filePath: string): boolean {
+function isNodeNextModuleExtension(filePath: string): boolean {
   const extension = path.extname(filePath).toLowerCase();
   // note - we only respect the user's jsx setting for unknown extensions
   // this is so that we always match TS's internal script kind logic, preventing
@@ -22,7 +22,7 @@ function isNewModuleExtension(filePath: string): boolean {
       return true;
 
     default:
-      // unknown extension, we assume this is not a new module extension
+      // unknown extension, we assume this is not a node-next module extension
       return false;
   }
 }
@@ -73,4 +73,4 @@ function getLanguageVariant(scriptKind: ts.ScriptKind): ts.LanguageVariant {
   }
 }
 
-export { getScriptKind, getLanguageVariant, isNewModuleExtension };
+export { getScriptKind, getLanguageVariant, isNodeNextModuleExtension };

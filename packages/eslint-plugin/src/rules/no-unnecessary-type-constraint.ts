@@ -1,7 +1,7 @@
 import {
   getLanguageVariant,
   getScriptKind,
-  isNewModuleExtension,
+  isNodeNextModuleExtension,
 } from '@typescript-eslint/type-utils';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
@@ -71,7 +71,7 @@ export default util.createRule({
       !!context.parserOptions.ecmaFeatures?.jsx,
     );
     const inJsx = getLanguageVariant(scriptKind) === ts.LanguageVariant.JSX;
-    const newModuleExtension = isNewModuleExtension(filename);
+    const nodeNextModuleExtension = isNodeNextModuleExtension(filename);
     const source = context.getSourceCode();
 
     const checkNode = (
@@ -79,7 +79,8 @@ export default util.createRule({
       inArrowFunction: boolean,
     ): void => {
       const constraint =
-        !newModuleExtension && unnecessaryConstraints.get(node.constraint.type);
+        !nodeNextModuleExtension &&
+        unnecessaryConstraints.get(node.constraint.type);
       function shouldAddTrailingComma(): boolean {
         if (!inArrowFunction || !inJsx) {
           return false;
