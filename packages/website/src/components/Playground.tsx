@@ -50,7 +50,7 @@ function rangeReducer<T extends SelectedRange | null>(
 }
 function Playground(): JSX.Element {
   const [state, setState] = useHashState({
-    fileType: 'ts',
+    fileType: 'tsx',
     showAST: false,
     sourceType: 'module',
     code: '',
