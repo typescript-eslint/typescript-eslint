@@ -1,8 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { shallowEqual } from '../lib/shallowEqual';
 import type { ConfigModel, EslintRC, RuleDetails, RuleEntry } from '../types';
-import type { ConfigOptionsType } from './ConfigEditor';
+import type { ConfigOptionsField, ConfigOptionsType } from './ConfigEditor';
 import ConfigEditor from './ConfigEditor';
 import { parseESLintRC, toJson } from './utils';
 
@@ -29,8 +29,9 @@ function checkOptions(rule: [string, unknown]): rule is [string, RuleEntry] {
 
 function ConfigEslint(props: ConfigEslintProps): JSX.Element {
   const { isOpen, config, onClose: onCloseProps, ruleOptions } = props;
-  const [options, updateOptions] = useState<ConfigOptionsType[]>([]);
-  const [configObject, updateConfigObject] = useState<EslintRC>();
+  const [configObject, updateConfigObject] = useState<EslintRC>(() => ({
+    rules: {},
+  }));
 
   useEffect(() => {
     if (isOpen) {
@@ -38,31 +39,24 @@ function ConfigEslint(props: ConfigEslintProps): JSX.Element {
     }
   }, [isOpen, config]);
 
-  useEffect(() => {
-    updateOptions([
+  const options = useMemo((): ConfigOptionsType[] => {
+    const mappedRules: ConfigOptionsField[] = ruleOptions.map(item => ({
+      key: item.name,
+      label: item.description,
+      type: 'boolean',
+      defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
+    }));
+
+    return [
       {
         heading: 'Rules',
-        fields: ruleOptions
-          .filter(item => item.name.startsWith('@typescript'))
-          .map(item => ({
-            key: item.name,
-            label: item.description,
-            type: 'boolean',
-            defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
-          })),
+        fields: mappedRules.filter(item => item.key.startsWith('@typescript')),
       },
       {
         heading: 'Core rules',
-        fields: ruleOptions
-          .filter(item => !item.name.startsWith('@typescript'))
-          .map(item => ({
-            key: item.name,
-            label: item.description,
-            type: 'boolean',
-            defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
-          })),
+        fields: mappedRules.filter(item => !item.key.startsWith('@typescript')),
       },
-    ]);
+    ];
   }, [ruleOptions]);
 
   const onClose = useCallback(
@@ -91,7 +85,7 @@ function ConfigEslint(props: ConfigEslintProps): JSX.Element {
     <ConfigEditor
       header="Eslint Config"
       options={options}
-      values={configObject?.rules ?? {}}
+      values={configObject.rules}
       isOpen={isOpen}
       onClose={onClose}
     />

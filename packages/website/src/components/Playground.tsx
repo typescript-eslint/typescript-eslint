@@ -94,7 +94,7 @@ function Playground(): JSX.Element {
 
   return (
     <div className={styles.codeContainer}>
-      {ruleNames.length > 0 && (
+      {!isLoading && (
         <ConfigEslint
           isOpen={showModal === 'eslintrc'}
           ruleOptions={ruleNames}
@@ -102,11 +102,13 @@ function Playground(): JSX.Element {
           onClose={updateModal}
         />
       )}
-      <ConfigTypeScript
-        isOpen={showModal === 'tsconfig'}
-        config={state.tsconfig}
-        onClose={updateModal}
-      />
+      {!isLoading && (
+        <ConfigTypeScript
+          isOpen={showModal === 'tsconfig'}
+          config={state.tsconfig}
+          onClose={updateModal}
+        />
+      )}
       <div className={styles.codeBlocks}>
         <ConditionalSplitPane
           render={enableSplitPanes}

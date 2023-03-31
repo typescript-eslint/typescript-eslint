@@ -1,7 +1,7 @@
 import Dropdown from '@site/src/components/inputs/Dropdown';
 import Modal from '@site/src/components/layout/Modal';
 import clsx from 'clsx';
-import React, { useCallback, useEffect, useReducer, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import useFocus from '../hooks/useFocus';
 import Checkbox from '../inputs/Checkbox';
@@ -31,47 +31,6 @@ export interface ConfigEditorProps {
   readonly onClose: (config: ConfigEditorValues) => void;
 }
 
-function reducerObject(
-  state: ConfigEditorValues,
-  action:
-    | { type: 'init'; config?: ConfigEditorValues }
-    | {
-        type: 'set';
-        name: string;
-        value: unknown;
-      }
-    | {
-        type: 'toggle';
-        checked: boolean;
-        default: unknown[] | undefined;
-        name: string;
-      },
-): ConfigEditorValues {
-  switch (action.type) {
-    case 'init': {
-      return action.config ?? {};
-    }
-    case 'set': {
-      const newState = { ...state };
-      if (action.value === '') {
-        delete newState[action.name];
-      } else {
-        newState[action.name] = action.value;
-      }
-      return newState;
-    }
-    case 'toggle': {
-      const newState = { ...state };
-      if (action.checked) {
-        newState[action.name] = action.default ? action.default[0] : true;
-      } else if (action.name in newState) {
-        delete newState[action.name];
-      }
-      return newState;
-    }
-  }
-}
-
 function filterConfig(
   options: ConfigOptionsType[],
   filter: string,
@@ -88,18 +47,79 @@ function isDefault(value: unknown, defaults?: unknown[]): boolean {
   return defaults ? defaults.includes(value) : value === true;
 }
 
+interface ConfigEditorFieldProps {
+  readonly item: ConfigOptionsField;
+  readonly value: unknown;
+  readonly onChange: (name: string, value: unknown) => void;
+}
+
+function ConfigEditorField({
+  item,
+  value,
+  onChange,
+}: ConfigEditorFieldProps): JSX.Element {
+  return (
+    <label className={styles.searchResult}>
+      <span className={styles.searchResultDescription}>
+        <span className={styles.searchResultName}>{item.key}</span>
+        {item.label && <br />}
+        {item.label && <span> {item.label}</span>}
+      </span>
+      {(item.type === 'boolean' && (
+        <Checkbox
+          name={`config_${item.key}`}
+          value={item.key}
+          indeterminate={Boolean(value) && !isDefault(value, item.defaults)}
+          checked={Boolean(value)}
+          onChange={(checked): void =>
+            onChange(item.key, checked ? item.defaults?.[0] ?? true : undefined)
+          }
+        />
+      )) ||
+        (item.type === 'string' && item.enum && (
+          <Dropdown
+            name={`config_${item.key}`}
+            value={String(value)}
+            options={item.enum}
+            onChange={(value): void => onChange(item.key, value)}
+          />
+        ))}
+    </label>
+  );
+}
+
 function ConfigEditor(props: ConfigEditorProps): JSX.Element {
-  const { onClose: onCloseProps, isOpen, values } = props;
+  const { onClose: onCloseProps, isOpen, values, options, header } = props;
   const [filter, setFilter] = useState<string>('');
-  const [config, setConfig] = useReducer(reducerObject, {});
+  const [config, setConfig] = useState<ConfigEditorValues>(() => ({}));
   const [filterInput, setFilterFocus] = useFocus<HTMLInputElement>();
+
+  const filteredOptions = useMemo(
+    () => filterConfig(options, filter),
+    [options, filter],
+  );
 
   const onClose = useCallback(() => {
     onCloseProps(config);
   }, [onCloseProps, config]);
 
+  const onChange = useCallback(
+    (name: string, value: unknown): void => {
+      setConfig(oldConfig => {
+        const newConfig = { ...oldConfig };
+        if (value === '' || value == null) {
+          delete newConfig[name];
+        } else {
+          newConfig[name] = value;
+        }
+        return newConfig;
+      });
+    },
+    [setConfig],
+  );
+
   useEffect(() => {
-    setConfig({ type: 'init', config: values });
+    setConfig(values);
   }, [values]);
 
   useEffect(() => {
@@ -109,7 +129,7 @@ function ConfigEditor(props: ConfigEditorProps): JSX.Element {
   }, [isOpen, setFilterFocus]);
 
   return (
-    <Modal header={props.header} isOpen={isOpen} onClose={onClose}>
+    <Modal header={header} isOpen={isOpen} onClose={onClose}>
       <div className={styles.searchBar}>
         <Text
           ref={filterInput}
@@ -120,59 +140,22 @@ function ConfigEditor(props: ConfigEditorProps): JSX.Element {
         />
       </div>
       <div className={clsx('thin-scrollbar', styles.searchResultContainer)}>
-        {filterConfig(props.options, filter).map(group => (
-          <div key={group.heading}>
-            <h3 className={styles.searchResultGroup}>{group.heading}</h3>
-            <div>
-              {group.fields.map(item => (
-                <label className={styles.searchResult} key={item.key}>
-                  <span className={styles.searchResultDescription}>
-                    <span className={styles.searchResultName}>{item.key}</span>
-                    {item.label && (
-                      <>
-                        <br />
-                        <span> {item.label}</span>
-                      </>
-                    )}
-                  </span>
-                  {item.type === 'boolean' && (
-                    <Checkbox
-                      name={`config_${item.key}`}
-                      value={item.key}
-                      indeterminate={
-                        Boolean(config[item.key]) &&
-                        !isDefault(config[item.key], item.defaults)
-                      }
-                      checked={Boolean(config[item.key])}
-                      onChange={(checked, name): void =>
-                        setConfig({
-                          type: 'toggle',
-                          checked,
-                          default: item.defaults,
-                          name,
-                        })
-                      }
-                    />
-                  )}
-                  {item.type === 'string' && item.enum && (
-                    <Dropdown
-                      name={`config_${item.key}`}
-                      value={String(config[item.key])}
-                      options={item.enum}
-                      onChange={(value): void => {
-                        setConfig({
-                          type: 'set',
-                          value,
-                          name: item.key,
-                        });
-                      }}
-                    />
-                  )}
-                </label>
-              ))}
+        {isOpen &&
+          filteredOptions.map(group => (
+            <div key={group.heading}>
+              <h3 className={styles.searchResultGroup}>{group.heading}</h3>
+              <div>
+                {group.fields.map(item => (
+                  <ConfigEditorField
+                    key={item.key}
+                    item={item}
+                    value={config[item.key]}
+                    onChange={onChange}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
       </div>
     </Modal>
   );

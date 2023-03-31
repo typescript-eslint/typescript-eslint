@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { shallowEqual } from '../lib/shallowEqual';
 import type { ConfigModel, TSConfig } from '../types';
@@ -13,9 +13,10 @@ interface ConfigTypeScriptProps {
 }
 
 function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
-  const { onClose: onCloseProps, isOpen, config } = props;
-  const [tsConfigOptions, updateOptions] = useState<ConfigOptionsType[]>([]);
-  const [configObject, updateConfigObject] = useState<TSConfig>();
+  const { isOpen, config, onClose: onCloseProps } = props;
+  const [configObject, updateConfigObject] = useState<TSConfig>(() => ({
+    compilerOptions: {},
+  }));
 
   useEffect(() => {
     if (isOpen) {
@@ -23,39 +24,35 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
     }
   }, [isOpen, config]);
 
-  useEffect(() => {
-    if (window.ts) {
-      updateOptions(
-        Object.values(
-          getTypescriptOptions().reduce<Record<string, ConfigOptionsType>>(
-            (group, item) => {
-              const category = item.category!.message;
-              group[category] = group[category] ?? {
-                heading: category,
-                fields: [],
-              };
-              if (item.type === 'boolean') {
-                group[category].fields.push({
-                  key: item.name,
-                  type: 'boolean',
-                  label: item.description!.message,
-                });
-              } else if (item.type instanceof Map) {
-                group[category].fields.push({
-                  key: item.name,
-                  type: 'string',
-                  label: item.description!.message,
-                  enum: ['', ...Array.from<string>(item.type.keys())],
-                });
-              }
-              return group;
-            },
-            {},
-          ),
-        ),
-      );
-    }
-  }, [isOpen]);
+  const options = useMemo((): ConfigOptionsType[] => {
+    return Object.values(
+      getTypescriptOptions().reduce<Record<string, ConfigOptionsType>>(
+        (group, item) => {
+          const category = item.category!.message;
+          group[category] = group[category] ?? {
+            heading: category,
+            fields: [],
+          };
+          if (item.type === 'boolean') {
+            group[category].fields.push({
+              key: item.name,
+              type: 'boolean',
+              label: item.description!.message,
+            });
+          } else if (item.type instanceof Map) {
+            group[category].fields.push({
+              key: item.name,
+              type: 'string',
+              label: item.description!.message,
+              enum: ['', ...Array.from<string>(item.type.keys())],
+            });
+          }
+          return group;
+        },
+        {},
+      ),
+    );
+  }, []);
 
   const onClose = useCallback(
     (newConfig: Record<string, unknown>) => {
@@ -74,8 +71,8 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
   return (
     <ConfigEditor
       header="TypeScript Config"
-      options={tsConfigOptions}
-      values={configObject?.compilerOptions ?? {}}
+      options={options}
+      values={configObject.compilerOptions}
       isOpen={isOpen}
       onClose={onClose}
     />

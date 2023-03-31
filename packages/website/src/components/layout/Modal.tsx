@@ -13,9 +13,7 @@ interface ModalProps {
   readonly onClose: () => void;
 }
 
-function Modal(props: ModalProps): JSX.Element {
-  const { onClose } = props;
-
+function Modal({ isOpen, onClose, children, header }: ModalProps): JSX.Element {
   useEffect(() => {
     const closeOnEscapeKeyDown = (e: KeyboardEvent): void => {
       if (
@@ -44,7 +42,7 @@ function Modal(props: ModalProps): JSX.Element {
 
   return (
     <div
-      className={clsx(styles.modal, props.isOpen ? styles.open : '')}
+      className={clsx(styles.modal, isOpen ? styles.open : '')}
       onClick={onClick}
     >
       <div
@@ -53,19 +51,17 @@ function Modal(props: ModalProps): JSX.Element {
         className={clsx(styles.modalContent, 'item shadow--md')}
       >
         <div className={styles.modalHeader}>
-          <h2>{props.header}</h2>
+          <h2>{header}</h2>
           <button
             aria-label="Close"
-            onClick={props.onClose}
+            onClick={onClose}
             className={clsx(styles.modalClose, 'clean-btn')}
             type="button"
           >
             <CloseIcon />
           </button>
         </div>
-        <div className={styles.modalBody}>
-          {React.Children.map(props.children, child => child)}
-        </div>
+        <div className={styles.modalBody}>{children}</div>
       </div>
     </div>
   );
