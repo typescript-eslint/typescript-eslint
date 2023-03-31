@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
@@ -8,7 +8,9 @@ type MessageIds =
   | 'as'
   | 'angle-bracket'
   | 'never'
-  | 'unexpectedObjectTypeAssertion';
+  | 'unexpectedObjectTypeAssertion'
+  | 'replaceObjectTypeAssertionWithAnnotation'
+  | 'replaceObjectTypeAssertionWithSatisfies';
 type OptUnion =
   | {
       assertionStyle: 'as' | 'angle-bracket';
@@ -23,6 +25,8 @@ export default util.createRule<Options, MessageIds>({
   name: 'consistent-type-assertions',
   meta: {
     type: 'suggestion',
+    fixable: 'code',
+    hasSuggestions: true,
     docs: {
       description: 'Enforce consistent usage of type assertions',
       recommended: 'stylistic',
@@ -32,6 +36,10 @@ export default util.createRule<Options, MessageIds>({
       'angle-bracket': "Use '<{{cast}}>' instead of 'as {{cast}}'.",
       never: 'Do not use any type assertions.',
       unexpectedObjectTypeAssertion: 'Always prefer const x: T = { ... }.',
+      replaceObjectTypeAssertionWithAnnotation:
+        'Use const x: {{cast}} = { ... } instead.',
+      replaceObjectTypeAssertionWithSatisfies:
+        'Use const x = { ... } satisfies {{cast}} instead.',
     },
     schema: [
       {
@@ -83,6 +91,28 @@ export default util.createRule<Options, MessageIds>({
       );
     }
 
+    function getTextWithParentheses(node: TSESTree.Node): string {
+      // Capture parentheses before and after the node
+      let beforeCount = 0;
+      let afterCount = 0;
+
+      if (util.isParenthesized(node, sourceCode)) {
+        const bodyOpeningParen = sourceCode.getTokenBefore(
+          node,
+          util.isOpeningParenToken,
+        )!;
+        const bodyClosingParen = sourceCode.getTokenAfter(
+          node,
+          util.isClosingParenToken,
+        )!;
+
+        beforeCount = node.range[0] - bodyOpeningParen.range[0];
+        afterCount = bodyClosingParen.range[1] - node.range[1];
+      }
+
+      return sourceCode.getText(node, beforeCount, afterCount);
+    }
+
     function reportIncorrectAssertionType(
       node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
     ): void {
@@ -100,6 +130,19 @@ export default util.createRule<Options, MessageIds>({
           messageId !== 'never'
             ? { cast: sourceCode.getText(node.typeAnnotation) }
             : {},
+        fix:
+          messageId === 'as'
+            ? (fixer): TSESLint.RuleFix[] => [
+                fixer.replaceText(
+                  node,
+                  getTextWithParentheses(node.expression),
+                ),
+                fixer.insertTextAfter(
+                  node,
+                  ` as ${getTextWithParentheses(node.typeAnnotation)}`,
+                ),
+              ]
+            : undefined,
       });
     }
 
@@ -147,9 +190,42 @@ export default util.createRule<Options, MessageIds>({
         checkType(node.typeAnnotation) &&
         node.expression.type === AST_NODE_TYPES.ObjectExpression
       ) {
+        const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
+        if (
+          node.parent?.type === AST_NODE_TYPES.VariableDeclarator &&
+          !node.parent.id.typeAnnotation
+        ) {
+          const { parent } = node;
+          suggest.push({
+            messageId: 'replaceObjectTypeAssertionWithAnnotation',
+            data: { cast: sourceCode.getText(node.typeAnnotation) },
+            fix: fixer => [
+              fixer.insertTextAfter(
+                parent.id,
+                `: ${sourceCode.getText(node.typeAnnotation)}`,
+              ),
+              fixer.replaceText(node, getTextWithParentheses(node.expression)),
+            ],
+          });
+        }
+        suggest.push({
+          messageId: 'replaceObjectTypeAssertionWithSatisfies',
+          data: { cast: sourceCode.getText(node.typeAnnotation) },
+          fix: fixer => [
+            fixer.replaceText(node, getTextWithParentheses(node.expression)),
+            fixer.insertTextAfter(
+              node,
+              ` satisfies ${context
+                .getSourceCode()
+                .getText(node.typeAnnotation)}`,
+            ),
+          ],
+        });
+
         context.report({
           node,
           messageId: 'unexpectedObjectTypeAssertion',
+          suggest,
         });
       }
     }
