@@ -1,0 +1,30 @@
+.tabContainer {
+  display: flex;
+  justify-content: space-between;
+  background: var(--playground-main-color);
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.tabStyle {
+  --ifm-button-padding-horizontal: 1rem;
+  --ifm-button-background-color: var(--ifm-background-surface-color);
+  --ifm-button-color: var(--ifm-color-emphasis-700);
+  --ifm-button-border-color: var(--ifm-color-emphasis-200);
+
+  font-size: 0.75rem;
+}
+
+.tabStyle svg {
+  margin-left: 0.3rem;
+}
+
+.tabStyle:hover {
+  --ifm-button-background-color: var(--playground-secondary-color);
+}
+
+.tabStyle:disabled {
+  --ifm-button-background-color: var(--playground-secondary-color);
+  --ifm-button-color: var(--ifm-color-emphasis-900);
+
+  opacity: 1;
+}

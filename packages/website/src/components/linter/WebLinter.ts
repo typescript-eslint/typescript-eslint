@@ -2,8 +2,10 @@ import { createVirtualCompilerHost } from '@site/src/components/linter/CompilerH
 import { parseSettings } from '@site/src/components/linter/config';
 import type { analyze } from '@typescript-eslint/scope-manager';
 import type { ParserOptions } from '@typescript-eslint/types';
-import type { astConverter } from '@typescript-eslint/typescript-estree/use-at-your-own-risk/ast-converter';
-import type { getScriptKind } from '@typescript-eslint/typescript-estree/use-at-your-own-risk/getScriptKind';
+import type {
+  astConverter,
+  getScriptKind,
+} from '@typescript-eslint/typescript-estree/use-at-your-own-risk';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type esquery from 'esquery';
 import type {
@@ -127,7 +129,7 @@ export class WebLinter {
 
     const { estree: ast, astMaps } = this.lintUtils.astConverter(
       tsAst,
-      { ...parseSettings, code, jsx: isJsx },
+      { ...parseSettings, code, codeFullText: code, jsx: isJsx },
       true,
     );
 

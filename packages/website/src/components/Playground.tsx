@@ -1,13 +1,3 @@
-import ASTViewerScope from '@site/src/components/ASTViewerScope';
-import ConfigEslint from '@site/src/components/config/ConfigEslint';
-import ConfigTypeScript from '@site/src/components/config/ConfigTypeScript';
-import {
-  defaultEslintConfig,
-  defaultTsConfig,
-} from '@site/src/components/config/utils';
-import EditorTabs from '@site/src/components/EditorTabs';
-import { ErrorsViewer, ErrorViewer } from '@site/src/components/ErrorsViewer';
-import { ESQueryFilter } from '@site/src/components/ESQueryFilter';
 import type { TSESTree } from '@typescript-eslint/utils';
 import clsx from 'clsx';
 import type * as ESQuery from 'esquery';
@@ -17,10 +7,18 @@ import type { SourceFile } from 'typescript';
 
 import { useMediaQuery } from '../hooks/useMediaQuery';
 import ASTViewerESTree from './ASTViewerESTree';
+import ASTViewerScope from './ASTViewerScope';
 import ASTViewerTS from './ASTViewerTS';
+import { detailTabs } from './config';
+import ConfigEslint from './config/ConfigEslint';
+import ConfigTypeScript from './config/ConfigTypeScript';
+import { defaultEslintConfig, defaultTsConfig } from './config/utils';
 import { EditorEmbed } from './editor/EditorEmbed';
 import { LoadingEditor } from './editor/LoadingEditor';
+import { ErrorsViewer, ErrorViewer } from './ErrorsViewer';
+import { ESQueryFilter } from './ESQueryFilter';
 import useHashState from './hooks/useHashState';
+import EditorTabs from './layout/EditorTabs';
 import Loader from './layout/Loader';
 import { shallowEqual } from './lib/shallowEqual';
 import OptionsSelector from './OptionsSelector';
@@ -138,8 +136,9 @@ function Playground(): JSX.Element {
               {isLoading && <Loader />}
               <EditorTabs
                 tabs={['code', 'tsconfig', 'eslintrc']}
-                activeTab={activeTab}
+                active={activeTab}
                 change={setTab}
+                showVisualEditor={activeTab !== 'code'}
                 showModal={(): void => setShowModal(activeTab)}
               />
               <div className={styles.tabCode}>
@@ -165,12 +164,20 @@ function Playground(): JSX.Element {
               />
             </div>
             <div className={styles.astViewer}>
-              {state.showAST === 'es' && (
-                <ESQueryFilter
-                  onChange={setEsQueryFilter}
-                  onError={setEsQueryError}
+              <div className={styles.playgroundInfoHeader}>
+                <EditorTabs
+                  tabs={detailTabs}
+                  active={state.showAST ?? false}
+                  change={(v): void => setState({ showAST: v })}
                 />
-              )}
+                {state.showAST === 'es' && (
+                  <ESQueryFilter
+                    onChange={setEsQueryFilter}
+                    onError={setEsQueryError}
+                  />
+                )}
+              </div>
+
               {(state.showAST === 'ts' && tsAst && (
                 <ASTViewerTS
                   value={tsAst}

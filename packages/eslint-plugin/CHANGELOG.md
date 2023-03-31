@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.57.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.56.0...v5.57.0) (2023-03-27)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unnecessary-boolean-literal-compare] simplify fixer and add support for double negation ([#6620](https://github.com/typescript-eslint/typescript-eslint/issues/6620)) ([81c8519](https://github.com/typescript-eslint/typescript-eslint/commit/81c85193d27d2e7f6d12bc259088b9b73dbe1e8b))
+* **eslint-plugin:** correct crashes with getTypeArguments for ts < 3.7 ([#6767](https://github.com/typescript-eslint/typescript-eslint/issues/6767)) ([59eab58](https://github.com/typescript-eslint/typescript-eslint/commit/59eab587890a915387444d00c4a9387aed602718))
+
+
+### Features
+
+* **eslint-plugin:** [consistent-type-assertions] add suggestions for objectLiteralTypeAssertions ([#6642](https://github.com/typescript-eslint/typescript-eslint/issues/6642)) ([720e811](https://github.com/typescript-eslint/typescript-eslint/commit/720e81138b66c94c60c4a4471b86b7d8567b6df0))
+* **eslint-plugin:** [consistent-type-assertions] autofix angle bracket assertions to as ([#6641](https://github.com/typescript-eslint/typescript-eslint/issues/6641)) ([ad8ea64](https://github.com/typescript-eslint/typescript-eslint/commit/ad8ea64dbdf06c92ff72b48022f041693a8d7076))
+* **eslint-plugin:** add `no-duplicate-type-constituents` rule ([#5728](https://github.com/typescript-eslint/typescript-eslint/issues/5728)) ([bc31078](https://github.com/typescript-eslint/typescript-eslint/commit/bc31078cf86d69eee881e4a7daeffa347c1d82a7))
+
+
+
+
+
 # [5.56.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.55.0...v5.56.0) (2023-03-20)
 
 

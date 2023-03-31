@@ -24,7 +24,6 @@ import type { CommonEditorProps } from './types';
 import type { SandboxInstance } from './useSandboxServices';
 
 export interface LoadedEditorProps extends CommonEditorProps {
-  readonly main: typeof Monaco;
   readonly sandboxInstance: SandboxInstance;
   readonly webLinter: WebLinter;
 }
@@ -35,7 +34,6 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   eslintrc,
   decoration,
   jsx,
-  main,
   onEsASTChange,
   onScopeChange,
   onTsASTChange,
@@ -186,14 +184,16 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     // configure the JSON language support with schemas and schema associations
     sandboxInstance.monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
       validate: true,
+      enableSchemaRequest: false,
+      allowComments: true,
       schemas: [
         {
-          uri: 'eslint-schema.json', // id of the first schema
+          uri: sandboxInstance.monaco.Uri.file('eslint-schema.json').toString(), // id of the first schema
           fileMatch: [tabs.eslintrc.uri.toString()], // associate with our model
           schema: getEslintSchema(webLinter.ruleNames),
         },
         {
-          uri: 'ts-schema.json', // id of the first schema
+          uri: sandboxInstance.monaco.Uri.file('ts-schema.json').toString(), // id of the first schema
           fileMatch: [tabs.tsconfig.uri.toString()], // associate with our model
           schema: getTsConfigSchema(),
         },
@@ -201,7 +201,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     });
 
     const subscriptions = [
-      main.languages.registerCodeActionProvider(
+      sandboxInstance.monaco.languages.registerCodeActionProvider(
         'typescript',
         createProvideCodeActions(codeActions),
       ),
@@ -283,7 +283,6 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     };
   }, [
     codeActions,
-    main.languages,
     onChange,
     onSelect,
     sandboxInstance.editor,

@@ -22,6 +22,7 @@ const Text = React.forwardRef<HTMLInputElement, DropdownProps>(
         name={props.name}
         className={clsx(styles.textInput, props.className)}
         type={props.type ?? 'text'}
+        autoComplete="off"
         placeholder={props.placeholder}
         ref={ref}
       />

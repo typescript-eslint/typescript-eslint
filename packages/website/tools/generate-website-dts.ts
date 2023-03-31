@@ -1,10 +1,24 @@
+import * as fs from 'node:fs/promises';
+import * as path from 'node:path';
+
 import fetch from 'cross-fetch';
-import * as fs from 'fs';
 import makeDir from 'make-dir';
-import * as path from 'path';
+import prettier from 'prettier';
 import { rimraf } from 'rimraf';
 
 const BASE_HOST = 'https://www.staging-typescript.org';
+
+const banner = [
+  '/**********************************************',
+  ' *      DO NOT MODIFY THIS FILE MANUALLY      *',
+  ' *                                            *',
+  ' *     THIS FILE HAS BEEN FETCHED FROM THE    *',
+  ' *      TYPESCRIPT PLAYGROUND SOURCE CODE.    *',
+  ' *                                            *',
+  ' *    YOU CAN REGENERATE THESE FILES USING    *',
+  ' *          yarn generate-website-dts         *',
+  ' **********************************************/',
+];
 
 async function getFileAndStoreLocally(
   url: string,
@@ -16,104 +30,75 @@ async function getFileAndStoreLocally(
     method: 'GET',
     headers: { 'Content-Type': 'application/json' },
   });
-  const contents = await response.text();
-  fs.writeFileSync(
-    path,
-    [
-      '/**********************************************',
-      ' *      DO NOT MODIFY THIS FILE MANUALLY      *',
-      ' *                                            *',
-      ' *     THIS FILE HAS BEEN FETCHED FROM THE    *',
-      ' *      TYPESCRIPT PLAYGROUND SOURCE CODE.    *',
-      ' *                                            *',
-      ' *    YOU CAN REGENERATE THESE FILES USING    *',
-      ' *          yarn generate-website-dts         *',
-      ' **********************************************/',
-      '',
-      editFunc(contents),
-    ].join('\n'),
-    'utf8',
+
+  const config = await prettier.resolveConfig(path);
+
+  let contents = await response.text();
+  contents = [...banner, '', editFunc(contents)].join('\n');
+  contents = prettier.format(contents, {
+    parser: 'typescript',
+    ...config,
+  });
+
+  await fs.writeFile(path, contents, 'utf8');
+}
+
+function replaceImports(text: string, from: string, to: string): string {
+  const regex = new RegExp(`from ["']${from}["']`, 'g');
+  const regex2 = new RegExp(`import\\(["']${from}["']\\)`, 'g');
+  return text.replace(regex, `from '${to}'`).replace(regex2, `import('${to}')`);
+}
+
+function injectImports(text: string, from: string, safeName: string): string {
+  const regex = new RegExp(`import\\(["']${from}["']\\)`, 'g');
+  if (regex.test(text)) {
+    return (
+      `import type * as ${safeName} from '${from}';\n` +
+      text.replace(regex, safeName)
+    );
+  }
+  return text;
+}
+
+function processFiles(text: string): string {
+  let result = text;
+  result = injectImports(result, 'monaco-editor', 'MonacoEditor');
+  result = injectImports(result, 'typescript', 'ts');
+  result = replaceImports(result, './vendor/lzstring.min', 'lz-string');
+  result = replaceImports(
+    result,
+    './vendor/typescript-vfs',
+    './typescript-vfs',
   );
+  // replace the import of the worker with the type
+  result = result.replace(
+    /import\s*\{\s*TypeScriptWorker\s*}\s*from\s*['"].\/tsWorker['"];/,
+    'import TypeScriptWorker = MonacoEditor.languages.typescript.TypeScriptWorker;',
+  );
+  // replace all imports with import type
+  result = result.replace(/^import\s+(?!type)/gm, 'import type ');
+  return result;
 }
 
 async function main(): Promise<void> {
   const vendor = path.join(__dirname, '..', 'src', 'vendor');
-  const ds = path.join(vendor, 'ds');
 
   console.log('Cleaning...');
   await rimraf(vendor);
   await makeDir(vendor);
-  await makeDir(ds);
-
-  // The API for the monaco typescript worker
-  await getFileAndStoreLocally(
-    '/js/sandbox/tsWorker.d.ts',
-    path.join(vendor, 'tsWorker.d.ts'),
-  );
-
-  // The Design System DTS
-  await getFileAndStoreLocally(
-    '/js/playground/ds/createDesignSystem.d.ts',
-    path.join(ds, 'createDesignSystem.d.ts'),
-    text => {
-      return text.replace('typescriptlang-org/static/js/sandbox', '../sandbox');
-    },
-  );
-
-  // Util funcs
-  await getFileAndStoreLocally(
-    '/js/playground/pluginUtils.d.ts',
-    path.join(vendor, 'pluginUtils.d.ts'),
-    text => {
-      return text.replace('from "@typescript/sandbox"', 'from "./sandbox"');
-    },
-  );
 
   // TS-VFS
   await getFileAndStoreLocally(
     '/js/sandbox/vendor/typescript-vfs.d.ts',
     path.join(vendor, 'typescript-vfs.d.ts'),
-    text => {
-      const removeImports = text.replace(
-        '/// <reference types="lz-string" />',
-        '',
-      );
-      return removeImports.replace('import("lz-string").LZStringStatic', 'any');
-    },
+    processFiles,
   );
 
   // Sandbox
   await getFileAndStoreLocally(
     '/js/sandbox/index.d.ts',
     path.join(vendor, 'sandbox.d.ts'),
-    text => {
-      return text
-        .replace(/import lzstring/g, '// import lzstring')
-        .replace('"./vendor/typescript-vfs"', "'./typescript-vfs'")
-        .replace('lzstring: typeof lzstring', '// lzstring: typeof lzstring');
-    },
-  );
-
-  // Playground
-  await getFileAndStoreLocally(
-    '/js/playground/index.d.ts',
-    path.join(vendor, '/playground.d.ts'),
-    text => {
-      const replaceSandbox = text.replace(/@typescript\/sandbox/g, './sandbox');
-      const replaceTSVFS = replaceSandbox.replace(
-        /typescriptlang-org\/static\/js\/sandbox\/vendor\/typescript-vfs/g,
-        './typescript-vfs',
-      );
-      const removedLZ = replaceTSVFS.replace(
-        'lzstring: typeof',
-        '// lzstring: typeof',
-      );
-      const removedWorker = removedLZ.replace(
-        'getWorkerProcess',
-        '// getWorkerProcess',
-      );
-      return removedWorker.replace('ui:', '// ui:');
-    },
+    processFiles,
   );
 }
 

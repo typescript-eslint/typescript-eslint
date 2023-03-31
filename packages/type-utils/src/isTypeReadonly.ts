@@ -2,6 +2,7 @@ import { ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
+import { getTypeArguments } from './getTypeArguments';
 import { getTypeOfPropertyOfType } from './propertyTypes';
 import type { TypeOrValueSpecifier } from './TypeOrValueSpecifier';
 import {
@@ -56,9 +57,7 @@ function isTypeReadonlyArrayOrTuple(
   function checkTypeArguments(arrayType: ts.TypeReference): Readonlyness {
     const typeArguments =
       // getTypeArguments was only added in TS3.7
-      checker.getTypeArguments
-        ? checker.getTypeArguments(arrayType)
-        : arrayType.typeArguments ?? [];
+      getTypeArguments(arrayType, checker);
 
     // this shouldn't happen in reality as:
     // - tuples require at least 1 type argument

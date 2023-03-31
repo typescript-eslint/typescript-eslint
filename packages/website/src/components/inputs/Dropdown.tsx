@@ -1,7 +1,7 @@
 import clsx from 'clsx';
 import React from 'react';
 
-import styles from '../OptionsSelector.module.css';
+import styles from './Dropdown.module.css';
 
 export interface DropdownOption<T> {
   readonly value: T;
@@ -28,10 +28,10 @@ function Dropdown<T extends boolean | string | number>(
 
   return (
     <select
+      className={clsx(styles.dropdown, props.className)}
       name={props.name}
       disabled={props.disabled}
       value={String(props.value)}
-      className={clsx(styles.optionSelect, props.className)}
       onChange={(e): void => {
         const selected = options.find(
           item => String(item.value) === e.target.value,
