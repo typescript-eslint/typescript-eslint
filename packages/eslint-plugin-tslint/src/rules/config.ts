@@ -1,9 +1,26 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
-import memoize from 'lodash/memoize';
 import type { RuleSeverity } from 'tslint';
 import { Configuration } from 'tslint';
 
 import { CustomLinter } from '../custom-linter';
+
+function memoize<T extends (...args: never[]) => unknown>(
+  func: T,
+  resolver: (...args: Parameters<T>) => string,
+): T {
+  const cache = new Map<string, ReturnType<T>>();
+  const memoized = function (...args) {
+    const key = resolver(...(args as Parameters<T>));
+
+    if (cache.has(key)) {
+      return cache.get(key)!;
+    }
+    const result = func(...args);
+    cache.set(key, result as ReturnType<T>);
+    return result;
+  } as T;
+  return memoized;
+}
 
 // note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment

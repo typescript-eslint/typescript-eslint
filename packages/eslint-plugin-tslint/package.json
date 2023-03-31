@@ -38,8 +38,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/utils": "5.57.0",
-    "lodash": "^4.17.21"
+    "@typescript-eslint/utils": "5.57.0"
   },
   "peerDependencies": {
     "eslint": "^6.0.0 || ^7.0.0 || ^8.0.0",
