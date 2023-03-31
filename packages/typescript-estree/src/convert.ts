@@ -2521,7 +2521,7 @@ export class Converter {
         );
 
       case SyntaxKind.MappedType: {
-        if (Array.isArray(node.members) && node.members.length > 0) {
+        if (node.members && node.members.length > 0) {
           this.#throwUnlessAllowInvalidAST(
             node.members[0],
             'A mapped type may not declare properties or methods.',
