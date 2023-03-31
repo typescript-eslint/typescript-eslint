@@ -44,7 +44,8 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
             case 'stylistic':
               return '🎨';
             default:
-              recommended satisfies undefined;
+              // for some reason the current version of babel loader won't elide this correctly
+              // recommended satisfies undefined;
               return '';
           }
         })()}
@@ -172,7 +173,7 @@ export default function RulesTable({
             label="🔒 strict"
           />
           <RuleFilterCheckBox
-            mode={filters.strict}
+            mode={filters.stylistic}
             setMode={(newMode): void => changeFilter('stylistic', newMode)}
             label="🎨 stylistic"
           />
