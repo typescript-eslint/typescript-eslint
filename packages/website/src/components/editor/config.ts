@@ -1,19 +1,18 @@
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
-import type Monaco from 'monaco-editor';
+import type * as ts from 'typescript';
 
 import { getTypescriptOptions } from '../config/utils';
 
 export function createCompilerOptions(
-  jsx = false,
   tsConfig: Record<string, unknown> = {},
-): Monaco.languages.typescript.CompilerOptions {
+): ts.CompilerOptions {
   const config = window.ts.convertCompilerOptionsFromJson(
     {
       // ts and monaco has different type as monaco types are not changing base on ts version
       target: 'esnext',
       module: 'esnext',
       ...tsConfig,
-      jsx: jsx ? 'preserve' : undefined,
+      jsx: 'preserve',
       lib: Array.isArray(tsConfig.lib) ? tsConfig.lib : undefined,
       moduleResolution: undefined,
       plugins: undefined,
@@ -25,7 +24,7 @@ export function createCompilerOptions(
     '/tsconfig.json',
   );
 
-  const options = config.options as Monaco.languages.typescript.CompilerOptions;
+  const options = config.options;
 
   if (!options.lib) {
     options.lib = [window.ts.getDefaultLibFileName(options)];
