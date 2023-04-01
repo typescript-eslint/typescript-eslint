@@ -4,8 +4,8 @@ import { useCallback, useState } from 'react';
 
 import { toJsonConfig } from '../config/utils';
 import { hasOwnProperty } from '../lib/has-own-property';
+import { shallowEqual } from '../lib/shallowEqual';
 import type { ConfigModel } from '../types';
-import { shallowEqual } from '@site/src/components/lib/shallowEqual';
 
 function writeQueryParam(value: string | null): string {
   return (value && lz.compressToEncodedURIComponent(value)) ?? '';
