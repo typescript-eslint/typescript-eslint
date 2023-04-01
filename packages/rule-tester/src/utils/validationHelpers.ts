@@ -16,6 +16,7 @@ export const RULE_TESTER_PARAMETERS = [
   'only',
   'options',
   'output',
+  'skip',
 ] as const;
 
 /*
