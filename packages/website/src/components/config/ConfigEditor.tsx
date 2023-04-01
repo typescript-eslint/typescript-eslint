@@ -1,8 +1,8 @@
-import Dropdown from '@site/src/components/inputs/Dropdown';
 import clsx from 'clsx';
 import React, { useCallback, useMemo, useState } from 'react';
 
 import Checkbox from '../inputs/Checkbox';
+import Dropdown from '../inputs/Dropdown';
 import Text from '../inputs/Text';
 import styles from './ConfigEditor.module.css';
 
@@ -85,8 +85,12 @@ function ConfigEditorField({
   );
 }
 
-function ConfigEditor(props: ConfigEditorProps): JSX.Element {
-  const { onChange: onChangeProp, values, options, className } = props;
+function ConfigEditor({
+  onChange: onChangeProp,
+  values,
+  options,
+  className,
+}: ConfigEditorProps): JSX.Element {
   const [filter, setFilter] = useState<string>('');
 
   const filteredOptions = useMemo(() => {

@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { ensureObject, parseJSONObject, toJson } from '../lib/json';
 import { shallowEqual } from '../lib/shallowEqual';
-import type { CompilerFlags, ConfigModel } from '../types';
+import type { ConfigModel } from '../types';
 import type { ConfigOptionsType } from './ConfigEditor';
 import ConfigEditor from './ConfigEditor';
-import { getTypescriptOptions, parseTSConfig, toJson } from './utils';
+import { getTypescriptOptions } from './utils';
 
 interface ConfigTypeScriptProps {
   readonly onChange: (config: Partial<ConfigModel>) => void;
@@ -21,7 +22,7 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
 
   useEffect(() => {
     updateConfigObject(oldConfig => {
-      const newConfig = parseTSConfig(config).compilerOptions;
+      const newConfig = ensureObject(parseJSONObject(config).compilerOptions);
       if (shallowEqual(oldConfig, newConfig)) {
         return oldConfig;
       }
@@ -61,10 +62,10 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
 
   const onChange = useCallback(
     (newConfig: Record<string, unknown>) => {
-      const parsed = parseTSConfig(config);
-      parsed.compilerOptions = newConfig as CompilerFlags;
+      const parsed = parseJSONObject(config);
+      parsed.compilerOptions = newConfig;
       updateConfigObject(newConfig);
-      onChangeProp({ eslintrc: toJson(parsed) });
+      onChangeProp({ tsconfig: toJson(parsed) });
     },
     [config, onChangeProp],
   );

@@ -1,10 +1,10 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { ensureObject, parseJSONObject, toJson } from '../lib/json';
 import { shallowEqual } from '../lib/shallowEqual';
-import type { ConfigModel, RuleDetails, RulesRecord } from '../types';
+import type { ConfigModel, RuleDetails } from '../types';
 import type { ConfigOptionsField, ConfigOptionsType } from './ConfigEditor';
 import ConfigEditor from './ConfigEditor';
-import { parseESLintRC, toJson } from './utils';
 
 export interface ConfigEslintProps {
   readonly onChange: (value: Partial<ConfigModel>) => void;
@@ -22,7 +22,7 @@ function ConfigEslint(props: ConfigEslintProps): JSX.Element {
 
   useEffect(() => {
     updateConfigObject(oldConfig => {
-      const newConfig = parseESLintRC(config).rules;
+      const newConfig = ensureObject(parseJSONObject(config).rules);
       if (shallowEqual(oldConfig, newConfig)) {
         return oldConfig;
       }
@@ -52,8 +52,8 @@ function ConfigEslint(props: ConfigEslintProps): JSX.Element {
 
   const onChange = useCallback(
     (newConfig: Record<string, unknown>) => {
-      const parsed = parseESLintRC(config);
-      parsed.rules = newConfig as RulesRecord;
+      const parsed = parseJSONObject(config);
+      parsed.rules = newConfig;
       updateConfigObject(newConfig);
       onChangeProp({ eslintrc: toJson(parsed) });
     },

@@ -2,8 +2,8 @@ import { useHistory } from '@docusaurus/router';
 import * as lz from 'lz-string';
 import { useCallback, useState } from 'react';
 
-import { toJsonConfig } from '../config/utils';
 import { hasOwnProperty } from '../lib/has-own-property';
+import { toJsonConfig } from '../lib/json';
 import { shallowEqual } from '../lib/shallowEqual';
 import type { ConfigModel } from '../types';
 
