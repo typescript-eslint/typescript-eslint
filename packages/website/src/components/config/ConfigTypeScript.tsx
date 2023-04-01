@@ -1,28 +1,33 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { shallowEqual } from '../lib/shallowEqual';
-import type { ConfigModel, TSConfig } from '../types';
+import type { CompilerFlags, ConfigModel } from '../types';
 import type { ConfigOptionsType } from './ConfigEditor';
 import ConfigEditor from './ConfigEditor';
 import { getTypescriptOptions, parseTSConfig, toJson } from './utils';
 
 interface ConfigTypeScriptProps {
-  readonly isOpen: boolean;
-  readonly onClose: (config?: Partial<ConfigModel>) => void;
+  readonly onChange: (config: Partial<ConfigModel>) => void;
   readonly config?: string;
+  readonly className?: string;
 }
 
 function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
-  const { isOpen, config, onClose: onCloseProps } = props;
-  const [configObject, updateConfigObject] = useState<TSConfig>(() => ({
-    compilerOptions: {},
-  }));
+  const { config, onChange: onChangeProp, className } = props;
+
+  const [configObject, updateConfigObject] = useState<Record<string, unknown>>(
+    () => ({}),
+  );
 
   useEffect(() => {
-    if (isOpen) {
-      updateConfigObject(parseTSConfig(config));
-    }
-  }, [isOpen, config]);
+    updateConfigObject(oldConfig => {
+      const newConfig = parseTSConfig(config).compilerOptions;
+      if (shallowEqual(oldConfig, newConfig)) {
+        return oldConfig;
+      }
+      return newConfig;
+    });
+  }, [config]);
 
   const options = useMemo((): ConfigOptionsType[] => {
     return Object.values(
@@ -54,27 +59,22 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
     );
   }, []);
 
-  const onClose = useCallback(
+  const onChange = useCallback(
     (newConfig: Record<string, unknown>) => {
-      const cfg = { ...newConfig };
-      if (!shallowEqual(cfg, configObject?.compilerOptions)) {
-        onCloseProps({
-          tsconfig: toJson({ ...(configObject ?? {}), compilerOptions: cfg }),
-        });
-      } else {
-        onCloseProps();
-      }
+      const parsed = parseTSConfig(config);
+      parsed.compilerOptions = newConfig as CompilerFlags;
+      updateConfigObject(newConfig);
+      onChangeProp({ eslintrc: toJson(parsed) });
     },
-    [onCloseProps, configObject],
+    [config, onChangeProp],
   );
 
   return (
     <ConfigEditor
-      header="TypeScript Config"
+      className={className}
       options={options}
-      values={configObject.compilerOptions}
-      isOpen={isOpen}
-      onClose={onClose}
+      values={configObject}
+      onChange={onChange}
     />
   );
 }

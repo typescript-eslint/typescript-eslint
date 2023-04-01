@@ -57,6 +57,9 @@
   column-gap: 0.5rem;
   margin-bottom: 0.5rem;
   justify-content: flex-end;
+  position: sticky;
+  top: 0;
+  left: 0;
 }
 
 .textarea {

@@ -21,7 +21,7 @@ export interface ConfigModel {
   tsconfig: string;
   code: string;
   ts: string;
-  showAST?: boolean | 'ts' | 'es' | 'scope';
+  showAST?: false | 'ts' | 'es' | 'scope';
 }
 
 export interface SelectedPosition {

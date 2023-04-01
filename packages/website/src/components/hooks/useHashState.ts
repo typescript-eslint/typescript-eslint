@@ -1,31 +1,28 @@
-import { toJsonConfig } from '@site/src/components/config/utils';
+import { useHistory } from '@docusaurus/router';
 import * as lz from 'lz-string';
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
+import { toJsonConfig } from '../config/utils';
 import { hasOwnProperty } from '../lib/has-own-property';
-import { shallowEqual } from '../lib/shallowEqual';
 import type { ConfigModel } from '../types';
+import { shallowEqual } from '@site/src/components/lib/shallowEqual';
 
-function writeQueryParam(value: string): string {
-  return lz.compressToEncodedURIComponent(value);
+function writeQueryParam(value: string | null): string {
+  return (value && lz.compressToEncodedURIComponent(value)) ?? '';
 }
 
 function readQueryParam(value: string | null, fallback: string): string {
-  return value
-    ? lz.decompressFromEncodedURIComponent(value) ?? fallback
-    : fallback;
+  return (value && lz.decompressFromEncodedURIComponent(value)) ?? fallback;
 }
 
-function readShowAST(value: string | null): 'ts' | 'scope' | 'es' | boolean {
+function readShowAST(value: string | null): 'ts' | 'scope' | 'es' | false {
   switch (value) {
     case 'es':
-      return 'es';
     case 'ts':
-      return 'ts';
     case 'scope':
-      return 'scope';
+      return value;
   }
-  return Boolean(value);
+  return value ? 'es' : false;
 }
 
 function readLegacyParam(
@@ -40,7 +37,7 @@ function readLegacyParam(
   return undefined;
 }
 
-const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
+const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
   if (!hash) {
     return;
   }
@@ -66,16 +63,11 @@ const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
     }
 
     return {
-      // @ts-expect-error: process.env.TS_VERSION
-      ts: (searchParams.get('ts') ?? process.env.TS_VERSION).trim(),
+      ts: searchParams.get('ts') ?? undefined,
       jsx: searchParams.has('jsx'),
-      showAST:
-        searchParams.has('showAST') && readShowAST(searchParams.get('showAST')),
+      showAST: readShowAST(searchParams.get('showAST')),
       sourceType:
-        searchParams.has('sourceType') &&
-        searchParams.get('sourceType') === 'script'
-          ? 'script'
-          : 'module',
+        searchParams.get('sourceType') === 'script' ? 'script' : 'module',
       code: searchParams.has('code')
         ? readQueryParam(searchParams.get('code'), '')
         : '',
@@ -88,28 +80,25 @@ const parseStateFromUrl = (hash: string): ConfigModel | undefined => {
   return undefined;
 };
 
-const writeStateToUrl = (newState: ConfigModel): string => {
+const writeStateToUrl = (newState: ConfigModel): string | undefined => {
   try {
-    return Object.entries({
-      ts: newState.ts.trim(),
-      jsx: newState.jsx,
-      sourceType: newState.sourceType,
-      showAST: newState.showAST,
-      code: newState.code ? writeQueryParam(newState.code) : undefined,
-      eslintrc: newState.eslintrc
-        ? writeQueryParam(newState.eslintrc)
-        : undefined,
-      tsconfig: newState.tsconfig
-        ? writeQueryParam(newState.tsconfig)
-        : undefined,
-    })
-      .filter(item => item[1])
-      .map(item => `${encodeURIComponent(item[0])}=${item[1]}`)
-      .join('&');
+    const searchParams = new URLSearchParams();
+    searchParams.set('ts', newState.ts.trim());
+    searchParams.set('jsx', String(newState.jsx));
+    if (newState.sourceType === 'script') {
+      searchParams.set('sourceType', newState.sourceType);
+    }
+    if (newState.showAST) {
+      searchParams.set('showAST', newState.showAST);
+    }
+    searchParams.set('code', writeQueryParam(newState.code));
+    searchParams.set('eslintrc', writeQueryParam(newState.eslintrc));
+    searchParams.set('tsconfig', writeQueryParam(newState.tsconfig));
+    return searchParams.toString();
   } catch (e) {
     console.warn(e);
   }
-  return '';
+  return undefined;
 };
 
 const retrieveStateFromLocalStorage = (): Partial<ConfigModel> | undefined => {
@@ -139,9 +128,7 @@ const retrieveStateFromLocalStorage = (): Partial<ConfigModel> | undefined => {
     }
     if (hasOwnProperty('showAST', config)) {
       const showAST = config.showAST;
-      if (typeof showAST === 'boolean') {
-        state.showAST = showAST;
-      } else if (typeof showAST === 'string') {
+      if (typeof showAST === 'string') {
         state.showAST = readShowAST(showAST);
       }
     }
@@ -165,66 +152,41 @@ const writeStateToLocalStorage = (newState: ConfigModel): void => {
 function useHashState(
   initialState: ConfigModel,
 ): [ConfigModel, (cfg: Partial<ConfigModel>) => void] {
-  const [hash, setHash] = useState<string>(window.location.hash.slice(1));
+  const history = useHistory();
   const [state, setState] = useState<ConfigModel>(() => ({
     ...initialState,
     ...retrieveStateFromLocalStorage(),
     ...parseStateFromUrl(window.location.hash.slice(1)),
   }));
-  const [tmpState, setTmpState] = useState<Partial<ConfigModel>>(() => ({
-    ...initialState,
-    ...retrieveStateFromLocalStorage(),
-    ...parseStateFromUrl(window.location.hash.slice(1)),
-  }));
 
-  useEffect(() => {
-    const newHash = window.location.hash.slice(1);
-    if (newHash !== hash) {
-      const newState = parseStateFromUrl(newHash);
-      if (newState) {
-        setState(newState);
-        setTmpState(newState);
-      }
-    }
-  }, [hash]);
+  const updateState = useCallback(
+    (cfg: Partial<ConfigModel>) => {
+      console.info('[State] updating config diff', cfg);
 
-  useEffect(() => {
-    const newState = { ...state, ...tmpState };
-    if (!shallowEqual(newState, state)) {
-      writeStateToLocalStorage(newState);
-      const newHash = writeStateToUrl(newState);
-      setState(newState);
-      setHash(newHash);
+      setState(oldState => {
+        const newState = { ...oldState, ...cfg };
 
-      if (window.location.hash.slice(1) !== newHash) {
-        window.history.pushState(
-          undefined,
-          document.title,
-          `${window.location.pathname}#${newHash}`,
-        );
-      }
-    }
-  }, [tmpState, state]);
+        if (shallowEqual(oldState, newState)) {
+          return oldState;
+        }
 
-  const onHashChange = (): void => {
-    const newHash = window.location.hash;
-    console.info('[State] hash change detected', newHash);
-    setHash(newHash);
-  };
+        writeStateToLocalStorage(newState);
 
-  useEffect(() => {
-    window.addEventListener('popstate', onHashChange);
-    return (): void => {
-      window.removeEventListener('popstate', onHashChange);
-    };
-  }, []);
+        history.replace({
+          ...history.location,
+          hash: writeStateToUrl(newState),
+        });
 
-  const _setState = useCallback((cfg: Partial<ConfigModel>) => {
-    console.info('[State] updating config diff', cfg);
-    setTmpState(cfg);
-  }, []);
+        if (cfg.ts) {
+          window.location.reload();
+        }
+        return newState;
+      });
+    },
+    [setState, history],
+  );
 
-  return [state, _setState];
+  return [state, updateState];
 }
 
 export default useHashState;

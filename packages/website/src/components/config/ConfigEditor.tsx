@@ -1,9 +1,7 @@
 import Dropdown from '@site/src/components/inputs/Dropdown';
-import Modal from '@site/src/components/layout/Modal';
 import clsx from 'clsx';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useMemo, useState } from 'react';
 
-import useFocus from '../hooks/useFocus';
 import Checkbox from '../inputs/Checkbox';
 import Text from '../inputs/Text';
 import styles from './ConfigEditor.module.css';
@@ -26,9 +24,8 @@ export type ConfigEditorValues = Record<string, unknown>;
 export interface ConfigEditorProps {
   readonly options: ConfigOptionsType[];
   readonly values: ConfigEditorValues;
-  readonly isOpen: boolean;
-  readonly header: string;
-  readonly onClose: (config: ConfigEditorValues) => void;
+  readonly onChange: (config: ConfigEditorValues) => void;
+  readonly className?: string;
 }
 
 function filterConfig(
@@ -89,75 +86,58 @@ function ConfigEditorField({
 }
 
 function ConfigEditor(props: ConfigEditorProps): JSX.Element {
-  const { onClose: onCloseProps, isOpen, values, options, header } = props;
+  const { onChange: onChangeProp, values, options, className } = props;
   const [filter, setFilter] = useState<string>('');
-  const [config, setConfig] = useState<ConfigEditorValues>(() => ({}));
-  const [filterInput, setFilterFocus] = useFocus<HTMLInputElement>();
 
-  const filteredOptions = useMemo(
-    () => filterConfig(options, filter),
-    [options, filter],
-  );
-
-  const onClose = useCallback(() => {
-    onCloseProps(config);
-  }, [onCloseProps, config]);
+  const filteredOptions = useMemo(() => {
+    return filterConfig(options, filter);
+  }, [options, filter]);
 
   const onChange = useCallback(
     (name: string, value: unknown): void => {
-      setConfig(oldConfig => {
-        const newConfig = { ...oldConfig };
-        if (value === '' || value == null) {
-          delete newConfig[name];
-        } else {
-          newConfig[name] = value;
-        }
-        return newConfig;
-      });
+      const newConfig = { ...values };
+      if (value === '' || value == null) {
+        delete newConfig[name];
+      } else {
+        newConfig[name] = value;
+      }
+      onChangeProp(newConfig);
     },
-    [setConfig],
+    [values, onChangeProp],
   );
 
-  useEffect(() => {
-    setConfig(values);
-  }, [values]);
-
-  useEffect(() => {
-    if (isOpen) {
-      setFilterFocus();
-    }
-  }, [isOpen, setFilterFocus]);
-
   return (
-    <Modal header={header} isOpen={isOpen} onClose={onClose}>
+    <div
+      className={clsx(
+        'thin-scrollbar',
+        styles.searchResultContainer,
+        className,
+      )}
+    >
       <div className={styles.searchBar}>
         <Text
-          ref={filterInput}
           type="search"
           name="config-filter"
           value={filter}
           onChange={setFilter}
         />
       </div>
-      <div className={clsx('thin-scrollbar', styles.searchResultContainer)}>
-        {isOpen &&
-          filteredOptions.map(group => (
-            <div key={group.heading}>
-              <h3 className={styles.searchResultGroup}>{group.heading}</h3>
-              <div>
-                {group.fields.map(item => (
-                  <ConfigEditorField
-                    key={item.key}
-                    item={item}
-                    value={config[item.key]}
-                    onChange={onChange}
-                  />
-                ))}
-              </div>
-            </div>
-          ))}
-      </div>
-    </Modal>
+      {filteredOptions.map(group => (
+        <div key={group.heading}>
+          <h3 className={styles.searchResultGroup}>{group.heading}</h3>
+          <div>
+            {group.fields.map(item => (
+              <ConfigEditorField
+                key={item.key}
+                item={item}
+                value={values[item.key]}
+                onChange={onChange}
+              />
+            ))}
+          </div>
+        </div>
+      ))}
+    </div>
   );
 }
 
