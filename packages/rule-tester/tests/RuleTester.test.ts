@@ -3,9 +3,9 @@ import { AST_NODE_TYPES } from '@typescript-eslint/typescript-estree';
 import type { TSESTree } from '@typescript-eslint/utils';
 import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 
-import * as dependencyConstraintsModule from '../src/utils/dependencyConstraints';
 import { RuleTester } from '../src/RuleTester';
 import type { RuleTesterTestFrameworkFunctionBase } from '../src/TestFramework';
+import * as dependencyConstraintsModule from '../src/utils/dependencyConstraints';
 
 // we can't spy on the exports of an ES module - so we instead have to mock the entire module
 jest.mock('../src/dependencyConstraints', () => {

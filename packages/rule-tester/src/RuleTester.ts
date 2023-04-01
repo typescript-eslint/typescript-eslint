@@ -8,6 +8,7 @@ import type * as ParserType from '@typescript-eslint/parser';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { deepMerge } from '@typescript-eslint/utils/eslint-utils';
 import type {
+  AnyRuleCreateFunction,
   AnyRuleModule,
   ParserOptions,
   RuleContext,
@@ -19,7 +20,6 @@ import { Linter } from '@typescript-eslint/utils/ts-eslint';
 import { SourceCode } from 'eslint';
 import merge from 'lodash.merge';
 
-import { satisfiesAllDependencyConstraints } from './utils/dependencyConstraints';
 import { TestFramework } from './TestFramework';
 import type {
   InvalidTestCase,
@@ -32,6 +32,7 @@ import type {
 import { ajvBuilder } from './utils/ajv';
 import { cloneDeeplyExcludesParent } from './utils/cloneDeeplyExcludesParent';
 import { validate } from './utils/config-validator';
+import { satisfiesAllDependencyConstraints } from './utils/dependencyConstraints';
 import { freezeDeeply } from './utils/freezeDeeply';
 import { getRuleOptionsSchema } from './utils/getRuleOptionsSchema';
 import { hasOwnProperty } from './utils/hasOwnProperty';
@@ -72,7 +73,7 @@ let defaultConfig = deepMerge(
 
 export class RuleTester extends TestFramework {
   readonly #testerConfig: TesterConfigWithDefaults;
-  readonly #rules: Record<string, AnyRuleModule> = {};
+  readonly #rules: Record<string, AnyRuleModule | AnyRuleCreateFunction> = {};
   readonly #linter: Linter = new Linter();
 
   /**
@@ -168,7 +169,7 @@ export class RuleTester extends TestFramework {
   /**
    * Define a rule for one particular run of tests.
    */
-  defineRule(name: string, rule: AnyRuleModule): void {
+  defineRule(name: string, rule: AnyRuleModule | AnyRuleCreateFunction): void {
     this.#rules[name] = rule;
   }
 

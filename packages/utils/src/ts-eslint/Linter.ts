@@ -50,7 +50,8 @@ declare class LinterBase {
   defineRules<TMessageIds extends string, TOptions extends readonly unknown[]>(
     rulesToDefine: Record<
       string,
-      MinimalRuleModule<TMessageIds, TOptions> | RuleCreateFunction
+      | MinimalRuleModule<TMessageIds, TOptions>
+      | RuleCreateFunction<TMessageIds, TOptions>
     >,
   ): void;
 

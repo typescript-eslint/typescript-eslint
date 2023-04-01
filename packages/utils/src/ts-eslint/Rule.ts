@@ -432,7 +432,6 @@ interface RuleListenerCatchAllBaseCase {
   [nodeSelector: string]: RuleFunction | undefined;
 }
 // Interface to merge into for anyone that wants to add more selectors
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface RuleListenerExtension {}
 
 type RuleListener = RuleListenerBaseSelectors &
@@ -467,8 +466,10 @@ type RuleCreateFunction<
   TMessageIds extends string = never,
   TOptions extends readonly unknown[] = unknown[],
 > = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => RuleListener;
+type AnyRuleCreateFunction = RuleCreateFunction<string, readonly unknown[]>;
 
 export {
+  AnyRuleCreateFunction,
   AnyRuleModule,
   ReportDescriptor,
   ReportDescriptorMessageData,

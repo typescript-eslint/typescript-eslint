@@ -13,8 +13,6 @@ export type VersionConstraint =
   | SemverVersionConstraint
   | AtLeastVersionConstraint;
 export interface DependencyConstraint {
-  readonly typescript: VersionConstraint;
-  readonly eslint: VersionConstraint;
   /**
    * Passing a string for the value is shorthand for a '>=' constraint
    */
