@@ -1,5 +1,6 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import { getESLintCoreRule } from '../../src/util/getESLintCoreRule';
-import { RuleTester } from '../RuleTester';
 
 const rule = getESLintCoreRule('strict');
 

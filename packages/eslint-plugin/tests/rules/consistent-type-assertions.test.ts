@@ -1,5 +1,7 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/consistent-type-assertions';
-import { batchedSingleLineTests, RuleTester } from '../RuleTester';
+import { batchedSingleLineTests } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

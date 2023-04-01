@@ -1,3 +1,4 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import * as path from 'path';
 
 import type {
@@ -5,12 +6,7 @@ import type {
   Options,
 } from '../../src/rules/strict-boolean-expressions';
 import rule from '../../src/rules/strict-boolean-expressions';
-import {
-  batchedSingleLineTests,
-  getFixturesRootDir,
-  noFormat,
-  RuleTester,
-} from '../RuleTester';
+import { batchedSingleLineTests, getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({

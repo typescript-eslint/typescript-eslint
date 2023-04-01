@@ -1,10 +1,7 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/no-unsafe-return';
-import {
-  batchedSingleLineTests,
-  getFixturesRootDir,
-  noFormat,
-  RuleTester,
-} from '../RuleTester';
+import { batchedSingleLineTests, getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

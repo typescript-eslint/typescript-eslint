@@ -1,5 +1,6 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/unified-signatures';
-import { RuleTester } from '../RuleTester';
 
 //------------------------------------------------------------------------------
 // Tests

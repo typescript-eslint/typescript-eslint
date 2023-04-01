@@ -1,3 +1,4 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESLint } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-unsafe-assignment';
@@ -5,12 +6,7 @@ import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
-import {
-  batchedSingleLineTests,
-  getFixturesRootDir,
-  noFormat,
-  RuleTester,
-} from '../RuleTester';
+import { batchedSingleLineTests, getFixturesRootDir } from '../RuleTester';
 
 type Options = InferOptionsTypeFromRule<typeof rule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
@@ -123,21 +119,33 @@ type Props = { a: string };
 declare function Foo(props: Props): never;
 <Foo a={'foo'} />;
       `,
-      filename: 'react.tsx',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     {
       code: `
 declare function Foo(props: { a: string }): never;
 <Foo a="foo" />;
       `,
-      filename: 'react.tsx',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     {
       code: `
 declare function Foo(props: { a: string }): never;
 <Foo a={} />;
       `,
-      filename: 'react.tsx',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     'const x: unknown = y as any;',
     'const x: unknown[] = y as any[];',
@@ -340,7 +348,11 @@ type Props = { a: string };
 declare function Foo(props: Props): never;
 <Foo a={1 as any} />;
       `,
-      filename: 'react.tsx',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
       errors: [
         {
           messageId: 'anyAssignment',

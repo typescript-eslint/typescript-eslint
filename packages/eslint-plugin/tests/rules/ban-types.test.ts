@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESLint } from '@typescript-eslint/utils';
 
 import type { MessageIds, Options } from '../../src/rules/ban-types';
 import rule, { TYPE_KEYWORDS } from '../../src/rules/ban-types';
 import { objectReduceKey } from '../../src/util';
-import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

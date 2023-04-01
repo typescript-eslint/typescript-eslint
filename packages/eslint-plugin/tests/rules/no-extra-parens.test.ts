@@ -3,8 +3,10 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/no-extra-parens';
-import { batchedSingleLineTests, RuleTester } from '../RuleTester';
+import { batchedSingleLineTests } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {

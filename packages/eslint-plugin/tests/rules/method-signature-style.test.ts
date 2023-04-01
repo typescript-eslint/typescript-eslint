@@ -1,5 +1,7 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/method-signature-style';
-import { batchedSingleLineTests, noFormat, RuleTester } from '../RuleTester';
+import { batchedSingleLineTests } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

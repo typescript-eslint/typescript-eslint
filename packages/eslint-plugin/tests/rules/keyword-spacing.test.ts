@@ -2,11 +2,11 @@
 // this rule tests the spacing, which prettier will want to fix and break the tests
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESLint } from '@typescript-eslint/utils';
 
 import type { MessageIds, Options } from '../../src/rules/keyword-spacing';
 import rule from '../../src/rules/keyword-spacing';
-import { RuleTester } from '../RuleTester';
 
 //------------------------------------------------------------------------------
 // Helpers

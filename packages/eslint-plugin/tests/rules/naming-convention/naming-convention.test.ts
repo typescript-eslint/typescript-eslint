@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../../src/rules/naming-convention';
-import { getFixturesRootDir, noFormat, RuleTester } from '../../RuleTester';
+import { getFixturesRootDir } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

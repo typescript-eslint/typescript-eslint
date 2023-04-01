@@ -63,6 +63,9 @@ function isDescribeWithSkip(
   );
 }
 
+/**
+ * @deprecated use `@typescript-eslint/rule-tester` instead
+ */
 class RuleTester extends BaseRuleTester.RuleTester {
   readonly #baseOptions: RuleTesterConfig;
 
@@ -81,8 +84,10 @@ class RuleTester extends BaseRuleTester.RuleTester {
     this.#afterAll = value;
   }
 
+  // eslint-disable-next-line deprecation/deprecation
   private get staticThis(): typeof RuleTester {
     // the cast here is due to https://github.com/microsoft/TypeScript/issues/3841
+    // eslint-disable-next-line deprecation/deprecation
     return this.constructor as typeof RuleTester;
   }
 
@@ -310,5 +315,9 @@ function noFormat(raw: TemplateStringsArray, ...keys: string[]): string {
   return String.raw({ raw }, ...keys);
 }
 
-export { noFormat, RuleTester };
+export {
+  noFormat,
+  // eslint-disable-next-line deprecation/deprecation
+  RuleTester,
+};
 export type { InvalidTestCase, ValidTestCase, RunTests };

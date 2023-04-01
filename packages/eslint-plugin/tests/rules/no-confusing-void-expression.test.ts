@@ -1,14 +1,11 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+
 import type {
   MessageId,
   Options,
 } from '../../src/rules/no-confusing-void-expression';
 import rule from '../../src/rules/no-confusing-void-expression';
-import {
-  batchedSingleLineTests,
-  getFixturesRootDir,
-  noFormat,
-  RuleTester,
-} from '../RuleTester';
+import { batchedSingleLineTests, getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({

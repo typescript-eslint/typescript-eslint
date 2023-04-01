@@ -2,8 +2,9 @@
 // this rule tests the new lines, which prettier will want to fix and break the tests
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/lines-between-class-members';
-import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
