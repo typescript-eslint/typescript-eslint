@@ -25,10 +25,6 @@ function data<T extends TODO>() {}
     'const data = <T, U>() => {};',
     'const data = <T extends number>() => {};',
     'const data = <T extends number | string>() => {};',
-    {
-      code: 'const data = <T extends any>() => {};',
-      filename: 'file.mts',
-    },
   ],
   invalid: [
     {

@@ -1,32 +1,6 @@
 import path from 'path';
 import * as ts from 'typescript';
 
-function isNodeNextModuleExtension(filePath: string): boolean {
-  const extension = path.extname(filePath).toLowerCase();
-  // note - we only respect the user's jsx setting for unknown extensions
-  // this is so that we always match TS's internal script kind logic, preventing
-  // weird errors due to a mismatch.
-  // https://github.com/microsoft/TypeScript/blob/da00ba67ed1182ad334f7c713b8254fba174aeba/src/compiler/utilities.ts#L6948-L6968
-  switch (extension) {
-    case ts.Extension.Js:
-    case ts.Extension.Ts:
-    case ts.Extension.Jsx:
-    case ts.Extension.Tsx:
-    case ts.Extension.Json:
-      return false;
-
-    case ts.Extension.Cjs:
-    case ts.Extension.Mjs:
-    case ts.Extension.Cts:
-    case ts.Extension.Mts:
-      return true;
-
-    default:
-      // unknown extension, we assume this is not a node-next module extension
-      return false;
-  }
-}
-
 function getScriptKind(filePath: string, jsx: boolean): ts.ScriptKind {
   const extension = path.extname(filePath).toLowerCase();
   // note - we only respect the user's jsx setting for unknown extensions
@@ -73,4 +47,4 @@ function getLanguageVariant(scriptKind: ts.ScriptKind): ts.LanguageVariant {
   }
 }
 
-export { getScriptKind, getLanguageVariant, isNodeNextModuleExtension };
+export { getScriptKind, getLanguageVariant };

@@ -16,7 +16,4 @@ export {
   getDecorators,
   getModifiers,
   typescriptVersionIsAtLeast,
-  getScriptKind,
-  getLanguageVariant,
-  isNodeNextModuleExtension,
 } from '@typescript-eslint/typescript-estree';
