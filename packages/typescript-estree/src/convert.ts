@@ -1149,7 +1149,6 @@ export class Converter {
         }
 
         const isAccessor = hasModifier(SyntaxKind.AccessorKeyword, node);
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- TODO - add ignore IIFE option
         const type = (() => {
           if (isAccessor) {
             if (isAbstract) {
@@ -2521,6 +2520,13 @@ export class Converter {
         );
 
       case SyntaxKind.MappedType: {
+        if (node.members && node.members.length > 0) {
+          this.#throwUnlessAllowInvalidAST(
+            node.members[0],
+            'A mapped type may not declare properties or methods.',
+          );
+        }
+
         return this.createNode<TSESTree.TSMappedType>(node, {
           type: AST_NODE_TYPES.TSMappedType,
           nameType: this.convertChild(node.nameType) ?? null,

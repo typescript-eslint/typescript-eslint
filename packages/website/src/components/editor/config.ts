@@ -5,7 +5,6 @@ import { getTypescriptOptions } from '../config/utils';
 import type { WebLinter } from '../linter/WebLinter';
 
 export function createCompilerOptions(
-  jsx = false,
   tsConfig: Record<string, unknown> = {},
 ): Monaco.languages.typescript.CompilerOptions {
   const config = window.ts.convertCompilerOptionsFromJson(
@@ -13,8 +12,9 @@ export function createCompilerOptions(
       // ts and monaco has different type as monaco types are not changing base on ts version
       target: 'esnext',
       module: 'esnext',
+      jsx: 'preserve',
       ...tsConfig,
-      jsx: jsx ? 'preserve' : undefined,
+      allowJs: true,
       lib: Array.isArray(tsConfig.lib) ? tsConfig.lib : undefined,
       moduleResolution: undefined,
       plugins: undefined,

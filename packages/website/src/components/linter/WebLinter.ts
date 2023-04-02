@@ -8,17 +8,9 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type esquery from 'esquery';
 import type * as ts from 'typescript';
 
-import type { EslintRC } from '../types';
+import type { EslintRC, RuleDetails } from '../types';
 import { createVirtualCompilerHost } from './CompilerHost';
 import { eslintConfig, PARSER_NAME, parseSettings } from './config';
-
-export interface RuleDetails {
-  name: string;
-  description?: string;
-  url?: string;
-}
-
-export type RulesMap = Map<string, RuleDetails>;
 
 export interface LintUtils {
   createLinter: () => TSESLint.Linter;
@@ -43,7 +35,7 @@ export class WebLinter {
   private linter: TSESLint.Linter;
   private lintUtils: LintUtils;
 
-  public readonly rulesMap: RulesMap = new Map();
+  public readonly rulesMap = new Map<string, RuleDetails>();
   public readonly configs: Record<string, TSESLint.Linter.Config> = {};
 
   constructor(
@@ -76,14 +68,14 @@ export class WebLinter {
 
   lint(code: string, filename: string): TSESLint.Linter.LintMessage[] {
     return this.linter.verify(code, this.eslintConfig, {
-      filename,
+      filename: filename,
     });
   }
 
   fix(code: string, filename: string): TSESLint.Linter.FixReport {
     return this.linter.verifyAndFix(code, this.eslintConfig, {
+      filename: filename,
       fix: true,
-      filename,
     });
   }
 
@@ -94,10 +86,8 @@ export class WebLinter {
     this.eslintConfig.overrides = resolvedConfig.overrides;
   }
 
-  updateParserOptions(jsx?: boolean, sourceType?: TSESLint.SourceType): void {
+  updateParserOptions(sourceType?: TSESLint.SourceType): void {
     this.eslintConfig.parserOptions ??= {};
-    this.eslintConfig.parserOptions.ecmaFeatures ??= {};
-    this.eslintConfig.parserOptions.ecmaFeatures.jsx = jsx ?? false;
     this.eslintConfig.parserOptions.sourceType = sourceType ?? 'module';
   }
 
@@ -109,14 +99,13 @@ export class WebLinter {
     code: string,
     eslintOptions: ParserOptions = {},
   ): TSESLint.Linter.ESLintParseResult {
-    const isJsx = eslintOptions?.ecmaFeatures?.jsx ?? false;
-    const fileName = isJsx ? '/demo.tsx' : '/demo.ts';
+    const fileName = eslintOptions.filePath ?? '/input.ts';
 
     this.storedAST = undefined;
     this.storedTsAST = undefined;
     this.storedScope = undefined;
 
-    this.host.writeFile(fileName, code, false);
+    this.host.writeFile(fileName, code || '\n', false);
 
     const program = window.ts.createProgram({
       rootNames: [fileName],
@@ -128,7 +117,7 @@ export class WebLinter {
 
     const { estree: ast, astMaps } = this.lintUtils.astConverter(
       tsAst,
-      { ...parseSettings, code, codeFullText: code, jsx: isJsx },
+      { ...parseSettings, code, codeFullText: code },
       true,
     );
 
