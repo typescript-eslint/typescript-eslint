@@ -1,4 +1,4 @@
-import type { ParseSettings } from '@typescript-eslint/typescript-estree/use-at-your-own-risk/parseSettings';
+import type { ParseSettings } from '@typescript-eslint/typescript-estree/use-at-your-own-risk';
 
 export const parseSettings: ParseSettings = {
   allowInvalidAST: false,

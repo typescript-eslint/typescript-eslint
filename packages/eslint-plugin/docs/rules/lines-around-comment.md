@@ -27,8 +27,8 @@ See the [ESLint documentation](https://eslint.org/docs/rules/lines-around-commen
 
 In addition to the options supported by the `lines-around-comment` rule in ESLint core, the rule adds the following options:
 
-- `allowEnumEnd: true` doesn't require a blank line after an interface body block end
-- `allowEnumStart: true` doesn't require a blank line before an interface body block start
+- `allowEnumEnd: true` doesn't require a blank line after an enum body block end
+- `allowEnumStart: true` doesn't require a blank line before an enum body block start
 - `allowInterfaceEnd: true` doesn't require a blank line before an interface body block end
 - `allowInterfaceStart: true` doesn't require a blank line after an interface body block start
 - `allowModuleEnd: true` doesn't require a blank line before a module body block end

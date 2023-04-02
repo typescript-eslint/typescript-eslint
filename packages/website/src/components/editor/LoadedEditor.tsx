@@ -32,7 +32,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   code,
   tsconfig,
   eslintrc,
-  decoration,
+  selectedRange,
   fileType,
   onEsASTChange,
   onScopeChange,
@@ -149,7 +149,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       onEsASTChange(webLinter.storedAST);
       onTsASTChange(webLinter.storedTsAST);
       onScopeChange(webLinter.storedScope);
-      onSelect(sandboxInstance.editor.getPosition());
+
+      const position = sandboxInstance.editor.getPosition();
+      onSelect(position ? tabs.code.getOffsetAt(position) : undefined);
     }, 500);
 
     lintEditor();
@@ -213,7 +215,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
             const position = sandboxInstance.editor.getPosition();
             if (position) {
               console.info('[Editor] updating cursor', position);
-              onSelect(position);
+              onSelect(tabs.code.getOffsetAt(position));
             }
           }
         }, 150),
@@ -355,14 +357,12 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     setDecorations(prevDecorations =>
       tabs.code.deltaDecorations(
         prevDecorations,
-        decoration && showAST
+        selectedRange && showAST
           ? [
               {
-                range: new sandboxInstance.monaco.Range(
-                  decoration.start.line,
-                  decoration.start.column + 1,
-                  decoration.end.line,
-                  decoration.end.column + 1,
+                range: sandboxInstance.monaco.Range.fromPositions(
+                  tabs.code.getPositionAt(selectedRange[0]),
+                  tabs.code.getPositionAt(selectedRange[1]),
                 ),
                 options: {
                   inlineClassName: 'myLineDecoration',
@@ -373,7 +373,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
           : [],
       ),
     );
-  }, [decoration, sandboxInstance, showAST, tabs.code]);
+  }, [selectedRange, sandboxInstance, showAST, tabs.code]);
 
   return null;
 };

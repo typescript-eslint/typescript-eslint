@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures type TSMappedType _error_ with-member TSESTree - Error 1`] = `
+"TSError
+  1 | type Mapped = {
+  2 |   [key in keyof O]: number;
+> 3 |   member: member;
+    |   ^^^^^^^^^^^^^^^ A mapped type may not declare properties or methods.
+  4 | };
+  5 |"
+`;

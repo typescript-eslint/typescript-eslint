@@ -29,15 +29,7 @@ export interface ConfigModel {
   showAST?: ConfigShowAst;
 }
 
-export interface SelectedPosition {
-  line: number;
-  column: number;
-}
-
-export interface SelectedRange {
-  start: SelectedPosition;
-  end: SelectedPosition;
-}
+export type SelectedRange = [number, number];
 
 export interface ErrorItem {
   message: string;

@@ -1,72 +1,53 @@
 import Link from '@docusaurus/Link';
-import type { MouseEvent } from 'react';
+import type { KeyboardEvent, MouseEvent } from 'react';
 import React, { useCallback } from 'react';
 
-import styles from './ASTViewer.module.css';
-
 export interface PropertyNameProps {
-  readonly typeName?: string;
-  readonly propName?: string;
-  readonly onClick?: (e: MouseEvent<HTMLElement>) => void;
+  readonly value?: string;
+  readonly onClick?: () => void;
   readonly onHover?: (e: boolean) => void;
+  readonly className?: string;
 }
 
 export default function PropertyName(props: PropertyNameProps): JSX.Element {
-  const { onClick: onClickProps, onHover } = props;
-
   const onClick = useCallback(
     (e: MouseEvent<HTMLElement>) => {
       e.preventDefault();
-      onClickProps?.(e);
+      props.onClick?.();
     },
-    [onClickProps],
+    [props.onClick],
   );
 
   const onMouseEnter = useCallback(() => {
-    onHover?.(true);
-  }, [onHover]);
+    props.onHover?.(true);
+  }, [props.onHover]);
 
   const onMouseLeave = useCallback(() => {
-    onHover?.(false);
-  }, [onHover]);
+    props.onHover?.(false);
+  }, [props.onHover]);
 
-  return props.onClick || props.onHover ? (
-    <>
-      {props.propName && (
-        <Link
-          to={`#${props.propName}`}
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          onClick={onClick}
-          className={styles.propName}
-        >
-          {props.propName}
-        </Link>
-      )}
-      {props.propName && <span>: </span>}
-      {props.typeName && (
-        <Link
-          to={`#${props.typeName}`}
-          onMouseEnter={onMouseEnter}
-          onMouseLeave={onMouseLeave}
-          onClick={onClick}
-          className={styles.tokenName}
-        >
-          {props.typeName}
-        </Link>
-      )}
-      {props.typeName && <span> </span>}
-    </>
-  ) : (
-    <>
-      {props.propName && (
-        <span className={styles.propName}>{props.propName}</span>
-      )}
-      {props.propName && <span>: </span>}
-      {props.typeName && (
-        <span className={styles.tokenName}>{props.typeName}</span>
-      )}
-      {props.typeName && <span> </span>}
-    </>
+  const onKeyDown = useCallback(
+    (e: KeyboardEvent<HTMLElement>) => {
+      if (e.code === 'Space') {
+        e.preventDefault();
+        props.onClick?.();
+      }
+    },
+    [props.onClick],
+  );
+
+  return (
+    <Link
+      className={props.className}
+      href={`#${props.value}`}
+      role="button"
+      onClick={onClick}
+      onKeyDown={onKeyDown}
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
+      tabIndex={props.onClick && 0}
+    >
+      {props.value}
+    </Link>
   );
 }
