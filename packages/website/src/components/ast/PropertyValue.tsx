@@ -8,17 +8,19 @@ export interface PropertyValueProps {
   readonly value: unknown;
 }
 
-export interface SimpleModel {
+interface SimpleModel {
   readonly value: string;
   readonly className: string;
-  shortValue?: string;
+  readonly shortValue?: string;
 }
 
-export function getSimpleModel(data: unknown): SimpleModel {
+function getSimpleModel(data: unknown): SimpleModel {
   if (typeof data === 'string') {
+    const value = JSON.stringify(data);
     return {
       value: JSON.stringify(data),
       className: styles.propString,
+      shortValue: value.length > 250 ? value.substring(0, 200) : undefined,
     };
   } else if (typeof data === 'number') {
     return {
@@ -60,13 +62,7 @@ export function getSimpleModel(data: unknown): SimpleModel {
 function PropertyValue({ value }: PropertyValueProps): JSX.Element {
   const [expand, setExpand] = useState(false);
 
-  const model = useMemo(() => {
-    const val = getSimpleModel(value);
-    if (val.value.length > 250) {
-      val.shortValue = val.value.substring(0, 200);
-    }
-    return val;
-  }, [value]);
+  const model = useMemo(() => getSimpleModel(value), [value]);
 
   if (model.shortValue) {
     return (
