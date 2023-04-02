@@ -2,8 +2,8 @@ import { useHistory } from '@docusaurus/router';
 import * as lz from 'lz-string';
 import { useCallback, useState } from 'react';
 
-import { hasOwnProperty } from '../lib/has-own-property';
 import { fileTypes } from '../config';
+import { hasOwnProperty } from '../lib/has-own-property';
 import { toJson } from '../lib/json';
 import { shallowEqual } from '../lib/shallowEqual';
 import type { ConfigFileType, ConfigModel, ConfigShowAst } from '../types';
