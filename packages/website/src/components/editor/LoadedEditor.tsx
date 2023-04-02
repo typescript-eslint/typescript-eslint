@@ -323,7 +323,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
   useEffect(() => {
     webLinter.triggerLint(tabs.code.uri.path);
-  }, [webLinter, fileType, sourceType, activeTab, tabs.code]);
+  }, [webLinter, fileType, sourceType, tabs.code]);
 
   return null;
 };
