@@ -120,7 +120,7 @@ function specifierNameMatches(type: ts.Type, name: string | string[]): boolean {
   if (typeof name === 'string') {
     name = [name];
   }
-  const symbol = type.getSymbol();
+  const symbol = type.aliasSymbol ?? type.getSymbol();
   if (symbol === undefined) {
     return false;
   }

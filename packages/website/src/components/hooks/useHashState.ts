@@ -3,9 +3,10 @@ import * as lz from 'lz-string';
 import { useCallback, useState } from 'react';
 
 import { hasOwnProperty } from '../lib/has-own-property';
-import { toJsonConfig } from '../lib/json';
+import { fileTypes } from '../config';
+import { toJson } from '../lib/json';
 import { shallowEqual } from '../lib/shallowEqual';
-import type { ConfigModel } from '../types';
+import type { ConfigFileType, ConfigModel, ConfigShowAst } from '../types';
 
 function writeQueryParam(value: string | null): string {
   return (value && lz.compressToEncodedURIComponent(value)) ?? '';
@@ -15,7 +16,7 @@ function readQueryParam(value: string | null, fallback: string): string {
   return (value && lz.decompressFromEncodedURIComponent(value)) ?? fallback;
 }
 
-function readShowAST(value: string | null): 'ts' | 'scope' | 'es' | false {
+function readShowAST(value: string | null): ConfigShowAst {
   switch (value) {
     case 'es':
     case 'ts':
@@ -23,6 +24,17 @@ function readShowAST(value: string | null): 'ts' | 'scope' | 'es' | false {
       return value;
   }
   return value ? 'es' : false;
+}
+
+function readFileType(value: string | null): ConfigFileType {
+  if (value && (fileTypes as string[]).includes(value)) {
+    return value as ConfigFileType;
+  }
+  return '.ts';
+}
+
+function toJsonConfig(cfg: unknown, prop: string): string {
+  return toJson({ [prop]: cfg });
 }
 
 function readLegacyParam(
@@ -62,15 +74,22 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
       );
     }
 
+    const fileType =
+      searchParams.get('jsx') === 'true'
+        ? '.tsx'
+        : readFileType(searchParams.get('fileType'));
+
+    const code = searchParams.has('code')
+      ? readQueryParam(searchParams.get('code'), '')
+      : '';
+
     return {
-      ts: searchParams.get('ts') ?? undefined,
-      jsx: searchParams.has('jsx'),
+      ts: searchParams.get('ts') ?? process.env.TS_VERSION!,
       showAST: readShowAST(searchParams.get('showAST')),
       sourceType:
         searchParams.get('sourceType') === 'script' ? 'script' : 'module',
-      code: searchParams.has('code')
-        ? readQueryParam(searchParams.get('code'), '')
-        : '',
+      code,
+      fileType,
       eslintrc: eslintrc ?? '',
       tsconfig: tsconfig ?? '',
     };
@@ -84,12 +103,14 @@ const writeStateToUrl = (newState: ConfigModel): string | undefined => {
   try {
     const searchParams = new URLSearchParams();
     searchParams.set('ts', newState.ts.trim());
-    searchParams.set('jsx', String(newState.jsx));
     if (newState.sourceType === 'script') {
       searchParams.set('sourceType', newState.sourceType);
     }
     if (newState.showAST) {
       searchParams.set('showAST', newState.showAST);
+    }
+    if (newState.fileType) {
+      searchParams.set('fileType', newState.fileType);
     }
     searchParams.set('code', writeQueryParam(newState.code));
     searchParams.set('eslintrc', writeQueryParam(newState.eslintrc));
@@ -120,10 +141,10 @@ const retrieveStateFromLocalStorage = (): Partial<ConfigModel> | undefined => {
         state.ts = ts;
       }
     }
-    if (hasOwnProperty('jsx', config)) {
-      const jsx = config.jsx;
-      if (typeof jsx === 'boolean') {
-        state.jsx = jsx;
+    if (hasOwnProperty('fileType', config)) {
+      const fileType = config.fileType;
+      if (fileType === 'true') {
+        state.fileType = readFileType(fileType);
       }
     }
     if (hasOwnProperty('showAST', config)) {
@@ -143,7 +164,8 @@ const retrieveStateFromLocalStorage = (): Partial<ConfigModel> | undefined => {
 const writeStateToLocalStorage = (newState: ConfigModel): void => {
   const config: Partial<ConfigModel> = {
     ts: newState.ts,
-    jsx: newState.jsx,
+    fileType: newState.fileType,
+    sourceType: newState.sourceType,
     showAST: newState.showAST,
   };
   window.localStorage.setItem('config', JSON.stringify(config));

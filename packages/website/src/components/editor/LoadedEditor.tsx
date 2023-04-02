@@ -32,8 +32,8 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   code,
   tsconfig,
   eslintrc,
-  decoration,
-  jsx,
+  selectedRange,
+  fileType,
   onEsASTChange,
   onScopeChange,
   onTsASTChange,
@@ -84,11 +84,11 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   ]);
 
   useEffect(() => {
-    const newPath = jsx ? '/input.tsx' : '/input.ts';
+    const newPath = `/input${fileType}`;
     if (tabs.code.uri.path !== newPath) {
       const newModel = sandboxInstance.monaco.editor.createModel(
         tabs.code.getValue(),
-        'typescript',
+        undefined,
         sandboxInstance.monaco.Uri.file(newPath),
       );
       newModel.updateOptions({ tabSize: 2, insertSpaces: true });
@@ -98,22 +98,15 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       tabs.code.dispose();
       tabs.code = newModel;
     }
-  }, [
-    jsx,
-    sandboxInstance.editor,
-    sandboxInstance.monaco.Uri,
-    sandboxInstance.monaco.editor,
-    tabs,
-  ]);
+  }, [fileType, sandboxInstance.editor, sandboxInstance.monaco, tabs]);
 
   useEffect(() => {
     const config = createCompilerOptions(
-      jsx,
       parseTSConfig(tsconfig).compilerOptions,
     );
     webLinter.updateCompilerOptions(config);
     sandboxInstance.setCompilerSettings(config);
-  }, [jsx, sandboxInstance, tsconfig, webLinter]);
+  }, [sandboxInstance, tsconfig, webLinter]);
 
   useEffect(() => {
     webLinter.updateRules(parseESLintRC(eslintrc).rules);
@@ -128,10 +121,10 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     const lintEditor = debounce(() => {
       console.info('[Editor] linting triggered');
 
-      webLinter.updateParserOptions(jsx, sourceType);
+      webLinter.updateParserOptions(sourceType);
 
       try {
-        const messages = webLinter.lint(code);
+        const messages = webLinter.lint(code, tabs.code.uri.path);
 
         const markers = parseLintResults(messages, codeActions, ruleId =>
           sandboxInstance.monaco.Uri.parse(
@@ -156,13 +149,15 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       onEsASTChange(webLinter.storedAST);
       onTsASTChange(webLinter.storedTsAST);
       onScopeChange(webLinter.storedScope);
-      onSelect(sandboxInstance.editor.getPosition());
+
+      const position = sandboxInstance.editor.getPosition();
+      onSelect(position ? tabs.code.getOffsetAt(position) : undefined);
     }, 500);
 
     lintEditor();
   }, [
     code,
-    jsx,
+    fileType,
     tsconfig,
     eslintrc,
     sourceType,
@@ -220,7 +215,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
             const position = sandboxInstance.editor.getPosition();
             if (position) {
               console.info('[Editor] updating cursor', position);
-              onSelect(position);
+              onSelect(tabs.code.getOffsetAt(position));
             }
           }
         }, 150),
@@ -237,7 +232,10 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         run(editor) {
           const editorModel = editor.getModel();
           if (editorModel) {
-            const fixed = webLinter.fix(editor.getValue());
+            const fixed = webLinter.fix(
+              editor.getValue(),
+              editorModel.uri.path,
+            );
             if (fixed.fixed) {
               editorModel.pushEditOperations(
                 null,
@@ -359,14 +357,12 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     setDecorations(prevDecorations =>
       tabs.code.deltaDecorations(
         prevDecorations,
-        decoration && showAST
+        selectedRange && showAST
           ? [
               {
-                range: new sandboxInstance.monaco.Range(
-                  decoration.start.line,
-                  decoration.start.column + 1,
-                  decoration.end.line,
-                  decoration.end.column + 1,
+                range: sandboxInstance.monaco.Range.fromPositions(
+                  tabs.code.getPositionAt(selectedRange[0]),
+                  tabs.code.getPositionAt(selectedRange[1]),
                 ),
                 options: {
                   inlineClassName: 'myLineDecoration',
@@ -377,7 +373,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
           : [],
       ),
     );
-  }, [decoration, sandboxInstance, showAST, tabs.code]);
+  }, [selectedRange, sandboxInstance, showAST, tabs.code]);
 
   return null;
 };

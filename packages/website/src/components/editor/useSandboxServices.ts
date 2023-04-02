@@ -33,22 +33,14 @@ export const useSandboxServices = (
 ): Error | SandboxServices | undefined => {
   const { onLoaded } = props;
   const [services, setServices] = useState<Error | SandboxServices>();
-  const [loadedTs, setLoadedTs] = useState<string>(props.ts);
   const { colorMode } = useColorMode();
 
   useEffect(() => {
-    if (props.ts !== loadedTs) {
-      window.location.reload();
-    }
-  }, [props.ts, loadedTs]);
-
-  useEffect(() => {
     let sandboxInstance: SandboxInstance | undefined;
-    setLoadedTs(props.ts);
 
     sandboxSingleton(props.ts)
       .then(async ({ main, sandboxFactory, lintUtils }) => {
-        const compilerOptions = createCompilerOptions(props.jsx);
+        const compilerOptions = createCompilerOptions();
 
         const sandboxConfig: Partial<SandboxConfig> = {
           text: props.code,
@@ -128,7 +120,7 @@ export const useSandboxServices = (
     };
     // colorMode and jsx can't be reactive here because we don't want to force a recreation
     // updating of colorMode and jsx is handled in LoadedEditor
-  }, [props.ts, onLoaded]);
+  }, []);
 
   return services;
 };

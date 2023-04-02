@@ -1,4 +1,5 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
 
 export type CompilerFlags = Record<string, unknown>;
 
@@ -14,25 +15,21 @@ export interface RuleDetails {
 
 export type TabType = 'code' | 'tsconfig' | 'eslintrc';
 
+export type ConfigFileType = `${ts.Extension}`;
+
+export type ConfigShowAst = false | 'es' | 'ts' | 'scope';
+
 export interface ConfigModel {
-  jsx?: boolean;
+  fileType?: ConfigFileType;
   sourceType?: SourceType;
   eslintrc: string;
   tsconfig: string;
   code: string;
   ts: string;
-  showAST?: false | 'ts' | 'es' | 'scope';
+  showAST?: ConfigShowAst;
 }
 
-export interface SelectedPosition {
-  line: number;
-  column: number;
-}
-
-export interface SelectedRange {
-  start: SelectedPosition;
-  end: SelectedPosition;
-}
+export type SelectedRange = [number, number];
 
 export interface ErrorItem {
   message: string;

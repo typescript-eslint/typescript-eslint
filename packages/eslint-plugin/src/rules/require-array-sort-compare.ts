@@ -53,7 +53,7 @@ export default util.createRule<Options, MessageIds>({
       const type = services.getTypeAtLocation(node);
 
       if (checker.isArrayType(type) || checker.isTupleType(type)) {
-        const typeArgs = checker.getTypeArguments(type);
+        const typeArgs = util.getTypeArguments(type, checker);
         return typeArgs.every(
           arg => util.getTypeName(checker, arg) === 'string',
         );
