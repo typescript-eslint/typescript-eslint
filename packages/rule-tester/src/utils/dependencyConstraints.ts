@@ -1,23 +1,9 @@
 import * as semver from 'semver';
 
-export interface SemverVersionConstraint {
-  readonly range: string;
-  readonly options?: Parameters<typeof semver.satisfies>[2];
-}
-export type AtLeastVersionConstraint =
-  | `${number}`
-  | `${number}.${number}`
-  | `${number}.${number}.${number}`
-  | `${number}.${number}.${number}-${string}`;
-export type VersionConstraint =
-  | SemverVersionConstraint
-  | AtLeastVersionConstraint;
-export interface DependencyConstraint {
-  /**
-   * Passing a string for the value is shorthand for a '>=' constraint
-   */
-  readonly [packageName: string]: VersionConstraint;
-}
+import type {
+  DependencyConstraint,
+  SemverVersionConstraint,
+} from '../types/DependencyConstraint';
 
 const BASE_SATISFIES_OPTIONS: semver.RangeOptions = {
   includePrerelease: true,

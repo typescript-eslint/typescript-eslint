@@ -13,4 +13,4 @@ export type {
   DependencyConstraint,
   SemverVersionConstraint,
   VersionConstraint,
-} from './utils/dependencyConstraints';
+} from './types/DependencyConstraint';

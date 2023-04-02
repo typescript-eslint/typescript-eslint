@@ -110,7 +110,7 @@ export function wrapParser(parser: Linter.ParserModule): Linter.ParserModule {
     }
 
     simpleTraverse(ast, {
-      visitorKeys,
+      visitorKeys: visitorKeys,
       enter: node => defineStartEndAsError('node', node),
     });
     ast.tokens?.forEach(token => defineStartEndAsError('token', token));
