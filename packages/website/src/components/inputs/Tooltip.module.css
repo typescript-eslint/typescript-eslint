@@ -9,7 +9,8 @@
   display: inline-block;
 }
 
-.tooltip.hover {
+.tooltip.hover,
+.tooltip.hover span {
   text-decoration: underline;
   cursor: pointer;
 }
@@ -22,7 +23,7 @@
   padding: 0.2rem 1rem;
   text-indent: 0;
   text-shadow: none;
-  white-space: normal;
+  white-space: pre;
   word-wrap: break-word;
   z-index: 10;
   min-width: 6.25rem;

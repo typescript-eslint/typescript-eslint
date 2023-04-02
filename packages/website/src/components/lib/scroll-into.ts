@@ -1,4 +1,4 @@
-export function scrollIntoViewIfNeeded(target: HTMLElement): void {
+export function scrollIntoViewIfNeeded(target: Element): void {
   const rect = target.getBoundingClientRect();
   const isBelow = rect.top < 0;
   const isAbove = rect.bottom > window.innerHeight;
