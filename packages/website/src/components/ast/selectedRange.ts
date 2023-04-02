@@ -71,22 +71,22 @@ export function findSelectionPath(
   node: object,
   cursorPosition: number,
 ): { path: string[]; node: object | null } {
-  const nodePath: string[] = ['ast'];
+  const nodePath = ['ast'];
   const visited = new Set<unknown>();
-  let iter: null | object = node;
-  while (iter) {
+  let currentNode: null | object = node;
+  while (currentNode) {
     // infinite loop guard
-    if (visited.has(iter)) {
+    if (visited.has(currentNode)) {
       break;
     }
-    visited.add(iter);
+    visited.add(currentNode);
 
-    const result = findInObject(iter, cursorPosition, visited);
+    const result = findInObject(currentNode, cursorPosition, visited);
     if (result) {
-      iter = result.value;
+      currentNode = result.value;
       nodePath.push(...result.key);
     } else {
-      return { path: nodePath, node: iter };
+      return { path: nodePath, node: currentNode };
     }
   }
   return { path: nodePath, node: null };

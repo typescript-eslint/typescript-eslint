@@ -13,6 +13,11 @@ interface TsParsedEnums {
   LanguageVariant: Record<number, string>;
 }
 
+/**
+ * Extract the enum values from the TypeScript enum.
+ * typescript enum's have duplicates, and we always want to take first one.
+ * e.g. SyntaxKind.EqualsToken = 63, SyntaxKind.FirstAssignment = 63
+ */
 export function extractEnum(
   obj: Record<number, string | number>,
 ): Record<number, string> {
@@ -30,7 +35,10 @@ export function extractEnum(
 
 let tsEnumCache: TsParsedEnums | undefined;
 
-export function getTsEnum(type: keyof TsParsedEnums): Record<number, string> {
+/**
+ * Get the TypeScript enum values.
+ */
+function getTsEnum(type: keyof TsParsedEnums): Record<number, string> {
   tsEnumCache ??= {
     SyntaxKind: extractEnum(window.ts.SyntaxKind),
     NodeFlags: extractEnum(window.ts.NodeFlags),
@@ -50,27 +58,28 @@ export function getTsEnum(type: keyof TsParsedEnums): Record<number, string> {
   return tsEnumCache[type];
 }
 
-export function tsEnumValue(
+/**
+ * Convert a TypeScript enum value to a string.
+ */
+export function tsEnumToString(
   type: keyof TsParsedEnums,
-  value: unknown,
+  value: number,
 ): string | undefined {
-  const allFlags = getTsEnum(type);
-  if (allFlags) {
-    return allFlags[Number(value)];
-  }
-  return undefined;
+  return getTsEnum(type)?.[value];
 }
 
-export function expandFlags(
+/**
+ * Convert a TypeScript enum flag value to a concatenated string of the flags.
+ */
+export function tsEnumFlagToString(
   type: keyof TsParsedEnums,
-  value: unknown,
+  value: number,
 ): string | undefined {
   const allFlags = getTsEnum(type);
-  const flags = Number(value);
   if (allFlags) {
     return Object.entries(allFlags)
-      .filter(([f, _]) => (Number(f) & flags) !== 0)
-      .map(([_, name]) => `${type}.${name}`)
+      .filter(([f]) => (Number(f) & value) !== 0)
+      .map(([, name]) => `${type}.${name}`)
       .join('\n');
   }
   return '';

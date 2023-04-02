@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
-import { expandFlags, tsEnumValue } from './tsUtils';
+import { tsEnumFlagToString, tsEnumToString } from './tsUtils';
 import type { ParentNodeType } from './types';
 
 export function objType(obj: unknown): string {
@@ -85,7 +85,7 @@ export function getTypeName(
     case 'esNode':
       return String(value.type);
     case 'tsNode':
-      return tsEnumValue('SyntaxKind', value.kind);
+      return tsEnumToString('SyntaxKind', Number(value.kind));
     case 'scopeManager':
       return 'ScopeManager';
     case 'scope':
@@ -120,39 +120,42 @@ export function getTooltipLabel(
       case 'tsNode': {
         switch (propName) {
           case 'flags':
-            return expandFlags('NodeFlags', value);
+            return tsEnumFlagToString('NodeFlags', value);
           case 'numericLiteralFlags':
-            return expandFlags('TokenFlags', value);
+            return tsEnumFlagToString('TokenFlags', value);
           case 'modifierFlagsCache':
-            return expandFlags('ModifierFlags', value);
+            return tsEnumFlagToString('ModifierFlags', value);
           case 'scriptKind':
-            return `ScriptKind.${tsEnumValue('ScriptKind', value)}`;
+            return `ScriptKind.${tsEnumToString('ScriptKind', value)}`;
           case 'transformFlags':
-            return expandFlags('TransformFlags', value);
+            return tsEnumFlagToString('TransformFlags', value);
           case 'kind':
-            return `SyntaxKind.${tsEnumValue('SyntaxKind', value)}`;
+            return `SyntaxKind.${tsEnumToString('SyntaxKind', value)}`;
           case 'languageVersion':
-            return `ScriptTarget.${tsEnumValue('ScriptTarget', value)}`;
+            return `ScriptTarget.${tsEnumToString('ScriptTarget', value)}`;
           case 'languageVariant':
-            return `LanguageVariant.${tsEnumValue('LanguageVariant', value)}`;
+            return `LanguageVariant.${tsEnumToString(
+              'LanguageVariant',
+              value,
+            )}`;
         }
         break;
       }
       case 'tsType':
         if (propName === 'flags') {
-          return expandFlags('TypeFlags', value);
+          return tsEnumFlagToString('TypeFlags', value);
         } else if (propName === 'objectFlags') {
-          return expandFlags('ObjectFlags', value);
+          return tsEnumFlagToString('ObjectFlags', value);
         }
         break;
       case 'tsSymbol':
         if (propName === 'flags') {
-          return expandFlags('SymbolFlags', value);
+          return tsEnumFlagToString('SymbolFlags', value);
         }
         break;
       case 'tsFlow':
         if (propName === 'flags') {
-          return expandFlags('FlowFlags', value);
+          return tsEnumFlagToString('FlowFlags', value);
         }
         break;
     }
