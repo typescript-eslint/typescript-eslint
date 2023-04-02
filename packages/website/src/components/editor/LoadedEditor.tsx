@@ -36,8 +36,8 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   code,
   tsconfig,
   eslintrc,
-  decoration,
-  jsx,
+  selectedRange,
+  fileType,
   onEsASTChange,
   onScopeChange,
   onTsASTChange,
@@ -47,8 +47,8 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   sandboxInstance: { editor, monaco },
   showAST,
   system,
-  webLinter,
   sourceType,
+  webLinter,
   activeTab,
 }) => {
   const { colorMode } = useColorMode();
@@ -84,16 +84,16 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   }, [codeActions, onMarkersChange, editor, monaco.editor]);
 
   useEffect(() => {
-    webLinter.updateParserOptions(jsx, sourceType);
-  }, [webLinter, jsx, sourceType]);
+    webLinter.updateParserOptions(sourceType);
+  }, [webLinter, sourceType]);
 
   useEffect(() => {
-    const newPath = `/input.${jsx ? 'tsx' : 'ts'}`;
+    const newPath = `/input${fileType}`;
     if (tabs.code.uri.path !== newPath) {
       const code = tabs.code.getValue();
       const newModel = monaco.editor.createModel(
         code,
-        'typescript',
+        undefined,
         monaco.Uri.file(newPath),
       );
       newModel.updateOptions({ tabSize: 2, insertSpaces: true });
@@ -104,7 +104,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       tabs.code = newModel;
       system.writeFile(newPath, code);
     }
-  }, [jsx, editor, system, monaco, tabs]);
+  }, [fileType, editor, system, monaco, tabs]);
 
   useEffect(() => {
     const config = createCompilerOptions(
@@ -189,13 +189,11 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
   useEffect(() => {
     const disposable = editor.onDidChangeCursorPosition(
-      debounce(() => {
+      debounce(e => {
         if (tabs.code.isAttachedToEditor()) {
-          const position = editor.getPosition();
-          if (position) {
-            console.info('[Editor] updating cursor', position);
-            onSelect(position);
-          }
+          const position = tabs.code.getOffsetAt(e.position);
+          console.info('[Editor] updating cursor', position);
+          onSelect(position);
         }
       }, 150),
     );
@@ -305,14 +303,12 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     setDecorations(prevDecorations =>
       tabs.code.deltaDecorations(
         prevDecorations,
-        decoration && showAST
+        selectedRange && showAST
           ? [
               {
-                range: new monaco.Range(
-                  decoration.start.line,
-                  decoration.start.column + 1,
-                  decoration.end.line,
-                  decoration.end.column + 1,
+                range: monaco.Range.fromPositions(
+                  tabs.code.getPositionAt(selectedRange[0]),
+                  tabs.code.getPositionAt(selectedRange[1]),
                 ),
                 options: {
                   inlineClassName: 'myLineDecoration',
@@ -323,13 +319,11 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
           : [],
       ),
     );
-  }, [decoration, monaco, showAST, tabs.code]);
+  }, [selectedRange, monaco, showAST, tabs.code]);
 
   useEffect(() => {
-    if (activeTab === 'code') {
-      webLinter.triggerLint(tabs.code.uri.path);
-    }
-  }, [webLinter, jsx, sourceType, activeTab, tabs.code]);
+    webLinter.triggerLint(tabs.code.uri.path);
+  }, [webLinter, fileType, sourceType, activeTab, tabs.code]);
 
   return null;
 };

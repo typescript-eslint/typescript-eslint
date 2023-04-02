@@ -79,10 +79,6 @@ export function toJson(cfg: unknown): string {
   return JSON.stringify(cfg, null, 2);
 }
 
-export function toJsonConfig(cfg: unknown, prop: string): string {
-  return toJson({ [prop]: cfg });
-}
-
 export function getTypescriptOptions(): OptionDeclarations[] {
   const allowedCategories = [
     'Command-line Options',

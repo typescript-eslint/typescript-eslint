@@ -11,8 +11,9 @@ export function createCompilerOptions(
       // ts and monaco has different type as monaco types are not changing base on ts version
       target: 'esnext',
       module: 'esnext',
-      ...tsConfig,
       jsx: 'preserve',
+      ...tsConfig,
+      allowJs: true,
       lib: Array.isArray(tsConfig.lib) ? tsConfig.lib : undefined,
       moduleResolution: undefined,
       plugins: undefined,

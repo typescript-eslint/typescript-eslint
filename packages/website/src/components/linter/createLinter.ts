@@ -71,14 +71,9 @@ export function createLinter(
     return undefined;
   };
 
-  const updateParserOptions = (
-    jsx?: boolean,
-    sourceType?: TSESLint.SourceType,
-  ): void => {
+  const updateParserOptions = (sourceType?: TSESLint.SourceType): void => {
     eslintConfig.parserOptions ??= {};
     eslintConfig.parserOptions.sourceType = sourceType ?? 'module';
-    eslintConfig.parserOptions.ecmaFeatures ??= {};
-    eslintConfig.parserOptions.ecmaFeatures.jsx = jsx ?? false;
   };
 
   const applyEslintConfig = (fileName: string): void => {

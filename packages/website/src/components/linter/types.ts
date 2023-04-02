@@ -44,5 +44,5 @@ export interface WebLinter {
   triggerLint(filename: string): void;
   onLint(cb: LinterOnLint): () => void;
   onParse(cb: LinterOnParse): () => void;
-  updateParserOptions(jsx?: boolean, sourceType?: TSESLint.SourceType): void;
+  updateParserOptions(sourceType?: TSESLint.SourceType): void;
 }

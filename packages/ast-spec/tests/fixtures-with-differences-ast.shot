@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AST Fixtures List fixtures with AST differences 1`] = `
-Set {
+[
   "declaration/ClassDeclaration/fixtures/abstract/fixture.ts",
   "declaration/ClassDeclaration/fixtures/declare/fixture.ts",
   "declaration/ClassDeclaration/fixtures/decorator-many/fixture.ts",
@@ -459,5 +459,5 @@ Set {
   "special/TSTypeParameter/fixtures/interface-const-modifier/fixture.ts",
   "special/TSTypeParameter/fixtures/interface-in-const-modifier-multiple/fixture.ts",
   "special/TSTypeParameter/fixtures/method-const-modifiers/fixture.ts",
-}
+]
 `;

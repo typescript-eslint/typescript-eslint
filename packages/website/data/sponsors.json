@@ -3,7 +3,7 @@
     "id": "Indeed",
     "image": "https://images.opencollective.com/indeed/4b8725e/logo.png",
     "name": "Indeed",
-    "totalDonations": 1005000,
+    "totalDonations": 2005000,
     "website": "https://Indeed.com"
   },
   {
@@ -166,6 +166,13 @@
     "name": "THANKS.DEV",
     "totalDonations": 14761,
     "website": "https://thanks.dev"
+  },
+  {
+    "id": "Now4real",
+    "image": "https://images.opencollective.com/now4real/54ca7d9/logo.png",
+    "name": "Now4real",
+    "totalDonations": 14500,
+    "website": "https://now4real.com/"
   },
   {
     "id": "Joe Alden",

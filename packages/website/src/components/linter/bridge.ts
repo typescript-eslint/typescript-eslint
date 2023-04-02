@@ -6,13 +6,13 @@ import type { ConfigModel } from '../types';
 import type { PlaygroundSystem } from './types';
 
 export function createFileSystem(
-  config: Pick<ConfigModel, 'eslintrc' | 'tsconfig' | 'code' | 'jsx'>,
+  config: Pick<ConfigModel, 'eslintrc' | 'tsconfig' | 'code' | 'fileType'>,
   vfs: typeof tsvfs,
 ): PlaygroundSystem {
   const files = new Map<string, string>();
   files.set(`/.eslintrc`, config.eslintrc);
   files.set(`/tsconfig.json`, config.tsconfig);
-  files.set(`/input.${config.jsx ? 'tsx' : 'ts'}`, config.code);
+  files.set(`/input${config.fileType}`, config.code);
 
   const fileWatcherCallbacks = new Map<RegExp, Set<ts.FileWatcherCallback>>();
 

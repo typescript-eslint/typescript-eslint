@@ -14,7 +14,7 @@ export const defaultParseSettings: ParseSettings = {
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   extraFileExtensions: [],
   filePath: '',
-  jsx: false,
+  jsx: true,
   loc: true,
   log: console.log,
   preserveNodeMaps: true,

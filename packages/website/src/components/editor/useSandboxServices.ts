@@ -34,18 +34,10 @@ export const useSandboxServices = (
 ): Error | SandboxServices | undefined => {
   const { onLoaded } = props;
   const [services, setServices] = useState<Error | SandboxServices>();
-  const [loadedTs, setLoadedTs] = useState<string>(props.ts);
   const { colorMode } = useColorMode();
 
   useEffect(() => {
-    if (props.ts !== loadedTs) {
-      window.location.reload();
-    }
-  }, [props.ts, loadedTs]);
-
-  useEffect(() => {
     let sandboxInstance: SandboxInstance | undefined;
-    setLoadedTs(props.ts);
 
     sandboxSingleton(props.ts)
       .then(async ({ main, sandboxFactory, lintUtils }) => {
