@@ -5,10 +5,9 @@ import React, { useCallback, useState } from 'react';
 import type { SourceFile } from 'typescript';
 
 import ASTViewer from './ast/ASTViewer';
-import { detailTabs } from './config';
+import { defaultEslintConfig, defaultTsConfig, detailTabs } from './options';
 import ConfigEslint from './config/ConfigEslint';
 import ConfigTypeScript from './config/ConfigTypeScript';
-import { defaultEslintConfig, defaultTsConfig } from './config/utils';
 import { EditorEmbed } from './editor/EditorEmbed';
 import { LoadingEditor } from './editor/LoadingEditor';
 import { ErrorsViewer, ErrorViewer } from './ErrorsViewer';

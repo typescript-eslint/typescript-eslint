@@ -19,17 +19,13 @@ export interface WebLinterModule {
   visitorKeys: TSESLint.SourceCode.VisitorKeys;
   astConverter: typeof astConverter;
   esquery: typeof esquery;
+  configs: Record<string, TSESLint.Linter.Config>;
 }
 
 export type PlaygroundSystem = ts.System &
   Required<Pick<ts.System, 'watchFile' | 'deleteFile'>> & {
     removeFile: (fileName: string) => void;
   };
-
-export type RulesMap = Map<
-  string,
-  { name: string; description?: string; url?: string }
->;
 
 export type LinterOnLint = (
   fileName: string,
@@ -39,7 +35,8 @@ export type LinterOnLint = (
 export type LinterOnParse = (fileName: string, model: UpdateModel) => void;
 
 export interface WebLinter {
-  rules: RulesMap;
+  rules: Map<string, { name: string; description?: string; url?: string }>;
+  configs: string[];
   triggerFix(filename: string): TSESLint.Linter.FixReport | undefined;
   triggerLint(filename: string): void;
   onLint(cb: LinterOnLint): () => void;

@@ -155,7 +155,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         {
           uri: monaco.Uri.file('eslint-schema.json').toString(), // id of the first schema
           fileMatch: ['/.eslintrc'], // associate with our model
-          schema: getEslintSchema(Array.from(webLinter.rules.values())),
+          schema: getEslintSchema(webLinter),
         },
         {
           uri: monaco.Uri.file('ts-schema.json').toString(), // id of the first schema

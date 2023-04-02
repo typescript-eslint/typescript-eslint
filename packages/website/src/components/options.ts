@@ -1,3 +1,4 @@
+import { toJson } from './config/utils';
 import type { ConfigFileType, ConfigShowAst } from './types';
 
 export const detailTabs: { value: ConfigShowAst; label: string }[] = [
@@ -18,3 +19,13 @@ export const fileTypes: ConfigFileType[] = [
   '.cts',
   '.mts',
 ];
+
+export const defaultTsConfig = toJson({
+  compilerOptions: {
+    strictNullChecks: true,
+  },
+});
+
+export const defaultEslintConfig = toJson({
+  rules: {},
+});

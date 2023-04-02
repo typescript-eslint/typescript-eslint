@@ -3,7 +3,7 @@ import type * as MonacoEditor from 'monaco-editor';
 import { useEffect, useState } from 'react';
 
 import type { createTypeScriptSandbox } from '../../vendor/sandbox';
-import { createCompilerOptions } from '../editor/config';
+import { createCompilerOptions } from './config';
 import { createFileSystem } from '../linter/bridge';
 import { createLinter } from '../linter/createLinter';
 import type { PlaygroundSystem, WebLinter } from '../linter/types';
@@ -13,7 +13,6 @@ import { sandboxSingleton } from './loadSandbox';
 import type { CommonEditorProps } from './types';
 
 export interface SandboxServicesProps {
-  readonly jsx?: boolean;
   readonly onLoaded: (
     ruleDetails: RuleDetails[],
     tsVersions: readonly string[],

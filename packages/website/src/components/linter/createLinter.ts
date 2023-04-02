@@ -21,6 +21,7 @@ export function createLinter(
   vfs: typeof tsvfs,
 ): WebLinter {
   const rules: WebLinter['rules'] = new Map();
+  const configs = new Map(Object.entries(webLinterModule.configs));
   let compilerOptions: ts.CompilerOptions = {};
   const eslintConfig = { ...defaultEslintConfig };
 
@@ -76,10 +77,34 @@ export function createLinter(
     eslintConfig.parserOptions.sourceType = sourceType ?? 'module';
   };
 
+  const resolveEslintConfig = (
+    cfg: Partial<TSESLint.Linter.Config>,
+  ): TSESLint.Linter.Config => {
+    const config = { rules: {} };
+    if (cfg.extends) {
+      const cfgExtends = Array.isArray(cfg.extends)
+        ? cfg.extends
+        : [cfg.extends];
+      for (const extendsName of cfgExtends) {
+        const maybeConfig = configs.get(extendsName);
+        if (maybeConfig) {
+          const resolved = resolveEslintConfig(maybeConfig);
+          if (resolved.rules) {
+            Object.assign(config.rules, resolved.rules);
+          }
+        }
+      }
+    }
+    if (cfg.rules) {
+      Object.assign(config.rules, cfg.rules);
+    }
+    return config;
+  };
+
   const applyEslintConfig = (fileName: string): void => {
     try {
       const file = system.readFile(fileName) ?? '{}';
-      const parsed = parseESLintRC(file);
+      const parsed = resolveEslintConfig(parseESLintRC(file));
       eslintConfig.rules = parsed.rules;
       console.log('[Editor] Updating', fileName, eslintConfig);
     } catch (e) {
@@ -108,6 +133,7 @@ export function createLinter(
 
   return {
     rules,
+    configs: Array.from(configs.keys()),
     triggerFix,
     triggerLint,
     updateParserOptions,

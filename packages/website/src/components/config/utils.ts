@@ -110,13 +110,3 @@ export function getTypescriptOptions(): OptionDeclarations[] {
       !filteredNames.includes(item.name),
   );
 }
-
-export const defaultTsConfig = toJson({
-  compilerOptions: {
-    strictNullChecks: true,
-  },
-});
-
-export const defaultEslintConfig = toJson({
-  rules: {},
-});
