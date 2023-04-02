@@ -73,10 +73,10 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
       );
     }
 
-    let fileType = readFileType(searchParams.get('fileType'));
-    if (searchParams.get('jsx') === 'true') {
-      fileType = '.tsx';
-    }
+    const fileType =
+      searchParams.get('jsx') === 'true'
+        ? '.tsx'
+        : readFileType(searchParams.get('fileType'));
 
     const code = searchParams.has('code')
       ? readQueryParam(searchParams.get('code'), '')
