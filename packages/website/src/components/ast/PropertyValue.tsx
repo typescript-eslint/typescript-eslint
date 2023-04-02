@@ -18,7 +18,7 @@ function getSimpleModel(data: unknown): SimpleModel {
   if (typeof data === 'string') {
     const value = JSON.stringify(data);
     return {
-      value: JSON.stringify(data),
+      value,
       className: styles.propString,
       shortValue: value.length > 250 ? value.substring(0, 200) : undefined,
     };
