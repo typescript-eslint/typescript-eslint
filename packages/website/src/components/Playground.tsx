@@ -1,4 +1,3 @@
-import { useWindowSize } from '@docusaurus/theme-common';
 import type { TSESTree } from '@typescript-eslint/utils';
 import clsx from 'clsx';
 import type * as ESQuery from 'esquery';
@@ -51,7 +50,6 @@ function Playground(): JSX.Element {
   const [showModal, setShowModal] = useState<TabType | false>(false);
   const [esQueryFilter, setEsQueryFilter] = useState<ESQuery.Selector>();
   const [esQueryError, setEsQueryError] = useState<Error>();
-  const windowSize = useWindowSize();
 
   const updateModal = useCallback(
     (config?: Partial<ConfigModel>) => {
@@ -98,7 +96,6 @@ function Playground(): JSX.Element {
       />
       <div className={styles.codeBlocks}>
         <ConditionalSplitPane
-          render={windowSize !== 'mobile'}
           split="vertical"
           minSize="10%"
           defaultSize="20rem"
@@ -115,7 +112,6 @@ function Playground(): JSX.Element {
             />
           </div>
           <ConditionalSplitPane
-            render={windowSize !== 'mobile'}
             split="vertical"
             minSize="10%"
             defaultSize="50%"
