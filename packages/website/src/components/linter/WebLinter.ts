@@ -82,8 +82,6 @@ export class WebLinter {
   updateEslintConfig(config: EslintRC): void {
     const resolvedConfig = this.resolveEslintConfig(config);
     this.eslintConfig.rules = resolvedConfig.rules;
-    // TODO: overrides are not fully supported yet
-    this.eslintConfig.overrides = resolvedConfig.overrides;
   }
 
   updateParserOptions(sourceType?: TSESLint.SourceType): void {
@@ -163,17 +161,11 @@ export class WebLinter {
           if (resolved.rules) {
             Object.assign(config.rules, resolved.rules);
           }
-          if (resolved.overrides) {
-            Object.assign(config.overrides, resolved.overrides);
-          }
         }
       }
     }
     if (cfg.rules) {
       Object.assign(config.rules, cfg.rules);
-    }
-    if (cfg.overrides) {
-      Object.assign(config.overrides, cfg.overrides);
     }
     return config;
   }
