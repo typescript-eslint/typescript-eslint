@@ -29,7 +29,7 @@ import type {
 
 function Playground(): JSX.Element {
   const [state, setState] = useHashState({
-    jsx: false,
+    fileType: '.tsx',
     showAST: false,
     sourceType: 'module',
     code: '',
@@ -131,7 +131,7 @@ function Playground(): JSX.Element {
               </div>
               <LoadingEditor
                 ts={state.ts}
-                jsx={state.jsx}
+                fileType={state.fileType}
                 activeTab={activeTab}
                 code={state.code}
                 tsconfig={state.tsconfig}
