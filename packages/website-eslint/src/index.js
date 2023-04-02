@@ -34,12 +34,11 @@ exports.createLinter = function () {
 /** @type {Record<string, unknown>} */
 const configs = {};
 
-for (const name in eslintJs.configs) {
-  configs[`eslint:${name}`] = eslintJs.configs[name];
+for (const [name, value] of Object.entries(eslintJs.configs)) {
+  configs[`eslint:${name}`] = value;
 }
 
-for (const name in plugin.configs) {
-  const value = plugin.configs[name];
+for (const [name, value] of Object.entries(plugin.configs)) {
   if (value.extends && Array.isArray(value.extends)) {
     value.extends = value.extends.map(name =>
       name.replace(/^\.\/configs\//, 'plugin:@typescript-eslint/'),
