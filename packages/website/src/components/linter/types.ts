@@ -33,13 +33,3 @@ export type LinterOnLint = (
 ) => void;
 
 export type LinterOnParse = (fileName: string, model: UpdateModel) => void;
-
-export interface WebLinter {
-  rules: Map<string, { name: string; description?: string; url?: string }>;
-  configs: string[];
-  triggerFix(filename: string): TSESLint.Linter.FixReport | undefined;
-  triggerLint(filename: string): void;
-  onLint(cb: LinterOnLint): () => void;
-  onParse(cb: LinterOnParse): () => void;
-  updateParserOptions(sourceType?: TSESLint.SourceType): void;
-}

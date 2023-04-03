@@ -122,7 +122,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   }, [activeTab, editor, tabs, updateMarkers]);
 
   useEffect(() => {
-    const disposable = webLinter.onLint((uri, messages) => {
+    const disposable = webLinter.onLint.register((uri, messages) => {
       const diagnostics = parseLintResults(messages, codeActions, ruleId =>
         monaco.Uri.parse(webLinter.rules.get(ruleId)?.url ?? ''),
       );
@@ -137,7 +137,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   }, [webLinter, monaco, codeActions, updateMarkers]);
 
   useEffect(() => {
-    const disposable = webLinter.onParse((uri, model) => {
+    const disposable = webLinter.onParse.register((uri, model) => {
       onEsASTChange(model.storedAST);
       onScopeChange(model.storedScope as Record<string, unknown> | undefined);
       onTsASTChange(model.storedTsAST);

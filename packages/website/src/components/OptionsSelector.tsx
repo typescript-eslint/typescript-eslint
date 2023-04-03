@@ -7,13 +7,13 @@ import IconExternalLink from '@theme/Icon/ExternalLink';
 import React, { useCallback } from 'react';
 
 import { useClipboard } from '../hooks/useClipboard';
-import { fileTypes } from './options';
 import Dropdown from './inputs/Dropdown';
 import Tooltip from './inputs/Tooltip';
 import ActionLabel from './layout/ActionLabel';
 import Expander from './layout/Expander';
 import InputLabel from './layout/InputLabel';
 import { createMarkdown, createMarkdownParams } from './lib/markdown';
+import { fileTypes } from './options';
 import type { ConfigModel } from './types';
 
 export interface OptionsSelectorParams {

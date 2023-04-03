@@ -2,7 +2,7 @@ import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import type * as ts from 'typescript';
 
 import { getTypescriptOptions } from '../config/utils';
-import type { WebLinter } from '../linter/types';
+import type { WebLinter } from '../linter/WebLinter';
 
 export function createCompilerOptions(
   tsConfig: Record<string, unknown> = {},
