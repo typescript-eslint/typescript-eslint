@@ -3,11 +3,11 @@ import type * as MonacoEditor from 'monaco-editor';
 import { useEffect, useState } from 'react';
 
 import type { createTypeScriptSandbox } from '../../vendor/sandbox';
+import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { createFileSystem } from '../linter/bridge';
 import type { PlaygroundSystem } from '../linter/types';
 import { WebLinter } from '../linter/WebLinter';
 import type { RuleDetails } from '../types';
-import { createCompilerOptions } from './config';
 import { editorEmbedId } from './EditorEmbed';
 import { sandboxSingleton } from './loadSandbox';
 import type { CommonEditorProps } from './types';
@@ -79,7 +79,6 @@ export const useSandboxServices = (
           }
         }
 
-        // @ts-expect-error - we're adding these to the window for debugging purposes
         window.system = system;
         window.esquery = lintUtils.esquery;
 

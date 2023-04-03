@@ -10,4 +10,16 @@ declare module 'typescript' {
    * The value is the file name
    */
   const libMap: StringMap;
+
+  interface OptionDeclarations {
+    name: string;
+    type?: unknown;
+    category?: { message: string };
+    description?: { message: string };
+    element?: {
+      type: unknown;
+    };
+  }
+
+  const optionDeclarations: OptionDeclarations[];
 }

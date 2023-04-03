@@ -2,16 +2,6 @@ import { isRecord } from '@site/src/components/ast/utils';
 import type { EslintRC, TSConfig } from '@site/src/components/types';
 import json5 from 'json5';
 
-export interface OptionDeclarations {
-  name: string;
-  type?: unknown;
-  category?: { message: string };
-  description?: { message: string };
-  element?: {
-    type: unknown;
-  };
-}
-
 export function parseESLintRC(code?: string): EslintRC {
   if (code) {
     try {
@@ -77,36 +67,4 @@ export function tryParseEslintModule(value: string): string {
 
 export function toJson(cfg: unknown): string {
   return JSON.stringify(cfg, null, 2);
-}
-
-export function getTypescriptOptions(): OptionDeclarations[] {
-  const allowedCategories = [
-    'Command-line Options',
-    'Projects',
-    'Compiler Diagnostics',
-    'Editor Support',
-    'Output Formatting',
-    'Watch and Build Modes',
-    'Source Map Options',
-  ];
-
-  const filteredNames = [
-    'moduleResolution',
-    'moduleDetection',
-    'plugins',
-    'typeRoots',
-    'jsx',
-  ];
-
-  // @ts-expect-error: definition is not fully correct
-  return (window.ts.optionDeclarations as OptionDeclarations[]).filter(
-    item =>
-      (item.type === 'boolean' ||
-        item.type === 'list' ||
-        item.type instanceof Map) &&
-      item.description &&
-      item.category &&
-      !allowedCategories.includes(item.category.message) &&
-      !filteredNames.includes(item.name),
-  );
 }

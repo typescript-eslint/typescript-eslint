@@ -1,10 +1,11 @@
 import React, { useCallback, useEffect, useState } from 'react';
 
+import { getTypescriptOptions } from '../lib/jsonSchema';
 import { shallowEqual } from '../lib/shallowEqual';
 import type { ConfigModel, TSConfig } from '../types';
 import type { ConfigOptionsType } from './ConfigEditor';
 import ConfigEditor from './ConfigEditor';
-import { getTypescriptOptions, parseTSConfig, toJson } from './utils';
+import { parseTSConfig, toJson } from './utils';
 
 interface ConfigTypeScriptProps {
   readonly isOpen: boolean;

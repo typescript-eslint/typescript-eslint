@@ -3,8 +3,8 @@ import type { TSESLint } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
 import { parseESLintRC, parseTSConfig } from '../config/utils';
-import { createCompilerOptions } from '../editor/config';
-import { createEventHelper } from '../lib/createEventHelper';
+import { createCompilerOptions } from '../lib/createCompilerOptions';
+import { createEventsBinder } from '../lib/createEventsBinder';
 import { defaultEslintConfig, PARSER_NAME } from './config';
 import { createParser } from './createParser';
 import type {
@@ -15,8 +15,8 @@ import type {
 } from './types';
 
 export class WebLinter {
-  readonly onLint = createEventHelper<LinterOnLint>();
-  readonly onParse = createEventHelper<LinterOnParse>();
+  readonly onLint = createEventsBinder<LinterOnLint>();
+  readonly onParse = createEventsBinder<LinterOnParse>();
   readonly rules = new Map<
     string,
     { name: string; description?: string; url?: string }

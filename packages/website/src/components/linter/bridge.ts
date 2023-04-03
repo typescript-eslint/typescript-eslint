@@ -37,10 +37,7 @@ export function createFileSystem(
 
     return {
       close: (): void => {
-        const handle = fileWatcherCallbacks.get(expPath);
-        if (handle) {
-          handle.delete(cb);
-        }
+        fileWatcherCallbacks.get(expPath)?.delete(cb);
       },
     };
   };

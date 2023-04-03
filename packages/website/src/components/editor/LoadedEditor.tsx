@@ -5,15 +5,15 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
 import { parseTSConfig, tryParseEslintModule } from '../config/utils';
 import { useResizeObserver } from '../hooks/useResizeObserver';
+import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { debounce } from '../lib/debounce';
+import {
+  getEslintJsonSchema,
+  getTypescriptJsonSchema,
+} from '../lib/jsonSchema';
 import type { LintCodeAction } from '../linter/utils';
 import { parseLintResults, parseMarkers } from '../linter/utils';
 import type { TabType } from '../types';
-import {
-  createCompilerOptions,
-  getEslintSchema,
-  getTsConfigSchema,
-} from './config';
 import { createProvideCodeActions } from './createProvideCodeActions';
 import type { CommonEditorProps } from './types';
 import type { SandboxServices } from './useSandboxServices';
@@ -155,16 +155,16 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         {
           uri: monaco.Uri.file('eslint-schema.json').toString(), // id of the first schema
           fileMatch: ['/.eslintrc'], // associate with our model
-          schema: getEslintSchema(webLinter),
+          schema: getEslintJsonSchema(webLinter),
         },
         {
           uri: monaco.Uri.file('ts-schema.json').toString(), // id of the first schema
           fileMatch: ['/tsconfig.json'], // associate with our model
-          schema: getTsConfigSchema(),
+          schema: getTypescriptJsonSchema(),
         },
       ],
     });
-  }, [monaco, webLinter.rules]);
+  }, [monaco, webLinter]);
 
   useEffect(() => {
     const disposable = monaco.languages.registerCodeActionProvider(

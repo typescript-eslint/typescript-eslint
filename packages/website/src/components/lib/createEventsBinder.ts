@@ -1,5 +1,5 @@
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function createEventHelper<T extends (...args: any[]) => void>(): {
+export function createEventsBinder<T extends (...args: any[]) => void>(): {
   trigger: (...args: Parameters<T>) => void;
   register: (cb: T) => () => void;
 } {
