@@ -1,4 +1,4 @@
-import { toJson } from './config/utils';
+import { toJson } from './lib/json';
 import type { ConfigFileType, ConfigShowAst } from './types';
 
 export const detailTabs: { value: ConfigShowAst; label: string }[] = [

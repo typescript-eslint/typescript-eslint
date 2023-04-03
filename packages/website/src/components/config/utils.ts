@@ -1,17 +1,15 @@
-import { isRecord } from '@site/src/components/ast/utils';
-import type { EslintRC, TSConfig } from '@site/src/components/types';
-import json5 from 'json5';
+import { isRecord } from '../ast/utils';
+import { parseJSONObject, toJson } from '../lib/json';
+import type { EslintRC, TSConfig } from '../types';
 
 export function parseESLintRC(code?: string): EslintRC {
   if (code) {
     try {
-      const parsed: unknown = json5.parse(code);
-      if (isRecord(parsed)) {
-        if ('rules' in parsed && isRecord(parsed.rules)) {
-          return parsed as EslintRC;
-        }
-        return { ...parsed, rules: {} };
+      const parsed = parseJSONObject(code);
+      if ('rules' in parsed && isRecord(parsed.rules)) {
+        return parsed as EslintRC;
       }
+      return { ...parsed, rules: {} };
     } catch (e) {
       console.error(e);
     }
@@ -63,8 +61,4 @@ export function tryParseEslintModule(value: string): string {
     console.error(e);
   }
   return value;
-}
-
-export function toJson(cfg: unknown): string {
-  return JSON.stringify(cfg, null, 2);
 }

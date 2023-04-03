@@ -2,8 +2,9 @@ import { useHistory } from '@docusaurus/router';
 import * as lz from 'lz-string';
 import { useCallback, useState } from 'react';
 
-import { toJson } from '../config/utils';
 import { hasOwnProperty } from '../lib/has-own-property';
+import { toJsonConfig } from '../lib/json';
+import { shallowEqual } from '../lib/shallowEqual';
 import { fileTypes } from '../options';
 import type { ConfigFileType, ConfigModel, ConfigShowAst } from '../types';
 
@@ -30,10 +31,6 @@ function readFileType(value: string | null): ConfigFileType {
     return value as ConfigFileType;
   }
   return '.ts';
-}
-
-function toJsonConfig(cfg: unknown, prop: string): string {
-  return toJson({ [prop]: cfg });
 }
 
 function readLegacyParam(
@@ -183,8 +180,13 @@ function useHashState(
   const updateState = useCallback(
     (cfg: Partial<ConfigModel>) => {
       console.info('[State] updating config diff', cfg);
+
       setState(oldState => {
         const newState = { ...oldState, ...cfg };
+
+        if (shallowEqual(oldState, newState)) {
+          return oldState;
+        }
 
         writeStateToLocalStorage(newState);
 
