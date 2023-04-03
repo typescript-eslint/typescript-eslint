@@ -124,6 +124,46 @@ function data<T extends TODO>() {}
       filename: 'react.tsx',
     },
     {
+      code: 'const data = <T extends any>() => {};',
+      errors: [
+        {
+          data: { constraint: 'any', name: 'T' },
+          messageId: 'unnecessaryConstraint',
+          endColumn: 28,
+          column: 15,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
+              output: `const data = <T,>() => {};`,
+            },
+          ],
+        },
+      ],
+      filename: 'file.mts',
+    },
+    {
+      code: 'const data = <T extends any>() => {};',
+      errors: [
+        {
+          data: { constraint: 'any', name: 'T' },
+          messageId: 'unnecessaryConstraint',
+          endColumn: 28,
+          column: 15,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
+              output: `const data = <T,>() => {};`,
+            },
+          ],
+        },
+      ],
+      filename: 'file.cts',
+    },
+    {
       code: noFormat`const data = <T extends any,>() => {};`,
       errors: [
         {
