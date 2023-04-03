@@ -35,6 +35,7 @@
   background: var(--ifm-color-emphasis-100);
 }
 
+.searchResult:nth-child(even):hover,
 .searchResult:hover {
   background: var(--ifm-color-emphasis-200);
 }
