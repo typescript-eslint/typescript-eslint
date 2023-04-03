@@ -98,10 +98,10 @@ jobs:
   stylelint:
     name: Stylelint
     needs: [install]
-    runs-on: ubuntu-tatest
+    runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        actions: actions/checkout@v3
+        uses: actions/checkout@v3
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
