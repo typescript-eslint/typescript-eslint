@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import clsx from 'clsx';
 import type * as ESQuery from 'esquery';
-import React, { useCallback, useMemo, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import type { SourceFile } from 'typescript';
 
 import ASTViewer from './ast/ASTViewer';
@@ -55,16 +55,13 @@ function Playground(): JSX.Element {
     [],
   );
 
-  const activeVisualEditor = useMemo(() => {
-    if (!isLoading) {
-      return visualEslintRc && activeTab === 'eslintrc'
-        ? 'eslintrc'
-        : visualTSConfig && activeTab === 'tsconfig'
-        ? 'tsconfig'
-        : undefined;
-    }
-    return undefined;
-  }, [activeTab, isLoading, visualEslintRc, visualTSConfig]);
+  const activeVisualEditor = !isLoading
+    ? visualEslintRc && activeTab === 'eslintrc'
+      ? 'eslintrc'
+      : visualTSConfig && activeTab === 'tsconfig'
+      ? 'tsconfig'
+      : undefined
+    : undefined;
 
   const onVisualEditor = useCallback((tab: TabType): void => {
     if (tab === 'tsconfig') {
