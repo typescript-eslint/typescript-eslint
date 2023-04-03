@@ -105,7 +105,6 @@ jobs:
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
-        node-version:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
       - name: Run stylelint check
         run: yarn stylelint
