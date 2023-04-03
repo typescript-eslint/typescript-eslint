@@ -108,7 +108,7 @@ jobs:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
       - name: Run stylelint check
         run: yarn stylelint
-        working-directory: website
+        working-directory: packages/website
 
   integration_tests:
     name: Run integration tests on primary Node.js version
