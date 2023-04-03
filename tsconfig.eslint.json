@@ -7,7 +7,7 @@
   "extends": "./tsconfig.base.json",
   "include": [
     "tools/**/*.ts",
-    ".eslintrc.js",
+    "eslint.config.js",
     "jest.config.base.js",
     "jest.config.js",
     "jest.preset.js"

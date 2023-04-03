@@ -24,11 +24,7 @@
       "outputs": ["{projectRoot}/coverage"]
     },
     "lint": {
-      "inputs": [
-        "default",
-        "{workspaceRoot}/.eslintrc.js",
-        "{workspaceRoot}/.eslintignore"
-      ]
+      "inputs": ["default", "{workspaceRoot}/eslint.config.js"]
     }
   },
   "namedInputs": {
