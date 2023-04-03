@@ -3,8 +3,9 @@ import * as lz from 'lz-string';
 import { useCallback, useState } from 'react';
 
 import { fileTypes } from '../config';
-import { toJson } from '../config/utils';
 import { hasOwnProperty } from '../lib/has-own-property';
+import { toJson } from '../lib/json';
+import { shallowEqual } from '../lib/shallowEqual';
 import type { ConfigFileType, ConfigModel, ConfigShowAst } from '../types';
 
 function writeQueryParam(value: string | null): string {
@@ -183,8 +184,13 @@ function useHashState(
   const updateState = useCallback(
     (cfg: Partial<ConfigModel>) => {
       console.info('[State] updating config diff', cfg);
+
       setState(oldState => {
         const newState = { ...oldState, ...cfg };
+
+        if (shallowEqual(oldState, newState)) {
+          return oldState;
+        }
 
         writeStateToLocalStorage(newState);
 

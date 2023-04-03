@@ -1,27 +1,17 @@
-import { isRecord } from '@site/src/components/ast/utils';
-import type { EslintRC, TSConfig } from '@site/src/components/types';
-import json5 from 'json5';
+import type * as ts from 'typescript';
 
-export interface OptionDeclarations {
-  name: string;
-  type?: unknown;
-  category?: { message: string };
-  description?: { message: string };
-  element?: {
-    type: unknown;
-  };
-}
+import { isRecord } from '../ast/utils';
+import { parseJSONObject, toJson } from '../lib/json';
+import type { EslintRC, TSConfig } from '../types';
 
 export function parseESLintRC(code?: string): EslintRC {
   if (code) {
     try {
-      const parsed: unknown = json5.parse(code);
-      if (isRecord(parsed)) {
-        if ('rules' in parsed && isRecord(parsed.rules)) {
-          return parsed as EslintRC;
-        }
-        return { ...parsed, rules: {} };
+      const parsed = parseJSONObject(code);
+      if ('rules' in parsed && isRecord(parsed.rules)) {
+        return parsed as EslintRC;
       }
+      return { ...parsed, rules: {} };
     } catch (e) {
       console.error(e);
     }
@@ -75,11 +65,7 @@ export function tryParseEslintModule(value: string): string {
   return value;
 }
 
-export function toJson(cfg: unknown): string {
-  return JSON.stringify(cfg, null, 2);
-}
-
-export function getTypescriptOptions(): OptionDeclarations[] {
+export function getTypescriptOptions(): ts.OptionDeclarations[] {
   const allowedCategories = [
     'Command-line Options',
     'Projects',
@@ -98,8 +84,7 @@ export function getTypescriptOptions(): OptionDeclarations[] {
     'jsx',
   ];
 
-  // @ts-expect-error: definition is not fully correct
-  return (window.ts.optionDeclarations as OptionDeclarations[]).filter(
+  return window.ts.optionDeclarations.filter(
     item =>
       (item.type === 'boolean' ||
         item.type === 'list' ||

@@ -396,7 +396,7 @@ module.exports = {
         'import/no-default-export': 'off',
         'react/jsx-no-target-blank': 'off',
         'react/no-unescaped-entities': 'off',
-        'react-hooks/exhaustive-deps': 'off', // TODO: enable it later
+        'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
       },
       settings: {
         react: {

@@ -19,13 +19,7 @@ import Loader from './layout/Loader';
 import OptionsSelector from './OptionsSelector';
 import styles from './Playground.module.css';
 import ConditionalSplitPane from './SplitPane/ConditionalSplitPane';
-import type {
-  ConfigModel,
-  ErrorGroup,
-  RuleDetails,
-  SelectedRange,
-  TabType,
-} from './types';
+import type { ErrorGroup, RuleDetails, SelectedRange, TabType } from './types';
 
 function Playground(): JSX.Element {
   const [state, setState] = useHashState({
@@ -47,19 +41,10 @@ function Playground(): JSX.Element {
   const [selectedRange, setSelectedRange] = useState<SelectedRange>();
   const [position, setPosition] = useState<number>();
   const [activeTab, setTab] = useState<TabType>('code');
-  const [showModal, setShowModal] = useState<TabType | false>(false);
   const [esQueryFilter, setEsQueryFilter] = useState<ESQuery.Selector>();
   const [esQueryError, setEsQueryError] = useState<Error>();
-
-  const updateModal = useCallback(
-    (config?: Partial<ConfigModel>) => {
-      if (config) {
-        setState(config);
-      }
-      setShowModal(false);
-    },
-    [setState],
-  );
+  const [visualEslintRc, setVisualEslintRc] = useState(false);
+  const [visualTSConfig, setVisualTSConfig] = useState(false);
 
   const onLoaded = useCallback(
     (ruleNames: RuleDetails[], tsVersions: readonly string[]): void => {
@@ -69,6 +54,22 @@ function Playground(): JSX.Element {
     },
     [],
   );
+
+  const activeVisualEditor = !isLoading
+    ? visualEslintRc && activeTab === 'eslintrc'
+      ? 'eslintrc'
+      : visualTSConfig && activeTab === 'tsconfig'
+      ? 'tsconfig'
+      : undefined
+    : undefined;
+
+  const onVisualEditor = useCallback((tab: TabType): void => {
+    if (tab === 'tsconfig') {
+      setVisualTSConfig(val => !val);
+    } else if (tab === 'eslintrc') {
+      setVisualEslintRc(val => !val);
+    }
+  }, []);
 
   const astToShow =
     state.showAST === 'ts'
@@ -81,19 +82,6 @@ function Playground(): JSX.Element {
 
   return (
     <div className={styles.codeContainer}>
-      {ruleNames.length > 0 && (
-        <ConfigEslint
-          isOpen={showModal === 'eslintrc'}
-          ruleOptions={ruleNames}
-          config={state.eslintrc}
-          onClose={updateModal}
-        />
-      )}
-      <ConfigTypeScript
-        isOpen={showModal === 'tsconfig'}
-        config={state.tsconfig}
-        onClose={updateModal}
-      />
       <div className={styles.codeBlocks}>
         <ConditionalSplitPane
           split="vertical"
@@ -124,9 +112,30 @@ function Playground(): JSX.Element {
                 active={activeTab}
                 change={setTab}
                 showVisualEditor={activeTab !== 'code'}
-                showModal={(): void => setShowModal(activeTab)}
+                showModal={onVisualEditor}
               />
-              <div className={styles.tabCode}>
+              {(activeVisualEditor === 'eslintrc' && (
+                <ConfigEslint
+                  className={styles.tabCode}
+                  ruleOptions={ruleNames}
+                  config={state.eslintrc}
+                  onChange={setState}
+                />
+              )) ||
+                (activeVisualEditor === 'tsconfig' && (
+                  <ConfigTypeScript
+                    className={styles.tabCode}
+                    config={state.tsconfig}
+                    onChange={setState}
+                  />
+                ))}
+              <div
+                key="monacoEditor"
+                className={clsx(
+                  styles.tabCode,
+                  !!activeVisualEditor && styles.hidden,
+                )}
+              >
                 <EditorEmbed />
               </div>
               <LoadingEditor
