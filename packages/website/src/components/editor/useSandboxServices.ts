@@ -6,7 +6,7 @@ import type { createTypeScriptSandbox } from '../../vendor/sandbox';
 import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { createFileSystem } from '../linter/bridge';
 import type { PlaygroundSystem } from '../linter/types';
-import { createLinter, type WebLinter } from '../linter/WebLinter';
+import { createLinter, type CreateLinter } from '../linter/createLinter';
 import type { RuleDetails } from '../types';
 import { editorEmbedId } from './EditorEmbed';
 import { sandboxSingleton } from './loadSandbox';
@@ -25,7 +25,7 @@ export type SandboxInstance = ReturnType<typeof createTypeScriptSandbox>;
 export interface SandboxServices {
   sandboxInstance: SandboxInstance;
   system: PlaygroundSystem;
-  webLinter: WebLinter;
+  webLinter: CreateLinter;
 }
 
 export const useSandboxServices = (

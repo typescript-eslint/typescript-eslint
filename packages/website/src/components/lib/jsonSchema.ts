@@ -1,9 +1,9 @@
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import type * as ts from 'typescript';
 
-import type { WebLinter } from '../linter/WebLinter';
+import type { CreateLinter } from '../linter/createLinter';
 
-export function getEslintJsonSchema(linter: WebLinter): JSONSchema4 {
+export function getEslintJsonSchema(linter: CreateLinter): JSONSchema4 {
   const properties: Record<string, JSONSchema4> = {};
 
   for (const [, item] of linter.rules) {

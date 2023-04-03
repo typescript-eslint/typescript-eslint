@@ -14,7 +14,7 @@ import type {
   WebLinterModule,
 } from './types';
 
-export interface WebLinter {
+export interface CreateLinter {
   rules: Map<string, { name: string; description?: string; url?: string }>;
   configs: string[];
   triggerFix(filename: string): TSESLint.Linter.FixReport | undefined;
@@ -28,8 +28,8 @@ export function createLinter(
   system: PlaygroundSystem,
   webLinterModule: WebLinterModule,
   vfs: typeof tsvfs,
-): WebLinter {
-  const rules: WebLinter['rules'] = new Map();
+): CreateLinter {
+  const rules: CreateLinter['rules'] = new Map();
   const configs = new Map(Object.entries(webLinterModule.configs));
   let compilerOptions: ts.CompilerOptions = {};
   const eslintConfig = { ...defaultEslintConfig };
