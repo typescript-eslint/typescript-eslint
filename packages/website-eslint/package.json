@@ -31,6 +31,7 @@
     "@typescript-eslint/types": "5.57.0",
     "@typescript-eslint/utils": "5.57.0",
     "eslint": "*",
+    "@eslint/js": "8.36.0",
     "esbuild": "~0.17.12",
     "esquery": "*",
     "semver": "^7.3.7"

@@ -11,6 +11,7 @@ export type RuleEntry = TSESLint.Linter.RuleEntry;
 export interface RuleDetails {
   name: string;
   description?: string;
+  url?: string;
 }
 
 export type TabType = 'code' | 'tsconfig' | 'eslintrc';

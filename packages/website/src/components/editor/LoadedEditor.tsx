@@ -109,7 +109,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   }, [sandboxInstance, tsconfig, webLinter]);
 
   useEffect(() => {
-    webLinter.updateRules(parseESLintRC(eslintrc).rules);
+    webLinter.updateEslintConfig(parseESLintRC(eslintrc));
   }, [eslintrc, webLinter]);
 
   useEffect(() => {
@@ -128,7 +128,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
         const markers = parseLintResults(messages, codeActions, ruleId =>
           sandboxInstance.monaco.Uri.parse(
-            webLinter.rulesUrl.get(ruleId) ?? '',
+            webLinter.rulesMap.get(ruleId)?.url ?? '',
           ),
         );
 
@@ -185,7 +185,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         {
           uri: sandboxInstance.monaco.Uri.file('eslint-schema.json').toString(), // id of the first schema
           fileMatch: [tabs.eslintrc.uri.toString()], // associate with our model
-          schema: getEslintSchema(webLinter.ruleNames),
+          schema: getEslintSchema(webLinter),
         },
         {
           uri: sandboxInstance.monaco.Uri.file('ts-schema.json').toString(), // id of the first schema
@@ -290,7 +290,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     tabs.eslintrc,
     tabs.tsconfig,
     updateMarkers,
-    webLinter.ruleNames,
+    webLinter.rulesMap,
   ]);
 
   const resize = useMemo(() => {
