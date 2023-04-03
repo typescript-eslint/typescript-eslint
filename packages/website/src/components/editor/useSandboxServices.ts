@@ -6,7 +6,7 @@ import type { createTypeScriptSandbox } from '../../vendor/sandbox';
 import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { createFileSystem } from '../linter/bridge';
 import type { PlaygroundSystem } from '../linter/types';
-import { WebLinter } from '../linter/WebLinter';
+import { createLinter, type WebLinter } from '../linter/WebLinter';
 import type { RuleDetails } from '../types';
 import { editorEmbedId } from './EditorEmbed';
 import { sandboxSingleton } from './loadSandbox';
@@ -82,7 +82,7 @@ export const useSandboxServices = (
         window.system = system;
         window.esquery = lintUtils.esquery;
 
-        const webLinter = new WebLinter(
+        const webLinter = createLinter(
           system,
           lintUtils,
           sandboxInstance.tsvfs,

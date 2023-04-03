@@ -14,97 +14,90 @@ import type {
   WebLinterModule,
 } from './types';
 
-export class WebLinter {
-  readonly onLint = createEventsBinder<LinterOnLint>();
-  readonly onParse = createEventsBinder<LinterOnParse>();
-  readonly rules = new Map<
-    string,
-    { name: string; description?: string; url?: string }
-  >();
-  readonly configs: string[] = [];
+export interface WebLinter {
+  rules: Map<string, { name: string; description?: string; url?: string }>;
+  configs: string[];
+  triggerFix(filename: string): TSESLint.Linter.FixReport | undefined;
+  triggerLint(filename: string): void;
+  onLint(cb: LinterOnLint): () => void;
+  onParse(cb: LinterOnParse): () => void;
+  updateParserOptions(sourceType?: TSESLint.SourceType): void;
+}
 
-  readonly #configMap = new Map<string, TSESLint.Linter.Config>();
-  #compilerOptions: ts.CompilerOptions = {};
-  #eslintConfig: TSESLint.Linter.Config = { ...defaultEslintConfig };
-  readonly #linter: TSESLint.Linter;
-  readonly #parser: ReturnType<typeof createParser>;
-  readonly #system: PlaygroundSystem;
+export function createLinter(
+  system: PlaygroundSystem,
+  webLinterModule: WebLinterModule,
+  vfs: typeof tsvfs,
+): WebLinter {
+  const rules: WebLinter['rules'] = new Map();
+  const configs = new Map(Object.entries(webLinterModule.configs));
+  let compilerOptions: ts.CompilerOptions = {};
+  const eslintConfig = { ...defaultEslintConfig };
 
-  constructor(
-    system: PlaygroundSystem,
-    webLinterModule: WebLinterModule,
-    vfs: typeof tsvfs,
-  ) {
-    this.#configMap = new Map(Object.entries(webLinterModule.configs));
-    this.#linter = webLinterModule.createLinter();
-    this.#system = system;
-    this.configs = Array.from(this.#configMap.keys());
+  const onLint = createEventsBinder<LinterOnLint>();
+  const onParse = createEventsBinder<LinterOnParse>();
 
-    this.#parser = createParser(
-      system,
-      this.#compilerOptions,
-      (filename, model): void => {
-        this.onParse.trigger(filename, model);
-      },
-      webLinterModule,
-      vfs,
-    );
+  const linter = webLinterModule.createLinter();
 
-    this.#linter.defineParser(PARSER_NAME, this.#parser);
+  const parser = createParser(
+    system,
+    compilerOptions,
+    (filename, model): void => {
+      onParse.trigger(filename, model);
+    },
+    webLinterModule,
+    vfs,
+  );
 
-    this.#linter.getRules().forEach((item, name) => {
-      this.rules.set(name, {
-        name: name,
-        description: item.meta?.docs?.description,
-        url: item.meta?.docs?.url,
-      });
+  linter.defineParser(PARSER_NAME, parser);
+
+  linter.getRules().forEach((item, name) => {
+    rules.set(name, {
+      name: name,
+      description: item.meta?.docs?.description,
+      url: item.meta?.docs?.url,
     });
+  });
 
-    system.watchFile('/input.*', this.triggerLint);
-    system.watchFile('/.eslintrc', this.#applyEslintConfig);
-    system.watchFile('/tsconfig.json', this.#applyTSConfig);
-
-    this.#applyEslintConfig('/.eslintrc');
-    this.#applyTSConfig('/tsconfig.json');
-  }
-
-  triggerLint(filename: string): void {
+  const triggerLint = (filename: string): void => {
     console.info('[Editor] linting triggered for file', filename);
-    const code = this.#system.readFile(filename) ?? '\n';
+    const code = system.readFile(filename) ?? '\n';
     if (code != null) {
-      const messages = this.#linter.verify(code, this.#eslintConfig, filename);
-      this.onLint.trigger(filename, messages);
+      const messages = linter.verify(code, eslintConfig, filename);
+      onLint.trigger(filename, messages);
     }
-  }
+  };
 
-  triggerFix(filename: string): TSESLint.Linter.FixReport | undefined {
-    const code = this.#system.readFile(filename);
+  const triggerFix = (
+    filename: string,
+  ): TSESLint.Linter.FixReport | undefined => {
+    const code = system.readFile(filename);
     if (code) {
-      return this.#linter.verifyAndFix(code, this.#eslintConfig, {
+      return linter.verifyAndFix(code, eslintConfig, {
         filename: filename,
         fix: true,
       });
     }
     return undefined;
-  }
+  };
 
-  updateParserOptions(sourceType?: TSESLint.SourceType): void {
-    this.#eslintConfig.parserOptions ??= {};
-    this.#eslintConfig.parserOptions.sourceType = sourceType ?? 'module';
-  }
+  const updateParserOptions = (sourceType?: TSESLint.SourceType): void => {
+    eslintConfig.parserOptions ??= {};
+    eslintConfig.parserOptions.sourceType = sourceType ?? 'module';
+  };
 
-  #resolveEslintConfig(
+  const resolveEslintConfig = (
     cfg: Partial<TSESLint.Linter.Config>,
-  ): TSESLint.Linter.Config {
+  ): TSESLint.Linter.Config => {
     const config = { rules: {} };
     if (cfg.extends) {
       const cfgExtends = Array.isArray(cfg.extends)
         ? cfg.extends
         : [cfg.extends];
       for (const extendsName of cfgExtends) {
-        const maybeConfig = this.#configMap.get(extendsName);
+        const maybeConfig = configs.get(extendsName);
         if (maybeConfig) {
-          const resolved = this.#resolveEslintConfig(maybeConfig);
+          const resolved = resolveEslintConfig(maybeConfig);
           if (resolved.rules) {
             Object.assign(config.rules, resolved.rules);
           }
@@ -115,28 +108,45 @@ export class WebLinter {
       Object.assign(config.rules, cfg.rules);
     }
     return config;
-  }
+  };
 
-  #applyEslintConfig(fileName: string): void {
+  const applyEslintConfig = (fileName: string): void => {
     try {
-      const file = this.#system.readFile(fileName) ?? '{}';
-      const parsed = this.#resolveEslintConfig(parseESLintRC(file));
-      this.#eslintConfig.rules = parsed.rules;
-      console.log('[Editor] Updating', fileName, this.#eslintConfig);
+      const file = system.readFile(fileName) ?? '{}';
+      const parsed = resolveEslintConfig(parseESLintRC(file));
+      eslintConfig.rules = parsed.rules;
+      console.log('[Editor] Updating', fileName, eslintConfig);
     } catch (e) {
       console.error(e);
     }
-  }
+  };
 
-  #applyTSConfig(fileName: string): void {
+  const applyTSConfig = (fileName: string): void => {
     try {
-      const file = this.#system.readFile(fileName) ?? '{}';
+      const file = system.readFile(fileName) ?? '{}';
       const parsed = parseTSConfig(file).compilerOptions;
-      this.#compilerOptions = createCompilerOptions(parsed);
-      console.log('[Editor] Updating', fileName, this.#compilerOptions);
-      this.#parser.updateConfig(this.#compilerOptions);
+      compilerOptions = createCompilerOptions(parsed);
+      console.log('[Editor] Updating', fileName, compilerOptions);
+      parser.updateConfig(compilerOptions);
     } catch (e) {
       console.error(e);
     }
-  }
+  };
+
+  system.watchFile('/input.*', triggerLint);
+  system.watchFile('/.eslintrc', applyEslintConfig);
+  system.watchFile('/tsconfig.json', applyTSConfig);
+
+  applyEslintConfig('/.eslintrc');
+  applyTSConfig('/tsconfig.json');
+
+  return {
+    rules,
+    configs: Array.from(configs.keys()),
+    triggerFix,
+    triggerLint,
+    updateParserOptions,
+    onParse: onParse.register,
+    onLint: onLint.register,
+  };
 }
