@@ -1,41 +1,13 @@
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
-import type Monaco from 'monaco-editor';
+import type * as ts from 'typescript';
 
-import { getTypescriptOptions } from '../config/utils';
 import type { WebLinter } from '../linter/WebLinter';
 
-export function createCompilerOptions(
-  tsConfig: Record<string, unknown> = {},
-): Monaco.languages.typescript.CompilerOptions {
-  const config = window.ts.convertCompilerOptionsFromJson(
-    {
-      // ts and monaco has different type as monaco types are not changing base on ts version
-      target: 'esnext',
-      module: 'esnext',
-      jsx: 'preserve',
-      ...tsConfig,
-      allowJs: true,
-      lib: Array.isArray(tsConfig.lib) ? tsConfig.lib : undefined,
-      moduleResolution: undefined,
-      plugins: undefined,
-      typeRoots: undefined,
-      paths: undefined,
-      moduleDetection: undefined,
-      baseUrl: undefined,
-    },
-    '/tsconfig.json',
-  );
-
-  const options = config.options as Monaco.languages.typescript.CompilerOptions;
-
-  if (!options.lib) {
-    options.lib = [window.ts.getDefaultLibFileName(options)];
-  }
-
-  return options;
-}
-
-export function getEslintSchema(linter: WebLinter): JSONSchema4 {
+/**
+ * Get the JSON schema for the eslint config
+ * Currently we only support the rules and extends
+ */
+export function getEslintJsonSchema(linter: WebLinter): JSONSchema4 {
   const properties: Record<string, JSONSchema4> = {};
 
   for (const [, item] of linter.rulesMap) {
@@ -83,7 +55,45 @@ export function getEslintSchema(linter: WebLinter): JSONSchema4 {
   };
 }
 
-export function getTsConfigSchema(): JSONSchema4 {
+/**
+ * Get all typescript options, except for the ones that are not supported by the playground
+ * this function uses private API from typescript, and this might break in the future
+ */
+export function getTypescriptOptions(): ts.OptionDeclarations[] {
+  const allowedCategories = [
+    'Command-line Options',
+    'Projects',
+    'Compiler Diagnostics',
+    'Editor Support',
+    'Output Formatting',
+    'Watch and Build Modes',
+    'Source Map Options',
+  ];
+
+  const filteredNames = [
+    'moduleResolution',
+    'moduleDetection',
+    'plugins',
+    'typeRoots',
+    'jsx',
+  ];
+
+  return window.ts.optionDeclarations.filter(
+    item =>
+      (item.type === 'boolean' ||
+        item.type === 'list' ||
+        item.type instanceof Map) &&
+      item.description &&
+      item.category &&
+      !allowedCategories.includes(item.category.message) &&
+      !filteredNames.includes(item.name),
+  );
+}
+
+/**
+ * Get the JSON schema for the typescript config
+ */
+export function getTypescriptJsonSchema(): JSONSchema4 {
   const properties = getTypescriptOptions().reduce((options, item) => {
     if (item.type === 'boolean') {
       options[item.name] = {

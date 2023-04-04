@@ -9,45 +9,50 @@ export interface PropertyNameProps {
   readonly className?: string;
 }
 
-export default function PropertyName(props: PropertyNameProps): JSX.Element {
+export default function PropertyName({
+  onClick: onClickProp,
+  onHover: onHoverProp,
+  className,
+  value,
+}: PropertyNameProps): JSX.Element {
   const onClick = useCallback(
     (e: MouseEvent<HTMLElement>) => {
       e.preventDefault();
-      props.onClick?.();
+      onClickProp?.();
     },
-    [props.onClick],
+    [onClickProp],
   );
 
   const onMouseEnter = useCallback(() => {
-    props.onHover?.(true);
-  }, [props.onHover]);
+    onHoverProp?.(true);
+  }, [onHoverProp]);
 
   const onMouseLeave = useCallback(() => {
-    props.onHover?.(false);
-  }, [props.onHover]);
+    onHoverProp?.(false);
+  }, [onHoverProp]);
 
   const onKeyDown = useCallback(
     (e: KeyboardEvent<HTMLElement>) => {
       if (e.code === 'Space') {
         e.preventDefault();
-        props.onClick?.();
+        onClickProp?.();
       }
     },
-    [props.onClick],
+    [onClickProp],
   );
 
   return (
     <Link
-      className={props.className}
-      href={`#${props.value}`}
+      className={className}
+      href={`#${value}`}
       role="button"
       onClick={onClick}
       onKeyDown={onKeyDown}
       onMouseEnter={onMouseEnter}
       onMouseLeave={onMouseLeave}
-      tabIndex={props.onClick && 0}
+      tabIndex={onClickProp && 0}
     >
-      {props.value}
+      {value}
     </Link>
   );
 }

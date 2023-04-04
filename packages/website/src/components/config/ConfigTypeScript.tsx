@@ -1,11 +1,11 @@
 import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
 import { ensureObject, parseJSONObject, toJson } from '../lib/json';
+import { getTypescriptOptions } from '../lib/jsonSchema';
 import { shallowEqual } from '../lib/shallowEqual';
 import type { ConfigModel } from '../types';
 import type { ConfigOptionsType } from './ConfigEditor';
 import ConfigEditor from './ConfigEditor';
-import { getTypescriptOptions } from './utils';
 
 interface ConfigTypeScriptProps {
   readonly onChange: (config: Partial<ConfigModel>) => void;
