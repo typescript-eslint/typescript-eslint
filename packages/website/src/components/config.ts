@@ -5,6 +5,7 @@ export const detailTabs: { value: ConfigShowAst; label: string }[] = [
   { value: 'es', label: 'ESTree' },
   { value: 'ts', label: 'TypeScript' },
   { value: 'scope', label: 'Scope' },
+  { value: 'types', label: 'Types' },
 ];
 
 export const fileTypes: ConfigFileType[] = [

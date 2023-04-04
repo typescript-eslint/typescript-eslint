@@ -1,4 +1,4 @@
-import type { analyze } from '@typescript-eslint/scope-manager';
+import type { analyze, ScopeManager } from '@typescript-eslint/scope-manager';
 import type { ParserOptions } from '@typescript-eslint/types';
 import type {
   astConverter,
@@ -27,7 +27,8 @@ export class WebLinter {
 
   public storedAST?: TSESTree.Program;
   public storedTsAST?: ts.SourceFile;
-  public storedScope?: Record<string, unknown>;
+  public storedScope?: ScopeManager;
+  public typeChecker?: ts.TypeChecker;
 
   private compilerOptions: ts.CompilerOptions;
   private eslintConfig = eslintConfig;
@@ -102,6 +103,7 @@ export class WebLinter {
     this.storedAST = undefined;
     this.storedTsAST = undefined;
     this.storedScope = undefined;
+    this.typeChecker = undefined;
 
     this.host.writeFile(fileName, code || '\n', false);
 
@@ -126,7 +128,8 @@ export class WebLinter {
 
     this.storedAST = ast;
     this.storedTsAST = tsAst;
-    this.storedScope = scopeManager as unknown as Record<string, unknown>;
+    this.storedScope = scopeManager;
+    this.typeChecker = checker;
 
     return {
       ast,

@@ -18,7 +18,7 @@ export type TabType = 'code' | 'tsconfig' | 'eslintrc';
 
 export type ConfigFileType = `${ts.Extension}`;
 
-export type ConfigShowAst = false | 'es' | 'ts' | 'scope';
+export type ConfigShowAst = false | 'es' | 'ts' | 'scope' | 'types';
 
 export interface ConfigModel {
   fileType?: ConfigFileType;

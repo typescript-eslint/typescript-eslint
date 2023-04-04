@@ -34,9 +34,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   eslintrc,
   selectedRange,
   fileType,
-  onEsASTChange,
-  onScopeChange,
-  onTsASTChange,
+  onASTChange,
   onMarkersChange,
   onChange,
   onSelect,
@@ -146,9 +144,12 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         onMarkersChange(e as Error);
       }
 
-      onEsASTChange(webLinter.storedAST);
-      onTsASTChange(webLinter.storedTsAST);
-      onScopeChange(webLinter.storedScope);
+      onASTChange({
+        storedAST: webLinter.storedAST,
+        storedTsAST: webLinter.storedTsAST,
+        storedScope: webLinter.storedScope,
+        typeChecker: webLinter.typeChecker,
+      });
 
       const position = sandboxInstance.editor.getPosition();
       onSelect(position ? tabs.code.getOffsetAt(position) : undefined);
@@ -162,9 +163,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     eslintrc,
     sourceType,
     webLinter,
-    onEsASTChange,
-    onTsASTChange,
-    onScopeChange,
+    onASTChange,
     onSelect,
     sandboxInstance.editor,
     sandboxInstance.monaco.editor,
@@ -284,8 +283,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     onChange,
     onSelect,
     sandboxInstance.editor,
-    sandboxInstance.monaco.editor,
-    sandboxInstance.monaco.languages.json.jsonDefaults,
+    sandboxInstance.monaco,
     tabs.code,
     tabs.eslintrc,
     tabs.tsconfig,
