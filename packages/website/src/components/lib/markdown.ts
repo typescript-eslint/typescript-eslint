@@ -15,7 +15,7 @@ function createSummary(
 }
 
 function createSummaryJson(obj: string, field: string, title: string): string {
-  if (obj && Object.keys(obj).length > 0) {
+  if (obj && obj.length > 0) {
     return createSummary(obj, title, 'json', 10);
   }
   return '';
