@@ -22,6 +22,17 @@
   width: calc(100vw - 20rem);
 }
 
+.playgroundInfoContainer {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 0;
+  height: 100%;
+  background: var(--code-editor-bg);
+  border: 1px solid var(--playground-secondary-color);
+  border-left: none;
+  overflow: auto;
+}
+
 .astViewer {
   height: 100%;
   width: 100%;

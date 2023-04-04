@@ -40,25 +40,21 @@ export function TypesDetails({
       defaultSize="50%"
       pane2Style={{ overflow: 'hidden' }}
     >
-      <div>
-        <div className={styles.playgroundInfoContainer}>
-          <SimplifiedTreeView
-            onHoverNode={onHoverNode}
-            selectedNode={selectedNode}
-            onSelect={setSelectedNode}
-            value={value}
-          />
-        </div>
+      <div className={styles.playgroundInfoContainer}>
+        <SimplifiedTreeView
+          onHoverNode={onHoverNode}
+          selectedNode={selectedNode}
+          onSelect={setSelectedNode}
+          value={value}
+        />
       </div>
       {selectedNode && (
-        <div>
-          <div className={styles.playgroundInfoContainer}>
-            <TypeInfo
-              onHoverNode={onHoverNode}
-              typeChecker={typeChecker}
-              value={selectedNode}
-            />
-          </div>
+        <div className={styles.playgroundInfoContainer}>
+          <TypeInfo
+            onHoverNode={onHoverNode}
+            typeChecker={typeChecker}
+            value={selectedNode}
+          />
         </div>
       )}
     </ConditionalSplitPane>
