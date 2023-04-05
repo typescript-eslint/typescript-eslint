@@ -3,7 +3,6 @@ import type Monaco from 'monaco-editor';
 import type React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
-import { parseTSConfig, tryParseEslintModule } from '../config/utils';
 import { useResizeObserver } from '../hooks/useResizeObserver';
 import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { debounce } from '../lib/debounce';
@@ -11,6 +10,7 @@ import {
   getEslintJsonSchema,
   getTypescriptJsonSchema,
 } from '../lib/jsonSchema';
+import { parseTSConfig, tryParseEslintModule } from '../lib/parseConfig';
 import type { LintCodeAction } from '../linter/utils';
 import { parseLintResults, parseMarkers } from '../linter/utils';
 import type { TabType } from '../types';
@@ -110,8 +110,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     const config = createCompilerOptions(
       parseTSConfig(tsconfig).compilerOptions,
     );
-    // @ts-expect-error - monaco and ts compilerOptions are not the same
-    monaco.languages.typescript.typescriptDefaults.setCompilerOptions(config);
+    monaco.languages.typescript.typescriptDefaults.setCompilerOptions(
+      config as Monaco.languages.typescript.CompilerOptions,
+    );
   }, [monaco, tsconfig]);
 
   useEffect(() => {

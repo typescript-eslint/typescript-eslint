@@ -1,5 +1,5 @@
 import { useColorMode } from '@docusaurus/theme-common';
-import type * as MonacoEditor from 'monaco-editor';
+import type * as Monaco from 'monaco-editor';
 import { useEffect, useState } from 'react';
 
 import type { createTypeScriptSandbox } from '../../vendor/sandbox';
@@ -40,8 +40,7 @@ export const useSandboxServices = (
 
     sandboxSingleton(props.ts)
       .then(async ({ main, sandboxFactory, lintUtils }) => {
-        const compilerOptions =
-          createCompilerOptions() as MonacoEditor.languages.typescript.CompilerOptions;
+        const compilerOptions = createCompilerOptions();
 
         sandboxInstance = sandboxFactory.createTypeScriptSandbox(
           {
@@ -59,7 +58,8 @@ export const useSandboxServices = (
               hover: { above: false },
             },
             acquireTypes: false,
-            compilerOptions: compilerOptions,
+            compilerOptions:
+              compilerOptions as Monaco.languages.typescript.CompilerOptions,
             domID: editorEmbedId,
           },
           main,

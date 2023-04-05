@@ -1,5 +1,5 @@
 import { toJson } from './lib/json';
-import type { ConfigFileType, ConfigShowAst } from './types';
+import type { ConfigFileType, ConfigModel, ConfigShowAst } from './types';
 
 export const detailTabs: { value: ConfigShowAst; label: string }[] = [
   { value: false, label: 'Errors' },
@@ -8,6 +8,9 @@ export const detailTabs: { value: ConfigShowAst; label: string }[] = [
   { value: 'scope', label: 'Scope' },
 ];
 
+/**
+ * List of allowed extensions used in playground
+ */
 export const fileTypes: ConfigFileType[] = [
   '.ts',
   '.tsx',
@@ -20,12 +23,22 @@ export const fileTypes: ConfigFileType[] = [
   '.mts',
 ];
 
-export const defaultTsConfig = toJson({
-  compilerOptions: {
-    strictNullChecks: true,
-  },
-});
-
-export const defaultEslintConfig = toJson({
-  rules: {},
-});
+/**
+ * Default config for the playground
+ * It's used as a fallback when the URL doesn't contain any config
+ */
+export const defaultConfig: ConfigModel = {
+  fileType: '.tsx',
+  showAST: false,
+  sourceType: 'module',
+  code: '',
+  ts: process.env.TS_VERSION!,
+  tsconfig: toJson({
+    compilerOptions: {
+      strictNullChecks: true,
+    },
+  }),
+  eslintrc: toJson({
+    rules: {},
+  }),
+};

@@ -2,9 +2,9 @@ import type * as tsvfs from '@site/src/vendor/typescript-vfs';
 import type { TSESLint } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
-import { parseESLintRC, parseTSConfig } from '../config/utils';
 import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { createEventsBinder } from '../lib/createEventsBinder';
+import { parseESLintRC, parseTSConfig } from '../lib/parseConfig';
 import { defaultEslintConfig, PARSER_NAME } from './config';
 import { createParser } from './createParser';
 import type {
@@ -32,7 +32,7 @@ export function createLinter(
   const rules: CreateLinter['rules'] = new Map();
   const configs = new Map(Object.entries(webLinterModule.configs));
   let compilerOptions: ts.CompilerOptions = {};
-  const eslintConfig = { ...defaultEslintConfig };
+  const eslintConfig: TSESLint.Linter.Config = { ...defaultEslintConfig };
 
   const onLint = createEventsBinder<LinterOnLint>();
   const onParse = createEventsBinder<LinterOnParse>();

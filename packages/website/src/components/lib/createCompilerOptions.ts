@@ -1,11 +1,13 @@
 import type * as ts from 'typescript';
 
+/**
+ * Converts compiler options from JSON to ts.CompilerOptions
+ */
 export function createCompilerOptions(
   tsConfig: Record<string, unknown> = {},
 ): ts.CompilerOptions {
   const config = window.ts.convertCompilerOptionsFromJson(
     {
-      // ts and monaco has different type as monaco types are not changing base on ts version
       target: 'esnext',
       module: 'esnext',
       jsx: 'preserve',

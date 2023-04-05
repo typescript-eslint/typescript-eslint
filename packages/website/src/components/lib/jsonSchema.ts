@@ -3,6 +3,10 @@ import type * as ts from 'typescript';
 
 import type { CreateLinter } from '../linter/createLinter';
 
+/**
+ * Get the JSON schema for the eslint config
+ * Currently we only support the rules and extends
+ */
 export function getEslintJsonSchema(linter: CreateLinter): JSONSchema4 {
   const properties: Record<string, JSONSchema4> = {};
 
@@ -51,6 +55,10 @@ export function getEslintJsonSchema(linter: CreateLinter): JSONSchema4 {
   };
 }
 
+/**
+ * Get all typescript options, except for the ones that are not supported by the playground
+ * this function uses private API from typescript, and this might break in the future
+ */
 export function getTypescriptOptions(): ts.OptionDeclarations[] {
   const allowedCategories = [
     'Command-line Options',
@@ -82,6 +90,9 @@ export function getTypescriptOptions(): ts.OptionDeclarations[] {
   );
 }
 
+/**
+ * Get the JSON schema for the typescript config
+ */
 export function getTypescriptJsonSchema(): JSONSchema4 {
   const properties = getTypescriptOptions().reduce((options, item) => {
     if (item.type === 'boolean') {

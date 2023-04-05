@@ -14,22 +14,14 @@ import { ESQueryFilter } from './ESQueryFilter';
 import useHashState from './hooks/useHashState';
 import EditorTabs from './layout/EditorTabs';
 import Loader from './layout/Loader';
-import { defaultEslintConfig, defaultTsConfig, detailTabs } from './options';
+import { defaultConfig, detailTabs } from './options';
 import OptionsSelector from './OptionsSelector';
 import styles from './Playground.module.css';
 import ConditionalSplitPane from './SplitPane/ConditionalSplitPane';
 import type { ErrorGroup, RuleDetails, SelectedRange, TabType } from './types';
 
 function Playground(): JSX.Element {
-  const [state, setState] = useHashState({
-    fileType: '.tsx',
-    showAST: false,
-    sourceType: 'module',
-    code: '',
-    ts: process.env.TS_VERSION!,
-    tsconfig: defaultTsConfig,
-    eslintrc: defaultEslintConfig,
-  });
+  const [state, setState] = useHashState(defaultConfig);
   const [esAst, setEsAst] = useState<TSESTree.Program | null>();
   const [tsAst, setTsAST] = useState<SourceFile | null>();
   const [scope, setScope] = useState<Record<string, unknown> | null>();

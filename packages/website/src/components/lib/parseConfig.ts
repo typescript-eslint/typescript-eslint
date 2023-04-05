@@ -1,15 +1,25 @@
 import { isRecord } from '../ast/utils';
-import { parseJSONObject, toJson } from '../lib/json';
 import type { EslintRC, TSConfig } from '../types';
+import { ensureObject, parseJSONObject, toJson } from './json';
 
+/**
+ * Parse a .eslintrc string into an object.
+ * This function is pretty naive, as it only validates rules and extends.
+ */
 export function parseESLintRC(code?: string): EslintRC {
   if (code) {
     try {
       const parsed = parseJSONObject(code);
-      if ('rules' in parsed && isRecord(parsed.rules)) {
-        return parsed as EslintRC;
+      if ('rules' in parsed) {
+        parsed.rules = ensureObject(parsed.rules);
       }
-      return { ...parsed, rules: {} };
+      if ('extends' in parsed) {
+        parsed.extends =
+          Array.isArray(parsed.extends) || typeof parsed.extends === 'string'
+            ? parsed.extends
+            : [];
+      }
+      return parsed as EslintRC;
     } catch (e) {
       console.error(e);
     }
@@ -17,6 +27,10 @@ export function parseESLintRC(code?: string): EslintRC {
   return { rules: {} };
 }
 
+/**
+ * Parse a tsconfig.json string into an object.
+ * This is done by typescript compiler.
+ */
 export function parseTSConfig(code?: string): TSConfig {
   if (code) {
     try {
@@ -49,6 +63,9 @@ function constrainedScopeEval(obj: string): unknown {
   `)();
 }
 
+/**
+ * Evaluate a string that contains a module.exports assignment.
+ */
 export function tryParseEslintModule(value: string): string {
   try {
     if (moduleRegexp.test(value)) {
