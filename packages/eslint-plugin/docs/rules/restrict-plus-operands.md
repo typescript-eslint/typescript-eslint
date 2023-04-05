@@ -31,6 +31,20 @@ let foo = 1n + 1n;
 
 ## Options
 
+:::caution
+We generally recommend against using these options, as they limit which varieties of incorrect `+` usage can be checked.
+
+For example, instead of enabling the `allow*` options to concatenate strings and other values, use APIs akin to `console.log` that allow passing multiple values:
+
+```diff
+declare const value: boolean;
+
+- console.log("My value is: " + value);
++ console.log("My value is:", value;
+```
+
+:::
+
 ### `allowAny`
 
 Examples of code for this rule with `{ allowAny: true }`:
