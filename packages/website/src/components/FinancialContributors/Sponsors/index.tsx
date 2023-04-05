@@ -2,12 +2,12 @@ import clsx from 'clsx';
 import React from 'react';
 
 import { Sponsor } from '../Sponsor';
-import type { SponsorData, SponsorIncludeOptions } from '../types';
+import type { SponsorData } from '../types';
 import styles from './styles.module.css';
 
 interface SponsorsProps {
   className: string;
-  include?: SponsorIncludeOptions;
+  includeName?: boolean;
   expanded?: boolean;
   sponsors: SponsorData[];
   title: string;
@@ -16,7 +16,7 @@ interface SponsorsProps {
 
 export function Sponsors({
   className,
-  include,
+  includeName,
   title,
   tier,
   sponsors,
@@ -27,7 +27,7 @@ export function Sponsors({
       <ul className={clsx(styles.sponsorsTier, styles[`tier-${tier}`])}>
         {sponsors.map(sponsor => (
           <li key={sponsor.id}>
-            <Sponsor include={include} sponsor={sponsor} />
+            <Sponsor includeName={includeName} sponsor={sponsor} />
           </li>
         ))}
       </ul>

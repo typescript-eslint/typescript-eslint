@@ -90,6 +90,15 @@ const arg = /foo/;
 const msg1 = `arg = ${arg}`;
 ```
 
+### `allowNever`
+
+Examples of additional **correct** code for this rule with `{ allowNever: true }`:
+
+```ts
+const arg = 'something';
+const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
+```
+
 ## Related To
 
 - [`no-base-to-string`](./no-base-to-string.md)

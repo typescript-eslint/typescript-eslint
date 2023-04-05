@@ -1,0 +1,153 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics function-anonymus-with-type-parameters TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "obj",
+
+            range: [77, 80],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 7, line: 3 },
+            },
+          },
+          init: FunctionExpression {
+            type: "FunctionExpression",
+            async: false,
+            body: BlockStatement {
+              type: "BlockStatement",
+              body: [
+                ReturnStatement {
+                  type: "ReturnStatement",
+                  argument: Identifier {
+                    type: "Identifier",
+                    name: "a",
+
+                    range: [118, 119],
+                    loc: {
+                      start: { column: 9, line: 4 },
+                      end: { column: 10, line: 4 },
+                    },
+                  },
+
+                  range: [111, 120],
+                  loc: {
+                    start: { column: 2, line: 4 },
+                    end: { column: 11, line: 4 },
+                  },
+                },
+              ],
+
+              range: [107, 122],
+              loc: {
+                start: { column: 34, line: 3 },
+                end: { column: 1, line: 5 },
+              },
+            },
+            expression: false,
+            generator: false,
+            id: null,
+            params: [
+              Identifier {
+                type: "Identifier",
+                name: "a",
+                typeAnnotation: TSTypeAnnotation {
+                  type: "TSTypeAnnotation",
+                  typeAnnotation: TSStringKeyword {
+                    type: "TSStringKeyword",
+
+                    range: [99, 105],
+                    loc: {
+                      start: { column: 26, line: 3 },
+                      end: { column: 32, line: 3 },
+                    },
+                  },
+
+                  range: [97, 105],
+                  loc: {
+                    start: { column: 24, line: 3 },
+                    end: { column: 32, line: 3 },
+                  },
+                },
+
+                range: [96, 105],
+                loc: {
+                  start: { column: 23, line: 3 },
+                  end: { column: 32, line: 3 },
+                },
+              },
+            ],
+            typeParameters: TSTypeParameterDeclaration {
+              type: "TSTypeParameterDeclaration",
+              params: [
+                TSTypeParameter {
+                  type: "TSTypeParameter",
+                  const: false,
+                  in: false,
+                  name: Identifier {
+                    type: "Identifier",
+                    name: "T",
+
+                    range: [93, 94],
+                    loc: {
+                      start: { column: 20, line: 3 },
+                      end: { column: 21, line: 3 },
+                    },
+                  },
+                  out: false,
+
+                  range: [93, 94],
+                  loc: {
+                    start: { column: 20, line: 3 },
+                    end: { column: 21, line: 3 },
+                  },
+                },
+              ],
+
+              range: [92, 95],
+              loc: {
+                start: { column: 19, line: 3 },
+                end: { column: 22, line: 3 },
+              },
+            },
+
+            range: [83, 122],
+            loc: {
+              start: { column: 10, line: 3 },
+              end: { column: 1, line: 5 },
+            },
+          },
+
+          range: [77, 122],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 1, line: 5 },
+          },
+        },
+      ],
+      kind: "var",
+
+      range: [73, 123],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 2, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 124],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

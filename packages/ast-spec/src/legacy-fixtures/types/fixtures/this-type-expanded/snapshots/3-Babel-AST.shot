@@ -1,0 +1,1052 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types this-type-expanded Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            accessibility: "public",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "a",
+
+              range: [92, 93],
+              loc: {
+                start: { column: 9, line: 4 },
+                end: { column: 10, line: 4 },
+              },
+            },
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSNumberKeyword {
+                type: "TSNumberKeyword",
+
+                range: [95, 101],
+                loc: {
+                  start: { column: 12, line: 4 },
+                  end: { column: 18, line: 4 },
+                },
+              },
+
+              range: [93, 101],
+              loc: {
+                start: { column: 10, line: 4 },
+                end: { column: 18, line: 4 },
+              },
+            },
+            value: null,
+
+            range: [85, 102],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 19, line: 4 },
+            },
+          },
+          MethodDefinition {
+            type: "MethodDefinition",
+            accessibility: "public",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "method",
+
+              range: [113, 119],
+              loc: {
+                start: { column: 9, line: 6 },
+                end: { column: 15, line: 6 },
+              },
+            },
+            kind: "method",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: MemberExpression {
+                      type: "MemberExpression",
+                      computed: false,
+                      object: ThisExpression {
+                        type: "ThisExpression",
+
+                        range: [153, 157],
+                        loc: {
+                          start: { column: 11, line: 7 },
+                          end: { column: 15, line: 7 },
+                        },
+                      },
+                      optional: false,
+                      property: Identifier {
+                        type: "Identifier",
+                        name: "a",
+
+                        range: [158, 159],
+                        loc: {
+                          start: { column: 16, line: 7 },
+                          end: { column: 17, line: 7 },
+                        },
+                      },
+
+                      range: [153, 159],
+                      loc: {
+                        start: { column: 11, line: 7 },
+                        end: { column: 17, line: 7 },
+                      },
+                    },
+
+                    range: [146, 160],
+                    loc: {
+                      start: { column: 4, line: 7 },
+                      end: { column: 18, line: 7 },
+                    },
+                  },
+                ],
+
+                range: [140, 164],
+                loc: {
+                  start: { column: 36, line: 6 },
+                  end: { column: 3, line: 8 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: [
+                Identifier {
+                  type: "Identifier",
+                  name: "this",
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSThisType {
+                      type: "TSThisType",
+
+                      range: [126, 130],
+                      loc: {
+                        start: { column: 22, line: 6 },
+                        end: { column: 26, line: 6 },
+                      },
+                    },
+
+                    range: [124, 130],
+                    loc: {
+                      start: { column: 20, line: 6 },
+                      end: { column: 26, line: 6 },
+                    },
+                  },
+
+                  range: [120, 130],
+                  loc: {
+                    start: { column: 16, line: 6 },
+                    end: { column: 26, line: 6 },
+                  },
+                },
+              ],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSNumberKeyword {
+                  type: "TSNumberKeyword",
+
+                  range: [133, 139],
+                  loc: {
+                    start: { column: 29, line: 6 },
+                    end: { column: 35, line: 6 },
+                  },
+                },
+
+                range: [131, 139],
+                loc: {
+                  start: { column: 27, line: 6 },
+                  end: { column: 35, line: 6 },
+                },
+              },
+
+              range: [119, 164],
+              loc: {
+                start: { column: 15, line: 6 },
+                end: { column: 3, line: 8 },
+              },
+            },
+
+            range: [106, 164],
+            loc: {
+              start: { column: 2, line: 6 },
+              end: { column: 3, line: 8 },
+            },
+          },
+          MethodDefinition {
+            type: "MethodDefinition",
+            accessibility: "public",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "method2",
+
+              range: [175, 182],
+              loc: {
+                start: { column: 9, line: 10 },
+                end: { column: 16, line: 10 },
+              },
+            },
+            kind: "method",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: MemberExpression {
+                      type: "MemberExpression",
+                      computed: false,
+                      object: ThisExpression {
+                        type: "ThisExpression",
+
+                        range: [211, 215],
+                        loc: {
+                          start: { column: 11, line: 11 },
+                          end: { column: 15, line: 11 },
+                        },
+                      },
+                      optional: false,
+                      property: Identifier {
+                        type: "Identifier",
+                        name: "a",
+
+                        range: [216, 217],
+                        loc: {
+                          start: { column: 16, line: 11 },
+                          end: { column: 17, line: 11 },
+                        },
+                      },
+
+                      range: [211, 217],
+                      loc: {
+                        start: { column: 11, line: 11 },
+                        end: { column: 17, line: 11 },
+                      },
+                    },
+
+                    range: [204, 218],
+                    loc: {
+                      start: { column: 4, line: 11 },
+                      end: { column: 18, line: 11 },
+                    },
+                  },
+                ],
+
+                range: [198, 222],
+                loc: {
+                  start: { column: 32, line: 10 },
+                  end: { column: 3, line: 12 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: [
+                Identifier {
+                  type: "Identifier",
+                  name: "this",
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSTypeReference {
+                      type: "TSTypeReference",
+                      typeName: Identifier {
+                        type: "Identifier",
+                        name: "A",
+
+                        range: [189, 190],
+                        loc: {
+                          start: { column: 23, line: 10 },
+                          end: { column: 24, line: 10 },
+                        },
+                      },
+
+                      range: [189, 190],
+                      loc: {
+                        start: { column: 23, line: 10 },
+                        end: { column: 24, line: 10 },
+                      },
+                    },
+
+                    range: [187, 190],
+                    loc: {
+                      start: { column: 21, line: 10 },
+                      end: { column: 24, line: 10 },
+                    },
+                  },
+
+                  range: [183, 190],
+                  loc: {
+                    start: { column: 17, line: 10 },
+                    end: { column: 24, line: 10 },
+                  },
+                },
+              ],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSThisType {
+                  type: "TSThisType",
+
+                  range: [193, 197],
+                  loc: {
+                    start: { column: 27, line: 10 },
+                    end: { column: 31, line: 10 },
+                  },
+                },
+
+                range: [191, 197],
+                loc: {
+                  start: { column: 25, line: 10 },
+                  end: { column: 31, line: 10 },
+                },
+              },
+
+              range: [182, 222],
+              loc: {
+                start: { column: 16, line: 10 },
+                end: { column: 3, line: 12 },
+              },
+            },
+
+            range: [168, 222],
+            loc: {
+              start: { column: 2, line: 10 },
+              end: { column: 3, line: 12 },
+            },
+          },
+          MethodDefinition {
+            type: "MethodDefinition",
+            accessibility: "public",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "method3",
+
+              range: [233, 240],
+              loc: {
+                start: { column: 9, line: 14 },
+                end: { column: 16, line: 14 },
+              },
+            },
+            kind: "method",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [
+                  VariableDeclaration {
+                    type: "VariableDeclaration",
+                    declarations: [
+                      VariableDeclarator {
+                        type: "VariableDeclarator",
+                        id: Identifier {
+                          type: "Identifier",
+                          name: "fn",
+
+                          range: [271, 273],
+                          loc: {
+                            start: { column: 8, line: 15 },
+                            end: { column: 10, line: 15 },
+                          },
+                        },
+                        init: ArrowFunctionExpression {
+                          type: "ArrowFunctionExpression",
+                          async: false,
+                          body: MemberExpression {
+                            type: "MemberExpression",
+                            computed: false,
+                            object: ThisExpression {
+                              type: "ThisExpression",
+
+                              range: [282, 286],
+                              loc: {
+                                start: { column: 19, line: 15 },
+                                end: { column: 23, line: 15 },
+                              },
+                            },
+                            optional: false,
+                            property: Identifier {
+                              type: "Identifier",
+                              name: "a",
+
+                              range: [287, 288],
+                              loc: {
+                                start: { column: 24, line: 15 },
+                                end: { column: 25, line: 15 },
+                              },
+                            },
+
+                            range: [282, 288],
+                            loc: {
+                              start: { column: 19, line: 15 },
+                              end: { column: 25, line: 15 },
+                            },
+                          },
+                          expression: true,
+                          generator: false,
+                          id: null,
+                          params: [],
+
+                          range: [276, 288],
+                          loc: {
+                            start: { column: 13, line: 15 },
+                            end: { column: 25, line: 15 },
+                          },
+                        },
+
+                        range: [271, 288],
+                        loc: {
+                          start: { column: 8, line: 15 },
+                          end: { column: 25, line: 15 },
+                        },
+                      },
+                    ],
+                    kind: "var",
+
+                    range: [267, 289],
+                    loc: {
+                      start: { column: 4, line: 15 },
+                      end: { column: 26, line: 15 },
+                    },
+                  },
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: CallExpression {
+                      type: "CallExpression",
+                      arguments: [],
+                      callee: Identifier {
+                        type: "Identifier",
+                        name: "fn",
+
+                        range: [301, 303],
+                        loc: {
+                          start: { column: 11, line: 16 },
+                          end: { column: 13, line: 16 },
+                        },
+                      },
+                      optional: false,
+
+                      range: [301, 305],
+                      loc: {
+                        start: { column: 11, line: 16 },
+                        end: { column: 15, line: 16 },
+                      },
+                    },
+
+                    range: [294, 306],
+                    loc: {
+                      start: { column: 4, line: 16 },
+                      end: { column: 16, line: 16 },
+                    },
+                  },
+                ],
+
+                range: [261, 310],
+                loc: {
+                  start: { column: 37, line: 14 },
+                  end: { column: 3, line: 17 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: [
+                Identifier {
+                  type: "Identifier",
+                  name: "this",
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSThisType {
+                      type: "TSThisType",
+
+                      range: [247, 251],
+                      loc: {
+                        start: { column: 23, line: 14 },
+                        end: { column: 27, line: 14 },
+                      },
+                    },
+
+                    range: [245, 251],
+                    loc: {
+                      start: { column: 21, line: 14 },
+                      end: { column: 27, line: 14 },
+                    },
+                  },
+
+                  range: [241, 251],
+                  loc: {
+                    start: { column: 17, line: 14 },
+                    end: { column: 27, line: 14 },
+                  },
+                },
+              ],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSNumberKeyword {
+                  type: "TSNumberKeyword",
+
+                  range: [254, 260],
+                  loc: {
+                    start: { column: 30, line: 14 },
+                    end: { column: 36, line: 14 },
+                  },
+                },
+
+                range: [252, 260],
+                loc: {
+                  start: { column: 28, line: 14 },
+                  end: { column: 36, line: 14 },
+                },
+              },
+
+              range: [240, 310],
+              loc: {
+                start: { column: 16, line: 14 },
+                end: { column: 3, line: 17 },
+              },
+            },
+
+            range: [226, 310],
+            loc: {
+              start: { column: 2, line: 14 },
+              end: { column: 3, line: 17 },
+            },
+          },
+          MethodDefinition {
+            type: "MethodDefinition",
+            accessibility: "public",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "method4",
+
+              range: [321, 328],
+              loc: {
+                start: { column: 9, line: 19 },
+                end: { column: 16, line: 19 },
+              },
+            },
+            kind: "method",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [
+                  VariableDeclaration {
+                    type: "VariableDeclaration",
+                    declarations: [
+                      VariableDeclarator {
+                        type: "VariableDeclarator",
+                        id: Identifier {
+                          type: "Identifier",
+                          name: "fn",
+
+                          range: [356, 358],
+                          loc: {
+                            start: { column: 8, line: 20 },
+                            end: { column: 10, line: 20 },
+                          },
+                        },
+                        init: ArrowFunctionExpression {
+                          type: "ArrowFunctionExpression",
+                          async: false,
+                          body: MemberExpression {
+                            type: "MemberExpression",
+                            computed: false,
+                            object: ThisExpression {
+                              type: "ThisExpression",
+
+                              range: [367, 371],
+                              loc: {
+                                start: { column: 19, line: 20 },
+                                end: { column: 23, line: 20 },
+                              },
+                            },
+                            optional: false,
+                            property: Identifier {
+                              type: "Identifier",
+                              name: "a",
+
+                              range: [372, 373],
+                              loc: {
+                                start: { column: 24, line: 20 },
+                                end: { column: 25, line: 20 },
+                              },
+                            },
+
+                            range: [367, 373],
+                            loc: {
+                              start: { column: 19, line: 20 },
+                              end: { column: 25, line: 20 },
+                            },
+                          },
+                          expression: true,
+                          generator: false,
+                          id: null,
+                          params: [],
+
+                          range: [361, 373],
+                          loc: {
+                            start: { column: 13, line: 20 },
+                            end: { column: 25, line: 20 },
+                          },
+                        },
+
+                        range: [356, 373],
+                        loc: {
+                          start: { column: 8, line: 20 },
+                          end: { column: 25, line: 20 },
+                        },
+                      },
+                    ],
+                    kind: "var",
+
+                    range: [352, 374],
+                    loc: {
+                      start: { column: 4, line: 20 },
+                      end: { column: 26, line: 20 },
+                    },
+                  },
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: CallExpression {
+                      type: "CallExpression",
+                      arguments: [],
+                      callee: Identifier {
+                        type: "Identifier",
+                        name: "fn",
+
+                        range: [386, 388],
+                        loc: {
+                          start: { column: 11, line: 21 },
+                          end: { column: 13, line: 21 },
+                        },
+                      },
+                      optional: false,
+
+                      range: [386, 390],
+                      loc: {
+                        start: { column: 11, line: 21 },
+                        end: { column: 15, line: 21 },
+                      },
+                    },
+
+                    range: [379, 391],
+                    loc: {
+                      start: { column: 4, line: 21 },
+                      end: { column: 16, line: 21 },
+                    },
+                  },
+                ],
+
+                range: [346, 395],
+                loc: {
+                  start: { column: 34, line: 19 },
+                  end: { column: 3, line: 22 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: [
+                Identifier {
+                  type: "Identifier",
+                  name: "this",
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSTypeReference {
+                      type: "TSTypeReference",
+                      typeName: Identifier {
+                        type: "Identifier",
+                        name: "A",
+
+                        range: [335, 336],
+                        loc: {
+                          start: { column: 23, line: 19 },
+                          end: { column: 24, line: 19 },
+                        },
+                      },
+
+                      range: [335, 336],
+                      loc: {
+                        start: { column: 23, line: 19 },
+                        end: { column: 24, line: 19 },
+                      },
+                    },
+
+                    range: [333, 336],
+                    loc: {
+                      start: { column: 21, line: 19 },
+                      end: { column: 24, line: 19 },
+                    },
+                  },
+
+                  range: [329, 336],
+                  loc: {
+                    start: { column: 17, line: 19 },
+                    end: { column: 24, line: 19 },
+                  },
+                },
+              ],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSNumberKeyword {
+                  type: "TSNumberKeyword",
+
+                  range: [339, 345],
+                  loc: {
+                    start: { column: 27, line: 19 },
+                    end: { column: 33, line: 19 },
+                  },
+                },
+
+                range: [337, 345],
+                loc: {
+                  start: { column: 25, line: 19 },
+                  end: { column: 33, line: 19 },
+                },
+              },
+
+              range: [328, 395],
+              loc: {
+                start: { column: 16, line: 19 },
+                end: { column: 3, line: 22 },
+              },
+            },
+
+            range: [314, 395],
+            loc: {
+              start: { column: 2, line: 19 },
+              end: { column: 3, line: 22 },
+            },
+          },
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "staticMethod",
+
+              range: [406, 418],
+              loc: {
+                start: { column: 9, line: 24 },
+                end: { column: 21, line: 24 },
+              },
+            },
+            kind: "method",
+            static: true,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: MemberExpression {
+                      type: "MemberExpression",
+                      computed: false,
+                      object: ThisExpression {
+                        type: "ThisExpression",
+
+                        range: [449, 453],
+                        loc: {
+                          start: { column: 11, line: 25 },
+                          end: { column: 15, line: 25 },
+                        },
+                      },
+                      optional: false,
+                      property: Identifier {
+                        type: "Identifier",
+                        name: "a",
+
+                        range: [454, 455],
+                        loc: {
+                          start: { column: 16, line: 25 },
+                          end: { column: 17, line: 25 },
+                        },
+                      },
+
+                      range: [449, 455],
+                      loc: {
+                        start: { column: 11, line: 25 },
+                        end: { column: 17, line: 25 },
+                      },
+                    },
+
+                    range: [442, 456],
+                    loc: {
+                      start: { column: 4, line: 25 },
+                      end: { column: 18, line: 25 },
+                    },
+                  },
+                ],
+
+                range: [436, 460],
+                loc: {
+                  start: { column: 39, line: 24 },
+                  end: { column: 3, line: 26 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: [
+                Identifier {
+                  type: "Identifier",
+                  name: "this",
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSTypeReference {
+                      type: "TSTypeReference",
+                      typeName: Identifier {
+                        type: "Identifier",
+                        name: "A",
+
+                        range: [425, 426],
+                        loc: {
+                          start: { column: 28, line: 24 },
+                          end: { column: 29, line: 24 },
+                        },
+                      },
+
+                      range: [425, 426],
+                      loc: {
+                        start: { column: 28, line: 24 },
+                        end: { column: 29, line: 24 },
+                      },
+                    },
+
+                    range: [423, 426],
+                    loc: {
+                      start: { column: 26, line: 24 },
+                      end: { column: 29, line: 24 },
+                    },
+                  },
+
+                  range: [419, 426],
+                  loc: {
+                    start: { column: 22, line: 24 },
+                    end: { column: 29, line: 24 },
+                  },
+                },
+              ],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSNumberKeyword {
+                  type: "TSNumberKeyword",
+
+                  range: [429, 435],
+                  loc: {
+                    start: { column: 32, line: 24 },
+                    end: { column: 38, line: 24 },
+                  },
+                },
+
+                range: [427, 435],
+                loc: {
+                  start: { column: 30, line: 24 },
+                  end: { column: 38, line: 24 },
+                },
+              },
+
+              range: [418, 460],
+              loc: {
+                start: { column: 21, line: 24 },
+                end: { column: 3, line: 26 },
+              },
+            },
+
+            range: [399, 460],
+            loc: {
+              start: { column: 2, line: 24 },
+              end: { column: 3, line: 26 },
+            },
+          },
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "typeof",
+
+              range: [471, 477],
+              loc: {
+                start: { column: 9, line: 28 },
+                end: { column: 15, line: 28 },
+              },
+            },
+            kind: "method",
+            static: true,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: UnaryExpression {
+                      type: "UnaryExpression",
+                      argument: ThisExpression {
+                        type: "ThisExpression",
+
+                        range: [513, 517],
+                        loc: {
+                          start: { column: 18, line: 29 },
+                          end: { column: 22, line: 29 },
+                        },
+                      },
+                      operator: "typeof",
+                      prefix: true,
+
+                      range: [506, 517],
+                      loc: {
+                        start: { column: 11, line: 29 },
+                        end: { column: 22, line: 29 },
+                      },
+                    },
+
+                    range: [499, 518],
+                    loc: {
+                      start: { column: 4, line: 29 },
+                      end: { column: 23, line: 29 },
+                    },
+                  },
+                ],
+
+                range: [493, 522],
+                loc: {
+                  start: { column: 31, line: 28 },
+                  end: { column: 3, line: 30 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: [
+                Identifier {
+                  type: "Identifier",
+                  name: "this",
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSTypeReference {
+                      type: "TSTypeReference",
+                      typeName: Identifier {
+                        type: "Identifier",
+                        name: "A",
+
+                        range: [484, 485],
+                        loc: {
+                          start: { column: 22, line: 28 },
+                          end: { column: 23, line: 28 },
+                        },
+                      },
+
+                      range: [484, 485],
+                      loc: {
+                        start: { column: 22, line: 28 },
+                        end: { column: 23, line: 28 },
+                      },
+                    },
+
+                    range: [482, 485],
+                    loc: {
+                      start: { column: 20, line: 28 },
+                      end: { column: 23, line: 28 },
+                    },
+                  },
+
+                  range: [478, 485],
+                  loc: {
+                    start: { column: 16, line: 28 },
+                    end: { column: 23, line: 28 },
+                  },
+                },
+              ],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSThisType {
+                  type: "TSThisType",
+
+                  range: [488, 492],
+                  loc: {
+                    start: { column: 26, line: 28 },
+                    end: { column: 30, line: 28 },
+                  },
+                },
+
+                range: [486, 492],
+                loc: {
+                  start: { column: 24, line: 28 },
+                  end: { column: 30, line: 28 },
+                },
+              },
+
+              range: [477, 522],
+              loc: {
+                start: { column: 15, line: 28 },
+                end: { column: 3, line: 30 },
+              },
+            },
+
+            range: [464, 522],
+            loc: {
+              start: { column: 2, line: 28 },
+              end: { column: 3, line: 30 },
+            },
+          },
+        ],
+
+        range: [81, 524],
+        loc: {
+          start: { column: 8, line: 3 },
+          end: { column: 1, line: 31 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "A",
+
+        range: [79, 80],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 7, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 524],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 31 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 525],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 32 },
+  },
+}
+`;

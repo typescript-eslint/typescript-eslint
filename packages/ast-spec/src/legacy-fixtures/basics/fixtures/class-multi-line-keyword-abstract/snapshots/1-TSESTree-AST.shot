@@ -1,0 +1,65 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-multi-line-keyword-abstract TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: Identifier {
+        type: "Identifier",
+        name: "abstract",
+
+        range: [73, 81],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 8, line: 3 },
+        },
+      },
+
+      range: [73, 82],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 9, line: 3 },
+      },
+    },
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: [],
+
+        range: [91, 93],
+        loc: {
+          start: { column: 8, line: 4 },
+          end: { column: 10, line: 4 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "B",
+
+        range: [89, 90],
+        loc: {
+          start: { column: 6, line: 4 },
+          end: { column: 7, line: 4 },
+        },
+      },
+      superClass: null,
+
+      range: [83, 93],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 10, line: 4 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 94],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 5 },
+  },
+}
+`;

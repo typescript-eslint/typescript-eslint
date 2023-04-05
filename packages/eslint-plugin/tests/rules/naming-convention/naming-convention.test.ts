@@ -313,6 +313,46 @@ ruleTester.run('naming-convention', rule, {
         { selector: 'variable', format: ['camelCase'] },
       ],
     },
+    // treat properties with function expressions as typeMethod
+    {
+      code: `
+        interface SOME_INTERFACE {
+          SomeMethod: () => void;
+
+          some_property: string;
+        }
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['UPPER_CASE'],
+        },
+        {
+          selector: 'typeMethod',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'typeProperty',
+          format: ['snake_case'],
+        },
+      ],
+    },
+    {
+      code: `
+        type Ignored = {
+          ignored_due_to_modifiers: string;
+          readonly FOO: string;
+        };
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'typeProperty',
+          modifiers: ['readonly'],
+          format: ['UPPER_CASE'],
+        },
+      ],
+    },
     {
       code: `
         const camelCaseVar = 1;
@@ -863,6 +903,29 @@ ruleTester.run('naming-convention', rule, {
         {
           selector: ['memberLike'],
           modifiers: ['override'],
+          format: ['snake_case'],
+        },
+      ],
+    },
+    {
+      code: `
+        class foo {
+          private someAttribute = 1;
+          #some_attribute = 1;
+
+          private someMethod() {}
+          #some_method() {}
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'memberLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: ['memberLike'],
+          modifiers: ['#private'],
           format: ['snake_case'],
         },
       ],
@@ -1967,6 +2030,90 @@ ruleTester.run('naming-convention', rule, {
           data: {
             type: 'Accessor',
             name: 'someSetterOverride',
+            formats: 'snake_case',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        class foo {
+          private firstPrivateField = 1;
+          // ❌ error
+          private first_private_field = 1;
+          // ❌ error
+          #secondPrivateField = 1;
+          #second_private_field = 1;
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'memberLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: ['memberLike'],
+          modifiers: ['#private'],
+          format: ['snake_case'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Class Property',
+            name: 'first_private_field',
+            formats: 'camelCase',
+          },
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Class Property',
+            name: 'secondPrivateField',
+            formats: 'snake_case',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        class foo {
+          private firstPrivateMethod() {}
+          // ❌ error
+          private first_private_method() {}
+          // ❌ error
+          #secondPrivateMethod() {}
+          #second_private_method() {}
+        }
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'memberLike',
+          format: ['camelCase'],
+        },
+        {
+          selector: ['memberLike'],
+          modifiers: ['#private'],
+          format: ['snake_case'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Class Method',
+            name: 'first_private_method',
+            formats: 'camelCase',
+          },
+        },
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Class Method',
+            name: 'secondPrivateMethod',
             formats: 'snake_case',
           },
         },

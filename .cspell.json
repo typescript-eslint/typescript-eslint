@@ -42,6 +42,7 @@
     "Airbnb",
     "Airbnb's",
     "ambiently",
+    "Armano",
     "astexplorer",
     "ASTs",
     "autofix",
@@ -62,6 +63,7 @@
     "declarators",
     "destructure",
     "destructured",
+    "discoverability",
     "dprint",
     "errored",
     "erroring",
@@ -71,6 +73,8 @@
     "esquery",
     "esrecurse",
     "estree",
+    "falsiness",
+    "globby",
     "IDE's",
     "IIFE",
     "IIFEs",
@@ -120,6 +124,7 @@
     "unoptimized",
     "unprefixed",
     "upsert",
+    "warnonunsupportedtypescriptversion",
     "Zacher"
   ],
   "overrides": [

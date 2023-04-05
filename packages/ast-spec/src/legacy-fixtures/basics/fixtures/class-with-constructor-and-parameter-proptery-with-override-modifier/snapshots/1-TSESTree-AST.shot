@@ -1,0 +1,172 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-parameter-proptery-with-override-modifier TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "constructor",
+
+              range: [126, 137],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 13, line: 4 },
+              },
+            },
+            kind: "constructor",
+            override: false,
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [
+                  ExpressionStatement {
+                    type: "ExpressionStatement",
+                    expression: CallExpression {
+                      type: "CallExpression",
+                      arguments: [],
+                      callee: Super {
+                        type: "Super",
+
+                        range: [168, 173],
+                        loc: {
+                          start: { column: 4, line: 5 },
+                          end: { column: 9, line: 5 },
+                        },
+                      },
+                      optional: false,
+
+                      range: [168, 175],
+                      loc: {
+                        start: { column: 4, line: 5 },
+                        end: { column: 11, line: 5 },
+                      },
+                    },
+
+                    range: [168, 176],
+                    loc: {
+                      start: { column: 4, line: 5 },
+                      end: { column: 12, line: 5 },
+                    },
+                  },
+                ],
+
+                range: [162, 180],
+                loc: {
+                  start: { column: 38, line: 4 },
+                  end: { column: 3, line: 6 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: [
+                TSParameterProperty {
+                  type: "TSParameterProperty",
+                  override: true,
+                  parameter: Identifier {
+                    type: "Identifier",
+                    name: "param",
+                    typeAnnotation: TSTypeAnnotation {
+                      type: "TSTypeAnnotation",
+                      typeAnnotation: TSStringKeyword {
+                        type: "TSStringKeyword",
+
+                        range: [154, 160],
+                        loc: {
+                          start: { column: 30, line: 4 },
+                          end: { column: 36, line: 4 },
+                        },
+                      },
+
+                      range: [152, 160],
+                      loc: {
+                        start: { column: 28, line: 4 },
+                        end: { column: 36, line: 4 },
+                      },
+                    },
+
+                    range: [147, 160],
+                    loc: {
+                      start: { column: 23, line: 4 },
+                      end: { column: 36, line: 4 },
+                    },
+                  },
+
+                  range: [138, 160],
+                  loc: {
+                    start: { column: 14, line: 4 },
+                    end: { column: 36, line: 4 },
+                  },
+                },
+              ],
+
+              range: [137, 180],
+              loc: {
+                start: { column: 13, line: 4 },
+                end: { column: 3, line: 6 },
+              },
+            },
+
+            range: [126, 180],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 3, line: 6 },
+            },
+          },
+        ],
+
+        range: [122, 182],
+        loc: {
+          start: { column: 49, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "SpecializedComponent",
+
+        range: [79, 99],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 26, line: 3 },
+        },
+      },
+      superClass: Identifier {
+        type: "Identifier",
+        name: "SomeComponent",
+
+        range: [108, 121],
+        loc: {
+          start: { column: 35, line: 3 },
+          end: { column: 48, line: 3 },
+        },
+      },
+
+      range: [73, 182],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 183],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

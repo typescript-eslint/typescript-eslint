@@ -2,20 +2,20 @@
 
 exports[`jsx fragment 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$1,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
       ],
     },

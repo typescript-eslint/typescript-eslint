@@ -1,0 +1,54 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics unique-symbol TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "A",
+
+        range: [78, 79],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 6, line: 3 },
+        },
+      },
+      typeAnnotation: TSTypeOperator {
+        type: "TSTypeOperator",
+        operator: "unique",
+        typeAnnotation: TSSymbolKeyword {
+          type: "TSSymbolKeyword",
+
+          range: [89, 95],
+          loc: {
+            start: { column: 16, line: 3 },
+            end: { column: 22, line: 3 },
+          },
+        },
+
+        range: [82, 95],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 22, line: 3 },
+        },
+      },
+
+      range: [73, 96],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 23, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 97],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

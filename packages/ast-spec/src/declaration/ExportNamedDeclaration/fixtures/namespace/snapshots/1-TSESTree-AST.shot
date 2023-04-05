@@ -3,15 +3,15 @@
 exports[`AST Fixtures declaration ExportNamedDeclaration namespace TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: TSModuleDeclaration {
         type: "TSModuleDeclaration",
         body: TSModuleBlock {
           type: "TSModuleBlock",
-          body: Array [],
+          body: [],
 
           range: [21, 23],
           loc: {
@@ -29,6 +29,7 @@ Program {
             end: { column: 20, line: 1 },
           },
         },
+        kind: "namespace",
 
         range: [7, 23],
         loc: {
@@ -38,7 +39,7 @@ Program {
       },
       exportKind: "value",
       source: null,
-      specifiers: Array [],
+      specifiers: [],
 
       range: [0, 23],
       loc: {

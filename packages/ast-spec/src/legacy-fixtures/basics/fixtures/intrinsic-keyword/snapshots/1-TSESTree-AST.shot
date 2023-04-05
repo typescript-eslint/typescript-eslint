@@ -1,0 +1,296 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics intrinsic-keyword TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "Uppercase",
+
+        range: [78, 87],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 14, line: 3 },
+        },
+      },
+      typeAnnotation: TSIntrinsicKeyword {
+        type: "TSIntrinsicKeyword",
+
+        range: [108, 117],
+        loc: {
+          start: { column: 35, line: 3 },
+          end: { column: 44, line: 3 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            const: false,
+            constraint: TSStringKeyword {
+              type: "TSStringKeyword",
+
+              range: [98, 104],
+              loc: {
+                start: { column: 25, line: 3 },
+                end: { column: 31, line: 3 },
+              },
+            },
+            in: false,
+            name: Identifier {
+              type: "Identifier",
+              name: "S",
+
+              range: [88, 89],
+              loc: {
+                start: { column: 15, line: 3 },
+                end: { column: 16, line: 3 },
+              },
+            },
+            out: false,
+
+            range: [88, 104],
+            loc: {
+              start: { column: 15, line: 3 },
+              end: { column: 31, line: 3 },
+            },
+          },
+        ],
+
+        range: [87, 105],
+        loc: {
+          start: { column: 14, line: 3 },
+          end: { column: 32, line: 3 },
+        },
+      },
+
+      range: [73, 118],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 45, line: 3 },
+      },
+    },
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "Lowercase",
+
+        range: [124, 133],
+        loc: {
+          start: { column: 5, line: 4 },
+          end: { column: 14, line: 4 },
+        },
+      },
+      typeAnnotation: TSIntrinsicKeyword {
+        type: "TSIntrinsicKeyword",
+
+        range: [154, 163],
+        loc: {
+          start: { column: 35, line: 4 },
+          end: { column: 44, line: 4 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            const: false,
+            constraint: TSStringKeyword {
+              type: "TSStringKeyword",
+
+              range: [144, 150],
+              loc: {
+                start: { column: 25, line: 4 },
+                end: { column: 31, line: 4 },
+              },
+            },
+            in: false,
+            name: Identifier {
+              type: "Identifier",
+              name: "S",
+
+              range: [134, 135],
+              loc: {
+                start: { column: 15, line: 4 },
+                end: { column: 16, line: 4 },
+              },
+            },
+            out: false,
+
+            range: [134, 150],
+            loc: {
+              start: { column: 15, line: 4 },
+              end: { column: 31, line: 4 },
+            },
+          },
+        ],
+
+        range: [133, 151],
+        loc: {
+          start: { column: 14, line: 4 },
+          end: { column: 32, line: 4 },
+        },
+      },
+
+      range: [119, 164],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 45, line: 4 },
+      },
+    },
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "Capitalize",
+
+        range: [170, 180],
+        loc: {
+          start: { column: 5, line: 5 },
+          end: { column: 15, line: 5 },
+        },
+      },
+      typeAnnotation: TSIntrinsicKeyword {
+        type: "TSIntrinsicKeyword",
+
+        range: [201, 210],
+        loc: {
+          start: { column: 36, line: 5 },
+          end: { column: 45, line: 5 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            const: false,
+            constraint: TSStringKeyword {
+              type: "TSStringKeyword",
+
+              range: [191, 197],
+              loc: {
+                start: { column: 26, line: 5 },
+                end: { column: 32, line: 5 },
+              },
+            },
+            in: false,
+            name: Identifier {
+              type: "Identifier",
+              name: "S",
+
+              range: [181, 182],
+              loc: {
+                start: { column: 16, line: 5 },
+                end: { column: 17, line: 5 },
+              },
+            },
+            out: false,
+
+            range: [181, 197],
+            loc: {
+              start: { column: 16, line: 5 },
+              end: { column: 32, line: 5 },
+            },
+          },
+        ],
+
+        range: [180, 198],
+        loc: {
+          start: { column: 15, line: 5 },
+          end: { column: 33, line: 5 },
+        },
+      },
+
+      range: [165, 211],
+      loc: {
+        start: { column: 0, line: 5 },
+        end: { column: 46, line: 5 },
+      },
+    },
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "Uncapitalize",
+
+        range: [217, 229],
+        loc: {
+          start: { column: 5, line: 6 },
+          end: { column: 17, line: 6 },
+        },
+      },
+      typeAnnotation: TSIntrinsicKeyword {
+        type: "TSIntrinsicKeyword",
+
+        range: [250, 259],
+        loc: {
+          start: { column: 38, line: 6 },
+          end: { column: 47, line: 6 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            const: false,
+            constraint: TSStringKeyword {
+              type: "TSStringKeyword",
+
+              range: [240, 246],
+              loc: {
+                start: { column: 28, line: 6 },
+                end: { column: 34, line: 6 },
+              },
+            },
+            in: false,
+            name: Identifier {
+              type: "Identifier",
+              name: "S",
+
+              range: [230, 231],
+              loc: {
+                start: { column: 18, line: 6 },
+                end: { column: 19, line: 6 },
+              },
+            },
+            out: false,
+
+            range: [230, 246],
+            loc: {
+              start: { column: 18, line: 6 },
+              end: { column: 34, line: 6 },
+            },
+          },
+        ],
+
+        range: [229, 247],
+        loc: {
+          start: { column: 17, line: 6 },
+          end: { column: 35, line: 6 },
+        },
+      },
+
+      range: [212, 260],
+      loc: {
+        start: { column: 0, line: 6 },
+        end: { column: 48, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 261],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 7 },
+  },
+}
+`;

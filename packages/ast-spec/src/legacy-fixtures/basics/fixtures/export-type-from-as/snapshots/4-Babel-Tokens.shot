@@ -1,0 +1,106 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics export-type-from-as Babel - Tokens 1`] = `
+[
+  Keyword {
+    type: "Keyword",
+    value: "export",
+
+    range: [73, 79],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 6, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "type",
+
+    range: [80, 84],
+    loc: {
+      start: { column: 7, line: 3 },
+      end: { column: 11, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [85, 86],
+    loc: {
+      start: { column: 12, line: 3 },
+      end: { column: 13, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "B",
+
+    range: [87, 88],
+    loc: {
+      start: { column: 14, line: 3 },
+      end: { column: 15, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "as",
+
+    range: [89, 91],
+    loc: {
+      start: { column: 16, line: 3 },
+      end: { column: 18, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "C",
+
+    range: [92, 93],
+    loc: {
+      start: { column: 19, line: 3 },
+      end: { column: 20, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [94, 95],
+    loc: {
+      start: { column: 21, line: 3 },
+      end: { column: 22, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "from",
+
+    range: [96, 100],
+    loc: {
+      start: { column: 23, line: 3 },
+      end: { column: 27, line: 3 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'./a'",
+
+    range: [101, 106],
+    loc: {
+      start: { column: 28, line: 3 },
+      end: { column: 33, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [106, 107],
+    loc: {
+      start: { column: 33, line: 3 },
+      end: { column: 34, line: 3 },
+    },
+  },
+]
+`;

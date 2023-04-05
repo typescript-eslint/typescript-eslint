@@ -1,0 +1,150 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics catch-clause-with-annotation TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TryStatement {
+      type: "TryStatement",
+      block: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [77, 80],
+        loc: {
+          start: { column: 4, line: 3 },
+          end: { column: 1, line: 4 },
+        },
+      },
+      finalizer: null,
+      handler: CatchClause {
+        type: "CatchClause",
+        body: BlockStatement {
+          type: "BlockStatement",
+          body: [],
+
+          range: [96, 98],
+          loc: {
+            start: { column: 17, line: 4 },
+            end: { column: 19, line: 4 },
+          },
+        },
+        param: Identifier {
+          type: "Identifier",
+          name: "e",
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSAnyKeyword {
+              type: "TSAnyKeyword",
+
+              range: [91, 94],
+              loc: {
+                start: { column: 12, line: 4 },
+                end: { column: 15, line: 4 },
+              },
+            },
+
+            range: [89, 94],
+            loc: {
+              start: { column: 10, line: 4 },
+              end: { column: 15, line: 4 },
+            },
+          },
+
+          range: [88, 94],
+          loc: {
+            start: { column: 9, line: 4 },
+            end: { column: 15, line: 4 },
+          },
+        },
+
+        range: [81, 98],
+        loc: {
+          start: { column: 2, line: 4 },
+          end: { column: 19, line: 4 },
+        },
+      },
+
+      range: [73, 98],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 19, line: 4 },
+      },
+    },
+    TryStatement {
+      type: "TryStatement",
+      block: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [104, 107],
+        loc: {
+          start: { column: 4, line: 6 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      finalizer: null,
+      handler: CatchClause {
+        type: "CatchClause",
+        body: BlockStatement {
+          type: "BlockStatement",
+          body: [],
+
+          range: [127, 129],
+          loc: {
+            start: { column: 21, line: 7 },
+            end: { column: 23, line: 7 },
+          },
+        },
+        param: Identifier {
+          type: "Identifier",
+          name: "e",
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSUnknownKeyword {
+              type: "TSUnknownKeyword",
+
+              range: [118, 125],
+              loc: {
+                start: { column: 12, line: 7 },
+                end: { column: 19, line: 7 },
+              },
+            },
+
+            range: [116, 125],
+            loc: {
+              start: { column: 10, line: 7 },
+              end: { column: 19, line: 7 },
+            },
+          },
+
+          range: [115, 125],
+          loc: {
+            start: { column: 9, line: 7 },
+            end: { column: 19, line: 7 },
+          },
+        },
+
+        range: [108, 129],
+        loc: {
+          start: { column: 2, line: 7 },
+          end: { column: 23, line: 7 },
+        },
+      },
+
+      range: [100, 129],
+      loc: {
+        start: { column: 0, line: 6 },
+        end: { column: 23, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 130],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

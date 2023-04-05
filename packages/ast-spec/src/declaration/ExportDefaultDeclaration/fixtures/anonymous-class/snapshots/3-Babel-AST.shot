@@ -3,14 +3,14 @@
 exports[`AST Fixtures declaration ExportDefaultDeclaration anonymous-class Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportDefaultDeclaration {
       type: "ExportDefaultDeclaration",
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
         body: ClassBody {
           type: "ClassBody",
-          body: Array [],
+          body: [],
 
           range: [21, 23],
           loc: {

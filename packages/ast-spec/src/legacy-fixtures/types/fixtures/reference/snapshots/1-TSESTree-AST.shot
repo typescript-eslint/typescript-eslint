@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types reference TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "x",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTypeReference {
+                type: "TSTypeReference",
+                typeName: Identifier {
+                  type: "Identifier",
+                  name: "T",
+
+                  range: [80, 81],
+                  loc: {
+                    start: { column: 7, line: 3 },
+                    end: { column: 8, line: 3 },
+                  },
+                },
+
+                range: [80, 81],
+                loc: {
+                  start: { column: 7, line: 3 },
+                  end: { column: 8, line: 3 },
+                },
+              },
+
+              range: [78, 81],
+              loc: {
+                start: { column: 5, line: 3 },
+                end: { column: 8, line: 3 },
+              },
+            },
+
+            range: [77, 81],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 8, line: 3 },
+            },
+          },
+          init: null,
+
+          range: [77, 81],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 8, line: 3 },
+          },
+        },
+      ],
+      kind: "let",
+
+      range: [73, 82],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 9, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 83],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

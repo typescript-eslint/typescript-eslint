@@ -190,6 +190,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       ...selectorSchema('memberLike', false, [
         'abstract',
         'private',
+        '#private',
         'protected',
         'public',
         'readonly',
@@ -201,6 +202,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       ...selectorSchema('classProperty', true, [
         'abstract',
         'private',
+        '#private',
         'protected',
         'public',
         'readonly',
@@ -226,6 +228,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       ...selectorSchema('property', true, [
         'abstract',
         'private',
+        '#private',
         'protected',
         'public',
         'readonly',
@@ -238,6 +241,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       ...selectorSchema('classMethod', false, [
         'abstract',
         'private',
+        '#private',
         'protected',
         'public',
         'requiresQuotes',
@@ -254,6 +258,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       ...selectorSchema('method', false, [
         'abstract',
         'private',
+        '#private',
         'protected',
         'public',
         'requiresQuotes',

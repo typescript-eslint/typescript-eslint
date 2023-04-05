@@ -2,5 +2,41 @@
 
 exports[`AST Fixtures declaration TSModuleDeclaration module-declare-no-body AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSModuleDeclaration {
+        type: 'TSModuleDeclaration',
+        declare: true,
+        id: Literal {
+          type: 'Literal',
+          raw: '\\'a\\'',
+          value: 'a',
+
+          range: [15, 18],
+          loc: {
+            start: { column: 15, line: 1 },
+            end: { column: 18, line: 1 },
+          },
+        },
+-       kind: 'module',
+
+        range: [0, 19],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 19, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 20],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;
