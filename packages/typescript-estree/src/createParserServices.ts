@@ -5,7 +5,7 @@ import type { ParserServices } from './parser-options';
 
 type MethodKeyOf<Container> = keyof {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [Key in keyof Container]: Container[Key] extends (arg: any) => void
+  [Key in keyof Container]: Container[Key] extends (parameter: any) => unknown
     ? Key
     : never;
 };
@@ -48,14 +48,7 @@ export function createParserServices(
   const checker = program.getTypeChecker();
 
   if (memoize) {
-    memoizeMethods(checker, [
-      'getApparentType',
-      'getContextualType',
-      'getPropertyOfType',
-      'getSymbolAtLocation',
-      'getTypeAtLocation',
-      'getTypeOfSymbolAtLocation',
-    ]);
+    memoizeMethods(checker, ['getSymbolAtLocation', 'getTypeAtLocation']);
   }
 
   return {

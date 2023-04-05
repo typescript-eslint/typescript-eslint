@@ -99,7 +99,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    *
    * Whether to memoize many of TypeScript's type checking APIs.
    */
-  EXPERIMENTAL__memoizeTypeCheckingAPIs?: boolean;
+  EXPERIMENTAL_memoizeTypeCheckingAPIs?: boolean;
 
   /**
    * ***EXPERIMENTAL FLAG*** - Use this at your own risk.

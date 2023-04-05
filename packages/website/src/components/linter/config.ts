@@ -13,7 +13,7 @@ export const parseSettings: ParseSettings = {
   DEPRECATED__createDefaultProgram: false,
   errorOnTypeScriptSyntacticAndSemanticIssues: false,
   errorOnUnknownASTType: false,
-  EXPERIMENTAL__memoizeTypeCheckingAPIs: false,
+  EXPERIMENTAL_memoizeTypeCheckingAPIs: false,
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   extraFileExtensions: [],
   filePath: '',

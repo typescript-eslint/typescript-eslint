@@ -273,7 +273,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
     services: createParserServices(
       astMaps,
       program,
-      parseSettings.EXPERIMENTAL__memoizeTypeCheckingAPIs,
+      parseSettings.EXPERIMENTAL_memoizeTypeCheckingAPIs,
     ),
   };
 }
