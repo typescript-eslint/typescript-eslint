@@ -21,10 +21,7 @@ function createSummaryJson(obj: string, field: string, title: string): string {
   return '';
 }
 
-/**
- * Generate a table of versions
- */
-export function genVersions(tsVersion: string): string {
+function generateVersionsTable(tsVersion: string): string {
   return [
     '| package | version |',
     '| -- | -- |',
@@ -45,7 +42,7 @@ export function createMarkdown(state: ConfigModel): string {
     createSummary(state.code, 'Code', 'ts', 30),
     createSummaryJson(state.eslintrc, 'rules', 'Eslint config'),
     createSummaryJson(state.tsconfig, 'compilerOptions', 'TypeScript config'),
-    genVersions(state.ts),
+    generateVersionsTable(state.ts),
   ]
     .filter(Boolean)
     .join('\n\n');
@@ -71,7 +68,7 @@ export function createMarkdownParams(state: ConfigModel): string {
     'repro-code': state.code,
     'eslint-config': `module.exports = ${state.eslintrc ?? '{}'}`,
     'typescript-config': state.tsconfig ?? '{}',
-    versions: genVersions(state.ts),
+    versions: generateVersionsTable(state.ts),
   };
 
   return new URLSearchParams(params).toString();
