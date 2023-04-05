@@ -52,13 +52,6 @@ test.describe('Playground', () => {
     // 1. Type some valid code in the playground
     await writeInEditor(page, 'let value: Array<string>;');
 
-    /* Workaround for text editor wiping text. switch between lint editor and
-       code editor */
-    await page.getByRole('tab', { name: 'eslintrc' }).click();
-    await page.getByRole('button', { name: 'Visual Editor' }).click();
-    await page.getByRole('button', { name: 'Close' }).click();
-    await page.getByRole('tab', { name: 'code' }).click();
-
     // 2. Enable AST viewer
     await page
       .getByRole('combobox', { name: 'AST Viewer' })
