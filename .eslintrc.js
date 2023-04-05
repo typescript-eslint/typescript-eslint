@@ -41,7 +41,8 @@ module.exports = {
     allowAutomaticSingleRunInference: true,
     tsconfigRootDir: __dirname,
     warnOnUnsupportedTypeScriptVersion: false,
-    EXPERIMENTAL_memoizeTypeCheckingAPIs: true,
+    EXPERIMENTAL_memoizeTypeCheckingAPIs:
+      !!process.env.MEMOIZE_TYPE_CHECKING_APIS,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
     cacheLifetime: {
       // we pretty well never create/change tsconfig structure - so need to ever evict the cache
