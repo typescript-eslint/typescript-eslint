@@ -6,6 +6,7 @@
     ".github/workflows/**",
     ".vscode/*.json",
     "**/*.{json,snap}",
+    "**/eslint.config.js",
     "**/**/CHANGELOG.md",
     "**/**/CONTRIBUTORS.md",
     "**/**/TSLINT_RULE_ALTERNATIVES.md",
