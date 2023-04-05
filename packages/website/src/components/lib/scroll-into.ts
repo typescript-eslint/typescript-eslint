@@ -1,3 +1,6 @@
+/**
+ * Scroll the target element into view if it is not already visible.
+ */
 export function scrollIntoViewIfNeeded(target: Element): void {
   const rect = target.getBoundingClientRect();
   const isBelow = rect.top < 0;

@@ -2,10 +2,10 @@ import { useHistory } from '@docusaurus/router';
 import * as lz from 'lz-string';
 import { useCallback, useState } from 'react';
 
-import { fileTypes } from '../config';
 import { hasOwnProperty } from '../lib/has-own-property';
-import { toJson } from '../lib/json';
+import { toJsonConfig } from '../lib/json';
 import { shallowEqual } from '../lib/shallowEqual';
+import { fileTypes } from '../options';
 import type { ConfigFileType, ConfigModel, ConfigShowAst } from '../types';
 
 function writeQueryParam(value: string | null): string {
@@ -31,10 +31,6 @@ function readFileType(value: string | null): ConfigFileType {
     return value as ConfigFileType;
   }
   return '.ts';
-}
-
-function toJsonConfig(cfg: unknown, prop: string): string {
-  return toJson({ [prop]: cfg });
 }
 
 function readLegacyParam(

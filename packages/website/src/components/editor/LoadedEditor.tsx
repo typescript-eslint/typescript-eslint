@@ -3,22 +3,22 @@ import type Monaco from 'monaco-editor';
 import type React from 'react';
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 
+import { useResizeObserver } from '../hooks/useResizeObserver';
+import { createCompilerOptions } from '../lib/createCompilerOptions';
+import { debounce } from '../lib/debounce';
+import {
+  getEslintJsonSchema,
+  getTypescriptJsonSchema,
+} from '../lib/jsonSchema';
 import {
   parseESLintRC,
   parseTSConfig,
   tryParseEslintModule,
-} from '../config/utils';
-import { useResizeObserver } from '../hooks/useResizeObserver';
-import { debounce } from '../lib/debounce';
+} from '../lib/parseConfig';
 import type { LintCodeAction } from '../linter/utils';
 import { parseLintResults, parseMarkers } from '../linter/utils';
 import type { WebLinter } from '../linter/WebLinter';
 import type { TabType } from '../types';
-import {
-  createCompilerOptions,
-  getEslintSchema,
-  getTsConfigSchema,
-} from './config';
 import { createProvideCodeActions } from './createProvideCodeActions';
 import type { CommonEditorProps } from './types';
 import type { SandboxInstance } from './useSandboxServices';
@@ -105,7 +105,9 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       parseTSConfig(tsconfig).compilerOptions,
     );
     webLinter.updateCompilerOptions(config);
-    sandboxInstance.setCompilerSettings(config);
+    sandboxInstance.setCompilerSettings(
+      config as Monaco.languages.typescript.CompilerOptions,
+    );
   }, [sandboxInstance, tsconfig, webLinter]);
 
   useEffect(() => {
@@ -185,12 +187,12 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         {
           uri: sandboxInstance.monaco.Uri.file('eslint-schema.json').toString(), // id of the first schema
           fileMatch: [tabs.eslintrc.uri.toString()], // associate with our model
-          schema: getEslintSchema(webLinter),
+          schema: getEslintJsonSchema(webLinter),
         },
         {
           uri: sandboxInstance.monaco.Uri.file('ts-schema.json').toString(), // id of the first schema
           fileMatch: [tabs.tsconfig.uri.toString()], // associate with our model
-          schema: getTsConfigSchema(),
+          schema: getTypescriptJsonSchema(),
         },
       ],
     });

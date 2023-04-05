@@ -1,13 +1,11 @@
 import { useColorMode } from '@docusaurus/theme-common';
+import type * as Monaco from 'monaco-editor';
 import { useEffect, useState } from 'react';
 
-import type {
-  createTypeScriptSandbox,
-  SandboxConfig,
-} from '../../vendor/sandbox';
+import type { createTypeScriptSandbox } from '../../vendor/sandbox';
+import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { WebLinter } from '../linter/WebLinter';
 import type { RuleDetails } from '../types';
-import { createCompilerOptions } from './config';
 import { editorEmbedId } from './EditorEmbed';
 import { sandboxSingleton } from './loadSandbox';
 import type { CommonEditorProps } from './types';
@@ -42,27 +40,26 @@ export const useSandboxServices = (
       .then(async ({ main, sandboxFactory, lintUtils }) => {
         const compilerOptions = createCompilerOptions();
 
-        const sandboxConfig: Partial<SandboxConfig> = {
-          text: props.code,
-          monacoSettings: {
-            minimap: { enabled: false },
-            fontSize: 13,
-            wordWrap: 'off',
-            scrollBeyondLastLine: false,
-            smoothScrolling: true,
-            autoIndent: 'full',
-            formatOnPaste: true,
-            formatOnType: true,
-            wrappingIndent: 'same',
-            hover: { above: false },
-          },
-          acquireTypes: false,
-          compilerOptions: compilerOptions,
-          domID: editorEmbedId,
-        };
-
         sandboxInstance = sandboxFactory.createTypeScriptSandbox(
-          sandboxConfig,
+          {
+            text: props.code,
+            monacoSettings: {
+              minimap: { enabled: false },
+              fontSize: 13,
+              wordWrap: 'off',
+              scrollBeyondLastLine: false,
+              smoothScrolling: true,
+              autoIndent: 'full',
+              formatOnPaste: true,
+              formatOnType: true,
+              wrappingIndent: 'same',
+              hover: { above: false },
+            },
+            acquireTypes: false,
+            compilerOptions:
+              compilerOptions as Monaco.languages.typescript.CompilerOptions,
+            domID: editorEmbedId,
+          },
           main,
           window.ts,
         );
