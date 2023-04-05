@@ -3,10 +3,8 @@ import type * as ESQuery from 'esquery';
 import React, { useCallback, useState } from 'react';
 
 import ASTViewer from './ast/ASTViewer';
-import { detailTabs } from './config';
 import ConfigEslint from './config/ConfigEslint';
 import ConfigTypeScript from './config/ConfigTypeScript';
-import { defaultEslintConfig, defaultTsConfig } from './config/utils';
 import { EditorEmbed } from './editor/EditorEmbed';
 import { LoadingEditor } from './editor/LoadingEditor';
 import { ErrorsViewer, ErrorViewer } from './ErrorsViewer';
@@ -15,6 +13,7 @@ import useHashState from './hooks/useHashState';
 import EditorTabs from './layout/EditorTabs';
 import Loader from './layout/Loader';
 import type { ASTModel } from './linter/types';
+import { defaultConfig, detailTabs } from './options';
 import OptionsSelector from './OptionsSelector';
 import styles from './Playground.module.css';
 import ConditionalSplitPane from './SplitPane/ConditionalSplitPane';
@@ -22,15 +21,7 @@ import { TypesDetails } from './typeDetails/TypesDetails';
 import type { ErrorGroup, RuleDetails, SelectedRange, TabType } from './types';
 
 function Playground(): JSX.Element {
-  const [state, setState] = useHashState({
-    fileType: '.tsx',
-    showAST: false,
-    sourceType: 'module',
-    code: '',
-    ts: process.env.TS_VERSION!,
-    tsconfig: defaultTsConfig,
-    eslintrc: defaultEslintConfig,
-  });
+  const [state, setState] = useHashState(defaultConfig);
   const [astModel, setAstModel] = useState<ASTModel>();
   const [markers, setMarkers] = useState<ErrorGroup[] | Error>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
@@ -158,6 +149,7 @@ function Playground(): JSX.Element {
                   />
                 )}
               </div>
+
               {(state.showAST === 'es' && esQueryError && (
                 <ErrorViewer
                   type="warning"
