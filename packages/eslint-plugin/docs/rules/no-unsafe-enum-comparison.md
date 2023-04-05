@@ -15,7 +15,8 @@ enum Fruit {
   Banana,
 }
 
-let fruit = Fruit.Apple;
+declare let fruit: Fruit;
+
 fruit === 999; // No error
 ```
 
@@ -30,7 +31,8 @@ enum Fruit {
   Apple,
 }
 
-let fruit = Fruit.Apple;
+declare let fruit: Fruit;
+
 fruit === 999;
 ```
 
@@ -39,7 +41,8 @@ enum Vegetable {
   Asparagus = 'asparagus',
 }
 
-let vegetable = Vegetable.Asparagus;
+declare let vegetable: Vegetable;
+
 vegetable === 'asparagus';
 ```
 
@@ -50,7 +53,8 @@ enum Fruit {
   Apple,
 }
 
-let fruit = Fruit.Apple;
+declare let fruit: Fruit;
+
 fruit === Fruit.Banana;
 ```
 
@@ -59,7 +63,8 @@ enum Vegetable {
   Asparagus = 'asparagus',
 }
 
-let vegetable = Vegetable.Asparagus;
+declare let vegetable: Vegetable;
+
 vegetable === Vegetable.Asparagus;
 ```
 
