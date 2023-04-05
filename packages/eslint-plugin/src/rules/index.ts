@@ -25,6 +25,7 @@ import indent from './indent';
 import initDeclarations from './init-declarations';
 import keySpacing from './key-spacing';
 import keywordSpacing from './keyword-spacing';
+import linesAroundComment from './lines-around-comment';
 import linesBetweenClassMembers from './lines-between-class-members';
 import memberDelimiterStyle from './member-delimiter-style';
 import memberOrdering from './member-ordering';
@@ -37,6 +38,7 @@ import noConfusingVoidExpression from './no-confusing-void-expression';
 import noDupeClassMembers from './no-dupe-class-members';
 import noDuplicateEnumValues from './no-duplicate-enum-values';
 import noDuplicateImports from './no-duplicate-imports';
+import noDuplicateTypeConstituents from './no-duplicate-type-constituents';
 import noDynamicDelete from './no-dynamic-delete';
 import noEmptyFunction from './no-empty-function';
 import noEmptyInterface from './no-empty-interface';
@@ -160,6 +162,7 @@ export default {
   'init-declarations': initDeclarations,
   'key-spacing': keySpacing,
   'keyword-spacing': keywordSpacing,
+  'lines-around-comment': linesAroundComment,
   'lines-between-class-members': linesBetweenClassMembers,
   'member-delimiter-style': memberDelimiterStyle,
   'member-ordering': memberOrdering,
@@ -172,6 +175,7 @@ export default {
   'no-dupe-class-members': noDupeClassMembers,
   'no-duplicate-enum-values': noDuplicateEnumValues,
   'no-duplicate-imports': noDuplicateImports,
+  'no-duplicate-type-constituents': noDuplicateTypeConstituents,
   'no-dynamic-delete': noDynamicDelete,
   'no-empty-function': noEmptyFunction,
   'no-empty-interface': noEmptyInterface,

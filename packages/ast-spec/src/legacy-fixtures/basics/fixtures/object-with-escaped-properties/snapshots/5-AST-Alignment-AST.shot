@@ -139,7 +139,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
               computed: true,
               key: Literal {
                 type: 'Literal',
-                raw: '\\\\'__\\\\'',
+                raw: '\\'__\\'',
                 value: '__',
 
                 range: [110, 114],
@@ -195,7 +195,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
 -             declare: false,
               key: Literal {
                 type: 'Literal',
-                raw: '\\\\'__\\\\'',
+                raw: '\\'__\\'',
                 value: '__',
 
                 range: [139, 143],

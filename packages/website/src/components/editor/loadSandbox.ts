@@ -8,27 +8,6 @@ import type * as TsWorker from '../../vendor/tsWorker';
 type Monaco = typeof MonacoType;
 type TS = typeof TSType;
 
-declare global {
-  type WindowRequireCb = (
-    main: Monaco,
-    tsWorker: typeof TsWorker,
-    sandboxFactory: typeof SandboxFactory,
-    lintUtils: LintUtils,
-  ) => void;
-  interface WindowRequire {
-    (files: string[], cb: WindowRequireCb): void;
-    config: (arg: {
-      paths?: Record<string, string>;
-      ignoreDuplicateModules?: string[];
-    }) => void;
-  }
-
-  interface Window {
-    ts: TS;
-    require: WindowRequire;
-  }
-}
-
 export interface SandboxModel {
   main: Monaco;
   tsWorker: typeof TsWorker;

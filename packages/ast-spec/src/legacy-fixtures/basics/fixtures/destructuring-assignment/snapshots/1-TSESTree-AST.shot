@@ -3,14 +3,14 @@
 exports[`AST Fixtures legacy-fixtures basics destructuring-assignment TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: AssignmentExpression {
         type: "AssignmentExpression",
         left: ObjectPattern {
           type: "ObjectPattern",
-          properties: Array [
+          properties: [
             Property {
               type: "Property",
               computed: false,
@@ -41,7 +41,7 @@ Program {
                 },
                 right: ArrayExpression {
                   type: "ArrayExpression",
-                  elements: Array [],
+                  elements: [],
 
                   range: [82, 84],
                   loc: {

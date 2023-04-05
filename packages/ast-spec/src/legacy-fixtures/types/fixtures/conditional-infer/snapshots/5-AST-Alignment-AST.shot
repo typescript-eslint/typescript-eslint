@@ -47,6 +47,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer AST Alignment - AS
 -             type: 'TSInferType',
 -             typeParameter: TSTypeParameter {
 -               type: 'TSTypeParameter',
+-               const: false,
 -               in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
@@ -141,6 +142,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer AST Alignment - AS
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',

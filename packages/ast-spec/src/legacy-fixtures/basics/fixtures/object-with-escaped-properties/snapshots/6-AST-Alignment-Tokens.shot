@@ -220,7 +220,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
     },
     String {
       type: 'String',
-      value: '\\\\'__\\\\'',
+      value: '\\'__\\'',
 
       range: [110, 114],
       loc: {
@@ -322,7 +322,7 @@ exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties AST 
     },
     String {
       type: 'String',
-      value: '\\\\'__\\\\'',
+      value: '\\'__\\'',
 
       range: [139, 143],
       loc: {

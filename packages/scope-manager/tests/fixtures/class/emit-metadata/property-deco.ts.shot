@@ -2,17 +2,17 @@
 
 exports[`class emit-metadata property-deco 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         FunctionNameDefinition$1 {
           name: Identifier<"deco">,
           node: FunctionDeclaration$1,
         },
       ],
       name: "deco",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"deco">,
           isRead: true,
@@ -26,33 +26,33 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         ParameterDefinition$2 {
           name: Identifier<"param">,
           node: FunctionDeclaration$1,
         },
       ],
       name: "param",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         TSModuleNameDefinition$3 {
           name: Identifier<"a">,
           node: TSModuleDeclaration$2,
         },
       ],
       name: "a",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"a">,
           isRead: true,
@@ -74,59 +74,59 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$6 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$4 {
           name: Identifier<"B">,
           node: ClassDeclaration$3,
         },
       ],
       name: "B",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$7 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$5 {
           name: Identifier<"B">,
           node: ClassDeclaration$3,
         },
       ],
       name: "B",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$8 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$6 {
           name: Identifier<"A">,
           node: ClassDeclaration$4,
         },
       ],
       name: "A",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$9 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$7 {
           name: Identifier<"A">,
           node: ClassDeclaration$4,
         },
       ],
       name: "A",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$5,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
         "deco" => Variable$2,
@@ -135,7 +135,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$5,
@@ -145,14 +145,14 @@ ScopeManager {
     FunctionScope$2 {
       block: FunctionDeclaration$1,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "arguments" => Variable$3,
         "param" => Variable$4,
       },
       type: "function",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
         Variable$4,
       ],
@@ -160,33 +160,33 @@ ScopeManager {
     TSModuleScope$3 {
       block: TSModuleDeclaration$2,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "B" => Variable$6,
       },
       type: "tsModule",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$6,
       ],
     },
     ClassScope$4 {
       block: ClassDeclaration$3,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "B" => Variable$7,
       },
       type: "class",
       upper: TSModuleScope$3,
-      variables: Array [
+      variables: [
         Variable$7,
       ],
     },
     ClassScope$5 {
       block: ClassDeclaration$4,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
         Reference$3,
@@ -196,7 +196,7 @@ ScopeManager {
       },
       type: "class",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$9,
       ],
     },

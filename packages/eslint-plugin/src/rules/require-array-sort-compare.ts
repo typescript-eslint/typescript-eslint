@@ -55,7 +55,7 @@ export default util.createRule<Options, MessageIds>({
         service.esTreeNodeToTSNodeMap.get(node),
       );
       if (checker.isArrayType(type) || checker.isTupleType(type)) {
-        const typeArgs = checker.getTypeArguments(type);
+        const typeArgs = util.getTypeArguments(type, checker);
         return typeArgs.every(
           arg => util.getTypeName(checker, arg) === 'string',
         );

@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures expressions new-expression-type-arguments Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           id: Identifier {
@@ -21,7 +21,7 @@ Program {
           },
           init: NewExpression {
             type: "NewExpression",
-            arguments: Array [],
+            arguments: [],
             callee: Identifier {
               type: "Identifier",
               name: "A",
@@ -34,7 +34,7 @@ Program {
             },
             typeParameters: TSTypeParameterInstantiation {
               type: "TSTypeParameterInstantiation",
-              params: Array [
+              params: [
                 TSTypeReference {
                   type: "TSTypeReference",
                   typeName: Identifier {

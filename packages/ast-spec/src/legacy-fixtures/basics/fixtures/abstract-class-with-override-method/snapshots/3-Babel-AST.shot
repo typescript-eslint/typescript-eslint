@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics abstract-class-with-override-method Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: true,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           MethodDefinition {
             type: "MethodDefinition",
             abstract: true,
@@ -33,7 +33,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [157, 160],
               loc: {

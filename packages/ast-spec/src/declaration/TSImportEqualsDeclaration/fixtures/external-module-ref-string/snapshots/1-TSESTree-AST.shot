@@ -3,7 +3,7 @@
 exports[`AST Fixtures declaration TSImportEqualsDeclaration external-module-ref-string TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSImportEqualsDeclaration {
       type: "TSImportEqualsDeclaration",
       id: Identifier {

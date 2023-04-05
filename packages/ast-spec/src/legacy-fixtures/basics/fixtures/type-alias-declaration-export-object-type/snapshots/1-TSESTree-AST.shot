@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export-object-type TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: TSTypeAliasDeclaration {
         type: "TSTypeAliasDeclaration",
         id: Identifier {
@@ -21,7 +21,7 @@ Program {
         },
         typeAnnotation: TSTypeLiteral {
           type: "TSTypeLiteral",
-          members: Array [
+          members: [
             TSPropertySignature {
               type: "TSPropertySignature",
               computed: false,
@@ -77,7 +77,7 @@ Program {
       },
       exportKind: "type",
       source: null,
-      specifiers: Array [],
+      specifiers: [],
 
       range: [73, 123],
       loc: {

@@ -80,6 +80,7 @@ exports[`AST Fixtures legacy-fixtures basics call-signatures-with-generics AST A
                 params: Array [
                   TSTypeParameter {
                     type: 'TSTypeParameter',
+-                   const: false,
 -                   in: false,
 -                   name: Identifier {
 -                     type: 'Identifier',
@@ -172,6 +173,7 @@ exports[`AST Fixtures legacy-fixtures basics call-signatures-with-generics AST A
                 params: Array [
                   TSTypeParameter {
                     type: 'TSTypeParameter',
+-                   const: false,
 -                   in: false,
 -                   name: Identifier {
 -                     type: 'Identifier',

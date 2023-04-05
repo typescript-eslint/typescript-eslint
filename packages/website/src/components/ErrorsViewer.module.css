@@ -10,6 +10,7 @@
   font-feature-settings: 'liga' 0, 'calt' 0;
   box-sizing: border-box;
   margin: 0;
+  white-space: break-spaces;
 }
 
 .fixerContainer {
