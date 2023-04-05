@@ -97,6 +97,13 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
    *
+   * Whether to memoize many of TypeScript's type checking APIs.
+   */
+  EXPERIMENTAL__memoizeTypeCheckingAPIs?: boolean;
+
+  /**
+   * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
+   *
    * Causes TS to use the source files for referenced projects instead of the compiled .d.ts files.
    * This feature is not yet optimized, and is likely to cause OOMs for medium to large projects.
    *

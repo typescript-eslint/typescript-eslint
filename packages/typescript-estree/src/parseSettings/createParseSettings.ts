@@ -47,6 +47,8 @@ export function createParseSettings(
         : new Set(),
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: options.errorOnUnknownASTType === true,
+    EXPERIMENTAL__memoizeTypeCheckingAPIs:
+      options.EXPERIMENTAL__memoizeTypeCheckingAPIs === true,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect:
       options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect === true,
     extraFileExtensions:

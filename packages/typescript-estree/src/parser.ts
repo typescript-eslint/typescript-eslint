@@ -270,7 +270,11 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
    */
   return {
     ast: estree as AST<T>,
-    services: createParserServices(astMaps, program),
+    services: createParserServices(
+      astMaps,
+      program,
+      parseSettings.EXPERIMENTAL__memoizeTypeCheckingAPIs,
+    ),
   };
 }
 

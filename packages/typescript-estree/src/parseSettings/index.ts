@@ -58,6 +58,11 @@ export interface MutableParseSettings {
   errorOnUnknownASTType: boolean;
 
   /**
+   * Whether to memoize many of TypeScript's type checking APIs.
+   */
+  EXPERIMENTAL__memoizeTypeCheckingAPIs: boolean;
+
+  /**
    * Whether TS should use the source files for referenced projects instead of the compiled .d.ts files.
    *
    * @remarks

@@ -3,26 +3,40 @@ import type * as ts from 'typescript';
 import type { ASTMaps } from './convert';
 import type { ParserServices } from './parser-options';
 
-function memoize<Key extends object, Return>(
-  get: (key: Key) => Return,
-): typeof get {
-  const cache = new WeakMap<Key, Return>();
+type MethodKeyOf<Container> = keyof {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [Key in keyof Container]: Container[Key] extends (arg: any) => void
+    ? Key
+    : never;
+};
 
-  return key => {
-    const cached = cache.get(key);
-    if (cached) {
-      return cached;
-    }
+function memoizeMethods<Container, Keys extends MethodKeyOf<Container>[]>(
+  container: Container,
+  keys: Keys,
+): void {
+  for (const key of keys) {
+    const originalMethod = (
+      container[key] as (parameter: object) => unknown
+    ).bind(container);
+    const cache = new WeakMap<object, unknown>();
 
-    const created = get(key);
-    cache.set(key, created);
-    return created;
-  };
+    container[key] = ((parameter: object): unknown => {
+      const cached = cache.get(parameter);
+      if (cached) {
+        return cached;
+      }
+
+      const created = originalMethod(parameter);
+      cache.set(parameter, created);
+      return created;
+    }) as Container[typeof key];
+  }
 }
 
 export function createParserServices(
   astMaps: ASTMaps,
   program: ts.Program | null,
+  memoize: boolean,
 ): ParserServices {
   if (!program) {
     // we always return the node maps because
@@ -33,10 +47,16 @@ export function createParserServices(
 
   const checker = program.getTypeChecker();
 
-  checker.getSymbolAtLocation = memoize(
-    checker.getSymbolAtLocation.bind(checker),
-  );
-  checker.getTypeAtLocation = memoize(checker.getTypeAtLocation.bind(checker));
+  if (memoize) {
+    memoizeMethods(checker, [
+      'getApparentType',
+      'getContextualType',
+      'getPropertyOfType',
+      'getSymbolAtLocation',
+      'getTypeAtLocation',
+      'getTypeOfSymbolAtLocation',
+    ]);
+  }
 
   return {
     program,

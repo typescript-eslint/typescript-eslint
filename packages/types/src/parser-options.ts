@@ -47,6 +47,7 @@ interface ParserOptions {
   debugLevel?: DebugLevel;
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
   errorOnUnknownASTType?: boolean;
+  EXPERIMENTAL_memoizeTypeCheckingAPIs?: boolean;
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean; // purposely undocumented for now
   extraFileExtensions?: string[];
   filePath?: string;
