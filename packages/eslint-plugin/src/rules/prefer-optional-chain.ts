@@ -1,6 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { isBinaryExpression } from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -38,7 +37,7 @@ export default util.createRule({
     docs: {
       description:
         'Enforce using concise optional chain expressions instead of chained logical ands, negated logical ors, or empty objects',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
     hasSuggestions: true,
     messages: {
@@ -76,7 +75,7 @@ export default util.createRule({
           const logicalTsNode = services.esTreeNodeToTSNodeMap.get(node);
 
           const leftTsNode = services.esTreeNodeToTSNodeMap.get(leftNode);
-          const operator = isBinaryExpression(logicalTsNode)
+          const operator = ts.isBinaryExpression(logicalTsNode)
             ? logicalTsNode.operatorToken.kind
             : ts.SyntaxKind.Unknown;
           const leftPrecedence = util.getOperatorPrecedence(

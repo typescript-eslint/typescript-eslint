@@ -3,58 +3,88 @@
 exports[`AST Fixtures element AccessorProperty key-computed-complex TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           AccessorProperty {
             type: "AccessorProperty",
-            computed: false,
+            computed: true,
             declare: false,
-            key: Literal {
-              type: "Literal",
-              raw: "1",
-              value: 1,
+            decorators: [],
+            definite: false,
+            key: BinaryExpression {
+              type: "BinaryExpression",
+              left: Literal {
+                type: "Literal",
+                raw: "1",
+                value: 1,
 
-              range: [23, 24],
+                range: [24, 25],
+                loc: {
+                  start: { column: 12, line: 2 },
+                  end: { column: 13, line: 2 },
+                },
+              },
+              operator: "+",
+              right: Literal {
+                type: "Literal",
+                raw: "1",
+                value: 1,
+
+                range: [28, 29],
+                loc: {
+                  start: { column: 16, line: 2 },
+                  end: { column: 17, line: 2 },
+                },
+              },
+
+              range: [24, 29],
               loc: {
-                start: { column: 11, line: 2 },
-                end: { column: 12, line: 2 },
+                start: { column: 12, line: 2 },
+                end: { column: 17, line: 2 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             value: Literal {
               type: "Literal",
               raw: "2",
               value: 2,
 
-              range: [27, 28],
+              range: [33, 34],
               loc: {
-                start: { column: 15, line: 2 },
-                end: { column: 16, line: 2 },
+                start: { column: 21, line: 2 },
+                end: { column: 22, line: 2 },
               },
             },
 
-            range: [14, 29],
+            range: [14, 35],
             loc: {
               start: { column: 2, line: 2 },
-              end: { column: 17, line: 2 },
+              end: { column: 23, line: 2 },
             },
           },
         ],
 
-        range: [10, 31],
+        range: [10, 37],
         loc: {
           start: { column: 10, line: 1 },
           end: { column: 1, line: 3 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [6, 9],
         loc: {
@@ -62,9 +92,10 @@ Program {
           end: { column: 9, line: 1 },
         },
       },
+      implements: [],
       superClass: null,
 
-      range: [0, 31],
+      range: [0, 37],
       loc: {
         start: { column: 0, line: 1 },
         end: { column: 1, line: 3 },
@@ -73,7 +104,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [0, 32],
+  range: [0, 38],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },

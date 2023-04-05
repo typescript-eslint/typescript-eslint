@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-index-signature-private TSESTree - Error 1`] = `
+"TSError
+  2 |
+  3 | interface Foo {
+> 4 |   private [baz: string]: string;
+    |   ^^^^^^^ 'private' modifier cannot appear on an index signature
+  5 | }
+  6 |
+  7 |"
+`;

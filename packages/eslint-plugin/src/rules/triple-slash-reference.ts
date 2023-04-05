@@ -19,7 +19,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow certain triple slash directives in favor of ES6-style import declarations',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     messages: {
       tripleSlashReference:

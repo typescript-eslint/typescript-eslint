@@ -4,7 +4,9 @@ exports[`typescript basics typed-method-signature.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 8,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           5,
           8,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -50,8 +54,11 @@ Object {
         },
         "members": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "export": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 3,
@@ -63,11 +70,13 @@ Object {
                 },
               },
               "name": "h",
+              "optional": false,
               "range": Array [
                 15,
                 16,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -80,8 +89,10 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 15,
@@ -93,6 +104,7 @@ Object {
                   },
                 },
                 "name": "bar",
+                "optional": false,
                 "range": Array [
                   17,
                   28,
@@ -138,6 +150,7 @@ Object {
               15,
               36,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -172,11 +185,16 @@ Object {
                 "type": "TSVoidKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
+            "typeParameters": undefined,
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "export": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 3,
@@ -188,11 +206,13 @@ Object {
                 },
               },
               "name": "g",
+              "optional": false,
               "range": Array [
                 39,
                 40,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -205,8 +225,10 @@ Object {
                 "line": 3,
               },
             },
+            "optional": false,
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 13,
@@ -218,6 +240,7 @@ Object {
                   },
                 },
                 "name": "bar",
+                "optional": false,
                 "range": Array [
                   44,
                   50,
@@ -256,6 +279,7 @@ Object {
                     ],
                     "type": "TSTypeReference",
                     "typeName": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 13,
@@ -267,11 +291,13 @@ Object {
                         },
                       },
                       "name": "T",
+                      "optional": false,
                       "range": Array [
                         49,
                         50,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "typeParameters": undefined,
                   },
@@ -282,6 +308,7 @@ Object {
               39,
               55,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -315,6 +342,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 17,
@@ -326,15 +354,18 @@ Object {
                     },
                   },
                   "name": "T",
+                  "optional": false,
                   "range": Array [
                     53,
                     54,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
             "typeParameters": Object {
               "loc": Object {
@@ -363,6 +394,7 @@ Object {
                     },
                   },
                   "name": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 5,
@@ -374,11 +406,13 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       41,
                       42,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "out": false,
                   "range": Array [
@@ -402,6 +436,7 @@ Object {
         ],
         "type": "TSTypeLiteral",
       },
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

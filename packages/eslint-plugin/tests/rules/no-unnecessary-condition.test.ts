@@ -1,7 +1,7 @@
 import type {
   InvalidTestCase,
   TestCaseError,
-} from '@typescript-eslint/utils/dist/ts-eslint';
+} from '@typescript-eslint/utils/ts-eslint';
 import * as path from 'path';
 
 import type {
@@ -346,6 +346,10 @@ do {} while (true);
       options: [{ allowConstantLoopConditions: true }],
     },
     `
+let variable = 'abc' as string | void;
+variable?.[0];
+    `,
+    `
 let foo: undefined | { bar: true };
 foo?.bar;
     `,
@@ -545,6 +549,48 @@ type OptionalFoo = Foo | undefined;
 declare const foo: OptionalFoo;
 foo?.[1]?.length;
     `,
+    `
+declare let foo: number | null;
+foo ??= 1;
+    `,
+    `
+declare let foo: number;
+foo ||= 1;
+    `,
+    `
+declare let foo: number;
+foo &&= 1;
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6264
+    `
+function get<Obj, Key extends keyof Obj>(obj: Obj, key: Key) {
+  const value = obj[key];
+  if (value) {
+    return value;
+  }
+  throw new Error('BOOM!');
+}
+
+get({ foo: null }, 'foo');
+    `,
+    {
+      code: `
+function getElem(dict: Record<string, { foo: string }>, key: string) {
+  if (dict[key]) {
+    return dict[key].foo;
+  } else {
+    return '';
+  }
+}
+      `,
+      parserOptions: {
+        tsconfigRootDir: getFixturesRootDir(),
+        project: './tsconfig.noUncheckedIndexedAccess.json',
+      },
+      dependencyConstraints: {
+        typescript: '4.1',
+      },
+    },
   ],
   invalid: [
     // Ensure that it's checking in all the right places
@@ -1594,6 +1640,156 @@ foo?.test.length;
           endLine: 9,
           column: 10,
           endColumn: 12,
+        },
+      ],
+    },
+    {
+      code: `
+function pick<Obj extends Record<string, 1 | 2 | 3>, Key extends keyof Obj>(
+  obj: Obj,
+  key: Key,
+): Obj[Key] {
+  const k = obj[key];
+  if (obj[key]) {
+    return obj[key];
+  }
+  throw new Error('Boom!');
+}
+
+pick({ foo: 1, bar: 2 }, 'bar');
+      `,
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 7,
+          endLine: 7,
+          column: 7,
+          endColumn: 15,
+        },
+      ],
+    },
+    {
+      code: `
+function getElem(dict: Record<string, { foo: string }>, key: string) {
+  if (dict[key]) {
+    return dict[key].foo;
+  } else {
+    return '';
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 3,
+          endLine: 3,
+          column: 7,
+          endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+declare let foo: {};
+foo ??= 1;
+      `,
+      errors: [
+        {
+          messageId: 'neverNullish',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare let foo: number;
+foo ??= 1;
+      `,
+      errors: [
+        {
+          messageId: 'neverNullish',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare let foo: null;
+foo ??= null;
+      `,
+      errors: [
+        {
+          messageId: 'alwaysNullish',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare let foo: {};
+foo ||= 1;
+      `,
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare let foo: null;
+foo ||= null;
+      `,
+      errors: [
+        {
+          messageId: 'alwaysFalsy',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare let foo: {};
+foo &&= 1;
+      `,
+      errors: [
+        {
+          messageId: 'alwaysTruthy',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 4,
+        },
+      ],
+    },
+    {
+      code: `
+declare let foo: null;
+foo &&= null;
+      `,
+      errors: [
+        {
+          messageId: 'alwaysFalsy',
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 4,
         },
       ],
     },

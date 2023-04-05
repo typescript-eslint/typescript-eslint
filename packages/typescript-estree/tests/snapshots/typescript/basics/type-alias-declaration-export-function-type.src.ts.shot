@@ -6,7 +6,9 @@ Object {
     Object {
       "assertions": Array [],
       "declaration": Object {
+        "declare": false,
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 24,
@@ -18,11 +20,13 @@ Object {
             },
           },
           "name": "TestCallback",
+          "optional": false,
           "range": Array [
             12,
             24,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -52,6 +56,7 @@ Object {
           },
           "params": Array [
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 37,
@@ -63,6 +68,7 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 28,
                 37,
@@ -143,7 +149,9 @@ Object {
             },
           },
           "type": "TSFunctionType",
+          "typeParameters": undefined,
         },
+        "typeParameters": undefined,
       },
       "exportKind": "type",
       "loc": Object {

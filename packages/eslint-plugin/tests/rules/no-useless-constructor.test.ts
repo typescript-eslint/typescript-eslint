@@ -140,11 +140,6 @@ abstract class A {
   constructor();
 }
     `,
-    `
-abstract class A {
-  abstract constructor();
-}
-    `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/48
     `
 class A {

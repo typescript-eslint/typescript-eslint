@@ -20,9 +20,13 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
             end: { column: 23, line: 1 },
           },
         },
+-       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'F',
+-         optional: false,
 
           range: [10, 11],
           loc: {
@@ -35,10 +39,13 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [12, 13],
 -               loc: {
@@ -57,10 +64,13 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'U',
+-               optional: false,
 -
 -               range: [15, 16],
 -               loc: {
@@ -79,10 +89,13 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-many AST Ali
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'V',
+-               optional: false,
 -
 -               range: [18, 19],
 -               loc: {

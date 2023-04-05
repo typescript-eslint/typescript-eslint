@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 13,
@@ -18,11 +20,13 @@ Object {
               },
             },
             "name": "asserted2",
+            "optional": false,
             "range": Array [
               4,
               13,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "expression": Object {
@@ -31,6 +35,7 @@ Object {
                 "body": Array [
                   Object {
                     "argument": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 39,
@@ -42,11 +47,13 @@ Object {
                         },
                       },
                       "name": "n",
+                      "optional": false,
                       "range": Array [
                         38,
                         39,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "loc": Object {
                       "end": Object {
@@ -96,6 +103,7 @@ Object {
               },
               "params": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 24,
@@ -107,18 +115,22 @@ Object {
                     },
                   },
                   "name": "n",
+                  "optional": false,
                   "range": Array [
                     23,
                     24,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               ],
               "range": Array [
                 22,
                 42,
               ],
+              "returnType": undefined,
               "type": "ArrowFunctionExpression",
+              "typeParameters": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -170,6 +182,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {

@@ -1,4 +1,4 @@
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 
 import * as util from '../util';
 
@@ -7,7 +7,7 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallow awaiting a value that is not a Thenable',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {

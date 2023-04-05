@@ -6,9 +6,12 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "elements": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 6,
@@ -20,16 +23,20 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   5,
                   6,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
                 "argument": Object {
+                  "decorators": Array [],
                   "elements": Array [
                     Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 13,
@@ -41,13 +48,16 @@ Object {
                         },
                       },
                       "name": "b",
+                      "optional": false,
                       "range": Array [
                         12,
                         13,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 16,
@@ -59,11 +69,13 @@ Object {
                         },
                       },
                       "name": "c",
+                      "optional": false,
                       "range": Array [
                         15,
                         16,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                   ],
                   "loc": Object {
@@ -76,12 +88,15 @@ Object {
                       "line": 1,
                     },
                   },
+                  "optional": false,
                   "range": Array [
                     11,
                     17,
                   ],
                   "type": "ArrayPattern",
+                  "typeAnnotation": undefined,
                 },
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 17,
@@ -92,11 +107,14 @@ Object {
                     "line": 1,
                   },
                 },
+                "optional": false,
                 "range": Array [
                   8,
                   17,
                 ],
                 "type": "RestElement",
+                "typeAnnotation": undefined,
+                "value": undefined,
               },
             ],
             "loc": Object {
@@ -109,13 +127,16 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "range": Array [
               4,
               18,
             ],
             "type": "ArrayPattern",
+            "typeAnnotation": undefined,
           },
           "init": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 22,
@@ -127,11 +148,13 @@ Object {
               },
             },
             "name": "d",
+            "optional": false,
             "range": Array [
               21,
               22,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -150,6 +173,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {

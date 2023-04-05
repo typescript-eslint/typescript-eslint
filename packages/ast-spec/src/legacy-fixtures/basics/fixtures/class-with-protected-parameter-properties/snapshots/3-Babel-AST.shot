@@ -1,0 +1,288 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-protected-parameter-properties Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "constructor",
+
+              range: [87, 98],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 13, line: 4 },
+              },
+            },
+            kind: "constructor",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [],
+
+                range: [259, 261],
+                loc: {
+                  start: { column: 4, line: 9 },
+                  end: { column: 6, line: 9 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: [
+                TSParameterProperty {
+                  type: "TSParameterProperty",
+                  accessibility: "protected",
+                  parameter: Identifier {
+                    type: "Identifier",
+                    name: "firstName",
+                    typeAnnotation: TSTypeAnnotation {
+                      type: "TSTypeAnnotation",
+                      typeAnnotation: TSStringKeyword {
+                        type: "TSStringKeyword",
+
+                        range: [125, 131],
+                        loc: {
+                          start: { column: 25, line: 5 },
+                          end: { column: 31, line: 5 },
+                        },
+                      },
+
+                      range: [123, 131],
+                      loc: {
+                        start: { column: 23, line: 5 },
+                        end: { column: 31, line: 5 },
+                      },
+                    },
+
+                    range: [114, 131],
+                    loc: {
+                      start: { column: 14, line: 5 },
+                      end: { column: 31, line: 5 },
+                    },
+                  },
+
+                  range: [104, 131],
+                  loc: {
+                    start: { column: 4, line: 5 },
+                    end: { column: 31, line: 5 },
+                  },
+                },
+                TSParameterProperty {
+                  type: "TSParameterProperty",
+                  accessibility: "protected",
+                  parameter: Identifier {
+                    type: "Identifier",
+                    name: "lastName",
+                    typeAnnotation: TSTypeAnnotation {
+                      type: "TSTypeAnnotation",
+                      typeAnnotation: TSStringKeyword {
+                        type: "TSStringKeyword",
+
+                        range: [166, 172],
+                        loc: {
+                          start: { column: 33, line: 6 },
+                          end: { column: 39, line: 6 },
+                        },
+                      },
+
+                      range: [164, 172],
+                      loc: {
+                        start: { column: 31, line: 6 },
+                        end: { column: 39, line: 6 },
+                      },
+                    },
+
+                    range: [156, 172],
+                    loc: {
+                      start: { column: 23, line: 6 },
+                      end: { column: 39, line: 6 },
+                    },
+                  },
+                  readonly: true,
+
+                  range: [137, 172],
+                  loc: {
+                    start: { column: 4, line: 6 },
+                    end: { column: 39, line: 6 },
+                  },
+                },
+                TSParameterProperty {
+                  type: "TSParameterProperty",
+                  accessibility: "protected",
+                  parameter: AssignmentPattern {
+                    type: "AssignmentPattern",
+                    left: Identifier {
+                      type: "Identifier",
+                      name: "age",
+                      typeAnnotation: TSTypeAnnotation {
+                        type: "TSTypeAnnotation",
+                        typeAnnotation: TSNumberKeyword {
+                          type: "TSNumberKeyword",
+
+                          range: [193, 199],
+                          loc: {
+                            start: { column: 19, line: 7 },
+                            end: { column: 25, line: 7 },
+                          },
+                        },
+
+                        range: [191, 199],
+                        loc: {
+                          start: { column: 17, line: 7 },
+                          end: { column: 25, line: 7 },
+                        },
+                      },
+
+                      range: [188, 199],
+                      loc: {
+                        start: { column: 14, line: 7 },
+                        end: { column: 25, line: 7 },
+                      },
+                    },
+                    right: Literal {
+                      type: "Literal",
+                      raw: "30",
+                      value: 30,
+
+                      range: [202, 204],
+                      loc: {
+                        start: { column: 28, line: 7 },
+                        end: { column: 30, line: 7 },
+                      },
+                    },
+
+                    range: [188, 204],
+                    loc: {
+                      start: { column: 14, line: 7 },
+                      end: { column: 30, line: 7 },
+                    },
+                  },
+
+                  range: [178, 204],
+                  loc: {
+                    start: { column: 4, line: 7 },
+                    end: { column: 30, line: 7 },
+                  },
+                },
+                TSParameterProperty {
+                  type: "TSParameterProperty",
+                  accessibility: "protected",
+                  parameter: AssignmentPattern {
+                    type: "AssignmentPattern",
+                    left: Identifier {
+                      type: "Identifier",
+                      name: "student",
+                      typeAnnotation: TSTypeAnnotation {
+                        type: "TSTypeAnnotation",
+                        typeAnnotation: TSBooleanKeyword {
+                          type: "TSBooleanKeyword",
+
+                          range: [238, 245],
+                          loc: {
+                            start: { column: 32, line: 8 },
+                            end: { column: 39, line: 8 },
+                          },
+                        },
+
+                        range: [236, 245],
+                        loc: {
+                          start: { column: 30, line: 8 },
+                          end: { column: 39, line: 8 },
+                        },
+                      },
+
+                      range: [229, 245],
+                      loc: {
+                        start: { column: 23, line: 8 },
+                        end: { column: 39, line: 8 },
+                      },
+                    },
+                    right: Literal {
+                      type: "Literal",
+                      raw: "false",
+                      value: false,
+
+                      range: [248, 253],
+                      loc: {
+                        start: { column: 42, line: 8 },
+                        end: { column: 47, line: 8 },
+                      },
+                    },
+
+                    range: [229, 253],
+                    loc: {
+                      start: { column: 23, line: 8 },
+                      end: { column: 47, line: 8 },
+                    },
+                  },
+                  readonly: true,
+
+                  range: [210, 253],
+                  loc: {
+                    start: { column: 4, line: 8 },
+                    end: { column: 47, line: 8 },
+                  },
+                },
+              ],
+
+              range: [98, 261],
+              loc: {
+                start: { column: 13, line: 4 },
+                end: { column: 6, line: 9 },
+              },
+            },
+
+            range: [87, 261],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 6, line: 9 },
+            },
+          },
+        ],
+
+        range: [83, 263],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 1, line: 10 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [79, 82],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 263],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 10 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 264],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 11 },
+  },
+}
+`;

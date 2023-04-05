@@ -3,19 +3,21 @@
 exports[`AST Fixtures declaration ExportNamedDeclaration identifier-braced TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: null,
       exportKind: "value",
       source: null,
-      specifiers: Array [
+      specifiers: [
         ExportSpecifier {
           type: "ExportSpecifier",
           exported: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "a",
+            optional: false,
 
             range: [9, 10],
             loc: {
@@ -26,7 +28,9 @@ Program {
           exportKind: "value",
           local: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "a",
+            optional: false,
 
             range: [9, 10],
             loc: {

@@ -6,9 +6,11 @@ Object {
     Object {
       "await": false,
       "body": Object {
+        "directive": undefined,
         "expression": Object {
           "arguments": Array [],
           "callee": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 15,
@@ -20,11 +22,13 @@ Object {
               },
             },
             "name": "doSomething",
+            "optional": false,
             "range": Array [
               25,
               36,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -42,6 +46,7 @@ Object {
             38,
           ],
           "type": "CallExpression",
+          "typeParameters": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -62,7 +67,9 @@ Object {
       "left": Object {
         "declarations": Array [
           Object {
+            "definite": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -74,11 +81,13 @@ Object {
                 },
               },
               "name": "x",
+              "optional": false,
               "range": Array [
                 11,
                 12,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": null,
             "loc": Object {
@@ -98,6 +107,7 @@ Object {
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": Object {
           "end": Object {
@@ -130,6 +140,7 @@ Object {
         39,
       ],
       "right": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 19,
@@ -141,11 +152,13 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           16,
           19,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "type": "ForOfStatement",
     },

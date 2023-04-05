@@ -4,8 +4,10 @@ exports[`javascript objectLiteralShorthandMethods simple-method-with-argument.sr
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 1,
@@ -17,11 +19,13 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             0,
             1,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -53,6 +57,7 @@ Object {
             Object {
               "computed": false,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 10,
@@ -64,11 +69,13 @@ Object {
                   },
                 },
                 "name": "method",
+                "optional": false,
                 "range": Array [
                   10,
                   16,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "init",
               "loc": Object {
@@ -82,6 +89,7 @@ Object {
                 },
               },
               "method": true,
+              "optional": false,
               "range": Array [
                 10,
                 31,
@@ -108,6 +116,7 @@ Object {
                   ],
                   "type": "BlockStatement",
                 },
+                "declare": false,
                 "expression": false,
                 "generator": false,
                 "id": null,
@@ -123,6 +132,7 @@ Object {
                 },
                 "params": Array [
                   Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 15,
@@ -134,18 +144,22 @@ Object {
                       },
                     },
                     "name": "test",
+                    "optional": false,
                     "range": Array [
                       17,
                       21,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                 ],
                 "range": Array [
                   16,
                   31,
                 ],
+                "returnType": undefined,
                 "type": "FunctionExpression",
+                "typeParameters": undefined,
               },
             },
           ],

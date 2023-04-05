@@ -37,7 +37,7 @@ function checkParams(node: TSESTree.MethodDefinition): boolean {
   return !node.value.params.some(
     param =>
       param.type === AST_NODE_TYPES.TSParameterProperty ||
-      param.decorators?.length,
+      param.decorators.length,
   );
 }
 

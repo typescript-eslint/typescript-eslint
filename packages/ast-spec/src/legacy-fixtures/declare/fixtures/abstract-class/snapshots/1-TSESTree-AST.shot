@@ -1,0 +1,52 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures declare abstract-class TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: true,
+      body: ClassBody {
+        type: "ClassBody",
+        body: [],
+
+        range: [100, 102],
+        loc: {
+          start: { column: 27, line: 3 },
+          end: { column: 29, line: 3 },
+        },
+      },
+      declare: true,
+      decorators: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "Foo",
+        optional: false,
+
+        range: [96, 99],
+        loc: {
+          start: { column: 23, line: 3 },
+          end: { column: 26, line: 3 },
+        },
+      },
+      implements: [],
+      superClass: null,
+
+      range: [73, 102],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 29, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 103],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

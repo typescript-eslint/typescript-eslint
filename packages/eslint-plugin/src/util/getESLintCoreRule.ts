@@ -7,6 +7,7 @@ const isESLintV8 = semver.major(version) >= 8;
 interface RuleMap {
   /* eslint-disable @typescript-eslint/consistent-type-imports -- more concise to use inline imports */
   'arrow-parens': typeof import('eslint/lib/rules/arrow-parens');
+  'block-spacing': typeof import('eslint/lib/rules/block-spacing');
   'brace-style': typeof import('eslint/lib/rules/brace-style');
   'comma-dangle': typeof import('eslint/lib/rules/comma-dangle');
   'dot-notation': typeof import('eslint/lib/rules/dot-notation');
@@ -14,6 +15,7 @@ interface RuleMap {
   'init-declarations': typeof import('eslint/lib/rules/init-declarations');
   'key-spacing': typeof import('eslint/lib/rules/key-spacing');
   'keyword-spacing': typeof import('eslint/lib/rules/keyword-spacing');
+  'lines-around-comment': typeof import('eslint/lib/rules/lines-around-comment');
   'lines-between-class-members': typeof import('eslint/lib/rules/lines-between-class-members');
   'no-dupe-args': typeof import('eslint/lib/rules/no-dupe-args');
   'no-dupe-class-members': typeof import('eslint/lib/rules/no-dupe-class-members');

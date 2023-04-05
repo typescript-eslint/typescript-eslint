@@ -4,8 +4,10 @@ exports[`typescript basics short-circuiting-assignment-and-and.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 1,
@@ -17,11 +19,13 @@ Object {
             },
           },
           "name": "a",
+          "optional": false,
           "range": Array [
             0,
             1,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -39,6 +43,7 @@ Object {
           7,
         ],
         "right": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 7,
@@ -50,11 +55,13 @@ Object {
             },
           },
           "name": "b",
+          "optional": false,
           "range": Array [
             6,
             7,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "AssignmentExpression",
       },

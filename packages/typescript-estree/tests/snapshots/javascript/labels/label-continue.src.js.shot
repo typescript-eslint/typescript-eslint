@@ -9,6 +9,7 @@ Object {
           "body": Array [
             Object {
               "label": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 18,
@@ -20,11 +21,13 @@ Object {
                   },
                 },
                 "name": "loop1",
+                "optional": false,
                 "range": Array [
                   36,
                   41,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -113,6 +116,7 @@ Object {
         "type": "WhileStatement",
       },
       "label": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 5,
@@ -124,11 +128,13 @@ Object {
           },
         },
         "name": "loop1",
+        "optional": false,
         "range": Array [
           0,
           5,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {

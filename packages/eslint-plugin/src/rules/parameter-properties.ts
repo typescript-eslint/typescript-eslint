@@ -30,7 +30,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require or disallow parameter properties in class constructors',
-      recommended: false,
     },
     messages: {
       preferClassProperty:

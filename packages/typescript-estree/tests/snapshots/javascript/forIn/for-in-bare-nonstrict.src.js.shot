@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -18,11 +20,13 @@ Object {
               },
             },
             "name": "effects",
+            "optional": false,
             "range": Array [
               4,
               11,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -60,6 +64,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {
@@ -80,7 +85,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -92,11 +99,13 @@ Object {
               },
             },
             "name": "iterations",
+            "optional": false,
             "range": Array [
               21,
               31,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -134,6 +143,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {
@@ -154,7 +164,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -166,11 +178,13 @@ Object {
               },
             },
             "name": "stored",
+            "optional": false,
             "range": Array [
               41,
               47,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": null,
           "loc": Object {
@@ -190,6 +204,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {
@@ -211,8 +226,10 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "argument": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -224,11 +241,13 @@ Object {
                   },
                 },
                 "name": "iterations",
+                "optional": false,
                 "range": Array [
                   119,
                   129,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -284,7 +303,9 @@ Object {
       "left": Object {
         "declarations": Array [
           Object {
+            "definite": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -296,16 +317,19 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 58,
                 59,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": Object {
               "expressions": Array [
                 Object {
                   "argument": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 23,
@@ -317,11 +341,13 @@ Object {
                       },
                     },
                     "name": "effects",
+                    "optional": false,
                     "range": Array [
                       65,
                       72,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "loc": Object {
                     "end": Object {
@@ -413,6 +439,7 @@ Object {
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "var",
         "loc": Object {
           "end": Object {
@@ -448,6 +475,7 @@ Object {
         "expressions": Array [
           Object {
             "left": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 38,
@@ -459,11 +487,13 @@ Object {
                 },
               },
               "name": "stored",
+              "optional": false,
               "range": Array [
                 81,
                 87,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -481,6 +511,7 @@ Object {
               91,
             ],
             "right": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 42,
@@ -492,11 +523,13 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 90,
                 91,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "type": "AssignmentExpression",
           },
@@ -515,6 +548,7 @@ Object {
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 46,
@@ -526,11 +560,13 @@ Object {
                     },
                   },
                   "name": "a",
+                  "optional": false,
                   "range": Array [
                     94,
                     95,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {
@@ -544,6 +580,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   94,
                   98,
@@ -573,6 +610,7 @@ Object {
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 52,
@@ -584,11 +622,13 @@ Object {
                     },
                   },
                   "name": "b",
+                  "optional": false,
                   "range": Array [
                     100,
                     101,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {
@@ -602,6 +642,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   100,
                   104,
@@ -631,6 +672,7 @@ Object {
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 58,
@@ -642,11 +684,13 @@ Object {
                     },
                   },
                   "name": "c",
+                  "optional": false,
                   "range": Array [
                     106,
                     107,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {
@@ -660,6 +704,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   106,
                   110,

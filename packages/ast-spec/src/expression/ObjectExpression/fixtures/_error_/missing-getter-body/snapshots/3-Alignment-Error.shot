@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures expression ObjectExpression _error_ missing-getter-body Error Alignment 1`] = `"Both errored"`;

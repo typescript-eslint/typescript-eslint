@@ -1,6 +1,6 @@
-const a: number = 1
+const a: number = 1;
 enum E {
-    A = a,
-    B = a + 1,
-    C = A + B
+  A = a,
+  B = a + 1,
+  C = A + B,
 }

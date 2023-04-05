@@ -1,0 +1,305 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-property-values TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "a",
+              optional: false,
+
+              range: [87, 88],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 3, line: 4 },
+              },
+            },
+            optional: false,
+            override: false,
+            readonly: false,
+            static: false,
+            value: Literal {
+              type: "Literal",
+              raw: "2",
+              value: 2,
+
+              range: [91, 92],
+              loc: {
+                start: { column: 6, line: 4 },
+                end: { column: 7, line: 4 },
+              },
+            },
+
+            range: [87, 93],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 8, line: 4 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "b",
+              optional: false,
+
+              range: [96, 97],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 3, line: 5 },
+              },
+            },
+            optional: false,
+            override: false,
+            readonly: false,
+            static: false,
+            value: ObjectExpression {
+              type: "ObjectExpression",
+              properties: [],
+
+              range: [100, 102],
+              loc: {
+                start: { column: 6, line: 5 },
+                end: { column: 8, line: 5 },
+              },
+            },
+
+            range: [96, 103],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 9, line: 5 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "c",
+              optional: false,
+
+              range: [106, 107],
+              loc: {
+                start: { column: 2, line: 6 },
+                end: { column: 3, line: 6 },
+              },
+            },
+            optional: false,
+            override: false,
+            readonly: false,
+            static: false,
+            value: ArrayExpression {
+              type: "ArrayExpression",
+              elements: [],
+
+              range: [110, 112],
+              loc: {
+                start: { column: 6, line: 6 },
+                end: { column: 8, line: 6 },
+              },
+            },
+
+            range: [106, 113],
+            loc: {
+              start: { column: 2, line: 6 },
+              end: { column: 9, line: 6 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "d",
+              optional: false,
+
+              range: [116, 117],
+              loc: {
+                start: { column: 2, line: 7 },
+                end: { column: 3, line: 7 },
+              },
+            },
+            optional: false,
+            override: false,
+            readonly: false,
+            static: false,
+            value: Literal {
+              type: "Literal",
+              raw: "''",
+              value: "",
+
+              range: [120, 122],
+              loc: {
+                start: { column: 6, line: 7 },
+                end: { column: 8, line: 7 },
+              },
+            },
+
+            range: [116, 123],
+            loc: {
+              start: { column: 2, line: 7 },
+              end: { column: 9, line: 7 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "e",
+              optional: false,
+
+              range: [126, 127],
+              loc: {
+                start: { column: 2, line: 8 },
+                end: { column: 3, line: 8 },
+              },
+            },
+            optional: false,
+            override: false,
+            readonly: false,
+            static: false,
+            value: NewExpression {
+              type: "NewExpression",
+              arguments: [
+                ArrayExpression {
+                  type: "ArrayExpression",
+                  elements: [
+                    ObjectExpression {
+                      type: "ObjectExpression",
+                      properties: [],
+
+                      range: [141, 143],
+                      loc: {
+                        start: { column: 17, line: 8 },
+                        end: { column: 19, line: 8 },
+                      },
+                    },
+                    ArrayExpression {
+                      type: "ArrayExpression",
+                      elements: [],
+
+                      range: [145, 147],
+                      loc: {
+                        start: { column: 21, line: 8 },
+                        end: { column: 23, line: 8 },
+                      },
+                    },
+                    Literal {
+                      type: "Literal",
+                      raw: "2",
+                      value: 2,
+
+                      range: [149, 150],
+                      loc: {
+                        start: { column: 25, line: 8 },
+                        end: { column: 26, line: 8 },
+                      },
+                    },
+                  ],
+
+                  range: [140, 151],
+                  loc: {
+                    start: { column: 16, line: 8 },
+                    end: { column: 27, line: 8 },
+                  },
+                },
+              ],
+              callee: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "Array",
+                optional: false,
+
+                range: [134, 139],
+                loc: {
+                  start: { column: 10, line: 8 },
+                  end: { column: 15, line: 8 },
+                },
+              },
+
+              range: [130, 152],
+              loc: {
+                start: { column: 6, line: 8 },
+                end: { column: 28, line: 8 },
+              },
+            },
+
+            range: [126, 153],
+            loc: {
+              start: { column: 2, line: 8 },
+              end: { column: 29, line: 8 },
+            },
+          },
+        ],
+
+        range: [83, 155],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 1, line: 9 },
+        },
+      },
+      declare: false,
+      decorators: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "Foo",
+        optional: false,
+
+        range: [79, 82],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+      implements: [],
+      superClass: null,
+
+      range: [73, 155],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 9 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 156],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 10 },
+  },
+}
+`;

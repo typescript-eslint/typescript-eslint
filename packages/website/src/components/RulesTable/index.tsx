@@ -1,9 +1,14 @@
 import Link from '@docusaurus/Link';
+import { useHistory } from '@docusaurus/router';
 import type { RulesMeta } from '@site/rulesMeta';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
 import clsx from 'clsx';
-import React, { useMemo, useState } from 'react';
+import React, { useMemo } from 'react';
 
+import {
+  type HistorySelector,
+  useHistorySelector,
+} from '../../hooks/useHistorySelector';
 import styles from './styles.module.css';
 
 function interpolateCode(text: string): (JSX.Element | string)[] | string {
@@ -29,17 +34,21 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
         <br />
         {interpolateCode(rule.docs.description)}
       </td>
-      <td
-        className={styles.attrCol}
-        title={
-          recommended === 'strict'
-            ? 'strict'
-            : recommended
-            ? 'recommended'
-            : undefined
-        }
-      >
-        {recommended === 'strict' ? '🔒' : recommended ? '✅' : ''}
+      <td className={styles.attrCol} title={recommended}>
+        {(() => {
+          switch (recommended) {
+            case 'recommended':
+              return '✅';
+            case 'strict':
+              return '🔒';
+            case 'stylistic':
+              return '🎨';
+            default:
+              // for some reason the current version of babel loader won't elide this correctly
+              // recommended satisfies undefined;
+              return '';
+          }
+        })()}
       </td>
       <td
         className={styles.attrCol}
@@ -67,7 +76,7 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
 }
 
 const filterModes = ['neutral', 'include', 'exclude'] as const;
-type FilterMode = typeof filterModes[number];
+type FilterMode = (typeof filterModes)[number];
 
 function RuleFilterCheckBox({
   label,
@@ -118,101 +127,87 @@ function match(mode: FilterMode, value: boolean): boolean | undefined {
 }
 
 export default function RulesTable({
-  extensionRules,
+  ruleset,
 }: {
-  extensionRules?: boolean;
+  ruleset: 'extension-rules' | 'supported-rules';
 }): JSX.Element {
+  const [filters, changeFilter] = useRulesFilters(ruleset);
+
   const rules = useRulesMeta();
-  const [showRecommended, setShowRecommended] = useState<FilterMode>('neutral');
-  const [showStrict, setShowStrict] = useState<FilterMode>('neutral');
-  const [showFixable, setShowFixable] = useState<FilterMode>('neutral');
-  const [showHasSuggestions, setShowHasSuggestion] =
-    useState<FilterMode>('neutral');
-  const [showTypeCheck, setShowTypeCheck] = useState<FilterMode>('neutral');
+  const extensionRules = ruleset === 'extension-rules';
   const relevantRules = useMemo(
     () =>
       rules
         .filter(r => !!extensionRules === !!r.docs?.extendsBaseRule)
         .filter(r => {
           const opinions = [
+            match(filters.recommended, r.docs?.recommended === 'recommended'),
             match(
-              showRecommended,
-              r.docs?.recommended === 'error' || r.docs?.recommended === 'warn',
+              filters.strict,
+              r.docs?.recommended === 'recommended' ||
+                r.docs?.recommended === 'strict',
             ),
-            match(showStrict, r.docs?.recommended === 'strict'),
-            match(showFixable, !!r.fixable),
-            match(showHasSuggestions, !!r.hasSuggestions),
-            match(showTypeCheck, !!r.docs?.requiresTypeChecking),
+            match(filters.stylistic, r.docs?.recommended === 'stylistic'),
+            match(filters.fixable, !!r.fixable),
+            match(filters.suggestions, !!r.hasSuggestions),
+            match(filters.typeInformation, !!r.docs?.requiresTypeChecking),
           ].filter((o): o is boolean => o !== undefined);
           return opinions.every(o => o);
         }),
-    [
-      rules,
-      extensionRules,
-      showRecommended,
-      showStrict,
-      showFixable,
-      showHasSuggestions,
-      showTypeCheck,
-    ],
+    [rules, extensionRules, filters],
   );
+
   return (
     <>
-      <ul className={clsx('clean-list', styles.checkboxList)}>
-        <RuleFilterCheckBox
-          mode={showRecommended}
-          setMode={(newMode): void => {
-            setShowRecommended(newMode);
-
-            if (newMode === 'include' && showStrict === 'include') {
-              setShowStrict('exclude');
+      <div className={styles.checkboxListArea}>
+        <em>Config Group</em>
+        <ul className={clsx('clean-list', styles.checkboxList)}>
+          <RuleFilterCheckBox
+            mode={filters.recommended}
+            setMode={(newMode): void => changeFilter('recommended', newMode)}
+            label="✅ recommended"
+          />
+          <RuleFilterCheckBox
+            mode={filters.strict}
+            setMode={(newMode): void => changeFilter('strict', newMode)}
+            label="🔒 strict"
+          />
+          <RuleFilterCheckBox
+            mode={filters.stylistic}
+            setMode={(newMode): void => changeFilter('stylistic', newMode)}
+            label="🎨 stylistic"
+          />
+        </ul>
+      </div>
+      <div className={styles.checkboxListArea}>
+        <em>Metadata</em>
+        <ul className={clsx('clean-list', styles.checkboxList)}>
+          <RuleFilterCheckBox
+            mode={filters.fixable}
+            setMode={(newMode): void => changeFilter('fixable', newMode)}
+            label="🔧 fixable"
+          />
+          <RuleFilterCheckBox
+            mode={filters.suggestions}
+            setMode={(newMode): void => changeFilter('suggestions', newMode)}
+            label="💡 has suggestions"
+          />
+          <RuleFilterCheckBox
+            mode={filters.typeInformation}
+            setMode={(newMode): void =>
+              changeFilter('typeInformation', newMode)
             }
-          }}
-          label="✅ recommended"
-        />
-        <RuleFilterCheckBox
-          mode={showStrict}
-          setMode={(newMode): void => {
-            setShowStrict(newMode);
-
-            if (newMode === 'include' && showRecommended === 'include') {
-              setShowRecommended('exclude');
-            }
-          }}
-          label="🔒 strict"
-        />
-        <RuleFilterCheckBox
-          mode={showFixable}
-          setMode={setShowFixable}
-          label="🔧 fixable"
-        />
-        <RuleFilterCheckBox
-          mode={showHasSuggestions}
-          setMode={setShowHasSuggestion}
-          label="💡 has suggestions"
-        />
-        <RuleFilterCheckBox
-          mode={showTypeCheck}
-          setMode={setShowTypeCheck}
-          label="💭 requires type information"
-        />
-      </ul>
+            label="💭 requires type information"
+          />
+        </ul>
+      </div>
       <table className={styles.rulesTable}>
         <thead>
           <tr>
             <th className={styles.ruleCol}>Rule</th>
-            <th className={styles.attrCol} title={'✅ recommended\n🔒 strict'}>
-              ✅{'\n'}🔒
-            </th>
-            <th
-              className={styles.attrCol}
-              title={'🔧 fixable\n💡 has suggestions'}
-            >
-              🔧{'\n'}💡
-            </th>
-            <th className={styles.attrCol} title="💭 requires type information">
-              💭
-            </th>
+            <th className={styles.attrCol}>Config</th>
+            <th className={styles.attrCol}>Fixer</th>
+            <th className={styles.attrCol}>Typed</th>
           </tr>
         </thead>
         <tbody>
@@ -223,4 +218,100 @@ export default function RulesTable({
       </table>
     </>
   );
+}
+
+type FilterCategory =
+  | 'recommended'
+  | 'strict'
+  | 'stylistic'
+  | 'fixable'
+  | 'suggestions'
+  | 'typeInformation';
+type FiltersState = Record<FilterCategory, FilterMode>;
+const neutralFiltersState: FiltersState = {
+  recommended: 'neutral',
+  strict: 'neutral',
+  stylistic: 'neutral',
+  fixable: 'neutral',
+  suggestions: 'neutral',
+  typeInformation: 'neutral',
+};
+
+const selectSearch: HistorySelector<string> = history =>
+  history.location.search;
+const getServerSnapshot = (): string => '';
+
+function useRulesFilters(
+  paramsKey: string,
+): [FiltersState, (category: FilterCategory, mode: FilterMode) => void] {
+  const history = useHistory();
+  const search = useHistorySelector(selectSearch, getServerSnapshot);
+
+  const paramValue = new URLSearchParams(search).get(paramsKey) ?? '';
+  // We can't compute this in selectSearch, because we need the snapshot to be
+  // comparable by value.
+  const filtersState = useMemo(
+    () => parseFiltersState(paramValue),
+    [paramValue],
+  );
+
+  const changeFilter = (category: FilterCategory, mode: FilterMode): void => {
+    const newState = { ...filtersState, [category]: mode };
+
+    if (
+      category === 'strict' &&
+      mode === 'include' &&
+      filtersState.recommended === 'include'
+    ) {
+      newState.recommended = 'exclude';
+    } else if (
+      category === 'recommended' &&
+      mode === 'include' &&
+      filtersState.strict === 'include'
+    ) {
+      newState.strict = 'exclude';
+    }
+
+    const searchParams = new URLSearchParams(history.location.search);
+    const filtersString = stringifyFiltersState(newState);
+
+    if (filtersString) {
+      searchParams.set(paramsKey, filtersString);
+    } else {
+      searchParams.delete(paramsKey);
+    }
+
+    history.replace({ search: searchParams.toString() });
+  };
+
+  return [filtersState, changeFilter];
+}
+
+const NEGATION_SYMBOL = 'x';
+
+function stringifyFiltersState(filters: FiltersState): string {
+  return Object.entries(filters)
+    .map(([key, value]) =>
+      value === 'include'
+        ? key
+        : value === 'exclude'
+        ? `${NEGATION_SYMBOL}${key}`
+        : '',
+    )
+    .filter(Boolean)
+    .join('-');
+}
+
+function parseFiltersState(str: string): FiltersState {
+  const res: FiltersState = { ...neutralFiltersState };
+
+  for (const part of str.split('-')) {
+    const exclude = part.startsWith(NEGATION_SYMBOL);
+    const key = exclude ? part.slice(1) : part;
+    if (Object.hasOwn(neutralFiltersState, key)) {
+      res[key] = exclude ? 'exclude' : 'include';
+    }
+  }
+
+  return res;
 }

@@ -14,19 +14,17 @@ export interface TSInterfaceDeclaration extends BaseNode {
   /**
    * Whether the interface was `declare`d, `undefined` otherwise
    */
-  // TODO(#5020) - make this `false` if it is not `declare`d
-  declare?: boolean;
+  declare: boolean;
   /**
    * The types this interface `extends`
    */
-  extends?: TSInterfaceHeritage[];
+  extends: TSInterfaceHeritage[];
   /**
    * The name of this interface
    */
   id: Identifier;
   /**
    * The generic type parameters declared for the interface.
-   * This is `undefined` if there are no generic type parameters declared.
    */
-  typeParameters?: TSTypeParameterDeclaration;
+  typeParameters: TSTypeParameterDeclaration | undefined;
 }

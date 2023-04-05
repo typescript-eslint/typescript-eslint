@@ -3,12 +3,14 @@
 exports[`AST Fixtures declaration ExportDefaultDeclaration identifier TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportDefaultDeclaration {
       type: "ExportDefaultDeclaration",
       declaration: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "x",
+        optional: false,
 
         range: [15, 16],
         loc: {

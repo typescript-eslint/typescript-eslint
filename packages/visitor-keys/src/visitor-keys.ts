@@ -101,14 +101,14 @@ type KeysDefinedInESLintVisitorKeysCore =
 
 // strictly type the arrays of keys provided to make sure we keep this config in sync with the type defs
 type AdditionalKeys = {
-  readonly // require keys for all nodes NOT defined in `eslint-visitor-keys`
-  [T in Exclude<
+  // require keys for all nodes NOT defined in `eslint-visitor-keys`
+  readonly [T in Exclude<
     AST_NODE_TYPES,
     KeysDefinedInESLintVisitorKeysCore
   >]: readonly GetNodeTypeKeys<T>[];
 } & {
-  readonly // optionally allow keys for all nodes defined in `eslint-visitor-keys`
-  [T in KeysDefinedInESLintVisitorKeysCore]?: readonly GetNodeTypeKeys<T>[];
+  // optionally allow keys for all nodes defined in `eslint-visitor-keys`
+  readonly [T in KeysDefinedInESLintVisitorKeysCore]?: readonly GetNodeTypeKeys<T>[];
 };
 
 /**
@@ -118,7 +118,6 @@ type AdditionalKeys = {
  * the child keys - don't just sort them alphabetically.
  */
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- TODO - add ignore IIFE option
 const SharedVisitorKeys = (() => {
   const FunctionType = ['typeParameters', 'params', 'returnType'] as const;
   const AnonymousFunction = [...FunctionType, 'body'] as const;
@@ -138,7 +137,7 @@ const SharedVisitorKeys = (() => {
       'id',
       'typeParameters',
       'superClass',
-      'superTypeParameters',
+      'superTypeArguments',
       'implements',
       'body',
     ],
@@ -154,7 +153,7 @@ const additionalKeys: AdditionalKeys = {
   ArrayPattern: ['decorators', 'elements', 'typeAnnotation'],
   ArrowFunctionExpression: SharedVisitorKeys.AnonymousFunction,
   AssignmentPattern: ['decorators', 'left', 'right', 'typeAnnotation'],
-  CallExpression: ['callee', 'typeParameters', 'arguments'],
+  CallExpression: ['callee', 'typeArguments', 'arguments'],
   ClassDeclaration: SharedVisitorKeys.ClassDeclaration,
   ClassExpression: SharedVisitorKeys.ClassDeclaration,
   Decorator: ['expression'],
@@ -167,16 +166,16 @@ const additionalKeys: AdditionalKeys = {
   ImportDeclaration: ['specifiers', 'source', 'assertions'],
   ImportExpression: ['source', 'attributes'],
   JSXClosingFragment: [],
-  JSXOpeningElement: ['name', 'typeParameters', 'attributes'],
+  JSXOpeningElement: ['name', 'typeArguments', 'attributes'],
   JSXOpeningFragment: [],
   JSXSpreadChild: ['expression'],
-  MethodDefinition: ['decorators', 'key', 'value', 'typeParameters'],
-  NewExpression: ['callee', 'typeParameters', 'arguments'],
+  MethodDefinition: ['decorators', 'key', 'value'],
+  NewExpression: ['callee', 'typeArguments', 'arguments'],
   ObjectPattern: ['decorators', 'properties', 'typeAnnotation'],
   PropertyDefinition: SharedVisitorKeys.PropertyDefinition,
   RestElement: ['decorators', 'argument', 'typeAnnotation'],
   StaticBlock: ['body'],
-  TaggedTemplateExpression: ['tag', 'typeParameters', 'quasi'],
+  TaggedTemplateExpression: ['tag', 'typeArguments', 'quasi'],
   TSAbstractAccessorProperty: SharedVisitorKeys.AbstractPropertyDefinition,
   TSAbstractKeyword: [],
   TSAbstractMethodDefinition: ['key', 'value'],
@@ -188,7 +187,7 @@ const additionalKeys: AdditionalKeys = {
   TSBigIntKeyword: [],
   TSBooleanKeyword: [],
   TSCallSignatureDeclaration: SharedVisitorKeys.FunctionType,
-  TSClassImplements: ['expression', 'typeParameters'],
+  TSClassImplements: ['expression', 'typeArguments'],
   TSConditionalType: ['checkType', 'extendsType', 'trueType', 'falseType'],
   TSConstructorType: SharedVisitorKeys.FunctionType,
   TSConstructSignatureDeclaration: SharedVisitorKeys.FunctionType,
@@ -202,14 +201,14 @@ const additionalKeys: AdditionalKeys = {
   TSExternalModuleReference: ['expression'],
   TSFunctionType: SharedVisitorKeys.FunctionType,
   TSImportEqualsDeclaration: ['id', 'moduleReference'],
-  TSImportType: ['argument', 'qualifier', 'typeParameters'],
+  TSImportType: ['argument', 'qualifier', 'typeArguments'],
   TSIndexedAccessType: ['indexType', 'objectType'],
   TSIndexSignature: ['parameters', 'typeAnnotation'],
   TSInferType: ['typeParameter'],
-  TSInstantiationExpression: ['expression', 'typeParameters'],
+  TSInstantiationExpression: ['expression', 'typeArguments'],
   TSInterfaceBody: ['body'],
   TSInterfaceDeclaration: ['id', 'typeParameters', 'extends', 'body'],
-  TSInterfaceHeritage: ['expression', 'typeParameters'],
+  TSInterfaceHeritage: ['expression', 'typeArguments'],
   TSIntersectionType: ['types'],
   TSIntrinsicKeyword: [],
   TSLiteralType: ['literal'],
@@ -227,7 +226,7 @@ const additionalKeys: AdditionalKeys = {
   TSOptionalType: ['typeAnnotation'],
   TSParameterProperty: ['decorators', 'parameter'],
   TSPrivateKeyword: [],
-  TSPropertySignature: ['typeAnnotation', 'key', 'initializer'],
+  TSPropertySignature: ['typeAnnotation', 'key'],
   TSProtectedKeyword: [],
   TSPublicKeyword: [],
   TSQualifiedName: ['left', 'right'],
@@ -254,8 +253,8 @@ const additionalKeys: AdditionalKeys = {
   TSTypeParameterDeclaration: ['params'],
   TSTypeParameterInstantiation: ['params'],
   TSTypePredicate: ['typeAnnotation', 'parameterName'],
-  TSTypeQuery: ['exprName', 'typeParameters'],
-  TSTypeReference: ['typeName', 'typeParameters'],
+  TSTypeQuery: ['exprName', 'typeArguments'],
+  TSTypeReference: ['typeName', 'typeArguments'],
   TSUndefinedKeyword: [],
   TSUnionType: ['types'],
   TSUnknownKeyword: [],

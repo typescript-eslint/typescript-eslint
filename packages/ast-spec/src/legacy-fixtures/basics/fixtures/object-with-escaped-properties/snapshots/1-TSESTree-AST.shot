@@ -1,0 +1,276 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics object-with-escaped-properties TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: ObjectExpression {
+        type: "ObjectExpression",
+        properties: [
+          Property {
+            type: "Property",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "__",
+              optional: false,
+
+              range: [76, 78],
+              loc: {
+                start: { column: 3, line: 3 },
+                end: { column: 5, line: 3 },
+              },
+            },
+            kind: "init",
+            method: false,
+            optional: false,
+            shorthand: false,
+            value: Literal {
+              type: "Literal",
+              raw: "null",
+              value: null,
+
+              range: [80, 84],
+              loc: {
+                start: { column: 7, line: 3 },
+                end: { column: 11, line: 3 },
+              },
+            },
+
+            range: [76, 84],
+            loc: {
+              start: { column: 3, line: 3 },
+              end: { column: 11, line: 3 },
+            },
+          },
+        ],
+
+        range: [74, 86],
+        loc: {
+          start: { column: 1, line: 3 },
+          end: { column: 13, line: 3 },
+        },
+      },
+
+      range: [73, 88],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 15, line: 3 },
+      },
+    },
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: ObjectExpression {
+        type: "ObjectExpression",
+        properties: [
+          Property {
+            type: "Property",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "__",
+              optional: false,
+
+              range: [93, 95],
+              loc: {
+                start: { column: 3, line: 5 },
+                end: { column: 5, line: 5 },
+              },
+            },
+            kind: "init",
+            method: true,
+            optional: false,
+            shorthand: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [],
+
+                range: [98, 100],
+                loc: {
+                  start: { column: 8, line: 5 },
+                  end: { column: 10, line: 5 },
+                },
+              },
+              declare: false,
+              expression: false,
+              generator: false,
+              id: null,
+              params: [],
+
+              range: [95, 100],
+              loc: {
+                start: { column: 5, line: 5 },
+                end: { column: 10, line: 5 },
+              },
+            },
+
+            range: [93, 100],
+            loc: {
+              start: { column: 3, line: 5 },
+              end: { column: 10, line: 5 },
+            },
+          },
+        ],
+
+        range: [91, 102],
+        loc: {
+          start: { column: 1, line: 5 },
+          end: { column: 12, line: 5 },
+        },
+      },
+
+      range: [90, 104],
+      loc: {
+        start: { column: 0, line: 5 },
+        end: { column: 14, line: 5 },
+      },
+    },
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: ObjectExpression {
+        type: "ObjectExpression",
+        properties: [
+          Property {
+            type: "Property",
+            computed: true,
+            key: Literal {
+              type: "Literal",
+              raw: "'__'",
+              value: "__",
+
+              range: [110, 114],
+              loc: {
+                start: { column: 4, line: 7 },
+                end: { column: 8, line: 7 },
+              },
+            },
+            kind: "init",
+            method: false,
+            optional: false,
+            shorthand: false,
+            value: Literal {
+              type: "Literal",
+              raw: "null",
+              value: null,
+
+              range: [117, 121],
+              loc: {
+                start: { column: 11, line: 7 },
+                end: { column: 15, line: 7 },
+              },
+            },
+
+            range: [109, 121],
+            loc: {
+              start: { column: 3, line: 7 },
+              end: { column: 15, line: 7 },
+            },
+          },
+        ],
+
+        range: [107, 123],
+        loc: {
+          start: { column: 1, line: 7 },
+          end: { column: 17, line: 7 },
+        },
+      },
+
+      range: [106, 125],
+      loc: {
+        start: { column: 0, line: 7 },
+        end: { column: 19, line: 7 },
+      },
+    },
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
+            key: Literal {
+              type: "Literal",
+              raw: "'__'",
+              value: "__",
+
+              range: [139, 143],
+              loc: {
+                start: { column: 2, line: 10 },
+                end: { column: 6, line: 10 },
+              },
+            },
+            optional: false,
+            override: false,
+            readonly: false,
+            static: false,
+            value: Literal {
+              type: "Literal",
+              raw: "null",
+              value: null,
+
+              range: [146, 150],
+              loc: {
+                start: { column: 9, line: 10 },
+                end: { column: 13, line: 10 },
+              },
+            },
+
+            range: [139, 151],
+            loc: {
+              start: { column: 2, line: 10 },
+              end: { column: 14, line: 10 },
+            },
+          },
+        ],
+
+        range: [135, 153],
+        loc: {
+          start: { column: 8, line: 9 },
+          end: { column: 1, line: 11 },
+        },
+      },
+      declare: false,
+      decorators: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "X",
+        optional: false,
+
+        range: [133, 134],
+        loc: {
+          start: { column: 6, line: 9 },
+          end: { column: 7, line: 9 },
+        },
+      },
+      implements: [],
+      superClass: null,
+
+      range: [127, 153],
+      loc: {
+        start: { column: 0, line: 9 },
+        end: { column: 1, line: 11 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 154],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 12 },
+  },
+}
+`;

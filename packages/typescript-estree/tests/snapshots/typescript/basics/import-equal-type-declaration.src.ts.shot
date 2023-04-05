@@ -5,6 +5,7 @@ Object {
   "body": Array [
     Object {
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 15,
@@ -16,13 +17,16 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           12,
           15,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "importKind": "type",
+      "isExport": false,
       "loc": Object {
         "end": Object {
           "column": 33,

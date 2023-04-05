@@ -4,12 +4,17 @@ exports[`typescript basics class-static-blocks.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 14,
@@ -21,11 +26,13 @@ Object {
                 },
               },
               "name": "count",
+              "optional": false,
               "range": Array [
                 21,
                 26,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -37,14 +44,16 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               14,
               31,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": true,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": Object {
               "loc": Object {
                 "end": Object {
@@ -72,8 +81,10 @@ Object {
                 "consequent": Object {
                   "body": Array [
                     Object {
+                      "directive": undefined,
                       "expression": Object {
                         "argument": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 11,
@@ -85,11 +96,13 @@ Object {
                             },
                           },
                           "name": "count",
+                          "optional": false,
                           "range": Array [
                             76,
                             81,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "loc": Object {
                           "end": Object {
@@ -159,6 +172,7 @@ Object {
                 "test": Object {
                   "arguments": Array [],
                   "callee": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 21,
@@ -170,11 +184,13 @@ Object {
                       },
                     },
                     "name": "someCondition",
+                    "optional": false,
                     "range": Array [
                       51,
                       64,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "loc": Object {
                     "end": Object {
@@ -192,6 +208,7 @@ Object {
                     66,
                   ],
                   "type": "CallExpression",
+                  "typeParameters": undefined,
                 },
                 "type": "IfStatement",
               },
@@ -229,7 +246,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 9,
@@ -241,12 +261,15 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -262,7 +285,9 @@ Object {
         96,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

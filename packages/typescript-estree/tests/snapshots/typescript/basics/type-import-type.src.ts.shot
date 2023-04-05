@@ -4,7 +4,9 @@ exports[`typescript basics type-import-type.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 6,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "A",
+        "optional": false,
         "range": Array [
           5,
           6,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -108,10 +112,14 @@ Object {
           27,
         ],
         "type": "TSTypeQuery",
+        "typeParameters": undefined,
       },
+      "typeParameters": undefined,
     },
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 6,
@@ -123,11 +131,13 @@ Object {
           },
         },
         "name": "B",
+        "optional": false,
         "range": Array [
           34,
           35,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -192,6 +202,7 @@ Object {
           },
         },
         "qualifier": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 22,
@@ -203,11 +214,13 @@ Object {
             },
           },
           "name": "X",
+          "optional": false,
           "range": Array [
             50,
             51,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "range": Array [
           38,
@@ -243,6 +256,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 24,
@@ -254,11 +268,13 @@ Object {
                   },
                 },
                 "name": "Y",
+                "optional": false,
                 "range": Array [
                   52,
                   53,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -270,6 +286,7 @@ Object {
           "type": "TSTypeParameterInstantiation",
         },
       },
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

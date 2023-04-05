@@ -1,0 +1,90 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics interface-with-jsdoc TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSInterfaceDeclaration {
+      type: "TSInterfaceDeclaration",
+      body: TSInterfaceBody {
+        type: "TSInterfaceBody",
+        body: [
+          TSMethodSignature {
+            type: "TSMethodSignature",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "foo",
+              optional: false,
+
+              range: [138, 141],
+              loc: {
+                start: { column: 2, line: 8 },
+                end: { column: 5, line: 8 },
+              },
+            },
+            kind: "method",
+            optional: false,
+            params: [
+              Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "bar",
+                optional: false,
+
+                range: [142, 145],
+                loc: {
+                  start: { column: 6, line: 8 },
+                  end: { column: 9, line: 8 },
+                },
+              },
+            ],
+            readonly: false,
+            static: false,
+
+            range: [138, 147],
+            loc: {
+              start: { column: 2, line: 8 },
+              end: { column: 11, line: 8 },
+            },
+          },
+        ],
+
+        range: [88, 149],
+        loc: {
+          start: { column: 15, line: 3 },
+          end: { column: 1, line: 9 },
+        },
+      },
+      declare: false,
+      extends: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "Test",
+        optional: false,
+
+        range: [83, 87],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 14, line: 3 },
+        },
+      },
+
+      range: [73, 149],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 9 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 150],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 10 },
+  },
+}
+`;

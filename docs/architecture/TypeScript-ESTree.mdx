@@ -32,9 +32,20 @@ Parses the given string of code with the options provided and returns an ESTree-
 ```ts
 interface ParseOptions {
   /**
+   * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
+   * This case only usually occurs when attempting to lint invalid code.
+   */
+  allowInvalidAST?: boolean;
+
+  /**
    * create a top-level comments array containing all comments
    */
   comment?: boolean;
+
+  /**
+   * Whether deprecated AST properties should skip calling console.warn on accesses.
+   */
+  suppressDeprecatedPropertyWarnings?: boolean;
 
   /**
    * An array of modules to turn explicit debugging on for.
@@ -99,7 +110,6 @@ interface ParseOptions {
 
 const PARSE_DEFAULT_OPTIONS: ParseOptions = {
   comment: false,
-  errorOnUnknownASTType: false,
   filePath: 'estree.ts', // or 'estree.tsx', if you pass jsx: true
   jsx: false,
   loc: false,
@@ -174,10 +184,11 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   preserveNodeMaps?: boolean;
 
   /**
-   * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s).
+   * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s),
+   * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
    */
-  project?: string | string[];
+  project?: string | string[] | true;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -235,11 +246,6 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
      */
     glob?: number | 'Infinity';
   };
-
-  /**
-   * Path to a file exporting a custom `ModuleResolver`.
-   */
-  moduleResolver?: string;
 }
 
 interface ParserServices {
@@ -282,23 +288,6 @@ const { ast, services } = parseAndGenerateServices(code, {
   project: './tsconfig.json',
   range: true,
 });
-```
-
-##### `ModuleResolver`
-
-The `moduleResolver` option allows you to specify the path to a module with a custom module resolver implementation. The module is expected to adhere to the following interface:
-
-```ts
-interface ModuleResolver {
-  version: 1;
-  resolveModuleNames(
-    moduleNames: string[],
-    containingFile: string,
-    reusedNames: string[] | undefined,
-    redirectedReference: ts.ResolvedProjectReference | undefined,
-    options: ts.CompilerOptions,
-  ): (ts.ResolvedModule | undefined)[];
-}
 ```
 
 #### `parseWithNodeMaps(code, options)`

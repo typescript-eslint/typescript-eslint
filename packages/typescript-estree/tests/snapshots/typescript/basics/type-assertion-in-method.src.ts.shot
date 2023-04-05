@@ -4,11 +4,15 @@ exports[`typescript basics type-assertion-in-method.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -20,11 +24,13 @@ Object {
                 },
               },
               "name": "isBar",
+              "optional": false,
               "range": Array [
                 21,
                 26,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -37,6 +43,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               21,
@@ -44,6 +51,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -83,6 +91,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -155,12 +164,17 @@ Object {
                 },
               },
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -172,11 +186,13 @@ Object {
                 },
               },
               "name": "isBaz",
+              "optional": false,
               "range": Array [
                 63,
                 68,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -188,14 +204,16 @@ Object {
                 "line": 5,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               63,
               108,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -307,6 +325,7 @@ Object {
                 },
               },
               "type": "ArrowFunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -326,7 +345,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 16,
@@ -338,12 +360,15 @@ Object {
           },
         },
         "name": "AssertsFoo",
+        "optional": false,
         "range": Array [
           6,
           16,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -359,7 +384,9 @@ Object {
         110,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

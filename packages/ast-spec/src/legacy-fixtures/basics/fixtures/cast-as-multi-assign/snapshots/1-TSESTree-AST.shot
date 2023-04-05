@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics cast-as-multi-assign TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: AssignmentExpression {
+        type: "AssignmentExpression",
+        left: TSAsExpression {
+          type: "TSAsExpression",
+          expression: TSAsExpression {
+            type: "TSAsExpression",
+            expression: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "a",
+              optional: false,
+
+              range: [74, 75],
+              loc: {
+                start: { column: 1, line: 3 },
+                end: { column: 2, line: 3 },
+              },
+            },
+            typeAnnotation: TSNumberKeyword {
+              type: "TSNumberKeyword",
+
+              range: [79, 85],
+              loc: {
+                start: { column: 6, line: 3 },
+                end: { column: 12, line: 3 },
+              },
+            },
+
+            range: [74, 85],
+            loc: {
+              start: { column: 1, line: 3 },
+              end: { column: 12, line: 3 },
+            },
+          },
+          typeAnnotation: TSAnyKeyword {
+            type: "TSAnyKeyword",
+
+            range: [89, 92],
+            loc: {
+              start: { column: 16, line: 3 },
+              end: { column: 19, line: 3 },
+            },
+          },
+
+          range: [74, 92],
+          loc: {
+            start: { column: 1, line: 3 },
+            end: { column: 19, line: 3 },
+          },
+        },
+        operator: "=",
+        right: Literal {
+          type: "Literal",
+          raw: "42",
+          value: 42,
+
+          range: [96, 98],
+          loc: {
+            start: { column: 23, line: 3 },
+            end: { column: 25, line: 3 },
+          },
+        },
+
+        range: [73, 98],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 25, line: 3 },
+        },
+      },
+
+      range: [73, 99],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 26, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 100],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

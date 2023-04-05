@@ -1,0 +1,134 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types reference-generic-nested TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          definite: false,
+          id: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "x",
+            optional: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTypeReference {
+                type: "TSTypeReference",
+                typeArguments: TSTypeParameterInstantiation {
+                  type: "TSTypeParameterInstantiation",
+                  params: [
+                    TSTypeReference {
+                      type: "TSTypeReference",
+                      typeArguments: TSTypeParameterInstantiation {
+                        type: "TSTypeParameterInstantiation",
+                        params: [
+                          TSNumberKeyword {
+                            type: "TSNumberKeyword",
+
+                            range: [92, 98],
+                            loc: {
+                              start: { column: 19, line: 3 },
+                              end: { column: 25, line: 3 },
+                            },
+                          },
+                        ],
+
+                        range: [91, 99],
+                        loc: {
+                          start: { column: 18, line: 3 },
+                          end: { column: 26, line: 3 },
+                        },
+                      },
+                      typeName: Identifier {
+                        type: "Identifier",
+                        decorators: [],
+                        name: "Array",
+                        optional: false,
+
+                        range: [86, 91],
+                        loc: {
+                          start: { column: 13, line: 3 },
+                          end: { column: 18, line: 3 },
+                        },
+                      },
+
+                      range: [86, 99],
+                      loc: {
+                        start: { column: 13, line: 3 },
+                        end: { column: 26, line: 3 },
+                      },
+                    },
+                  ],
+
+                  range: [85, 100],
+                  loc: {
+                    start: { column: 12, line: 3 },
+                    end: { column: 27, line: 3 },
+                  },
+                },
+                typeName: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "Array",
+                  optional: false,
+
+                  range: [80, 85],
+                  loc: {
+                    start: { column: 7, line: 3 },
+                    end: { column: 12, line: 3 },
+                  },
+                },
+
+                range: [80, 100],
+                loc: {
+                  start: { column: 7, line: 3 },
+                  end: { column: 27, line: 3 },
+                },
+              },
+
+              range: [78, 100],
+              loc: {
+                start: { column: 5, line: 3 },
+                end: { column: 27, line: 3 },
+              },
+            },
+
+            range: [77, 100],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 27, line: 3 },
+            },
+          },
+          init: null,
+
+          range: [77, 100],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 27, line: 3 },
+          },
+        },
+      ],
+      declare: false,
+      kind: "let",
+
+      range: [73, 101],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 28, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 102],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

@@ -10,6 +10,8 @@
   },
   "include": [
     "file.ts",
+    "consistent-type-exports.ts",
+    "mixed-enums-decl.ts",
     "react.tsx"
   ]
 }

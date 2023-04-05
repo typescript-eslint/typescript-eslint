@@ -1,0 +1,77 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures class-decorators export-default-class-decorator Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExportDefaultDeclaration {
+      type: "ExportDefaultDeclaration",
+      declaration: ClassDeclaration {
+        type: "ClassDeclaration",
+        body: ClassBody {
+          type: "ClassBody",
+          body: [],
+
+          range: [106, 108],
+          loc: {
+            start: { column: 25, line: 4 },
+            end: { column: 27, line: 4 },
+          },
+        },
+        decorators: [
+          Decorator {
+            type: "Decorator",
+            expression: Identifier {
+              type: "Identifier",
+              name: "sealed",
+
+              range: [74, 80],
+              loc: {
+                start: { column: 1, line: 3 },
+                end: { column: 7, line: 3 },
+              },
+            },
+
+            range: [73, 80],
+            loc: {
+              start: { column: 0, line: 3 },
+              end: { column: 7, line: 3 },
+            },
+          },
+        ],
+        id: Identifier {
+          type: "Identifier",
+          name: "Qux",
+
+          range: [102, 105],
+          loc: {
+            start: { column: 21, line: 4 },
+            end: { column: 24, line: 4 },
+          },
+        },
+        superClass: null,
+
+        range: [73, 108],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 27, line: 4 },
+        },
+      },
+      exportKind: "value",
+
+      range: [81, 108],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 27, line: 4 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [81, 109],
+  loc: {
+    start: { column: 0, line: 4 },
+    end: { column: 0, line: 5 },
+  },
+}
+`;

@@ -23,6 +23,7 @@ Object {
         "type": "BlockStatement",
       },
       "left": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 6,
@@ -34,11 +35,13 @@ Object {
           },
         },
         "name": "i",
+        "optional": false,
         "range": Array [
           5,
           6,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {

@@ -4,6 +4,7 @@ exports[`javascript templateStrings multi-line-template-string.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "expressions": Array [],
         "loc": Object {

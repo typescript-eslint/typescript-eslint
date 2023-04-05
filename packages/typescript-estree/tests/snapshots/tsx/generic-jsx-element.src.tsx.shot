@@ -4,6 +4,7 @@ exports[`tsx generic-jsx-element.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [],
         "closingElement": null,

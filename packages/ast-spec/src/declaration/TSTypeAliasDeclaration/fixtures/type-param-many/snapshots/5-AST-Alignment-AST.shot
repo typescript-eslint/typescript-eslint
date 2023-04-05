@@ -10,9 +10,12 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-many AST Ali
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'T',
+-         optional: false,
 
           range: [5, 6],
           loc: {
@@ -45,10 +48,13 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-many AST Ali
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'U',
+-               optional: false,
 -
 -               range: [7, 8],
 -               loc: {

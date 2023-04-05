@@ -4,7 +4,9 @@ exports[`typescript types mapped-named-type.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 9,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "Test",
+        "optional": false,
         "range": Array [
           5,
           9,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -84,10 +88,12 @@ Object {
           ],
           "type": "TSLiteralType",
         },
+        "optional": undefined,
         "range": Array [
           15,
           49,
         ],
+        "readonly": undefined,
         "type": "TSMappedType",
         "typeAnnotation": Object {
           "indexType": Object {
@@ -107,6 +113,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 28,
@@ -118,11 +125,13 @@ Object {
                 },
               },
               "name": "P",
+              "optional": false,
               "range": Array [
                 44,
                 45,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": undefined,
           },
@@ -153,6 +162,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 26,
@@ -164,11 +174,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 42,
                 43,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": undefined,
           },
@@ -213,6 +225,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 15,
@@ -224,11 +237,13 @@ Object {
                   },
                 },
                 "name": "T",
+                "optional": false,
                 "range": Array [
                   31,
                   32,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -246,6 +261,7 @@ Object {
             },
           },
           "name": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 4,
@@ -257,11 +273,13 @@ Object {
               },
             },
             "name": "P",
+            "optional": false,
             "range": Array [
               20,
               21,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "out": false,
           "range": Array [
@@ -298,6 +316,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 11,
@@ -309,11 +328,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 10,
                 11,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [

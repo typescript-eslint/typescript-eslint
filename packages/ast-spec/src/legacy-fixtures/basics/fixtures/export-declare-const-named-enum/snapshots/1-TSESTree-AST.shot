@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics export-declare-const-named-enum TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: [],
+      declaration: TSEnumDeclaration {
+        type: "TSEnumDeclaration",
+        const: true,
+        declare: true,
+        id: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "Foo",
+          optional: false,
+
+          range: [99, 102],
+          loc: {
+            start: { column: 26, line: 3 },
+            end: { column: 29, line: 3 },
+          },
+        },
+        members: [
+          TSEnumMember {
+            type: "TSEnumMember",
+            computed: false,
+            id: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "foo",
+              optional: false,
+
+              range: [107, 110],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 5, line: 4 },
+              },
+            },
+            initializer: Literal {
+              type: "Literal",
+              raw: "1",
+              value: 1,
+
+              range: [113, 114],
+              loc: {
+                start: { column: 8, line: 4 },
+                end: { column: 9, line: 4 },
+              },
+            },
+
+            range: [107, 114],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 9, line: 4 },
+            },
+          },
+          TSEnumMember {
+            type: "TSEnumMember",
+            computed: false,
+            id: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "bar",
+              optional: false,
+
+              range: [118, 121],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 5, line: 5 },
+              },
+            },
+
+            range: [118, 121],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 5, line: 5 },
+            },
+          },
+        ],
+
+        range: [80, 124],
+        loc: {
+          start: { column: 7, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+      exportKind: "type",
+      source: null,
+      specifiers: [],
+
+      range: [73, 124],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 6 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 125],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 7 },
+  },
+}
+`;

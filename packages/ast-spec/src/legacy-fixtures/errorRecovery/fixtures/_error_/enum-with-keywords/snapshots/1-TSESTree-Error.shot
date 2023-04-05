@@ -1,0 +1,9 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures errorRecovery _error_ enum-with-keywords TSESTree - Error 1`] = `
+"TSError
+  1 | // TODO: This fixture might be too large, and if so should be split up.
+  2 |
+> 3 | export private public protected static readonly abstract async enum X {}
+    |        ^^^^^^^ 'private' modifier cannot appear on a module or namespace element."
+`;

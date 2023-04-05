@@ -2,29 +2,29 @@
 
 exports[`type-declaration conditional5 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TypeDefinition$1 {
           name: Identifier<"Test">,
           node: TSTypeAliasDeclaration$1,
         },
       ],
       name: "Test",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         TypeDefinition$2 {
           name: Identifier<"U">,
           node: TSTypeParameter$2,
         },
       ],
       name: "U",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"U">,
           isRead: true,
@@ -38,38 +38,38 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         ParameterDefinition$3 {
           name: Identifier<"arg">,
           node: TSFunctionType$3,
         },
       ],
       name: "arg",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         ParameterDefinition$4 {
           name: Identifier<"arg2">,
           node: TSFunctionType$4,
         },
       ],
       name: "arg2",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
     Variable$6 {
-      defs: Array [
+      defs: [
         TypeDefinition$5 {
           name: Identifier<"I">,
           node: TSTypeParameter$5,
         },
       ],
       name: "I",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"I">,
           isRead: true,
@@ -83,18 +83,18 @@ ScopeManager {
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$6,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
         "Test" => Variable$2,
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
       ],
@@ -102,20 +102,20 @@ ScopeManager {
     TypeScope$2 {
       block: TSTypeAliasDeclaration$1,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "U" => Variable$3,
       },
       type: "type",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
       ],
     },
     ConditionalTypeScope$3 {
       block: TSConditionalType$7,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
       ],
@@ -124,33 +124,33 @@ ScopeManager {
       },
       type: "conditionalType",
       upper: TypeScope$2,
-      variables: Array [
+      variables: [
         Variable$6,
       ],
     },
     FunctionTypeScope$4 {
       block: TSFunctionType$3,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "arg" => Variable$4,
       },
       type: "functionType",
       upper: ConditionalTypeScope$3,
-      variables: Array [
+      variables: [
         Variable$4,
       ],
     },
     FunctionTypeScope$5 {
       block: TSFunctionType$4,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "arg2" => Variable$5,
       },
       type: "functionType",
       upper: FunctionTypeScope$4,
-      variables: Array [
+      variables: [
         Variable$5,
       ],
     },

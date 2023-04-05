@@ -7,6 +7,8 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
+            "export": false,
             "loc": Object {
               "end": Object {
                 "column": 31,
@@ -19,6 +21,7 @@ Object {
             },
             "parameters": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 21,
@@ -30,6 +33,7 @@ Object {
                   },
                 },
                 "name": "baz",
+                "optional": false,
                 "range": Array [
                   26,
                   37,
@@ -75,6 +79,7 @@ Object {
               18,
               47,
             ],
+            "readonly": false,
             "static": true,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
@@ -129,7 +134,10 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
+      "extends": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 13,
@@ -141,11 +149,13 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           10,
           13,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -162,6 +172,7 @@ Object {
         49,
       ],
       "type": "TSInterfaceDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

@@ -55,6 +55,7 @@ Object {
                   },
                 },
                 "local": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 11,
@@ -66,11 +67,13 @@ Object {
                     },
                   },
                   "name": "fs",
+                  "optional": false,
                   "range": Array [
                     41,
                     43,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   41,
@@ -99,6 +102,7 @@ Object {
         "type": "TSModuleBlock",
       },
       "declare": true,
+      "global": false,
       "id": Object {
         "loc": Object {
           "end": Object {

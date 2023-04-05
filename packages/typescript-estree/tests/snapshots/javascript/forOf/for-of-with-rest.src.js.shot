@@ -24,6 +24,7 @@ Object {
         "type": "BlockStatement",
       },
       "left": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 27,
@@ -34,10 +35,12 @@ Object {
             "line": 1,
           },
         },
+        "optional": false,
         "properties": Array [
           Object {
             "computed": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 8,
@@ -49,11 +52,13 @@ Object {
                 },
               },
               "name": "x",
+              "optional": false,
               "range": Array [
                 7,
                 8,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "init",
             "loc": Object {
@@ -67,6 +72,7 @@ Object {
               },
             },
             "method": false,
+            "optional": false,
             "range": Array [
               7,
               12,
@@ -74,6 +80,7 @@ Object {
             "shorthand": false,
             "type": "Property",
             "value": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -85,15 +92,18 @@ Object {
                 },
               },
               "name": "xx",
+              "optional": false,
               "range": Array [
                 10,
                 12,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
           },
           Object {
             "argument": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 25,
@@ -105,12 +115,15 @@ Object {
                 },
               },
               "name": "rrestOff",
+              "optional": false,
               "range": Array [
                 17,
                 25,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 25,
@@ -121,11 +134,14 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "range": Array [
               14,
               25,
             ],
             "type": "RestElement",
+            "typeAnnotation": undefined,
+            "value": undefined,
           },
         ],
         "range": Array [
@@ -133,6 +149,7 @@ Object {
           27,
         ],
         "type": "ObjectPattern",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -149,6 +166,7 @@ Object {
         41,
       ],
       "right": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 36,
@@ -160,11 +178,13 @@ Object {
           },
         },
         "name": "array",
+        "optional": false,
         "range": Array [
           31,
           36,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "type": "ForOfStatement",
     },

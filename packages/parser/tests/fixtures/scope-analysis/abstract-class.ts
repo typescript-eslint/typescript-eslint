@@ -1,4 +1,4 @@
 abstract class A {
-    abstract a: string
-    abstract f(): number
+  abstract a: string;
+  abstract f(): number;
 }

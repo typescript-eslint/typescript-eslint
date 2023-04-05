@@ -91,7 +91,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Enforce consistent indentation',
       // too opinionated to be recommended
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
@@ -163,9 +162,15 @@ export default util.createRule<Options, MessageIds>({
       } else {
         return {
           type,
-          static: false,
-          readonly: false,
+          accessibility: undefined,
           declare: false,
+          decorators: [],
+          definite: false,
+          optional: false,
+          override: false,
+          readonly: false,
+          static: false,
+          typeAnnotation: undefined,
           ...base,
         } as TSESTree.PropertyDefinition;
       }
@@ -298,6 +303,7 @@ export default util.createRule<Options, MessageIds>({
               },
             } as TSESTree.VariableDeclarator,
           ],
+          declare: false,
 
           // location data
           parent: node.parent,
@@ -352,7 +358,14 @@ export default util.createRule<Options, MessageIds>({
           body: node.body as any,
           id: null,
           // TODO: This is invalid, there can be more than one extends in interface
-          superClass: node.extends![0].expression as any,
+          superClass: node.extends[0].expression as any,
+          abstract: false,
+          declare: false,
+          decorators: [],
+          implements: [],
+          superTypeArguments: undefined,
+          superTypeParameters: undefined,
+          typeParameters: undefined,
 
           // location data
           parent: node.parent,
@@ -393,6 +406,7 @@ export default util.createRule<Options, MessageIds>({
               kind: 'init' as const,
               computed: false,
               method: false,
+              optional: false,
               shorthand: false,
             },
           ],
@@ -459,6 +473,8 @@ export default util.createRule<Options, MessageIds>({
           selfClosing: false,
           name: name as any,
           attributes: attributes as any,
+          typeArguments: undefined,
+          typeParameters: undefined,
 
           // location data
           parent: node.parent,

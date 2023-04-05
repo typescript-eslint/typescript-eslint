@@ -8,9 +8,11 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "arguments": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 20,
@@ -22,14 +24,17 @@ Object {
                     },
                   },
                   "name": "e",
+                  "optional": false,
                   "range": Array [
                     56,
                     57,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               ],
               "callee": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 18,
@@ -41,11 +46,13 @@ Object {
                   },
                 },
                 "name": "validateEntity",
+                "optional": false,
                 "range": Array [
                   41,
                   55,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -63,6 +70,7 @@ Object {
                 58,
               ],
               "type": "CallExpression",
+              "typeParameters": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -83,7 +91,9 @@ Object {
           Object {
             "declarations": Array [
               Object {
+                "definite": false,
                 "id": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 9,
@@ -95,11 +105,13 @@ Object {
                     },
                   },
                   "name": "s",
+                  "optional": false,
                   "range": Array [
                     68,
                     69,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "init": Object {
                   "computed": false,
@@ -115,6 +127,7 @@ Object {
                   },
                   "object": Object {
                     "expression": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 13,
@@ -126,11 +139,13 @@ Object {
                         },
                       },
                       "name": "e",
+                      "optional": false,
                       "range": Array [
                         72,
                         73,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "loc": Object {
                       "end": Object {
@@ -150,6 +165,7 @@ Object {
                   },
                   "optional": false,
                   "property": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 19,
@@ -161,11 +177,13 @@ Object {
                       },
                     },
                     "name": "name",
+                    "optional": false,
                     "range": Array [
                       75,
                       79,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "range": Array [
                     72,
@@ -190,6 +208,7 @@ Object {
                 "type": "VariableDeclarator",
               },
             ],
+            "declare": false,
             "kind": "let",
             "loc": Object {
               "end": Object {
@@ -224,9 +243,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 22,
@@ -238,11 +259,13 @@ Object {
           },
         },
         "name": "processEntity",
+        "optional": false,
         "range": Array [
           9,
           22,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -256,6 +279,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 33,
@@ -306,6 +330,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 33,
@@ -317,11 +342,13 @@ Object {
                   },
                 },
                 "name": "Entity",
+                "optional": false,
                 "range": Array [
                   27,
                   33,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -332,7 +359,9 @@ Object {
         0,
         82,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

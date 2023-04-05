@@ -9,6 +9,7 @@ Object {
         "body": Array [
           Object {
             "argument": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -20,11 +21,13 @@ Object {
                 },
               },
               "name": "b",
+              "optional": false,
               "range": Array [
                 36,
                 37,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -59,9 +62,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 10,
@@ -73,11 +78,13 @@ Object {
           },
         },
         "name": "a",
+        "optional": false,
         "range": Array [
           9,
           10,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -91,6 +98,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 18,
@@ -102,6 +110,7 @@ Object {
             },
           },
           "name": "b",
+          "optional": false,
           "range": Array [
             14,
             18,
@@ -140,6 +149,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 18,
@@ -151,11 +161,13 @@ Object {
                   },
                 },
                 "name": "X",
+                "optional": false,
                 "range": Array [
                   17,
                   18,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -199,6 +211,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 22,
@@ -210,11 +223,13 @@ Object {
               },
             },
             "name": "X",
+            "optional": false,
             "range": Array [
               21,
               22,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },
@@ -247,6 +262,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -258,11 +274,13 @@ Object {
                 },
               },
               "name": "X",
+              "optional": false,
               "range": Array [
                 11,
                 12,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [

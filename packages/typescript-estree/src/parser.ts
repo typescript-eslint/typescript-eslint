@@ -80,7 +80,6 @@ function getProgramAndAST(
   return createNoProgram(parseSettings);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface EmptyObject {}
 type AST<T extends TSESTreeOptions> = TSESTree.Program &
   (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : EmptyObject) &
@@ -201,7 +200,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
   const hasFullTypeInformation =
     parseSettings.programs != null || parseSettings.projects?.length > 0;
 
-  if (typeof options !== 'undefined') {
+  if (options !== undefined) {
     if (
       typeof options.errorOnTypeScriptSyntacticAndSemanticIssues ===
         'boolean' &&

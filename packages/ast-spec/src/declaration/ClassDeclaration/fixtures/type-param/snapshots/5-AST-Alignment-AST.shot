@@ -10,6 +10,7 @@ exports[`AST Fixtures declaration ClassDeclaration type-param AST Alignment - AS
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -20,9 +21,13 @@ exports[`AST Fixtures declaration ClassDeclaration type-param AST Alignment - AS
             end: { column: 15, line: 1 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {
@@ -30,16 +35,20 @@ exports[`AST Fixtures declaration ClassDeclaration type-param AST Alignment - AS
             end: { column: 9, line: 1 },
           },
         },
+-       implements: Array [],
         superClass: null,
         typeParameters: TSTypeParameterDeclaration {
           type: 'TSTypeParameterDeclaration',
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [10, 11],
 -               loc: {

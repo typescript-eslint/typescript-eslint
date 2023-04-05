@@ -6,7 +6,9 @@ Object {
     Object {
       "assertions": Array [],
       "declaration": Object {
+        "declare": false,
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 26,
@@ -18,11 +20,13 @@ Object {
             },
           },
           "name": "TestClassProps",
+          "optional": false,
           "range": Array [
             12,
             26,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -52,10 +56,12 @@ Object {
           },
           "members": Array [
             Object {
+              "accessibility": undefined,
               "computed": false,
-              "export": undefined,
+              "export": false,
               "initializer": undefined,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 9,
@@ -67,11 +73,13 @@ Object {
                   },
                 },
                 "name": "count",
+                "optional": false,
                 "range": Array [
                   35,
                   40,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -83,13 +91,13 @@ Object {
                   "line": 2,
                 },
               },
-              "optional": undefined,
+              "optional": false,
               "range": Array [
                 35,
                 48,
               ],
-              "readonly": undefined,
-              "static": undefined,
+              "readonly": false,
+              "static": false,
               "type": "TSPropertySignature",
               "typeAnnotation": Object {
                 "loc": Object {
@@ -133,6 +141,7 @@ Object {
           ],
           "type": "TSTypeLiteral",
         },
+        "typeParameters": undefined,
       },
       "exportKind": "type",
       "loc": Object {

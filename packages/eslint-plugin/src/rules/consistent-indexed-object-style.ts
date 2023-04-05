@@ -12,7 +12,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require or disallow the `Record` type',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
     messages: {
       preferRecord: 'A record is preferred over an index signature.',
@@ -108,7 +108,7 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          const params = node.typeParameters?.params;
+          const params = node.typeArguments?.params;
           if (params?.length !== 2) {
             return;
           }
@@ -132,8 +132,8 @@ export default createRule<Options, MessageIds>({
         TSInterfaceDeclaration(node): void {
           let genericTypes = '';
 
-          if ((node.typeParameters?.params ?? []).length > 0) {
-            genericTypes = `<${node.typeParameters?.params
+          if (node.typeParameters?.params?.length) {
+            genericTypes = `<${node.typeParameters.params
               .map(p => sourceCode.getText(p))
               .join(', ')}>`;
           }

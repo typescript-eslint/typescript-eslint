@@ -13,7 +13,7 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
     messages: {
       preferTypeAnnotation:
@@ -32,16 +32,32 @@ export default createRule<Options, MessageIds>({
   create(context, [mode]) {
     const sourceCode = context.getSourceCode();
     return {
-      'VariableDeclarator,PropertyDefinition'(
-        node: TSESTree.VariableDeclarator | TSESTree.PropertyDefinition,
+      'VariableDeclarator,PropertyDefinition,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
+        node:
+          | TSESTree.VariableDeclarator
+          | TSESTree.PropertyDefinition
+          | TSESTree.AssignmentPattern,
       ): void {
-        const lhs = (
-          node.type === AST_NODE_TYPES.VariableDeclarator ? node.id : node
-        ).typeAnnotation?.typeAnnotation;
-        const rhs =
-          node.type === AST_NODE_TYPES.VariableDeclarator
-            ? node.init
-            : node.value;
+        function getLHSRHS(): [
+          TSESTree.BindingName | TSESTree.PropertyDefinition,
+          TSESTree.Expression | null,
+        ] {
+          switch (node.type) {
+            case AST_NODE_TYPES.VariableDeclarator:
+              return [node.id, node.init];
+            case AST_NODE_TYPES.PropertyDefinition:
+              return [node, node.value];
+            case AST_NODE_TYPES.AssignmentPattern:
+              return [node.left, node.right];
+            default:
+              throw new Error(
+                `Unhandled node type: ${(node as { type: string }).type}`,
+              );
+          }
+        }
+        const [lhsName, rhs] = getLHSRHS();
+        const lhs = lhsName.typeAnnotation?.typeAnnotation;
+
         if (
           !rhs ||
           rhs.type !== AST_NODE_TYPES.NewExpression ||
@@ -58,10 +74,10 @@ export default createRule<Options, MessageIds>({
           return;
         }
         if (mode === 'type-annotation') {
-          if (!lhs && rhs.typeParameters) {
-            const { typeParameters, callee } = rhs;
+          if (!lhs && rhs.typeArguments) {
+            const { typeArguments, callee } = rhs;
             const typeAnnotation =
-              sourceCode.getText(callee) + sourceCode.getText(typeParameters);
+              sourceCode.getText(callee) + sourceCode.getText(typeArguments);
             context.report({
               node,
               messageId: 'preferTypeAnnotation',
@@ -69,8 +85,8 @@ export default createRule<Options, MessageIds>({
                 function getIDToAttachAnnotation():
                   | TSESTree.Token
                   | TSESTree.Node {
-                  if (node.type === AST_NODE_TYPES.VariableDeclarator) {
-                    return node.id;
+                  if (node.type !== AST_NODE_TYPES.PropertyDefinition) {
+                    return lhsName;
                   }
                   if (!node.computed) {
                     return node.key;
@@ -80,7 +96,7 @@ export default createRule<Options, MessageIds>({
                   return sourceCode.getTokenAfter(node.key)!;
                 }
                 return [
-                  fixer.remove(typeParameters),
+                  fixer.remove(typeArguments),
                   fixer.insertTextAfter(
                     getIDToAttachAnnotation(),
                     ': ' + typeAnnotation,
@@ -92,14 +108,14 @@ export default createRule<Options, MessageIds>({
           return;
         }
         if (mode === 'constructor') {
-          if (lhs?.typeParameters && !rhs.typeParameters) {
+          if (lhs?.typeArguments && !rhs.typeArguments) {
             const hasParens =
               sourceCode.getTokenAfter(rhs.callee)?.value === '(';
             const extraComments = new Set(
               sourceCode.getCommentsInside(lhs.parent),
             );
             sourceCode
-              .getCommentsInside(lhs.typeParameters)
+              .getCommentsInside(lhs.typeArguments)
               .forEach(c => extraComments.delete(c));
             context.report({
               node,
@@ -114,7 +130,7 @@ export default createRule<Options, MessageIds>({
                 }
                 yield fixer.insertTextAfter(
                   rhs.callee,
-                  sourceCode.getText(lhs.typeParameters),
+                  sourceCode.getText(lhs.typeArguments),
                 );
                 if (!hasParens) {
                   yield fixer.insertTextAfter(rhs.callee, '()');

@@ -24,7 +24,10 @@ Object {
           ],
           "type": "TSInterfaceBody",
         },
+        "declare": false,
+        "extends": Array [],
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 27,
@@ -36,11 +39,13 @@ Object {
             },
           },
           "name": "I",
+          "optional": false,
           "range": Array [
             26,
             27,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -57,6 +62,7 @@ Object {
           31,
         ],
         "type": "TSInterfaceDeclaration",
+        "typeParameters": undefined,
       },
       "exportKind": "type",
       "loc": Object {

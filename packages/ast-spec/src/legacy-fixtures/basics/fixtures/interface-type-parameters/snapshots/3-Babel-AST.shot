@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics interface-type-parameters Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSInterfaceDeclaration {
+      type: "TSInterfaceDeclaration",
+      body: TSInterfaceBody {
+        type: "TSInterfaceBody",
+        body: [],
+
+        range: [90, 92],
+        loc: {
+          start: { column: 17, line: 3 },
+          end: { column: 19, line: 3 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [83, 86],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 13, line: 3 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            name: "T",
+
+            range: [87, 88],
+            loc: {
+              start: { column: 14, line: 3 },
+              end: { column: 15, line: 3 },
+            },
+          },
+        ],
+
+        range: [86, 89],
+        loc: {
+          start: { column: 13, line: 3 },
+          end: { column: 16, line: 3 },
+        },
+      },
+
+      range: [73, 92],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 19, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 93],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

@@ -57,13 +57,13 @@ class FunctionSignature {
         // is a rest param
         if (checker.isArrayType(type)) {
           restType = {
-            type: checker.getTypeArguments(type)[0],
+            type: util.getTypeArguments(type, checker)[0],
             kind: RestTypeKind.Array,
             index: i,
           };
         } else if (checker.isTupleType(type)) {
           restType = {
-            typeArguments: checker.getTypeArguments(type),
+            typeArguments: util.getTypeArguments(type, checker),
             kind: RestTypeKind.Tuple,
             index: i,
           };
@@ -137,7 +137,7 @@ export default util.createRule<[], MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow calling a function with a value with type `any`',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -198,8 +198,10 @@ export default util.createRule<[], MessageIds>({
                 });
               } else if (checker.isTupleType(spreadArgType)) {
                 // foo(...[tuple1, tuple2])
-                const spreadTypeArguments =
-                  checker.getTypeArguments(spreadArgType);
+                const spreadTypeArguments = util.getTypeArguments(
+                  spreadArgType,
+                  checker,
+                );
                 for (const tupleType of spreadTypeArguments) {
                   const parameterType = signature.getNextParameterType();
                   if (parameterType == null) {

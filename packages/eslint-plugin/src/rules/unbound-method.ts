@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -130,7 +130,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce unbound methods are called with their expected scope',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -162,7 +162,6 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [{ ignoreStatic }]) {
     const services = util.getParserServices(context);
-    const checker = services.program.getTypeChecker();
     const currentSourceFile = services.program.getSourceFile(
       context.getFilename(),
     );
@@ -282,7 +281,7 @@ function checkMethod(
           !thisArgIsVoid &&
           !(
             ignoreStatic &&
-            tsutils.hasModifier(
+            tsutils.includesModifier(
               getModifiers(valueDeclaration),
               ts.SyntaxKind.StaticKeyword,
             )

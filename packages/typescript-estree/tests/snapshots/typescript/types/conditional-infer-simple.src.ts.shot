@@ -4,7 +4,9 @@ exports[`typescript types conditional-infer-simple.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 8,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           5,
           8,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -55,6 +59,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 15,
@@ -66,11 +71,13 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               14,
               15,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },
@@ -87,10 +94,12 @@ Object {
           },
           "members": Array [
             Object {
+              "accessibility": undefined,
               "computed": false,
-              "export": undefined,
+              "export": false,
               "initializer": undefined,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 27,
@@ -102,11 +111,13 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   26,
                   27,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -118,13 +129,13 @@ Object {
                   "line": 1,
                 },
               },
-              "optional": undefined,
+              "optional": false,
               "range": Array [
                 26,
                 37,
               ],
-              "readonly": undefined,
-              "static": undefined,
+              "readonly": false,
+              "static": false,
               "type": "TSPropertySignature",
               "typeAnnotation": Object {
                 "loc": Object {
@@ -173,6 +184,7 @@ Object {
                       },
                     },
                     "name": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 36,
@@ -184,11 +196,13 @@ Object {
                         },
                       },
                       "name": "U",
+                      "optional": false,
                       "range": Array [
                         35,
                         36,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "out": false,
                     "range": Array [
@@ -201,10 +215,12 @@ Object {
               },
             },
             Object {
+              "accessibility": undefined,
               "computed": false,
-              "export": undefined,
+              "export": false,
               "initializer": undefined,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 39,
@@ -216,11 +232,13 @@ Object {
                   },
                 },
                 "name": "b",
+                "optional": false,
                 "range": Array [
                   38,
                   39,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -232,13 +250,13 @@ Object {
                   "line": 1,
                 },
               },
-              "optional": undefined,
+              "optional": false,
               "range": Array [
                 38,
                 48,
               ],
-              "readonly": undefined,
-              "static": undefined,
+              "readonly": false,
+              "static": false,
               "type": "TSPropertySignature",
               "typeAnnotation": Object {
                 "loc": Object {
@@ -287,6 +305,7 @@ Object {
                       },
                     },
                     "name": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 48,
@@ -298,11 +317,13 @@ Object {
                         },
                       },
                       "name": "U",
+                      "optional": false,
                       "range": Array [
                         47,
                         48,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "out": false,
                     "range": Array [
@@ -369,6 +390,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 54,
@@ -380,11 +402,13 @@ Object {
               },
             },
             "name": "U",
+            "optional": false,
             "range": Array [
               53,
               54,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },
@@ -417,6 +441,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -428,11 +453,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 9,
                 10,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [

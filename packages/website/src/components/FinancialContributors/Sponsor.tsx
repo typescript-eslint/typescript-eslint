@@ -1,3 +1,4 @@
+import Link from '@docusaurus/Link';
 import React from 'react';
 
 import styles from './styles.module.css';
@@ -21,14 +22,13 @@ export function Sponsor({ includeName, sponsor }: SponsorProps): JSX.Element {
   }
 
   return (
-    <a
+    <Link
       className={styles.sponsorLink}
       href={sponsor.website ?? undefined}
       title={sponsor.name}
-      target="_blank"
       rel="noopener sponsored"
     >
       {children}
-    </a>
+    </Link>
   );
 }

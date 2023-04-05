@@ -4,7 +4,9 @@ exports[`typescript basics type-import-type-with-type-parameters-in-type-referen
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 6,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "X",
+        "optional": false,
         "range": Array [
           5,
           6,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -54,6 +58,7 @@ Object {
         ],
         "type": "TSTypeReference",
         "typeName": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 10,
@@ -65,11 +70,13 @@ Object {
             },
           },
           "name": "A",
+          "optional": false,
           "range": Array [
             9,
             10,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "typeParameters": Object {
           "loc": Object {
@@ -131,6 +138,7 @@ Object {
                 },
               },
               "qualifier": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 23,
@@ -142,11 +150,13 @@ Object {
                   },
                 },
                 "name": "B",
+                "optional": false,
                 "range": Array [
                   22,
                   23,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "range": Array [
                 11,
@@ -198,6 +208,7 @@ Object {
           "type": "TSTypeParameterInstantiation",
         },
       },
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

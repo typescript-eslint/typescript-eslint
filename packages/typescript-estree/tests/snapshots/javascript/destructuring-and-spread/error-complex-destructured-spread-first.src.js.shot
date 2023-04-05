@@ -4,11 +4,14 @@ exports[`javascript destructuring-and-spread error-complex-destructured-spread-f
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "elements": Array [
             Object {
               "argument": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 5,
@@ -20,12 +23,15 @@ Object {
                   },
                 },
                 "name": "c",
+                "optional": false,
                 "range": Array [
                   4,
                   5,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 5,
@@ -36,13 +42,17 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "range": Array [
                 1,
                 5,
               ],
               "type": "RestElement",
+              "typeAnnotation": undefined,
+              "value": undefined,
             },
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 15,
@@ -53,10 +63,12 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "properties": Array [
                 Object {
                   "computed": false,
                   "key": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 10,
@@ -68,11 +80,13 @@ Object {
                       },
                     },
                     "name": "a",
+                    "optional": false,
                     "range": Array [
                       9,
                       10,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "kind": "init",
                   "loc": Object {
@@ -86,6 +100,7 @@ Object {
                     },
                   },
                   "method": false,
+                  "optional": false,
                   "range": Array [
                     9,
                     10,
@@ -93,6 +108,7 @@ Object {
                   "shorthand": true,
                   "type": "Property",
                   "value": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 10,
@@ -104,16 +120,19 @@ Object {
                       },
                     },
                     "name": "a",
+                    "optional": false,
                     "range": Array [
                       9,
                       10,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                 },
                 Object {
                   "computed": false,
                   "key": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 13,
@@ -125,11 +144,13 @@ Object {
                       },
                     },
                     "name": "b",
+                    "optional": false,
                     "range": Array [
                       12,
                       13,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "kind": "init",
                   "loc": Object {
@@ -143,6 +164,7 @@ Object {
                     },
                   },
                   "method": false,
+                  "optional": false,
                   "range": Array [
                     12,
                     13,
@@ -150,6 +172,7 @@ Object {
                   "shorthand": true,
                   "type": "Property",
                   "value": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 13,
@@ -161,11 +184,13 @@ Object {
                       },
                     },
                     "name": "b",
+                    "optional": false,
                     "range": Array [
                       12,
                       13,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                 },
               ],
@@ -174,6 +199,7 @@ Object {
                 15,
               ],
               "type": "ObjectPattern",
+              "typeAnnotation": undefined,
             },
           ],
           "loc": Object {
@@ -186,11 +212,13 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             0,
             16,
           ],
           "type": "ArrayPattern",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -208,6 +236,7 @@ Object {
           20,
         ],
         "right": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 20,
@@ -219,11 +248,13 @@ Object {
             },
           },
           "name": "d",
+          "optional": false,
           "range": Array [
             19,
             20,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "AssignmentExpression",
       },

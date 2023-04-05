@@ -4,7 +4,9 @@ exports[`typescript types template-literal-type-3.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 10,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "Color",
+        "optional": false,
         "range": Array [
           5,
           10,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -128,9 +132,12 @@ Object {
           },
         ],
       },
+      "typeParameters": undefined,
     },
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 13,
@@ -142,11 +149,13 @@ Object {
           },
         },
         "name": "Quantity",
+        "optional": false,
         "range": Array [
           34,
           42,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -254,9 +263,12 @@ Object {
           },
         ],
       },
+      "typeParameters": undefined,
     },
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 14,
@@ -268,11 +280,13 @@ Object {
           },
         },
         "name": "SeussFish",
+        "optional": false,
         "range": Array [
           65,
           74,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -386,6 +400,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 28,
@@ -397,11 +412,13 @@ Object {
                     },
                   },
                   "name": "Quantity",
+                  "optional": false,
                   "range": Array [
                     80,
                     88,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -422,6 +439,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 36,
@@ -433,11 +451,13 @@ Object {
                     },
                   },
                   "name": "Color",
+                  "optional": false,
                   "range": Array [
                     91,
                     96,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -445,6 +465,7 @@ Object {
           },
         ],
       },
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

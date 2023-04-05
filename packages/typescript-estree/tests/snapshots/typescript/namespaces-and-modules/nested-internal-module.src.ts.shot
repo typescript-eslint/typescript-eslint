@@ -11,7 +11,9 @@ Object {
             "declaration": Object {
               "declarations": Array [
                 Object {
+                  "definite": false,
                   "id": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 16,
@@ -23,11 +25,13 @@ Object {
                       },
                     },
                     "name": "x",
+                    "optional": false,
                     "range": Array [
                       27,
                       28,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "init": Object {
                     "loc": Object {
@@ -65,6 +69,7 @@ Object {
                   "type": "VariableDeclarator",
                 },
               ],
+              "declare": false,
               "kind": "var",
               "loc": Object {
                 "end": Object {
@@ -104,11 +109,15 @@ Object {
           Object {
             "assertions": Array [],
             "declaration": Object {
+              "abstract": false,
               "body": Object {
                 "body": Array [
                   Object {
+                    "accessibility": undefined,
                     "computed": false,
+                    "decorators": Array [],
                     "key": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 19,
@@ -120,11 +129,13 @@ Object {
                         },
                       },
                       "name": "constructor",
+                      "optional": false,
                       "range": Array [
                         78,
                         89,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "kind": "constructor",
                     "loc": Object {
@@ -137,6 +148,7 @@ Object {
                         "line": 5,
                       },
                     },
+                    "optional": false,
                     "override": false,
                     "range": Array [
                       78,
@@ -144,6 +156,7 @@ Object {
                     ],
                     "static": false,
                     "type": "MethodDefinition",
+                    "typeParameters": undefined,
                     "value": Object {
                       "async": false,
                       "body": Object {
@@ -164,6 +177,7 @@ Object {
                         ],
                         "type": "BlockStatement",
                       },
+                      "declare": false,
                       "expression": false,
                       "generator": false,
                       "id": null,
@@ -180,7 +194,8 @@ Object {
                       "params": Array [
                         Object {
                           "accessibility": "public",
-                          "export": undefined,
+                          "decorators": Array [],
+                          "export": false,
                           "loc": Object {
                             "end": Object {
                               "column": 36,
@@ -191,8 +206,9 @@ Object {
                               "line": 5,
                             },
                           },
-                          "override": undefined,
+                          "override": false,
                           "parameter": Object {
+                            "decorators": Array [],
                             "loc": Object {
                               "end": Object {
                                 "column": 36,
@@ -204,6 +220,7 @@ Object {
                               },
                             },
                             "name": "x",
+                            "optional": false,
                             "range": Array [
                               97,
                               106,
@@ -248,13 +265,14 @@ Object {
                             90,
                             106,
                           ],
-                          "readonly": undefined,
-                          "static": undefined,
+                          "readonly": false,
+                          "static": false,
                           "type": "TSParameterProperty",
                         },
                         Object {
                           "accessibility": "public",
-                          "export": undefined,
+                          "decorators": Array [],
+                          "export": false,
                           "loc": Object {
                             "end": Object {
                               "column": 54,
@@ -265,8 +283,9 @@ Object {
                               "line": 5,
                             },
                           },
-                          "override": undefined,
+                          "override": false,
                           "parameter": Object {
+                            "decorators": Array [],
                             "loc": Object {
                               "end": Object {
                                 "column": 54,
@@ -278,6 +297,7 @@ Object {
                               },
                             },
                             "name": "y",
+                            "optional": false,
                             "range": Array [
                               115,
                               124,
@@ -322,8 +342,8 @@ Object {
                             108,
                             124,
                           ],
-                          "readonly": undefined,
-                          "static": undefined,
+                          "readonly": false,
+                          "static": false,
                           "type": "TSParameterProperty",
                         },
                       ],
@@ -331,7 +351,9 @@ Object {
                         89,
                         129,
                       ],
+                      "returnType": undefined,
                       "type": "FunctionExpression",
+                      "typeParameters": undefined,
                     },
                   },
                 ],
@@ -351,7 +373,10 @@ Object {
                 ],
                 "type": "ClassBody",
               },
+              "declare": false,
+              "decorators": Array [],
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 22,
@@ -363,12 +388,15 @@ Object {
                   },
                 },
                 "name": "Point",
+                "optional": false,
                 "range": Array [
                   62,
                   67,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
+              "implements": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 5,
@@ -384,7 +412,9 @@ Object {
                 135,
               ],
               "superClass": null,
+              "superTypeParameters": undefined,
               "type": "ClassDeclaration",
+              "typeParameters": undefined,
             },
             "exportKind": "value",
             "loc": Object {
@@ -416,10 +446,12 @@ Object {
                       "body": Object {
                         "body": Array [
                           Object {
+                            "accessibility": undefined,
                             "computed": false,
-                            "export": undefined,
+                            "export": false,
                             "initializer": undefined,
                             "key": Object {
+                              "decorators": Array [],
                               "loc": Object {
                                 "end": Object {
                                   "column": 16,
@@ -431,11 +463,13 @@ Object {
                                 },
                               },
                               "name": "name",
+                              "optional": false,
                               "range": Array [
                                 200,
                                 204,
                               ],
                               "type": "Identifier",
+                              "typeAnnotation": undefined,
                             },
                             "loc": Object {
                               "end": Object {
@@ -447,13 +481,13 @@ Object {
                                 "line": 9,
                               },
                             },
-                            "optional": undefined,
+                            "optional": false,
                             "range": Array [
                               200,
                               213,
                             ],
-                            "readonly": undefined,
-                            "static": undefined,
+                            "readonly": false,
+                            "static": false,
                             "type": "TSPropertySignature",
                             "typeAnnotation": Object {
                               "loc": Object {
@@ -507,7 +541,10 @@ Object {
                         ],
                         "type": "TSInterfaceBody",
                       },
+                      "declare": false,
+                      "extends": Array [],
                       "id": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 27,
@@ -519,11 +556,13 @@ Object {
                           },
                         },
                         "name": "Id",
+                        "optional": false,
                         "range": Array [
                           183,
                           185,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "loc": Object {
                         "end": Object {
@@ -540,6 +579,7 @@ Object {
                         223,
                       ],
                       "type": "TSInterfaceDeclaration",
+                      "typeParameters": undefined,
                     },
                     "exportKind": "type",
                     "loc": Object {
@@ -577,7 +617,10 @@ Object {
                 ],
                 "type": "TSModuleBlock",
               },
+              "declare": false,
+              "global": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 19,
@@ -589,11 +632,13 @@ Object {
                   },
                 },
                 "name": "B",
+                "optional": false,
                 "range": Array [
                   154,
                   155,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -647,7 +692,10 @@ Object {
         ],
         "type": "TSModuleBlock",
       },
+      "declare": false,
+      "global": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 8,
@@ -659,11 +707,13 @@ Object {
           },
         },
         "name": "A",
+        "optional": false,
         "range": Array [
           7,
           8,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {

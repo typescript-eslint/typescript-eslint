@@ -3,20 +3,25 @@
 exports[`AST Fixtures element AccessorProperty modifier-private TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           AccessorProperty {
             type: "AccessorProperty",
             accessibility: "private",
             computed: false,
             declare: false,
+            decorators: [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "foo",
+              optional: false,
 
               range: [31, 34],
               loc: {
@@ -24,7 +29,9 @@ Program {
                 end: { column: 22, line: 2 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             value: Literal {
               type: "Literal",
@@ -52,9 +59,13 @@ Program {
           end: { column: 1, line: 3 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [6, 9],
         loc: {
@@ -62,6 +73,7 @@ Program {
           end: { column: 9, line: 1 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [0, 41],

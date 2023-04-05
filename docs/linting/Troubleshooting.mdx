@@ -243,9 +243,37 @@ See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/
 
 ### I get `no-unsafe-*` complaints for cross-file changes
 
-See [Changes to one file are not reflected in linting other files in my IDE](#changes-to-one-file-are-not-reflected-in-linting-other-files-in-my-ide).
+See [Changes to one file are not reflected in linting other files in my IDE](#changes-to-one-file-are-not-reflected-when-linting-other-files-in-my-ide).
 Rules such as [`no-unsafe-argument`](https://typescript-eslint.io/rules/no-unsafe-argument), [`no-unsafe-assignment`](https://typescript-eslint.io/rules/no-unsafe-assignment), and [`no-unsafe-call`](https://typescript-eslint.io/rules/no-unsafe-call) are often impacted.
+
+## "The '`<key>`' property is deprecated on '`<type>`' nodes. Use '`<key>`' instead." warnings
+
+If you're seeing this warning, it's likely you're using an ESLint plugin (or other tooling) that hasn't been updated for typescript-eslint v6.
+Make sure you're using the latest versions of each of your ESLint plugins (and other tooling).
+
+If you've using many ESLint plugins, have updated each to their latest version, and you're not sure which one this complaint is coming from, try disabling half of them at a time to narrow down which plugin it is.
+Then make sure each of those plugins has a GitHub issue asking that they release a version supporting typescript-eslint v6.
+
+:::tip
+For developers updating ESLint rules in plugins that still need to support typescript-eslint v5: you may need to `||` fall back to the old property key if the new one doesn't exist:
+
+```diff
+- node.typeParameters
++ node.typeArguments || node.typeParameters
+```
+
+:::
+
+For more context, see the [Some properties named typeParameters instead of typeArguments](https://github.com/typescript-eslint/typescript-eslint/issues/146) issue, and the implementing [fix: rename typeParameters to typeArguments where needed](https://github.com/typescript-eslint/typescript-eslint/pull/5384) pull request.
+
+The [typescript-eslint v6 release post](https://deploy-preview-6515--typescript-eslint.netlify.app/blog/announcing-typescript-eslint-v6-beta) has more information on typescript-eslint v6.
 
 ## My linting feels really slow
 
 If you think you're having issues with performance, see our [Performance Troubleshooting documentation](./troubleshooting/Performance.md).
+
+## Are TypeScript project references supported?
+
+No, TypeScript project references are not yet supported.
+
+See [issue #2094 discussing project references](https://github.com/typescript-eslint/typescript-eslint/issues/2094) for more details.

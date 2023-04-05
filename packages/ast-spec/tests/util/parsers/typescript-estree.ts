@@ -8,10 +8,12 @@ export function parseTSESTree(
 ): ParserResponse {
   try {
     const result = parse(contents, {
+      allowInvalidAST: fixture.config.allowInvalidAST,
       comment: false,
       jsx: fixture.ext.endsWith('x'),
       loc: true,
       range: true,
+      suppressDeprecatedPropertyWarnings: true,
       tokens: true,
     });
     const { tokens: _, comments: __, ...program } = result;

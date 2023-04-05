@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics import-type-named-as TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ImportDeclaration {
+      type: "ImportDeclaration",
+      assertions: [],
+      importKind: "type",
+      source: Literal {
+        type: "Literal",
+        raw: "'baz'",
+        value: "baz",
+
+        range: [105, 110],
+        loc: {
+          start: { column: 32, line: 3 },
+          end: { column: 37, line: 3 },
+        },
+      },
+      specifiers: [
+        ImportSpecifier {
+          type: "ImportSpecifier",
+          imported: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "foo",
+            optional: false,
+
+            range: [87, 90],
+            loc: {
+              start: { column: 14, line: 3 },
+              end: { column: 17, line: 3 },
+            },
+          },
+          importKind: "value",
+          local: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "bar",
+            optional: false,
+
+            range: [94, 97],
+            loc: {
+              start: { column: 21, line: 3 },
+              end: { column: 24, line: 3 },
+            },
+          },
+
+          range: [87, 97],
+          loc: {
+            start: { column: 14, line: 3 },
+            end: { column: 24, line: 3 },
+          },
+        },
+      ],
+
+      range: [73, 111],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 38, line: 3 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 112],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

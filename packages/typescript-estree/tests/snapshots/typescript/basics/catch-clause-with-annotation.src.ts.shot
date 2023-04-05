@@ -53,6 +53,7 @@ Object {
           },
         },
         "param": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 15,
@@ -64,6 +65,7 @@ Object {
             },
           },
           "name": "e",
+          "optional": false,
           "range": Array [
             16,
             22,
@@ -176,6 +178,7 @@ Object {
           },
         },
         "param": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 19,
@@ -187,6 +190,7 @@ Object {
             },
           },
           "name": "e",
+          "optional": false,
           "range": Array [
             46,
             56,

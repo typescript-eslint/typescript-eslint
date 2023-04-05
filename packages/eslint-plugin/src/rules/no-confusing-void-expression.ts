@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -28,7 +28,6 @@ export default util.createRule<Options, MessageId>({
     docs: {
       description:
         'Require expressions of type void to appear in statement position',
-      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {
@@ -203,6 +202,7 @@ export default util.createRule<Options, MessageId>({
             suggest: [{ messageId: 'voidExprWrapVoid', fix: wrapVoidFix }],
           });
         }
+
         context.report({
           node,
           messageId: 'invalidVoidExpr',
@@ -223,6 +223,11 @@ export default util.createRule<Options, MessageId>({
         node.parent,
         util.NullThrowsReasons.MissingParent,
       );
+      if (parent.type === AST_NODE_TYPES.SequenceExpression) {
+        if (node !== parent.expressions[parent.expressions.length - 1]) {
+          return null;
+        }
+      }
 
       if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
         // e.g. `{ console.log("foo"); }`

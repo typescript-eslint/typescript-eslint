@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -25,7 +25,7 @@ export default util.createRule<Options, MessageId>({
     docs: {
       description:
         'Require Promise-like statements to be handled appropriately',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
@@ -148,7 +148,7 @@ export default util.createRule<Options, MessageId>({
     };
 
     function isHigherPrecedenceThanUnary(node: ts.Node): boolean {
-      const operator = tsutils.isBinaryExpression(node)
+      const operator = ts.isBinaryExpression(node)
         ? node.operatorToken.kind
         : ts.SyntaxKind.Unknown;
       const nodePrecedence = util.getOperatorPrecedence(node.kind, operator);

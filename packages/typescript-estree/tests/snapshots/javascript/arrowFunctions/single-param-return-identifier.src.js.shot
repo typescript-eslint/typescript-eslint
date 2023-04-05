@@ -4,9 +4,11 @@ exports[`javascript arrowFunctions single-param-return-identifier.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 14,
@@ -18,11 +20,13 @@ Object {
             },
           },
           "name": "earth",
+          "optional": false,
           "range": Array [
             9,
             14,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "expression": true,
         "generator": false,
@@ -39,6 +43,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 4,
@@ -50,18 +55,22 @@ Object {
               },
             },
             "name": "sun",
+            "optional": false,
             "range": Array [
               1,
               4,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
         ],
         "range": Array [
           0,
           14,
         ],
+        "returnType": undefined,
         "type": "ArrowFunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

@@ -12,6 +12,12 @@ import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 
 interface ParseOptions {
   /**
+   * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
+   * This case only usually occurs when attempting to lint invalid code.
+   */
+  allowInvalidAST?: boolean;
+
+  /**
    * create a top-level comments array containing all comments
    */
   comment?: boolean;
@@ -75,6 +81,11 @@ interface ParseOptions {
    * Set to true to create a top-level array containing all tokens from the file.
    */
   tokens?: boolean;
+
+  /**
+   * Whether deprecated AST properties should skip calling console.warn on accesses.
+   */
+  suppressDeprecatedPropertyWarnings?: boolean;
 }
 
 interface ParseAndGenerateServicesOptions extends ParseOptions {
@@ -120,10 +131,11 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   preserveNodeMaps?: boolean;
 
   /**
-   * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s).
+   * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s),
+   * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
    */
-  project?: string | string[];
+  project?: string | string[] | true | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -144,7 +156,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * This overrides any program or programs that would have been computed from the `project` option.
    * All linted files must be part of the provided program(s).
    */
-  programs?: ts.Program[];
+  programs?: ts.Program[] | null;
 
   /**
    * @deprecated - this flag will be removed in the next major.
@@ -181,11 +193,6 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
      */
     glob?: CacheDurationSeconds;
   };
-
-  /**
-   * Path to a file exporting a custom `ModuleResolver`.
-   */
-  moduleResolver?: string;
 }
 
 export type TSESTreeOptions = ParseAndGenerateServicesOptions;
@@ -221,14 +228,3 @@ export interface ParserServicesWithoutTypeInformation
 export type ParserServices =
   | ParserServicesWithTypeInformation
   | ParserServicesWithoutTypeInformation;
-
-export interface ModuleResolver {
-  version: 1;
-  resolveModuleNames(
-    moduleNames: string[],
-    containingFile: string,
-    reusedNames: string[] | undefined,
-    redirectedReference: ts.ResolvedProjectReference | undefined,
-    options: ts.CompilerOptions,
-  ): (ts.ResolvedModule | undefined)[];
-}

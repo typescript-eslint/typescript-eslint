@@ -1,0 +1,92 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics function-with-type-parameters-that-have-comments AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      FunctionDeclaration {
+        type: 'FunctionDeclaration',
+        async: false,
+        body: BlockStatement {
+          type: 'BlockStatement',
+          body: Array [],
+
+          range: [107, 109],
+          loc: {
+            start: { column: 34, line: 3 },
+            end: { column: 36, line: 3 },
+          },
+        },
+-       declare: false,
+        expression: false,
+        generator: false,
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'compare',
+-         optional: false,
+
+          range: [82, 89],
+          loc: {
+            start: { column: 9, line: 3 },
+            end: { column: 16, line: 3 },
+          },
+        },
+        params: Array [],
+        typeParameters: TSTypeParameterDeclaration {
+          type: 'TSTypeParameterDeclaration',
+          params: Array [
+            TSTypeParameter {
+              type: 'TSTypeParameter',
+-             const: false,
+-             in: false,
+-             name: Identifier {
+-               type: 'Identifier',
+-               decorators: Array [],
+-               name: 'T',
+-               optional: false,
+-
+-               range: [102, 103],
+-               loc: {
+-                 start: { column: 29, line: 3 },
+-                 end: { column: 30, line: 3 },
+-               },
+-             },
+-             out: false,
++             name: 'T',
+
+              range: [102, 103],
+              loc: {
+                start: { column: 29, line: 3 },
+                end: { column: 30, line: 3 },
+              },
+            },
+          ],
+
+          range: [89, 104],
+          loc: {
+            start: { column: 16, line: 3 },
+            end: { column: 31, line: 3 },
+          },
+        },
+
+        range: [73, 109],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 36, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 110],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

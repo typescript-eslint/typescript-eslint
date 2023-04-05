@@ -3,15 +3,18 @@
 exports[`AST Fixtures declaration VariableDeclaration multiple-declarations TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "x",
+            optional: false,
 
             range: [4, 5],
             loc: {
@@ -29,9 +32,12 @@ Program {
         },
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "y",
+            optional: false,
 
             range: [7, 8],
             loc: {
@@ -49,9 +55,12 @@ Program {
         },
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "z",
+            optional: false,
 
             range: [10, 11],
             loc: {
@@ -68,6 +77,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [0, 12],

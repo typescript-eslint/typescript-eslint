@@ -1,13 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import {
-  getCallSignaturesOfType,
-  isBooleanLiteralType,
-  isFalsyType,
-  isLiteralType,
-  isStrictCompilerOptionEnabled,
-  unionTypeParts,
-} from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
@@ -28,17 +21,20 @@ import {
 // Truthiness utilities
 // #region
 const isTruthyLiteral = (type: ts.Type): boolean =>
-  isBooleanLiteralType(type, true) || (isLiteralType(type) && !!type.value);
+  tsutils.isTrueLiteralType(type) ||
+  //  || type.
+  (type.isLiteral() && !!type.value);
 
 const isPossiblyFalsy = (type: ts.Type): boolean =>
-  unionTypeParts(type)
+  tsutils
+    .unionTypeParts(type)
     // PossiblyFalsy flag includes literal values, so exclude ones that
     // are definitely truthy
     .filter(t => !isTruthyLiteral(t))
     .some(type => isTypeFlagSet(type, ts.TypeFlags.PossiblyFalsy));
 
 const isPossiblyTruthy = (type: ts.Type): boolean =>
-  unionTypeParts(type).some(type => !isFalsyType(type));
+  tsutils.unionTypeParts(type).some(type => !tsutils.isFalsyType(type));
 
 // Nullish utilities
 const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
@@ -46,19 +42,18 @@ const isNullishType = (type: ts.Type): boolean =>
   isTypeFlagSet(type, nullishFlag);
 
 const isPossiblyNullish = (type: ts.Type): boolean =>
-  unionTypeParts(type).some(isNullishType);
+  tsutils.unionTypeParts(type).some(isNullishType);
 
 const isAlwaysNullish = (type: ts.Type): boolean =>
-  unionTypeParts(type).every(isNullishType);
+  tsutils.unionTypeParts(type).every(isNullishType);
 
 // isLiteralType only covers numbers and strings, this is a more exhaustive check.
 const isLiteral = (type: ts.Type): boolean =>
-  isBooleanLiteralType(type, true) ||
-  isBooleanLiteralType(type, false) ||
+  tsutils.isBooleanLiteralType(type) ||
   type.flags === ts.TypeFlags.Undefined ||
   type.flags === ts.TypeFlags.Null ||
   type.flags === ts.TypeFlags.Void ||
-  isLiteralType(type);
+  type.isLiteral();
 // #endregion
 
 export type Options = [
@@ -150,7 +145,7 @@ export default createRule<Options, MessageId>({
     const checker = services.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
     const compilerOptions = services.program.getCompilerOptions();
-    const isStrictNullChecks = isStrictCompilerOptionEnabled(
+    const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
       'strictNullChecks',
     );
@@ -230,14 +225,16 @@ export default createRule<Options, MessageId>({
       const type = getConstrainedTypeAtLocation(services, node);
 
       // Conditional is always necessary if it involves:
-      //    `any` or `unknown` or a naked type parameter
+      //    `any` or `unknown` or a naked type variable
       if (
-        unionTypeParts(type).some(
-          part =>
-            isTypeAnyType(part) ||
-            isTypeUnknownType(part) ||
-            isTypeFlagSet(part, ts.TypeFlags.TypeParameter),
-        )
+        tsutils
+          .unionTypeParts(type)
+          .some(
+            part =>
+              isTypeAnyType(part) ||
+              isTypeUnknownType(part) ||
+              isTypeFlagSet(part, ts.TypeFlags.TypeVariable),
+          )
       ) {
         return;
       }
@@ -392,9 +389,8 @@ export default createRule<Options, MessageId>({
        */
       if (
         allowConstantLoopConditions &&
-        isBooleanLiteralType(
+        tsutils.isTrueLiteralType(
           getConstrainedTypeAtLocation(services, node.test),
-          true,
         )
       ) {
         return;
@@ -449,9 +445,11 @@ export default createRule<Options, MessageId>({
           // (Value to complexity ratio is dubious however)
         }
         // Otherwise just do type analysis on the function as a whole.
-        const returnTypes = getCallSignaturesOfType(
-          getConstrainedTypeAtLocation(services, callback),
-        ).map(sig => sig.getReturnType());
+        const returnTypes = tsutils
+          .getCallSignaturesOfType(
+            getConstrainedTypeAtLocation(services, callback),
+          )
+          .map(sig => sig.getReturnType());
         /* istanbul ignore if */ if (returnTypes.length === 0) {
           // Not a callable function
           return;
@@ -575,10 +573,11 @@ export default createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.MemberExpression
           ? !isNullableOriginFromPrev(node)
           : true;
+      const possiblyVoid = isTypeFlagSet(type, ts.TypeFlags.Void);
       return (
-        isTypeAnyType(type) ||
-        isTypeUnknownType(type) ||
-        (isNullableType(type, { allowUndefined: true }) && isOwnNullable)
+        isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown) ||
+        (isOwnNullable &&
+          (isNullableType(type, { allowUndefined: true }) || possiblyVoid))
       );
     }
 
@@ -636,7 +635,20 @@ export default createRule<Options, MessageId>({
       checkOptionalChain(node, node.callee, '');
     }
 
+    function checkAssignmentExpression(
+      node: TSESTree.AssignmentExpression,
+    ): void {
+      // Similar to checkLogicalExpressionForUnnecessaryConditionals, since
+      // a ||= b is equivalent to a || (a = b)
+      if (['||=', '&&='].includes(node.operator)) {
+        checkNode(node.left);
+      } else if (node.operator === '??=') {
+        checkNodeForNullish(node.left);
+      }
+    }
+
     return {
+      AssignmentExpression: checkAssignmentExpression,
       BinaryExpression: checkIfBinaryExpressionIsNecessaryConditional,
       CallExpression: checkCallExpression,
       ConditionalExpression: (node): void => checkNode(node.test),

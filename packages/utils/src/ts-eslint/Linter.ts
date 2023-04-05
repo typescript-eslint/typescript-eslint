@@ -329,7 +329,7 @@ namespace Linter {
     preprocess?: (
       text: string,
       filename: string,
-    ) => Array<string | { text: string; filename: string }>;
+    ) => (string | { text: string; filename: string })[];
     /**
      * The function to merge messages.
      */

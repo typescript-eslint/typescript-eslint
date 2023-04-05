@@ -4,11 +4,15 @@ exports[`typescript decorators parameter-decorators parameter-decorator-construc
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 15,
@@ -20,11 +24,13 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 20,
                 31,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "constructor",
             "loc": Object {
@@ -37,6 +43,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               20,
@@ -44,11 +51,13 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
                 "body": Array [
                   Object {
+                    "directive": undefined,
                     "expression": Object {
                       "left": Object {
                         "computed": false,
@@ -81,6 +90,7 @@ Object {
                         },
                         "optional": false,
                         "property": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 18,
@@ -92,11 +102,13 @@ Object {
                             },
                           },
                           "name": "title",
+                          "optional": false,
                           "range": Array [
                             86,
                             91,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "range": Array [
                           81,
@@ -132,6 +144,7 @@ Object {
                           },
                         },
                         "object": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 27,
@@ -143,14 +156,17 @@ Object {
                             },
                           },
                           "name": "config",
+                          "optional": false,
                           "range": Array [
                             94,
                             100,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "optional": false,
                         "property": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 33,
@@ -162,11 +178,13 @@ Object {
                             },
                           },
                           "name": "title",
+                          "optional": false,
                           "range": Array [
                             101,
                             106,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "range": Array [
                           94,
@@ -209,6 +227,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -229,6 +248,7 @@ Object {
                       "expression": Object {
                         "arguments": Array [
                           Object {
+                            "decorators": Array [],
                             "loc": Object {
                               "end": Object {
                                 "column": 34,
@@ -240,14 +260,17 @@ Object {
                               },
                             },
                             "name": "APP_CONFIG",
+                            "optional": false,
                             "range": Array [
                               40,
                               50,
                             ],
                             "type": "Identifier",
+                            "typeAnnotation": undefined,
                           },
                         ],
                         "callee": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 23,
@@ -259,11 +282,13 @@ Object {
                             },
                           },
                           "name": "Inject",
+                          "optional": false,
                           "range": Array [
                             33,
                             39,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "loc": Object {
                           "end": Object {
@@ -281,6 +306,7 @@ Object {
                           51,
                         ],
                         "type": "CallExpression",
+                        "typeParameters": undefined,
                       },
                       "loc": Object {
                         "end": Object {
@@ -310,6 +336,7 @@ Object {
                     },
                   },
                   "name": "config",
+                  "optional": false,
                   "range": Array [
                     52,
                     69,
@@ -348,6 +375,7 @@ Object {
                       ],
                       "type": "TSTypeReference",
                       "typeName": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 53,
@@ -359,11 +387,13 @@ Object {
                           },
                         },
                         "name": "AppConfig",
+                        "optional": false,
                         "range": Array [
                           60,
                           69,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "typeParameters": undefined,
                     },
@@ -374,7 +404,9 @@ Object {
                 31,
                 113,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -394,7 +426,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 13,
@@ -406,12 +441,15 @@ Object {
           },
         },
         "name": "Service",
+        "optional": false,
         "range": Array [
           6,
           13,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -427,7 +465,9 @@ Object {
         115,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

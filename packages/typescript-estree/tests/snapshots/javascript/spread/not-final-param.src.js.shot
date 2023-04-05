@@ -4,10 +4,12 @@ exports[`javascript spread not-final-param.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "arguments": Array [
           Object {
             "argument": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 9,
@@ -19,11 +21,13 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 8,
                 9,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -42,6 +46,7 @@ Object {
             "type": "SpreadElement",
           },
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 12,
@@ -53,14 +58,17 @@ Object {
               },
             },
             "name": "b",
+            "optional": false,
             "range": Array [
               11,
               12,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
         ],
         "callee": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 4,
@@ -72,11 +80,13 @@ Object {
             },
           },
           "name": "func",
+          "optional": false,
           "range": Array [
             0,
             4,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -94,6 +104,7 @@ Object {
           13,
         ],
         "type": "CallExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

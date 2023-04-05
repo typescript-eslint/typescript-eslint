@@ -3,7 +3,7 @@
 exports[`AST Fixtures expression TSSatisfiesExpression logical-with-parentheses TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: TSSatisfiesExpression {
@@ -12,7 +12,9 @@ Program {
           type: "BinaryExpression",
           left: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "foo",
+            optional: false,
 
             range: [1, 4],
             loc: {

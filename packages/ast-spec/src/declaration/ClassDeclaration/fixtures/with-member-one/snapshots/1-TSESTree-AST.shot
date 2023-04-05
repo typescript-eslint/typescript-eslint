@@ -3,19 +3,24 @@
 exports[`AST Fixtures declaration ClassDeclaration with-member-one TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
             declare: false,
+            decorators: [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "prop",
+              optional: false,
 
               range: [14, 18],
               loc: {
@@ -23,7 +28,9 @@ Program {
                 end: { column: 6, line: 2 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             value: null,
 
@@ -41,9 +48,13 @@ Program {
           end: { column: 1, line: 3 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [6, 9],
         loc: {
@@ -51,6 +62,7 @@ Program {
           end: { column: 9, line: 1 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [0, 21],

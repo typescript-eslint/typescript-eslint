@@ -1,0 +1,72 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics async-function-expression TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: CallExpression {
+        type: "CallExpression",
+        arguments: [],
+        callee: FunctionExpression {
+          type: "FunctionExpression",
+          async: true,
+          body: BlockStatement {
+            type: "BlockStatement",
+            body: [],
+
+            range: [96, 98],
+            loc: {
+              start: { column: 23, line: 3 },
+              end: { column: 25, line: 3 },
+            },
+          },
+          declare: false,
+          expression: false,
+          generator: false,
+          id: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "test",
+            optional: false,
+
+            range: [89, 93],
+            loc: {
+              start: { column: 16, line: 3 },
+              end: { column: 20, line: 3 },
+            },
+          },
+          params: [],
+
+          range: [74, 98],
+          loc: {
+            start: { column: 1, line: 3 },
+            end: { column: 25, line: 3 },
+          },
+        },
+        optional: false,
+
+        range: [73, 101],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 28, line: 3 },
+        },
+      },
+
+      range: [73, 102],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 29, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 103],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

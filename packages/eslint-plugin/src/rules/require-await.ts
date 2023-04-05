@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
 import * as util from '../util';
@@ -23,7 +23,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow async functions which have no `await` expression',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
       extendsBaseRule: true,
     },

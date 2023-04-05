@@ -3,7 +3,7 @@ import type {
   TSESTree,
 } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -16,6 +16,7 @@ export type Options = [
     allowNullableBoolean?: boolean;
     allowNullableString?: boolean;
     allowNullableNumber?: boolean;
+    allowNullableEnum?: boolean;
     allowAny?: boolean;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
   },
@@ -32,6 +33,7 @@ export type MessageId =
   | 'conditionErrorNullableNumber'
   | 'conditionErrorObject'
   | 'conditionErrorNullableObject'
+  | 'conditionErrorNullableEnum'
   | 'noStrictNullCheck'
   | 'conditionFixDefaultFalse'
   | 'conditionFixDefaultEmptyString'
@@ -53,7 +55,6 @@ export default util.createRule<Options, MessageId>({
     hasSuggestions: true,
     docs: {
       description: 'Disallow certain types in boolean expressions',
-      recommended: false,
       requiresTypeChecking: true,
     },
     schema: [
@@ -66,6 +67,7 @@ export default util.createRule<Options, MessageId>({
           allowNullableBoolean: { type: 'boolean' },
           allowNullableString: { type: 'boolean' },
           allowNullableNumber: { type: 'boolean' },
+          allowNullableEnum: { type: 'boolean' },
           allowAny: { type: 'boolean' },
           allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
             type: 'boolean',
@@ -105,6 +107,9 @@ export default util.createRule<Options, MessageId>({
       conditionErrorNullableObject:
         'Unexpected nullable object value in conditional. ' +
         'An explicit null check is required.',
+      conditionErrorNullableEnum:
+        'Unexpected nullable enum value in conditional. ' +
+        'Please handle the nullish/zero/NaN cases explicitly.',
       noStrictNullCheck:
         'This rule requires the `strictNullChecks` compiler option to be turned on to function correctly.',
 
@@ -140,6 +145,7 @@ export default util.createRule<Options, MessageId>({
       allowNullableBoolean: false,
       allowNullableString: false,
       allowNullableNumber: false,
+      allowNullableEnum: true,
       allowAny: false,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
     },
@@ -720,6 +726,40 @@ export default util.createRule<Options, MessageId>({
         return;
       }
 
+      // nullable enum
+      if (
+        is('nullish', 'number', 'enum') ||
+        is('nullish', 'string', 'enum') ||
+        is('nullish', 'truthy number', 'enum') ||
+        is('nullish', 'truthy string', 'enum')
+      ) {
+        if (!options.allowNullableEnum) {
+          if (isLogicalNegationExpression(node.parent!)) {
+            context.report({
+              node,
+              messageId: 'conditionErrorNullableEnum',
+              fix: util.getWrappingFixer({
+                sourceCode,
+                node: node.parent,
+                innerNode: node,
+                wrap: code => `${code} == null`,
+              }),
+            });
+          } else {
+            context.report({
+              node,
+              messageId: 'conditionErrorNullableEnum',
+              fix: util.getWrappingFixer({
+                sourceCode,
+                node,
+                wrap: code => `${code} != null`,
+              }),
+            });
+          }
+        }
+        return;
+      }
+
       // any
       if (is('any')) {
         if (!options.allowAny) {
@@ -755,6 +795,7 @@ export default util.createRule<Options, MessageId>({
       | 'number'
       | 'truthy number'
       | 'object'
+      | 'enum'
       | 'any'
       | 'never';
 
@@ -781,9 +822,9 @@ export default util.createRule<Options, MessageId>({
       // If incoming type is either "true" or "false", there will be one type
       // object with intrinsicName set accordingly
       // If incoming type is boolean, there will be two type objects with
-      // intrinsicName set "true" and "false" each because of tsutils.unionTypeParts()
+      // intrinsicName set "true" and "false" each because of ts-api-utils.unionTypeParts()
       if (booleans.length === 1) {
-        tsutils.isBooleanLiteralType(booleans[0], true)
+        tsutils.isTrueLiteralType(booleans[0])
           ? variantTypes.add('truthy boolean')
           : variantTypes.add('boolean');
       } else if (booleans.length === 2) {
@@ -795,7 +836,9 @@ export default util.createRule<Options, MessageId>({
       );
 
       if (strings.length) {
-        if (strings.some(type => type.isStringLiteral() && type.value !== '')) {
+        if (
+          strings.every(type => type.isStringLiteral() && type.value !== '')
+        ) {
           variantTypes.add('truthy string');
         } else {
           variantTypes.add('string');
@@ -808,12 +851,19 @@ export default util.createRule<Options, MessageId>({
           ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
         ),
       );
+
       if (numbers.length) {
-        if (numbers.some(type => type.isNumberLiteral() && type.value !== 0)) {
+        if (numbers.every(type => type.isNumberLiteral() && type.value !== 0)) {
           variantTypes.add('truthy number');
         } else {
           variantTypes.add('number');
         }
+      }
+
+      if (
+        types.some(type => tsutils.isTypeFlagSet(type, ts.TypeFlags.EnumLike))
+      ) {
+        variantTypes.add('enum');
       }
 
       if (

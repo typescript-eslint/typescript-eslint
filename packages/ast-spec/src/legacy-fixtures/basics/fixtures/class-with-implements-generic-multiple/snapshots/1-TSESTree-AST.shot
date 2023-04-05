@@ -1,0 +1,127 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-implements-generic-multiple TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: [],
+
+        range: [104, 106],
+        loc: {
+          start: { column: 31, line: 3 },
+          end: { column: 33, line: 3 },
+        },
+      },
+      declare: false,
+      decorators: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "Foo",
+        optional: false,
+
+        range: [79, 82],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+      implements: [
+        TSClassImplements {
+          type: "TSClassImplements",
+          expression: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "Bar",
+            optional: false,
+
+            range: [94, 97],
+            loc: {
+              start: { column: 21, line: 3 },
+              end: { column: 24, line: 3 },
+            },
+          },
+          typeArguments: TSTypeParameterInstantiation {
+            type: "TSTypeParameterInstantiation",
+            params: [
+              TSTypeReference {
+                type: "TSTypeReference",
+                typeName: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "S",
+                  optional: false,
+
+                  range: [98, 99],
+                  loc: {
+                    start: { column: 25, line: 3 },
+                    end: { column: 26, line: 3 },
+                  },
+                },
+
+                range: [98, 99],
+                loc: {
+                  start: { column: 25, line: 3 },
+                  end: { column: 26, line: 3 },
+                },
+              },
+              TSTypeReference {
+                type: "TSTypeReference",
+                typeName: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "T",
+                  optional: false,
+
+                  range: [101, 102],
+                  loc: {
+                    start: { column: 28, line: 3 },
+                    end: { column: 29, line: 3 },
+                  },
+                },
+
+                range: [101, 102],
+                loc: {
+                  start: { column: 28, line: 3 },
+                  end: { column: 29, line: 3 },
+                },
+              },
+            ],
+
+            range: [97, 103],
+            loc: {
+              start: { column: 24, line: 3 },
+              end: { column: 30, line: 3 },
+            },
+          },
+
+          range: [94, 103],
+          loc: {
+            start: { column: 21, line: 3 },
+            end: { column: 30, line: 3 },
+          },
+        },
+      ],
+      superClass: null,
+
+      range: [73, 106],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 33, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 107],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

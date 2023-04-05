@@ -3,15 +3,18 @@
 exports[`AST Fixtures declaration VariableDeclaration const-without-value TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "x",
+            optional: false,
 
             range: [6, 7],
             loc: {
@@ -38,6 +41,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [0, 12],

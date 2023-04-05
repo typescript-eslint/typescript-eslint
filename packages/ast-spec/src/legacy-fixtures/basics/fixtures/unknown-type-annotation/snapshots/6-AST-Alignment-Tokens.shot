@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics unknown-type-annotation AST Alignment - Token 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Array [
+-   Keyword {
+-     type: 'Keyword',
++   Identifier {
++     type: 'Identifier',
+      value: 'let',
+
+      range: [73, 76],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 3, line: 3 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'foo',
+
+      range: [77, 80],
+      loc: {
+        start: { column: 4, line: 3 },
+        end: { column: 7, line: 3 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ':',
+
+      range: [80, 81],
+      loc: {
+        start: { column: 7, line: 3 },
+        end: { column: 8, line: 3 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'unknown',
+
+      range: [82, 89],
+      loc: {
+        start: { column: 9, line: 3 },
+        end: { column: 16, line: 3 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ';',
+
+      range: [89, 90],
+      loc: {
+        start: { column: 16, line: 3 },
+        end: { column: 17, line: 3 },
+      },
+    },
+  ]"
+`;

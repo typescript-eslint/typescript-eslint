@@ -8,9 +8,13 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": true,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 15,
@@ -22,11 +26,13 @@ Object {
                 },
               },
               "name": "prop1",
+              "optional": false,
               "range": Array [
                 45,
                 50,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -38,12 +44,13 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               37,
               59,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -83,9 +90,13 @@ Object {
             "value": null,
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": true,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 24,
@@ -97,11 +108,13 @@ Object {
                 },
               },
               "name": "prop2",
+              "optional": false,
               "range": Array [
                 79,
                 84,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -113,12 +126,13 @@ Object {
                 "line": 3,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               62,
               93,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "TSAbstractPropertyDefinition",
             "typeAnnotation": Object {
@@ -161,7 +175,10 @@ Object {
             "accessibility": "public",
             "computed": false,
             "declare": true,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 31,
@@ -173,11 +190,13 @@ Object {
                 },
               },
               "name": "prop3",
+              "optional": false,
               "range": Array [
                 120,
                 125,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -189,12 +208,13 @@ Object {
                 "line": 4,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               96,
               134,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "TSAbstractPropertyDefinition",
             "typeAnnotation": Object {
@@ -234,9 +254,13 @@ Object {
             "value": null,
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": true,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 33,
@@ -248,11 +272,13 @@ Object {
                 },
               },
               "name": "prop4",
+              "optional": false,
               "range": Array [
                 163,
                 168,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -264,6 +290,7 @@ Object {
                 "line": 5,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               137,
@@ -312,7 +339,10 @@ Object {
             "accessibility": "public",
             "computed": false,
             "declare": true,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 40,
@@ -324,11 +354,13 @@ Object {
                 },
               },
               "name": "prop5",
+              "optional": false,
               "range": Array [
                 213,
                 218,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -340,6 +372,7 @@ Object {
                 "line": 6,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               180,
@@ -401,7 +434,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 32,
@@ -413,12 +449,15 @@ Object {
           },
         },
         "name": "AbstractDeclProps",
+        "optional": false,
         "range": Array [
           15,
           32,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -434,7 +473,9 @@ Object {
         229,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

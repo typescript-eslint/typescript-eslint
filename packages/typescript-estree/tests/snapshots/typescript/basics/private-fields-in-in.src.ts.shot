@@ -4,11 +4,15 @@ exports[`typescript basics private-fields-in-in.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -37,19 +41,24 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               14,
               21,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": null,
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 8,
@@ -61,11 +70,13 @@ Object {
                 },
               },
               "name": "method",
+              "optional": false,
               "range": Array [
                 24,
                 30,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -78,6 +89,7 @@ Object {
                 "line": 3,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               24,
@@ -85,6 +97,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -125,6 +138,7 @@ Object {
                         62,
                       ],
                       "right": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 24,
@@ -136,11 +150,13 @@ Object {
                           },
                         },
                         "name": "arg",
+                        "optional": false,
                         "range": Array [
                           59,
                           62,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "type": "BinaryExpression",
                     },
@@ -177,6 +193,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -192,6 +209,7 @@ Object {
               },
               "params": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 12,
@@ -203,18 +221,22 @@ Object {
                     },
                   },
                   "name": "arg",
+                  "optional": false,
                   "range": Array [
                     31,
                     34,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               ],
               "range": Array [
                 30,
                 67,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -234,7 +256,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 9,
@@ -246,12 +271,15 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -267,7 +295,9 @@ Object {
         69,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

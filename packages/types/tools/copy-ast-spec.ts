@@ -9,7 +9,7 @@ const writeFile = promisify(fs.writeFile);
 // the promisify util will eat the stderr logs
 async function execAsync(
   command: string,
-  args: ReadonlyArray<string>,
+  args: readonly string[],
   options: childProcess.SpawnOptions,
 ): Promise<void> {
   return new Promise((resolve, reject) => {
@@ -67,8 +67,10 @@ async function copyFile(
 }
 
 async function main(): Promise<void> {
-  // ensure the package is built
-  await execAsync('yarn', ['build'], { cwd: AST_SPEC_PATH });
+  if (process.env.SKIP_AST_SPEC_REBUILD) {
+    // ensure the package is built
+    await execAsync('yarn', ['build'], { cwd: AST_SPEC_PATH });
+  }
 
   await Promise.all([
     copyFile('dist', 'ast-spec.ts', code =>

@@ -1,0 +1,222 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures parameter-decorators parameter-decorator-static-member TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            decorators: [],
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "greet",
+              optional: false,
+
+              range: [104, 109],
+              loc: {
+                start: { column: 9, line: 4 },
+                end: { column: 14, line: 4 },
+              },
+            },
+            kind: "method",
+            optional: false,
+            override: false,
+            static: true,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [
+                  ReturnStatement {
+                    type: "ReturnStatement",
+                    argument: BinaryExpression {
+                      type: "BinaryExpression",
+                      left: BinaryExpression {
+                        type: "BinaryExpression",
+                        left: Literal {
+                          type: "Literal",
+                          raw: "'Hello '",
+                          value: "Hello ",
+
+                          range: [147, 155],
+                          loc: {
+                            start: { column: 11, line: 5 },
+                            end: { column: 19, line: 5 },
+                          },
+                        },
+                        operator: "+",
+                        right: Identifier {
+                          type: "Identifier",
+                          decorators: [],
+                          name: "name",
+                          optional: false,
+
+                          range: [158, 162],
+                          loc: {
+                            start: { column: 22, line: 5 },
+                            end: { column: 26, line: 5 },
+                          },
+                        },
+
+                        range: [147, 162],
+                        loc: {
+                          start: { column: 11, line: 5 },
+                          end: { column: 26, line: 5 },
+                        },
+                      },
+                      operator: "+",
+                      right: Literal {
+                        type: "Literal",
+                        raw: "'!'",
+                        value: "!",
+
+                        range: [165, 168],
+                        loc: {
+                          start: { column: 29, line: 5 },
+                          end: { column: 32, line: 5 },
+                        },
+                      },
+
+                      range: [147, 168],
+                      loc: {
+                        start: { column: 11, line: 5 },
+                        end: { column: 32, line: 5 },
+                      },
+                    },
+
+                    range: [140, 169],
+                    loc: {
+                      start: { column: 4, line: 5 },
+                      end: { column: 33, line: 5 },
+                    },
+                  },
+                ],
+
+                range: [134, 173],
+                loc: {
+                  start: { column: 39, line: 4 },
+                  end: { column: 3, line: 6 },
+                },
+              },
+              declare: false,
+              expression: false,
+              generator: false,
+              id: null,
+              params: [
+                Identifier {
+                  type: "Identifier",
+                  decorators: [
+                    Decorator {
+                      type: "Decorator",
+                      expression: Identifier {
+                        type: "Identifier",
+                        decorators: [],
+                        name: "required",
+                        optional: false,
+
+                        range: [111, 119],
+                        loc: {
+                          start: { column: 16, line: 4 },
+                          end: { column: 24, line: 4 },
+                        },
+                      },
+
+                      range: [110, 119],
+                      loc: {
+                        start: { column: 15, line: 4 },
+                        end: { column: 24, line: 4 },
+                      },
+                    },
+                  ],
+                  name: "name",
+                  optional: false,
+                  typeAnnotation: TSTypeAnnotation {
+                    type: "TSTypeAnnotation",
+                    typeAnnotation: TSStringKeyword {
+                      type: "TSStringKeyword",
+
+                      range: [126, 132],
+                      loc: {
+                        start: { column: 31, line: 4 },
+                        end: { column: 37, line: 4 },
+                      },
+                    },
+
+                    range: [124, 132],
+                    loc: {
+                      start: { column: 29, line: 4 },
+                      end: { column: 37, line: 4 },
+                    },
+                  },
+
+                  range: [120, 132],
+                  loc: {
+                    start: { column: 25, line: 4 },
+                    end: { column: 37, line: 4 },
+                  },
+                },
+              ],
+
+              range: [109, 173],
+              loc: {
+                start: { column: 14, line: 4 },
+                end: { column: 3, line: 6 },
+              },
+            },
+
+            range: [97, 173],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 3, line: 6 },
+            },
+          },
+        ],
+
+        range: [93, 175],
+        loc: {
+          start: { column: 20, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      declare: false,
+      decorators: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "StaticGreeter",
+        optional: false,
+
+        range: [79, 92],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 19, line: 3 },
+        },
+      },
+      implements: [],
+      superClass: null,
+
+      range: [73, 175],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 176],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

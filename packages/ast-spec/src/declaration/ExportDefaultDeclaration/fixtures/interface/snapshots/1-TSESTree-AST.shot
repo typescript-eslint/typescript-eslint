@@ -3,14 +3,14 @@
 exports[`AST Fixtures declaration ExportDefaultDeclaration interface TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportDefaultDeclaration {
       type: "ExportDefaultDeclaration",
       declaration: TSInterfaceDeclaration {
         type: "TSInterfaceDeclaration",
         body: TSInterfaceBody {
           type: "TSInterfaceBody",
-          body: Array [],
+          body: [],
 
           range: [29, 31],
           loc: {
@@ -18,9 +18,13 @@ Program {
             end: { column: 31, line: 1 },
           },
         },
+        declare: false,
+        extends: [],
         id: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "Foo",
+          optional: false,
 
           range: [25, 28],
           loc: {

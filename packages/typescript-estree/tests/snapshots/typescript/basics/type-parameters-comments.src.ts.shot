@@ -4,9 +4,11 @@ exports[`typescript basics type-parameters-comments.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "arguments": Array [],
         "callee": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 3,
@@ -18,11 +20,13 @@ Object {
             },
           },
           "name": "foo",
+          "optional": false,
           "range": Array [
             0,
             3,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -69,6 +73,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 22,
@@ -80,11 +85,13 @@ Object {
                   },
                 },
                 "name": "A",
+                "optional": false,
                 "range": Array [
                   21,
                   22,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -132,9 +139,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 12,
@@ -146,11 +155,13 @@ Object {
           },
         },
         "name": "bar",
+        "optional": false,
         "range": Array [
           53,
           56,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -167,6 +178,7 @@ Object {
         44,
         87,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
       "typeParameters": Object {
         "loc": Object {
@@ -195,6 +207,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 25,
@@ -206,11 +219,13 @@ Object {
                 },
               },
               "name": "A",
+              "optional": false,
               "range": Array [
                 68,
                 69,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [
@@ -247,9 +262,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 12,
@@ -261,11 +278,13 @@ Object {
           },
         },
         "name": "baz",
+        "optional": false,
         "range": Array [
           97,
           100,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -282,6 +301,7 @@ Object {
         88,
         137,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
       "typeParameters": Object {
         "loc": Object {
@@ -314,6 +334,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 41,
@@ -325,11 +346,13 @@ Object {
                   },
                 },
                 "name": "Foo",
+                "optional": false,
                 "range": Array [
                   126,
                   129,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -345,6 +368,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 25,
@@ -356,11 +380,13 @@ Object {
                 },
               },
               "name": "A",
+              "optional": false,
               "range": Array [
                 112,
                 113,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [

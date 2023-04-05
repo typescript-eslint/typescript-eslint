@@ -10,8 +10,11 @@ Object {
         "body": Object {
           "body": Array [
             Object {
+              "accessibility": undefined,
               "computed": false,
+              "decorators": Array [],
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 25,
@@ -23,11 +26,13 @@ Object {
                   },
                 },
                 "name": "createSocket",
+                "optional": false,
                 "range": Array [
                   52,
                   64,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "method",
               "loc": Object {
@@ -40,6 +45,7 @@ Object {
                   "line": 2,
                 },
               },
+              "optional": false,
               "override": false,
               "range": Array [
                 43,
@@ -47,9 +53,11 @@ Object {
               ],
               "static": false,
               "type": "TSAbstractMethodDefinition",
+              "typeParameters": undefined,
               "value": Object {
                 "async": false,
                 "body": null,
+                "declare": false,
                 "expression": false,
                 "generator": false,
                 "id": null,
@@ -101,6 +109,7 @@ Object {
                     ],
                     "type": "TSTypeReference",
                     "typeName": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 36,
@@ -112,11 +121,13 @@ Object {
                         },
                       },
                       "name": "Promise",
+                      "optional": false,
                       "range": Array [
                         68,
                         75,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "typeParameters": Object {
                       "loc": Object {
@@ -157,6 +168,7 @@ Object {
                   },
                 },
                 "type": "TSEmptyBodyFunctionExpression",
+                "typeParameters": undefined,
               },
             },
           ],
@@ -176,7 +188,10 @@ Object {
           ],
           "type": "ClassBody",
         },
+        "declare": false,
+        "decorators": Array [],
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 36,
@@ -188,12 +203,15 @@ Object {
             },
           },
           "name": "AbstractSocket",
+          "optional": false,
           "range": Array [
             22,
             36,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
+        "implements": Array [],
         "loc": Object {
           "end": Object {
             "column": 1,
@@ -209,7 +227,9 @@ Object {
           86,
         ],
         "superClass": null,
+        "superTypeParameters": undefined,
         "type": "ClassDeclaration",
+        "typeParameters": undefined,
       },
       "exportKind": "value",
       "loc": Object {

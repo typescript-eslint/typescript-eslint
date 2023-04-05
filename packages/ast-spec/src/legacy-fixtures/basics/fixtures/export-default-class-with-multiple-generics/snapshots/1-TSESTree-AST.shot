@@ -1,0 +1,110 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics export-default-class-with-multiple-generics TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExportDefaultDeclaration {
+      type: "ExportDefaultDeclaration",
+      declaration: ClassDeclaration {
+        type: "ClassDeclaration",
+        abstract: false,
+        body: ClassBody {
+          type: "ClassBody",
+          body: [],
+
+          range: [100, 102],
+          loc: {
+            start: { column: 27, line: 3 },
+            end: { column: 29, line: 3 },
+          },
+        },
+        declare: false,
+        decorators: [],
+        id: null,
+        implements: [],
+        superClass: null,
+        typeParameters: TSTypeParameterDeclaration {
+          type: "TSTypeParameterDeclaration",
+          params: [
+            TSTypeParameter {
+              type: "TSTypeParameter",
+              const: false,
+              in: false,
+              name: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "T",
+                optional: false,
+
+                range: [94, 95],
+                loc: {
+                  start: { column: 21, line: 3 },
+                  end: { column: 22, line: 3 },
+                },
+              },
+              out: false,
+
+              range: [94, 95],
+              loc: {
+                start: { column: 21, line: 3 },
+                end: { column: 22, line: 3 },
+              },
+            },
+            TSTypeParameter {
+              type: "TSTypeParameter",
+              const: false,
+              in: false,
+              name: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "U",
+                optional: false,
+
+                range: [97, 98],
+                loc: {
+                  start: { column: 24, line: 3 },
+                  end: { column: 25, line: 3 },
+                },
+              },
+              out: false,
+
+              range: [97, 98],
+              loc: {
+                start: { column: 24, line: 3 },
+                end: { column: 25, line: 3 },
+              },
+            },
+          ],
+
+          range: [93, 99],
+          loc: {
+            start: { column: 20, line: 3 },
+            end: { column: 26, line: 3 },
+          },
+        },
+
+        range: [88, 102],
+        loc: {
+          start: { column: 15, line: 3 },
+          end: { column: 29, line: 3 },
+        },
+      },
+      exportKind: "value",
+
+      range: [73, 102],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 29, line: 3 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 103],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

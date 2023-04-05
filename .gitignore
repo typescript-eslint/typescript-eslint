@@ -76,9 +76,14 @@ jspm_packages/
 .idea
 dist
 _ts3.4
+_ts4.2
 *.tsbuildinfo
 .watchmanconfig
 .rollup.cache
+
+# the downlevel-dts output folders
+_ts3.4
+_ts4.2
 
 # Files copied as part of the build
 packages/types/src/generated/**/*.ts

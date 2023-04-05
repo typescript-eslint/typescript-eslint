@@ -4,11 +4,15 @@ exports[`typescript basics class-with-generic-method-default.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 8,
@@ -20,11 +24,13 @@ Object {
                 },
               },
               "name": "getBar",
+              "optional": false,
               "range": Array [
                 14,
                 20,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -37,6 +43,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               14,
@@ -44,6 +51,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -64,6 +72,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -82,6 +91,7 @@ Object {
                 20,
                 34,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
               "typeParameters": Object {
                 "loc": Object {
@@ -114,6 +124,7 @@ Object {
                       ],
                       "type": "TSTypeReference",
                       "typeName": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 16,
@@ -125,11 +136,13 @@ Object {
                           },
                         },
                         "name": "Bar",
+                        "optional": false,
                         "range": Array [
                           25,
                           28,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "typeParameters": undefined,
                     },
@@ -145,6 +158,7 @@ Object {
                       },
                     },
                     "name": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 10,
@@ -156,11 +170,13 @@ Object {
                         },
                       },
                       "name": "T",
+                      "optional": false,
                       "range": Array [
                         21,
                         22,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "out": false,
                     "range": Array [
@@ -195,7 +211,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 9,
@@ -207,12 +226,15 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -228,7 +250,9 @@ Object {
         36,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

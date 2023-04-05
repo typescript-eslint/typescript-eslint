@@ -4,8 +4,10 @@ exports[`javascript objectLiteralShorthandMethods simple-method-named-set.src 1`
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 1,
@@ -17,11 +19,13 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             0,
             1,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -53,6 +57,7 @@ Object {
             Object {
               "computed": false,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 7,
@@ -64,11 +69,13 @@ Object {
                   },
                 },
                 "name": "set",
+                "optional": false,
                 "range": Array [
                   10,
                   13,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "init",
               "loc": Object {
@@ -82,6 +89,7 @@ Object {
                 },
               },
               "method": true,
+              "optional": false,
               "range": Array [
                 10,
                 23,
@@ -108,6 +116,7 @@ Object {
                   ],
                   "type": "BlockStatement",
                 },
+                "declare": false,
                 "expression": false,
                 "generator": false,
                 "id": null,
@@ -126,7 +135,9 @@ Object {
                   13,
                   23,
                 ],
+                "returnType": undefined,
                 "type": "FunctionExpression",
+                "typeParameters": undefined,
               },
             },
           ],

@@ -1,0 +1,422 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types template-literal-type-4 Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "EnthusiasticGreeting",
+
+        range: [78, 98],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 25, line: 3 },
+        },
+      },
+      typeAnnotation: TSLiteralType {
+        type: "TSLiteralType",
+        literal: TemplateLiteral {
+          type: "TemplateLiteral",
+          expressions: [
+            TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "Uppercase",
+
+                range: [124, 133],
+                loc: {
+                  start: { column: 5, line: 4 },
+                  end: { column: 14, line: 4 },
+                },
+              },
+              typeParameters: TSTypeParameterInstantiation {
+                type: "TSTypeParameterInstantiation",
+                params: [
+                  TSTypeReference {
+                    type: "TSTypeReference",
+                    typeName: Identifier {
+                      type: "Identifier",
+                      name: "T",
+
+                      range: [134, 135],
+                      loc: {
+                        start: { column: 15, line: 4 },
+                        end: { column: 16, line: 4 },
+                      },
+                    },
+
+                    range: [134, 135],
+                    loc: {
+                      start: { column: 15, line: 4 },
+                      end: { column: 16, line: 4 },
+                    },
+                  },
+                ],
+
+                range: [133, 136],
+                loc: {
+                  start: { column: 14, line: 4 },
+                  end: { column: 17, line: 4 },
+                },
+              },
+
+              range: [124, 136],
+              loc: {
+                start: { column: 5, line: 4 },
+                end: { column: 17, line: 4 },
+              },
+            },
+            TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "Lowercase",
+
+                range: [142, 151],
+                loc: {
+                  start: { column: 23, line: 4 },
+                  end: { column: 32, line: 4 },
+                },
+              },
+              typeParameters: TSTypeParameterInstantiation {
+                type: "TSTypeParameterInstantiation",
+                params: [
+                  TSTypeReference {
+                    type: "TSTypeReference",
+                    typeName: Identifier {
+                      type: "Identifier",
+                      name: "T",
+
+                      range: [152, 153],
+                      loc: {
+                        start: { column: 33, line: 4 },
+                        end: { column: 34, line: 4 },
+                      },
+                    },
+
+                    range: [152, 153],
+                    loc: {
+                      start: { column: 33, line: 4 },
+                      end: { column: 34, line: 4 },
+                    },
+                  },
+                ],
+
+                range: [151, 154],
+                loc: {
+                  start: { column: 32, line: 4 },
+                  end: { column: 35, line: 4 },
+                },
+              },
+
+              range: [142, 154],
+              loc: {
+                start: { column: 23, line: 4 },
+                end: { column: 35, line: 4 },
+              },
+            },
+            TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "Capitalize",
+
+                range: [160, 170],
+                loc: {
+                  start: { column: 41, line: 4 },
+                  end: { column: 51, line: 4 },
+                },
+              },
+              typeParameters: TSTypeParameterInstantiation {
+                type: "TSTypeParameterInstantiation",
+                params: [
+                  TSTypeReference {
+                    type: "TSTypeReference",
+                    typeName: Identifier {
+                      type: "Identifier",
+                      name: "T",
+
+                      range: [171, 172],
+                      loc: {
+                        start: { column: 52, line: 4 },
+                        end: { column: 53, line: 4 },
+                      },
+                    },
+
+                    range: [171, 172],
+                    loc: {
+                      start: { column: 52, line: 4 },
+                      end: { column: 53, line: 4 },
+                    },
+                  },
+                ],
+
+                range: [170, 173],
+                loc: {
+                  start: { column: 51, line: 4 },
+                  end: { column: 54, line: 4 },
+                },
+              },
+
+              range: [160, 173],
+              loc: {
+                start: { column: 41, line: 4 },
+                end: { column: 54, line: 4 },
+              },
+            },
+            TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "Uncapitalize",
+
+                range: [179, 191],
+                loc: {
+                  start: { column: 60, line: 4 },
+                  end: { column: 72, line: 4 },
+                },
+              },
+              typeParameters: TSTypeParameterInstantiation {
+                type: "TSTypeParameterInstantiation",
+                params: [
+                  TSTypeReference {
+                    type: "TSTypeReference",
+                    typeName: Identifier {
+                      type: "Identifier",
+                      name: "T",
+
+                      range: [192, 193],
+                      loc: {
+                        start: { column: 73, line: 4 },
+                        end: { column: 74, line: 4 },
+                      },
+                    },
+
+                    range: [192, 193],
+                    loc: {
+                      start: { column: 73, line: 4 },
+                      end: { column: 74, line: 4 },
+                    },
+                  },
+                ],
+
+                range: [191, 194],
+                loc: {
+                  start: { column: 72, line: 4 },
+                  end: { column: 75, line: 4 },
+                },
+              },
+
+              range: [179, 194],
+              loc: {
+                start: { column: 60, line: 4 },
+                end: { column: 75, line: 4 },
+              },
+            },
+          ],
+          quasis: [
+            TemplateElement {
+              type: "TemplateElement",
+              tail: false,
+              value: {
+                "cooked": "",
+                "raw": "",
+              },
+
+              range: [121, 124],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 5, line: 4 },
+              },
+            },
+            TemplateElement {
+              type: "TemplateElement",
+              tail: false,
+              value: {
+                "cooked": " - ",
+                "raw": " - ",
+              },
+
+              range: [136, 142],
+              loc: {
+                start: { column: 17, line: 4 },
+                end: { column: 23, line: 4 },
+              },
+            },
+            TemplateElement {
+              type: "TemplateElement",
+              tail: false,
+              value: {
+                "cooked": " - ",
+                "raw": " - ",
+              },
+
+              range: [154, 160],
+              loc: {
+                start: { column: 35, line: 4 },
+                end: { column: 41, line: 4 },
+              },
+            },
+            TemplateElement {
+              type: "TemplateElement",
+              tail: false,
+              value: {
+                "cooked": " - ",
+                "raw": " - ",
+              },
+
+              range: [173, 179],
+              loc: {
+                start: { column: 54, line: 4 },
+                end: { column: 60, line: 4 },
+              },
+            },
+            TemplateElement {
+              type: "TemplateElement",
+              tail: true,
+              value: {
+                "cooked": "",
+                "raw": "",
+              },
+
+              range: [194, 196],
+              loc: {
+                start: { column: 75, line: 4 },
+                end: { column: 77, line: 4 },
+              },
+            },
+          ],
+
+          range: [121, 196],
+          loc: {
+            start: { column: 2, line: 4 },
+            end: { column: 77, line: 4 },
+          },
+        },
+
+        range: [121, 196],
+        loc: {
+          start: { column: 2, line: 4 },
+          end: { column: 77, line: 4 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            constraint: TSStringKeyword {
+              type: "TSStringKeyword",
+
+              range: [109, 115],
+              loc: {
+                start: { column: 36, line: 3 },
+                end: { column: 42, line: 3 },
+              },
+            },
+            name: "T",
+
+            range: [99, 115],
+            loc: {
+              start: { column: 26, line: 3 },
+              end: { column: 42, line: 3 },
+            },
+          },
+        ],
+
+        range: [98, 116],
+        loc: {
+          start: { column: 25, line: 3 },
+          end: { column: 43, line: 3 },
+        },
+      },
+
+      range: [73, 197],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 78, line: 4 },
+      },
+    },
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "HELLO",
+
+        range: [203, 208],
+        loc: {
+          start: { column: 5, line: 5 },
+          end: { column: 10, line: 5 },
+        },
+      },
+      typeAnnotation: TSTypeReference {
+        type: "TSTypeReference",
+        typeName: Identifier {
+          type: "Identifier",
+          name: "EnthusiasticGreeting",
+
+          range: [211, 231],
+          loc: {
+            start: { column: 13, line: 5 },
+            end: { column: 33, line: 5 },
+          },
+        },
+        typeParameters: TSTypeParameterInstantiation {
+          type: "TSTypeParameterInstantiation",
+          params: [
+            TSLiteralType {
+              type: "TSLiteralType",
+              literal: Literal {
+                type: "Literal",
+                raw: "'heLLo'",
+                value: "heLLo",
+
+                range: [232, 239],
+                loc: {
+                  start: { column: 34, line: 5 },
+                  end: { column: 41, line: 5 },
+                },
+              },
+
+              range: [232, 239],
+              loc: {
+                start: { column: 34, line: 5 },
+                end: { column: 41, line: 5 },
+              },
+            },
+          ],
+
+          range: [231, 240],
+          loc: {
+            start: { column: 33, line: 5 },
+            end: { column: 42, line: 5 },
+          },
+        },
+
+        range: [211, 240],
+        loc: {
+          start: { column: 13, line: 5 },
+          end: { column: 42, line: 5 },
+        },
+      },
+
+      range: [198, 241],
+      loc: {
+        start: { column: 0, line: 5 },
+        end: { column: 43, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 242],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

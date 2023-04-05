@@ -11,6 +11,7 @@ module.exports = {
     'tsx',
     'mts',
     'mtsx',
+    'cjs',
     'js',
     'jsx',
     'mjs',
@@ -18,7 +19,6 @@ module.exports = {
     'json',
     'node',
   ],
-  resolver: '<rootDir>/../../tests/jest-resolver.js',
   setupFilesAfterEnv: ['console-fail-test/setup.js'],
   testRegex: ['./tests/.+\\.test\\.ts$', './tests/.+\\.spec\\.ts$'],
   transform: {

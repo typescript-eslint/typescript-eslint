@@ -1,9 +1,5 @@
 var __test = 'ff';
 
-class __Foo {
+class __Foo {}
 
-}
-
-function __Bar() {
-
-}
+function __Bar() {}

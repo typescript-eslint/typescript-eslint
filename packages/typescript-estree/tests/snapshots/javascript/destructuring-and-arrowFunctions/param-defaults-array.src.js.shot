@@ -4,9 +4,11 @@ exports[`javascript destructuring-and-arrowFunctions param-defaults-array.src 1`
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 15,
@@ -18,11 +20,13 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             14,
             15,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "expression": true,
         "generator": false,
@@ -39,9 +43,12 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "elements": Array [
               Object {
+                "decorators": Array [],
                 "left": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 3,
@@ -53,11 +60,13 @@ Object {
                     },
                   },
                   "name": "x",
+                  "optional": false,
                   "range": Array [
                     2,
                     3,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -69,6 +78,7 @@ Object {
                     "line": 1,
                   },
                 },
+                "optional": false,
                 "range": Array [
                   2,
                   8,
@@ -93,6 +103,7 @@ Object {
                   "value": 10,
                 },
                 "type": "AssignmentPattern",
+                "typeAnnotation": undefined,
               },
             ],
             "loc": Object {
@@ -105,18 +116,22 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "range": Array [
               1,
               9,
             ],
             "type": "ArrayPattern",
+            "typeAnnotation": undefined,
           },
         ],
         "range": Array [
           0,
           15,
         ],
+        "returnType": undefined,
         "type": "ArrowFunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

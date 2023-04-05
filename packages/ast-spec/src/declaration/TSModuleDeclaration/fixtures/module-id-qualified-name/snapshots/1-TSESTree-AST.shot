@@ -3,7 +3,7 @@
 exports[`AST Fixtures declaration TSModuleDeclaration module-id-qualified-name TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       body: TSModuleDeclaration {
@@ -12,7 +12,7 @@ Program {
           type: "TSModuleDeclaration",
           body: TSModuleBlock {
             type: "TSModuleBlock",
-            body: Array [],
+            body: [],
 
             range: [13, 15],
             loc: {
@@ -20,9 +20,13 @@ Program {
               end: { column: 15, line: 1 },
             },
           },
+          declare: false,
+          global: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "C",
+            optional: false,
 
             range: [11, 12],
             loc: {
@@ -30,6 +34,7 @@ Program {
               end: { column: 12, line: 1 },
             },
           },
+          kind: "module",
 
           range: [11, 15],
           loc: {
@@ -37,9 +42,13 @@ Program {
             end: { column: 15, line: 1 },
           },
         },
+        declare: false,
+        global: false,
         id: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "B",
+          optional: false,
 
           range: [9, 10],
           loc: {
@@ -47,6 +56,7 @@ Program {
             end: { column: 10, line: 1 },
           },
         },
+        kind: "module",
 
         range: [9, 15],
         loc: {
@@ -54,9 +64,13 @@ Program {
           end: { column: 15, line: 1 },
         },
       },
+      declare: false,
+      global: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "A",
+        optional: false,
 
         range: [7, 8],
         loc: {
@@ -64,6 +78,7 @@ Program {
           end: { column: 8, line: 1 },
         },
       },
+      kind: "module",
 
       range: [0, 15],
       loc: {

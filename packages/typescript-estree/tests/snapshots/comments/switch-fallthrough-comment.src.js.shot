@@ -45,9 +45,11 @@ Object {
         Object {
           "consequent": Array [
             Object {
+              "directive": undefined,
               "expression": Object {
                 "arguments": Array [],
                 "callee": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 12,
@@ -59,11 +61,13 @@ Object {
                     },
                   },
                   "name": "doIt",
+                  "optional": false,
                   "range": Array [
                     82,
                     86,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -81,6 +85,7 @@ Object {
                   88,
                 ],
                 "type": "CallExpression",
+                "typeParameters": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -136,6 +141,7 @@ Object {
         },
       ],
       "discriminant": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 10,
@@ -147,11 +153,13 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           7,
           10,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {

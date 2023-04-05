@@ -7,14 +7,20 @@
   line-height: 18px;
   letter-spacing: 0;
   font-feature-settings: 'liga' 0, 'calt' 0;
+  position: relative;
+  min-width: 100%;
+}
+
+.list * {
+  vertical-align: top;
 }
 
 .list,
 .subList {
   box-sizing: border-box;
-  white-space: break-spaces;
   margin: 0;
   padding-left: 1.5rem;
+  width: max-content;
 }
 
 .selected {
@@ -24,6 +30,7 @@
 .nonExpand,
 .expand {
   border-left: 0.1rem dashed var(--ifm-color-emphasis-200);
+  width: max-content;
 }
 
 .expand.open::before {
@@ -44,6 +51,20 @@
 
 .tokenName {
   color: var(--token-color-class-name);
+}
+
+.propNumber,
+.propEmpty,
+.propRegExp,
+.propClass,
+.propBoolean,
+.propError,
+.propString {
+  display: inline-block;
+  max-width: 600px;
+  word-wrap: break-word;
+  word-break: break-all;
+  white-space: pre-wrap;
 }
 
 .propName {
@@ -70,13 +91,17 @@
   color: var(--token-color-boolean);
 }
 
+.propError {
+  color: var(--token-color-deleted);
+}
+
 .propString {
   color: var(--token-color-string);
 }
 
 .hidden {
   color: var(--token-color-comment);
-  max-width: 40%;
+  max-width: 200px;
   overflow: hidden;
   display: inline-block;
   text-overflow: ellipsis;

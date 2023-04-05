@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures expressions _error_ instantiation-expression TSESTree - Error 1`] = `
+"TSError
+  3 | a<b>;
+  4 |
+> 5 | a<b><c>;
+    |        ^ Expression expected.
+  6 | a<b><c>();
+  7 | a<b><c>?.();
+  8 | a?.b<c><d>();"
+`;

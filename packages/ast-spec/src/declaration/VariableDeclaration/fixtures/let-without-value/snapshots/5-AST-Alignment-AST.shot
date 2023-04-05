@@ -2,5 +2,55 @@
 
 exports[`AST Fixtures declaration VariableDeclaration let-without-value AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'x',
+-             optional: false,
+
+              range: [4, 5],
+              loc: {
+                start: { column: 4, line: 1 },
+                end: { column: 5, line: 1 },
+              },
+            },
+            init: null,
+
+            range: [4, 5],
+            loc: {
+              start: { column: 4, line: 1 },
+              end: { column: 5, line: 1 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'let',
+
+        range: [0, 6],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 6, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 7],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;

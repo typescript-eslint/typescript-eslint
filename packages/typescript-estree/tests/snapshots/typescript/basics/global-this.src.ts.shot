@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -18,11 +20,13 @@ Object {
               },
             },
             "name": "abc",
+            "optional": false,
             "range": Array [
               26,
               29,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -60,6 +64,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {
@@ -78,6 +83,7 @@ Object {
       "type": "VariableDeclaration",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
           "computed": false,
@@ -92,6 +98,7 @@ Object {
             },
           },
           "object": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -103,14 +110,17 @@ Object {
               },
             },
             "name": "globalThis",
+            "optional": false,
             "range": Array [
               69,
               79,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "optional": false,
           "property": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -122,11 +132,13 @@ Object {
               },
             },
             "name": "abc",
+            "optional": false,
             "range": Array [
               80,
               83,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             69,
@@ -189,7 +201,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -201,11 +215,13 @@ Object {
               },
             },
             "name": "answer",
+            "optional": false,
             "range": Array [
               97,
               103,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -243,6 +259,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {
@@ -261,6 +278,7 @@ Object {
       "type": "VariableDeclaration",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
           "computed": false,
@@ -275,6 +293,7 @@ Object {
             },
           },
           "object": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -286,14 +305,17 @@ Object {
               },
             },
             "name": "globalThis",
+            "optional": false,
             "range": Array [
               178,
               188,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "optional": false,
           "property": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 17,
@@ -305,11 +327,13 @@ Object {
               },
             },
             "name": "answer",
+            "optional": false,
             "range": Array [
               189,
               195,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             178,

@@ -6,7 +6,10 @@ Object {
     Object {
       "assertions": Array [],
       "declaration": Object {
+        "const": false,
+        "declare": false,
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 69,
@@ -18,11 +21,13 @@ Object {
             },
           },
           "name": "X",
+          "optional": false,
           "range": Array [
             68,
             69,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {

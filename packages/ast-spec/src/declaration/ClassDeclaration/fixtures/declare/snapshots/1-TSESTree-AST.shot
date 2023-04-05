@@ -3,12 +3,13 @@
 exports[`AST Fixtures declaration ClassDeclaration declare TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [],
+        body: [],
 
         range: [18, 20],
         loc: {
@@ -17,9 +18,12 @@ Program {
         },
       },
       declare: true,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [14, 17],
         loc: {
@@ -27,6 +31,7 @@ Program {
           end: { column: 17, line: 1 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [0, 20],

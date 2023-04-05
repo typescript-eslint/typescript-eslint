@@ -4,6 +4,9 @@ import { getModifiers } from './getModifiers';
 import { xhtmlEntities } from './jsx/xhtml-entities';
 import type { TSESTree } from './ts-estree';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from './ts-estree';
+import { typescriptVersionIsAtLeast } from './version-check';
+
+const isAtLeast50 = typescriptVersionIsAtLeast['5.0'];
 
 const SyntaxKind = ts.SyntaxKind;
 
@@ -275,10 +278,10 @@ export function getDeclarationKind(
  */
 export function getTSNodeAccessibility(
   node: ts.Node,
-): 'public' | 'protected' | 'private' | null {
+): 'public' | 'protected' | 'private' | undefined {
   const modifiers = getModifiers(node);
   if (modifiers == null) {
-    return null;
+    return undefined;
   }
   for (const modifier of modifiers) {
     switch (modifier.kind) {
@@ -292,7 +295,7 @@ export function getTSNodeAccessibility(
         break;
     }
   }
-  return null;
+  return undefined;
 }
 
 /**
@@ -436,12 +439,19 @@ export function isChildUnwrappableOptionalChain(
 export function getTokenType(
   token: ts.Identifier | ts.Token<ts.SyntaxKind>,
 ): Exclude<AST_TOKEN_TYPES, AST_TOKEN_TYPES.Line | AST_TOKEN_TYPES.Block> {
-  if ('originalKeywordKind' in token && token.originalKeywordKind) {
-    if (token.originalKeywordKind === SyntaxKind.NullKeyword) {
+  let keywordKind: ts.SyntaxKind | undefined;
+  if (isAtLeast50 && token.kind === SyntaxKind.Identifier) {
+    keywordKind = ts.identifierToKeywordKind(token as ts.Identifier);
+  } else if ('originalKeywordKind' in token) {
+    // eslint-disable-next-line deprecation/deprecation -- intentional fallback for older TS versions
+    keywordKind = token.originalKeywordKind;
+  }
+  if (keywordKind) {
+    if (keywordKind === SyntaxKind.NullKeyword) {
       return AST_TOKEN_TYPES.Null;
     } else if (
-      token.originalKeywordKind >= SyntaxKind.FirstFutureReservedWord &&
-      token.originalKeywordKind <= SyntaxKind.LastKeyword
+      keywordKind >= SyntaxKind.FirstFutureReservedWord &&
+      keywordKind <= SyntaxKind.LastKeyword
     ) {
       return AST_TOKEN_TYPES.Identifier;
     }
@@ -600,9 +610,18 @@ export class TSError extends Error {
   constructor(
     message: string,
     public readonly fileName: string,
-    public readonly index: number,
-    public readonly lineNumber: number,
-    public readonly column: number,
+    public readonly location: {
+      start: {
+        line: number;
+        column: number;
+        offset: number;
+      };
+      end: {
+        line: number;
+        column: number;
+        offset: number;
+      };
+    },
   ) {
     super(message);
     Object.defineProperty(this, 'name', {
@@ -611,21 +630,51 @@ export class TSError extends Error {
       configurable: true,
     });
   }
+
+  // For old version of ESLint https://github.com/typescript-eslint/typescript-eslint/pull/6556#discussion_r1123237311
+  get index(): number {
+    return this.location.start.offset;
+  }
+
+  // https://github.com/eslint/eslint/blob/b09a512107249a4eb19ef5a37b0bd672266eafdb/lib/linter/linter.js#L853
+  get lineNumber(): number {
+    return this.location.start.line;
+  }
+
+  // https://github.com/eslint/eslint/blob/b09a512107249a4eb19ef5a37b0bd672266eafdb/lib/linter/linter.js#L854
+  get column(): number {
+    return this.location.start.column;
+  }
 }
 
 /**
- * @param ast     the AST object
- * @param start   the index at which the error starts
  * @param message the error message
+ * @param ast the AST object
+ * @param startIndex the index at which the error starts
+ * @param endIndex the index at which the error ends
  * @returns converted error object
  */
 export function createError(
-  ast: ts.SourceFile,
-  start: number,
   message: string,
+  ast: ts.SourceFile,
+  startIndex: number,
+  endIndex: number = startIndex,
 ): TSError {
-  const loc = ast.getLineAndCharacterOfPosition(start);
-  return new TSError(message, ast.fileName, start, loc.line + 1, loc.character);
+  const [start, end] = [startIndex, endIndex].map(offset => {
+    const { line, character: column } =
+      ast.getLineAndCharacterOfPosition(offset);
+    return { line: line + 1, column, offset };
+  });
+  return new TSError(message, ast.fileName, { start, end });
+}
+
+export function nodeHasIllegalDecorators(
+  node: ts.Node,
+): node is ts.Node & { illegalDecorators: ts.Node[] } {
+  return !!(
+    'illegalDecorators' in node &&
+    (node.illegalDecorators as unknown[] | undefined)?.length
+  );
 }
 
 /**
@@ -665,7 +714,11 @@ export function firstDefined<T, U>(
 }
 
 export function identifierIsThisKeyword(id: ts.Identifier): boolean {
-  return id.originalKeywordKind === SyntaxKind.ThisKeyword;
+  return (
+    // eslint-disable-next-line deprecation/deprecation -- intentional for older TS versions
+    (isAtLeast50 ? ts.identifierToKeywordKind(id) : id.originalKeywordKind) ===
+    SyntaxKind.ThisKeyword
+  );
 }
 
 export function isThisIdentifier(
@@ -688,4 +741,28 @@ export function isThisInTypeQuery(node: ts.Node): boolean {
   }
 
   return node.parent.kind === SyntaxKind.TypeQuery;
+}
+
+// `ts.nodeIsMissing`
+function nodeIsMissing(node: ts.Node | undefined): boolean {
+  if (node === undefined) {
+    return true;
+  }
+  return (
+    node.pos === node.end &&
+    node.pos >= 0 &&
+    node.kind !== SyntaxKind.EndOfFileToken
+  );
+}
+
+// `ts.nodeIsPresent`
+export function nodeIsPresent(node: ts.Node | undefined): node is ts.Node {
+  return !nodeIsMissing(node);
+}
+
+// `ts.getContainingFunction`
+export function getContainingFunction(
+  node: ts.Node,
+): ts.SignatureDeclaration | undefined {
+  return ts.findAncestor(node.parent, ts.isFunctionLike);
 }

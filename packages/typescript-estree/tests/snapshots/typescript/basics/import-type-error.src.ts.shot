@@ -52,6 +52,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 15,
@@ -63,11 +64,13 @@ Object {
               },
             },
             "name": "foo",
+            "optional": false,
             "range": Array [
               12,
               15,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             12,
@@ -78,6 +81,7 @@ Object {
         Object {
           "importKind": "value",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 22,
@@ -89,11 +93,13 @@ Object {
               },
             },
             "name": "bar",
+            "optional": false,
             "range": Array [
               19,
               22,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -106,6 +112,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 22,
@@ -117,11 +124,13 @@ Object {
               },
             },
             "name": "bar",
+            "optional": false,
             "range": Array [
               19,
               22,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             19,

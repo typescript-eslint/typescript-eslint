@@ -1,0 +1,183 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [119, 121],
+        loc: {
+          start: { column: 46, line: 3 },
+          end: { column: 48, line: 3 },
+        },
+      },
+      declare: false,
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "M",
+        optional: false,
+
+        range: [82, 83],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 10, line: 3 },
+        },
+      },
+      params: [
+        Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "Base",
+          optional: false,
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "T",
+                optional: false,
+
+                range: [116, 117],
+                loc: {
+                  start: { column: 43, line: 3 },
+                  end: { column: 44, line: 3 },
+                },
+              },
+
+              range: [116, 117],
+              loc: {
+                start: { column: 43, line: 3 },
+                end: { column: 44, line: 3 },
+              },
+            },
+
+            range: [114, 117],
+            loc: {
+              start: { column: 41, line: 3 },
+              end: { column: 44, line: 3 },
+            },
+          },
+
+          range: [110, 117],
+          loc: {
+            start: { column: 37, line: 3 },
+            end: { column: 44, line: 3 },
+          },
+        },
+      ],
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            const: false,
+            constraint: TSTypeReference {
+              type: "TSTypeReference",
+              typeArguments: TSTypeParameterInstantiation {
+                type: "TSTypeParameterInstantiation",
+                params: [
+                  TSTypeReference {
+                    type: "TSTypeReference",
+                    typeName: Identifier {
+                      type: "Identifier",
+                      decorators: [],
+                      name: "M",
+                      optional: false,
+
+                      range: [106, 107],
+                      loc: {
+                        start: { column: 33, line: 3 },
+                        end: { column: 34, line: 3 },
+                      },
+                    },
+
+                    range: [106, 107],
+                    loc: {
+                      start: { column: 33, line: 3 },
+                      end: { column: 34, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [105, 108],
+                loc: {
+                  start: { column: 32, line: 3 },
+                  end: { column: 35, line: 3 },
+                },
+              },
+              typeName: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "Constructor",
+                optional: false,
+
+                range: [94, 105],
+                loc: {
+                  start: { column: 21, line: 3 },
+                  end: { column: 32, line: 3 },
+                },
+              },
+
+              range: [94, 108],
+              loc: {
+                start: { column: 21, line: 3 },
+                end: { column: 35, line: 3 },
+              },
+            },
+            in: false,
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "T",
+              optional: false,
+
+              range: [84, 85],
+              loc: {
+                start: { column: 11, line: 3 },
+                end: { column: 12, line: 3 },
+              },
+            },
+            out: false,
+
+            range: [84, 108],
+            loc: {
+              start: { column: 11, line: 3 },
+              end: { column: 35, line: 3 },
+            },
+          },
+        ],
+
+        range: [83, 109],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 36, line: 3 },
+        },
+      },
+
+      range: [73, 121],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 48, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 122],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

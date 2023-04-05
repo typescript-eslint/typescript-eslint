@@ -4,10 +4,13 @@ exports[`javascript destructuring array-to-array.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "elements": Array [
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 2,
@@ -19,13 +22,16 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 1,
                 2,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 5,
@@ -37,11 +43,13 @@ Object {
                 },
               },
               "name": "b",
+              "optional": false,
               "range": Array [
                 4,
                 5,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
           ],
           "loc": Object {
@@ -54,11 +62,13 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             0,
             6,
           ],
           "type": "ArrayPattern",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -78,6 +88,7 @@ Object {
         "right": Object {
           "elements": Array [
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 11,
@@ -89,13 +100,16 @@ Object {
                 },
               },
               "name": "b",
+              "optional": false,
               "range": Array [
                 10,
                 11,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 14,
@@ -107,11 +121,13 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 13,
                 14,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
           ],
           "loc": Object {

@@ -22,7 +22,10 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
+      "extends": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 14,
@@ -34,11 +37,13 @@ Object {
           },
         },
         "name": "Test",
+        "optional": false,
         "range": Array [
           10,
           14,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -82,6 +87,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 16,
@@ -93,11 +99,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 15,
                 16,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [

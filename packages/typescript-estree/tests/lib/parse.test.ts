@@ -101,6 +101,7 @@ describe('parseWithNodeMaps()', () => {
         {
           "body": [
             {
+              "directive": undefined,
               "expression": {
                 "raw": "1",
                 "type": "Literal",
@@ -109,7 +110,9 @@ describe('parseWithNodeMaps()', () => {
               "type": "ExpressionStatement",
             },
           ],
+          "comments": undefined,
           "sourceType": "script",
+          "tokens": undefined,
           "type": "Program",
         }
       `);

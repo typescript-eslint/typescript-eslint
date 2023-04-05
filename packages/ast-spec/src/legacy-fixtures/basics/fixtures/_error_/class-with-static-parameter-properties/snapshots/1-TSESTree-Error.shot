@@ -1,0 +1,12 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics _error_ class-with-static-parameter-properties TSESTree - Error 1`] = `
+"TSError
+  2 |
+  3 | class Foo {
+> 4 |     constructor(static a: string) {
+    |                 ^^^^^^ 'static' modifier cannot appear on a parameter.
+  5 |
+  6 |     }
+  7 | }"
+`;

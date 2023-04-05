@@ -4,11 +4,13 @@ exports[`javascript generators yield-without-value.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
           "body": Array [
             Object {
+              "directive": undefined,
               "expression": Object {
                 "argument": null,
                 "delegate": false,
@@ -61,6 +63,7 @@ Object {
           ],
           "type": "BlockStatement",
         },
+        "declare": false,
         "expression": false,
         "generator": true,
         "id": null,
@@ -79,7 +82,9 @@ Object {
           1,
           24,
         ],
+        "returnType": undefined,
         "type": "FunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

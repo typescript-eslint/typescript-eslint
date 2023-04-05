@@ -4,7 +4,9 @@ exports[`typescript types object-literal-type-with-accessors.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 10,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "Thing",
+        "optional": false,
         "range": Array [
           5,
           10,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -50,8 +54,11 @@ Object {
         },
         "members": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "export": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -63,11 +70,13 @@ Object {
                 },
               },
               "name": "size",
+              "optional": false,
               "range": Array [
                 21,
                 25,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "get",
             "loc": Object {
@@ -80,11 +89,13 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "params": Array [],
             "range": Array [
               17,
               36,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -119,11 +130,16 @@ Object {
                 "type": "TSNumberKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
+            "typeParameters": undefined,
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "export": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -135,11 +151,13 @@ Object {
                 },
               },
               "name": "size",
+              "optional": false,
               "range": Array [
                 43,
                 47,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "set",
             "loc": Object {
@@ -152,8 +170,10 @@ Object {
                 "line": 3,
               },
             },
+            "optional": false,
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 43,
@@ -165,6 +185,7 @@ Object {
                   },
                 },
                 "name": "value",
+                "optional": false,
                 "range": Array [
                   48,
                   80,
@@ -263,7 +284,11 @@ Object {
               39,
               82,
             ],
+            "readonly": false,
+            "returnType": undefined,
+            "static": false,
             "type": "TSMethodSignature",
+            "typeParameters": undefined,
           },
         ],
         "range": Array [
@@ -272,6 +297,7 @@ Object {
         ],
         "type": "TSTypeLiteral",
       },
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

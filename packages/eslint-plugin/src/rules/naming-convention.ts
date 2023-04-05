@@ -53,7 +53,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce naming conventions for everything across a codebase',
-      recommended: false,
       // technically only requires type checking if the user uses "type" modifiers
       requiresTypeChecking: true,
     },
@@ -392,20 +391,21 @@ export default util.createRule<Options, MessageIds>({
           },
         },
 
-      'TSPropertySignature[computed = false]': {
-        validator: validators.typeProperty,
-        handler: (
-          node: TSESTree.TSPropertySignatureNonComputedName,
-          validator,
-        ): void => {
-          const modifiers = new Set<Modifiers>([Modifiers.public]);
-          if (node.readonly) {
-            modifiers.add(Modifiers.readonly);
-          }
+      'TSPropertySignature[computed = false][typeAnnotation.typeAnnotation.type != "TSFunctionType"]':
+        {
+          validator: validators.typeProperty,
+          handler: (
+            node: TSESTree.TSPropertySignatureNonComputedName,
+            validator,
+          ): void => {
+            const modifiers = new Set<Modifiers>([Modifiers.public]);
+            if (node.readonly) {
+              modifiers.add(Modifiers.readonly);
+            }
 
-          handleMember(validator, node, modifiers);
+            handleMember(validator, node, modifiers);
+          },
         },
-      },
 
       // #endregion property
 
@@ -458,10 +458,15 @@ export default util.createRule<Options, MessageIds>({
         },
       },
 
-      'TSMethodSignature[computed = false]': {
+      [[
+        'TSMethodSignature[computed = false]',
+        'TSPropertySignature[computed = false][typeAnnotation.typeAnnotation.type = "TSFunctionType"]',
+      ].join(', ')]: {
         validator: validators.typeMethod,
         handler: (
-          node: TSESTree.TSMethodSignatureNonComputedName,
+          node:
+            | TSESTree.TSMethodSignatureNonComputedName
+            | TSESTree.TSPropertySignatureNonComputedName,
           validator,
         ): void => {
           const modifiers = new Set<Modifiers>([Modifiers.public]);

@@ -1,99 +1,71 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { ensureObject, parseJSONObject, toJson } from '../lib/json';
 import { shallowEqual } from '../lib/shallowEqual';
-import type { ConfigModel, EslintRC, RuleDetails, RuleEntry } from '../types';
-import type { ConfigOptionsType } from './ConfigEditor';
+import type { ConfigModel, RuleDetails } from '../types';
+import type { ConfigOptionsField, ConfigOptionsType } from './ConfigEditor';
 import ConfigEditor from './ConfigEditor';
-import { parseESLintRC, toJson } from './utils';
 
 export interface ConfigEslintProps {
-  readonly isOpen: boolean;
-  readonly onClose: (value?: Partial<ConfigModel>) => void;
+  readonly onChange: (value: Partial<ConfigModel>) => void;
   readonly ruleOptions: RuleDetails[];
   readonly config?: string;
-}
-
-function checkSeverity(value: unknown): boolean {
-  if (typeof value === 'string' || typeof value === 'number') {
-    return [0, 1, 2, 'off', 'warn', 'error'].includes(value);
-  }
-  return false;
-}
-
-function checkOptions(rule: [string, unknown]): rule is [string, RuleEntry] {
-  if (Array.isArray(rule[1])) {
-    return rule[1].length > 0 && checkSeverity(rule[1][0]);
-  }
-  return checkSeverity(rule[1]);
+  readonly className?: string;
 }
 
 function ConfigEslint(props: ConfigEslintProps): JSX.Element {
-  const { isOpen, config, onClose: onCloseProps, ruleOptions } = props;
-  const [options, updateOptions] = useState<ConfigOptionsType[]>([]);
-  const [configObject, updateConfigObject] = useState<EslintRC>();
+  const { config, onChange: onChangeProp, ruleOptions, className } = props;
+
+  const [configObject, updateConfigObject] = useState<Record<string, unknown>>(
+    () => ({}),
+  );
 
   useEffect(() => {
-    if (isOpen) {
-      updateConfigObject(parseESLintRC(config));
-    }
-  }, [isOpen, config]);
+    updateConfigObject(oldConfig => {
+      const newConfig = ensureObject(parseJSONObject(config).rules);
+      if (shallowEqual(oldConfig, newConfig)) {
+        return oldConfig;
+      }
+      return newConfig;
+    });
+  }, [config]);
 
-  useEffect(() => {
-    updateOptions([
+  const options = useMemo((): ConfigOptionsType[] => {
+    const mappedRules: ConfigOptionsField[] = ruleOptions.map(item => ({
+      key: item.name,
+      label: item.description,
+      type: 'boolean',
+      defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
+    }));
+
+    return [
       {
         heading: 'Rules',
-        fields: ruleOptions
-          .filter(item => item.name.startsWith('@typescript'))
-          .map(item => ({
-            key: item.name,
-            label: item.description,
-            type: 'boolean',
-            defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
-          })),
+        fields: mappedRules.filter(item => item.key.startsWith('@typescript')),
       },
       {
         heading: 'Core rules',
-        fields: ruleOptions
-          .filter(item => !item.name.startsWith('@typescript'))
-          .map(item => ({
-            key: item.name,
-            label: item.description,
-            type: 'boolean',
-            defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
-          })),
+        fields: mappedRules.filter(item => !item.key.startsWith('@typescript')),
       },
-    ]);
+    ];
   }, [ruleOptions]);
 
-  const onClose = useCallback(
+  const onChange = useCallback(
     (newConfig: Record<string, unknown>) => {
-      const cfg = Object.fromEntries(
-        Object.entries(newConfig)
-          .map<[string, unknown]>(([name, value]) =>
-            Array.isArray(value) && value.length === 1
-              ? [name, value[0]]
-              : [name, value],
-          )
-          .filter(checkOptions),
-      );
-      if (!shallowEqual(cfg, configObject?.rules)) {
-        onCloseProps({
-          eslintrc: toJson({ ...(configObject ?? {}), rules: cfg }),
-        });
-      } else {
-        onCloseProps();
-      }
+      const parsed = parseJSONObject(config);
+      parsed.rules = newConfig;
+      updateConfigObject(newConfig);
+      onChangeProp({ eslintrc: toJson(parsed) });
     },
-    [onCloseProps, configObject],
+    [config, onChangeProp],
   );
 
   return (
     <ConfigEditor
-      header="Eslint Config"
+      className={className}
       options={options}
-      values={configObject?.rules ?? {}}
-      isOpen={isOpen}
-      onClose={onClose}
+      values={configObject}
+      onChange={onChange}
     />
   );
 }

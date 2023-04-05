@@ -4,7 +4,9 @@ exports[`typescript types conditional-infer-with-constraint.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 7,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "X3",
+        "optional": false,
         "range": Array [
           5,
           7,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -55,6 +59,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -66,11 +71,13 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               13,
               14,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },
@@ -123,6 +130,7 @@ Object {
                   },
                 },
                 "name": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 31,
@@ -134,11 +142,13 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     30,
                     31,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "out": false,
                 "range": Array [
@@ -213,6 +223,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 62,
@@ -224,11 +235,13 @@ Object {
               },
             },
             "name": "MustBeNumber",
+            "optional": false,
             "range": Array [
               50,
               62,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": Object {
             "loc": Object {
@@ -259,6 +272,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 64,
@@ -270,11 +284,13 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     63,
                     64,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -315,6 +331,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 9,
@@ -326,11 +343,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 8,
                 9,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [
@@ -348,7 +367,9 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 7,
@@ -360,11 +381,13 @@ Object {
           },
         },
         "name": "X4",
+        "optional": false,
         "range": Array [
           80,
           82,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -399,6 +422,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -410,11 +434,13 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               88,
               89,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },
@@ -467,6 +493,7 @@ Object {
                   },
                 },
                 "name": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 31,
@@ -478,11 +505,13 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     105,
                     106,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "out": false,
                 "range": Array [
@@ -539,6 +568,7 @@ Object {
                   },
                 },
                 "name": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 55,
@@ -550,11 +580,13 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     129,
                     130,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "out": false,
                 "range": Array [
@@ -629,6 +661,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 86,
@@ -640,11 +673,13 @@ Object {
               },
             },
             "name": "MustBeNumber",
+            "optional": false,
             "range": Array [
               149,
               161,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": Object {
             "loc": Object {
@@ -675,6 +710,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 88,
@@ -686,11 +722,13 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     162,
                     163,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -731,6 +769,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 9,
@@ -742,11 +781,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 83,
                 84,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [
@@ -764,7 +805,9 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 7,
@@ -776,11 +819,13 @@ Object {
           },
         },
         "name": "X5",
+        "optional": false,
         "range": Array [
           179,
           181,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -815,6 +860,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -826,11 +872,13 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               187,
               188,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },
@@ -883,6 +931,7 @@ Object {
                   },
                 },
                 "name": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 31,
@@ -894,11 +943,13 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     204,
                     205,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "out": false,
                 "range": Array [
@@ -939,6 +990,7 @@ Object {
                   },
                 },
                 "name": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 55,
@@ -950,11 +1002,13 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     228,
                     229,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "out": false,
                 "range": Array [
@@ -1029,6 +1083,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 71,
@@ -1040,11 +1095,13 @@ Object {
               },
             },
             "name": "MustBeNumber",
+            "optional": false,
             "range": Array [
               233,
               245,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": Object {
             "loc": Object {
@@ -1075,6 +1132,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 73,
@@ -1086,11 +1144,13 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     246,
                     247,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -1131,6 +1191,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 9,
@@ -1142,11 +1203,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 182,
                 183,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [
@@ -1164,7 +1227,9 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 7,
@@ -1176,11 +1241,13 @@ Object {
           },
         },
         "name": "X6",
+        "optional": false,
         "range": Array [
           263,
           265,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -1215,6 +1282,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -1226,11 +1294,13 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               271,
               272,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },
@@ -1267,6 +1337,7 @@ Object {
                   },
                 },
                 "name": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 31,
@@ -1278,11 +1349,13 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     288,
                     289,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "out": false,
                 "range": Array [
@@ -1339,6 +1412,7 @@ Object {
                   },
                 },
                 "name": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 40,
@@ -1350,11 +1424,13 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     297,
                     298,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "out": false,
                 "range": Array [
@@ -1429,6 +1505,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 71,
@@ -1440,11 +1517,13 @@ Object {
               },
             },
             "name": "MustBeNumber",
+            "optional": false,
             "range": Array [
               317,
               329,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": Object {
             "loc": Object {
@@ -1475,6 +1554,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 73,
@@ -1486,11 +1566,13 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     330,
                     331,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -1531,6 +1613,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 9,
@@ -1542,11 +1625,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 266,
                 267,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [
@@ -1564,7 +1649,9 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 7,
@@ -1576,11 +1663,13 @@ Object {
           },
         },
         "name": "X7",
+        "optional": false,
         "range": Array [
           347,
           349,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -1615,6 +1704,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -1626,11 +1716,13 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               355,
               356,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },
@@ -1683,6 +1775,7 @@ Object {
                   },
                 },
                 "name": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 31,
@@ -1694,11 +1787,13 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     372,
                     373,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "out": false,
                 "range": Array [
@@ -1755,6 +1850,7 @@ Object {
                   },
                 },
                 "name": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 55,
@@ -1766,11 +1862,13 @@ Object {
                     },
                   },
                   "name": "U",
+                  "optional": false,
                   "range": Array [
                     396,
                     397,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "out": false,
                 "range": Array [
@@ -1845,6 +1943,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 75,
@@ -1856,11 +1955,13 @@ Object {
               },
             },
             "name": "U",
+            "optional": false,
             "range": Array [
               416,
               417,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },
@@ -1893,6 +1994,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 9,
@@ -1904,11 +2006,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 350,
                 351,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [

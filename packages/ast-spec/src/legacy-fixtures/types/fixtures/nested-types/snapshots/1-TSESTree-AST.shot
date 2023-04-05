@@ -1,0 +1,225 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types nested-types TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      declare: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "Foo",
+        optional: false,
+
+        range: [78, 81],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 8, line: 3 },
+        },
+      },
+      typeAnnotation: TSUnionType {
+        type: "TSUnionType",
+        types: [
+          TSTupleType {
+            type: "TSTupleType",
+            elementTypes: [
+              TSNumberKeyword {
+                type: "TSNumberKeyword",
+
+                range: [89, 95],
+                loc: {
+                  start: { column: 5, line: 4 },
+                  end: { column: 11, line: 4 },
+                },
+              },
+              TSOptionalType {
+                type: "TSOptionalType",
+                typeAnnotation: TSStringKeyword {
+                  type: "TSStringKeyword",
+
+                  range: [97, 103],
+                  loc: {
+                    start: { column: 13, line: 4 },
+                    end: { column: 19, line: 4 },
+                  },
+                },
+
+                range: [97, 104],
+                loc: {
+                  start: { column: 13, line: 4 },
+                  end: { column: 20, line: 4 },
+                },
+              },
+              TSOptionalType {
+                type: "TSOptionalType",
+                typeAnnotation: TSBooleanKeyword {
+                  type: "TSBooleanKeyword",
+
+                  range: [106, 113],
+                  loc: {
+                    start: { column: 22, line: 4 },
+                    end: { column: 29, line: 4 },
+                  },
+                },
+
+                range: [106, 114],
+                loc: {
+                  start: { column: 22, line: 4 },
+                  end: { column: 30, line: 4 },
+                },
+              },
+            ],
+
+            range: [88, 115],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 31, line: 4 },
+            },
+          },
+          TSIntersectionType {
+            type: "TSIntersectionType",
+            types: [
+              TSTupleType {
+                type: "TSTupleType",
+                elementTypes: [
+                  TSTypeLiteral {
+                    type: "TSTypeLiteral",
+                    members: [],
+
+                    range: [122, 124],
+                    loc: {
+                      start: { column: 6, line: 5 },
+                      end: { column: 8, line: 5 },
+                    },
+                  },
+                  TSUnionType {
+                    type: "TSUnionType",
+                    types: [
+                      TSTupleType {
+                        type: "TSTupleType",
+                        elementTypes: [
+                          TSOptionalType {
+                            type: "TSOptionalType",
+                            typeAnnotation: TSNumberKeyword {
+                              type: "TSNumberKeyword",
+
+                              range: [127, 133],
+                              loc: {
+                                start: { column: 11, line: 5 },
+                                end: { column: 17, line: 5 },
+                              },
+                            },
+
+                            range: [127, 134],
+                            loc: {
+                              start: { column: 11, line: 5 },
+                              end: { column: 18, line: 5 },
+                            },
+                          },
+                        ],
+
+                        range: [126, 135],
+                        loc: {
+                          start: { column: 10, line: 5 },
+                          end: { column: 19, line: 5 },
+                        },
+                      },
+                      TSIntersectionType {
+                        type: "TSIntersectionType",
+                        types: [
+                          TSNullKeyword {
+                            type: "TSNullKeyword",
+
+                            range: [139, 143],
+                            loc: {
+                              start: { column: 23, line: 5 },
+                              end: { column: 27, line: 5 },
+                            },
+                          },
+                          TSArrayType {
+                            type: "TSArrayType",
+                            elementType: TSBooleanKeyword {
+                              type: "TSBooleanKeyword",
+
+                              range: [146, 153],
+                              loc: {
+                                start: { column: 30, line: 5 },
+                                end: { column: 37, line: 5 },
+                              },
+                            },
+
+                            range: [146, 155],
+                            loc: {
+                              start: { column: 30, line: 5 },
+                              end: { column: 39, line: 5 },
+                            },
+                          },
+                        ],
+
+                        range: [139, 155],
+                        loc: {
+                          start: { column: 23, line: 5 },
+                          end: { column: 39, line: 5 },
+                        },
+                      },
+                    ],
+
+                    range: [126, 156],
+                    loc: {
+                      start: { column: 10, line: 5 },
+                      end: { column: 40, line: 5 },
+                    },
+                  },
+                ],
+
+                range: [121, 157],
+                loc: {
+                  start: { column: 5, line: 5 },
+                  end: { column: 41, line: 5 },
+                },
+              },
+              TSTypeLiteral {
+                type: "TSTypeLiteral",
+                members: [],
+
+                range: [160, 162],
+                loc: {
+                  start: { column: 44, line: 5 },
+                  end: { column: 46, line: 5 },
+                },
+              },
+            ],
+
+            range: [121, 162],
+            loc: {
+              start: { column: 5, line: 5 },
+              end: { column: 46, line: 5 },
+            },
+          },
+        ],
+
+        range: [86, 163],
+        loc: {
+          start: { column: 2, line: 4 },
+          end: { column: 47, line: 5 },
+        },
+      },
+
+      range: [73, 164],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 48, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 165],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

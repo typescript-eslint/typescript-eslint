@@ -2,5 +2,139 @@
 
 exports[`AST Fixtures expression TSSatisfiesExpression object-object-outer-parentheses AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ExpressionStatement {
+        type: 'ExpressionStatement',
+        expression: TSSatisfiesExpression {
+          type: 'TSSatisfiesExpression',
+          expression: ObjectExpression {
+            type: 'ObjectExpression',
+            properties: Array [
+              Property {
+                type: 'Property',
+                computed: false,
+                key: Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'prop',
+-                 optional: false,
+
+                  range: [3, 7],
+                  loc: {
+                    start: { column: 3, line: 1 },
+                    end: { column: 7, line: 1 },
+                  },
+                },
+                kind: 'init',
+                method: false,
+-               optional: false,
+                shorthand: false,
+                value: Literal {
+                  type: 'Literal',
+                  raw: '\\'string\\'',
+                  value: 'string',
+
+                  range: [9, 17],
+                  loc: {
+                    start: { column: 9, line: 1 },
+                    end: { column: 17, line: 1 },
+                  },
+                },
+
+                range: [3, 17],
+                loc: {
+                  start: { column: 3, line: 1 },
+                  end: { column: 17, line: 1 },
+                },
+              },
+            ],
+
+            range: [1, 19],
+            loc: {
+              start: { column: 1, line: 1 },
+              end: { column: 19, line: 1 },
+            },
+          },
+          typeAnnotation: TSTypeLiteral {
+            type: 'TSTypeLiteral',
+            members: Array [
+              TSPropertySignature {
+                type: 'TSPropertySignature',
+                computed: false,
+                key: Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'prop',
+-                 optional: false,
+
+                  range: [33, 37],
+                  loc: {
+                    start: { column: 33, line: 1 },
+                    end: { column: 37, line: 1 },
+                  },
+                },
+-               optional: false,
+-               readonly: false,
+-               static: false,
+                typeAnnotation: TSTypeAnnotation {
+                  type: 'TSTypeAnnotation',
+                  typeAnnotation: TSStringKeyword {
+                    type: 'TSStringKeyword',
+
+                    range: [39, 45],
+                    loc: {
+                      start: { column: 39, line: 1 },
+                      end: { column: 45, line: 1 },
+                    },
+                  },
+
+                  range: [37, 45],
+                  loc: {
+                    start: { column: 37, line: 1 },
+                    end: { column: 45, line: 1 },
+                  },
+                },
+
+                range: [33, 45],
+                loc: {
+                  start: { column: 33, line: 1 },
+                  end: { column: 45, line: 1 },
+                },
+              },
+            ],
+
+            range: [31, 47],
+            loc: {
+              start: { column: 31, line: 1 },
+              end: { column: 47, line: 1 },
+            },
+          },
+
+          range: [0, 47],
+          loc: {
+            start: { column: 0, line: 1 },
+            end: { column: 47, line: 1 },
+          },
+        },
+
+        range: [0, 48],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 48, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 49],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;

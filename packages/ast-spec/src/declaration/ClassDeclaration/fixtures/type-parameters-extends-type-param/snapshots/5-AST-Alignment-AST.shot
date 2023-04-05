@@ -10,6 +10,7 @@ exports[`AST Fixtures declaration ClassDeclaration type-parameters-extends-type-
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -20,9 +21,13 @@ exports[`AST Fixtures declaration ClassDeclaration type-parameters-extends-type-
             end: { column: 30, line: 1 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {
@@ -30,9 +35,12 @@ exports[`AST Fixtures declaration ClassDeclaration type-parameters-extends-type-
             end: { column: 9, line: 1 },
           },
         },
+-       implements: Array [],
         superClass: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Set',
+-         optional: false,
 
           range: [21, 24],
           loc: {
@@ -40,14 +48,17 @@ exports[`AST Fixtures declaration ClassDeclaration type-parameters-extends-type-
             end: { column: 24, line: 1 },
           },
         },
-        superTypeParameters: TSTypeParameterInstantiation {
+-       superTypeArguments: TSTypeParameterInstantiation {
++       superTypeParameters: TSTypeParameterInstantiation {
           type: 'TSTypeParameterInstantiation',
           params: Array [
             TSTypeReference {
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'T',
+-               optional: false,
 
                 range: [25, 26],
                 loc: {
@@ -75,10 +86,13 @@ exports[`AST Fixtures declaration ClassDeclaration type-parameters-extends-type-
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [10, 11],
 -               loc: {

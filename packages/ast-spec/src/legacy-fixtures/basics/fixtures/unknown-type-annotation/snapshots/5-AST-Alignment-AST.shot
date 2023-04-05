@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics unknown-type-annotation AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'foo',
+-             optional: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSUnknownKeyword {
+                  type: 'TSUnknownKeyword',
+
+                  range: [82, 89],
+                  loc: {
+                    start: { column: 9, line: 3 },
+                    end: { column: 16, line: 3 },
+                  },
+                },
+
+                range: [80, 89],
+                loc: {
+                  start: { column: 7, line: 3 },
+                  end: { column: 16, line: 3 },
+                },
+              },
+
+              range: [77, 89],
+              loc: {
+                start: { column: 4, line: 3 },
+                end: { column: 16, line: 3 },
+              },
+            },
+            init: null,
+
+            range: [77, 89],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 16, line: 3 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'let',
+
+        range: [73, 90],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 17, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 91],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

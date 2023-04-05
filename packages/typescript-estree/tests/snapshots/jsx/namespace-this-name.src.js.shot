@@ -4,6 +4,7 @@ exports[`jsx namespace-this-name.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [],
         "closingElement": null,

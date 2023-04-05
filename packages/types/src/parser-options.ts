@@ -51,15 +51,14 @@ interface ParserOptions {
   extraFileExtensions?: string[];
   filePath?: string;
   loc?: boolean;
-  program?: Program;
-  project?: string | string[];
+  program?: Program | null;
+  project?: string | string[] | true | null;
   projectFolderIgnoreList?: (string | RegExp)[];
   range?: boolean;
   sourceType?: SourceType;
   tokens?: boolean;
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
-  moduleResolver?: string;
   cacheLifetime?: {
     glob?: CacheDurationSeconds;
   };

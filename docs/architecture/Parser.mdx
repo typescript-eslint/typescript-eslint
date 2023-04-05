@@ -43,9 +43,8 @@ interface ParserOptions {
   jsxFragmentName?: string | null;
   jsxPragma?: string | null;
   lib?: string[];
-  moduleResolver?: string;
   program?: import('typescript').Program;
-  project?: string | string[];
+  project?: string | string[] | true;
   projectFolderIgnoreList?: string[];
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
@@ -150,25 +149,6 @@ Specifies the TypeScript `lib`s that are available. This is used by the scope an
 
 If you provide `parserOptions.project`, you do not need to set this, as it will automatically detected from the compiler.
 
-### `moduleResolver`
-
-> Default `undefined`.
-
-This option allows you to provide a custom module resolution. The value should point to a JS file that default exports (`export default`, or `module.exports =`, or `export =`) a file with the following interface:
-
-```ts
-interface ModuleResolver {
-  version: 1;
-  resolveModuleNames(
-    moduleNames: string[],
-    containingFile: string,
-    reusedNames: string[] | undefined,
-    redirectedReference: ts.ResolvedProjectReference | undefined,
-    options: ts.CompilerOptions,
-  ): (ts.ResolvedModule | undefined)[];
-}
-```
-
 ### `program`
 
 > Default `undefined`.
@@ -188,6 +168,9 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
 - Accepted values:
 
   ```js
+  // find the tsconfig.json nearest each source file
+  project: true,
+
   // path
   project: './tsconfig.json';
 
@@ -197,6 +180,10 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
   // array of paths and/or glob patterns
   project: ['./packages/**/tsconfig.json', './separate-package/tsconfig.json'];
   ```
+
+- If `true`, each source file's parse will find the nearest `tsconfig.json` file to that source file.
+
+  - This is done by checking that source file's directory tree for the nearest `tsconfig.json`.
 
 - If you use project references, TypeScript will not automatically use project references to resolve files. This means that you will have to add each referenced tsconfig to the `project` field either separately, or via a glob.
 

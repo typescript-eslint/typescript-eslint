@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -10,7 +10,6 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallow unnecessary namespace qualifiers',
-      recommended: false,
       requiresTypeChecking: true,
     },
     fixable: 'code',
@@ -76,7 +75,7 @@ export default util.createRule({
       const namespaceSymbol = services.getSymbolAtLocation(qualifier);
 
       if (
-        typeof namespaceSymbol === 'undefined' ||
+        namespaceSymbol === undefined ||
         !symbolIsNamespaceInScope(namespaceSymbol)
       ) {
         return false;
@@ -84,7 +83,7 @@ export default util.createRule({
 
       const accessedSymbol = services.getSymbolAtLocation(name);
 
-      if (typeof accessedSymbol === 'undefined') {
+      if (accessedSymbol === undefined) {
         return false;
       }
 
@@ -97,8 +96,7 @@ export default util.createRule({
       );
 
       return (
-        typeof fromScope === 'undefined' ||
-        symbolsAreEqual(accessedSymbol, fromScope)
+        fromScope === undefined || symbolsAreEqual(accessedSymbol, fromScope)
       );
     }
 
