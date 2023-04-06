@@ -1182,7 +1182,7 @@ foo?.bar(/* comment */a,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`(!foo?.bar?.baz) && (!baz || !baz.bar || !baz.bar.foo);`,
+              output: '(!foo?.bar?.baz) && (!baz || !baz.bar || !baz.bar.foo);',
             },
           ],
         },
@@ -1191,7 +1191,7 @@ foo?.bar(/* comment */a,
           suggestions: [
             {
               messageId: 'optionalChainSuggest',
-              output: noFormat`(!foo || !foo.bar || !foo.bar.baz) && (!baz?.bar?.foo);`,
+              output: '(!foo || !foo.bar || !foo.bar.baz) && (!baz?.bar?.foo);',
             },
           ],
         },
