@@ -1,5 +1,5 @@
-const typescriptESLint = require('@typescript-eslint');
-const typeScriptESLintInternal = require('@typescript-eslint');
+const typescriptESLint = require('@typescript-eslint/eslint-plugin');
+const typeScriptESLintInternal = require('@typescript-eslint/eslint-plugin-internal');
 const deprecation = require('eslint-plugin-deprecation');
 const eslintComments = require('eslint-plugin-eslint-comments');
 const eslintPlugin = require('eslint-plugin-eslint-plugin');
@@ -40,7 +40,7 @@ module.exports = [
     ],
   },
   js.configs.recommended,
-  eslintrc.extends([
+  ...eslintrc.extends([
     'plugin:eslint-plugin/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
