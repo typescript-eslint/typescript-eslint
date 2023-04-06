@@ -403,6 +403,23 @@ ${PARENT_INDENT}\``,
         },
       ],
     },
+    {
+      code: wrap`
+noFormat\`
+async function foo() {}
+async function bar() {}
+\``,
+      output: wrap`
+\`
+async function foo() {}
+async function bar() {}
+\``,
+      errors: [
+        {
+          messageId: 'noUnnecessaryNoFormat',
+        },
+      ],
+    },
 
     // sanity check that it handles suggestion output
     {

@@ -265,6 +265,7 @@ export default createRule<Options, MessageIds>({
       literal: TSESTree.TemplateLiteral,
       isErrorTest: boolean,
       isNoFormatTagged = false,
+      parent?: TSESTree.TaggedTemplateExpression,
     ): void {
       if (literal.quasis.length > 1) {
         // ignore template literals with ${expressions} for simplicity
@@ -391,11 +392,14 @@ export default createRule<Options, MessageIds>({
         }
       }
 
+      const code = lines.join('\n');
       if (isNoFormatTagged) {
+        if (parent) {
+          checkForUnnecesaryNoFormat(code, parent);
+        }
         return;
       }
 
-      const code = lines.join('\n');
       const formatted = prettierFormat(code, literal);
       if (formatted && formatted !== code) {
         const formattedIndented = requiresIndent
@@ -429,25 +433,47 @@ export default createRule<Options, MessageIds>({
       return tag.type === AST_NODE_TYPES.Identifier && tag.name === 'noFormat';
     }
 
+    function checkForUnnecesaryNoFormat(
+      text: string,
+      expr: TSESTree.TaggedTemplateExpression,
+    ): void {
+      // We silence the Prettier errors
+      // We only want to know if noFormat is needed or not
+      // by checking if the the current code is equal to the formatted output
+      const formatted = prettierFormat(text, expr.quasi, true);
+
+      if (formatted && formatted === text) {
+        context.report({
+          node: expr.quasi,
+          messageId: 'noUnnecessaryNoFormat',
+          fix(fixer) {
+            if (expr.loc.start.line === expr.loc.end.line) {
+              return fixer.replaceText(expr, `'${escapeTemplateString(text)}'`);
+            } else {
+              const parentIndent = getExpectedIndentForNode(
+                expr,
+                sourceCode.lines,
+              );
+              return fixer.replaceText(
+                expr,
+                `\`\n${escapeTemplateString(text)}\n${doIndent(
+                  '',
+                  parentIndent,
+                )}\``,
+              );
+            }
+          },
+        });
+      }
+    }
+
     function checkTaggedTemplateExpression(
       expr: TSESTree.TaggedTemplateExpression,
       isErrorTest: boolean,
     ): void {
       if (isNoFormatTemplateTag(expr.tag)) {
         const text = expr.quasi.quasis[0].value.cooked;
-
-        // We silence the Prettier errors
-        // We only want to know if noFormat is needed or not.
-        const formatted = prettierFormat(text, expr.quasi, true);
-        if (formatted && formatted === text) {
-          return context.report({
-            node: expr.quasi,
-            messageId: 'noUnnecessaryNoFormat',
-            fix(fixer) {
-              return fixer.replaceText(expr, `'${text}'`);
-            },
-          });
-        }
+        checkForUnnecesaryNoFormat(text, expr);
       } else {
         return;
       }
@@ -461,6 +487,7 @@ export default createRule<Options, MessageIds>({
         expr.quasi,
         isErrorTest,
         isNoFormatTemplateTag(expr.tag),
+        expr,
       );
     }
 
