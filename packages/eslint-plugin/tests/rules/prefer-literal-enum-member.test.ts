@@ -1,5 +1,5 @@
 import rule from '../../src/rules/prefer-literal-enum-member';
-import { noFormat, RuleTester } from '../RuleTester';
+import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
