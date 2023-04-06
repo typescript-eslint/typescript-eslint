@@ -127,7 +127,7 @@ const a = 1;
       ],
     },
 
-    // empty linems are valid when everything else is indented
+    // empty lines are valid when everything else is indented
     wrap`\`
 ${CODE_INDENT}const a = 1;
 
