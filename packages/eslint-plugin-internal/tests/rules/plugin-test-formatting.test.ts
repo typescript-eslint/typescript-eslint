@@ -1,3 +1,4 @@
+import { noFormat } from '@typescript-eslint/utils/src/eslint-utils';
 import rule from '../../src/rules/plugin-test-formatting';
 import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
@@ -51,7 +52,6 @@ ${PARENT_INDENT}\``,
     wrap`\`
 const a = 1;
 ${PARENT_INDENT}\``,
-    wrap`noFormat\`const a = 1;\``,
     // sanity check suggestion validation
     // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
     `
@@ -391,6 +391,16 @@ ${PARENT_INDENT}\``,
       errors: [
         {
           messageId: 'invalidFormatting',
+        },
+      ],
+    },
+    // noUnnecessaryNoFormat
+    {
+      code: wrap`noFormat\`const a = 1;\``,
+      output: wrap`'const a = 1;'`,
+      errors: [
+        {
+          messageId: 'noUnnecessaryNoFormat',
         },
       ],
     },

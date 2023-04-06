@@ -95,6 +95,7 @@ type Options = [
 type MessageIds =
   | 'invalidFormatting'
   | 'invalidFormattingErrorTest'
+  | 'noUnnecessaryNoFormat'
   | 'singleLineQuotes'
   | 'templateLiteralEmptyEnds'
   | 'templateLiteralLastLineIndent'
@@ -128,6 +129,8 @@ export default createRule<Options, MessageIds>({
         'This snippet should be formatted correctly. Use the fixer to format the code.',
       invalidFormattingErrorTest:
         'This snippet should be formatted correctly. Use the fixer to format the code. Note that the automated fixer may break your test locations.',
+      noUnnecessaryNoFormat:
+        'NoFormat is unnecessary here. Use the fixer to remove it.',
       singleLineQuotes: 'Use quotes (\' or ") for single line tests.',
       templateLiteralEmptyEnds:
         'Template literals must start and end with an empty line.',
@@ -157,6 +160,7 @@ export default createRule<Options, MessageIds>({
     function prettierFormat(
       code: string,
       location: TSESTree.Node,
+      silent?: boolean,
     ): string | null {
       if (formatWithPrettier === false) {
         return null;
@@ -186,13 +190,16 @@ export default createRule<Options, MessageIds>({
           message = message.replace(/ \(\d+:\d+\)$/, '');
         }
 
-        context.report({
-          node: location,
-          messageId: 'prettierException',
-          data: {
-            message,
-          },
-        });
+        if (!silent) {
+          context.report({
+            node: location,
+            messageId: 'prettierException',
+            data: {
+              message,
+            },
+          });
+        }
+
         return null;
       }
     }
@@ -426,7 +433,22 @@ export default createRule<Options, MessageIds>({
       expr: TSESTree.TaggedTemplateExpression,
       isErrorTest: boolean,
     ): void {
-      if (!isNoFormatTemplateTag(expr.tag)) {
+      if (isNoFormatTemplateTag(expr.tag)) {
+        const text = expr.quasi.quasis[0].value.cooked;
+
+        // We silence the Prettier errors
+        // We only want to know if noFormat is needed or not.
+        const formatted = prettierFormat(text, expr.quasi, true);
+        if (formatted && formatted === text) {
+          return context.report({
+            node: expr.quasi,
+            messageId: 'noUnnecessaryNoFormat',
+            fix(fixer) {
+              return fixer.replaceText(expr, `'${text}'`);
+            },
+          });
+        }
+      } else {
         return;
       }
 
