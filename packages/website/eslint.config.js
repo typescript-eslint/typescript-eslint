@@ -10,11 +10,11 @@ const eslintrc = new FlatCompat({
 
 module.exports = [
   ...baseConfig,
-  ...eslintrc.extends([
+  ...eslintrc.extends(
     'plugin:jsx-a11y/recommended',
     'plugin:react/recommended',
     'plugin:react-hooks/recommended',
-  ]),
+  ),
   {
     plugins: {
       react,

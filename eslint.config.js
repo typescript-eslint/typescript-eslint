@@ -19,14 +19,14 @@ const eslintrc = new FlatCompat({
 module.exports = [
   {
     ignores: [
-      'node_modules',
-      'dist',
-      'jest.config.js',
-      'fixtures',
-      'coverage',
-      '__snapshots__',
-      '.docusaurus',
-      'build',
+      '**/node_modules',
+      '**/dist',
+      '**/jest.config.js',
+      '**/fixtures',
+      '**/coverage',
+      '**/__snapshots__',
+      '**/.docusaurus',
+      '**/build',
 
       'packages/eslint-plugin-tslint/tests',
 
@@ -40,11 +40,11 @@ module.exports = [
     ],
   },
   js.configs.recommended,
-  ...eslintrc.extends([
+  ...eslintrc.extends(
     'plugin:eslint-plugin/recommended',
     'plugin:@typescript-eslint/recommended',
     'plugin:@typescript-eslint/recommended-requiring-type-checking',
-  ]),
+  ),
   {
     plugins: {
       '@typescript-eslint': typescriptESLint,

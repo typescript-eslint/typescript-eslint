@@ -8,7 +8,9 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/typescript-estree/**/*.ts"]
+        "lintFilePatterns": ["packages/typescript-estree/**/*.ts"],
+
+        "eslintConfig": "eslint.config.js"
       }
     }
   }

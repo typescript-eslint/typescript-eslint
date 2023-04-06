@@ -9,7 +9,6 @@
       "outputs": ["{options.outputFile}"],
       "options": {
         "lintFilePatterns": ["packages/website/**/*.ts"],
-
         "eslintConfig": "packages/website/eslint.config.js"
       }
     }

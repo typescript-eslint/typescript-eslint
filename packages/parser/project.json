@@ -8,7 +8,9 @@
       "executor": "@nrwl/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/parser/**/*.ts"]
+        "lintFilePatterns": ["packages/parser/**/*.ts"],
+
+        "eslintConfig": "eslint.config.js"
       }
     }
   }
