@@ -443,6 +443,12 @@ export default createRule<Options, MessageIds>({
       const formatted = prettierFormat(text, expr.quasi, true);
 
       if (formatted && formatted === text) {
+        // We want the line after `noFormat`
+        const lineIdx = expr.loc.start.line;
+        const firstLineIndent = START_OF_LINE_WHITESPACE_MATCHER.exec(
+          sourceCode.lines[lineIdx],
+        )![1].length;
+
         context.report({
           node: expr.quasi,
           messageId: 'noUnnecessaryNoFormat',
@@ -450,15 +456,15 @@ export default createRule<Options, MessageIds>({
             if (expr.loc.start.line === expr.loc.end.line) {
               return fixer.replaceText(expr, `'${escapeTemplateString(text)}'`);
             } else {
-              const parentIndent = getExpectedIndentForNode(
-                expr,
-                sourceCode.lines,
-              );
+              const textIndented = text
+                .split('\n')
+                .map(l => doIndent(l, firstLineIndent))
+                .join('\n');
               return fixer.replaceText(
                 expr,
-                `\`\n${escapeTemplateString(text)}\n${doIndent(
+                `\`\n${escapeTemplateString(textIndented)}\n${doIndent(
                   '',
-                  parentIndent,
+                  firstLineIndent,
                 )}\``,
               );
             }

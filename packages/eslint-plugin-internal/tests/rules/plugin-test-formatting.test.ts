@@ -420,6 +420,23 @@ async function bar() {}
         },
       ],
     },
+    {
+      code: wrap`
+${PARENT_INDENT}noFormat\`
+${CODE_INDENT}async function bar() {}
+${CODE_INDENT}async function foo() {}
+${PARENT_INDENT}\``,
+      output: wrap`
+${PARENT_INDENT}\`
+${CODE_INDENT}async function bar() {}
+${CODE_INDENT}async function foo() {}
+${CODE_INDENT}\``,
+      errors: [
+        {
+          messageId: 'noUnnecessaryNoFormat',
+        },
+      ],
+    },
 
     // sanity check that it handles suggestion output
     {
