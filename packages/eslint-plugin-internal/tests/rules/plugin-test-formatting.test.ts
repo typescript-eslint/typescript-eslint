@@ -1,4 +1,3 @@
-import { noFormat } from '@typescript-eslint/utils/src/eslint-utils';
 import rule from '../../src/rules/plugin-test-formatting';
 import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
