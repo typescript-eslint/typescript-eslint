@@ -64,8 +64,6 @@ Safer alternatives to using the `allow*` options include:
   // result === 'The result of /[0-9]/.test("11") is true'
   ```
 
-````
-
 :::
 
 ### `allowAny`
@@ -79,7 +77,7 @@ Examples of code for this rule with `{ allowAny: true }`:
 ```ts
 let fn = (a: number, b: []) => a + b;
 let fn = (a: string, b: []) => a + b;
-````
+```
 
 #### ✅ Correct
 
