@@ -40,7 +40,7 @@ For example, instead of enabling the `allow*` options to concatenate strings and
 declare const value: boolean;
 
 - console.log("My value is: " + value);
-+ console.log("My value is:", value;
++ console.log("My value is:", value);
 ```
 
 :::
