@@ -349,7 +349,7 @@ ruleTester.run('typedef', rule, {
       ],
     },
     {
-      code: noFormat`
+      code: `
         type Test = {
           [i: string];
         };
@@ -916,7 +916,7 @@ class ClassName {
       ],
     },
     {
-      code: noFormat`
+      code: `
         type Test = {
           [i: string];
         };
@@ -951,7 +951,7 @@ class ClassName {
       ],
     },
     {
-      code: noFormat`
+      code: `
         interface Test {
           [i: string];
         }

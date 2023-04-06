@@ -57,7 +57,7 @@ enum ValidQuotedKeyWithAssignment {
   'a' = 1,
 }
     `,
-    noFormat`
+    `
 enum ValidKeyWithComputedSyntaxButNoComputedKey {
   ['a'],
 }

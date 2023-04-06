@@ -923,7 +923,7 @@ foo?.bar(/* comment */a,
       ],
     },
     {
-      code: noFormat`(a > b || {}).bar;`,
+      code: '(a > b || {}).bar;',
       errors: [
         {
           messageId: 'optionalChainSuggest',
@@ -1174,7 +1174,7 @@ foo?.bar(/* comment */a,
     },
     // two  errors
     {
-      code: noFormat`(!foo || !foo.bar || !foo.bar.baz) && (!baz || !baz.bar || !baz.bar.foo);`,
+      code: '(!foo || !foo.bar || !foo.bar.baz) && (!baz || !baz.bar || !baz.bar.foo);',
       output: null,
       errors: [
         {
@@ -1225,7 +1225,7 @@ foo?.bar(/* comment */a,
       ],
     },
     {
-      code: noFormat`import.meta && import.meta?.baz;`,
+      code: 'import.meta && import.meta?.baz;',
       output: null,
       errors: [
         {
@@ -1240,7 +1240,7 @@ foo?.bar(/* comment */a,
       ],
     },
     {
-      code: noFormat`!import.meta || !import.meta?.baz;`,
+      code: '!import.meta || !import.meta?.baz;',
       output: null,
       errors: [
         {
@@ -1255,7 +1255,7 @@ foo?.bar(/* comment */a,
       ],
     },
     {
-      code: noFormat`import.meta && import.meta?.() && import.meta?.().baz;`,
+      code: 'import.meta && import.meta?.() && import.meta?.().baz;',
       output: null,
       errors: [
         {

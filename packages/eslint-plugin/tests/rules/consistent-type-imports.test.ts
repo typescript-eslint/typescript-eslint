@@ -1618,7 +1618,7 @@ const a: Default = '';
       parserOptions: withMetaParserOptions,
     },
     {
-      code: noFormat`
+      code: `
         import type { Type } from 'foo';
         import { Foo, Bar } from 'foo';
         @deco
@@ -1778,7 +1778,7 @@ const a: Default = '';
       parserOptions: withMetaConfigParserOptions,
     },
     {
-      code: noFormat`
+      code: `
         import type { Type } from 'foo';
         import { Foo, Bar } from 'foo';
         @deco

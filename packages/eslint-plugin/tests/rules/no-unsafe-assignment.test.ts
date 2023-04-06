@@ -208,7 +208,7 @@ const [x] = [] as any[];
       ],
     }),
     ...batchedSingleLineTests({
-      code: noFormat`
+      code: `
 const x: Set<string> = new Set<any>();
 const x: Map<string, string> = new Map<string, any>();
 const x: Set<string[]> = new Set<any[]>();

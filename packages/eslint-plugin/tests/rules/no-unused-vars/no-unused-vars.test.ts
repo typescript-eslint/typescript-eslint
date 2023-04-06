@@ -403,7 +403,7 @@ export const map: { [name in Foo]: Bar } = {
     `,
     // 4.1 remapped mapped type
     {
-      code: noFormat`
+      code: `
 type Foo = 'a' | 'b' | 'c';
 type Bar = number;
 
@@ -746,7 +746,7 @@ export function foo() {
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/5152
     {
-      code: noFormat`
+      code: `
 function foo<T>(value: T): T {
   return { value };
 }
@@ -960,7 +960,7 @@ declare function A(A: string): string;
     },
     // 4.1 template literal types
     {
-      code: noFormat`
+      code: `
 type Color = 'red' | 'blue';
 type Quantity = 'one' | 'two';
 export type SeussFish = \`\${Quantity | Color} fish\`;

@@ -694,7 +694,7 @@ async function test() {
     },
     {
       options: ['always'],
-      code: noFormat`
+      code: `
 async function foo() {}
 async function bar() {}
 async function baz() {}
