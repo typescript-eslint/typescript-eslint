@@ -33,15 +33,38 @@ let foo = 1n + 1n;
 
 :::caution
 We generally recommend against using these options, as they limit which varieties of incorrect `+` usage can be checked.
+This in turn severely limits the validation that the rule can do to ensure that resulting strings and numbers are correct.
 
-For example, instead of enabling the `allow*` options to concatenate strings and other values, use APIs akin to `console.log` that allow passing multiple values:
+Safer alternatives to using the `allow*` options include:
 
-```diff
-declare const value: boolean;
+- Using variadic forms of logging APIs to avoid needing to `+` values.
+  ```ts
+  // Remove this line
+  console.log('The result is ' + true);
+  // Add this line
+  console.log('The result is', true);
+  ```
+- Using `.toFixed()` to coerce numbers to well-formed string representations:
+  ```ts
+  const number = 1.123456789;
+  const result = 'The number is ' + number.toFixed(2);
+  // result === 'The number is 1.12'
+  ```
+- Calling `.toString()` on other types to mark explicit and intentional string coercion:
+  ```ts
+  const arg = '11';
+  const regex = /[0-9]/;
+  const result =
+    'The result of ' +
+    regex.toString() +
+    '.test("' +
+    arg +
+    '") is ' +
+    regex.test(arg).toString();
+  // result === 'The result of /[0-9]/.test("11") is true'
+  ```
 
-- console.log("My value is: " + value);
-+ console.log("My value is:", value);
-```
+````
 
 :::
 
@@ -56,7 +79,7 @@ Examples of code for this rule with `{ allowAny: true }`:
 ```ts
 let fn = (a: number, b: []) => a + b;
 let fn = (a: string, b: []) => a + b;
-```
+````
 
 #### ✅ Correct
 
