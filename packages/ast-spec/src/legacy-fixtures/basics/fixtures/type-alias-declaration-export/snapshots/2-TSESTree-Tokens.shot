@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export TSESTree - Tokens 1`] = `
+[
+  Keyword {
+    type: "Keyword",
+    value: "export",
+
+    range: [73, 79],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 6, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "type",
+
+    range: [80, 84],
+    loc: {
+      start: { column: 7, line: 3 },
+      end: { column: 11, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "TestAlias",
+
+    range: [85, 94],
+    loc: {
+      start: { column: 12, line: 3 },
+      end: { column: 21, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [95, 96],
+    loc: {
+      start: { column: 22, line: 3 },
+      end: { column: 23, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "string",
+
+    range: [97, 103],
+    loc: {
+      start: { column: 24, line: 3 },
+      end: { column: 30, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "|",
+
+    range: [104, 105],
+    loc: {
+      start: { column: 31, line: 3 },
+      end: { column: 32, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "number",
+
+    range: [106, 112],
+    loc: {
+      start: { column: 33, line: 3 },
+      end: { column: 39, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [112, 113],
+    loc: {
+      start: { column: 39, line: 3 },
+      end: { column: 40, line: 3 },
+    },
+  },
+]
+`;

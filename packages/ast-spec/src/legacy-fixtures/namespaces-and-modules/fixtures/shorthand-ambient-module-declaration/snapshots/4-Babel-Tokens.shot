@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures namespaces-and-modules shorthand-ambient-module-declaration Babel - Tokens 1`] = `
+[
+  Identifier {
+    type: "Identifier",
+    value: "declare",
+
+    range: [73, 80],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 7, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "module",
+
+    range: [81, 87],
+    loc: {
+      start: { column: 8, line: 3 },
+      end: { column: 14, line: 3 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'hot-new-module'",
+
+    range: [88, 104],
+    loc: {
+      start: { column: 15, line: 3 },
+      end: { column: 31, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [104, 105],
+    loc: {
+      start: { column: 31, line: 3 },
+      end: { column: 32, line: 3 },
+    },
+  },
+]
+`;

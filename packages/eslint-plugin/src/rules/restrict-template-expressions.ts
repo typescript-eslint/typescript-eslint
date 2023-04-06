@@ -11,6 +11,7 @@ type Options = [
     allowNullish?: boolean;
     allowNumber?: boolean;
     allowRegExp?: boolean;
+    allowNever?: boolean;
   },
 ];
 
@@ -56,6 +57,11 @@ export default util.createRule<Options, MessageId>({
           allowRegExp: {
             description:
               'Whether to allow `regexp` typed values in template expressions.',
+            type: 'boolean',
+          },
+          allowNever: {
+            description:
+              'Whether to allow `never` typed values in template expressions.',
             type: 'boolean',
           },
         },
@@ -108,6 +114,10 @@ export default util.createRule<Options, MessageId>({
         options.allowNullish &&
         util.isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)
       ) {
+        return true;
+      }
+
+      if (options.allowNever && util.isTypeNeverType(type)) {
         return true;
       }
 

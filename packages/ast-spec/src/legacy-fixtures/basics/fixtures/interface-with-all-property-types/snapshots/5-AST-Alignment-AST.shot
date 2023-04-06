@@ -1,0 +1,696 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics interface-with-all-property-types AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSInterfaceDeclaration {
+        type: 'TSInterfaceDeclaration',
+        body: TSInterfaceBody {
+          type: 'TSInterfaceBody',
+          body: Array [
+            TSPropertySignature {
+              type: 'TSPropertySignature',
+              computed: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'baa',
+
+                range: [91, 94],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 5, line: 4 },
+                },
+              },
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSNumberKeyword {
+                  type: 'TSNumberKeyword',
+
+                  range: [96, 102],
+                  loc: {
+                    start: { column: 7, line: 4 },
+                    end: { column: 13, line: 4 },
+                  },
+                },
+
+                range: [94, 102],
+                loc: {
+                  start: { column: 5, line: 4 },
+                  end: { column: 13, line: 4 },
+                },
+              },
+
+              range: [91, 103],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 14, line: 4 },
+              },
+            },
+            TSPropertySignature {
+              type: 'TSPropertySignature',
+              computed: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'bar',
+
+                range: [106, 109],
+                loc: {
+                  start: { column: 2, line: 5 },
+                  end: { column: 5, line: 5 },
+                },
+              },
+              optional: true,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSNumberKeyword {
+                  type: 'TSNumberKeyword',
+
+                  range: [112, 118],
+                  loc: {
+                    start: { column: 8, line: 5 },
+                    end: { column: 14, line: 5 },
+                  },
+                },
+
+                range: [110, 118],
+                loc: {
+                  start: { column: 6, line: 5 },
+                  end: { column: 14, line: 5 },
+                },
+              },
+
+              range: [106, 119],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 15, line: 5 },
+              },
+            },
+            TSPropertySignature {
+              type: 'TSPropertySignature',
+              computed: true,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'bax',
+
+                range: [123, 126],
+                loc: {
+                  start: { column: 3, line: 6 },
+                  end: { column: 6, line: 6 },
+                },
+              },
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [129, 135],
+                  loc: {
+                    start: { column: 9, line: 6 },
+                    end: { column: 15, line: 6 },
+                  },
+                },
+
+                range: [127, 135],
+                loc: {
+                  start: { column: 7, line: 6 },
+                  end: { column: 15, line: 6 },
+                },
+              },
+
+              range: [122, 136],
+              loc: {
+                start: { column: 2, line: 6 },
+                end: { column: 16, line: 6 },
+              },
+            },
+            TSPropertySignature {
+              type: 'TSPropertySignature',
+              computed: true,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'baz',
+
+                range: [140, 143],
+                loc: {
+                  start: { column: 3, line: 7 },
+                  end: { column: 6, line: 7 },
+                },
+              },
+              optional: true,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [147, 153],
+                  loc: {
+                    start: { column: 10, line: 7 },
+                    end: { column: 16, line: 7 },
+                  },
+                },
+
+                range: [145, 153],
+                loc: {
+                  start: { column: 8, line: 7 },
+                  end: { column: 16, line: 7 },
+                },
+              },
+
+              range: [139, 154],
+              loc: {
+                start: { column: 2, line: 7 },
+                end: { column: 17, line: 7 },
+              },
+            },
+            TSIndexSignature {
+              type: 'TSIndexSignature',
+              parameters: Array [
+                Identifier {
+                  type: 'Identifier',
+                  name: 'eee',
+                  typeAnnotation: TSTypeAnnotation {
+                    type: 'TSTypeAnnotation',
+                    typeAnnotation: TSNumberKeyword {
+                      type: 'TSNumberKeyword',
+
+                      range: [163, 169],
+                      loc: {
+                        start: { column: 8, line: 8 },
+                        end: { column: 14, line: 8 },
+                      },
+                    },
+
+                    range: [161, 169],
+                    loc: {
+                      start: { column: 6, line: 8 },
+                      end: { column: 14, line: 8 },
+                    },
+                  },
+
+                  range: [158, 169],
+                  loc: {
+                    start: { column: 3, line: 8 },
+                    end: { column: 14, line: 8 },
+                  },
+                },
+              ],
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [172, 178],
+                  loc: {
+                    start: { column: 17, line: 8 },
+                    end: { column: 23, line: 8 },
+                  },
+                },
+
+                range: [170, 178],
+                loc: {
+                  start: { column: 15, line: 8 },
+                  end: { column: 23, line: 8 },
+                },
+              },
+
+              range: [157, 179],
+              loc: {
+                start: { column: 2, line: 8 },
+                end: { column: 24, line: 8 },
+              },
+            },
+            TSMethodSignature {
+              type: 'TSMethodSignature',
+              computed: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'doo',
+
+                range: [182, 185],
+                loc: {
+                  start: { column: 2, line: 9 },
+                  end: { column: 5, line: 9 },
+                },
+              },
+              kind: 'method',
+-             params: Array [],
+-             returnType: TSTypeAnnotation {
++             parameters: Array [],
++             typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSVoidKeyword {
+                  type: 'TSVoidKeyword',
+
+                  range: [189, 193],
+                  loc: {
+                    start: { column: 9, line: 9 },
+                    end: { column: 13, line: 9 },
+                  },
+                },
+
+                range: [187, 193],
+                loc: {
+                  start: { column: 7, line: 9 },
+                  end: { column: 13, line: 9 },
+                },
+              },
+
+              range: [182, 194],
+              loc: {
+                start: { column: 2, line: 9 },
+                end: { column: 14, line: 9 },
+              },
+            },
+            TSMethodSignature {
+              type: 'TSMethodSignature',
+              computed: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'coo',
+
+                range: [197, 200],
+                loc: {
+                  start: { column: 2, line: 10 },
+                  end: { column: 5, line: 10 },
+                },
+              },
+              kind: 'method',
+              optional: true,
+-             params: Array [
++             parameters: Array [
+                Identifier {
+                  type: 'Identifier',
+                  name: 'a',
+
+                  range: [202, 203],
+                  loc: {
+                    start: { column: 7, line: 10 },
+                    end: { column: 8, line: 10 },
+                  },
+                },
+                Identifier {
+                  type: 'Identifier',
+                  name: 'b',
+
+                  range: [205, 206],
+                  loc: {
+                    start: { column: 10, line: 10 },
+                    end: { column: 11, line: 10 },
+                  },
+                },
+                Identifier {
+                  type: 'Identifier',
+                  name: 'c',
+
+                  range: [208, 209],
+                  loc: {
+                    start: { column: 13, line: 10 },
+                    end: { column: 14, line: 10 },
+                  },
+                },
+              ],
+-             returnType: TSTypeAnnotation {
++             typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSVoidKeyword {
+                  type: 'TSVoidKeyword',
+
+                  range: [212, 216],
+                  loc: {
+                    start: { column: 17, line: 10 },
+                    end: { column: 21, line: 10 },
+                  },
+                },
+
+                range: [210, 216],
+                loc: {
+                  start: { column: 15, line: 10 },
+                  end: { column: 21, line: 10 },
+                },
+              },
+
+              range: [197, 217],
+              loc: {
+                start: { column: 2, line: 10 },
+                end: { column: 22, line: 10 },
+              },
+            },
+            TSMethodSignature {
+              type: 'TSMethodSignature',
+              computed: true,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'loo',
+
+                range: [221, 224],
+                loc: {
+                  start: { column: 3, line: 11 },
+                  end: { column: 6, line: 11 },
+                },
+              },
+              kind: 'method',
+              optional: true,
+-             params: Array [
++             parameters: Array [
+                Identifier {
+                  type: 'Identifier',
+                  name: 'a',
+
+                  range: [227, 228],
+                  loc: {
+                    start: { column: 9, line: 11 },
+                    end: { column: 10, line: 11 },
+                  },
+                },
+                Identifier {
+                  type: 'Identifier',
+                  name: 'b',
+
+                  range: [230, 231],
+                  loc: {
+                    start: { column: 12, line: 11 },
+                    end: { column: 13, line: 11 },
+                  },
+                },
+                Identifier {
+                  type: 'Identifier',
+                  name: 'c',
+
+                  range: [233, 234],
+                  loc: {
+                    start: { column: 15, line: 11 },
+                    end: { column: 16, line: 11 },
+                  },
+                },
+              ],
+-             returnType: TSTypeAnnotation {
++             typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSVoidKeyword {
+                  type: 'TSVoidKeyword',
+
+                  range: [237, 241],
+                  loc: {
+                    start: { column: 19, line: 11 },
+                    end: { column: 23, line: 11 },
+                  },
+                },
+
+                range: [235, 241],
+                loc: {
+                  start: { column: 17, line: 11 },
+                  end: { column: 23, line: 11 },
+                },
+              },
+
+              range: [220, 242],
+              loc: {
+                start: { column: 2, line: 11 },
+                end: { column: 24, line: 11 },
+              },
+            },
+            TSMethodSignature {
+              type: 'TSMethodSignature',
+              computed: false,
+              key: Identifier {
+                type: 'Identifier',
+                name: 'boo',
+
+                range: [245, 248],
+                loc: {
+                  start: { column: 2, line: 12 },
+                  end: { column: 5, line: 12 },
+                },
+              },
+              kind: 'method',
+-             params: Array [
++             parameters: Array [
+                Identifier {
+                  type: 'Identifier',
+                  name: 'a',
+
+                  range: [252, 253],
+                  loc: {
+                    start: { column: 9, line: 12 },
+                    end: { column: 10, line: 12 },
+                  },
+                },
+                Identifier {
+                  type: 'Identifier',
+                  name: 'b',
+
+                  range: [255, 256],
+                  loc: {
+                    start: { column: 12, line: 12 },
+                    end: { column: 13, line: 12 },
+                  },
+                },
+                Identifier {
+                  type: 'Identifier',
+                  name: 'c',
+
+                  range: [258, 259],
+                  loc: {
+                    start: { column: 15, line: 12 },
+                    end: { column: 16, line: 12 },
+                  },
+                },
+              ],
+-             returnType: TSTypeAnnotation {
++             typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSVoidKeyword {
+                  type: 'TSVoidKeyword',
+
+                  range: [262, 266],
+                  loc: {
+                    start: { column: 19, line: 12 },
+                    end: { column: 23, line: 12 },
+                  },
+                },
+
+                range: [260, 266],
+                loc: {
+                  start: { column: 17, line: 12 },
+                  end: { column: 23, line: 12 },
+                },
+              },
+              typeParameters: TSTypeParameterDeclaration {
+                type: 'TSTypeParameterDeclaration',
+                params: Array [
+                  TSTypeParameter {
+                    type: 'TSTypeParameter',
+-                   const: false,
+-                   in: false,
+-                   name: Identifier {
+-                     type: 'Identifier',
+-                     name: 'J',
+-
+-                     range: [249, 250],
+-                     loc: {
+-                       start: { column: 6, line: 12 },
+-                       end: { column: 7, line: 12 },
+-                     },
+-                   },
+-                   out: false,
++                   name: 'J',
+
+                    range: [249, 250],
+                    loc: {
+                      start: { column: 6, line: 12 },
+                      end: { column: 7, line: 12 },
+                    },
+                  },
+                ],
+
+                range: [248, 251],
+                loc: {
+                  start: { column: 5, line: 12 },
+                  end: { column: 8, line: 12 },
+                },
+              },
+
+              range: [245, 267],
+              loc: {
+                start: { column: 2, line: 12 },
+                end: { column: 24, line: 12 },
+              },
+            },
+            TSConstructSignatureDeclaration {
+              type: 'TSConstructSignatureDeclaration',
+-             params: Array [
++             parameters: Array [
+                Identifier {
+                  type: 'Identifier',
+                  name: 'a',
+
+                  range: [275, 276],
+                  loc: {
+                    start: { column: 7, line: 13 },
+                    end: { column: 8, line: 13 },
+                  },
+                },
+                Identifier {
+                  type: 'Identifier',
+                  name: 'b',
+                  optional: true,
+
+                  range: [278, 280],
+                  loc: {
+                    start: { column: 10, line: 13 },
+                    end: { column: 12, line: 13 },
+                  },
+                },
+              ],
+-             returnType: TSTypeAnnotation {
++             typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [283, 289],
+                  loc: {
+                    start: { column: 15, line: 13 },
+                    end: { column: 21, line: 13 },
+                  },
+                },
+
+                range: [281, 289],
+                loc: {
+                  start: { column: 13, line: 13 },
+                  end: { column: 21, line: 13 },
+                },
+              },
+
+              range: [270, 290],
+              loc: {
+                start: { column: 2, line: 13 },
+                end: { column: 22, line: 13 },
+              },
+            },
+            TSConstructSignatureDeclaration {
+              type: 'TSConstructSignatureDeclaration',
+-             params: Array [
++             parameters: Array [
+                Identifier {
+                  type: 'Identifier',
+                  name: 'a',
+
+                  range: [301, 302],
+                  loc: {
+                    start: { column: 10, line: 14 },
+                    end: { column: 11, line: 14 },
+                  },
+                },
+                Identifier {
+                  type: 'Identifier',
+                  name: 'b',
+                  optional: true,
+
+                  range: [304, 306],
+                  loc: {
+                    start: { column: 13, line: 14 },
+                    end: { column: 15, line: 14 },
+                  },
+                },
+              ],
+-             returnType: TSTypeAnnotation {
++             typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [309, 315],
+                  loc: {
+                    start: { column: 18, line: 14 },
+                    end: { column: 24, line: 14 },
+                  },
+                },
+
+                range: [307, 315],
+                loc: {
+                  start: { column: 16, line: 14 },
+                  end: { column: 24, line: 14 },
+                },
+              },
+              typeParameters: TSTypeParameterDeclaration {
+                type: 'TSTypeParameterDeclaration',
+                params: Array [
+                  TSTypeParameter {
+                    type: 'TSTypeParameter',
+-                   const: false,
+-                   in: false,
+-                   name: Identifier {
+-                     type: 'Identifier',
+-                     name: 'F',
+-
+-                     range: [298, 299],
+-                     loc: {
+-                       start: { column: 7, line: 14 },
+-                       end: { column: 8, line: 14 },
+-                     },
+-                   },
+-                   out: false,
++                   name: 'F',
+
+                    range: [298, 299],
+                    loc: {
+                      start: { column: 7, line: 14 },
+                      end: { column: 8, line: 14 },
+                    },
+                  },
+                ],
+
+                range: [297, 300],
+                loc: {
+                  start: { column: 6, line: 14 },
+                  end: { column: 9, line: 14 },
+                },
+              },
+
+              range: [293, 316],
+              loc: {
+                start: { column: 2, line: 14 },
+                end: { column: 25, line: 14 },
+              },
+            },
+          ],
+
+          range: [87, 318],
+          loc: {
+            start: { column: 14, line: 3 },
+            end: { column: 1, line: 15 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'Foo',
+
+          range: [83, 86],
+          loc: {
+            start: { column: 10, line: 3 },
+            end: { column: 13, line: 3 },
+          },
+        },
+
+        range: [73, 318],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 15 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 319],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 16 },
+    },
+  }"
+`;

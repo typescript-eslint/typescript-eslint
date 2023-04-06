@@ -2,17 +2,17 @@
 
 exports[`class expression private-identifier 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"Foo">,
           node: VariableDeclarator$1,
         },
       ],
       name: "Foo",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"Foo">,
           init: true,
@@ -28,18 +28,18 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$3,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -48,7 +48,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
       ],
@@ -56,22 +56,22 @@ ScopeManager {
     ClassScope$2 {
       block: ClassExpression$2,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {},
       type: "class",
       upper: GlobalScope$1,
-      variables: Array [],
+      variables: [],
     },
     FunctionScope$3 {
       block: FunctionExpression$4,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "arguments" => Variable$3,
       },
       type: "function",
       upper: ClassScope$2,
-      variables: Array [
+      variables: [
         Variable$3,
       ],
     },

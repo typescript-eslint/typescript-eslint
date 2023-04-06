@@ -65,7 +65,7 @@ export default util.createRule({
         case AST_NODE_TYPES.TSDeclareFunction:
         case AST_NODE_TYPES.FunctionDeclaration: {
           const name = member.id?.name ?? null;
-          if (name === null) {
+          if (name == null) {
             return null;
           }
           return {
@@ -143,7 +143,7 @@ export default util.createRule({
 
         members.forEach(member => {
           const method = getMemberMethod(member);
-          if (method === null) {
+          if (method == null) {
             lastMethod = null;
             return;
           }

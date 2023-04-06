@@ -1,1 +1,0 @@
-<foo bar="baz" qux={quz} {...rest}>test</foo>

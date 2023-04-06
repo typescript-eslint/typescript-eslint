@@ -1,0 +1,96 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics function-with-type-parameters-that-have-comments TSESTree - Tokens 1`] = `
+[
+  Keyword {
+    type: "Keyword",
+    value: "function",
+
+    range: [73, 81],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 8, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "compare",
+
+    range: [82, 89],
+    loc: {
+      start: { column: 9, line: 3 },
+      end: { column: 16, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "<",
+
+    range: [89, 90],
+    loc: {
+      start: { column: 16, line: 3 },
+      end: { column: 17, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "T",
+
+    range: [102, 103],
+    loc: {
+      start: { column: 29, line: 3 },
+      end: { column: 30, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ">",
+
+    range: [103, 104],
+    loc: {
+      start: { column: 30, line: 3 },
+      end: { column: 31, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [104, 105],
+    loc: {
+      start: { column: 31, line: 3 },
+      end: { column: 32, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [105, 106],
+    loc: {
+      start: { column: 32, line: 3 },
+      end: { column: 33, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [107, 108],
+    loc: {
+      start: { column: 34, line: 3 },
+      end: { column: 35, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [108, 109],
+    loc: {
+      start: { column: 35, line: 3 },
+      end: { column: 36, line: 3 },
+    },
+  },
+]
+`;

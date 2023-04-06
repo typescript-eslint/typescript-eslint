@@ -44,6 +44,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "kind": "module",
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -98,6 +99,7 @@ Object {
               ],
               "type": "Identifier",
             },
+            "kind": "namespace",
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -151,6 +153,7 @@ Object {
         ],
         "type": "Identifier",
       },
+      "kind": "global",
       "loc": Object {
         "end": Object {
           "column": 1,

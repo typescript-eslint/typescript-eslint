@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics function-with-type-parameters-that-have-comments Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [107, 109],
+        loc: {
+          start: { column: 34, line: 3 },
+          end: { column: 36, line: 3 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "compare",
+
+        range: [82, 89],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 16, line: 3 },
+        },
+      },
+      params: [],
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            name: "T",
+
+            range: [102, 103],
+            loc: {
+              start: { column: 29, line: 3 },
+              end: { column: 30, line: 3 },
+            },
+          },
+        ],
+
+        range: [89, 104],
+        loc: {
+          start: { column: 16, line: 3 },
+          end: { column: 31, line: 3 },
+        },
+      },
+
+      range: [73, 109],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 36, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 110],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

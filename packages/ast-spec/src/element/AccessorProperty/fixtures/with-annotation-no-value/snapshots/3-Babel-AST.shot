@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures element AccessorProperty with-annotation-no-value Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          ClassAccessorProperty {
+            type: "ClassAccessorProperty",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "prop",
+
+              range: [23, 27],
+              loc: {
+                start: { column: 11, line: 2 },
+                end: { column: 15, line: 2 },
+              },
+            },
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [29, 35],
+                loc: {
+                  start: { column: 17, line: 2 },
+                  end: { column: 23, line: 2 },
+                },
+              },
+
+              range: [27, 35],
+              loc: {
+                start: { column: 15, line: 2 },
+                end: { column: 23, line: 2 },
+              },
+            },
+            value: null,
+
+            range: [14, 36],
+            loc: {
+              start: { column: 2, line: 2 },
+              end: { column: 24, line: 2 },
+            },
+          },
+        ],
+
+        range: [10, 38],
+        loc: {
+          start: { column: 10, line: 1 },
+          end: { column: 1, line: 3 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "Foo",
+
+        range: [6, 9],
+        loc: {
+          start: { column: 6, line: 1 },
+          end: { column: 9, line: 1 },
+        },
+      },
+      superClass: null,
+
+      range: [0, 38],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 1, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 39],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

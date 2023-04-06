@@ -3,6 +3,139 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.57.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.0...v5.57.1) (2023-04-03)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
+# [5.57.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.56.0...v5.57.0) (2023-03-27)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
+# [5.56.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.55.0...v5.56.0) (2023-03-20)
+
+
+### Bug Fixes
+
+* **eslint-plugin-internal:** version import ([#6680](https://github.com/typescript-eslint/typescript-eslint/issues/6680)) ([312225f](https://github.com/typescript-eslint/typescript-eslint/commit/312225faebfab1b7e079140056950fe1b3bc9436))
+
+
+
+
+
+# [5.55.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.54.1...v5.55.0) (2023-03-13)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
+## [5.54.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.54.0...v5.54.1) (2023-03-06)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
+# [5.54.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.53.0...v5.54.0) (2023-02-27)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
+# [5.53.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.52.0...v5.53.0) (2023-02-20)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
+# [5.52.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.51.0...v5.52.0) (2023-02-13)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
+# [5.51.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.50.0...v5.51.0) (2023-02-06)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
+# [5.50.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.49.0...v5.50.0) (2023-01-31)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
+# [5.49.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.2...v5.49.0) (2023-01-23)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
+## [5.48.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.1...v5.48.2) (2023-01-16)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
+## [5.48.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.0...v5.48.1) (2023-01-09)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+
+
+
+
+# [5.48.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.47.1...v5.48.0) (2023-01-02)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+## [5.47.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.47.0...v5.47.1) (2022-12-26)
+
+### Bug Fixes
+
+- **ast-spec:** correct some incorrect ast types ([#6257](https://github.com/typescript-eslint/typescript-eslint/issues/6257)) ([0f3f645](https://github.com/typescript-eslint/typescript-eslint/commit/0f3f64571ea5d938081b1a9f3fd1495765201700))
+
+# [5.47.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.46.1...v5.47.0) (2022-12-19)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+## [5.46.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.46.0...v5.46.1) (2022-12-12)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+# [5.46.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.45.1...v5.46.0) (2022-12-08)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+## [5.45.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.45.0...v5.45.1) (2022-12-05)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
 # [5.45.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.44.0...v5.45.0) (2022-11-28)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal

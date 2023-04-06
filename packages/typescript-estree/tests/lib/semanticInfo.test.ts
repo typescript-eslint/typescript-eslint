@@ -365,7 +365,7 @@ function testIsolatedFile(
   const declaration = (parseResult.ast.body[0] as TSESTree.VariableDeclaration)
     .declarations[0];
   const arrayMember = (declaration.init! as TSESTree.ArrayExpression)
-    .elements[0];
+    .elements[0]!;
   expect(parseResult).toHaveProperty('services.esTreeNodeToTSNodeMap');
 
   // get corresponding TS node

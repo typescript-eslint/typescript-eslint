@@ -8,6 +8,7 @@ import type { CanonicalPath } from './shared';
 import {
   canonicalDirname,
   createDefaultCompilerOptionsFromExtra,
+  createHash,
   getCanonicalFileName,
   getModuleResolver,
 } from './shared';
@@ -103,19 +104,6 @@ function diagnosticReporter(diagnostic: ts.Diagnostic): void {
   throw new Error(
     ts.flattenDiagnosticMessageText(diagnostic.messageText, ts.sys.newLine),
   );
-}
-
-/**
- * Hash content for compare content.
- * @param content hashed contend
- * @returns hashed result
- */
-function createHash(content: string): string {
-  // No ts.sys in browser environments.
-  if (ts.sys?.createHash) {
-    return ts.sys.createHash(content);
-  }
-  return content;
 }
 
 function updateCachedFileList(
@@ -282,6 +270,7 @@ function createWatchProgram(
   ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
 
   if (parseSettings.moduleResolver) {
+    // eslint-disable-next-line deprecation/deprecation -- intentional for older TS versions
     watchCompilerHost.resolveModuleNames = getModuleResolver(
       parseSettings.moduleResolver,
     ).resolveModuleNames;

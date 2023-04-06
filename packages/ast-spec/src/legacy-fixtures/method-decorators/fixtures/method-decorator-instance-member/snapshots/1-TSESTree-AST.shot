@@ -1,0 +1,115 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures method-decorators method-decorator-instance-member TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            decorators: [
+              Decorator {
+                type: "Decorator",
+                expression: Identifier {
+                  type: "Identifier",
+                  name: "onlyRead",
+
+                  range: [86, 94],
+                  loc: {
+                    start: { column: 3, line: 4 },
+                    end: { column: 11, line: 4 },
+                  },
+                },
+
+                range: [85, 94],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 11, line: 4 },
+                },
+              },
+            ],
+            key: Identifier {
+              type: "Identifier",
+              name: "instanceMethod",
+
+              range: [97, 111],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 16, line: 5 },
+              },
+            },
+            kind: "method",
+            override: false,
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [],
+
+                range: [114, 116],
+                loc: {
+                  start: { column: 19, line: 5 },
+                  end: { column: 21, line: 5 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: [],
+
+              range: [111, 116],
+              loc: {
+                start: { column: 16, line: 5 },
+                end: { column: 21, line: 5 },
+              },
+            },
+
+            range: [85, 116],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 21, line: 5 },
+            },
+          },
+        ],
+
+        range: [81, 118],
+        loc: {
+          start: { column: 8, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "A",
+
+        range: [79, 80],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 7, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 118],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 119],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 7 },
+  },
+}
+`;

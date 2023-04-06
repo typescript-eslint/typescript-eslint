@@ -1,5 +1,5 @@
 {
-  "name": "@typescript-eslint/eslint-plugin",
+  "name": "eslint-plugin",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
   "implicitDependencies": [],

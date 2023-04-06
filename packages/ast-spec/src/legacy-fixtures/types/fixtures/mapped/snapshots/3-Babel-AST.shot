@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types mapped Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "map",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSMappedType {
+                type: "TSMappedType",
+                nameType: null,
+                typeAnnotation: TSNumberKeyword {
+                  type: "TSNumberKeyword",
+
+                  range: [99, 105],
+                  loc: {
+                    start: { column: 26, line: 3 },
+                    end: { column: 32, line: 3 },
+                  },
+                },
+                typeParameter: TSTypeParameter {
+                  type: "TSTypeParameter",
+                  constraint: TSStringKeyword {
+                    type: "TSStringKeyword",
+
+                    range: [90, 96],
+                    loc: {
+                      start: { column: 17, line: 3 },
+                      end: { column: 23, line: 3 },
+                    },
+                  },
+                  name: "P",
+
+                  range: [85, 96],
+                  loc: {
+                    start: { column: 12, line: 3 },
+                    end: { column: 23, line: 3 },
+                  },
+                },
+
+                range: [82, 107],
+                loc: {
+                  start: { column: 9, line: 3 },
+                  end: { column: 34, line: 3 },
+                },
+              },
+
+              range: [80, 107],
+              loc: {
+                start: { column: 7, line: 3 },
+                end: { column: 34, line: 3 },
+              },
+            },
+
+            range: [77, 107],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 34, line: 3 },
+            },
+          },
+          init: null,
+
+          range: [77, 107],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 34, line: 3 },
+          },
+        },
+      ],
+      kind: "let",
+
+      range: [73, 108],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 35, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 109],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

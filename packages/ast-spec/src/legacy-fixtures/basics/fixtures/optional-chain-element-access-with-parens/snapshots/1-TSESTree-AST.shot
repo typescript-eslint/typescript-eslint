@@ -1,0 +1,578 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics optional-chain-element-access-with-parens TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: ChainExpression {
+              type: "ChainExpression",
+              expression: MemberExpression {
+                type: "MemberExpression",
+                computed: true,
+                object: Identifier {
+                  type: "Identifier",
+                  name: "one",
+
+                  range: [126, 129],
+                  loc: {
+                    start: { column: 2, line: 4 },
+                    end: { column: 5, line: 4 },
+                  },
+                },
+                optional: true,
+                property: Literal {
+                  type: "Literal",
+                  raw: "2",
+                  value: 2,
+
+                  range: [132, 133],
+                  loc: {
+                    start: { column: 8, line: 4 },
+                    end: { column: 9, line: 4 },
+                  },
+                },
+
+                range: [126, 134],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 10, line: 4 },
+                },
+              },
+
+              range: [126, 134],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 10, line: 4 },
+              },
+            },
+
+            range: [126, 135],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 11, line: 4 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: MemberExpression {
+              type: "MemberExpression",
+              computed: true,
+              object: ChainExpression {
+                type: "ChainExpression",
+                expression: MemberExpression {
+                  type: "MemberExpression",
+                  computed: true,
+                  object: Identifier {
+                    type: "Identifier",
+                    name: "one",
+
+                    range: [139, 142],
+                    loc: {
+                      start: { column: 3, line: 5 },
+                      end: { column: 6, line: 5 },
+                    },
+                  },
+                  optional: true,
+                  property: Literal {
+                    type: "Literal",
+                    raw: "2",
+                    value: 2,
+
+                    range: [145, 146],
+                    loc: {
+                      start: { column: 9, line: 5 },
+                      end: { column: 10, line: 5 },
+                    },
+                  },
+
+                  range: [139, 147],
+                  loc: {
+                    start: { column: 3, line: 5 },
+                    end: { column: 11, line: 5 },
+                  },
+                },
+
+                range: [139, 147],
+                loc: {
+                  start: { column: 3, line: 5 },
+                  end: { column: 11, line: 5 },
+                },
+              },
+              optional: false,
+              property: Literal {
+                type: "Literal",
+                raw: "3",
+                value: 3,
+
+                range: [149, 150],
+                loc: {
+                  start: { column: 13, line: 5 },
+                  end: { column: 14, line: 5 },
+                },
+              },
+
+              range: [138, 151],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 15, line: 5 },
+              },
+            },
+
+            range: [138, 152],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 16, line: 5 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: ChainExpression {
+              type: "ChainExpression",
+              expression: MemberExpression {
+                type: "MemberExpression",
+                computed: true,
+                object: MemberExpression {
+                  type: "MemberExpression",
+                  computed: true,
+                  object: Identifier {
+                    type: "Identifier",
+                    name: "one",
+
+                    range: [155, 158],
+                    loc: {
+                      start: { column: 2, line: 6 },
+                      end: { column: 5, line: 6 },
+                    },
+                  },
+                  optional: false,
+                  property: Literal {
+                    type: "Literal",
+                    raw: "2",
+                    value: 2,
+
+                    range: [159, 160],
+                    loc: {
+                      start: { column: 6, line: 6 },
+                      end: { column: 7, line: 6 },
+                    },
+                  },
+
+                  range: [155, 161],
+                  loc: {
+                    start: { column: 2, line: 6 },
+                    end: { column: 8, line: 6 },
+                  },
+                },
+                optional: true,
+                property: Literal {
+                  type: "Literal",
+                  raw: "3",
+                  value: 3,
+
+                  range: [164, 165],
+                  loc: {
+                    start: { column: 11, line: 6 },
+                    end: { column: 12, line: 6 },
+                  },
+                },
+
+                range: [155, 166],
+                loc: {
+                  start: { column: 2, line: 6 },
+                  end: { column: 13, line: 6 },
+                },
+              },
+
+              range: [155, 166],
+              loc: {
+                start: { column: 2, line: 6 },
+                end: { column: 13, line: 6 },
+              },
+            },
+
+            range: [155, 167],
+            loc: {
+              start: { column: 2, line: 6 },
+              end: { column: 14, line: 6 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: MemberExpression {
+              type: "MemberExpression",
+              computed: true,
+              object: ChainExpression {
+                type: "ChainExpression",
+                expression: MemberExpression {
+                  type: "MemberExpression",
+                  computed: true,
+                  object: MemberExpression {
+                    type: "MemberExpression",
+                    computed: true,
+                    object: Identifier {
+                      type: "Identifier",
+                      name: "one",
+
+                      range: [171, 174],
+                      loc: {
+                        start: { column: 3, line: 7 },
+                        end: { column: 6, line: 7 },
+                      },
+                    },
+                    optional: false,
+                    property: Literal {
+                      type: "Literal",
+                      raw: "2",
+                      value: 2,
+
+                      range: [175, 176],
+                      loc: {
+                        start: { column: 7, line: 7 },
+                        end: { column: 8, line: 7 },
+                      },
+                    },
+
+                    range: [171, 177],
+                    loc: {
+                      start: { column: 3, line: 7 },
+                      end: { column: 9, line: 7 },
+                    },
+                  },
+                  optional: true,
+                  property: Literal {
+                    type: "Literal",
+                    raw: "3",
+                    value: 3,
+
+                    range: [180, 181],
+                    loc: {
+                      start: { column: 12, line: 7 },
+                      end: { column: 13, line: 7 },
+                    },
+                  },
+
+                  range: [171, 182],
+                  loc: {
+                    start: { column: 3, line: 7 },
+                    end: { column: 14, line: 7 },
+                  },
+                },
+
+                range: [171, 182],
+                loc: {
+                  start: { column: 3, line: 7 },
+                  end: { column: 14, line: 7 },
+                },
+              },
+              optional: false,
+              property: Literal {
+                type: "Literal",
+                raw: "4",
+                value: 4,
+
+                range: [184, 185],
+                loc: {
+                  start: { column: 16, line: 7 },
+                  end: { column: 17, line: 7 },
+                },
+              },
+
+              range: [170, 186],
+              loc: {
+                start: { column: 2, line: 7 },
+                end: { column: 18, line: 7 },
+              },
+            },
+
+            range: [170, 187],
+            loc: {
+              start: { column: 2, line: 7 },
+              end: { column: 19, line: 7 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: ChainExpression {
+              type: "ChainExpression",
+              expression: MemberExpression {
+                type: "MemberExpression",
+                computed: true,
+                object: MemberExpression {
+                  type: "MemberExpression",
+                  computed: true,
+                  object: MemberExpression {
+                    type: "MemberExpression",
+                    computed: true,
+                    object: Identifier {
+                      type: "Identifier",
+                      name: "one",
+
+                      range: [190, 193],
+                      loc: {
+                        start: { column: 2, line: 8 },
+                        end: { column: 5, line: 8 },
+                      },
+                    },
+                    optional: false,
+                    property: Literal {
+                      type: "Literal",
+                      raw: "2",
+                      value: 2,
+
+                      range: [194, 195],
+                      loc: {
+                        start: { column: 6, line: 8 },
+                        end: { column: 7, line: 8 },
+                      },
+                    },
+
+                    range: [190, 196],
+                    loc: {
+                      start: { column: 2, line: 8 },
+                      end: { column: 8, line: 8 },
+                    },
+                  },
+                  optional: true,
+                  property: Literal {
+                    type: "Literal",
+                    raw: "3",
+                    value: 3,
+
+                    range: [199, 200],
+                    loc: {
+                      start: { column: 11, line: 8 },
+                      end: { column: 12, line: 8 },
+                    },
+                  },
+
+                  range: [190, 201],
+                  loc: {
+                    start: { column: 2, line: 8 },
+                    end: { column: 13, line: 8 },
+                  },
+                },
+                optional: true,
+                property: Literal {
+                  type: "Literal",
+                  raw: "4",
+                  value: 4,
+
+                  range: [204, 205],
+                  loc: {
+                    start: { column: 16, line: 8 },
+                    end: { column: 17, line: 8 },
+                  },
+                },
+
+                range: [190, 206],
+                loc: {
+                  start: { column: 2, line: 8 },
+                  end: { column: 18, line: 8 },
+                },
+              },
+
+              range: [190, 206],
+              loc: {
+                start: { column: 2, line: 8 },
+                end: { column: 18, line: 8 },
+              },
+            },
+
+            range: [190, 207],
+            loc: {
+              start: { column: 2, line: 8 },
+              end: { column: 19, line: 8 },
+            },
+          },
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: MemberExpression {
+              type: "MemberExpression",
+              computed: true,
+              object: ChainExpression {
+                type: "ChainExpression",
+                expression: MemberExpression {
+                  type: "MemberExpression",
+                  computed: true,
+                  object: MemberExpression {
+                    type: "MemberExpression",
+                    computed: true,
+                    object: MemberExpression {
+                      type: "MemberExpression",
+                      computed: true,
+                      object: Identifier {
+                        type: "Identifier",
+                        name: "one",
+
+                        range: [211, 214],
+                        loc: {
+                          start: { column: 3, line: 9 },
+                          end: { column: 6, line: 9 },
+                        },
+                      },
+                      optional: false,
+                      property: Literal {
+                        type: "Literal",
+                        raw: "2",
+                        value: 2,
+
+                        range: [215, 216],
+                        loc: {
+                          start: { column: 7, line: 9 },
+                          end: { column: 8, line: 9 },
+                        },
+                      },
+
+                      range: [211, 217],
+                      loc: {
+                        start: { column: 3, line: 9 },
+                        end: { column: 9, line: 9 },
+                      },
+                    },
+                    optional: true,
+                    property: Literal {
+                      type: "Literal",
+                      raw: "3",
+                      value: 3,
+
+                      range: [220, 221],
+                      loc: {
+                        start: { column: 12, line: 9 },
+                        end: { column: 13, line: 9 },
+                      },
+                    },
+
+                    range: [211, 222],
+                    loc: {
+                      start: { column: 3, line: 9 },
+                      end: { column: 14, line: 9 },
+                    },
+                  },
+                  optional: true,
+                  property: Literal {
+                    type: "Literal",
+                    raw: "4",
+                    value: 4,
+
+                    range: [225, 226],
+                    loc: {
+                      start: { column: 17, line: 9 },
+                      end: { column: 18, line: 9 },
+                    },
+                  },
+
+                  range: [211, 227],
+                  loc: {
+                    start: { column: 3, line: 9 },
+                    end: { column: 19, line: 9 },
+                  },
+                },
+
+                range: [211, 227],
+                loc: {
+                  start: { column: 3, line: 9 },
+                  end: { column: 19, line: 9 },
+                },
+              },
+              optional: false,
+              property: Literal {
+                type: "Literal",
+                raw: "5",
+                value: 5,
+
+                range: [229, 230],
+                loc: {
+                  start: { column: 21, line: 9 },
+                  end: { column: 22, line: 9 },
+                },
+              },
+
+              range: [210, 231],
+              loc: {
+                start: { column: 2, line: 9 },
+                end: { column: 23, line: 9 },
+              },
+            },
+
+            range: [210, 232],
+            loc: {
+              start: { column: 2, line: 9 },
+              end: { column: 24, line: 9 },
+            },
+          },
+        ],
+
+        range: [122, 234],
+        loc: {
+          start: { column: 49, line: 3 },
+          end: { column: 1, line: 10 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "processOptionalElementParens",
+
+        range: [82, 110],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 37, line: 3 },
+        },
+      },
+      params: [
+        Identifier {
+          type: "Identifier",
+          name: "one",
+          optional: true,
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSAnyKeyword {
+              type: "TSAnyKeyword",
+
+              range: [117, 120],
+              loc: {
+                start: { column: 44, line: 3 },
+                end: { column: 47, line: 3 },
+              },
+            },
+
+            range: [115, 120],
+            loc: {
+              start: { column: 42, line: 3 },
+              end: { column: 47, line: 3 },
+            },
+          },
+
+          range: [111, 120],
+          loc: {
+            start: { column: 38, line: 3 },
+            end: { column: 47, line: 3 },
+          },
+        },
+      ],
+
+      range: [73, 234],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 10 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 235],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 11 },
+  },
+}
+`;

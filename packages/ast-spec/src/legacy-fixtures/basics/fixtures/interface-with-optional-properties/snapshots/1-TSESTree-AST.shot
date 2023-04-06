@@ -1,0 +1,180 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics interface-with-optional-properties TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSInterfaceDeclaration {
+      type: "TSInterfaceDeclaration",
+      body: TSInterfaceBody {
+        type: "TSInterfaceBody",
+        body: [
+          TSPropertySignature {
+            type: "TSPropertySignature",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "foo",
+
+              range: [92, 95],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 5, line: 4 },
+              },
+            },
+            optional: true,
+
+            range: [92, 97],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 7, line: 4 },
+            },
+          },
+          TSPropertySignature {
+            type: "TSPropertySignature",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "bar",
+
+              range: [100, 103],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 5, line: 5 },
+              },
+            },
+            optional: true,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [106, 112],
+                loc: {
+                  start: { column: 8, line: 5 },
+                  end: { column: 14, line: 5 },
+                },
+              },
+
+              range: [104, 112],
+              loc: {
+                start: { column: 6, line: 5 },
+                end: { column: 14, line: 5 },
+              },
+            },
+
+            range: [100, 113],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 15, line: 5 },
+            },
+          },
+          TSMethodSignature {
+            type: "TSMethodSignature",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "baz",
+
+              range: [116, 119],
+              loc: {
+                start: { column: 2, line: 6 },
+                end: { column: 5, line: 6 },
+              },
+            },
+            kind: "method",
+            optional: true,
+            params: [
+              Identifier {
+                type: "Identifier",
+                name: "foo",
+
+                range: [121, 124],
+                loc: {
+                  start: { column: 7, line: 6 },
+                  end: { column: 10, line: 6 },
+                },
+              },
+              Identifier {
+                type: "Identifier",
+                name: "bar",
+                optional: true,
+                typeAnnotation: TSTypeAnnotation {
+                  type: "TSTypeAnnotation",
+                  typeAnnotation: TSStringKeyword {
+                    type: "TSStringKeyword",
+
+                    range: [132, 138],
+                    loc: {
+                      start: { column: 18, line: 6 },
+                      end: { column: 24, line: 6 },
+                    },
+                  },
+
+                  range: [130, 138],
+                  loc: {
+                    start: { column: 16, line: 6 },
+                    end: { column: 24, line: 6 },
+                  },
+                },
+
+                range: [126, 138],
+                loc: {
+                  start: { column: 12, line: 6 },
+                  end: { column: 24, line: 6 },
+                },
+              },
+              Identifier {
+                type: "Identifier",
+                name: "baz",
+                optional: true,
+
+                range: [140, 144],
+                loc: {
+                  start: { column: 26, line: 6 },
+                  end: { column: 30, line: 6 },
+                },
+              },
+            ],
+
+            range: [116, 146],
+            loc: {
+              start: { column: 2, line: 6 },
+              end: { column: 32, line: 6 },
+            },
+          },
+        ],
+
+        range: [88, 148],
+        loc: {
+          start: { column: 15, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "test",
+
+        range: [83, 87],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 14, line: 3 },
+        },
+      },
+
+      range: [73, 148],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 149],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

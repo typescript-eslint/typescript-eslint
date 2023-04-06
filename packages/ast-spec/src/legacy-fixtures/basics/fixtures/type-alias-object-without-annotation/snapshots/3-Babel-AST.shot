@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics type-alias-object-without-annotation Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "foo",
+
+        range: [78, 81],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 8, line: 3 },
+        },
+      },
+      typeAnnotation: TSTypeLiteral {
+        type: "TSTypeLiteral",
+        members: [
+          TSPropertySignature {
+            type: "TSPropertySignature",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "bar",
+
+              range: [86, 89],
+              loc: {
+                start: { column: 13, line: 3 },
+                end: { column: 16, line: 3 },
+              },
+            },
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [91, 97],
+                loc: {
+                  start: { column: 18, line: 3 },
+                  end: { column: 24, line: 3 },
+                },
+              },
+
+              range: [89, 97],
+              loc: {
+                start: { column: 16, line: 3 },
+                end: { column: 24, line: 3 },
+              },
+            },
+
+            range: [86, 98],
+            loc: {
+              start: { column: 13, line: 3 },
+              end: { column: 25, line: 3 },
+            },
+          },
+          TSPropertySignature {
+            type: "TSPropertySignature",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "baz",
+
+              range: [99, 102],
+              loc: {
+                start: { column: 26, line: 3 },
+                end: { column: 29, line: 3 },
+              },
+            },
+
+            range: [99, 102],
+            loc: {
+              start: { column: 26, line: 3 },
+              end: { column: 29, line: 3 },
+            },
+          },
+        ],
+
+        range: [84, 104],
+        loc: {
+          start: { column: 11, line: 3 },
+          end: { column: 31, line: 3 },
+        },
+      },
+
+      range: [73, 105],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 32, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 106],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

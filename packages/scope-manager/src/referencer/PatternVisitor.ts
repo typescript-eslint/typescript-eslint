@@ -97,10 +97,7 @@ class PatternVisitor extends VisitorBase {
 
     this.#callback(pattern, {
       topLevel: pattern === this.#rootPattern,
-      rest:
-        lastRestElement !== null &&
-        lastRestElement !== undefined &&
-        lastRestElement.argument === pattern,
+      rest: lastRestElement != null && lastRestElement.argument === pattern,
       assignments: this.#assignments,
     });
   }

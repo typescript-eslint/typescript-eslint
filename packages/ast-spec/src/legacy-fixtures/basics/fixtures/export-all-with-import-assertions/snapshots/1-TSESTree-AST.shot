@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics export-all-with-import-assertions TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExportAllDeclaration {
+      type: "ExportAllDeclaration",
+      assertions: [
+        ImportAttribute {
+          type: "ImportAttribute",
+          key: Identifier {
+            type: "Identifier",
+            name: "type",
+
+            range: [102, 106],
+            loc: {
+              start: { column: 29, line: 3 },
+              end: { column: 33, line: 3 },
+            },
+          },
+          value: Literal {
+            type: "Literal",
+            raw: "'json'",
+            value: "json",
+
+            range: [108, 114],
+            loc: {
+              start: { column: 35, line: 3 },
+              end: { column: 41, line: 3 },
+            },
+          },
+
+          range: [102, 114],
+          loc: {
+            start: { column: 29, line: 3 },
+            end: { column: 41, line: 3 },
+          },
+        },
+      ],
+      exported: null,
+      exportKind: "value",
+      source: Literal {
+        type: "Literal",
+        raw: "'mod'",
+        value: "mod",
+
+        range: [87, 92],
+        loc: {
+          start: { column: 14, line: 3 },
+          end: { column: 19, line: 3 },
+        },
+      },
+
+      range: [73, 117],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 44, line: 3 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 118],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

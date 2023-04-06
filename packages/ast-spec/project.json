@@ -1,5 +1,5 @@
 {
-  "name": "@typescript-eslint/ast-spec",
+  "name": "ast-spec",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "type": "library",
   "implicitDependencies": [],
@@ -10,7 +10,7 @@
         "cwd": "packages/ast-spec",
         "commands": ["yarn build"]
       },
-      "outputs": ["packages/ast-spec/dist/**/*.ts"]
+      "outputs": ["{projectRoot}/dist/**/*.ts"]
     },
     "lint": {
       "executor": "@nrwl/linter:eslint",

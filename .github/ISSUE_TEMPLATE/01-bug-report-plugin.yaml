@@ -98,17 +98,3 @@ body:
       description: |
         Any additional info you'd like to provide.
         If ESLint threw an exception, please run your lint again with the `--debug` flag, and dump the output below. e.g. `eslint path/to/broken/file.ts --debug`
-  - type: textarea
-    id: versions
-    attributes:
-      label: Versions
-      value: |
-        | package                                | version |
-        | -------------------------------------- | ------- |
-        | `@typescript-eslint/eslint-plugin`     | `X.Y.Z` |
-        | `@typescript-eslint/parser`            | `X.Y.Z` |
-        | `TypeScript`                           | `X.Y.Z` |
-        | `ESLint`                               | `X.Y.Z` |
-        | `node`                                 | `X.Y.Z` |
-    validations:
-      required: true

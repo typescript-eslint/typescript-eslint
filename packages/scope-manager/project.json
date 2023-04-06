@@ -1,5 +1,5 @@
 {
-  "name": "@typescript-eslint/scope-manager",
+  "name": "scope-manager",
   "$schema": "../../node_modules/nx/schemas/project-schema.json",
   "sourceRoot": "packages/scope-manager/src",
   "projectType": "library",
@@ -69,9 +69,7 @@
       "options": {
         "parallel": false,
         "cwd": "packages/scope-manager",
-        "commands": [
-          "../../node_modules/.bin/ts-node --files --transpile-only tools/generate-lib.ts"
-        ]
+        "commands": ["yarn tsx tools/generate-lib.ts"]
       }
     }
   },

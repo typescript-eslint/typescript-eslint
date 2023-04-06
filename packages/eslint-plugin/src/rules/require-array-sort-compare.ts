@@ -50,12 +50,12 @@ export default util.createRule<Options, MessageIds>({
      * Check if a given node is an array which all elements are string.
      * @param node
      */
-    function isStringArrayNode(node: TSESTree.LeftHandSideExpression): boolean {
+    function isStringArrayNode(node: TSESTree.Expression): boolean {
       const type = checker.getTypeAtLocation(
         service.esTreeNodeToTSNodeMap.get(node),
       );
       if (checker.isArrayType(type) || checker.isTupleType(type)) {
-        const typeArgs = checker.getTypeArguments(type);
+        const typeArgs = util.getTypeArguments(type, checker);
         return typeArgs.every(
           arg => util.getTypeName(checker, arg) === 'string',
         );

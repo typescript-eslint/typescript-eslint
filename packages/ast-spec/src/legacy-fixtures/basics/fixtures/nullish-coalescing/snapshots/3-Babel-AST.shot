@@ -1,0 +1,142 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics nullish-coalescing Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [
+          VariableDeclaration {
+            type: "VariableDeclaration",
+            declarations: [
+              VariableDeclarator {
+                type: "VariableDeclarator",
+                id: Identifier {
+                  type: "Identifier",
+                  name: "len",
+
+                  range: [125, 128],
+                  loc: {
+                    start: { column: 6, line: 4 },
+                    end: { column: 9, line: 4 },
+                  },
+                },
+                init: LogicalExpression {
+                  type: "LogicalExpression",
+                  left: Identifier {
+                    type: "Identifier",
+                    name: "s",
+
+                    range: [131, 132],
+                    loc: {
+                      start: { column: 12, line: 4 },
+                      end: { column: 13, line: 4 },
+                    },
+                  },
+                  operator: "??",
+                  right: Literal {
+                    type: "Literal",
+                    raw: "''",
+                    value: "",
+
+                    range: [136, 138],
+                    loc: {
+                      start: { column: 17, line: 4 },
+                      end: { column: 19, line: 4 },
+                    },
+                  },
+
+                  range: [131, 138],
+                  loc: {
+                    start: { column: 12, line: 4 },
+                    end: { column: 19, line: 4 },
+                  },
+                },
+
+                range: [125, 138],
+                loc: {
+                  start: { column: 6, line: 4 },
+                  end: { column: 19, line: 4 },
+                },
+              },
+            ],
+            kind: "let",
+
+            range: [121, 139],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 20, line: 4 },
+            },
+          },
+        ],
+
+        range: [117, 141],
+        loc: {
+          start: { column: 44, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "processNullishCoalesce",
+
+        range: [82, 104],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 31, line: 3 },
+        },
+      },
+      params: [
+        Identifier {
+          type: "Identifier",
+          name: "s",
+          optional: true,
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSStringKeyword {
+              type: "TSStringKeyword",
+
+              range: [109, 115],
+              loc: {
+                start: { column: 36, line: 3 },
+                end: { column: 42, line: 3 },
+              },
+            },
+
+            range: [107, 115],
+            loc: {
+              start: { column: 34, line: 3 },
+              end: { column: 42, line: 3 },
+            },
+          },
+
+          range: [105, 115],
+          loc: {
+            start: { column: 32, line: 3 },
+            end: { column: 42, line: 3 },
+          },
+        },
+      ],
+
+      range: [73, 141],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 142],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

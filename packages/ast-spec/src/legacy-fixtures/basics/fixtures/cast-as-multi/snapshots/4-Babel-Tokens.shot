@@ -1,0 +1,66 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics cast-as-multi Babel - Tokens 1`] = `
+[
+  Identifier {
+    type: "Identifier",
+    value: "x",
+
+    range: [73, 74],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 1, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "as",
+
+    range: [75, 77],
+    loc: {
+      start: { column: 2, line: 3 },
+      end: { column: 4, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "any",
+
+    range: [78, 81],
+    loc: {
+      start: { column: 5, line: 3 },
+      end: { column: 8, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "as",
+
+    range: [82, 84],
+    loc: {
+      start: { column: 9, line: 3 },
+      end: { column: 11, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "T",
+
+    range: [85, 86],
+    loc: {
+      start: { column: 12, line: 3 },
+      end: { column: 13, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [86, 87],
+    loc: {
+      start: { column: 13, line: 3 },
+      end: { column: 14, line: 3 },
+    },
+  },
+]
+`;

@@ -66,7 +66,7 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
   ],
   image: 'img/logo-twitter-card.png',
   navbar: {
-    title: 'TypeScript ESLint',
+    title: 'typescript-eslint',
     logo: {
       alt: '',
       height: '32px',
@@ -76,7 +76,7 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
     items: [
       {
         to: 'getting-started/',
-        label: 'Getting started',
+        label: 'Docs',
         position: 'left',
       },
       {
@@ -103,7 +103,7 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
       {
         href: githubUrl,
         position: 'right',
-        className: 'header-github-link',
+        className: 'github-link image-link header-github-link',
         'aria-label': 'GitHub repository',
       },
     ],
@@ -119,12 +119,27 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
         title: 'Community',
         items: [
           {
+            label: 'Discord',
+            href: 'https://discord.gg/FSxKq8Tdyg',
+            rel: 'noopener',
+            className: 'image-link discord-link social-link-icon',
+          },
+          {
+            label: 'Mastodon',
+            href: 'https://fosstodon.org/@tseslint',
+            rel: 'me noopener',
+            className: 'image-link mastodon-link social-link-icon',
+          },
+          {
             label: 'Stack Overflow',
             href: 'https://stackoverflow.com/questions/tagged/typescript-eslint',
+            className: 'image-link stack-overflow-link social-link-icon',
           },
           {
             label: 'Twitter',
             href: 'https://twitter.com/tseslint',
+            rel: 'me noopener',
+            className: 'image-link twitter-link social-link-icon',
           },
         ],
       },
@@ -133,16 +148,19 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
         items: [
           {
             label: 'GitHub',
-            href: 'https://github.com/typescript-eslint/typescript-eslint',
+            href: githubUrl,
+            rel: 'me noopener',
+            className: 'github-link image-link social-link-icon',
           },
           {
             label: 'Report issue',
-            href: 'https://github.com/typescript-eslint/typescript-eslint/issues/new/choose',
+            href: `${githubUrl}/issues/new/choose`,
+            className: 'bug-report-link image-link social-link-icon',
           },
         ],
       },
     ],
-    copyright: `Copyright © ${new Date().getFullYear()} TypeScript ESLint, Inc. Built with Docusaurus.`,
+    copyright: `Copyright © ${new Date().getFullYear()} typescript-eslint, Inc. Built with Docusaurus.`,
   },
   prism: {
     theme: {
@@ -232,8 +250,9 @@ const pluginPwaOptions: PluginPwaOptions = {
 };
 
 const config: Config = {
-  title: 'TypeScript ESLint',
-  tagline: 'Tooling which enables ESLint to support TypeScript',
+  title: 'typescript-eslint',
+  tagline:
+    'The tooling that enables ESLint and Prettier to support TypeScript.',
   url: 'https://typescript-eslint.io',
   baseUrl: '/',
   onBrokenLinks: 'throw',
@@ -274,6 +293,11 @@ const config: Config = {
     {
       rel: 'manifest',
       href: '/img/favicon/site.webmanifest',
+    },
+    {
+      color: '#2656c7',
+      href: '/img/favicon/safari-pinned-tab.svg',
+      rel: 'mask-icon',
     },
   ],
 };

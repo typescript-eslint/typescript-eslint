@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics export-type-from Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: [],
+      declaration: null,
+      exportKind: "type",
+      source: Literal {
+        type: "Literal",
+        raw: "'bar'",
+        value: "bar",
+
+        range: [98, 103],
+        loc: {
+          start: { column: 25, line: 3 },
+          end: { column: 30, line: 3 },
+        },
+      },
+      specifiers: [
+        ExportSpecifier {
+          type: "ExportSpecifier",
+          exported: Identifier {
+            type: "Identifier",
+            name: "foo",
+
+            range: [87, 90],
+            loc: {
+              start: { column: 14, line: 3 },
+              end: { column: 17, line: 3 },
+            },
+          },
+          exportKind: "value",
+          local: Identifier {
+            type: "Identifier",
+            name: "foo",
+
+            range: [87, 90],
+            loc: {
+              start: { column: 14, line: 3 },
+              end: { column: 17, line: 3 },
+            },
+          },
+
+          range: [87, 90],
+          loc: {
+            start: { column: 14, line: 3 },
+            end: { column: 17, line: 3 },
+          },
+        },
+      ],
+
+      range: [73, 104],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 31, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 105],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics destructuring-assignment TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExpressionStatement {
+      type: "ExpressionStatement",
+      expression: AssignmentExpression {
+        type: "AssignmentExpression",
+        left: ObjectPattern {
+          type: "ObjectPattern",
+          properties: [
+            Property {
+              type: "Property",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                name: "foo",
+
+                range: [76, 79],
+                loc: {
+                  start: { column: 3, line: 3 },
+                  end: { column: 6, line: 3 },
+                },
+              },
+              kind: "init",
+              method: false,
+              shorthand: true,
+              value: AssignmentPattern {
+                type: "AssignmentPattern",
+                left: Identifier {
+                  type: "Identifier",
+                  name: "foo",
+
+                  range: [76, 79],
+                  loc: {
+                    start: { column: 3, line: 3 },
+                    end: { column: 6, line: 3 },
+                  },
+                },
+                right: ArrayExpression {
+                  type: "ArrayExpression",
+                  elements: [],
+
+                  range: [82, 84],
+                  loc: {
+                    start: { column: 9, line: 3 },
+                    end: { column: 11, line: 3 },
+                  },
+                },
+
+                range: [76, 84],
+                loc: {
+                  start: { column: 3, line: 3 },
+                  end: { column: 11, line: 3 },
+                },
+              },
+
+              range: [76, 84],
+              loc: {
+                start: { column: 3, line: 3 },
+                end: { column: 11, line: 3 },
+              },
+            },
+          ],
+
+          range: [74, 86],
+          loc: {
+            start: { column: 1, line: 3 },
+            end: { column: 13, line: 3 },
+          },
+        },
+        operator: "=",
+        right: Identifier {
+          type: "Identifier",
+          name: "bar",
+
+          range: [89, 92],
+          loc: {
+            start: { column: 16, line: 3 },
+            end: { column: 19, line: 3 },
+          },
+        },
+
+        range: [74, 92],
+        loc: {
+          start: { column: 1, line: 3 },
+          end: { column: 19, line: 3 },
+        },
+      },
+
+      range: [73, 94],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 21, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 95],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

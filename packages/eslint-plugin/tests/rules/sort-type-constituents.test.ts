@@ -359,6 +359,7 @@ type T = 1 | string | {} | A;
         },
       ],
     },
+    "type A<T> = string | (T extends number ? 'hi' : 'there');",
   ],
   invalid: [
     ...invalid('|'),
@@ -372,6 +373,19 @@ type T = 1 | string | {} | A;
           data: {
             type: 'Intersection',
             name: 'T',
+          },
+        },
+      ],
+    },
+    {
+      output: "type A<T> = string | (T extends number ? 'hi' : 'there');",
+      code: "type A<T> = (T extends number ? 'hi' : 'there') | string;",
+      errors: [
+        {
+          messageId: 'notSortedNamed',
+          data: {
+            type: 'Union',
+            name: 'A',
           },
         },
       ],

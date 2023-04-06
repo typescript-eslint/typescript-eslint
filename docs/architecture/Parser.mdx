@@ -21,7 +21,7 @@ TS's AST is optimized for its use case of parsing incomplete code and typechecki
 ESTree is unoptimized and intended for "general purpose" use-cases of traversing the AST.
 
 :::tip
-You can select `@typescript-eslint/parser` on the [TypeScript ESLint playground](https://typescript-eslint.io/play#showAST=es)'s left sidebar under _Options_ > _AST Explorer_ by selecting _ESTree_.
+You can select `@typescript-eslint/parser` on the [typescript-eslint playground](https://typescript-eslint.io/play#showAST=es)'s left sidebar under _Options_ > _AST Explorer_ by selecting _ESTree_.
 :::
 
 ## Configuration
@@ -30,6 +30,9 @@ The following additional configuration options are available by specifying them 
 
 ```ts
 interface ParserOptions {
+  cacheLifetime?: {
+    glob?: number | 'Infinity';
+  };
   ecmaFeatures?: {
     jsx?: boolean;
     globalReturn?: boolean;
@@ -42,12 +45,20 @@ interface ParserOptions {
   lib?: string[];
   moduleResolver?: string;
   program?: import('typescript').Program;
-  project?: string | string[];
+  project?: string | string[] | true;
   projectFolderIgnoreList?: string[];
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
 }
 ```
+
+### `cacheLifetime`
+
+This option allows you to granularly control our internal cache expiry lengths.
+
+You can specify the number of seconds as an integer number, or the string 'Infinity' if you never want the cache to expire.
+
+By default cache entries will be evicted after 30 seconds, or will persist indefinitely if the parser infers that it is a single run.
 
 ### `ecmaFeatures`
 
@@ -177,6 +188,9 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
 - Accepted values:
 
   ```js
+  // find the tsconfig.json nearest each source file
+  project: true,
+
   // path
   project: './tsconfig.json';
 
@@ -186,6 +200,10 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
   // array of paths and/or glob patterns
   project: ['./packages/**/tsconfig.json', './separate-package/tsconfig.json'];
   ```
+
+- If `true`, each source file's parse will find the nearest `tsconfig.json` file to that source file.
+
+  - This is done by checking that source file's directory tree for the nearest `tsconfig.json`.
 
 - If you use project references, TypeScript will not automatically use project references to resolve files. This means that you will have to add each referenced tsconfig to the `project` field either separately, or via a glob.
 
@@ -226,7 +244,8 @@ For example, by default it will ensure that a glob like `./**/tsconfig.json` wil
 
 > Default `undefined`.
 
-This option allows you to provide the root directory for relative tsconfig paths specified in the `project` option above.
+This option allows you to provide the root directory for relative TSConfig paths specified in the `project` option above.
+Doing so ensures running ESLint from a directory other than the root will still be able to find your TSConfig.
 
 ### `warnOnUnsupportedTypeScriptVersion`
 

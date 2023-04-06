@@ -1,0 +1,274 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types template-literal-type-3 Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "Color",
+
+        range: [78, 83],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 10, line: 3 },
+        },
+      },
+      typeAnnotation: TSUnionType {
+        type: "TSUnionType",
+        types: [
+          TSLiteralType {
+            type: "TSLiteralType",
+            literal: Literal {
+              type: "Literal",
+              raw: "'red'",
+              value: "red",
+
+              range: [86, 91],
+              loc: {
+                start: { column: 13, line: 3 },
+                end: { column: 18, line: 3 },
+              },
+            },
+
+            range: [86, 91],
+            loc: {
+              start: { column: 13, line: 3 },
+              end: { column: 18, line: 3 },
+            },
+          },
+          TSLiteralType {
+            type: "TSLiteralType",
+            literal: Literal {
+              type: "Literal",
+              raw: "'blue'",
+              value: "blue",
+
+              range: [94, 100],
+              loc: {
+                start: { column: 21, line: 3 },
+                end: { column: 27, line: 3 },
+              },
+            },
+
+            range: [94, 100],
+            loc: {
+              start: { column: 21, line: 3 },
+              end: { column: 27, line: 3 },
+            },
+          },
+        ],
+
+        range: [86, 100],
+        loc: {
+          start: { column: 13, line: 3 },
+          end: { column: 27, line: 3 },
+        },
+      },
+
+      range: [73, 101],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 28, line: 3 },
+      },
+    },
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "Quantity",
+
+        range: [107, 115],
+        loc: {
+          start: { column: 5, line: 4 },
+          end: { column: 13, line: 4 },
+        },
+      },
+      typeAnnotation: TSUnionType {
+        type: "TSUnionType",
+        types: [
+          TSLiteralType {
+            type: "TSLiteralType",
+            literal: Literal {
+              type: "Literal",
+              raw: "'one'",
+              value: "one",
+
+              range: [118, 123],
+              loc: {
+                start: { column: 16, line: 4 },
+                end: { column: 21, line: 4 },
+              },
+            },
+
+            range: [118, 123],
+            loc: {
+              start: { column: 16, line: 4 },
+              end: { column: 21, line: 4 },
+            },
+          },
+          TSLiteralType {
+            type: "TSLiteralType",
+            literal: Literal {
+              type: "Literal",
+              raw: "'two'",
+              value: "two",
+
+              range: [126, 131],
+              loc: {
+                start: { column: 24, line: 4 },
+                end: { column: 29, line: 4 },
+              },
+            },
+
+            range: [126, 131],
+            loc: {
+              start: { column: 24, line: 4 },
+              end: { column: 29, line: 4 },
+            },
+          },
+        ],
+
+        range: [118, 131],
+        loc: {
+          start: { column: 16, line: 4 },
+          end: { column: 29, line: 4 },
+        },
+      },
+
+      range: [102, 132],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 30, line: 4 },
+      },
+    },
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      id: Identifier {
+        type: "Identifier",
+        name: "SeussFish",
+
+        range: [138, 147],
+        loc: {
+          start: { column: 5, line: 5 },
+          end: { column: 14, line: 5 },
+        },
+      },
+      typeAnnotation: TSLiteralType {
+        type: "TSLiteralType",
+        literal: TemplateLiteral {
+          type: "TemplateLiteral",
+          expressions: [
+            TSUnionType {
+              type: "TSUnionType",
+              types: [
+                TSTypeReference {
+                  type: "TSTypeReference",
+                  typeName: Identifier {
+                    type: "Identifier",
+                    name: "Quantity",
+
+                    range: [153, 161],
+                    loc: {
+                      start: { column: 20, line: 5 },
+                      end: { column: 28, line: 5 },
+                    },
+                  },
+
+                  range: [153, 161],
+                  loc: {
+                    start: { column: 20, line: 5 },
+                    end: { column: 28, line: 5 },
+                  },
+                },
+                TSTypeReference {
+                  type: "TSTypeReference",
+                  typeName: Identifier {
+                    type: "Identifier",
+                    name: "Color",
+
+                    range: [164, 169],
+                    loc: {
+                      start: { column: 31, line: 5 },
+                      end: { column: 36, line: 5 },
+                    },
+                  },
+
+                  range: [164, 169],
+                  loc: {
+                    start: { column: 31, line: 5 },
+                    end: { column: 36, line: 5 },
+                  },
+                },
+              ],
+
+              range: [153, 169],
+              loc: {
+                start: { column: 20, line: 5 },
+                end: { column: 36, line: 5 },
+              },
+            },
+          ],
+          quasis: [
+            TemplateElement {
+              type: "TemplateElement",
+              tail: false,
+              value: {
+                "cooked": "",
+                "raw": "",
+              },
+
+              range: [150, 153],
+              loc: {
+                start: { column: 17, line: 5 },
+                end: { column: 20, line: 5 },
+              },
+            },
+            TemplateElement {
+              type: "TemplateElement",
+              tail: true,
+              value: {
+                "cooked": " fish",
+                "raw": " fish",
+              },
+
+              range: [169, 176],
+              loc: {
+                start: { column: 36, line: 5 },
+                end: { column: 43, line: 5 },
+              },
+            },
+          ],
+
+          range: [150, 176],
+          loc: {
+            start: { column: 17, line: 5 },
+            end: { column: 43, line: 5 },
+          },
+        },
+
+        range: [150, 176],
+        loc: {
+          start: { column: 17, line: 5 },
+          end: { column: 43, line: 5 },
+        },
+      },
+
+      range: [133, 177],
+      loc: {
+        start: { column: 0, line: 5 },
+        end: { column: 44, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 178],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

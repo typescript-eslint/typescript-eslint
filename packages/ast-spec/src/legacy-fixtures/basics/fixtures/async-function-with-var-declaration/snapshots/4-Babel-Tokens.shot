@@ -1,0 +1,226 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics async-function-with-var-declaration Babel - Tokens 1`] = `
+[
+  Identifier {
+    type: "Identifier",
+    value: "async",
+
+    range: [73, 78],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 5, line: 3 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "function",
+
+    range: [79, 87],
+    loc: {
+      start: { column: 6, line: 3 },
+      end: { column: 14, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "test",
+
+    range: [88, 92],
+    loc: {
+      start: { column: 15, line: 3 },
+      end: { column: 19, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "(",
+
+    range: [92, 93],
+    loc: {
+      start: { column: 19, line: 3 },
+      end: { column: 20, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [93, 94],
+    loc: {
+      start: { column: 20, line: 3 },
+      end: { column: 21, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [95, 96],
+    loc: {
+      start: { column: 22, line: 3 },
+      end: { column: 23, line: 3 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "var",
+
+    range: [99, 102],
+    loc: {
+      start: { column: 2, line: 4 },
+      end: { column: 5, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "foo",
+
+    range: [103, 106],
+    loc: {
+      start: { column: 6, line: 4 },
+      end: { column: 9, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [107, 108],
+    loc: {
+      start: { column: 10, line: 4 },
+      end: { column: 11, line: 4 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'foo'",
+
+    range: [109, 114],
+    loc: {
+      start: { column: 12, line: 4 },
+      end: { column: 17, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [114, 115],
+    loc: {
+      start: { column: 17, line: 4 },
+      end: { column: 18, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "let",
+
+    range: [118, 121],
+    loc: {
+      start: { column: 2, line: 5 },
+      end: { column: 5, line: 5 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "bar",
+
+    range: [122, 125],
+    loc: {
+      start: { column: 6, line: 5 },
+      end: { column: 9, line: 5 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [126, 127],
+    loc: {
+      start: { column: 10, line: 5 },
+      end: { column: 11, line: 5 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'bar'",
+
+    range: [128, 133],
+    loc: {
+      start: { column: 12, line: 5 },
+      end: { column: 17, line: 5 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [133, 134],
+    loc: {
+      start: { column: 17, line: 5 },
+      end: { column: 18, line: 5 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "const",
+
+    range: [137, 142],
+    loc: {
+      start: { column: 2, line: 6 },
+      end: { column: 7, line: 6 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "fooBar",
+
+    range: [143, 149],
+    loc: {
+      start: { column: 8, line: 6 },
+      end: { column: 14, line: 6 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [150, 151],
+    loc: {
+      start: { column: 15, line: 6 },
+      end: { column: 16, line: 6 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'fooBar'",
+
+    range: [152, 160],
+    loc: {
+      start: { column: 17, line: 6 },
+      end: { column: 25, line: 6 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [160, 161],
+    loc: {
+      start: { column: 25, line: 6 },
+      end: { column: 26, line: 6 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [162, 163],
+    loc: {
+      start: { column: 0, line: 7 },
+      end: { column: 1, line: 7 },
+    },
+  },
+]
+`;

@@ -4,6 +4,7 @@ import * as ts from 'typescript';
 
 import { firstDefined } from '../node-utils';
 import type { ParseSettings } from '../parseSettings';
+import { describeFilePath } from './describeFilePath';
 import { getWatchProgramsForProjects } from './getWatchProgramsForProjects';
 import type { ASTAndProgram } from './shared';
 import { getAstFromProgram } from './shared';
@@ -40,19 +41,14 @@ function createProjectProgram(
     return astAndProgram;
   }
 
-  const describeFilePath = (filePath: string): string => {
-    const relative = path.relative(
-      parseSettings.tsconfigRootDir || process.cwd(),
-      filePath,
-    );
-    if (parseSettings.tsconfigRootDir) {
-      return `<tsconfigRootDir>/${relative}`;
-    }
-    return `<cwd>/${relative}`;
-  };
+  const describeProjectFilePath = (projectFile: string): string =>
+    describeFilePath(projectFile, parseSettings.tsconfigRootDir);
 
-  const describedFilePath = describeFilePath(parseSettings.filePath);
-  const relativeProjects = parseSettings.projects.map(describeFilePath);
+  const describedFilePath = describeFilePath(
+    parseSettings.filePath,
+    parseSettings.tsconfigRootDir,
+  );
+  const relativeProjects = parseSettings.projects.map(describeProjectFilePath);
   const describedPrograms =
     relativeProjects.length === 1
       ? relativeProjects[0]
@@ -105,7 +101,7 @@ function createProjectProgram(
       `- Change ESLint's list of included files to not include this file`,
       `- Change ${describedSpecifiers} to include this file`,
       `- Create a new TSConfig that includes this file and include it in your parserOptions.project`,
-      `See the TypeScript ESLint docs for more info: https://typescript-eslint.io/linting/troubleshooting##i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file`,
+      `See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file`,
     );
   }
 
