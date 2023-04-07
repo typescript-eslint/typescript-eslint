@@ -23,24 +23,21 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
+    const parserServices = util.getParserServices(context);
+    const checker = parserServices.program.getTypeChecker();
+
     return {
       "UnaryExpression[operator='delete'] > MemberExpression[computed]"(
         node: TSESTree.MemberExpressionComputedName & {
           parent: TSESTree.UnaryExpression;
         },
       ): void {
-        const parserServices = util.getParserServices(context);
-        const checker = parserServices.program.getTypeChecker();
         const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
 
         const target = originalNode.getChildAt(0);
         const key = originalNode.getChildAt(2);
 
         const targetType = util.getConstrainedTypeAtLocation(checker, target);
-
-        if (!util.isTypeAnyArrayType) {
-          return;
-        }
 
         if (!isTypeArrayTypeOrArrayInUnionOfTypes(targetType, checker)) {
           return;

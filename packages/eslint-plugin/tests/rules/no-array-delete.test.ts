@@ -322,7 +322,7 @@ delete arr[Math.random() ? 1 : 1];
               output: `
 declare const arr: unknown[];
 arr.splice(Math.random() ? 1 : 1, 1);
-            `,
+      `,
             },
           ],
         },
@@ -341,8 +341,8 @@ delete arr[Math.random() ? 1 : 'prop'];
               messageId: 'arrayDelete',
               output: `
 declare const arr: unknown[];
-arr.splice(Math.random() ? 1 : "prop", 1);
-            `,
+arr.splice(Math.random() ? 1 : 'prop', 1);
+      `,
             },
           ],
         },
@@ -365,8 +365,8 @@ delete arr[(something(), 1)];
 declare const arr: unknown[];
 declare function something(): unknown;
 
-arr.splice((something(), 1), 1);
-            `,
+arr.splice(((something(), 1)), 1);
+      `,
             },
           ],
         },
