@@ -12,7 +12,7 @@ import { ESQueryFilter } from './ESQueryFilter';
 import useHashState from './hooks/useHashState';
 import EditorTabs from './layout/EditorTabs';
 import Loader from './layout/Loader';
-import type { ASTModel } from './linter/types';
+import type { UpdateModel } from './linter/types';
 import { defaultConfig, detailTabs } from './options';
 import OptionsSelector from './OptionsSelector';
 import styles from './Playground.module.css';
@@ -22,7 +22,7 @@ import type { ErrorGroup, RuleDetails, SelectedRange, TabType } from './types';
 
 function Playground(): JSX.Element {
   const [state, setState] = useHashState(defaultConfig);
-  const [astModel, setAstModel] = useState<ASTModel>();
+  const [astModel, setAstModel] = useState<UpdateModel>();
   const [markers, setMarkers] = useState<ErrorGroup[] | Error>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);

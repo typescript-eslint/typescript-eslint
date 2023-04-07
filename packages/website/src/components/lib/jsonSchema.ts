@@ -1,16 +1,16 @@
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import type * as ts from 'typescript';
 
-import type { WebLinter } from '../linter/WebLinter';
+import type { CreateLinter } from '../linter/createLinter';
 
 /**
  * Get the JSON schema for the eslint config
  * Currently we only support the rules and extends
  */
-export function getEslintJsonSchema(linter: WebLinter): JSONSchema4 {
+export function getEslintJsonSchema(linter: CreateLinter): JSONSchema4 {
   const properties: Record<string, JSONSchema4> = {};
 
-  for (const [, item] of linter.rulesMap) {
+  for (const [, item] of linter.rules) {
     properties[item.name] = {
       description: `${item.description}\n ${item.url}`,
       title: item.name.startsWith('@typescript') ? 'Rules' : 'Core rules',

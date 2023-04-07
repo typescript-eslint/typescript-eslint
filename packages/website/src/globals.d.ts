@@ -18,5 +18,6 @@ declare global {
     ts: typeof ts;
     require: WindowRequire;
     esquery: typeof esquery;
+    system: unknown;
   }
 }
