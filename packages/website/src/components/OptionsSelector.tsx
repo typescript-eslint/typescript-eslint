@@ -21,19 +21,11 @@ export interface OptionsSelectorParams {
   readonly state: ConfigModel;
   readonly setState: (cfg: Partial<ConfigModel>) => void;
   readonly tsVersions: readonly string[];
-  readonly enableScrolling: boolean;
-  readonly setEnableScrolling: (checked: boolean) => void;
-  readonly showTokens: boolean;
-  readonly setShowTokens: (checked: boolean) => void;
 }
 
 function OptionsSelectorContent({
   state,
   setState,
-  enableScrolling,
-  setEnableScrolling,
-  showTokens,
-  setShowTokens,
   tsVersions,
 }: OptionsSelectorParams): JSX.Element {
   const [copyLink, copyLinkToClipboard] = useClipboard(() =>
@@ -90,15 +82,15 @@ function OptionsSelectorContent({
         <InputLabel name="Auto scroll">
           <Checkbox
             name="enableScrolling"
-            checked={enableScrolling}
-            onChange={setEnableScrolling}
+            checked={state.scroll}
+            onChange={(scroll): void => setState({ scroll })}
           />
         </InputLabel>
         <InputLabel name="Show tokens">
           <Checkbox
             name="showTokens"
-            checked={showTokens}
-            onChange={setShowTokens}
+            checked={state.showTokens}
+            onChange={(showTokens): void => setState({ showTokens })}
           />
         </InputLabel>
       </Expander>

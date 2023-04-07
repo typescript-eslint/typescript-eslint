@@ -37,9 +37,6 @@ function Playground(): JSX.Element {
   const [visualEslintRc, setVisualEslintRc] = useState(false);
   const [visualTSConfig, setVisualTSConfig] = useState(false);
 
-  const [enableScrolling, setEnableScrolling] = useState<boolean>(true);
-  const [showTokens, setShowTokens] = useState<boolean>(false);
-
   const onLoaded = useCallback(
     (ruleNames: RuleDetails[], tsVersions: readonly string[]): void => {
       setRuleNames(ruleNames);
@@ -90,10 +87,6 @@ function Playground(): JSX.Element {
               state={state}
               tsVersions={tsVersions}
               setState={setState}
-              setEnableScrolling={setEnableScrolling}
-              enableScrolling={enableScrolling}
-              setShowTokens={setShowTokens}
-              showTokens={showTokens}
             />
           </div>
           <ConditionalSplitPane
@@ -181,8 +174,8 @@ function Playground(): JSX.Element {
                     key={String(state.showAST)}
                     filter={state.showAST === 'es' ? esQueryFilter : undefined}
                     value={astToShow}
-                    showTokens={showTokens}
-                    enableScrolling={enableScrolling}
+                    showTokens={state.showTokens}
+                    enableScrolling={state.scroll}
                     cursorPosition={position}
                     onHoverNode={setSelectedRange}
                   />
