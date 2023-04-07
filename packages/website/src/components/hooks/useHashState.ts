@@ -88,7 +88,7 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
       fileType,
       eslintrc: eslintrc ?? '',
       tsconfig: tsconfig ?? '',
-      showTokens: searchParams.get('showTokens') === 'true',
+      showTokens: searchParams.get('tokens') === 'true',
     };
   } catch (e) {
     console.warn(e);
