@@ -2,6 +2,7 @@ import {
   NavbarSecondaryMenuFiller,
   useWindowSize,
 } from '@docusaurus/theme-common';
+import Checkbox from '@site/src/components/inputs/Checkbox';
 import CopyIcon from '@site/src/icons/copy.svg';
 import IconExternalLink from '@theme/Icon/ExternalLink';
 import React, { useCallback } from 'react';
@@ -15,7 +16,6 @@ import InputLabel from './layout/InputLabel';
 import { createMarkdown, createMarkdownParams } from './lib/markdown';
 import { fileTypes } from './options';
 import type { ConfigModel } from './types';
-import Checkbox from '@site/src/components/inputs/Checkbox';
 
 export interface OptionsSelectorParams {
   readonly state: ConfigModel;
