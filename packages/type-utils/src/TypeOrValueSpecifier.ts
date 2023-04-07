@@ -1,11 +1,19 @@
 import path from 'path';
 import type * as ts from 'typescript';
 
-interface FileSpecifier {
+type FileSpecifier = {
   from: 'file';
   name: string | string[];
-  path?: string;
-}
+} & (
+  | {
+      path?: string;
+      excludePaths?: undefined;
+    }
+  | {
+      path?: undefined;
+      excludePaths?: string | string[]; // defaults to `["node_modules"]`.
+    }
+);
 
 interface LibSpecifier {
   from: 'lib';
@@ -129,14 +137,26 @@ function specifierNameMatches(type: ts.Type, name: string | string[]): boolean {
 
 function typeDeclaredInFile(
   relativePath: string | undefined,
+  excludePaths: string | string[] | undefined,
   declarationFiles: ts.SourceFile[],
   program: ts.Program,
 ): boolean {
   if (relativePath === undefined) {
     const cwd = program.getCurrentDirectory().toLowerCase();
-    return declarationFiles.some(declaration =>
-      declaration.fileName.toLowerCase().startsWith(cwd),
-    );
+    const excludePathsArray =
+      excludePaths === undefined
+        ? ['node_modules']
+        : Array.isArray(excludePaths)
+        ? excludePaths
+        : [excludePaths];
+
+    return declarationFiles.some(declaration => {
+      const fileName = declaration.fileName.toLowerCase();
+      return (
+        fileName.startsWith(cwd) &&
+        excludePathsArray.every(p => !fileName.startsWith(path.join(cwd, p)))
+      );
+    });
   }
   const absolutePath = path
     .join(program.getCurrentDirectory(), relativePath)
@@ -164,7 +184,12 @@ export function typeMatchesSpecifier(
       ?.map(declaration => declaration.getSourceFile()) ?? [];
   switch (specifier.from) {
     case 'file':
-      return typeDeclaredInFile(specifier.path, declarationFiles, program);
+      return typeDeclaredInFile(
+        specifier.path,
+        specifier.excludePaths,
+        declarationFiles,
+        program,
+      );
     case 'lib':
       return declarationFiles.some(declaration =>
         program.isSourceFileDefaultLibrary(declaration),
