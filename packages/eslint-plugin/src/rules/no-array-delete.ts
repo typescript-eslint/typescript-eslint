@@ -42,12 +42,13 @@ export default util.createRule({
           return;
         }
 
+        if (!isTypeArrayTypeOrArrayInUnionOfTypes(targetType, checker)) {
+          return;
+        }
+
         const keyType = util.getConstrainedTypeAtLocation(checker, key);
 
-        if (
-          !isTypeArrayTypeOrArrayInUnionOfTypes(targetType, checker) ||
-          !isTypeNumberOrNumberLiteralOrNumberLikeType(keyType)
-        ) {
+        if (!isTypeNumberOrNumberLiteralOrNumberLikeType(keyType)) {
           return;
         }
 
