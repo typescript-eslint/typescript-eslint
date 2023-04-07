@@ -15,19 +15,26 @@ import InputLabel from './layout/InputLabel';
 import { createMarkdown, createMarkdownParams } from './lib/markdown';
 import { fileTypes } from './options';
 import type { ConfigModel } from './types';
+import Checkbox from '@site/src/components/inputs/Checkbox';
 
 export interface OptionsSelectorParams {
   readonly state: ConfigModel;
   readonly setState: (cfg: Partial<ConfigModel>) => void;
   readonly tsVersions: readonly string[];
-  readonly isLoading: boolean;
+  readonly enableScrolling: boolean;
+  readonly setEnableScrolling: (checked: boolean) => void;
+  readonly showTokens: boolean;
+  readonly setShowTokens: (checked: boolean) => void;
 }
 
 function OptionsSelectorContent({
   state,
   setState,
+  enableScrolling,
+  setEnableScrolling,
+  showTokens,
+  setShowTokens,
   tsVersions,
-  isLoading,
 }: OptionsSelectorParams): JSX.Element {
   const [copyLink, copyLinkToClipboard] = useClipboard(() =>
     document.location.toString(),
@@ -36,26 +43,16 @@ function OptionsSelectorContent({
     createMarkdown(state),
   );
 
-  const updateTS = useCallback(
-    (version: string) => {
-      setState({ ts: version });
-    },
-    [setState],
-  );
-
   const openIssue = useCallback(() => {
-    if (isLoading) {
-      return;
-    }
+    const params = createMarkdownParams(state);
+
     window
       .open(
-        `https://github.com/typescript-eslint/typescript-eslint/issues/new?${createMarkdownParams(
-          state,
-        )}`,
+        `https://github.com/typescript-eslint/typescript-eslint/issues/new?${params}`,
         '_blank',
       )
       ?.focus();
-  }, [state, isLoading]);
+  }, [state]);
 
   return (
     <>
@@ -66,7 +63,7 @@ function OptionsSelectorContent({
             className="text--right"
             value={state.ts}
             disabled={!tsVersions.length}
-            onChange={updateTS}
+            onChange={(ts): void => setState({ ts })}
             options={(tsVersions.length && tsVersions) || [state.ts]}
           />
         </InputLabel>
@@ -86,8 +83,22 @@ function OptionsSelectorContent({
           <Dropdown
             name="sourceType"
             value={state.sourceType}
-            onChange={(e): void => setState({ sourceType: e })}
+            onChange={(sourceType): void => setState({ sourceType })}
             options={['script', 'module']}
+          />
+        </InputLabel>
+        <InputLabel name="Auto scroll">
+          <Checkbox
+            name="enableScrolling"
+            checked={enableScrolling}
+            onChange={setEnableScrolling}
+          />
+        </InputLabel>
+        <InputLabel name="Show tokens">
+          <Checkbox
+            name="showTokens"
+            checked={showTokens}
+            onChange={setShowTokens}
           />
         </InputLabel>
       </Expander>
