@@ -312,7 +312,7 @@ function trickyCase1<T extends unknown>(t: T[]) {
       code: `
 declare const arr: unknown[];
 delete arr[Math.random() ? 1 : 1];
-            `,
+      `,
       errors: [
         {
           messageId: 'arrayDelete',
@@ -331,8 +331,8 @@ arr.splice(Math.random() ? 1 : 1, 1);
     {
       code: `
 declare const arr: unknown[];
-delete arr[Math.random() ? 1 : "prop"];
-            `,
+delete arr[Math.random() ? 1 : 'prop'];
+      `,
       errors: [
         {
           messageId: 'arrayDelete',
@@ -353,8 +353,8 @@ arr.splice(Math.random() ? 1 : "prop", 1);
 declare const arr: unknown[];
 declare function something(): unknown;
 
-delete arr[something(), 1];
-            `,
+delete arr[(something(), 1)];
+      `,
       errors: [
         {
           messageId: 'arrayDelete',
