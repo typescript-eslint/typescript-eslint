@@ -137,12 +137,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
   useEffect(() => {
     const disposable = webLinter.onParse((uri, model) => {
-      onASTChange({
-        storedAST: model.storedAST,
-        storedTsAST: model.storedTsAST,
-        storedScope: model.storedScope,
-        typeChecker: model.typeChecker,
-      });
+      onASTChange(model);
     });
     return () => disposable();
   }, [webLinter, onASTChange]);
