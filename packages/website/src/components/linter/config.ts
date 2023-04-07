@@ -3,7 +3,7 @@ import type { TSESLint } from '@typescript-eslint/utils';
 
 export const PARSER_NAME = '@typescript-eslint/parser';
 
-export const parseSettings: ParseSettings = {
+export const defaultParseSettings: ParseSettings = {
   allowInvalidAST: false,
   code: '',
   codeFullText: '',
@@ -30,11 +30,11 @@ export const parseSettings: ParseSettings = {
   tsconfigRootDir: '/',
 };
 
-export const eslintConfig: TSESLint.Linter.Config = {
+export const defaultEslintConfig: TSESLint.Linter.Config = {
   parser: PARSER_NAME,
   parserOptions: {
     ecmaFeatures: {
-      jsx: false,
+      jsx: true,
       globalReturn: false,
     },
     ecmaVersion: 'latest',

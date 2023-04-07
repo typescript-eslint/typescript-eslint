@@ -4,14 +4,15 @@ import { useEffect, useState } from 'react';
 
 import type { createTypeScriptSandbox } from '../../vendor/sandbox';
 import { createCompilerOptions } from '../lib/createCompilerOptions';
-import { WebLinter } from '../linter/WebLinter';
+import { createFileSystem } from '../linter/bridge';
+import { type CreateLinter, createLinter } from '../linter/createLinter';
+import type { PlaygroundSystem } from '../linter/types';
 import type { RuleDetails } from '../types';
 import { editorEmbedId } from './EditorEmbed';
 import { sandboxSingleton } from './loadSandbox';
 import type { CommonEditorProps } from './types';
 
 export interface SandboxServicesProps {
-  readonly jsx?: boolean;
   readonly onLoaded: (
     ruleDetails: RuleDetails[],
     tsVersions: readonly string[],
@@ -23,7 +24,8 @@ export type SandboxInstance = ReturnType<typeof createTypeScriptSandbox>;
 
 export interface SandboxServices {
   sandboxInstance: SandboxInstance;
-  webLinter: WebLinter;
+  system: PlaygroundSystem;
+  webLinter: CreateLinter;
 }
 
 export const useSandboxServices = (
@@ -67,22 +69,27 @@ export const useSandboxServices = (
           colorMode === 'dark' ? 'vs-dark' : 'vs-light',
         );
 
-        const libEntries = new Map<string, string>();
+        const system = createFileSystem(props, sandboxInstance.tsvfs);
+
         const worker = await sandboxInstance.getWorkerProcess();
         if (worker.getLibFiles) {
           const libs = await worker.getLibFiles();
           for (const [key, value] of Object.entries(libs)) {
-            libEntries.set('/' + key, value);
+            system.writeFile('/' + key, value);
           }
         }
 
-        const system = sandboxInstance.tsvfs.createSystem(libEntries);
+        window.system = system;
         window.esquery = lintUtils.esquery;
 
-        const webLinter = new WebLinter(system, compilerOptions, lintUtils);
+        const webLinter = createLinter(
+          system,
+          lintUtils,
+          sandboxInstance.tsvfs,
+        );
 
         onLoaded(
-          Array.from(webLinter.rulesMap.values()),
+          Array.from(webLinter.rules.values()),
           Array.from(
             new Set([...sandboxInstance.supportedVersions, window.ts.version]),
           )
@@ -91,8 +98,9 @@ export const useSandboxServices = (
         );
 
         setServices({
-          sandboxInstance,
+          system,
           webLinter,
+          sandboxInstance,
         });
       })
       .catch(setServices);
