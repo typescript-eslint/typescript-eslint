@@ -270,6 +270,19 @@ describe('TypeOrValueSpecifier', () => {
     ])("doesn't match a mismatched lib specifier: %s", runTestNegative);
 
     it.each<[string, TypeOrValueSpecifier]>([
+      ['type Test = string;', { from: 'lib', name: 'string' }],
+      ['type Test = string;', { from: 'lib', name: ['string', 'number'] }],
+    ])('matches a matching intrinsic type specifier: %s', runTestPositive);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      ['type Test = string;', { from: 'lib', name: 'number' }],
+      ['type Test = string;', { from: 'lib', name: ['number', 'boolean'] }],
+    ])(
+      "doesn't match a mismatched intrinsic type specifier: %s",
+      runTestNegative,
+    );
+
+    it.each<[string, TypeOrValueSpecifier]>([
       [
         'import type {Node} from "typescript"; type Test = Node;',
         { from: 'package', name: 'Node', package: 'typescript' },
@@ -405,5 +418,10 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'package', name: ['RegExp', 'BigInt'], package: 'foo-package' },
       ],
     ])("doesn't match a mismatched specifier type: %s", runTestNegative);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      ['type Test = Foo;', { from: 'lib', name: 'Foo' }],
+      ['type Test = Foo;', { from: 'lib', name: ['Foo', 'number'] }],
+    ])("doesn't match a error types: %s", runTestNegative);
   });
 });

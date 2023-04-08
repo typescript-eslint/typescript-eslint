@@ -122,6 +122,9 @@ function specifierNameMatches(type: ts.Type, name: string[] | string): boolean {
   if (typeof name === 'string') {
     name = [name];
   }
+  if (name.some(item => item === type.intrinsicName)) {
+    return true;
+  }
   const symbol = type.aliasSymbol ?? type.getSymbol();
   if (symbol === undefined) {
     return false;
@@ -163,11 +166,30 @@ function typeDeclaredInPackage(
   );
 }
 
+function typeDeclaredInLib(
+  declarationFiles: ts.SourceFile[],
+  program: ts.Program,
+): boolean {
+  // Assertion: The type is not an error type.
+
+  // Intrinsic type (i.e. string, number, boolean, etc) - Treat it as if it's from lib.
+  if (declarationFiles.length === 0) {
+    return true;
+  }
+  return declarationFiles.some(declaration =>
+    program.isSourceFileDefaultLibrary(declaration),
+  );
+}
+
 export function typeMatchesSpecifier(
   type: ts.Type,
   specifier: TypeOrValueSpecifier,
   program: ts.Program,
 ): boolean {
+  // TODO: use `tsutils.isErrorType(type)` -- That function doesn't exists yet.
+  if (type.intrinsicName === 'error') {
+    return false;
+  }
   if (typeof specifier === 'string') {
     return specifierNameMatches(type, specifier);
   }
@@ -183,9 +205,7 @@ export function typeMatchesSpecifier(
     case 'file':
       return typeDeclaredInFile(specifier.path, declarationFiles, program);
     case 'lib':
-      return declarationFiles.some(declaration =>
-        program.isSourceFileDefaultLibrary(declaration),
-      );
+      return typeDeclaredInLib(declarationFiles, program);
     case 'package':
       return typeDeclaredInPackage(specifier.package, declarationFiles);
   }
