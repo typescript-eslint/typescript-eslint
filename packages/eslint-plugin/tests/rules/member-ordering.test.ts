@@ -2007,6 +2007,53 @@ interface Foo {
         },
       ],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6812
+    {
+      code: `
+class Foo {
+  #bar: string;
+
+  get bar(): string {
+    return this.#bar;
+  }
+
+  set bar(value: string) {
+    this.#bar = value;
+  }
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: [['get', 'set']],
+            order: 'alphabetically',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  #bar: string;
+
+  get bar(): string {
+    return this.#bar;
+  }
+
+  set bar(value: string) {
+    this.#bar = value;
+  }
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: [['get', 'set']],
+            order: 'natural',
+          },
+        },
+      ],
+    },
   ],
   invalid: [
     {

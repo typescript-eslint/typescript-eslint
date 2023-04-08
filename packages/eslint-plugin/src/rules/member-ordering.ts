@@ -811,6 +811,10 @@ export default util.createRule<Options, MessageIds>({
       previousName: string,
       order: AlphabeticalOrder,
     ): boolean {
+      if (name === previousName) {
+        return false;
+      }
+
       switch (order) {
         case 'alphabetically':
           return name < previousName;
