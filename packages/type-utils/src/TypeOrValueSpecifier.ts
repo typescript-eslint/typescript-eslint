@@ -1,5 +1,5 @@
 import path from 'path';
-import type * as ts from 'typescript';
+import * as ts from 'typescript';
 
 interface FileSpecifier {
   from: 'file';
@@ -134,9 +134,20 @@ function typeDeclaredInFile(
 ): boolean {
   if (relativePath === undefined) {
     const cwd = program.getCurrentDirectory().toLowerCase();
-    return declarationFiles.some(declaration =>
-      declaration.fileName.toLowerCase().startsWith(cwd),
+    const typeRoots = ts.getEffectiveTypeRoots(
+      program.getCompilerOptions(),
+      program,
     );
+
+    return declarationFiles.some(declaration => {
+      const fileName = declaration.fileName.toLowerCase();
+      return (
+        !(
+          program.isSourceFileFromExternalLibrary(declaration) ||
+          typeRoots?.some(typeRoot => fileName.startsWith(typeRoot)) === true
+        ) && fileName.startsWith(cwd)
+      );
+    });
   }
   const absolutePath = path
     .join(program.getCurrentDirectory(), relativePath)
