@@ -11,6 +11,7 @@ type Types = Record<
   | {
       message: string;
       fixWith?: string;
+      suggest?: readonly string[];
     }
 >;
 
@@ -20,7 +21,7 @@ export type Options = [
     extendDefaults?: boolean;
   },
 ];
-export type MessageIds = 'bannedTypeMessage';
+export type MessageIds = 'bannedTypeMessage' | 'bannedTypeReplacement';
 
 function removeSpaces(str: string): string {
   return str.replace(/\s/g, '');
@@ -90,6 +91,7 @@ const defaultTypes: Types = {
       '- If you want a type meaning "any value", you probably want `unknown` instead.',
       '- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead.',
     ].join('\n'),
+    suggest: ['object', 'unknown', 'NonNullable<unknown>'],
   },
   '{}': {
     message: [
@@ -99,6 +101,12 @@ const defaultTypes: Types = {
       '- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.',
       '- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead.',
     ].join('\n'),
+    suggest: [
+      'object',
+      'unknown',
+      'Record<string, never>',
+      'NonNullable<unknown>',
+    ],
   },
 };
 
@@ -125,8 +133,10 @@ export default util.createRule<Options, MessageIds>({
       recommended: 'error',
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       bannedTypeMessage: "Don't use `{{name}}` as a type.{{customMessage}}",
+      bannedTypeReplacement: 'Replace `{{name}}` with `{{replacement}}`.',
     },
     schema: [
       {
@@ -144,6 +154,10 @@ export default util.createRule<Options, MessageIds>({
                   properties: {
                     message: { type: 'string' },
                     fixWith: { type: 'string' },
+                    suggest: {
+                      type: 'array',
+                      items: { type: 'string' },
+                    },
                   },
                   additionalProperties: false,
                 },
@@ -184,6 +198,10 @@ export default util.createRule<Options, MessageIds>({
       const customMessage = getCustomMessage(bannedType);
       const fixWith =
         bannedType && typeof bannedType === 'object' && bannedType.fixWith;
+      const suggest =
+        bannedType && typeof bannedType === 'object'
+          ? bannedType.suggest
+          : undefined;
 
       context.report({
         node: typeNode,
@@ -195,6 +213,15 @@ export default util.createRule<Options, MessageIds>({
         fix: fixWith
           ? (fixer): TSESLint.RuleFix => fixer.replaceText(typeNode, fixWith)
           : null,
+        suggest: suggest?.map(replacement => ({
+          messageId: 'bannedTypeReplacement',
+          data: {
+            name,
+            replacement,
+          },
+          fix: (fixer): TSESLint.RuleFix =>
+            fixer.replaceText(typeNode, replacement),
+        })),
       });
     }
 
