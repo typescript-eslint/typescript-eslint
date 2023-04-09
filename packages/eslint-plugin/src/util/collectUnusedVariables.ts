@@ -424,18 +424,15 @@ function isMergableExported(variable: TSESLint.Scope.Variable): boolean {
  */
 function isExported(variable: TSESLint.Scope.Variable): boolean {
   const exportedDefinition = variable.defs.find(definition => {
-    if (definition) {
-      let node = definition.node;
+    let node = definition.node;
 
-      if (node.type === AST_NODE_TYPES.VariableDeclarator) {
-        node = node.parent!;
-      } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
-        return false;
-      }
-
-      return node.parent!.type.indexOf('Export') === 0;
+    if (node.type === AST_NODE_TYPES.VariableDeclarator) {
+      node = node.parent!;
+    } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
+      return false;
     }
-    return false;
+
+    return node.parent!.type.indexOf('Export') === 0;
   });
   return exportedDefinition !== undefined;
 }
