@@ -1072,6 +1072,12 @@ export class Foo {
         typescript: '4.4',
       },
     },
+    `
+interface Foo {
+  bar: string;
+}
+export const Foo = 'bar';
+    `,
   ],
 
   invalid: [

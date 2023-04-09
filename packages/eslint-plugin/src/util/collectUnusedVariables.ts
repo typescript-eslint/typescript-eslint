@@ -423,20 +423,21 @@ function isMergableExported(variable: TSESLint.Scope.Variable): boolean {
  * @returns True if the variable is exported, false if not.
  */
 function isExported(variable: TSESLint.Scope.Variable): boolean {
-  const definition = variable.defs[0];
+  const exportedDefinition = variable.defs.find(definition => {
+    if (definition) {
+      let node = definition.node;
 
-  if (definition) {
-    let node = definition.node;
+      if (node.type === AST_NODE_TYPES.VariableDeclarator) {
+        node = node.parent!;
+      } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
+        return false;
+      }
 
-    if (node.type === AST_NODE_TYPES.VariableDeclarator) {
-      node = node.parent!;
-    } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
-      return false;
+      return node.parent!.type.indexOf('Export') === 0;
     }
-
-    return node.parent!.type.indexOf('Export') === 0;
-  }
-  return false;
+    return false;
+  });
+  return exportedDefinition !== undefined;
 }
 
 /**
