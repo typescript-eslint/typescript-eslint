@@ -140,12 +140,15 @@ function typeDeclaredInFile(
     );
 
     return declarationFiles.some(declaration => {
+      if (program.isSourceFileFromExternalLibrary(declaration)) {
+        return false;
+      }
       const fileName = declaration.fileName.toLowerCase();
+      if (!fileName.startsWith(cwd)) {
+        return false;
+      }
       return (
-        !(
-          program.isSourceFileFromExternalLibrary(declaration) ||
-          typeRoots?.some(typeRoot => fileName.startsWith(typeRoot)) === true
-        ) && fileName.startsWith(cwd)
+        typeRoots?.some(typeRoot => fileName.startsWith(typeRoot)) !== true
       );
     });
   }
