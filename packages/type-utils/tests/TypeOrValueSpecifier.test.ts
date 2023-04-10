@@ -210,6 +210,15 @@ describe('TypeOrValueSpecifier', () => {
             path: 'tests/fixtures/file.ts',
           },
         ]),
+        ['type RegExp = {prop: string};'].map(
+          (test): [string, TypeOrValueSpecifier] => [
+            test,
+            {
+              from: 'file',
+              name: 'RegExp',
+            },
+          ],
+        ),
       ].flat(),
     )('matches a matching file specifier: %s', runTestPositive);
 
@@ -232,6 +241,13 @@ describe('TypeOrValueSpecifier', () => {
           from: 'file',
           name: ['Foo', 'Bar'],
           path: 'tests/fixtures/wrong-file.ts',
+        },
+      ],
+      [
+        'type Test = RegExp & {prop: string};',
+        {
+          from: 'file',
+          name: 'RegExp',
         },
       ],
     ])("doesn't match a mismatched file specifier: %s", runTestNegative);
