@@ -169,6 +169,14 @@ function f(a: number | string): void {}
     },
     {
       code: `
+function f(m: number): void;
+function f(v: number, u: string): void;
+function f(v: number, u?: string): void {}
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
 function f(a: boolean, ...c: number[]): void;
 function f(a: boolean, ...d: string[]): void;
 function f(a: boolean, ...c: (number | string)[]): void {}
