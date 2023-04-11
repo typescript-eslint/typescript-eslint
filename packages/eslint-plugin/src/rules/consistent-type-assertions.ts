@@ -132,16 +132,27 @@ export default util.createRule<Options, MessageIds>({
             : {},
         fix:
           messageId === 'as'
-            ? (fixer): TSESLint.RuleFix[] => [
-                fixer.replaceText(
+            ? function* (fixer): Generator<TSESLint.RuleFix> {
+                yield fixer.replaceText(
                   node,
                   getTextWithParentheses(node.expression),
-                ),
-                fixer.insertTextAfter(
+                );
+
+                if (
+                  node.expression.type === AST_NODE_TYPES.ObjectExpression &&
+                  node.parent?.type ===
+                    AST_NODE_TYPES.ArrowFunctionExpression &&
+                  !util.isParenthesized(node.expression, sourceCode)
+                ) {
+                  yield fixer.insertTextBefore(node, '(');
+                  yield fixer.insertTextAfter(node, ')');
+                }
+
+                yield fixer.insertTextAfter(
                   node,
                   ` as ${getTextWithParentheses(node.typeAnnotation)}`,
-                ),
-              ]
+                );
+              }
             : undefined,
       });
     }

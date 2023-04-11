@@ -14,7 +14,10 @@ const x = <A>!'string';
 const x = <A>a + b;
 const x = <(A)>a + (b);
 const x = <Foo>(new Generic<string>());
-const x = (new (<Foo>Generic<string>)());`;
+const x = (new (<Foo>Generic<string>)());
+const x = () => <Foo>{ bar: 5 };
+const x = () => <Foo>({ bar: 5 });
+const x = () => <Foo>bar;`;
 
 const ANGLE_BRACKET_TESTS = `${ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE}
 const x = <const>{ key: 'value' };
@@ -29,7 +32,10 @@ const x = !'string' as A;
 const x = a as A + b;
 const x = a as (A) + (b);
 const x = (new Generic<string>()) as Foo;
-const x = (new (Generic<string> as Foo)());`;
+const x = (new (Generic<string> as Foo)());
+const x = () => ({ bar: 5 }) as Foo;
+const x = () => ({ bar: 5 }) as Foo;
+const x = () => bar as Foo;`;
 
 const AS_TESTS = `${AS_TESTS_EXCEPT_CONST_CASE}
 const x = { key: 'value' } as const;
@@ -198,6 +204,18 @@ ruleTester.run('consistent-type-assertions', rule, {
           messageId: 'angle-bracket',
           line: 11,
         },
+        {
+          messageId: 'angle-bracket',
+          line: 12,
+        },
+        {
+          messageId: 'angle-bracket',
+          line: 13,
+        },
+        {
+          messageId: 'angle-bracket',
+          line: 14,
+        },
       ],
     }),
     ...batchedSingleLineTests({
@@ -248,6 +266,18 @@ ruleTester.run('consistent-type-assertions', rule, {
           messageId: 'as',
           line: 11,
         },
+        {
+          messageId: 'as',
+          line: 12,
+        },
+        {
+          messageId: 'as',
+          line: 13,
+        },
+        {
+          messageId: 'as',
+          line: 14,
+        },
       ],
       output: AS_TESTS,
     }),
@@ -295,6 +325,18 @@ ruleTester.run('consistent-type-assertions', rule, {
           messageId: 'never',
           line: 10,
         },
+        {
+          messageId: 'never',
+          line: 11,
+        },
+        {
+          messageId: 'never',
+          line: 12,
+        },
+        {
+          messageId: 'never',
+          line: 13,
+        },
       ],
     }),
     ...batchedSingleLineTests({
@@ -340,6 +382,18 @@ ruleTester.run('consistent-type-assertions', rule, {
         {
           messageId: 'never',
           line: 10,
+        },
+        {
+          messageId: 'never',
+          line: 11,
+        },
+        {
+          messageId: 'never',
+          line: 12,
+        },
+        {
+          messageId: 'never',
+          line: 13,
         },
       ],
     }),
