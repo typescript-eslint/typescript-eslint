@@ -595,6 +595,7 @@ export default util.createRule<Options, MessageIds>({
     },
     fixable: 'whitespace',
     hasSuggestions: false,
+    // intentionally a non-array schema to mirror the base rule
     schema: {
       $defs: {
         paddingType: {

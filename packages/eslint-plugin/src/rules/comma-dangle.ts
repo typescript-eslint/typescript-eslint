@@ -47,6 +47,7 @@ export default util.createRule<Options, MessageIds>({
       recommended: false,
       extendsBaseRule: true,
     },
+    // intentionally a non-array schema to mirror the base rule
     schema: {
       $defs: {
         value: {
@@ -61,19 +62,19 @@ export default util.createRule<Options, MessageIds>({
         {
           oneOf: [
             {
-              $ref: '#/$defs/value',
+              $ref: '#/items/0/$defs/value',
             },
             {
               type: 'object',
               properties: {
-                arrays: { $ref: '#/$defs/valueWithIgnore' },
-                objects: { $ref: '#/$defs/valueWithIgnore' },
-                imports: { $ref: '#/$defs/valueWithIgnore' },
-                exports: { $ref: '#/$defs/valueWithIgnore' },
-                functions: { $ref: '#/$defs/valueWithIgnore' },
-                enums: { $ref: '#/$defs/valueWithIgnore' },
-                generics: { $ref: '#/$defs/valueWithIgnore' },
-                tuples: { $ref: '#/$defs/valueWithIgnore' },
+                arrays: { $ref: '#/items/0/$defs/valueWithIgnore' },
+                objects: { $ref: '#/items/0/$defs/valueWithIgnore' },
+                imports: { $ref: '#/items/0/$defs/valueWithIgnore' },
+                exports: { $ref: '#/items/0/$defs/valueWithIgnore' },
+                functions: { $ref: '#/items/0/$defs/valueWithIgnore' },
+                enums: { $ref: '#/items/0/$defs/valueWithIgnore' },
+                generics: { $ref: '#/items/0/$defs/valueWithIgnore' },
+                tuples: { $ref: '#/items/0/$defs/valueWithIgnore' },
               },
               additionalProperties: false,
             },

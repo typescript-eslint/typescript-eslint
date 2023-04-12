@@ -1,14 +1,14 @@
 import * as eslintPlugin from '@typescript-eslint/eslint-plugin';
 import * as tseslintParser from '@typescript-eslint/parser';
 import * as fs from 'fs';
-import type { JSONSchema7 } from 'json-schema';
+import type { JSONSchema4Type } from 'json-schema';
 import type { JSONSchema } from 'json-schema-to-typescript';
 import { compile } from 'json-schema-to-typescript';
 import * as lz from 'lzstring.ts';
 import type * as mdast from 'mdast';
 import { EOL } from 'os';
 import * as path from 'path';
-import { format } from 'prettier';
+import { format, resolveConfig } from 'prettier';
 import type { Plugin } from 'unified';
 import type * as unist from 'unist';
 
@@ -32,6 +32,59 @@ const eslintPluginDirectory = path.resolve(
 
 function nodeIsParent(node: unist.Node<unist.Data>): node is unist.Parent {
   return 'children' in node;
+}
+
+const prettierConfig = resolveConfig.sync(__dirname);
+
+function correctSchemaForCompile(
+  schema: JSONSchema | JSONSchema[],
+): JSONSchema {
+  if (Array.isArray(schema)) {
+    if (schema.length > 1) {
+      throw new Error(
+        'Expected schema to only have one element for documentation generation. If this was intentional, we will need to update the documentation generator.',
+      );
+    }
+
+    if (schema[0].$defs != null) {
+      correctSchema(schema[0]);
+    }
+    return schema[0];
+  }
+
+  return schema;
+
+  /**
+   * ESLint will automatically wrap an array schema in its own schema
+   *   [schema] -> { type: 'array', items: [schema] }
+   *
+   * So to make refs work we prefix the path with `items/0/`.
+   * When we're generating the TS types though we don't do this
+   */
+  function correctSchema(subschema: JSONSchema4Type): void {
+    if (typeof subschema !== 'object' || subschema == null) {
+      return;
+    }
+
+    if (Array.isArray(subschema)) {
+      subschema.forEach(correctSchema);
+      return;
+    }
+
+    for (const [key, value] of Object.entries(subschema)) {
+      switch (typeof value) {
+        case 'string':
+          if (value.startsWith('#/items/0/')) {
+            subschema[key] = value.replace('#/items/0/', '#/');
+          }
+          break;
+
+        case 'object':
+          correctSchema(value);
+          break;
+      }
+    }
+  }
 }
 
 export const generatedRuleDocs: Plugin = () => {
@@ -254,20 +307,7 @@ export const generatedRuleDocs: Plugin = () => {
           type: 'paragraph',
         } as mdast.Paragraph);
       } else if (!COMPLICATED_RULE_OPTIONS.has(file.stem)) {
-        const optionsSchema: JSONSchema =
-          meta.schema instanceof Array
-            ? meta.schema[0]
-            : meta.schema.type === 'array'
-            ? {
-                ...(meta.schema.definitions
-                  ? { definitions: meta.schema.definitions }
-                  : {}),
-                ...(meta.schema.$defs
-                  ? { $defs: (meta.schema as JSONSchema7).$defs }
-                  : {}),
-                ...(meta.schema.prefixItems as [JSONSchema])[0],
-              }
-            : meta.schema;
+        const optionsSchema = correctSchemaForCompile(meta.schema);
 
         children.splice(
           optionsH2Index + 1,
@@ -300,6 +340,8 @@ export const generatedRuleDocs: Plugin = () => {
                     additionalProperties: false,
                     bannerComment: '',
                     declareExternallyReferenced: true,
+                    format: true,
+                    style: prettierConfig ?? {},
                   },
                 )
               ).replace(/^export /gm, ''),

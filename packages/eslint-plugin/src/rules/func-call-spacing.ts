@@ -24,6 +24,7 @@ export default util.createRule<Options, MessageIds>({
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
+    // intentionally a non-array schema to mirror the base rule
     schema: {
       anyOf: [
         {

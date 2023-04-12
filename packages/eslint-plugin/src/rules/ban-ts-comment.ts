@@ -39,45 +39,42 @@ export default util.createRule<[Options], MessageIds>({
       tsDirectiveCommentDescriptionNotMatchPattern:
         'The description for the "@ts-{{directive}}" directive must match the {{format}} format.',
     },
-    schema: {
-      $defs: {
-        directiveConfigSchema: {
-          oneOf: [
-            {
-              type: 'boolean',
-              default: true,
-            },
-            {
-              enum: ['allow-with-description'],
-            },
-            {
-              type: 'object',
-              properties: {
-                descriptionFormat: { type: 'string' },
+    schema: [
+      {
+        $defs: {
+          directiveConfigSchema: {
+            oneOf: [
+              {
+                type: 'boolean',
+                default: true,
               },
-            },
-          ],
-        },
-      },
-      prefixItems: [
-        {
-          properties: {
-            'ts-expect-error': {
-              $ref: '#/$defs/directiveConfigSchema',
-            },
-            'ts-ignore': { $ref: '#/$defs/directiveConfigSchema' },
-            'ts-nocheck': { $ref: '#/$defs/directiveConfigSchema' },
-            'ts-check': { $ref: '#/$defs/directiveConfigSchema' },
-            minimumDescriptionLength: {
-              type: 'number',
-              default: defaultMinimumDescriptionLength,
-            },
+              {
+                enum: ['allow-with-description'],
+              },
+              {
+                type: 'object',
+                properties: {
+                  descriptionFormat: { type: 'string' },
+                },
+              },
+            ],
           },
-          additionalProperties: false,
         },
-      ],
-      type: 'array',
-    },
+        properties: {
+          'ts-expect-error': {
+            $ref: '#/items/0/$defs/directiveConfigSchema',
+          },
+          'ts-ignore': { $ref: '#/items/0/$defs/directiveConfigSchema' },
+          'ts-nocheck': { $ref: '#/items/0/$defs/directiveConfigSchema' },
+          'ts-check': { $ref: '#/items/0/$defs/directiveConfigSchema' },
+          minimumDescriptionLength: {
+            type: 'number',
+            default: defaultMinimumDescriptionLength,
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
   },
   defaultOptions: [
     {
