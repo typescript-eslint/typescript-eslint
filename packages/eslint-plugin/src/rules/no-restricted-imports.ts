@@ -5,12 +5,13 @@ import type {
 } from 'eslint/lib/rules/no-restricted-imports';
 import type { Ignore } from 'ignore';
 import ignore from 'ignore';
+import type { JSONSchema4 } from 'json-schema';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
-import { createRule, deepMerge } from '../util';
+import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-restricted-imports');
@@ -18,49 +19,85 @@ const baseRule = getESLintCoreRule('no-restricted-imports');
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const allowTypeImportsOptionSchema = {
+const allowTypeImportsOptionSchema: JSONSchema4['properties'] = {
   allowTypeImports: {
     type: 'boolean',
-    default: false,
   },
 };
-const schemaForMergeArrayOfStringsOrObjects = {
+
+const arrayOfStringsOrObjects: JSONSchema4 = {
+  type: 'array',
   items: {
     anyOf: [
+      { type: 'string' },
       {
+        type: 'object',
+        properties: {
+          ...(
+            (
+              (baseRule.meta.schema as JSONSchema4).anyOf![1]
+                .items as JSONSchema4[]
+            )[0].properties!.paths.items as JSONSchema4
+          ).anyOf![1].properties,
+          ...allowTypeImportsOptionSchema,
+        },
         additionalProperties: false,
-        properties: allowTypeImportsOptionSchema,
+        required: ['name'],
       },
     ],
   },
+  uniqueItems: true,
 };
-const schemaForMergeArrayOfStringsOrObjectPatterns = {
+
+const arrayOfStringsOrObjectPatterns: JSONSchema4 = {
   anyOf: [
     {
+      type: 'array',
       items: {
-        additionalProperties: false,
-        properties: allowTypeImportsOptionSchema,
+        type: 'string',
       },
+      uniqueItems: true,
+    },
+    {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          ...(
+            (
+              (baseRule.meta.schema as JSONSchema4).anyOf![1]
+                .items as JSONSchema4[]
+            )[0].properties!.patterns.anyOf![1].items as JSONSchema4
+          ).properties,
+          ...allowTypeImportsOptionSchema,
+        },
+        additionalProperties: false,
+        required: ['group'],
+      },
+      uniqueItems: true,
     },
   ],
 };
-const schema = deepMerge(
-  { ...baseRule.meta.schema },
-  {
-    anyOf: [
-      schemaForMergeArrayOfStringsOrObjects,
-      {
-        items: {
-          additionalProperties: false,
+
+const schema: JSONSchema4 = {
+  anyOf: [
+    arrayOfStringsOrObjects,
+    {
+      type: 'array',
+      items: [
+        {
+          type: 'object',
           properties: {
-            paths: schemaForMergeArrayOfStringsOrObjects,
-            patterns: schemaForMergeArrayOfStringsOrObjectPatterns,
+            paths: arrayOfStringsOrObjects,
+            patterns: arrayOfStringsOrObjectPatterns,
           },
+          additionalProperties: false,
         },
-      },
-    ],
-  },
-);
+      ],
+      additionalItems: false,
+    },
+  ],
+};
 
 function isObjectOfPaths(
   obj: unknown,
