@@ -48,6 +48,7 @@
     "@typescript-eslint/scope-manager": "5.58.0",
     "@typescript-eslint/type-utils": "5.58.0",
     "@typescript-eslint/utils": "5.58.0",
+    "ajv": "6",
     "debug": "^4.3.4",
     "grapheme-splitter": "^1.0.4",
     "ignore": "^5.2.0",

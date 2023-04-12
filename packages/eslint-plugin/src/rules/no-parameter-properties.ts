@@ -51,7 +51,6 @@ export default util.createRule<Options, MessageIds>({
                 'public readonly',
               ],
             },
-            minItems: 1,
           },
         },
         additionalProperties: false,

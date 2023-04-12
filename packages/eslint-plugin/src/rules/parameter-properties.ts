@@ -52,22 +52,21 @@ export default util.createRule<Options, MessageIds>({
           ],
         },
       },
-      prefixItems: [
+      items: [
         {
           type: 'object',
+          additionalProperties: false,
           properties: {
             allow: {
               type: 'array',
               items: {
                 $ref: '#/$defs/modifier',
               },
-              minItems: 1,
             },
             prefer: {
               enum: ['class-property', 'parameter-property'],
             },
           },
-          additionalProperties: false,
         },
       ],
       type: 'array',

@@ -59,8 +59,10 @@ export default util.createRule<[Options], MessageIds>({
           ],
         },
       },
-      prefixItems: [
+      items: [
         {
+          type: 'object',
+          additionalProperties: false,
           properties: {
             'ts-expect-error': {
               $ref: '#/$defs/directiveConfigSchema',
@@ -73,7 +75,6 @@ export default util.createRule<[Options], MessageIds>({
               default: defaultMinimumDescriptionLength,
             },
           },
-          additionalProperties: false,
         },
       ],
       type: 'array',

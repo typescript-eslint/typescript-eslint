@@ -27,8 +27,8 @@ const allowTypeImportsOptionSchema = {
 const schemaForMergeArrayOfStringsOrObjects = {
   items: {
     anyOf: [
-      {},
       {
+        additionalProperties: false,
         properties: allowTypeImportsOptionSchema,
       },
     ],
@@ -36,9 +36,9 @@ const schemaForMergeArrayOfStringsOrObjects = {
 };
 const schemaForMergeArrayOfStringsOrObjectPatterns = {
   anyOf: [
-    {},
     {
       items: {
+        additionalProperties: false,
         properties: allowTypeImportsOptionSchema,
       },
     },
@@ -51,6 +51,7 @@ const schema = deepMerge(
       schemaForMergeArrayOfStringsOrObjects,
       {
         items: {
+          additionalProperties: false,
           properties: {
             paths: schemaForMergeArrayOfStringsOrObjects,
             patterns: schemaForMergeArrayOfStringsOrObjectPatterns,

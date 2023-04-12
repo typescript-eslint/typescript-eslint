@@ -74,8 +74,11 @@ interface RuleMetaData<TMessageIds extends string> {
   replacedBy?: readonly string[];
   /**
    * The options schema. Supply an empty array if there are no options.
+   * $ref is not supported in arrays, so is omitted.
+   * See: https://github.com/typescript-eslint/typescript-eslint/pull/5531
+   * See: https://eslint.org/docs/latest/extend/custom-rules#options-schemas
    */
-  schema: JSONSchema4 | readonly JSONSchema4[];
+  schema: JSONSchema4 | readonly Omit<JSONSchema4, '$ref'>[];
 }
 
 interface RuleFix {

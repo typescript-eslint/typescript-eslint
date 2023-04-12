@@ -33,6 +33,7 @@ export default util.createRule<Options, MessageId>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allowNumber: {
             description:

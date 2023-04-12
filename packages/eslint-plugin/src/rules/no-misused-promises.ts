@@ -83,6 +83,7 @@ export default util.createRule<Options, MessageId>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           checksConditionals: {
             type: 'boolean',

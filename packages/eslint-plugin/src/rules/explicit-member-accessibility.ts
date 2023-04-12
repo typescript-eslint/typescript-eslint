@@ -67,7 +67,7 @@ export default util.createRule<Options, MessageIds>({
       $defs: {
         accessibilityLevel,
       },
-      prefixItems: [
+      items: [
         {
           type: 'object',
           properties: {
