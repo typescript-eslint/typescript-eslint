@@ -1,18 +1,19 @@
+import type { RuleModule } from '@typescript-eslint/utils/src/ts-eslint';
 import Ajv from 'ajv';
 import type { JSONSchema4 } from 'json-schema';
 
 import eslintPlugin from '../src';
-import { RuleModule } from '@typescript-eslint/utils/src/ts-eslint';
 
 describe("Validating rule's schemas", () => {
   // These two have defaults which cover multiple arguments that are incompatible
-  const excluded = ['semi', 'func-call-spacing'];
+  const overrideOptions: Record<string, unknown> = {
+    semi: ['never'],
+    'func-call-spacing': ['never'],
+  };
 
-  for (const [ruleName, rule] of Object.entries(eslintPlugin.rules).filter(
-    ([ruleName]) => !excluded.includes(ruleName),
-  )) {
-    test(`${ruleName} must have default options satisfying its own schema`, () => {
-      if (!isValid(rule, rule.defaultOptions)) {
+  for (const [ruleName, rule] of Object.entries(eslintPlugin.rules)) {
+    test(`${ruleName} must accept valid arguments`, () => {
+      if (!isValid(rule, overrideOptions[ruleName] ?? rule.defaultOptions)) {
         throw new Error(
           `Options failed validation against rule's schema, with errors: ${JSON.stringify(
             ajv.errors,
@@ -23,7 +24,6 @@ describe("Validating rule's schemas", () => {
 
     test(`${ruleName} rejects arbitrary arguments`, () => {
       if (isValid(rule, [{ 'arbitrary-schemas.test.ts': true }])) {
-        console.log(rule.meta.schema);
         throw new Error(`Options succeeded validation for arbitrary options`);
       }
     });
