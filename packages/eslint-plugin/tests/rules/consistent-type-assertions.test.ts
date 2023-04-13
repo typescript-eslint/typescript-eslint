@@ -33,9 +33,9 @@ const x = (a as A) + b;
 const x = (a as A) + (b);
 const x = new Generic<string>() as Foo;
 const x = (new (Generic<string> as Foo)());
-const x = () => ({ bar: 5 } as Foo);
-const x = () => ({ bar: 5 } as Foo);
-const x = () => (bar as Foo);`;
+const x = () => ({ bar: 5 }) as Foo;
+const x = () => ({ bar: 5 }) as Foo;
+const x = () => bar as Foo;`;
 
 const AS_TESTS = `${AS_TESTS_EXCEPT_CONST_CASE}
 const x = { key: 'value' } as const;

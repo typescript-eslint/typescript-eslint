@@ -750,16 +750,16 @@ if (y) {
             {
               messageId: 'conditionFixCompareZero',
               // TODO: fix compare zero suggestion for bigint
-              output: `        (x: bigint) => (x === 0);`,
+              output: `        (x: bigint) => x === 0;`,
             },
             {
               // TODO: remove check NaN suggestion for bigint
               messageId: 'conditionFixCompareNaN',
-              output: `        (x: bigint) => (Number.isNaN(x));`,
+              output: `        (x: bigint) => Number.isNaN(x);`,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: `        (x: bigint) => (!Boolean(x));`,
+              output: `        (x: bigint) => !Boolean(x);`,
             },
           ],
         },
@@ -893,7 +893,7 @@ if (y) {
             },
             {
               messageId: 'conditionFixCompareFalse',
-              output: `        (x?: boolean) => (x === false);`,
+              output: `        (x?: boolean) => x === false;`,
             },
           ],
         },
@@ -930,7 +930,7 @@ if (y) {
       ],
       output: `
         declare const x: object | null; if (x != null) {}
-        (x?: { a: number }) => (x == null);
+        (x?: { a: number }) => x == null;
         <T extends {} | null | undefined>(x: T) => (x != null) ? 1 : 0;
       `,
     }),
@@ -970,7 +970,7 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
-              output: '        (x?: string) => (x == null);',
+              output: '        (x?: string) => x == null;',
             },
             {
               messageId: 'conditionFixDefaultEmptyString',
@@ -978,7 +978,7 @@ if (y) {
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: '        (x?: string) => (!Boolean(x));',
+              output: '        (x?: string) => !Boolean(x);',
             },
           ],
         },
@@ -1064,7 +1064,7 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
-              output: '        (x?: number) => (x == null);',
+              output: '        (x?: number) => x == null;',
             },
             {
               messageId: 'conditionFixDefaultZero',
@@ -1072,7 +1072,7 @@ if (y) {
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: '        (x?: number) => (!Boolean(x));',
+              output: '        (x?: number) => !Boolean(x);',
             },
           ],
         },

@@ -3,7 +3,16 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { createRule, getWrappingFixer } from '../../src/util';
 import { getFixturesRootDir, RuleTester } from '../RuleTester';
 
-const rule = createRule({
+const rootPath = getFixturesRootDir();
+const ruleTester = new RuleTester({
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    tsconfigRootDir: rootPath,
+    project: './tsconfig.json',
+  },
+});
+
+const voidEverythingRule = createRule({
   name: 'void-everything',
   defaultOptions: [],
   meta: {
@@ -45,16 +54,7 @@ const rule = createRule({
   },
 });
 
-const rootPath = getFixturesRootDir();
-const ruleTester = new RuleTester({
-  parser: '@typescript-eslint/parser',
-  parserOptions: {
-    tsconfigRootDir: rootPath,
-    project: './tsconfig.json',
-  },
-});
-
-ruleTester.run('getWrappingFixer', rule, {
+ruleTester.run('getWrappingFixer - voidEverythingRule', voidEverythingRule, {
   valid: [],
   invalid: [
     // should add parens when inner expression might need them
@@ -131,11 +131,6 @@ ruleTester.run('getWrappingFixer', rule, {
       code: 'wrapMe.prop',
       errors: [{ messageId: 'addVoid' }],
       output: '(void wrapMe).prop',
-    },
-    {
-      code: '() => wrapMe',
-      errors: [{ messageId: 'addVoid' }],
-      output: '() => (void wrapMe)',
     },
 
     // shouldn't add outer parens when not necessary
@@ -306,6 +301,57 @@ ruleTester.run('getWrappingFixer', rule, {
           (void wrapMe) ?? f()
         }
       `,
+    },
+  ],
+});
+
+const removeFunctionRule = createRule({
+  name: 'remove-function',
+  defaultOptions: [],
+  meta: {
+    type: 'suggestion',
+    fixable: 'code',
+    docs: {
+      description:
+        'Remove function with first arg remaining in random places for test purposes.',
+      recommended: false,
+    },
+    messages: {
+      removeFunction: 'Please remove this function',
+    },
+    schema: [],
+  },
+
+  create(context) {
+    const sourceCode = context.getSourceCode();
+
+    const report = (node: TSESTree.CallExpression): void => {
+      context.report({
+        node,
+        messageId: 'removeFunction',
+        fix: getWrappingFixer({
+          sourceCode,
+          node,
+          innerNode: [node.arguments[0]],
+          wrap: code => code,
+        }),
+      });
+    };
+
+    return {
+      'CallExpression[callee.name="fn"]': report,
+    };
+  },
+});
+
+ruleTester.run('getWrappingFixer - removeFunctionRule', removeFunctionRule, {
+  valid: [],
+  invalid: [
+    // should add parens when a inner node is a part of return body of node's parent
+    {
+      code: '() => fn({ x: "wrapObject" })',
+      errors: [{ messageId: 'removeFunction' }],
+      output: '() => ({ x: "wrapObject" })',
     },
   ],
 });

@@ -42,6 +42,13 @@ export function getWrappingFixer(
         code = `(${code})`;
       }
 
+      // check the inner node is used as return body of arrow function
+      if (isObjectExpressionInOneLineReturn(node, innerNode)) {
+        // the code we are editing might break arrow function expressions
+        // let's wrap our node in parens in case it's gotten mistaken as block statement
+        code = `(${code})`;
+      }
+
       return code;
     });
 
@@ -124,13 +131,6 @@ function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
     return true;
   }
 
-  if (
-    parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-    parent.body === node
-  ) {
-    return true;
-  }
-
   return false;
 }
 
@@ -209,6 +209,24 @@ function isLeftHandSide(node: TSESTree.Node): boolean {
   if (
     parent.type === AST_NODE_TYPES.TaggedTemplateExpression &&
     node === parent.tag
+  ) {
+    return true;
+  }
+
+  return false;
+}
+
+/**
+ * Checks if a node's parent is arrow function expression and a inner node is object expression
+ */
+function isObjectExpressionInOneLineReturn(
+  node: TSESTree.Node,
+  innerNode: TSESTree.Node,
+): boolean {
+  if (
+    node.parent?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+    node.parent?.body === node &&
+    innerNode.type === AST_NODE_TYPES.ObjectExpression
   ) {
     return true;
   }
