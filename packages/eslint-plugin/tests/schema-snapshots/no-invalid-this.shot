@@ -1,0 +1,26 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-invalid-this 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "object",
+    "properties": {
+      "capIsConstructor": { "type": "boolean", "default": true }
+    },
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    capIsConstructor?: boolean;
+  },
+];
+"
+`;

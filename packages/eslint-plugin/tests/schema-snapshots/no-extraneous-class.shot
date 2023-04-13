@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-extraneous-class 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "allowConstructorOnly": {
+        "description": "Whether to allow extraneous classes that contain only a constructor.",
+        "type": "boolean"
+      },
+      "allowEmpty": {
+        "description": "Whether to allow extraneous classes that have no body (i.e. are empty).",
+        "type": "boolean"
+      },
+      "allowStaticOnly": {
+        "description": "Whether to allow extraneous classes that only contain static members.",
+        "type": "boolean"
+      },
+      "allowWithDecorator": {
+        "description": "Whether to allow extraneous classes that include a decorator.",
+        "type": "boolean"
+      }
+    }
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    /** Whether to allow extraneous classes that contain only a constructor. */
+    allowConstructorOnly?: boolean;
+    /** Whether to allow extraneous classes that have no body (i.e. are empty). */
+    allowEmpty?: boolean;
+    /** Whether to allow extraneous classes that only contain static members. */
+    allowStaticOnly?: boolean;
+    /** Whether to allow extraneous classes that include a decorator. */
+    allowWithDecorator?: boolean;
+  },
+];
+"
+`;

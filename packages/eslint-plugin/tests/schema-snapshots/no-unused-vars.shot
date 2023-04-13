@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-unused-vars 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "oneOf": [
+      { "enum": ["all", "local"] },
+      {
+        "type": "object",
+        "properties": {
+          "vars": { "enum": ["all", "local"] },
+          "varsIgnorePattern": { "type": "string" },
+          "args": { "enum": ["all", "after-used", "none"] },
+          "ignoreRestSiblings": { "type": "boolean" },
+          "argsIgnorePattern": { "type": "string" },
+          "caughtErrors": { "enum": ["all", "none"] },
+          "caughtErrorsIgnorePattern": { "type": "string" },
+          "destructuredArrayIgnorePattern": { "type": "string" }
+        },
+        "additionalProperties": false
+      }
+    ]
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  | ('all' | 'local')
+  | {
+      vars?: 'all' | 'local';
+      varsIgnorePattern?: string;
+      args?: 'all' | 'after-used' | 'none';
+      ignoreRestSiblings?: boolean;
+      argsIgnorePattern?: string;
+      caughtErrors?: 'all' | 'none';
+      caughtErrorsIgnorePattern?: string;
+      destructuredArrayIgnorePattern?: string;
+    },
+];
+"
+`;

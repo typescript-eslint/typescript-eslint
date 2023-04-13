@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes func-call-spacing 1`] = `
+"
+# SCHEMA:
+
+{
+  "anyOf": [
+    {
+      "type": "array",
+      "items": [{ "enum": ["never"] }],
+      "minItems": 0,
+      "maxItems": 1
+    },
+    {
+      "type": "array",
+      "items": [
+        { "enum": ["always"] },
+        {
+          "type": "object",
+          "properties": { "allowNewlines": { "type": "boolean" } },
+          "additionalProperties": false
+        }
+      ],
+      "minItems": 0,
+      "maxItems": 2
+    }
+  ]
+}
+
+
+# TYPES:
+
+type Options =
+  | ([] | ['never', ...unknown[]])
+  | (
+      | []
+      | ['always']
+      | [
+          'always',
+          {
+            allowNewlines?: boolean;
+          },
+          ...unknown[],
+        ]
+    );
+"
+`;

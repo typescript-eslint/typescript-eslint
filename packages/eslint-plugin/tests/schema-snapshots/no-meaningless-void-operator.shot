@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-meaningless-void-operator 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "object",
+    "properties": { "checkNever": { "type": "boolean", "default": false } },
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    checkNever?: boolean;
+  },
+];
+"
+`;

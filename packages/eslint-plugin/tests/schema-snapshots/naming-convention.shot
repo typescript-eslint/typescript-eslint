@@ -1,0 +1,3473 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes naming-convention 1`] = `
+"
+# SCHEMA:
+
+{
+  "type": "array",
+  "items": {
+    "oneOf": [
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "default",
+                "variableLike",
+                "memberLike",
+                "typeLike",
+                "method",
+                "property",
+                "variable",
+                "function",
+                "parameter",
+                "parameterProperty",
+                "accessor",
+                "enumMember",
+                "classMethod",
+                "objectLiteralMethod",
+                "typeMethod",
+                "classProperty",
+                "objectLiteralProperty",
+                "typeProperty",
+                "class",
+                "interface",
+                "typeAlias",
+                "enum",
+                "typeParameter"
+              ]
+            },
+            "additionalItems": false
+          },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "const",
+                "readonly",
+                "static",
+                "public",
+                "protected",
+                "private",
+                "#private",
+                "abstract",
+                "destructured",
+                "global",
+                "exported",
+                "unused",
+                "requiresQuotes",
+                "override",
+                "async"
+              ]
+            },
+            "additionalItems": false
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["boolean", "string", "number", "function", "array"]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["default"] },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "const",
+                "readonly",
+                "static",
+                "public",
+                "protected",
+                "private",
+                "#private",
+                "abstract",
+                "destructured",
+                "global",
+                "exported",
+                "unused",
+                "requiresQuotes",
+                "override",
+                "async"
+              ]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["variableLike"] },
+          "modifiers": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["unused", "async"] },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["variable"] },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "const",
+                "destructured",
+                "exported",
+                "global",
+                "unused",
+                "async"
+              ]
+            },
+            "additionalItems": false
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["boolean", "string", "number", "function", "array"]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["function"] },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["exported", "global", "unused", "async"]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["parameter"] },
+          "modifiers": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["destructured", "unused"] },
+            "additionalItems": false
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["boolean", "string", "number", "function", "array"]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["memberLike"] },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "abstract",
+                "private",
+                "#private",
+                "protected",
+                "public",
+                "readonly",
+                "requiresQuotes",
+                "static",
+                "override",
+                "async"
+              ]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["classProperty"] },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "abstract",
+                "private",
+                "#private",
+                "protected",
+                "public",
+                "readonly",
+                "requiresQuotes",
+                "static",
+                "override"
+              ]
+            },
+            "additionalItems": false
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["boolean", "string", "number", "function", "array"]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["objectLiteralProperty"] },
+          "modifiers": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["public", "requiresQuotes"] },
+            "additionalItems": false
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["boolean", "string", "number", "function", "array"]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["typeProperty"] },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["public", "readonly", "requiresQuotes"]
+            },
+            "additionalItems": false
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["boolean", "string", "number", "function", "array"]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["parameterProperty"] },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["private", "protected", "public", "readonly"]
+            },
+            "additionalItems": false
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["boolean", "string", "number", "function", "array"]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["property"] },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "abstract",
+                "private",
+                "#private",
+                "protected",
+                "public",
+                "readonly",
+                "requiresQuotes",
+                "static",
+                "override",
+                "async"
+              ]
+            },
+            "additionalItems": false
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["boolean", "string", "number", "function", "array"]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["classMethod"] },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "abstract",
+                "private",
+                "#private",
+                "protected",
+                "public",
+                "requiresQuotes",
+                "static",
+                "override",
+                "async"
+              ]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["objectLiteralMethod"] },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["public", "requiresQuotes", "async"]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["typeMethod"] },
+          "modifiers": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["public", "requiresQuotes"] },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["method"] },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "abstract",
+                "private",
+                "#private",
+                "protected",
+                "public",
+                "requiresQuotes",
+                "static",
+                "override",
+                "async"
+              ]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["accessor"] },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "abstract",
+                "private",
+                "protected",
+                "public",
+                "requiresQuotes",
+                "static",
+                "override"
+              ]
+            },
+            "additionalItems": false
+          },
+          "types": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["boolean", "string", "number", "function", "array"]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["enumMember"] },
+          "modifiers": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["requiresQuotes"] },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["typeLike"] },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["abstract", "exported", "unused"]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["class"] },
+          "modifiers": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["abstract", "exported", "unused"]
+            },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["interface"] },
+          "modifiers": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["exported", "unused"] },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["typeAlias"] },
+          "modifiers": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["exported", "unused"] },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["enum"] },
+          "modifiers": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["exported", "unused"] },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "format": {
+            "oneOf": [
+              {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "enum": [
+                    "camelCase",
+                    "strictCamelCase",
+                    "PascalCase",
+                    "StrictPascalCase",
+                    "snake_case",
+                    "UPPER_CASE"
+                  ]
+                },
+                "additionalItems": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "custom": {
+            "type": "object",
+            "properties": {
+              "match": { "type": "boolean" },
+              "regex": { "type": "string" }
+            },
+            "required": ["match", "regex"]
+          },
+          "leadingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "trailingUnderscore": {
+            "type": "string",
+            "enum": [
+              "forbid",
+              "allow",
+              "require",
+              "requireDouble",
+              "allowDouble",
+              "allowSingleOrDouble"
+            ]
+          },
+          "prefix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "suffix": {
+            "type": "array",
+            "items": { "type": "string", "minLength": 1 },
+            "additionalItems": false
+          },
+          "failureMessage": { "type": "string" },
+          "filter": {
+            "oneOf": [
+              { "type": "string", "minLength": 1 },
+              {
+                "type": "object",
+                "properties": {
+                  "match": { "type": "boolean" },
+                  "regex": { "type": "string" }
+                },
+                "required": ["match", "regex"]
+              }
+            ]
+          },
+          "selector": { "type": "string", "enum": ["typeParameter"] },
+          "modifiers": {
+            "type": "array",
+            "items": { "type": "string", "enum": ["unused"] },
+            "additionalItems": false
+          }
+        },
+        "required": ["selector", "format"],
+        "additionalProperties": false
+      }
+    ]
+  },
+  "additionalItems": false
+}
+
+
+# TYPES:
+
+type Options = (
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: (
+        | 'default'
+        | 'variableLike'
+        | 'memberLike'
+        | 'typeLike'
+        | 'method'
+        | 'property'
+        | 'variable'
+        | 'function'
+        | 'parameter'
+        | 'parameterProperty'
+        | 'accessor'
+        | 'enumMember'
+        | 'classMethod'
+        | 'objectLiteralMethod'
+        | 'typeMethod'
+        | 'classProperty'
+        | 'objectLiteralProperty'
+        | 'typeProperty'
+        | 'class'
+        | 'interface'
+        | 'typeAlias'
+        | 'enum'
+        | 'typeParameter'
+      )[];
+      modifiers?: (
+        | 'const'
+        | 'readonly'
+        | 'static'
+        | 'public'
+        | 'protected'
+        | 'private'
+        | '#private'
+        | 'abstract'
+        | 'destructured'
+        | 'global'
+        | 'exported'
+        | 'unused'
+        | 'requiresQuotes'
+        | 'override'
+        | 'async'
+      )[];
+      types?: ('boolean' | 'string' | 'number' | 'function' | 'array')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'default';
+      modifiers?: (
+        | 'const'
+        | 'readonly'
+        | 'static'
+        | 'public'
+        | 'protected'
+        | 'private'
+        | '#private'
+        | 'abstract'
+        | 'destructured'
+        | 'global'
+        | 'exported'
+        | 'unused'
+        | 'requiresQuotes'
+        | 'override'
+        | 'async'
+      )[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'variableLike';
+      modifiers?: ('unused' | 'async')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'variable';
+      modifiers?: (
+        | 'const'
+        | 'destructured'
+        | 'exported'
+        | 'global'
+        | 'unused'
+        | 'async'
+      )[];
+      types?: ('boolean' | 'string' | 'number' | 'function' | 'array')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'function';
+      modifiers?: ('exported' | 'global' | 'unused' | 'async')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'parameter';
+      modifiers?: ('destructured' | 'unused')[];
+      types?: ('boolean' | 'string' | 'number' | 'function' | 'array')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'memberLike';
+      modifiers?: (
+        | 'abstract'
+        | 'private'
+        | '#private'
+        | 'protected'
+        | 'public'
+        | 'readonly'
+        | 'requiresQuotes'
+        | 'static'
+        | 'override'
+        | 'async'
+      )[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'classProperty';
+      modifiers?: (
+        | 'abstract'
+        | 'private'
+        | '#private'
+        | 'protected'
+        | 'public'
+        | 'readonly'
+        | 'requiresQuotes'
+        | 'static'
+        | 'override'
+      )[];
+      types?: ('boolean' | 'string' | 'number' | 'function' | 'array')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'objectLiteralProperty';
+      modifiers?: ('public' | 'requiresQuotes')[];
+      types?: ('boolean' | 'string' | 'number' | 'function' | 'array')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'typeProperty';
+      modifiers?: ('public' | 'readonly' | 'requiresQuotes')[];
+      types?: ('boolean' | 'string' | 'number' | 'function' | 'array')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'parameterProperty';
+      modifiers?: ('private' | 'protected' | 'public' | 'readonly')[];
+      types?: ('boolean' | 'string' | 'number' | 'function' | 'array')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'property';
+      modifiers?: (
+        | 'abstract'
+        | 'private'
+        | '#private'
+        | 'protected'
+        | 'public'
+        | 'readonly'
+        | 'requiresQuotes'
+        | 'static'
+        | 'override'
+        | 'async'
+      )[];
+      types?: ('boolean' | 'string' | 'number' | 'function' | 'array')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'classMethod';
+      modifiers?: (
+        | 'abstract'
+        | 'private'
+        | '#private'
+        | 'protected'
+        | 'public'
+        | 'requiresQuotes'
+        | 'static'
+        | 'override'
+        | 'async'
+      )[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'objectLiteralMethod';
+      modifiers?: ('public' | 'requiresQuotes' | 'async')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'typeMethod';
+      modifiers?: ('public' | 'requiresQuotes')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'method';
+      modifiers?: (
+        | 'abstract'
+        | 'private'
+        | '#private'
+        | 'protected'
+        | 'public'
+        | 'requiresQuotes'
+        | 'static'
+        | 'override'
+        | 'async'
+      )[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'accessor';
+      modifiers?: (
+        | 'abstract'
+        | 'private'
+        | 'protected'
+        | 'public'
+        | 'requiresQuotes'
+        | 'static'
+        | 'override'
+      )[];
+      types?: ('boolean' | 'string' | 'number' | 'function' | 'array')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'enumMember';
+      modifiers?: ('requiresQuotes')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'typeLike';
+      modifiers?: ('abstract' | 'exported' | 'unused')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'class';
+      modifiers?: ('abstract' | 'exported' | 'unused')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'interface';
+      modifiers?: ('exported' | 'unused')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'typeAlias';
+      modifiers?: ('exported' | 'unused')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'enum';
+      modifiers?: ('exported' | 'unused')[];
+    }
+  | {
+      format:
+        | (
+            | 'camelCase'
+            | 'strictCamelCase'
+            | 'PascalCase'
+            | 'StrictPascalCase'
+            | 'snake_case'
+            | 'UPPER_CASE'
+          )[]
+        | null;
+      custom?: {
+        match: boolean;
+        regex: string;
+      };
+      leadingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      trailingUnderscore?:
+        | 'forbid'
+        | 'allow'
+        | 'require'
+        | 'requireDouble'
+        | 'allowDouble'
+        | 'allowSingleOrDouble';
+      prefix?: string[];
+      suffix?: string[];
+      failureMessage?: string;
+      filter?:
+        | string
+        | {
+            match: boolean;
+            regex: string;
+          };
+      selector: 'typeParameter';
+      modifiers?: ('unused')[];
+    }
+)[];
+"
+`;

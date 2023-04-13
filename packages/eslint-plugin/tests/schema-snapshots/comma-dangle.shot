@@ -1,0 +1,75 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes comma-dangle 1`] = `
+"
+# SCHEMA:
+
+{
+  "$defs": {
+    "value": {
+      "enum": ["always-multiline", "always", "never", "only-multiline"]
+    },
+    "valueWithIgnore": {
+      "enum": [
+        "always-multiline",
+        "always",
+        "never",
+        "only-multiline",
+        "ignore"
+      ]
+    }
+  },
+  "type": "array",
+  "items": [
+    {
+      "oneOf": [
+        { "$ref": "#/$defs/value" },
+        {
+          "type": "object",
+          "properties": {
+            "arrays": { "$ref": "#/$defs/valueWithIgnore" },
+            "objects": { "$ref": "#/$defs/valueWithIgnore" },
+            "imports": { "$ref": "#/$defs/valueWithIgnore" },
+            "exports": { "$ref": "#/$defs/valueWithIgnore" },
+            "functions": { "$ref": "#/$defs/valueWithIgnore" },
+            "enums": { "$ref": "#/$defs/valueWithIgnore" },
+            "generics": { "$ref": "#/$defs/valueWithIgnore" },
+            "tuples": { "$ref": "#/$defs/valueWithIgnore" }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  ],
+  "additionalProperties": false
+}
+
+
+# TYPES:
+
+type Value = 'always-multiline' | 'always' | 'never' | 'only-multiline';
+
+type ValueWithIgnore =
+  | 'always-multiline'
+  | 'always'
+  | 'never'
+  | 'only-multiline'
+  | 'ignore';
+
+type Options =
+  | []
+  | [
+      | Value
+      | {
+          arrays?: ValueWithIgnore;
+          objects?: ValueWithIgnore;
+          imports?: ValueWithIgnore;
+          exports?: ValueWithIgnore;
+          functions?: ValueWithIgnore;
+          enums?: ValueWithIgnore;
+          generics?: ValueWithIgnore;
+          tuples?: ValueWithIgnore;
+        },
+    ];
+"
+`;

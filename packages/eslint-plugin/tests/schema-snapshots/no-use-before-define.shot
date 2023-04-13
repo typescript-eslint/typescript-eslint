@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-use-before-define 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "oneOf": [
+      { "enum": ["nofunc"] },
+      {
+        "type": "object",
+        "properties": {
+          "functions": { "type": "boolean" },
+          "classes": { "type": "boolean" },
+          "enums": { "type": "boolean" },
+          "variables": { "type": "boolean" },
+          "typedefs": { "type": "boolean" },
+          "ignoreTypeReferences": { "type": "boolean" },
+          "allowNamedExports": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    ]
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  | 'nofunc'
+  | {
+      functions?: boolean;
+      classes?: boolean;
+      enums?: boolean;
+      variables?: boolean;
+      typedefs?: boolean;
+      ignoreTypeReferences?: boolean;
+      allowNamedExports?: boolean;
+    },
+];
+"
+`;

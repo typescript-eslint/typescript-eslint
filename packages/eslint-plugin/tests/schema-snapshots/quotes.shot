@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes quotes 1`] = `
+"
+# SCHEMA:
+
+[
+  { "enum": ["single", "double", "backtick"] },
+  {
+    "anyOf": [
+      { "enum": ["avoid-escape"] },
+      {
+        "type": "object",
+        "properties": {
+          "avoidEscape": { "type": "boolean" },
+          "allowTemplateLiterals": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    ]
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  'single' | 'double' | 'backtick',
+  (
+    | 'avoid-escape'
+    | {
+        avoidEscape?: boolean;
+        allowTemplateLiterals?: boolean;
+      }
+  ),
+];
+"
+`;

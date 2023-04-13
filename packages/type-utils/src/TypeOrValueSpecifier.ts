@@ -1,3 +1,4 @@
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import path from 'path';
 import type * as ts from 'typescript';
 
@@ -24,7 +25,7 @@ export type TypeOrValueSpecifier =
   | LibSpecifier
   | PackageSpecifier;
 
-export const typeOrValueSpecifierSchema = {
+export const typeOrValueSpecifierSchema: JSONSchema4 = {
   oneOf: [
     {
       type: 'string',
@@ -35,7 +36,7 @@ export const typeOrValueSpecifierSchema = {
       properties: {
         from: {
           type: 'string',
-          const: 'file',
+          enum: ['file'],
         },
         name: {
           oneOf: [
@@ -64,7 +65,7 @@ export const typeOrValueSpecifierSchema = {
       properties: {
         from: {
           type: 'string',
-          const: 'lib',
+          enum: ['lib'],
         },
         name: {
           oneOf: [
@@ -90,7 +91,7 @@ export const typeOrValueSpecifierSchema = {
       properties: {
         from: {
           type: 'string',
-          const: 'package',
+          enum: ['package'],
         },
         name: {
           oneOf: [

@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-invalid-void-type 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "object",
+    "properties": {
+      "allowInGenericTypeArguments": {
+        "oneOf": [
+          { "type": "boolean" },
+          { "type": "array", "items": { "type": "string" }, "minLength": 1 }
+        ]
+      },
+      "allowAsThisParameter": { "type": "boolean" }
+    },
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    allowInGenericTypeArguments?: boolean | string[];
+    allowAsThisParameter?: boolean;
+  },
+];
+"
+`;

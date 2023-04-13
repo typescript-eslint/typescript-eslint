@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes strict-boolean-expressions 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "object",
+    "properties": {
+      "allowString": { "type": "boolean" },
+      "allowNumber": { "type": "boolean" },
+      "allowNullableObject": { "type": "boolean" },
+      "allowNullableBoolean": { "type": "boolean" },
+      "allowNullableString": { "type": "boolean" },
+      "allowNullableNumber": { "type": "boolean" },
+      "allowNullableEnum": { "type": "boolean" },
+      "allowAny": { "type": "boolean" },
+      "allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing": {
+        "type": "boolean"
+      }
+    },
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    allowString?: boolean;
+    allowNumber?: boolean;
+    allowNullableObject?: boolean;
+    allowNullableBoolean?: boolean;
+    allowNullableString?: boolean;
+    allowNullableNumber?: boolean;
+    allowNullableEnum?: boolean;
+    allowAny?: boolean;
+    allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+  },
+];
+"
+`;

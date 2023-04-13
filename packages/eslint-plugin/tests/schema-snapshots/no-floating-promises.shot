@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-floating-promises 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "object",
+    "properties": {
+      "ignoreVoid": {
+        "description": "Whether to ignore \`void\` expressions.",
+        "type": "boolean"
+      },
+      "ignoreIIFE": {
+        "description": "Whether to ignore async IIFEs (Immediately Invocated Function Expressions).",
+        "type": "boolean"
+      }
+    },
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    /** Whether to ignore \`void\` expressions. */
+    ignoreVoid?: boolean;
+    /** Whether to ignore async IIFEs (Immediately Invocated Function Expressions). */
+    ignoreIIFE?: boolean;
+  },
+];
+"
+`;

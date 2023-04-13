@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-this-alias 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "allowDestructuring": {
+        "description": "Whether to ignore destructurings, such as \`const { props, state } = this\`.",
+        "type": "boolean"
+      },
+      "allowedNames": {
+        "description": "Names to ignore, such as [\\"self\\"] for \`const self = this;\`.",
+        "type": "array",
+        "items": { "type": "string" }
+      }
+    }
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    /** Whether to ignore destructurings, such as \`const { props, state } = this\`. */
+    allowDestructuring?: boolean;
+    /** Names to ignore, such as ["self"] for \`const self = this;\`. */
+    allowedNames?: string[];
+  },
+];
+"
+`;

@@ -1,0 +1,114 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes prefer-readonly-parameter-types 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": {
+      "allow": {
+        "type": "array",
+        "items": {
+          "oneOf": [
+            { "type": "string" },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "from": { "type": "string", "enum": ["file"] },
+                "name": {
+                  "oneOf": [
+                    { "type": "string" },
+                    {
+                      "type": "array",
+                      "minItems": 1,
+                      "uniqueItems": true,
+                      "items": { "type": "string" }
+                    }
+                  ]
+                },
+                "path": { "type": "string" }
+              },
+              "required": ["from", "name"]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "from": { "type": "string", "enum": ["lib"] },
+                "name": {
+                  "oneOf": [
+                    { "type": "string" },
+                    {
+                      "type": "array",
+                      "minItems": 1,
+                      "uniqueItems": true,
+                      "items": { "type": "string" }
+                    }
+                  ]
+                }
+              },
+              "required": ["from", "name"]
+            },
+            {
+              "type": "object",
+              "additionalProperties": false,
+              "properties": {
+                "from": { "type": "string", "enum": ["package"] },
+                "name": {
+                  "oneOf": [
+                    { "type": "string" },
+                    {
+                      "type": "array",
+                      "minItems": 1,
+                      "uniqueItems": true,
+                      "items": { "type": "string" }
+                    }
+                  ]
+                },
+                "package": { "type": "string" }
+              },
+              "required": ["from", "name", "package"]
+            }
+          ]
+        }
+      },
+      "checkParameterProperties": { "type": "boolean" },
+      "ignoreInferredTypes": { "type": "boolean" },
+      "treatMethodsAsReadonly": { "type": "boolean" }
+    }
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    allow?: (
+      | string
+      | {
+          from: 'file';
+          name: string | [string, ...string[]];
+          path?: string;
+        }
+      | {
+          from: 'lib';
+          name: string | [string, ...string[]];
+        }
+      | {
+          from: 'package';
+          name: string | [string, ...string[]];
+          package: string;
+        }
+    )[];
+    checkParameterProperties?: boolean;
+    ignoreInferredTypes?: boolean;
+    treatMethodsAsReadonly?: boolean;
+  },
+];
+"
+`;

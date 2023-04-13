@@ -1,0 +1,48 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes init-declarations 1`] = `
+"
+# SCHEMA:
+
+{
+  "anyOf": [
+    {
+      "type": "array",
+      "items": [{ "enum": ["always"] }],
+      "minItems": 0,
+      "maxItems": 1
+    },
+    {
+      "type": "array",
+      "items": [
+        { "enum": ["never"] },
+        {
+          "type": "object",
+          "properties": { "ignoreForLoopInit": { "type": "boolean" } },
+          "additionalProperties": false
+        }
+      ],
+      "minItems": 0,
+      "maxItems": 2
+    }
+  ]
+}
+
+
+# TYPES:
+
+type Options =
+  | ([] | ['always', ...unknown[]])
+  | (
+      | []
+      | ['never']
+      | [
+          'never',
+          {
+            ignoreForLoopInit?: boolean;
+          },
+          ...unknown[],
+        ]
+    );
+"
+`;

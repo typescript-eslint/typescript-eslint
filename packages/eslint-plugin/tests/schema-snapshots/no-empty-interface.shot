@@ -1,0 +1,24 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-empty-interface 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "object",
+    "additionalProperties": false,
+    "properties": { "allowSingleExtends": { "type": "boolean" } }
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    allowSingleExtends?: boolean;
+  },
+];
+"
+`;

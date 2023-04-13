@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes ban-types 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "$defs": {
+      "banConfig": {
+        "oneOf": [
+          {
+            "type": "null",
+            "description": "Bans the type with the default message"
+          },
+          {
+            "enum": [false],
+            "description": "Un-bans the type (useful when paired with \`extendDefaults\`)"
+          },
+          {
+            "enum": [true],
+            "description": "Bans the type with the default message"
+          },
+          {
+            "type": "string",
+            "description": "Bans the type with a custom message"
+          },
+          {
+            "type": "object",
+            "description": "Bans a type",
+            "properties": {
+              "message": {
+                "type": "string",
+                "description": "Custom error message"
+              },
+              "fixWith": {
+                "type": "string",
+                "description": "Type to autofix replace with."
+              }
+            },
+            "additionalProperties": false
+          }
+        ]
+      }
+    },
+    "type": "object",
+    "properties": {
+      "types": {
+        "type": "object",
+        "additionalProperties": { "$ref": "#/items/0/$defs/banConfig" }
+      },
+      "extendDefaults": { "type": "boolean" }
+    },
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type BanConfig =
+  /** Bans the type with the default message */
+  | null
+  /** Un-bans the type (useful when paired with \`extendDefaults\`) */
+  | false
+  /** Bans the type with the default message */
+  | true
+  /** Bans the type with a custom message */
+  | string
+  /** Bans a type */
+  | {
+      /** Custom error message */
+      message?: string;
+      /** Type to autofix replace with. */
+      fixWith?: string;
+    };
+
+type Options = [
+  {
+    types?: {
+      [k: string]: BanConfig;
+    };
+    extendDefaults?: boolean;
+  },
+];
+"
+`;

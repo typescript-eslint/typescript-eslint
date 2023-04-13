@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes ban-ts-comment 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "$defs": {
+      "directiveConfigSchema": {
+        "oneOf": [
+          { "type": "boolean", "default": true },
+          { "enum": ["allow-with-description"] },
+          {
+            "type": "object",
+            "properties": { "descriptionFormat": { "type": "string" } }
+          }
+        ]
+      }
+    },
+    "properties": {
+      "ts-expect-error": { "$ref": "#/items/0/$defs/directiveConfigSchema" },
+      "ts-ignore": { "$ref": "#/items/0/$defs/directiveConfigSchema" },
+      "ts-nocheck": { "$ref": "#/items/0/$defs/directiveConfigSchema" },
+      "ts-check": { "$ref": "#/items/0/$defs/directiveConfigSchema" },
+      "minimumDescriptionLength": { "type": "number", "default": 3 }
+    },
+    "type": "object",
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type DirectiveConfigSchema =
+  | boolean
+  | 'allow-with-description'
+  | {
+      descriptionFormat?: string;
+    };
+
+type Options = [
+  {
+    'ts-expect-error'?: DirectiveConfigSchema;
+    'ts-ignore'?: DirectiveConfigSchema;
+    'ts-nocheck'?: DirectiveConfigSchema;
+    'ts-check'?: DirectiveConfigSchema;
+    minimumDescriptionLength?: number;
+  },
+];
+"
+`;

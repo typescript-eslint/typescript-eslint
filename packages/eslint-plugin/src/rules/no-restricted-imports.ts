@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import type {
   ArrayOfStringOrObject,
   ArrayOfStringOrObjectPatterns,
@@ -10,7 +11,7 @@ import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
-import { createRule, deepMerge } from '../util';
+import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-restricted-imports');
@@ -18,48 +19,86 @@ const baseRule = getESLintCoreRule('no-restricted-imports');
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const allowTypeImportsOptionSchema = {
-  allowTypeImports: {
-    type: 'boolean',
-    default: false,
-  },
-};
-const schemaForMergeArrayOfStringsOrObjects = {
+const arrayOfStringsOrObjects: JSONSchema4 = {
+  type: 'array',
   items: {
     anyOf: [
-      {},
+      { type: 'string' },
       {
-        properties: allowTypeImportsOptionSchema,
+        type: 'object',
+        properties: {
+          name: { type: 'string' },
+          message: {
+            type: 'string',
+            minLength: 1,
+          },
+          importNames: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+          },
+          allowTypeImports: {
+            type: 'boolean',
+            default: false,
+          },
+        },
+        additionalProperties: false,
+        required: ['name'],
       },
     ],
   },
+  uniqueItems: true,
 };
-const schemaForMergeArrayOfStringsOrObjectPatterns = {
+const arrayOfStringsOrObjectPatterns: JSONSchema4 = {
   anyOf: [
-    {},
     {
+      type: 'array',
       items: {
-        properties: allowTypeImportsOptionSchema,
+        type: 'string',
       },
+      uniqueItems: true,
+    },
+    {
+      type: 'array',
+      items: {
+        type: 'object',
+        properties: {
+          importNames: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+            minItems: 1,
+            uniqueItems: true,
+          },
+          group: {
+            type: 'array',
+            items: {
+              type: 'string',
+            },
+            minItems: 1,
+            uniqueItems: true,
+          },
+          message: {
+            type: 'string',
+            minLength: 1,
+          },
+          caseSensitive: {
+            type: 'boolean',
+          },
+          allowTypeImports: {
+            type: 'boolean',
+            default: false,
+          },
+        },
+        additionalProperties: false,
+        required: ['group'],
+      },
+      uniqueItems: true,
     },
   ],
 };
-const schema = deepMerge(
-  { ...baseRule.meta.schema },
-  {
-    anyOf: [
-      schemaForMergeArrayOfStringsOrObjects,
-      {
-        items: {
-          properties: {
-            paths: schemaForMergeArrayOfStringsOrObjects,
-            patterns: schemaForMergeArrayOfStringsOrObjectPatterns,
-          },
-        },
-      },
-    ],
-  },
-);
 
 function isObjectOfPaths(
   obj: unknown,
@@ -114,7 +153,25 @@ export default createRule<Options, MessageIds>({
     },
     messages: baseRule.meta.messages,
     fixable: baseRule.meta.fixable,
-    schema,
+    schema: {
+      anyOf: [
+        arrayOfStringsOrObjects,
+        {
+          type: 'array',
+          items: [
+            {
+              type: 'object',
+              properties: {
+                paths: arrayOfStringsOrObjects,
+                patterns: arrayOfStringsOrObjectPatterns,
+              },
+              additionalProperties: false,
+            },
+          ],
+          additionalItems: false,
+        },
+      ],
+    },
   },
   defaultOptions: [],
   create(context) {

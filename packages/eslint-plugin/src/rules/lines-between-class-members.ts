@@ -9,16 +9,20 @@ const baseRule = getESLintCoreRule('lines-between-class-members');
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const schema = util.deepMerge(
-  { ...baseRule.meta.schema },
-  {
-    1: {
-      exceptAfterOverload: {
-        type: 'boolean',
-        default: true,
+const schema = Object.values(
+  util.deepMerge(
+    { ...baseRule.meta.schema },
+    {
+      1: {
+        properties: {
+          exceptAfterOverload: {
+            type: 'boolean',
+            default: true,
+          },
+        },
       },
     },
-  },
+  ),
 );
 
 export default util.createRule<Options, MessageIds>({

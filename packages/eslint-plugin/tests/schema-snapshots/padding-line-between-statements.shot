@@ -1,0 +1,264 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes padding-line-between-statements 1`] = `
+"
+# SCHEMA:
+
+{
+  "$defs": {
+    "paddingType": { "enum": ["any", "never", "always"] },
+    "statementType": {
+      "anyOf": [
+        {
+          "enum": [
+            "*",
+            "block-like",
+            "exports",
+            "require",
+            "directive",
+            "expression",
+            "iife",
+            "multiline-block-like",
+            "multiline-expression",
+            "multiline-const",
+            "multiline-let",
+            "multiline-var",
+            "singleline-const",
+            "singleline-let",
+            "singleline-var",
+            "block",
+            "empty",
+            "function",
+            "break",
+            "case",
+            "class",
+            "const",
+            "continue",
+            "debugger",
+            "default",
+            "do",
+            "export",
+            "for",
+            "if",
+            "import",
+            "let",
+            "return",
+            "switch",
+            "throw",
+            "try",
+            "var",
+            "while",
+            "with",
+            "interface",
+            "type"
+          ]
+        },
+        {
+          "type": "array",
+          "items": {
+            "enum": [
+              "*",
+              "block-like",
+              "exports",
+              "require",
+              "directive",
+              "expression",
+              "iife",
+              "multiline-block-like",
+              "multiline-expression",
+              "multiline-const",
+              "multiline-let",
+              "multiline-var",
+              "singleline-const",
+              "singleline-let",
+              "singleline-var",
+              "block",
+              "empty",
+              "function",
+              "break",
+              "case",
+              "class",
+              "const",
+              "continue",
+              "debugger",
+              "default",
+              "do",
+              "export",
+              "for",
+              "if",
+              "import",
+              "let",
+              "return",
+              "switch",
+              "throw",
+              "try",
+              "var",
+              "while",
+              "with",
+              "interface",
+              "type"
+            ]
+          },
+          "minItems": 1,
+          "uniqueItems": true,
+          "additionalItems": false
+        }
+      ]
+    }
+  },
+  "type": "array",
+  "items": {
+    "type": "object",
+    "properties": {
+      "blankLine": { "$ref": "#/$defs/paddingType" },
+      "prev": { "$ref": "#/$defs/statementType" },
+      "next": { "$ref": "#/$defs/statementType" }
+    },
+    "additionalProperties": false,
+    "required": ["blankLine", "prev", "next"]
+  },
+  "additionalItems": false
+}
+
+
+# TYPES:
+
+type PaddingType = 'any' | 'never' | 'always';
+
+type StatementType =
+  | (
+      | '*'
+      | 'block-like'
+      | 'exports'
+      | 'require'
+      | 'directive'
+      | 'expression'
+      | 'iife'
+      | 'multiline-block-like'
+      | 'multiline-expression'
+      | 'multiline-const'
+      | 'multiline-let'
+      | 'multiline-var'
+      | 'singleline-const'
+      | 'singleline-let'
+      | 'singleline-var'
+      | 'block'
+      | 'empty'
+      | 'function'
+      | 'break'
+      | 'case'
+      | 'class'
+      | 'const'
+      | 'continue'
+      | 'debugger'
+      | 'default'
+      | 'do'
+      | 'export'
+      | 'for'
+      | 'if'
+      | 'import'
+      | 'let'
+      | 'return'
+      | 'switch'
+      | 'throw'
+      | 'try'
+      | 'var'
+      | 'while'
+      | 'with'
+      | 'interface'
+      | 'type'
+    )
+  | [
+      (
+        | '*'
+        | 'block-like'
+        | 'exports'
+        | 'require'
+        | 'directive'
+        | 'expression'
+        | 'iife'
+        | 'multiline-block-like'
+        | 'multiline-expression'
+        | 'multiline-const'
+        | 'multiline-let'
+        | 'multiline-var'
+        | 'singleline-const'
+        | 'singleline-let'
+        | 'singleline-var'
+        | 'block'
+        | 'empty'
+        | 'function'
+        | 'break'
+        | 'case'
+        | 'class'
+        | 'const'
+        | 'continue'
+        | 'debugger'
+        | 'default'
+        | 'do'
+        | 'export'
+        | 'for'
+        | 'if'
+        | 'import'
+        | 'let'
+        | 'return'
+        | 'switch'
+        | 'throw'
+        | 'try'
+        | 'var'
+        | 'while'
+        | 'with'
+        | 'interface'
+        | 'type'
+      ),
+      ...(
+        | '*'
+        | 'block-like'
+        | 'exports'
+        | 'require'
+        | 'directive'
+        | 'expression'
+        | 'iife'
+        | 'multiline-block-like'
+        | 'multiline-expression'
+        | 'multiline-const'
+        | 'multiline-let'
+        | 'multiline-var'
+        | 'singleline-const'
+        | 'singleline-let'
+        | 'singleline-var'
+        | 'block'
+        | 'empty'
+        | 'function'
+        | 'break'
+        | 'case'
+        | 'class'
+        | 'const'
+        | 'continue'
+        | 'debugger'
+        | 'default'
+        | 'do'
+        | 'export'
+        | 'for'
+        | 'if'
+        | 'import'
+        | 'let'
+        | 'return'
+        | 'switch'
+        | 'throw'
+        | 'try'
+        | 'var'
+        | 'while'
+        | 'with'
+        | 'interface'
+        | 'type'
+      )[],
+    ];
+
+type Options = {
+  blankLine: PaddingType;
+  prev: StatementType;
+  next: StatementType;
+}[];
+"
+`;

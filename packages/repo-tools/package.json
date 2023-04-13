@@ -1,8 +1,9 @@
 {
   "name": "@typescript-eslint/repo-tools",
-  "version": "5.52.0",
+  "version": "5.58.0",
   "private": true,
   "scripts": {
+    "build": "tsc -b tsconfig.build.json",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-contributors": "tsx ./src/generate-contributors.ts",
     "generate-sponsors": "tsx ./src/generate-sponsors.ts",

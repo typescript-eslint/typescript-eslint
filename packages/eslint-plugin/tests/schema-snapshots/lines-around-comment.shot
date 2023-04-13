@@ -1,0 +1,76 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes lines-around-comment 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "array",
+    "items": [
+      {
+        "type": "object",
+        "properties": {
+          "beforeBlockComment": { "type": "boolean", "default": true },
+          "afterBlockComment": { "type": "boolean", "default": false },
+          "beforeLineComment": { "type": "boolean", "default": false },
+          "afterLineComment": { "type": "boolean", "default": false },
+          "allowBlockStart": { "type": "boolean", "default": false },
+          "allowBlockEnd": { "type": "boolean", "default": false },
+          "allowClassStart": { "type": "boolean" },
+          "allowClassEnd": { "type": "boolean" },
+          "allowObjectStart": { "type": "boolean" },
+          "allowObjectEnd": { "type": "boolean" },
+          "allowArrayStart": { "type": "boolean" },
+          "allowArrayEnd": { "type": "boolean" },
+          "allowInterfaceStart": { "type": "boolean" },
+          "allowInterfaceEnd": { "type": "boolean" },
+          "allowTypeStart": { "type": "boolean" },
+          "allowTypeEnd": { "type": "boolean" },
+          "allowEnumStart": { "type": "boolean" },
+          "allowEnumEnd": { "type": "boolean" },
+          "allowModuleStart": { "type": "boolean" },
+          "allowModuleEnd": { "type": "boolean" },
+          "ignorePattern": { "type": "string" },
+          "applyDefaultIgnorePatterns": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      }
+    ]
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  | []
+  | [
+      {
+        beforeBlockComment?: boolean;
+        afterBlockComment?: boolean;
+        beforeLineComment?: boolean;
+        afterLineComment?: boolean;
+        allowBlockStart?: boolean;
+        allowBlockEnd?: boolean;
+        allowClassStart?: boolean;
+        allowClassEnd?: boolean;
+        allowObjectStart?: boolean;
+        allowObjectEnd?: boolean;
+        allowArrayStart?: boolean;
+        allowArrayEnd?: boolean;
+        allowInterfaceStart?: boolean;
+        allowInterfaceEnd?: boolean;
+        allowTypeStart?: boolean;
+        allowTypeEnd?: boolean;
+        allowEnumStart?: boolean;
+        allowEnumEnd?: boolean;
+        allowModuleStart?: boolean;
+        allowModuleEnd?: boolean;
+        ignorePattern?: string;
+        applyDefaultIgnorePatterns?: boolean;
+      },
+    ],
+];
+"
+`;

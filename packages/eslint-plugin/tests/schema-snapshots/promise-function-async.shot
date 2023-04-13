@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes promise-function-async 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "object",
+    "properties": {
+      "allowAny": {
+        "description": "Whether to consider \`any\` and \`unknown\` to be Promises.",
+        "type": "boolean"
+      },
+      "allowedPromiseNames": {
+        "description": "Any extra names of classes or interfaces to be considered Promises.",
+        "type": "array",
+        "items": { "type": "string" }
+      },
+      "checkArrowFunctions": { "type": "boolean" },
+      "checkFunctionDeclarations": { "type": "boolean" },
+      "checkFunctionExpressions": { "type": "boolean" },
+      "checkMethodDeclarations": { "type": "boolean" }
+    },
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    /** Whether to consider \`any\` and \`unknown\` to be Promises. */
+    allowAny?: boolean;
+    /** Any extra names of classes or interfaces to be considered Promises. */
+    allowedPromiseNames?: string[];
+    checkArrowFunctions?: boolean;
+    checkFunctionDeclarations?: boolean;
+    checkFunctionExpressions?: boolean;
+    checkMethodDeclarations?: boolean;
+  },
+];
+"
+`;

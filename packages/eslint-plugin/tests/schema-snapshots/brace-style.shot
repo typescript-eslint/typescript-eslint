@@ -1,0 +1,28 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes brace-style 1`] = `
+"
+# SCHEMA:
+
+[
+  { "enum": ["1tbs", "stroustrup", "allman"] },
+  {
+    "type": "object",
+    "properties": {
+      "allowSingleLine": { "type": "boolean", "default": false }
+    },
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  '1tbs' | 'stroustrup' | 'allman',
+  {
+    allowSingleLine?: boolean;
+  },
+];
+"
+`;

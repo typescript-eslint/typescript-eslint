@@ -1,0 +1,147 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-restricted-imports 1`] = `
+"
+# SCHEMA:
+
+{
+  "anyOf": [
+    {
+      "type": "array",
+      "items": {
+        "anyOf": [
+          { "type": "string" },
+          {
+            "type": "object",
+            "properties": {
+              "name": { "type": "string" },
+              "message": { "type": "string", "minLength": 1 },
+              "importNames": { "type": "array", "items": { "type": "string" } },
+              "allowTypeImports": { "type": "boolean", "default": false }
+            },
+            "additionalProperties": false,
+            "required": ["name"]
+          }
+        ]
+      },
+      "uniqueItems": true
+    },
+    {
+      "type": "array",
+      "items": [
+        {
+          "type": "object",
+          "properties": {
+            "paths": {
+              "type": "array",
+              "items": {
+                "anyOf": [
+                  { "type": "string" },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "name": { "type": "string" },
+                      "message": { "type": "string", "minLength": 1 },
+                      "importNames": {
+                        "type": "array",
+                        "items": { "type": "string" }
+                      },
+                      "allowTypeImports": {
+                        "type": "boolean",
+                        "default": false
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["name"]
+                  }
+                ]
+              },
+              "uniqueItems": true
+            },
+            "patterns": {
+              "anyOf": [
+                {
+                  "type": "array",
+                  "items": { "type": "string" },
+                  "uniqueItems": true
+                },
+                {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "importNames": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "minItems": 1,
+                        "uniqueItems": true
+                      },
+                      "group": {
+                        "type": "array",
+                        "items": { "type": "string" },
+                        "minItems": 1,
+                        "uniqueItems": true
+                      },
+                      "message": { "type": "string", "minLength": 1 },
+                      "caseSensitive": { "type": "boolean" },
+                      "allowTypeImports": {
+                        "type": "boolean",
+                        "default": false
+                      }
+                    },
+                    "additionalProperties": false,
+                    "required": ["group"]
+                  },
+                  "uniqueItems": true
+                }
+              ]
+            }
+          },
+          "additionalProperties": false
+        }
+      ],
+      "additionalItems": false
+    }
+  ]
+}
+
+
+# TYPES:
+
+type Options =
+  | (
+      | string
+      | {
+          name: string;
+          message?: string;
+          importNames?: string[];
+          allowTypeImports?: boolean;
+        }
+    )[]
+  | (
+      | []
+      | [
+          {
+            paths?: (
+              | string
+              | {
+                  name: string;
+                  message?: string;
+                  importNames?: string[];
+                  allowTypeImports?: boolean;
+                }
+            )[];
+            patterns?:
+              | string[]
+              | {
+                  importNames?: [string, ...string[]];
+                  group: [string, ...string[]];
+                  message?: string;
+                  caseSensitive?: boolean;
+                  allowTypeImports?: boolean;
+                }[];
+          },
+        ]
+    );
+"
+`;

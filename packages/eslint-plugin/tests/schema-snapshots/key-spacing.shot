@@ -1,0 +1,168 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes key-spacing 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "anyOf": [
+      {
+        "type": "object",
+        "properties": {
+          "align": {
+            "anyOf": [
+              { "enum": ["colon", "value"] },
+              {
+                "type": "object",
+                "properties": {
+                  "mode": { "enum": ["strict", "minimum"] },
+                  "on": { "enum": ["colon", "value"] },
+                  "beforeColon": { "type": "boolean" },
+                  "afterColon": { "type": "boolean" }
+                },
+                "additionalProperties": false
+              }
+            ]
+          },
+          "mode": { "enum": ["strict", "minimum"] },
+          "beforeColon": { "type": "boolean" },
+          "afterColon": { "type": "boolean" }
+        },
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "singleLine": {
+            "type": "object",
+            "properties": {
+              "mode": { "enum": ["strict", "minimum"] },
+              "beforeColon": { "type": "boolean" },
+              "afterColon": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          },
+          "multiLine": {
+            "type": "object",
+            "properties": {
+              "align": {
+                "anyOf": [
+                  { "enum": ["colon", "value"] },
+                  {
+                    "type": "object",
+                    "properties": {
+                      "mode": { "enum": ["strict", "minimum"] },
+                      "on": { "enum": ["colon", "value"] },
+                      "beforeColon": { "type": "boolean" },
+                      "afterColon": { "type": "boolean" }
+                    },
+                    "additionalProperties": false
+                  }
+                ]
+              },
+              "mode": { "enum": ["strict", "minimum"] },
+              "beforeColon": { "type": "boolean" },
+              "afterColon": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      },
+      {
+        "type": "object",
+        "properties": {
+          "singleLine": {
+            "type": "object",
+            "properties": {
+              "mode": { "enum": ["strict", "minimum"] },
+              "beforeColon": { "type": "boolean" },
+              "afterColon": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          },
+          "multiLine": {
+            "type": "object",
+            "properties": {
+              "mode": { "enum": ["strict", "minimum"] },
+              "beforeColon": { "type": "boolean" },
+              "afterColon": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          },
+          "align": {
+            "type": "object",
+            "properties": {
+              "mode": { "enum": ["strict", "minimum"] },
+              "on": { "enum": ["colon", "value"] },
+              "beforeColon": { "type": "boolean" },
+              "afterColon": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    ]
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  | {
+      align?:
+        | ('colon' | 'value')
+        | {
+            mode?: 'strict' | 'minimum';
+            on?: 'colon' | 'value';
+            beforeColon?: boolean;
+            afterColon?: boolean;
+          };
+      mode?: 'strict' | 'minimum';
+      beforeColon?: boolean;
+      afterColon?: boolean;
+    }
+  | {
+      singleLine?: {
+        mode?: 'strict' | 'minimum';
+        beforeColon?: boolean;
+        afterColon?: boolean;
+      };
+      multiLine?: {
+        align?:
+          | ('colon' | 'value')
+          | {
+              mode?: 'strict' | 'minimum';
+              on?: 'colon' | 'value';
+              beforeColon?: boolean;
+              afterColon?: boolean;
+            };
+        mode?: 'strict' | 'minimum';
+        beforeColon?: boolean;
+        afterColon?: boolean;
+      };
+    }
+  | {
+      singleLine?: {
+        mode?: 'strict' | 'minimum';
+        beforeColon?: boolean;
+        afterColon?: boolean;
+      };
+      multiLine?: {
+        mode?: 'strict' | 'minimum';
+        beforeColon?: boolean;
+        afterColon?: boolean;
+      };
+      align?: {
+        mode?: 'strict' | 'minimum';
+        on?: 'colon' | 'value';
+        beforeColon?: boolean;
+        afterColon?: boolean;
+      };
+    },
+];
+"
+`;

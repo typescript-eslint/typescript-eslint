@@ -1,0 +1,44 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes consistent-type-assertions 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "oneOf": [
+      {
+        "type": "object",
+        "properties": { "assertionStyle": { "enum": ["never"] } },
+        "additionalProperties": false,
+        "required": ["assertionStyle"]
+      },
+      {
+        "type": "object",
+        "properties": {
+          "assertionStyle": { "enum": ["as", "angle-bracket"] },
+          "objectLiteralTypeAssertions": {
+            "enum": ["allow", "allow-as-parameter", "never"]
+          }
+        },
+        "additionalProperties": false,
+        "required": ["assertionStyle"]
+      }
+    ]
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  | {
+      assertionStyle: 'never';
+    }
+  | {
+      assertionStyle: 'as' | 'angle-bracket';
+      objectLiteralTypeAssertions?: 'allow' | 'allow-as-parameter' | 'never';
+    },
+];
+"
+`;

@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes lines-between-class-members 1`] = `
+"
+# SCHEMA:
+
+[
+  { "enum": ["always", "never"] },
+  {
+    "type": "object",
+    "properties": {
+      "exceptAfterSingleLine": { "type": "boolean", "default": false },
+      "exceptAfterOverload": { "type": "boolean", "default": true }
+    },
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  'always' | 'never',
+  {
+    exceptAfterSingleLine?: boolean;
+    exceptAfterOverload?: boolean;
+  },
+];
+"
+`;

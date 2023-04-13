@@ -1,0 +1,108 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes type-annotation-spacing 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "object",
+    "properties": {
+      "before": { "type": "boolean" },
+      "after": { "type": "boolean" },
+      "overrides": {
+        "type": "object",
+        "properties": {
+          "colon": {
+            "type": "object",
+            "properties": {
+              "before": { "type": "boolean" },
+              "after": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          },
+          "arrow": {
+            "type": "object",
+            "properties": {
+              "before": { "type": "boolean" },
+              "after": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          },
+          "variable": {
+            "type": "object",
+            "properties": {
+              "before": { "type": "boolean" },
+              "after": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          },
+          "parameter": {
+            "type": "object",
+            "properties": {
+              "before": { "type": "boolean" },
+              "after": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          },
+          "property": {
+            "type": "object",
+            "properties": {
+              "before": { "type": "boolean" },
+              "after": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          },
+          "returnType": {
+            "type": "object",
+            "properties": {
+              "before": { "type": "boolean" },
+              "after": { "type": "boolean" }
+            },
+            "additionalProperties": false
+          }
+        },
+        "additionalProperties": false
+      }
+    },
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    before?: boolean;
+    after?: boolean;
+    overrides?: {
+      colon?: {
+        before?: boolean;
+        after?: boolean;
+      };
+      arrow?: {
+        before?: boolean;
+        after?: boolean;
+      };
+      variable?: {
+        before?: boolean;
+        after?: boolean;
+      };
+      parameter?: {
+        before?: boolean;
+        after?: boolean;
+      };
+      property?: {
+        before?: boolean;
+        after?: boolean;
+      };
+      returnType?: {
+        before?: boolean;
+        after?: boolean;
+      };
+    };
+  },
+];
+"
+`;

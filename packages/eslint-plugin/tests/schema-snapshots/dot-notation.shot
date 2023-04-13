@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes dot-notation 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "object",
+    "properties": {
+      "allowKeywords": { "type": "boolean", "default": true },
+      "allowPattern": { "type": "string", "default": "" },
+      "allowPrivateClassPropertyAccess": {
+        "type": "boolean",
+        "default": false
+      },
+      "allowProtectedClassPropertyAccess": {
+        "type": "boolean",
+        "default": false
+      },
+      "allowIndexSignaturePropertyAccess": {
+        "type": "boolean",
+        "default": false
+      }
+    },
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    allowKeywords?: boolean;
+    allowPattern?: string;
+    allowPrivateClassPropertyAccess?: boolean;
+    allowProtectedClassPropertyAccess?: boolean;
+    allowIndexSignaturePropertyAccess?: boolean;
+  },
+];
+"
+`;

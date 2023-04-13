@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes object-curly-spacing 1`] = `
+"
+# SCHEMA:
+
+[
+  { "enum": ["always", "never"] },
+  {
+    "type": "object",
+    "properties": {
+      "arraysInObjects": { "type": "boolean" },
+      "objectsInObjects": { "type": "boolean" }
+    },
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  'always' | 'never',
+  {
+    arraysInObjects?: boolean;
+    objectsInObjects?: boolean;
+  },
+];
+"
+`;

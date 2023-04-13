@@ -1,0 +1,30 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes unbound-method 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "object",
+    "properties": {
+      "ignoreStatic": {
+        "description": "Whether to skip checking whether \`static\` methods are correctly bound.",
+        "type": "boolean"
+      }
+    },
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    /** Whether to skip checking whether \`static\` methods are correctly bound. */
+    ignoreStatic?: boolean;
+  },
+];
+"
+`;

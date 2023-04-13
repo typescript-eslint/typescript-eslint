@@ -1,0 +1,62 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-empty-function 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "object",
+    "properties": {
+      "allow": {
+        "type": "array",
+        "items": {
+          "enum": [
+            "functions",
+            "arrowFunctions",
+            "generatorFunctions",
+            "methods",
+            "generatorMethods",
+            "getters",
+            "setters",
+            "constructors",
+            "private-constructors",
+            "protected-constructors",
+            "asyncFunctions",
+            "asyncMethods",
+            "decoratedFunctions",
+            "overrideMethods"
+          ]
+        },
+        "uniqueItems": true
+      }
+    },
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    allow?: (
+      | 'functions'
+      | 'arrowFunctions'
+      | 'generatorFunctions'
+      | 'methods'
+      | 'generatorMethods'
+      | 'getters'
+      | 'setters'
+      | 'constructors'
+      | 'private-constructors'
+      | 'protected-constructors'
+      | 'asyncFunctions'
+      | 'asyncMethods'
+      | 'decoratedFunctions'
+      | 'overrideMethods'
+    )[];
+  },
+];
+"
+`;

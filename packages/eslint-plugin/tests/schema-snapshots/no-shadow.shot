@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-shadow 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "type": "object",
+    "properties": {
+      "builtinGlobals": { "type": "boolean" },
+      "hoist": { "enum": ["all", "functions", "never"] },
+      "allow": { "type": "array", "items": { "type": "string" } },
+      "ignoreOnInitialization": { "type": "boolean" },
+      "ignoreTypeValueShadow": { "type": "boolean" },
+      "ignoreFunctionTypeParameterNameValueShadow": { "type": "boolean" }
+    },
+    "additionalProperties": false
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    builtinGlobals?: boolean;
+    hoist?: 'all' | 'functions' | 'never';
+    allow?: string[];
+    ignoreOnInitialization?: boolean;
+    ignoreTypeValueShadow?: boolean;
+    ignoreFunctionTypeParameterNameValueShadow?: boolean;
+  },
+];
+"
+`;
