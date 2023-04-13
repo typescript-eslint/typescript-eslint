@@ -9,6 +9,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 # TYPES:
 
-type Options = ['type-annotation' | 'constructor'];
+type Options = ['constructor' | 'type-annotation'];
 "
 `;

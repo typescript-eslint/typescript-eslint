@@ -19,7 +19,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type Options = [
-  '1tbs' | 'stroustrup' | 'allman',
+  '1tbs' | 'allman' | 'stroustrup',
   {
     allowSingleLine?: boolean;
   },

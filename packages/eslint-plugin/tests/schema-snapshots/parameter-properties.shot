@@ -36,13 +36,13 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type Modifier =
-  | 'readonly'
-  | 'private'
-  | 'protected'
-  | 'public'
   | 'private readonly'
+  | 'private'
   | 'protected readonly'
-  | 'public readonly';
+  | 'protected'
+  | 'public readonly'
+  | 'public'
+  | 'readonly';
 
 type Options = [
   {

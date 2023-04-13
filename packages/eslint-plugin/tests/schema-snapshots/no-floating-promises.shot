@@ -26,10 +26,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to ignore \`void\` expressions. */
-    ignoreVoid?: boolean;
     /** Whether to ignore async IIFEs (Immediately Invocated Function Expressions). */
     ignoreIIFE?: boolean;
+    /** Whether to ignore \`void\` expressions. */
+    ignoreVoid?: boolean;
   },
 ];
 "

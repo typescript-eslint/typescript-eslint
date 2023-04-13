@@ -32,11 +32,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    allowIndexSignaturePropertyAccess?: boolean;
     allowKeywords?: boolean;
     allowPattern?: string;
     allowPrivateClassPropertyAccess?: boolean;
     allowProtectedClassPropertyAccess?: boolean;
-    allowIndexSignaturePropertyAccess?: boolean;
   },
 ];
 "

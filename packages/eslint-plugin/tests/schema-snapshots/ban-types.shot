@@ -59,28 +59,28 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type BanConfig =
-  /** Bans the type with the default message */
-  | null
   /** Un-bans the type (useful when paired with \`extendDefaults\`) */
   | false
   /** Bans the type with the default message */
   | true
-  /** Bans the type with a custom message */
-  | string
   /** Bans a type */
   | {
-      /** Custom error message */
-      message?: string;
       /** Type to autofix replace with. */
       fixWith?: string;
-    };
+      /** Custom error message */
+      message?: string;
+    }
+  /** Bans the type with the default message */
+  | null
+  /** Bans the type with a custom message */
+  | string;
 
 type Options = [
   {
+    extendDefaults?: boolean;
     types?: {
       [k: string]: BanConfig;
     };
-    extendDefaults?: boolean;
   },
 ];
 "

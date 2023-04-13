@@ -86,36 +86,36 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   {
     multiline?: {
-      delimiter?: 'none' | 'semi' | 'comma';
+      delimiter?: 'comma' | 'none' | 'semi';
       requireLast?: boolean;
     };
-    singleline?: {
-      delimiter?: 'semi' | 'comma';
-      requireLast?: boolean;
-    };
+    multilineDetection?: 'brackets' | 'last-member';
     overrides?: {
       interface?: {
         multiline?: {
-          delimiter?: 'none' | 'semi' | 'comma';
+          delimiter?: 'comma' | 'none' | 'semi';
           requireLast?: boolean;
         };
         singleline?: {
-          delimiter?: 'semi' | 'comma';
+          delimiter?: 'comma' | 'semi';
           requireLast?: boolean;
         };
       };
       typeLiteral?: {
         multiline?: {
-          delimiter?: 'none' | 'semi' | 'comma';
+          delimiter?: 'comma' | 'none' | 'semi';
           requireLast?: boolean;
         };
         singleline?: {
-          delimiter?: 'semi' | 'comma';
+          delimiter?: 'comma' | 'semi';
           requireLast?: boolean;
         };
       };
     };
-    multilineDetection?: 'brackets' | 'last-member';
+    singleline?: {
+      delimiter?: 'comma' | 'semi';
+      requireLast?: boolean;
+    };
   },
 ];
 "

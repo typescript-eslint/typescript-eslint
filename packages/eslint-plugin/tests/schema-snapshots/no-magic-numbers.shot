@@ -41,10 +41,10 @@ type Options = [
     enforceConst?: boolean;
     ignore?: (number | string)[];
     ignoreArrayIndexes?: boolean;
-    ignoreDefaultValues?: boolean;
     ignoreClassFieldInitialValues?: boolean;
-    ignoreNumericLiteralTypes?: boolean;
+    ignoreDefaultValues?: boolean;
     ignoreEnums?: boolean;
+    ignoreNumericLiteralTypes?: boolean;
     ignoreReadonlyClassProperties?: boolean;
     ignoreTypeIndexes?: boolean;
   },

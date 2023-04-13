@@ -22,8 +22,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   'always' | 'never',
   {
-    exceptAfterSingleLine?: boolean;
     exceptAfterOverload?: boolean;
+    exceptAfterSingleLine?: boolean;
   },
 ];
 "

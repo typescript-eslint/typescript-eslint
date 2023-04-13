@@ -34,19 +34,19 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type DirectiveConfigSchema =
-  | boolean
   | 'allow-with-description'
   | {
       descriptionFormat?: string;
-    };
+    }
+  | boolean;
 
 type Options = [
   {
+    minimumDescriptionLength?: number;
+    'ts-check'?: DirectiveConfigSchema;
     'ts-expect-error'?: DirectiveConfigSchema;
     'ts-ignore'?: DirectiveConfigSchema;
     'ts-nocheck'?: DirectiveConfigSchema;
-    'ts-check'?: DirectiveConfigSchema;
-    minimumDescriptionLength?: number;
   },
 ];
 "

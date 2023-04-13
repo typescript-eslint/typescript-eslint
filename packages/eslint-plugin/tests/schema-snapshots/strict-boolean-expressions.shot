@@ -29,15 +29,15 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    allowString?: boolean;
-    allowNumber?: boolean;
-    allowNullableObject?: boolean;
-    allowNullableBoolean?: boolean;
-    allowNullableString?: boolean;
-    allowNullableNumber?: boolean;
-    allowNullableEnum?: boolean;
     allowAny?: boolean;
+    allowNullableBoolean?: boolean;
+    allowNullableEnum?: boolean;
+    allowNullableNumber?: boolean;
+    allowNullableObject?: boolean;
+    allowNullableString?: boolean;
+    allowNumber?: boolean;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+    allowString?: boolean;
   },
 ];
 "

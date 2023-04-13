@@ -26,10 +26,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to allow comparisons between nullable boolean variables and \`true\`. */
-    allowComparingNullableBooleansToTrue?: boolean;
     /** Whether to allow comparisons between nullable boolean variables and \`false\`. */
     allowComparingNullableBooleansToFalse?: boolean;
+    /** Whether to allow comparisons between nullable boolean variables and \`true\`. */
+    allowComparingNullableBooleansToTrue?: boolean;
   },
 ];
 "

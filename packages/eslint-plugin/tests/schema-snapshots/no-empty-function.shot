@@ -41,20 +41,20 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   {
     allow?: (
-      | 'functions'
       | 'arrowFunctions'
-      | 'generatorFunctions'
-      | 'methods'
-      | 'generatorMethods'
-      | 'getters'
-      | 'setters'
-      | 'constructors'
-      | 'private-constructors'
-      | 'protected-constructors'
       | 'asyncFunctions'
       | 'asyncMethods'
+      | 'constructors'
       | 'decoratedFunctions'
+      | 'functions'
+      | 'generatorFunctions'
+      | 'generatorMethods'
+      | 'getters'
+      | 'methods'
       | 'overrideMethods'
+      | 'private-constructors'
+      | 'protected-constructors'
+      | 'setters'
     )[];
   },
 ];

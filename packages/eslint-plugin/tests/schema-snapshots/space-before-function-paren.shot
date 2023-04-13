@@ -27,9 +27,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   | ('always' | 'never')
   | {
-      anonymous?: 'always' | 'never' | 'ignore';
-      named?: 'always' | 'never' | 'ignore';
-      asyncArrow?: 'always' | 'never' | 'ignore';
+      anonymous?: 'always' | 'ignore' | 'never';
+      asyncArrow?: 'always' | 'ignore' | 'never';
+      named?: 'always' | 'ignore' | 'never';
     },
 ];
 "

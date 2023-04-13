@@ -578,284 +578,284 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    before?: boolean;
     after?: boolean;
+    before?: boolean;
     overrides?: {
       abstract?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       as?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       async?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       await?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       boolean?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       break?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       byte?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       case?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       catch?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       char?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       class?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       const?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       continue?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       debugger?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       default?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       delete?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       do?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       double?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       else?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       enum?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       export?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       extends?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       false?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       final?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       finally?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       float?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       for?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       from?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       function?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       get?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       goto?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       if?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       implements?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       import?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       in?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       instanceof?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       int?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       interface?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       let?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       long?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       native?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       new?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       null?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       of?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       package?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       private?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       protected?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       public?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       return?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       set?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       short?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       static?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       super?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       switch?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       synchronized?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       this?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       throw?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       throws?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       transient?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       true?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       try?: {
-        before?: boolean;
         after?: boolean;
-      };
-      typeof?: {
         before?: boolean;
-        after?: boolean;
-      };
-      var?: {
-        before?: boolean;
-        after?: boolean;
-      };
-      void?: {
-        before?: boolean;
-        after?: boolean;
-      };
-      volatile?: {
-        before?: boolean;
-        after?: boolean;
-      };
-      while?: {
-        before?: boolean;
-        after?: boolean;
-      };
-      with?: {
-        before?: boolean;
-        after?: boolean;
-      };
-      yield?: {
-        before?: boolean;
-        after?: boolean;
       };
       type?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
+      };
+      typeof?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      var?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      void?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      volatile?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      while?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      with?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      yield?: {
+        after?: boolean;
+        before?: boolean;
       };
     };
   },

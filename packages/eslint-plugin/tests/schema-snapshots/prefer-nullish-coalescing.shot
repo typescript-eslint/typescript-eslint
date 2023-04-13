@@ -24,10 +24,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    ignoreConditionalTests?: boolean;
-    ignoreTernaryTests?: boolean;
-    ignoreMixedLogicalExpressions?: boolean;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+    ignoreConditionalTests?: boolean;
+    ignoreMixedLogicalExpressions?: boolean;
+    ignoreTernaryTests?: boolean;
   },
 ];
 "

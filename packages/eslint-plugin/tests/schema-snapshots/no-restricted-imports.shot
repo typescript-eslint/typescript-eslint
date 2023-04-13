@@ -110,36 +110,36 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options =
   | (
-      | string
       | {
-          name: string;
-          message?: string;
-          importNames?: string[];
           allowTypeImports?: boolean;
+          importNames?: string[];
+          message?: string;
+          name: string;
         }
+      | string
     )[]
   | (
       | []
       | [
           {
             paths?: (
-              | string
               | {
-                  name: string;
-                  message?: string;
-                  importNames?: string[];
                   allowTypeImports?: boolean;
+                  importNames?: string[];
+                  message?: string;
+                  name: string;
                 }
+              | string
             )[];
             patterns?:
-              | string[]
               | {
-                  importNames?: [string, ...string[]];
-                  group: [string, ...string[]];
-                  message?: string;
-                  caseSensitive?: boolean;
                   allowTypeImports?: boolean;
-                }[];
+                  caseSensitive?: boolean;
+                  group: [string, ...string[]];
+                  importNames?: [string, ...string[]];
+                  message?: string;
+                }[]
+              | string[];
           },
         ]
     );

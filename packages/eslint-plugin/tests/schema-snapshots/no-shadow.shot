@@ -24,12 +24,12 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    allow?: string[];
     builtinGlobals?: boolean;
     hoist?: 'all' | 'functions' | 'never';
-    allow?: string[];
+    ignoreFunctionTypeParameterNameValueShadow?: boolean;
     ignoreOnInitialization?: boolean;
     ignoreTypeValueShadow?: boolean;
-    ignoreFunctionTypeParameterNameValueShadow?: boolean;
   },
 ];
 "

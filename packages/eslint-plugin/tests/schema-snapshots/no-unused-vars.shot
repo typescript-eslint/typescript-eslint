@@ -32,14 +32,14 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   | ('all' | 'local')
   | {
-      vars?: 'all' | 'local';
-      varsIgnorePattern?: string;
-      args?: 'all' | 'after-used' | 'none';
-      ignoreRestSiblings?: boolean;
+      args?: 'after-used' | 'all' | 'none';
       argsIgnorePattern?: string;
       caughtErrors?: 'all' | 'none';
       caughtErrorsIgnorePattern?: string;
       destructuredArrayIgnorePattern?: string;
+      ignoreRestSiblings?: boolean;
+      vars?: 'all' | 'local';
+      varsIgnorePattern?: string;
     },
 ];
 "

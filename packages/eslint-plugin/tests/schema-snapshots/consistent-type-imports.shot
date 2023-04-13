@@ -21,9 +21,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    prefer?: 'type-imports' | 'no-type-imports';
     disallowTypeAnnotations?: boolean;
-    fixStyle?: 'separate-type-imports' | 'inline-type-imports';
+    fixStyle?: 'inline-type-imports' | 'separate-type-imports';
+    prefer?: 'no-type-imports' | 'type-imports';
   },
 ];
 "

@@ -23,8 +23,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   {
     allowShortCircuit?: boolean;
-    allowTernary?: boolean;
     allowTaggedTemplates?: boolean;
+    allowTernary?: boolean;
     enforceForJSX?: boolean;
   },
 ];

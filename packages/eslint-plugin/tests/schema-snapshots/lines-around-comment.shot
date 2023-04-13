@@ -47,28 +47,28 @@ type Options = [
   | []
   | [
       {
-        beforeBlockComment?: boolean;
         afterBlockComment?: boolean;
-        beforeLineComment?: boolean;
         afterLineComment?: boolean;
-        allowBlockStart?: boolean;
-        allowBlockEnd?: boolean;
-        allowClassStart?: boolean;
-        allowClassEnd?: boolean;
-        allowObjectStart?: boolean;
-        allowObjectEnd?: boolean;
-        allowArrayStart?: boolean;
         allowArrayEnd?: boolean;
-        allowInterfaceStart?: boolean;
-        allowInterfaceEnd?: boolean;
-        allowTypeStart?: boolean;
-        allowTypeEnd?: boolean;
-        allowEnumStart?: boolean;
+        allowArrayStart?: boolean;
+        allowBlockEnd?: boolean;
+        allowBlockStart?: boolean;
+        allowClassEnd?: boolean;
+        allowClassStart?: boolean;
         allowEnumEnd?: boolean;
-        allowModuleStart?: boolean;
+        allowEnumStart?: boolean;
+        allowInterfaceEnd?: boolean;
+        allowInterfaceStart?: boolean;
         allowModuleEnd?: boolean;
-        ignorePattern?: string;
+        allowModuleStart?: boolean;
+        allowObjectEnd?: boolean;
+        allowObjectStart?: boolean;
+        allowTypeEnd?: boolean;
+        allowTypeStart?: boolean;
         applyDefaultIgnorePatterns?: boolean;
+        beforeBlockComment?: boolean;
+        beforeLineComment?: boolean;
+        ignorePattern?: string;
       },
     ],
 ];

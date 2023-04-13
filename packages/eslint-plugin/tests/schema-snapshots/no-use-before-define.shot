@@ -31,13 +31,13 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   | 'nofunc'
   | {
-      functions?: boolean;
+      allowNamedExports?: boolean;
       classes?: boolean;
       enums?: boolean;
-      variables?: boolean;
-      typedefs?: boolean;
+      functions?: boolean;
       ignoreTypeReferences?: boolean;
-      allowNamedExports?: boolean;
+      typedefs?: boolean;
+      variables?: boolean;
     },
 ];
 "

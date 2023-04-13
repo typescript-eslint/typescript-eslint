@@ -52,24 +52,24 @@ type Value = 'always-multiline' | 'always' | 'never' | 'only-multiline';
 type ValueWithIgnore =
   | 'always-multiline'
   | 'always'
+  | 'ignore'
   | 'never'
-  | 'only-multiline'
-  | 'ignore';
+  | 'only-multiline';
 
 type Options =
   | []
   | [
-      | Value
       | {
           arrays?: ValueWithIgnore;
-          objects?: ValueWithIgnore;
-          imports?: ValueWithIgnore;
+          enums?: ValueWithIgnore;
           exports?: ValueWithIgnore;
           functions?: ValueWithIgnore;
-          enums?: ValueWithIgnore;
           generics?: ValueWithIgnore;
+          imports?: ValueWithIgnore;
+          objects?: ValueWithIgnore;
           tuples?: ValueWithIgnore;
-        },
+        }
+      | Value,
     ];
 "
 `;

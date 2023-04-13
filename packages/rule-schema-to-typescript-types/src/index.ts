@@ -218,11 +218,11 @@ function generateType(schema: JSONSchema4, refMap: RefMap): GeneratedResult {
 
 function printUnionType(members: (string | GeneratedResult)[]): string {
   return members
-    .map(m => {
-      if (typeof m === 'string') {
-        return `| ${m}`;
+    .map(member => {
+      if (typeof member === 'string') {
+        return `| ${member}`;
       }
-      return `${printComment(m)} | (${m.code})`;
+      return `${printComment(member)} | (${member.code})`;
     })
     .join('\n');
 }
@@ -257,7 +257,12 @@ function generateUnionType(members: JSONSchema4Type[], refMap: RefMap): string {
     );
   }
 
-  return printUnionType(memberStrings);
+  return printUnionType(
+    memberStrings
+      // sort the union members so that we get consistent output regardless
+      // of import declaration order
+      .sort((a, b) => a.code.localeCompare(b.code)),
+  );
 }
 
 function generateArrayType(
@@ -431,7 +436,11 @@ function generateObjectType(
     Array.isArray(schema.required) ? schema.required : [],
   );
   if (schema.properties) {
-    for (const [propName, propSchema] of Object.entries(schema.properties)) {
+    const propertyDefs = Object.entries(schema.properties)
+      // sort the properties so that we get consistent output regardless
+      // of import declaration order
+      .sort(([a], [b]) => a.localeCompare(b));
+    for (const [propName, propSchema] of propertyDefs) {
       const propType = generateType(propSchema, refMap);
       const sanitisedPropName = requiresQuoting(propName)
         ? `'${propName}'`

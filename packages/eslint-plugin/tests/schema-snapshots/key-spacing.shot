@@ -113,54 +113,54 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   | {
+      afterColon?: boolean;
       align?:
         | ('colon' | 'value')
         | {
-            mode?: 'strict' | 'minimum';
-            on?: 'colon' | 'value';
-            beforeColon?: boolean;
             afterColon?: boolean;
+            beforeColon?: boolean;
+            mode?: 'minimum' | 'strict';
+            on?: 'colon' | 'value';
           };
-      mode?: 'strict' | 'minimum';
       beforeColon?: boolean;
-      afterColon?: boolean;
+      mode?: 'minimum' | 'strict';
     }
   | {
-      singleLine?: {
-        mode?: 'strict' | 'minimum';
-        beforeColon?: boolean;
+      align?: {
         afterColon?: boolean;
+        beforeColon?: boolean;
+        mode?: 'minimum' | 'strict';
+        on?: 'colon' | 'value';
       };
       multiLine?: {
+        afterColon?: boolean;
+        beforeColon?: boolean;
+        mode?: 'minimum' | 'strict';
+      };
+      singleLine?: {
+        afterColon?: boolean;
+        beforeColon?: boolean;
+        mode?: 'minimum' | 'strict';
+      };
+    }
+  | {
+      multiLine?: {
+        afterColon?: boolean;
         align?:
           | ('colon' | 'value')
           | {
-              mode?: 'strict' | 'minimum';
-              on?: 'colon' | 'value';
-              beforeColon?: boolean;
               afterColon?: boolean;
+              beforeColon?: boolean;
+              mode?: 'minimum' | 'strict';
+              on?: 'colon' | 'value';
             };
-        mode?: 'strict' | 'minimum';
         beforeColon?: boolean;
-        afterColon?: boolean;
+        mode?: 'minimum' | 'strict';
       };
-    }
-  | {
       singleLine?: {
-        mode?: 'strict' | 'minimum';
-        beforeColon?: boolean;
         afterColon?: boolean;
-      };
-      multiLine?: {
-        mode?: 'strict' | 'minimum';
         beforeColon?: boolean;
-        afterColon?: boolean;
-      };
-      align?: {
-        mode?: 'strict' | 'minimum';
-        on?: 'colon' | 'value';
-        beforeColon?: boolean;
-        afterColon?: boolean;
+        mode?: 'minimum' | 'strict';
       };
     },
 ];

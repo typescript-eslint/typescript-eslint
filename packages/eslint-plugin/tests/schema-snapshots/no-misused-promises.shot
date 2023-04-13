@@ -36,16 +36,16 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   {
     checksConditionals?: boolean;
+    checksSpreads?: boolean;
     checksVoidReturn?:
-      | boolean
       | {
           arguments?: boolean;
           attributes?: boolean;
           properties?: boolean;
           returns?: boolean;
           variables?: boolean;
-        };
-    checksSpreads?: boolean;
+        }
+      | boolean;
   },
 ];
 "

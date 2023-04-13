@@ -48,6 +48,7 @@
     "@babel/parser": "*",
     "@babel/code-frame": "*",
     "@microsoft/api-extractor": "^7.34.4",
+    "@typescript-eslint/repo-tools": "5.58.0",
     "@types/babel__core": "*",
     "glob": "*",
     "jest-diff": "*",

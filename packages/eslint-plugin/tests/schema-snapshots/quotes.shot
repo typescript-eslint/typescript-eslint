@@ -25,12 +25,12 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type Options = [
-  'single' | 'double' | 'backtick',
+  'backtick' | 'double' | 'single',
   (
     | 'avoid-escape'
     | {
-        avoidEscape?: boolean;
         allowTemplateLiterals?: boolean;
+        avoidEscape?: boolean;
       }
   ),
 ];

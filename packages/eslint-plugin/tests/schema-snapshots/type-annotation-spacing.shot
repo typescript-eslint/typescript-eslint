@@ -74,32 +74,32 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    before?: boolean;
     after?: boolean;
+    before?: boolean;
     overrides?: {
-      colon?: {
-        before?: boolean;
-        after?: boolean;
-      };
       arrow?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
-      variable?: {
-        before?: boolean;
+      colon?: {
         after?: boolean;
+        before?: boolean;
       };
       parameter?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       property?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
       };
       returnType?: {
-        before?: boolean;
         after?: boolean;
+        before?: boolean;
+      };
+      variable?: {
+        after?: boolean;
+        before?: boolean;
       };
     };
   },

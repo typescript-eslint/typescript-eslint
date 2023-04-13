@@ -44,25 +44,25 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type Options =
-  | ([] | ['functions', ...unknown[]])
   | (
       | []
       | ['all']
       | [
           'all',
           {
+            allowParensAfterCommentPattern?: string;
             conditionalAssign?: boolean;
+            enforceForArrowConditionals?: boolean;
+            enforceForFunctionPrototypeMethods?: boolean;
+            enforceForNewInMemberExpressions?: boolean;
+            enforceForSequenceExpressions?: boolean;
+            ignoreJSX?: 'all' | 'multi-line' | 'none' | 'single-line';
             nestedBinaryExpressions?: boolean;
             returnAssign?: boolean;
-            ignoreJSX?: 'none' | 'all' | 'single-line' | 'multi-line';
-            enforceForArrowConditionals?: boolean;
-            enforceForSequenceExpressions?: boolean;
-            enforceForNewInMemberExpressions?: boolean;
-            enforceForFunctionPrototypeMethods?: boolean;
-            allowParensAfterCommentPattern?: string;
           },
           ...unknown[],
         ]
-    );
+    )
+  | ([] | ['functions', ...unknown[]]);
 "
 `;

@@ -60,14 +60,14 @@ type AccessibilityLevel =
 type Options = [
   {
     accessibility?: AccessibilityLevel;
+    ignoredMethodNames?: string[];
     overrides?: {
       accessors?: AccessibilityLevel;
       constructors?: AccessibilityLevel;
       methods?: AccessibilityLevel;
-      properties?: AccessibilityLevel;
       parameterProperties?: AccessibilityLevel;
+      properties?: AccessibilityLevel;
     };
-    ignoredMethodNames?: string[];
   },
 ];
 "

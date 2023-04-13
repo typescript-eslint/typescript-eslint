@@ -45,22 +45,22 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options =
   | (
       | []
-      | ['never']
+      | ['always']
       | [
-          'never',
+          'always',
           {
-            beforeStatementContinuationChars?: 'always' | 'any' | 'never';
+            omitLastInOneLineBlock?: boolean;
           },
           ...unknown[],
         ]
     )
   | (
       | []
-      | ['always']
+      | ['never']
       | [
-          'always',
+          'never',
           {
-            omitLastInOneLineBlock?: boolean;
+            beforeStatementContinuationChars?: 'always' | 'any' | 'never';
           },
           ...unknown[],
         ]

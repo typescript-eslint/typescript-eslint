@@ -9,6 +9,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 # TYPES:
 
-type Options = ['in-try-catch' | 'always' | 'never'];
+type Options = ['always' | 'in-try-catch' | 'never'];
 "
 `;
