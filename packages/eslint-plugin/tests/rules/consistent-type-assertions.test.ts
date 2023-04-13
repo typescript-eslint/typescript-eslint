@@ -27,15 +27,15 @@ const AS_TESTS_EXCEPT_CONST_CASE = `
 const x = new Generic<int>() as Foo;
 const x = b as A;
 const x = [1] as readonly number[];
-const x = ('string') as a | b;
-const x = !'string' as A;
-const x = a as A + b;
-const x = a as (A) + (b);
-const x = (new Generic<string>()) as Foo;
+const x = 'string' as (a | b);
+const x = (!'string') as A;
+const x = (a as A) + b;
+const x = (a as A) + (b);
+const x = new Generic<string>() as Foo;
 const x = (new (Generic<string> as Foo)());
-const x = () => ({ bar: 5 }) as Foo;
-const x = () => ({ bar: 5 }) as Foo;
-const x = () => bar as Foo;`;
+const x = () => ({ bar: 5 } as Foo);
+const x = () => ({ bar: 5 } as Foo);
+const x = () => (bar as Foo);`;
 
 const AS_TESTS = `${AS_TESTS_EXCEPT_CONST_CASE}
 const x = { key: 'value' } as const;

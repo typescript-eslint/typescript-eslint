@@ -73,12 +73,15 @@ export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
   return (
     innerNode.type === AST_NODE_TYPES.Literal ||
     innerNode.type === AST_NODE_TYPES.Identifier ||
+    innerNode.type === AST_NODE_TYPES.TSTypeReference ||
+    innerNode.type === AST_NODE_TYPES.TSTypeOperator ||
     innerNode.type === AST_NODE_TYPES.ArrayExpression ||
     innerNode.type === AST_NODE_TYPES.ObjectExpression ||
     innerNode.type === AST_NODE_TYPES.MemberExpression ||
     innerNode.type === AST_NODE_TYPES.CallExpression ||
     innerNode.type === AST_NODE_TYPES.NewExpression ||
-    innerNode.type === AST_NODE_TYPES.TaggedTemplateExpression
+    innerNode.type === AST_NODE_TYPES.TaggedTemplateExpression ||
+    innerNode.type === AST_NODE_TYPES.TSInstantiationExpression
   );
 }
 
@@ -117,6 +120,13 @@ function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
   if (
     parent.type === AST_NODE_TYPES.TaggedTemplateExpression &&
     parent.tag === node
+  ) {
+    return true;
+  }
+
+  if (
+    parent.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+    parent.body === node
   ) {
     return true;
   }

@@ -132,6 +132,11 @@ ruleTester.run('getWrappingFixer', rule, {
       errors: [{ messageId: 'addVoid' }],
       output: '(void wrapMe).prop',
     },
+    {
+      code: '() => wrapMe',
+      errors: [{ messageId: 'addVoid' }],
+      output: '() => (void wrapMe)',
+    },
 
     // shouldn't add outer parens when not necessary
     {
@@ -182,11 +187,6 @@ ruleTester.run('getWrappingFixer', rule, {
       code: 'function* fn() { yield wrapMe }',
       errors: [{ messageId: 'addVoid' }],
       output: 'function* fn() { yield void wrapMe }',
-    },
-    {
-      code: '() => wrapMe',
-      errors: [{ messageId: 'addVoid' }],
-      output: '() => void wrapMe',
     },
     {
       code: 'if (wrapMe) {}',
