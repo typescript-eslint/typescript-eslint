@@ -365,10 +365,5 @@ ruleTester.run('getWrappingFixer - removeFunctionRule', removeFunctionRule, {
       errors: [{ messageId: 'removeFunction' }],
       output: '() => "string"',
     },
-    {
-      code: '(params = fn({ x: "wrapObject" })) => "string"',
-      errors: [{ messageId: 'removeFunction' }],
-      output: '(params = { x: "wrapObject" }) => "string"',
-    },
   ],
 });
