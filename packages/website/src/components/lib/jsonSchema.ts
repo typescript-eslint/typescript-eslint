@@ -84,7 +84,9 @@ export function getRuleJsonSchemaWithErrorLevel(
       ),
     };
   }
-  console.log('unsupported rule schema', name, ruleSchema);
+  if (typeof ruleSchema !== 'object' || Object.keys(ruleSchema).length) {
+    console.error('unsupported rule schema', name, ruleSchema);
+  }
   return {
     type: 'array',
     items: [defaultRuleSchema],
