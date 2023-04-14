@@ -40,7 +40,6 @@ const arrayOfStringsOrObjects: JSONSchema4 = {
           },
           allowTypeImports: {
             type: 'boolean',
-            default: false,
           },
         },
         additionalProperties: false,
@@ -89,7 +88,6 @@ const arrayOfStringsOrObjectPatterns: JSONSchema4 = {
           },
           allowTypeImports: {
             type: 'boolean',
-            default: false,
           },
         },
         additionalProperties: false,
