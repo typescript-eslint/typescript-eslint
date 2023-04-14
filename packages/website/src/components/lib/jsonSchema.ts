@@ -17,17 +17,19 @@ const defaultRuleSchema: JSONSchema4 = {
  * monaco.languages.json.jsonDefaults.diagnosticsOptions.schemas.filter(item => item.schema.type === 'array')
  */
 export function getRuleJsonSchemaWithErrorLevel(
+  name: string,
   ruleSchema: JSONSchema4 | JSONSchema4[],
 ): JSONSchema4 {
   if (Array.isArray(ruleSchema)) {
     return {
       type: 'array',
       items: [defaultRuleSchema, ...ruleSchema],
+      minItems: 1,
       additionalItems: false,
     };
   }
   // TODO: delete this once we update schemas
-  // example: ban-ts-comments
+  // example: ban-ts-comment
   if (Array.isArray(ruleSchema.prefixItems)) {
     const { prefixItems, ...rest } = ruleSchema;
     return {
@@ -38,7 +40,7 @@ export function getRuleJsonSchemaWithErrorLevel(
       additionalItems: false,
     };
   }
-  // example: @typescript-eslint/explicit-member-accessibility
+  // example: explicit-member-accessibility
   if (Array.isArray(ruleSchema.items)) {
     return {
       ...ruleSchema,
@@ -49,7 +51,7 @@ export function getRuleJsonSchemaWithErrorLevel(
     };
   }
   if (typeof ruleSchema.items === 'object' && ruleSchema.items) {
-    // this is a workaround for @typescript-eslint/naming-convention rule
+    // this is a workaround for naming-convention rule
     if (ruleSchema.items.oneOf) {
       return {
         ...ruleSchema,
@@ -57,7 +59,7 @@ export function getRuleJsonSchemaWithErrorLevel(
         additionalItems: ruleSchema.items,
       };
     }
-    // example: @typescript-eslint/padding-line-between-statements
+    // example: padding-line-between-statements
     return {
       ...ruleSchema,
       items: [defaultRuleSchema, ruleSchema.items],
@@ -69,7 +71,7 @@ export function getRuleJsonSchemaWithErrorLevel(
     return {
       ...ruleSchema,
       anyOf: ruleSchema.anyOf.map(item =>
-        getRuleJsonSchemaWithErrorLevel(item),
+        getRuleJsonSchemaWithErrorLevel(name, item),
       ),
     };
   }
@@ -78,11 +80,17 @@ export function getRuleJsonSchemaWithErrorLevel(
     return {
       ...ruleSchema,
       oneOf: ruleSchema.oneOf.map(item =>
-        getRuleJsonSchemaWithErrorLevel(item),
+        getRuleJsonSchemaWithErrorLevel(name, item),
       ),
     };
   }
-  return ruleSchema;
+  console.log('unsupported rule schema', name, ruleSchema);
+  return {
+    type: 'array',
+    items: [defaultRuleSchema],
+    minItems: 1,
+    additionalItems: false,
+  };
 }
 
 /**

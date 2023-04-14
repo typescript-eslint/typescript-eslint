@@ -159,7 +159,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       schemas: [
         ...Array.from(webLinter.rules.values()).map(rule => ({
           uri: createRuleUri(rule.name),
-          schema: getRuleJsonSchemaWithErrorLevel(rule.schema),
+          schema: getRuleJsonSchemaWithErrorLevel(rule.name, rule.schema),
         })),
         {
           uri: monaco.Uri.file('eslint-schema.json').toString(), // id of the first schema
