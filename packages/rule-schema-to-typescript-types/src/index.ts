@@ -466,9 +466,16 @@ function getCommentLines(schema: JSONSchema4): string[] {
   }
   return lines;
 }
-function printComment({ commentLines }: GeneratedResult): string {
-  if (commentLines == null || commentLines.length === 0) {
+function printComment({
+  commentLines: commentLinesIn,
+}: GeneratedResult): string {
+  if (commentLinesIn == null || commentLinesIn.length === 0) {
     return '';
+  }
+
+  const commentLines: string[] = [];
+  for (const line of commentLinesIn) {
+    commentLines.push(...line.split('\n'));
   }
 
   if (commentLines.length === 1) {
