@@ -50,9 +50,8 @@ type Options =
           {
             allowNewlines?: boolean;
           },
-          ...unknown[],
         ]
     )
-  | ([] | ['never', ...unknown[]]);
+  | ([] | ['never']);
 "
 `;

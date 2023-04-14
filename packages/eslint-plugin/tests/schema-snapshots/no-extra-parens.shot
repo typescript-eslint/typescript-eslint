@@ -82,9 +82,8 @@ type Options =
             nestedBinaryExpressions?: boolean;
             returnAssign?: boolean;
           },
-          ...unknown[],
         ]
     )
-  | ([] | ['functions', ...unknown[]]);
+  | ([] | ['functions']);
 "
 `;

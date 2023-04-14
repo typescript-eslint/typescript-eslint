@@ -316,7 +316,7 @@ function generateArrayType(
   } else {
     // treat as a tuple
     items = schema.items;
-    if (hasMaxItems) {
+    if (hasMaxItems && items.length < maxItems) {
       spreadItemSchema =
         typeof schema.additionalItems === 'object'
           ? schema.additionalItems
