@@ -10,48 +10,52 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       "banConfig": {
         "oneOf": [
           {
-            "type": "null",
-            "description": "Bans the type with the default message"
+            "description": "Bans the type with the default message",
+            "type": "null"
           },
           {
-            "enum": [false],
-            "description": "Un-bans the type (useful when paired with \`extendDefaults\`)"
+            "description": "Un-bans the type (useful when paired with \`extendDefaults\`)",
+            "enum": [false]
           },
           {
-            "enum": [true],
-            "description": "Bans the type with the default message"
+            "description": "Bans the type with the default message",
+            "enum": [true]
           },
           {
-            "type": "string",
-            "description": "Bans the type with a custom message"
+            "description": "Bans the type with a custom message",
+            "type": "string"
           },
           {
-            "type": "object",
+            "additionalProperties": false,
             "description": "Bans a type",
             "properties": {
-              "message": {
-                "type": "string",
-                "description": "Custom error message"
-              },
               "fixWith": {
-                "type": "string",
-                "description": "Type to autofix replace with."
+                "description": "Type to autofix replace with.",
+                "type": "string"
+              },
+              "message": {
+                "description": "Custom error message",
+                "type": "string"
               }
             },
-            "additionalProperties": false
+            "type": "object"
           }
         ]
       }
     },
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
-      "types": {
-        "type": "object",
-        "additionalProperties": { "$ref": "#/items/0/$defs/banConfig" }
+      "extendDefaults": {
+        "type": "boolean"
       },
-      "extendDefaults": { "type": "boolean" }
+      "types": {
+        "additionalProperties": {
+          "$ref": "#/items/0/$defs/banConfig"
+        },
+        "type": "object"
+      }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

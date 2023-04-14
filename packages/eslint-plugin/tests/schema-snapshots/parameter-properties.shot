@@ -9,26 +9,30 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "$defs": {
       "modifier": {
         "enum": [
-          "readonly",
           "private",
-          "protected",
-          "public",
           "private readonly",
+          "protected",
           "protected readonly",
-          "public readonly"
+          "public",
+          "public readonly",
+          "readonly"
         ]
       }
     },
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
       "allow": {
-        "type": "array",
-        "items": { "$ref": "#/items/0/$defs/modifier" },
-        "minItems": 1
+        "items": {
+          "$ref": "#/items/0/$defs/modifier"
+        },
+        "minItems": 1,
+        "type": "array"
       },
-      "prefer": { "enum": ["class-property", "parameter-property"] }
+      "prefer": {
+        "enum": ["class-property", "parameter-property"]
+      }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

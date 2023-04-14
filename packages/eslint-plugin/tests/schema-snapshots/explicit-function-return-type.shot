@@ -6,43 +6,45 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
       "allowConciseArrowFunctionExpressionsStartingWithVoid": {
         "description": "Whether to allow arrow functions that start with the \`void\` keyword.",
-        "type": "boolean"
-      },
-      "allowExpressions": {
-        "description": "Whether to ignore function expressions (functions which are not part of a declaration).",
-        "type": "boolean"
-      },
-      "allowHigherOrderFunctions": {
-        "description": "Whether to ignore functions immediately returning another function expression.",
-        "type": "boolean"
-      },
-      "allowTypedFunctionExpressions": {
-        "description": "Whether to ignore type annotations on the variable of function expressions.",
         "type": "boolean"
       },
       "allowDirectConstAssertionInArrowFunctions": {
         "description": "Whether to ignore arrow functions immediately returning a \`as const\` value.",
         "type": "boolean"
       },
+      "allowedNames": {
+        "description": "An array of function/method names that will not have their arguments or return values checked.",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "allowExpressions": {
+        "description": "Whether to ignore function expressions (functions which are not part of a declaration).",
+        "type": "boolean"
+      },
       "allowFunctionsWithoutTypeParameters": {
         "description": "Whether to ignore functions that don't have generic type parameters.",
         "type": "boolean"
       },
-      "allowedNames": {
-        "description": "An array of function/method names that will not have their arguments or return values checked.",
-        "items": { "type": "string" },
-        "type": "array"
+      "allowHigherOrderFunctions": {
+        "description": "Whether to ignore functions immediately returning another function expression.",
+        "type": "boolean"
       },
       "allowIIFEs": {
         "description": "Whether to ignore immediately invoked function expressions (IIFEs).",
         "type": "boolean"
+      },
+      "allowTypedFunctionExpressions": {
+        "description": "Whether to ignore type annotations on the variable of function expressions.",
+        "type": "boolean"
       }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

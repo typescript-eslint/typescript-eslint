@@ -6,29 +6,16 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 {
   "$defs": {
-    "paddingType": { "enum": ["any", "never", "always"] },
+    "paddingType": {
+      "enum": ["always", "any", "never"]
+    },
     "statementType": {
       "anyOf": [
         {
           "enum": [
             "*",
-            "block-like",
-            "exports",
-            "require",
-            "directive",
-            "expression",
-            "iife",
-            "multiline-block-like",
-            "multiline-expression",
-            "multiline-const",
-            "multiline-let",
-            "multiline-var",
-            "singleline-const",
-            "singleline-let",
-            "singleline-var",
             "block",
-            "empty",
-            "function",
+            "block-like",
             "break",
             "case",
             "class",
@@ -36,45 +23,45 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "continue",
             "debugger",
             "default",
+            "directive",
             "do",
+            "empty",
             "export",
+            "exports",
+            "expression",
             "for",
+            "function",
             "if",
+            "iife",
             "import",
+            "interface",
             "let",
+            "multiline-block-like",
+            "multiline-const",
+            "multiline-expression",
+            "multiline-let",
+            "multiline-var",
+            "require",
             "return",
+            "singleline-const",
+            "singleline-let",
+            "singleline-var",
             "switch",
             "throw",
             "try",
+            "type",
             "var",
             "while",
-            "with",
-            "interface",
-            "type"
+            "with"
           ]
         },
         {
-          "type": "array",
+          "additionalItems": false,
           "items": {
             "enum": [
               "*",
-              "block-like",
-              "exports",
-              "require",
-              "directive",
-              "expression",
-              "iife",
-              "multiline-block-like",
-              "multiline-expression",
-              "multiline-const",
-              "multiline-let",
-              "multiline-var",
-              "singleline-const",
-              "singleline-let",
-              "singleline-var",
               "block",
-              "empty",
-              "function",
+              "block-like",
               "break",
               "case",
               "class",
@@ -82,42 +69,63 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
               "continue",
               "debugger",
               "default",
+              "directive",
               "do",
+              "empty",
               "export",
+              "exports",
+              "expression",
               "for",
+              "function",
               "if",
+              "iife",
               "import",
+              "interface",
               "let",
+              "multiline-block-like",
+              "multiline-const",
+              "multiline-expression",
+              "multiline-let",
+              "multiline-var",
+              "require",
               "return",
+              "singleline-const",
+              "singleline-let",
+              "singleline-var",
               "switch",
               "throw",
               "try",
+              "type",
               "var",
               "while",
-              "with",
-              "interface",
-              "type"
+              "with"
             ]
           },
           "minItems": 1,
-          "uniqueItems": true,
-          "additionalItems": false
+          "type": "array",
+          "uniqueItems": true
         }
       ]
     }
   },
-  "type": "array",
+  "additionalItems": false,
   "items": {
-    "type": "object",
-    "properties": {
-      "blankLine": { "$ref": "#/$defs/paddingType" },
-      "prev": { "$ref": "#/$defs/statementType" },
-      "next": { "$ref": "#/$defs/statementType" }
-    },
     "additionalProperties": false,
-    "required": ["blankLine", "prev", "next"]
+    "properties": {
+      "blankLine": {
+        "$ref": "#/$defs/paddingType"
+      },
+      "next": {
+        "$ref": "#/$defs/statementType"
+      },
+      "prev": {
+        "$ref": "#/$defs/statementType"
+      }
+    },
+    "required": ["blankLine", "prev", "next"],
+    "type": "object"
   },
-  "additionalItems": false
+  "type": "array"
 }
 
 

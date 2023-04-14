@@ -6,7 +6,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
     "properties": {
       "checkIntersections": {
         "description": "Whether to check intersection types.",
@@ -18,26 +17,27 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       },
       "groupOrder": {
         "description": "Ordering of the groups.",
-        "type": "array",
         "items": {
-          "type": "string",
           "enum": [
             "conditional",
             "function",
             "import",
             "intersection",
             "keyword",
-            "nullish",
             "literal",
             "named",
+            "nullish",
             "object",
             "operator",
             "tuple",
             "union"
-          ]
-        }
+          ],
+          "type": "string"
+        },
+        "type": "array"
       }
-    }
+    },
+    "type": "object"
   }
 ]
 

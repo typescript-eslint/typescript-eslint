@@ -7,100 +7,135 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 {
   "anyOf": [
     {
-      "type": "array",
       "items": {
         "anyOf": [
-          { "type": "string" },
           {
-            "type": "object",
-            "properties": {
-              "name": { "type": "string" },
-              "message": { "type": "string", "minLength": 1 },
-              "importNames": { "type": "array", "items": { "type": "string" } },
-              "allowTypeImports": { "type": "boolean", "default": false }
-            },
+            "type": "string"
+          },
+          {
             "additionalProperties": false,
-            "required": ["name"]
+            "properties": {
+              "allowTypeImports": {
+                "default": false,
+                "type": "boolean"
+              },
+              "importNames": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "message": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": ["name"],
+            "type": "object"
           }
         ]
       },
+      "type": "array",
       "uniqueItems": true
     },
     {
-      "type": "array",
+      "additionalItems": false,
       "items": [
         {
-          "type": "object",
+          "additionalProperties": false,
           "properties": {
             "paths": {
-              "type": "array",
               "items": {
                 "anyOf": [
-                  { "type": "string" },
                   {
-                    "type": "object",
+                    "type": "string"
+                  },
+                  {
+                    "additionalProperties": false,
                     "properties": {
-                      "name": { "type": "string" },
-                      "message": { "type": "string", "minLength": 1 },
-                      "importNames": {
-                        "type": "array",
-                        "items": { "type": "string" }
-                      },
                       "allowTypeImports": {
-                        "type": "boolean",
-                        "default": false
+                        "default": false,
+                        "type": "boolean"
+                      },
+                      "importNames": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "message": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
                       }
                     },
-                    "additionalProperties": false,
-                    "required": ["name"]
+                    "required": ["name"],
+                    "type": "object"
                   }
                 ]
               },
+              "type": "array",
               "uniqueItems": true
             },
             "patterns": {
               "anyOf": [
                 {
+                  "items": {
+                    "type": "string"
+                  },
                   "type": "array",
-                  "items": { "type": "string" },
                   "uniqueItems": true
                 },
                 {
-                  "type": "array",
                   "items": {
-                    "type": "object",
+                    "additionalProperties": false,
                     "properties": {
-                      "importNames": {
-                        "type": "array",
-                        "items": { "type": "string" },
-                        "minItems": 1,
-                        "uniqueItems": true
+                      "allowTypeImports": {
+                        "default": false,
+                        "type": "boolean"
+                      },
+                      "caseSensitive": {
+                        "type": "boolean"
                       },
                       "group": {
-                        "type": "array",
-                        "items": { "type": "string" },
+                        "items": {
+                          "type": "string"
+                        },
                         "minItems": 1,
+                        "type": "array",
                         "uniqueItems": true
                       },
-                      "message": { "type": "string", "minLength": 1 },
-                      "caseSensitive": { "type": "boolean" },
-                      "allowTypeImports": {
-                        "type": "boolean",
-                        "default": false
+                      "importNames": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "minItems": 1,
+                        "type": "array",
+                        "uniqueItems": true
+                      },
+                      "message": {
+                        "minLength": 1,
+                        "type": "string"
                       }
                     },
-                    "additionalProperties": false,
-                    "required": ["group"]
+                    "required": ["group"],
+                    "type": "object"
                   },
+                  "type": "array",
                   "uniqueItems": true
                 }
               ]
             }
           },
-          "additionalProperties": false
+          "type": "object"
         }
       ],
-      "additionalItems": false
+      "type": "array"
     }
   ]
 }

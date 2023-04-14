@@ -6,9 +6,14 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
-    "properties": { "checkNever": { "type": "boolean", "default": false } },
-    "additionalProperties": false
+    "additionalProperties": false,
+    "properties": {
+      "checkNever": {
+        "default": false,
+        "type": "boolean"
+      }
+    },
+    "type": "object"
   }
 ]
 

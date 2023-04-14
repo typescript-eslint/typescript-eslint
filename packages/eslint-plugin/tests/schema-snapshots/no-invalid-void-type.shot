@@ -6,17 +6,27 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
+      "allowAsThisParameter": {
+        "type": "boolean"
+      },
       "allowInGenericTypeArguments": {
         "oneOf": [
-          { "type": "boolean" },
-          { "type": "array", "items": { "type": "string" }, "minLength": 1 }
+          {
+            "type": "boolean"
+          },
+          {
+            "items": {
+              "type": "string"
+            },
+            "minLength": 1,
+            "type": "array"
+          }
         ]
-      },
-      "allowAsThisParameter": { "type": "boolean" }
+      }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

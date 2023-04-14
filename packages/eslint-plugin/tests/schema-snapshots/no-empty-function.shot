@@ -6,32 +6,32 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
       "allow": {
-        "type": "array",
         "items": {
           "enum": [
-            "functions",
             "arrowFunctions",
-            "generatorFunctions",
-            "methods",
-            "generatorMethods",
-            "getters",
-            "setters",
-            "constructors",
-            "private-constructors",
-            "protected-constructors",
             "asyncFunctions",
             "asyncMethods",
+            "constructors",
             "decoratedFunctions",
-            "overrideMethods"
+            "functions",
+            "generatorFunctions",
+            "generatorMethods",
+            "getters",
+            "methods",
+            "overrideMethods",
+            "private-constructors",
+            "protected-constructors",
+            "setters"
           ]
         },
+        "type": "array",
         "uniqueItems": true
       }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

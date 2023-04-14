@@ -6,17 +6,33 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
     "properties": {
-      "arrayDestructuring": { "type": "boolean" },
-      "arrowParameter": { "type": "boolean" },
-      "memberVariableDeclaration": { "type": "boolean" },
-      "objectDestructuring": { "type": "boolean" },
-      "parameter": { "type": "boolean" },
-      "propertyDeclaration": { "type": "boolean" },
-      "variableDeclaration": { "type": "boolean" },
-      "variableDeclarationIgnoreFunction": { "type": "boolean" }
-    }
+      "arrayDestructuring": {
+        "type": "boolean"
+      },
+      "arrowParameter": {
+        "type": "boolean"
+      },
+      "memberVariableDeclaration": {
+        "type": "boolean"
+      },
+      "objectDestructuring": {
+        "type": "boolean"
+      },
+      "parameter": {
+        "type": "boolean"
+      },
+      "propertyDeclaration": {
+        "type": "boolean"
+      },
+      "variableDeclaration": {
+        "type": "boolean"
+      },
+      "variableDeclarationIgnoreFunction": {
+        "type": "boolean"
+      }
+    },
+    "type": "object"
   }
 ]
 

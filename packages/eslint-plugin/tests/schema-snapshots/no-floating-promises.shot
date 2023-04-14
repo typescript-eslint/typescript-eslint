@@ -6,18 +6,18 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
-      "ignoreVoid": {
-        "description": "Whether to ignore \`void\` expressions.",
-        "type": "boolean"
-      },
       "ignoreIIFE": {
         "description": "Whether to ignore async IIFEs (Immediately Invocated Function Expressions).",
         "type": "boolean"
+      },
+      "ignoreVoid": {
+        "description": "Whether to ignore \`void\` expressions.",
+        "type": "boolean"
       }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

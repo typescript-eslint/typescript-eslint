@@ -52,87 +52,82 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
-        type: 'array',
-        items: [
-          {
-            type: 'object',
-            properties: {
-              beforeBlockComment: {
-                type: 'boolean',
-                default: true,
-              },
-              afterBlockComment: {
-                type: 'boolean',
-                default: false,
-              },
-              beforeLineComment: {
-                type: 'boolean',
-                default: false,
-              },
-              afterLineComment: {
-                type: 'boolean',
-                default: false,
-              },
-              allowBlockStart: {
-                type: 'boolean',
-                default: false,
-              },
-              allowBlockEnd: {
-                type: 'boolean',
-                default: false,
-              },
-              allowClassStart: {
-                type: 'boolean',
-              },
-              allowClassEnd: {
-                type: 'boolean',
-              },
-              allowObjectStart: {
-                type: 'boolean',
-              },
-              allowObjectEnd: {
-                type: 'boolean',
-              },
-              allowArrayStart: {
-                type: 'boolean',
-              },
-              allowArrayEnd: {
-                type: 'boolean',
-              },
-              allowInterfaceStart: {
-                type: 'boolean',
-              },
-              allowInterfaceEnd: {
-                type: 'boolean',
-              },
-              allowTypeStart: {
-                type: 'boolean',
-              },
-              allowTypeEnd: {
-                type: 'boolean',
-              },
-              allowEnumStart: {
-                type: 'boolean',
-              },
-              allowEnumEnd: {
-                type: 'boolean',
-              },
-              allowModuleStart: {
-                type: 'boolean',
-              },
-              allowModuleEnd: {
-                type: 'boolean',
-              },
-              ignorePattern: {
-                type: 'string',
-              },
-              applyDefaultIgnorePatterns: {
-                type: 'boolean',
-              },
-            },
-            additionalProperties: false,
+        type: 'object',
+        properties: {
+          beforeBlockComment: {
+            type: 'boolean',
+            default: true,
           },
-        ],
+          afterBlockComment: {
+            type: 'boolean',
+            default: false,
+          },
+          beforeLineComment: {
+            type: 'boolean',
+            default: false,
+          },
+          afterLineComment: {
+            type: 'boolean',
+            default: false,
+          },
+          allowBlockStart: {
+            type: 'boolean',
+            default: false,
+          },
+          allowBlockEnd: {
+            type: 'boolean',
+            default: false,
+          },
+          allowClassStart: {
+            type: 'boolean',
+          },
+          allowClassEnd: {
+            type: 'boolean',
+          },
+          allowObjectStart: {
+            type: 'boolean',
+          },
+          allowObjectEnd: {
+            type: 'boolean',
+          },
+          allowArrayStart: {
+            type: 'boolean',
+          },
+          allowArrayEnd: {
+            type: 'boolean',
+          },
+          allowInterfaceStart: {
+            type: 'boolean',
+          },
+          allowInterfaceEnd: {
+            type: 'boolean',
+          },
+          allowTypeStart: {
+            type: 'boolean',
+          },
+          allowTypeEnd: {
+            type: 'boolean',
+          },
+          allowEnumStart: {
+            type: 'boolean',
+          },
+          allowEnumEnd: {
+            type: 'boolean',
+          },
+          allowModuleStart: {
+            type: 'boolean',
+          },
+          allowModuleEnd: {
+            type: 'boolean',
+          },
+          ignorePattern: {
+            type: 'string',
+          },
+          applyDefaultIgnorePatterns: {
+            type: 'boolean',
+          },
+        },
+        additionalProperties: false,
       },
     ],
     fixable: baseRule.meta.fixable,

@@ -5,17 +5,25 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # SCHEMA:
 
 [
-  { "enum": ["single", "double", "backtick"] },
+  {
+    "enum": ["backtick", "double", "single"]
+  },
   {
     "anyOf": [
-      { "enum": ["avoid-escape"] },
       {
-        "type": "object",
+        "enum": ["avoid-escape"]
+      },
+      {
+        "additionalProperties": false,
         "properties": {
-          "avoidEscape": { "type": "boolean" },
-          "allowTemplateLiterals": { "type": "boolean" }
+          "allowTemplateLiterals": {
+            "type": "boolean"
+          },
+          "avoidEscape": {
+            "type": "boolean"
+          }
         },
-        "additionalProperties": false
+        "type": "object"
       }
     ]
   }

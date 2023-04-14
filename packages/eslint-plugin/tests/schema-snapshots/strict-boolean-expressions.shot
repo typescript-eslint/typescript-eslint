@@ -6,21 +6,37 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
-      "allowString": { "type": "boolean" },
-      "allowNumber": { "type": "boolean" },
-      "allowNullableObject": { "type": "boolean" },
-      "allowNullableBoolean": { "type": "boolean" },
-      "allowNullableString": { "type": "boolean" },
-      "allowNullableNumber": { "type": "boolean" },
-      "allowNullableEnum": { "type": "boolean" },
-      "allowAny": { "type": "boolean" },
+      "allowAny": {
+        "type": "boolean"
+      },
+      "allowNullableBoolean": {
+        "type": "boolean"
+      },
+      "allowNullableEnum": {
+        "type": "boolean"
+      },
+      "allowNullableNumber": {
+        "type": "boolean"
+      },
+      "allowNullableObject": {
+        "type": "boolean"
+      },
+      "allowNullableString": {
+        "type": "boolean"
+      },
+      "allowNumber": {
+        "type": "boolean"
+      },
       "allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing": {
+        "type": "boolean"
+      },
+      "allowString": {
         "type": "boolean"
       }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

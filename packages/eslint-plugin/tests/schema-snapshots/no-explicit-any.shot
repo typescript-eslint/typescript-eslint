@@ -6,7 +6,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
     "additionalProperties": false,
     "properties": {
       "fixToUnknown": {
@@ -17,7 +16,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "description": "Whether to ignore rest parameter arrays.",
         "type": "boolean"
       }
-    }
+    },
+    "type": "object"
   }
 ]
 

@@ -6,7 +6,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
     "additionalProperties": false,
     "properties": {
       "allowDestructuring": {
@@ -15,10 +14,13 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       },
       "allowedNames": {
         "description": "Names to ignore, such as [\\"self\\"] for \`const self = this;\`.",
-        "type": "array",
-        "items": { "type": "string" }
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
       }
-    }
+    },
+    "type": "object"
   }
 ]
 

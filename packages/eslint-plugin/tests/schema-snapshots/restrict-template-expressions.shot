@@ -6,33 +6,33 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
     "properties": {
-      "allowNumber": {
-        "description": "Whether to allow \`number\` typed values in template expressions.",
+      "allowAny": {
+        "description": "Whether to allow \`any\` typed values in template expressions.",
         "type": "boolean"
       },
       "allowBoolean": {
         "description": "Whether to allow \`boolean\` typed values in template expressions.",
         "type": "boolean"
       },
-      "allowAny": {
-        "description": "Whether to allow \`any\` typed values in template expressions.",
+      "allowNever": {
+        "description": "Whether to allow \`never\` typed values in template expressions.",
         "type": "boolean"
       },
       "allowNullish": {
         "description": "Whether to allow \`nullish\` typed values in template expressions.",
         "type": "boolean"
       },
+      "allowNumber": {
+        "description": "Whether to allow \`number\` typed values in template expressions.",
+        "type": "boolean"
+      },
       "allowRegExp": {
         "description": "Whether to allow \`regexp\` typed values in template expressions.",
         "type": "boolean"
-      },
-      "allowNever": {
-        "description": "Whether to allow \`never\` typed values in template expressions.",
-        "type": "boolean"
       }
-    }
+    },
+    "type": "object"
   }
 ]
 

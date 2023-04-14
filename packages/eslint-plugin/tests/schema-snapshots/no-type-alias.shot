@@ -6,16 +6,16 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
       "allowAliases": {
         "description": "Whether to allow direct one-to-one type aliases.",
         "enum": [
           "always",
-          "never",
-          "in-unions",
           "in-intersections",
-          "in-unions-and-intersections"
+          "in-unions",
+          "in-unions-and-intersections",
+          "never"
         ]
       },
       "allowCallbacks": {
@@ -30,42 +30,42 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "description": "Whether to allow type aliases with constructors.",
         "enum": ["always", "never"]
       },
+      "allowGenerics": {
+        "description": "Whether to allow type aliases with generic types.",
+        "enum": ["always", "never"]
+      },
       "allowLiterals": {
         "description": "Whether to allow type aliases with object literal types.",
         "enum": [
           "always",
-          "never",
-          "in-unions",
           "in-intersections",
-          "in-unions-and-intersections"
+          "in-unions",
+          "in-unions-and-intersections",
+          "never"
         ]
       },
       "allowMappedTypes": {
         "description": "Whether to allow type aliases with mapped types.",
         "enum": [
           "always",
-          "never",
-          "in-unions",
           "in-intersections",
-          "in-unions-and-intersections"
+          "in-unions",
+          "in-unions-and-intersections",
+          "never"
         ]
       },
       "allowTupleTypes": {
         "description": "Whether to allow type aliases with tuple types.",
         "enum": [
           "always",
-          "never",
-          "in-unions",
           "in-intersections",
-          "in-unions-and-intersections"
+          "in-unions",
+          "in-unions-and-intersections",
+          "never"
         ]
-      },
-      "allowGenerics": {
-        "description": "Whether to allow type aliases with generic types.",
-        "enum": ["always", "never"]
       }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

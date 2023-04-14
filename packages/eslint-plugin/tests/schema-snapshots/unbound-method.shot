@@ -6,14 +6,14 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
       "ignoreStatic": {
         "description": "Whether to skip checking whether \`static\` methods are correctly bound.",
         "type": "boolean"
       }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

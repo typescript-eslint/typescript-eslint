@@ -6,930 +6,1511 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 {
   "$defs": {
-    "underscoreOptions": {
-      "type": "string",
-      "enum": [
-        "forbid",
-        "allow",
-        "require",
-        "requireDouble",
-        "allowDouble",
-        "allowSingleOrDouble"
-      ]
-    },
-    "predefinedFormats": {
-      "type": "string",
-      "enum": [
-        "camelCase",
-        "strictCamelCase",
-        "PascalCase",
-        "StrictPascalCase",
-        "snake_case",
-        "UPPER_CASE"
-      ]
-    },
-    "typeModifiers": {
-      "type": "string",
-      "enum": ["boolean", "string", "number", "function", "array"]
-    },
-    "prefixSuffixConfig": {
-      "type": "array",
-      "items": { "type": "string", "minLength": 1 },
-      "additionalItems": false
-    },
-    "matchRegexConfig": {
-      "type": "object",
-      "properties": {
-        "match": { "type": "boolean" },
-        "regex": { "type": "string" }
-      },
-      "required": ["match", "regex"]
-    },
     "formatOptionsConfig": {
       "oneOf": [
         {
-          "type": "array",
-          "items": { "$ref": "#/$defs/predefinedFormats" },
-          "additionalItems": false
+          "additionalItems": false,
+          "items": {
+            "$ref": "#/$defs/predefinedFormats"
+          },
+          "type": "array"
         },
-        { "type": "null" }
+        {
+          "type": "null"
+        }
       ]
+    },
+    "matchRegexConfig": {
+      "properties": {
+        "match": {
+          "type": "boolean"
+        },
+        "regex": {
+          "type": "string"
+        }
+      },
+      "required": ["match", "regex"],
+      "type": "object"
+    },
+    "predefinedFormats": {
+      "enum": [
+        "PascalCase",
+        "StrictPascalCase",
+        "UPPER_CASE",
+        "camelCase",
+        "snake_case",
+        "strictCamelCase"
+      ],
+      "type": "string"
+    },
+    "prefixSuffixConfig": {
+      "additionalItems": false,
+      "items": {
+        "minLength": 1,
+        "type": "string"
+      },
+      "type": "array"
+    },
+    "typeModifiers": {
+      "enum": ["array", "boolean", "function", "number", "string"],
+      "type": "string"
+    },
+    "underscoreOptions": {
+      "enum": [
+        "allow",
+        "allowDouble",
+        "allowSingleOrDouble",
+        "forbid",
+        "require",
+        "requireDouble"
+      ],
+      "type": "string"
     }
   },
-  "type": "array",
+  "additionalItems": false,
   "items": {
     "oneOf": [
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Multiple selectors in one config",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
+          },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
+          "modifiers": {
+            "additionalItems": false,
+            "items": {
+              "enum": [
+                "#private",
+                "abstract",
+                "async",
+                "const",
+                "destructured",
+                "exported",
+                "global",
+                "override",
+                "private",
+                "protected",
+                "public",
+                "readonly",
+                "requiresQuotes",
+                "static",
+                "unused"
+              ],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
           },
           "selector": {
-            "type": "array",
+            "additionalItems": false,
             "items": {
-              "type": "string",
               "enum": [
+                "accessor",
+                "class",
+                "classMethod",
+                "classProperty",
                 "default",
-                "variableLike",
-                "memberLike",
-                "typeLike",
-                "method",
-                "property",
-                "variable",
+                "enum",
+                "enumMember",
                 "function",
+                "interface",
+                "memberLike",
+                "method",
+                "objectLiteralMethod",
+                "objectLiteralProperty",
                 "parameter",
                 "parameterProperty",
-                "accessor",
-                "enumMember",
-                "classMethod",
-                "objectLiteralMethod",
-                "typeMethod",
-                "classProperty",
-                "objectLiteralProperty",
-                "typeProperty",
-                "class",
-                "interface",
+                "property",
                 "typeAlias",
-                "enum",
-                "typeParameter"
-              ]
+                "typeLike",
+                "typeMethod",
+                "typeParameter",
+                "typeProperty",
+                "variable",
+                "variableLike"
+              ],
+              "type": "string"
             },
-            "additionalItems": false
+            "type": "array"
           },
-          "modifiers": {
-            "type": "array",
-            "items": {
-              "type": "string",
-              "enum": [
-                "const",
-                "readonly",
-                "static",
-                "public",
-                "protected",
-                "private",
-                "#private",
-                "abstract",
-                "destructured",
-                "global",
-                "exported",
-                "unused",
-                "requiresQuotes",
-                "override",
-                "async"
-              ]
-            },
-            "additionalItems": false
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           },
           "types": {
-            "type": "array",
-            "items": { "$ref": "#/$defs/typeModifiers" },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "$ref": "#/$defs/typeModifiers"
+            },
+            "type": "array"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'default'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["default"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
+            "additionalItems": false,
             "items": {
-              "type": "string",
               "enum": [
-                "const",
-                "readonly",
-                "static",
-                "public",
-                "protected",
-                "private",
                 "#private",
                 "abstract",
+                "async",
+                "const",
                 "destructured",
-                "global",
                 "exported",
-                "unused",
-                "requiresQuotes",
+                "global",
                 "override",
-                "async"
-              ]
+                "private",
+                "protected",
+                "public",
+                "readonly",
+                "requiresQuotes",
+                "static",
+                "unused"
+              ],
+              "type": "string"
             },
-            "additionalItems": false
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["default"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'variableLike'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["variableLike"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
-            "items": { "type": "string", "enum": ["unused", "async"] },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "enum": ["async", "unused"],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["variableLike"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'variable'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["variable"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
+            "additionalItems": false,
             "items": {
-              "type": "string",
               "enum": [
+                "async",
                 "const",
                 "destructured",
                 "exported",
                 "global",
-                "unused",
-                "async"
-              ]
+                "unused"
+              ],
+              "type": "string"
             },
-            "additionalItems": false
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["variable"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           },
           "types": {
-            "type": "array",
-            "items": { "$ref": "#/$defs/typeModifiers" },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "$ref": "#/$defs/typeModifiers"
+            },
+            "type": "array"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'function'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["function"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
+            "additionalItems": false,
             "items": {
-              "type": "string",
-              "enum": ["exported", "global", "unused", "async"]
+              "enum": ["async", "exported", "global", "unused"],
+              "type": "string"
             },
-            "additionalItems": false
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["function"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'parameter'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["parameter"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
-            "items": { "type": "string", "enum": ["destructured", "unused"] },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "enum": ["destructured", "unused"],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["parameter"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           },
           "types": {
-            "type": "array",
-            "items": { "$ref": "#/$defs/typeModifiers" },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "$ref": "#/$defs/typeModifiers"
+            },
+            "type": "array"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'memberLike'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["memberLike"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
+            "additionalItems": false,
             "items": {
-              "type": "string",
               "enum": [
-                "abstract",
-                "private",
                 "#private",
+                "abstract",
+                "async",
+                "override",
+                "private",
                 "protected",
                 "public",
                 "readonly",
                 "requiresQuotes",
-                "static",
-                "override",
-                "async"
-              ]
+                "static"
+              ],
+              "type": "string"
             },
-            "additionalItems": false
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["memberLike"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'classProperty'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["classProperty"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
+            "additionalItems": false,
             "items": {
-              "type": "string",
               "enum": [
-                "abstract",
-                "private",
                 "#private",
+                "abstract",
+                "override",
+                "private",
                 "protected",
                 "public",
                 "readonly",
                 "requiresQuotes",
-                "static",
-                "override"
-              ]
+                "static"
+              ],
+              "type": "string"
             },
-            "additionalItems": false
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["classProperty"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           },
           "types": {
-            "type": "array",
-            "items": { "$ref": "#/$defs/typeModifiers" },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "$ref": "#/$defs/typeModifiers"
+            },
+            "type": "array"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'objectLiteralProperty'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["objectLiteralProperty"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
-            "items": { "type": "string", "enum": ["public", "requiresQuotes"] },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "enum": ["public", "requiresQuotes"],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["objectLiteralProperty"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           },
           "types": {
-            "type": "array",
-            "items": { "$ref": "#/$defs/typeModifiers" },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "$ref": "#/$defs/typeModifiers"
+            },
+            "type": "array"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'typeProperty'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["typeProperty"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
+            "additionalItems": false,
             "items": {
-              "type": "string",
-              "enum": ["public", "readonly", "requiresQuotes"]
+              "enum": ["public", "readonly", "requiresQuotes"],
+              "type": "string"
             },
-            "additionalItems": false
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["typeProperty"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           },
           "types": {
-            "type": "array",
-            "items": { "$ref": "#/$defs/typeModifiers" },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "$ref": "#/$defs/typeModifiers"
+            },
+            "type": "array"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'parameterProperty'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["parameterProperty"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
+            "additionalItems": false,
             "items": {
-              "type": "string",
-              "enum": ["private", "protected", "public", "readonly"]
+              "enum": ["private", "protected", "public", "readonly"],
+              "type": "string"
             },
-            "additionalItems": false
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["parameterProperty"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           },
           "types": {
-            "type": "array",
-            "items": { "$ref": "#/$defs/typeModifiers" },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "$ref": "#/$defs/typeModifiers"
+            },
+            "type": "array"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'property'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["property"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
+            "additionalItems": false,
             "items": {
-              "type": "string",
               "enum": [
-                "abstract",
-                "private",
                 "#private",
+                "abstract",
+                "async",
+                "override",
+                "private",
                 "protected",
                 "public",
                 "readonly",
                 "requiresQuotes",
-                "static",
-                "override",
-                "async"
-              ]
+                "static"
+              ],
+              "type": "string"
             },
-            "additionalItems": false
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["property"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           },
           "types": {
-            "type": "array",
-            "items": { "$ref": "#/$defs/typeModifiers" },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "$ref": "#/$defs/typeModifiers"
+            },
+            "type": "array"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'classMethod'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["classMethod"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
+            "additionalItems": false,
             "items": {
-              "type": "string",
               "enum": [
-                "abstract",
-                "private",
                 "#private",
+                "abstract",
+                "async",
+                "override",
+                "private",
                 "protected",
                 "public",
                 "requiresQuotes",
-                "static",
-                "override",
-                "async"
-              ]
+                "static"
+              ],
+              "type": "string"
             },
-            "additionalItems": false
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["classMethod"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'objectLiteralMethod'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["objectLiteralMethod"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
+            "additionalItems": false,
             "items": {
-              "type": "string",
-              "enum": ["public", "requiresQuotes", "async"]
+              "enum": ["async", "public", "requiresQuotes"],
+              "type": "string"
             },
-            "additionalItems": false
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["objectLiteralMethod"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'typeMethod'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["typeMethod"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
-            "items": { "type": "string", "enum": ["public", "requiresQuotes"] },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "enum": ["public", "requiresQuotes"],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["typeMethod"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'method'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["method"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
+            "additionalItems": false,
             "items": {
-              "type": "string",
               "enum": [
-                "abstract",
-                "private",
                 "#private",
+                "abstract",
+                "async",
+                "override",
+                "private",
                 "protected",
                 "public",
                 "requiresQuotes",
-                "static",
-                "override",
-                "async"
-              ]
+                "static"
+              ],
+              "type": "string"
             },
-            "additionalItems": false
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["method"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'accessor'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["accessor"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
+            "additionalItems": false,
             "items": {
-              "type": "string",
               "enum": [
                 "abstract",
+                "override",
                 "private",
                 "protected",
                 "public",
                 "requiresQuotes",
-                "static",
-                "override"
-              ]
+                "static"
+              ],
+              "type": "string"
             },
-            "additionalItems": false
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["accessor"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           },
           "types": {
-            "type": "array",
-            "items": { "$ref": "#/$defs/typeModifiers" },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "$ref": "#/$defs/typeModifiers"
+            },
+            "type": "array"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'enumMember'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["enumMember"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
-            "items": { "type": "string", "enum": ["requiresQuotes"] },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "enum": ["requiresQuotes"],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["enumMember"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'typeLike'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["typeLike"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
+            "additionalItems": false,
             "items": {
-              "type": "string",
-              "enum": ["abstract", "exported", "unused"]
+              "enum": ["abstract", "exported", "unused"],
+              "type": "string"
             },
-            "additionalItems": false
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["typeLike"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'class'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["class"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
+            "additionalItems": false,
             "items": {
-              "type": "string",
-              "enum": ["abstract", "exported", "unused"]
+              "enum": ["abstract", "exported", "unused"],
+              "type": "string"
             },
-            "additionalItems": false
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["class"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'interface'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["interface"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
-            "items": { "type": "string", "enum": ["exported", "unused"] },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "enum": ["exported", "unused"],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["interface"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'typeAlias'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["typeAlias"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
-            "items": { "type": "string", "enum": ["exported", "unused"] },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "enum": ["exported", "unused"],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["typeAlias"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'enum'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["enum"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
-            "items": { "type": "string", "enum": ["exported", "unused"] },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "enum": ["exported", "unused"],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["enum"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       },
       {
-        "type": "object",
+        "additionalProperties": false,
         "description": "Selector 'typeParameter'",
         "properties": {
-          "format": { "$ref": "#/$defs/formatOptionsConfig" },
-          "custom": { "$ref": "#/$defs/matchRegexConfig" },
-          "leadingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "trailingUnderscore": { "$ref": "#/$defs/underscoreOptions" },
-          "prefix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "suffix": { "$ref": "#/$defs/prefixSuffixConfig" },
-          "failureMessage": { "type": "string" },
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
           "filter": {
             "oneOf": [
-              { "type": "string", "minLength": 1 },
-              { "$ref": "#/$defs/matchRegexConfig" }
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
             ]
           },
-          "selector": { "type": "string", "enum": ["typeParameter"] },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
           "modifiers": {
-            "type": "array",
-            "items": { "type": "string", "enum": ["unused"] },
-            "additionalItems": false
+            "additionalItems": false,
+            "items": {
+              "enum": ["unused"],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["typeParameter"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
           }
         },
         "required": ["selector", "format"],
-        "additionalProperties": false
+        "type": "object"
       }
     ]
   },
-  "additionalItems": false
+  "type": "array"
 }
 
 

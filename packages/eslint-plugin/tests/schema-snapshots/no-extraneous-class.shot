@@ -6,7 +6,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
     "additionalProperties": false,
     "properties": {
       "allowConstructorOnly": {
@@ -25,7 +24,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "description": "Whether to allow extraneous classes that include a decorator.",
         "type": "boolean"
       }
-    }
+    },
+    "type": "object"
   }
 ]
 

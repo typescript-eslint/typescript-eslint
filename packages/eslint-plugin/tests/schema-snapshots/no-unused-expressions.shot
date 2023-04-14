@@ -6,14 +6,26 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
-      "allowShortCircuit": { "type": "boolean", "default": false },
-      "allowTernary": { "type": "boolean", "default": false },
-      "allowTaggedTemplates": { "type": "boolean", "default": false },
-      "enforceForJSX": { "type": "boolean", "default": false }
+      "allowShortCircuit": {
+        "default": false,
+        "type": "boolean"
+      },
+      "allowTaggedTemplates": {
+        "default": false,
+        "type": "boolean"
+      },
+      "allowTernary": {
+        "default": false,
+        "type": "boolean"
+      },
+      "enforceForJSX": {
+        "default": false,
+        "type": "boolean"
+      }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

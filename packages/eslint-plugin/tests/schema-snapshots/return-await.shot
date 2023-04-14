@@ -4,7 +4,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 "
 # SCHEMA:
 
-[{ "enum": ["in-try-catch", "always", "never"] }]
+[
+  {
+    "enum": ["always", "in-try-catch", "never"]
+  }
+]
 
 
 # TYPES:

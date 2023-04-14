@@ -7,15 +7,23 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 [
   {
     "oneOf": [
-      { "enum": ["always", "never"] },
       {
-        "type": "object",
+        "enum": ["always", "never"]
+      },
+      {
+        "additionalProperties": false,
         "properties": {
-          "anonymous": { "enum": ["always", "never", "ignore"] },
-          "named": { "enum": ["always", "never", "ignore"] },
-          "asyncArrow": { "enum": ["always", "never", "ignore"] }
+          "anonymous": {
+            "enum": ["always", "ignore", "never"]
+          },
+          "asyncArrow": {
+            "enum": ["always", "ignore", "never"]
+          },
+          "named": {
+            "enum": ["always", "ignore", "never"]
+          }
         },
-        "additionalProperties": false
+        "type": "object"
       }
     ]
   }

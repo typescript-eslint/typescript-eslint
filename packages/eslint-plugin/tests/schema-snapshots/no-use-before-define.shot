@@ -7,19 +7,35 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 [
   {
     "oneOf": [
-      { "enum": ["nofunc"] },
       {
-        "type": "object",
+        "enum": ["nofunc"]
+      },
+      {
+        "additionalProperties": false,
         "properties": {
-          "functions": { "type": "boolean" },
-          "classes": { "type": "boolean" },
-          "enums": { "type": "boolean" },
-          "variables": { "type": "boolean" },
-          "typedefs": { "type": "boolean" },
-          "ignoreTypeReferences": { "type": "boolean" },
-          "allowNamedExports": { "type": "boolean" }
+          "allowNamedExports": {
+            "type": "boolean"
+          },
+          "classes": {
+            "type": "boolean"
+          },
+          "enums": {
+            "type": "boolean"
+          },
+          "functions": {
+            "type": "boolean"
+          },
+          "ignoreTypeReferences": {
+            "type": "boolean"
+          },
+          "typedefs": {
+            "type": "boolean"
+          },
+          "variables": {
+            "type": "boolean"
+          }
         },
-        "additionalProperties": false
+        "type": "object"
       }
     ]
   }

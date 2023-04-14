@@ -6,18 +6,18 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
     "additionalProperties": false,
     "properties": {
-      "checkCompoundAssignments": {
-        "description": "Whether to check compound assignments such as \`+=\`.",
-        "type": "boolean"
-      },
       "allowAny": {
         "description": "Whether to allow \`any\` typed values.",
         "type": "boolean"
+      },
+      "checkCompoundAssignments": {
+        "description": "Whether to check compound assignments such as \`+=\`.",
+        "type": "boolean"
       }
-    }
+    },
+    "type": "object"
   }
 ]
 

@@ -7,20 +7,38 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 [
   {
     "oneOf": [
-      { "enum": ["all", "local"] },
       {
-        "type": "object",
+        "enum": ["all", "local"]
+      },
+      {
+        "additionalProperties": false,
         "properties": {
-          "vars": { "enum": ["all", "local"] },
-          "varsIgnorePattern": { "type": "string" },
-          "args": { "enum": ["all", "after-used", "none"] },
-          "ignoreRestSiblings": { "type": "boolean" },
-          "argsIgnorePattern": { "type": "string" },
-          "caughtErrors": { "enum": ["all", "none"] },
-          "caughtErrorsIgnorePattern": { "type": "string" },
-          "destructuredArrayIgnorePattern": { "type": "string" }
+          "args": {
+            "enum": ["after-used", "all", "none"]
+          },
+          "argsIgnorePattern": {
+            "type": "string"
+          },
+          "caughtErrors": {
+            "enum": ["all", "none"]
+          },
+          "caughtErrorsIgnorePattern": {
+            "type": "string"
+          },
+          "destructuredArrayIgnorePattern": {
+            "type": "string"
+          },
+          "ignoreRestSiblings": {
+            "type": "boolean"
+          },
+          "vars": {
+            "enum": ["all", "local"]
+          },
+          "varsIgnorePattern": {
+            "type": "string"
+          }
         },
-        "additionalProperties": false
+        "type": "object"
       }
     ]
   }

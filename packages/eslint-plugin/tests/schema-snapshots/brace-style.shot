@@ -5,13 +5,18 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # SCHEMA:
 
 [
-  { "enum": ["1tbs", "stroustrup", "allman"] },
   {
-    "type": "object",
+    "enum": ["1tbs", "allman", "stroustrup"]
+  },
+  {
+    "additionalProperties": false,
     "properties": {
-      "allowSingleLine": { "type": "boolean", "default": false }
+      "allowSingleLine": {
+        "default": false,
+        "type": "boolean"
+      }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

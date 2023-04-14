@@ -7,35 +7,57 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 {
   "anyOf": [
     {
-      "type": "array",
-      "items": [{ "enum": ["functions"] }],
-      "minItems": 0,
-      "maxItems": 1
-    },
-    {
-      "type": "array",
       "items": [
-        { "enum": ["all"] },
         {
-          "type": "object",
-          "properties": {
-            "conditionalAssign": { "type": "boolean" },
-            "nestedBinaryExpressions": { "type": "boolean" },
-            "returnAssign": { "type": "boolean" },
-            "ignoreJSX": {
-              "enum": ["none", "all", "single-line", "multi-line"]
-            },
-            "enforceForArrowConditionals": { "type": "boolean" },
-            "enforceForSequenceExpressions": { "type": "boolean" },
-            "enforceForNewInMemberExpressions": { "type": "boolean" },
-            "enforceForFunctionPrototypeMethods": { "type": "boolean" },
-            "allowParensAfterCommentPattern": { "type": "string" }
-          },
-          "additionalProperties": false
+          "enum": ["functions"]
         }
       ],
+      "maxItems": 1,
       "minItems": 0,
-      "maxItems": 2
+      "type": "array"
+    },
+    {
+      "items": [
+        {
+          "enum": ["all"]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "allowParensAfterCommentPattern": {
+              "type": "string"
+            },
+            "conditionalAssign": {
+              "type": "boolean"
+            },
+            "enforceForArrowConditionals": {
+              "type": "boolean"
+            },
+            "enforceForFunctionPrototypeMethods": {
+              "type": "boolean"
+            },
+            "enforceForNewInMemberExpressions": {
+              "type": "boolean"
+            },
+            "enforceForSequenceExpressions": {
+              "type": "boolean"
+            },
+            "ignoreJSX": {
+              "enum": ["all", "multi-line", "none", "single-line"]
+            },
+            "nestedBinaryExpressions": {
+              "type": "boolean"
+            },
+            "returnAssign": {
+              "type": "boolean"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 0,
+      "type": "array"
     }
   ]
 }

@@ -6,7 +6,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
       "allowAny": {
         "description": "Whether to consider \`any\` and \`unknown\` to be Promises.",
@@ -14,15 +14,25 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       },
       "allowedPromiseNames": {
         "description": "Any extra names of classes or interfaces to be considered Promises.",
-        "type": "array",
-        "items": { "type": "string" }
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
       },
-      "checkArrowFunctions": { "type": "boolean" },
-      "checkFunctionDeclarations": { "type": "boolean" },
-      "checkFunctionExpressions": { "type": "boolean" },
-      "checkMethodDeclarations": { "type": "boolean" }
+      "checkArrowFunctions": {
+        "type": "boolean"
+      },
+      "checkFunctionDeclarations": {
+        "type": "boolean"
+      },
+      "checkFunctionExpressions": {
+        "type": "boolean"
+      },
+      "checkMethodDeclarations": {
+        "type": "boolean"
+      }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

@@ -6,7 +6,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
       "allowDeclarations": {
         "description": "Whether to allow \`declare\` with custom TypeScript namespaces.",
@@ -17,7 +17,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "boolean"
       }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

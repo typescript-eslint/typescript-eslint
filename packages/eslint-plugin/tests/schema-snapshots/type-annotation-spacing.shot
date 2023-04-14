@@ -6,66 +6,94 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
-      "before": { "type": "boolean" },
-      "after": { "type": "boolean" },
+      "after": {
+        "type": "boolean"
+      },
+      "before": {
+        "type": "boolean"
+      },
       "overrides": {
-        "type": "object",
+        "additionalProperties": false,
         "properties": {
-          "colon": {
-            "type": "object",
-            "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
-            },
-            "additionalProperties": false
-          },
           "arrow": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
-          "variable": {
-            "type": "object",
+          "colon": {
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "parameter": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "property": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "returnType": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
+          },
+          "variable": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
           }
         },
-        "additionalProperties": false
+        "type": "object"
       }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

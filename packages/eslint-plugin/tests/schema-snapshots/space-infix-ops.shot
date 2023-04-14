@@ -6,9 +6,14 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
-    "properties": { "int32Hint": { "type": "boolean", "default": false } },
-    "additionalProperties": false
+    "additionalProperties": false,
+    "properties": {
+      "int32Hint": {
+        "default": false,
+        "type": "boolean"
+      }
+    },
+    "type": "object"
   }
 ]
 

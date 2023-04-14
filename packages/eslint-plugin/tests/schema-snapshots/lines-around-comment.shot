@@ -6,37 +6,82 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "array",
-    "items": [
-      {
-        "type": "object",
-        "properties": {
-          "beforeBlockComment": { "type": "boolean", "default": true },
-          "afterBlockComment": { "type": "boolean", "default": false },
-          "beforeLineComment": { "type": "boolean", "default": false },
-          "afterLineComment": { "type": "boolean", "default": false },
-          "allowBlockStart": { "type": "boolean", "default": false },
-          "allowBlockEnd": { "type": "boolean", "default": false },
-          "allowClassStart": { "type": "boolean" },
-          "allowClassEnd": { "type": "boolean" },
-          "allowObjectStart": { "type": "boolean" },
-          "allowObjectEnd": { "type": "boolean" },
-          "allowArrayStart": { "type": "boolean" },
-          "allowArrayEnd": { "type": "boolean" },
-          "allowInterfaceStart": { "type": "boolean" },
-          "allowInterfaceEnd": { "type": "boolean" },
-          "allowTypeStart": { "type": "boolean" },
-          "allowTypeEnd": { "type": "boolean" },
-          "allowEnumStart": { "type": "boolean" },
-          "allowEnumEnd": { "type": "boolean" },
-          "allowModuleStart": { "type": "boolean" },
-          "allowModuleEnd": { "type": "boolean" },
-          "ignorePattern": { "type": "string" },
-          "applyDefaultIgnorePatterns": { "type": "boolean" }
-        },
-        "additionalProperties": false
+    "additionalProperties": false,
+    "properties": {
+      "afterBlockComment": {
+        "default": false,
+        "type": "boolean"
+      },
+      "afterLineComment": {
+        "default": false,
+        "type": "boolean"
+      },
+      "allowArrayEnd": {
+        "type": "boolean"
+      },
+      "allowArrayStart": {
+        "type": "boolean"
+      },
+      "allowBlockEnd": {
+        "default": false,
+        "type": "boolean"
+      },
+      "allowBlockStart": {
+        "default": false,
+        "type": "boolean"
+      },
+      "allowClassEnd": {
+        "type": "boolean"
+      },
+      "allowClassStart": {
+        "type": "boolean"
+      },
+      "allowEnumEnd": {
+        "type": "boolean"
+      },
+      "allowEnumStart": {
+        "type": "boolean"
+      },
+      "allowInterfaceEnd": {
+        "type": "boolean"
+      },
+      "allowInterfaceStart": {
+        "type": "boolean"
+      },
+      "allowModuleEnd": {
+        "type": "boolean"
+      },
+      "allowModuleStart": {
+        "type": "boolean"
+      },
+      "allowObjectEnd": {
+        "type": "boolean"
+      },
+      "allowObjectStart": {
+        "type": "boolean"
+      },
+      "allowTypeEnd": {
+        "type": "boolean"
+      },
+      "allowTypeStart": {
+        "type": "boolean"
+      },
+      "applyDefaultIgnorePatterns": {
+        "type": "boolean"
+      },
+      "beforeBlockComment": {
+        "default": true,
+        "type": "boolean"
+      },
+      "beforeLineComment": {
+        "default": false,
+        "type": "boolean"
+      },
+      "ignorePattern": {
+        "type": "string"
       }
-    ]
+    },
+    "type": "object"
   }
 ]
 
@@ -44,33 +89,30 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type Options = [
-  | []
-  | [
-      {
-        afterBlockComment?: boolean;
-        afterLineComment?: boolean;
-        allowArrayEnd?: boolean;
-        allowArrayStart?: boolean;
-        allowBlockEnd?: boolean;
-        allowBlockStart?: boolean;
-        allowClassEnd?: boolean;
-        allowClassStart?: boolean;
-        allowEnumEnd?: boolean;
-        allowEnumStart?: boolean;
-        allowInterfaceEnd?: boolean;
-        allowInterfaceStart?: boolean;
-        allowModuleEnd?: boolean;
-        allowModuleStart?: boolean;
-        allowObjectEnd?: boolean;
-        allowObjectStart?: boolean;
-        allowTypeEnd?: boolean;
-        allowTypeStart?: boolean;
-        applyDefaultIgnorePatterns?: boolean;
-        beforeBlockComment?: boolean;
-        beforeLineComment?: boolean;
-        ignorePattern?: string;
-      },
-    ],
+  {
+    afterBlockComment?: boolean;
+    afterLineComment?: boolean;
+    allowArrayEnd?: boolean;
+    allowArrayStart?: boolean;
+    allowBlockEnd?: boolean;
+    allowBlockStart?: boolean;
+    allowClassEnd?: boolean;
+    allowClassStart?: boolean;
+    allowEnumEnd?: boolean;
+    allowEnumStart?: boolean;
+    allowInterfaceEnd?: boolean;
+    allowInterfaceStart?: boolean;
+    allowModuleEnd?: boolean;
+    allowModuleStart?: boolean;
+    allowObjectEnd?: boolean;
+    allowObjectStart?: boolean;
+    allowTypeEnd?: boolean;
+    allowTypeStart?: boolean;
+    applyDefaultIgnorePatterns?: boolean;
+    beforeBlockComment?: boolean;
+    beforeLineComment?: boolean;
+    ignorePattern?: string;
+  },
 ];
 "
 `;

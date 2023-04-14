@@ -6,27 +6,43 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
     "properties": {
-      "checksConditionals": { "type": "boolean" },
+      "checksConditionals": {
+        "type": "boolean"
+      },
+      "checksSpreads": {
+        "type": "boolean"
+      },
       "checksVoidReturn": {
         "oneOf": [
-          { "type": "boolean" },
+          {
+            "type": "boolean"
+          },
           {
             "additionalProperties": false,
             "properties": {
-              "arguments": { "type": "boolean" },
-              "attributes": { "type": "boolean" },
-              "properties": { "type": "boolean" },
-              "returns": { "type": "boolean" },
-              "variables": { "type": "boolean" }
+              "arguments": {
+                "type": "boolean"
+              },
+              "attributes": {
+                "type": "boolean"
+              },
+              "properties": {
+                "type": "boolean"
+              },
+              "returns": {
+                "type": "boolean"
+              },
+              "variables": {
+                "type": "boolean"
+              }
             },
             "type": "object"
           }
         ]
-      },
-      "checksSpreads": { "type": "boolean" }
-    }
+      }
+    },
+    "type": "object"
   }
 ]
 

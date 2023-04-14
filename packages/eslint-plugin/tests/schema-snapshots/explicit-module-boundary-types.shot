@@ -6,7 +6,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
       "allowArgumentsExplicitlyTypedAsAny": {
         "description": "Whether to ignore arguments that are explicitly typed as \`any\`.",
@@ -18,7 +18,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       },
       "allowedNames": {
         "description": "An array of function/method names that will not have their arguments or return values checked.",
-        "items": { "type": "string" },
+        "items": {
+          "type": "string"
+        },
         "type": "array"
       },
       "allowHigherOrderFunctions": {
@@ -30,7 +32,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "boolean"
       }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

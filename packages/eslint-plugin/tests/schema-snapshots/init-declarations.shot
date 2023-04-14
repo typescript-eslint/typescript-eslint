@@ -7,23 +7,33 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 {
   "anyOf": [
     {
-      "type": "array",
-      "items": [{ "enum": ["always"] }],
-      "minItems": 0,
-      "maxItems": 1
-    },
-    {
-      "type": "array",
       "items": [
-        { "enum": ["never"] },
         {
-          "type": "object",
-          "properties": { "ignoreForLoopInit": { "type": "boolean" } },
-          "additionalProperties": false
+          "enum": ["always"]
         }
       ],
+      "maxItems": 1,
       "minItems": 0,
-      "maxItems": 2
+      "type": "array"
+    },
+    {
+      "items": [
+        {
+          "enum": ["never"]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "ignoreForLoopInit": {
+              "type": "boolean"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 0,
+      "type": "array"
     }
   ]
 }

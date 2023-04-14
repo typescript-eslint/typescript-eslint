@@ -10,39 +10,54 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       "accessibilityLevel": {
         "oneOf": [
           {
-            "enum": ["explicit"],
-            "description": "Always require an accessor."
+            "description": "Always require an accessor.",
+            "enum": ["explicit"]
           },
           {
-            "enum": ["no-public"],
-            "description": "Require an accessor except when public."
+            "description": "Require an accessor except when public.",
+            "enum": ["no-public"]
           },
           {
-            "enum": ["off"],
-            "description": "Never check whether there is an accessor."
+            "description": "Never check whether there is an accessor.",
+            "enum": ["off"]
           }
         ]
       }
     },
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
-      "accessibility": { "$ref": "#/items/0/$defs/accessibilityLevel" },
+      "accessibility": {
+        "$ref": "#/items/0/$defs/accessibilityLevel"
+      },
+      "ignoredMethodNames": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
       "overrides": {
-        "type": "object",
+        "additionalProperties": false,
         "properties": {
-          "accessors": { "$ref": "#/items/0/$defs/accessibilityLevel" },
-          "constructors": { "$ref": "#/items/0/$defs/accessibilityLevel" },
-          "methods": { "$ref": "#/items/0/$defs/accessibilityLevel" },
-          "properties": { "$ref": "#/items/0/$defs/accessibilityLevel" },
+          "accessors": {
+            "$ref": "#/items/0/$defs/accessibilityLevel"
+          },
+          "constructors": {
+            "$ref": "#/items/0/$defs/accessibilityLevel"
+          },
+          "methods": {
+            "$ref": "#/items/0/$defs/accessibilityLevel"
+          },
           "parameterProperties": {
+            "$ref": "#/items/0/$defs/accessibilityLevel"
+          },
+          "properties": {
             "$ref": "#/items/0/$defs/accessibilityLevel"
           }
         },
-        "additionalProperties": false
-      },
-      "ignoredMethodNames": { "type": "array", "items": { "type": "string" } }
+        "type": "object"
+      }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

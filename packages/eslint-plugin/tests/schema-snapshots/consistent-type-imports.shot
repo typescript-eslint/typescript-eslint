@@ -6,13 +6,19 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
-      "prefer": { "enum": ["type-imports", "no-type-imports"] },
-      "disallowTypeAnnotations": { "type": "boolean" },
-      "fixStyle": { "enum": ["separate-type-imports", "inline-type-imports"] }
+      "disallowTypeAnnotations": {
+        "type": "boolean"
+      },
+      "fixStyle": {
+        "enum": ["inline-type-imports", "separate-type-imports"]
+      },
+      "prefer": {
+        "enum": ["no-type-imports", "type-imports"]
+      }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

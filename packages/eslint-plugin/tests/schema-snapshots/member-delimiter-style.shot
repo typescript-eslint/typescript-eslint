@@ -6,77 +6,103 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
       "multiline": {
-        "type": "object",
+        "additionalProperties": false,
         "properties": {
-          "delimiter": { "enum": ["none", "semi", "comma"] },
-          "requireLast": { "type": "boolean" }
-        },
-        "additionalProperties": false
-      },
-      "singleline": {
-        "type": "object",
-        "properties": {
-          "delimiter": { "enum": ["semi", "comma"] },
-          "requireLast": { "type": "boolean" }
-        },
-        "additionalProperties": false
-      },
-      "overrides": {
-        "type": "object",
-        "properties": {
-          "interface": {
-            "type": "object",
-            "properties": {
-              "multiline": {
-                "type": "object",
-                "properties": {
-                  "delimiter": { "enum": ["none", "semi", "comma"] },
-                  "requireLast": { "type": "boolean" }
-                },
-                "additionalProperties": false
-              },
-              "singleline": {
-                "type": "object",
-                "properties": {
-                  "delimiter": { "enum": ["semi", "comma"] },
-                  "requireLast": { "type": "boolean" }
-                },
-                "additionalProperties": false
-              }
-            },
-            "additionalProperties": false
+          "delimiter": {
+            "enum": ["comma", "none", "semi"]
           },
-          "typeLiteral": {
-            "type": "object",
-            "properties": {
-              "multiline": {
-                "type": "object",
-                "properties": {
-                  "delimiter": { "enum": ["none", "semi", "comma"] },
-                  "requireLast": { "type": "boolean" }
-                },
-                "additionalProperties": false
-              },
-              "singleline": {
-                "type": "object",
-                "properties": {
-                  "delimiter": { "enum": ["semi", "comma"] },
-                  "requireLast": { "type": "boolean" }
-                },
-                "additionalProperties": false
-              }
-            },
-            "additionalProperties": false
+          "requireLast": {
+            "type": "boolean"
           }
         },
-        "additionalProperties": false
+        "type": "object"
       },
-      "multilineDetection": { "enum": ["brackets", "last-member"] }
+      "multilineDetection": {
+        "enum": ["brackets", "last-member"]
+      },
+      "overrides": {
+        "additionalProperties": false,
+        "properties": {
+          "interface": {
+            "additionalProperties": false,
+            "properties": {
+              "multiline": {
+                "additionalProperties": false,
+                "properties": {
+                  "delimiter": {
+                    "enum": ["comma", "none", "semi"]
+                  },
+                  "requireLast": {
+                    "type": "boolean"
+                  }
+                },
+                "type": "object"
+              },
+              "singleline": {
+                "additionalProperties": false,
+                "properties": {
+                  "delimiter": {
+                    "enum": ["comma", "semi"]
+                  },
+                  "requireLast": {
+                    "type": "boolean"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          },
+          "typeLiteral": {
+            "additionalProperties": false,
+            "properties": {
+              "multiline": {
+                "additionalProperties": false,
+                "properties": {
+                  "delimiter": {
+                    "enum": ["comma", "none", "semi"]
+                  },
+                  "requireLast": {
+                    "type": "boolean"
+                  }
+                },
+                "type": "object"
+              },
+              "singleline": {
+                "additionalProperties": false,
+                "properties": {
+                  "delimiter": {
+                    "enum": ["comma", "semi"]
+                  },
+                  "requireLast": {
+                    "type": "boolean"
+                  }
+                },
+                "type": "object"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "singleline": {
+        "additionalProperties": false,
+        "properties": {
+          "delimiter": {
+            "enum": ["comma", "semi"]
+          },
+          "requireLast": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

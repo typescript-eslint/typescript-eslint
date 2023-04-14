@@ -6,7 +6,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
       "allowConstantLoopConditions": {
         "description": "Whether to ignore constant loop conditions, such as \`while (true)\`.",
@@ -17,7 +17,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "boolean"
       }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

@@ -6,16 +6,31 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
-      "builtinGlobals": { "type": "boolean" },
-      "hoist": { "enum": ["all", "functions", "never"] },
-      "allow": { "type": "array", "items": { "type": "string" } },
-      "ignoreOnInitialization": { "type": "boolean" },
-      "ignoreTypeValueShadow": { "type": "boolean" },
-      "ignoreFunctionTypeParameterNameValueShadow": { "type": "boolean" }
+      "allow": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "builtinGlobals": {
+        "type": "boolean"
+      },
+      "hoist": {
+        "enum": ["all", "functions", "never"]
+      },
+      "ignoreFunctionTypeParameterNameValueShadow": {
+        "type": "boolean"
+      },
+      "ignoreOnInitialization": {
+        "type": "boolean"
+      },
+      "ignoreTypeValueShadow": {
+        "type": "boolean"
+      }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

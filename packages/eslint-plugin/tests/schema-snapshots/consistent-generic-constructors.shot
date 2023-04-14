@@ -4,7 +4,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 "
 # SCHEMA:
 
-[{ "enum": ["type-annotation", "constructor"] }]
+[
+  {
+    "enum": ["constructor", "type-annotation"]
+  }
+]
 
 
 # TYPES:

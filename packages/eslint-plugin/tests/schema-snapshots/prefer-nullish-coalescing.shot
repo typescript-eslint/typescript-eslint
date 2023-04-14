@@ -6,16 +6,22 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
-      "ignoreConditionalTests": { "type": "boolean" },
-      "ignoreTernaryTests": { "type": "boolean" },
-      "ignoreMixedLogicalExpressions": { "type": "boolean" },
       "allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing": {
+        "type": "boolean"
+      },
+      "ignoreConditionalTests": {
+        "type": "boolean"
+      },
+      "ignoreMixedLogicalExpressions": {
+        "type": "boolean"
+      },
+      "ignoreTernaryTests": {
         "type": "boolean"
       }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

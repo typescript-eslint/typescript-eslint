@@ -6,80 +6,113 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
     "additionalProperties": false,
     "properties": {
       "allow": {
-        "type": "array",
         "items": {
           "oneOf": [
-            { "type": "string" },
             {
-              "type": "object",
+              "type": "string"
+            },
+            {
               "additionalProperties": false,
               "properties": {
-                "from": { "type": "string", "enum": ["file"] },
+                "from": {
+                  "enum": ["file"],
+                  "type": "string"
+                },
                 "name": {
                   "oneOf": [
-                    { "type": "string" },
                     {
-                      "type": "array",
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
                       "minItems": 1,
-                      "uniqueItems": true,
-                      "items": { "type": "string" }
+                      "type": "array",
+                      "uniqueItems": true
                     }
                   ]
                 },
-                "path": { "type": "string" }
+                "path": {
+                  "type": "string"
+                }
               },
-              "required": ["from", "name"]
+              "required": ["from", "name"],
+              "type": "object"
             },
             {
-              "type": "object",
               "additionalProperties": false,
               "properties": {
-                "from": { "type": "string", "enum": ["lib"] },
+                "from": {
+                  "enum": ["lib"],
+                  "type": "string"
+                },
                 "name": {
                   "oneOf": [
-                    { "type": "string" },
                     {
-                      "type": "array",
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
                       "minItems": 1,
-                      "uniqueItems": true,
-                      "items": { "type": "string" }
+                      "type": "array",
+                      "uniqueItems": true
                     }
                   ]
                 }
               },
-              "required": ["from", "name"]
+              "required": ["from", "name"],
+              "type": "object"
             },
             {
-              "type": "object",
               "additionalProperties": false,
               "properties": {
-                "from": { "type": "string", "enum": ["package"] },
+                "from": {
+                  "enum": ["package"],
+                  "type": "string"
+                },
                 "name": {
                   "oneOf": [
-                    { "type": "string" },
                     {
-                      "type": "array",
+                      "type": "string"
+                    },
+                    {
+                      "items": {
+                        "type": "string"
+                      },
                       "minItems": 1,
-                      "uniqueItems": true,
-                      "items": { "type": "string" }
+                      "type": "array",
+                      "uniqueItems": true
                     }
                   ]
                 },
-                "package": { "type": "string" }
+                "package": {
+                  "type": "string"
+                }
               },
-              "required": ["from", "name", "package"]
+              "required": ["from", "name", "package"],
+              "type": "object"
             }
           ]
-        }
+        },
+        "type": "array"
       },
-      "checkParameterProperties": { "type": "boolean" },
-      "ignoreInferredTypes": { "type": "boolean" },
-      "treatMethodsAsReadonly": { "type": "boolean" }
-    }
+      "checkParameterProperties": {
+        "type": "boolean"
+      },
+      "ignoreInferredTypes": {
+        "type": "boolean"
+      },
+      "treatMethodsAsReadonly": {
+        "type": "boolean"
+      }
+    },
+    "type": "object"
   }
 ]
 

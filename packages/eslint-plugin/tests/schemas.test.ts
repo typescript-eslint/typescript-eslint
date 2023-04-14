@@ -33,7 +33,31 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
 
     (ruleName === ONLY ? it.only : it)(ruleName, () => {
       const schemaString = format(
-        JSON.stringify(ruleDef.meta.schema),
+        JSON.stringify(
+          ruleDef.meta.schema,
+          (k, v: unknown) => {
+            if (k === 'enum' && Array.isArray(v)) {
+              // sort enum arrays for consistency regardless of source order
+              v.sort();
+            } else if (
+              typeof v === 'object' &&
+              v != null &&
+              !Array.isArray(v)
+            ) {
+              // sort properties for consistency regardless of source order
+              return Object.fromEntries(
+                Object.entries(v).sort(([a], [b]) => a.localeCompare(b)),
+              );
+            }
+            return v;
+          },
+          // use the indent feature as it forces all objects to be multiline
+          // if we don't do this then prettier decides what objects are multiline
+          // based on what fits on a line - which looks less consistent
+          // and makes changes harder to understand as you can have multiple
+          // changes per line, or adding a prop can restructure an object
+          2,
+        ),
         prettierConfigJson,
       );
       const compilationResult = compile(ruleDef.meta.schema);
@@ -108,7 +132,7 @@ const VALID_SCHEMA_PROPS = new Set([
 describe('Rules should only define valid keys on schemas', () => {
   for (const [ruleName, ruleDef] of Object.entries(rules)) {
     (ruleName === ONLY ? it.only : it)(ruleName, () => {
-      JSON.stringify(ruleDef.meta.schema, (key, value) => {
+      JSON.stringify(ruleDef.meta.schema, (key, value: unknown) => {
         if (key === '') {
           // the root object will have key ""
           return value;

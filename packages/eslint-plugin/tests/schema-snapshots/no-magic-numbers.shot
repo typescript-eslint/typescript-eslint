@@ -6,29 +6,57 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
-      "detectObjects": { "type": "boolean", "default": false },
-      "enforceConst": { "type": "boolean", "default": false },
+      "detectObjects": {
+        "default": false,
+        "type": "boolean"
+      },
+      "enforceConst": {
+        "default": false,
+        "type": "boolean"
+      },
       "ignore": {
-        "type": "array",
         "items": {
           "anyOf": [
-            { "type": "number" },
-            { "type": "string", "pattern": "^[+-]?(?:0|[1-9][0-9]*)n$" }
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^[+-]?(?:0|[1-9][0-9]*)n$",
+              "type": "string"
+            }
           ]
         },
+        "type": "array",
         "uniqueItems": true
       },
-      "ignoreArrayIndexes": { "type": "boolean", "default": false },
-      "ignoreDefaultValues": { "type": "boolean", "default": false },
-      "ignoreClassFieldInitialValues": { "type": "boolean", "default": false },
-      "ignoreNumericLiteralTypes": { "type": "boolean" },
-      "ignoreEnums": { "type": "boolean" },
-      "ignoreReadonlyClassProperties": { "type": "boolean" },
-      "ignoreTypeIndexes": { "type": "boolean" }
+      "ignoreArrayIndexes": {
+        "default": false,
+        "type": "boolean"
+      },
+      "ignoreClassFieldInitialValues": {
+        "default": false,
+        "type": "boolean"
+      },
+      "ignoreDefaultValues": {
+        "default": false,
+        "type": "boolean"
+      },
+      "ignoreEnums": {
+        "type": "boolean"
+      },
+      "ignoreNumericLiteralTypes": {
+        "type": "boolean"
+      },
+      "ignoreReadonlyClassProperties": {
+        "type": "boolean"
+      },
+      "ignoreTypeIndexes": {
+        "type": "boolean"
+      }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

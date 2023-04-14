@@ -5,14 +5,22 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # SCHEMA:
 
 [
-  { "enum": ["always", "never"] },
   {
-    "type": "object",
+    "enum": ["always", "never"]
+  },
+  {
+    "additionalProperties": false,
     "properties": {
-      "exceptAfterSingleLine": { "type": "boolean", "default": false },
-      "exceptAfterOverload": { "type": "boolean", "default": true }
+      "exceptAfterOverload": {
+        "default": true,
+        "type": "boolean"
+      },
+      "exceptAfterSingleLine": {
+        "default": false,
+        "type": "boolean"
+      }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

@@ -9,24 +9,44 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "$defs": {
       "directiveConfigSchema": {
         "oneOf": [
-          { "type": "boolean", "default": true },
-          { "enum": ["allow-with-description"] },
           {
-            "type": "object",
-            "properties": { "descriptionFormat": { "type": "string" } }
+            "default": true,
+            "type": "boolean"
+          },
+          {
+            "enum": ["allow-with-description"]
+          },
+          {
+            "properties": {
+              "descriptionFormat": {
+                "type": "string"
+              }
+            },
+            "type": "object"
           }
         ]
       }
     },
+    "additionalProperties": false,
     "properties": {
-      "ts-expect-error": { "$ref": "#/items/0/$defs/directiveConfigSchema" },
-      "ts-ignore": { "$ref": "#/items/0/$defs/directiveConfigSchema" },
-      "ts-nocheck": { "$ref": "#/items/0/$defs/directiveConfigSchema" },
-      "ts-check": { "$ref": "#/items/0/$defs/directiveConfigSchema" },
-      "minimumDescriptionLength": { "type": "number", "default": 3 }
+      "minimumDescriptionLength": {
+        "default": 3,
+        "type": "number"
+      },
+      "ts-check": {
+        "$ref": "#/items/0/$defs/directiveConfigSchema"
+      },
+      "ts-expect-error": {
+        "$ref": "#/items/0/$defs/directiveConfigSchema"
+      },
+      "ts-ignore": {
+        "$ref": "#/items/0/$defs/directiveConfigSchema"
+      },
+      "ts-nocheck": {
+        "$ref": "#/items/0/$defs/directiveConfigSchema"
+      }
     },
-    "type": "object",
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

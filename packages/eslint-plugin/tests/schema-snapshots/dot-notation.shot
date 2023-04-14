@@ -6,24 +6,30 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
-      "allowKeywords": { "type": "boolean", "default": true },
-      "allowPattern": { "type": "string", "default": "" },
+      "allowIndexSignaturePropertyAccess": {
+        "default": false,
+        "type": "boolean"
+      },
+      "allowKeywords": {
+        "default": true,
+        "type": "boolean"
+      },
+      "allowPattern": {
+        "default": "",
+        "type": "string"
+      },
       "allowPrivateClassPropertyAccess": {
-        "type": "boolean",
-        "default": false
+        "default": false,
+        "type": "boolean"
       },
       "allowProtectedClassPropertyAccess": {
-        "type": "boolean",
-        "default": false
-      },
-      "allowIndexSignaturePropertyAccess": {
-        "type": "boolean",
-        "default": false
+        "default": false,
+        "type": "boolean"
       }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

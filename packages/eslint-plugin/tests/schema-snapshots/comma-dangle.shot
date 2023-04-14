@@ -7,41 +7,59 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 {
   "$defs": {
     "value": {
-      "enum": ["always-multiline", "always", "never", "only-multiline"]
+      "enum": ["always", "always-multiline", "never", "only-multiline"]
     },
     "valueWithIgnore": {
       "enum": [
-        "always-multiline",
         "always",
+        "always-multiline",
+        "ignore",
         "never",
-        "only-multiline",
-        "ignore"
+        "only-multiline"
       ]
     }
   },
-  "type": "array",
+  "additionalProperties": false,
   "items": [
     {
       "oneOf": [
-        { "$ref": "#/$defs/value" },
         {
-          "type": "object",
+          "$ref": "#/$defs/value"
+        },
+        {
+          "additionalProperties": false,
           "properties": {
-            "arrays": { "$ref": "#/$defs/valueWithIgnore" },
-            "objects": { "$ref": "#/$defs/valueWithIgnore" },
-            "imports": { "$ref": "#/$defs/valueWithIgnore" },
-            "exports": { "$ref": "#/$defs/valueWithIgnore" },
-            "functions": { "$ref": "#/$defs/valueWithIgnore" },
-            "enums": { "$ref": "#/$defs/valueWithIgnore" },
-            "generics": { "$ref": "#/$defs/valueWithIgnore" },
-            "tuples": { "$ref": "#/$defs/valueWithIgnore" }
+            "arrays": {
+              "$ref": "#/$defs/valueWithIgnore"
+            },
+            "enums": {
+              "$ref": "#/$defs/valueWithIgnore"
+            },
+            "exports": {
+              "$ref": "#/$defs/valueWithIgnore"
+            },
+            "functions": {
+              "$ref": "#/$defs/valueWithIgnore"
+            },
+            "generics": {
+              "$ref": "#/$defs/valueWithIgnore"
+            },
+            "imports": {
+              "$ref": "#/$defs/valueWithIgnore"
+            },
+            "objects": {
+              "$ref": "#/$defs/valueWithIgnore"
+            },
+            "tuples": {
+              "$ref": "#/$defs/valueWithIgnore"
+            }
           },
-          "additionalProperties": false
+          "type": "object"
         }
       ]
     }
   ],
-  "additionalProperties": false
+  "type": "array"
 }
 
 

@@ -6,18 +6,18 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
-      "allowComparingNullableBooleansToTrue": {
-        "description": "Whether to allow comparisons between nullable boolean variables and \`true\`.",
-        "type": "boolean"
-      },
       "allowComparingNullableBooleansToFalse": {
         "description": "Whether to allow comparisons between nullable boolean variables and \`false\`.",
         "type": "boolean"
+      },
+      "allowComparingNullableBooleansToTrue": {
+        "description": "Whether to allow comparisons between nullable boolean variables and \`true\`.",
+        "type": "boolean"
       }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

@@ -7,11 +7,15 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 [
   {
     "additionalProperties": false,
-    "type": "object",
     "properties": {
-      "ignoreIntersections": { "type": "boolean" },
-      "ignoreUnions": { "type": "boolean" }
-    }
+      "ignoreIntersections": {
+        "type": "boolean"
+      },
+      "ignoreUnions": {
+        "type": "boolean"
+      }
+    },
+    "type": "object"
   }
 ]
 

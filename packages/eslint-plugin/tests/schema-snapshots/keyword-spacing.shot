@@ -6,570 +6,852 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
-      "before": { "type": "boolean", "default": true },
-      "after": { "type": "boolean", "default": true },
+      "after": {
+        "default": true,
+        "type": "boolean"
+      },
+      "before": {
+        "default": true,
+        "type": "boolean"
+      },
       "overrides": {
-        "type": "object",
+        "additionalProperties": false,
         "properties": {
           "abstract": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "as": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "async": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "await": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "boolean": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "break": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "byte": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "case": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "catch": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "char": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "class": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "const": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "continue": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "debugger": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "default": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "delete": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "do": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "double": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "else": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "enum": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "export": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "extends": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "false": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "final": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "finally": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "float": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "for": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "from": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "function": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "get": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "goto": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "if": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "implements": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "import": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "in": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "instanceof": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "int": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "interface": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "let": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "long": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "native": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "new": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "null": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "of": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "package": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "private": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "protected": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "public": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "return": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "set": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "short": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "static": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "super": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "switch": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "synchronized": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "this": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "throw": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "throws": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "transient": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "true": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
           },
           "try": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
-          },
-          "typeof": {
-            "type": "object",
-            "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
-            },
-            "additionalProperties": false
-          },
-          "var": {
-            "type": "object",
-            "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
-            },
-            "additionalProperties": false
-          },
-          "void": {
-            "type": "object",
-            "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
-            },
-            "additionalProperties": false
-          },
-          "volatile": {
-            "type": "object",
-            "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
-            },
-            "additionalProperties": false
-          },
-          "while": {
-            "type": "object",
-            "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
-            },
-            "additionalProperties": false
-          },
-          "with": {
-            "type": "object",
-            "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
-            },
-            "additionalProperties": false
-          },
-          "yield": {
-            "type": "object",
-            "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
-            },
-            "additionalProperties": false
+            "type": "object"
           },
           "type": {
-            "type": "object",
+            "additionalProperties": false,
             "properties": {
-              "before": { "type": "boolean" },
-              "after": { "type": "boolean" }
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
             },
-            "additionalProperties": false
+            "type": "object"
+          },
+          "typeof": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "var": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "void": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "volatile": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "while": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "with": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "yield": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
           }
         },
-        "additionalProperties": false
+        "type": "object"
       }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 

@@ -6,11 +6,16 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
-    "type": "object",
+    "additionalProperties": false,
     "properties": {
-      "ignoredTypeNames": { "type": "array", "items": { "type": "string" } }
+      "ignoredTypeNames": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      }
     },
-    "additionalProperties": false
+    "type": "object"
   }
 ]
 
