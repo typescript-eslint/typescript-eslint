@@ -8,6 +8,7 @@ import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { debounce } from '../lib/debounce';
 import {
   getEslintJsonSchema,
+  getRuleJsonSchemaWithErrorLevel,
   getTypescriptJsonSchema,
 } from '../lib/jsonSchema';
 import { parseTSConfig, tryParseEslintModule } from '../lib/parseConfig';
@@ -158,7 +159,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       schemas: [
         ...Array.from(webLinter.rules.values()).map(rule => ({
           uri: createRuleUri(rule.name),
-          schema: rule.schema,
+          schema: getRuleJsonSchemaWithErrorLevel(rule.schema),
         })),
         {
           uri: monaco.Uri.file('eslint-schema.json').toString(), // id of the first schema

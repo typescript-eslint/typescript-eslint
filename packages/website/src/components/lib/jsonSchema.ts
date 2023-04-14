@@ -9,6 +9,83 @@ const defaultRuleSchema: JSONSchema4 = {
 };
 
 /**
+ * Add the error level to the rule schema items
+ *
+ * if you encounter issues with rule schema validation you can check the schema by using the following code in the console:
+ * monaco.languages.json.jsonDefaults.diagnosticsOptions.schemas.find(item => item.uri.includes('typescript-eslint/consistent-type-imports'))
+ * monaco.languages.json.jsonDefaults.diagnosticsOptions.schemas.find(item => item.uri.includes('no-unused-labels'))
+ * monaco.languages.json.jsonDefaults.diagnosticsOptions.schemas.filter(item => item.schema.type === 'array')
+ */
+export function getRuleJsonSchemaWithErrorLevel(
+  ruleSchema: JSONSchema4 | JSONSchema4[],
+): JSONSchema4 {
+  if (Array.isArray(ruleSchema)) {
+    return {
+      type: 'array',
+      items: [defaultRuleSchema, ...ruleSchema],
+      additionalItems: false,
+    };
+  }
+  // TODO: delete this once we update schemas
+  // example: ban-ts-comments
+  if (Array.isArray(ruleSchema.prefixItems)) {
+    const { prefixItems, ...rest } = ruleSchema;
+    return {
+      ...rest,
+      items: [defaultRuleSchema, ...(prefixItems as JSONSchema4[])],
+      maxItems: ruleSchema.maxItems ? ruleSchema.maxItems + 1 : undefined,
+      minItems: ruleSchema.minItems ? ruleSchema.minItems + 1 : 1,
+      additionalItems: false,
+    };
+  }
+  // example: @typescript-eslint/explicit-member-accessibility
+  if (Array.isArray(ruleSchema.items)) {
+    return {
+      ...ruleSchema,
+      items: [defaultRuleSchema, ...ruleSchema.items],
+      maxItems: ruleSchema.maxItems ? ruleSchema.maxItems + 1 : undefined,
+      minItems: ruleSchema.minItems ? ruleSchema.minItems + 1 : 1,
+      additionalItems: false,
+    };
+  }
+  if (typeof ruleSchema.items === 'object' && ruleSchema.items) {
+    // this is a workaround for @typescript-eslint/naming-convention rule
+    if (ruleSchema.items.oneOf) {
+      return {
+        ...ruleSchema,
+        items: [defaultRuleSchema],
+        additionalItems: ruleSchema.items,
+      };
+    }
+    // example: @typescript-eslint/padding-line-between-statements
+    return {
+      ...ruleSchema,
+      items: [defaultRuleSchema, ruleSchema.items],
+      additionalItems: false,
+    };
+  }
+  // example eqeqeq
+  if (Array.isArray(ruleSchema.anyOf)) {
+    return {
+      ...ruleSchema,
+      anyOf: ruleSchema.anyOf.map(item =>
+        getRuleJsonSchemaWithErrorLevel(item),
+      ),
+    };
+  }
+  // example logical-assignment-operators
+  if (Array.isArray(ruleSchema.oneOf)) {
+    return {
+      ...ruleSchema,
+      oneOf: ruleSchema.oneOf.map(item =>
+        getRuleJsonSchemaWithErrorLevel(item),
+      ),
+    };
+  }
+  return ruleSchema;
+}
+
+/**
  * Get the JSON schema for the eslint config
  * Currently we only support the rules and extends
  */
@@ -19,56 +96,11 @@ export function getEslintJsonSchema(
   const properties: Record<string, JSONSchema4> = {};
 
   for (const [, item] of linter.rules) {
-    const ruleRefName = createRef(item.name);
-    const schemaItemOptions: JSONSchema4[] = [defaultRuleSchema];
-    let additionalItems: JSONSchema4 | false = false;
-
-    // if the rule has options, add them to the schema
-    // if you encounter issues with rule schema validation you can check the schema by using the following code in the console:
-    // monaco.languages.json.jsonDefaults.diagnosticsOptions.schemas.find(item => item.uri === 'file:///rules/typescript-eslint/consistent-type-imports.json')
-    // monaco.languages.json.jsonDefaults.diagnosticsOptions.schemas.filter(item => item.schema.type === 'array')
-    if (Array.isArray(item.schema)) {
-      // example @typescript-eslint/consistent-type-imports
-      for (let index = 0; index < item.schema?.length; ++index) {
-        schemaItemOptions.push({
-          $ref: `${ruleRefName}#/${index}`,
-        });
-      }
-    } else {
-      const name = item.schema.items ? 'items' : 'prefixItems';
-      const items = item.schema[name] as
-        | JSONSchema4[]
-        | JSONSchema4
-        | undefined;
-      if (items) {
-        if (Array.isArray(items)) {
-          // example array-element-newline
-          for (let index = 0; index < items.length; ++index) {
-            schemaItemOptions.push({
-              $ref: `${ruleRefName}#/${name}/${index}`,
-            });
-          }
-        } else {
-          // example @typescript-eslint/naming-convention
-          additionalItems = {
-            $ref: `${ruleRefName}#/${name}`,
-          };
-        }
-      }
-    }
-
     properties[item.name] = {
       description: `${item.description}\n ${item.url}`,
       title: item.name.startsWith('@typescript') ? 'Rules' : 'Core rules',
       default: 'off',
-      oneOf: [
-        defaultRuleSchema,
-        {
-          type: 'array',
-          items: schemaItemOptions,
-          additionalItems: additionalItems,
-        },
-      ],
+      oneOf: [defaultRuleSchema, { $ref: createRef(item.name) }],
     };
   }
 
