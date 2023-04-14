@@ -3,31 +3,70 @@ import type * as ts from 'typescript';
 
 import type { CreateLinter } from '../linter/createLinter';
 
+const defaultRuleSchema: JSONSchema4 = {
+  type: ['string', 'number'],
+  enum: ['off', 'warn', 'error', 0, 1, 2],
+};
+
 /**
  * Get the JSON schema for the eslint config
  * Currently we only support the rules and extends
  */
-export function getEslintJsonSchema(linter: CreateLinter): JSONSchema4 {
+export function getEslintJsonSchema(
+  linter: CreateLinter,
+  createRef: (name: string) => string,
+): JSONSchema4 {
   const properties: Record<string, JSONSchema4> = {};
 
   for (const [, item] of linter.rules) {
+    const ruleRefName = createRef(item.name);
+    const schemaItemOptions: JSONSchema4[] = [defaultRuleSchema];
+    let additionalItems: JSONSchema4 | false = false;
+
+    // if the rule has options, add them to the schema
+    // if you encounter issues with rule schema validation you can check the schema by using the following code in the console:
+    // monaco.languages.json.jsonDefaults.diagnosticsOptions.schemas.find(item => item.uri === 'file:///rules/typescript-eslint/consistent-type-imports.json')
+    // monaco.languages.json.jsonDefaults.diagnosticsOptions.schemas.filter(item => item.schema.type === 'array')
+    if (Array.isArray(item.schema)) {
+      // example @typescript-eslint/consistent-type-imports
+      for (let index = 0; index < item.schema?.length; ++index) {
+        schemaItemOptions.push({
+          $ref: `${ruleRefName}#/${index}`,
+        });
+      }
+    } else {
+      const name = item.schema.items ? 'items' : 'prefixItems';
+      const items = item.schema[name] as
+        | JSONSchema4[]
+        | JSONSchema4
+        | undefined;
+      if (items) {
+        if (Array.isArray(items)) {
+          // example array-element-newline
+          for (let index = 0; index < items.length; ++index) {
+            schemaItemOptions.push({
+              $ref: `${ruleRefName}#/${name}/${index}`,
+            });
+          }
+        } else {
+          // example @typescript-eslint/naming-convention
+          additionalItems = {
+            $ref: `${ruleRefName}#/${name}`,
+          };
+        }
+      }
+    }
+
     properties[item.name] = {
       description: `${item.description}\n ${item.url}`,
       title: item.name.startsWith('@typescript') ? 'Rules' : 'Core rules',
       default: 'off',
       oneOf: [
-        {
-          type: ['string', 'number'],
-          enum: ['off', 'warn', 'error', 0, 1, 2],
-        },
+        defaultRuleSchema,
         {
           type: 'array',
-          items: [
-            {
-              type: ['string', 'number'],
-              enum: ['off', 'warn', 'error', 0, 1, 2],
-            },
-          ],
+          items: schemaItemOptions,
+          additionalItems: additionalItems,
         },
       ],
     };

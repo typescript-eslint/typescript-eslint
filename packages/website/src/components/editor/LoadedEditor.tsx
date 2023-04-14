@@ -147,16 +147,23 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   }, [webLinter, onEsASTChange, onScopeChange, onTsASTChange]);
 
   useEffect(() => {
+    const createRuleUri = (name: string): string =>
+      monaco.Uri.parse(`/rules/${name.replace('@', '')}.json`).toString();
+
     // configure the JSON language support with schemas and schema associations
     monaco.languages.json.jsonDefaults.setDiagnosticsOptions({
       validate: true,
       enableSchemaRequest: false,
       allowComments: true,
       schemas: [
+        ...Array.from(webLinter.rules.values()).map(rule => ({
+          uri: createRuleUri(rule.name),
+          schema: rule.schema,
+        })),
         {
           uri: monaco.Uri.file('eslint-schema.json').toString(), // id of the first schema
           fileMatch: ['/.eslintrc'], // associate with our model
-          schema: getEslintJsonSchema(webLinter),
+          schema: getEslintJsonSchema(webLinter, createRuleUri),
         },
         {
           uri: monaco.Uri.file('ts-schema.json').toString(), // id of the first schema
