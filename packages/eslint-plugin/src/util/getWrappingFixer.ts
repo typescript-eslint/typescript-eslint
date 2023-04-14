@@ -223,13 +223,9 @@ function isObjectExpressionInOneLineReturn(
   node: TSESTree.Node,
   innerNode: TSESTree.Node,
 ): boolean {
-  if (
+  return (
     node.parent?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
-    node.parent?.body === node &&
+    node.parent.body === node &&
     innerNode.type === AST_NODE_TYPES.ObjectExpression
-  ) {
-    return true;
-  }
-
-  return false;
+  );
 }

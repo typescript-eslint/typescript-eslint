@@ -353,5 +353,22 @@ ruleTester.run('getWrappingFixer - removeFunctionRule', removeFunctionRule, {
       errors: [{ messageId: 'removeFunction' }],
       output: '() => ({ x: "wrapObject" })',
     },
+
+    // shouldn't add parens when not necessary
+    {
+      code: 'const a = fn({ x: "wrapObject" })',
+      errors: [{ messageId: 'removeFunction' }],
+      output: 'const a = { x: "wrapObject" }',
+    },
+    {
+      code: '() => fn("string")',
+      errors: [{ messageId: 'removeFunction' }],
+      output: '() => "string"',
+    },
+    {
+      code: '(params = fn({ x: "wrapObject" })) => "string"',
+      errors: [{ messageId: 'removeFunction' }],
+      output: '(params = { x: "wrapObject" }) => "string"',
+    },
   ],
 });
