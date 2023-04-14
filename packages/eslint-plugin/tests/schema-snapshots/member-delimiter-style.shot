@@ -6,13 +6,51 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
+    "$defs": {
+      "delimiterConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "multiline": {
+            "additionalProperties": false,
+            "properties": {
+              "delimiter": {
+                "$ref": "#/items/0/$defs/multiLineOption"
+              },
+              "requireLast": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "singleline": {
+            "additionalProperties": false,
+            "properties": {
+              "delimiter": {
+                "$ref": "#/items/0/$defs/singleLineOption"
+              },
+              "requireLast": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "multiLineOption": {
+        "enum": ["comma", "none", "semi"]
+      },
+      "singleLineOption": {
+        "enum": ["comma", "semi"]
+      }
+    },
     "additionalProperties": false,
     "properties": {
       "multiline": {
         "additionalProperties": false,
         "properties": {
           "delimiter": {
-            "enum": ["comma", "none", "semi"]
+            "$ref": "#/items/0/$defs/multiLineOption"
           },
           "requireLast": {
             "type": "boolean"
@@ -27,64 +65,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "additionalProperties": false,
         "properties": {
           "interface": {
-            "additionalProperties": false,
-            "properties": {
-              "multiline": {
-                "additionalProperties": false,
-                "properties": {
-                  "delimiter": {
-                    "enum": ["comma", "none", "semi"]
-                  },
-                  "requireLast": {
-                    "type": "boolean"
-                  }
-                },
-                "type": "object"
-              },
-              "singleline": {
-                "additionalProperties": false,
-                "properties": {
-                  "delimiter": {
-                    "enum": ["comma", "semi"]
-                  },
-                  "requireLast": {
-                    "type": "boolean"
-                  }
-                },
-                "type": "object"
-              }
-            },
-            "type": "object"
+            "$ref": "#/items/0/$defs/delimiterConfig"
           },
           "typeLiteral": {
-            "additionalProperties": false,
-            "properties": {
-              "multiline": {
-                "additionalProperties": false,
-                "properties": {
-                  "delimiter": {
-                    "enum": ["comma", "none", "semi"]
-                  },
-                  "requireLast": {
-                    "type": "boolean"
-                  }
-                },
-                "type": "object"
-              },
-              "singleline": {
-                "additionalProperties": false,
-                "properties": {
-                  "delimiter": {
-                    "enum": ["comma", "semi"]
-                  },
-                  "requireLast": {
-                    "type": "boolean"
-                  }
-                },
-                "type": "object"
-              }
-            },
-            "type": "object"
+            "$ref": "#/items/0/$defs/delimiterConfig"
           }
         },
         "type": "object"
@@ -93,7 +77,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "additionalProperties": false,
         "properties": {
           "delimiter": {
-            "enum": ["comma", "semi"]
+            "$ref": "#/items/0/$defs/singleLineOption"
           },
           "requireLast": {
             "type": "boolean"
@@ -109,37 +93,34 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 # TYPES:
 
+type MultiLineOption = 'comma' | 'none' | 'semi';
+
+type SingleLineOption = 'comma' | 'semi';
+
+type DelimiterConfig = {
+  multiline?: {
+    delimiter?: MultiLineOption;
+    requireLast?: boolean;
+  };
+  singleline?: {
+    delimiter?: SingleLineOption;
+    requireLast?: boolean;
+  };
+};
+
 type Options = [
   {
     multiline?: {
-      delimiter?: 'comma' | 'none' | 'semi';
+      delimiter?: MultiLineOption;
       requireLast?: boolean;
     };
     multilineDetection?: 'brackets' | 'last-member';
     overrides?: {
-      interface?: {
-        multiline?: {
-          delimiter?: 'comma' | 'none' | 'semi';
-          requireLast?: boolean;
-        };
-        singleline?: {
-          delimiter?: 'comma' | 'semi';
-          requireLast?: boolean;
-        };
-      };
-      typeLiteral?: {
-        multiline?: {
-          delimiter?: 'comma' | 'none' | 'semi';
-          requireLast?: boolean;
-        };
-        singleline?: {
-          delimiter?: 'comma' | 'semi';
-          requireLast?: boolean;
-        };
-      };
+      interface?: DelimiterConfig;
+      typeLiteral?: DelimiterConfig;
     };
     singleline?: {
-      delimiter?: 'comma' | 'semi';
+      delimiter?: SingleLineOption;
       requireLast?: boolean;
     };
   },

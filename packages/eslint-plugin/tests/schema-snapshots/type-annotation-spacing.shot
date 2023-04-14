@@ -6,6 +6,20 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
+    "$defs": {
+      "spacingConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "after": {
+            "type": "boolean"
+          },
+          "before": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      }
+    },
     "additionalProperties": false,
     "properties": {
       "after": {
@@ -18,76 +32,22 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "additionalProperties": false,
         "properties": {
           "arrow": {
-            "additionalProperties": false,
-            "properties": {
-              "after": {
-                "type": "boolean"
-              },
-              "before": {
-                "type": "boolean"
-              }
-            },
-            "type": "object"
+            "$ref": "#/items/0/$defs/spacingConfig"
           },
           "colon": {
-            "additionalProperties": false,
-            "properties": {
-              "after": {
-                "type": "boolean"
-              },
-              "before": {
-                "type": "boolean"
-              }
-            },
-            "type": "object"
+            "$ref": "#/items/0/$defs/spacingConfig"
           },
           "parameter": {
-            "additionalProperties": false,
-            "properties": {
-              "after": {
-                "type": "boolean"
-              },
-              "before": {
-                "type": "boolean"
-              }
-            },
-            "type": "object"
+            "$ref": "#/items/0/$defs/spacingConfig"
           },
           "property": {
-            "additionalProperties": false,
-            "properties": {
-              "after": {
-                "type": "boolean"
-              },
-              "before": {
-                "type": "boolean"
-              }
-            },
-            "type": "object"
+            "$ref": "#/items/0/$defs/spacingConfig"
           },
           "returnType": {
-            "additionalProperties": false,
-            "properties": {
-              "after": {
-                "type": "boolean"
-              },
-              "before": {
-                "type": "boolean"
-              }
-            },
-            "type": "object"
+            "$ref": "#/items/0/$defs/spacingConfig"
           },
           "variable": {
-            "additionalProperties": false,
-            "properties": {
-              "after": {
-                "type": "boolean"
-              },
-              "before": {
-                "type": "boolean"
-              }
-            },
-            "type": "object"
+            "$ref": "#/items/0/$defs/spacingConfig"
           }
         },
         "type": "object"
@@ -100,35 +60,22 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 # TYPES:
 
+type SpacingConfig = {
+  after?: boolean;
+  before?: boolean;
+};
+
 type Options = [
   {
     after?: boolean;
     before?: boolean;
     overrides?: {
-      arrow?: {
-        after?: boolean;
-        before?: boolean;
-      };
-      colon?: {
-        after?: boolean;
-        before?: boolean;
-      };
-      parameter?: {
-        after?: boolean;
-        before?: boolean;
-      };
-      property?: {
-        after?: boolean;
-        before?: boolean;
-      };
-      returnType?: {
-        after?: boolean;
-        before?: boolean;
-      };
-      variable?: {
-        after?: boolean;
-        before?: boolean;
-      };
+      arrow?: SpacingConfig;
+      colon?: SpacingConfig;
+      parameter?: SpacingConfig;
+      property?: SpacingConfig;
+      returnType?: SpacingConfig;
+      variable?: SpacingConfig;
     };
   },
 ];

@@ -6,63 +6,53 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
+    "$defs": {
+      "expandedOptions": {
+        "enum": [
+          "always",
+          "in-intersections",
+          "in-unions",
+          "in-unions-and-intersections",
+          "never"
+        ]
+      },
+      "simpleOptions": {
+        "enum": ["always", "never"]
+      }
+    },
     "additionalProperties": false,
     "properties": {
       "allowAliases": {
-        "description": "Whether to allow direct one-to-one type aliases.",
-        "enum": [
-          "always",
-          "in-intersections",
-          "in-unions",
-          "in-unions-and-intersections",
-          "never"
-        ]
+        "$ref": "#/items/0/$defs/expandedOptions",
+        "description": "Whether to allow direct one-to-one type aliases."
       },
       "allowCallbacks": {
-        "description": "Whether to allow type aliases for callbacks.",
-        "enum": ["always", "never"]
+        "$ref": "#/items/0/$defs/simpleOptions",
+        "description": "Whether to allow type aliases for callbacks."
       },
       "allowConditionalTypes": {
-        "description": "Whether to allow type aliases for conditional types.",
-        "enum": ["always", "never"]
+        "$ref": "#/items/0/$defs/simpleOptions",
+        "description": "Whether to allow type aliases for conditional types."
       },
       "allowConstructors": {
-        "description": "Whether to allow type aliases with constructors.",
-        "enum": ["always", "never"]
+        "$ref": "#/items/0/$defs/simpleOptions",
+        "description": "Whether to allow type aliases with constructors."
       },
       "allowGenerics": {
-        "description": "Whether to allow type aliases with generic types.",
-        "enum": ["always", "never"]
+        "$ref": "#/items/0/$defs/simpleOptions",
+        "description": "Whether to allow type aliases with generic types."
       },
       "allowLiterals": {
-        "description": "Whether to allow type aliases with object literal types.",
-        "enum": [
-          "always",
-          "in-intersections",
-          "in-unions",
-          "in-unions-and-intersections",
-          "never"
-        ]
+        "$ref": "#/items/0/$defs/expandedOptions",
+        "description": "Whether to allow type aliases with object literal types."
       },
       "allowMappedTypes": {
-        "description": "Whether to allow type aliases with mapped types.",
-        "enum": [
-          "always",
-          "in-intersections",
-          "in-unions",
-          "in-unions-and-intersections",
-          "never"
-        ]
+        "$ref": "#/items/0/$defs/expandedOptions",
+        "description": "Whether to allow type aliases with mapped types."
       },
       "allowTupleTypes": {
-        "description": "Whether to allow type aliases with tuple types.",
-        "enum": [
-          "always",
-          "in-intersections",
-          "in-unions",
-          "in-unions-and-intersections",
-          "never"
-        ]
+        "$ref": "#/items/0/$defs/expandedOptions",
+        "description": "Whether to allow type aliases with tuple types."
       }
     },
     "type": "object"
@@ -72,44 +62,33 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 # TYPES:
 
+type ExpandedOptions =
+  | 'always'
+  | 'in-intersections'
+  | 'in-unions-and-intersections'
+  | 'in-unions'
+  | 'never';
+
+type SimpleOptions = 'always' | 'never';
+
 type Options = [
   {
     /** Whether to allow direct one-to-one type aliases. */
-    allowAliases?:
-      | 'always'
-      | 'in-intersections'
-      | 'in-unions-and-intersections'
-      | 'in-unions'
-      | 'never';
+    allowAliases?: ExpandedOptions;
     /** Whether to allow type aliases for callbacks. */
-    allowCallbacks?: 'always' | 'never';
+    allowCallbacks?: SimpleOptions;
     /** Whether to allow type aliases for conditional types. */
-    allowConditionalTypes?: 'always' | 'never';
+    allowConditionalTypes?: SimpleOptions;
     /** Whether to allow type aliases with constructors. */
-    allowConstructors?: 'always' | 'never';
+    allowConstructors?: SimpleOptions;
     /** Whether to allow type aliases with generic types. */
-    allowGenerics?: 'always' | 'never';
+    allowGenerics?: SimpleOptions;
     /** Whether to allow type aliases with object literal types. */
-    allowLiterals?:
-      | 'always'
-      | 'in-intersections'
-      | 'in-unions-and-intersections'
-      | 'in-unions'
-      | 'never';
+    allowLiterals?: ExpandedOptions;
     /** Whether to allow type aliases with mapped types. */
-    allowMappedTypes?:
-      | 'always'
-      | 'in-intersections'
-      | 'in-unions-and-intersections'
-      | 'in-unions'
-      | 'never';
+    allowMappedTypes?: ExpandedOptions;
     /** Whether to allow type aliases with tuple types. */
-    allowTupleTypes?:
-      | 'always'
-      | 'in-intersections'
-      | 'in-unions-and-intersections'
-      | 'in-unions'
-      | 'never';
+    allowTupleTypes?: ExpandedOptions;
   },
 ];
 "

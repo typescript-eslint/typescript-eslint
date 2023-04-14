@@ -10,8 +10,8 @@ type RefMap = ReadonlyMap<
   string
 >;
 interface GeneratedResult {
-  code: string;
-  commentLines?: string[];
+  readonly code: string;
+  readonly commentLines?: string[];
 }
 
 class NotSupportedError extends Error {
@@ -42,9 +42,15 @@ const prettierConfig = {
  */
 const MAX_ITEMS_TO_TUPLIZE = 20;
 
-export function compile(schemaIn: JSONSchema4 | JSONSchema4[]): string {
+function isArray(arg: unknown): arg is readonly unknown[] {
+  return Array.isArray(arg);
+}
+
+export function compile(
+  schemaIn: JSONSchema4 | readonly JSONSchema4[],
+): string {
   const { schema, isArraySchema } = (() => {
-    if (Array.isArray(schemaIn)) {
+    if (isArray(schemaIn)) {
       return {
         schema: schemaIn,
         isArraySchema: true,
@@ -110,7 +116,7 @@ function toPascalCase(key: string): string {
 }
 
 // keywords we probably should support but currently do not support
-const UNSUPPORTED_KEYWORDS = new Set<keyof JSONSchema4>([
+const UNSUPPORTED_KEYWORDS = new Set<string>([
   'allOf',
   'dependencies',
   'extends',
@@ -119,7 +125,7 @@ const UNSUPPORTED_KEYWORDS = new Set<keyof JSONSchema4>([
   'multipleOf',
   'not',
   'patternProperties',
-]);
+] satisfies (keyof JSONSchema4)[]);
 
 function generateType(schema: JSONSchema4, refMap: RefMap): GeneratedResult {
   const unsupportedProps = Object.keys(schema).filter(key =>
@@ -135,7 +141,9 @@ function generateType(schema: JSONSchema4, refMap: RefMap): GeneratedResult {
     const refName = refMap.get(schema.$ref);
     if (refName == null) {
       throw new UnexpectedError(
-        `Could not find definition for $ref ${schema.$ref}`,
+        `Could not find definition for $ref ${
+          schema.$ref
+        }.\nAvailable refs:\n${Array.from(refMap.keys()).join('\n')})`,
         schema,
       );
     }
@@ -166,7 +174,7 @@ function generateType(schema: JSONSchema4, refMap: RefMap): GeneratedResult {
     };
   }
 
-  if (Array.isArray(schema.type)) {
+  if (isArray(schema.type)) {
     throw new NotSupportedError('schemas with multiple types', schema);
   }
   if (schema.type == null) {
@@ -226,7 +234,10 @@ function printUnionType(members: (string | GeneratedResult)[]): string {
     })
     .join('\n');
 }
-function generateUnionType(members: JSONSchema4Type[], refMap: RefMap): string {
+function generateUnionType(
+  members: (JSONSchema4 | JSONSchema4Type)[],
+  refMap: RefMap,
+): string {
   const memberStrings: GeneratedResult[] = [];
 
   for (const memberSchema of members) {
@@ -274,7 +285,7 @@ function generateArrayType(
     // but that's obviously dumb and loose so let's not even bother with it
     throw new UnexpectedError('Unexpected missing items', schema);
   }
-  if (schema.items && !Array.isArray(schema.items) && schema.additionalItems) {
+  if (schema.items && !isArray(schema.items) && schema.additionalItems) {
     throw new NotSupportedError(
       'singlely-typed array with additionalItems',
       schema,
@@ -294,7 +305,7 @@ function generateArrayType(
   let items: JSONSchema4[];
   let spreadItemSchema: JSONSchema4 | null = null;
 
-  if (!Array.isArray(schema.items)) {
+  if (!isArray(schema.items)) {
     if (hasMinItems || hasMaxItems) {
       // treat as a tuple
       items = Array<JSONSchema4>(
@@ -432,9 +443,7 @@ function generateObjectType(
   }
 
   const properties: string[] = [];
-  const required = new Set(
-    Array.isArray(schema.required) ? schema.required : [],
-  );
+  const required = new Set(isArray(schema.required) ? schema.required : []);
   if (schema.properties) {
     const propertyDefs = Object.entries(schema.properties)
       // sort the properties so that we get consistent output regardless

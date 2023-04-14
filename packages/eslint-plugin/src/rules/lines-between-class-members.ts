@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import * as util from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
@@ -23,7 +24,7 @@ const schema = Object.values(
       },
     },
   ),
-);
+) as JSONSchema4[];
 
 export default util.createRule<Options, MessageIds>({
   name: 'lines-between-class-members',

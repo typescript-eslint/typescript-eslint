@@ -253,7 +253,10 @@ export const generatedRuleDocs: Plugin = () => {
 
       optionsH2Index += 2;
 
-      if (meta.schema.length === 0) {
+      const hasConfig = Array.isArray(meta.schema)
+        ? meta.schema.length === 0
+        : Object.keys(meta.schema).length === 0;
+      if (!hasConfig) {
         children.splice(optionsH2Index + 1, 0, {
           children: [
             {

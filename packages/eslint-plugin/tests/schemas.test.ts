@@ -1,6 +1,7 @@
 import 'jest-specific-snapshot';
 
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import fs, { mkdirSync } from 'fs';
 import path from 'path';
 import { format, resolveConfig } from 'prettier';
@@ -128,7 +129,7 @@ const VALID_SCHEMA_PROPS = new Set([
   'title',
   'type',
   'uniqueItems',
-]);
+] satisfies (keyof JSONSchema4)[]);
 describe('Rules should only define valid keys on schemas', () => {
   for (const [ruleName, ruleDef] of Object.entries(rules)) {
     (ruleName === ONLY ? it.only : it)(ruleName, () => {
