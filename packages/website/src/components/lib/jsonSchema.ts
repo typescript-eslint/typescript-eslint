@@ -51,19 +51,11 @@ export function getRuleJsonSchemaWithErrorLevel(
     };
   }
   if (typeof ruleSchema.items === 'object' && ruleSchema.items) {
-    // this is a workaround for naming-convention rule
-    if (ruleSchema.items.oneOf) {
-      return {
-        ...ruleSchema,
-        items: [defaultRuleSchema],
-        additionalItems: ruleSchema.items,
-      };
-    }
-    // example: padding-line-between-statements
+    // example: naming-convention rule
     return {
       ...ruleSchema,
-      items: [defaultRuleSchema, ruleSchema.items],
-      additionalItems: false,
+      items: [defaultRuleSchema],
+      additionalItems: ruleSchema.items,
     };
   }
   // example eqeqeq
