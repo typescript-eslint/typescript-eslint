@@ -282,6 +282,11 @@ function test(a: unknown) {
   return a ?? 'default';
 }
     `,
+    `
+function test<T>(a: T) {
+  return a ?? 'default';
+}
+    `,
     // Indexing cases
     `
 declare const arr: object[];
