@@ -35,17 +35,15 @@ export function getWrappingFixer(
     const innerCodes = innerNodes.map(innerNode => {
       let code = sourceCode.getText(innerNode);
 
-      // check the inner expression's precedence
-      if (!isStrongPrecedenceNode(innerNode)) {
-        // the code we are adding might have stronger precedence than our wrapped node
-        // let's wrap our node in parens in case it has a weaker precedence than the code we are wrapping it in
-        code = `(${code})`;
-      }
-
-      // check the inner node is used as return body of arrow function
-      if (isObjectExpressionInOneLineReturn(node, innerNode)) {
-        // the code we are editing might break arrow function expressions
-        // let's wrap our node in parens in case it's gotten mistaken as block statement
+      /**
+       * Wrap our node in parens to prevent the following cases:
+       * - It has a weaker precedence than the code we are wrapping it in
+       * - It's gotten mistaken as block statement instead of object expression
+       */
+      if (
+        !isStrongPrecedenceNode(innerNode) ||
+        isObjectExpressionInOneLineReturn(node, innerNode)
+      ) {
         code = `(${code})`;
       }
 
