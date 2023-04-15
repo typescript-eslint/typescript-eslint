@@ -97,10 +97,7 @@ export function hasModifier(
  */
 export function getLastModifier(node: ts.Node): ts.Modifier | null {
   const modifiers = getModifiers(node);
-  if (modifiers == null) {
-    return null;
-  }
-  return modifiers[modifiers.length - 1] ?? null;
+  return modifiers?.[modifiers.length - 1] ?? null;
 }
 
 /**
@@ -338,13 +335,10 @@ export function findFirstMatchingAncestor(
   node: ts.Node,
   predicate: (node: ts.Node) => boolean,
 ): ts.Node | undefined {
-  while (node) {
-    if (predicate(node)) {
-      return node;
-    }
+  while (node && !predicate(node)) {
     node = node.parent;
   }
-  return undefined;
+  return node;
 }
 
 /**
@@ -396,9 +390,7 @@ export function isComputedProperty(
 export function isOptional(node: {
   questionToken?: ts.QuestionToken;
 }): boolean {
-  return node.questionToken
-    ? node.questionToken.kind === SyntaxKind.QuestionToken
-    : false;
+  return node.questionToken?.kind === SyntaxKind.QuestionToken ?? false;
 }
 
 /**

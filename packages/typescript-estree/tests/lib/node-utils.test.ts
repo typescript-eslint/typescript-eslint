@@ -1,4 +1,10 @@
-import { unescapeStringLiteralText } from '../../src/node-utils';
+import type { FunctionDeclaration } from 'typescript';
+import { createSourceFile, ScriptTarget, SyntaxKind } from 'typescript';
+
+import {
+  findFirstMatchingAncestor,
+  unescapeStringLiteralText,
+} from '../../src/node-utils';
 
 describe('unescapeStringLiteralText()', () => {
   it('should not modify content', () => {
@@ -40,5 +46,48 @@ describe('unescapeStringLiteralText()', () => {
         'a\n&lt;&gt;&quot;&apos;&amp;&copy;&#8710;&rx;&#128514;&#0;&#1;',
       ),
     ).toBe(`a\n<>"'&©∆&rx;😂\u0000\u0001`);
+  });
+});
+
+describe('findFirstMatchingAncestor', () => {
+  const sourceCode = `
+    function foo() {
+      return 42;
+    }
+  `;
+  const sourceFile = createSourceFile(
+    'test.ts',
+    sourceCode,
+    ScriptTarget.Latest,
+  );
+
+  it('returns the node itself when it matches the predicate', () => {
+    const result = findFirstMatchingAncestor(
+      sourceFile.getChildren()[0].getChildren()[0],
+      node => node === sourceFile.getChildren()[0].getChildren()[0],
+    );
+    expect(result).toBe(sourceFile.getChildren()[0].getChildren()[0]);
+  });
+
+  it('returns the first matching ancestor', () => {
+    const result = findFirstMatchingAncestor(
+      sourceFile.getChildren()[0].getChildren()[0],
+      node => node.kind === SyntaxKind.FunctionDeclaration,
+    );
+    expect(result?.kind).toBe(SyntaxKind.FunctionDeclaration);
+    expect((result as FunctionDeclaration)?.name?.escapedText).toBe('foo');
+  });
+
+  it('returns undefined when no matching ancestor is found', () => {
+    const result = findFirstMatchingAncestor(
+      sourceFile.getChildren()[0].getChildren()[0],
+      node => node.kind === SyntaxKind.VariableDeclaration,
+    );
+    expect(result).toBeUndefined();
+  });
+
+  it('returns undefined when called with undefined node', () => {
+    const result = findFirstMatchingAncestor(undefined as never, node => true);
+    expect(result).toBeUndefined();
   });
 });
