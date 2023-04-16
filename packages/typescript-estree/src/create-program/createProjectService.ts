@@ -1,4 +1,3 @@
-import * as ts from 'typescript';
 import * as tsserver from 'typescript/lib/tsserverlibrary';
 
 export function createProjectService() {
@@ -11,22 +10,22 @@ export function createProjectService() {
   // (this "goes nuclear on TypeScript")
   const watchFile = (
     path: string,
-    callback: ts.FileWatcherCallback,
-  ): ts.FileWatcher => {
+    callback: tsserver.FileWatcherCallback,
+  ): tsserver.FileWatcher => {
     // todo (or just ... stub out?)
     return { close() {} };
   };
 
   const watchDirectory = (
     path: string,
-    callback: ts.DirectoryWatcherCallback,
+    callback: tsserver.DirectoryWatcherCallback,
   ) => {
     // todo (or just ... stub out?)
     return { close() {} };
   };
 
   const system = {
-    ...ts.sys,
+    ...tsserver.sys,
     watchFile,
     watchDirectory,
     setTimeout,
@@ -37,8 +36,6 @@ export function createProjectService() {
 
   const projectService = new tsserver.server.ProjectService({
     host: system,
-
-    // todo: look into these
     cancellationToken: { isCancellationRequested: () => false },
     useSingleInferredProject: false, // ???
     useInferredProjectPerProjectRoot: false, // ???

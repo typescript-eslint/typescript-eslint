@@ -21,6 +21,9 @@ const log = debug(
 
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
 
+let TSSERVER_PROJECT_SERVICE: ReturnType<typeof createProjectService> | null =
+  null;
+
 export function createParseSettings(
   code: string | ts.SourceFile,
   options: Partial<TSESTreeOptions> = {},
@@ -33,7 +36,7 @@ export function createParseSettings(
       : process.cwd();
   const parseSettings: MutableParseSettings = {
     // todo: sometimes
-    projectService: createProjectService(),
+    projectService: (TSSERVER_PROJECT_SERVICE ??= createProjectService()),
     EXPERIMENTAL_useProjectService: true,
 
     allowInvalidAST: options.allowInvalidAST === true,

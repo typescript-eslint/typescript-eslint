@@ -370,7 +370,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -664,7 +666,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -848,7 +852,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -1032,7 +1038,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -1252,7 +1260,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .json file - wit
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -1546,7 +1556,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -1840,7 +1852,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -2024,7 +2038,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -2208,7 +2224,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -2392,7 +2410,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -2576,7 +2596,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -2870,7 +2892,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -3164,7 +3188,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -3348,7 +3374,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -3532,7 +3560,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -4010,7 +4040,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -4194,7 +4226,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "program": "No Program",
+    "getSymbolAtLocation": [Function],
+    "getTypeAtLocation": [Function],
+    "program": "With Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
