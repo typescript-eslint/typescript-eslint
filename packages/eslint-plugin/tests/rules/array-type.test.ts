@@ -3,6 +3,7 @@ import { TSESLint } from '@typescript-eslint/utils';
 
 import type { OptionString } from '../../src/rules/array-type';
 import rule from '../../src/rules/array-type';
+import { areOptionsValid } from '../areOptionsValid';
 import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
@@ -2154,5 +2155,21 @@ type BrokenArray = {
       'type T = ReadonlyArray<ReadonlyArray<string>>',
       'generic',
     );
+  });
+});
+
+describe('schema validation', () => {
+  // https://github.com/typescript-eslint/typescript-eslint/issues/6852
+  test("array-type does not accept 'simple-array' option", () => {
+    if (areOptionsValid(rule, [{ default: 'simple-array' }])) {
+      throw new Error(`Options succeeded validation for bad options`);
+    }
+  });
+
+  // https://github.com/typescript-eslint/typescript-eslint/issues/6892
+  test('array-type does not accept non object option', () => {
+    if (areOptionsValid(rule, ['array'])) {
+      throw new Error(`Options succeeded validation for bad options`);
+    }
   });
 });
