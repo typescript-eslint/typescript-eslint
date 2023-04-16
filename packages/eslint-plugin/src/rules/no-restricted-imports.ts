@@ -19,6 +19,17 @@ const baseRule = getESLintCoreRule('no-restricted-imports');
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
+// In some versions of eslint, the base rule has a completely incompatible schema
+// This helper function is to safely try to get parts of the schema. If it's not
+// possible, we'll fallback to less strict checks.
+const tryAccess = <T>(getter: () => T, fallback: T): T => {
+  try {
+    return getter();
+  } catch (error) {
+    return fallback;
+  }
+};
+
 const baseSchema = baseRule.meta.schema as {
   anyOf: [
     unknown,
@@ -75,13 +86,20 @@ const arrayOfStringsOrObjects: JSONSchema4 = {
       {
         type: 'object',
         properties: {
-          ...baseSchema.anyOf[1].items[0].properties.paths.items.anyOf[1]
-            .properties,
+          ...tryAccess(
+            () =>
+              baseSchema.anyOf[1].items[0].properties.paths.items.anyOf[1]
+                .properties,
+            undefined,
+          ),
           ...allowTypeImportsOptionSchema,
         },
-        additionalProperties: false,
-        required:
-          baseSchema.anyOf[1].items[0].properties.paths.items.anyOf[1].required,
+        required: tryAccess(
+          () =>
+            baseSchema.anyOf[1].items[0].properties.paths.items.anyOf[1]
+              .required,
+          undefined,
+        ),
       },
     ],
   },
@@ -102,14 +120,20 @@ const arrayOfStringsOrObjectPatterns: JSONSchema4 = {
       items: {
         type: 'object',
         properties: {
-          ...baseSchema.anyOf[1].items[0].properties.patterns.anyOf[1].items
-            .properties,
+          ...tryAccess(
+            () =>
+              baseSchema.anyOf[1].items[0].properties.patterns.anyOf[1].items
+                .properties,
+            undefined,
+          ),
           ...allowTypeImportsOptionSchema,
         },
-        additionalProperties: false,
-        required:
-          baseSchema.anyOf[1].items[0].properties.patterns.anyOf[1].items
-            .required,
+        required: tryAccess(
+          () =>
+            baseSchema.anyOf[1].items[0].properties.patterns.anyOf[1].items
+              .required,
+          [],
+        ),
       },
       uniqueItems: true,
     },

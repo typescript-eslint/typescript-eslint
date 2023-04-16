@@ -100,6 +100,7 @@ export function integrationTest(testFilename: string, filesGlob: string): void {
 
       // lint, outputting to a JSON file
       const outFile = await tmpFile();
+      let stderr = '';
       try {
         await execFile(
           'yarn',
@@ -120,6 +121,11 @@ export function integrationTest(testFilename: string, filesGlob: string): void {
         );
       } catch (ex) {
         // we expect eslint will "fail" because we have intentional lint errors
+
+        // useful for debugging
+        if (typeof ex === 'object' && ex != null && 'stderr' in ex) {
+          stderr = String(ex.stderr);
+        }
       }
       // console.log('Lint complete.');
 
@@ -134,7 +140,9 @@ export function integrationTest(testFilename: string, filesGlob: string): void {
         const lintOutput = JSON.parse(lintOutputRAW);
         expect(lintOutput).toMatchSnapshot();
       } catch {
-        throw lintOutputRAW;
+        throw new Error(
+          `Lint output could not be parsed as JSON: \`${lintOutputRAW}\`. The error logs from eslint were: \`${stderr}\``,
+        );
       }
     });
 
