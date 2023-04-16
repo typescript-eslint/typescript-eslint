@@ -43,6 +43,7 @@ Paths may be provided as [Node globs](https://github.com/isaacs/node-glob/blob/f
 For each file being linted, the first matching project path will be used as its backing TSConfig.
 
 ```js title=".eslintrc.js"
+/* eslint-env node */
 module.exports = {
   extends: [
     'eslint:recommended',
@@ -68,6 +69,7 @@ Using wide globs `**` in your `parserOptions.project` may degrade linting perfor
 Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time.
 
 ```js title=".eslintrc.js"
+/* eslint-env node */
 module.exports = {
   extends: [
     'eslint:recommended',
