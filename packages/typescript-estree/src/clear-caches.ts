@@ -18,4 +18,4 @@ export function clearCaches(): void {
 }
 
 // TODO - delete this in next major
-export const clearProgramCache = clearCaches();
+export const clearProgramCache = clearCaches;

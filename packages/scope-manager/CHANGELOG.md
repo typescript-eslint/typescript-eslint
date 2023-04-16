@@ -3,6 +3,65 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.58.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.1...v5.58.0) (2023-04-10)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+## [5.57.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.0...v5.57.1) (2023-04-03)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.57.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.56.0...v5.57.0) (2023-03-27)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.56.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.55.0...v5.56.0) (2023-03-20)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.55.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.54.1...v5.55.0) (2023-03-13)
+
+
+### Features
+
+* update TypeScript to 5.0 RC ([#6570](https://github.com/typescript-eslint/typescript-eslint/issues/6570)) ([36ef0e1](https://github.com/typescript-eslint/typescript-eslint/commit/36ef0e16f31810c27dda299e739d1610b689d3ad))
+
+
+
+
+
+## [5.54.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.54.0...v5.54.1) (2023-03-06)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
+# [5.54.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.53.0...v5.54.0) (2023-02-27)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+
+
+
+
 # [5.53.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.52.0...v5.53.0) (2023-02-20)
 
 **Note:** Version bump only for package @typescript-eslint/scope-manager

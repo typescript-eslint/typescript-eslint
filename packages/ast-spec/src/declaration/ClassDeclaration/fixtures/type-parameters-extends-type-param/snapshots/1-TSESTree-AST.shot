@@ -3,12 +3,12 @@
 exports[`AST Fixtures declaration ClassDeclaration type-parameters-extends-type-param TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [],
+        body: [],
 
         range: [28, 30],
         loc: {
@@ -38,7 +38,7 @@ Program {
       },
       superTypeParameters: TSTypeParameterInstantiation {
         type: "TSTypeParameterInstantiation",
-        params: Array [
+        params: [
           TSTypeReference {
             type: "TSTypeReference",
             typeName: Identifier {
@@ -68,9 +68,10 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",

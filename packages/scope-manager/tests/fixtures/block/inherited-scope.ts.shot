@@ -2,17 +2,17 @@
 
 exports[`block inherited-scope 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"a">,
           node: VariableDeclarator$1,
         },
       ],
       name: "a",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"a">,
           init: true,
@@ -36,11 +36,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$3,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -49,7 +49,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
       ],
@@ -57,13 +57,13 @@ ScopeManager {
     BlockScope$2 {
       block: BlockStatement$4,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$2,
       ],
       set: Map {},
       type: "block",
       upper: GlobalScope$1,
-      variables: Array [],
+      variables: [],
     },
   ],
 }

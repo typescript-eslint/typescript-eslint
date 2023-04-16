@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures expressions call-expression-type-arguments Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: CallExpression {
         type: "CallExpression",
-        arguments: Array [],
+        arguments: [],
         callee: Identifier {
           type: "Identifier",
           name: "foo",
@@ -22,7 +22,7 @@ Program {
         optional: false,
         typeParameters: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
-          params: Array [
+          params: [
             TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
@@ -68,7 +68,7 @@ Program {
       type: "ExpressionStatement",
       expression: CallExpression {
         type: "CallExpression",
-        arguments: Array [],
+        arguments: [],
         callee: Identifier {
           type: "Identifier",
           name: "foo",
@@ -82,7 +82,7 @@ Program {
         optional: false,
         typeParameters: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
-          params: Array [
+          params: [
             TSNumberKeyword {
               type: "TSNumberKeyword",
 

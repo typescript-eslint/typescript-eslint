@@ -3,7 +3,7 @@
 exports[`AST Fixtures expression TSSatisfiesExpression chained-satisfies TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: TSSatisfiesExpression {

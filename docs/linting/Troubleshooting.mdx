@@ -243,9 +243,15 @@ See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/
 
 ### I get `no-unsafe-*` complaints for cross-file changes
 
-See [Changes to one file are not reflected in linting other files in my IDE](#changes-to-one-file-are-not-reflected-in-linting-other-files-in-my-ide).
+See [Changes to one file are not reflected in linting other files in my IDE](#changes-to-one-file-are-not-reflected-when-linting-other-files-in-my-ide).
 Rules such as [`no-unsafe-argument`](https://typescript-eslint.io/rules/no-unsafe-argument), [`no-unsafe-assignment`](https://typescript-eslint.io/rules/no-unsafe-assignment), and [`no-unsafe-call`](https://typescript-eslint.io/rules/no-unsafe-call) are often impacted.
 
 ## My linting feels really slow
 
 If you think you're having issues with performance, see our [Performance Troubleshooting documentation](./troubleshooting/Performance.md).
+
+## Are TypeScript project references supported?
+
+No, TypeScript project references are not yet supported.
+
+See [issue #2094 discussing project references](https://github.com/typescript-eslint/typescript-eslint/issues/2094) for more details.

@@ -1,13 +1,11 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AST Fixtures List fixtures with Error differences 1`] = `
-Object {
-  "Babel errored but TSESTree didn't": Set {
+{
+  "Babel errored but TSESTree didn't": [
     "declaration/ClassDeclaration/fixtures/_error_/implements-non-identifier/fixture.ts",
     "declaration/ClassDeclaration/fixtures/_error_/missing-extends-type-param/fixture.ts",
     "declaration/ClassDeclaration/fixtures/_error_/missing-type-param/fixture.ts",
-    "declaration/ExportAllDeclaration/fixtures/_error_/kind-type/fixture.ts",
-    "declaration/ExportAllDeclaration/fixtures/_error_/type-kind/fixture.ts",
     "declaration/ExportNamedDeclaration/fixtures/_error_/anonymous-class/fixture.ts",
     "declaration/ExportNamedDeclaration/fixtures/_error_/assertion/fixture.ts",
     "declaration/FunctionDeclaration/fixtures/_error_/missing-type-param/fixture.ts",
@@ -36,7 +34,6 @@ Object {
     "legacy-fixtures/basics/fixtures/_error_/export-named-enum-computed-number/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/export-named-enum-computed-string/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/export-named-enum-computed-var-ref/fixture.ts",
-    "legacy-fixtures/basics/fixtures/_error_/export-type-star-from/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/export-with-import-assertions/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/import-type-error/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/interface-with-construct-signature-with-parameter-accessibility/fixture.ts",
@@ -87,11 +84,11 @@ Object {
     "legacy-fixtures/errorRecovery/fixtures/_error_/solo-const/fixture.ts",
     "legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-array-pattern-decorator/fixture.ts",
     "legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-rest-element-decorator/fixture.ts",
-  },
-  "TSESTree errored but Babel didn't": Set {
+  ],
+  "TSESTree errored but Babel didn't": [
     "declaration/ExportAllDeclaration/fixtures/_error_/named-non-identifier/fixture.ts",
     "declaration/ExportNamedDeclaration/fixtures/_error_/aliased-literal/fixture.ts",
     "legacy-fixtures/expressions/fixtures/_error_/instantiation-expression/fixture.ts",
-  },
+  ],
 }
 `;

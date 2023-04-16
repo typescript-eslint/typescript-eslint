@@ -312,6 +312,9 @@ export default util.createRule<Options, MessageId>({
           return;
         }
 
+        if (!returnsThenable(checker, tsNode)) {
+          return;
+        }
         const objType = checker.getContextualType(obj);
         if (objType === undefined) {
           return;
@@ -329,10 +332,7 @@ export default util.createRule<Options, MessageId>({
           tsNode.name,
         );
 
-        if (
-          isVoidReturningFunctionType(checker, tsNode.name, contextualType) &&
-          returnsThenable(checker, tsNode)
-        ) {
+        if (isVoidReturningFunctionType(checker, tsNode.name, contextualType)) {
           context.report({
             messageId: 'voidReturnProperty',
             node: node.value,
@@ -365,21 +365,27 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkJSXAttribute(node: TSESTree.JSXAttribute): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const value = tsNode.initializer;
       if (
         node.value == null ||
-        value === undefined ||
-        !ts.isJsxExpression(value) ||
-        value.expression === undefined
+        node.value.type !== AST_NODE_TYPES.JSXExpressionContainer
       ) {
         return;
       }
-      const contextualType = checker.getContextualType(value);
+      const expressionContainer = parserServices.esTreeNodeToTSNodeMap.get(
+        node.value,
+      );
+      const expression = parserServices.esTreeNodeToTSNodeMap.get(
+        node.value.expression,
+      );
+      const contextualType = checker.getContextualType(expressionContainer);
       if (
         contextualType !== undefined &&
-        isVoidReturningFunctionType(checker, value, contextualType) &&
-        returnsThenable(checker, value.expression)
+        isVoidReturningFunctionType(
+          checker,
+          expressionContainer,
+          contextualType,
+        ) &&
+        returnsThenable(checker, expression)
       ) {
         context.report({
           messageId: 'voidReturnAttribute',
@@ -549,7 +555,7 @@ function voidFunctionArguments(
             // Unwrap 'Array<MaybeVoidFunction>' to 'MaybeVoidFunction',
             // so that we'll handle it in the same way as a non-rest
             // 'param: MaybeVoidFunction'
-            type = checker.getTypeArguments(type)[0];
+            type = util.getTypeArguments(type, checker)[0];
             for (let i = index; i < node.arguments.length; i++) {
               checkThenableOrVoidArgument(
                 checker,
@@ -563,7 +569,7 @@ function voidFunctionArguments(
           } else if (checker.isTupleType(type)) {
             // Check each type in the tuple - for example, [boolean, () => void] would
             // add the index of the second tuple parameter to 'voidReturnIndices'
-            const typeArgs = checker.getTypeArguments(type);
+            const typeArgs = util.getTypeArguments(type, checker);
             for (
               let i = index;
               i < node.arguments.length && i - index < typeArgs.length;

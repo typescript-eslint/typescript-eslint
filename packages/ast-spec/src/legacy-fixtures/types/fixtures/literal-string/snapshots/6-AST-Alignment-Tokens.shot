@@ -40,7 +40,7 @@ exports[`AST Fixtures legacy-fixtures types literal-string AST Alignment - Token
     },
     String {
       type: 'String',
-      value: '\\\\'foo\\\\'',
+      value: '\\'foo\\'',
 
       range: [80, 85],
       loc: {

@@ -270,6 +270,7 @@ function createWatchProgram(
   ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
 
   if (parseSettings.moduleResolver) {
+    // eslint-disable-next-line deprecation/deprecation -- intentional for older TS versions
     watchCompilerHost.resolveModuleNames = getModuleResolver(
       parseSettings.moduleResolver,
     ).resolveModuleNames;

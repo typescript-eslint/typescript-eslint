@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics interface-with-all-property-types Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSInterfaceDeclaration {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [
+        body: [
           TSPropertySignature {
             type: "TSPropertySignature",
             computed: false,
@@ -165,7 +165,7 @@ Program {
           },
           TSIndexSignature {
             type: "TSIndexSignature",
-            parameters: Array [
+            parameters: [
               Identifier {
                 type: "Identifier",
                 name: "eee",
@@ -234,7 +234,7 @@ Program {
               },
             },
             kind: "method",
-            parameters: Array [],
+            parameters: [],
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSVoidKeyword {
@@ -275,7 +275,7 @@ Program {
             },
             kind: "method",
             optional: true,
-            parameters: Array [
+            parameters: [
               Identifier {
                 type: "Identifier",
                 name: "a",
@@ -347,7 +347,7 @@ Program {
             },
             kind: "method",
             optional: true,
-            parameters: Array [
+            parameters: [
               Identifier {
                 type: "Identifier",
                 name: "a",
@@ -418,7 +418,7 @@ Program {
               },
             },
             kind: "method",
-            parameters: Array [
+            parameters: [
               Identifier {
                 type: "Identifier",
                 name: "a",
@@ -470,7 +470,7 @@ Program {
             },
             typeParameters: TSTypeParameterDeclaration {
               type: "TSTypeParameterDeclaration",
-              params: Array [
+              params: [
                 TSTypeParameter {
                   type: "TSTypeParameter",
                   name: "J",
@@ -498,7 +498,7 @@ Program {
           },
           TSConstructSignatureDeclaration {
             type: "TSConstructSignatureDeclaration",
-            parameters: Array [
+            parameters: [
               Identifier {
                 type: "Identifier",
                 name: "a",
@@ -548,7 +548,7 @@ Program {
           },
           TSConstructSignatureDeclaration {
             type: "TSConstructSignatureDeclaration",
-            parameters: Array [
+            parameters: [
               Identifier {
                 type: "Identifier",
                 name: "a",
@@ -591,7 +591,7 @@ Program {
             },
             typeParameters: TSTypeParameterDeclaration {
               type: "TSTypeParameterDeclaration",
-              params: Array [
+              params: [
                 TSTypeParameter {
                   type: "TSTypeParameter",
                   name: "F",

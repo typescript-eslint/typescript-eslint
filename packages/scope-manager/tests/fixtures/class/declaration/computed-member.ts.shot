@@ -2,17 +2,17 @@
 
 exports[`class declaration computed-member 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"outer1">,
           node: VariableDeclarator$1,
         },
       ],
       name: "outer1",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"outer1">,
           init: true,
@@ -36,14 +36,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         VariableDefinition$2 {
           name: Identifier<"outer2">,
           node: VariableDeclarator$3,
         },
       ],
       name: "outer2",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"outer2">,
           init: true,
@@ -67,42 +67,42 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$3 {
           name: Identifier<"A">,
           node: ClassDeclaration$5,
         },
       ],
       name: "A",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$4 {
           name: Identifier<"A">,
           node: ClassDeclaration$5,
         },
       ],
       name: "A",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$6 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$6,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
       ],
@@ -114,7 +114,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
@@ -124,7 +124,7 @@ ScopeManager {
     ClassScope$2 {
       block: ClassDeclaration$5,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$3,
         Reference$4,
       ],
@@ -133,29 +133,29 @@ ScopeManager {
       },
       type: "class",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$5,
       ],
     },
     ClassFieldInitializerScope$3 {
       block: Literal$7,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {},
       type: "class-field-initializer",
       upper: ClassScope$2,
-      variables: Array [],
+      variables: [],
     },
     FunctionScope$4 {
       block: FunctionExpression$8,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "arguments" => Variable$6,
       },
       type: "function",
       upper: ClassScope$2,
-      variables: Array [
+      variables: [
         Variable$6,
       ],
     },

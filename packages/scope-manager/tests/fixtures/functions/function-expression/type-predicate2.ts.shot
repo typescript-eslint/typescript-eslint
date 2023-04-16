@@ -2,17 +2,17 @@
 
 exports[`functions function-expression type-predicate2 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TypeDefinition$1 {
           name: Identifier<"T">,
           node: TSTypeAliasDeclaration$1,
         },
       ],
       name: "T",
-      references: Array [
+      references: [
         Reference$3 {
           identifier: Identifier<"T">,
           isRead: true,
@@ -26,14 +26,14 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         VariableDefinition$2 {
           name: Identifier<"foo">,
           node: VariableDeclarator$2,
         },
       ],
       name: "foo",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"foo">,
           init: true,
@@ -49,21 +49,21 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$4 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         ParameterDefinition$3 {
           name: Identifier<"arg">,
           node: FunctionExpression$3,
         },
       ],
       name: "arg",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"arg">,
           isRead: true,
@@ -85,11 +85,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$4,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -99,7 +99,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
@@ -108,7 +108,7 @@ ScopeManager {
     FunctionScope$2 {
       block: FunctionExpression$3,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$2,
         Reference$3,
         Reference$4,
@@ -119,7 +119,7 @@ ScopeManager {
       },
       type: "function",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$4,
         Variable$5,
       ],
