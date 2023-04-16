@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.58.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.1...v5.58.0) (2023-04-10)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [unified-signatures] allow overloads with different named and different number of parameters ([#6877](https://github.com/typescript-eslint/typescript-eslint/issues/6877)) ([939d665](https://github.com/typescript-eslint/typescript-eslint/commit/939d6656ebcb94fab048a08d719b3e77362ab5b4))
+
+
+### Features
+
+* **eslint-plugin:** [no-unsafe-enum-comparison] add rule ([#6107](https://github.com/typescript-eslint/typescript-eslint/issues/6107)) ([915f9c2](https://github.com/typescript-eslint/typescript-eslint/commit/915f9c2dc8934eef491a672786ec9f016f3658ba))
+
+
+
+
+
 ## [5.57.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.0...v5.57.1) (2023-04-03)
 
 
