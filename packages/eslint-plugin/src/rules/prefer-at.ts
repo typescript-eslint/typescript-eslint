@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as path from 'path';
+import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -45,24 +45,18 @@ export default util.createRule({
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
-    class UnknownNodeError extends Error {
-      public constructor(node: TSESTree.Node) {
-        super(`UnknownNode ${node.type}`);
-      }
-    }
-
-    function getName(node: TSESTree.Node): string {
+    function getName(node: TSESTree.Node): string | undefined {
       switch (node.type) {
         case AST_NODE_TYPES.Identifier:
           return node.name;
         case AST_NODE_TYPES.MemberExpression:
           return getName(node.property);
         default:
-          throw new UnknownNodeError(node);
+          return undefined;
       }
     }
 
-    function getFullName(node: TSESTree.Node): string {
+    function getFullName(node: TSESTree.Node): string | undefined {
       switch (node.type) {
         case AST_NODE_TYPES.PrivateIdentifier:
           return `#${node.name}`;
@@ -80,7 +74,7 @@ export default util.createRule({
           }
           return `${getFullName(node.object)}.${getFullName(node.property)}`;
         default:
-          throw new UnknownNodeError(node);
+          return undefined;
       }
     }
 
@@ -92,12 +86,10 @@ export default util.createRule({
       );
     }
 
-    function getTypeAtLocation(node: TSESTree.Node): ts.Type | undefined {
-      const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      if (!originalNode) {
-        return undefined;
-      }
-      return checker.getTypeAtLocation(originalNode);
+    function getTypeAtLocation(node: TSESTree.Node): ts.Type {
+      return checker.getTypeAtLocation(
+        parserServices.esTreeNodeToTSNodeMap.get(node),
+      );
     }
 
     type SupportedObject = (type: ts.Type) => boolean;
@@ -142,17 +134,11 @@ export default util.createRule({
         return false;
       }
       const type = getTypeAtLocation(node.object);
-      if (type && !isSupportedObject(type)) {
+      if (!isSupportedObject(type)) {
         return false;
       }
-      const atMember = type?.getProperty('at');
-      return (
-        atMember?.declarations?.every(declaration => {
-          const sourceFile = declaration.getSourceFile();
-          const directory = path.join(sourceFile.fileName, '../');
-          return directory.endsWith(path.join('node_modules/typescript/lib/'));
-        }) ?? false
-      );
+      const atMember = type.getProperty('at');
+      return Boolean(atMember);
     }
 
     function isExpectedExpressionLeft(
@@ -162,17 +148,14 @@ export default util.createRule({
         return false;
       }
       const type = getTypeAtLocation(node.left);
-      return type?.getFlags() === ts.TypeFlags.Number;
+      return tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike);
     }
 
     function isExpectedExpressionRight(
       node: TSESTree.BinaryExpression,
     ): boolean {
       const type = getTypeAtLocation(node.right);
-      return (
-        // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
-        type?.isNumberLiteral() || type?.getFlags() === ts.TypeFlags.Number
-      );
+      return tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLike);
     }
 
     function isExpectedExpression<T extends TSESTree.BinaryExpression>(
@@ -187,31 +170,24 @@ export default util.createRule({
           property: TSESTree.BinaryExpression & { operator: '-' };
         },
       ): void {
-        try {
-          if (!isExpectedExpression(node.property)) {
-            return;
-          }
-          const objectName = getFullName(node.object);
-          const memberName = getFullName(node.property.left.object);
-          if (objectName !== memberName) {
-            return;
-          }
-          const rightName = getFullName(node.property.right);
-          context.report({
-            messageId: 'preferAt',
-            data: {
-              name: objectName,
-            },
-            node,
-            fix: fixer =>
-              fixer.replaceText(node, `${objectName}.at(-${rightName})`),
-          });
-        } catch (error) {
-          if (error instanceof UnknownNodeError) {
-            return;
-          }
-          throw error;
+        if (!isExpectedExpression(node.property)) {
+          return;
         }
+        const objectName = getFullName(node.object);
+        const memberName = getFullName(node.property.left.object);
+        const rightName = getFullName(node.property.right);
+        if (!objectName || !rightName || objectName !== memberName) {
+          return;
+        }
+        context.report({
+          messageId: 'preferAt',
+          data: {
+            name: objectName,
+          },
+          node,
+          fix: fixer =>
+            fixer.replaceText(node, `${objectName}.at(-${rightName})`),
+        });
       },
     };
   },
