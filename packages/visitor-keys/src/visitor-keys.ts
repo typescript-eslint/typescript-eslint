@@ -118,7 +118,6 @@ type AdditionalKeys = {
  * the child keys - don't just sort them alphabetically.
  */
 
-// eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- TODO - add ignore IIFE option
 const SharedVisitorKeys = (() => {
   const FunctionType = ['typeParameters', 'params', 'returnType'] as const;
   const AnonymousFunction = [...FunctionType, 'body'] as const;

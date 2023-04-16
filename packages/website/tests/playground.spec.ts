@@ -47,6 +47,24 @@ test.describe('Playground', () => {
     await expect(page.getByText('let value: string[];')).toBeVisible();
     await expect(page.getByText('All is ok!')).toBeVisible();
   });
+
+  test('AST Viewer', async ({ page }) => {
+    // 1. Type some valid code in the playground
+    await writeInEditor(page, 'let value: Array<string>;');
+
+    // 2. Enable AST viewer
+    await page
+      .getByRole('combobox', { name: 'AST Viewer' })
+      .selectOption({ label: 'ESTree' });
+
+    // 3. Type some valid code in the playground
+    await writeInEditor(page, 'let value: Array<string>;');
+
+    // 4. Validate variable declaration block exists in AST viewer
+    await expect(
+      page.getByRole('link', { name: 'VariableDeclaration' }),
+    ).toBeVisible();
+  });
 });
 
 async function writeInEditor(page: Page, text: string): Promise<void> {

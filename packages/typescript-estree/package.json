@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "5.56.0",
+  "version": "5.58.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
@@ -15,17 +15,9 @@
       "default": "./dist/index.js"
     },
     "./package.json": "./package.json",
-    "./use-at-your-own-risk/ast-converter": {
-      "types": "./dist/ast-converter.d.ts",
-      "default": "./dist/ast-converter.js"
-    },
-    "./use-at-your-own-risk/parseSettings": {
-      "types": "./dist/parseSettings/index.d.ts",
-      "default": "./dist/parseSettings/index.js"
-    },
-    "./use-at-your-own-risk/getScriptKind": {
-      "types": "./dist/create-program/getScriptKind.d.ts",
-      "default": "./dist/create-program/getScriptKind.js"
+    "./use-at-your-own-risk": {
+      "types": "./dist/use-at-your-own-risk.d.ts",
+      "default": "./dist/use-at-your-own-risk.js"
     }
   },
   "engines": {
@@ -60,8 +52,8 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "5.56.0",
-    "@typescript-eslint/visitor-keys": "5.56.0",
+    "@typescript-eslint/types": "5.58.0",
+    "@typescript-eslint/visitor-keys": "5.58.0",
     "debug": "^4.3.4",
     "globby": "^11.1.0",
     "is-glob": "^4.0.3",

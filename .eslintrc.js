@@ -72,7 +72,10 @@ module.exports = {
       'error',
       { prefer: 'type-imports', disallowTypeAnnotations: true },
     ],
-    '@typescript-eslint/explicit-function-return-type': 'error',
+    '@typescript-eslint/explicit-function-return-type': [
+      'error',
+      { allowIIFEs: true },
+    ],
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-empty-function': [
       'error',
@@ -393,7 +396,7 @@ module.exports = {
         'import/no-default-export': 'off',
         'react/jsx-no-target-blank': 'off',
         'react/no-unescaped-entities': 'off',
-        'react-hooks/exhaustive-deps': 'off', // TODO: enable it later
+        'react-hooks/exhaustive-deps': 'warn', // TODO: enable it later
       },
       settings: {
         react: {
