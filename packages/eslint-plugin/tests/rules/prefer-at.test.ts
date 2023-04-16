@@ -79,6 +79,11 @@ ruleTester.run('prefer-at', rule, {
 
       const lastItem = getValue().at(-1);
     `,
+    `
+      declare const getValue: (arg: number) => string;
+
+      const lastItem = getValue(1)[getValue(2).length - 1];
+    `,
     {
       code: `
         declare const getValue: () => string;

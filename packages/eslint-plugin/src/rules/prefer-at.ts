@@ -44,6 +44,7 @@ export default util.createRule({
   create(context, [options]) {
     const parserServices = util.getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
+    const sourceCode = context.getSourceCode();
 
     function getName(node: TSESTree.Node): string | undefined {
       switch (node.type) {
@@ -56,26 +57,8 @@ export default util.createRule({
       }
     }
 
-    function getFullName(node: TSESTree.Node): string | undefined {
-      switch (node.type) {
-        case AST_NODE_TYPES.PrivateIdentifier:
-          return `#${node.name}`;
-        case AST_NODE_TYPES.Identifier:
-          return node.name;
-        case AST_NODE_TYPES.Literal:
-          return node.raw;
-        case AST_NODE_TYPES.ThisExpression:
-          return 'this';
-        case AST_NODE_TYPES.CallExpression:
-          return `${getFullName(node.callee)}()`;
-        case AST_NODE_TYPES.MemberExpression:
-          if (node.property.type === AST_NODE_TYPES.Literal) {
-            return `${getFullName(node.object)}[${node.property.raw}]`;
-          }
-          return `${getFullName(node.object)}.${getFullName(node.property)}`;
-        default:
-          return undefined;
-      }
+    function getFullName(node: TSESTree.Node): string {
+      return sourceCode.text.slice(node.range[0], node.range[1]);
     }
 
     function hasCallExpression(node: TSESTree.MemberExpression): boolean {
@@ -176,7 +159,7 @@ export default util.createRule({
         const objectName = getFullName(node.object);
         const memberName = getFullName(node.property.left.object);
         const rightName = getFullName(node.property.right);
-        if (!objectName || !rightName || objectName !== memberName) {
+        if (objectName !== memberName) {
           return;
         }
         context.report({
