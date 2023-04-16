@@ -31,7 +31,6 @@ export default util.createRule({
               },
             },
             additionalProperties: false,
-            required: ['ignoreFunctions'],
           },
         ],
       },
