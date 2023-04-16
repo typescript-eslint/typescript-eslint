@@ -19,6 +19,48 @@ const baseRule = getESLintCoreRule('no-restricted-imports');
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const baseSchema = baseRule.meta.schema as {
+  anyOf: [
+    unknown,
+    {
+      type: 'array';
+      items: [
+        {
+          type: 'object';
+          properties: {
+            paths: {
+              type: 'array';
+              items: {
+                anyOf: [
+                  { type: 'string' },
+                  {
+                    type: 'object';
+                    properties: JSONSchema4['properties'];
+                    required: string[];
+                  },
+                ];
+              };
+            };
+            patterns: {
+              anyOf: [
+                { type: 'array'; items: { type: 'string' } },
+                {
+                  type: 'array';
+                  items: {
+                    type: 'object';
+                    properties: JSONSchema4['properties'];
+                    required: string[];
+                  };
+                },
+              ];
+            };
+          };
+        },
+      ];
+    },
+  ];
+};
+
 const allowTypeImportsOptionSchema: JSONSchema4['properties'] = {
   allowTypeImports: {
     type: 'boolean',
@@ -33,16 +75,13 @@ const arrayOfStringsOrObjects: JSONSchema4 = {
       {
         type: 'object',
         properties: {
-          ...(
-            (
-              (baseRule.meta.schema as JSONSchema4).anyOf![1]
-                .items as JSONSchema4[]
-            )[0].properties!.paths.items as JSONSchema4
-          ).anyOf![1].properties,
+          ...baseSchema.anyOf[1].items[0].properties.paths.items.anyOf[1]
+            .properties,
           ...allowTypeImportsOptionSchema,
         },
         additionalProperties: false,
-        required: ['name'],
+        required:
+          baseSchema.anyOf[1].items[0].properties.paths.items.anyOf[1].required,
       },
     ],
   },
@@ -63,16 +102,14 @@ const arrayOfStringsOrObjectPatterns: JSONSchema4 = {
       items: {
         type: 'object',
         properties: {
-          ...(
-            (
-              (baseRule.meta.schema as JSONSchema4).anyOf![1]
-                .items as JSONSchema4[]
-            )[0].properties!.patterns.anyOf![1].items as JSONSchema4
-          ).properties,
+          ...baseSchema.anyOf[1].items[0].properties.patterns.anyOf[1].items
+            .properties,
           ...allowTypeImportsOptionSchema,
         },
         additionalProperties: false,
-        required: ['group'],
+        required:
+          baseSchema.anyOf[1].items[0].properties.patterns.anyOf[1].items
+            .required,
       },
       uniqueItems: true,
     },
