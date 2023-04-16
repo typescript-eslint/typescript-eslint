@@ -81,7 +81,7 @@ function getProgramAndAST(
     if (program) {
       const projectServiceProgram = createProjectProgram(parseSettings, [
         // LOL TYPES
-        // This'll hoepfully be resolved once they fully move to modules
+        // This'll hopefully be resolved once they fully move to modules
         // right now it's two separate files that get dumped out
         program as ts.Program,
       ]);
@@ -327,7 +327,7 @@ export {
 // 1. ping jake with questions
 //   * what does closing a file do
 // 2. create versions of test suite tailored to this new fancy form
-// 3. testing the bujeezus out of it
+// 3. testing the heck out of it
 
 // aside:
 // * performance testing - need to work on that
