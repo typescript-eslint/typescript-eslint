@@ -229,10 +229,7 @@ export function filterProperties(
 
   switch (type) {
     case 'esNode': {
-      if (key === 'tokens') {
-        return showTokens === true;
-      }
-      return true;
+      return key !== 'tokens' || !!showTokens;
     }
     case 'scopeManager':
       return (
