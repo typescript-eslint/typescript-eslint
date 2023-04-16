@@ -32,7 +32,7 @@ html:root {
 
 html[data-theme='dark']:root {
   --ifm-color-feedback-background: #f0f8ff;
-  --ifm-color-primary: #3255bb;
+  --ifm-color-primary: #6582d9;
   --ifm-color-primary-dark: #1f459d;
   --ifm-color-primary-darker: #1f417f;
   --ifm-color-primary-darkest: #163162;
@@ -71,81 +71,45 @@ html[data-theme='dark']:root {
   --gray-border-shadow: var(--ifm-color-secondary-dark);
 }
 
-.bug-report-link {
+.image-link {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
 }
-.bug-report-link:before {
+
+.image-link:before {
   content: '';
   display: flex;
-  background: url('/img/bug-report.svg') no-repeat;
 }
-.github-link {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-}
-.github-link:before {
-  content: '';
-  display: flex;
-  background: url('/img/github.svg') no-repeat;
-}
-.mastodon-link {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-}
-.mastodon-link:before {
-  content: '';
-  display: flex;
-  background: url('/img/mastodon.svg') no-repeat;
-}
-.stack-overflow-link {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-}
-.stack-overflow-link:before {
-  content: '';
-  display: flex;
-  background: url('/img/stack-overflow.svg') no-repeat;
-}
-.stack-overflow-link {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-}
-.stack-overflow-link:before {
-  content: '';
-  display: flex;
-  background: url('/img/stack-overflow.svg') no-repeat;
-}
-.twitter-link {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-}
-.twitter-link:before {
-  content: '';
-  display: flex;
-  background: url('/img/twitter.svg') no-repeat;
-}
+
 /* assumes icons are black by default and inverts them for dark mode so they're white */
-html[data-theme='dark'] .bug-report-link:before,
-html[data-theme='dark'] .github-link:before,
-html[data-theme='dark'] .mastodon-link:before,
-html[data-theme='dark'] .stack-overflow-link:before,
-html[data-theme='dark'] .twitter-link:before {
+html[data-theme='dark'] .image-link:before {
   filter: invert(100%);
 }
 
+.bug-report-link:before {
+  background: url('/img/bug-report.svg') no-repeat;
+}
+.discord-link:before {
+  background: url('/img/discord.svg') no-repeat;
+  background-position: center;
+}
+.github-link:before {
+  background: url('/img/github.svg') no-repeat;
+}
+.mastodon-link:before {
+  background: url('/img/mastodon.svg') no-repeat;
+}
+.stack-overflow-link:before {
+  background: url('/img/stack-overflow.svg') no-repeat;
+}
+.stack-overflow-link:before {
+  background: url('/img/stack-overflow.svg') no-repeat;
+}
+.twitter-link:before {
+  background: url('/img/twitter.svg') no-repeat;
+}
 .header-github-link:hover {
   opacity: 0.6;
 }

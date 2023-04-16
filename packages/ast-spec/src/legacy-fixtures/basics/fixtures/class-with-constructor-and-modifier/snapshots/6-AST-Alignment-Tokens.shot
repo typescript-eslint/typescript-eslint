@@ -122,7 +122,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-modifier
     },
     String {
       type: 'String',
-      value: '\\\\'constructor\\\\'',
+      value: '\\'constructor\\'',
 
       range: [123, 136],
       loc: {

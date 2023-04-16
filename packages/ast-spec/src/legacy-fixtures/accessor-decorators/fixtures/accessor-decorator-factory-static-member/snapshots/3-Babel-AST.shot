@@ -3,24 +3,24 @@
 exports[`AST Fixtures legacy-fixtures accessor-decorators accessor-decorator-factory-static-member Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
-            decorators: Array [
+            decorators: [
               Decorator {
                 type: "Decorator",
                 expression: CallExpression {
                   type: "CallExpression",
-                  arguments: Array [
+                  arguments: [
                     ObjectExpression {
                       type: "ObjectExpression",
-                      properties: Array [
+                      properties: [
                         Property {
                           type: "Property",
                           computed: false,
@@ -107,7 +107,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ReturnStatement {
                     type: "ReturnStatement",
                     argument: MemberExpression {
@@ -158,7 +158,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [],
+              params: [],
 
               range: [125, 155],
               loc: {

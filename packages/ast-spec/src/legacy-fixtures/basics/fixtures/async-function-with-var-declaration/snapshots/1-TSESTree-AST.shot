@@ -3,16 +3,16 @@
 exports[`AST Fixtures legacy-fixtures basics async-function-with-var-declaration TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: true,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           VariableDeclaration {
             type: "VariableDeclaration",
-            declarations: Array [
+            declarations: [
               VariableDeclarator {
                 type: "VariableDeclarator",
                 id: Identifier {
@@ -54,7 +54,7 @@ Program {
           },
           VariableDeclaration {
             type: "VariableDeclaration",
-            declarations: Array [
+            declarations: [
               VariableDeclarator {
                 type: "VariableDeclarator",
                 id: Identifier {
@@ -96,7 +96,7 @@ Program {
           },
           VariableDeclaration {
             type: "VariableDeclaration",
-            declarations: Array [
+            declarations: [
               VariableDeclarator {
                 type: "VariableDeclarator",
                 id: Identifier {
@@ -156,7 +156,7 @@ Program {
           end: { column: 19, line: 3 },
         },
       },
-      params: Array [],
+      params: [],
 
       range: [73, 163],
       loc: {

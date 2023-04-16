@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics type-guard-in-function TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           ReturnStatement {
             type: "ReturnStatement",
             argument: BinaryExpression {
@@ -81,7 +81,7 @@ Program {
           end: { column: 17, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
           name: "x",

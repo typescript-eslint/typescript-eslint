@@ -2,17 +2,17 @@
 
 exports[`class expression properties 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"x">,
           node: VariableDeclarator$1,
         },
       ],
       name: "x",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"x">,
           init: true,
@@ -36,14 +36,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         VariableDefinition$2 {
           name: Identifier<"A">,
           node: VariableDeclarator$3,
         },
       ],
       name: "A",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"A">,
           init: true,
@@ -59,14 +59,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         VariableDefinition$3 {
           name: Identifier<"unresolved">,
           node: VariableDeclarator$5,
         },
       ],
       name: "unresolved",
-      references: Array [
+      references: [
         Reference$4 {
           identifier: Identifier<"unresolved">,
           init: true,
@@ -82,11 +82,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$6,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
         Reference$4,
@@ -107,7 +107,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
@@ -117,31 +117,31 @@ ScopeManager {
     ClassScope$2 {
       block: ClassExpression$4,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {},
       type: "class",
       upper: GlobalScope$1,
-      variables: Array [],
+      variables: [],
     },
     ClassFieldInitializerScope$3 {
       block: Literal$7,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {},
       type: "class-field-initializer",
       upper: ClassScope$2,
-      variables: Array [],
+      variables: [],
     },
     ClassFieldInitializerScope$4 {
       block: Identifier<"x">,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$3,
       ],
       set: Map {},
       type: "class-field-initializer",
       upper: ClassScope$2,
-      variables: Array [],
+      variables: [],
     },
   ],
 }

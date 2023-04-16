@@ -2,17 +2,17 @@
 
 exports[`functions arrow params 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"outer">,
           node: VariableDeclarator$1,
         },
       ],
       name: "outer",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"outer">,
           init: true,
@@ -36,14 +36,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         ParameterDefinition$2 {
           name: Identifier<"a">,
           node: ArrowFunctionExpression$3,
         },
       ],
       name: "a",
-      references: Array [
+      references: [
         Reference$4 {
           identifier: Identifier<"a">,
           isRead: true,
@@ -65,38 +65,38 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         ParameterDefinition$3 {
           name: Identifier<"b">,
           node: ArrowFunctionExpression$3,
         },
       ],
       name: "b",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         ParameterDefinition$4 {
           name: Identifier<"c">,
           node: ArrowFunctionExpression$3,
         },
       ],
       name: "c",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
     Variable$6 {
-      defs: Array [
+      defs: [
         ParameterDefinition$5 {
           name: Identifier<"d">,
           node: ArrowFunctionExpression$3,
         },
       ],
       name: "d",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"d">,
           init: true,
@@ -112,14 +112,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$7 {
-      defs: Array [
+      defs: [
         ParameterDefinition$6 {
           name: Identifier<"e">,
           node: ArrowFunctionExpression$3,
         },
       ],
       name: "e",
-      references: Array [
+      references: [
         Reference$3 {
           identifier: Identifier<"e">,
           init: true,
@@ -135,14 +135,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$8 {
-      defs: Array [
+      defs: [
         ParameterDefinition$7 {
           name: Identifier<"f">,
           node: ArrowFunctionExpression$3,
         },
       ],
       name: "f",
-      references: Array [
+      references: [
         Reference$5 {
           identifier: Identifier<"f">,
           init: true,
@@ -158,26 +158,26 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$9 {
-      defs: Array [
+      defs: [
         ParameterDefinition$8 {
           name: Identifier<"g">,
           node: ArrowFunctionExpression$3,
         },
       ],
       name: "g",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
     Variable$10 {
-      defs: Array [
+      defs: [
         VariableDefinition$9 {
           name: Identifier<"unresolved">,
           node: VariableDeclarator$5,
         },
       ],
       name: "unresolved",
-      references: Array [
+      references: [
         Reference$8 {
           identifier: Identifier<"unresolved">,
           init: true,
@@ -193,11 +193,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$6,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
         Reference$8,
         Reference$9 {
@@ -216,7 +216,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$10,
@@ -225,7 +225,7 @@ ScopeManager {
     FunctionScope$2 {
       block: ArrowFunctionExpression$3,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$2,
         Reference$3,
         Reference$4,
@@ -244,7 +244,7 @@ ScopeManager {
       },
       type: "function",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
         Variable$4,
         Variable$5,

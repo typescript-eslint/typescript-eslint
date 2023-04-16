@@ -2,10 +2,10 @@
 
 exports[`ts-module declaration-merging function-namespace 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         FunctionNameDefinition$1 {
           name: Identifier<"Foo">,
           node: FunctionDeclaration$1,
@@ -16,7 +16,7 @@ ScopeManager {
         },
       ],
       name: "Foo",
-      references: Array [
+      references: [
         Reference$3 {
           identifier: Identifier<"Foo">,
           isRead: true,
@@ -30,21 +30,21 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         VariableDefinition$3 {
           name: Identifier<"x">,
           node: VariableDeclarator$3,
         },
       ],
       name: "x",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"x">,
           init: true,
@@ -60,14 +60,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         VariableDefinition$4 {
           name: Identifier<"usage">,
           node: VariableDeclarator$5,
         },
       ],
       name: "usage",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"usage">,
           init: true,
@@ -83,11 +83,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$6,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$2,
         Reference$3,
       ],
@@ -98,7 +98,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$5,
@@ -107,20 +107,20 @@ ScopeManager {
     FunctionScope$2 {
       block: FunctionDeclaration$1,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "arguments" => Variable$3,
       },
       type: "function",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
       ],
     },
     TSModuleScope$3 {
       block: TSModuleDeclaration$2,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -128,7 +128,7 @@ ScopeManager {
       },
       type: "tsModule",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$4,
       ],
     },
