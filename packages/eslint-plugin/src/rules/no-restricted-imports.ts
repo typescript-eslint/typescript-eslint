@@ -25,7 +25,7 @@ export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 const tryAccess = <T>(getter: () => T, fallback: T): T => {
   try {
     return getter();
-  } catch (error) {
+  } catch {
     return fallback;
   }
 };
