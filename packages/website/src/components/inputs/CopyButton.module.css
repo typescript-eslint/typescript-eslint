@@ -1,0 +1,54 @@
+.copyButtonContainer {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-family: var(--ifm-font-family-base);
+  box-sizing: border-box;
+  line-height: var(--ifm-line-height-base);
+  font-size: 0.75rem;
+  text-align: center;
+}
+
+.copyButton {
+  --ifm-button-padding-vertical: 0.4rem;
+  --ifm-button-padding-horizontal: 0.4rem;
+  --ifm-button-background-color: var(--ifm-background-surface-color);
+  --ifm-button-color: var(--ifm-color-emphasis-700);
+  --ifm-button-border-color: var(--ifm-color-emphasis-200);
+  --copy-button-icon-check: 0;
+  --copy-button-icon-copy: 1;
+
+  font-size: 0.75rem;
+  align-items: center;
+  display: flex;
+  line-height: 0;
+  transition: opacity 0.2s ease-in-out, border-color 0.4s ease-in-out,
+    color 0.4s ease-in-out;
+}
+
+.copyButton:disabled {
+  --ifm-button-background-color: var(--playground-secondary-color);
+  --ifm-button-color: var(--ifm-color-success-dark);
+  --ifm-button-border-color: var(--ifm-color-emphasis-200);
+  --copy-button-icon-check: 1;
+  --copy-button-icon-copy: 0;
+
+  opacity: 1;
+}
+
+.copyButton:hover,
+.copyButton:focus-visible {
+  --ifm-button-background-color: var(--playground-secondary-color);
+  --ifm-button-border-color: var(--ifm-color-emphasis-300);
+}
+
+.copyIcon {
+  opacity: var(--copy-button-icon-copy);
+  position: absolute;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.checkIcon {
+  opacity: var(--copy-button-icon-check);
+  transition: opacity 0.2s ease-in-out;
+}

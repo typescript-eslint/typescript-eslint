@@ -2,32 +2,31 @@ import {
   NavbarSecondaryMenuFiller,
   useWindowSize,
 } from '@docusaurus/theme-common';
+import Checkbox from '@site/src/components/inputs/Checkbox';
 import CopyIcon from '@site/src/icons/copy.svg';
 import IconExternalLink from '@theme/Icon/ExternalLink';
 import React, { useCallback } from 'react';
 
 import { useClipboard } from '../hooks/useClipboard';
-import Checkbox from './inputs/Checkbox';
 import Dropdown from './inputs/Dropdown';
 import Tooltip from './inputs/Tooltip';
 import ActionLabel from './layout/ActionLabel';
 import Expander from './layout/Expander';
 import InputLabel from './layout/InputLabel';
 import { createMarkdown, createMarkdownParams } from './lib/markdown';
+import { fileTypes } from './options';
 import type { ConfigModel } from './types';
 
 export interface OptionsSelectorParams {
   readonly state: ConfigModel;
   readonly setState: (cfg: Partial<ConfigModel>) => void;
   readonly tsVersions: readonly string[];
-  readonly isLoading: boolean;
 }
 
 function OptionsSelectorContent({
   state,
   setState,
   tsVersions,
-  isLoading,
 }: OptionsSelectorParams): JSX.Element {
   const [copyLink, copyLinkToClipboard] = useClipboard(() =>
     document.location.toString(),
@@ -36,26 +35,16 @@ function OptionsSelectorContent({
     createMarkdown(state),
   );
 
-  const updateTS = useCallback(
-    (version: string) => {
-      setState({ ts: version });
-    },
-    [setState],
-  );
-
   const openIssue = useCallback(() => {
-    if (isLoading) {
-      return;
-    }
+    const params = createMarkdownParams(state);
+
     window
       .open(
-        `https://github.com/typescript-eslint/typescript-eslint/issues/new?${createMarkdownParams(
-          state,
-        )}`,
+        `https://github.com/typescript-eslint/typescript-eslint/issues/new?${params}`,
         '_blank',
       )
       ?.focus();
-  }, [state, isLoading]);
+  }, [state]);
 
   return (
     <>
@@ -66,7 +55,7 @@ function OptionsSelectorContent({
             className="text--right"
             value={state.ts}
             disabled={!tsVersions.length}
-            onChange={updateTS}
+            onChange={(ts): void => setState({ ts })}
             options={(tsVersions.length && tsVersions) || [state.ts]}
           />
         </InputLabel>
@@ -74,19 +63,34 @@ function OptionsSelectorContent({
         <InputLabel name="TSEslint">{process.env.TS_ESLINT_VERSION}</InputLabel>
       </Expander>
       <Expander label="Options">
-        <InputLabel name="Enable jsx">
-          <Checkbox
-            name="jsx"
-            checked={state.jsx}
-            onChange={(e): void => setState({ jsx: e })}
+        <InputLabel name="File type">
+          <Dropdown
+            name="fileType"
+            value={state.fileType}
+            onChange={(fileType): void => setState({ fileType })}
+            options={fileTypes}
           />
         </InputLabel>
         <InputLabel name="Source type">
           <Dropdown
             name="sourceType"
             value={state.sourceType}
-            onChange={(e): void => setState({ sourceType: e })}
+            onChange={(sourceType): void => setState({ sourceType })}
             options={['script', 'module']}
+          />
+        </InputLabel>
+        <InputLabel name="Auto scroll">
+          <Checkbox
+            name="enableScrolling"
+            checked={state.scroll}
+            onChange={(scroll): void => setState({ scroll })}
+          />
+        </InputLabel>
+        <InputLabel name="Show tokens">
+          <Checkbox
+            name="showTokens"
+            checked={state.showTokens}
+            onChange={(showTokens): void => setState({ showTokens })}
           />
         </InputLabel>
       </Expander>

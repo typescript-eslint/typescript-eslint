@@ -3,6 +3,33 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.58.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.1...v5.58.0) (2023-04-10)
+
+
+### Bug Fixes
+
+* update getLib for new TypeScript targets ES2021, ES2022 ([#6782](https://github.com/typescript-eslint/typescript-eslint/issues/6782)) ([1c04664](https://github.com/typescript-eslint/typescript-eslint/commit/1c0466414300f338c6c4111f8d1eac0c3e6a8983))
+
+
+
+
+
+## [5.57.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.0...v5.57.1) (2023-04-03)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [5.57.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.56.0...v5.57.0) (2023-03-27)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
 # [5.56.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.55.0...v5.56.0) (2023-03-20)
 
 **Note:** Version bump only for package @typescript-eslint/parser

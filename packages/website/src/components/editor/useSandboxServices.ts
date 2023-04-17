@@ -1,20 +1,18 @@
 import { useColorMode } from '@docusaurus/theme-common';
-import type Monaco from 'monaco-editor';
+import type * as Monaco from 'monaco-editor';
 import { useEffect, useState } from 'react';
 
-import type {
-  createTypeScriptSandbox,
-  SandboxConfig,
-} from '../../vendor/sandbox';
-import { WebLinter } from '../linter/WebLinter';
+import type { createTypeScriptSandbox } from '../../vendor/sandbox';
+import { createCompilerOptions } from '../lib/createCompilerOptions';
+import { createFileSystem } from '../linter/bridge';
+import { type CreateLinter, createLinter } from '../linter/createLinter';
+import type { PlaygroundSystem } from '../linter/types';
 import type { RuleDetails } from '../types';
-import { createCompilerOptions } from './config';
 import { editorEmbedId } from './EditorEmbed';
 import { sandboxSingleton } from './loadSandbox';
 import type { CommonEditorProps } from './types';
 
 export interface SandboxServicesProps {
-  readonly jsx?: boolean;
   readonly onLoaded: (
     ruleDetails: RuleDetails[],
     tsVersions: readonly string[],
@@ -25,9 +23,9 @@ export interface SandboxServicesProps {
 export type SandboxInstance = ReturnType<typeof createTypeScriptSandbox>;
 
 export interface SandboxServices {
-  main: typeof Monaco;
   sandboxInstance: SandboxInstance;
-  webLinter: WebLinter;
+  system: PlaygroundSystem;
+  webLinter: CreateLinter;
 }
 
 export const useSandboxServices = (
@@ -35,97 +33,74 @@ export const useSandboxServices = (
 ): Error | SandboxServices | undefined => {
   const { onLoaded } = props;
   const [services, setServices] = useState<Error | SandboxServices>();
-  const [loadedTs, setLoadedTs] = useState<string>(props.ts);
   const { colorMode } = useColorMode();
 
   useEffect(() => {
-    if (props.ts !== loadedTs) {
-      window.location.reload();
-    }
-  }, [props.ts, loadedTs]);
-
-  useEffect(() => {
     let sandboxInstance: SandboxInstance | undefined;
-    setLoadedTs(props.ts);
 
     sandboxSingleton(props.ts)
-      .then(async ({ main, sandboxFactory, ts, lintUtils }) => {
-        const compilerOptions = createCompilerOptions(props.jsx);
-
-        const sandboxConfig: Partial<SandboxConfig> = {
-          text: props.code,
-          monacoSettings: {
-            minimap: { enabled: false },
-            fontSize: 13,
-            wordWrap: 'off',
-            scrollBeyondLastLine: false,
-            smoothScrolling: true,
-            autoIndent: 'full',
-            formatOnPaste: true,
-            formatOnType: true,
-            wrappingIndent: 'same',
-            hover: { above: false },
-          },
-          acquireTypes: false,
-          compilerOptions: compilerOptions,
-          domID: editorEmbedId,
-        };
+      .then(async ({ main, sandboxFactory, lintUtils }) => {
+        const compilerOptions = createCompilerOptions();
 
         sandboxInstance = sandboxFactory.createTypeScriptSandbox(
-          sandboxConfig,
+          {
+            text: props.code,
+            monacoSettings: {
+              minimap: { enabled: false },
+              fontSize: 13,
+              wordWrap: 'off',
+              scrollBeyondLastLine: false,
+              smoothScrolling: true,
+              autoIndent: 'full',
+              formatOnPaste: true,
+              formatOnType: true,
+              wrappingIndent: 'same',
+              hover: { above: false },
+            },
+            acquireTypes: false,
+            compilerOptions:
+              compilerOptions as Monaco.languages.typescript.CompilerOptions,
+            domID: editorEmbedId,
+          },
           main,
-          ts,
+          window.ts,
         );
         sandboxInstance.monaco.editor.setTheme(
           colorMode === 'dark' ? 'vs-dark' : 'vs-light',
         );
 
-        let libEntries: Map<string, string> | undefined;
+        const system = createFileSystem(props, sandboxInstance.tsvfs);
+
         const worker = await sandboxInstance.getWorkerProcess();
-        if ('getLibFiles' in worker && worker.getLibFiles) {
-          libEntries = new Map(
-            Object.entries(
-              (await (
-                worker.getLibFiles as () => Promise<Record<string, string>>
-              )()) ?? {},
-            ).map(item => ['/' + item[0], item[1]]),
-          );
-        } else {
-          // for some older version of playground we do not have definitions available
-          libEntries = await sandboxInstance.tsvfs.createDefaultMapFromCDN(
-            {
-              lib: Array.from(window.ts.libMap.keys()),
-            },
-            props.ts,
-            true,
-            window.ts,
-          );
-          for (const pair of libEntries) {
-            sandboxInstance.languageServiceDefaults.addExtraLib(
-              pair[1],
-              'ts:' + pair[0],
-            );
+        if (worker.getLibFiles) {
+          const libs = await worker.getLibFiles();
+          for (const [key, value] of Object.entries(libs)) {
+            system.writeFile('/' + key, value);
           }
         }
 
-        const system = sandboxInstance.tsvfs.createSystem(libEntries);
+        window.system = system;
         window.esquery = lintUtils.esquery;
 
-        const webLinter = new WebLinter(system, compilerOptions, lintUtils);
+        const webLinter = createLinter(
+          system,
+          lintUtils,
+          sandboxInstance.tsvfs,
+        );
 
         onLoaded(
-          webLinter.ruleNames,
+          Array.from(webLinter.rules.values()),
           Array.from(
             new Set([...sandboxInstance.supportedVersions, window.ts.version]),
           )
-            .filter(item => parseFloat(item) >= 3.3)
+            .filter(item => parseFloat(item) >= 4.2)
             .sort((a, b) => b.localeCompare(a)),
         );
 
         setServices({
-          main,
-          sandboxInstance,
+          system,
           webLinter,
+          sandboxInstance,
         });
       })
       .catch(setServices);
@@ -150,7 +125,8 @@ export const useSandboxServices = (
     };
     // colorMode and jsx can't be reactive here because we don't want to force a recreation
     // updating of colorMode and jsx is handled in LoadedEditor
-  }, [props.ts, onLoaded]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return services;
 };

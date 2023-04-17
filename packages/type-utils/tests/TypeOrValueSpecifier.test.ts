@@ -182,11 +182,23 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'file', name: 'Foo' },
       ],
       [
+        'type Foo = {prop: string}; type Test = Foo;',
+        { from: 'file', name: 'Foo' },
+      ],
+      [
         'interface Foo {prop: string}; type Test = Foo;',
         { from: 'file', name: ['Foo', 'Bar'] },
       ],
       [
+        'type Foo = {prop: string}; type Test = Foo;',
+        { from: 'file', name: ['Foo', 'Bar'] },
+      ],
+      [
         'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'file', name: 'Foo', path: 'tests/fixtures/file.ts' },
+      ],
+      [
+        'type Foo = {prop: string}; type Test = Foo;',
         { from: 'file', name: 'Foo', path: 'tests/fixtures/file.ts' },
       ],
       [
@@ -198,7 +210,23 @@ describe('TypeOrValueSpecifier', () => {
         },
       ],
       [
+        'type Foo = {prop: string}; type Test = Foo;',
+        {
+          from: 'file',
+          name: 'Foo',
+          path: 'tests/../tests/fixtures/////file.ts',
+        },
+      ],
+      [
         'interface Foo {prop: string}; type Test = Foo;',
+        {
+          from: 'file',
+          name: ['Foo', 'Bar'],
+          path: 'tests/fixtures/file.ts',
+        },
+      ],
+      [
+        'type Foo = {prop: string}; type Test = Foo;',
         {
           from: 'file',
           name: ['Foo', 'Bar'],

@@ -1,20 +1,20 @@
 :root {
   --gray-border: var(--ifm-color-secondary-dark);
   --gray-border-shadow: var(--ifm-color-secondary-dark);
-  --blue-bg: rgba(148, 197, 225, 0.25);
+  --blue-bg: rgb(148 197 225 / 25%);
   --blue-border: var(--ifm-color-primary-lighter);
   --blue-border-shadow: var(--ifm-color-primary-lightest);
-  --red-bg: rgba(250, 56, 62, 0.25);
-  --red-border: rgba(198, 10, 10, 0.4);
-  --red-border-shadow: rgba(255, 0, 0, 0.4);
+  --red-bg: rgb(250 56 62 / 25%);
+  --red-border: rgb(198 10 10 / 40%);
+  --red-border-shadow: rgb(255 0 0 / 40%);
 }
 
 [data-theme='dark'] {
   --gray-border-shadow: var(--ifm-color-secondary);
-  --blue-bg: rgba(35, 78, 128, 0.5);
+  --blue-bg: rgb(35 78 128 / 50%);
   --blue-border: var(--ifm-color-primary-dark);
-  --red-border: rgba(255, 0, 0, 0.3);
-  --red-border-shadow: rgb(235, 107, 107);
+  --red-border: rgb(255 0 0 / 30%);
+  --red-border-shadow: rgb(235 107 107);
 }
 
 .checkboxListArea {
@@ -60,7 +60,7 @@
 }
 
 [data-theme='dark'] .checkboxLabel {
-  border: 2px solid #666666;
+  border: 2px solid #666;
 }
 
 .checkboxLabel:hover {
@@ -73,7 +73,7 @@
 }
 
 .checkboxLabel:focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid currentcolor;
 }
 
 .checkboxLabel.activated {

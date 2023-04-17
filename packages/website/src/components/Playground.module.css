@@ -16,9 +16,7 @@
 
 .codeBlocks {
   display: flex;
-  flex-grow: 1;
-  flex-shrink: 1;
-  flex-basis: 0;
+  flex: 1 1 0;
   flex-direction: row;
   height: 100%;
   width: calc(100vw - 20rem);
@@ -53,7 +51,12 @@
 }
 
 .tabCode {
-  height: calc(100% - 32px);
+  height: calc(100% - 41px);
+}
+
+.hidden {
+  display: none;
+  visibility: hidden;
 }
 
 @media only screen and (max-width: 996px) {
@@ -62,6 +65,7 @@
     width: 100%;
     position: static;
   }
+
   .codeBlocks {
     display: block;
     width: 100%;
