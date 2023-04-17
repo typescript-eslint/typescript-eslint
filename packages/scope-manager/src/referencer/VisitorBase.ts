@@ -67,7 +67,7 @@ abstract class VisitorBase {
    * Dispatching node.
    */
   visit(node: TSESTree.Node | null | undefined): void {
-    if (node == null || node.type == null) {
+    if (node?.type == null) {
       return;
     }
 

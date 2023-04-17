@@ -1,12 +1,26 @@
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type {
+  ParserServicesWithTypeInformation,
+  TSESLint,
+  TSESTree,
+} from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
+import { isBooleanLiteralType, unionTypeParts } from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
 
 type TMessageIds = 'preferOptionalChain' | 'optionalChainSuggest';
-type TOptions = [];
+interface TypeAwareOptions {
+  checkAny?: boolean;
+  checkUnknown?: boolean;
+  checkString?: boolean;
+  checkNumber?: boolean;
+  checkBoolean?: boolean;
+  checkBigInt?: boolean;
+  requireNullish?: boolean;
+}
+type TOptions = [TypeAwareOptions];
 
 const enum ComparisonValueType {
   Null = 'Null', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
@@ -58,7 +72,70 @@ interface InvalidOperand {
 }
 type Operand = ValidOperand | InvalidOperand;
 
-function gatherLogicalOperands(node: TSESTree.LogicalExpression): {
+function isValidFalseBooleanCheckType(
+  node: TSESTree.Node,
+  operator: TSESTree.LogicalExpression['operator'],
+  checkType: 'true' | 'false',
+  parserServices: ParserServicesWithTypeInformation,
+  options: TypeAwareOptions,
+): boolean {
+  const type = parserServices.getTypeAtLocation(node);
+  const types = unionTypeParts(type);
+
+  const disallowFalseLiteral =
+    (operator === '||' && checkType === 'false') ||
+    (operator === '&&' && checkType === 'true');
+  if (disallowFalseLiteral) {
+    /*
+    ```
+    declare const x: false | {a: string};
+    x && x.a;
+    !x || x.a;
+    ```
+
+    We don't want to consider these two cases because the boolean expression
+    narrows out the `false` - so converting the chain to `x?.a` would introduce
+    a build error
+    */
+    if (
+      types.some(t => isBooleanLiteralType(t) && t.intrinsicName === 'false')
+    ) {
+      return false;
+    }
+  }
+
+  const nullishFlags = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
+  if (options.requireNullish === true) {
+    return types.some(t => util.isTypeFlagSet(t, nullishFlags));
+  }
+
+  let allowedFlags = nullishFlags | ts.TypeFlags.Object;
+  if (options.checkAny === true) {
+    allowedFlags |= ts.TypeFlags.Any;
+  }
+  if (options.checkUnknown === true) {
+    allowedFlags |= ts.TypeFlags.Unknown;
+  }
+  if (options.checkString === true) {
+    allowedFlags |= ts.TypeFlags.StringLike;
+  }
+  if (options.checkNumber === true) {
+    allowedFlags |= ts.TypeFlags.NumberLike;
+  }
+  if (options.checkBoolean === true) {
+    allowedFlags |= ts.TypeFlags.BooleanLike;
+  }
+  if (options.checkBigInt === true) {
+    allowedFlags |= ts.TypeFlags.BigIntLike;
+  }
+  return types.every(t => util.isTypeFlagSet(t, allowedFlags));
+}
+
+function gatherLogicalOperands(
+  node: TSESTree.LogicalExpression,
+  parserServices: ParserServicesWithTypeInformation,
+  options: TypeAwareOptions,
+): {
   operands: Operand[];
   seenLogicals: Set<TSESTree.LogicalExpression>;
 } {
@@ -169,8 +246,16 @@ function gatherLogicalOperands(node: TSESTree.LogicalExpression): {
       }
 
       case AST_NODE_TYPES.UnaryExpression:
-        if (operand.operator === '!') {
-          // TODO(#4820) - use types here to determine if there is a boolean type that might be refined out
+        if (
+          operand.operator === '!' &&
+          isValidFalseBooleanCheckType(
+            operand.argument,
+            node.operator,
+            'false',
+            parserServices,
+            options,
+          )
+        ) {
           result.push({
             type: OperandValidity.Valid,
             comparedName: operand.argument,
@@ -188,13 +273,24 @@ function gatherLogicalOperands(node: TSESTree.LogicalExpression): {
         continue;
 
       default:
-        // TODO(#4820) - use types here to determine if there is a boolean type that might be refined out
-        result.push({
-          type: OperandValidity.Valid,
-          comparedName: operand,
-          comparisonType: NullishComparisonType.Boolean,
-          node: operand,
-        });
+        if (
+          isValidFalseBooleanCheckType(
+            operand,
+            node.operator,
+            'true',
+            parserServices,
+            options,
+          )
+        ) {
+          result.push({
+            type: OperandValidity.Valid,
+            comparedName: operand,
+            comparisonType: NullishComparisonType.Boolean,
+            node: operand,
+          });
+        } else {
+          result.push({ type: OperandValidity.Invalid });
+        }
         continue;
     }
   }
@@ -806,6 +902,8 @@ function analyzeChain(
           start: subChain[0].node.loc.start,
           end: subChain[subChain.length - 1].node.loc.end,
         },
+        // TODO add an auto fixer if and only if the result type would be unchanged
+        //      else add the fixer as a suggestion fixer
       });
     }
 
@@ -864,6 +962,7 @@ export default util.createRule<TOptions, TMessageIds>({
       description:
         'Enforce using concise optional chain expressions instead of chained logical ands, negated logical ors, or empty objects',
       recommended: 'strict',
+      requiresTypeChecking: true,
     },
     hasSuggestions: true,
     messages: {
@@ -871,12 +970,64 @@ export default util.createRule<TOptions, TMessageIds>({
         "Prefer using an optional chain expression instead, as it's more concise and easier to read.",
       optionalChainSuggest: 'Change to an optional chain.',
     },
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          checkAny: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `any` when inspecting "loose boolean" operands.',
+          },
+          checkUnknown: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `unknown` when inspecting "loose boolean" operands.',
+          },
+          checkString: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `string` when inspecting "loose boolean" operands.',
+          },
+          checkNumber: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `number` when inspecting "loose boolean" operands.',
+          },
+          checkBoolean: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `boolean` when inspecting "loose boolean" operands.',
+          },
+          checkBigInt: {
+            type: 'boolean',
+            description:
+              'Check operands that are typed as `bigint` when inspecting "loose boolean" operands.',
+          },
+          requireNullish: {
+            type: 'boolean',
+            description:
+              'Skip operands that are not typed with `null` and/or `undefined` when inspecting "loose boolean" operands.',
+          },
+        },
+      },
+    ],
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [
+    {
+      checkAny: true,
+      checkUnknown: true,
+      checkString: true,
+      checkNumber: true,
+      checkBoolean: true,
+      checkBigInt: true,
+      requireNullish: false,
+    },
+  ],
+  create(context, [options]) {
     const sourceCode = context.getSourceCode();
-    const parserServices = util.getParserServices(context, true);
+    const parserServices = util.getParserServices(context);
 
     const seenLogicals = new Set<TSESTree.LogicalExpression>();
 
@@ -952,7 +1103,7 @@ export default util.createRule<TOptions, TMessageIds>({
         }
 
         const { operands, seenLogicals: newSeenLogicals } =
-          gatherLogicalOperands(node);
+          gatherLogicalOperands(node, parserServices, options);
 
         for (const logical of newSeenLogicals) {
           seenLogicals.add(logical);

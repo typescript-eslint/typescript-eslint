@@ -4,17 +4,21 @@ import type {
   InferOptionsTypeFromRule,
 } from '../../../src/util';
 import type { InvalidTestCase } from '../../RuleTester';
-import { noFormat, RuleTester } from '../../RuleTester';
+import { getFixturesRootDir, noFormat, RuleTester } from '../../RuleTester';
 import * as BaseCases from './base-cases';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
+  parserOptions: {
+    project: './tsconfig.json',
+    tsconfigRootDir: getFixturesRootDir(),
+  },
 });
 
 function tempRemoveFixerTODO({
   output: _,
   ...invalid
-}: InvalidTestCase<string, []>): InvalidTestCase<
+}: InvalidTestCase<string, unknown[]>): InvalidTestCase<
   InferMessageIdsTypeFromRule<typeof rule>,
   InferOptionsTypeFromRule<typeof rule>
 > {
@@ -765,10 +769,12 @@ describe('hand-crafted cases', () => {
       {
         code: '<div /> && (<div />).wtf;',
         parserOptions: { ecmaFeatures: { jsx: true } },
+        filename: 'react.tsx',
       },
       {
         code: '<></> && (<></>).wtf;',
         parserOptions: { ecmaFeatures: { jsx: true } },
+        filename: 'react.tsx',
       },
       'foo[x++] && foo[x++].bar;',
       'foo[yield x] && foo[yield x].bar;',
@@ -777,6 +783,98 @@ describe('hand-crafted cases', () => {
       '(x || y) != null && (x || y).foo;',
       // TODO - should we handle this?
       '(await foo) && (await foo).bar;',
+      {
+        code: `
+          declare const x: string;
+          x && x.length;
+        `,
+        options: [
+          {
+            requireNullish: true,
+          },
+        ],
+      },
+      {
+        code: `
+          declare const x: string | number | boolean | object;
+          x && x.toString();
+        `,
+        options: [
+          {
+            requireNullish: true,
+          },
+        ],
+      },
+      {
+        code: `
+          declare const x: any;
+          x && x.length;
+        `,
+        options: [
+          {
+            checkAny: false,
+          },
+        ],
+      },
+      {
+        code: `
+          declare const x: bigint;
+          x && x.length;
+        `,
+        options: [
+          {
+            checkBigInt: false,
+          },
+        ],
+      },
+      {
+        code: `
+          declare const x: boolean;
+          x && x.length;
+        `,
+        options: [
+          {
+            checkBoolean: false,
+          },
+        ],
+      },
+      {
+        code: `
+          declare const x: number;
+          x && x.length;
+        `,
+        options: [
+          {
+            checkNumber: false,
+          },
+        ],
+      },
+      {
+        code: `
+          declare const x: string;
+          x && x.length;
+        `,
+        options: [
+          {
+            checkString: false,
+          },
+        ],
+      },
+      {
+        code: `
+          declare const x: unknown;
+          x && x.length;
+        `,
+        options: [
+          {
+            checkUnknown: false,
+          },
+        ],
+      },
+      '(x = {}) && (x.y = true) != null && x.y.toString();',
+      "('x' as `${'x'}`) && ('x' as `${'x'}`).length;",
+      '`x` && `x`.length;',
+      '`x${a}` && `x${a}`.length;',
     ],
     invalid: [
       // two  errors
@@ -855,6 +953,7 @@ describe('hand-crafted cases', () => {
             jsx: true,
           },
         },
+        filename: 'react.tsx',
       },
       {
         code: 'foo && foo.bar(baz => typeof baz);',
@@ -1189,6 +1288,7 @@ foo?.bar(/* comment */a,
             jsx: true,
           },
         },
+        filename: 'react.tsx',
       },
       // case with this keyword at the start of expression
       {
@@ -1293,12 +1393,12 @@ foo?.bar(/* comment */a,
       },
       {
         code: `
-        class Foo {
-          constructor() {
-            new.target && new.target.length;
+          class Foo {
+            constructor() {
+              new.target && new.target.length;
+            }
           }
-        }
-      `,
+        `,
         output: null,
         errors: [
           {
@@ -1307,12 +1407,12 @@ foo?.bar(/* comment */a,
               {
                 messageId: 'optionalChainSuggest',
                 output: `
-        class Foo {
-          constructor() {
-            new.target?.length;
+          class Foo {
+            constructor() {
+              new.target?.length;
+            }
           }
-        }
-      `,
+        `,
               },
             ],
           },
@@ -1603,6 +1703,26 @@ foo?.bar(/* comment */a,
           a.b == null ||
           a.b.c === undefined ||
           a.b.c === null ||
+          a.b.c.d == null ||
+          a.b.c.d.e === null ||
+          a.b.c.d.e.f === undefined ||
+          typeof a.b.c.d.e.f.g === 'undefined' ||
+          a.b.c.d.e.f.g.h
+        `,
+        output: 'a?.b?.c?.d?.e?.f?.g?.h',
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+      },
+      {
+        code: `
+          !a ||
+          a.b == null ||
+          a.b.c === null ||
+          a.b.c === undefined ||
           a.b.c.d == null ||
           a.b.c.d.e === null ||
           a.b.c.d.e.f === undefined ||

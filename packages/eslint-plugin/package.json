@@ -65,7 +65,7 @@
     "ignore": "^5.2.0",
     "natural-compare-lite": "^1.4.0",
     "semver": "^7.3.7",
-    "ts-api-utils": "^0.0.44"
+    "ts-api-utils": "^0.0.46"
   },
   "devDependencies": {
     "@types/debug": "*",

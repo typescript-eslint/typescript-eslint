@@ -7,21 +7,54 @@ import type {
 const ERROR_MESSAGE =
   'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.';
 
-type GetParserServicesResult<T extends boolean> = T extends true
-  ? ParserServices
-  : ParserServicesWithTypeInformation;
-
 /**
- * Try to retrieve typescript parser service from context
+ * Try to retrieve type-aware parser service from context.
+ * This **_will_** throw if it is not available.
  */
 function getParserServices<
   TMessageIds extends string,
   TOptions extends readonly unknown[],
-  TAllowWithoutFullTypeInformation extends boolean = false,
 >(
   context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
-  allowWithoutFullTypeInformation: TAllowWithoutFullTypeInformation = false as TAllowWithoutFullTypeInformation,
-): GetParserServicesResult<TAllowWithoutFullTypeInformation> {
+): ParserServicesWithTypeInformation;
+/**
+ * Try to retrieve type-aware parser service from context.
+ * This **_will_** throw if it is not available.
+ */
+function getParserServices<
+  TMessageIds extends string,
+  TOptions extends readonly unknown[],
+>(
+  context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
+  allowWithoutFullTypeInformation: false,
+): ParserServicesWithTypeInformation;
+/**
+ * Try to retrieve type-aware parser service from context.
+ * This **_will not_** throw if it is not available.
+ */
+function getParserServices<
+  TMessageIds extends string,
+  TOptions extends readonly unknown[],
+>(
+  context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
+  allowWithoutFullTypeInformation: true,
+): ParserServices;
+/**
+ * Try to retrieve type-aware parser service from context.
+ * This may or may not throw if it is not available, depending on if `allowWithoutFullTypeInformation` is `true`
+ */
+function getParserServices<
+  TMessageIds extends string,
+  TOptions extends readonly unknown[],
+>(
+  context: Readonly<TSESLint.RuleContext<TMessageIds, TOptions>>,
+  allowWithoutFullTypeInformation: boolean,
+): ParserServices;
+
+function getParserServices(
+  context: Readonly<TSESLint.RuleContext<string, unknown[]>>,
+  allowWithoutFullTypeInformation = false,
+): ParserServices {
   // This check is unnecessary if the user is using the latest version of our parser.
   //
   // However the world isn't perfect:
@@ -33,8 +66,7 @@ function getParserServices<
   // This check allows us to handle bad user setups whilst providing a nice user-facing
   // error message explaining the problem.
   if (
-    context.parserServices == null ||
-    context.parserServices.esTreeNodeToTSNodeMap == null ||
+    context.parserServices?.esTreeNodeToTSNodeMap == null ||
     context.parserServices.tsNodeToESTreeNodeMap == null
   ) {
     throw new Error(ERROR_MESSAGE);
@@ -49,7 +81,7 @@ function getParserServices<
     throw new Error(ERROR_MESSAGE);
   }
 
-  return context.parserServices as GetParserServicesResult<TAllowWithoutFullTypeInformation>;
+  return context.parserServices;
 }
 
 export { getParserServices };
