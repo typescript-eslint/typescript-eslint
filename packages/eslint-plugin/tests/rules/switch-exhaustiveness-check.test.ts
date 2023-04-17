@@ -209,6 +209,42 @@ function test(value: ObjectUnion): number {
   }
 }
     `,
+    `
+declare const a: 'a' | 'b' | number;
+switch (a) {
+  case 'a':
+    break;
+  case 'b':
+    break;
+}
+    `,
+    `
+declare const a: number | string;
+switch (a) {
+  case 2:
+    break;
+}
+    `,
+    `
+declare const a: 'a' | (string & {});
+switch (a) {
+  case 'a':
+    break;
+}
+    `,
+    `
+type FooBar = (string & { foo: void }) | 'bar';
+
+const foobar = 'bar' as FooBar;
+let result = 0;
+
+switch (foobar) {
+  case 'bar': {
+    result = 42;
+    break;
+  }
+}
+    `,
   ],
   invalid: [
     {
@@ -373,32 +409,32 @@ switch (day) {
         },
       ],
     },
-    {
-      // Still complains with union intersection part
-      code: `
-type FooBar = (string & { foo: void }) | 'bar';
+    //     {
+    //       // Still complains with union intersection part
+    //       code: `
+    // type FooBar = (string & { foo: void }) | 'bar';
 
-const foobar = 'bar' as FooBar;
-let result = 0;
+    // const foobar = 'bar' as FooBar;
+    // let result = 0;
 
-switch (foobar) {
-  case 'bar': {
-    result = 42;
-    break;
-  }
-}
-      `,
-      errors: [
-        {
-          messageId: 'switchIsNotExhaustive',
-          line: 7,
-          column: 9,
-          data: {
-            missingBranches: 'string & { foo: void; }',
-          },
-        },
-      ],
-    },
+    // switch (foobar) {
+    //   case 'bar': {
+    //     result = 42;
+    //     break;
+    //   }
+    // }
+    //       `,
+    //       errors: [
+    //         {
+    //           messageId: 'switchIsNotExhaustive',
+    //           line: 7,
+    //           column: 9,
+    //           data: {
+    //             missingBranches: 'string & { foo: void; }',
+    //           },
+    //         },
+    //       ],
+    //     },
     {
       code: `
 const a = Symbol('a');
