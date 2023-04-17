@@ -4,10 +4,13 @@ exports[`javascript classes class-private-identifier-method.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -37,6 +40,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               14,
@@ -44,6 +48,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -64,6 +69,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -82,12 +88,17 @@ Object {
                 18,
                 23,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 13,
@@ -99,11 +110,13 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 27,
                 38,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "constructor",
             "loc": Object {
@@ -116,6 +129,7 @@ Object {
                 "line": 4,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               27,
@@ -123,11 +137,13 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
                 "body": Array [
                   Object {
+                    "directive": undefined,
                     "expression": Object {
                       "arguments": Array [],
                       "callee": Object {
@@ -200,6 +216,7 @@ Object {
                         58,
                       ],
                       "type": "CallExpression",
+                      "typeParameters": undefined,
                     },
                     "loc": Object {
                       "end": Object {
@@ -234,6 +251,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -252,7 +270,9 @@ Object {
                 38,
                 63,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -272,7 +292,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 9,
@@ -284,12 +307,15 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -305,7 +331,9 @@ Object {
         65,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

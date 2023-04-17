@@ -4,6 +4,7 @@ exports[`jsx member-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [],
         "closingElement": Object {

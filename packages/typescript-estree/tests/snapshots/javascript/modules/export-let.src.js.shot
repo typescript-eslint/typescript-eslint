@@ -8,7 +8,9 @@ Object {
       "declaration": Object {
         "declarations": Array [
           Object {
+            "definite": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 14,
@@ -20,11 +22,13 @@ Object {
                 },
               },
               "name": "foo",
+              "optional": false,
               "range": Array [
                 11,
                 14,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": Object {
               "loc": Object {
@@ -62,6 +66,7 @@ Object {
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "let",
         "loc": Object {
           "end": Object {

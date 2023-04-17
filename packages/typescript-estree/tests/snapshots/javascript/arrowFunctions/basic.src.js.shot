@@ -4,6 +4,7 @@ exports[`javascript arrowFunctions basic.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
@@ -43,7 +44,9 @@ Object {
           0,
           12,
         ],
+        "returnType": undefined,
         "type": "ArrowFunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

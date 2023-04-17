@@ -41,6 +41,7 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "loc": Object {
           "end": Object {

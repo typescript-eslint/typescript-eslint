@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -18,11 +20,13 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               4,
               5,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "async": false,
@@ -44,6 +48,7 @@ Object {
               ],
               "type": "BlockStatement",
             },
+            "declare": false,
             "expression": false,
             "generator": false,
             "id": null,
@@ -59,6 +64,7 @@ Object {
             },
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 18,
@@ -70,14 +76,17 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   17,
                   18,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
                 "argument": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 24,
@@ -89,12 +98,15 @@ Object {
                     },
                   },
                   "name": "b",
+                  "optional": false,
                   "range": Array [
                     23,
                     24,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 24,
@@ -105,18 +117,23 @@ Object {
                     "line": 1,
                   },
                 },
+                "optional": false,
                 "range": Array [
                   20,
                   24,
                 ],
                 "type": "RestElement",
+                "typeAnnotation": undefined,
+                "value": undefined,
               },
             ],
             "range": Array [
               8,
               28,
             ],
+            "returnType": undefined,
             "type": "FunctionExpression",
+            "typeParameters": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -135,6 +152,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {

@@ -4,11 +4,15 @@ exports[`typescript basics class-with-private-parameter-properties.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 13,
@@ -20,11 +24,13 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 14,
                 25,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "constructor",
             "loc": Object {
@@ -37,6 +43,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               14,
@@ -44,6 +51,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -64,6 +72,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -80,7 +89,8 @@ Object {
               "params": Array [
                 Object {
                   "accessibility": "private",
-                  "export": undefined,
+                  "decorators": Array [],
+                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 39,
@@ -91,8 +101,9 @@ Object {
                       "line": 2,
                     },
                   },
-                  "override": undefined,
+                  "override": false,
                   "parameter": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 39,
@@ -104,6 +115,7 @@ Object {
                       },
                     },
                     "name": "firstName",
+                    "optional": false,
                     "range": Array [
                       34,
                       51,
@@ -148,13 +160,14 @@ Object {
                     26,
                     51,
                   ],
-                  "readonly": undefined,
-                  "static": undefined,
+                  "readonly": false,
+                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "private",
-                  "export": undefined,
+                  "decorators": Array [],
+                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 47,
@@ -165,8 +178,9 @@ Object {
                       "line": 3,
                     },
                   },
-                  "override": undefined,
+                  "override": false,
                   "parameter": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 47,
@@ -178,6 +192,7 @@ Object {
                       },
                     },
                     "name": "lastName",
+                    "optional": false,
                     "range": Array [
                       84,
                       100,
@@ -223,12 +238,13 @@ Object {
                     100,
                   ],
                   "readonly": true,
-                  "static": undefined,
+                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "private",
-                  "export": undefined,
+                  "decorators": Array [],
+                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 38,
@@ -239,9 +255,11 @@ Object {
                       "line": 4,
                     },
                   },
-                  "override": undefined,
+                  "override": false,
                   "parameter": Object {
+                    "decorators": Array [],
                     "left": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 33,
@@ -253,6 +271,7 @@ Object {
                         },
                       },
                       "name": "age",
+                      "optional": false,
                       "range": Array [
                         124,
                         135,
@@ -303,6 +322,7 @@ Object {
                         "line": 4,
                       },
                     },
+                    "optional": false,
                     "range": Array [
                       124,
                       140,
@@ -327,18 +347,20 @@ Object {
                       "value": 30,
                     },
                     "type": "AssignmentPattern",
+                    "typeAnnotation": undefined,
                   },
                   "range": Array [
                     116,
                     140,
                   ],
-                  "readonly": undefined,
-                  "static": undefined,
+                  "readonly": false,
+                  "static": false,
                   "type": "TSParameterProperty",
                 },
                 Object {
                   "accessibility": "private",
-                  "export": undefined,
+                  "decorators": Array [],
+                  "export": false,
                   "loc": Object {
                     "end": Object {
                       "column": 55,
@@ -349,9 +371,11 @@ Object {
                       "line": 5,
                     },
                   },
-                  "override": undefined,
+                  "override": false,
                   "parameter": Object {
+                    "decorators": Array [],
                     "left": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 47,
@@ -363,6 +387,7 @@ Object {
                         },
                       },
                       "name": "student",
+                      "optional": false,
                       "range": Array [
                         173,
                         189,
@@ -413,6 +438,7 @@ Object {
                         "line": 5,
                       },
                     },
+                    "optional": false,
                     "range": Array [
                       173,
                       197,
@@ -437,13 +463,14 @@ Object {
                       "value": false,
                     },
                     "type": "AssignmentPattern",
+                    "typeAnnotation": undefined,
                   },
                   "range": Array [
                     156,
                     197,
                   ],
                   "readonly": true,
-                  "static": undefined,
+                  "static": false,
                   "type": "TSParameterProperty",
                 },
               ],
@@ -451,7 +478,9 @@ Object {
                 25,
                 201,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -471,7 +500,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 9,
@@ -483,12 +515,15 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -504,7 +539,9 @@ Object {
         203,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

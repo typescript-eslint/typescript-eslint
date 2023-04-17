@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -28,7 +28,6 @@ export default util.createRule<Options, MessageId>({
     docs: {
       description:
         'Require expressions of type void to appear in statement position',
-      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {
@@ -80,10 +79,8 @@ export default util.createRule<Options, MessageId>({
           | TSESTree.CallExpression
           | TSESTree.TaggedTemplateExpression,
       ): void {
-        const parserServices = util.getParserServices(context);
-        const checker = parserServices.program.getTypeChecker();
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-        const type = util.getConstrainedTypeAtLocation(checker, tsNode);
+        const services = util.getParserServices(context);
+        const type = util.getConstrainedTypeAtLocation(services, node);
         if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
           // not a void expression
           return;
@@ -186,7 +183,7 @@ export default util.createRule<Options, MessageId>({
                 // put a semicolon at the beginning of the line
                 newReturnStmtText = `;${newReturnStmtText}`;
               }
-              if (returnStmt.parent?.type !== AST_NODE_TYPES.BlockStatement) {
+              if (returnStmt.parent.type !== AST_NODE_TYPES.BlockStatement) {
                 // e.g. `if (cond) return console.error();`
                 // add braces if not inside a block
                 newReturnStmtText = `{ ${newReturnStmtText} }`;
@@ -205,6 +202,7 @@ export default util.createRule<Options, MessageId>({
             suggest: [{ messageId: 'voidExprWrapVoid', fix: wrapVoidFix }],
           });
         }
+
         context.report({
           node,
           messageId: 'invalidVoidExpr',
@@ -225,6 +223,11 @@ export default util.createRule<Options, MessageId>({
         node.parent,
         util.NullThrowsReasons.MissingParent,
       );
+      if (parent.type === AST_NODE_TYPES.SequenceExpression) {
+        if (node !== parent.expressions[parent.expressions.length - 1]) {
+          return null;
+        }
+      }
 
       if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
         // e.g. `{ console.log("foo"); }`

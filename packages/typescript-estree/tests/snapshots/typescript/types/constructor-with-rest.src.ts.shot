@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 35,
@@ -18,6 +20,7 @@ Object {
               },
             },
             "name": "f",
+            "optional": false,
             "range": Array [
               4,
               35,
@@ -54,6 +57,7 @@ Object {
                 "params": Array [
                   Object {
                     "argument": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 16,
@@ -65,12 +69,15 @@ Object {
                         },
                       },
                       "name": "a",
+                      "optional": false,
                       "range": Array [
                         15,
                         16,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 26,
@@ -81,6 +88,7 @@ Object {
                         "line": 1,
                       },
                     },
+                    "optional": false,
                     "range": Array [
                       12,
                       26,
@@ -137,6 +145,7 @@ Object {
                         "type": "TSArrayType",
                       },
                     },
+                    "value": undefined,
                   },
                 ],
                 "range": Array [
@@ -178,6 +187,7 @@ Object {
                   },
                 },
                 "type": "TSConstructorType",
+                "typeParameters": undefined,
               },
             },
           },
@@ -199,6 +209,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {

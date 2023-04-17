@@ -212,10 +212,7 @@ export default util.createRule<Options, MessageIds>({
       const bTypeParams =
         b.typeParameters !== undefined ? b.typeParameters.params : undefined;
 
-      if (
-        ignoreDifferentlyNamedParameters &&
-        a.params.length === b.params.length
-      ) {
+      if (ignoreDifferentlyNamedParameters) {
         for (let i = 0; i < a.params.length; i += 1) {
           if (
             a.params[i].type === b.params[i].type &&
@@ -424,8 +421,7 @@ export default util.createRule<Options, MessageIds>({
 
       return (
         (a.type === AST_NODE_TYPES.RestElement) ===
-          (b.type === AST_NODE_TYPES.RestElement) &&
-        (optionalA !== undefined) === (optionalB !== undefined)
+          (b.type === AST_NODE_TYPES.RestElement) && optionalA === optionalB
       );
     }
 
@@ -588,9 +584,8 @@ function getExportingNode(
   | TSESTree.ExportNamedDeclaration
   | TSESTree.ExportDefaultDeclaration
   | undefined {
-  return node.parent &&
-    (node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
-      node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration)
+  return node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
+    node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration
     ? node.parent
     : undefined;
 }

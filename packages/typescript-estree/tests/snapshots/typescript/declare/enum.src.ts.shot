@@ -4,8 +4,10 @@ exports[`typescript declare enum.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "const": false,
       "declare": true,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 16,
@@ -17,11 +19,13 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           13,
           16,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -35,7 +39,9 @@ Object {
       },
       "members": Array [
         Object {
+          "computed": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -47,12 +53,15 @@ Object {
               },
             },
             "name": "Bar",
+            "optional": false,
             "range": Array [
               23,
               26,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
+          "initializer": undefined,
           "loc": Object {
             "end": Object {
               "column": 7,
@@ -70,7 +79,9 @@ Object {
           "type": "TSEnumMember",
         },
         Object {
+          "computed": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -82,12 +93,15 @@ Object {
               },
             },
             "name": "Baz",
+            "optional": false,
             "range": Array [
               32,
               35,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
+          "initializer": undefined,
           "loc": Object {
             "end": Object {
               "column": 7,

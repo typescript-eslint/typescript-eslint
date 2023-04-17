@@ -19,7 +19,9 @@ exports[`AST Fixtures declaration ExportNamedDeclaration identifier-braced AST A
             type: 'ExportSpecifier',
             exported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'a',
+-             optional: false,
 
               range: [9, 10],
               loc: {
@@ -30,7 +32,9 @@ exports[`AST Fixtures declaration ExportNamedDeclaration identifier-braced AST A
             exportKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'a',
+-             optional: false,
 
               range: [9, 10],
               loc: {

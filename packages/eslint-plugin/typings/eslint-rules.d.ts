@@ -143,7 +143,7 @@ declare module 'eslint/lib/rules/indent' {
 
 declare module 'eslint/lib/rules/key-spacing' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-  import type { RuleFunction } from '@typescript-eslint/utils/dist/ts-eslint';
+  import type { RuleFunction } from '@typescript-eslint/utils/ts-eslint';
 
   type Options = [
     {
@@ -195,7 +195,7 @@ declare module 'eslint/lib/rules/key-spacing' {
 
 declare module 'eslint/lib/rules/keyword-spacing' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-  import type { RuleFunction } from '@typescript-eslint/utils/dist/ts-eslint';
+  import type { RuleFunction } from '@typescript-eslint/utils/ts-eslint';
 
   type Options = [
     {
@@ -661,6 +661,21 @@ declare module 'eslint/lib/rules/quotes' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/block-spacing' {
+  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+  const rule: TSESLint.RuleModule<
+    'missing' | 'extra',
+    ['always' | 'never'],
+    {
+      BlockStatement(node: TSESTree.BlockStatement): void;
+      StaticBlock(node: TSESTree.StaticBlock): void;
+      SwitchStatement(node: TSESTree.SwitchStatement): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/brace-style' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
@@ -710,6 +725,44 @@ declare module 'eslint/lib/rules/no-extra-semi' {
           | TSESTree.PropertyDefinition
           | TSESTree.StaticBlock,
       ) => void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/lines-around-comment' {
+  import type { TSESLint } from '@typescript-eslint/utils';
+
+  const rule: TSESLint.RuleModule<
+    'after' | 'before',
+    [
+      {
+        beforeBlockComment?: boolean;
+        afterBlockComment?: boolean;
+        beforeLineComment?: boolean;
+        afterLineComment?: boolean;
+        allowBlockStart?: boolean;
+        allowBlockEnd?: boolean;
+        allowClassStart?: boolean;
+        allowClassEnd?: boolean;
+        allowObjectStart?: boolean;
+        allowObjectEnd?: boolean;
+        allowArrayStart?: boolean;
+        allowArrayEnd?: boolean;
+        allowInterfaceStart?: boolean;
+        allowInterfaceEnd?: boolean;
+        allowTypeStart?: boolean;
+        allowTypeEnd?: boolean;
+        allowEnumStart?: boolean;
+        allowEnumEnd?: boolean;
+        allowModuleStart?: boolean;
+        allowModuleEnd?: boolean;
+        ignorePattern?: string;
+        applyDefaultIgnorePatterns?: boolean;
+      }?,
+    ],
+    {
+      Program(): void;
     }
   >;
   export = rule;
@@ -844,32 +897,6 @@ declare module 'eslint/lib/rules/comma-dangle' {
         node: TSESTree.TSTypeParameterDeclaration,
       ): void;
       TSTupleType(node: TSESTree.TSTupleType): void;
-    }
-  >;
-  export = rule;
-}
-
-declare module 'eslint/lib/rules/no-duplicate-imports' {
-  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-
-  const rule: TSESLint.RuleModule<
-    | 'import'
-    | 'importAs'
-    | 'export'
-    | 'exportAs'
-    | 'importType'
-    | 'importTypeAs'
-    | 'exportType'
-    | 'exportTypeAs',
-    [
-      {
-        includeExports?: boolean;
-      },
-    ],
-    {
-      ImportDeclaration(node: TSESTree.ImportDeclaration): void;
-      ExportNamedDeclaration?(node: TSESTree.ExportNamedDeclaration): void;
-      ExportAllDeclaration?(node: TSESTree.ExportAllDeclaration): void;
     }
   >;
   export = rule;

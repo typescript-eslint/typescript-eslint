@@ -4,7 +4,7 @@ import * as path from 'path';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
-import type { ASTAndProgram } from './shared';
+import type { ASTAndDefiniteProgram } from './shared';
 import { CORE_COMPILER_OPTIONS, getAstFromProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
@@ -12,13 +12,13 @@ const log = debug('typescript-eslint:typescript-estree:useProvidedProgram');
 function useProvidedPrograms(
   programInstances: Iterable<ts.Program>,
   parseSettings: ParseSettings,
-): ASTAndProgram | undefined {
+): ASTAndDefiniteProgram | undefined {
   log(
     'Retrieving ast for %s from provided program instance(s)',
     parseSettings.filePath,
   );
 
-  let astAndProgram: ASTAndProgram | undefined;
+  let astAndProgram: ASTAndDefiniteProgram | undefined;
   for (const programInstance of programInstances) {
     astAndProgram = getAstFromProgram(programInstance, parseSettings);
     // Stop at the first applicable program instance

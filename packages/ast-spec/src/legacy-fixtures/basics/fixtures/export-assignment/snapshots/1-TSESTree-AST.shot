@@ -1,0 +1,37 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics export-assignment TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSExportAssignment {
+      type: "TSExportAssignment",
+      expression: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "foo",
+        optional: false,
+
+        range: [82, 85],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 12, line: 3 },
+        },
+      },
+
+      range: [73, 86],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 13, line: 3 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 87],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

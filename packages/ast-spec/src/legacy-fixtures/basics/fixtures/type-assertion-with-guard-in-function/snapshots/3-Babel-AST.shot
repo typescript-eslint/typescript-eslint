@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics type-assertion-with-guard-in-function Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [
+          ReturnStatement {
+            type: "ReturnStatement",
+            argument: null,
+
+            range: [134, 141],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 9, line: 4 },
+            },
+          },
+        ],
+
+        range: [130, 143],
+        loc: {
+          start: { column: 57, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "assertsStringGuard",
+
+        range: [82, 100],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 27, line: 3 },
+        },
+      },
+      params: [
+        Identifier {
+          type: "Identifier",
+          name: "x",
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSAnyKeyword {
+              type: "TSAnyKeyword",
+
+              range: [104, 107],
+              loc: {
+                start: { column: 31, line: 3 },
+                end: { column: 34, line: 3 },
+              },
+            },
+
+            range: [102, 107],
+            loc: {
+              start: { column: 29, line: 3 },
+              end: { column: 34, line: 3 },
+            },
+          },
+
+          range: [101, 107],
+          loc: {
+            start: { column: 28, line: 3 },
+            end: { column: 34, line: 3 },
+          },
+        },
+      ],
+      returnType: TSTypeAnnotation {
+        type: "TSTypeAnnotation",
+        typeAnnotation: TSTypePredicate {
+          type: "TSTypePredicate",
+          asserts: true,
+          parameterName: Identifier {
+            type: "Identifier",
+            name: "x",
+
+            range: [118, 119],
+            loc: {
+              start: { column: 45, line: 3 },
+              end: { column: 46, line: 3 },
+            },
+          },
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSStringKeyword {
+              type: "TSStringKeyword",
+
+              range: [123, 129],
+              loc: {
+                start: { column: 50, line: 3 },
+                end: { column: 56, line: 3 },
+              },
+            },
+
+            range: [123, 129],
+            loc: {
+              start: { column: 50, line: 3 },
+              end: { column: 56, line: 3 },
+            },
+          },
+
+          range: [110, 129],
+          loc: {
+            start: { column: 37, line: 3 },
+            end: { column: 56, line: 3 },
+          },
+        },
+
+        range: [108, 129],
+        loc: {
+          start: { column: 35, line: 3 },
+          end: { column: 56, line: 3 },
+        },
+      },
+
+      range: [73, 143],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 144],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

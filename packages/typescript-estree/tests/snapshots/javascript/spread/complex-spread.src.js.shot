@@ -4,8 +4,10 @@ exports[`javascript spread complex-spread.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 102,
@@ -16,10 +18,12 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "properties": Array [
             Object {
               "computed": false,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 3,
@@ -31,11 +35,13 @@ Object {
                   },
                 },
                 "name": "x",
+                "optional": false,
                 "range": Array [
                   2,
                   3,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "init",
               "loc": Object {
@@ -49,6 +55,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 2,
                 22,
@@ -56,6 +63,7 @@ Object {
               "shorthand": false,
               "type": "Property",
               "value": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 22,
@@ -66,10 +74,12 @@ Object {
                     "line": 1,
                   },
                 },
+                "optional": false,
                 "properties": Array [
                   Object {
                     "computed": false,
                     "key": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 9,
@@ -81,11 +91,13 @@ Object {
                         },
                       },
                       "name": "ka",
+                      "optional": false,
                       "range": Array [
                         7,
                         9,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "kind": "init",
                     "loc": Object {
@@ -99,6 +111,7 @@ Object {
                       },
                     },
                     "method": false,
+                    "optional": false,
                     "range": Array [
                       7,
                       9,
@@ -106,6 +119,7 @@ Object {
                     "shorthand": true,
                     "type": "Property",
                     "value": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 9,
@@ -117,15 +131,18 @@ Object {
                         },
                       },
                       "name": "ka",
+                      "optional": false,
                       "range": Array [
                         7,
                         9,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                   },
                   Object {
                     "argument": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 20,
@@ -137,12 +154,15 @@ Object {
                         },
                       },
                       "name": "nested",
+                      "optional": false,
                       "range": Array [
                         14,
                         20,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 20,
@@ -153,11 +173,14 @@ Object {
                         "line": 1,
                       },
                     },
+                    "optional": false,
                     "range": Array [
                       11,
                       20,
                     ],
                     "type": "RestElement",
+                    "typeAnnotation": undefined,
+                    "value": undefined,
                   },
                 ],
                 "range": Array [
@@ -165,11 +188,13 @@ Object {
                   22,
                 ],
                 "type": "ObjectPattern",
+                "typeAnnotation": undefined,
               },
             },
             Object {
               "computed": false,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 25,
@@ -181,11 +206,13 @@ Object {
                   },
                 },
                 "name": "y",
+                "optional": false,
                 "range": Array [
                   24,
                   25,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "init",
               "loc": Object {
@@ -199,6 +226,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 24,
                 32,
@@ -206,6 +234,7 @@ Object {
               "shorthand": false,
               "type": "Property",
               "value": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 32,
@@ -217,16 +246,19 @@ Object {
                   },
                 },
                 "name": "other",
+                "optional": false,
                 "range": Array [
                   27,
                   32,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
             },
             Object {
               "computed": false,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 35,
@@ -238,11 +270,13 @@ Object {
                   },
                 },
                 "name": "f",
+                "optional": false,
                 "range": Array [
                   34,
                   35,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "init",
               "loc": Object {
@@ -256,6 +290,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 34,
                 92,
@@ -263,6 +298,7 @@ Object {
               "shorthand": false,
               "type": "Property",
               "value": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 92,
@@ -273,10 +309,12 @@ Object {
                     "line": 1,
                   },
                 },
+                "optional": false,
                 "properties": Array [
                   Object {
                     "computed": false,
                     "key": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 40,
@@ -288,11 +326,13 @@ Object {
                         },
                       },
                       "name": "a",
+                      "optional": false,
                       "range": Array [
                         39,
                         40,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "kind": "init",
                     "loc": Object {
@@ -306,6 +346,7 @@ Object {
                       },
                     },
                     "method": false,
+                    "optional": false,
                     "range": Array [
                       39,
                       64,
@@ -313,8 +354,10 @@ Object {
                     "shorthand": false,
                     "type": "Property",
                     "value": Object {
+                      "decorators": Array [],
                       "elements": Array [
                         Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 57,
@@ -325,9 +368,11 @@ Object {
                               "line": 1,
                             },
                           },
+                          "optional": false,
                           "properties": Array [
                             Object {
                               "argument": Object {
+                                "decorators": Array [],
                                 "loc": Object {
                                   "end": Object {
                                     "column": 55,
@@ -339,12 +384,15 @@ Object {
                                   },
                                 },
                                 "name": "nested2",
+                                "optional": false,
                                 "range": Array [
                                   48,
                                   55,
                                 ],
                                 "type": "Identifier",
+                                "typeAnnotation": undefined,
                               },
+                              "decorators": Array [],
                               "loc": Object {
                                 "end": Object {
                                   "column": 55,
@@ -355,11 +403,14 @@ Object {
                                   "line": 1,
                                 },
                               },
+                              "optional": false,
                               "range": Array [
                                 45,
                                 55,
                               ],
                               "type": "RestElement",
+                              "typeAnnotation": undefined,
+                              "value": undefined,
                             },
                           ],
                           "range": Array [
@@ -367,9 +418,11 @@ Object {
                             57,
                           ],
                           "type": "ObjectPattern",
+                          "typeAnnotation": undefined,
                         },
                         Object {
                           "argument": Object {
+                            "decorators": Array [],
                             "loc": Object {
                               "end": Object {
                                 "column": 63,
@@ -381,12 +434,15 @@ Object {
                               },
                             },
                             "name": "y",
+                            "optional": false,
                             "range": Array [
                               62,
                               63,
                             ],
                             "type": "Identifier",
+                            "typeAnnotation": undefined,
                           },
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 63,
@@ -397,11 +453,14 @@ Object {
                               "line": 1,
                             },
                           },
+                          "optional": false,
                           "range": Array [
                             59,
                             63,
                           ],
                           "type": "RestElement",
+                          "typeAnnotation": undefined,
+                          "value": undefined,
                         },
                       ],
                       "loc": Object {
@@ -414,16 +473,19 @@ Object {
                           "line": 1,
                         },
                       },
+                      "optional": false,
                       "range": Array [
                         42,
                         64,
                       ],
                       "type": "ArrayPattern",
+                      "typeAnnotation": undefined,
                     },
                   },
                   Object {
                     "computed": false,
                     "key": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 67,
@@ -435,11 +497,13 @@ Object {
                         },
                       },
                       "name": "b",
+                      "optional": false,
                       "range": Array [
                         66,
                         67,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "kind": "init",
                     "loc": Object {
@@ -453,6 +517,7 @@ Object {
                       },
                     },
                     "method": false,
+                    "optional": false,
                     "range": Array [
                       66,
                       80,
@@ -460,6 +525,7 @@ Object {
                     "shorthand": false,
                     "type": "Property",
                     "value": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 80,
@@ -470,10 +536,12 @@ Object {
                           "line": 1,
                         },
                       },
+                      "optional": false,
                       "properties": Array [
                         Object {
                           "computed": false,
                           "key": Object {
+                            "decorators": Array [],
                             "loc": Object {
                               "end": Object {
                                 "column": 72,
@@ -485,11 +553,13 @@ Object {
                               },
                             },
                             "name": "z",
+                            "optional": false,
                             "range": Array [
                               71,
                               72,
                             ],
                             "type": "Identifier",
+                            "typeAnnotation": undefined,
                           },
                           "kind": "init",
                           "loc": Object {
@@ -503,6 +573,7 @@ Object {
                             },
                           },
                           "method": false,
+                          "optional": false,
                           "range": Array [
                             71,
                             72,
@@ -510,6 +581,7 @@ Object {
                           "shorthand": true,
                           "type": "Property",
                           "value": Object {
+                            "decorators": Array [],
                             "loc": Object {
                               "end": Object {
                                 "column": 72,
@@ -521,15 +593,18 @@ Object {
                               },
                             },
                             "name": "z",
+                            "optional": false,
                             "range": Array [
                               71,
                               72,
                             ],
                             "type": "Identifier",
+                            "typeAnnotation": undefined,
                           },
                         },
                         Object {
                           "argument": Object {
+                            "decorators": Array [],
                             "loc": Object {
                               "end": Object {
                                 "column": 78,
@@ -541,12 +616,15 @@ Object {
                               },
                             },
                             "name": "c",
+                            "optional": false,
                             "range": Array [
                               77,
                               78,
                             ],
                             "type": "Identifier",
+                            "typeAnnotation": undefined,
                           },
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 78,
@@ -557,11 +635,14 @@ Object {
                               "line": 1,
                             },
                           },
+                          "optional": false,
                           "range": Array [
                             74,
                             78,
                           ],
                           "type": "RestElement",
+                          "typeAnnotation": undefined,
+                          "value": undefined,
                         },
                       ],
                       "range": Array [
@@ -569,10 +650,12 @@ Object {
                         80,
                       ],
                       "type": "ObjectPattern",
+                      "typeAnnotation": undefined,
                     },
                   },
                   Object {
                     "argument": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 90,
@@ -584,12 +667,15 @@ Object {
                         },
                       },
                       "name": "rest2",
+                      "optional": false,
                       "range": Array [
                         85,
                         90,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 90,
@@ -600,11 +686,14 @@ Object {
                         "line": 1,
                       },
                     },
+                    "optional": false,
                     "range": Array [
                       82,
                       90,
                     ],
                     "type": "RestElement",
+                    "typeAnnotation": undefined,
+                    "value": undefined,
                   },
                 ],
                 "range": Array [
@@ -612,10 +701,12 @@ Object {
                   92,
                 ],
                 "type": "ObjectPattern",
+                "typeAnnotation": undefined,
               },
             },
             Object {
               "argument": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 101,
@@ -627,12 +718,15 @@ Object {
                   },
                 },
                 "name": "rest",
+                "optional": false,
                 "range": Array [
                   97,
                   101,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 101,
@@ -643,11 +737,14 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "range": Array [
                 94,
                 101,
               ],
               "type": "RestElement",
+              "typeAnnotation": undefined,
+              "value": undefined,
             },
           ],
           "range": Array [
@@ -655,6 +752,7 @@ Object {
             102,
           ],
           "type": "ObjectPattern",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -672,6 +770,7 @@ Object {
           112,
         ],
         "right": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 112,
@@ -683,11 +782,13 @@ Object {
             },
           },
           "name": "complex",
+          "optional": false,
           "range": Array [
             105,
             112,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "AssignmentExpression",
       },

@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 14,
@@ -18,11 +20,13 @@ Object {
               },
             },
             "name": "isString",
+            "optional": false,
             "range": Array [
               6,
               14,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "async": false,
@@ -32,6 +36,7 @@ Object {
                   "argument": Object {
                     "left": Object {
                       "argument": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 19,
@@ -43,11 +48,13 @@ Object {
                           },
                         },
                         "name": "x",
+                        "optional": false,
                         "range": Array [
                           62,
                           63,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "loc": Object {
                         "end": Object {
@@ -151,6 +158,7 @@ Object {
             },
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 24,
@@ -162,6 +170,7 @@ Object {
                   },
                 },
                 "name": "x",
+                "optional": false,
                 "range": Array [
                   18,
                   24,
@@ -236,6 +245,7 @@ Object {
                   },
                 },
                 "parameterName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 28,
@@ -247,11 +257,13 @@ Object {
                     },
                   },
                   "name": "x",
+                  "optional": false,
                   "range": Array [
                     27,
                     28,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   27,
@@ -295,6 +307,7 @@ Object {
               },
             },
             "type": "ArrowFunctionExpression",
+            "typeParameters": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -313,6 +326,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {

@@ -1,21 +1,24 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "5.51.0",
+  "version": "5.58.0",
   "description": "TypeScript scope analyser for ESLint",
-  "keywords": [
-    "eslint",
-    "typescript",
-    "estree"
-  ],
-  "engines": {
-    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
-  },
   "files": [
     "dist",
     "package.json",
     "README.md",
     "LICENSE"
   ],
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
@@ -25,25 +28,28 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "keywords": [
+    "eslint",
+    "typescript",
+    "estree"
+  ],
   "scripts": {
     "build": "nx build",
     "clean": "nx clean",
     "clean-fixtures": "nx clean-fixtures",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate:lib": "nx generate-lib",
+    "generate-lib": "nx generate-lib",
     "lint": "nx lint",
     "test": "nx test --code-coverage",
     "typecheck": "nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "5.51.0",
-    "@typescript-eslint/visitor-keys": "5.51.0"
+    "@typescript-eslint/types": "5.58.0",
+    "@typescript-eslint/visitor-keys": "5.58.0"
   },
   "devDependencies": {
     "@types/glob": "*",
-    "@typescript-eslint/typescript-estree": "5.51.0",
+    "@typescript-eslint/typescript-estree": "5.58.0",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
@@ -57,9 +63,9 @@
     "url": "https://opencollective.com/typescript-eslint"
   },
   "typesVersions": {
-    "<3.8": {
+    "<4.7": {
       "*": [
-        "_ts3.4/*"
+        "_ts4.2/*"
       ]
     }
   }

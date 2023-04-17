@@ -42,7 +42,6 @@ const ALLOWED_OPTIONS: Map<string, ALLOWED_VALUE> = new Map<
   keyof AnalyzeOptions,
   ALLOWED_VALUE
 >([
-  ['ecmaVersion', ['number']],
   ['globalReturn', ['boolean']],
   ['impliedStrict', ['boolean']],
   ['jsxPragma', ['string']],
@@ -52,7 +51,7 @@ const ALLOWED_OPTIONS: Map<string, ALLOWED_VALUE> = new Map<
 ]);
 
 function nestDescribe(
-  fixture: typeof fixtures[number],
+  fixture: (typeof fixtures)[number],
   segments = fixture.segments,
 ): void {
   if (segments.length > 0) {

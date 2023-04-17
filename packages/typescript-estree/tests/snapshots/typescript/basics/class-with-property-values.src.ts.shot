@@ -4,12 +4,17 @@ exports[`typescript basics class-with-property-values.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 3,
@@ -21,11 +26,13 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 14,
                 15,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -37,14 +44,16 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               14,
               20,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": Object {
               "loc": Object {
                 "end": Object {
@@ -66,9 +75,13 @@ Object {
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 3,
@@ -80,11 +93,13 @@ Object {
                 },
               },
               "name": "b",
+              "optional": false,
               "range": Array [
                 23,
                 24,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -96,14 +111,16 @@ Object {
                 "line": 3,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               23,
               30,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": Object {
               "loc": Object {
                 "end": Object {
@@ -124,9 +141,13 @@ Object {
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 3,
@@ -138,11 +159,13 @@ Object {
                 },
               },
               "name": "c",
+              "optional": false,
               "range": Array [
                 33,
                 34,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -154,14 +177,16 @@ Object {
                 "line": 4,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               33,
               40,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": Object {
               "elements": Array [],
               "loc": Object {
@@ -182,9 +207,13 @@ Object {
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 3,
@@ -196,11 +225,13 @@ Object {
                 },
               },
               "name": "d",
+              "optional": false,
               "range": Array [
                 43,
                 44,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -212,14 +243,16 @@ Object {
                 "line": 5,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               43,
               50,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": Object {
               "loc": Object {
                 "end": Object {
@@ -241,9 +274,13 @@ Object {
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 3,
@@ -255,11 +292,13 @@ Object {
                 },
               },
               "name": "e",
+              "optional": false,
               "range": Array [
                 53,
                 54,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -271,14 +310,16 @@ Object {
                 "line": 6,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               53,
               80,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
+            "typeAnnotation": undefined,
             "value": Object {
               "arguments": Array [
                 Object {
@@ -357,6 +398,7 @@ Object {
                 },
               ],
               "callee": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 15,
@@ -368,11 +410,13 @@ Object {
                   },
                 },
                 "name": "Array",
+                "optional": false,
                 "range": Array [
                   61,
                   66,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -389,6 +433,7 @@ Object {
                 79,
               ],
               "type": "NewExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -408,7 +453,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 9,
@@ -420,12 +468,15 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -441,7 +492,9 @@ Object {
         82,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

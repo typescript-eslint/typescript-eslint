@@ -5,11 +5,13 @@ function getFixturesRootDir(): string {
   return path.join(__dirname, 'fixtures');
 }
 
-const { batchedSingleLineTests, RuleTester, noFormat } = ESLintUtils;
+const { batchedSingleLineTests } = ESLintUtils;
 export {
+  RuleTester,
   RunTests,
   ValidTestCase,
   InvalidTestCase,
-} from '@typescript-eslint/utils/dist/eslint-utils/rule-tester/RuleTester';
+  noFormat,
+} from '@typescript-eslint/utils/eslint-utils/rule-tester';
 
-export { batchedSingleLineTests, getFixturesRootDir, noFormat, RuleTester };
+export { batchedSingleLineTests, getFixturesRootDir };

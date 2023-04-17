@@ -1,0 +1,105 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export-object-type TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: [],
+      declaration: TSTypeAliasDeclaration {
+        type: "TSTypeAliasDeclaration",
+        declare: false,
+        id: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "TestClassProps",
+          optional: false,
+
+          range: [85, 99],
+          loc: {
+            start: { column: 12, line: 3 },
+            end: { column: 26, line: 3 },
+          },
+        },
+        typeAnnotation: TSTypeLiteral {
+          type: "TSTypeLiteral",
+          members: [
+            TSPropertySignature {
+              type: "TSPropertySignature",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "count",
+                optional: false,
+
+                range: [106, 111],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 7, line: 4 },
+                },
+              },
+              optional: false,
+              readonly: false,
+              static: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSNumberKeyword {
+                  type: "TSNumberKeyword",
+
+                  range: [113, 119],
+                  loc: {
+                    start: { column: 9, line: 4 },
+                    end: { column: 15, line: 4 },
+                  },
+                },
+
+                range: [111, 119],
+                loc: {
+                  start: { column: 7, line: 4 },
+                  end: { column: 15, line: 4 },
+                },
+              },
+
+              range: [106, 120],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 16, line: 4 },
+              },
+            },
+          ],
+
+          range: [102, 122],
+          loc: {
+            start: { column: 29, line: 3 },
+            end: { column: 1, line: 5 },
+          },
+        },
+
+        range: [80, 123],
+        loc: {
+          start: { column: 7, line: 3 },
+          end: { column: 2, line: 5 },
+        },
+      },
+      exportKind: "type",
+      source: null,
+      specifiers: [],
+
+      range: [73, 123],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 2, line: 5 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 124],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

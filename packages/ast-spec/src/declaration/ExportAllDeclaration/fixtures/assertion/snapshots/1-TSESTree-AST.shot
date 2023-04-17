@@ -3,15 +3,17 @@
 exports[`AST Fixtures declaration ExportAllDeclaration assertion TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportAllDeclaration {
       type: "ExportAllDeclaration",
-      assertions: Array [
+      assertions: [
         ImportAttribute {
           type: "ImportAttribute",
           key: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "type",
+            optional: false,
 
             range: [29, 33],
             loc: {

@@ -1,5 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { isTypeFlagSet, unionTypeParts } from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
@@ -18,7 +18,6 @@ export default createRule({
     docs: {
       description:
         'Require switch-case statements to be exhaustive with union type',
-      recommended: false,
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
@@ -32,19 +31,14 @@ export default createRule({
   defaultOptions: [],
   create(context) {
     const sourceCode = context.getSourceCode();
-    const service = getParserServices(context);
-    const checker = service.program.getTypeChecker();
-    const compilerOptions = service.program.getCompilerOptions();
-
-    function getNodeType(node: TSESTree.Node): ts.Type {
-      const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-      return getConstrainedTypeAtLocation(checker, tsNode);
-    }
+    const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
+    const compilerOptions = services.program.getCompilerOptions();
 
     function fixSwitch(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.SwitchStatement,
-      missingBranchTypes: Array<ts.Type>,
+      missingBranchTypes: ts.Type[],
       symbolName?: string,
     ): TSESLint.RuleFix | null {
       const lastCase =
@@ -114,11 +108,14 @@ export default createRule({
     }
 
     function checkSwitchExhaustive(node: TSESTree.SwitchStatement): void {
-      const discriminantType = getNodeType(node.discriminant);
+      const discriminantType = getConstrainedTypeAtLocation(
+        services,
+        node.discriminant,
+      );
       const symbolName = discriminantType.getSymbol()?.escapedName;
 
       if (discriminantType.isUnion()) {
-        const unionTypes = unionTypeParts(discriminantType);
+        const unionTypes = tsutils.unionTypeParts(discriminantType);
         const caseTypes: Set<ts.Type> = new Set();
         for (const switchCase of node.cases) {
           if (switchCase.test == null) {
@@ -126,7 +123,9 @@ export default createRule({
             return;
           }
 
-          caseTypes.add(getNodeType(switchCase.test));
+          caseTypes.add(
+            getConstrainedTypeAtLocation(services, switchCase.test),
+          );
         }
 
         const missingBranchTypes = unionTypes.filter(
@@ -144,7 +143,7 @@ export default createRule({
           data: {
             missingBranches: missingBranchTypes
               .map(missingType =>
-                isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
+                tsutils.isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
                   ? `typeof ${missingType.getSymbol()?.escapedName as string}`
                   : checker.typeToString(missingType),
               )

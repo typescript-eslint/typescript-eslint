@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -10,7 +10,7 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Enforce non-null assertions over explicit type casts',
-      recommended: 'strict',
+      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
     fixable: 'code',
@@ -24,14 +24,11 @@ export default util.createRule({
   defaultOptions: [],
 
   create(context) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
     const sourceCode = context.getSourceCode();
 
     const getTypesIfNotLoose = (node: TSESTree.Node): ts.Type[] | undefined => {
-      const type = checker.getTypeAtLocation(
-        parserServices.esTreeNodeToTSNodeMap.get(node),
-      );
+      const type = services.getTypeAtLocation(node);
 
       if (
         tsutils.isTypeFlagSet(type, ts.TypeFlags.Any | ts.TypeFlags.Unknown)

@@ -2,5 +2,78 @@
 
 exports[`AST Fixtures declaration TSInterfaceDeclaration with-member-one AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSInterfaceDeclaration {
+        type: 'TSInterfaceDeclaration',
+        body: TSInterfaceBody {
+          type: 'TSInterfaceBody',
+          body: Array [
+            TSPropertySignature {
+              type: 'TSPropertySignature',
+              computed: false,
+              key: Identifier {
+                type: 'Identifier',
+-               decorators: Array [],
+                name: 'prop',
+-               optional: false,
+
+                range: [16, 20],
+                loc: {
+                  start: { column: 2, line: 2 },
+                  end: { column: 6, line: 2 },
+                },
+              },
+-             optional: false,
+-             readonly: false,
+-             static: false,
+
+              range: [16, 21],
+              loc: {
+                start: { column: 2, line: 2 },
+                end: { column: 7, line: 2 },
+              },
+            },
+          ],
+
+          range: [12, 23],
+          loc: {
+            start: { column: 12, line: 1 },
+            end: { column: 1, line: 3 },
+          },
+        },
+-       declare: false,
+-       extends: Array [],
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'F',
+-         optional: false,
+
+          range: [10, 11],
+          loc: {
+            start: { column: 10, line: 1 },
+            end: { column: 11, line: 1 },
+          },
+        },
+
+        range: [0, 23],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 1, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 24],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 4 },
+    },
+  }"
 `;

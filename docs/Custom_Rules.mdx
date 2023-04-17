@@ -63,7 +63,6 @@ export const rule = createRule({
     docs: {
       description:
         'Function declaration names should start with an upper-case letter.',
-      recommended: 'warn',
     },
     messages: {
       uppercase: 'Start this name with an upper-case letter.',
@@ -202,7 +201,7 @@ export const rule = createRule({
 });
 ```
 
-## Type Checking
+## Typed Rules
 
 :::tip
 Read TypeScript's [Compiler APIs > Using the Type Checker](https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API#using-the-type-checker) section for how to use a program's type checker.
@@ -210,38 +209,40 @@ Read TypeScript's [Compiler APIs > Using the Type Checker](https://github.com/mi
 
 The biggest addition typescript-eslint brings to ESLint rules is the ability to use TypeScript's type checker APIs.
 
-`@typescript-eslint/utils` exports an `ESLintUtils` namespace containing a `getParserServices` function that takes in an ESLint context and returns a `parserServices` object.
+`@typescript-eslint/utils` exports an `ESLintUtils` namespace containing a `getParserServices` function that takes in an ESLint context and returns a `services` object.
 
-That `parserServices` object contains:
+That `services` object contains:
 
-- `program`: A full TypeScript `ts.Program` object
+- `program`: A full TypeScript `ts.Program` object if type checking is enabled, or `null` otherwise
 - `esTreeNodeToTSNodeMap`: Map of `@typescript-eslint/estree` `TSESTree.Node` nodes to their TypeScript `ts.Node` equivalents
 - `tsNodeToESTreeNodeMap`: Map of TypeScript `ts.Node` nodes to their `@typescript-eslint/estree` `TSESTree.Node` equivalents
 
-By mapping from ESTree nodes to TypeScript nodes and retrieving the TypeScript program from the parser services, rules are able to ask TypeScript for full type information on those nodes.
+If type checking is enabled, that `services` object additionally contains:
 
-This rule bans for-of looping over an enum by using the type-checker via typescript-eslint and TypeScript APIs:
+- `getTypeAtLocation`: Wraps the type checker function, with a `TSESTree.Node` parameter instead of a `ts.Node`
+- `getSymbolAtLocation`: Wraps the type checker function, with a `TSESTree.Node` parameter instead of a `ts.Node`
+
+Those additional objects internally map from ESTree nodes to their TypeScript equivalents, then call to the TypeScript program.
+By using the TypeScript program from the parser services, rules are able to ask TypeScript for full type information on those nodes.
+
+This rule bans for-of looping over an enum by using the TypeScript type checker via typescript-eslint's services:
 
 ```ts
 import { ESLintUtils } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-tools';
 import * as ts from 'typescript';
-import * as tsutils from 'tsutils';
 
 export const rule = createRule({
   create(context) {
     return {
       ForOfStatement(node) {
-        // 1. Grab the TypeScript program from parser services
-        const parserServices = ESLintUtils.getParserServices(context);
-        const checker = parserServices.program.getTypeChecker();
+        // 1. Grab the parser services for the rule
+        const services = ESLintUtils.getParserServices(context);
 
-        // 2. Find the backing TS node for the ES node, then that TS type
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(
-          node.right,
-        );
-        const nodeType = checker.getTypeAtLocation(originalNode);
+        // 2. Find the TS type for the ES node
+        const type = services.getTypeAtLocation(node);
 
-        // 3. Check the TS node type using the TypeScript APIs
+        // 3. Check the TS type using the TypeScript APIs
         if (tsutils.isTypeFlagSet(nodeType, ts.TypeFlags.EnumLike)) {
           context.report({
             messageId: 'loopOverEnum',
@@ -254,7 +255,6 @@ export const rule = createRule({
   meta: {
     docs: {
       description: 'Avoid looping over enums.',
-      recommended: 'error',
     },
     messages: {
       loopOverEnum: 'Do not loop over enums.',
@@ -266,6 +266,11 @@ export const rule = createRule({
   defaultOptions: [],
 });
 ```
+
+:::note
+Rules can retrieve their full backing TypeScript type checker with `services.program.getTypeChecker()`.
+This can be necessary for TypeScript APIs not wrapped by the parser services.
+:::
 
 ## Testing
 

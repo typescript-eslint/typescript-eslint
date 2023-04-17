@@ -7,10 +7,12 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "export": true,
             "initializer": undefined,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -22,11 +24,13 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 25,
                 26,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -38,13 +42,13 @@ Object {
                 "line": 2,
               },
             },
-            "optional": undefined,
+            "optional": false,
             "range": Array [
               18,
               35,
             ],
-            "readonly": undefined,
-            "static": undefined,
+            "readonly": false,
+            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -98,7 +102,10 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
+      "extends": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 13,
@@ -110,11 +117,13 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           10,
           13,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -131,6 +140,7 @@ Object {
         37,
       ],
       "type": "TSInterfaceDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

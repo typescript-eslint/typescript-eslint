@@ -1,0 +1,91 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-extends-and-implements AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+-       abstract: false,
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [],
+
+          range: [151, 153],
+          loc: {
+            start: { column: 78, line: 3 },
+            end: { column: 80, line: 3 },
+          },
+        },
+-       declare: false,
+-       decorators: Array [],
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'ClassWithParentAndInterface',
+-         optional: false,
+
+          range: [79, 106],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 33, line: 3 },
+          },
+        },
+        implements: Array [
+-         TSClassImplements {
+-           type: 'TSClassImplements',
++         TSExpressionWithTypeArguments {
++           type: 'TSExpressionWithTypeArguments',
+            expression: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'MyInterface',
+-             optional: false,
+
+              range: [139, 150],
+              loc: {
+                start: { column: 66, line: 3 },
+                end: { column: 77, line: 3 },
+              },
+            },
+
+            range: [139, 150],
+            loc: {
+              start: { column: 66, line: 3 },
+              end: { column: 77, line: 3 },
+            },
+          },
+        ],
+        superClass: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'MyOtherClass',
+-         optional: false,
+
+          range: [115, 127],
+          loc: {
+            start: { column: 42, line: 3 },
+            end: { column: 54, line: 3 },
+          },
+        },
+
+        range: [73, 153],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 80, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 154],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

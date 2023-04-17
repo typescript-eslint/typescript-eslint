@@ -1,0 +1,178 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-extends-generic-multiple AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+-       abstract: false,
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [],
+
+          range: [114, 116],
+          loc: {
+            start: { column: 41, line: 3 },
+            end: { column: 43, line: 3 },
+          },
+        },
+-       declare: false,
+-       decorators: Array [],
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'Foo',
+-         optional: false,
+
+          range: [79, 82],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 9, line: 3 },
+          },
+        },
+-       implements: Array [],
+        superClass: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'Bar',
+-         optional: false,
+
+          range: [104, 107],
+          loc: {
+            start: { column: 31, line: 3 },
+            end: { column: 34, line: 3 },
+          },
+        },
+-       superTypeArguments: TSTypeParameterInstantiation {
++       superTypeParameters: TSTypeParameterInstantiation {
+          type: 'TSTypeParameterInstantiation',
+          params: Array [
+            TSTypeReference {
+              type: 'TSTypeReference',
+              typeName: Identifier {
+                type: 'Identifier',
+-               decorators: Array [],
+                name: 'C',
+-               optional: false,
+
+                range: [108, 109],
+                loc: {
+                  start: { column: 35, line: 3 },
+                  end: { column: 36, line: 3 },
+                },
+              },
+
+              range: [108, 109],
+              loc: {
+                start: { column: 35, line: 3 },
+                end: { column: 36, line: 3 },
+              },
+            },
+            TSTypeReference {
+              type: 'TSTypeReference',
+              typeName: Identifier {
+                type: 'Identifier',
+-               decorators: Array [],
+                name: 'D',
+-               optional: false,
+
+                range: [111, 112],
+                loc: {
+                  start: { column: 38, line: 3 },
+                  end: { column: 39, line: 3 },
+                },
+              },
+
+              range: [111, 112],
+              loc: {
+                start: { column: 38, line: 3 },
+                end: { column: 39, line: 3 },
+              },
+            },
+          ],
+
+          range: [107, 113],
+          loc: {
+            start: { column: 34, line: 3 },
+            end: { column: 40, line: 3 },
+          },
+        },
+        typeParameters: TSTypeParameterDeclaration {
+          type: 'TSTypeParameterDeclaration',
+          params: Array [
+            TSTypeParameter {
+              type: 'TSTypeParameter',
+-             const: false,
+              constraint: TSTypeReference {
+                type: 'TSTypeReference',
+                typeName: Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'B',
+-                 optional: false,
+
+                  range: [93, 94],
+                  loc: {
+                    start: { column: 20, line: 3 },
+                    end: { column: 21, line: 3 },
+                  },
+                },
+
+                range: [93, 94],
+                loc: {
+                  start: { column: 20, line: 3 },
+                  end: { column: 21, line: 3 },
+                },
+              },
+-             in: false,
+-             name: Identifier {
+-               type: 'Identifier',
+-               decorators: Array [],
+-               name: 'A',
+-               optional: false,
+-
+-               range: [83, 84],
+-               loc: {
+-                 start: { column: 10, line: 3 },
+-                 end: { column: 11, line: 3 },
+-               },
+-             },
+-             out: false,
++             name: 'A',
+
+              range: [83, 94],
+              loc: {
+                start: { column: 10, line: 3 },
+                end: { column: 21, line: 3 },
+              },
+            },
+          ],
+
+          range: [82, 95],
+          loc: {
+            start: { column: 9, line: 3 },
+            end: { column: 22, line: 3 },
+          },
+        },
+
+        range: [73, 116],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 43, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 117],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

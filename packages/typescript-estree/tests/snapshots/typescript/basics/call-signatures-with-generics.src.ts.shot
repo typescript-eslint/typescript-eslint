@@ -4,7 +4,9 @@ exports[`typescript basics call-signatures-with-generics.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 8,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           5,
           8,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -62,6 +66,7 @@ Object {
             },
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 15,
@@ -73,6 +78,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   19,
                   28,
@@ -180,6 +186,7 @@ Object {
                     },
                   },
                   "name": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 4,
@@ -191,11 +198,13 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       16,
                       17,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "out": false,
                   "range": Array [
@@ -225,6 +234,7 @@ Object {
             },
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 18,
@@ -236,6 +246,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   47,
                   56,
@@ -343,6 +354,7 @@ Object {
                     },
                   },
                   "name": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 7,
@@ -354,11 +366,13 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       44,
                       45,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "out": false,
                   "range": Array [
@@ -382,6 +396,7 @@ Object {
         ],
         "type": "TSTypeLiteral",
       },
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

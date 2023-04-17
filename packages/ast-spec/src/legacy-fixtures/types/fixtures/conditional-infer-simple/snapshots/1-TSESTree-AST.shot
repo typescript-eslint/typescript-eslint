@@ -1,0 +1,278 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types conditional-infer-simple TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      declare: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "Foo",
+        optional: false,
+
+        range: [78, 81],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 8, line: 3 },
+        },
+      },
+      typeAnnotation: TSConditionalType {
+        type: "TSConditionalType",
+        checkType: TSTypeReference {
+          type: "TSTypeReference",
+          typeName: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "T",
+            optional: false,
+
+            range: [87, 88],
+            loc: {
+              start: { column: 14, line: 3 },
+              end: { column: 15, line: 3 },
+            },
+          },
+
+          range: [87, 88],
+          loc: {
+            start: { column: 14, line: 3 },
+            end: { column: 15, line: 3 },
+          },
+        },
+        extendsType: TSTypeLiteral {
+          type: "TSTypeLiteral",
+          members: [
+            TSPropertySignature {
+              type: "TSPropertySignature",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "a",
+                optional: false,
+
+                range: [99, 100],
+                loc: {
+                  start: { column: 26, line: 3 },
+                  end: { column: 27, line: 3 },
+                },
+              },
+              optional: false,
+              readonly: false,
+              static: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSInferType {
+                  type: "TSInferType",
+                  typeParameter: TSTypeParameter {
+                    type: "TSTypeParameter",
+                    const: false,
+                    in: false,
+                    name: Identifier {
+                      type: "Identifier",
+                      decorators: [],
+                      name: "U",
+                      optional: false,
+
+                      range: [108, 109],
+                      loc: {
+                        start: { column: 35, line: 3 },
+                        end: { column: 36, line: 3 },
+                      },
+                    },
+                    out: false,
+
+                    range: [108, 109],
+                    loc: {
+                      start: { column: 35, line: 3 },
+                      end: { column: 36, line: 3 },
+                    },
+                  },
+
+                  range: [102, 109],
+                  loc: {
+                    start: { column: 29, line: 3 },
+                    end: { column: 36, line: 3 },
+                  },
+                },
+
+                range: [100, 109],
+                loc: {
+                  start: { column: 27, line: 3 },
+                  end: { column: 36, line: 3 },
+                },
+              },
+
+              range: [99, 110],
+              loc: {
+                start: { column: 26, line: 3 },
+                end: { column: 37, line: 3 },
+              },
+            },
+            TSPropertySignature {
+              type: "TSPropertySignature",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "b",
+                optional: false,
+
+                range: [111, 112],
+                loc: {
+                  start: { column: 38, line: 3 },
+                  end: { column: 39, line: 3 },
+                },
+              },
+              optional: false,
+              readonly: false,
+              static: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSInferType {
+                  type: "TSInferType",
+                  typeParameter: TSTypeParameter {
+                    type: "TSTypeParameter",
+                    const: false,
+                    in: false,
+                    name: Identifier {
+                      type: "Identifier",
+                      decorators: [],
+                      name: "U",
+                      optional: false,
+
+                      range: [120, 121],
+                      loc: {
+                        start: { column: 47, line: 3 },
+                        end: { column: 48, line: 3 },
+                      },
+                    },
+                    out: false,
+
+                    range: [120, 121],
+                    loc: {
+                      start: { column: 47, line: 3 },
+                      end: { column: 48, line: 3 },
+                    },
+                  },
+
+                  range: [114, 121],
+                  loc: {
+                    start: { column: 41, line: 3 },
+                    end: { column: 48, line: 3 },
+                  },
+                },
+
+                range: [112, 121],
+                loc: {
+                  start: { column: 39, line: 3 },
+                  end: { column: 48, line: 3 },
+                },
+              },
+
+              range: [111, 121],
+              loc: {
+                start: { column: 38, line: 3 },
+                end: { column: 48, line: 3 },
+              },
+            },
+          ],
+
+          range: [97, 123],
+          loc: {
+            start: { column: 24, line: 3 },
+            end: { column: 50, line: 3 },
+          },
+        },
+        falseType: TSNeverKeyword {
+          type: "TSNeverKeyword",
+
+          range: [130, 135],
+          loc: {
+            start: { column: 57, line: 3 },
+            end: { column: 62, line: 3 },
+          },
+        },
+        trueType: TSTypeReference {
+          type: "TSTypeReference",
+          typeName: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "U",
+            optional: false,
+
+            range: [126, 127],
+            loc: {
+              start: { column: 53, line: 3 },
+              end: { column: 54, line: 3 },
+            },
+          },
+
+          range: [126, 127],
+          loc: {
+            start: { column: 53, line: 3 },
+            end: { column: 54, line: 3 },
+          },
+        },
+
+        range: [87, 135],
+        loc: {
+          start: { column: 14, line: 3 },
+          end: { column: 62, line: 3 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            const: false,
+            in: false,
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "T",
+              optional: false,
+
+              range: [82, 83],
+              loc: {
+                start: { column: 9, line: 3 },
+                end: { column: 10, line: 3 },
+              },
+            },
+            out: false,
+
+            range: [82, 83],
+            loc: {
+              start: { column: 9, line: 3 },
+              end: { column: 10, line: 3 },
+            },
+          },
+        ],
+
+        range: [81, 84],
+        loc: {
+          start: { column: 8, line: 3 },
+          end: { column: 11, line: 3 },
+        },
+      },
+
+      range: [73, 136],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 63, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 137],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

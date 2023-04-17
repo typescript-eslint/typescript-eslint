@@ -290,7 +290,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         new (arg: readonly string[]): void;
       }
     `, // TSConstructSignatureDeclaration
-    noFormat`const x = { foo(arg: readonly string[]): void; };`, // TSEmptyBodyFunctionExpression
+    noFormat`class Foo { foo(arg: readonly string[]): void; };`, // TSEmptyBodyFunctionExpression
     'function foo(arg: readonly string[]);', // TSDeclareFunction
     'type Foo = (arg: readonly string[]) => void;', // TSFunctionType
     `
@@ -369,7 +369,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         interface Obj {
           readonly [K: string]: Obj;
         }
-        
+
         function foo(event: Obj): void {}
       `,
       options: [
@@ -386,11 +386,11 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         interface Obj1 {
           readonly [K: string]: Obj2;
         }
-        
+
         interface Obj2 {
           readonly [K: string]: Obj1;
         }
-        
+
         function foo(event: Obj1): void {}
       `,
       options: [
@@ -398,6 +398,83 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
           checkParameterProperties: true,
           ignoreInferredTypes: false,
           ...readonlynessOptionsDefaults,
+        },
+      ],
+    },
+    // Allowlist
+    {
+      code: `
+        interface Foo {
+          readonly prop: RegExp;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'RegExp' }],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          prop: RegExp;
+        }
+
+        function foo(arg: Readonly<Foo>) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'RegExp' }],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          prop: string;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Foo' }],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Bar {
+          prop: string;
+        }
+        interface Foo {
+          readonly prop: Bar;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Foo' }],
+        },
+      ],
+    },
+    {
+      code: `
+        interface Bar {
+          prop: string;
+        }
+        interface Foo {
+          readonly prop: Bar;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Bar' }],
         },
       ],
     },
@@ -667,7 +744,7 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
     },
     {
       // TSEmptyBodyFunctionExpression
-      code: noFormat`const x = { foo(arg: string[]): void; };`,
+      code: noFormat`class Foo { foo(arg: string[]): void; };`,
       errors: [
         {
           messageId: 'shouldBeReadonly',
@@ -864,6 +941,143 @@ ruleTester.run('prefer-readonly-parameter-types', rule, {
         {
           messageId: 'shouldBeReadonly',
           line: 6,
+          column: 22,
+          endColumn: 33,
+        },
+      ],
+    },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3405
+    {
+      code: `
+        type MyType<T> = {
+          [K in keyof T]: 'cat' | 'dog' | T[K];
+        };
+
+        function method<A extends any[] = string[]>(value: MyType<A>) {
+          return value;
+        }
+
+        method(['cat', 'dog']);
+        method<'mouse'[]>(['cat', 'mouse']);
+      `,
+      errors: [{ line: 6, messageId: 'shouldBeReadonly' }],
+    },
+    // Allowlist
+    {
+      code: `
+        function foo(arg: RegExp) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Foo' }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 2,
+          column: 22,
+          endColumn: 33,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          readonly prop: RegExp;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'Bar' }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 6,
+          column: 22,
+          endColumn: 30,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          readonly prop: RegExp;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'lib', name: 'Foo' }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 6,
+          column: 22,
+          endColumn: 30,
+        },
+      ],
+    },
+    {
+      code: `
+        interface Foo {
+          readonly prop: RegExp;
+        }
+
+        function foo(arg: Foo) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'package', name: 'Foo', package: 'foo-lib' }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 6,
+          column: 22,
+          endColumn: 30,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo(arg: RegExp) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'file', name: 'RegExp' }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 2,
+          column: 22,
+          endColumn: 33,
+        },
+      ],
+    },
+    {
+      code: `
+        function foo(arg: RegExp) {}
+      `,
+      options: [
+        {
+          allow: [{ from: 'package', name: 'RegExp', package: 'regexp-lib' }],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'shouldBeReadonly',
+          line: 2,
           column: 22,
           endColumn: 33,
         },

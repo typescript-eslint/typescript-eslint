@@ -4,7 +4,9 @@ exports[`typescript types optional-variance-out.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 13,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "Provider",
+        "optional": false,
         "range": Array [
           5,
           13,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -86,6 +90,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 30,
@@ -97,16 +102,19 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 29,
                 30,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": undefined,
           },
         },
         "type": "TSFunctionType",
+        "typeParameters": undefined,
       },
       "typeParameters": Object {
         "loc": Object {
@@ -135,6 +143,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 19,
@@ -146,11 +155,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 18,
                 19,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": true,
             "range": Array [

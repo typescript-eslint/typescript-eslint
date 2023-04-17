@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
 import * as util from '../util';
@@ -23,7 +23,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow async functions which have no `await` expression',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
       extendsBaseRule: true,
     },
@@ -34,8 +34,8 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     const sourceCode = context.getSourceCode();
     let scopeInfo: ScopeInfo | null = null;
@@ -110,14 +110,13 @@ export default util.createRule({
         return;
       }
 
-      if (node?.argument?.type === AST_NODE_TYPES.Literal) {
+      if (node.argument.type === AST_NODE_TYPES.Literal) {
         // making this `false` as for literals we don't need to check the definition
         // eg : async function* run() { yield* 1 }
         scopeInfo.isAsyncYield ||= false;
       }
 
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node?.argument);
-      const type = checker.getTypeAtLocation(tsNode);
+      const type = services.getTypeAtLocation(node.argument);
       const typesToCheck = expandUnionOrIntersectionType(type);
       for (const type of typesToCheck) {
         const asyncIterator = tsutils.getWellKnownSymbolPropertyOfType(
@@ -152,7 +151,7 @@ export default util.createRule({
           TSESTree.BlockStatement | TSESTree.AwaitExpression
         >,
       ): void {
-        const expression = parserServices.esTreeNodeToTSNodeMap.get(node);
+        const expression = services.esTreeNodeToTSNodeMap.get(node);
         if (expression && isThenableType(expression)) {
           markAsHasAwait();
         }
@@ -163,7 +162,7 @@ export default util.createRule({
           return;
         }
 
-        const { expression } = parserServices.esTreeNodeToTSNodeMap.get(node);
+        const { expression } = services.esTreeNodeToTSNodeMap.get(node);
         if (expression && isThenableType(expression)) {
           markAsHasAwait();
         }

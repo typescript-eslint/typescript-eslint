@@ -1,0 +1,202 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics non-null-assertion-operator Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [
+          ExpressionStatement {
+            type: "ExpressionStatement",
+            expression: CallExpression {
+              type: "CallExpression",
+              arguments: [
+                Identifier {
+                  type: "Identifier",
+                  name: "e",
+
+                  range: [127, 128],
+                  loc: {
+                    start: { column: 17, line: 4 },
+                    end: { column: 18, line: 4 },
+                  },
+                },
+              ],
+              callee: Identifier {
+                type: "Identifier",
+                name: "validateEntity",
+
+                range: [112, 126],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 16, line: 4 },
+                },
+              },
+              optional: false,
+
+              range: [112, 129],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 19, line: 4 },
+              },
+            },
+
+            range: [112, 130],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 20, line: 4 },
+            },
+          },
+          VariableDeclaration {
+            type: "VariableDeclaration",
+            declarations: [
+              VariableDeclarator {
+                type: "VariableDeclarator",
+                id: Identifier {
+                  type: "Identifier",
+                  name: "s",
+
+                  range: [137, 138],
+                  loc: {
+                    start: { column: 6, line: 5 },
+                    end: { column: 7, line: 5 },
+                  },
+                },
+                init: MemberExpression {
+                  type: "MemberExpression",
+                  computed: false,
+                  object: TSNonNullExpression {
+                    type: "TSNonNullExpression",
+                    expression: Identifier {
+                      type: "Identifier",
+                      name: "e",
+
+                      range: [141, 142],
+                      loc: {
+                        start: { column: 10, line: 5 },
+                        end: { column: 11, line: 5 },
+                      },
+                    },
+
+                    range: [141, 143],
+                    loc: {
+                      start: { column: 10, line: 5 },
+                      end: { column: 12, line: 5 },
+                    },
+                  },
+                  optional: false,
+                  property: Identifier {
+                    type: "Identifier",
+                    name: "name",
+
+                    range: [144, 148],
+                    loc: {
+                      start: { column: 13, line: 5 },
+                      end: { column: 17, line: 5 },
+                    },
+                  },
+
+                  range: [141, 148],
+                  loc: {
+                    start: { column: 10, line: 5 },
+                    end: { column: 17, line: 5 },
+                  },
+                },
+
+                range: [137, 148],
+                loc: {
+                  start: { column: 6, line: 5 },
+                  end: { column: 17, line: 5 },
+                },
+              },
+            ],
+            kind: "let",
+
+            range: [133, 149],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 18, line: 5 },
+            },
+          },
+        ],
+
+        range: [108, 151],
+        loc: {
+          start: { column: 35, line: 3 },
+          end: { column: 1, line: 6 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "processEntity",
+
+        range: [82, 95],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 22, line: 3 },
+        },
+      },
+      params: [
+        Identifier {
+          type: "Identifier",
+          name: "e",
+          optional: true,
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "Entity",
+
+                range: [100, 106],
+                loc: {
+                  start: { column: 27, line: 3 },
+                  end: { column: 33, line: 3 },
+                },
+              },
+
+              range: [100, 106],
+              loc: {
+                start: { column: 27, line: 3 },
+                end: { column: 33, line: 3 },
+              },
+            },
+
+            range: [98, 106],
+            loc: {
+              start: { column: 25, line: 3 },
+              end: { column: 33, line: 3 },
+            },
+          },
+
+          range: [96, 106],
+          loc: {
+            start: { column: 23, line: 3 },
+            end: { column: 33, line: 3 },
+          },
+        },
+      ],
+
+      range: [73, 151],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 6 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 152],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 7 },
+  },
+}
+`;

@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -18,11 +20,13 @@ Object {
               },
             },
             "name": "first",
+            "optional": false,
             "range": Array [
               6,
               11,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "children": Array [
@@ -152,6 +156,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {
@@ -172,7 +177,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 12,
@@ -184,11 +191,13 @@ Object {
               },
             },
             "name": "second",
+            "optional": false,
             "range": Array [
               52,
               58,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "children": Array [
@@ -279,6 +288,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {
@@ -299,7 +309,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -311,11 +323,13 @@ Object {
               },
             },
             "name": "third",
+            "optional": false,
             "range": Array [
               93,
               98,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "children": Array [
@@ -502,6 +516,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {
@@ -522,7 +537,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 12,
@@ -534,11 +551,13 @@ Object {
               },
             },
             "name": "fourth",
+            "optional": false,
             "range": Array [
               145,
               151,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "children": Array [
@@ -759,6 +778,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {
@@ -779,7 +799,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -791,11 +813,13 @@ Object {
               },
             },
             "name": "fifth",
+            "optional": false,
             "range": Array [
               205,
               210,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "children": Array [
@@ -959,6 +983,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {

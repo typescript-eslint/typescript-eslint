@@ -11,8 +11,8 @@ interface TSEnumMemberBase extends BaseNode {
   id:
     | PropertyNameComputed // this should only happen in semantically invalid code (ts error 1164)
     | PropertyNameNonComputed;
-  initializer?: Expression;
-  computed?: boolean;
+  initializer: Expression | undefined;
+  computed: boolean;
 }
 
 /**
@@ -33,7 +33,7 @@ export interface TSEnumMemberComputedName extends TSEnumMemberBase {
 
 export interface TSEnumMemberNonComputedName extends TSEnumMemberBase {
   id: PropertyNameNonComputed;
-  computed?: false;
+  computed: false;
 }
 
 export type TSEnumMember =

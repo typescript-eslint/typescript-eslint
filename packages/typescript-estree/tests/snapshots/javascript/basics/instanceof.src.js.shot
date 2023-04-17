@@ -4,6 +4,7 @@ exports[`javascript basics instanceof.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
           "loc": Object {
@@ -40,6 +41,7 @@ Object {
           17,
         ],
         "right": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 17,
@@ -51,11 +53,13 @@ Object {
             },
           },
           "name": "Set",
+          "optional": false,
           "range": Array [
             14,
             17,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "BinaryExpression",
       },

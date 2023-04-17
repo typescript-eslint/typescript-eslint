@@ -1,0 +1,157 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics type-guard-in-interface TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSInterfaceDeclaration {
+      type: "TSInterfaceDeclaration",
+      body: TSInterfaceBody {
+        type: "TSInterfaceBody",
+        body: [
+          TSMethodSignature {
+            type: "TSMethodSignature",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "isString",
+              optional: false,
+
+              range: [91, 99],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 10, line: 4 },
+              },
+            },
+            kind: "method",
+            optional: false,
+            params: [
+              Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "node",
+                optional: false,
+                typeAnnotation: TSTypeAnnotation {
+                  type: "TSTypeAnnotation",
+                  typeAnnotation: TSAnyKeyword {
+                    type: "TSAnyKeyword",
+
+                    range: [106, 109],
+                    loc: {
+                      start: { column: 17, line: 4 },
+                      end: { column: 20, line: 4 },
+                    },
+                  },
+
+                  range: [104, 109],
+                  loc: {
+                    start: { column: 15, line: 4 },
+                    end: { column: 20, line: 4 },
+                  },
+                },
+
+                range: [100, 109],
+                loc: {
+                  start: { column: 11, line: 4 },
+                  end: { column: 20, line: 4 },
+                },
+              },
+            ],
+            readonly: false,
+            returnType: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTypePredicate {
+                type: "TSTypePredicate",
+                asserts: false,
+                parameterName: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "node",
+                  optional: false,
+
+                  range: [112, 116],
+                  loc: {
+                    start: { column: 23, line: 4 },
+                    end: { column: 27, line: 4 },
+                  },
+                },
+                typeAnnotation: TSTypeAnnotation {
+                  type: "TSTypeAnnotation",
+                  typeAnnotation: TSStringKeyword {
+                    type: "TSStringKeyword",
+
+                    range: [120, 126],
+                    loc: {
+                      start: { column: 31, line: 4 },
+                      end: { column: 37, line: 4 },
+                    },
+                  },
+
+                  range: [120, 126],
+                  loc: {
+                    start: { column: 31, line: 4 },
+                    end: { column: 37, line: 4 },
+                  },
+                },
+
+                range: [112, 126],
+                loc: {
+                  start: { column: 23, line: 4 },
+                  end: { column: 37, line: 4 },
+                },
+              },
+
+              range: [110, 126],
+              loc: {
+                start: { column: 21, line: 4 },
+                end: { column: 37, line: 4 },
+              },
+            },
+            static: false,
+
+            range: [91, 127],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 38, line: 4 },
+            },
+          },
+        ],
+
+        range: [87, 129],
+        loc: {
+          start: { column: 14, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      declare: false,
+      extends: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "Foo",
+        optional: false,
+
+        range: [83, 86],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 13, line: 3 },
+        },
+      },
+
+      range: [73, 129],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 130],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

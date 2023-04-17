@@ -4,9 +4,11 @@ exports[`javascript destructuring-and-arrowFunctions arrow-param-nested-object.s
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 17,
@@ -18,11 +20,13 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             16,
             17,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "expression": true,
         "generator": false,
@@ -39,6 +43,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -49,10 +54,12 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "properties": Array [
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 3,
@@ -64,11 +71,13 @@ Object {
                     },
                   },
                   "name": "y",
+                  "optional": false,
                   "range": Array [
                     2,
                     3,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {
@@ -82,6 +91,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   2,
                   3,
@@ -89,6 +99,7 @@ Object {
                 "shorthand": true,
                 "type": "Property",
                 "value": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 3,
@@ -100,16 +111,19 @@ Object {
                     },
                   },
                   "name": "y",
+                  "optional": false,
                   "range": Array [
                     2,
                     3,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               },
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 6,
@@ -121,11 +135,13 @@ Object {
                     },
                   },
                   "name": "a",
+                  "optional": false,
                   "range": Array [
                     5,
                     6,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {
@@ -139,6 +155,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   5,
                   10,
@@ -146,6 +163,7 @@ Object {
                 "shorthand": false,
                 "type": "Property",
                 "value": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 10,
@@ -156,10 +174,12 @@ Object {
                       "line": 1,
                     },
                   },
+                  "optional": false,
                   "properties": Array [
                     Object {
                       "computed": false,
                       "key": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 9,
@@ -171,11 +191,13 @@ Object {
                           },
                         },
                         "name": "x",
+                        "optional": false,
                         "range": Array [
                           8,
                           9,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "kind": "init",
                       "loc": Object {
@@ -189,6 +211,7 @@ Object {
                         },
                       },
                       "method": false,
+                      "optional": false,
                       "range": Array [
                         8,
                         9,
@@ -196,6 +219,7 @@ Object {
                       "shorthand": true,
                       "type": "Property",
                       "value": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 9,
@@ -207,11 +231,13 @@ Object {
                           },
                         },
                         "name": "x",
+                        "optional": false,
                         "range": Array [
                           8,
                           9,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                     },
                   ],
@@ -220,6 +246,7 @@ Object {
                     10,
                   ],
                   "type": "ObjectPattern",
+                  "typeAnnotation": undefined,
                 },
               },
             ],
@@ -228,13 +255,16 @@ Object {
               11,
             ],
             "type": "ObjectPattern",
+            "typeAnnotation": undefined,
           },
         ],
         "range": Array [
           0,
           17,
         ],
+        "returnType": undefined,
         "type": "ArrowFunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

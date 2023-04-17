@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures babylon-convergence type-parameter-whitespace-loc TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [],
+
+        range: [89, 91],
+        loc: {
+          start: { column: 16, line: 3 },
+          end: { column: 18, line: 3 },
+        },
+      },
+      declare: false,
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "f",
+        optional: false,
+
+        range: [82, 83],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 10, line: 3 },
+        },
+      },
+      params: [],
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            const: false,
+            in: false,
+            name: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "T",
+              optional: false,
+
+              range: [84, 85],
+              loc: {
+                start: { column: 11, line: 3 },
+                end: { column: 12, line: 3 },
+              },
+            },
+            out: false,
+
+            range: [84, 85],
+            loc: {
+              start: { column: 11, line: 3 },
+              end: { column: 12, line: 3 },
+            },
+          },
+        ],
+
+        range: [83, 86],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 13, line: 3 },
+        },
+      },
+
+      range: [73, 91],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 18, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 92],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

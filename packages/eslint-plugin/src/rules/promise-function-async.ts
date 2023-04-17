@@ -24,7 +24,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require any function or method that returns a Promise to be marked async',
-      recommended: false,
       requiresTypeChecking: true,
     },
     messages: {
@@ -91,8 +90,8 @@ export default util.createRule<Options, MessageIds>({
       'Promise',
       ...allowedPromiseNames!,
     ]);
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
     function validateNode(
@@ -101,10 +100,7 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression,
     ): void {
-      const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const signatures = checker
-        .getTypeAtLocation(originalNode)
-        .getCallSignatures();
+      const signatures = services.getTypeAtLocation(node).getCallSignatures();
       if (!signatures.length) {
         return;
       }
@@ -115,19 +111,20 @@ export default util.createRule<Options, MessageIds>({
           returnType,
           allowAny!,
           allAllowedPromiseNames,
+          // If no return type is explicitly set, we check if any parts of the return type match a Promise (instead of requiring all to match).
+          node.returnType == null,
         )
       ) {
         // Return type is not a promise
         return;
       }
 
-      if (node.parent?.type === AST_NODE_TYPES.TSAbstractMethodDefinition) {
+      if (node.parent.type === AST_NODE_TYPES.TSAbstractMethodDefinition) {
         // Abstract method can't be async
         return;
       }
 
       if (
-        node.parent &&
         (node.parent.type === AST_NODE_TYPES.Property ||
           node.parent.type === AST_NODE_TYPES.MethodDefinition) &&
         (node.parent.kind === 'get' || node.parent.kind === 'set')
@@ -153,10 +150,8 @@ export default util.createRule<Options, MessageIds>({
         loc: util.getFunctionHeadLoc(node, sourceCode),
         fix: fixer => {
           if (
-            node.parent &&
-            (node.parent.type === AST_NODE_TYPES.MethodDefinition ||
-              (node.parent.type === AST_NODE_TYPES.Property &&
-                node.parent.method))
+            node.parent.type === AST_NODE_TYPES.MethodDefinition ||
+            (node.parent.type === AST_NODE_TYPES.Property && node.parent.method)
           ) {
             // this function is a class method or object function property shorthand
             const method = node.parent;
@@ -167,7 +162,7 @@ export default util.createRule<Options, MessageIds>({
             // if there are decorators then skip past them
             if (
               method.type === AST_NODE_TYPES.MethodDefinition &&
-              method.decorators
+              method.decorators.length
             ) {
               const lastDecorator =
                 method.decorators[method.decorators.length - 1];
@@ -219,7 +214,6 @@ export default util.createRule<Options, MessageIds>({
         node: TSESTree.FunctionExpression,
       ): void {
         if (
-          node.parent &&
           node.parent.type === AST_NODE_TYPES.MethodDefinition &&
           node.parent.kind === 'method'
         ) {

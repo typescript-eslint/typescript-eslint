@@ -23,7 +23,6 @@ export default util.createRule<[Options], MessageIds>({
   meta: {
     docs: {
       description: 'Require type annotations in certain places',
-      recommended: false,
     },
     messages: {
       expectedTypedef: 'Expected a type annotation.',
@@ -154,7 +153,7 @@ export default util.createRule<[Options], MessageIds>({
     function isAncestorHasTypeAnnotation(
       node: TSESTree.ObjectPattern | TSESTree.ArrayPattern,
     ): boolean {
-      let ancestor = node.parent;
+      let ancestor: TSESTree.Node | undefined = node.parent;
 
       while (ancestor) {
         if (

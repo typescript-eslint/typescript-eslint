@@ -1,5 +1,0 @@
-(function () {
-  (function () {
-    this.call({}, [])
-  })([]);
-})({});

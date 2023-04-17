@@ -12,6 +12,7 @@ import type {
 } from './util/parsers/parser-types';
 import { ParserResponseType } from './util/parsers/parser-types';
 import { parseTSESTree } from './util/parsers/typescript-estree';
+import { serializeError } from './util/serialize-error';
 import { diffHasChanges, snapshotDiff } from './util/snapshot-diff';
 
 const PACKAGE_ROOT = path.resolve(__dirname, '..');
@@ -38,10 +39,18 @@ const fixturesWithErrorDifferences = {
 } as const;
 
 const VALID_FIXTURES: readonly string[] = glob.sync(
-  `${SRC_DIR}/**/fixtures/*/fixture.{ts,tsx}`,
+  `**/fixtures/*/fixture.{ts,tsx}`,
+  {
+    cwd: SRC_DIR,
+    absolute: true,
+  },
 );
 const ERROR_FIXTURES: readonly string[] = glob.sync(
-  `${SRC_DIR}/**/fixtures/_error_/*/fixture.{ts,tsx}`,
+  `**/fixtures/_error_/*/fixture.{ts,tsx}`,
+  {
+    cwd: SRC_DIR,
+    absolute: true,
+  },
 );
 
 const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
@@ -66,7 +75,7 @@ const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
       isError: absolute.includes('/_error_/'),
       isJSX: ext.endsWith('x'),
       name,
-      relative: path.relative(SRC_DIR, absolute),
+      relative: path.relative(SRC_DIR, absolute).replace(/\\/g, '/'),
       segments,
       snapshotFiles: {
         success: {
@@ -163,7 +172,9 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
         }
 
         it('TSESTree - Error', () => {
-          expect(tsestreeParsed.error).toMatchSpecificSnapshot(
+          expect(
+            serializeError(tsestreeParsed.error, contents),
+          ).toMatchSpecificSnapshot(
             fixture.snapshotFiles.error.tsestree(snapshotCounter++),
           );
         });
@@ -326,22 +337,35 @@ describe('AST Fixtures', () => {
 
   // once we've run all the tests, snapshot the list of fixtures that have differences for easy reference
   it('List fixtures with AST differences', () => {
-    expect(fixturesWithASTDifferences).toMatchSpecificSnapshot(
+    expect(
+      Array.from(fixturesWithASTDifferences).sort(),
+    ).toMatchSpecificSnapshot(
       path.resolve(__dirname, 'fixtures-with-differences-ast.shot'),
     );
   });
   it('List fixtures with Token differences', () => {
-    expect(fixturesWithTokenDifferences).toMatchSpecificSnapshot(
+    expect(
+      Array.from(fixturesWithTokenDifferences).sort(),
+    ).toMatchSpecificSnapshot(
       path.resolve(__dirname, 'fixtures-with-differences-tokens.shot'),
     );
   });
   it('List fixtures with Error differences', () => {
-    expect(fixturesWithErrorDifferences).toMatchSpecificSnapshot(
+    expect(
+      Object.fromEntries(
+        Object.entries(fixturesWithErrorDifferences).map(([key, value]) => [
+          key,
+          Array.from(value).sort(),
+        ]),
+      ),
+    ).toMatchSpecificSnapshot(
       path.resolve(__dirname, 'fixtures-with-differences-errors.shot'),
     );
   });
   it('List fixtures we expect babel to not support', () => {
-    expect(fixturesConfiguredToExpectBabelToNotSupport).toMatchSpecificSnapshot(
+    expect(
+      Array.from(fixturesConfiguredToExpectBabelToNotSupport).sort(),
+    ).toMatchSpecificSnapshot(
       path.resolve(__dirname, 'fixtures-without-babel-support.shot'),
     );
   });

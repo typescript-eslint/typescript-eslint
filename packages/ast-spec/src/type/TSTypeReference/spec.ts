@@ -5,6 +5,10 @@ import type { EntityName } from '../../unions/EntityName';
 
 export interface TSTypeReference extends BaseNode {
   type: AST_NODE_TYPES.TSTypeReference;
+  typeArguments: TSTypeParameterInstantiation | undefined;
+
+  /** @deprecated Use {@link `typeArguments`} instead. */
+  typeParameters: TSTypeParameterInstantiation | undefined;
+
   typeName: EntityName;
-  typeParameters?: TSTypeParameterInstantiation;
 }

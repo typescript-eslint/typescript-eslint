@@ -5,6 +5,7 @@ Object {
   "body": Array [
     Object {
       "declare": true,
+      "global": false,
       "id": Object {
         "loc": Object {
           "end": Object {

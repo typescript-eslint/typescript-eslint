@@ -3,24 +3,24 @@
 exports[`AST Fixtures element AccessorProperty key-string Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           ClassAccessorProperty {
             type: "ClassAccessorProperty",
             computed: false,
             key: Literal {
               type: "Literal",
-              raw: "'prop'",
-              value: "prop",
+              raw: "'quoted-prop'",
+              value: "quoted-prop",
 
-              range: [23, 29],
+              range: [23, 36],
               loc: {
                 start: { column: 11, line: 2 },
-                end: { column: 17, line: 2 },
+                end: { column: 24, line: 2 },
               },
             },
             static: false,
@@ -29,22 +29,22 @@ Program {
               raw: "'value'",
               value: "value",
 
-              range: [32, 39],
+              range: [39, 46],
               loc: {
-                start: { column: 20, line: 2 },
-                end: { column: 27, line: 2 },
+                start: { column: 27, line: 2 },
+                end: { column: 34, line: 2 },
               },
             },
 
-            range: [14, 40],
+            range: [14, 47],
             loc: {
               start: { column: 2, line: 2 },
-              end: { column: 28, line: 2 },
+              end: { column: 35, line: 2 },
             },
           },
         ],
 
-        range: [10, 42],
+        range: [10, 49],
         loc: {
           start: { column: 10, line: 1 },
           end: { column: 1, line: 3 },
@@ -62,7 +62,7 @@ Program {
       },
       superClass: null,
 
-      range: [0, 42],
+      range: [0, 49],
       loc: {
         start: { column: 0, line: 1 },
         end: { column: 1, line: 3 },
@@ -71,7 +71,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [0, 43],
+  range: [0, 50],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 4 },

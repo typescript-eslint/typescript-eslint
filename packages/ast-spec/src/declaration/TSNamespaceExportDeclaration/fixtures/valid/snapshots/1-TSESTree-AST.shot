@@ -3,12 +3,14 @@
 exports[`AST Fixtures declaration TSNamespaceExportDeclaration valid TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSNamespaceExportDeclaration {
       type: "TSNamespaceExportDeclaration",
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "a",
+        optional: false,
 
         range: [20, 21],
         loc: {

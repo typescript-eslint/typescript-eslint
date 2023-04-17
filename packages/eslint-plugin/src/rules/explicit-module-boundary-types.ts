@@ -22,7 +22,6 @@ type Options = [
     allowedNames?: string[];
     allowHigherOrderFunctions?: boolean;
     allowTypedFunctionExpressions?: boolean;
-    shouldTrackReferences?: boolean;
   },
 ];
 type MessageIds =
@@ -39,7 +38,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         "Require explicit return and argument types on exported functions' and classes' public class methods",
-      recommended: false,
     },
     messages: {
       missingReturnType: 'Missing return type on function.',
@@ -83,10 +81,6 @@ export default util.createRule<Options, MessageIds>({
           allowTypedFunctionExpressions: {
             description:
               'Whether to ignore type annotations on the variable of a function expresion.',
-            type: 'boolean',
-          },
-          // DEPRECATED - To be removed in next major
-          shouldTrackReferences: {
             type: 'boolean',
           },
         },
@@ -274,7 +268,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function isExportedHigherOrderFunction(node: FunctionNode): boolean {
-      let current = node.parent;
+      let current: TSESTree.Node | undefined = node.parent;
       while (current) {
         if (current.type === AST_NODE_TYPES.ReturnStatement) {
           // the parent of a return will always be a block statement, so we can skip over it

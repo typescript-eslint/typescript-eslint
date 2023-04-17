@@ -4,6 +4,7 @@ exports[`javascript experimentalObjectRestSpread spread-trailing-comma.src 1`] =
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -19,6 +20,7 @@ Object {
           Object {
             "computed": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 4,
@@ -30,11 +32,13 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 3,
                 4,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "init",
             "loc": Object {
@@ -48,6 +52,7 @@ Object {
               },
             },
             "method": false,
+            "optional": false,
             "range": Array [
               3,
               4,
@@ -55,6 +60,7 @@ Object {
             "shorthand": true,
             "type": "Property",
             "value": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 4,
@@ -66,16 +72,19 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 3,
                 4,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
           },
           Object {
             "computed": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -87,11 +96,13 @@ Object {
                 },
               },
               "name": "b",
+              "optional": false,
               "range": Array [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "init",
             "loc": Object {
@@ -105,6 +116,7 @@ Object {
               },
             },
             "method": false,
+            "optional": false,
             "range": Array [
               6,
               7,
@@ -112,6 +124,7 @@ Object {
             "shorthand": true,
             "type": "Property",
             "value": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -123,15 +136,18 @@ Object {
                 },
               },
               "name": "b",
+              "optional": false,
               "range": Array [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
           },
           Object {
             "argument": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 13,
@@ -143,11 +159,13 @@ Object {
                 },
               },
               "name": "c",
+              "optional": false,
               "range": Array [
                 12,
                 13,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {

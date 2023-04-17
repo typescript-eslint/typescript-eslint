@@ -1,7 +1,7 @@
+import type { AST as RegExpAST } from '@eslint-community/regexpp';
+import { RegExpParser } from '@eslint-community/regexpp';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import type { AST as RegExpAST } from 'regexpp';
-import { RegExpParser } from 'regexpp';
 
 import {
   createRule,
@@ -26,7 +26,7 @@ export default createRule({
     docs: {
       description:
         'Enforce using `String#startsWith` and `String#endsWith` over other equivalent methods of checking substrings',
-      recommended: 'strict',
+      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
     messages: {
@@ -40,18 +40,16 @@ export default createRule({
   create(context) {
     const globalScope = context.getScope();
     const sourceCode = context.getSourceCode();
-    const service = getParserServices(context);
-    const typeChecker = service.program.getTypeChecker();
+    const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     /**
      * Check if a given node is a string.
      * @param node The node to check.
      */
     function isStringType(node: TSESTree.Expression): boolean {
-      const objectType = typeChecker.getTypeAtLocation(
-        service.esTreeNodeToTSNodeMap.get(node),
-      );
-      return getTypeName(typeChecker, objectType) === 'string';
+      const objectType = services.getTypeAtLocation(node);
+      return getTypeName(checker, objectType) === 'string';
     }
 
     /**

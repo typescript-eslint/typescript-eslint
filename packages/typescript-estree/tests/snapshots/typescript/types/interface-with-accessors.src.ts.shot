@@ -7,8 +7,11 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "export": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -20,11 +23,13 @@ Object {
                 },
               },
               "name": "size",
+              "optional": false,
               "range": Array [
                 24,
                 28,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "get",
             "loc": Object {
@@ -37,11 +42,13 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "params": Array [],
             "range": Array [
               20,
               39,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -76,11 +83,16 @@ Object {
                 "type": "TSNumberKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
+            "typeParameters": undefined,
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "export": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -92,11 +104,13 @@ Object {
                 },
               },
               "name": "size",
+              "optional": false,
               "range": Array [
                 46,
                 50,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "set",
             "loc": Object {
@@ -109,8 +123,10 @@ Object {
                 "line": 3,
               },
             },
+            "optional": false,
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 43,
@@ -122,6 +138,7 @@ Object {
                   },
                 },
                 "name": "value",
+                "optional": false,
                 "range": Array [
                   51,
                   83,
@@ -220,7 +237,11 @@ Object {
               42,
               85,
             ],
+            "readonly": false,
+            "returnType": undefined,
+            "static": false,
             "type": "TSMethodSignature",
+            "typeParameters": undefined,
           },
         ],
         "loc": Object {
@@ -239,7 +260,10 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
+      "extends": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 15,
@@ -251,11 +275,13 @@ Object {
           },
         },
         "name": "Thing",
+        "optional": false,
         "range": Array [
           10,
           15,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -272,6 +298,7 @@ Object {
         87,
       ],
       "type": "TSInterfaceDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

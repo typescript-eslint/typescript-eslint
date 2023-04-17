@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice Babel - Tokens 1`] = `
+[
+  Identifier {
+    type: "Identifier",
+    value: "namespace",
+
+    range: [0, 9],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 9, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "abc",
+
+    range: [10, 13],
+    loc: {
+      start: { column: 10, line: 1 },
+      end: { column: 13, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ".",
+
+    range: [13, 14],
+    loc: {
+      start: { column: 13, line: 1 },
+      end: { column: 14, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "def",
+
+    range: [14, 17],
+    loc: {
+      start: { column: 14, line: 1 },
+      end: { column: 17, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ".",
+
+    range: [17, 18],
+    loc: {
+      start: { column: 17, line: 1 },
+      end: { column: 18, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "ghi",
+
+    range: [18, 21],
+    loc: {
+      start: { column: 18, line: 1 },
+      end: { column: 21, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [22, 23],
+    loc: {
+      start: { column: 22, line: 1 },
+      end: { column: 23, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [23, 24],
+    loc: {
+      start: { column: 23, line: 1 },
+      end: { column: 24, line: 1 },
+    },
+  },
+]
+`;

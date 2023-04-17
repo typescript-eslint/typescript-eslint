@@ -1,0 +1,439 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-module TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSModuleDeclaration {
+      type: "TSModuleDeclaration",
+      body: TSModuleBlock {
+        type: "TSModuleBlock",
+        body: [
+          ExportNamedDeclaration {
+            type: "ExportNamedDeclaration",
+            assertions: [],
+            declaration: VariableDeclaration {
+              type: "VariableDeclaration",
+              declarations: [
+                VariableDeclarator {
+                  type: "VariableDeclarator",
+                  definite: false,
+                  id: Identifier {
+                    type: "Identifier",
+                    decorators: [],
+                    name: "x",
+                    optional: false,
+
+                    range: [97, 98],
+                    loc: {
+                      start: { column: 13, line: 4 },
+                      end: { column: 14, line: 4 },
+                    },
+                  },
+                  init: Literal {
+                    type: "Literal",
+                    raw: "'hello world'",
+                    value: "hello world",
+
+                    range: [101, 114],
+                    loc: {
+                      start: { column: 17, line: 4 },
+                      end: { column: 30, line: 4 },
+                    },
+                  },
+
+                  range: [97, 114],
+                  loc: {
+                    start: { column: 13, line: 4 },
+                    end: { column: 30, line: 4 },
+                  },
+                },
+              ],
+              declare: false,
+              kind: "var",
+
+              range: [93, 115],
+              loc: {
+                start: { column: 9, line: 4 },
+                end: { column: 31, line: 4 },
+              },
+            },
+            exportKind: "value",
+            source: null,
+            specifiers: [],
+
+            range: [86, 115],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 31, line: 4 },
+            },
+          },
+          ExportNamedDeclaration {
+            type: "ExportNamedDeclaration",
+            assertions: [],
+            declaration: ClassDeclaration {
+              type: "ClassDeclaration",
+              abstract: false,
+              body: ClassBody {
+                type: "ClassBody",
+                body: [
+                  MethodDefinition {
+                    type: "MethodDefinition",
+                    computed: false,
+                    decorators: [],
+                    key: Identifier {
+                      type: "Identifier",
+                      decorators: [],
+                      name: "constructor",
+                      optional: false,
+
+                      range: [143, 154],
+                      loc: {
+                        start: { column: 4, line: 6 },
+                        end: { column: 15, line: 6 },
+                      },
+                    },
+                    kind: "constructor",
+                    optional: false,
+                    override: false,
+                    static: false,
+                    value: FunctionExpression {
+                      type: "FunctionExpression",
+                      async: false,
+                      body: BlockStatement {
+                        type: "BlockStatement",
+                        body: [],
+
+                        range: [191, 193],
+                        loc: {
+                          start: { column: 52, line: 6 },
+                          end: { column: 54, line: 6 },
+                        },
+                      },
+                      declare: false,
+                      expression: false,
+                      generator: false,
+                      id: null,
+                      params: [
+                        TSParameterProperty {
+                          type: "TSParameterProperty",
+                          accessibility: "public",
+                          decorators: [],
+                          override: false,
+                          parameter: Identifier {
+                            type: "Identifier",
+                            decorators: [],
+                            name: "x",
+                            optional: false,
+                            typeAnnotation: TSTypeAnnotation {
+                              type: "TSTypeAnnotation",
+                              typeAnnotation: TSNumberKeyword {
+                                type: "TSNumberKeyword",
+
+                                range: [165, 171],
+                                loc: {
+                                  start: { column: 26, line: 6 },
+                                  end: { column: 32, line: 6 },
+                                },
+                              },
+
+                              range: [163, 171],
+                              loc: {
+                                start: { column: 24, line: 6 },
+                                end: { column: 32, line: 6 },
+                              },
+                            },
+
+                            range: [162, 171],
+                            loc: {
+                              start: { column: 23, line: 6 },
+                              end: { column: 32, line: 6 },
+                            },
+                          },
+                          readonly: false,
+                          static: false,
+
+                          range: [155, 171],
+                          loc: {
+                            start: { column: 16, line: 6 },
+                            end: { column: 32, line: 6 },
+                          },
+                        },
+                        TSParameterProperty {
+                          type: "TSParameterProperty",
+                          accessibility: "public",
+                          decorators: [],
+                          override: false,
+                          parameter: Identifier {
+                            type: "Identifier",
+                            decorators: [],
+                            name: "y",
+                            optional: false,
+                            typeAnnotation: TSTypeAnnotation {
+                              type: "TSTypeAnnotation",
+                              typeAnnotation: TSNumberKeyword {
+                                type: "TSNumberKeyword",
+
+                                range: [183, 189],
+                                loc: {
+                                  start: { column: 44, line: 6 },
+                                  end: { column: 50, line: 6 },
+                                },
+                              },
+
+                              range: [181, 189],
+                              loc: {
+                                start: { column: 42, line: 6 },
+                                end: { column: 50, line: 6 },
+                              },
+                            },
+
+                            range: [180, 189],
+                            loc: {
+                              start: { column: 41, line: 6 },
+                              end: { column: 50, line: 6 },
+                            },
+                          },
+                          readonly: false,
+                          static: false,
+
+                          range: [173, 189],
+                          loc: {
+                            start: { column: 34, line: 6 },
+                            end: { column: 50, line: 6 },
+                          },
+                        },
+                      ],
+
+                      range: [154, 193],
+                      loc: {
+                        start: { column: 15, line: 6 },
+                        end: { column: 54, line: 6 },
+                      },
+                    },
+
+                    range: [143, 193],
+                    loc: {
+                      start: { column: 4, line: 6 },
+                      end: { column: 54, line: 6 },
+                    },
+                  },
+                ],
+
+                range: [137, 197],
+                loc: {
+                  start: { column: 21, line: 5 },
+                  end: { column: 3, line: 7 },
+                },
+              },
+              declare: false,
+              decorators: [],
+              id: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "Point",
+                optional: false,
+
+                range: [131, 136],
+                loc: {
+                  start: { column: 15, line: 5 },
+                  end: { column: 20, line: 5 },
+                },
+              },
+              implements: [],
+              superClass: null,
+
+              range: [125, 197],
+              loc: {
+                start: { column: 9, line: 5 },
+                end: { column: 3, line: 7 },
+              },
+            },
+            exportKind: "value",
+            source: null,
+            specifiers: [],
+
+            range: [118, 197],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 3, line: 7 },
+            },
+          },
+          ExportNamedDeclaration {
+            type: "ExportNamedDeclaration",
+            assertions: [],
+            declaration: TSModuleDeclaration {
+              type: "TSModuleDeclaration",
+              body: TSModuleBlock {
+                type: "TSModuleBlock",
+                body: [
+                  ExportNamedDeclaration {
+                    type: "ExportNamedDeclaration",
+                    assertions: [],
+                    declaration: TSInterfaceDeclaration {
+                      type: "TSInterfaceDeclaration",
+                      body: TSInterfaceBody {
+                        type: "TSInterfaceBody",
+                        body: [
+                          TSPropertySignature {
+                            type: "TSPropertySignature",
+                            computed: false,
+                            key: Identifier {
+                              type: "Identifier",
+                              decorators: [],
+                              name: "name",
+                              optional: false,
+
+                              range: [250, 254],
+                              loc: {
+                                start: { column: 6, line: 10 },
+                                end: { column: 10, line: 10 },
+                              },
+                            },
+                            optional: false,
+                            readonly: false,
+                            static: false,
+                            typeAnnotation: TSTypeAnnotation {
+                              type: "TSTypeAnnotation",
+                              typeAnnotation: TSStringKeyword {
+                                type: "TSStringKeyword",
+
+                                range: [256, 262],
+                                loc: {
+                                  start: { column: 12, line: 10 },
+                                  end: { column: 18, line: 10 },
+                                },
+                              },
+
+                              range: [254, 262],
+                              loc: {
+                                start: { column: 10, line: 10 },
+                                end: { column: 18, line: 10 },
+                              },
+                            },
+
+                            range: [250, 263],
+                            loc: {
+                              start: { column: 6, line: 10 },
+                              end: { column: 19, line: 10 },
+                            },
+                          },
+                        ],
+
+                        range: [242, 269],
+                        loc: {
+                          start: { column: 24, line: 9 },
+                          end: { column: 5, line: 11 },
+                        },
+                      },
+                      declare: false,
+                      extends: [],
+                      id: Identifier {
+                        type: "Identifier",
+                        decorators: [],
+                        name: "Id",
+                        optional: false,
+
+                        range: [239, 241],
+                        loc: {
+                          start: { column: 21, line: 9 },
+                          end: { column: 23, line: 9 },
+                        },
+                      },
+
+                      range: [229, 269],
+                      loc: {
+                        start: { column: 11, line: 9 },
+                        end: { column: 5, line: 11 },
+                      },
+                    },
+                    exportKind: "type",
+                    source: null,
+                    specifiers: [],
+
+                    range: [222, 269],
+                    loc: {
+                      start: { column: 4, line: 9 },
+                      end: { column: 5, line: 11 },
+                    },
+                  },
+                ],
+
+                range: [216, 273],
+                loc: {
+                  start: { column: 18, line: 8 },
+                  end: { column: 3, line: 12 },
+                },
+              },
+              declare: false,
+              global: false,
+              id: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "B",
+                optional: false,
+
+                range: [214, 215],
+                loc: {
+                  start: { column: 16, line: 8 },
+                  end: { column: 17, line: 8 },
+                },
+              },
+              kind: "module",
+
+              range: [207, 273],
+              loc: {
+                start: { column: 9, line: 8 },
+                end: { column: 3, line: 12 },
+              },
+            },
+            exportKind: "value",
+            source: null,
+            specifiers: [],
+
+            range: [200, 273],
+            loc: {
+              start: { column: 2, line: 8 },
+              end: { column: 3, line: 12 },
+            },
+          },
+        ],
+
+        range: [82, 275],
+        loc: {
+          start: { column: 9, line: 3 },
+          end: { column: 1, line: 13 },
+        },
+      },
+      declare: false,
+      global: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "A",
+        optional: false,
+
+        range: [80, 81],
+        loc: {
+          start: { column: 7, line: 3 },
+          end: { column: 8, line: 3 },
+        },
+      },
+      kind: "module",
+
+      range: [73, 275],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 13 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 276],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 14 },
+  },
+}
+`;

@@ -1,0 +1,136 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics directive-in-module Babel - Tokens 1`] = `
+[
+  Identifier {
+    type: "Identifier",
+    value: "module",
+
+    range: [73, 79],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 6, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "foo",
+
+    range: [80, 83],
+    loc: {
+      start: { column: 7, line: 3 },
+      end: { column: 10, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [84, 85],
+    loc: {
+      start: { column: 11, line: 3 },
+      end: { column: 12, line: 3 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'use strict'",
+
+    range: [88, 100],
+    loc: {
+      start: { column: 2, line: 4 },
+      end: { column: 14, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [100, 101],
+    loc: {
+      start: { column: 14, line: 4 },
+      end: { column: 15, line: 4 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "var",
+
+    range: [104, 107],
+    loc: {
+      start: { column: 2, line: 5 },
+      end: { column: 5, line: 5 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "a",
+
+    range: [108, 109],
+    loc: {
+      start: { column: 6, line: 5 },
+      end: { column: 7, line: 5 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [110, 111],
+    loc: {
+      start: { column: 8, line: 5 },
+      end: { column: 9, line: 5 },
+    },
+  },
+  Numeric {
+    type: "Numeric",
+    value: "1",
+
+    range: [112, 113],
+    loc: {
+      start: { column: 10, line: 5 },
+      end: { column: 11, line: 5 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [113, 114],
+    loc: {
+      start: { column: 11, line: 5 },
+      end: { column: 12, line: 5 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'use strict'",
+
+    range: [117, 129],
+    loc: {
+      start: { column: 2, line: 6 },
+      end: { column: 14, line: 6 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [129, 130],
+    loc: {
+      start: { column: 14, line: 6 },
+      end: { column: 15, line: 6 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [131, 132],
+    loc: {
+      start: { column: 0, line: 7 },
+      end: { column: 1, line: 7 },
+    },
+  },
+]
+`;

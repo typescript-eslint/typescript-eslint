@@ -3,18 +3,20 @@
 exports[`AST Fixtures declaration TSInterfaceDeclaration with-member-one TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSInterfaceDeclaration {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [
+        body: [
           TSPropertySignature {
             type: "TSPropertySignature",
             computed: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "prop",
+              optional: false,
 
               range: [16, 20],
               loc: {
@@ -22,6 +24,9 @@ Program {
                 end: { column: 6, line: 2 },
               },
             },
+            optional: false,
+            readonly: false,
+            static: false,
 
             range: [16, 21],
             loc: {
@@ -37,9 +42,13 @@ Program {
           end: { column: 1, line: 3 },
         },
       },
+      declare: false,
+      extends: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "F",
+        optional: false,
 
         range: [10, 11],
         loc: {

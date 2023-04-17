@@ -1,0 +1,153 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics type-assertion-in-arrow-function AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'assertString',
+-             optional: false,
+
+              range: [79, 91],
+              loc: {
+                start: { column: 6, line: 3 },
+                end: { column: 18, line: 3 },
+              },
+            },
+            init: ArrowFunctionExpression {
+              type: 'ArrowFunctionExpression',
+              async: false,
+              body: BlockStatement {
+                type: 'BlockStatement',
+                body: Array [
+                  ReturnStatement {
+                    type: 'ReturnStatement',
+                    argument: null,
+
+                    range: [121, 128],
+                    loc: {
+                      start: { column: 2, line: 4 },
+                      end: { column: 9, line: 4 },
+                    },
+                  },
+                ],
+
+                range: [117, 130],
+                loc: {
+                  start: { column: 44, line: 3 },
+                  end: { column: 1, line: 5 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: Array [
+                Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'x',
+-                 optional: false,
+                  typeAnnotation: TSTypeAnnotation {
+                    type: 'TSTypeAnnotation',
+                    typeAnnotation: TSAnyKeyword {
+                      type: 'TSAnyKeyword',
+
+                      range: [98, 101],
+                      loc: {
+                        start: { column: 25, line: 3 },
+                        end: { column: 28, line: 3 },
+                      },
+                    },
+
+                    range: [96, 101],
+                    loc: {
+                      start: { column: 23, line: 3 },
+                      end: { column: 28, line: 3 },
+                    },
+                  },
+
+                  range: [95, 101],
+                  loc: {
+                    start: { column: 22, line: 3 },
+                    end: { column: 28, line: 3 },
+                  },
+                },
+              ],
+              returnType: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSTypePredicate {
+                  type: 'TSTypePredicate',
+                  asserts: true,
+                  parameterName: Identifier {
+                    type: 'Identifier',
+-                   decorators: Array [],
+                    name: 'x',
+-                   optional: false,
+
+                    range: [112, 113],
+                    loc: {
+                      start: { column: 39, line: 3 },
+                      end: { column: 40, line: 3 },
+                    },
+                  },
+                  typeAnnotation: null,
+
+                  range: [104, 113],
+                  loc: {
+                    start: { column: 31, line: 3 },
+                    end: { column: 40, line: 3 },
+                  },
+                },
+
+                range: [102, 113],
+                loc: {
+                  start: { column: 29, line: 3 },
+                  end: { column: 40, line: 3 },
+                },
+              },
+
+              range: [94, 130],
+              loc: {
+                start: { column: 21, line: 3 },
+                end: { column: 1, line: 5 },
+              },
+            },
+
+            range: [79, 130],
+            loc: {
+              start: { column: 6, line: 3 },
+              end: { column: 1, line: 5 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'const',
+
+        range: [73, 131],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 2, line: 5 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 132],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 6 },
+    },
+  }"
+`;

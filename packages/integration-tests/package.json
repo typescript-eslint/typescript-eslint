@@ -1,0 +1,16 @@
+{
+  "name": "@typescript-eslint/integration-tests",
+  "version": "5.58.0",
+  "private": true,
+  "scripts": {
+    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
+    "lint": "nx lint",
+    "test": "jest --no-coverage",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "devDependencies": {
+    "@types/ncp": "^2.0.5",
+    "ncp": "^2.0.0",
+    "tmp": "*"
+  }
+}

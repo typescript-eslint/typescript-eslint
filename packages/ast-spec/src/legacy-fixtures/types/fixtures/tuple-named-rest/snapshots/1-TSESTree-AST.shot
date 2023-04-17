@@ -1,0 +1,152 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types tuple-named-rest TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          definite: false,
+          id: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "x",
+            optional: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTupleType {
+                type: "TSTupleType",
+                elementTypes: [
+                  TSNamedTupleMember {
+                    type: "TSNamedTupleMember",
+                    elementType: TSStringKeyword {
+                      type: "TSStringKeyword",
+
+                      range: [84, 90],
+                      loc: {
+                        start: { column: 11, line: 3 },
+                        end: { column: 17, line: 3 },
+                      },
+                    },
+                    label: Identifier {
+                      type: "Identifier",
+                      decorators: [],
+                      name: "a",
+                      optional: false,
+
+                      range: [81, 82],
+                      loc: {
+                        start: { column: 8, line: 3 },
+                        end: { column: 9, line: 3 },
+                      },
+                    },
+                    optional: false,
+
+                    range: [81, 90],
+                    loc: {
+                      start: { column: 8, line: 3 },
+                      end: { column: 17, line: 3 },
+                    },
+                  },
+                  TSRestType {
+                    type: "TSRestType",
+                    typeAnnotation: TSNamedTupleMember {
+                      type: "TSNamedTupleMember",
+                      elementType: TSArrayType {
+                        type: "TSArrayType",
+                        elementType: TSNumberKeyword {
+                          type: "TSNumberKeyword",
+
+                          range: [98, 104],
+                          loc: {
+                            start: { column: 25, line: 3 },
+                            end: { column: 31, line: 3 },
+                          },
+                        },
+
+                        range: [98, 106],
+                        loc: {
+                          start: { column: 25, line: 3 },
+                          end: { column: 33, line: 3 },
+                        },
+                      },
+                      label: Identifier {
+                        type: "Identifier",
+                        decorators: [],
+                        name: "b",
+                        optional: false,
+
+                        range: [95, 96],
+                        loc: {
+                          start: { column: 22, line: 3 },
+                          end: { column: 23, line: 3 },
+                        },
+                      },
+                      optional: false,
+
+                      range: [95, 106],
+                      loc: {
+                        start: { column: 22, line: 3 },
+                        end: { column: 33, line: 3 },
+                      },
+                    },
+
+                    range: [92, 106],
+                    loc: {
+                      start: { column: 19, line: 3 },
+                      end: { column: 33, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [80, 107],
+                loc: {
+                  start: { column: 7, line: 3 },
+                  end: { column: 34, line: 3 },
+                },
+              },
+
+              range: [78, 107],
+              loc: {
+                start: { column: 5, line: 3 },
+                end: { column: 34, line: 3 },
+              },
+            },
+
+            range: [77, 107],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 34, line: 3 },
+            },
+          },
+          init: null,
+
+          range: [77, 107],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 34, line: 3 },
+          },
+        },
+      ],
+      declare: false,
+      kind: "let",
+
+      range: [73, 108],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 35, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 109],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

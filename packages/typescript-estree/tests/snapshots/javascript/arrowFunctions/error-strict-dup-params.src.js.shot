@@ -41,6 +41,7 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
@@ -77,6 +78,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 16,
@@ -88,13 +90,16 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               15,
               16,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 19,
@@ -106,18 +111,22 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               18,
               19,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
         ],
         "range": Array [
           14,
           26,
         ],
+        "returnType": undefined,
         "type": "ArrowFunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

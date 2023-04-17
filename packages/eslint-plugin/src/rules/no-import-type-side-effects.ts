@@ -13,7 +13,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce the use of top-level import type qualifier when an import only has specifiers with inline type qualifiers',
-      recommended: false,
     },
     fixable: 'code',
     messages: {
@@ -29,6 +28,10 @@ export default util.createRule<Options, MessageIds>({
       'ImportDeclaration[importKind!="type"]'(
         node: TSESTree.ImportDeclaration,
       ): void {
+        if (node.specifiers.length === 0) {
+          return;
+        }
+
         const specifiers: TSESTree.ImportSpecifier[] = [];
         for (const specifier of node.specifiers) {
           if (

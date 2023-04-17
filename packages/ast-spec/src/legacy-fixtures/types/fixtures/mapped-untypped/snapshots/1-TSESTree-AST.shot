@@ -1,0 +1,104 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types mapped-untypped TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          definite: false,
+          id: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "map",
+            optional: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSMappedType {
+                type: "TSMappedType",
+                nameType: null,
+                typeParameter: TSTypeParameter {
+                  type: "TSTypeParameter",
+                  const: false,
+                  constraint: TSStringKeyword {
+                    type: "TSStringKeyword",
+
+                    range: [90, 96],
+                    loc: {
+                      start: { column: 17, line: 3 },
+                      end: { column: 23, line: 3 },
+                    },
+                  },
+                  in: false,
+                  name: Identifier {
+                    type: "Identifier",
+                    decorators: [],
+                    name: "P",
+                    optional: false,
+
+                    range: [85, 86],
+                    loc: {
+                      start: { column: 12, line: 3 },
+                      end: { column: 13, line: 3 },
+                    },
+                  },
+                  out: false,
+
+                  range: [85, 96],
+                  loc: {
+                    start: { column: 12, line: 3 },
+                    end: { column: 23, line: 3 },
+                  },
+                },
+
+                range: [82, 99],
+                loc: {
+                  start: { column: 9, line: 3 },
+                  end: { column: 26, line: 3 },
+                },
+              },
+
+              range: [80, 99],
+              loc: {
+                start: { column: 7, line: 3 },
+                end: { column: 26, line: 3 },
+              },
+            },
+
+            range: [77, 99],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 26, line: 3 },
+            },
+          },
+          init: null,
+
+          range: [77, 99],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 26, line: 3 },
+          },
+        },
+      ],
+      declare: false,
+      kind: "let",
+
+      range: [73, 100],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 27, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 101],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

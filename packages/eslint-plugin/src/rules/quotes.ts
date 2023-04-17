@@ -16,15 +16,11 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce the consistent use of either backticks, double, or single quotes',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'code',
     hasSuggestions: baseRule.meta.hasSuggestions,
-    // TODO: this rule has only had messages since v7.0 - remove this when we remove support for v6
-    messages: baseRule.meta.messages ?? {
-      wrongQuotes: 'Strings must use {{description}}.',
-    },
+    messages: baseRule.meta.messages,
     schema: baseRule.meta.schema,
   },
   defaultOptions: [

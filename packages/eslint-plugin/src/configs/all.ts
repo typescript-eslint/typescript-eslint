@@ -1,6 +1,9 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// YOU CAN REGENERATE IT USING yarn generate:configs
+// SEE https://typescript-eslint.io/linting/configs
+//
+// For developers working in the typescript-eslint monorepo:
+// You can regenerate it using `yarn generate:configs`
 
 export = {
   extends: ['./configs/base', './configs/eslint-recommended'],
@@ -11,6 +14,8 @@ export = {
     '@typescript-eslint/ban-ts-comment': 'error',
     '@typescript-eslint/ban-tslint-comment': 'error',
     '@typescript-eslint/ban-types': 'error',
+    'block-spacing': 'off',
+    '@typescript-eslint/block-spacing': 'error',
     'brace-style': 'off',
     '@typescript-eslint/brace-style': 'error',
     '@typescript-eslint/class-literal-property-style': 'error',
@@ -41,6 +46,8 @@ export = {
     '@typescript-eslint/key-spacing': 'error',
     'keyword-spacing': 'off',
     '@typescript-eslint/keyword-spacing': 'error',
+    'lines-around-comment': 'off',
+    '@typescript-eslint/lines-around-comment': 'error',
     'lines-between-class-members': 'off',
     '@typescript-eslint/lines-between-class-members': 'error',
     '@typescript-eslint/member-delimiter-style': 'error',
@@ -55,6 +62,7 @@ export = {
     'no-dupe-class-members': 'off',
     '@typescript-eslint/no-dupe-class-members': 'error',
     '@typescript-eslint/no-duplicate-enum-values': 'error',
+    '@typescript-eslint/no-duplicate-type-constituents': 'error',
     '@typescript-eslint/no-dynamic-delete': 'error',
     'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': 'error',
@@ -84,6 +92,7 @@ export = {
     '@typescript-eslint/no-meaningless-void-operator': 'error',
     '@typescript-eslint/no-misused-new': 'error',
     '@typescript-eslint/no-misused-promises': 'error',
+    '@typescript-eslint/no-mixed-enums': 'error',
     '@typescript-eslint/no-namespace': 'error',
     '@typescript-eslint/no-non-null-asserted-nullish-coalescing': 'error',
     '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
@@ -99,7 +108,6 @@ export = {
     '@typescript-eslint/no-this-alias': 'error',
     'no-throw-literal': 'off',
     '@typescript-eslint/no-throw-literal': 'error',
-    '@typescript-eslint/no-type-alias': 'error',
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
     '@typescript-eslint/no-unnecessary-condition': 'error',
     '@typescript-eslint/no-unnecessary-qualifier': 'error',
@@ -110,6 +118,7 @@ export = {
     '@typescript-eslint/no-unsafe-assignment': 'error',
     '@typescript-eslint/no-unsafe-call': 'error',
     '@typescript-eslint/no-unsafe-declaration-merging': 'error',
+    '@typescript-eslint/no-unsafe-enum-comparison': 'error',
     '@typescript-eslint/no-unsafe-member-access': 'error',
     '@typescript-eslint/no-unsafe-return': 'error',
     'no-unused-expressions': 'off',

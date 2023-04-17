@@ -4,9 +4,11 @@ exports[`typescript decorators accessor-decorators accessor-decorator-factory-in
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "decorators": Array [
               Object {
@@ -33,6 +35,7 @@ Object {
                     },
                   ],
                   "callee": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 17,
@@ -44,11 +47,13 @@ Object {
                       },
                     },
                     "name": "configurable",
+                    "optional": false,
                     "range": Array [
                       19,
                       31,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "loc": Object {
                     "end": Object {
@@ -66,6 +71,7 @@ Object {
                     38,
                   ],
                   "type": "CallExpression",
+                  "typeParameters": undefined,
                 },
                 "loc": Object {
                   "end": Object {
@@ -85,6 +91,7 @@ Object {
               },
             ],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 9,
@@ -96,11 +103,13 @@ Object {
                 },
               },
               "name": "x",
+              "optional": false,
               "range": Array [
                 47,
                 48,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "get",
             "loc": Object {
@@ -113,6 +122,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               18,
@@ -120,6 +130,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -156,6 +167,7 @@ Object {
                       },
                       "optional": false,
                       "property": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 28,
@@ -167,11 +179,13 @@ Object {
                           },
                         },
                         "name": "_x",
+                        "optional": false,
                         "range": Array [
                           65,
                           67,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "range": Array [
                         60,
@@ -212,6 +226,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -230,7 +245,9 @@ Object {
                 48,
                 70,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -250,7 +267,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 11,
@@ -262,12 +282,15 @@ Object {
           },
         },
         "name": "Point",
+        "optional": false,
         "range": Array [
           6,
           11,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -283,7 +306,9 @@ Object {
         72,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

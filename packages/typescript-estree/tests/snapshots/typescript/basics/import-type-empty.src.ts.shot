@@ -52,6 +52,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -63,11 +64,13 @@ Object {
               },
             },
             "name": "type",
+            "optional": false,
             "range": Array [
               62,
               66,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             62,

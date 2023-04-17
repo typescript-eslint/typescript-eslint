@@ -22,7 +22,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before function parenthesis',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
@@ -79,7 +78,7 @@ export default util.createRule<Options, MessageIds>({
         return true;
       }
 
-      const parent = node.parent!;
+      const parent = node.parent;
 
       return (
         parent.type === AST_NODE_TYPES.MethodDefinition ||

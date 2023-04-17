@@ -4,8 +4,10 @@ exports[`javascript defaultParams expression.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 1,
@@ -17,11 +19,13 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             0,
             1,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -58,6 +62,7 @@ Object {
             ],
             "type": "BlockStatement",
           },
+          "declare": false,
           "expression": false,
           "generator": false,
           "id": null,
@@ -73,7 +78,9 @@ Object {
           },
           "params": Array [
             Object {
+              "decorators": Array [],
               "left": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -85,11 +92,13 @@ Object {
                   },
                 },
                 "name": "y",
+                "optional": false,
                 "range": Array [
                   13,
                   14,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -101,6 +110,7 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "range": Array [
                 13,
                 18,
@@ -125,13 +135,16 @@ Object {
                 "value": 1,
               },
               "type": "AssignmentPattern",
+              "typeAnnotation": undefined,
             },
           ],
           "range": Array [
             4,
             22,
           ],
+          "returnType": undefined,
           "type": "FunctionExpression",
+          "typeParameters": undefined,
         },
         "type": "AssignmentExpression",
       },

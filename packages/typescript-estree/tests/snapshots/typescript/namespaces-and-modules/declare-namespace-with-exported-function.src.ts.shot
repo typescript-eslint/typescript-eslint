@@ -11,9 +11,11 @@ Object {
             "declaration": Object {
               "async": false,
               "body": undefined,
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 24,
@@ -25,11 +27,13 @@ Object {
                   },
                 },
                 "name": "select",
+                "optional": false,
                 "range": Array [
                   41,
                   47,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -43,6 +47,7 @@ Object {
               },
               "params": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 41,
@@ -54,6 +59,7 @@ Object {
                     },
                   },
                   "name": "selector",
+                  "optional": false,
                   "range": Array [
                     48,
                     64,
@@ -132,6 +138,7 @@ Object {
                   ],
                   "type": "TSTypeReference",
                   "typeName": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 53,
@@ -143,11 +150,13 @@ Object {
                       },
                     },
                     "name": "Selection",
+                    "optional": false,
                     "range": Array [
                       67,
                       76,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "typeParameters": Object {
                     "loc": Object {
@@ -188,6 +197,7 @@ Object {
                 },
               },
               "type": "TSDeclareFunction",
+              "typeParameters": undefined,
             },
             "exportKind": "value",
             "loc": Object {
@@ -226,7 +236,9 @@ Object {
         "type": "TSModuleBlock",
       },
       "declare": true,
+      "global": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 20,
@@ -238,11 +250,13 @@ Object {
           },
         },
         "name": "d3",
+        "optional": false,
         "range": Array [
           18,
           20,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {

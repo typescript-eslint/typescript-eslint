@@ -5,9 +5,11 @@ Object {
   "body": Array [
     Object {
       "body": Object {
+        "directive": undefined,
         "expression": Object {
           "arguments": Array [
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 34,
@@ -19,14 +21,17 @@ Object {
                 },
               },
               "name": "x",
+              "optional": false,
               "range": Array [
                 33,
                 34,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
           ],
           "callee": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 32,
@@ -38,11 +43,13 @@ Object {
               },
             },
             "name": "process",
+            "optional": false,
             "range": Array [
               25,
               32,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -60,6 +67,7 @@ Object {
             35,
           ],
           "type": "CallExpression",
+          "typeParameters": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -80,7 +88,9 @@ Object {
       "left": Object {
         "declarations": Array [
           Object {
+            "definite": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -92,11 +102,13 @@ Object {
                 },
               },
               "name": "x",
+              "optional": false,
               "range": Array [
                 9,
                 10,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": Object {
               "loc": Object {
@@ -134,6 +146,7 @@ Object {
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "let",
         "loc": Object {
           "end": Object {
@@ -166,6 +179,7 @@ Object {
         36,
       ],
       "right": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 23,
@@ -177,11 +191,13 @@ Object {
           },
         },
         "name": "list",
+        "optional": false,
         "range": Array [
           19,
           23,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "type": "ForInStatement",
     },

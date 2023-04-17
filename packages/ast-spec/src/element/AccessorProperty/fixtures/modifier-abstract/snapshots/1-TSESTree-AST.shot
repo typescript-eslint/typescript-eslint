@@ -3,20 +3,24 @@
 exports[`AST Fixtures element AccessorProperty modifier-abstract TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       abstract: true,
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           TSAbstractAccessorProperty {
             type: "TSAbstractAccessorProperty",
             computed: false,
             declare: false,
+            decorators: [],
+            definite: false,
             key: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "foo",
+              optional: false,
 
               range: [41, 44],
               loc: {
@@ -24,7 +28,9 @@ Program {
                 end: { column: 23, line: 2 },
               },
             },
+            optional: false,
             override: false,
+            readonly: false,
             static: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
@@ -60,9 +66,13 @@ Program {
           end: { column: 1, line: 3 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [15, 18],
         loc: {
@@ -70,6 +80,7 @@ Program {
           end: { column: 18, line: 1 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [0, 55],

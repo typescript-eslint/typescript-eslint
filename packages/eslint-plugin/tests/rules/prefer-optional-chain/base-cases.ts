@@ -33,7 +33,7 @@ const mapper = (c: BaseCase): InvalidTestCase => ({
   ],
 });
 
-const baseCases: Array<BaseCase> = [
+const baseCases: BaseCase[] = [
   // chained members
   {
     code: 'foo && foo.bar',
@@ -185,14 +185,14 @@ const baseCases: Array<BaseCase> = [
 ];
 
 interface Selector {
-  all(): Array<InvalidTestCase>;
+  all(): InvalidTestCase[];
   select<K extends Exclude<keyof BaseCase, 'code' | 'output'>>(
     key: K,
     value: BaseCase[K],
   ): Selector;
 }
 
-const selector = (cases: Array<BaseCase>): Selector => ({
+const selector = (cases: BaseCase[]): Selector => ({
   all: () => cases.map(mapper),
   select: <K extends Exclude<keyof BaseCase, 'code' | 'output'>>(
     key: K,

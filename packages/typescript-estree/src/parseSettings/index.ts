@@ -2,6 +2,7 @@ import type * as ts from 'typescript';
 
 import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTree } from '../ts-estree';
+import type { CacheLike } from './ExpiringCache';
 
 type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
 
@@ -10,9 +11,19 @@ type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
  */
 export interface MutableParseSettings {
   /**
-   * Code of the file being parsed.
+   * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
    */
-  code: string;
+  allowInvalidAST: boolean;
+
+  /**
+   * Code of the file being parsed, or raw source file containing it.
+   */
+  code: string | ts.SourceFile;
+
+  /**
+   * Full text of the file being parsed.
+   */
+  codeFullText: string;
 
   /**
    * Whether the `comment` parse option is enabled.
@@ -25,9 +36,11 @@ export interface MutableParseSettings {
   comments: TSESTree.Comment[];
 
   /**
-   * Whether to create a TypeScript program if one is not provided.
+   * @deprecated
+   * This is a legacy option that comes with severe performance penalties.
+   * Please do not use it.
    */
-  createDefaultProgram: boolean;
+  DEPRECATED__createDefaultProgram: boolean;
 
   /**
    * Which debug areas should be logged.
@@ -81,11 +94,6 @@ export interface MutableParseSettings {
   log: (message: string) => void;
 
   /**
-   * Path for a module resolver to use for the compiler host's `resolveModuleNames`.
-   */
-  moduleResolver: string;
-
-  /**
    * Whether two-way AST node maps are preserved during the AST conversion process.
    */
   preserveNodeMaps?: boolean;
@@ -111,9 +119,19 @@ export interface MutableParseSettings {
   singleRun: boolean;
 
   /**
+   * Whether deprecated AST properties should skip calling console.warn on accesses.
+   */
+  suppressDeprecatedPropertyWarnings: boolean;
+
+  /**
    * If the `tokens` parse option is enabled, retrieved tokens.
    */
   tokens: null | TSESTree.Token[];
+
+  /**
+   * Caches searches for TSConfigs from project directories.
+   */
+  tsconfigMatchCache: CacheLike<string, string>;
 
   /**
    * The absolute path to the root directory for all provided `project`s.

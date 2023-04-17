@@ -57,13 +57,13 @@ class FunctionSignature {
         // is a rest param
         if (checker.isArrayType(type)) {
           restType = {
-            type: checker.getTypeArguments(type)[0],
+            type: util.getTypeArguments(type, checker)[0],
             kind: RestTypeKind.Array,
             index: i,
           };
         } else if (checker.isTupleType(type)) {
           restType = {
-            typeArguments: checker.getTypeArguments(type),
+            typeArguments: util.getTypeArguments(type, checker),
             kind: RestTypeKind.Tuple,
             index: i,
           };
@@ -137,7 +137,7 @@ export default util.createRule<[], MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow calling a function with a value with type `any`',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -152,8 +152,8 @@ export default util.createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const { program, esTreeNodeToTSNodeMap } = util.getParserServices(context);
-    const checker = program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     return {
       'CallExpression, NewExpression'(
@@ -164,15 +164,11 @@ export default util.createRule<[], MessageIds>({
         }
 
         // ignore any-typed calls as these are caught by no-unsafe-call
-        if (
-          util.isTypeAnyType(
-            checker.getTypeAtLocation(esTreeNodeToTSNodeMap.get(node.callee)),
-          )
-        ) {
+        if (util.isTypeAnyType(services.getTypeAtLocation(node.callee))) {
           return;
         }
 
-        const tsNode = esTreeNodeToTSNodeMap.get(node);
+        const tsNode = services.esTreeNodeToTSNodeMap.get(node);
         const signature = FunctionSignature.create(checker, tsNode);
         if (!signature) {
           return;
@@ -182,8 +178,8 @@ export default util.createRule<[], MessageIds>({
           switch (argument.type) {
             // spreads consume
             case AST_NODE_TYPES.SpreadElement: {
-              const spreadArgType = checker.getTypeAtLocation(
-                esTreeNodeToTSNodeMap.get(argument.argument),
+              const spreadArgType = services.getTypeAtLocation(
+                argument.argument,
               );
 
               if (util.isTypeAnyType(spreadArgType)) {
@@ -202,8 +198,10 @@ export default util.createRule<[], MessageIds>({
                 });
               } else if (checker.isTupleType(spreadArgType)) {
                 // foo(...[tuple1, tuple2])
-                const spreadTypeArguments =
-                  checker.getTypeArguments(spreadArgType);
+                const spreadTypeArguments = util.getTypeArguments(
+                  spreadArgType,
+                  checker,
+                );
                 for (const tupleType of spreadTypeArguments) {
                   const parameterType = signature.getNextParameterType();
                   if (parameterType == null) {
@@ -247,9 +245,7 @@ export default util.createRule<[], MessageIds>({
                 continue;
               }
 
-              const argumentType = checker.getTypeAtLocation(
-                esTreeNodeToTSNodeMap.get(argument),
-              );
+              const argumentType = services.getTypeAtLocation(argument);
               const result = util.isUnsafeAssignment(
                 argumentType,
                 parameterType,

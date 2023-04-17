@@ -108,7 +108,7 @@ export default createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: `Enforce that eslint-plugin test snippets are correctly formatted`,
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     fixable: 'code',
@@ -148,9 +148,8 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [{ formatWithPrettier }]) {
     const sourceCode = context.getSourceCode();
-    const { program, esTreeNodeToTSNodeMap } =
-      ESLintUtils.getParserServices(context);
-    const checker = program.getTypeChecker();
+    const services = ESLintUtils.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     const checkedObjects = new Set<TSESTree.ObjectExpression>();
 
@@ -522,14 +521,14 @@ export default createRule<Options, MessageIds>({
 
         const type = getContextualType(
           checker,
-          esTreeNodeToTSNodeMap.get(node),
+          services.esTreeNodeToTSNodeMap.get(node),
         );
         if (!type) {
           return;
         }
 
         const typeString = checker.typeToString(type);
-        if (/^RunTests\b/.test(typeString)) {
+        if (/^(TSESLint\.)?RunTests\b/.test(typeString)) {
           checkedObjects.add(node);
 
           for (const prop of node.properties) {
@@ -559,12 +558,12 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
-        if (/^ValidTestCase\b/.test(typeString)) {
+        if (/^(TSESLint\.)?ValidTestCase\b/.test(typeString)) {
           checkInvalidTest(node);
           return;
         }
 
-        if (/^InvalidTestCase\b/.test(typeString)) {
+        if (/^(TSESLint\.)?InvalidTestCase\b/.test(typeString)) {
           checkInvalidTest(node);
           for (const testProp of node.properties) {
             if (

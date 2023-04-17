@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 29,
@@ -18,6 +20,7 @@ Object {
               },
             },
             "name": "f",
+            "optional": false,
             "range": Array [
               4,
               29,
@@ -52,6 +55,7 @@ Object {
                 },
                 "params": Array [
                   Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 20,
@@ -63,6 +67,7 @@ Object {
                       },
                     },
                     "name": "this",
+                    "optional": false,
                     "range": Array [
                       8,
                       20,
@@ -143,6 +148,7 @@ Object {
                   },
                 },
                 "type": "TSFunctionType",
+                "typeParameters": undefined,
               },
             },
           },
@@ -164,6 +170,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {

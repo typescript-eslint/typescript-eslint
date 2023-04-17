@@ -258,10 +258,6 @@
       "console": "integratedTerminal",
       "internalConsoleOptions": "neverOpen",
       "skipFiles": [
-        "${workspaceFolder}/packages/experimental-utils/src/index.ts",
-        "${workspaceFolder}/packages/experimental-utils/dist/index.js",
-        "${workspaceFolder}/packages/experimental-utils/src/ts-estree.ts",
-        "${workspaceFolder}/packages/experimental-utils/dist/ts-estree.js",
         "${workspaceFolder}/packages/parser/src/index.ts",
         "${workspaceFolder}/packages/parser/dist/index.js",
         "${workspaceFolder}/packages/typescript-estree/src/index.ts",

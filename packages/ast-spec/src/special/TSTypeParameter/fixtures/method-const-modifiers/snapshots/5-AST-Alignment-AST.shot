@@ -1,0 +1,373 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+-       abstract: false,
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: false,
+-             decorators: Array [],
+              key: Identifier {
+                type: 'Identifier',
+-               decorators: Array [],
+                name: 'method',
+-               optional: false,
+
+                range: [12, 18],
+                loc: {
+                  start: { column: 2, line: 2 },
+                  end: { column: 8, line: 2 },
+                },
+              },
+              kind: 'method',
+-             optional: false,
+-             override: false,
+              static: false,
+              value: FunctionExpression {
+                type: 'FunctionExpression',
+                async: false,
+                body: BlockStatement {
+                  type: 'BlockStatement',
+                  body: Array [],
+
+                  range: [30, 32],
+                  loc: {
+                    start: { column: 20, line: 2 },
+                    end: { column: 22, line: 2 },
+                  },
+                },
+-               declare: false,
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+                typeParameters: TSTypeParameterDeclaration {
+                  type: 'TSTypeParameterDeclaration',
+                  params: Array [
+                    TSTypeParameter {
+                      type: 'TSTypeParameter',
+                      const: true,
+-                     in: false,
+-                     name: Identifier {
+-                       type: 'Identifier',
+-                       decorators: Array [],
+-                       name: 'T',
+-                       optional: false,
++                     name: 'T',
+
+-                       range: [25, 26],
+-                       loc: {
+-                         start: { column: 15, line: 2 },
+-                         end: { column: 16, line: 2 },
+-                       },
+-                     },
+-                     out: false,
+-
+                      range: [19, 26],
+                      loc: {
+                        start: { column: 9, line: 2 },
+                        end: { column: 16, line: 2 },
+                      },
+                    },
+                  ],
+
+                  range: [18, 27],
+                  loc: {
+                    start: { column: 8, line: 2 },
+                    end: { column: 17, line: 2 },
+                  },
+                },
+
+-               range: [18, 32],
++               range: [27, 32],
+                loc: {
+-                 start: { column: 8, line: 2 },
++                 start: { column: 17, line: 2 },
+                  end: { column: 22, line: 2 },
+                },
+              },
+
+              range: [12, 32],
+              loc: {
+                start: { column: 2, line: 2 },
+                end: { column: 22, line: 2 },
+              },
+            },
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: false,
+-             decorators: Array [],
+              key: Identifier {
+                type: 'Identifier',
+-               decorators: Array [],
+                name: 'method',
+-               optional: false,
+
+                range: [35, 41],
+                loc: {
+                  start: { column: 2, line: 3 },
+                  end: { column: 8, line: 3 },
+                },
+              },
+              kind: 'method',
+-             optional: false,
+-             override: false,
+              static: false,
+              value: FunctionExpression {
+                type: 'FunctionExpression',
+                async: false,
+                body: BlockStatement {
+                  type: 'BlockStatement',
+                  body: Array [],
+
+                  range: [63, 65],
+                  loc: {
+                    start: { column: 30, line: 3 },
+                    end: { column: 32, line: 3 },
+                  },
+                },
+-               declare: false,
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+                typeParameters: TSTypeParameterDeclaration {
+                  type: 'TSTypeParameterDeclaration',
+                  params: Array [
+                    TSTypeParameter {
+                      type: 'TSTypeParameter',
+                      const: true,
+                      constraint: TSTypeReference {
+                        type: 'TSTypeReference',
+                        typeName: Identifier {
+                          type: 'Identifier',
+-                         decorators: Array [],
+                          name: 'U',
+-                         optional: false,
+
+                          range: [58, 59],
+                          loc: {
+                            start: { column: 25, line: 3 },
+                            end: { column: 26, line: 3 },
+                          },
+                        },
+
+                        range: [58, 59],
+                        loc: {
+                          start: { column: 25, line: 3 },
+                          end: { column: 26, line: 3 },
+                        },
+                      },
+-                     in: false,
+-                     name: Identifier {
+-                       type: 'Identifier',
+-                       decorators: Array [],
+-                       name: 'T',
+-                       optional: false,
+-
+-                       range: [48, 49],
+-                       loc: {
+-                         start: { column: 15, line: 3 },
+-                         end: { column: 16, line: 3 },
+-                       },
+-                     },
+-                     out: false,
++                     name: 'T',
+
+                      range: [42, 59],
+                      loc: {
+                        start: { column: 9, line: 3 },
+                        end: { column: 26, line: 3 },
+                      },
+                    },
+                  ],
+
+                  range: [41, 60],
+                  loc: {
+                    start: { column: 8, line: 3 },
+                    end: { column: 27, line: 3 },
+                  },
+                },
+
+-               range: [41, 65],
++               range: [60, 65],
+                loc: {
+-                 start: { column: 8, line: 3 },
++                 start: { column: 27, line: 3 },
+                  end: { column: 32, line: 3 },
+                },
+              },
+
+              range: [35, 65],
+              loc: {
+                start: { column: 2, line: 3 },
+                end: { column: 32, line: 3 },
+              },
+            },
+            MethodDefinition {
+              type: 'MethodDefinition',
+              computed: false,
+-             decorators: Array [],
+              key: Identifier {
+                type: 'Identifier',
+-               decorators: Array [],
+                name: 'method',
+-               optional: false,
+
+                range: [68, 74],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 8, line: 4 },
+                },
+              },
+              kind: 'method',
+-             optional: false,
+-             override: false,
+              static: false,
+              value: FunctionExpression {
+                type: 'FunctionExpression',
+                async: false,
+                body: BlockStatement {
+                  type: 'BlockStatement',
+                  body: Array [],
+
+                  range: [89, 91],
+                  loc: {
+                    start: { column: 23, line: 4 },
+                    end: { column: 25, line: 4 },
+                  },
+                },
+-               declare: false,
+                expression: false,
+                generator: false,
+                id: null,
+                params: Array [],
+                typeParameters: TSTypeParameterDeclaration {
+                  type: 'TSTypeParameterDeclaration',
+                  params: Array [
+                    TSTypeParameter {
+                      type: 'TSTypeParameter',
+-                     const: false,
+-                     in: false,
+-                     name: Identifier {
+-                       type: 'Identifier',
+-                       decorators: Array [],
+-                       name: 'T',
+-                       optional: false,
++                     name: 'T',
+
+-                       range: [75, 76],
+-                       loc: {
+-                         start: { column: 9, line: 4 },
+-                         end: { column: 10, line: 4 },
+-                       },
+-                     },
+-                     out: false,
+-
+                      range: [75, 76],
+                      loc: {
+                        start: { column: 9, line: 4 },
+                        end: { column: 10, line: 4 },
+                      },
+                    },
+                    TSTypeParameter {
+                      type: 'TSTypeParameter',
+                      const: true,
+-                     in: false,
+-                     name: Identifier {
+-                       type: 'Identifier',
+-                       decorators: Array [],
+-                       name: 'U',
+-                       optional: false,
+-
+-                       range: [84, 85],
+-                       loc: {
+-                         start: { column: 18, line: 4 },
+-                         end: { column: 19, line: 4 },
+-                       },
+-                     },
+-                     out: false,
++                     name: 'U',
+
+                      range: [78, 85],
+                      loc: {
+                        start: { column: 12, line: 4 },
+                        end: { column: 19, line: 4 },
+                      },
+                    },
+                  ],
+
+                  range: [74, 86],
+                  loc: {
+                    start: { column: 8, line: 4 },
+                    end: { column: 20, line: 4 },
+                  },
+                },
+
+-               range: [74, 91],
++               range: [86, 91],
+                loc: {
+-                 start: { column: 8, line: 4 },
++                 start: { column: 20, line: 4 },
+                  end: { column: 25, line: 4 },
+                },
+              },
+
+              range: [68, 91],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 25, line: 4 },
+              },
+            },
+          ],
+
+          range: [8, 93],
+          loc: {
+            start: { column: 8, line: 1 },
+            end: { column: 1, line: 5 },
+          },
+        },
+-       declare: false,
+-       decorators: Array [],
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: '_',
+-         optional: false,
+
+          range: [6, 7],
+          loc: {
+            start: { column: 6, line: 1 },
+            end: { column: 7, line: 1 },
+          },
+        },
+-       implements: Array [],
+        superClass: null,
+
+        range: [0, 93],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 1, line: 5 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 94],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 6 },
+    },
+  }"
+`;

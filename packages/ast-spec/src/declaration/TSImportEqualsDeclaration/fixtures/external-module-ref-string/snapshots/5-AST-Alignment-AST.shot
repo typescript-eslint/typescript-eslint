@@ -12,7 +12,9 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration external-module-ref-
         type: 'TSImportEqualsDeclaration',
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'F',
+-         optional: false,
 
           range: [7, 8],
           loc: {
@@ -21,12 +23,12 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration external-module-ref-
           },
         },
         importKind: 'value',
-        isExport: false,
++       isExport: false,
         moduleReference: TSExternalModuleReference {
           type: 'TSExternalModuleReference',
           expression: Literal {
             type: 'Literal',
-            raw: '\\\\'mod\\\\'',
+            raw: '\\'mod\\'',
             value: 'mod',
 
             range: [19, 24],

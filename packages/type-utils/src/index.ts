@@ -11,6 +11,7 @@ export * from './isUnsafeAssignment';
 export * from './predicates';
 export * from './propertyTypes';
 export * from './requiresQuoting';
+export * from './TypeOrValueSpecifier';
 export * from './typeFlagUtils';
 export {
   getDecorators,

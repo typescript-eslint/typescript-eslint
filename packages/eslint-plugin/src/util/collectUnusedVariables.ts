@@ -1,5 +1,4 @@
-import { ImplicitLibVariable } from '@typescript-eslint/scope-manager';
-import { Visitor } from '@typescript-eslint/scope-manager/dist/referencer/Visitor';
+import { ImplicitLibVariable, Visitor } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import {
   AST_NODE_TYPES,
@@ -321,7 +320,7 @@ class UnusedVarsVisitor<
   protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
     // -- global augmentation can be in any file, and they do not need exports
     if (node.global === true) {
-      this.markVariableAsUsed('global', node.parent!);
+      this.markVariableAsUsed('global', node.parent);
     }
   }
 
@@ -561,7 +560,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
     }
 
     const id = ref.identifier;
-    const parent = id.parent!;
+    const parent = id.parent;
     const grandparent = parent.parent!;
     const refScope = ref.from.variableScope;
     const varScope = ref.resolved!.scope.variableScope;
@@ -694,7 +693,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
     }
 
     const id = ref.identifier;
-    const parent = id.parent!;
+    const parent = id.parent;
     const grandparent = parent.parent!;
 
     return (

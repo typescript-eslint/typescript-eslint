@@ -3,10 +3,11 @@
 exports[`AST Fixtures declaration TSModuleDeclaration module-declare-no-body TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       declare: true,
+      global: false,
       id: Literal {
         type: "Literal",
         raw: "'a'",
@@ -18,6 +19,7 @@ Program {
           end: { column: 18, line: 1 },
         },
       },
+      kind: "module",
 
       range: [0, 19],
       loc: {

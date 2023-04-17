@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics _error_ abstract-class-with-override-property TSESTree - Error 1`] = `
+"TSError
+  2 |
+  3 | abstract class SpecializedComponent extends SomeComponent {
+> 4 |   abstract override foo = 1;
+    |                           ^ Abstract property cannot have an initializer.
+  5 | }
+  6 |"
+`;

@@ -1,7 +1,6 @@
 import type { FunctionExpression } from '../expression/FunctionExpression/spec';
 import type { TSEmptyBodyFunctionExpression } from '../expression/TSEmptyBodyFunctionExpression/spec';
 import type { Decorator } from '../special/Decorator/spec';
-import type { TSTypeParameterDeclaration } from '../special/TSTypeParameterDeclaration/spec';
 import type {
   ClassPropertyNameNonComputed,
   PropertyName,
@@ -18,11 +17,10 @@ interface MethodDefinitionBase extends BaseNode {
   computed: boolean;
   static: boolean;
   kind: 'constructor' | 'get' | 'method' | 'set';
-  optional?: boolean;
-  decorators?: Decorator[];
-  accessibility?: Accessibility;
-  typeParameters?: TSTypeParameterDeclaration;
-  override?: boolean;
+  optional: boolean;
+  decorators: Decorator[];
+  accessibility: Accessibility | undefined;
+  override: boolean;
 }
 
 export interface MethodDefinitionComputedNameBase extends MethodDefinitionBase {

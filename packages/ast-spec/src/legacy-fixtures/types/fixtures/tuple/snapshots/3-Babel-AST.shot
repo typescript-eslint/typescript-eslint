@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types tuple Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "x",
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTupleType {
+                type: "TSTupleType",
+                elementTypes: [
+                  TSNumberKeyword {
+                    type: "TSNumberKeyword",
+
+                    range: [81, 87],
+                    loc: {
+                      start: { column: 8, line: 3 },
+                      end: { column: 14, line: 3 },
+                    },
+                  },
+                  TSNumberKeyword {
+                    type: "TSNumberKeyword",
+
+                    range: [89, 95],
+                    loc: {
+                      start: { column: 16, line: 3 },
+                      end: { column: 22, line: 3 },
+                    },
+                  },
+                  TSNumberKeyword {
+                    type: "TSNumberKeyword",
+
+                    range: [97, 103],
+                    loc: {
+                      start: { column: 24, line: 3 },
+                      end: { column: 30, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [80, 104],
+                loc: {
+                  start: { column: 7, line: 3 },
+                  end: { column: 31, line: 3 },
+                },
+              },
+
+              range: [78, 104],
+              loc: {
+                start: { column: 5, line: 3 },
+                end: { column: 31, line: 3 },
+              },
+            },
+
+            range: [77, 104],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 31, line: 3 },
+            },
+          },
+          init: null,
+
+          range: [77, 104],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 31, line: 3 },
+          },
+        },
+      ],
+      kind: "let",
+
+      range: [73, 105],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 32, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 106],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

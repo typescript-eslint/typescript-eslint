@@ -24,6 +24,7 @@ Object {
           ],
           "type": "BlockStatement",
         },
+        "declare": false,
         "expression": false,
         "generator": false,
         "id": null,
@@ -42,7 +43,9 @@ Object {
           15,
           29,
         ],
+        "returnType": undefined,
         "type": "FunctionDeclaration",
+        "typeParameters": undefined,
       },
       "exportKind": "value",
       "loc": Object {

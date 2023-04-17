@@ -3,20 +3,22 @@
 exports[`AST Fixtures expression TSSatisfiesExpression object-object-inner-parentheses TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: TSSatisfiesExpression {
         type: "TSSatisfiesExpression",
         expression: ObjectExpression {
           type: "ObjectExpression",
-          properties: Array [
+          properties: [
             Property {
               type: "Property",
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "prop",
+                optional: false,
 
                 range: [3, 7],
                 loc: {
@@ -26,6 +28,7 @@ Program {
               },
               kind: "init",
               method: false,
+              optional: false,
               shorthand: false,
               value: Literal {
                 type: "Literal",
@@ -55,58 +58,63 @@ Program {
         },
         typeAnnotation: TSTypeLiteral {
           type: "TSTypeLiteral",
-          members: Array [
+          members: [
             TSPropertySignature {
               type: "TSPropertySignature",
               computed: false,
               key: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "prop",
+                optional: false,
 
-                range: [32, 36],
+                range: [33, 37],
                 loc: {
-                  start: { column: 32, line: 1 },
-                  end: { column: 36, line: 1 },
+                  start: { column: 33, line: 1 },
+                  end: { column: 37, line: 1 },
                 },
               },
+              optional: false,
+              readonly: false,
+              static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSStringKeyword {
                   type: "TSStringKeyword",
 
-                  range: [38, 44],
+                  range: [39, 45],
                   loc: {
-                    start: { column: 38, line: 1 },
-                    end: { column: 44, line: 1 },
+                    start: { column: 39, line: 1 },
+                    end: { column: 45, line: 1 },
                   },
                 },
 
-                range: [36, 44],
+                range: [37, 45],
                 loc: {
-                  start: { column: 36, line: 1 },
-                  end: { column: 44, line: 1 },
+                  start: { column: 37, line: 1 },
+                  end: { column: 45, line: 1 },
                 },
               },
 
-              range: [32, 44],
+              range: [33, 45],
               loc: {
-                start: { column: 32, line: 1 },
-                end: { column: 44, line: 1 },
+                start: { column: 33, line: 1 },
+                end: { column: 45, line: 1 },
               },
             },
           ],
 
-          range: [30, 46],
+          range: [31, 47],
           loc: {
-            start: { column: 30, line: 1 },
-            end: { column: 46, line: 1 },
+            start: { column: 31, line: 1 },
+            end: { column: 47, line: 1 },
           },
         },
 
-        range: [1, 46],
+        range: [0, 47],
         loc: {
-          start: { column: 1, line: 1 },
-          end: { column: 46, line: 1 },
+          start: { column: 0, line: 1 },
+          end: { column: 47, line: 1 },
         },
       },
 

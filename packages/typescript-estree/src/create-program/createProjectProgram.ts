@@ -4,8 +4,9 @@ import * as ts from 'typescript';
 
 import { firstDefined } from '../node-utils';
 import type { ParseSettings } from '../parseSettings';
+import { describeFilePath } from './describeFilePath';
 import { getWatchProgramsForProjects } from './getWatchProgramsForProjects';
-import type { ASTAndProgram } from './shared';
+import type { ASTAndDefiniteProgram } from './shared';
 import { getAstFromProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createProjectProgram');
@@ -27,7 +28,7 @@ const DEFAULT_EXTRA_FILE_EXTENSIONS = [
  */
 function createProjectProgram(
   parseSettings: ParseSettings,
-): ASTAndProgram | undefined {
+): ASTAndDefiniteProgram | undefined {
   log('Creating project program for: %s', parseSettings.filePath);
 
   const programsForProjects = getWatchProgramsForProjects(parseSettings);
@@ -36,23 +37,19 @@ function createProjectProgram(
   );
 
   // The file was either matched within the tsconfig, or we allow creating a default program
-  if (astAndProgram || parseSettings.createDefaultProgram) {
+  // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+  if (astAndProgram || parseSettings.DEPRECATED__createDefaultProgram) {
     return astAndProgram;
   }
 
-  const describeFilePath = (filePath: string): string => {
-    const relative = path.relative(
-      parseSettings.tsconfigRootDir || process.cwd(),
-      filePath,
-    );
-    if (parseSettings.tsconfigRootDir) {
-      return `<tsconfigRootDir>/${relative}`;
-    }
-    return `<cwd>/${relative}`;
-  };
+  const describeProjectFilePath = (projectFile: string): string =>
+    describeFilePath(projectFile, parseSettings.tsconfigRootDir);
 
-  const describedFilePath = describeFilePath(parseSettings.filePath);
-  const relativeProjects = parseSettings.projects.map(describeFilePath);
+  const describedFilePath = describeFilePath(
+    parseSettings.filePath,
+    parseSettings.tsconfigRootDir,
+  );
+  const relativeProjects = parseSettings.projects.map(describeProjectFilePath);
   const describedPrograms =
     relativeProjects.length === 1
       ? relativeProjects[0]

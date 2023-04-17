@@ -47,7 +47,9 @@ Object {
           Object {
             "declarations": Array [
               Object {
+                "definite": false,
                 "id": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 7,
@@ -59,11 +61,13 @@ Object {
                     },
                   },
                   "name": "a",
+                  "optional": false,
                   "range": Array [
                     39,
                     40,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "init": Object {
                   "loc": Object {
@@ -101,6 +105,7 @@ Object {
                 "type": "VariableDeclarator",
               },
             ],
+            "declare": false,
             "kind": "var",
             "loc": Object {
               "end": Object {
@@ -119,6 +124,7 @@ Object {
             "type": "VariableDeclaration",
           },
           Object {
+            "directive": undefined,
             "expression": Object {
               "loc": Object {
                 "end": Object {
@@ -171,9 +177,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 12,
@@ -185,11 +193,13 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           9,
           12,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -206,7 +216,9 @@ Object {
         0,
         63,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

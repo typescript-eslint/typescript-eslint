@@ -3,12 +3,12 @@
 exports[`AST Fixtures declaration TSInterfaceDeclaration type-param-one TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSInterfaceDeclaration {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [],
+        body: [],
 
         range: [15, 17],
         loc: {
@@ -16,9 +16,13 @@ Program {
           end: { column: 17, line: 1 },
         },
       },
+      declare: false,
+      extends: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "F",
+        optional: false,
 
         range: [10, 11],
         loc: {
@@ -28,13 +32,16 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [12, 13],
               loc: {

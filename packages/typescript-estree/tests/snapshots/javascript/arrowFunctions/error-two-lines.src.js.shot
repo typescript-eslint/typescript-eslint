@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -18,11 +20,13 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               4,
               5,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "async": false,
@@ -63,7 +67,9 @@ Object {
               8,
               16,
             ],
+            "returnType": undefined,
             "type": "ArrowFunctionExpression",
+            "typeParameters": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -82,6 +88,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {

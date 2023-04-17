@@ -1,0 +1,203 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-factory-static-member TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            decorators: [
+              Decorator {
+                type: "Decorator",
+                expression: CallExpression {
+                  type: "CallExpression",
+                  arguments: [
+                    Literal {
+                      type: "Literal",
+                      raw: "true",
+                      value: true,
+
+                      range: [99, 103],
+                      loc: {
+                        start: { column: 16, line: 4 },
+                        end: { column: 20, line: 4 },
+                      },
+                    },
+                  ],
+                  callee: Identifier {
+                    type: "Identifier",
+                    decorators: [],
+                    name: "configurable",
+                    optional: false,
+
+                    range: [86, 98],
+                    loc: {
+                      start: { column: 3, line: 4 },
+                      end: { column: 15, line: 4 },
+                    },
+                  },
+                  optional: false,
+
+                  range: [86, 104],
+                  loc: {
+                    start: { column: 3, line: 4 },
+                    end: { column: 21, line: 4 },
+                  },
+                },
+
+                range: [85, 104],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 21, line: 4 },
+                },
+              },
+            ],
+            definite: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "prop1",
+              optional: false,
+
+              range: [112, 117],
+              loc: {
+                start: { column: 29, line: 4 },
+                end: { column: 34, line: 4 },
+              },
+            },
+            optional: false,
+            override: false,
+            readonly: false,
+            static: true,
+            value: null,
+
+            range: [85, 118],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 35, line: 4 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: false,
+            decorators: [
+              Decorator {
+                type: "Decorator",
+                expression: CallExpression {
+                  type: "CallExpression",
+                  arguments: [
+                    Literal {
+                      type: "Literal",
+                      raw: "false",
+                      value: false,
+
+                      range: [136, 141],
+                      loc: {
+                        start: { column: 16, line: 6 },
+                        end: { column: 21, line: 6 },
+                      },
+                    },
+                  ],
+                  callee: Identifier {
+                    type: "Identifier",
+                    decorators: [],
+                    name: "configurable",
+                    optional: false,
+
+                    range: [123, 135],
+                    loc: {
+                      start: { column: 3, line: 6 },
+                      end: { column: 15, line: 6 },
+                    },
+                  },
+                  optional: false,
+
+                  range: [123, 142],
+                  loc: {
+                    start: { column: 3, line: 6 },
+                    end: { column: 22, line: 6 },
+                  },
+                },
+
+                range: [122, 142],
+                loc: {
+                  start: { column: 2, line: 6 },
+                  end: { column: 22, line: 6 },
+                },
+              },
+            ],
+            definite: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "prop2",
+              optional: false,
+
+              range: [152, 157],
+              loc: {
+                start: { column: 9, line: 7 },
+                end: { column: 14, line: 7 },
+              },
+            },
+            optional: false,
+            override: false,
+            readonly: false,
+            static: true,
+            value: null,
+
+            range: [122, 158],
+            loc: {
+              start: { column: 2, line: 6 },
+              end: { column: 15, line: 7 },
+            },
+          },
+        ],
+
+        range: [81, 160],
+        loc: {
+          start: { column: 8, line: 3 },
+          end: { column: 1, line: 8 },
+        },
+      },
+      declare: false,
+      decorators: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "A",
+        optional: false,
+
+        range: [79, 80],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 7, line: 3 },
+        },
+      },
+      implements: [],
+      superClass: null,
+
+      range: [73, 160],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 8 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 161],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 9 },
+  },
+}
+`;

@@ -1,0 +1,214 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-readonly-parameter-properties TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            decorators: [],
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "constructor",
+              optional: false,
+
+              range: [87, 98],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 13, line: 4 },
+              },
+            },
+            kind: "constructor",
+            optional: false,
+            override: false,
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [],
+
+                range: [177, 179],
+                loc: {
+                  start: { column: 4, line: 7 },
+                  end: { column: 6, line: 7 },
+                },
+              },
+              declare: false,
+              expression: false,
+              generator: false,
+              id: null,
+              params: [
+                TSParameterProperty {
+                  type: "TSParameterProperty",
+                  decorators: [],
+                  override: false,
+                  parameter: Identifier {
+                    type: "Identifier",
+                    decorators: [],
+                    name: "firstName",
+                    optional: false,
+                    typeAnnotation: TSTypeAnnotation {
+                      type: "TSTypeAnnotation",
+                      typeAnnotation: TSStringKeyword {
+                        type: "TSStringKeyword",
+
+                        range: [124, 130],
+                        loc: {
+                          start: { column: 24, line: 5 },
+                          end: { column: 30, line: 5 },
+                        },
+                      },
+
+                      range: [122, 130],
+                      loc: {
+                        start: { column: 22, line: 5 },
+                        end: { column: 30, line: 5 },
+                      },
+                    },
+
+                    range: [113, 130],
+                    loc: {
+                      start: { column: 13, line: 5 },
+                      end: { column: 30, line: 5 },
+                    },
+                  },
+                  readonly: true,
+                  static: false,
+
+                  range: [104, 130],
+                  loc: {
+                    start: { column: 4, line: 5 },
+                    end: { column: 30, line: 5 },
+                  },
+                },
+                TSParameterProperty {
+                  type: "TSParameterProperty",
+                  decorators: [],
+                  override: false,
+                  parameter: AssignmentPattern {
+                    type: "AssignmentPattern",
+                    decorators: [],
+                    left: Identifier {
+                      type: "Identifier",
+                      decorators: [],
+                      name: "lastName",
+                      optional: false,
+                      typeAnnotation: TSTypeAnnotation {
+                        type: "TSTypeAnnotation",
+                        typeAnnotation: TSStringKeyword {
+                          type: "TSStringKeyword",
+
+                          range: [155, 161],
+                          loc: {
+                            start: { column: 23, line: 6 },
+                            end: { column: 29, line: 6 },
+                          },
+                        },
+
+                        range: [153, 161],
+                        loc: {
+                          start: { column: 21, line: 6 },
+                          end: { column: 29, line: 6 },
+                        },
+                      },
+
+                      range: [145, 161],
+                      loc: {
+                        start: { column: 13, line: 6 },
+                        end: { column: 29, line: 6 },
+                      },
+                    },
+                    optional: false,
+                    right: Literal {
+                      type: "Literal",
+                      raw: "'Smith'",
+                      value: "Smith",
+
+                      range: [164, 171],
+                      loc: {
+                        start: { column: 32, line: 6 },
+                        end: { column: 39, line: 6 },
+                      },
+                    },
+
+                    range: [145, 171],
+                    loc: {
+                      start: { column: 13, line: 6 },
+                      end: { column: 39, line: 6 },
+                    },
+                  },
+                  readonly: true,
+                  static: false,
+
+                  range: [136, 171],
+                  loc: {
+                    start: { column: 4, line: 6 },
+                    end: { column: 39, line: 6 },
+                  },
+                },
+              ],
+
+              range: [98, 179],
+              loc: {
+                start: { column: 13, line: 4 },
+                end: { column: 6, line: 7 },
+              },
+            },
+
+            range: [87, 179],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 6, line: 7 },
+            },
+          },
+        ],
+
+        range: [83, 181],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 1, line: 8 },
+        },
+      },
+      declare: false,
+      decorators: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "Foo",
+        optional: false,
+
+        range: [79, 82],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+      implements: [],
+      superClass: null,
+
+      range: [73, 181],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 8 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 182],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 9 },
+  },
+}
+`;

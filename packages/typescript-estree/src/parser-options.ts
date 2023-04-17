@@ -12,6 +12,12 @@ import type { TSESTree, TSESTreeToTSNode, TSNode, TSToken } from './ts-estree';
 
 interface ParseOptions {
   /**
+   * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
+   * This case only usually occurs when attempting to lint invalid code.
+   */
+  allowInvalidAST?: boolean;
+
+  /**
    * create a top-level comments array containing all comments
    */
   comment?: boolean;
@@ -75,6 +81,11 @@ interface ParseOptions {
    * Set to true to create a top-level array containing all tokens from the file.
    */
   tokens?: boolean;
+
+  /**
+   * Whether deprecated AST properties should skip calling console.warn on accesses.
+   */
+  suppressDeprecatedPropertyWarnings?: boolean;
 }
 
 interface ParseAndGenerateServicesOptions extends ParseOptions {
@@ -120,10 +131,11 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   preserveNodeMaps?: boolean;
 
   /**
-   * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s).
+   * Absolute (or relative to `tsconfigRootDir`) paths to the tsconfig(s),
+   * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
    */
-  project?: string | string[];
+  project?: string | string[] | true | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -144,18 +156,13 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * This overrides any program or programs that would have been computed from the `project` option.
    * All linted files must be part of the provided program(s).
    */
-  programs?: ts.Program[];
+  programs?: ts.Program[] | null;
 
   /**
-   ***************************************************************************************
-   * IT IS RECOMMENDED THAT YOU DO NOT USE THIS OPTION, AS IT CAUSES PERFORMANCE ISSUES. *
-   ***************************************************************************************
-   *
-   * When passed with `project`, this allows the parser to create a catch-all, default program.
-   * This means that if the parser encounters a file not included in any of the provided `project`s,
-   * it will not error, but will instead parse the file and its dependencies in a new program.
+   * @deprecated - this flag will be removed in the next major.
+   * Do not rely on the behavior provided by this flag.
    */
-  createDefaultProgram?: boolean;
+  DEPRECATED__createDefaultProgram?: boolean;
 
   /**
    * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
@@ -186,11 +193,6 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
      */
     glob?: CacheDurationSeconds;
   };
-
-  /**
-   * Path to a file exporting a custom `ModuleResolver`.
-   */
-  moduleResolver?: string;
 }
 
 export type TSESTreeOptions = ParseAndGenerateServicesOptions;
@@ -209,20 +211,20 @@ export interface ParserWeakMapESTreeToTSNode<
   has(key: unknown): boolean;
 }
 
-export interface ParserServices {
-  program: ts.Program;
+export interface ParserServicesNodeMaps {
   esTreeNodeToTSNodeMap: ParserWeakMapESTreeToTSNode;
   tsNodeToESTreeNodeMap: ParserWeakMap<TSNode | TSToken, TSESTree.Node>;
-  hasFullTypeInformation: boolean;
 }
-
-export interface ModuleResolver {
-  version: 1;
-  resolveModuleNames(
-    moduleNames: string[],
-    containingFile: string,
-    reusedNames: string[] | undefined,
-    redirectedReference: ts.ResolvedProjectReference | undefined,
-    options: ts.CompilerOptions,
-  ): (ts.ResolvedModule | undefined)[];
+export interface ParserServicesWithTypeInformation
+  extends ParserServicesNodeMaps {
+  program: ts.Program;
+  getSymbolAtLocation: (node: TSESTree.Node) => ts.Symbol | undefined;
+  getTypeAtLocation: (node: TSESTree.Node) => ts.Type;
 }
+export interface ParserServicesWithoutTypeInformation
+  extends ParserServicesNodeMaps {
+  program: null;
+}
+export type ParserServices =
+  | ParserServicesWithTypeInformation
+  | ParserServicesWithoutTypeInformation;

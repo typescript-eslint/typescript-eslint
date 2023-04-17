@@ -169,6 +169,14 @@ function f(a: number | string): void {}
     },
     {
       code: `
+function f(m: number): void;
+function f(v: number, u: string): void;
+function f(v: number, u?: string): void {}
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
 function f(a: boolean, ...c: number[]): void;
 function f(a: boolean, ...d: string[]): void;
 function f(a: boolean, ...c: (number | string)[]): void {}
@@ -675,68 +683,6 @@ interface IFoo {
           },
           line: 8,
           column: 15,
-        },
-      ],
-    },
-    {
-      // Works with parameter properties. Note that this is invalid TypeScript syntax.
-      code: `
-class Foo {
-  constructor(readonly x: number);
-  constructor(readonly x: string);
-}
-      `,
-      errors: [
-        {
-          messageId: 'singleParameterDifference',
-          data: {
-            failureStringStart:
-              'These overloads can be combined into one signature',
-            type1: 'number',
-            type2: 'string',
-          },
-          line: 4,
-          column: 15,
-        },
-      ],
-    },
-    {
-      // Works with parameter properties. Note that this is invalid TypeScript syntax.
-      code: `
-class Foo {
-  constructor(readonly x: number);
-  constructor(readonly x: number, readonly y: string);
-}
-      `,
-      errors: [
-        {
-          messageId: 'omittingSingleParameter',
-          data: {
-            failureStringStart:
-              'These overloads can be combined into one signature',
-          },
-          line: 4,
-          column: 35,
-        },
-      ],
-    },
-    {
-      // Works with parameter properties. Note that this is invalid TypeScript syntax.
-      code: `
-class Foo {
-  constructor(readonly x: number);
-  constructor(readonly x: number, readonly y?: string, readonly z?: string);
-}
-      `,
-      errors: [
-        {
-          messageId: 'omittingSingleParameter',
-          data: {
-            failureStringStart:
-              'These overloads can be combined into one signature',
-          },
-          line: 4,
-          column: 56,
         },
       ],
     },

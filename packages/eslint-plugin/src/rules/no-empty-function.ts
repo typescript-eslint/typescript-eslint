@@ -46,7 +46,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow empty functions',
-      recommended: 'error',
+      recommended: 'stylistic',
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
@@ -165,13 +165,6 @@ export default util.createRule<Options, MessageIds>({
         }
 
         rules.FunctionExpression(node);
-      },
-      FunctionDeclaration(node): void {
-        if (isAllowedEmptyDecoratedFunctions(node)) {
-          return;
-        }
-
-        rules.FunctionDeclaration(node);
       },
     };
   },

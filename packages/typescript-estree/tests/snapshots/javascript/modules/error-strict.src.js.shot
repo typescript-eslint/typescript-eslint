@@ -52,6 +52,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 12,
@@ -63,11 +64,13 @@ Object {
               },
             },
             "name": "house",
+            "optional": false,
             "range": Array [
               7,
               12,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             7,
@@ -82,9 +85,11 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "arguments": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 17,
@@ -96,11 +101,13 @@ Object {
                     },
                   },
                   "name": "roof",
+                  "optional": false,
                   "range": Array [
                     56,
                     60,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               ],
               "callee": Object {
@@ -116,6 +123,7 @@ Object {
                   },
                 },
                 "object": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 8,
@@ -127,14 +135,17 @@ Object {
                     },
                   },
                   "name": "console",
+                  "optional": false,
                   "range": Array [
                     44,
                     51,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "optional": false,
                 "property": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 12,
@@ -146,11 +157,13 @@ Object {
                     },
                   },
                   "name": "log",
+                  "optional": false,
                   "range": Array [
                     52,
                     55,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   44,
@@ -174,6 +187,7 @@ Object {
                 61,
               ],
               "type": "CallExpression",
+              "typeParameters": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -219,6 +233,7 @@ Object {
         },
       },
       "object": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 11,
@@ -230,11 +245,13 @@ Object {
           },
         },
         "name": "house",
+        "optional": false,
         "range": Array [
           34,
           39,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "range": Array [
         28,

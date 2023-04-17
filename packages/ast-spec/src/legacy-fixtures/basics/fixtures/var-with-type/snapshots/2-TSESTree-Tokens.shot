@@ -1,0 +1,146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics var-with-type TSESTree - Tokens 1`] = `
+[
+  Keyword {
+    type: "Keyword",
+    value: "var",
+
+    range: [73, 76],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 3, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "name",
+
+    range: [77, 81],
+    loc: {
+      start: { column: 4, line: 3 },
+      end: { column: 8, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [81, 82],
+    loc: {
+      start: { column: 8, line: 3 },
+      end: { column: 9, line: 3 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "string",
+
+    range: [83, 89],
+    loc: {
+      start: { column: 10, line: 3 },
+      end: { column: 16, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [90, 91],
+    loc: {
+      start: { column: 17, line: 3 },
+      end: { column: 18, line: 3 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'Nicholas'",
+
+    range: [92, 102],
+    loc: {
+      start: { column: 19, line: 3 },
+      end: { column: 29, line: 3 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [102, 103],
+    loc: {
+      start: { column: 29, line: 3 },
+      end: { column: 30, line: 3 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "var",
+
+    range: [104, 107],
+    loc: {
+      start: { column: 0, line: 4 },
+      end: { column: 3, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "foo",
+
+    range: [108, 111],
+    loc: {
+      start: { column: 4, line: 4 },
+      end: { column: 7, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [111, 112],
+    loc: {
+      start: { column: 7, line: 4 },
+      end: { column: 8, line: 4 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "string",
+
+    range: [113, 119],
+    loc: {
+      start: { column: 9, line: 4 },
+      end: { column: 15, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [120, 121],
+    loc: {
+      start: { column: 16, line: 4 },
+      end: { column: 17, line: 4 },
+    },
+  },
+  String {
+    type: "String",
+    value: "'Bar'",
+
+    range: [122, 127],
+    loc: {
+      start: { column: 18, line: 4 },
+      end: { column: 23, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [127, 128],
+    loc: {
+      start: { column: 23, line: 4 },
+      end: { column: 24, line: 4 },
+    },
+  },
+]
+`;

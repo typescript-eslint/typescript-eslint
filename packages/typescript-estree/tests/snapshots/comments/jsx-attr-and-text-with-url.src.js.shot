@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 10,
@@ -18,11 +20,13 @@ Object {
               },
             },
             "name": "link",
+            "optional": false,
             "range": Array [
               6,
               10,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "children": Array [
@@ -207,6 +211,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {

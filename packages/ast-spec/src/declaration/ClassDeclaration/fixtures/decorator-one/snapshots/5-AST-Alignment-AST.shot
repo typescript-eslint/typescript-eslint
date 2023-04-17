@@ -2,5 +2,77 @@
 
 exports[`AST Fixtures declaration ClassDeclaration decorator-one AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+-       abstract: false,
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [],
+
+          range: [21, 23],
+          loc: {
+            start: { column: 10, line: 2 },
+            end: { column: 12, line: 2 },
+          },
+        },
+-       declare: false,
+        decorators: Array [
+          Decorator {
+            type: 'Decorator',
+            expression: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'decorator',
+-             optional: false,
+
+              range: [1, 10],
+              loc: {
+                start: { column: 1, line: 1 },
+                end: { column: 10, line: 1 },
+              },
+            },
+
+            range: [0, 10],
+            loc: {
+              start: { column: 0, line: 1 },
+              end: { column: 10, line: 1 },
+            },
+          },
+        ],
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'Foo',
+-         optional: false,
+
+          range: [17, 20],
+          loc: {
+            start: { column: 6, line: 2 },
+            end: { column: 9, line: 2 },
+          },
+        },
+-       implements: Array [],
+        superClass: null,
+
+        range: [0, 23],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 12, line: 2 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 24],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 3 },
+    },
+  }"
 `;

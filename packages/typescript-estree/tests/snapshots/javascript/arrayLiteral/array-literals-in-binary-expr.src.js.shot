@@ -4,6 +4,7 @@ exports[`javascript arrayLiteral array-literals-in-binary-expr.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
           "elements": Array [],

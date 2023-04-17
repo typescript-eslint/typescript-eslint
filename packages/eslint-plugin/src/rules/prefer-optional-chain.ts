@@ -1,7 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
-import { isBinaryExpression } from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -907,7 +906,7 @@ export default util.createRule<TOptions, TMessageIds>({
           const logicalTsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
 
           const leftTsNode = parserServices.esTreeNodeToTSNodeMap.get(leftNode);
-          const operator = isBinaryExpression(logicalTsNode)
+          const operator = ts.isBinaryExpression(logicalTsNode)
             ? logicalTsNode.operatorToken.kind
             : ts.SyntaxKind.Unknown;
           const leftPrecedence = util.getOperatorPrecedence(

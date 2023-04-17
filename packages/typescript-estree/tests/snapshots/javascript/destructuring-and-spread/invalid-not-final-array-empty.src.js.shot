@@ -4,11 +4,14 @@ exports[`javascript destructuring-and-spread invalid-not-final-array-empty.src 1
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "elements": Array [
             Object {
               "argument": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 5,
@@ -20,12 +23,15 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   4,
                   5,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 5,
@@ -36,11 +42,14 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "range": Array [
                 1,
                 5,
               ],
               "type": "RestElement",
+              "typeAnnotation": undefined,
+              "value": undefined,
             },
           ],
           "loc": Object {
@@ -53,11 +62,13 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             0,
             8,
           ],
           "type": "ArrayPattern",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -75,6 +86,7 @@ Object {
           12,
         ],
         "right": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 12,
@@ -86,11 +98,13 @@ Object {
             },
           },
           "name": "b",
+          "optional": false,
           "range": Array [
             11,
             12,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "AssignmentExpression",
       },

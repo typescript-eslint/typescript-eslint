@@ -3,7 +3,7 @@ import type { AST_NODE_TYPES, AST_TOKEN_TYPES, TSESTree } from '../ts-estree';
 type ObjectEntry<BaseType> = BaseType extends unknown
   ? [keyof BaseType, BaseType[keyof BaseType]]
   : never;
-type ObjectEntries<BaseType> = Array<ObjectEntry<BaseType>>;
+type ObjectEntries<BaseType> = ObjectEntry<BaseType>[];
 
 export const isNodeOfType =
   <NodeType extends AST_NODE_TYPES>(nodeType: NodeType) =>

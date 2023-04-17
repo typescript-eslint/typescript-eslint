@@ -211,12 +211,16 @@ class Referencer extends Visitor {
   protected visitFunctionParameterTypeAnnotation(
     node: TSESTree.Parameter,
   ): void {
-    if ('typeAnnotation' in node) {
-      this.visitType(node.typeAnnotation);
-    } else if (node.type === AST_NODE_TYPES.AssignmentPattern) {
-      this.visitType(node.left.typeAnnotation);
-    } else if (node.type === AST_NODE_TYPES.TSParameterProperty) {
-      this.visitFunctionParameterTypeAnnotation(node.parameter);
+    switch (node.type) {
+      case AST_NODE_TYPES.AssignmentPattern:
+        this.visitType(node.left.typeAnnotation);
+        break;
+      case AST_NODE_TYPES.TSParameterProperty:
+        this.visitFunctionParameterTypeAnnotation(node.parameter);
+        break;
+      default:
+        this.visitType(node.typeAnnotation);
+        break;
     }
   }
   protected visitFunction(
@@ -265,7 +269,7 @@ class Referencer extends Visitor {
         { processRightHandNodes: true },
       );
       this.visitFunctionParameterTypeAnnotation(param);
-      param.decorators?.forEach(d => this.visit(d));
+      param.decorators.forEach(d => this.visit(d));
     }
 
     this.visitType(node.returnType);
@@ -374,9 +378,7 @@ class Referencer extends Visitor {
   }
 
   protected BlockStatement(node: TSESTree.BlockStatement): void {
-    if (this.scopeManager.isES6()) {
-      this.scopeManager.nestBlockScope(node);
-    }
+    this.scopeManager.nestBlockScope(node);
 
     this.visitChildren(node);
 
@@ -388,8 +390,8 @@ class Referencer extends Visitor {
   }
 
   protected CallExpression(node: TSESTree.CallExpression): void {
-    this.visitChildren(node, ['typeParameters']);
-    this.visitType(node.typeParameters);
+    this.visitChildren(node, ['typeArguments']);
+    this.visitType(node.typeArguments);
   }
 
   protected CatchClause(node: TSESTree.CatchClause): void {
@@ -490,7 +492,7 @@ class Referencer extends Visitor {
 
   protected ImportDeclaration(node: TSESTree.ImportDeclaration): void {
     assert(
-      this.scopeManager.isES6() && this.scopeManager.isModule(),
+      this.scopeManager.isModule(),
       'ImportDeclaration should appear when the mode is ES6 and in the module context.',
     );
 
@@ -542,7 +544,7 @@ class Referencer extends Visitor {
     } else {
       this.visit(node.name);
     }
-    this.visitType(node.typeParameters);
+    this.visitType(node.typeArguments);
     for (const attr of node.attributes) {
       this.visit(attr);
     }
@@ -564,8 +566,8 @@ class Referencer extends Visitor {
   }
 
   protected NewExpression(node: TSESTree.NewExpression): void {
-    this.visitChildren(node, ['typeParameters']);
-    this.visitType(node.typeParameters);
+    this.visitChildren(node, ['typeArguments']);
+    this.visitType(node.typeArguments);
   }
 
   protected PrivateIdentifier(): void {
@@ -582,14 +584,11 @@ class Referencer extends Visitor {
       this.scopeManager.nestFunctionScope(node, false);
     }
 
-    if (this.scopeManager.isES6() && this.scopeManager.isModule()) {
+    if (this.scopeManager.isModule()) {
       this.scopeManager.nestModuleScope(node);
     }
 
-    if (
-      this.scopeManager.isStrictModeSupported() &&
-      this.scopeManager.isImpliedStrict()
-    ) {
+    if (this.scopeManager.isImpliedStrict()) {
       this.currentScope().isStrict = true;
     }
 
@@ -604,9 +603,7 @@ class Referencer extends Visitor {
   protected SwitchStatement(node: TSESTree.SwitchStatement): void {
     this.visit(node.discriminant);
 
-    if (this.scopeManager.isES6()) {
-      this.scopeManager.nestSwitchScope(node);
-    }
+    this.scopeManager.nestSwitchScope(node);
 
     for (const switchCase of node.cases) {
       this.visit(switchCase);
@@ -620,7 +617,7 @@ class Referencer extends Visitor {
   ): void {
     this.visit(node.tag);
     this.visit(node.quasi);
-    this.visitType(node.typeParameters);
+    this.visitType(node.typeArguments);
   }
 
   protected TSAsExpression(node: TSESTree.TSAsExpression): void {
@@ -702,8 +699,8 @@ class Referencer extends Visitor {
   protected TSInstantiationExpression(
     node: TSESTree.TSInstantiationExpression,
   ): void {
-    this.visitChildren(node, ['typeParameters']);
-    this.visitType(node.typeParameters);
+    this.visitChildren(node, ['typeArguments']);
+    this.visitType(node.typeArguments);
   }
 
   protected TSInterfaceDeclaration(
@@ -786,13 +783,8 @@ class Referencer extends Visitor {
         { processRightHandNodes: true },
       );
 
-      if (decl.init) {
-        this.visit(decl.init);
-      }
-
-      if ('typeAnnotation' in decl.id) {
-        this.visitType(decl.id.typeAnnotation);
-      }
+      this.visit(decl.init);
+      this.visitType(decl.id.typeAnnotation);
     }
   }
 

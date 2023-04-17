@@ -1,22 +1,25 @@
 {
   "name": "@typescript-eslint/type-utils",
-  "version": "5.51.0",
+  "version": "5.58.0",
   "description": "Type utilities for working with TypeScript + ESLint together",
-  "keywords": [
-    "eslint",
-    "typescript",
-    "estree"
-  ],
-  "engines": {
-    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
-  },
   "files": [
     "dist",
-    "_ts3.4",
+    "_ts4.2",
     "package.json",
     "README.md",
     "LICENSE"
   ],
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/typescript-eslint/typescript-eslint.git",
@@ -26,30 +29,34 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "license": "MIT",
-  "main": "dist/index.js",
-  "types": "dist/index.d.ts",
+  "keywords": [
+    "eslint",
+    "typescript",
+    "estree"
+  ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "downlevel-dts dist _ts3.4/dist",
+    "postbuild": "downlevel-dts dist _ts4.2/dist --to=4.2",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
+    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf _ts4.2 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "nx lint",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "5.51.0",
-    "@typescript-eslint/utils": "5.51.0",
+    "@typescript-eslint/typescript-estree": "5.58.0",
+    "@typescript-eslint/utils": "5.58.0",
     "debug": "^4.3.4",
-    "tsutils": "^3.21.0"
+    "ts-api-utils": "^0.0.44"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "5.51.0",
+    "@typescript-eslint/parser": "5.58.0",
+    "ajv": "^8.12.0",
     "typescript": "*"
   },
   "peerDependencies": {
-    "eslint": "*"
+    "eslint": "^7.0.0 || ^8.0.0"
   },
   "peerDependenciesMeta": {
     "typescript": {
@@ -61,9 +68,9 @@
     "url": "https://opencollective.com/typescript-eslint"
   },
   "typesVersions": {
-    "<3.8": {
+    "<4.7": {
       "*": [
-        "_ts3.4/*"
+        "_ts4.2/*"
       ]
     }
   }

@@ -3,6 +3,90 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.58.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.1...v5.58.0) (2023-04-10)
+
+
+### Features
+
+* **eslint-plugin:** [no-unsafe-enum-comparison] add rule ([#6107](https://github.com/typescript-eslint/typescript-eslint/issues/6107)) ([915f9c2](https://github.com/typescript-eslint/typescript-eslint/commit/915f9c2dc8934eef491a672786ec9f016f3658ba))
+
+
+
+
+
+## [5.57.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.0...v5.57.1) (2023-04-03)
+
+**Note:** Version bump only for package @typescript-eslint/type-utils
+
+
+
+
+
+# [5.57.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.56.0...v5.57.0) (2023-03-27)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** correct crashes with getTypeArguments for ts < 3.7 ([#6767](https://github.com/typescript-eslint/typescript-eslint/issues/6767)) ([59eab58](https://github.com/typescript-eslint/typescript-eslint/commit/59eab587890a915387444d00c4a9387aed602718))
+
+
+
+
+
+# [5.56.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.55.0...v5.56.0) (2023-03-20)
+
+**Note:** Version bump only for package @typescript-eslint/type-utils
+
+
+
+
+
+# [5.55.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.54.1...v5.55.0) (2023-03-13)
+
+
+### Features
+
+* update TypeScript to 5.0 RC ([#6570](https://github.com/typescript-eslint/typescript-eslint/issues/6570)) ([36ef0e1](https://github.com/typescript-eslint/typescript-eslint/commit/36ef0e16f31810c27dda299e739d1610b689d3ad))
+
+
+
+
+
+## [5.54.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.54.0...v5.54.1) (2023-03-06)
+
+**Note:** Version bump only for package @typescript-eslint/type-utils
+
+
+
+
+
+# [5.54.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.53.0...v5.54.0) (2023-02-27)
+
+
+### Features
+
+* **eslint-plugin:** [promise-function-async] check for promises in implicit return types ([#6330](https://github.com/typescript-eslint/typescript-eslint/issues/6330)) ([de1e5ce](https://github.com/typescript-eslint/typescript-eslint/commit/de1e5ce11250b259f1f809859eeb7eaa162e897f)), closes [#6329](https://github.com/typescript-eslint/typescript-eslint/issues/6329)
+
+
+
+
+
+# [5.53.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.52.0...v5.53.0) (2023-02-20)
+
+**Note:** Version bump only for package @typescript-eslint/type-utils
+
+
+
+
+
+# [5.52.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.51.0...v5.52.0) (2023-02-13)
+
+**Note:** Version bump only for package @typescript-eslint/type-utils
+
+
+
+
+
 # [5.51.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.50.0...v5.51.0) (2023-02-06)
 
 **Note:** Version bump only for package @typescript-eslint/type-utils

@@ -1,0 +1,224 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-method Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "foo",
+
+              range: [85, 88],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 5, line: 4 },
+              },
+            },
+            kind: "method",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [],
+
+                range: [99, 101],
+                loc: {
+                  start: { column: 16, line: 4 },
+                  end: { column: 18, line: 4 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: [],
+              returnType: TSTypeAnnotation {
+                type: "TSTypeAnnotation",
+                typeAnnotation: TSNumberKeyword {
+                  type: "TSNumberKeyword",
+
+                  range: [92, 98],
+                  loc: {
+                    start: { column: 9, line: 4 },
+                    end: { column: 15, line: 4 },
+                  },
+                },
+
+                range: [90, 98],
+                loc: {
+                  start: { column: 7, line: 4 },
+                  end: { column: 15, line: 4 },
+                },
+              },
+
+              range: [88, 101],
+              loc: {
+                start: { column: 5, line: 4 },
+                end: { column: 18, line: 4 },
+              },
+            },
+
+            range: [85, 101],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 18, line: 4 },
+            },
+          },
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "bar",
+
+              range: [104, 107],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 5, line: 5 },
+              },
+            },
+            kind: "method",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [],
+
+                range: [113, 115],
+                loc: {
+                  start: { column: 11, line: 5 },
+                  end: { column: 13, line: 5 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: [],
+              typeParameters: TSTypeParameterDeclaration {
+                type: "TSTypeParameterDeclaration",
+                params: [
+                  TSTypeParameter {
+                    type: "TSTypeParameter",
+                    name: "T",
+
+                    range: [108, 109],
+                    loc: {
+                      start: { column: 6, line: 5 },
+                      end: { column: 7, line: 5 },
+                    },
+                  },
+                ],
+
+                range: [107, 110],
+                loc: {
+                  start: { column: 5, line: 5 },
+                  end: { column: 8, line: 5 },
+                },
+              },
+
+              range: [110, 115],
+              loc: {
+                start: { column: 8, line: 5 },
+                end: { column: 13, line: 5 },
+              },
+            },
+
+            range: [104, 115],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 13, line: 5 },
+            },
+          },
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "baz",
+
+              range: [118, 121],
+              loc: {
+                start: { column: 2, line: 6 },
+                end: { column: 5, line: 6 },
+              },
+            },
+            kind: "method",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [],
+
+                range: [124, 126],
+                loc: {
+                  start: { column: 8, line: 6 },
+                  end: { column: 10, line: 6 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: [],
+
+              range: [121, 126],
+              loc: {
+                start: { column: 5, line: 6 },
+                end: { column: 10, line: 6 },
+              },
+            },
+
+            range: [118, 126],
+            loc: {
+              start: { column: 2, line: 6 },
+              end: { column: 10, line: 6 },
+            },
+          },
+        ],
+
+        range: [81, 128],
+        loc: {
+          start: { column: 8, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "C",
+
+        range: [79, 80],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 7, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 128],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 7 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 129],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 8 },
+  },
+}
+`;

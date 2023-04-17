@@ -23,9 +23,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 12,
@@ -37,11 +39,13 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           9,
           12,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -55,6 +59,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 21,
@@ -65,9 +70,11 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "properties": Array [
             Object {
               "argument": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 20,
@@ -79,12 +86,15 @@ Object {
                   },
                 },
                 "name": "bar",
+                "optional": false,
                 "range": Array [
                   17,
                   20,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 20,
@@ -95,11 +105,14 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "range": Array [
                 14,
                 20,
               ],
               "type": "RestElement",
+              "typeAnnotation": undefined,
+              "value": undefined,
             },
           ],
           "range": Array [
@@ -107,13 +120,16 @@ Object {
             21,
           ],
           "type": "ObjectPattern",
+          "typeAnnotation": undefined,
         },
       ],
       "range": Array [
         0,
         26,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

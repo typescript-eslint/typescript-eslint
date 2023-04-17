@@ -1,0 +1,197 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-private-optional-property AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+-       abstract: false,
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [
+            PropertyDefinition {
+              type: 'PropertyDefinition',
+              computed: false,
+-             declare: false,
+-             decorators: Array [],
+-             definite: false,
+              key: PrivateIdentifier {
+                type: 'PrivateIdentifier',
+                name: 'prop',
+
+                range: [87, 92],
+                loc: {
+                  start: { column: 2, line: 4 },
+                  end: { column: 7, line: 4 },
+                },
+              },
+              optional: true,
+-             override: false,
+-             readonly: false,
+              static: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [95, 101],
+                  loc: {
+                    start: { column: 10, line: 4 },
+                    end: { column: 16, line: 4 },
+                  },
+                },
+
+                range: [93, 101],
+                loc: {
+                  start: { column: 8, line: 4 },
+                  end: { column: 16, line: 4 },
+                },
+              },
+              value: null,
+
+              range: [87, 102],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 17, line: 4 },
+              },
+            },
+            PropertyDefinition {
+              type: 'PropertyDefinition',
+              computed: false,
+-             declare: false,
+-             decorators: Array [],
+-             definite: false,
+              key: PrivateIdentifier {
+                type: 'PrivateIdentifier',
+                name: 'propExplicitWithValue',
+
+                range: [105, 127],
+                loc: {
+                  start: { column: 2, line: 5 },
+                  end: { column: 24, line: 5 },
+                },
+              },
+              optional: true,
+-             override: false,
+-             readonly: false,
+              static: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSStringKeyword {
+                  type: 'TSStringKeyword',
+
+                  range: [130, 136],
+                  loc: {
+                    start: { column: 27, line: 5 },
+                    end: { column: 33, line: 5 },
+                  },
+                },
+
+                range: [128, 136],
+                loc: {
+                  start: { column: 25, line: 5 },
+                  end: { column: 33, line: 5 },
+                },
+              },
+              value: Literal {
+                type: 'Literal',
+                raw: '\\'\\'',
+                value: '',
+
+                range: [139, 141],
+                loc: {
+                  start: { column: 36, line: 5 },
+                  end: { column: 38, line: 5 },
+                },
+              },
+
+              range: [105, 142],
+              loc: {
+                start: { column: 2, line: 5 },
+                end: { column: 39, line: 5 },
+              },
+            },
+            PropertyDefinition {
+              type: 'PropertyDefinition',
+              computed: false,
+-             declare: false,
+-             decorators: Array [],
+-             definite: false,
+              key: PrivateIdentifier {
+                type: 'PrivateIdentifier',
+                name: 'propImplicitWithValue',
+
+                range: [145, 167],
+                loc: {
+                  start: { column: 2, line: 6 },
+                  end: { column: 24, line: 6 },
+                },
+              },
+              optional: true,
+-             override: false,
+-             readonly: false,
+              static: false,
+              value: Literal {
+                type: 'Literal',
+                raw: '\\'\\'',
+                value: '',
+
+                range: [171, 173],
+                loc: {
+                  start: { column: 28, line: 6 },
+                  end: { column: 30, line: 6 },
+                },
+              },
+
+              range: [145, 174],
+              loc: {
+                start: { column: 2, line: 6 },
+                end: { column: 31, line: 6 },
+              },
+            },
+          ],
+
+          range: [83, 176],
+          loc: {
+            start: { column: 10, line: 3 },
+            end: { column: 1, line: 7 },
+          },
+        },
+-       declare: false,
+-       decorators: Array [],
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'Foo',
+-         optional: false,
+
+          range: [79, 82],
+          loc: {
+            start: { column: 6, line: 3 },
+            end: { column: 9, line: 3 },
+          },
+        },
+-       implements: Array [],
+        superClass: null,
+
+        range: [73, 176],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 1, line: 7 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 177],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 8 },
+    },
+  }"
+`;

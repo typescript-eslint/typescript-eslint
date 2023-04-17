@@ -9,7 +9,6 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description: 'Enforce default parameters to be last',
-      recommended: false,
       extendsBaseRule: true,
     },
     schema: [],

@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-implements TSESTree - Error 1`] = `
+"TSError
+  1 | // TODO: This fixture might be too large, and if so should be split up.
+  2 |
+> 3 | interface d implements e {}
+    |             ^^^^^^^^^^^^ Interface declaration cannot have 'implements' clause.
+  4 |"
+`;

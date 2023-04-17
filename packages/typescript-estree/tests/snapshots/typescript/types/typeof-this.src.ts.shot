@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 21,
@@ -18,6 +20,7 @@ Object {
               },
             },
             "name": "self",
+            "optional": false,
             "range": Array [
               4,
               21,
@@ -94,6 +97,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {
@@ -114,7 +118,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 24,
@@ -126,6 +132,7 @@ Object {
               },
             },
             "name": "foo",
+            "optional": false,
             "range": Array [
               27,
               47,
@@ -181,6 +188,7 @@ Object {
                     47,
                   ],
                   "right": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 24,
@@ -192,11 +200,13 @@ Object {
                       },
                     },
                     "name": "foo",
+                    "optional": false,
                     "range": Array [
                       44,
                       47,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "type": "TSQualifiedName",
                 },
@@ -237,6 +247,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {

@@ -21,7 +21,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow `// tslint:<rule-flag>` comments',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
     messages: {
       commentDetected: 'tslint comment detected: "{{ text }}"',

@@ -1,6 +1,9 @@
-import type { ParserServices, TSESTree } from '@typescript-eslint/utils';
+import type {
+  ParserServicesWithTypeInformation,
+  TSESTree,
+} from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -52,7 +55,6 @@ export default util.createRule<Options, MessageId>({
     hasSuggestions: true,
     docs: {
       description: 'Disallow certain types in boolean expressions',
-      recommended: false,
       requiresTypeChecking: true,
     },
     schema: [
@@ -149,9 +151,9 @@ export default util.createRule<Options, MessageId>({
     },
   ],
   create(context, [options]) {
-    const parserServices = util.getParserServices(context);
-    const typeChecker = parserServices.program.getTypeChecker();
-    const compilerOptions = parserServices.program.getCompilerOptions();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
+    const compilerOptions = services.program.getCompilerOptions();
     const sourceCode = context.getSourceCode();
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
@@ -265,8 +267,7 @@ export default util.createRule<Options, MessageId>({
      * It analyzes the type of a node and checks if it is allowed in a boolean context.
      */
     function checkNode(node: TSESTree.Node): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const type = util.getConstrainedTypeAtLocation(typeChecker, tsNode);
+      const type = util.getConstrainedTypeAtLocation(services, node);
       const types = inspectVariantTypes(tsutils.unionTypeParts(type));
 
       const is = (...wantedTypes: readonly VariantType[]): boolean =>
@@ -514,8 +515,8 @@ export default util.createRule<Options, MessageId>({
       // number
       if (is('number') || is('truthy number')) {
         if (!options.allowNumber) {
-          if (isArrayLengthExpression(node, typeChecker, parserServices)) {
-            if (isLogicalNegationExpression(node.parent!)) {
+          if (isArrayLengthExpression(node, checker, services)) {
+            if (isLogicalNegationExpression(node.parent)) {
               // if (!array.length)
               context.report({
                 node,
@@ -726,7 +727,17 @@ export default util.createRule<Options, MessageId>({
       }
 
       // nullable enum
-      if (is('nullish', 'number', 'enum') || is('nullish', 'string', 'enum')) {
+      if (
+        is('nullish', 'number', 'enum') ||
+        is('nullish', 'string', 'enum') ||
+        is('nullish', 'truthy number', 'enum') ||
+        is('nullish', 'truthy string', 'enum') ||
+        // mixed enums
+        is('nullish', 'truthy number', 'truthy string', 'enum') ||
+        is('nullish', 'truthy number', 'string', 'enum') ||
+        is('nullish', 'truthy string', 'number', 'enum') ||
+        is('nullish', 'number', 'string', 'enum')
+      ) {
         if (!options.allowNullableEnum) {
           if (isLogicalNegationExpression(node.parent!)) {
             context.report({
@@ -816,9 +827,9 @@ export default util.createRule<Options, MessageId>({
       // If incoming type is either "true" or "false", there will be one type
       // object with intrinsicName set accordingly
       // If incoming type is boolean, there will be two type objects with
-      // intrinsicName set "true" and "false" each because of tsutils.unionTypeParts()
+      // intrinsicName set "true" and "false" each because of ts-api-utils.unionTypeParts()
       if (booleans.length === 1) {
-        tsutils.isBooleanLiteralType(booleans[0], true)
+        tsutils.isTrueLiteralType(booleans[0])
           ? variantTypes.add('truthy boolean')
           : variantTypes.add('boolean');
       } else if (booleans.length === 2) {
@@ -830,7 +841,9 @@ export default util.createRule<Options, MessageId>({
       );
 
       if (strings.length) {
-        if (strings.some(type => type.isStringLiteral() && type.value !== '')) {
+        if (
+          strings.every(type => type.isStringLiteral() && type.value !== '')
+        ) {
           variantTypes.add('truthy string');
         } else {
           variantTypes.add('string');
@@ -843,8 +856,9 @@ export default util.createRule<Options, MessageId>({
           ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
         ),
       );
+
       if (numbers.length) {
-        if (numbers.some(type => type.isNumberLiteral() && type.value !== 0)) {
+        if (numbers.every(type => type.isNumberLiteral() && type.value !== 0)) {
           variantTypes.add('truthy number');
         } else {
           variantTypes.add('number');
@@ -910,7 +924,7 @@ function isLogicalNegationExpression(
 function isArrayLengthExpression(
   node: TSESTree.Node,
   typeChecker: ts.TypeChecker,
-  parserServices: ParserServices,
+  services: ParserServicesWithTypeInformation,
 ): node is TSESTree.MemberExpressionNonComputedName {
   if (node.type !== AST_NODE_TYPES.MemberExpression) {
     return false;
@@ -921,10 +935,6 @@ function isArrayLengthExpression(
   if (node.property.name !== 'length') {
     return false;
   }
-  const objectTsNode = parserServices.esTreeNodeToTSNodeMap.get(node.object);
-  const objectType = util.getConstrainedTypeAtLocation(
-    typeChecker,
-    objectTsNode,
-  );
+  const objectType = util.getConstrainedTypeAtLocation(services, node.object);
   return util.isTypeArrayTypeOrUnionOfArrayTypes(objectType, typeChecker);
 }

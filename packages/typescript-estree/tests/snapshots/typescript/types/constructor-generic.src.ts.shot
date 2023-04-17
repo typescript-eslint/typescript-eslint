@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 25,
@@ -18,6 +20,7 @@ Object {
               },
             },
             "name": "f",
+            "optional": false,
             "range": Array [
               4,
               25,
@@ -53,6 +56,7 @@ Object {
                 },
                 "params": Array [
                   Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 19,
@@ -64,6 +68,7 @@ Object {
                       },
                     },
                     "name": "a",
+                    "optional": false,
                     "range": Array [
                       15,
                       19,
@@ -102,6 +107,7 @@ Object {
                         ],
                         "type": "TSTypeReference",
                         "typeName": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 19,
@@ -113,11 +119,13 @@ Object {
                             },
                           },
                           "name": "T",
+                          "optional": false,
                           "range": Array [
                             18,
                             19,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "typeParameters": undefined,
                       },
@@ -161,6 +169,7 @@ Object {
                     ],
                     "type": "TSTypeReference",
                     "typeName": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 25,
@@ -172,11 +181,13 @@ Object {
                         },
                       },
                       "name": "T",
+                      "optional": false,
                       "range": Array [
                         24,
                         25,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "typeParameters": undefined,
                   },
@@ -209,6 +220,7 @@ Object {
                         },
                       },
                       "name": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 13,
@@ -220,11 +232,13 @@ Object {
                           },
                         },
                         "name": "T",
+                        "optional": false,
                         "range": Array [
                           12,
                           13,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "out": false,
                       "range": Array [
@@ -261,6 +275,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {

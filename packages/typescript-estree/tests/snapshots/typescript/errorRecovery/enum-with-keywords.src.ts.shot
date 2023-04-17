@@ -6,7 +6,10 @@ Object {
     Object {
       "assertions": Array [],
       "declaration": Object {
+        "const": false,
+        "declare": false,
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 69,
@@ -18,11 +21,13 @@ Object {
             },
           },
           "name": "X",
+          "optional": false,
           "range": Array [
             68,
             69,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -35,127 +40,6 @@ Object {
           },
         },
         "members": Array [],
-        "modifiers": Array [
-          Object {
-            "loc": Object {
-              "end": Object {
-                "column": 14,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 7,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              7,
-              14,
-            ],
-            "type": "TSPrivateKeyword",
-          },
-          Object {
-            "loc": Object {
-              "end": Object {
-                "column": 21,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 15,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              15,
-              21,
-            ],
-            "type": "TSPublicKeyword",
-          },
-          Object {
-            "loc": Object {
-              "end": Object {
-                "column": 31,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 22,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              22,
-              31,
-            ],
-            "type": "TSProtectedKeyword",
-          },
-          Object {
-            "loc": Object {
-              "end": Object {
-                "column": 38,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 32,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              32,
-              38,
-            ],
-            "type": "TSStaticKeyword",
-          },
-          Object {
-            "loc": Object {
-              "end": Object {
-                "column": 47,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 39,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              39,
-              47,
-            ],
-            "type": "TSReadonlyKeyword",
-          },
-          Object {
-            "loc": Object {
-              "end": Object {
-                "column": 56,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 48,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              48,
-              56,
-            ],
-            "type": "TSAbstractKeyword",
-          },
-          Object {
-            "loc": Object {
-              "end": Object {
-                "column": 62,
-                "line": 1,
-              },
-              "start": Object {
-                "column": 57,
-                "line": 1,
-              },
-            },
-            "range": Array [
-              57,
-              62,
-            ],
-            "type": "TSAsyncKeyword",
-          },
-        ],
         "range": Array [
           7,
           72,

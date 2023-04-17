@@ -20,7 +20,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require or disallow spacing between function identifiers and their invocations',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
@@ -83,7 +82,7 @@ export default util.createRule<Options, MessageIds>({
 
       const closingParenToken = sourceCode.getLastToken(node)!;
       const lastCalleeTokenWithoutPossibleParens = sourceCode.getLastToken(
-        node.typeParameters ?? node.callee,
+        node.typeArguments ?? node.callee,
       )!;
       const openingParenToken = sourceCode.getFirstTokenBetween(
         lastCalleeTokenWithoutPossibleParens,

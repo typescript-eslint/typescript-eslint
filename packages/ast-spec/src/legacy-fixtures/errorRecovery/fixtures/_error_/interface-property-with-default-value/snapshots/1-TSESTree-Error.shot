@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures errorRecovery _error_ interface-property-with-default-value TSESTree - Error 1`] = `
+"TSError
+  2 |
+  3 | interface Foo {
+> 4 |   bar: string = 'a';
+    |                 ^^^ A property signature cannot have an initializer.
+  5 | }
+  6 |"
+`;

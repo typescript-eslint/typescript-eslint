@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 17,
@@ -18,6 +20,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               4,
               17,
@@ -42,6 +45,7 @@ Object {
               "typeAnnotation": Object {
                 "exprName": Object {
                   "left": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 15,
@@ -53,11 +57,13 @@ Object {
                       },
                     },
                     "name": "y",
+                    "optional": false,
                     "range": Array [
                       14,
                       15,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "loc": Object {
                     "end": Object {
@@ -74,6 +80,7 @@ Object {
                     17,
                   ],
                   "right": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 17,
@@ -85,11 +92,13 @@ Object {
                       },
                     },
                     "name": "z",
+                    "optional": false,
                     "range": Array [
                       16,
                       17,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "type": "TSQualifiedName",
                 },
@@ -130,6 +139,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {

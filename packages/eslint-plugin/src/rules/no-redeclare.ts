@@ -17,7 +17,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow variable redeclaration',
-      recommended: false,
       extendsBaseRule: true,
     },
     schema: [
@@ -103,7 +102,7 @@ export default util.createRule<Options, MessageIds>({
       const identifiers = variable.identifiers
         .map(id => ({
           identifier: id,
-          parent: id.parent!,
+          parent: id.parent,
         }))
         // ignore function declarations because TS will treat them as an overload
         .filter(

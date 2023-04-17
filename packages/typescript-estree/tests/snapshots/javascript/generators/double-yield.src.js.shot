@@ -4,11 +4,13 @@ exports[`javascript generators double-yield.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
           "body": Array [
             Object {
+              "directive": undefined,
               "expression": Object {
                 "argument": Object {
                   "argument": Object {
@@ -97,6 +99,7 @@ Object {
           ],
           "type": "BlockStatement",
         },
+        "declare": false,
         "expression": false,
         "generator": true,
         "id": null,
@@ -115,7 +118,9 @@ Object {
           1,
           32,
         ],
+        "returnType": undefined,
         "type": "FunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

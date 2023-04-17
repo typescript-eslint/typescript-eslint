@@ -3,13 +3,13 @@
 exports[`AST Fixtures declaration FunctionDeclaration generator TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [],
+        body: [],
 
         range: [16, 18],
         loc: {
@@ -17,11 +17,14 @@ Program {
           end: { column: 18, line: 1 },
         },
       },
+      declare: false,
       expression: false,
       generator: true,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "foo",
+        optional: false,
 
         range: [10, 13],
         loc: {
@@ -29,7 +32,7 @@ Program {
           end: { column: 13, line: 1 },
         },
       },
-      params: Array [],
+      params: [],
 
       range: [0, 18],
       loc: {

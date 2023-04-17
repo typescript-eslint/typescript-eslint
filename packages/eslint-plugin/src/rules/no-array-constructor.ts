@@ -9,7 +9,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow generic `Array` constructors',
-      recommended: 'error',
+      recommended: 'recommended',
       extendsBaseRule: true,
     },
     fixable: 'code',
@@ -31,7 +31,7 @@ export default util.createRule({
         node.arguments.length !== 1 &&
         node.callee.type === AST_NODE_TYPES.Identifier &&
         node.callee.name === 'Array' &&
-        !node.typeParameters &&
+        !node.typeArguments &&
         !util.isOptionalCallExpression(node)
       ) {
         context.report({

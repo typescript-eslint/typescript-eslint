@@ -6,9 +6,11 @@ Object {
     Object {
       "body": Array [
         Object {
+          "directive": undefined,
           "expression": Object {
             "arguments": Array [],
             "callee": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 5,
@@ -20,11 +22,13 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -42,6 +46,7 @@ Object {
               9,
             ],
             "type": "CallExpression",
+            "typeParameters": undefined,
           },
           "loc": Object {
             "end": Object {

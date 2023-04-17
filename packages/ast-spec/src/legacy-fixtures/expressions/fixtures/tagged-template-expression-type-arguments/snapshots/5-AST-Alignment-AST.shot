@@ -1,0 +1,109 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures expressions tagged-template-expression-type-arguments AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ExpressionStatement {
+        type: 'ExpressionStatement',
+        expression: TaggedTemplateExpression {
+          type: 'TaggedTemplateExpression',
+          quasi: TemplateLiteral {
+            type: 'TemplateLiteral',
+            expressions: Array [],
+            quasis: Array [
+              TemplateElement {
+                type: 'TemplateElement',
+                tail: true,
+                value: Object {
+                  'cooked': 'baz',
+                  'raw': 'baz',
+                },
+
+                range: [81, 86],
+                loc: {
+                  start: { column: 8, line: 3 },
+                  end: { column: 13, line: 3 },
+                },
+              },
+            ],
+
+            range: [81, 86],
+            loc: {
+              start: { column: 8, line: 3 },
+              end: { column: 13, line: 3 },
+            },
+          },
+          tag: Identifier {
+            type: 'Identifier',
+-           decorators: Array [],
+            name: 'foo',
+-           optional: false,
+
+            range: [73, 76],
+            loc: {
+              start: { column: 0, line: 3 },
+              end: { column: 3, line: 3 },
+            },
+          },
+-         typeArguments: TSTypeParameterInstantiation {
++         typeParameters: TSTypeParameterInstantiation {
+            type: 'TSTypeParameterInstantiation',
+            params: Array [
+              TSTypeReference {
+                type: 'TSTypeReference',
+                typeName: Identifier {
+                  type: 'Identifier',
+-                 decorators: Array [],
+                  name: 'bar',
+-                 optional: false,
+
+                  range: [77, 80],
+                  loc: {
+                    start: { column: 4, line: 3 },
+                    end: { column: 7, line: 3 },
+                  },
+                },
+
+                range: [77, 80],
+                loc: {
+                  start: { column: 4, line: 3 },
+                  end: { column: 7, line: 3 },
+                },
+              },
+            ],
+
+            range: [76, 81],
+            loc: {
+              start: { column: 3, line: 3 },
+              end: { column: 8, line: 3 },
+            },
+          },
+
+          range: [73, 86],
+          loc: {
+            start: { column: 0, line: 3 },
+            end: { column: 13, line: 3 },
+          },
+        },
+
+        range: [73, 87],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 14, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 88],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -18,11 +20,13 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               4,
               5,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "left": Object {
@@ -97,6 +101,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {
@@ -115,8 +120,10 @@ Object {
       "type": "VariableDeclaration",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 1,
@@ -128,11 +135,13 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             16,
             17,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {

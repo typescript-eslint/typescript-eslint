@@ -4,8 +4,10 @@ exports[`typescript errorRecovery object-assertion-not-allowed.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 5,
@@ -16,10 +18,12 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "properties": Array [
             Object {
               "computed": false,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 3,
@@ -31,11 +35,13 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   2,
                   3,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "init",
               "loc": Object {
@@ -49,6 +55,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 2,
                 4,
@@ -56,6 +63,7 @@ Object {
               "shorthand": true,
               "type": "Property",
               "value": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 3,
@@ -67,11 +75,13 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   2,
                   3,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
             },
           ],
@@ -80,6 +90,7 @@ Object {
             5,
           ],
           "type": "ObjectPattern",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {

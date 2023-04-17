@@ -1,0 +1,163 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures types typeof-this TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          definite: false,
+          id: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "self",
+            optional: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTypeQuery {
+                type: "TSTypeQuery",
+                exprName: ThisExpression {
+                  type: "ThisExpression",
+
+                  range: [90, 94],
+                  loc: {
+                    start: { column: 17, line: 3 },
+                    end: { column: 21, line: 3 },
+                  },
+                },
+
+                range: [83, 94],
+                loc: {
+                  start: { column: 10, line: 3 },
+                  end: { column: 21, line: 3 },
+                },
+              },
+
+              range: [81, 94],
+              loc: {
+                start: { column: 8, line: 3 },
+                end: { column: 21, line: 3 },
+              },
+            },
+
+            range: [77, 94],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 21, line: 3 },
+            },
+          },
+          init: null,
+
+          range: [77, 94],
+          loc: {
+            start: { column: 4, line: 3 },
+            end: { column: 21, line: 3 },
+          },
+        },
+      ],
+      declare: false,
+      kind: "let",
+
+      range: [73, 95],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 22, line: 3 },
+      },
+    },
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          definite: false,
+          id: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "foo",
+            optional: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSTypeQuery {
+                type: "TSTypeQuery",
+                exprName: TSQualifiedName {
+                  type: "TSQualifiedName",
+                  left: ThisExpression {
+                    type: "ThisExpression",
+
+                    range: [112, 116],
+                    loc: {
+                      start: { column: 16, line: 4 },
+                      end: { column: 20, line: 4 },
+                    },
+                  },
+                  right: Identifier {
+                    type: "Identifier",
+                    decorators: [],
+                    name: "foo",
+                    optional: false,
+
+                    range: [117, 120],
+                    loc: {
+                      start: { column: 21, line: 4 },
+                      end: { column: 24, line: 4 },
+                    },
+                  },
+
+                  range: [112, 120],
+                  loc: {
+                    start: { column: 16, line: 4 },
+                    end: { column: 24, line: 4 },
+                  },
+                },
+
+                range: [105, 120],
+                loc: {
+                  start: { column: 9, line: 4 },
+                  end: { column: 24, line: 4 },
+                },
+              },
+
+              range: [103, 120],
+              loc: {
+                start: { column: 7, line: 4 },
+                end: { column: 24, line: 4 },
+              },
+            },
+
+            range: [100, 120],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 24, line: 4 },
+            },
+          },
+          init: null,
+
+          range: [100, 120],
+          loc: {
+            start: { column: 4, line: 4 },
+            end: { column: 24, line: 4 },
+          },
+        },
+      ],
+      declare: false,
+      kind: "let",
+
+      range: [96, 121],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 25, line: 4 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 122],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 5 },
+  },
+}
+`;

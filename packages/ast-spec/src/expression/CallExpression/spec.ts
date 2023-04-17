@@ -8,6 +8,10 @@ export interface CallExpression extends BaseNode {
   type: AST_NODE_TYPES.CallExpression;
   callee: LeftHandSideExpression;
   arguments: CallExpressionArgument[];
-  typeParameters?: TSTypeParameterInstantiation;
+  typeArguments: TSTypeParameterInstantiation | undefined;
+
+  /** @deprecated Use {@link `typeArguments`} instead. */
+  typeParameters: TSTypeParameterInstantiation | undefined;
+
   optional: boolean;
 }

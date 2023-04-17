@@ -23,6 +23,7 @@ Object {
       },
       "init": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 6,
@@ -34,11 +35,13 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             5,
             6,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -92,6 +95,7 @@ Object {
       ],
       "test": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 13,
@@ -103,11 +107,13 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             12,
             13,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -139,6 +145,7 @@ Object {
               },
             },
             "object": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 17,
@@ -150,14 +157,17 @@ Object {
                 },
               },
               "name": "x",
+              "optional": false,
               "range": Array [
                 16,
                 17,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "optional": false,
             "property": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 31,
@@ -169,11 +179,13 @@ Object {
                 },
               },
               "name": "toExponential",
+              "optional": false,
               "range": Array [
                 18,
                 31,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "range": Array [
               16,
@@ -197,12 +209,14 @@ Object {
             33,
           ],
           "type": "CallExpression",
+          "typeParameters": undefined,
         },
         "type": "AssignmentExpression",
       },
       "type": "ForStatement",
       "update": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 36,
@@ -214,11 +228,13 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             35,
             36,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {

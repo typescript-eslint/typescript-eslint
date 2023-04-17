@@ -3,12 +3,14 @@
 exports[`AST Fixtures declaration TSImportEqualsDeclaration entity-name-many TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSImportEqualsDeclaration {
       type: "TSImportEqualsDeclaration",
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "F",
+        optional: false,
 
         range: [7, 8],
         loc: {
@@ -17,14 +19,15 @@ Program {
         },
       },
       importKind: "value",
-      isExport: false,
       moduleReference: TSQualifiedName {
         type: "TSQualifiedName",
         left: TSQualifiedName {
           type: "TSQualifiedName",
           left: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "A",
+            optional: false,
 
             range: [11, 12],
             loc: {
@@ -34,7 +37,9 @@ Program {
           },
           right: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "B",
+            optional: false,
 
             range: [13, 14],
             loc: {
@@ -51,7 +56,9 @@ Program {
         },
         right: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "C",
+          optional: false,
 
           range: [15, 16],
           loc: {

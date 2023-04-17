@@ -4,6 +4,7 @@ exports[`jsx-useJSXTextNode test-content.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [
           Object {

@@ -1,0 +1,47 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics typed-keyword-undefined TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSTypeAliasDeclaration {
+      type: "TSTypeAliasDeclaration",
+      declare: false,
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "Foo",
+        optional: false,
+
+        range: [78, 81],
+        loc: {
+          start: { column: 5, line: 3 },
+          end: { column: 8, line: 3 },
+        },
+      },
+      typeAnnotation: TSUndefinedKeyword {
+        type: "TSUndefinedKeyword",
+
+        range: [84, 93],
+        loc: {
+          start: { column: 11, line: 3 },
+          end: { column: 20, line: 3 },
+        },
+      },
+
+      range: [73, 94],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 21, line: 3 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 95],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

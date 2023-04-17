@@ -1,0 +1,56 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures declare abstract-class AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ClassDeclaration {
+        type: 'ClassDeclaration',
+        abstract: true,
+        body: ClassBody {
+          type: 'ClassBody',
+          body: Array [],
+
+          range: [100, 102],
+          loc: {
+            start: { column: 27, line: 3 },
+            end: { column: 29, line: 3 },
+          },
+        },
+        declare: true,
+-       decorators: Array [],
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'Foo',
+-         optional: false,
+
+          range: [96, 99],
+          loc: {
+            start: { column: 23, line: 3 },
+            end: { column: 26, line: 3 },
+          },
+        },
+-       implements: Array [],
+        superClass: null,
+
+        range: [73, 102],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 29, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 103],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

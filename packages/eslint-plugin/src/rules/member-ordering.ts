@@ -9,9 +9,12 @@ export type MessageIds =
   | 'incorrectOrder'
   | 'incorrectRequiredMembersOrder';
 
+type ReadonlyType = 'readonly-field' | 'readonly-signature';
+
 type MemberKind =
   | 'call-signature'
   | 'constructor'
+  | ReadonlyType
   | 'field'
   | 'get'
   | 'method'
@@ -19,9 +22,17 @@ type MemberKind =
   | 'signature'
   | 'static-initialization';
 
-type DecoratedMemberKind = 'field' | 'method' | 'get' | 'set';
+type DecoratedMemberKind =
+  | Exclude<ReadonlyType, 'readonly-signature'>
+  | 'field'
+  | 'method'
+  | 'get'
+  | 'set';
 
-type NonCallableMemberKind = Exclude<MemberKind, 'constructor' | 'signature'>;
+type NonCallableMemberKind = Exclude<
+  MemberKind,
+  'constructor' | 'signature' | 'readonly-signature'
+>;
 
 type MemberScope = 'static' | 'instance' | 'abstract';
 
@@ -31,7 +42,7 @@ type BaseMemberType =
   | MemberKind
   | `${Accessibility}-${Exclude<
       MemberKind,
-      'signature' | 'static-initialization'
+      'signature' | 'readonly-signature' | 'static-initialization'
     >}`
   | `${Accessibility}-decorated-${DecoratedMemberKind}`
   | `decorated-${DecoratedMemberKind}`
@@ -258,7 +269,9 @@ export const defaultOrder: MemberType[] = [
 const allMemberTypes = Array.from(
   (
     [
+      'readonly-signature',
       'signature',
+      'readonly-field',
       'field',
       'method',
       'call-signature',
@@ -273,6 +286,7 @@ const allMemberTypes = Array.from(
     (['public', 'protected', 'private', '#private'] as const).forEach(
       accessibility => {
         if (
+          type !== 'readonly-signature' &&
           type !== 'signature' &&
           type !== 'static-initialization' &&
           type !== 'call-signature' &&
@@ -284,7 +298,8 @@ const allMemberTypes = Array.from(
         // Only class instance fields, methods, get and set can have decorators attached to them
         if (
           accessibility !== '#private' &&
-          (type === 'field' ||
+          (type === 'readonly-field' ||
+            type === 'field' ||
             type === 'method' ||
             type === 'get' ||
             type === 'set')
@@ -295,6 +310,7 @@ const allMemberTypes = Array.from(
 
         if (
           type !== 'constructor' &&
+          type !== 'readonly-signature' &&
           type !== 'signature' &&
           type !== 'call-signature'
         ) {
@@ -340,15 +356,17 @@ function getNodeType(node: Member): MemberKind | null {
     case AST_NODE_TYPES.TSConstructSignatureDeclaration:
       return 'constructor';
     case AST_NODE_TYPES.TSAbstractPropertyDefinition:
-      return 'field';
+      return node.readonly ? 'readonly-field' : 'field';
     case AST_NODE_TYPES.PropertyDefinition:
       return node.value && functionExpressions.includes(node.value.type)
         ? 'method'
+        : node.readonly
+        ? 'readonly-field'
         : 'field';
     case AST_NODE_TYPES.TSPropertySignature:
-      return 'field';
+      return node.readonly ? 'readonly-field' : 'field';
     case AST_NODE_TYPES.TSIndexSignature:
-      return 'signature';
+      return node.readonly ? 'readonly-signature' : 'signature';
     case AST_NODE_TYPES.StaticBlock:
       return 'static-initialization';
     default:
@@ -511,30 +529,53 @@ function getRank(
   const memberGroups: BaseMemberType[] = [];
 
   if (supportsModifiers) {
-    const decorated = 'decorators' in node && node.decorators!.length > 0;
+    const decorated = 'decorators' in node && node.decorators.length > 0;
     if (
       decorated &&
-      (type === 'field' ||
+      (type === 'readonly-field' ||
+        type === 'field' ||
         type === 'method' ||
         type === 'get' ||
         type === 'set')
     ) {
       memberGroups.push(`${accessibility}-decorated-${type}`);
       memberGroups.push(`decorated-${type}`);
+
+      if (type === 'readonly-field') {
+        memberGroups.push(`${accessibility}-decorated-field`);
+        memberGroups.push(`decorated-field`);
+      }
     }
 
-    if (type !== 'signature' && type !== 'static-initialization') {
+    if (
+      type !== 'readonly-signature' &&
+      type !== 'signature' &&
+      type !== 'static-initialization'
+    ) {
       if (type !== 'constructor') {
         // Constructors have no scope
         memberGroups.push(`${accessibility}-${scope}-${type}`);
         memberGroups.push(`${scope}-${type}`);
+
+        if (type === 'readonly-field') {
+          memberGroups.push(`${accessibility}-${scope}-field`);
+          memberGroups.push(`${scope}-field`);
+        }
       }
 
       memberGroups.push(`${accessibility}-${type}`);
+      if (type === 'readonly-field') {
+        memberGroups.push(`${accessibility}-field`);
+      }
     }
   }
 
   memberGroups.push(type);
+  if (type === 'readonly-signature') {
+    memberGroups.push('signature');
+  } else if (type === 'readonly-field') {
+    memberGroups.push('field');
+  }
 
   // ...then get the rank order for those member groups based on the node
   return getRankOrder(memberGroups, orderConfig);
@@ -584,7 +625,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require a consistent member declaration order',
-      recommended: false,
     },
     messages: {
       incorrectOrder:
@@ -621,15 +661,43 @@ export default util.createRule<Options, MessageIds>({
           interfaces: {
             oneOf: [
               neverConfig,
-              arrayConfig(['signature', 'field', 'method', 'constructor']),
-              objectConfig(['signature', 'field', 'method', 'constructor']),
+              arrayConfig([
+                'readonly-signature',
+                'signature',
+                'readonly-field',
+                'field',
+                'method',
+                'constructor',
+              ]),
+              objectConfig([
+                'readonly-signature',
+                'signature',
+                'readonly-field',
+                'field',
+                'method',
+                'constructor',
+              ]),
             ],
           },
           typeLiterals: {
             oneOf: [
               neverConfig,
-              arrayConfig(['signature', 'field', 'method', 'constructor']),
-              objectConfig(['signature', 'field', 'method', 'constructor']),
+              arrayConfig([
+                'readonly-signature',
+                'signature',
+                'readonly-field',
+                'field',
+                'method',
+                'constructor',
+              ]),
+              objectConfig([
+                'readonly-signature',
+                'signature',
+                'readonly-field',
+                'field',
+                'method',
+                'constructor',
+              ]),
             ],
           },
         },
@@ -656,9 +724,9 @@ export default util.createRule<Options, MessageIds>({
       members: Member[],
       groupOrder: MemberType[],
       supportsModifiers: boolean,
-    ): Array<Member[]> | null {
+    ): Member[][] | null {
       const previousRanks: number[] = [];
-      const memberGroups: Array<Member[]> = [];
+      const memberGroups: Member[][] = [];
       let isCorrectlySorted = true;
 
       // Find first member which isn't correctly sorted
@@ -883,6 +951,8 @@ export default util.createRule<Options, MessageIds>({
         }
         checkOrder(members.slice(0, switchIndex));
         checkOrder(members.slice(switchIndex));
+      } else {
+        checkOrder(members);
       }
     }
 

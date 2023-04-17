@@ -1,0 +1,130 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics export-named-class-with-multiple-generics AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ExportNamedDeclaration {
+        type: 'ExportNamedDeclaration',
+        assertions: Array [],
+        declaration: ClassDeclaration {
+          type: 'ClassDeclaration',
+-         abstract: false,
+          body: ClassBody {
+            type: 'ClassBody',
+            body: Array [],
+
+            range: [96, 98],
+            loc: {
+              start: { column: 23, line: 3 },
+              end: { column: 25, line: 3 },
+            },
+          },
+-         declare: false,
+-         decorators: Array [],
+          id: Identifier {
+            type: 'Identifier',
+-           decorators: Array [],
+            name: 'Foo',
+-           optional: false,
+
+            range: [86, 89],
+            loc: {
+              start: { column: 13, line: 3 },
+              end: { column: 16, line: 3 },
+            },
+          },
+-         implements: Array [],
+          superClass: null,
+          typeParameters: TSTypeParameterDeclaration {
+            type: 'TSTypeParameterDeclaration',
+            params: Array [
+              TSTypeParameter {
+                type: 'TSTypeParameter',
+-               const: false,
+-               in: false,
+-               name: Identifier {
+-                 type: 'Identifier',
+-                 decorators: Array [],
+-                 name: 'T',
+-                 optional: false,
+-
+-                 range: [90, 91],
+-                 loc: {
+-                   start: { column: 17, line: 3 },
+-                   end: { column: 18, line: 3 },
+-                 },
+-               },
+-               out: false,
++               name: 'T',
+
+                range: [90, 91],
+                loc: {
+                  start: { column: 17, line: 3 },
+                  end: { column: 18, line: 3 },
+                },
+              },
+              TSTypeParameter {
+                type: 'TSTypeParameter',
+-               const: false,
+-               in: false,
+-               name: Identifier {
+-                 type: 'Identifier',
+-                 decorators: Array [],
+-                 name: 'U',
+-                 optional: false,
+-
+-                 range: [93, 94],
+-                 loc: {
+-                   start: { column: 20, line: 3 },
+-                   end: { column: 21, line: 3 },
+-                 },
+-               },
+-               out: false,
++               name: 'U',
+
+                range: [93, 94],
+                loc: {
+                  start: { column: 20, line: 3 },
+                  end: { column: 21, line: 3 },
+                },
+              },
+            ],
+
+            range: [89, 95],
+            loc: {
+              start: { column: 16, line: 3 },
+              end: { column: 22, line: 3 },
+            },
+          },
+
+          range: [80, 98],
+          loc: {
+            start: { column: 7, line: 3 },
+            end: { column: 25, line: 3 },
+          },
+        },
+        exportKind: 'value',
+        source: null,
+        specifiers: Array [],
+
+        range: [73, 98],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 25, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'module',
+
+    range: [73, 99],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
+`;

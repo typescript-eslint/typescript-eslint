@@ -1,0 +1,341 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-declare-properties Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: true,
+            key: Identifier {
+              type: "Identifier",
+              name: "prop1",
+
+              range: [101, 106],
+              loc: {
+                start: { column: 10, line: 4 },
+                end: { column: 15, line: 4 },
+              },
+            },
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [108, 114],
+                loc: {
+                  start: { column: 17, line: 4 },
+                  end: { column: 23, line: 4 },
+                },
+              },
+
+              range: [106, 114],
+              loc: {
+                start: { column: 15, line: 4 },
+                end: { column: 23, line: 4 },
+              },
+            },
+            value: null,
+
+            range: [93, 115],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 24, line: 4 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            accessibility: "public",
+            computed: false,
+            declare: true,
+            key: Identifier {
+              type: "Identifier",
+              name: "prop2",
+
+              range: [133, 138],
+              loc: {
+                start: { column: 17, line: 5 },
+                end: { column: 22, line: 5 },
+              },
+            },
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [140, 146],
+                loc: {
+                  start: { column: 24, line: 5 },
+                  end: { column: 30, line: 5 },
+                },
+              },
+
+              range: [138, 146],
+              loc: {
+                start: { column: 22, line: 5 },
+                end: { column: 30, line: 5 },
+              },
+            },
+            value: null,
+
+            range: [118, 147],
+            loc: {
+              start: { column: 2, line: 5 },
+              end: { column: 31, line: 5 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: true,
+            key: Identifier {
+              type: "Identifier",
+              name: "prop3",
+
+              range: [165, 170],
+              loc: {
+                start: { column: 17, line: 6 },
+                end: { column: 22, line: 6 },
+              },
+            },
+            static: true,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [172, 178],
+                loc: {
+                  start: { column: 24, line: 6 },
+                  end: { column: 30, line: 6 },
+                },
+              },
+
+              range: [170, 178],
+              loc: {
+                start: { column: 22, line: 6 },
+                end: { column: 30, line: 6 },
+              },
+            },
+            value: null,
+
+            range: [150, 179],
+            loc: {
+              start: { column: 2, line: 6 },
+              end: { column: 31, line: 6 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            declare: true,
+            key: Identifier {
+              type: "Identifier",
+              name: "prop3",
+
+              range: [199, 204],
+              loc: {
+                start: { column: 19, line: 7 },
+                end: { column: 24, line: 7 },
+              },
+            },
+            readonly: true,
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [206, 212],
+                loc: {
+                  start: { column: 26, line: 7 },
+                  end: { column: 32, line: 7 },
+                },
+              },
+
+              range: [204, 212],
+              loc: {
+                start: { column: 24, line: 7 },
+                end: { column: 32, line: 7 },
+              },
+            },
+            value: null,
+
+            range: [182, 213],
+            loc: {
+              start: { column: 2, line: 7 },
+              end: { column: 33, line: 7 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            accessibility: "public",
+            computed: false,
+            declare: true,
+            key: Identifier {
+              type: "Identifier",
+              name: "prop4",
+
+              range: [240, 245],
+              loc: {
+                start: { column: 26, line: 8 },
+                end: { column: 31, line: 8 },
+              },
+            },
+            readonly: true,
+            static: false,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [247, 253],
+                loc: {
+                  start: { column: 33, line: 8 },
+                  end: { column: 39, line: 8 },
+                },
+              },
+
+              range: [245, 253],
+              loc: {
+                start: { column: 31, line: 8 },
+                end: { column: 39, line: 8 },
+              },
+            },
+            value: null,
+
+            range: [216, 254],
+            loc: {
+              start: { column: 2, line: 8 },
+              end: { column: 40, line: 8 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            accessibility: "public",
+            computed: false,
+            declare: true,
+            key: Identifier {
+              type: "Identifier",
+              name: "prop5",
+
+              range: [279, 284],
+              loc: {
+                start: { column: 24, line: 9 },
+                end: { column: 29, line: 9 },
+              },
+            },
+            static: true,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [286, 292],
+                loc: {
+                  start: { column: 31, line: 9 },
+                  end: { column: 37, line: 9 },
+                },
+              },
+
+              range: [284, 292],
+              loc: {
+                start: { column: 29, line: 9 },
+                end: { column: 37, line: 9 },
+              },
+            },
+            value: null,
+
+            range: [257, 293],
+            loc: {
+              start: { column: 2, line: 9 },
+              end: { column: 38, line: 9 },
+            },
+          },
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            accessibility: "public",
+            computed: false,
+            declare: true,
+            key: Identifier {
+              type: "Identifier",
+              name: "prop6",
+
+              range: [327, 332],
+              loc: {
+                start: { column: 33, line: 10 },
+                end: { column: 38, line: 10 },
+              },
+            },
+            readonly: true,
+            static: true,
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [334, 340],
+                loc: {
+                  start: { column: 40, line: 10 },
+                  end: { column: 46, line: 10 },
+                },
+              },
+
+              range: [332, 340],
+              loc: {
+                start: { column: 38, line: 10 },
+                end: { column: 46, line: 10 },
+              },
+            },
+            value: null,
+
+            range: [296, 341],
+            loc: {
+              start: { column: 2, line: 10 },
+              end: { column: 47, line: 10 },
+            },
+          },
+        ],
+
+        range: [89, 343],
+        loc: {
+          start: { column: 16, line: 3 },
+          end: { column: 1, line: 11 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "DeclProps",
+
+        range: [79, 88],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 15, line: 3 },
+        },
+      },
+      superClass: null,
+
+      range: [73, 343],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 11 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 344],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 12 },
+  },
+}
+`;

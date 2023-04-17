@@ -4,6 +4,7 @@ exports[`javascript templateStrings tagged-no-placeholders.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -62,6 +63,7 @@ Object {
           8,
         ],
         "tag": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 3,
@@ -73,11 +75,13 @@ Object {
             },
           },
           "name": "foo",
+          "optional": false,
           "range": Array [
             0,
             3,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "TaggedTemplateExpression",
         "typeParameters": undefined,

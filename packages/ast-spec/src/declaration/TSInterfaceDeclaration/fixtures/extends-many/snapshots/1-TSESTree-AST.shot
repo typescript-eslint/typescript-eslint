@@ -3,12 +3,12 @@
 exports[`AST Fixtures declaration TSInterfaceDeclaration extends-many TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSInterfaceDeclaration {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [],
+        body: [],
 
         range: [28, 30],
         loc: {
@@ -16,12 +16,15 @@ Program {
           end: { column: 30, line: 1 },
         },
       },
-      extends: Array [
+      declare: false,
+      extends: [
         TSInterfaceHeritage {
           type: "TSInterfaceHeritage",
           expression: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "A",
+            optional: false,
 
             range: [20, 21],
             loc: {
@@ -40,7 +43,9 @@ Program {
           type: "TSInterfaceHeritage",
           expression: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "B",
+            optional: false,
 
             range: [23, 24],
             loc: {
@@ -59,7 +64,9 @@ Program {
           type: "TSInterfaceHeritage",
           expression: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "C",
+            optional: false,
 
             range: [26, 27],
             loc: {
@@ -77,7 +84,9 @@ Program {
       ],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "F",
+        optional: false,
 
         range: [10, 11],
         loc: {

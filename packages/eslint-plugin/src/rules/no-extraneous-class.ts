@@ -81,10 +81,9 @@ export default util.createRule<Options, MessageIds>({
       ClassBody(node): void {
         const parent = node.parent as
           | TSESTree.ClassDeclaration
-          | TSESTree.ClassExpression
-          | undefined;
+          | TSESTree.ClassExpression;
 
-        if (!parent || parent.superClass || isAllowWithDecorator(parent)) {
+        if (parent.superClass || isAllowWithDecorator(parent)) {
           return;
         }
 

@@ -1,7 +1,14 @@
 import debug from 'debug';
+import type * as ts from 'typescript';
 
 import { ensureAbsolutePath } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
+import { isSourceFile } from '../source-files';
+import {
+  DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
+  ExpiringCache,
+} from './ExpiringCache';
+import { getProjectConfigFiles } from './getProjectConfigFiles';
 import type { MutableParseSettings } from './index';
 import { inferSingleRun } from './inferSingleRun';
 import { resolveProjectList } from './resolveProjectList';
@@ -11,19 +18,27 @@ const log = debug(
   'typescript-eslint:typescript-estree:parser:parseSettings:createParseSettings',
 );
 
+let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
+
 export function createParseSettings(
-  code: string,
+  code: string | ts.SourceFile,
   options: Partial<TSESTreeOptions> = {},
 ): MutableParseSettings {
+  const codeFullText = enforceCodeString(code);
+  const singleRun = inferSingleRun(options);
   const tsconfigRootDir =
     typeof options.tsconfigRootDir === 'string'
       ? options.tsconfigRootDir
       : process.cwd();
   const parseSettings: MutableParseSettings = {
-    code: enforceString(code),
+    allowInvalidAST: options.allowInvalidAST === true,
+    code,
+    codeFullText,
     comment: options.comment === true,
     comments: [],
-    createDefaultProgram: options.createDefaultProgram === true,
+    DEPRECATED__createDefaultProgram:
+      // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+      options.DEPRECATED__createDefaultProgram === true,
     debugLevel:
       options.debugLevel === true
         ? new Set(['typescript-eslint'])
@@ -53,13 +68,21 @@ export function createParseSettings(
         : options.loggerFn === false
         ? (): void => {}
         : console.log, // eslint-disable-line no-console
-    moduleResolver: options.moduleResolver ?? '',
     preserveNodeMaps: options.preserveNodeMaps !== false,
     programs: Array.isArray(options.programs) ? options.programs : null,
     projects: [],
     range: options.range === true,
-    singleRun: inferSingleRun(options),
+    singleRun,
+    suppressDeprecatedPropertyWarnings:
+      options.suppressDeprecatedPropertyWarnings ??
+      process.env.NODE_ENV !== 'test',
     tokens: options.tokens === true ? [] : null,
+    tsconfigMatchCache: (TSCONFIG_MATCH_CACHE ??= new ExpiringCache(
+      singleRun
+        ? 'Infinity'
+        : options.cacheLifetime?.glob ??
+          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
+    )),
     tsconfigRootDir,
   };
 
@@ -95,7 +118,7 @@ export function createParseSettings(
   if (!parseSettings.programs) {
     parseSettings.projects = resolveProjectList({
       cacheLifetime: options.cacheLifetime,
-      project: options.project,
+      project: getProjectConfigFiles(parseSettings, options.project),
       projectFolderIgnoreList: options.projectFolderIgnoreList,
       singleRun: parseSettings.singleRun,
       tsconfigRootDir: tsconfigRootDir,
@@ -107,15 +130,19 @@ export function createParseSettings(
   return parseSettings;
 }
 
+export function clearTSConfigMatchCache(): void {
+  TSCONFIG_MATCH_CACHE?.clear();
+}
+
 /**
  * Ensures source code is a string.
  */
-function enforceString(code: unknown): string {
-  if (typeof code !== 'string') {
-    return String(code);
-  }
-
-  return code;
+function enforceCodeString(code: unknown): string {
+  return isSourceFile(code)
+    ? code.getFullText(code)
+    : typeof code === 'string'
+    ? code
+    : String(code);
 }
 
 /**

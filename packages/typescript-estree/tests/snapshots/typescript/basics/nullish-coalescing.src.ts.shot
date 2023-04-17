@@ -10,7 +10,9 @@ Object {
           Object {
             "declarations": Array [
               Object {
+                "definite": false,
                 "id": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 9,
@@ -22,14 +24,17 @@ Object {
                     },
                   },
                   "name": "len",
+                  "optional": false,
                   "range": Array [
                     52,
                     55,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "init": Object {
                   "left": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 14,
@@ -41,11 +46,13 @@ Object {
                       },
                     },
                     "name": "s",
+                    "optional": false,
                     "range": Array [
                       59,
                       60,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "loc": Object {
                     "end": Object {
@@ -100,6 +107,7 @@ Object {
                 "type": "VariableDeclarator",
               },
             ],
+            "declare": false,
             "kind": "let",
             "loc": Object {
               "end": Object {
@@ -134,9 +142,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 31,
@@ -148,11 +158,13 @@ Object {
           },
         },
         "name": "processNullishCoalesce",
+        "optional": false,
         "range": Array [
           9,
           31,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -166,6 +178,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 42,
@@ -223,7 +236,9 @@ Object {
         0,
         70,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

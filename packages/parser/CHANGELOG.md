@@ -3,6 +3,84 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.58.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.1...v5.58.0) (2023-04-10)
+
+
+### Bug Fixes
+
+* update getLib for new TypeScript targets ES2021, ES2022 ([#6782](https://github.com/typescript-eslint/typescript-eslint/issues/6782)) ([1c04664](https://github.com/typescript-eslint/typescript-eslint/commit/1c0466414300f338c6c4111f8d1eac0c3e6a8983))
+
+
+
+
+
+## [5.57.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.0...v5.57.1) (2023-04-03)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [5.57.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.56.0...v5.57.0) (2023-03-27)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [5.56.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.55.0...v5.56.0) (2023-03-20)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [5.55.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.54.1...v5.55.0) (2023-03-13)
+
+
+### Features
+
+* **parser:** add exported meta object ([#6586](https://github.com/typescript-eslint/typescript-eslint/issues/6586)) ([d05c3d8](https://github.com/typescript-eslint/typescript-eslint/commit/d05c3d8aa4093e88ffdfc2dbcff522eafbd455fb))
+
+
+
+
+
+## [5.54.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.54.0...v5.54.1) (2023-03-06)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [5.54.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.53.0...v5.54.0) (2023-02-27)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [5.53.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.52.0...v5.53.0) (2023-02-20)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
+# [5.52.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.51.0...v5.52.0) (2023-02-13)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
 # [5.51.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.50.0...v5.51.0) (2023-02-06)
 
 **Note:** Version bump only for package @typescript-eslint/parser

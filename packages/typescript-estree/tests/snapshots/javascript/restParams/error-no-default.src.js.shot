@@ -6,9 +6,11 @@ Object {
     Object {
       "async": false,
       "body": undefined,
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 10,
@@ -20,11 +22,13 @@ Object {
           },
         },
         "name": "f",
+        "optional": false,
         "range": Array [
           9,
           10,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -38,6 +42,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 12,
@@ -49,14 +54,17 @@ Object {
             },
           },
           "name": "a",
+          "optional": false,
           "range": Array [
             11,
             12,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         Object {
           "argument": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 18,
@@ -68,12 +76,15 @@ Object {
               },
             },
             "name": "b",
+            "optional": false,
             "range": Array [
               17,
               18,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 22,
@@ -84,18 +95,23 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             14,
             22,
           ],
           "type": "RestElement",
+          "typeAnnotation": undefined,
+          "value": undefined,
         },
       ],
       "range": Array [
         0,
         24,
       ],
+      "returnType": undefined,
       "type": "TSDeclareFunction",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

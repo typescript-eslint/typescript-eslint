@@ -4,6 +4,7 @@ exports[`javascript experimentalObjectRestSpread shorthand-method-args.src 1`] =
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -19,6 +20,7 @@ Object {
           Object {
             "computed": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 14,
@@ -30,11 +32,13 @@ Object {
                 },
               },
               "name": "initialize",
+              "optional": false,
               "range": Array [
                 7,
                 17,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "init",
             "loc": Object {
@@ -48,6 +52,7 @@ Object {
               },
             },
             "method": true,
+            "optional": false,
             "range": Array [
               7,
               104,
@@ -74,6 +79,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -89,6 +95,7 @@ Object {
               },
               "params": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 46,
@@ -99,10 +106,12 @@ Object {
                       "line": 2,
                     },
                   },
+                  "optional": false,
                   "properties": Array [
                     Object {
                       "computed": false,
                       "key": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 23,
@@ -114,11 +123,13 @@ Object {
                           },
                         },
                         "name": "someVar",
+                        "optional": false,
                         "range": Array [
                           19,
                           26,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "kind": "init",
                       "loc": Object {
@@ -132,6 +143,7 @@ Object {
                         },
                       },
                       "method": false,
+                      "optional": false,
                       "range": Array [
                         19,
                         26,
@@ -139,6 +151,7 @@ Object {
                       "shorthand": true,
                       "type": "Property",
                       "value": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 23,
@@ -150,16 +163,19 @@ Object {
                           },
                         },
                         "name": "someVar",
+                        "optional": false,
                         "range": Array [
                           19,
                           26,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                     },
                     Object {
                       "computed": false,
                       "key": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 33,
@@ -171,11 +187,13 @@ Object {
                           },
                         },
                         "name": "otherVar",
+                        "optional": false,
                         "range": Array [
                           28,
                           36,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "kind": "init",
                       "loc": Object {
@@ -189,6 +207,7 @@ Object {
                         },
                       },
                       "method": false,
+                      "optional": false,
                       "range": Array [
                         28,
                         36,
@@ -196,6 +215,7 @@ Object {
                       "shorthand": true,
                       "type": "Property",
                       "value": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 33,
@@ -207,15 +227,18 @@ Object {
                           },
                         },
                         "name": "otherVar",
+                        "optional": false,
                         "range": Array [
                           28,
                           36,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                     },
                     Object {
                       "argument": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 45,
@@ -227,12 +250,15 @@ Object {
                           },
                         },
                         "name": "options",
+                        "optional": false,
                         "range": Array [
                           41,
                           48,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 45,
@@ -243,11 +269,14 @@ Object {
                           "line": 2,
                         },
                       },
+                      "optional": false,
                       "range": Array [
                         38,
                         48,
                       ],
                       "type": "RestElement",
+                      "typeAnnotation": undefined,
+                      "value": undefined,
                     },
                   ],
                   "range": Array [
@@ -255,13 +284,16 @@ Object {
                     49,
                   ],
                   "type": "ObjectPattern",
+                  "typeAnnotation": undefined,
                 },
               ],
               "range": Array [
                 17,
                 104,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],

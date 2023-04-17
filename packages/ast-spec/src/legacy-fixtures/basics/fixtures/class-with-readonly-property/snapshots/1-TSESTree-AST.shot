@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics class-with-readonly-property TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      abstract: false,
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            accessibility: "public",
+            computed: false,
+            declare: false,
+            decorators: [],
+            definite: false,
+            key: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "foo",
+              optional: false,
+
+              range: [103, 106],
+              loc: {
+                start: { column: 18, line: 4 },
+                end: { column: 21, line: 4 },
+              },
+            },
+            optional: false,
+            override: false,
+            readonly: true,
+            static: false,
+            value: Literal {
+              type: "Literal",
+              raw: "'string'",
+              value: "string",
+
+              range: [109, 117],
+              loc: {
+                start: { column: 24, line: 4 },
+                end: { column: 32, line: 4 },
+              },
+            },
+
+            range: [87, 118],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 33, line: 4 },
+            },
+          },
+        ],
+
+        range: [83, 120],
+        loc: {
+          start: { column: 10, line: 3 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      declare: false,
+      decorators: [],
+      id: Identifier {
+        type: "Identifier",
+        decorators: [],
+        name: "Foo",
+        optional: false,
+
+        range: [79, 82],
+        loc: {
+          start: { column: 6, line: 3 },
+          end: { column: 9, line: 3 },
+        },
+      },
+      implements: [],
+      superClass: null,
+
+      range: [73, 120],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 1, line: 5 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [73, 121],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 6 },
+  },
+}
+`;

@@ -1,0 +1,80 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: [],
+      declaration: TSTypeAliasDeclaration {
+        type: "TSTypeAliasDeclaration",
+        declare: false,
+        id: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "TestAlias",
+          optional: false,
+
+          range: [85, 94],
+          loc: {
+            start: { column: 12, line: 3 },
+            end: { column: 21, line: 3 },
+          },
+        },
+        typeAnnotation: TSUnionType {
+          type: "TSUnionType",
+          types: [
+            TSStringKeyword {
+              type: "TSStringKeyword",
+
+              range: [97, 103],
+              loc: {
+                start: { column: 24, line: 3 },
+                end: { column: 30, line: 3 },
+              },
+            },
+            TSNumberKeyword {
+              type: "TSNumberKeyword",
+
+              range: [106, 112],
+              loc: {
+                start: { column: 33, line: 3 },
+                end: { column: 39, line: 3 },
+              },
+            },
+          ],
+
+          range: [97, 112],
+          loc: {
+            start: { column: 24, line: 3 },
+            end: { column: 39, line: 3 },
+          },
+        },
+
+        range: [80, 113],
+        loc: {
+          start: { column: 7, line: 3 },
+          end: { column: 40, line: 3 },
+        },
+      },
+      exportKind: "type",
+      source: null,
+      specifiers: [],
+
+      range: [73, 113],
+      loc: {
+        start: { column: 0, line: 3 },
+        end: { column: 40, line: 3 },
+      },
+    },
+  ],
+  sourceType: "module",
+
+  range: [73, 114],
+  loc: {
+    start: { column: 0, line: 3 },
+    end: { column: 0, line: 4 },
+  },
+}
+`;

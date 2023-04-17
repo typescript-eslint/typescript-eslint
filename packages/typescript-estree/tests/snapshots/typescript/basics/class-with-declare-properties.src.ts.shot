@@ -4,12 +4,17 @@ exports[`typescript basics class-with-declare-properties.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": true,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 15,
@@ -21,11 +26,13 @@ Object {
                 },
               },
               "name": "prop1",
+              "optional": false,
               "range": Array [
                 28,
                 33,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -37,12 +44,13 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               20,
               42,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -85,7 +93,10 @@ Object {
             "accessibility": "public",
             "computed": false,
             "declare": true,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 22,
@@ -97,11 +108,13 @@ Object {
                 },
               },
               "name": "prop2",
+              "optional": false,
               "range": Array [
                 60,
                 65,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -113,12 +126,13 @@ Object {
                 "line": 3,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               45,
               74,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -158,9 +172,13 @@ Object {
             "value": null,
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": true,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 22,
@@ -172,11 +190,13 @@ Object {
                 },
               },
               "name": "prop3",
+              "optional": false,
               "range": Array [
                 92,
                 97,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -188,12 +208,13 @@ Object {
                 "line": 4,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               77,
               106,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": true,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -233,9 +254,13 @@ Object {
             "value": null,
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
             "declare": true,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 24,
@@ -247,11 +272,13 @@ Object {
                 },
               },
               "name": "prop3",
+              "optional": false,
               "range": Array [
                 126,
                 131,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -263,6 +290,7 @@ Object {
                 "line": 5,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               109,
@@ -311,7 +339,10 @@ Object {
             "accessibility": "public",
             "computed": false,
             "declare": true,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 31,
@@ -323,11 +354,13 @@ Object {
                 },
               },
               "name": "prop4",
+              "optional": false,
               "range": Array [
                 167,
                 172,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -339,6 +372,7 @@ Object {
                 "line": 6,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               143,
@@ -387,7 +421,10 @@ Object {
             "accessibility": "public",
             "computed": false,
             "declare": true,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 29,
@@ -399,11 +436,13 @@ Object {
                 },
               },
               "name": "prop5",
+              "optional": false,
               "range": Array [
                 206,
                 211,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -415,12 +454,13 @@ Object {
                 "line": 7,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               184,
               220,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": true,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -463,7 +503,10 @@ Object {
             "accessibility": "public",
             "computed": false,
             "declare": true,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 38,
@@ -475,11 +518,13 @@ Object {
                 },
               },
               "name": "prop6",
+              "optional": false,
               "range": Array [
                 254,
                 259,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -491,6 +536,7 @@ Object {
                 "line": 8,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               223,
@@ -552,7 +598,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 15,
@@ -564,12 +613,15 @@ Object {
           },
         },
         "name": "DeclProps",
+        "optional": false,
         "range": Array [
           6,
           15,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -585,7 +637,9 @@ Object {
         270,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

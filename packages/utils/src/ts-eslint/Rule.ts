@@ -5,7 +5,7 @@ import type { Linter } from './Linter';
 import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
 
-export type RuleRecommendation = 'error' | 'strict' | 'warn' | false;
+export type RuleRecommendation = 'recommended' | 'strict' | 'stylistic';
 
 interface RuleMetaDataDocs {
   /**
@@ -17,15 +17,11 @@ interface RuleMetaDataDocs {
    * Used by the build tools to generate the recommended and strict configs.
    * Set to false to not include it as a recommendation
    */
-  recommended: 'error' | 'strict' | 'warn' | false;
+  recommended?: RuleRecommendation;
   /**
    * The URL of the rule's docs
    */
   url?: string;
-  /**
-   * Specifies whether the rule can return suggestions.
-   */
-  suggestion?: boolean;
   /**
    * Does the rule require us to create a full TypeScript Program in order for it
    * to type-check code. This is only used for documentation purposes.
@@ -264,7 +260,9 @@ interface RuleContext<
 
 // This isn't the correct signature, but it makes it easier to do custom unions within reusable listeners
 // never will break someone's code unless they specifically type the function argument
-type RuleFunction<T extends TSESTree.BaseNode = never> = (node: T) => void;
+type RuleFunction<T extends TSESTree.NodeOrTokenData = never> = (
+  node: T,
+) => void;
 
 interface RuleListener {
   [nodeSelector: string]: RuleFunction | undefined;
@@ -453,9 +451,7 @@ interface RuleModule<
 type RuleCreateFunction<
   TMessageIds extends string = never,
   TOptions extends readonly unknown[] = unknown[],
-  // for extending base rules
-  TRuleListener extends RuleListener = RuleListener,
-> = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => TRuleListener;
+> = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => RuleListener;
 
 export {
   ReportDescriptor,

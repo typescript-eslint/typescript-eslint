@@ -55,6 +55,7 @@ export interface EstreeToTsNodeTypes {
     | ts.ClassDeclaration
     | ts.ClassExpression
     | ts.TypeAliasDeclaration
+    | ts.ImportEqualsDeclaration
     | ts.InterfaceDeclaration
     | ts.EnumDeclaration
     | ts.ModuleDeclaration;
@@ -202,7 +203,7 @@ export interface EstreeToTsNodeTypes {
   [AST_NODE_TYPES.TSOptionalType]: ts.OptionalTypeNode;
   [AST_NODE_TYPES.TSParameterProperty]: ts.ParameterDeclaration;
   [AST_NODE_TYPES.TSPropertySignature]: ts.PropertySignature;
-  [AST_NODE_TYPES.TSQualifiedName]: ts.QualifiedName;
+  [AST_NODE_TYPES.TSQualifiedName]: ts.Identifier | ts.QualifiedName;
   [AST_NODE_TYPES.TSRestType]:
     | ts.RestTypeNode
     // for consistency and following babel's choices, a named tuple member with a rest gets converted to a TSRestType
@@ -228,7 +229,7 @@ export interface EstreeToTsNodeTypes {
     | ts.CallExpression
     | ts.TypeQueryNode;
   [AST_NODE_TYPES.TSTypePredicate]: ts.TypePredicateNode;
-  [AST_NODE_TYPES.TSTypeQuery]: ts.TypeQueryNode;
+  [AST_NODE_TYPES.TSTypeQuery]: ts.TypeQueryNode | ts.ImportTypeNode;
   [AST_NODE_TYPES.TSTypeReference]: ts.TypeReferenceNode;
   [AST_NODE_TYPES.TSUnionType]: ts.UnionTypeNode;
   [AST_NODE_TYPES.UpdateExpression]:

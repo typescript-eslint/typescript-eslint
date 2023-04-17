@@ -9,7 +9,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Enforce the use of `as const` over literal type',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     fixable: 'code',
     hasSuggestions: true,
@@ -49,7 +49,7 @@ export default util.createRule({
               {
                 messageId: 'variableSuggest',
                 fix: (fixer): TSESLint.RuleFix[] => [
-                  fixer.remove(typeNode.parent!),
+                  fixer.remove(typeNode.parent),
                   fixer.insertTextAfter(valueNode, ' as const'),
                 ],
               },

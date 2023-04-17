@@ -7,8 +7,11 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "export": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 17,
@@ -20,11 +23,13 @@ Object {
                 },
               },
               "name": "addClickListener",
+              "optional": false,
               "range": Array [
                 23,
                 39,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -37,8 +42,10 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 57,
@@ -50,6 +57,7 @@ Object {
                   },
                 },
                 "name": "onclick",
+                "optional": false,
                 "range": Array [
                   40,
                   79,
@@ -84,6 +92,7 @@ Object {
                     },
                     "params": Array [
                       Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 38,
@@ -95,6 +104,7 @@ Object {
                           },
                         },
                         "name": "this",
+                        "optional": false,
                         "range": Array [
                           50,
                           60,
@@ -136,6 +146,7 @@ Object {
                         },
                       },
                       Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 48,
@@ -147,6 +158,7 @@ Object {
                           },
                         },
                         "name": "e",
+                        "optional": false,
                         "range": Array [
                           62,
                           70,
@@ -185,6 +197,7 @@ Object {
                             ],
                             "type": "TSTypeReference",
                             "typeName": Object {
+                              "decorators": Array [],
                               "loc": Object {
                                 "end": Object {
                                   "column": 48,
@@ -196,11 +209,13 @@ Object {
                                 },
                               },
                               "name": "Event",
+                              "optional": false,
                               "range": Array [
                                 65,
                                 70,
                               ],
                               "type": "Identifier",
+                              "typeAnnotation": undefined,
                             },
                             "typeParameters": undefined,
                           },
@@ -246,6 +261,7 @@ Object {
                       },
                     },
                     "type": "TSFunctionType",
+                    "typeParameters": undefined,
                   },
                 },
               },
@@ -254,6 +270,7 @@ Object {
               23,
               87,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -288,7 +305,9 @@ Object {
                 "type": "TSVoidKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
+            "typeParameters": undefined,
           },
         ],
         "loc": Object {
@@ -307,7 +326,10 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
+      "extends": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 19,
@@ -319,11 +341,13 @@ Object {
           },
         },
         "name": "UIElement",
+        "optional": false,
         "range": Array [
           10,
           19,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -340,6 +364,7 @@ Object {
         89,
       ],
       "type": "TSInterfaceDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

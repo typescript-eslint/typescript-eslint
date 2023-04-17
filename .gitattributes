@@ -8,3 +8,4 @@
 
 # force github to treat out custom jest snapshot extension as normal jest snapshots
 *.shot linguist-language=Jest-Snapshot
+*.shot linguist-generated

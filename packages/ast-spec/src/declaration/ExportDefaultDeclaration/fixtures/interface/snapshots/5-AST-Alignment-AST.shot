@@ -2,5 +2,62 @@
 
 exports[`AST Fixtures declaration ExportDefaultDeclaration interface AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ExportDefaultDeclaration {
+        type: 'ExportDefaultDeclaration',
+        declaration: TSInterfaceDeclaration {
+          type: 'TSInterfaceDeclaration',
+          body: TSInterfaceBody {
+            type: 'TSInterfaceBody',
+            body: Array [],
+
+            range: [29, 31],
+            loc: {
+              start: { column: 29, line: 1 },
+              end: { column: 31, line: 1 },
+            },
+          },
+-         declare: false,
+-         extends: Array [],
+          id: Identifier {
+            type: 'Identifier',
+-           decorators: Array [],
+            name: 'Foo',
+-           optional: false,
+
+            range: [25, 28],
+            loc: {
+              start: { column: 25, line: 1 },
+              end: { column: 28, line: 1 },
+            },
+          },
+
+          range: [15, 31],
+          loc: {
+            start: { column: 15, line: 1 },
+            end: { column: 31, line: 1 },
+          },
+        },
+        exportKind: 'value',
+
+        range: [0, 31],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 31, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'module',
+
+    range: [0, 32],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;

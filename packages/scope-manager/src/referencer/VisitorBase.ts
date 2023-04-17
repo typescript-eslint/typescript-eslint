@@ -35,11 +35,11 @@ abstract class VisitorBase {
     node: T | null | undefined,
     excludeArr: (keyof T)[] = [],
   ): void {
-    if (node == null || node.type == null) {
+    if (node?.type == null) {
       return;
     }
 
-    const exclude = new Set(excludeArr.concat(['parent'])) as Set<string>;
+    const exclude = new Set([...excludeArr, 'parent'] as string[]);
     const children = this.#childVisitorKeys[node.type] ?? Object.keys(node);
     for (const key of children) {
       if (exclude.has(key)) {

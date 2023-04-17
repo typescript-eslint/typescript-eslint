@@ -4,7 +4,9 @@ exports[`typescript basics intrinsic-keyword.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 14,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "Uppercase",
+        "optional": false,
         "range": Array [
           5,
           14,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -97,6 +101,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 16,
@@ -108,11 +113,13 @@ Object {
                 },
               },
               "name": "S",
+              "optional": false,
               "range": Array [
                 15,
                 16,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [
@@ -130,7 +137,9 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 14,
@@ -142,11 +151,13 @@ Object {
           },
         },
         "name": "Lowercase",
+        "optional": false,
         "range": Array [
           51,
           60,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -223,6 +234,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 16,
@@ -234,11 +246,13 @@ Object {
                 },
               },
               "name": "S",
+              "optional": false,
               "range": Array [
                 61,
                 62,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [
@@ -256,7 +270,9 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 15,
@@ -268,11 +284,13 @@ Object {
           },
         },
         "name": "Capitalize",
+        "optional": false,
         "range": Array [
           97,
           107,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -349,6 +367,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 17,
@@ -360,11 +379,13 @@ Object {
                 },
               },
               "name": "S",
+              "optional": false,
               "range": Array [
                 108,
                 109,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [
@@ -382,7 +403,9 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 17,
@@ -394,11 +417,13 @@ Object {
           },
         },
         "name": "Uncapitalize",
+        "optional": false,
         "range": Array [
           144,
           156,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -475,6 +500,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 19,
@@ -486,11 +512,13 @@ Object {
                 },
               },
               "name": "S",
+              "optional": false,
               "range": Array [
                 157,
                 158,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [
