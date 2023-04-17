@@ -153,10 +153,11 @@ function typeDeclaredInPackage(
   // Handle scoped packages - if the name starts with @, remove it and replace / with __
   const typesPackageName =
     '@types/' + packageName.replace(/^@([^/]+)\//, '$1__');
-  return declarationFiles.some(
-    declaration =>
-      declaration.fileName.includes(`node_modules/${packageName}/`) ||
-      declaration.fileName.includes(`node_modules/${typesPackageName}/`),
+  const matcher = new RegExp(
+    `node_modules/(?:${packageName}|${typesPackageName})/`,
+  );
+  return declarationFiles.some(declaration =>
+    matcher.test(declaration.fileName),
   );
 }
 
