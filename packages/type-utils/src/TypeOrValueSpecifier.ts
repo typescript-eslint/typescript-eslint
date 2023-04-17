@@ -150,11 +150,9 @@ function typeDeclaredInPackage(
   packageName: string,
   declarationFiles: ts.SourceFile[],
 ): boolean {
+  // Handle scoped packages - if the name starts with @, remove it and replace / with __
   const typesPackageName =
-    '@types/' +
-    (packageName[0] === '@'
-      ? packageName.substring(1).replace('/', '__')
-      : packageName);
+    '@types/' + packageName.replace(/^@([^/]+)\//, '$1__');
   return declarationFiles.some(
     declaration =>
       declaration.fileName.includes(`node_modules/${packageName}/`) ||
