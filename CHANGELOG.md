@@ -3,6 +3,22 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.59.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.58.0...v5.59.0) (2023-04-17)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unnecessary-condition] allow nullish coalescing for naked type parameter ([#6910](https://github.com/typescript-eslint/typescript-eslint/issues/6910)) ([3e5f858](https://github.com/typescript-eslint/typescript-eslint/commit/3e5f8583f1e4fe045c2fe2143d6f280b7381f96b))
+
+
+### Features
+
+* **eslint-plugin:** [ban-types] add NonNullable suggestion and allow custom suggestions ([#6876](https://github.com/typescript-eslint/typescript-eslint/issues/6876)) ([ff65235](https://github.com/typescript-eslint/typescript-eslint/commit/ff65235246bb6214fb64f0e0317373ca99f8bcbe))
+
+
+
+
+
 # [5.58.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.1...v5.58.0) (2023-04-10)
 
 
