@@ -756,11 +756,11 @@ describe('hand-crafted cases', () => {
       'foo && foo.#bar;',
       '!foo || !foo.#bar;',
       // weird non-constant cases are ignored
-      '({} && {}.toString());',
+      '({}) && {}.toString();',
       '[] && [].length;',
       '(() => {}) && (() => {}).name;',
-      '(function () {} && function () {}.name);',
-      '(class Foo {} && class Foo {}.constructor);',
+      '(function () {}) && function () {}.name;',
+      '(class Foo {}) && class Foo {}.constructor;',
       "new Map().get('a') && new Map().get('a').what;",
       {
         code: '<div /> && (<div />).wtf;',

@@ -69,7 +69,7 @@ function gatherLogicalOperands(node: TSESTree.LogicalExpression): {
     switch (operand.type) {
       case AST_NODE_TYPES.BinaryExpression: {
         // check for "yoda" style logical: null != x
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- TODO - add ignore IIFE option
+
         const { comparedExpression, comparedValue } = (() => {
           // non-yoda checks are by far the most common, so check for them first
           const comparedValueRight = getComparisonValueType(operand.right);
@@ -521,8 +521,8 @@ function compareNodesUncached(
       }
 
       const typeParamCompare = compareNodes(
-        nodeA.typeParameters,
-        nodeBCall.typeParameters,
+        nodeA.typeArguments,
+        nodeBCall.typeArguments,
       );
       if (typeParamCompare === NodeComparisonResult.Equal) {
         return NodeComparisonResult.Equal;
