@@ -35,7 +35,7 @@ export function createParseSettings(
       ? options.tsconfigRootDir
       : process.cwd();
   const parseSettings: MutableParseSettings = {
-    // todo: sometimes
+    // todo: sometimes (add EXPERIMENTAL_useProjectService to TSESTreeOptions)
     projectService: (TSSERVER_PROJECT_SERVICE ??= createProjectService()),
     EXPERIMENTAL_useProjectService: true,
 

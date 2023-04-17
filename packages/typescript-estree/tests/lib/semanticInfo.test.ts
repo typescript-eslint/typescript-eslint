@@ -179,7 +179,7 @@ describe('semanticInfo', () => {
     expect(tsComputedPropertyString.kind).toEqual(ts.SyntaxKind.StringLiteral);
   });
 
-  it.only('imported-file tests', () => {
+  it('imported-file tests', () => {
     const fileName = path.resolve(FIXTURES_DIR, 'import-file.src.ts');
     const parseResult = parseCodeAndGenerateServices(
       fs.readFileSync(fileName, 'utf8'),
