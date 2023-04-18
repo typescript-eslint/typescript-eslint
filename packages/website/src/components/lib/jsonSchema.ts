@@ -8,6 +8,11 @@ const defaultRuleSchema: JSONSchema4 = {
   enum: ['off', 'warn', 'error', 0, 1, 2],
 };
 
+// https://github.com/microsoft/TypeScript/issues/17002
+function isArray(arg: unknown): arg is readonly unknown[] {
+  return isArray(arg);
+}
+
 /**
  * Add the error level to the rule schema items
  *
@@ -18,9 +23,9 @@ const defaultRuleSchema: JSONSchema4 = {
  */
 export function getRuleJsonSchemaWithErrorLevel(
   name: string,
-  ruleSchema: JSONSchema4 | JSONSchema4[],
+  ruleSchema: JSONSchema4 | readonly JSONSchema4[],
 ): JSONSchema4 {
-  if (Array.isArray(ruleSchema)) {
+  if (isArray(ruleSchema)) {
     return {
       type: 'array',
       items: [defaultRuleSchema, ...ruleSchema],
@@ -28,20 +33,8 @@ export function getRuleJsonSchemaWithErrorLevel(
       additionalItems: false,
     };
   }
-  // TODO: delete this once we update schemas
-  // example: ban-ts-comment
-  if (Array.isArray(ruleSchema.prefixItems)) {
-    const { prefixItems, ...rest } = ruleSchema;
-    return {
-      ...rest,
-      items: [defaultRuleSchema, ...(prefixItems as JSONSchema4[])],
-      maxItems: ruleSchema.maxItems ? ruleSchema.maxItems + 1 : undefined,
-      minItems: ruleSchema.minItems ? ruleSchema.minItems + 1 : 1,
-      additionalItems: false,
-    };
-  }
   // example: explicit-member-accessibility
-  if (Array.isArray(ruleSchema.items)) {
+  if (isArray(ruleSchema.items)) {
     return {
       ...ruleSchema,
       items: [defaultRuleSchema, ...ruleSchema.items],
@@ -59,7 +52,7 @@ export function getRuleJsonSchemaWithErrorLevel(
     };
   }
   // example eqeqeq
-  if (Array.isArray(ruleSchema.anyOf)) {
+  if (isArray(ruleSchema.anyOf)) {
     return {
       ...ruleSchema,
       anyOf: ruleSchema.anyOf.map(item =>
@@ -68,7 +61,7 @@ export function getRuleJsonSchemaWithErrorLevel(
     };
   }
   // example logical-assignment-operators
-  if (Array.isArray(ruleSchema.oneOf)) {
+  if (isArray(ruleSchema.oneOf)) {
     return {
       ...ruleSchema,
       oneOf: ruleSchema.oneOf.map(item =>

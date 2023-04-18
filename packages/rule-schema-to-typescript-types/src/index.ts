@@ -47,6 +47,7 @@ const prettierConfig = {
  */
 const MAX_ITEMS_TO_TUPLIZE = 20;
 
+// https://github.com/microsoft/TypeScript/issues/17002
 function isArray(arg: unknown): arg is readonly unknown[] {
   return Array.isArray(arg);
 }
