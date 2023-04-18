@@ -1,33 +1,20 @@
 import * as tsserver from 'typescript/lib/tsserverlibrary';
 
-export function createProjectService() {
-  const compilerOptions = { /* todo */ strict: true };
-  const compilerHost = tsserver.createCompilerHost(compilerOptions, true);
+const doNothing = (): void => {};
 
+const createStubFileWatcher = (): tsserver.FileWatcher => ({
+  close: doNothing,
+});
+
+export function createProjectService(): tsserver.server.ProjectService {
   // TODO: see getWatchProgramsForProjects
   // We don't watch the disk, we just refer to these when ESLint calls us
   // there's a whole separate update pass in maybeInvalidateProgram at the bottom of getWatchProgramsForProjects
   // (this "goes nuclear on TypeScript")
-  const watchFile = (
-    path: string,
-    callback: tsserver.FileWatcherCallback,
-  ): tsserver.FileWatcher => {
-    // todo (or just ... stub out?)
-    return { close() {} };
-  };
-
-  const watchDirectory = (
-    path: string,
-    callback: tsserver.DirectoryWatcherCallback,
-  ) => {
-    // todo (or just ... stub out?)
-    return { close() {} };
-  };
-
   const system = {
     ...tsserver.sys,
-    watchFile,
-    watchDirectory,
+    watchDirectory: createStubFileWatcher,
+    watchFile: createStubFileWatcher,
     setTimeout,
     clearTimeout,
     setImmediate,
@@ -36,29 +23,30 @@ export function createProjectService() {
 
   const projectService = new tsserver.server.ProjectService({
     host: system,
-    cancellationToken: { isCancellationRequested: () => false },
-    useSingleInferredProject: false, // ???
-    useInferredProjectPerProjectRoot: false, // ???
+    cancellationToken: { isCancellationRequested: (): boolean => false },
+    useSingleInferredProject: false,
+    useInferredProjectPerProjectRoot: false,
+    // TODO: https://github.com/microsoft/TypeScript/issues/53803
     typingsInstaller: {
-      attach: () => {},
-      enqueueInstallTypingsRequest: () => {},
-      installPackage: async (): Promise<never> => {
-        throw new Error('pls no');
+      attach: (): void => {},
+      enqueueInstallTypingsRequest: (): void => {},
+      installPackage: (): Promise<never> => {
+        throw new Error('This should never be called.');
       },
       isKnownTypesPackageName: () => false,
-      onProjectClosed: () => {},
+      onProjectClosed: (): void => {},
       globalTypingsCacheLocation: '',
     },
     logger: {
-      close() {},
-      hasLevel: () => false,
-      loggingEnabled: () => false,
-      perftrc() {},
-      info() {},
-      startGroup() {},
-      endGroup() {},
-      msg() {},
+      close: doNothing,
+      endGroup: doNothing,
       getLogFileName: () => undefined,
+      hasLevel: () => false,
+      info: doNothing,
+      loggingEnabled: () => false,
+      msg: doNothing,
+      perftrc: doNothing,
+      startGroup: doNothing,
     },
     session: undefined,
   });

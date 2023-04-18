@@ -150,12 +150,21 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
    *
+   * Whether to create a shared TypeScript server to power program creation.
+   *
+   * @see https://github.com/typescript-eslint/typescript-eslint/issues/6575
+   */
+  EXPERIMENTAL_useProjectService?: boolean;
+
+  /**
+   * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
+   *
    * Causes TS to use the source files for referenced projects instead of the compiled .d.ts files.
    * This feature is not yet optimized, and is likely to cause OOMs for medium to large projects.
    *
    * This flag REQUIRES at least TS v3.9, otherwise it does nothing.
    *
-   * See: https://github.com/typescript-eslint/typescript-eslint/issues/2094
+   * @see https://github.com/typescript-eslint/typescript-eslint/issues/2094
    */
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean;
 

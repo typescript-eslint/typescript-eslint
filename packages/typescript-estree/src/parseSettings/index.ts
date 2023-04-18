@@ -11,9 +11,6 @@ type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
  * Internal settings used by the parser to run on a file.
  */
 export interface MutableParseSettings {
-  // todo
-  projectService: tsserverlibrary.server.ProjectService | undefined;
-
   /**
    * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
    */
@@ -61,8 +58,12 @@ export interface MutableParseSettings {
    */
   errorOnUnknownASTType: boolean;
 
-  // todo
-  EXPERIMENTAL_useProjectService: boolean;
+  /**
+   * Experimental: TypeScript server to power program creation.
+   */
+  EXPERIMENTAL_projectService:
+    | tsserverlibrary.server.ProjectService
+    | undefined;
 
   /**
    * Whether TS should use the source files for referenced projects instead of the compiled .d.ts files.

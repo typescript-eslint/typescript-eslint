@@ -6,7 +6,6 @@ import { convertError } from './convert';
 import { createDefaultProgram } from './create-program/createDefaultProgram';
 import { createIsolatedProgram } from './create-program/createIsolatedProgram';
 import { createProjectProgram } from './create-program/createProjectProgram';
-import { createProjectService } from './create-program/createProjectService';
 import {
   createNoProgram,
   createSourceFile,
@@ -27,6 +26,7 @@ import type { ParseSettings } from './parseSettings';
 import { createParseSettings } from './parseSettings/createParseSettings';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import type { TSESTree } from './ts-estree';
+import { useProgramFromProjectService } from './useProgramFromProjectService';
 
 const log = debug('typescript-eslint:typescript-estree:parser');
 
@@ -59,62 +59,40 @@ function getProgramAndAST(
     }
   }
 
-  // todo; wrap in function or some such
-  if (parseSettings.projectService) {
-    parseSettings.projectService.openClientFile(
-      parseSettings.filePath,
-      parseSettings.codeFullText,
-    );
-
-    // todo: maybe we'll slap this into the parseSEttings as a property?
-    // const projectService = createProjectServiceProgram(/* parseSettings */);
-    const program = parseSettings.projectService
-      .getScriptInfo(parseSettings.filePath)!
-      .getDefaultProject()
-      .getLanguageService(/*ensureSynchronized*/ true)
-      .getProgram();
-
-    // TODO "Eventually, close the file"
-    // what does this actually do?
-    //
-
-    if (program) {
-      const projectServiceProgram = createProjectProgram(parseSettings, [
-        // LOL TYPES
-        // This'll hopefully be resolved once they fully move to modules
-        // right now it's two separate files that get dumped out
-        program as ts.Program,
-      ]);
-      if (projectServiceProgram) {
-        return projectServiceProgram;
-      }
-    }
-  }
-
-  if (hasFullTypeInformation) {
-    const fromProjectProgram = createProjectProgram(
-      parseSettings,
-      getWatchProgramsForProjects(parseSettings),
-    );
-    if (fromProjectProgram) {
-      return fromProjectProgram;
-    }
-
-    // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-    if (parseSettings.DEPRECATED__createDefaultProgram) {
-      // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-      const fromDefaultProgram = createDefaultProgram(parseSettings);
-      if (fromDefaultProgram) {
-        return fromDefaultProgram;
-      }
-    }
-
-    return createIsolatedProgram(parseSettings);
-  }
-
   // no need to waste time creating a program as the caller didn't want parser services
   // so we can save time and just create a lonesome source file
-  return createNoProgram(parseSettings);
+  if (!hasFullTypeInformation) {
+    return createNoProgram(parseSettings);
+  }
+
+  if (parseSettings.EXPERIMENTAL_projectService) {
+    const fromProjectService = useProgramFromProjectService(
+      parseSettings.EXPERIMENTAL_projectService,
+      parseSettings,
+    );
+    if (fromProjectService) {
+      return fromProjectService;
+    }
+  }
+
+  const fromProjectProgram = createProjectProgram(
+    parseSettings,
+    getWatchProgramsForProjects(parseSettings),
+  );
+  if (fromProjectProgram) {
+    return fromProjectProgram;
+  }
+
+  // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+  if (parseSettings.DEPRECATED__createDefaultProgram) {
+    // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+    const fromDefaultProgram = createDefaultProgram(parseSettings);
+    if (fromDefaultProgram) {
+      return fromDefaultProgram;
+    }
+  }
+
+  return createIsolatedProgram(parseSettings);
 }
 
 interface EmptyObject {}
@@ -321,16 +299,3 @@ export {
   clearProgramCache,
   clearParseAndGenerateServicesCalls,
 };
-
-// next steps
-// 0. clean up comments
-// 1. ping jake with questions
-//   * what does closing a file do
-// 2. create versions of test suite tailored to this new fancy form
-// 3. testing the heck out of it
-
-// aside:
-// * performance testing - need to work on that
-//    (see TS folks - they do both memory usage and runtime)
-//    memory usage: makes bigger people happy (OOMs)
-//    runtime: more people can use it

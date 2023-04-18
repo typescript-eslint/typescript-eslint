@@ -224,7 +224,7 @@ function baseTests(
 }
 
 describe('persistent parse', () => {
-  describe.only('includes not ending in a slash', () => {
+  describe('includes not ending in a slash', () => {
     const tsConfigExcludeBar = {
       include: ['src'],
       exclude: ['./src/bar.ts'],

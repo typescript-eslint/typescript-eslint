@@ -1,7 +1,7 @@
 import debug from 'debug';
 import type * as ts from 'typescript';
-import { createProjectService } from '../create-program/createProjectService';
 
+import { createProjectService } from '../create-program/createProjectService';
 import { ensureAbsolutePath } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
 import { isSourceFile } from '../source-files';
@@ -35,10 +35,6 @@ export function createParseSettings(
       ? options.tsconfigRootDir
       : process.cwd();
   const parseSettings: MutableParseSettings = {
-    // todo: sometimes (add EXPERIMENTAL_useProjectService to TSESTreeOptions)
-    projectService: (TSSERVER_PROJECT_SERVICE ??= createProjectService()),
-    EXPERIMENTAL_useProjectService: true,
-
     allowInvalidAST: options.allowInvalidAST === true,
     code,
     codeFullText,
@@ -55,6 +51,10 @@ export function createParseSettings(
         : new Set(),
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: options.errorOnUnknownASTType === true,
+    EXPERIMENTAL_projectService:
+      options.EXPERIMENTAL_useProjectService === true
+        ? (TSSERVER_PROJECT_SERVICE ??= createProjectService())
+        : undefined,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect:
       options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect === true,
     extraFileExtensions:
