@@ -61,7 +61,7 @@
     "debug": "^4.3.4",
     "grapheme-splitter": "^1.0.4",
     "ignore": "^5.2.0",
-    "natural-compare-lite": "^1.4.0",
+    "natural-compare": "^1.4.0",
     "semver": "^7.3.7",
     "ts-api-utils": "^0.0.46"
   },
@@ -69,7 +69,7 @@
     "@types/debug": "*",
     "@types/json-schema": "*",
     "@types/marked": "*",
-    "@types/natural-compare-lite": "^1.4.0",
+    "@types/natural-compare": "^1.4.0",
     "@types/prettier": "*",
     "cross-fetch": "*",
     "json-schema": "*",
