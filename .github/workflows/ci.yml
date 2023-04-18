@@ -215,7 +215,7 @@ jobs:
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
-          node-version: ${{ matrix.node-version }}
+          node-version: 18
       - name: Build
         uses: ./.github/actions/prepare-build
       - name: Run unit tests for ${{ matrix.package }}
