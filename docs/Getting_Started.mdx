@@ -64,7 +64,7 @@ ESLint will lint all TypeScript compatible files within the current folder, and 
 - `extends: [ ... ]` tells ESLint that your config extends the given configurations.
   - `eslint:recommended` is ESLint's inbuilt "recommended" config - it turns on a small, sensible set of rules which lint for well-known best-practices.
   - `plugin:@typescript-eslint/recommended` is our "recommended" config - it's similar to `eslint:recommended`, except it turns on TypeScript-specific rules from our plugin.
-- `root: true` is a general good ESLint practice to indicate this file is the root-level one used by the project
+- `root: true` is a generally good ESLint practice to indicate this file is the root-level one used by the project and ESLint should not search beyond this directory for config files.
 
 ## Next Steps
 
