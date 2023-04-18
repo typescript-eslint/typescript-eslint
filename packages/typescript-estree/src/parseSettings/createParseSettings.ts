@@ -24,8 +24,6 @@ let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
 let TSSERVER_PROJECT_SERVICE: ReturnType<typeof createProjectService> | null =
   null;
 
-process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER = 'true';
-
 export function createParseSettings(
   code: string | ts.SourceFile,
   options: Partial<TSESTreeOptions> = {},
