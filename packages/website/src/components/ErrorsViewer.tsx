@@ -10,7 +10,7 @@ import AlertBlock from './layout/AlertBlock';
 import type { ErrorGroup, ErrorItem } from './types';
 
 export interface ErrorsViewerProps {
-  readonly value?: ErrorGroup[] | Error;
+  readonly value?: ErrorGroup[];
 }
 
 export interface ErrorViewerProps {
@@ -127,10 +127,6 @@ export function ErrorsViewer({ value }: ErrorsViewerProps): JSX.Element {
   useEffect(() => {
     setIsLocked(false);
   }, [value]);
-
-  if (value && !Array.isArray(value)) {
-    return <ErrorViewer type="danger" title="Internal error" value={value} />;
-  }
 
   return (
     <div className={styles.list}>
