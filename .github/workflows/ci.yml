@@ -192,6 +192,38 @@ jobs:
           # Sadly 1 day is the minimum
           retention-days: 1
 
+  unit_tests_tsserver:
+    name: Run Unit Tests with Experimental TSServer
+    needs: [build]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          [
+            'eslint-plugin',
+            'eslint-plugin-internal',
+            'eslint-plugin-tslint',
+            'typescript-estree',
+          ]
+    env:
+      COLLECT_COVERAGE: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 2
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+      - name: Run unit tests for ${{ matrix.package }}
+        run: npx nx test ${{ matrix.package }} --coverage=false
+        env:
+          CI: true
+          TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER: true
+
   website_build:
     name: Build Website
     needs: [install, build]

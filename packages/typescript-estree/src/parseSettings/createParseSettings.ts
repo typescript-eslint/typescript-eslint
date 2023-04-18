@@ -24,6 +24,8 @@ let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
 let TSSERVER_PROJECT_SERVICE: ReturnType<typeof createProjectService> | null =
   null;
 
+process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER = 'true';
+
 export function createParseSettings(
   code: string | ts.SourceFile,
   options: Partial<TSESTreeOptions> = {},
@@ -52,7 +54,8 @@ export function createParseSettings(
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: options.errorOnUnknownASTType === true,
     EXPERIMENTAL_projectService:
-      options.EXPERIMENTAL_useProjectService === true
+      options.EXPERIMENTAL_useProjectService === true ||
+      process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true'
         ? (TSSERVER_PROJECT_SERVICE ??= createProjectService())
         : undefined,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect:
