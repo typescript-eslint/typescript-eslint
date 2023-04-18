@@ -30,12 +30,20 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "description": "Bans a type",
             "properties": {
               "fixWith": {
-                "description": "Type to autofix replace with.",
+                "description": "Type to autofix replace with. Note that autofixers can be applied automatically - so you need to be careful with this option.",
                 "type": "string"
               },
               "message": {
                 "description": "Custom error message",
                 "type": "string"
+              },
+              "suggest": {
+                "additionalItems": false,
+                "description": "Types to suggest replacing with.",
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
               }
             },
             "type": "object"
@@ -69,10 +77,12 @@ type BanConfig =
   | true
   /** Bans a type */
   | {
-      /** Type to autofix replace with. */
+      /** Type to autofix replace with. Note that autofixers can be applied automatically - so you need to be careful with this option. */
       fixWith?: string;
       /** Custom error message */
       message?: string;
+      /** Types to suggest replacing with. */
+      suggest?: string[];
     }
   /** Bans the type with the default message */
   | null

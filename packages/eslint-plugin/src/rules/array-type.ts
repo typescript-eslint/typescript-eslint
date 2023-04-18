@@ -115,7 +115,7 @@ export default util.createRule<Options, MessageIds>({
         properties: {
           default: {
             $ref: '#/items/0/$defs/arrayOption',
-            description: 'The array type expected for mutable cases...',
+            description: 'The array type expected for mutable cases.',
           },
           readonly: {
             $ref: '#/items/0/$defs/arrayOption',

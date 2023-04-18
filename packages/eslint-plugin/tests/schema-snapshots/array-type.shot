@@ -14,7 +14,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "properties": {
       "default": {
         "$ref": "#/items/0/$defs/arrayOption",
-        "description": "The array type expected for mutable cases..."
+        "description": "The array type expected for mutable cases."
       },
       "readonly": {
         "$ref": "#/items/0/$defs/arrayOption",
@@ -32,7 +32,7 @@ type ArrayOption = 'array-simple' | 'array' | 'generic';
 
 type Options = [
   {
-    /** The array type expected for mutable cases... */
+    /** The array type expected for mutable cases. */
     default?: ArrayOption;
     /** The array type expected for readonly cases. If omitted, the value for \`default\` will be used. */
     readonly?: ArrayOption;

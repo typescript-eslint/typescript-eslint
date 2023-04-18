@@ -594,37 +594,35 @@ export default util.createRule<Options, MessageIds>({
     },
     fixable: 'whitespace',
     hasSuggestions: false,
-    schema: {
-      $defs: {
-        paddingType: {
-          enum: Object.keys(PaddingTypes),
+    schema: [
+      {
+        $defs: {
+          paddingType: {
+            enum: Object.keys(PaddingTypes),
+          },
+          statementType: {
+            anyOf: [
+              { enum: Object.keys(StatementTypes) },
+              {
+                type: 'array',
+                items: { enum: Object.keys(StatementTypes) },
+                minItems: 1,
+                uniqueItems: true,
+                additionalItems: false,
+              },
+            ],
+          },
         },
-        statementType: {
-          anyOf: [
-            { enum: Object.keys(StatementTypes) },
-            {
-              type: 'array',
-              items: { enum: Object.keys(StatementTypes) },
-              minItems: 1,
-              uniqueItems: true,
-              additionalItems: false,
-            },
-          ],
-        },
-      },
-      type: 'array',
-      items: {
         type: 'object',
         properties: {
-          blankLine: { $ref: '#/$defs/paddingType' },
-          prev: { $ref: '#/$defs/statementType' },
-          next: { $ref: '#/$defs/statementType' },
+          blankLine: { $ref: '#/items/0/$defs/paddingType' },
+          prev: { $ref: '#/items/0/$defs/statementType' },
+          next: { $ref: '#/items/0/$defs/statementType' },
         },
         additionalProperties: false,
         required: ['blankLine', 'prev', 'next'],
       },
-      additionalItems: false,
-    },
+    ],
     messages: {
       unexpectedBlankLine: 'Unexpected blank line before this statement.',
       expectedBlankLine: 'Expected blank line before this statement.',
