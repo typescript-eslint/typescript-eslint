@@ -1,5 +1,5 @@
 import type * as tsvfs from '@site/src/vendor/typescript-vfs';
-import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
 import { createCompilerOptions } from '../lib/createCompilerOptions';
@@ -15,7 +15,15 @@ import type {
 } from './types';
 
 export interface CreateLinter {
-  rules: Map<string, { name: string; description?: string; url?: string }>;
+  rules: Map<
+    string,
+    {
+      name: string;
+      description?: string;
+      url?: string;
+      schema: JSONSchema.JSONSchema4;
+    }
+  >;
   configs: string[];
   triggerFix(filename: string): TSESLint.Linter.FixReport | undefined;
   triggerLint(filename: string): void;
@@ -56,6 +64,7 @@ export function createLinter(
       name: name,
       description: item.meta?.docs?.description,
       url: item.meta?.docs?.url,
+      schema: item.meta?.schema ?? [],
     });
   });
 

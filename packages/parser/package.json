@@ -1,10 +1,10 @@
 {
   "name": "@typescript-eslint/parser",
-  "version": "5.58.0",
+  "version": "5.59.0",
   "description": "An ESLint custom parser which leverages TypeScript ESTree",
   "files": [
     "dist",
-    "_ts4.2",
+    "_ts4.3",
     "README.md",
     "LICENSE"
   ],
@@ -39,9 +39,9 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "downlevel-dts dist _ts4.2/dist --to=4.2",
+    "postbuild": "downlevel-dts dist _ts4.3/dist --to=4.3",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf _ts4.2 && rimraf coverage",
+    "postclean": "rimraf dist && rimraf _ts4.3 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "nx lint",
     "test": "jest --coverage",
@@ -51,10 +51,10 @@
     "eslint": "^7.0.0 || ^8.0.0"
   },
   "dependencies": {
-    "@typescript-eslint/scope-manager": "5.58.0",
-    "@typescript-eslint/types": "5.58.0",
-    "@typescript-eslint/typescript-estree": "5.58.0",
-    "@typescript-eslint/visitor-keys": "5.58.0",
+    "@typescript-eslint/scope-manager": "5.59.0",
+    "@typescript-eslint/types": "5.59.0",
+    "@typescript-eslint/typescript-estree": "5.59.0",
+    "@typescript-eslint/visitor-keys": "5.59.0",
     "debug": "^4.3.4"
   },
   "devDependencies": {
@@ -74,7 +74,7 @@
   "typesVersions": {
     "<4.7": {
       "*": [
-        "_ts4.2/*"
+        "_ts4.3/*"
       ]
     }
   }

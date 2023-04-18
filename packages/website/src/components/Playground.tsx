@@ -84,7 +84,6 @@ function Playground(): JSX.Element {
         >
           <div className={clsx(styles.options, 'thin-scrollbar')}>
             <OptionsSelector
-              isLoading={isLoading}
               state={state}
               tsVersions={tsVersions}
               setState={setState}
@@ -175,7 +174,8 @@ function Playground(): JSX.Element {
                     key={String(state.showAST)}
                     filter={state.showAST === 'es' ? esQueryFilter : undefined}
                     value={astToShow}
-                    enableScrolling={true}
+                    showTokens={state.showTokens}
+                    enableScrolling={state.scroll}
                     cursorPosition={position}
                     onHoverNode={setSelectedRange}
                   />
