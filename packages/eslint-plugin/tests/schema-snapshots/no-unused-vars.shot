@@ -48,7 +48,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type Options = [
-  | ('all' | 'local')
+  | 'all'
+  | 'local'
   | {
       args?: 'after-used' | 'all' | 'none';
       argsIgnorePattern?: string;

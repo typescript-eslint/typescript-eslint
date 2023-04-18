@@ -42,16 +42,14 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type Options =
-  | (
-      | []
-      | ['always']
-      | [
-          'always',
-          {
-            allowNewlines?: boolean;
-          },
-        ]
-    )
-  | ([] | ['never']);
+  | []
+  | ['always']
+  | [
+      'always',
+      {
+        allowNewlines?: boolean;
+      },
+    ]
+  | ['never'];
 "
 `;

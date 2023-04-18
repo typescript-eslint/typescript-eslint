@@ -1,7 +1,12 @@
+import {
+  createFSBackedSystem,
+  createVirtualTypeScriptEnvironment,
+} from '@typescript/vfs';
 import { requiresQuoting } from '@typescript-eslint/type-utils';
 import type { JSONSchema4, JSONSchema4Type } from 'json-schema';
 import path from 'path';
 import { format as prettierFormat, resolveConfig } from 'prettier';
+import * as ts from 'typescript';
 
 type RefMap = ReadonlyMap<
   // ref path
@@ -78,10 +83,16 @@ export function compile(
   const optionsType = isArraySchema
     ? `type Options = [${typeStrings.join(',')}]`
     : `type Options = ${typeStrings[0]}`;
-  return prettierFormat(
-    [...refTypes, optionsType].join('\n\n'),
-    prettierConfig,
+
+  const codeWithUnsimplifiedOptions = [...refTypes, optionsType].join('\n\n');
+  const simplifiedOptionsType = useTsToSimplifyOptionsType(
+    codeWithUnsimplifiedOptions,
   );
+  const codeWithSimplifiedOptions = [...refTypes, simplifiedOptionsType].join(
+    '\n\n',
+  );
+
+  return prettierFormat(codeWithSimplifiedOptions, prettierConfig);
 }
 function compileSchema(
   schema: JSONSchema4,
@@ -492,4 +503,79 @@ function printComment({
   }
 
   return ['/**', ...commentLines.map(l => ` * ${l}`), ' */', ''].join('\n');
+}
+
+const COMPILER_OPTIONS: ts.CompilerOptions = {
+  isolatedModules: true,
+  noEmit: true,
+  // don't print `| undefined` for optional props
+  exactOptionalPropertyTypes: true,
+  target: ts.ScriptTarget.ESNext,
+};
+const PROJECT_ROOT = path.resolve(__dirname, '..', '..', '..');
+const FAKE_SCHEMA_FILENAME = 'schema.ts';
+const PRINTER = ts.createPrinter({
+  removeComments: false,
+});
+
+/**
+ * This function uses TS to analyze and simplify the options type.
+ * This is a workaround to simplify union types from
+ *
+ *   type Options = ([] | [T]) | ([] | [U]);
+ *
+ * to
+ *
+ *   type Options = [] | [T] | [U];
+ *
+ * Which happens when schemas nest `oneOf` with array types
+ */
+function useTsToSimplifyOptionsType(code: string): string {
+  const system = createFSBackedSystem(
+    new Map([[FAKE_SCHEMA_FILENAME, code]]),
+    PROJECT_ROOT,
+    ts,
+  );
+  const env = createVirtualTypeScriptEnvironment(
+    system,
+    [FAKE_SCHEMA_FILENAME],
+    ts,
+    COMPILER_OPTIONS,
+  );
+  const program = env.languageService.getProgram();
+  if (program == null) {
+    throw new Error('Unable to get program');
+  }
+
+  const sourceFile = program.getSourceFile(FAKE_SCHEMA_FILENAME);
+  if (sourceFile == null) {
+    throw new Error('Unable to find source file');
+  }
+
+  const checker = program.getTypeChecker();
+  for (const node of sourceFile.statements) {
+    if (ts.isTypeAliasDeclaration(node) && node.name.text === 'Options') {
+      const type = checker.getTypeAtLocation(node);
+      const typeNode = checker.typeToTypeNode(
+        type,
+        sourceFile,
+        // force print the type, not the type alias name
+        ts.NodeBuilderFlags.InTypeAlias |
+          // we are okay with []
+          ts.NodeBuilderFlags.AllowEmptyTuple |
+          // don't truncate the result at all
+          ts.NodeBuilderFlags.NoTruncation |
+          // force multiline objects so prettier will consistently print multiline objects
+          // rather than only multi-lining if it's too long
+          ts.NodeBuilderFlags.MultilineObjectLiterals,
+      );
+      return `type Options = ${PRINTER.printNode(
+        ts.EmitHint.Unspecified,
+        typeNode!,
+        sourceFile,
+      )}`;
+    }
+  }
+
+  throw new Error('Unable to find type alias node');
 }

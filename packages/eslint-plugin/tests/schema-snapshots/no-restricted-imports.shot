@@ -16,6 +16,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "additionalProperties": false,
             "properties": {
               "allowTypeImports": {
+                "description": "Disallow value imports, but allow type-only imports.",
                 "type": "boolean"
               },
               "importNames": {
@@ -56,6 +57,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                     "additionalProperties": false,
                     "properties": {
                       "allowTypeImports": {
+                        "description": "Disallow value imports, but allow type-only imports.",
                         "type": "boolean"
                       },
                       "importNames": {
@@ -94,6 +96,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                     "additionalProperties": false,
                     "properties": {
                       "allowTypeImports": {
+                        "description": "Disallow value imports, but allow type-only imports.",
                         "type": "boolean"
                       },
                       "caseSensitive": {
@@ -142,38 +145,39 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options =
   | (
+      | string
       | {
+          /** Disallow value imports, but allow type-only imports. */
           allowTypeImports?: boolean;
           importNames?: string[];
           message?: string;
           name: string;
         }
-      | string
     )[]
-  | (
-      | []
-      | [
-          {
-            paths?: (
-              | {
-                  allowTypeImports?: boolean;
-                  importNames?: string[];
-                  message?: string;
-                  name: string;
-                }
-              | string
-            )[];
-            patterns?:
-              | {
-                  allowTypeImports?: boolean;
-                  caseSensitive?: boolean;
-                  group: [string, ...string[]];
-                  importNames?: [string, ...string[]];
-                  message?: string;
-                }[]
-              | string[];
-          },
-        ]
-    );
+  | []
+  | [
+      {
+        paths?: (
+          | {
+              /** Disallow value imports, but allow type-only imports. */
+              allowTypeImports?: boolean;
+              importNames?: string[];
+              message?: string;
+              name: string;
+            }
+          | string
+        )[];
+        patterns?:
+          | {
+              /** Disallow value imports, but allow type-only imports. */
+              allowTypeImports?: boolean;
+              caseSensitive?: boolean;
+              group: [string, ...string[]];
+              importNames?: [string, ...string[]];
+              message?: string;
+            }[]
+          | string[];
+      },
+    ];
 "
 `;

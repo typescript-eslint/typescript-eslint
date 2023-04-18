@@ -42,16 +42,14 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type Options =
-  | ([] | ['always'])
-  | (
-      | []
-      | ['never']
-      | [
-          'never',
-          {
-            ignoreForLoopInit?: boolean;
-          },
-        ]
-    );
+  | []
+  | ['always']
+  | ['never']
+  | [
+      'never',
+      {
+        ignoreForLoopInit?: boolean;
+      },
+    ];
 "
 `;

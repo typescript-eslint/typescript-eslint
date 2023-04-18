@@ -1543,8 +1543,8 @@ type MatchRegexConfig = {
 
 type FormatOptionsConfig = PredefinedFormats[] | null;
 
-type Options = /** Selector 'default' */
-(| {
+type Options = (
+  | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
       filter?: MatchRegexConfig | string;
@@ -1572,7 +1572,6 @@ type Options = /** Selector 'default' */
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
-  /** Multiple selectors in one config */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1626,7 +1625,6 @@ type Options = /** Selector 'default' */
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];
     }
-  /** Selector 'memberLike' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1650,7 +1648,6 @@ type Options = /** Selector 'default' */
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
-  /** Selector 'property' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1675,7 +1672,6 @@ type Options = /** Selector 'default' */
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];
     }
-  /** Selector 'classMethod' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1698,7 +1694,6 @@ type Options = /** Selector 'default' */
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
-  /** Selector 'method' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1721,7 +1716,6 @@ type Options = /** Selector 'default' */
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
-  /** Selector 'classProperty' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1745,7 +1739,6 @@ type Options = /** Selector 'default' */
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];
     }
-  /** Selector 'class' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1758,7 +1751,6 @@ type Options = /** Selector 'default' */
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
-  /** Selector 'typeLike' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1771,7 +1763,6 @@ type Options = /** Selector 'default' */
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
-  /** Selector 'accessor' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1793,7 +1784,6 @@ type Options = /** Selector 'default' */
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];
     }
-  /** Selector 'variable' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1814,7 +1804,6 @@ type Options = /** Selector 'default' */
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];
     }
-  /** Selector 'function' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1827,7 +1816,6 @@ type Options = /** Selector 'default' */
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
-  /** Selector 'objectLiteralMethod' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1840,7 +1828,6 @@ type Options = /** Selector 'default' */
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
-  /** Selector 'variableLike' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1853,7 +1840,6 @@ type Options = /** Selector 'default' */
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
-  /** Selector 'parameter' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1867,7 +1853,6 @@ type Options = /** Selector 'default' */
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];
     }
-  /** Selector 'enum' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1880,7 +1865,6 @@ type Options = /** Selector 'default' */
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
-  /** Selector 'interface' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1893,7 +1877,6 @@ type Options = /** Selector 'default' */
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
-  /** Selector 'typeAlias' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1906,7 +1889,6 @@ type Options = /** Selector 'default' */
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
-  /** Selector 'parameterProperty' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1920,7 +1902,6 @@ type Options = /** Selector 'default' */
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];
     }
-  /** Selector 'typeProperty' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1934,7 +1915,6 @@ type Options = /** Selector 'default' */
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];
     }
-  /** Selector 'objectLiteralProperty' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1948,7 +1928,6 @@ type Options = /** Selector 'default' */
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];
     }
-  /** Selector 'typeMethod' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1961,27 +1940,25 @@ type Options = /** Selector 'default' */
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
-  /** Selector 'enumMember' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
       filter?: MatchRegexConfig | string;
       format: FormatOptionsConfig;
       leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('requiresQuotes')[];
+      modifiers?: 'requiresQuotes'[];
       prefix?: PrefixSuffixConfig;
       selector: 'enumMember';
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
-  /** Selector 'typeParameter' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
       filter?: MatchRegexConfig | string;
       format: FormatOptionsConfig;
       leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('unused')[];
+      modifiers?: 'unused'[];
       prefix?: PrefixSuffixConfig;
       selector: 'typeParameter';
       suffix?: PrefixSuffixConfig;

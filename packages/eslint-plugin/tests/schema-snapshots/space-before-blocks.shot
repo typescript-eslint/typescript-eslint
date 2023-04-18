@@ -33,7 +33,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type Options = [
-  | ('always' | 'never')
+  | 'always'
+  | 'never'
   | {
       classes?: 'always' | 'never' | 'off';
       functions?: 'always' | 'never' | 'off';
