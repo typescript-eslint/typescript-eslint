@@ -11,14 +11,14 @@ export function createProjectService(): tsserver.server.ProjectService {
   // We don't watch the disk, we just refer to these when ESLint calls us
   // there's a whole separate update pass in maybeInvalidateProgram at the bottom of getWatchProgramsForProjects
   // (this "goes nuclear on TypeScript")
-  const system = {
+  const system: tsserver.server.ServerHost = {
     ...tsserver.sys,
-    watchDirectory: createStubFileWatcher,
-    watchFile: createStubFileWatcher,
-    setTimeout,
+    clearImmediate,
     clearTimeout,
     setImmediate,
-    clearImmediate,
+    setTimeout,
+    watchDirectory: createStubFileWatcher,
+    watchFile: createStubFileWatcher,
   };
 
   const projectService = new tsserver.server.ProjectService({

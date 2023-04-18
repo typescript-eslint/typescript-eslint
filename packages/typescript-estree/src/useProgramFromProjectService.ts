@@ -9,14 +9,20 @@ export function useProgramFromProjectService(
   projectService: server.ProjectService,
   parseSettings: Readonly<MutableParseSettings>,
 ): ASTAndDefiniteProgram | undefined {
+  projectService.setCompilerOptionsForInferredProjects({
+    rootDir: parseSettings.tsconfigRootDir,
+  });
+
   projectService.openClientFile(
     parseSettings.filePath,
     parseSettings.codeFullText,
+    /* scriptKind */ undefined,
+    parseSettings.tsconfigRootDir,
   );
 
+  const scriptInfo = projectService.getScriptInfo(parseSettings.filePath);
   const program = projectService
-    .getScriptInfo(parseSettings.filePath)!
-    .getDefaultProject()
+    .getDefaultProjectForFile(scriptInfo!.fileName, true)!
     .getLanguageService(/*ensureSynchronized*/ true)
     .getProgram();
 
