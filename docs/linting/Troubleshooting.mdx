@@ -30,7 +30,7 @@ If you don't find an existing extension rule, or the extension rule doesn't work
 
 ## I get errors telling me "ESLint was configured to run ... However, that TSConfig does not / none of those TSConfigs include this file"
 
-These errors come are caused by an ESLint config requesting type information be generated for a file that isn't included in the TypeScript configuration.
+These errors are caused by an ESLint config requesting type information be generated for a file that isn't included in the TypeScript configuration.
 
 ### Fixing the Error
 
@@ -43,7 +43,7 @@ These errors come are caused by an ESLint config requesting type information be 
     - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information:
       <details>
         <summary>
-          A popular setup is remove all typed rules from top-level configuration
+          A popular setup is to remove all rules requiring type information from the top-level configuration
           and only apply them to TypeScript files via an override.
         </summary>
 
@@ -64,7 +64,7 @@ These errors come are caused by an ESLint config requesting type information be 
       </details>
       <details>
         <summary>
-          Alternatively, in our <a href="/blog/announcing-typescript-eslint-v6-beta">version v6</a>, you can add use our{' '}
+          Alternatively, in our <a href="/blog/announcing-typescript-eslint-v6-beta">version v6</a>, you can use our{' '}
           <a href="https://v6--typescript-eslint.netlify.app/linting/configs#disable-type-checked"><code>disable-type-checked</code> config</a> to disable type checking for just that type of file.
         </summary>
 
