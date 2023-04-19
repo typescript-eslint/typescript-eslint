@@ -66,5 +66,3 @@ function f(a: string): void;
 function f(a: number): void;
 function f(b: string): void;
 ```
-
-## Options

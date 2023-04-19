@@ -70,6 +70,6 @@ vegetable === Vegetable.Asparagus;
 
 <!--/tabs-->
 
-## When Not to Use It
+## When Not To Use It
 
 If you don't mind number and/or literal string constants being compared against enums, you likely don't need this rule.

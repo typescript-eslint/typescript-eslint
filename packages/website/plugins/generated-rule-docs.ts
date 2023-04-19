@@ -138,10 +138,10 @@ export const generatedRuleDocs: Plugin = () => {
         }
       }
 
+      insertIfMissing('Options');
       if (meta.docs.extendsBaseRule) {
         insertIfMissing('How to Use');
       }
-      insertIfMissing('Options');
       return [headingIndices[0], headingIndices[1]];
     })();
 
