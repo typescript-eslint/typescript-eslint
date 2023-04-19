@@ -69,7 +69,7 @@
     "@types/debug": "*",
     "@types/json-schema": "*",
     "@types/marked": "*",
-    "@types/natural-compare-lite": "^1.4.0",
+    "@types/natural-compare-lite": "*",
     "@types/prettier": "*",
     "@typescript-eslint/rule-schema-to-typescript-types": "5.59.0",
     "cross-fetch": "*",

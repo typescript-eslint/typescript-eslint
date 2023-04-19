@@ -38,6 +38,9 @@
     "natural-compare-lite": "^1.4.0",
     "prettier": "*"
   },
+  "devDependencies": {
+    "@types/natural-compare-lite": "*"
+  },
   "funding": {
     "type": "opencollective",
     "url": "https://opencollective.com/typescript-eslint"
