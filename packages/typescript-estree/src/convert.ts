@@ -3127,30 +3127,27 @@ export class Converter {
       );
     }
 
-    // @ts-expect-error -- this is safe as it's guarded
-    const modifiers: ts.ModifierLike[] = node.modifiers;
-
-    if (!modifiers) {
-      return;
+    for (const decorator of getDecorators(
+      node,
+      /* includeIllegalDecorators */ true,
+    ) ?? []) {
+      // `checkGrammarModifiers` function in typescript
+      if (!nodeCanBeDecorated(node as TSNode)) {
+        if (ts.isMethodDeclaration(node) && !nodeIsPresent(node.body)) {
+          this.#throwError(
+            decorator,
+            'A decorator can only decorate a method implementation, not an overload.',
+          );
+        } else {
+          this.#throwError(decorator, 'Decorators are not valid here.');
+        }
+      }
     }
 
-    for (const modifier of modifiers) {
-      if (ts.isDecorator(modifier)) {
-        // `checkGrammarModifiers` function in typescript
-        if (!nodeCanBeDecorated(node as TSNode)) {
-          if (ts.isMethodDeclaration(node) && !nodeIsPresent(node.body)) {
-            this.#throwError(
-              modifier,
-              'A decorator can only decorate a method implementation, not an overload.',
-            );
-          } else {
-            this.#throwError(modifier, 'Decorators are not valid here.');
-          }
-        }
-
-        continue;
-      }
-
+    for (const modifier of getModifiers(
+      node,
+      /* includeIllegalModifiers */ true,
+    ) ?? []) {
       if (modifier.kind !== SyntaxKind.ReadonlyKeyword) {
         if (
           node.kind === SyntaxKind.PropertySignature ||

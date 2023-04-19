@@ -6,6 +6,7 @@ const isAtLeast48 = typescriptVersionIsAtLeast['4.8'];
 
 export function getModifiers(
   node: ts.Node | null | undefined,
+  includeIllegalModifiers = false,
 ): undefined | ts.Modifier[] {
   if (node == null) {
     return undefined;
@@ -13,9 +14,9 @@ export function getModifiers(
 
   if (isAtLeast48) {
     // eslint-disable-next-line deprecation/deprecation -- this is safe as it's guarded
-    if (ts.canHaveModifiers(node)) {
+    if (includeIllegalModifiers || ts.canHaveModifiers(node)) {
       // eslint-disable-next-line deprecation/deprecation -- this is safe as it's guarded
-      const modifiers = ts.getModifiers(node);
+      const modifiers = ts.getModifiers(node as ts.HasModifiers);
       return modifiers ? Array.from(modifiers) : undefined;
     }
 
@@ -32,6 +33,7 @@ export function getModifiers(
 
 export function getDecorators(
   node: ts.Node | null | undefined,
+  includeIllegalDecorators = false,
 ): undefined | ts.Decorator[] {
   if (node == null) {
     return undefined;
@@ -39,9 +41,9 @@ export function getDecorators(
 
   if (isAtLeast48) {
     // eslint-disable-next-line deprecation/deprecation -- this is safe as it's guarded
-    if (ts.canHaveDecorators(node)) {
+    if (includeIllegalDecorators || ts.canHaveDecorators(node)) {
       // eslint-disable-next-line deprecation/deprecation -- this is safe as it's guarded
-      const decorators = ts.getDecorators(node);
+      const decorators = ts.getDecorators(node as ts.HasDecorators);
       return decorators ? Array.from(decorators) : undefined;
     }
 
