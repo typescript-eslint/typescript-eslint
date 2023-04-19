@@ -71,8 +71,8 @@ Other allowed values are:
 
 - `alphabetically`: Sorted in a-z alphabetical order, directly using string `<` comparison (so `B` comes before `a`)
 - `alphabetically-case-insensitive`: Sorted in a-z alphabetical order, ignoring case (so `a` comes before `B`)
-- `natural`: Same as `alphabetically`, but using [`natural-compare`](https://github.com/litejs/natural-compare) for more friendly sorting of numbers
-- `natural-case-insensitive`: Same as `alphabetically-case-insensitive`, but using [`natural-compare`](https://github.com/litejs/natural-compare) for more friendly sorting of numbers
+- `natural`: Same as `alphabetically`, but using [`natural-compare-lite`](https://github.com/litejs/natural-compare-lite) for more friendly sorting of numbers
+- `natural-case-insensitive`: Same as `alphabetically-case-insensitive`, but using [`natural-compare-lite`](https://github.com/litejs/natural-compare-lite) for more friendly sorting of numbers
 
 ### Default configuration
 
