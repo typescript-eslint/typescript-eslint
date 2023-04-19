@@ -1,4 +1,4 @@
-import naturalCompare from 'natural-compare-lite';
+import naturalCompare from 'natural-compare';
 
 import type { AST, TupleAST } from './types';
 
