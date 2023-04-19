@@ -1,6 +1,6 @@
 import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import naturalCompare from 'natural-compare-lite';
+import naturalCompare from 'natural-compare';
 
 import * as util from '../util';
 
