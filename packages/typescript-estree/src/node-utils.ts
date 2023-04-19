@@ -770,6 +770,11 @@ function hasAbstractModifier(node: ts.Node): boolean {
   return hasModifier(SyntaxKind.AbstractKeyword, node);
 }
 
+// `ts.hasAmbientModifier`
+function hasAmbientModifier(_node: ts.Node): boolean {
+  return false;
+}
+
 // `ts.getThisParameter`
 function getThisParameter(
   signature: ts.SignatureDeclaration,
@@ -810,7 +815,7 @@ export function nodeCanBeDecorated(node: TSNode): boolean {
       if (
         ts.isClassLike(parent) &&
         !hasAbstractModifier(node) &&
-        !ts.hasAmbientModifier(node)
+        !hasAmbientModifier(node)
       ) {
         return true;
       }
