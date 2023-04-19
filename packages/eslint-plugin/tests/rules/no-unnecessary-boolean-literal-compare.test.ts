@@ -360,5 +360,124 @@ ruleTester.run('no-unnecessary-boolean-literal-compare', rule, {
         }
       `,
     },
+    {
+      code: `
+        declare const varBoolean: boolean;
+        if (!(varBoolean !== false)) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'negated',
+        },
+      ],
+      output: `
+        declare const varBoolean: boolean;
+        if (!varBoolean) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varBoolean: boolean;
+        if (!(varBoolean === false)) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'direct',
+        },
+      ],
+      output: `
+        declare const varBoolean: boolean;
+        if (varBoolean) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varBoolean: boolean;
+        if (!(varBoolean instanceof Event == false)) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'direct',
+        },
+      ],
+      output: `
+        declare const varBoolean: boolean;
+        if (varBoolean instanceof Event) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varBoolean: boolean;
+        if (varBoolean instanceof Event == false) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'direct',
+        },
+      ],
+      output: `
+        declare const varBoolean: boolean;
+        if (!(varBoolean instanceof Event)) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varBoolean: boolean;
+        if (!((varBoolean ?? false) !== false)) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'negated',
+        },
+      ],
+      output: `
+        declare const varBoolean: boolean;
+        if (!(varBoolean ?? false)) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varBoolean: boolean;
+        if (!((varBoolean ?? false) === false)) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'direct',
+        },
+      ],
+      output: `
+        declare const varBoolean: boolean;
+        if (varBoolean ?? false) {
+        }
+      `,
+    },
+    {
+      code: `
+        declare const varBoolean: boolean;
+        if (!((varBoolean ?? true) !== false)) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'negated',
+        },
+      ],
+      output: `
+        declare const varBoolean: boolean;
+        if (!(varBoolean ?? true)) {
+        }
+      `,
+    },
   ],
 });

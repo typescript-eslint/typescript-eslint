@@ -1,89 +1,41 @@
-import ASTViewerScope from '@site/src/components/ASTViewerScope';
-import ConfigEslint from '@site/src/components/config/ConfigEslint';
-import ConfigTypeScript from '@site/src/components/config/ConfigTypeScript';
-import {
-  defaultEslintConfig,
-  defaultTsConfig,
-} from '@site/src/components/config/utils';
-import EditorTabs from '@site/src/components/EditorTabs';
-import { ErrorsViewer, ErrorViewer } from '@site/src/components/ErrorsViewer';
-import { ESQueryFilter } from '@site/src/components/ESQueryFilter';
 import type { TSESTree } from '@typescript-eslint/utils';
 import clsx from 'clsx';
 import type * as ESQuery from 'esquery';
-import type Monaco from 'monaco-editor';
-import React, { useCallback, useReducer, useState } from 'react';
+import React, { useCallback, useState } from 'react';
 import type { SourceFile } from 'typescript';
 
-import { useMediaQuery } from '../hooks/useMediaQuery';
-import ASTViewerESTree from './ASTViewerESTree';
-import ASTViewerTS from './ASTViewerTS';
+import ASTViewer from './ast/ASTViewer';
+import ConfigEslint from './config/ConfigEslint';
+import ConfigTypeScript from './config/ConfigTypeScript';
 import { EditorEmbed } from './editor/EditorEmbed';
 import { LoadingEditor } from './editor/LoadingEditor';
+import { ErrorsViewer, ErrorViewer } from './ErrorsViewer';
+import { ESQueryFilter } from './ESQueryFilter';
 import useHashState from './hooks/useHashState';
+import EditorTabs from './layout/EditorTabs';
 import Loader from './layout/Loader';
-import { shallowEqual } from './lib/shallowEqual';
+import { defaultConfig, detailTabs } from './options';
 import OptionsSelector from './OptionsSelector';
 import styles from './Playground.module.css';
 import ConditionalSplitPane from './SplitPane/ConditionalSplitPane';
-import type {
-  ConfigModel,
-  ErrorGroup,
-  RuleDetails,
-  SelectedRange,
-  TabType,
-} from './types';
+import type { ErrorGroup, RuleDetails, SelectedRange, TabType } from './types';
 
-function rangeReducer<T extends SelectedRange | null>(
-  prevState: T,
-  action: T,
-): T {
-  if (prevState !== action) {
-    if (
-      !prevState ||
-      !action ||
-      !shallowEqual(prevState.start, action.start) ||
-      !shallowEqual(prevState.end, action.end)
-    ) {
-      return action;
-    }
-  }
-  return prevState;
-}
 function Playground(): JSX.Element {
-  const [state, setState] = useHashState({
-    jsx: false,
-    showAST: false,
-    sourceType: 'module',
-    code: '',
-    ts: process.env.TS_VERSION!,
-    tsconfig: defaultTsConfig,
-    eslintrc: defaultEslintConfig,
-  });
+  const [state, setState] = useHashState(defaultConfig);
   const [esAst, setEsAst] = useState<TSESTree.Program | null>();
   const [tsAst, setTsAST] = useState<SourceFile | null>();
   const [scope, setScope] = useState<Record<string, unknown> | null>();
-  const [markers, setMarkers] = useState<ErrorGroup[] | Error>();
+  const [markers, setMarkers] = useState<ErrorGroup[]>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
-  const [selectedRange, setSelectedRange] = useReducer(rangeReducer, null);
-  const [position, setPosition] = useState<Monaco.Position | null>(null);
+  const [selectedRange, setSelectedRange] = useState<SelectedRange>();
+  const [position, setPosition] = useState<number>();
   const [activeTab, setTab] = useState<TabType>('code');
-  const [showModal, setShowModal] = useState<TabType | false>(false);
   const [esQueryFilter, setEsQueryFilter] = useState<ESQuery.Selector>();
   const [esQueryError, setEsQueryError] = useState<Error>();
-  const enableSplitPanes = useMediaQuery('(min-width: 996px)');
-
-  const updateModal = useCallback(
-    (config?: Partial<ConfigModel>) => {
-      if (config) {
-        setState(config);
-      }
-      setShowModal(false);
-    },
-    [setState],
-  );
+  const [visualEslintRc, setVisualEslintRc] = useState(false);
+  const [visualTSConfig, setVisualTSConfig] = useState(false);
 
   const onLoaded = useCallback(
     (ruleNames: RuleDetails[], tsVersions: readonly string[]): void => {
@@ -94,24 +46,35 @@ function Playground(): JSX.Element {
     [],
   );
 
+  const activeVisualEditor = !isLoading
+    ? visualEslintRc && activeTab === 'eslintrc'
+      ? 'eslintrc'
+      : visualTSConfig && activeTab === 'tsconfig'
+      ? 'tsconfig'
+      : undefined
+    : undefined;
+
+  const onVisualEditor = useCallback((tab: TabType): void => {
+    if (tab === 'tsconfig') {
+      setVisualTSConfig(val => !val);
+    } else if (tab === 'eslintrc') {
+      setVisualEslintRc(val => !val);
+    }
+  }, []);
+
+  const astToShow =
+    state.showAST === 'ts'
+      ? tsAst
+      : state.showAST === 'scope'
+      ? scope
+      : state.showAST === 'es'
+      ? esAst
+      : undefined;
+
   return (
     <div className={styles.codeContainer}>
-      {ruleNames.length > 0 && (
-        <ConfigEslint
-          isOpen={showModal === 'eslintrc'}
-          ruleOptions={ruleNames}
-          config={state.eslintrc}
-          onClose={updateModal}
-        />
-      )}
-      <ConfigTypeScript
-        isOpen={showModal === 'tsconfig'}
-        config={state.tsconfig}
-        onClose={updateModal}
-      />
       <div className={styles.codeBlocks}>
         <ConditionalSplitPane
-          render={enableSplitPanes}
           split="vertical"
           minSize="10%"
           defaultSize="20rem"
@@ -121,14 +84,12 @@ function Playground(): JSX.Element {
         >
           <div className={clsx(styles.options, 'thin-scrollbar')}>
             <OptionsSelector
-              isLoading={isLoading}
               state={state}
               tsVersions={tsVersions}
               setState={setState}
             />
           </div>
           <ConditionalSplitPane
-            render={enableSplitPanes}
             split="vertical"
             minSize="10%"
             defaultSize="50%"
@@ -138,16 +99,38 @@ function Playground(): JSX.Element {
               {isLoading && <Loader />}
               <EditorTabs
                 tabs={['code', 'tsconfig', 'eslintrc']}
-                activeTab={activeTab}
+                active={activeTab}
                 change={setTab}
-                showModal={(): void => setShowModal(activeTab)}
+                showVisualEditor={activeTab !== 'code'}
+                showModal={onVisualEditor}
               />
-              <div className={styles.tabCode}>
+              {(activeVisualEditor === 'eslintrc' && (
+                <ConfigEslint
+                  className={styles.tabCode}
+                  ruleOptions={ruleNames}
+                  config={state.eslintrc}
+                  onChange={setState}
+                />
+              )) ||
+                (activeVisualEditor === 'tsconfig' && (
+                  <ConfigTypeScript
+                    className={styles.tabCode}
+                    config={state.tsconfig}
+                    onChange={setState}
+                  />
+                ))}
+              <div
+                key="monacoEditor"
+                className={clsx(
+                  styles.tabCode,
+                  !!activeVisualEditor && styles.hidden,
+                )}
+              >
                 <EditorEmbed />
               </div>
               <LoadingEditor
                 ts={state.ts}
-                jsx={state.jsx}
+                fileType={state.fileType}
                 activeTab={activeTab}
                 code={state.code}
                 tsconfig={state.tsconfig}
@@ -158,46 +141,43 @@ function Playground(): JSX.Element {
                 onTsASTChange={setTsAST}
                 onScopeChange={setScope}
                 onMarkersChange={setMarkers}
-                decoration={selectedRange}
+                selectedRange={selectedRange}
                 onChange={setState}
                 onLoaded={onLoaded}
                 onSelect={setPosition}
               />
             </div>
             <div className={styles.astViewer}>
-              {state.showAST === 'es' && (
-                <ESQueryFilter
-                  onChange={setEsQueryFilter}
-                  onError={setEsQueryError}
+              <div className={styles.playgroundInfoHeader}>
+                <EditorTabs
+                  tabs={detailTabs}
+                  active={state.showAST ?? false}
+                  change={(v): void => setState({ showAST: v })}
                 />
-              )}
-              {(state.showAST === 'ts' && tsAst && (
-                <ASTViewerTS
-                  value={tsAst}
-                  position={position}
-                  onSelectNode={setSelectedRange}
+                {state.showAST === 'es' && (
+                  <ESQueryFilter
+                    onChange={setEsQueryFilter}
+                    onError={setEsQueryError}
+                  />
+                )}
+              </div>
+
+              {(state.showAST === 'es' && esQueryError && (
+                <ErrorViewer
+                  type="warning"
+                  title="Invalid Selector"
+                  value={esQueryError}
                 />
               )) ||
-                (state.showAST === 'scope' && scope && (
-                  <ASTViewerScope
-                    value={scope}
-                    position={position}
-                    onSelectNode={setSelectedRange}
-                  />
-                )) ||
-                (state.showAST === 'es' && esQueryError && (
-                  <ErrorViewer
-                    type="warning"
-                    title="Invalid Selector"
-                    value={esQueryError}
-                  />
-                )) ||
-                (state.showAST === 'es' && esAst && (
-                  <ASTViewerESTree
-                    value={esAst}
-                    position={position}
-                    filter={esQueryFilter}
-                    onSelectNode={setSelectedRange}
+                (state.showAST && astToShow && (
+                  <ASTViewer
+                    key={String(state.showAST)}
+                    filter={state.showAST === 'es' ? esQueryFilter : undefined}
+                    value={astToShow}
+                    showTokens={state.showTokens}
+                    enableScrolling={state.scroll}
+                    cursorPosition={position}
+                    onHoverNode={setSelectedRange}
                   />
                 )) || <ErrorsViewer value={markers} />}
             </div>

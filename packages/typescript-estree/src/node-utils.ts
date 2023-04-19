@@ -174,20 +174,16 @@ export function getLineAndCharacterFor(
 /**
  * Returns line and column data for the given start and end positions,
  * for the given AST
- * @param start start data
- * @param end   end data
+ * @param range start end data
  * @param ast   the AST object
  * @returns the loc data
  */
 export function getLocFor(
-  start: number,
-  end: number,
+  range: TSESTree.Range,
   ast: ts.SourceFile,
 ): TSESTree.SourceLocation {
-  return {
-    start: getLineAndCharacterFor(start, ast),
-    end: getLineAndCharacterFor(end, ast),
-  };
+  const [start, end] = range.map(pos => getLineAndCharacterFor(pos, ast));
+  return { start, end };
 }
 
 /**
@@ -551,13 +547,15 @@ export function convertToken(
   const end = token.getEnd();
   const value = ast.text.slice(start, end);
   const tokenType = getTokenType(token);
+  const range: TSESTree.Range = [start, end];
+  const loc = getLocFor(range, ast);
 
   if (tokenType === AST_TOKEN_TYPES.RegularExpression) {
     return {
       type: tokenType,
       value,
-      range: [start, end],
-      loc: getLocFor(start, end, ast),
+      range,
+      loc,
       regex: {
         pattern: value.slice(1, value.lastIndexOf('/')),
         flags: value.slice(value.lastIndexOf('/') + 1),
@@ -569,8 +567,8 @@ export function convertToken(
     return {
       type: tokenType,
       value,
-      range: [start, end],
-      loc: getLocFor(start, end, ast),
+      range,
+      loc,
     };
   }
 }

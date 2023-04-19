@@ -1,17 +1,17 @@
 /* stylelint-disable docusaurus/copyright-header */
+
 /**
  * Any CSS included here will be global. The classic template
  * bundles Infima by default. Infima is a CSS framework designed to
  * work well for content-centric websites.
  */
 
-@import './prism.css';
+@import url('./prism.css');
 
 /* You can override the default Infima variables here. */
 html:root {
   --color-blurple: #2656c7;
   --color-blurple-shadow: #111e80;
-
   --ifm-color-primary: #3535e5;
   --ifm-color-primary-dark: #1b43d4;
   --ifm-color-primary-darker: var(--color-blurple);
@@ -22,12 +22,10 @@ html:root {
   --ifm-code-font-size: 95%;
   --ifm-color-info: var(--ifm-color-primary-dark);
   --ifm-link-color: var(--ifm-color-primary-dark);
-
-  --code-line-decoration: rgba(112, 53, 229, 0.1);
-  --code-editor-bg: #ffffff;
-
+  --code-line-decoration: rgb(112 53 229 / 10%);
+  --code-editor-bg: #fff;
   --docsearch-muted-color: #666;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.1);
+  --docusaurus-highlighted-code-line-bg: rgb(0 0 0 / 10%);
 }
 
 html[data-theme='dark']:root {
@@ -39,122 +37,82 @@ html[data-theme='dark']:root {
   --ifm-color-primary-light: #889dfa;
   --ifm-color-primary-lighter: #b1c5fd;
   --ifm-color-primary-lightest: #c5d1ff;
-
   --ifm-button-background-color: var(--ifm-color-primary-dark);
-  --ifm-code-background: rgb(43, 40, 54);
-  --ifm-code-color: rgb(248, 248, 242);
+  --ifm-code-background: rgb(43 40 54);
+  --ifm-code-color: rgb(248 248 242);
   --ifm-color-info: var(--ifm-color-primary-light);
   --ifm-link-color: var(--ifm-color-primary-light);
   --ifm-menu-color-active: var(--ifm-color-primary-light);
   --ifm-navbar-link-hover-color: var(--ifm-color-primary-light);
-
-  --code-line-decoration: rgba(255, 255, 255, 0.1);
+  --code-line-decoration: rgb(255 255 255 / 10%);
   --code-editor-bg: #1e1e1e;
-
   --ifm-tabs-color-active: var(--ifm-color-primary-light);
   --ifm-toc-border-color: var(--ifm-background-surface-color);
   --ifm-footer-background-color: var(--ifm-background-surface-color);
-
   --ifm-color-secondary-contrast-background: var(
     --ifm-background-surface-color
   );
-
   --ifm-color-secondary-dark: #2c2d2f;
-  --ifm-color-secondary-darker: rgb(200, 201, 204);
-  --ifm-color-secondary-darkest: rgb(164, 166, 168);
+  --ifm-color-secondary-darker: rgb(200 201 204);
+  --ifm-color-secondary-darkest: rgb(164 166 168);
+  --docsearch-muted-color: #aaa;
+  --docusaurus-highlighted-code-line-bg: rgb(0 0 0 / 30%);
+  --gray-border-shadow: var(--ifm-color-secondary-dark);
 
   scrollbar-color: #454a4d #202324;
-
-  --docsearch-muted-color: #aaa;
-  --docusaurus-highlighted-code-line-bg: rgba(0, 0, 0, 0.3);
-
-  --gray-border-shadow: var(--ifm-color-secondary-dark);
 }
 
-.bug-report-link {
+.image-link {
   display: flex;
   flex-direction: row;
   align-items: center;
-  justify-content: start;
+  justify-content: flex-start;
 }
-.bug-report-link:before {
+
+.image-link::before {
   content: '';
   display: flex;
+}
+
+/* assumes icons are black by default and inverts them for dark mode so they're white */
+html[data-theme='dark'] .image-link::before {
+  filter: invert(100%);
+}
+
+.bug-report-link::before {
   background: url('/img/bug-report.svg') no-repeat;
 }
-.github-link {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
+
+.discord-link::before {
+  background: url('/img/discord.svg') no-repeat center;
 }
-.github-link:before {
-  content: '';
-  display: flex;
+
+.github-link::before {
   background: url('/img/github.svg') no-repeat;
 }
-.mastodon-link {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-}
-.mastodon-link:before {
-  content: '';
-  display: flex;
+
+.mastodon-link::before {
   background: url('/img/mastodon.svg') no-repeat;
 }
-.stack-overflow-link {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-}
-.stack-overflow-link:before {
-  content: '';
-  display: flex;
+
+.stack-overflow-link::before {
   background: url('/img/stack-overflow.svg') no-repeat;
 }
-.stack-overflow-link {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-}
-.stack-overflow-link:before {
-  content: '';
-  display: flex;
-  background: url('/img/stack-overflow.svg') no-repeat;
-}
-.twitter-link {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: start;
-}
-.twitter-link:before {
-  content: '';
-  display: flex;
+
+.twitter-link::before {
   background: url('/img/twitter.svg') no-repeat;
-}
-/* assumes icons are black by default and inverts them for dark mode so they're white */
-html[data-theme='dark'] .bug-report-link:before,
-html[data-theme='dark'] .github-link:before,
-html[data-theme='dark'] .mastodon-link:before,
-html[data-theme='dark'] .stack-overflow-link:before,
-html[data-theme='dark'] .twitter-link:before {
-  filter: invert(100%);
 }
 
 .header-github-link:hover {
   opacity: 0.6;
 }
-.header-github-link:before {
+
+.header-github-link::before {
   height: 24px;
   width: 24px;
 }
 
-.social-link-icon:before {
+.social-link-icon::before {
   height: 20px;
   margin-right: 4px;
   width: 20px;
@@ -192,7 +150,7 @@ h6 {
 .code-block-removed-line::before {
   content: '-';
   display: inline-block;
-  width: 0px;
+  width: 0;
   position: relative;
   left: -0.7em;
   color: red;
@@ -209,10 +167,10 @@ h6 {
 .code-block-added-line::before {
   content: '+';
   display: inline-block;
-  width: 0px;
+  width: 0;
   position: relative;
   left: -0.7em;
-  color: rgb(2, 164, 113);
+  color: rgb(2 164 113);
   font-weight: 700;
 }
 

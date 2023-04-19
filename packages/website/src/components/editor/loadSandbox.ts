@@ -1,19 +1,15 @@
-import type MonacoType from 'monaco-editor';
-import type * as TSType from 'typescript';
+import type MonacoEditor from 'monaco-editor';
 
 import type * as SandboxFactory from '../../vendor/sandbox';
-import type * as TsWorker from '../../vendor/tsWorker';
-import type { LintUtils } from '../linter/WebLinter';
+import type { WebLinterModule } from '../linter/types';
 
-type Monaco = typeof MonacoType;
-type TS = typeof TSType;
+type Monaco = typeof MonacoEditor;
+type Sandbox = typeof SandboxFactory;
 
 export interface SandboxModel {
   main: Monaco;
-  tsWorker: typeof TsWorker;
-  sandboxFactory: typeof SandboxFactory;
-  ts: TS;
-  lintUtils: LintUtils;
+  sandboxFactory: Sandbox;
+  lintUtils: WebLinterModule;
 }
 
 function loadSandbox(tsVersion: string): Promise<SandboxModel> {
@@ -36,30 +32,15 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
       });
 
       // Grab a copy of monaco, TypeScript and the sandbox
-      window.require(
-        [
-          'vs/editor/editor.main',
-          'vs/language/typescript/tsWorker',
-          'sandbox/index',
-          'linter/index',
-        ],
-        (main, tsWorker, sandboxFactory, lintUtils) => {
-          const isOK = main && window.ts && sandboxFactory;
-          if (isOK) {
-            resolve({
-              main,
-              tsWorker,
-              sandboxFactory,
-              ts: window.ts,
-              lintUtils,
-            });
-          } else {
-            reject(
-              new Error(
-                'Could not get all the dependencies of sandbox set up!',
-              ),
-            );
-          }
+      window.require<[Monaco, Sandbox, WebLinterModule]>(
+        ['vs/editor/editor.main', 'sandbox/index', 'linter/index'],
+        (main, sandboxFactory, lintUtils) => {
+          resolve({ main, sandboxFactory, lintUtils });
+        },
+        () => {
+          reject(
+            new Error('Could not get all the dependencies of sandbox set up!'),
+          );
         },
       );
     };

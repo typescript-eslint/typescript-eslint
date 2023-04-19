@@ -23,6 +23,17 @@
   ],
   internalChecksFilter: 'strict',
   labels: ['dependencies'],
+  dependencyDashboard: true,
+  dependencyDashboardLabels: ['dependencies', 'repo maintenance'],
+  major: {
+    // most majors will require some manual effort to upgrade to, so we don't want to create
+    // PRs automatically or else we'll just spam ourselves.
+    dependencyDashboardApproval: true,
+  },
+  // by default renovate will auto-rebase whenever the dep pranch falls behind main.
+  // this is annoying as it spams notifications and creates unnecessary action runs.
+  // instead only auto-rebase when conflicted, and we can trigger a manual rebase if required.
+  rebaseWhen: 'conflicted',
   packageRules: [
     // automerge everything but major updates
     {
@@ -55,20 +66,14 @@
       groupName: 'nx',
     },
     {
-      extends: ['monorepo:babel'],
-      matchPackagePrefixes: ['@types/babel'],
+      matchPackagePrefixes: ['@babel', 'babel-'],
       groupName: 'babel',
     },
     {
       extends: ['monorepo:jest'],
       matchPackageNames: ['ts-jest', 'pretty-format'],
-      matchPackagePrefixes: ['@types/jest'],
+      matchPackagePrefixes: ['@types/jest', 'jest-', '@jest/'],
       groupName: 'jest',
-    },
-    {
-      matchPackagePrefixes: ['@rollup', 'rollup-'],
-      matchPackageNames: ['rollup'],
-      groupName: 'rollup',
     },
   ],
   postUpdateOptions: [

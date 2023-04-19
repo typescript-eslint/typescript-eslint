@@ -174,7 +174,7 @@ export class Converter {
         : findNextToken(exportKeyword, this.ast, this.ast);
 
       result.range[0] = varToken!.getStart(this.ast);
-      result.loc = getLocFor(result.range[0], result.range[1], this.ast);
+      result.loc = getLocFor(result.range, this.ast);
 
       if (declarationIsDefault) {
         return this.createNode<TSESTree.ExportDefaultDeclaration>(
@@ -248,7 +248,7 @@ export class Converter {
   ): T {
     const result = data;
     result.range ??= getRange(node, this.ast);
-    result.loc ??= getLocFor(result.range[0], result.range[1], this.ast);
+    result.loc ??= getLocFor(result.range, this.ast);
 
     if (result && this.options.shouldPreserveNodeMaps) {
       this.esTreeNodeToTSNodeMap.set(result, node);
@@ -289,12 +289,13 @@ export class Converter {
         ? 2
         : 1;
     const annotationStartCol = child.getFullStart() - offset;
+    const range: TSESTree.Range = [annotationStartCol, child.end];
+    const loc = getLocFor(range, this.ast);
 
-    const loc = getLocFor(annotationStartCol, child.end, this.ast);
     return {
       type: AST_NODE_TYPES.TSTypeAnnotation,
       loc,
-      range: [annotationStartCol, child.end],
+      range,
       typeAnnotation: this.convertChild(child),
     } as TSESTree.TSTypeAnnotation;
   }
@@ -369,11 +370,15 @@ export class Converter {
     typeParameters: ts.NodeArray<ts.TypeParameterDeclaration>,
   ): TSESTree.TSTypeParameterDeclaration {
     const greaterThanToken = findNextToken(typeParameters, this.ast, this.ast)!;
+    const range: TSESTree.Range = [
+      typeParameters.pos - 1,
+      greaterThanToken.end,
+    ];
 
     return {
       type: AST_NODE_TYPES.TSTypeParameterDeclaration,
-      range: [typeParameters.pos - 1, greaterThanToken.end],
-      loc: getLocFor(typeParameters.pos - 1, greaterThanToken.end, this.ast),
+      range,
+      loc: getLocFor(range, this.ast),
       params: typeParameters.map(typeParameter =>
         this.convertChild(typeParameter),
       ),
@@ -1150,7 +1155,6 @@ export class Converter {
         }
 
         const isAccessor = hasModifier(SyntaxKind.AccessorKeyword, node);
-        // eslint-disable-next-line @typescript-eslint/explicit-function-return-type -- TODO - add ignore IIFE option
         const type = (() => {
           if (isAccessor) {
             if (isAbstract) {
@@ -1633,7 +1637,7 @@ export class Converter {
           if (modifiers) {
             // AssignmentPattern should not contain modifiers in range
             result.range[0] = parameter.range[0];
-            result.loc = getLocFor(result.range[0], result.range[1], this.ast);
+            result.loc = getLocFor(result.range, this.ast);
           }
         } else {
           parameter = result = this.convertChild(node.name, parent);
@@ -2522,6 +2526,13 @@ export class Converter {
         );
 
       case SyntaxKind.MappedType: {
+        if (node.members && node.members.length > 0) {
+          this.#throwUnlessAllowInvalidAST(
+            node.members[0],
+            'A mapped type may not declare properties or methods.',
+          );
+        }
+
         return this.createNode<TSESTree.TSMappedType>(node, {
           type: AST_NODE_TYPES.TSMappedType,
           nameType: this.convertChild(node.nameType) ?? null,
@@ -3303,7 +3314,8 @@ export class Converter {
         (modifier.kind === SyntaxKind.PublicKeyword ||
           modifier.kind === SyntaxKind.PrivateKeyword ||
           modifier.kind === SyntaxKind.ProtectedKeyword ||
-          modifier.kind === SyntaxKind.ReadonlyKeyword)
+          modifier.kind === SyntaxKind.ReadonlyKeyword ||
+          modifier.kind === SyntaxKind.OverrideKeyword)
       ) {
         const func = getContainingFunction(node)!;
 

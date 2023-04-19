@@ -555,7 +555,7 @@ function voidFunctionArguments(
             // Unwrap 'Array<MaybeVoidFunction>' to 'MaybeVoidFunction',
             // so that we'll handle it in the same way as a non-rest
             // 'param: MaybeVoidFunction'
-            type = checker.getTypeArguments(type)[0];
+            type = util.getTypeArguments(type, checker)[0];
             for (let i = index; i < node.arguments.length; i++) {
               checkThenableOrVoidArgument(
                 checker,
@@ -569,7 +569,7 @@ function voidFunctionArguments(
           } else if (checker.isTupleType(type)) {
             // Check each type in the tuple - for example, [boolean, () => void] would
             // add the index of the second tuple parameter to 'voidReturnIndices'
-            const typeArgs = checker.getTypeArguments(type);
+            const typeArgs = util.getTypeArguments(type, checker);
             for (
               let i = index;
               i < node.arguments.length && i - index < typeArgs.length;

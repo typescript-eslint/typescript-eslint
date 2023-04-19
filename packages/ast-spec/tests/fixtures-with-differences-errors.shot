@@ -2,7 +2,7 @@
 
 exports[`AST Fixtures List fixtures with Error differences 1`] = `
 {
-  "Babel errored but TSESTree didn't": Set {
+  "Babel errored but TSESTree didn't": [
     "declaration/ClassDeclaration/fixtures/_error_/implements-non-identifier/fixture.ts",
     "declaration/ClassDeclaration/fixtures/_error_/missing-extends-type-param/fixture.ts",
     "declaration/ClassDeclaration/fixtures/_error_/missing-type-param/fixture.ts",
@@ -45,13 +45,13 @@ exports[`AST Fixtures List fixtures with Error differences 1`] = `
     "legacy-fixtures/errorRecovery/fixtures/_error_/interface-with-optional-index-signature/fixture.ts",
     "legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-array-pattern-decorator/fixture.ts",
     "legacy-fixtures/parameter-decorators/fixtures/_error_/parameter-rest-element-decorator/fixture.ts",
-  },
-  "TSESTree errored but Babel didn't": Set {
+  ],
+  "TSESTree errored but Babel didn't": [
     "declaration/ExportAllDeclaration/fixtures/_error_/named-non-identifier/fixture.ts",
     "declaration/ExportNamedDeclaration/fixtures/_error_/aliased-literal/fixture.ts",
     "element/AccessorProperty/fixtures/_error_/modifier-abstract-accessor-with-value/fixture.ts",
     "legacy-fixtures/basics/fixtures/_error_/abstract-class-with-abstract-constructor/fixture.ts",
     "legacy-fixtures/expressions/fixtures/_error_/instantiation-expression/fixture.ts",
-  },
+  ],
 }
 `;

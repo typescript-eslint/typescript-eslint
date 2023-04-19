@@ -1,8 +1,10 @@
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
+const ANY_OR_UNKNOWN = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+
 /**
- * Gets all of the type flags in a type, iterating through unions automatically
+ * Gets all of the type flags in a type, iterating through unions automatically.
  */
 export function getTypeFlags(type: ts.Type): ts.TypeFlags {
   // @ts-expect-error Since typescript 5.0, this is invalid, but uses 0 as the default value of TypeFlags.
@@ -14,8 +16,13 @@ export function getTypeFlags(type: ts.Type): ts.TypeFlags {
 }
 
 /**
- * Checks if the given type is (or accepts) the given flags
- * @param isReceiver true if the type is a receiving type (i.e. the type of a called function's parameter)
+ * @param flagsToCheck The composition of one or more `ts.TypeFlags`.
+ * @param isReceiver Whether the type is a receiving type (e.g. the type of a
+ * called function's parameter).
+ * @remarks
+ * Note that if the type is a union, this function will decompose it into the
+ * parts and get the flags of every union constituent. If this is not desired,
+ * use the `isTypeFlag` function from tsutils.
  */
 export function isTypeFlagSet(
   type: ts.Type,
@@ -24,7 +31,7 @@ export function isTypeFlagSet(
 ): boolean {
   const flags = getTypeFlags(type);
 
-  if (isReceiver && flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
+  if (isReceiver && flags & ANY_OR_UNKNOWN) {
     return true;
   }
 

@@ -22,7 +22,6 @@ type Options = [
 interface BooleanComparison {
   expression: TSESTree.Expression | TSESTree.PrivateIdentifier;
   literalBooleanInComparison: boolean;
-  forTruthy: boolean;
   negated: boolean;
 }
 
@@ -179,7 +178,6 @@ export default util.createRule<Options, MessageIds>({
 
         return {
           literalBooleanInComparison,
-          forTruthy: literalBooleanInComparison ? !negated : negated,
           expression,
           negated,
         };
@@ -220,48 +218,43 @@ export default util.createRule<Options, MessageIds>({
 
         context.report({
           fix: function* (fixer) {
+            // 1. isUnaryNegation - parent negation
+            // 2. literalBooleanInComparison - is compared to literal boolean
+            // 3. negated - is expression negated
+
+            const isUnaryNegation =
+              node.parent != null && nodeIsUnaryNegation(node.parent);
+
+            const shouldNegate =
+              comparison.negated !== comparison.literalBooleanInComparison;
+
+            const mutatedNode = isUnaryNegation ? node.parent : node;
+
             yield fixer.replaceText(
-              node,
+              mutatedNode,
               sourceCode.getText(comparison.expression),
             );
 
-            // if the expression `exp` isn't nullable, or we're comparing to `true`,
-            // we can just replace the entire comparison with `exp` or `!exp`
+            // if `isUnaryNegation === literalBooleanInComparison === !negated` is true - negate the expression
+            if (shouldNegate === isUnaryNegation) {
+              yield fixer.insertTextBefore(mutatedNode, '!');
+
+              // if the expression `exp` is not a strong precedence node, wrap it in parentheses
+              if (!util.isStrongPrecedenceNode(comparison.expression)) {
+                yield fixer.insertTextBefore(mutatedNode, '(');
+                yield fixer.insertTextAfter(mutatedNode, ')');
+              }
+            }
+
+            // if the expression `exp` is nullable, and we're not comparing to `true`, insert `?? true`
             if (
-              !comparison.expressionIsNullableBoolean ||
-              comparison.literalBooleanInComparison
+              comparison.expressionIsNullableBoolean &&
+              !comparison.literalBooleanInComparison
             ) {
-              if (!comparison.forTruthy) {
-                yield fixer.insertTextBefore(node, '!');
-                if (!util.isStrongPrecedenceNode(comparison.expression)) {
-                  yield fixer.insertTextBefore(node, '(');
-                  yield fixer.insertTextAfter(node, ')');
-                }
-              }
-              return;
+              // provide the default `true`
+              yield fixer.insertTextBefore(mutatedNode, '(');
+              yield fixer.insertTextAfter(mutatedNode, ' ?? true)');
             }
-
-            // if we're here, then the expression is a nullable boolean and we're
-            // comparing to a literal `false`
-
-            // if we're doing `== false` or `=== false`, then we need to negate the expression
-            if (!comparison.negated) {
-              const { parent } = node;
-              // if the parent is a negation, we can instead just get rid of the parent's negation.
-              // i.e. instead of resulting in `!(!(exp))`, we can just result in `exp`
-              if (parent != null && nodeIsUnaryNegation(parent)) {
-                // remove from the beginning of the parent to the beginning of this node
-                yield fixer.removeRange([parent.range[0], node.range[0]]);
-                // remove from the end of the node to the end of the parent
-                yield fixer.removeRange([node.range[1], parent.range[1]]);
-              } else {
-                yield fixer.insertTextBefore(node, '!');
-              }
-            }
-
-            // provide the default `true`
-            yield fixer.insertTextBefore(node, '(');
-            yield fixer.insertTextAfter(node, ' ?? true)');
           },
           messageId: comparison.expressionIsNullableBoolean
             ? comparison.literalBooleanInComparison
