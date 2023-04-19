@@ -62,11 +62,11 @@ type DirectiveConfigSchema =
 
 type Options = [
   {
-    minimumDescriptionLength?: number;
     'ts-check'?: DirectiveConfigSchema;
     'ts-expect-error'?: DirectiveConfigSchema;
     'ts-ignore'?: DirectiveConfigSchema;
     'ts-nocheck'?: DirectiveConfigSchema;
+    minimumDescriptionLength?: number;
   },
 ];
 "

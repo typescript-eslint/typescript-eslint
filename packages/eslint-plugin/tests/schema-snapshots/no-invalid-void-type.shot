@@ -36,7 +36,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   {
     allowAsThisParameter?: boolean;
-    allowInGenericTypeArguments?: string[] | boolean;
+    allowInGenericTypeArguments?: boolean | string[];
   },
 ];
 "

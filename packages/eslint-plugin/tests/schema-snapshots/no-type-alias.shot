@@ -65,8 +65,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type ExpandedOptions =
   | 'always'
   | 'in-intersections'
-  | 'in-unions-and-intersections'
   | 'in-unions'
+  | 'in-unions-and-intersections'
   | 'never';
 
 type SimpleOptions = 'always' | 'never';

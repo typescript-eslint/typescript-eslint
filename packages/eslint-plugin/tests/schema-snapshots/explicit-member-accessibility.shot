@@ -67,10 +67,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type AccessibilityLevel =
   /** Always require an accessor. */
   | 'explicit'
-  /** Require an accessor except when public. */
-  | 'no-public'
   /** Never check whether there is an accessor. */
-  | 'off';
+  | 'off'
+  /** Require an accessor except when public. */
+  | 'no-public';
 
 type Options = [
   {

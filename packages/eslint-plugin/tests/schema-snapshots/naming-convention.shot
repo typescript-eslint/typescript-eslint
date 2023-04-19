@@ -1525,12 +1525,12 @@ type UnderscoreOptions =
   | 'requireDouble';
 
 type PredefinedFormats =
-  | 'camelCase'
   | 'PascalCase'
-  | 'snake_case'
-  | 'strictCamelCase'
   | 'StrictPascalCase'
-  | 'UPPER_CASE';
+  | 'UPPER_CASE'
+  | 'camelCase'
+  | 'snake_case'
+  | 'strictCamelCase';
 
 type TypeModifiers = 'array' | 'boolean' | 'function' | 'number' | 'string';
 
@@ -1543,36 +1543,8 @@ type MatchRegexConfig = {
 
 type FormatOptionsConfig = PredefinedFormats[] | null;
 
-type Options = (
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: (
-        | '#private'
-        | 'abstract'
-        | 'async'
-        | 'const'
-        | 'destructured'
-        | 'exported'
-        | 'global'
-        | 'override'
-        | 'private'
-        | 'protected'
-        | 'public'
-        | 'readonly'
-        | 'requiresQuotes'
-        | 'static'
-        | 'unused'
-      )[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'default';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-    }
-  | {
+type Options = /** Multiple selectors in one config */
+(| {
       custom?: MatchRegexConfig;
       failureMessage?: string;
       filter?: MatchRegexConfig | string;
@@ -1625,6 +1597,170 @@ type Options = (
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];
     }
+  /** Selector 'accessor' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: (
+        | 'abstract'
+        | 'override'
+        | 'private'
+        | 'protected'
+        | 'public'
+        | 'requiresQuotes'
+        | 'static'
+      )[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'accessor';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+      types?: TypeModifiers[];
+    }
+  /** Selector 'class' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: ('abstract' | 'exported' | 'unused')[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'class';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+    }
+  /** Selector 'classMethod' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: (
+        | '#private'
+        | 'abstract'
+        | 'async'
+        | 'override'
+        | 'private'
+        | 'protected'
+        | 'public'
+        | 'requiresQuotes'
+        | 'static'
+      )[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'classMethod';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+    }
+  /** Selector 'classProperty' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: (
+        | '#private'
+        | 'abstract'
+        | 'override'
+        | 'private'
+        | 'protected'
+        | 'public'
+        | 'readonly'
+        | 'requiresQuotes'
+        | 'static'
+      )[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'classProperty';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+      types?: TypeModifiers[];
+    }
+  /** Selector 'default' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: (
+        | '#private'
+        | 'abstract'
+        | 'async'
+        | 'const'
+        | 'destructured'
+        | 'exported'
+        | 'global'
+        | 'override'
+        | 'private'
+        | 'protected'
+        | 'public'
+        | 'readonly'
+        | 'requiresQuotes'
+        | 'static'
+        | 'unused'
+      )[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'default';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+    }
+  /** Selector 'enum' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: ('exported' | 'unused')[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'enum';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+    }
+  /** Selector 'enumMember' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: ('requiresQuotes')[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'enumMember';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+    }
+  /** Selector 'function' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: ('async' | 'exported' | 'global' | 'unused')[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'function';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+    }
+  /** Selector 'interface' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: ('exported' | 'unused')[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'interface';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+    }
+  /** Selector 'memberLike' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1648,6 +1784,85 @@ type Options = (
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
+  /** Selector 'method' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: (
+        | '#private'
+        | 'abstract'
+        | 'async'
+        | 'override'
+        | 'private'
+        | 'protected'
+        | 'public'
+        | 'requiresQuotes'
+        | 'static'
+      )[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'method';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+    }
+  /** Selector 'objectLiteralMethod' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: ('async' | 'public' | 'requiresQuotes')[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'objectLiteralMethod';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+    }
+  /** Selector 'objectLiteralProperty' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: ('public' | 'requiresQuotes')[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'objectLiteralProperty';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+      types?: TypeModifiers[];
+    }
+  /** Selector 'parameter' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: ('destructured' | 'unused')[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'parameter';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+      types?: TypeModifiers[];
+    }
+  /** Selector 'parameterProperty' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: ('private' | 'protected' | 'public' | 'readonly')[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'parameterProperty';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+      types?: TypeModifiers[];
+    }
+  /** Selector 'property' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1672,85 +1887,20 @@ type Options = (
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];
     }
+  /** Selector 'typeAlias' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
       filter?: MatchRegexConfig | string;
       format: FormatOptionsConfig;
       leadingUnderscore?: UnderscoreOptions;
-      modifiers?: (
-        | '#private'
-        | 'abstract'
-        | 'async'
-        | 'override'
-        | 'private'
-        | 'protected'
-        | 'public'
-        | 'requiresQuotes'
-        | 'static'
-      )[];
+      modifiers?: ('exported' | 'unused')[];
       prefix?: PrefixSuffixConfig;
-      selector: 'classMethod';
+      selector: 'typeAlias';
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: (
-        | '#private'
-        | 'abstract'
-        | 'async'
-        | 'override'
-        | 'private'
-        | 'protected'
-        | 'public'
-        | 'requiresQuotes'
-        | 'static'
-      )[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'method';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-    }
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: (
-        | '#private'
-        | 'abstract'
-        | 'override'
-        | 'private'
-        | 'protected'
-        | 'public'
-        | 'readonly'
-        | 'requiresQuotes'
-        | 'static'
-      )[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'classProperty';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-      types?: TypeModifiers[];
-    }
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('abstract' | 'exported' | 'unused')[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'class';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-    }
+  /** Selector 'typeLike' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1763,27 +1913,47 @@ type Options = (
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
+  /** Selector 'typeMethod' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
       filter?: MatchRegexConfig | string;
       format: FormatOptionsConfig;
       leadingUnderscore?: UnderscoreOptions;
-      modifiers?: (
-        | 'abstract'
-        | 'override'
-        | 'private'
-        | 'protected'
-        | 'public'
-        | 'requiresQuotes'
-        | 'static'
-      )[];
+      modifiers?: ('public' | 'requiresQuotes')[];
       prefix?: PrefixSuffixConfig;
-      selector: 'accessor';
+      selector: 'typeMethod';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+    }
+  /** Selector 'typeParameter' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: ('unused')[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'typeParameter';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+    }
+  /** Selector 'typeProperty' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: ('public' | 'readonly' | 'requiresQuotes')[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'typeProperty';
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];
     }
+  /** Selector 'variable' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1804,30 +1974,7 @@ type Options = (
       trailingUnderscore?: UnderscoreOptions;
       types?: TypeModifiers[];
     }
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('async' | 'exported' | 'global' | 'unused')[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'function';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-    }
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('async' | 'public' | 'requiresQuotes')[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'objectLiteralMethod';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-    }
+  /** Selector 'variableLike' */
   | {
       custom?: MatchRegexConfig;
       failureMessage?: string;
@@ -1837,130 +1984,6 @@ type Options = (
       modifiers?: ('async' | 'unused')[];
       prefix?: PrefixSuffixConfig;
       selector: 'variableLike';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-    }
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('destructured' | 'unused')[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'parameter';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-      types?: TypeModifiers[];
-    }
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('exported' | 'unused')[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'enum';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-    }
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('exported' | 'unused')[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'interface';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-    }
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('exported' | 'unused')[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'typeAlias';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-    }
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('private' | 'protected' | 'public' | 'readonly')[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'parameterProperty';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-      types?: TypeModifiers[];
-    }
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('public' | 'readonly' | 'requiresQuotes')[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'typeProperty';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-      types?: TypeModifiers[];
-    }
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('public' | 'requiresQuotes')[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'objectLiteralProperty';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-      types?: TypeModifiers[];
-    }
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('public' | 'requiresQuotes')[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'typeMethod';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-    }
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: 'requiresQuotes'[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'enumMember';
-      suffix?: PrefixSuffixConfig;
-      trailingUnderscore?: UnderscoreOptions;
-    }
-  | {
-      custom?: MatchRegexConfig;
-      failureMessage?: string;
-      filter?: MatchRegexConfig | string;
-      format: FormatOptionsConfig;
-      leadingUnderscore?: UnderscoreOptions;
-      modifiers?: 'unused'[];
-      prefix?: PrefixSuffixConfig;
-      selector: 'typeParameter';
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }

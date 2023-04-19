@@ -71,10 +71,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type BanConfig =
-  /** Un-bans the type (useful when paired with \`extendDefaults\`) */
-  | false
-  /** Bans the type with the default message */
-  | true
   /** Bans a type */
   | {
       /** Type to autofix replace with. Note that autofixers can be applied automatically - so you need to be careful with this option. */
@@ -84,10 +80,14 @@ type BanConfig =
       /** Types to suggest replacing with. */
       suggest?: string[];
     }
+  /** Bans the type with a custom message */
+  | string
   /** Bans the type with the default message */
   | null
-  /** Bans the type with a custom message */
-  | string;
+  /** Bans the type with the default message */
+  | true
+  /** Un-bans the type (useful when paired with \`extendDefaults\`) */
+  | false;
 
 type Options = [
   {

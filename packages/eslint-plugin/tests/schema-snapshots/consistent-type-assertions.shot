@@ -40,7 +40,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   | {
       assertionStyle: 'angle-bracket' | 'as';
-      objectLiteralTypeAssertions?: 'allow-as-parameter' | 'allow' | 'never';
+      objectLiteralTypeAssertions?: 'allow' | 'allow-as-parameter' | 'never';
     }
   | {
       assertionStyle: 'never';

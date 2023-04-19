@@ -173,7 +173,8 @@ type Options = [
   | {
       afterColon?: boolean;
       align?:
-        | ('colon' | 'value')
+        | 'colon'
+        | 'value'
         | {
             afterColon?: boolean;
             beforeColon?: boolean;
@@ -205,7 +206,8 @@ type Options = [
       multiLine?: {
         afterColon?: boolean;
         align?:
-          | ('colon' | 'value')
+          | 'colon'
+          | 'value'
           | {
               afterColon?: boolean;
               beforeColon?: boolean;

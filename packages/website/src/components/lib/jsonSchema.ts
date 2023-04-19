@@ -10,7 +10,7 @@ const defaultRuleSchema: JSONSchema4 = {
 
 // https://github.com/microsoft/TypeScript/issues/17002
 function isArray(arg: unknown): arg is readonly unknown[] {
-  return isArray(arg);
+  return Array.isArray(arg);
 }
 
 /**

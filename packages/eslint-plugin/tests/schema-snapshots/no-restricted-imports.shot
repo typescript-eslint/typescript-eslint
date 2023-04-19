@@ -145,7 +145,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options =
   | (
-      | string
       | {
           /** Disallow value imports, but allow type-only imports. */
           allowTypeImports?: boolean;
@@ -153,6 +152,7 @@ type Options =
           message?: string;
           name: string;
         }
+      | string
     )[]
   | []
   | [

@@ -28,7 +28,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 # TYPES:
 
-type ArrayOption = 'array-simple' | 'array' | 'generic';
+type ArrayOption = 'array' | 'array-simple' | 'generic';
 
 type Options = [
   {

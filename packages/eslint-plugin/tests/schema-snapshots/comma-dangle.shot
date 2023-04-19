@@ -65,11 +65,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 # TYPES:
 
-type Value = 'always-multiline' | 'always' | 'never' | 'only-multiline';
+type Value = 'always' | 'always-multiline' | 'never' | 'only-multiline';
 
 type ValueWithIgnore =
-  | 'always-multiline'
   | 'always'
+  | 'always-multiline'
   | 'ignore'
   | 'never'
   | 'only-multiline';

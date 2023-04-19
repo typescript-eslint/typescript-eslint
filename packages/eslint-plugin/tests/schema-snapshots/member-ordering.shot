@@ -315,11 +315,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 # TYPES:
 
 type OrderOptions =
-  | 'alphabetically-case-insensitive'
   | 'alphabetically'
+  | 'alphabetically-case-insensitive'
   | 'as-written'
-  | 'natural-case-insensitive'
-  | 'natural';
+  | 'natural'
+  | 'natural-case-insensitive';
 
 type OptionalityOrderOptions = 'optional-first' | 'required-first';
 
@@ -466,26 +466,26 @@ type TypeItems =
 
 type BaseConfig =
   | 'never'
-  | (AllItems[] | AllItems)[]
+  | (AllItems | AllItems[])[]
   | {
-      memberTypes?: 'never' | (AllItems[] | AllItems)[];
+      memberTypes?: 'never' | (AllItems | AllItems[])[];
       optionalityOrder?: OptionalityOrderOptions;
       order?: OrderOptions;
     };
 
 type TypesConfig =
   | 'never'
-  | (TypeItems[] | TypeItems)[]
+  | (TypeItems | TypeItems[])[]
   | {
-      memberTypes?: 'never' | (TypeItems[] | TypeItems)[];
+      memberTypes?: 'never' | (TypeItems | TypeItems[])[];
       optionalityOrder?: OptionalityOrderOptions;
       order?: OrderOptions;
     };
 
 type Options = [
   {
-    classes?: BaseConfig;
     classExpressions?: BaseConfig;
+    classes?: BaseConfig;
     default?: BaseConfig;
     interfaces?: TypesConfig;
     typeLiterals?: TypesConfig;
