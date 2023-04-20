@@ -11,6 +11,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "enum": ["array", "array-simple", "generic"]
       }
     },
+    "additionalProperties": false,
     "properties": {
       "default": {
         "$ref": "#/items/0/$defs/arrayOption",

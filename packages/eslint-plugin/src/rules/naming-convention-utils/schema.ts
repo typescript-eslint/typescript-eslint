@@ -40,6 +40,7 @@ const $DEFS: Record<string, JSONSchema.JSONSchema4> = {
   },
   matchRegexConfig: {
     type: 'object',
+    additionalProperties: false,
     properties: {
       match: { type: 'boolean' },
       regex: { type: 'string' },

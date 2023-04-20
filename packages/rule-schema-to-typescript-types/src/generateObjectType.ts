@@ -13,13 +13,16 @@ export function generateObjectType(
   const commentLines = getCommentLines(schema);
 
   let indexSignature: AST | null = null;
-  if (schema.additionalProperties === true) {
+  if (
+    schema.additionalProperties === true ||
+    schema.additionalProperties === undefined
+  ) {
     indexSignature = {
       type: 'type-reference',
       typeName: 'unknown',
       commentLines: [],
     };
-  } else if (schema.additionalProperties) {
+  } else if (typeof schema.additionalProperties === 'object') {
     const indexSigType = generateType(schema.additionalProperties, refMap);
     indexSignature = indexSigType;
   }

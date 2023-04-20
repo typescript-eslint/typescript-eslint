@@ -6,6 +6,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
+    "additionalProperties": false,
     "properties": {
       "typesToIgnore": {
         "description": "A list of type names to ignore.",

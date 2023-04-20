@@ -53,6 +53,7 @@ export default util.createRule<[Options], MessageIds>({
               },
               {
                 type: 'object',
+                additionalProperties: false,
                 properties: {
                   descriptionFormat: { type: 'string' },
                 },
