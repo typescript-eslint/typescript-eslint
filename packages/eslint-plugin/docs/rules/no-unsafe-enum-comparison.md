@@ -22,6 +22,8 @@ fruit === 999; // No error
 
 This rule flags when an enum typed value is compared to a non-enum `number`.
 
+## Examples
+
 <!--tabs-->
 
 ### ❌ Incorrect
