@@ -1,0 +1,71 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes sort-type-constituents 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "properties": {
+      "checkIntersections": {
+        "description": "Whether to check intersection types.",
+        "type": "boolean"
+      },
+      "checkUnions": {
+        "description": "Whether to check union types.",
+        "type": "boolean"
+      },
+      "groupOrder": {
+        "description": "Ordering of the groups.",
+        "items": {
+          "enum": [
+            "conditional",
+            "function",
+            "import",
+            "intersection",
+            "keyword",
+            "literal",
+            "named",
+            "nullish",
+            "object",
+            "operator",
+            "tuple",
+            "union"
+          ],
+          "type": "string"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    /** Whether to check intersection types. */
+    checkIntersections?: boolean;
+    /** Whether to check union types. */
+    checkUnions?: boolean;
+    /** Ordering of the groups. */
+    groupOrder?: (
+      | 'conditional'
+      | 'function'
+      | 'import'
+      | 'intersection'
+      | 'keyword'
+      | 'literal'
+      | 'named'
+      | 'nullish'
+      | 'object'
+      | 'operator'
+      | 'tuple'
+      | 'union'
+    )[];
+  },
+];
+"
+`;
