@@ -282,6 +282,8 @@ ruleTester.run('comma-spacing', rule, {
     'interface Foo<T, T1,>{}',
     'interface A<> {}',
     'let foo,',
+    "['value', 'value2', ]",
+    "const obj = {value1: '',};",
   ],
 
   invalid: [
