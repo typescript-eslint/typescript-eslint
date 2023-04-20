@@ -21,7 +21,7 @@ export interface CreateLinter {
       name: string;
       description?: string;
       url?: string;
-      schema: JSONSchema.JSONSchema4;
+      schema: JSONSchema.JSONSchema4 | readonly JSONSchema.JSONSchema4[];
     }
   >;
   configs: string[];

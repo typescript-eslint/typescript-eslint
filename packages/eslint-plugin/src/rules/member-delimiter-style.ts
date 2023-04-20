@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import * as util from '../util';
 
@@ -46,30 +47,6 @@ interface MakeFixFunctionParams {
 type MakeFixFunctionReturnType =
   | ((fixer: TSESLint.RuleFixer) => TSESLint.RuleFix)
   | null;
-
-const definition = {
-  type: 'object',
-  properties: {
-    multiline: {
-      type: 'object',
-      properties: {
-        delimiter: { enum: ['none', 'semi', 'comma'] },
-        requireLast: { type: 'boolean' },
-      },
-      additionalProperties: false,
-    },
-    singleline: {
-      type: 'object',
-      properties: {
-        // note can't have "none" for single line delimiter as it's invalid syntax
-        delimiter: { enum: ['semi', 'comma'] },
-        requireLast: { type: 'boolean' },
-      },
-      additionalProperties: false,
-    },
-  },
-  additionalProperties: false,
-};
 
 const isLastTokenEndOfLine = (token: LastTokenType, line: string): boolean => {
   const positionInLine = token.loc.start.column;
@@ -132,6 +109,29 @@ const makeFixFunction = ({
   };
 };
 
+const BASE_SCHEMA: JSONSchema4 = {
+  type: 'object',
+  properties: {
+    multiline: {
+      type: 'object',
+      properties: {
+        delimiter: { $ref: '#/items/0/$defs/multiLineOption' },
+        requireLast: { type: 'boolean' },
+      },
+      additionalProperties: false,
+    },
+    singleline: {
+      type: 'object',
+      properties: {
+        delimiter: { $ref: '#/items/0/$defs/singleLineOption' },
+        requireLast: { type: 'boolean' },
+      },
+      additionalProperties: false,
+    },
+  },
+  additionalProperties: false,
+};
+
 export default util.createRule<Options, MessageIds>({
   name: 'member-delimiter-style',
   meta: {
@@ -149,20 +149,32 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
+        $defs: {
+          multiLineOption: { enum: ['none', 'semi', 'comma'] },
+          // note can't have "none" for single line delimiter as it's invalid syntax
+          singleLineOption: { enum: ['semi', 'comma'] },
+          // note - need to define this last as it references the enums
+          delimiterConfig: BASE_SCHEMA,
+        },
         type: 'object',
-        properties: Object.assign({}, definition.properties, {
+        properties: {
+          ...BASE_SCHEMA.properties,
           overrides: {
             type: 'object',
             properties: {
-              interface: definition,
-              typeLiteral: definition,
+              interface: {
+                $ref: '#/items/0/$defs/delimiterConfig',
+              },
+              typeLiteral: {
+                $ref: '#/items/0/$defs/delimiterConfig',
+              },
             },
             additionalProperties: false,
           },
           multilineDetection: {
             enum: ['brackets', 'last-member'],
           },
-        }),
+        },
         additionalProperties: false,
       },
     ],

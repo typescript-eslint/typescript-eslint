@@ -1,0 +1,129 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes member-delimiter-style 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "$defs": {
+      "delimiterConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "multiline": {
+            "additionalProperties": false,
+            "properties": {
+              "delimiter": {
+                "$ref": "#/items/0/$defs/multiLineOption"
+              },
+              "requireLast": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "singleline": {
+            "additionalProperties": false,
+            "properties": {
+              "delimiter": {
+                "$ref": "#/items/0/$defs/singleLineOption"
+              },
+              "requireLast": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      "multiLineOption": {
+        "enum": ["comma", "none", "semi"]
+      },
+      "singleLineOption": {
+        "enum": ["comma", "semi"]
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "multiline": {
+        "additionalProperties": false,
+        "properties": {
+          "delimiter": {
+            "$ref": "#/items/0/$defs/multiLineOption"
+          },
+          "requireLast": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      },
+      "multilineDetection": {
+        "enum": ["brackets", "last-member"]
+      },
+      "overrides": {
+        "additionalProperties": false,
+        "properties": {
+          "interface": {
+            "$ref": "#/items/0/$defs/delimiterConfig"
+          },
+          "typeLiteral": {
+            "$ref": "#/items/0/$defs/delimiterConfig"
+          }
+        },
+        "type": "object"
+      },
+      "singleline": {
+        "additionalProperties": false,
+        "properties": {
+          "delimiter": {
+            "$ref": "#/items/0/$defs/singleLineOption"
+          },
+          "requireLast": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type MultiLineOption = 'comma' | 'none' | 'semi';
+
+type SingleLineOption = 'comma' | 'semi';
+
+type DelimiterConfig = {
+  multiline?: {
+    delimiter?: MultiLineOption;
+    requireLast?: boolean;
+  };
+  singleline?: {
+    delimiter?: SingleLineOption;
+    requireLast?: boolean;
+  };
+};
+
+type Options = [
+  {
+    multiline?: {
+      delimiter?: MultiLineOption;
+      requireLast?: boolean;
+    };
+    multilineDetection?: 'brackets' | 'last-member';
+    overrides?: {
+      interface?: DelimiterConfig;
+      typeLiteral?: DelimiterConfig;
+    };
+    singleline?: {
+      delimiter?: SingleLineOption;
+      requireLast?: boolean;
+    };
+  },
+];
+"
+`;

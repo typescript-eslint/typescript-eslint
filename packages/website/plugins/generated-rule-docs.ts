@@ -1,14 +1,11 @@
 import pluginRules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
-import * as tseslintParser from '@typescript-eslint/parser';
+import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import * as fs from 'fs';
-import type { JSONSchema7 } from 'json-schema';
-import type { JSONSchema } from 'json-schema-to-typescript';
-import { compile } from 'json-schema-to-typescript';
 import * as lz from 'lz-string';
 import type * as mdast from 'mdast';
 import { EOL } from 'os';
 import * as path from 'path';
-import { format } from 'prettier';
+import { format, resolveConfig } from 'prettier';
 import type { Plugin } from 'unified';
 import type * as unist from 'unist';
 
@@ -22,6 +19,19 @@ const COMPLICATED_RULE_OPTIONS = new Set([
   'member-ordering',
   'naming-convention',
 ]);
+/**
+ * Rules that do funky things with their defaults and require special code
+ * rather than just JSON.stringify-ing their defaults blob
+ */
+const SPECIAL_CASE_DEFAULTS = new Map([
+  //
+  ['ban-types', '[{ /* See below for default options */ }]'],
+]);
+
+const prettierConfig = {
+  ...(resolveConfig.sync(__filename) ?? {}),
+  filepath: path.join(__dirname, 'defaults.ts'),
+};
 
 const sourceUrlPrefix =
   'https://github.com/typescript-eslint/typescript-eslint/blob/main/packages/eslint-plugin/';
@@ -35,7 +45,7 @@ function nodeIsParent(node: unist.Node<unist.Data>): node is unist.Parent {
 }
 
 export const generatedRuleDocs: Plugin = () => {
-  return async (root, file) => {
+  return (root, file) => {
     if (!nodeIsParent(root) || file.stem == null) {
       return;
     }
@@ -243,7 +253,10 @@ export const generatedRuleDocs: Plugin = () => {
 
       optionsH2Index += 2;
 
-      if (meta.schema.length === 0) {
+      const hasNoConfig = Array.isArray(meta.schema)
+        ? meta.schema.length === 0
+        : Object.keys(meta.schema).length === 0;
+      if (hasNoConfig) {
         children.splice(optionsH2Index + 1, 0, {
           children: [
             {
@@ -254,21 +267,9 @@ export const generatedRuleDocs: Plugin = () => {
           type: 'paragraph',
         } as mdast.Paragraph);
       } else if (!COMPLICATED_RULE_OPTIONS.has(file.stem)) {
-        const optionsSchema: JSONSchema =
-          meta.schema instanceof Array
-            ? meta.schema[0]
-            : meta.schema.type === 'array'
-            ? {
-                ...(meta.schema.definitions
-                  ? { definitions: meta.schema.definitions }
-                  : {}),
-                ...(meta.schema.$defs
-                  ? { $defs: (meta.schema as JSONSchema7).$defs }
-                  : {}),
-                ...(meta.schema.prefixItems as [JSONSchema])[0],
-              }
-            : meta.schema;
-
+        const defaults =
+          SPECIAL_CASE_DEFAULTS.get(file.stem) ??
+          JSON.stringify(rule.defaultOptions);
         children.splice(
           optionsH2Index + 1,
           0,
@@ -276,11 +277,7 @@ export const generatedRuleDocs: Plugin = () => {
             children: [
               {
                 type: 'text',
-                value: `This rule accepts an options ${
-                  'enum' in optionsSchema
-                    ? 'string of the following possible values'
-                    : 'object with the following properties'
-                }:`,
+                value: 'This rule accepts the following options',
               } as mdast.Text,
             ],
             type: 'paragraph',
@@ -289,27 +286,10 @@ export const generatedRuleDocs: Plugin = () => {
             lang: 'ts',
             type: 'code',
             value: [
-              (
-                await compile(
-                  {
-                    title: `Options`,
-                    ...optionsSchema,
-                  },
-                  file.stem,
-                  {
-                    additionalProperties: false,
-                    bannerComment: '',
-                    declareExternallyReferenced: true,
-                  },
-                )
-              ).replace(/^export /gm, ''),
+              compile(rule.meta.schema),
               format(
-                `const defaultOptions: Options = ${JSON.stringify(
-                  rule.defaultOptions,
-                )};`,
-                {
-                  parser: tseslintParser.parse,
-                },
+                `const defaultOptions: Options = ${defaults};`,
+                prettierConfig,
               ),
             ]
               .join(EOL)

@@ -145,6 +145,7 @@ jobs:
             'eslint-plugin-tslint',
             'parser',
             'repo-tools',
+            'rule-schema-to-typescript-types',
             'scope-manager',
             'type-utils',
             'typescript-estree',

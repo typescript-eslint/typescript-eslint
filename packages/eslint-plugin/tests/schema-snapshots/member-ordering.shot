@@ -1,0 +1,495 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes member-ordering 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "$defs": {
+      "allItems": {
+        "enum": [
+          "#private-field",
+          "#private-get",
+          "#private-instance-field",
+          "#private-instance-get",
+          "#private-instance-method",
+          "#private-instance-readonly-field",
+          "#private-instance-set",
+          "#private-instance-static-initialization",
+          "#private-method",
+          "#private-readonly-field",
+          "#private-set",
+          "#private-static-field",
+          "#private-static-get",
+          "#private-static-method",
+          "#private-static-readonly-field",
+          "#private-static-set",
+          "#private-static-static-initialization",
+          "abstract-field",
+          "abstract-get",
+          "abstract-method",
+          "abstract-readonly-field",
+          "abstract-set",
+          "abstract-static-initialization",
+          "call-signature",
+          "constructor",
+          "decorated-field",
+          "decorated-get",
+          "decorated-method",
+          "decorated-readonly-field",
+          "decorated-set",
+          "field",
+          "get",
+          "instance-field",
+          "instance-get",
+          "instance-method",
+          "instance-readonly-field",
+          "instance-set",
+          "instance-static-initialization",
+          "method",
+          "private-constructor",
+          "private-decorated-field",
+          "private-decorated-get",
+          "private-decorated-method",
+          "private-decorated-readonly-field",
+          "private-decorated-set",
+          "private-field",
+          "private-get",
+          "private-instance-field",
+          "private-instance-get",
+          "private-instance-method",
+          "private-instance-readonly-field",
+          "private-instance-set",
+          "private-instance-static-initialization",
+          "private-method",
+          "private-readonly-field",
+          "private-set",
+          "private-static-field",
+          "private-static-get",
+          "private-static-method",
+          "private-static-readonly-field",
+          "private-static-set",
+          "private-static-static-initialization",
+          "protected-abstract-field",
+          "protected-abstract-get",
+          "protected-abstract-method",
+          "protected-abstract-readonly-field",
+          "protected-abstract-set",
+          "protected-abstract-static-initialization",
+          "protected-constructor",
+          "protected-decorated-field",
+          "protected-decorated-get",
+          "protected-decorated-method",
+          "protected-decorated-readonly-field",
+          "protected-decorated-set",
+          "protected-field",
+          "protected-get",
+          "protected-instance-field",
+          "protected-instance-get",
+          "protected-instance-method",
+          "protected-instance-readonly-field",
+          "protected-instance-set",
+          "protected-instance-static-initialization",
+          "protected-method",
+          "protected-readonly-field",
+          "protected-set",
+          "protected-static-field",
+          "protected-static-get",
+          "protected-static-method",
+          "protected-static-readonly-field",
+          "protected-static-set",
+          "protected-static-static-initialization",
+          "public-abstract-field",
+          "public-abstract-get",
+          "public-abstract-method",
+          "public-abstract-readonly-field",
+          "public-abstract-set",
+          "public-abstract-static-initialization",
+          "public-constructor",
+          "public-decorated-field",
+          "public-decorated-get",
+          "public-decorated-method",
+          "public-decorated-readonly-field",
+          "public-decorated-set",
+          "public-field",
+          "public-get",
+          "public-instance-field",
+          "public-instance-get",
+          "public-instance-method",
+          "public-instance-readonly-field",
+          "public-instance-set",
+          "public-instance-static-initialization",
+          "public-method",
+          "public-readonly-field",
+          "public-set",
+          "public-static-field",
+          "public-static-get",
+          "public-static-method",
+          "public-static-readonly-field",
+          "public-static-set",
+          "public-static-static-initialization",
+          "readonly-field",
+          "readonly-signature",
+          "set",
+          "signature",
+          "static-field",
+          "static-get",
+          "static-initialization",
+          "static-method",
+          "static-readonly-field",
+          "static-set",
+          "static-static-initialization"
+        ],
+        "type": "string"
+      },
+      "baseConfig": {
+        "oneOf": [
+          {
+            "enum": ["never"],
+            "type": "string"
+          },
+          {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/items/0/$defs/allItems"
+                },
+                {
+                  "items": {
+                    "$ref": "#/items/0/$defs/allItems"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "type": "array"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "memberTypes": {
+                "oneOf": [
+                  {
+                    "items": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/items/0/$defs/allItems"
+                        },
+                        {
+                          "items": {
+                            "$ref": "#/items/0/$defs/allItems"
+                          },
+                          "type": "array"
+                        }
+                      ]
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "enum": ["never"],
+                    "type": "string"
+                  }
+                ]
+              },
+              "optionalityOrder": {
+                "$ref": "#/items/0/$defs/optionalityOrderOptions"
+              },
+              "order": {
+                "$ref": "#/items/0/$defs/orderOptions"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      },
+      "optionalityOrderOptions": {
+        "enum": ["optional-first", "required-first"],
+        "type": "string"
+      },
+      "orderOptions": {
+        "enum": [
+          "alphabetically",
+          "alphabetically-case-insensitive",
+          "as-written",
+          "natural",
+          "natural-case-insensitive"
+        ],
+        "type": "string"
+      },
+      "typeItems": {
+        "enum": [
+          "constructor",
+          "field",
+          "method",
+          "readonly-field",
+          "readonly-signature",
+          "signature"
+        ],
+        "type": "string"
+      },
+      "typesConfig": {
+        "oneOf": [
+          {
+            "enum": ["never"],
+            "type": "string"
+          },
+          {
+            "items": {
+              "oneOf": [
+                {
+                  "$ref": "#/items/0/$defs/typeItems"
+                },
+                {
+                  "items": {
+                    "$ref": "#/items/0/$defs/typeItems"
+                  },
+                  "type": "array"
+                }
+              ]
+            },
+            "type": "array"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "memberTypes": {
+                "oneOf": [
+                  {
+                    "items": {
+                      "oneOf": [
+                        {
+                          "$ref": "#/items/0/$defs/typeItems"
+                        },
+                        {
+                          "items": {
+                            "$ref": "#/items/0/$defs/typeItems"
+                          },
+                          "type": "array"
+                        }
+                      ]
+                    },
+                    "type": "array"
+                  },
+                  {
+                    "enum": ["never"],
+                    "type": "string"
+                  }
+                ]
+              },
+              "optionalityOrder": {
+                "$ref": "#/items/0/$defs/optionalityOrderOptions"
+              },
+              "order": {
+                "$ref": "#/items/0/$defs/orderOptions"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "classes": {
+        "$ref": "#/items/0/$defs/baseConfig"
+      },
+      "classExpressions": {
+        "$ref": "#/items/0/$defs/baseConfig"
+      },
+      "default": {
+        "$ref": "#/items/0/$defs/baseConfig"
+      },
+      "interfaces": {
+        "$ref": "#/items/0/$defs/typesConfig"
+      },
+      "typeLiterals": {
+        "$ref": "#/items/0/$defs/typesConfig"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type OrderOptions =
+  | 'alphabetically'
+  | 'alphabetically-case-insensitive'
+  | 'as-written'
+  | 'natural'
+  | 'natural-case-insensitive';
+
+type OptionalityOrderOptions = 'optional-first' | 'required-first';
+
+type AllItems =
+  | '#private-field'
+  | '#private-get'
+  | '#private-instance-field'
+  | '#private-instance-get'
+  | '#private-instance-method'
+  | '#private-instance-readonly-field'
+  | '#private-instance-set'
+  | '#private-instance-static-initialization'
+  | '#private-method'
+  | '#private-readonly-field'
+  | '#private-set'
+  | '#private-static-field'
+  | '#private-static-get'
+  | '#private-static-method'
+  | '#private-static-readonly-field'
+  | '#private-static-set'
+  | '#private-static-static-initialization'
+  | 'abstract-field'
+  | 'abstract-get'
+  | 'abstract-method'
+  | 'abstract-readonly-field'
+  | 'abstract-set'
+  | 'abstract-static-initialization'
+  | 'call-signature'
+  | 'constructor'
+  | 'decorated-field'
+  | 'decorated-get'
+  | 'decorated-method'
+  | 'decorated-readonly-field'
+  | 'decorated-set'
+  | 'field'
+  | 'get'
+  | 'instance-field'
+  | 'instance-get'
+  | 'instance-method'
+  | 'instance-readonly-field'
+  | 'instance-set'
+  | 'instance-static-initialization'
+  | 'method'
+  | 'private-constructor'
+  | 'private-decorated-field'
+  | 'private-decorated-get'
+  | 'private-decorated-method'
+  | 'private-decorated-readonly-field'
+  | 'private-decorated-set'
+  | 'private-field'
+  | 'private-get'
+  | 'private-instance-field'
+  | 'private-instance-get'
+  | 'private-instance-method'
+  | 'private-instance-readonly-field'
+  | 'private-instance-set'
+  | 'private-instance-static-initialization'
+  | 'private-method'
+  | 'private-readonly-field'
+  | 'private-set'
+  | 'private-static-field'
+  | 'private-static-get'
+  | 'private-static-method'
+  | 'private-static-readonly-field'
+  | 'private-static-set'
+  | 'private-static-static-initialization'
+  | 'protected-abstract-field'
+  | 'protected-abstract-get'
+  | 'protected-abstract-method'
+  | 'protected-abstract-readonly-field'
+  | 'protected-abstract-set'
+  | 'protected-abstract-static-initialization'
+  | 'protected-constructor'
+  | 'protected-decorated-field'
+  | 'protected-decorated-get'
+  | 'protected-decorated-method'
+  | 'protected-decorated-readonly-field'
+  | 'protected-decorated-set'
+  | 'protected-field'
+  | 'protected-get'
+  | 'protected-instance-field'
+  | 'protected-instance-get'
+  | 'protected-instance-method'
+  | 'protected-instance-readonly-field'
+  | 'protected-instance-set'
+  | 'protected-instance-static-initialization'
+  | 'protected-method'
+  | 'protected-readonly-field'
+  | 'protected-set'
+  | 'protected-static-field'
+  | 'protected-static-get'
+  | 'protected-static-method'
+  | 'protected-static-readonly-field'
+  | 'protected-static-set'
+  | 'protected-static-static-initialization'
+  | 'public-abstract-field'
+  | 'public-abstract-get'
+  | 'public-abstract-method'
+  | 'public-abstract-readonly-field'
+  | 'public-abstract-set'
+  | 'public-abstract-static-initialization'
+  | 'public-constructor'
+  | 'public-decorated-field'
+  | 'public-decorated-get'
+  | 'public-decorated-method'
+  | 'public-decorated-readonly-field'
+  | 'public-decorated-set'
+  | 'public-field'
+  | 'public-get'
+  | 'public-instance-field'
+  | 'public-instance-get'
+  | 'public-instance-method'
+  | 'public-instance-readonly-field'
+  | 'public-instance-set'
+  | 'public-instance-static-initialization'
+  | 'public-method'
+  | 'public-readonly-field'
+  | 'public-set'
+  | 'public-static-field'
+  | 'public-static-get'
+  | 'public-static-method'
+  | 'public-static-readonly-field'
+  | 'public-static-set'
+  | 'public-static-static-initialization'
+  | 'readonly-field'
+  | 'readonly-signature'
+  | 'set'
+  | 'signature'
+  | 'static-field'
+  | 'static-get'
+  | 'static-initialization'
+  | 'static-method'
+  | 'static-readonly-field'
+  | 'static-set'
+  | 'static-static-initialization';
+
+type TypeItems =
+  | 'constructor'
+  | 'field'
+  | 'method'
+  | 'readonly-field'
+  | 'readonly-signature'
+  | 'signature';
+
+type BaseConfig =
+  | 'never'
+  | (AllItems | AllItems[])[]
+  | {
+      memberTypes?: 'never' | (AllItems | AllItems[])[];
+      optionalityOrder?: OptionalityOrderOptions;
+      order?: OrderOptions;
+    };
+
+type TypesConfig =
+  | 'never'
+  | (TypeItems | TypeItems[])[]
+  | {
+      memberTypes?: 'never' | (TypeItems | TypeItems[])[];
+      optionalityOrder?: OptionalityOrderOptions;
+      order?: OrderOptions;
+    };
+
+type Options = [
+  {
+    classExpressions?: BaseConfig;
+    classes?: BaseConfig;
+    default?: BaseConfig;
+    interfaces?: TypesConfig;
+    typeLiterals?: TypesConfig;
+  },
+];
+"
+`;

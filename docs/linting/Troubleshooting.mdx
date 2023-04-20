@@ -71,6 +71,42 @@ See our docs on [type aware linting](./Typed_Linting.mdx) for more information.
 You're using an outdated version of `@typescript-eslint/parser`.
 Update to the latest version to see a more informative version of this error message, explained [above](#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file 'backlink to I get errors telling me ESLint was configured to run ...').
 
+## How do I turn on a `@typescript-eslint` rule?
+
+First make sure you've read the docs and understand ESLint configuration files:
+
+- [Read our getting started guide](../Getting_Started.mdx) to ensure your config is properly setup to start configuring our rules.
+- [Checkout ESLint's documentation on configuring rules](https://eslint.org/docs/latest/use/configure/rules) to ensure you understand how to configure rules.
+
+Our [rule docs](/rules) detail the options each rule supports under the "Options" heading.
+We use TypeScript types to describe an `Options` tuple type for the rule which you can use to configure the a rule.
+In your config file the keys of the `rules` object are the names of the rules you wish to configure and the values follow the following form:
+
+```ts
+type Severity = 'off' | 'warn' | 'error';
+type RuleConfig =
+  | Severity
+  | [Severity]
+  | [
+      Severiy,
+      // Options is the tuple type from the rule docs
+      ...Options,
+    ];
+```
+
+Some examples
+
+```js title=".eslintrc.js"
+module.exports = {
+  rules: {
+    // turns a rule on with no configuration (i.e. uses the default configuration)
+    '@typescript-eslint/array-type': 'error',
+    // turns on a rule with configuration
+    '@typescript-eslint/no-explicit-any': ['warn', { ignoreRestArgs: true }],
+  },
+};
+```
+
 ## I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"
 
 You can use `parserOptions.extraFileExtensions` to specify an array of non-TypeScript extensions to allow, for example:

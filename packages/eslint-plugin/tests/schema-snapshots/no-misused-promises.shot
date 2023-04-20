@@ -1,0 +1,68 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-misused-promises 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "properties": {
+      "checksConditionals": {
+        "type": "boolean"
+      },
+      "checksSpreads": {
+        "type": "boolean"
+      },
+      "checksVoidReturn": {
+        "oneOf": [
+          {
+            "type": "boolean"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "arguments": {
+                "type": "boolean"
+              },
+              "attributes": {
+                "type": "boolean"
+              },
+              "properties": {
+                "type": "boolean"
+              },
+              "returns": {
+                "type": "boolean"
+              },
+              "variables": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          }
+        ]
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    checksConditionals?: boolean;
+    checksSpreads?: boolean;
+    checksVoidReturn?:
+      | {
+          arguments?: boolean;
+          attributes?: boolean;
+          properties?: boolean;
+          returns?: boolean;
+          variables?: boolean;
+        }
+      | boolean;
+  },
+];
+"
+`;
