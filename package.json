@@ -71,7 +71,7 @@
     "@types/jest": "^29.0.2",
     "@types/jest-specific-snapshot": "^0.5.5",
     "@types/marked": "^4.0.3",
-    "@types/natural-compare-lite": "^1.4.0",
+    "@types/natural-compare": "^1.4.0",
     "@types/node": "^18.11.9",
     "@types/prettier": "^2.6.0",
     "@types/rimraf": "^3.0.2",

@@ -3865,12 +3865,7 @@
   resolved "https://registry.yarnpkg.com/@types/ms/-/ms-0.7.31.tgz#31b7ca6407128a3d2bbc27fe2d21b345397f6197"
   integrity sha512-iiUgKzV9AuaEkZqkOLDIvlQiL6ltuZd9tGcW3gwpnX8JbuiuhFlEGmmFXEXkN50Cvq7Os88IY2v0dkDqXYWVgA==
 
-"@types/natural-compare-lite@^1.4.0":
-  version "1.4.0"
-  resolved "https://registry.yarnpkg.com/@types/natural-compare-lite/-/natural-compare-lite-1.4.0.tgz#90724682da3c304dd8d643b4e9ba00f53f29d454"
-  integrity sha512-ZDcj/yWsRPacqKPpCExWWFq9X1JQwEOfHsu8deN1Qfa6M02z6tN4DK6AMf2IkM7709gp3QW6Bo7m2NFDhA485w==
-
-"@types/natural-compare@*":
+"@types/natural-compare@*", "@types/natural-compare@^1.4.0":
   version "1.4.1"
   resolved "https://registry.yarnpkg.com/@types/natural-compare/-/natural-compare-1.4.1.tgz#fc2b11ea100d380b0de7af15768bef209157bfb9"
   integrity sha512-9dr4UakpvN0QUvwNefk9+o14Sr1pPPIDWkgCxPkHcg3kyjtc9eKK1ng6dZ23vRwByloCqXYtZ1T5nJxkk3Ib3A==
