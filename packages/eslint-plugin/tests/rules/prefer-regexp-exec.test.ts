@@ -74,6 +74,12 @@ const matchCount = (str: string, re: RegExp) => {
   return (str.match(re) || []).length;
 };
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6928
+    `
+function test(str: string) {
+  str.match('[a-z');
+}
+    `,
   ],
   invalid: [
     {
