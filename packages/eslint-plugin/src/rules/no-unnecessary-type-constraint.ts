@@ -1,6 +1,6 @@
-import { extname } from 'path';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { extname } from 'path';
 import * as semver from 'semver';
 import * as ts from 'typescript';
 
