@@ -26,9 +26,13 @@ export function getRuleJsonSchemaWithErrorLevel(
   ruleSchema: JSONSchema4 | readonly JSONSchema4[],
 ): JSONSchema4 {
   if (isArray(ruleSchema)) {
+    const defaultRuleSchemaCopy = { ...defaultRuleSchema };
+    if (ruleSchema[0]?.$defs) {
+      defaultRuleSchemaCopy.$defs = ruleSchema[0].$defs;
+    }
     return {
       type: 'array',
-      items: [defaultRuleSchema, ...ruleSchema],
+      items: [defaultRuleSchemaCopy, ...ruleSchema],
       minItems: 1,
       additionalItems: false,
     };
@@ -43,8 +47,8 @@ export function getRuleJsonSchemaWithErrorLevel(
       additionalItems: false,
     };
   }
+  // example: naming-convention rule
   if (typeof ruleSchema.items === 'object' && ruleSchema.items) {
-    // example: naming-convention rule
     return {
       ...ruleSchema,
       items: [defaultRuleSchema],
