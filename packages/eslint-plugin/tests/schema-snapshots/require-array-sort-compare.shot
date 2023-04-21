@@ -6,6 +6,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 [
   {
+    "additionalProperties": false,
     "properties": {
       "ignoreStringArrays": {
         "description": "Whether to ignore arrays in which all elements are strings.",

@@ -112,6 +112,7 @@ export default util.createRule<Options, MessageIds>({
             enum: ['array', 'generic', 'array-simple'],
           },
         },
+        additionalProperties: false,
         properties: {
           default: {
             $ref: '#/items/0/$defs/arrayOption',
