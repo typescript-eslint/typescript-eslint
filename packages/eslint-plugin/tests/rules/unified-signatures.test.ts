@@ -184,6 +184,13 @@ function f(): string;
     },
     {
       code: `
+function f(v: boolean, u: boolean): number;
+function f(v: boolean): string;
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
 function f(v: number, u?: string): void {}
 function f(v: number): void;
 function f(): string;
