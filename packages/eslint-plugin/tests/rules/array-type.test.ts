@@ -3,8 +3,8 @@ import { TSESLint } from '@typescript-eslint/utils';
 
 import type { OptionString } from '../../src/rules/array-type';
 import rule from '../../src/rules/array-type';
-import { RuleTester } from '../RuleTester';
 import { areOptionsValid } from '../areOptionsValid';
+import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
