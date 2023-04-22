@@ -25,7 +25,6 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "items": {
           "$ref": "#/items/0/$defs/modifier"
         },
-        "minItems": 1,
         "type": "array"
       },
       "prefer": {
@@ -50,7 +49,7 @@ type Modifier =
 
 type Options = [
   {
-    allow?: [Modifier, ...Modifier[]];
+    allow?: Modifier[];
     prefer?: 'class-property' | 'parameter-property';
   },
 ];

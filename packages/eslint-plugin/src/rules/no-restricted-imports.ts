@@ -19,6 +19,66 @@ const baseRule = getESLintCoreRule('no-restricted-imports');
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
+// In some versions of eslint, the base rule has a completely incompatible schema
+// This helper function is to safely try to get parts of the schema. If it's not
+// possible, we'll fallback to less strict checks.
+const tryAccess = <T>(getter: () => T, fallback: T): T => {
+  try {
+    return getter();
+  } catch {
+    return fallback;
+  }
+};
+
+const baseSchema = baseRule.meta.schema as {
+  anyOf: [
+    unknown,
+    {
+      type: 'array';
+      items: [
+        {
+          type: 'object';
+          properties: {
+            paths: {
+              type: 'array';
+              items: {
+                anyOf: [
+                  { type: 'string' },
+                  {
+                    type: 'object';
+                    properties: JSONSchema4['properties'];
+                    required: string[];
+                  },
+                ];
+              };
+            };
+            patterns: {
+              anyOf: [
+                { type: 'array'; items: { type: 'string' } },
+                {
+                  type: 'array';
+                  items: {
+                    type: 'object';
+                    properties: JSONSchema4['properties'];
+                    required: string[];
+                  };
+                },
+              ];
+            };
+          };
+        },
+      ];
+    },
+  ];
+};
+
+const allowTypeImportsOptionSchema: JSONSchema4['properties'] = {
+  allowTypeImports: {
+    type: 'boolean',
+    description: 'Disallow value imports, but allow type-only imports.',
+  },
+};
+
 const arrayOfStringsOrObjects: JSONSchema4 = {
   type: 'array',
   items: {
@@ -26,30 +86,28 @@ const arrayOfStringsOrObjects: JSONSchema4 = {
       { type: 'string' },
       {
         type: 'object',
-        properties: {
-          name: { type: 'string' },
-          message: {
-            type: 'string',
-            minLength: 1,
-          },
-          importNames: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-          },
-          allowTypeImports: {
-            type: 'boolean',
-            description: 'Disallow value imports, but allow type-only imports.',
-          },
-        },
         additionalProperties: false,
-        required: ['name'],
+        properties: {
+          ...tryAccess(
+            () =>
+              baseSchema.anyOf[1].items[0].properties.paths.items.anyOf[1]
+                .properties,
+            undefined,
+          ),
+          ...allowTypeImportsOptionSchema,
+        },
+        required: tryAccess(
+          () =>
+            baseSchema.anyOf[1].items[0].properties.paths.items.anyOf[1]
+              .required,
+          undefined,
+        ),
       },
     ],
   },
   uniqueItems: true,
 };
+
 const arrayOfStringsOrObjectPatterns: JSONSchema4 = {
   anyOf: [
     {
@@ -63,39 +121,44 @@ const arrayOfStringsOrObjectPatterns: JSONSchema4 = {
       type: 'array',
       items: {
         type: 'object',
-        properties: {
-          importNames: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-            minItems: 1,
-            uniqueItems: true,
-          },
-          group: {
-            type: 'array',
-            items: {
-              type: 'string',
-            },
-            minItems: 1,
-            uniqueItems: true,
-          },
-          message: {
-            type: 'string',
-            minLength: 1,
-          },
-          caseSensitive: {
-            type: 'boolean',
-          },
-          allowTypeImports: {
-            type: 'boolean',
-            description: 'Disallow value imports, but allow type-only imports.',
-          },
-        },
         additionalProperties: false,
-        required: ['group'],
+        properties: {
+          ...tryAccess(
+            () =>
+              baseSchema.anyOf[1].items[0].properties.patterns.anyOf[1].items
+                .properties,
+            undefined,
+          ),
+          ...allowTypeImportsOptionSchema,
+        },
+        required: tryAccess(
+          () =>
+            baseSchema.anyOf[1].items[0].properties.patterns.anyOf[1].items
+              .required,
+          [],
+        ),
       },
       uniqueItems: true,
+    },
+  ],
+};
+
+const schema: JSONSchema4 = {
+  anyOf: [
+    arrayOfStringsOrObjects,
+    {
+      type: 'array',
+      items: [
+        {
+          type: 'object',
+          properties: {
+            paths: arrayOfStringsOrObjects,
+            patterns: arrayOfStringsOrObjectPatterns,
+          },
+          additionalProperties: false,
+        },
+      ],
+      additionalItems: false,
     },
   ],
 };
@@ -153,25 +216,7 @@ export default createRule<Options, MessageIds>({
     },
     messages: baseRule.meta.messages,
     fixable: baseRule.meta.fixable,
-    schema: {
-      anyOf: [
-        arrayOfStringsOrObjects,
-        {
-          type: 'array',
-          items: [
-            {
-              type: 'object',
-              properties: {
-                paths: arrayOfStringsOrObjects,
-                patterns: arrayOfStringsOrObjectPatterns,
-              },
-              additionalProperties: false,
-            },
-          ],
-          additionalItems: false,
-        },
-      ],
-    },
+    schema,
   },
   defaultOptions: [],
   create(context) {

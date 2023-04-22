@@ -7,6 +7,7 @@ import path from 'path';
 import { format, resolveConfig } from 'prettier';
 
 import rules from '../src/rules/index';
+import { areOptionsValid } from './areOptionsValid';
 
 const snapshotFolder = path.resolve(__dirname, 'schema-snapshots');
 try {
@@ -150,6 +151,37 @@ describe('Rules should only define valid keys on schemas', () => {
         expect(VALID_SCHEMA_PROPS).toContain(key);
         return value;
       });
+    });
+  }
+});
+
+describe('Rule schemas should validate options correctly', () => {
+  // Normally, we use the rule's default options as an example of valid options.
+  // However, the defaults might not actually be valid (especially in the case
+  // where the defaults have to cover multiple incompatible options).
+  // This override allows providing example valid options for rules which don't
+  // accept their defaults.
+  const overrideValidOptions: Record<string, unknown> = {
+    semi: ['never'],
+    'func-call-spacing': ['never'],
+  };
+
+  for (const [ruleName, rule] of Object.entries(rules)) {
+    test(`${ruleName} must accept valid options`, () => {
+      if (
+        !areOptionsValid(
+          rule,
+          overrideValidOptions[ruleName] ?? rule.defaultOptions,
+        )
+      ) {
+        throw new Error(`Options failed validation against rule's schema`);
+      }
+    });
+
+    test(`${ruleName} rejects arbitrary options`, () => {
+      if (areOptionsValid(rule, [{ 'arbitrary-schemas.test.ts': true }])) {
+        throw new Error(`Options succeeded validation for arbitrary options`);
+      }
     });
   }
 });
