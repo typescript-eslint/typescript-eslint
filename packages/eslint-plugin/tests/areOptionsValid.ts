@@ -1,4 +1,4 @@
-import { RuleModule } from '@typescript-eslint/utils/ts-eslint';
+import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 import Ajv from 'ajv';
 import type { JSONSchema4 } from 'json-schema';
 
@@ -23,7 +23,7 @@ function normalizeSchema(
   schema: JSONSchema4 | readonly JSONSchema4[],
 ): JSONSchema4 {
   if (!Array.isArray(schema)) {
-    return schema;
+    return schema as JSONSchema4;
   }
 
   if (schema.length === 0) {
