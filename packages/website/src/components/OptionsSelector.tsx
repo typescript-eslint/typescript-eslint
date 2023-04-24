@@ -2,31 +2,30 @@ import {
   NavbarSecondaryMenuFiller,
   useWindowSize,
 } from '@docusaurus/theme-common';
-import Checkbox from '@site/src/components/inputs/Checkbox';
 import CopyIcon from '@site/src/icons/copy.svg';
 import IconExternalLink from '@theme/Icon/ExternalLink';
 import React, { useCallback } from 'react';
 
 import { useClipboard } from '../hooks/useClipboard';
+import Checkbox from './inputs/Checkbox';
 import Dropdown from './inputs/Dropdown';
 import Tooltip from './inputs/Tooltip';
 import ActionLabel from './layout/ActionLabel';
 import Expander from './layout/Expander';
 import InputLabel from './layout/InputLabel';
 import { createMarkdown, createMarkdownParams } from './lib/markdown';
-import { fileTypes } from './options';
+import { fileTypes, tsVersions } from './options';
+import styles from './Playground.module.css';
 import type { ConfigModel } from './types';
 
 export interface OptionsSelectorParams {
   readonly state: ConfigModel;
   readonly setState: (cfg: Partial<ConfigModel>) => void;
-  readonly tsVersions: readonly string[];
 }
 
 function OptionsSelectorContent({
   state,
   setState,
-  tsVersions,
 }: OptionsSelectorParams): JSX.Element {
   const [copyLink, copyLinkToClipboard] = useClipboard(() =>
     document.location.toString(),
@@ -35,7 +34,7 @@ function OptionsSelectorContent({
     createMarkdown(state),
   );
 
-  const openIssue = useCallback(() => {
+  const openIssue = useCallback((): void => {
     const params = createMarkdownParams(state);
 
     window
@@ -53,10 +52,9 @@ function OptionsSelectorContent({
           <Dropdown
             name="ts"
             className="text--right"
+            options={tsVersions}
             value={state.ts}
-            disabled={!tsVersions.length}
             onChange={(ts): void => setState({ ts })}
-            options={(tsVersions.length && tsVersions) || [state.ts]}
           />
         </InputLabel>
         <InputLabel name="Eslint">{process.env.ESLINT_VERSION}</InputLabel>
@@ -74,7 +72,7 @@ function OptionsSelectorContent({
         <InputLabel name="Source type">
           <Dropdown
             name="sourceType"
-            value={state.sourceType}
+            value={state.sourceType ?? 'module'}
             onChange={(sourceType): void => setState({ sourceType })}
             options={['script', 'module']}
           />
@@ -123,7 +121,12 @@ function OptionsSelector(props: OptionsSelectorParams): JSX.Element {
       />
     );
   }
-  return <OptionsSelectorContent {...props} />;
+
+  return (
+    <div className={styles.playgroundMenu}>
+      <OptionsSelectorContent {...props} />
+    </div>
+  );
 }
 
 export default OptionsSelector;

@@ -1,4 +1,5 @@
 export type OnHoverNodeFn = (node?: [number, number]) => void;
+export type OnClickNodeFn = (node?: unknown) => void;
 
 export type ParentNodeType =
   | 'esNode'

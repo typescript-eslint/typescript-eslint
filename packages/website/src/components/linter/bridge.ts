@@ -1,14 +1,28 @@
-import type * as tsvfs from '@site/src/vendor/typescript-vfs';
+import { createSystem } from '@typescript/vfs';
+import type * as Monaco from 'monaco-editor';
 import type * as ts from 'typescript';
 
 import { debounce } from '../lib/debounce';
+import type { PlaygroundSystem } from '../linter/types';
 import type { ConfigModel } from '../types';
-import type { PlaygroundSystem } from './types';
 
-export function createFileSystem(
-  config: Pick<ConfigModel, 'eslintrc' | 'tsconfig' | 'code' | 'fileType'>,
-  vfs: typeof tsvfs,
-): PlaygroundSystem {
+export async function addLibFiles(
+  system: PlaygroundSystem,
+  monaco: typeof Monaco,
+): Promise<void> {
+  const worker = await monaco.languages.typescript.getTypeScriptWorker();
+  const workerInstance = await worker();
+  if (workerInstance.getLibFiles) {
+    const libs = await workerInstance.getLibFiles();
+    if (libs) {
+      for (const [name, content] of Object.entries(libs)) {
+        system.writeFile('/' + name, content);
+      }
+    }
+  }
+}
+
+export function createFileSystem(config: ConfigModel): PlaygroundSystem {
   const files = new Map<string, string>();
   files.set(`/.eslintrc`, config.eslintrc);
   files.set(`/tsconfig.json`, config.tsconfig);
@@ -16,7 +30,7 @@ export function createFileSystem(
 
   const fileWatcherCallbacks = new Map<RegExp, Set<ts.FileWatcherCallback>>();
 
-  const system = vfs.createSystem(files) as PlaygroundSystem;
+  const system = createSystem(files) as PlaygroundSystem;
 
   system.watchFile = (
     path,
@@ -37,7 +51,10 @@ export function createFileSystem(
 
     return {
       close: (): void => {
-        fileWatcherCallbacks.get(expPath)?.delete(cb);
+        const handle = fileWatcherCallbacks.get(expPath);
+        if (handle) {
+          handle.delete(cb);
+        }
       },
     };
   };

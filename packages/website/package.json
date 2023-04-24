@@ -6,7 +6,7 @@
     "build": "docusaurus build",
     "clear": "docusaurus clear",
     "format": "prettier --write \"./**/*.{md,mdx,ts,js,tsx,jsx}\" --ignore-path ../../.prettierignore",
-    "generate-website-dts": "tsx ./tools/generate-website-dts.ts",
+    "generate-package-versions": "tsx ./tools/generate-package-versions.ts",
     "stylelint": "stylelint \"src/**/*.css\"",
     "stylelint:fix": "stylelint \"src/**/*.css\" --fix",
     "lint": "nx lint",
@@ -26,9 +26,11 @@
     "@mdx-js/react": "1.6.22",
     "@typescript-eslint/parser": "5.59.0",
     "@typescript-eslint/website-eslint": "5.59.0",
+    "@typescript/vfs": "^1.4.0",
     "clsx": "^1.1.1",
     "eslint": "*",
     "json-schema": "^0.4.0",
+    "@monaco-editor/react": "^4.3.0",
     "json5": "^2.2.1",
     "konamimojisplosion": "^0.5.1",
     "lz-string": "^1.5.0",
@@ -36,7 +38,7 @@
     "prism-react-renderer": "^1.3.3",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "react-split-pane": "^0.1.92",
+    "react-resizable-panels": "^0.0.36",
     "remark-docusaurus-tabs": "^0.2.0",
     "ts-node": "*",
     "typescript": "*"
@@ -57,14 +59,13 @@
     "copy-webpack-plugin": "^11.0.0",
     "cross-fetch": "*",
     "globby": "^11.1.0",
-    "make-dir": "*",
     "monaco-editor": "^0.37.0",
-    "rimraf": "*",
     "stylelint": "^15.3.0",
     "stylelint-config-recommended": "^11.0.0",
     "stylelint-config-standard": "^31.0.0",
     "stylelint-order": "^6.0.3",
-    "webpack": "^5.74.0"
+    "webpack": "^5.74.0",
+    "semver": "^7.3.7"
   },
   "browserslist": {
     "production": [

@@ -1,190 +1,194 @@
-import type { TSESTree } from '@typescript-eslint/utils';
-import clsx from 'clsx';
+import { useWindowSize } from '@docusaurus/theme-common';
 import type * as ESQuery from 'esquery';
-import React, { useCallback, useState } from 'react';
-import type { SourceFile } from 'typescript';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
+import type { ImperativePanelHandle } from 'react-resizable-panels';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 
 import ASTViewer from './ast/ASTViewer';
 import ConfigEslint from './config/ConfigEslint';
 import ConfigTypeScript from './config/ConfigTypeScript';
-import { EditorEmbed } from './editor/EditorEmbed';
-import { LoadingEditor } from './editor/LoadingEditor';
-import { ErrorsViewer, ErrorViewer } from './ErrorsViewer';
+import LoadingEditor from './editor/LoadingEditor';
+import { ErrorsViewer } from './ErrorsViewer';
 import { ESQueryFilter } from './ESQueryFilter';
 import useHashState from './hooks/useHashState';
 import EditorTabs from './layout/EditorTabs';
-import Loader from './layout/Loader';
+import { createFileSystem } from './linter/bridge';
+import type { PlaygroundSystem, UpdateModel } from './linter/types';
 import { defaultConfig, detailTabs } from './options';
 import OptionsSelector from './OptionsSelector';
 import styles from './Playground.module.css';
-import ConditionalSplitPane from './SplitPane/ConditionalSplitPane';
-import type { ErrorGroup, RuleDetails, SelectedRange, TabType } from './types';
+import { TypesDetails } from './typeDetails/TypesDetails';
+import type { ErrorGroup } from './types';
 
 function Playground(): JSX.Element {
   const [state, setState] = useHashState(defaultConfig);
-  const [esAst, setEsAst] = useState<TSESTree.Program | null>();
-  const [tsAst, setTsAST] = useState<SourceFile | null>();
-  const [scope, setScope] = useState<Record<string, unknown> | null>();
-  const [markers, setMarkers] = useState<ErrorGroup[]>();
-  const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
-  const [selectedRange, setSelectedRange] = useState<SelectedRange>();
-  const [position, setPosition] = useState<number>();
-  const [activeTab, setTab] = useState<TabType>('code');
-  const [esQueryFilter, setEsQueryFilter] = useState<ESQuery.Selector>();
-  const [esQueryError, setEsQueryError] = useState<Error>();
+
+  const [system] = useState<PlaygroundSystem>(() => createFileSystem(state));
+  const [activeFile, setFileName] = useState(`input${state.fileType}`);
+  const [editorFile, setEditorFile] = useState(`input${state.fileType}`);
   const [visualEslintRc, setVisualEslintRc] = useState(false);
   const [visualTSConfig, setVisualTSConfig] = useState(false);
+  const [errors, setErrors] = useState<ErrorGroup[]>([]);
+  const [astModel, setAstModel] = useState<UpdateModel>();
+  const [esQueryFilter, setEsQueryFilter] = useState<ESQuery.Selector>();
+  const [selectedRange, setSelectedRange] = useState<[number, number]>();
+  const [cursorPosition, onCursorChange] = useState<number>();
+  const playgroundMenuRef = useRef<ImperativePanelHandle>(null);
 
-  const onLoaded = useCallback(
-    (ruleNames: RuleDetails[], tsVersions: readonly string[]): void => {
-      setRuleNames(ruleNames);
-      setTSVersion(tsVersions);
-      setIsLoading(false);
-    },
-    [],
-  );
+  const windowSize = useWindowSize();
 
-  const activeVisualEditor = !isLoading
-    ? visualEslintRc && activeTab === 'eslintrc'
+  const activeVisualEditor =
+    visualEslintRc && activeFile === '.eslintrc'
       ? 'eslintrc'
-      : visualTSConfig && activeTab === 'tsconfig'
+      : visualTSConfig && activeFile === 'tsconfig.json'
       ? 'tsconfig'
-      : undefined
-    : undefined;
+      : undefined;
 
-  const onVisualEditor = useCallback((tab: TabType): void => {
-    if (tab === 'tsconfig') {
+  const onVisualEditor = useCallback((tab: string): void => {
+    if (tab === 'tsconfig.json') {
       setVisualTSConfig(val => !val);
-    } else if (tab === 'eslintrc') {
+    } else if (tab === '.eslintrc') {
       setVisualEslintRc(val => !val);
     }
   }, []);
 
-  const astToShow =
-    state.showAST === 'ts'
-      ? tsAst
-      : state.showAST === 'scope'
-      ? scope
-      : state.showAST === 'es'
-      ? esAst
-      : undefined;
+  useEffect(() => {
+    const closeable = [
+      system.watchFile('/input.*', fileName => {
+        setState({ code: system.readFile(fileName) });
+      }),
+      system.watchFile('/.eslintrc', fileName => {
+        setState({ eslintrc: system.readFile(fileName) });
+      }),
+      system.watchFile('/tsconfig.json', fileName => {
+        setState({ tsconfig: system.readFile(fileName) });
+      }),
+    ];
+    return () => {
+      closeable.forEach(d => d.close());
+    };
+  }, [setState, system]);
+
+  useEffect(() => {
+    const newFile = `input${state.fileType}`;
+    if (newFile !== editorFile) {
+      if (editorFile === activeFile) {
+        setFileName(newFile);
+      }
+      setEditorFile(newFile);
+    }
+  }, [state, system, editorFile, activeFile]);
+
+  useEffect(() => {
+    if (windowSize === 'mobile') {
+      playgroundMenuRef.current?.collapse();
+    } else if (windowSize === 'desktop') {
+      playgroundMenuRef.current?.expand();
+    }
+  }, [windowSize, playgroundMenuRef]);
 
   return (
-    <div className={styles.codeContainer}>
-      <div className={styles.codeBlocks}>
-        <ConditionalSplitPane
-          split="vertical"
-          minSize="10%"
-          defaultSize="20rem"
-          maxSize={
-            20 * parseFloat(getComputedStyle(document.documentElement).fontSize)
-          }
+    <>
+      <PanelGroup
+        className={styles.panelGroup}
+        autoSaveId="playground-resize"
+        direction={windowSize === 'mobile' ? 'vertical' : 'horizontal'}
+      >
+        <Panel
+          id="playgroundMenu"
+          className={styles.PanelRow}
+          defaultSize={20}
+          minSize={10}
+          collapsible={true}
+          ref={playgroundMenuRef}
         >
-          <div className={clsx(styles.options, 'thin-scrollbar')}>
-            <OptionsSelector
-              state={state}
-              tsVersions={tsVersions}
-              setState={setState}
+          <OptionsSelector state={state} setState={setState} />
+        </Panel>
+        <PanelResizeHandle
+          className={styles.PanelResizeHandle}
+          style={windowSize === 'mobile' ? { display: 'none' } : {}}
+        />
+        <Panel
+          id="playgroundEditor"
+          className={styles.PanelRow}
+          collapsible={true}
+        >
+          <div className={styles.playgroundEditor}>
+            <EditorTabs
+              tabs={[editorFile, '.eslintrc', 'tsconfig.json']}
+              active={activeFile}
+              change={setFileName}
+              showModal={onVisualEditor}
+              showVisualEditor={activeFile !== editorFile}
+            />
+            {(activeVisualEditor === 'eslintrc' && (
+              <ConfigEslint className={styles.tabCode} system={system} />
+            )) ||
+              (activeVisualEditor === 'tsconfig' && (
+                <ConfigTypeScript className={styles.tabCode} system={system} />
+              ))}
+            <LoadingEditor
+              className={activeVisualEditor ? styles.hidden : ''}
+              tsVersion={state.ts}
+              onUpdate={setAstModel}
+              system={system}
+              activeFile={activeFile}
+              onValidate={setErrors}
+              onCursorChange={onCursorChange}
+              selectedRange={selectedRange}
             />
           </div>
-          <ConditionalSplitPane
-            split="vertical"
-            minSize="10%"
-            defaultSize="50%"
-            pane2Style={{ overflow: 'hidden' }}
-          >
-            <div className={clsx(styles.sourceCode)}>
-              {isLoading && <Loader />}
+        </Panel>
+        <PanelResizeHandle className={styles.PanelResizeHandle} />
+        <Panel
+          id="playgroundInfo"
+          className={styles.PanelRow}
+          defaultSize={50}
+          collapsible={true}
+        >
+          <div className={styles.playgroundInfoContainer}>
+            <div className={styles.playgroundInfoHeader}>
               <EditorTabs
-                tabs={['code', 'tsconfig', 'eslintrc']}
-                active={activeTab}
-                change={setTab}
-                showVisualEditor={activeTab !== 'code'}
-                showModal={onVisualEditor}
+                tabs={detailTabs}
+                active={state.showAST ?? false}
+                change={(v): void => setState({ showAST: v })}
               />
-              {(activeVisualEditor === 'eslintrc' && (
-                <ConfigEslint
-                  className={styles.tabCode}
-                  ruleOptions={ruleNames}
-                  config={state.eslintrc}
-                  onChange={setState}
-                />
-              )) ||
-                (activeVisualEditor === 'tsconfig' && (
-                  <ConfigTypeScript
-                    className={styles.tabCode}
-                    config={state.tsconfig}
-                    onChange={setState}
-                  />
-                ))}
-              <div
-                key="monacoEditor"
-                className={clsx(
-                  styles.tabCode,
-                  !!activeVisualEditor && styles.hidden,
-                )}
-              >
-                <EditorEmbed />
-              </div>
-              <LoadingEditor
-                ts={state.ts}
-                fileType={state.fileType}
-                activeTab={activeTab}
-                code={state.code}
-                tsconfig={state.tsconfig}
-                eslintrc={state.eslintrc}
-                sourceType={state.sourceType}
-                showAST={state.showAST}
-                onEsASTChange={setEsAst}
-                onTsASTChange={setTsAST}
-                onScopeChange={setScope}
-                onMarkersChange={setMarkers}
-                selectedRange={selectedRange}
-                onChange={setState}
-                onLoaded={onLoaded}
-                onSelect={setPosition}
-              />
+              {state.showAST === 'es' && (
+                <ESQueryFilter onChange={setEsQueryFilter} />
+              )}
             </div>
-            <div className={styles.astViewer}>
-              <div className={styles.playgroundInfoHeader}>
-                <EditorTabs
-                  tabs={detailTabs}
-                  active={state.showAST ?? false}
-                  change={(v): void => setState({ showAST: v })}
+            <div className={styles.playgroundInfo}>
+              {!state.showAST || !astModel ? (
+                <ErrorsViewer value={errors} />
+              ) : state.showAST === 'types' && astModel.storedTsAST ? (
+                <TypesDetails
+                  typeChecker={astModel.typeChecker}
+                  value={astModel.storedTsAST}
+                  onHoverNode={setSelectedRange}
+                  cursorPosition={cursorPosition}
                 />
-                {state.showAST === 'es' && (
-                  <ESQueryFilter
-                    onChange={setEsQueryFilter}
-                    onError={setEsQueryError}
-                  />
-                )}
-              </div>
-
-              {(state.showAST === 'es' && esQueryError && (
-                <ErrorViewer
-                  type="warning"
-                  title="Invalid Selector"
-                  value={esQueryError}
+              ) : (
+                <ASTViewer
+                  key={state.showAST}
+                  filter={state.showAST === 'es' ? esQueryFilter : undefined}
+                  value={
+                    state.showAST === 'ts'
+                      ? astModel.storedTsAST
+                      : state.showAST === 'scope'
+                      ? astModel.storedScope
+                      : astModel.storedAST
+                  }
+                  showTokens={state.showTokens}
+                  enableScrolling={state.scroll}
+                  cursorPosition={cursorPosition}
+                  onHoverNode={setSelectedRange}
                 />
-              )) ||
-                (state.showAST && astToShow && (
-                  <ASTViewer
-                    key={String(state.showAST)}
-                    filter={state.showAST === 'es' ? esQueryFilter : undefined}
-                    value={astToShow}
-                    showTokens={state.showTokens}
-                    enableScrolling={state.scroll}
-                    cursorPosition={position}
-                    onHoverNode={setSelectedRange}
-                  />
-                )) || <ErrorsViewer value={markers} />}
+              )}
             </div>
-          </ConditionalSplitPane>
-        </ConditionalSplitPane>
-      </div>
-    </div>
+          </div>
+        </Panel>
+      </PanelGroup>
+    </>
   );
 }
 

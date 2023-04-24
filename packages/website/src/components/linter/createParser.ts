@@ -1,4 +1,5 @@
-import type * as tsvfs from '@site/src/vendor/typescript-vfs';
+import type { VirtualTypeScriptEnvironment } from '@typescript/vfs';
+import { createVirtualTypeScriptEnvironment } from '@typescript/vfs';
 import type { ParserOptions } from '@typescript-eslint/types';
 import type { TSESLint } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
@@ -16,7 +17,6 @@ export function createParser(
   compilerOptions: ts.CompilerOptions,
   onUpdate: (filename: string, model: UpdateModel) => void,
   utils: WebLinterModule,
-  vfs: typeof tsvfs,
 ): TSESLint.Linter.ParserModule & {
   updateConfig: (compilerOptions: ts.CompilerOptions) => void;
 } {
@@ -24,8 +24,8 @@ export function createParser(
 
   const createEnv = (
     compilerOptions: ts.CompilerOptions,
-  ): tsvfs.VirtualTypeScriptEnvironment => {
-    return vfs.createVirtualTypeScriptEnvironment(
+  ): VirtualTypeScriptEnvironment => {
+    return createVirtualTypeScriptEnvironment(
       system,
       Array.from(registeredFiles),
       window.ts,

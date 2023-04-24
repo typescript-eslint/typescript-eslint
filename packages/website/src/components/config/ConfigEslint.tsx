@@ -1,63 +1,47 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useSystemFile } from '@site/src/components/hooks/useSystemFile';
+import type { JSONSchema4 } from 'json-schema';
+import React, { useCallback, useMemo } from 'react';
 
-import { ensureObject, parseJSONObject, toJson } from '../lib/json';
+import { ensureObject } from '../lib/json';
 import { shallowEqual } from '../lib/shallowEqual';
-import type { ConfigModel, RuleDetails } from '../types';
-import type { ConfigOptionsField, ConfigOptionsType } from './ConfigEditor';
+import type { PlaygroundSystem } from '../linter/types';
 import ConfigEditor from './ConfigEditor';
+import { schemaToConfigOptions } from './utils';
 
-export interface ConfigEslintProps {
-  readonly onChange: (value: Partial<ConfigModel>) => void;
-  readonly ruleOptions: RuleDetails[];
-  readonly config?: string;
+export interface ConfigProps {
   readonly className?: string;
+  readonly system: PlaygroundSystem;
 }
 
-function ConfigEslint(props: ConfigEslintProps): JSX.Element {
-  const { config, onChange: onChangeProp, ruleOptions, className } = props;
-
-  const [configObject, updateConfigObject] = useState<Record<string, unknown>>(
-    () => ({}),
+function ConfigEslint({ className, system }: ConfigProps): JSX.Element {
+  const [rawConfig, updateConfigObject] = useSystemFile(system, '/.eslintrc');
+  const configObject = useMemo(
+    () => ensureObject(rawConfig?.rules),
+    [rawConfig],
   );
 
-  useEffect(() => {
-    updateConfigObject(oldConfig => {
-      const newConfig = ensureObject(parseJSONObject(config).rules);
-      if (shallowEqual(oldConfig, newConfig)) {
-        return oldConfig;
+  const options = useMemo(() => {
+    const schemaContent = system.readFile('/schema/eslint.schema');
+    if (schemaContent) {
+      const schema = JSON.parse(schemaContent) as JSONSchema4;
+      if (schema.type === 'object') {
+        const props = schema.properties?.rules?.properties;
+        if (props) {
+          return schemaToConfigOptions(props).reverse();
+        }
       }
-      return newConfig;
-    });
-  }, [config]);
+    }
 
-  const options = useMemo((): ConfigOptionsType[] => {
-    const mappedRules: ConfigOptionsField[] = ruleOptions.map(item => ({
-      key: item.name,
-      label: item.description,
-      type: 'boolean',
-      defaults: ['error', 2, 'warn', 1, ['error'], ['warn'], [2], [1]],
-    }));
-
-    return [
-      {
-        heading: 'Rules',
-        fields: mappedRules.filter(item => item.key.startsWith('@typescript')),
-      },
-      {
-        heading: 'Core rules',
-        fields: mappedRules.filter(item => !item.key.startsWith('@typescript')),
-      },
-    ];
-  }, [ruleOptions]);
+    return [];
+  }, [system]);
 
   const onChange = useCallback(
     (newConfig: Record<string, unknown>) => {
-      const parsed = parseJSONObject(config);
-      parsed.rules = newConfig;
-      updateConfigObject(newConfig);
-      onChangeProp({ eslintrc: toJson(parsed) });
+      if (!shallowEqual(newConfig, ensureObject(rawConfig?.rules))) {
+        updateConfigObject({ ...rawConfig, rules: newConfig });
+      }
     },
-    [config, onChangeProp],
+    [rawConfig, updateConfigObject],
   );
 
   return (

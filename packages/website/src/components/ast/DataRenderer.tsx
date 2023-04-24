@@ -7,7 +7,7 @@ import styles from './ASTViewer.module.css';
 import HiddenItem from './HiddenItem';
 import PropertyName from './PropertyName';
 import PropertyValue from './PropertyValue';
-import type { OnHoverNodeFn, ParentNodeType } from './types';
+import type { OnClickNodeFn, OnHoverNodeFn, ParentNodeType } from './types';
 import {
   filterProperties,
   getNodeType,
@@ -25,6 +25,7 @@ export interface JsonRenderProps<T> {
   readonly lastElement?: boolean;
   readonly level: string;
   readonly onHover?: OnHoverNodeFn;
+  readonly onClickNode?: OnClickNodeFn;
   readonly selectedPath?: string;
   readonly showTokens?: boolean;
 }
@@ -47,6 +48,7 @@ function RenderExpandableObject({
   value,
   level,
   onHover,
+  onClickNode,
   selectedPath,
   showTokens,
 }: ExpandableRenderProps): JSX.Element {
@@ -103,7 +105,10 @@ function RenderExpandableObject({
       {typeName && (
         <PropertyName
           value={typeName}
-          onClick={toggleExpanded}
+          onClick={(): void => {
+            onClickNode?.(value);
+            toggleExpanded();
+          }}
           className={styles.tokenName}
           onHover={onHoverItem}
         />
@@ -121,6 +126,7 @@ function RenderExpandableObject({
               lastElement={index === lastIndex}
               level={`${level}.${dataElement[0]}`}
               onHover={onHover}
+              onClickNode={onClickNode}
               selectedPath={selectedPath}
               nodeType={nodeType}
               showTokens={showTokens}

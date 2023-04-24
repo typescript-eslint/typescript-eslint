@@ -3,44 +3,27 @@
   --playground-secondary-color: var(--ifm-color-emphasis-100);
 }
 
-.options {
+.playgroundMenu {
+  width: 100%;
   background: var(--playground-main-color);
-  overflow: auto;
-  z-index: 1;
 }
 
-.sourceCode {
-  height: 100%;
-  border: 1px solid var(--playground-secondary-color);
-}
-
-.codeBlocks {
-  display: flex;
-  flex: 1 1 0;
-  flex-direction: row;
-  height: 100%;
-  width: calc(100vw - 20rem);
-}
-
-.astViewer {
-  height: 100%;
+.playgroundEditor {
   width: 100%;
-  border: 1px solid var(--playground-secondary-color);
-  padding: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hidden {
+  display: none;
+  visibility: hidden;
+}
+
+.playgroundInfoContainer {
+  width: 100%;
+  height: 100%;
   overflow: auto;
-  word-wrap: initial;
-  white-space: nowrap;
   background: var(--code-editor-bg);
-}
-
-.codeContainer {
-  display: flex;
-  flex-direction: row;
-  position: fixed;
-  width: 100%;
-  height: calc(100% - var(--ifm-navbar-height));
-  top: var(--ifm-navbar-height);
-  z-index: calc(var(--ifm-z-index-fixed) - 1);
 }
 
 .playgroundInfoHeader {
@@ -50,41 +33,76 @@
   z-index: 1;
 }
 
-.tabCode {
-  height: calc(100% - 41px);
+.playgroundInfo {
+  word-wrap: normal;
+  width: 100%;
+  position: relative;
+  padding: 5px 0;
 }
 
-.hidden {
-  display: none;
-  visibility: hidden;
+.panelGroup {
+  height: calc(100vh - 60px) !important;
 }
 
-@media only screen and (max-width: 996px) {
-  .codeContainer {
-    display: block;
-    width: 100%;
-    position: static;
-  }
+.panelGroup .panelGroup {
+  height: calc(100vh - 111px) !important;
+}
 
-  .codeBlocks {
-    display: block;
-    width: 100%;
+@media (max-width: 996px) {
+  .panelGroup .panelGroup {
+    height: auto !important;
   }
+}
 
-  .options {
-    display: none;
-  }
+.Panel {
+  display: flex;
+  flex-direction: row;
+  font-size: 2rem;
+}
 
-  .tabCode {
-    height: calc(30rem - 3.2rem);
-  }
+.PanelColumn,
+.PanelRow {
+  display: flex;
+}
 
-  .astViewer,
-  .sourceCode {
-    height: 30rem;
-  }
+.PanelColumn {
+  flex-direction: column;
+}
 
-  .astViewer {
-    height: auto;
+.PanelRow {
+  flex-direction: row;
+}
+
+.PanelResizeHandle {
+  --resize-border-color: var(--playground-main-color);
+  --resize-background-color: var(--ifm-color-emphasis-200);
+
+  flex: 0 0 11px;
+  background-clip: padding-box;
+  display: flex;
+  justify-content: stretch;
+  align-items: stretch;
+  outline: none;
+  transition: border-color 0.2s linear, background-color 0.2s linear;
+  background-color: var(--resize-background-color);
+  border-color: var(--resize-border-color);
+  border-style: solid;
+  border-width: 0 5px;
+}
+
+.PanelResizeHandle[data-panel-group-direction='vertical'] {
+  flex-direction: column;
+  border-width: 5px 0;
+}
+
+.PanelResizeHandle[data-resize-handle-active],
+.PanelResizeHandle:hover {
+  --resize-border-color: var(--ifm-color-emphasis-200);
+  --resize-background-color: var(--ifm-color-emphasis-300);
+}
+
+@media (max-width: 500px) {
+  .PanelResizeHandle {
+    flex: 0 0 10px;
   }
 }

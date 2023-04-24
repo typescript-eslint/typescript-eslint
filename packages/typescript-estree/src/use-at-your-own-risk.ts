@@ -1,5 +1,4 @@
 // required by website
-export * from './create-program/getScriptKind';
 export * from './ast-converter';
 export type { ParseSettings } from './parseSettings';
 

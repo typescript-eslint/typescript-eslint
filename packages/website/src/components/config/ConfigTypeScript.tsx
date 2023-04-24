@@ -1,73 +1,50 @@
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import { useSystemFile } from '@site/src/components/hooks/useSystemFile';
+import type { JSONSchema4 } from 'json-schema';
+import React, { useCallback, useMemo } from 'react';
 
-import { ensureObject, parseJSONObject, toJson } from '../lib/json';
-import { getTypescriptOptions } from '../lib/jsonSchema';
+import { ensureObject } from '../lib/json';
 import { shallowEqual } from '../lib/shallowEqual';
-import type { ConfigModel } from '../types';
-import type { ConfigOptionsType } from './ConfigEditor';
+import type { PlaygroundSystem } from '../linter/types';
 import ConfigEditor from './ConfigEditor';
+import { schemaToConfigOptions } from './utils';
 
-interface ConfigTypeScriptProps {
-  readonly onChange: (config: Partial<ConfigModel>) => void;
-  readonly config?: string;
+export interface ConfigProps {
   readonly className?: string;
+  readonly system: PlaygroundSystem;
 }
 
-function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
-  const { config, onChange: onChangeProp, className } = props;
-
-  const [configObject, updateConfigObject] = useState<Record<string, unknown>>(
-    () => ({}),
+function ConfigTypeScript({ className, system }: ConfigProps): JSX.Element {
+  const [rawConfig, updateConfigObject] = useSystemFile(
+    system,
+    '/tsconfig.json',
+  );
+  const configObject = useMemo(
+    () => ensureObject(rawConfig?.compilerOptions),
+    [rawConfig],
   );
 
-  useEffect(() => {
-    updateConfigObject(oldConfig => {
-      const newConfig = ensureObject(parseJSONObject(config).compilerOptions);
-      if (shallowEqual(oldConfig, newConfig)) {
-        return oldConfig;
+  const options = useMemo(() => {
+    const schemaContent = system.readFile('/schema/tsconfig.schema');
+    if (schemaContent) {
+      const schema = JSON.parse(schemaContent) as JSONSchema4;
+      if (schema.type === 'object') {
+        const props = schema.properties?.compilerOptions?.properties;
+        if (props) {
+          return schemaToConfigOptions(props);
+        }
       }
-      return newConfig;
-    });
-  }, [config]);
+    }
 
-  const options = useMemo((): ConfigOptionsType[] => {
-    return Object.values(
-      getTypescriptOptions().reduce<Record<string, ConfigOptionsType>>(
-        (group, item) => {
-          const category = item.category!.message;
-          group[category] = group[category] ?? {
-            heading: category,
-            fields: [],
-          };
-          if (item.type === 'boolean') {
-            group[category].fields.push({
-              key: item.name,
-              type: 'boolean',
-              label: item.description!.message,
-            });
-          } else if (item.type instanceof Map) {
-            group[category].fields.push({
-              key: item.name,
-              type: 'string',
-              label: item.description!.message,
-              enum: ['', ...Array.from<string>(item.type.keys())],
-            });
-          }
-          return group;
-        },
-        {},
-      ),
-    );
-  }, []);
+    return [];
+  }, [system]);
 
   const onChange = useCallback(
     (newConfig: Record<string, unknown>) => {
-      const parsed = parseJSONObject(config);
-      parsed.compilerOptions = newConfig;
-      updateConfigObject(newConfig);
-      onChangeProp({ tsconfig: toJson(parsed) });
+      if (!shallowEqual(newConfig, ensureObject(rawConfig?.compilerOptions))) {
+        updateConfigObject({ ...rawConfig, compilerOptions: newConfig });
+      }
     },
-    [config, onChangeProp],
+    [rawConfig, updateConfigObject],
   );
 
   return (
