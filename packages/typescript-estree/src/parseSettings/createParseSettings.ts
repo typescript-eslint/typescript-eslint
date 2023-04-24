@@ -143,6 +143,10 @@ export function clearTSConfigMatchCache(): void {
   TSCONFIG_MATCH_CACHE?.clear();
 }
 
+export function clearTSServerProjectService(): void {
+  TSSERVER_PROJECT_SERVICE = null;
+}
+
 /**
  * Ensures source code is a string.
  */
