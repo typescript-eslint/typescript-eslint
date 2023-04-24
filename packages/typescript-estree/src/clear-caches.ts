@@ -1,6 +1,9 @@
 import { clearWatchCaches } from './create-program/getWatchProgramsForProjects';
 import { clearProgramCache as clearProgramCacheOriginal } from './parser';
-import { clearTSConfigMatchCache } from './parseSettings/createParseSettings';
+import {
+  clearTSConfigMatchCache,
+  clearTSServerProjectService,
+} from './parseSettings/createParseSettings';
 import { clearGlobCache } from './parseSettings/resolveProjectList';
 
 /**
@@ -14,6 +17,7 @@ export function clearCaches(): void {
   clearProgramCacheOriginal();
   clearWatchCaches();
   clearTSConfigMatchCache();
+  clearTSServerProjectService();
   clearGlobCache();
 }
 

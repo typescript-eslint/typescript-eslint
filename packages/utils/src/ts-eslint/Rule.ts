@@ -221,7 +221,7 @@ interface RuleContext<
    * It is a path to a directory that should be considered as the current working directory.
    * @since 6.6.0
    */
-  getCwd?(): string;
+  getCwd(): string;
 
   /**
    * Returns the filename associated with the source.

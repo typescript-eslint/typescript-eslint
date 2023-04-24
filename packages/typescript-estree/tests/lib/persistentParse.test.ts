@@ -4,6 +4,7 @@ import tmp from 'tmp';
 
 import { clearWatchCaches } from '../../src/create-program/getWatchProgramsForProjects';
 import { parseAndGenerateServices } from '../../src/parser';
+import { clearCaches } from '../../src';
 
 const CONTENTS = {
   foo: 'console.log("foo")',
@@ -177,6 +178,7 @@ function baseTests(
 
     // change the config file so it now includes all files
     writeTSConfig(PROJECT_DIR, tsConfigIncludeAll);
+    clearCaches();
 
     expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
     expect(() => parseFile('bar', PROJECT_DIR)).not.toThrow();
@@ -274,6 +276,7 @@ describe('persistent parse', () => {
 
       // write a new file and attempt to parse it
       writeFile(PROJECT_DIR, 'bar');
+      clearCaches();
 
       expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
       expect(() => parseFile('bar', PROJECT_DIR)).not.toThrow();
@@ -289,6 +292,7 @@ describe('persistent parse', () => {
 
       // write a new file and attempt to parse it
       writeFile(PROJECT_DIR, bazSlashBar);
+      clearCaches();
 
       expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
       expect(() => parseFile(bazSlashBar, PROJECT_DIR)).not.toThrow();
