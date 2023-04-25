@@ -34,7 +34,7 @@ See [our TSConfig inclusion FAQ](./Troubleshooting.mdx#i-get-errors-telling-me-e
 In more detail:
 
 - `plugin:@typescript-eslint/recommended-requiring-type-checking` is another [recommended configuration](./CONFIGURATIONS.mdx) we provide. This one contains recommended rules that additionally require type information.
-- `parserOptions.project` tells our parser that each source file's type information settings are described by the closest `tsconfig.json`.
+- `parserOptions.project` tells our parser how to find the TSConfig for each source file (`true` indicates to find the closest `tsconfig.json` for each source file)
   - If your project is a multi-package monorepo, see [our docs on configuring a monorepo](./typed-linting/Monorepos.mdx).
 - `parserOptions.tsconfigRootDir` tells our parser the absolute path of your project's root directory (see [Parser#tsconfigRootDir](../architecture/Parser.mdx#tsconfigRootDir)).
 
