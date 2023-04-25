@@ -261,7 +261,10 @@ function createWatchProgram(
   const watchCompilerHost = ts.createWatchCompilerHost(
     tsconfigPath,
     createDefaultCompilerOptionsFromExtra(parseSettings),
-    ts.sys,
+    {
+      ...ts.sys,
+      getCurrentDirectory: () => parseSettings.tsconfigRootDir,
+    },
     ts.createAbstractBuilder,
     diagnosticReporter,
     /*reportWatchStatus*/ () => {},

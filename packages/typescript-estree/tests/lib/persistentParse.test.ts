@@ -2,9 +2,9 @@ import fs from 'fs';
 import path from 'path';
 import tmp from 'tmp';
 
+import { clearCaches } from '../../src/clear-caches';
 import { clearWatchCaches } from '../../src/create-program/getWatchProgramsForProjects';
 import { parseAndGenerateServices } from '../../src/parser';
-import { clearCaches } from '../../src/clear-caches';
 
 const CONTENTS = {
   foo: 'console.log("foo")',

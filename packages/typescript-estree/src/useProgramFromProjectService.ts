@@ -4,7 +4,7 @@ import type { server } from 'typescript/lib/tsserverlibrary';
 
 import { createProjectProgram } from './create-program/createProjectProgram';
 import {
-  ASTAndDefiniteProgram,
+  type ASTAndDefiniteProgram,
   getCanonicalFileName,
 } from './create-program/shared';
 import type { MutableParseSettings } from './parseSettings';
@@ -33,12 +33,12 @@ export function useProgramFromProjectService(
     return undefined;
   }
 
-  const { configFilePath } = program.getCompilerOptions();
+  const configFilePath = program.getCompilerOptions().configFilePath as string;
   if (
     !parseSettings.projects
       .map(absolutify)
       .map(getCanonicalFileName)
-      .includes(getCanonicalFileName(configFilePath as string))
+      .includes(getCanonicalFileName(configFilePath))
   ) {
     throw new Error(`Config file ${configFilePath} not known.`);
   }
