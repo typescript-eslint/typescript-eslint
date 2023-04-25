@@ -4,7 +4,7 @@ import tmp from 'tmp';
 
 import { clearWatchCaches } from '../../src/create-program/getWatchProgramsForProjects';
 import { parseAndGenerateServices } from '../../src/parser';
-import { clearCaches } from '../../src';
+import { clearCaches } from '../../src/clear-caches';
 
 const CONTENTS = {
   foo: 'console.log("foo")',

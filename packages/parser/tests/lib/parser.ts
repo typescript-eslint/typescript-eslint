@@ -1,6 +1,7 @@
 import * as scopeManager from '@typescript-eslint/scope-manager';
 import type { ParserOptions } from '@typescript-eslint/types';
 import * as typescriptESTree from '@typescript-eslint/typescript-estree';
+import path from 'path';
 
 import { parse, parseForESLint } from '../../src/parser';
 
@@ -33,10 +34,10 @@ describe('parser', () => {
         jsx: false,
       },
       // ts-estree specific
-      filePath: 'isolated-file.src.ts',
+      filePath: './isolated-file.src.ts',
       project: 'tsconfig.json',
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
-      tsconfigRootDir: 'tests/fixtures/services',
+      tsconfigRootDir: path.join(__dirname, '../fixtures/services'),
       extraFileExtensions: ['.foo'],
     };
     parseForESLint(code, config);
@@ -89,7 +90,7 @@ describe('parser', () => {
       filePath: 'isolated-file.src.ts',
       project: 'tsconfig.json',
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
-      tsconfigRootDir: 'tests/fixtures/services',
+      tsconfigRootDir: path.join(__dirname, '../fixtures/services'),
       extraFileExtensions: ['.foo'],
     };
     parseForESLint(code, config);
