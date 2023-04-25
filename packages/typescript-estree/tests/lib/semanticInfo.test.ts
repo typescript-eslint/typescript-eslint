@@ -294,7 +294,9 @@ describe('semanticInfo', () => {
           fs.readFileSync(fileName, 'utf8'),
           badConfig,
         ),
-      ).toThrowErrorMatchingSnapshot();
+      ).toThrowErrorMatchingInlineSnapshot(
+        `"Compiler option 'compileOnSave' requires a value of type boolean."`,
+      );
     });
   }
 
