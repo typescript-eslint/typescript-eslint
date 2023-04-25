@@ -40,7 +40,7 @@ export function useProgramFromProjectService(
       .map(getCanonicalFileName)
       .includes(getCanonicalFileName(configFilePath))
   ) {
-    throw new Error(`Config file ${configFilePath} not known.`);
+    throw new Error(`Cannot read file '${parseSettings.projects[0]}'`);
   }
 
   return createProjectProgram(parseSettings, [program as ts.Program]);

@@ -3,7 +3,7 @@ import glob from 'glob';
 import * as path from 'path';
 import * as ts from 'typescript';
 
-import { clearWatchCaches } from '../../src/create-program/getWatchProgramsForProjects';
+import { clearCaches } from '../../src';
 import { createProgramFromConfigFile as createProgram } from '../../src/create-program/useProvidedPrograms';
 import type { ParseAndGenerateServicesResult } from '../../src/parser';
 import { parseAndGenerateServices } from '../../src/parser';
@@ -37,7 +37,7 @@ function createOptions(fileName: string): TSESTreeOptions & { cwd?: string } {
 }
 
 // ensure tsconfig-parser watch caches are clean for each test
-beforeEach(() => clearWatchCaches());
+beforeEach(() => clearCaches());
 
 describe('semanticInfo', () => {
   // test all AST snapshots
@@ -257,37 +257,34 @@ describe('semanticInfo', () => {
     );
   });
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
-    it('non-existent project file', () => {
-      const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
-      const badConfig = createOptions(fileName);
-      badConfig.project = './tsconfigs.json';
+  it('non-existent project file', () => {
+    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+    const badConfig = createOptions(fileName);
+    badConfig.project = './tsconfigs.json';
+    expect(() =>
       parseCodeAndGenerateServices(
         fs.readFileSync(fileName, 'utf8'),
         badConfig,
-      );
-      expect(() =>
-        parseCodeAndGenerateServices(
-          fs.readFileSync(fileName, 'utf8'),
-          badConfig,
-        ),
-      ).toThrow(/Cannot read file .+tsconfigs\.json'/);
-    });
-    it('fail to read project file', () => {
-      const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
-      const badConfig = createOptions(fileName);
-      badConfig.project = '.';
-      expect(() =>
-        parseCodeAndGenerateServices(
-          fs.readFileSync(fileName, 'utf8'),
-          badConfig,
-        ),
-      ).toThrow(
-        // case insensitive because unix based systems are case insensitive
-        /Cannot read file .+semanticInfo'./i,
-      );
-    });
+      ),
+    ).toThrow(/Cannot read file .+tsconfigs\.json'/);
+  });
 
+  it('fail to read project file', () => {
+    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+    const badConfig = createOptions(fileName);
+    badConfig.project = '.';
+    expect(() =>
+      parseCodeAndGenerateServices(
+        fs.readFileSync(fileName, 'utf8'),
+        badConfig,
+      ),
+    ).toThrow(
+      // case insensitive because unix based systems are case insensitive
+      /Cannot read file .+semanticInfo'/i,
+    );
+  });
+
+  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
     it('malformed project file', () => {
       const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
       const badConfig = createOptions(fileName);
