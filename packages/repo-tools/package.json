@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/repo-tools",
-  "version": "5.59.0",
+  "version": "5.59.1",
   "private": true,
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
