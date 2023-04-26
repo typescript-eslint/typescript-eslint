@@ -101,7 +101,7 @@
     "ncp": "^2.0.0",
     "nx": "15.7.2",
     "patch-package": "^6.4.7",
-    "prettier": "2.8.1",
+    "prettier": "2.8.8",
     "pretty-format": "^29.0.3",
     "rimraf": "^4.4.0",
     "tmp": "^0.2.1",
