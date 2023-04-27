@@ -30,20 +30,66 @@ If you don't find an existing extension rule, or the extension rule doesn't work
 
 ## I get errors telling me "ESLint was configured to run ... However, that TSConfig does not / none of those TSConfigs include this file"
 
+These errors are caused by an ESLint config requesting type information be generated for a file that isn't included in the TypeScript configuration.
+
 ### Fixing the Error
+
+<!-- prettier-ignore-start -->
 
 - If you **do not** want to lint the file:
   - Use [one of the options ESLint offers](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code) to ignore files, namely a `.eslintignore` file, or `ignorePatterns` config.
 - If you **do** want to lint the file:
   - If you **do not** want to lint the file with [type-aware linting](./Typed_Linting.mdx):
-    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information.
-      - A popular setup is to omit the above additions from top-level configuration and only apply them to TypeScript files via an override.
-      - Alternatively, you can add `parserOptions: { project: null }` to an override for the files you wish to exclude. Note that `{ project: undefined }` will not work.
+    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information:
+      <details>
+        <summary>
+          A popular setup is to remove all rules requiring type information from the top-level configuration
+          and only apply them to TypeScript files via an override.
+        </summary>
+
+        ```js title=".eslintrc.cjs"
+        module.exports = {
+          // ... the rest of your config ...
+          overrides: [
+            {
+              extends: [
+                'plugin:@typescript-eslint/recommended-requiring-type-checking',
+              ],
+              files: ['./**/*.{ts,tsx}'],
+            },
+          ],
+        };
+        ```
+
+      </details>
+      <details>
+        <summary>
+          Alternatively, in our <a href="/blog/announcing-typescript-eslint-v6-beta">version v6</a>, you can use our{' '}
+          <a href="https://v6--typescript-eslint.netlify.app/linting/configs#disable-type-checked"><code>disable-type-checked</code> config</a> to disable type checking for just that type of file.
+        </summary>
+
+        ```js title=".eslintrc.cjs"
+        module.exports = {
+          // ... the rest of your config ...
+          overrides: [
+            {
+              extends: ['plugin:@typescript-eslint/disable-type-checked'],
+              files: ['./**/*.js'],
+            },
+          ],
+        };
+        ```
+        To disable type checking for files manually, set `parserOptions: { project: null }` to an override for the files you wish to exclude. Note that `{ project: undefined }` will not work, and you'll also need to disable any rules or rule options that require type checking.
+      </details>
+
   - If you **do** want to lint the file with [type-aware linting](./Typed_Linting.mdx):
-    - Check the `include` option of each of the tsconfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
+    - Check the `include` option of each of the TSConfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
+      - If the file is a `.cjs`, `.js`, or `.mjs` file, make sure [`allowJs`](https://www.typescriptlang.org/tsconfig#allowJs) is enabled.
     - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
       - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)
       - [`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.eslintrc.js)
+
+<!-- prettier-ignore-end -->
 
 ### More Details
 
