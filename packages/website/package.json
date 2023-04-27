@@ -59,6 +59,7 @@
     "globby": "^11.1.0",
     "make-dir": "*",
     "monaco-editor": "^0.37.0",
+    "raw-loader": "^4.0.2",
     "rimraf": "*",
     "stylelint": "^15.3.0",
     "stylelint-config-recommended": "^11.0.0",

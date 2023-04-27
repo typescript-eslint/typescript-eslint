@@ -1,0 +1,79 @@
+{
+  "name": "@typescript-eslint/rule-tester",
+  "version": "5.59.1",
+  "description": "Tooling to test ESLint rules",
+  "files": [
+    "dist",
+    "_ts4.2",
+    "README.md",
+    "LICENSE"
+  ],
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    },
+    "./package.json": "./package.json"
+  },
+  "engines": {
+    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/typescript-eslint/typescript-eslint.git",
+    "directory": "packages/rule-tester"
+  },
+  "bugs": {
+    "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
+  },
+  "license": "MIT",
+  "keywords": [
+    "eslint",
+    "typescript",
+    "estree"
+  ],
+  "scripts": {
+    "build": "tsc -b tsconfig.build.json",
+    "postbuild": "downlevel-dts dist _ts4.2/dist --to=4.2",
+    "clean": "tsc -b tsconfig.build.json --clean",
+    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
+    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
+    "lint": "nx lint",
+    "pretest-eslint-base": "tsc -b tsconfig.build.json",
+    "test-eslint-base": "mocha --require source-map-support/register ./tests/eslint-base/eslint-base.test.js",
+    "test": "jest --coverage",
+    "typecheck": "tsc -p tsconfig.json --noEmit"
+  },
+  "//": "NOTE - AJV is out-of-date, but it's intentionally synced with ESLint - https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/package.json#L70",
+  "dependencies": {
+    "@typescript-eslint/typescript-estree": "5.59.1",
+    "@typescript-eslint/utils": "5.59.1",
+    "lodash.merge": "4.6.2",
+    "semver": "^7.3.7",
+    "ajv": "^6.10.0"
+  },
+  "peerDependencies": {
+    "@eslint/eslintrc": ">=2",
+    "eslint": ">=8"
+  },
+  "devDependencies": {
+    "@typescript-eslint/parser": "5.59.1",
+    "@types/lodash.merge": "4.6.7",
+    "chai": "^4.0.1",
+    "mocha": "^8.3.2",
+    "sinon": "^11.0.0",
+    "source-map-support": "^0.5.21"
+  },
+  "funding": {
+    "type": "opencollective",
+    "url": "https://opencollective.com/typescript-eslint"
+  },
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "_ts3.4/*"
+      ]
+    }
+  }
+}
