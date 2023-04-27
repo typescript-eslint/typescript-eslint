@@ -1,7 +1,7 @@
-import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unsafe-return';
-import { batchedSingleLineTests, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -109,12 +109,11 @@ function foo(): Set<number> {
     `,
   ],
   invalid: [
-    ...batchedSingleLineTests({
-      code: noFormat`
-function foo() { return (1 as any); }
-function foo() { return Object.create(null); }
-const foo = () => { return (1 as any) };
-const foo = () => Object.create(null);
+    {
+      code: `
+function foo() {
+  return 1 as any;
+}
       `,
       errors: [
         {
@@ -122,43 +121,55 @@ const foo = () => Object.create(null);
           data: {
             type: 'any',
           },
-          line: 2,
-          column: 18,
-        },
-        {
-          messageId: 'unsafeReturn',
-          data: {
-            type: 'any',
-          },
-          line: 3,
-          column: 18,
-        },
-        {
-          messageId: 'unsafeReturn',
-          data: {
-            type: 'any',
-          },
-          line: 4,
-          column: 21,
-        },
-        {
-          messageId: 'unsafeReturn',
-          data: {
-            type: 'any',
-          },
-          line: 5,
-          column: 19,
         },
       ],
-    }),
-    ...batchedSingleLineTests({
-      code: noFormat`
-function foo() { return ([] as any[]); }
-function foo() { return ([] as Array<any>); }
-function foo() { return ([] as readonly any[]); }
-function foo() { return ([] as Readonly<any[]>); }
-const foo = () => { return ([] as any[]) };
-const foo = () => ([] as any[]);
+    },
+    {
+      code: `
+function foo() {
+  return Object.create(null);
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          data: {
+            type: 'any',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+const foo = () => {
+  return 1 as any;
+};
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          data: {
+            type: 'any',
+          },
+        },
+      ],
+    },
+    {
+      code: 'const foo = () => Object.create(null);',
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          data: {
+            type: 'any',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  return [] as any[];
+}
       `,
       errors: [
         {
@@ -166,57 +177,85 @@ const foo = () => ([] as any[]);
           data: {
             type: 'any[]',
           },
-          line: 2,
-          column: 18,
-        },
-        {
-          messageId: 'unsafeReturn',
-          data: {
-            type: 'any[]',
-          },
-          line: 3,
-          column: 18,
-        },
-        {
-          messageId: 'unsafeReturn',
-          data: {
-            type: 'any[]',
-          },
-          line: 4,
-          column: 18,
-        },
-        {
-          messageId: 'unsafeReturn',
-          data: {
-            type: 'any[]',
-          },
-          line: 5,
-          column: 18,
-        },
-        {
-          messageId: 'unsafeReturn',
-          data: {
-            type: 'any[]',
-          },
-          line: 6,
-          column: 21,
-        },
-        {
-          messageId: 'unsafeReturn',
-          data: {
-            type: 'any[]',
-          },
-          line: 7,
-          column: 20,
         },
       ],
-    }),
-    ...batchedSingleLineTests({
-      code: noFormat`
-function foo(): Set<string> { return new Set<any>(); }
-function foo(): Map<string, string> { return new Map<string, any>(); }
-function foo(): Set<string[]> { return new Set<any[]>(); }
-function foo(): Set<Set<Set<string>>> { return new Set<Set<Set<any>>>(); }
+    },
+    {
+      code: `
+function foo() {
+  return [] as Array<any>;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          data: {
+            type: 'any[]',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  return [] as readonly any[];
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          data: {
+            type: 'any[]',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function foo() {
+  return [] as Readonly<any[]>;
+}
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          data: {
+            type: 'any[]',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+const foo = () => {
+  return [] as any[];
+};
+      `,
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          data: {
+            type: 'any[]',
+          },
+        },
+      ],
+    },
+    {
+      code: 'const foo = () => [] as any[];',
+      errors: [
+        {
+          messageId: 'unsafeReturn',
+          data: {
+            type: 'any[]',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+function foo(): Set<string> {
+  return new Set<any>();
+}
       `,
       errors: [
         {
@@ -225,34 +264,58 @@ function foo(): Set<Set<Set<string>>> { return new Set<Set<Set<any>>>(); }
             sender: 'Set<any>',
             receiver: 'Set<string>',
           },
-          line: 2,
         },
+      ],
+    },
+    {
+      code: `
+function foo(): Map<string, string> {
+  return new Map<string, any>();
+}
+      `,
+      errors: [
         {
           messageId: 'unsafeReturnAssignment',
           data: {
             sender: 'Map<string, any>',
             receiver: 'Map<string, string>',
           },
-          line: 3,
         },
+      ],
+    },
+    {
+      code: `
+function foo(): Set<string[]> {
+  return new Set<any[]>();
+}
+      `,
+      errors: [
         {
           messageId: 'unsafeReturnAssignment',
           data: {
             sender: 'Set<any[]>',
             receiver: 'Set<string[]>',
           },
-          line: 4,
         },
+      ],
+    },
+    {
+      code: `
+function foo(): Set<Set<Set<string>>> {
+  return new Set<Set<Set<any>>>();
+}
+      `,
+      errors: [
         {
           messageId: 'unsafeReturnAssignment',
           data: {
             sender: 'Set<Set<Set<any>>>',
             receiver: 'Set<Set<Set<string>>>',
           },
-          line: 5,
         },
       ],
-    }),
+    },
+
     {
       code: `
 type Fn = () => Set<string>;

@@ -6,7 +6,7 @@ import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
-import { batchedSingleLineTests, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 type Options = InferOptionsTypeFromRule<typeof rule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
@@ -154,74 +154,53 @@ declare function Foo(props: { a: string }): never;
     'const x: Map<string, string> = new Map();',
   ],
   invalid: [
-    ...batchedSingleLineTests({
-      code: noFormat`
-const x = (1 as any);
-const x = (1 as any), y = 1;
-function foo(a = (1 as any)) {}
-class Foo { constructor(private a = (1 as any)) {} }
-class Foo { private a = (1 as any) }
+    {
+      code: 'const x = 1 as any;',
+      errors: [{ messageId: 'anyAssignment' }],
+    },
+    {
+      code: `
+const x = 1 as any,
+  y = 1;
       `,
-      errors: [
-        {
-          messageId: 'anyAssignment',
-          line: 2,
-          column: 7,
-          endColumn: 21,
-        },
-        {
-          messageId: 'anyAssignment',
-          line: 3,
-          column: 7,
-          endColumn: 21,
-        },
-        {
-          messageId: 'anyAssignment',
-          line: 4,
-          column: 14,
-          endColumn: 28,
-        },
-        {
-          messageId: 'anyAssignment',
-          line: 5,
-          column: 33,
-          endColumn: 47,
-        },
-        {
-          messageId: 'anyAssignment',
-          line: 6,
-          column: 13,
-          endColumn: 35,
-        },
-      ],
-    }),
-    ...batchedSingleLineTests({
+      errors: [{ messageId: 'anyAssignment' }],
+    },
+    {
+      code: 'function foo(a = 1 as any) {}',
+      errors: [{ messageId: 'anyAssignment' }],
+    },
+    {
+      code: `
+class Foo {
+  constructor(private a = 1 as any) {}
+}
+      `,
+      errors: [{ messageId: 'anyAssignment' }],
+    },
+    {
+      code: `
+class Foo {
+  private a = 1 as any;
+}
+      `,
+      errors: [{ messageId: 'anyAssignment' }],
+    },
+
+    {
       code: `
 const [x] = 1 as any;
+      `,
+      errors: [{ messageId: 'anyAssignment' }],
+    },
+    {
+      code: `
 const [x] = [] as any[];
       `,
-      errors: [
-        {
-          messageId: 'anyAssignment',
-          line: 2,
-          column: 7,
-          endColumn: 21,
-        },
-        {
-          messageId: 'unsafeArrayPattern',
-          line: 3,
-          column: 7,
-          endColumn: 10,
-        },
-      ],
-    }),
-    ...batchedSingleLineTests({
-      code: noFormat`
-const x: Set<string> = new Set<any>();
-const x: Map<string, string> = new Map<string, any>();
-const x: Set<string[]> = new Set<any[]>();
-const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
-      `,
+      errors: [{ messageId: 'unsafeArrayPattern' }],
+    },
+
+    {
+      code: 'const x: Set<string> = new Set<any>();',
       errors: [
         {
           messageId: 'unsafeAssignment',
@@ -229,34 +208,46 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
             sender: 'Set<any>',
             receiver: 'Set<string>',
           },
-          line: 2,
         },
+      ],
+    },
+    {
+      code: 'const x: Map<string, string> = new Map<string, any>();',
+      errors: [
         {
           messageId: 'unsafeAssignment',
           data: {
             sender: 'Map<string, any>',
             receiver: 'Map<string, string>',
           },
-          line: 3,
         },
+      ],
+    },
+    {
+      code: 'const x: Set<string[]> = new Set<any[]>();',
+      errors: [
         {
           messageId: 'unsafeAssignment',
           data: {
             sender: 'Set<any[]>',
             receiver: 'Set<string[]>',
           },
-          line: 4,
         },
+      ],
+    },
+    {
+      code: 'const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();',
+      errors: [
         {
           messageId: 'unsafeAssignment',
           data: {
             sender: 'Set<Set<Set<any>>>',
             receiver: 'Set<Set<Set<string>>>',
           },
-          line: 5,
         },
       ],
-    }),
+    },
+
     ...assignmentTest([
       ['[x] = [1] as [any]', 2, 3],
       ['[[[[x]]]] = [[[[1 as any]]]]', 5, 6],
@@ -277,55 +268,52 @@ const x: Set<Set<Set<string>>> = new Set<Set<Set<any>>>();
         },
       ],
     },
-    ...batchedSingleLineTests({
+
+    {
       code: `
 const x = [...(1 as any)];
+      `,
+      errors: [{ messageId: 'unsafeArraySpread' }],
+    },
+    {
+      code: `
 const x = [...([] as any[])];
       `,
-      errors: [
-        {
-          messageId: 'unsafeArraySpread',
-          line: 2,
-          column: 12,
-          endColumn: 25,
-        },
-        {
-          messageId: 'unsafeArraySpread',
-          line: 3,
-          column: 12,
-          endColumn: 28,
-        },
-      ],
-    }),
+      errors: [{ messageId: 'unsafeArraySpread' }],
+    },
+
     ...assignmentTest([
       ['{x} = {x: 1} as {x: any}', 2, 3],
       ['{x: y} = {x: 1} as {x: any}', 5, 6],
       ['{x: {y}} = {x: {y: 1}} as {x: {y: any}}', 6, 7],
       ['{x: [y]} = {x: {y: 1}} as {x: [any]}', 6, 7],
     ]),
-    ...batchedSingleLineTests({
-      code: `
-const x = { y: 1 as any };
-const x = { y: { z: 1 as any } };
-const x: { y: Set<Set<Set<string>>> } = { y: new Set<Set<Set<any>>>() };
-const x = { ...(1 as any) };
-      `,
+
+    {
+      code: 'const x = { y: 1 as any };',
       errors: [
         {
           messageId: 'anyAssignment',
-          line: 2,
           column: 13,
           endColumn: 24,
         },
+      ],
+    },
+    {
+      code: 'const x = { y: { z: 1 as any } };',
+      errors: [
         {
           messageId: 'anyAssignment',
-          line: 3,
           column: 18,
           endColumn: 29,
         },
+      ],
+    },
+    {
+      code: 'const x: { y: Set<Set<Set<string>>> } = { y: new Set<Set<Set<any>>>() };',
+      errors: [
         {
           messageId: 'unsafeAssignment',
-          line: 4,
           column: 43,
           endColumn: 70,
           data: {
@@ -333,15 +321,20 @@ const x = { ...(1 as any) };
             receiver: 'Set<Set<Set<string>>>',
           },
         },
+      ],
+    },
+    {
+      code: 'const x = { ...(1 as any) };',
+      errors: [
         {
           // spreading an any widens the object type to any
           messageId: 'anyAssignment',
-          line: 5,
           column: 7,
           endColumn: 28,
         },
       ],
-    }),
+    },
+
     {
       code: `
 type Props = { a: string };

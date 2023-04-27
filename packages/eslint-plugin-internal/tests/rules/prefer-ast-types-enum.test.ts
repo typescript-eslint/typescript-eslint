@@ -1,8 +1,8 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/prefer-ast-types-enum';
-import { RuleTester } from '@typescript-eslint/rule-tester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

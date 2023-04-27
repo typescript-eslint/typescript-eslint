@@ -1,7 +1,7 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unsafe-call';
-import { batchedSingleLineTests, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -44,107 +44,95 @@ function foo(x: { a?: () => void }) {
     `,
   ],
   invalid: [
-    ...batchedSingleLineTests({
-      code: noFormat`
-function foo(x: any) { x() }
-function foo(x: any) { x?.() }
-function foo(x: any) { x.a.b.c.d.e.f.g() }
-function foo(x: any) { x.a.b.c.d.e.f.g?.() }
+    {
+      code: `
+function foo(x: any) {
+  x();
+}
       `,
-      errors: [
-        {
-          messageId: 'unsafeCall',
-          line: 2,
-          column: 24,
-          endColumn: 25,
-        },
-        {
-          messageId: 'unsafeCall',
-          line: 3,
-          column: 24,
-          endColumn: 25,
-        },
-        {
-          messageId: 'unsafeCall',
-          line: 4,
-          column: 24,
-          endColumn: 39,
-        },
-        {
-          messageId: 'unsafeCall',
-          line: 5,
-          column: 24,
-          endColumn: 39,
-        },
-      ],
-    }),
-    ...batchedSingleLineTests({
-      code: noFormat`
-function foo(x: { a: any }) { x.a() }
-function foo(x: { a: any }) { x?.a() }
-function foo(x: { a: any }) { x.a?.() }
+      errors: [{ messageId: 'unsafeCall' }],
+    },
+    {
+      code: `
+function foo(x: any) {
+  x?.();
+}
       `,
-      errors: [
-        {
-          messageId: 'unsafeCall',
-          line: 2,
-          column: 31,
-          endColumn: 34,
-        },
-        {
-          messageId: 'unsafeCall',
-          line: 3,
-          column: 31,
-          endColumn: 35,
-        },
-        {
-          messageId: 'unsafeCall',
-          line: 4,
-          column: 31,
-          endColumn: 34,
-        },
-      ],
-    }),
-    ...batchedSingleLineTests({
-      code: noFormat`
-function foo(x: any) { new x() }
-function foo(x: { a: any }) { new x.a() }
+      errors: [{ messageId: 'unsafeCall' }],
+    },
+    {
+      code: `
+function foo(x: any) {
+  x.a.b.c.d.e.f.g();
+}
       `,
-      errors: [
-        {
-          messageId: 'unsafeNew',
-          line: 2,
-          column: 24,
-          endColumn: 31,
-        },
-        {
-          messageId: 'unsafeNew',
-          line: 3,
-          column: 31,
-          endColumn: 40,
-        },
-      ],
-    }),
-    ...batchedSingleLineTests({
-      code: noFormat`
-function foo(x: any) { x\`foo\` }
-function foo(x: { tag: any }) { x.tag\`foo\` }
+      errors: [{ messageId: 'unsafeCall' }],
+    },
+    {
+      code: `
+function foo(x: any) {
+  x.a.b.c.d.e.f.g?.();
+}
       `,
-      errors: [
-        {
-          messageId: 'unsafeTemplateTag',
-          line: 2,
-          column: 24,
-          endColumn: 25,
-        },
-        {
-          messageId: 'unsafeTemplateTag',
-          line: 3,
-          column: 33,
-          endColumn: 38,
-        },
-      ],
-    }),
+      errors: [{ messageId: 'unsafeCall' }],
+    },
+    {
+      code: `
+function foo(x: { a: any }) {
+  x.a();
+}
+      `,
+      errors: [{ messageId: 'unsafeCall' }],
+    },
+    {
+      code: `
+function foo(x: { a: any }) {
+  x?.a();
+}
+      `,
+      errors: [{ messageId: 'unsafeCall' }],
+    },
+    {
+      code: `
+function foo(x: { a: any }) {
+  x.a?.();
+}
+      `,
+      errors: [{ messageId: 'unsafeCall' }],
+    },
+    {
+      code: `
+function foo(x: any) {
+  new x();
+}
+      `,
+      errors: [{ messageId: 'unsafeNew' }],
+    },
+    {
+      code: `
+function foo(x: { a: any }) {
+  new x.a();
+}
+      `,
+      errors: [{ messageId: 'unsafeNew' }],
+    },
+    {
+      code: `
+function foo(x: any) {
+  x\`foo\`;
+}
+      `,
+      errors: [{ messageId: 'unsafeTemplateTag' }],
+    },
+    {
+      code: `
+function foo(x: { tag: any }) {
+  x.tag\`foo\`;
+}
+      `,
+      errors: [{ messageId: 'unsafeTemplateTag' }],
+    },
+
     {
       code: noFormat`
 const methods = {

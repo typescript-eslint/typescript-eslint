@@ -1,3 +1,5 @@
+/* eslint-disable deprecation/deprecation -- TODO - migrate this test away from `batchedSingleLineTests` */
+
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import * as path from 'path';
 
@@ -20,114 +22,200 @@ const ruleTester = new RuleTester({
 ruleTester.run('strict-boolean-expressions', rule, {
   valid: [
     // boolean in boolean context
-    ...batchedSingleLineTests<Options>({
-      code: noFormat`
-        true ? "a" : "b";
-        if (false) {}
-        while (true) {}
-        for (; false;) {}
-        !true;
-        false || 123;
-        true && "foo";
-        !(false || true);
-        true && false ? true : false;
-        false && true || false;
-        false && true || [];
-        (false && 1) || (true && 2);
-        declare const x: boolean; if (x) {}
-        (x: boolean) => !x;
-        <T extends boolean>(x: T) => x ? 1 : 0;
-        declare const x: never; if (x) {}
-      `,
-    }),
+    "true ? 'a' : 'b';",
+    `
+if (false) {
+}
+    `,
+    'while (true) {}',
+    'for (; false; ) {}',
+    '!true;',
+    'false || 123;',
+    "true && 'foo';",
+    '!(false || true);',
+    'true && false ? true : false;',
+    '(false && true) || false;',
+    '(false && true) || [];',
+    '(false && 1) || (true && 2);',
+    `
+declare const x: boolean;
+if (x) {
+}
+    `,
+    '(x: boolean) => !x;',
+    '<T extends boolean>(x: T) => (x ? 1 : 0);',
+    `
+declare const x: never;
+if (x) {
+}
+    `,
 
     // string in boolean context
-    ...batchedSingleLineTests<Options>({
-      code: noFormat`
-        if ("") {}
-        while ("x") {}
-        for (; "";) {}
-        "" && "1" || x;
-        declare const x: string; if (x) {}
-        (x: string) => !x;
-        <T extends string>(x: T) => x ? 1 : 0;
-      `,
-    }),
+    `
+if ('') {
+}
+    `,
+    "while ('x') {}",
+    "for (; ''; ) {}",
+    "('' && '1') || x;",
+    `
+declare const x: string;
+if (x) {
+}
+    `,
+    '(x: string) => !x;',
+    '<T extends string>(x: T) => (x ? 1 : 0);',
 
     // number in boolean context
-    ...batchedSingleLineTests<Options>({
-      code: noFormat`
-        if (0) {}
-        while (1n) {}
-        for (; Infinity;) {}
-        0 / 0 && 1 + 2 || x;
-        declare const x: number; if (x) {}
-        (x: bigint) => !x;
-        <T extends number>(x: T) => x ? 1 : 0;
-      `,
-    }),
+    `
+if (0) {
+}
+    `,
+    'while (1n) {}',
+    'for (; Infinity; ) {}',
+    '(0 / 0 && 1 + 2) || x;',
+    `
+declare const x: number;
+if (x) {
+}
+    `,
+    '(x: bigint) => !x;',
+    '<T extends number>(x: T) => (x ? 1 : 0);',
 
     // nullable object in boolean context
-    ...batchedSingleLineTests<Options>({
-      code: noFormat`
-        declare const x: null | object; if (x) {}
-        (x?: { a: any }) => !x;
-        <T extends {} | null | undefined>(x: T) => x ? 1 : 0;
-      `,
-    }),
+    `
+declare const x: null | object;
+if (x) {
+}
+    `,
+    '(x?: { a: any }) => !x;',
+    '<T extends {} | null | undefined>(x: T) => (x ? 1 : 0);',
 
     // nullable boolean in boolean context
-    ...batchedSingleLineTests<Options>({
+    {
       options: [{ allowNullableBoolean: true }],
-      code: noFormat`
-        declare const x: boolean | null; if (x) {}
-        (x?: boolean) => !x;
-        <T extends boolean | null | undefined>(x: T) => x ? 1 : 0;
+      code: `
+        declare const x: boolean | null;
+        if (x) {
+        }
       `,
-    }),
+    },
+    {
+      options: [{ allowNullableBoolean: true }],
+      code: `
+        (x?: boolean) => !x;
+      `,
+    },
+    {
+      options: [{ allowNullableBoolean: true }],
+      code: `
+        <T extends boolean | null | undefined>(x: T) => (x ? 1 : 0);
+      `,
+    },
 
     // nullable string in boolean context
-    ...batchedSingleLineTests<Options>({
+    {
       options: [{ allowNullableString: true }],
-      code: noFormat`
-        declare const x: string | null; if (x) {}
-        (x?: string) => !x;
-        <T extends string | null | undefined>(x: T) => x ? 1 : 0;
+      code: `
+        declare const x: string | null;
+        if (x) {
+        }
       `,
-    }),
+    },
+    {
+      options: [{ allowNullableString: true }],
+      code: `
+        (x?: string) => !x;
+      `,
+    },
+    {
+      options: [{ allowNullableString: true }],
+      code: `
+        <T extends string | null | undefined>(x: T) => (x ? 1 : 0);
+      `,
+    },
 
     // nullable number in boolean context
-    ...batchedSingleLineTests<Options>({
+    {
       options: [{ allowNullableNumber: true }],
-      code: noFormat`
-        declare const x: number | null; if (x) {}
-        (x?: number) => !x;
-        <T extends number | null | undefined>(x: T) => x ? 1 : 0;
+      code: `
+        declare const x: number | null;
+        if (x) {
+        }
       `,
-    }),
+    },
+    {
+      options: [{ allowNullableNumber: true }],
+      code: `
+        (x?: number) => !x;
+      `,
+    },
+    {
+      options: [{ allowNullableNumber: true }],
+      code: `
+        <T extends number | null | undefined>(x: T) => (x ? 1 : 0);
+      `,
+    },
 
     // any in boolean context
-    ...batchedSingleLineTests<Options>({
+    {
       options: [{ allowAny: true }],
-      code: noFormat`
-        declare const x: any; if (x) {}
-        (x) => !x;
-        <T extends any>(x: T) => x ? 1 : 0;
+      code: `
+        declare const x: any;
+        if (x) {
+        }
       `,
-    }),
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        x => !x;
+      `,
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        <T extends any>(x: T) => (x ? 1 : 0);
+      `,
+    },
 
     // logical operator
-    ...batchedSingleLineTests<Options>({
+    {
       options: [{ allowString: true, allowNumber: true }],
       code: `
         1 && true && 'x' && {};
+      `,
+    },
+    {
+      options: [{ allowString: true, allowNumber: true }],
+      code: `
         let x = 0 || false || '' || null;
+      `,
+    },
+    {
+      options: [{ allowString: true, allowNumber: true }],
+      code: `
         if (1 && true && 'x') void 0;
+      `,
+    },
+    {
+      options: [{ allowString: true, allowNumber: true }],
+      code: `
         if (0 || false || '') void 0;
+      `,
+    },
+    {
+      options: [{ allowString: true, allowNumber: true }],
+      code: `
         1 && true && 'x' ? {} : null;
+      `,
+    },
+    {
+      options: [{ allowString: true, allowNumber: true }],
+      code: `
         0 || false || '' ? null : {};
       `,
-    }),
+    },
 
     // nullable enum in boolean context
     {

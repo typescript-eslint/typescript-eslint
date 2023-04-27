@@ -1,6 +1,7 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/plugin-test-formatting';
 import { getFixturesRootDir } from '../RuleTester';
-import { RuleTester } from '@typescript-eslint/rule-tester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

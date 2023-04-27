@@ -78,7 +78,7 @@ async function main(): Promise<void> {
 
   type RuleEntry = [
     string,
-    TSESLint.RuleModule<string, unknown[], TSESLint.RuleListener>,
+    TSESLint.RuleModule<string, readonly unknown[], TSESLint.RuleListener>,
   ];
 
   const allRuleEntries: RuleEntry[] = Object.entries(rules).sort((a, b) =>
@@ -95,14 +95,11 @@ async function main(): Promise<void> {
   /**
    * Helper function reduces records to key - value pairs.
    */
-  function reducer<TMessageIds extends string>(
+  function reducer(
     config: LinterConfigRules,
-    entry: [string, TSESLint.RuleModule<TMessageIds, unknown[]>],
+    [key, value]: RuleEntry,
     settings: RuleFilter = {},
   ): LinterConfigRules {
-    const key = entry[0];
-    const value = entry[1];
-
     if (settings.deprecated && value.meta.deprecated) {
       return config;
     }
@@ -168,10 +165,10 @@ async function main(): Promise<void> {
   }
 
   interface ExtendedConfigSettings {
-    extraExtends?: string[];
+    extraExtends?: readonly string[];
     name: string;
     filters?: RuleFilter;
-    ruleEntries: RuleEntry[];
+    ruleEntries: readonly RuleEntry[];
   }
 
   function writeExtendedConfig({

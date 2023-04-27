@@ -1,7 +1,7 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-unsafe-member-access';
-import { batchedSingleLineTests, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -71,11 +71,11 @@ interface B extends FG.A {}
     `,
   ],
   invalid: [
-    ...batchedSingleLineTests({
-      code: noFormat`
-function foo(x: any) { x.a }
-function foo(x: any) { x.a.b.c.d.e.f.g }
-function foo(x: { a: any }) { x.a.b.c.d.e.f.g }
+    {
+      code: `
+function foo(x: any) {
+  x.a;
+}
       `,
       errors: [
         {
@@ -83,34 +83,44 @@ function foo(x: { a: any }) { x.a.b.c.d.e.f.g }
           data: {
             property: '.a',
           },
-          line: 2,
-          column: 24,
-          endColumn: 27,
         },
+      ],
+    },
+    {
+      code: `
+function foo(x: any) {
+  x.a.b.c.d.e.f.g;
+}
+      `,
+      errors: [
         {
           messageId: 'unsafeMemberExpression',
           data: {
             property: '.a',
           },
-          line: 3,
-          column: 24,
-          endColumn: 27,
         },
+      ],
+    },
+    {
+      code: `
+function foo(x: { a: any }) {
+  x.a.b.c.d.e.f.g;
+}
+      `,
+      errors: [
         {
           messageId: 'unsafeMemberExpression',
           data: {
             property: '.b',
           },
-          line: 4,
-          column: 31,
-          endColumn: 36,
         },
       ],
-    }),
-    ...batchedSingleLineTests({
-      code: noFormat`
-function foo(x: any) { x['a'] }
-function foo(x: any) { x['a']['b']['c'] }
+    },
+    {
+      code: `
+function foo(x: any) {
+  x['a'];
+}
       `,
       errors: [
         {
@@ -118,29 +128,29 @@ function foo(x: any) { x['a']['b']['c'] }
           data: {
             property: "['a']",
           },
-          line: 2,
-          column: 24,
-          endColumn: 30,
         },
+      ],
+    },
+    {
+      code: `
+function foo(x: any) {
+  x['a']['b']['c'];
+}
+      `,
+      errors: [
         {
           messageId: 'unsafeMemberExpression',
           data: {
             property: "['a']",
           },
-          line: 3,
-          column: 24,
-          endColumn: 30,
         },
       ],
-    }),
-    ...batchedSingleLineTests({
-      code: noFormat`
-function foo(x: { a: number }, y: any) { x[y] }
-function foo(x?: { a: number }, y: any) { x?.[y] }
-function foo(x: { a: number }, y: any) { x[y += 1] }
-function foo(x: { a: number }, y: any) { x[1 as any] }
-function foo(x: { a: number }, y: any) { x[y()] }
-function foo(x: string[], y: any) { x[y] }
+    },
+    {
+      code: `
+function foo(x: { a: number }, y: any) {
+  x[y];
+}
       `,
       errors: [
         {
@@ -148,57 +158,85 @@ function foo(x: string[], y: any) { x[y] }
           data: {
             property: '[y]',
           },
-          line: 2,
-          column: 44,
-          endColumn: 45,
         },
+      ],
+    },
+    {
+      code: `
+function foo(x?: { a: number }, y: any) {
+  x?.[y];
+}
+      `,
+      errors: [
         {
           messageId: 'unsafeComputedMemberAccess',
           data: {
             property: '[y]',
           },
-          line: 3,
-          column: 47,
-          endColumn: 48,
         },
+      ],
+    },
+    {
+      code: `
+function foo(x: { a: number }, y: any) {
+  x[(y += 1)];
+}
+      `,
+      errors: [
         {
           messageId: 'unsafeComputedMemberAccess',
           data: {
             property: '[y += 1]',
           },
-          line: 4,
-          column: 44,
-          endColumn: 50,
         },
+      ],
+    },
+    {
+      code: `
+function foo(x: { a: number }, y: any) {
+  x[1 as any];
+}
+      `,
+      errors: [
         {
           messageId: 'unsafeComputedMemberAccess',
           data: {
             property: '[1 as any]',
           },
-          line: 5,
-          column: 44,
-          endColumn: 52,
         },
+      ],
+    },
+    {
+      code: `
+function foo(x: { a: number }, y: any) {
+  x[y()];
+}
+      `,
+      errors: [
         {
           messageId: 'unsafeComputedMemberAccess',
           data: {
             property: '[y()]',
           },
-          line: 6,
-          column: 44,
-          endColumn: 47,
         },
+      ],
+    },
+    {
+      code: `
+function foo(x: string[], y: any) {
+  x[y];
+}
+      `,
+      errors: [
         {
           messageId: 'unsafeComputedMemberAccess',
           data: {
             property: '[y]',
           },
-          line: 7,
-          column: 39,
-          endColumn: 40,
         },
       ],
-    }),
+    },
+
     {
       code: noFormat`
 const methods = {

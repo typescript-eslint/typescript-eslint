@@ -1,7 +1,6 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/method-signature-style';
-import { batchedSingleLineTests } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -70,105 +69,323 @@ interface Test {
         typescript: '4.3',
       },
     },
-    ...batchedSingleLineTests({
+    {
       options: ['method'],
-      code: noFormat`
-        interface Test { f(a: string): number }
-        interface Test { ['f'](a: boolean): void }
-        interface Test { f<T>(a: T): T }
-        interface Test { ['f']<T extends {}>(a: T, b: T): T }
-        interface Test { 'f!'</* a */>(/* b */ x: any /* c */): void }
-        type Test = { f(a: string): number }
-        type Test = { ['f']?(a: boolean): void }
-        type Test = { f?<T>(a?: T): T }
-        type Test = { ['f']?<T>(a: T, b: T): T }
+      code: `
+        interface Test {
+          f(a: string): number;
+        }
       `,
-    }),
-    ...batchedSingleLineTests({
+    },
+    {
       options: ['method'],
-      code: noFormat`
-        interface Test { get f(): number }
-        interface Test { set f(value: number): void }
-        type Test = { get f(): number }
-        type Test = { set f(value: number): void }
+      code: `
+        interface Test {
+          ['f'](a: boolean): void;
+        }
+      `,
+    },
+    {
+      options: ['method'],
+      code: `
+        interface Test {
+          f<T>(a: T): T;
+        }
+      `,
+    },
+    {
+      options: ['method'],
+      code: `
+        interface Test {
+          ['f']<T extends {}>(a: T, b: T): T;
+        }
+      `,
+    },
+    {
+      options: ['method'],
+      code: `
+        interface Test {
+          'f!'</* a */>(/* b */ x: any /* c */): void;
+        }
+      `,
+    },
+    {
+      options: ['method'],
+      code: `
+        type Test = { f(a: string): number };
+      `,
+    },
+    {
+      options: ['method'],
+      code: `
+        type Test = { ['f']?(a: boolean): void };
+      `,
+    },
+    {
+      options: ['method'],
+      code: `
+        type Test = { f?<T>(a?: T): T };
+      `,
+    },
+    {
+      options: ['method'],
+      code: `
+        type Test = { ['f']?<T>(a: T, b: T): T };
+      `,
+    },
+    {
+      options: ['method'],
+      code: `
+        interface Test {
+          get f(): number;
+        }
       `,
       dependencyConstraints: {
         typescript: '4.3',
       },
-    }),
+    },
+    {
+      options: ['method'],
+      code: `
+        interface Test {
+          set f(value: number): void;
+        }
+      `,
+      dependencyConstraints: {
+        typescript: '4.3',
+      },
+    },
+    {
+      options: ['method'],
+      code: `
+        type Test = { get f(): number };
+      `,
+      dependencyConstraints: {
+        typescript: '4.3',
+      },
+    },
+    {
+      options: ['method'],
+      code: `
+        type Test = { set f(value: number): void };
+      `,
+      dependencyConstraints: {
+        typescript: '4.3',
+      },
+    },
   ],
   invalid: [
-    ...batchedSingleLineTests({
-      code: noFormat`
-        interface Test { f(a: string): number }
-        interface Test { ['f'](a: boolean): void }
-        interface Test { f<T>(a: T): T }
-        interface Test { ['f']<T extends {}>(a: T, b: T): T }
-        interface Test { 'f!'</* a */>(/* b */ x: any /* c */): void }
-        type Test = { f(a: string): number }
-        type Test = { ['f']?(a: boolean): void }
-        type Test = { f?<T>(a?: T): T }
-        type Test = { ['f']?<T>(a: T, b: T): T }
+    {
+      code: `
+        interface Test {
+          f(a: string): number;
+        }
       `,
-      errors: [
-        { messageId: 'errorMethod', line: 2 },
-        { messageId: 'errorMethod', line: 3 },
-        { messageId: 'errorMethod', line: 4 },
-        { messageId: 'errorMethod', line: 5 },
-        { messageId: 'errorMethod', line: 6 },
-        { messageId: 'errorMethod', line: 7 },
-        { messageId: 'errorMethod', line: 8 },
-        { messageId: 'errorMethod', line: 9 },
-        { messageId: 'errorMethod', line: 10 },
-      ],
+      errors: [{ messageId: 'errorMethod' }],
       output: `
-        interface Test { f: (a: string) => number }
-        interface Test { ['f']: (a: boolean) => void }
-        interface Test { f: <T>(a: T) => T }
-        interface Test { ['f']: <T extends {}>(a: T, b: T) => T }
-        interface Test { 'f!': </* a */>(/* b */ x: any /* c */) => void }
-        type Test = { f: (a: string) => number }
-        type Test = { ['f']?: (a: boolean) => void }
-        type Test = { f?: <T>(a?: T) => T }
-        type Test = { ['f']?: <T>(a: T, b: T) => T }
+        interface Test {
+          f: (a: string) => number;
+        }
       `,
-    }),
-    ...batchedSingleLineTests({
+    },
+    {
+      code: `
+        interface Test {
+          ['f'](a: boolean): void;
+        }
+      `,
+      errors: [{ messageId: 'errorMethod' }],
+      output: `
+        interface Test {
+          ['f']: (a: boolean) => void;
+        }
+      `,
+    },
+    {
+      code: `
+        interface Test {
+          f<T>(a: T): T;
+        }
+      `,
+      errors: [{ messageId: 'errorMethod' }],
+      output: `
+        interface Test {
+          f: <T>(a: T) => T;
+        }
+      `,
+    },
+    {
+      code: `
+        interface Test {
+          ['f']<T extends {}>(a: T, b: T): T;
+        }
+      `,
+      errors: [{ messageId: 'errorMethod' }],
+      output: `
+        interface Test {
+          ['f']: <T extends {}>(a: T, b: T) => T;
+        }
+      `,
+    },
+    {
+      code: `
+        interface Test {
+          'f!'</* a */>(/* b */ x: any /* c */): void;
+        }
+      `,
+      errors: [{ messageId: 'errorMethod' }],
+      output: `
+        interface Test {
+          'f!': </* a */>(/* b */ x: any /* c */) => void;
+        }
+      `,
+    },
+    {
+      code: `
+        type Test = { f(a: string): number };
+      `,
+      errors: [{ messageId: 'errorMethod' }],
+      output: `
+        type Test = { f: (a: string) => number };
+      `,
+    },
+    {
+      code: `
+        type Test = { ['f']?(a: boolean): void };
+      `,
+      errors: [{ messageId: 'errorMethod' }],
+      output: `
+        type Test = { ['f']?: (a: boolean) => void };
+      `,
+    },
+    {
+      code: `
+        type Test = { f?<T>(a?: T): T };
+      `,
+      errors: [{ messageId: 'errorMethod' }],
+      output: `
+        type Test = { f?: <T>(a?: T) => T };
+      `,
+    },
+    {
+      code: `
+        type Test = { ['f']?<T>(a: T, b: T): T };
+      `,
+      errors: [{ messageId: 'errorMethod' }],
+      output: `
+        type Test = { ['f']?: <T>(a: T, b: T) => T };
+      `,
+    },
+    {
+      code: `
+        interface Test {
+          f: (a: string) => number;
+        }
+      `,
       options: ['method'],
-      code: noFormat`
-        interface Test { f: (a: string) => number }
-        interface Test { ['f']: (a: boolean) => void }
-        interface Test { f: <T>(a: T) => T }
-        interface Test { ['f']: <T extends {}>(a: T, b: T) => T }
-        interface Test { 'f!': </* a */>(/* b */ x: any /* c */) => void }
-        type Test = { f: (a: string) => number }
-        type Test = { ['f']?: (a: boolean) => void }
-        type Test = { f?: <T>(a?: T) => T }
-        type Test = { ['f']?: <T>(a: T, b: T) => T }
-      `,
-      errors: [
-        { messageId: 'errorProperty', line: 2 },
-        { messageId: 'errorProperty', line: 3 },
-        { messageId: 'errorProperty', line: 4 },
-        { messageId: 'errorProperty', line: 5 },
-        { messageId: 'errorProperty', line: 6 },
-        { messageId: 'errorProperty', line: 7 },
-        { messageId: 'errorProperty', line: 8 },
-        { messageId: 'errorProperty', line: 9 },
-        { messageId: 'errorProperty', line: 10 },
-      ],
+      errors: [{ messageId: 'errorProperty' }],
       output: `
-        interface Test { f(a: string): number }
-        interface Test { ['f'](a: boolean): void }
-        interface Test { f<T>(a: T): T }
-        interface Test { ['f']<T extends {}>(a: T, b: T): T }
-        interface Test { 'f!'</* a */>(/* b */ x: any /* c */): void }
-        type Test = { f(a: string): number }
-        type Test = { ['f']?(a: boolean): void }
-        type Test = { f?<T>(a?: T): T }
-        type Test = { ['f']?<T>(a: T, b: T): T }
+        interface Test {
+          f(a: string): number;
+        }
       `,
-    }),
+    },
+    {
+      code: `
+        interface Test {
+          ['f']: (a: boolean) => void;
+        }
+      `,
+      options: ['method'],
+      errors: [{ messageId: 'errorProperty' }],
+      output: `
+        interface Test {
+          ['f'](a: boolean): void;
+        }
+      `,
+    },
+    {
+      code: `
+        interface Test {
+          f: <T>(a: T) => T;
+        }
+      `,
+      options: ['method'],
+      errors: [{ messageId: 'errorProperty' }],
+      output: `
+        interface Test {
+          f<T>(a: T): T;
+        }
+      `,
+    },
+    {
+      code: `
+        interface Test {
+          ['f']: <T extends {}>(a: T, b: T) => T;
+        }
+      `,
+      options: ['method'],
+      errors: [{ messageId: 'errorProperty' }],
+      output: `
+        interface Test {
+          ['f']<T extends {}>(a: T, b: T): T;
+        }
+      `,
+    },
+    {
+      code: `
+        interface Test {
+          'f!': </* a */>(/* b */ x: any /* c */) => void;
+        }
+      `,
+      options: ['method'],
+      errors: [{ messageId: 'errorProperty' }],
+      output: `
+        interface Test {
+          'f!'</* a */>(/* b */ x: any /* c */): void;
+        }
+      `,
+    },
+    {
+      code: `
+        type Test = { f: (a: string) => number };
+      `,
+      options: ['method'],
+      errors: [{ messageId: 'errorProperty' }],
+      output: `
+        type Test = { f(a: string): number };
+      `,
+    },
+    {
+      code: `
+        type Test = { ['f']?: (a: boolean) => void };
+      `,
+      options: ['method'],
+      errors: [{ messageId: 'errorProperty' }],
+      output: `
+        type Test = { ['f']?(a: boolean): void };
+      `,
+    },
+    {
+      code: `
+        type Test = { f?: <T>(a?: T) => T };
+      `,
+      options: ['method'],
+      errors: [{ messageId: 'errorProperty' }],
+      output: `
+        type Test = { f?<T>(a?: T): T };
+      `,
+    },
+    {
+      code: `
+        type Test = { ['f']?: <T>(a: T, b: T) => T };
+      `,
+      options: ['method'],
+      errors: [{ messageId: 'errorProperty' }],
+      output: `
+        type Test = { ['f']?<T>(a: T, b: T): T };
+      `,
+    },
     {
       code: noFormat`
 interface Foo {

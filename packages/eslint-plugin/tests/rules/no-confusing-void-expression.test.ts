@@ -1,11 +1,7 @@
 import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
-import type {
-  MessageId,
-  Options,
-} from '../../src/rules/no-confusing-void-expression';
 import rule from '../../src/rules/no-confusing-void-expression';
-import { batchedSingleLineTests, getFixturesRootDir } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -18,42 +14,99 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-confusing-void-expression', rule, {
   valid: [
-    ...batchedSingleLineTests<Options>({
-      code: `
-        () => Math.random();
-        console.log('foo');
-        foo && console.log(foo);
-        foo || console.log(foo);
-        foo ? console.log(true) : console.log(false);
-        console?.log('foo');
-      `,
-    }),
+    '() => Math.random();',
+    "console.log('foo');",
+    'foo && console.log(foo);',
+    'foo || console.log(foo);',
+    'foo ? console.log(true) : console.log(false);',
+    "console?.log('foo');",
 
-    ...batchedSingleLineTests<Options>({
+    {
       options: [{ ignoreArrowShorthand: true }],
       code: `
         () => console.log('foo');
+      `,
+    },
+    {
+      options: [{ ignoreArrowShorthand: true }],
+      code: `
         foo => foo && console.log(foo);
+      `,
+    },
+    {
+      options: [{ ignoreArrowShorthand: true }],
+      code: `
         foo => foo || console.log(foo);
+      `,
+    },
+    {
+      options: [{ ignoreArrowShorthand: true }],
+      code: `
         foo => (foo ? console.log(true) : console.log(false));
       `,
-    }),
+    },
 
-    ...batchedSingleLineTests<Options>({
+    {
       options: [{ ignoreVoidOperator: true }],
       code: `
         !void console.log('foo');
+      `,
+    },
+    {
+      options: [{ ignoreVoidOperator: true }],
+      code: `
         +void (foo && console.log(foo));
+      `,
+    },
+    {
+      options: [{ ignoreVoidOperator: true }],
+      code: `
         -void (foo || console.log(foo));
+      `,
+    },
+    {
+      options: [{ ignoreVoidOperator: true }],
+      code: `
         () => void ((foo && void console.log(true)) || console.log(false));
+      `,
+    },
+    {
+      options: [{ ignoreVoidOperator: true }],
+      code: `
         const x = void (foo ? console.log(true) : console.log(false));
+      `,
+    },
+    {
+      options: [{ ignoreVoidOperator: true }],
+      code: `
         !(foo && void console.log(foo));
+      `,
+    },
+    {
+      options: [{ ignoreVoidOperator: true }],
+      code: `
         !!(foo || void console.log(foo));
+      `,
+    },
+    {
+      options: [{ ignoreVoidOperator: true }],
+      code: `
         const x = (foo && void console.log(true)) || void console.log(false);
+      `,
+    },
+    {
+      options: [{ ignoreVoidOperator: true }],
+      code: `
         () => (foo ? void console.log(true) : void console.log(false));
+      `,
+    },
+    {
+      options: [{ ignoreVoidOperator: true }],
+      code: `
         return void console.log('foo');
       `,
-    }),
+    },
+
     `
 function cool(input: string) {
   return console.log(input), input;
@@ -69,32 +122,66 @@ function cool(input: string) {
   ],
 
   invalid: [
-    ...batchedSingleLineTests<MessageId, Options>({
+    {
       code: `
         const x = console.log('foo');
+      `,
+      errors: [{ column: 19, messageId: 'invalidVoidExpr' }],
+    },
+    {
+      code: `
         const x = console?.log('foo');
+      `,
+      errors: [{ column: 19, messageId: 'invalidVoidExpr' }],
+    },
+    {
+      code: `
         console.error(console.log('foo'));
+      `,
+      errors: [{ column: 23, messageId: 'invalidVoidExpr' }],
+    },
+    {
+      code: `
         [console.log('foo')];
+      `,
+      errors: [{ column: 10, messageId: 'invalidVoidExpr' }],
+    },
+    {
+      code: `
         ({ x: console.log('foo') });
+      `,
+      errors: [{ column: 15, messageId: 'invalidVoidExpr' }],
+    },
+    {
+      code: `
         void console.log('foo');
+      `,
+      errors: [{ column: 14, messageId: 'invalidVoidExpr' }],
+    },
+    {
+      code: `
         console.log('foo') ? true : false;
+      `,
+      errors: [{ column: 9, messageId: 'invalidVoidExpr' }],
+    },
+    {
+      code: `
         (console.log('foo') && true) || false;
+      `,
+      errors: [{ column: 10, messageId: 'invalidVoidExpr' }],
+    },
+    {
+      code: `
         (cond && console.log('ok')) || console.log('error');
+      `,
+      errors: [{ column: 18, messageId: 'invalidVoidExpr' }],
+    },
+    {
+      code: `
         !console.log('foo');
       `,
-      errors: [
-        { line: 2, column: 11, messageId: 'invalidVoidExpr' },
-        { line: 3, column: 19, messageId: 'invalidVoidExpr' },
-        { line: 4, column: 23, messageId: 'invalidVoidExpr' },
-        { line: 5, column: 10, messageId: 'invalidVoidExpr' },
-        { line: 6, column: 15, messageId: 'invalidVoidExpr' },
-        { line: 7, column: 14, messageId: 'invalidVoidExpr' },
-        { line: 8, column: 9, messageId: 'invalidVoidExpr' },
-        { line: 9, column: 10, messageId: 'invalidVoidExpr' },
-        { line: 10, column: 18, messageId: 'invalidVoidExpr' },
-        { line: 11, column: 10, messageId: 'invalidVoidExpr' },
-      ],
-    }),
+      errors: [{ column: 10, messageId: 'invalidVoidExpr' }],
+    },
 
     {
       code: `

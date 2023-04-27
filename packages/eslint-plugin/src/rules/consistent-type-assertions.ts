@@ -4,7 +4,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 // intentionally mirroring the options
-type MessageIds =
+export type MessageIds =
   | 'as'
   | 'angle-bracket'
   | 'never'
@@ -19,7 +19,7 @@ type OptUnion =
   | {
       assertionStyle: 'never';
     };
-type Options = [OptUnion];
+export type Options = readonly [OptUnion];
 
 export default util.createRule<Options, MessageIds>({
   name: 'consistent-type-assertions',
