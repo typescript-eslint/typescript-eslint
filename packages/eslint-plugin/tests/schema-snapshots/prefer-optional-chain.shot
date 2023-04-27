@@ -4,11 +4,63 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 "
 # SCHEMA:
 
-[]
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "checkAny": {
+        "description": "Check operands that are typed as \`any\` when inspecting \\"loose boolean\\" operands.",
+        "type": "boolean"
+      },
+      "checkBigInt": {
+        "description": "Check operands that are typed as \`bigint\` when inspecting \\"loose boolean\\" operands.",
+        "type": "boolean"
+      },
+      "checkBoolean": {
+        "description": "Check operands that are typed as \`boolean\` when inspecting \\"loose boolean\\" operands.",
+        "type": "boolean"
+      },
+      "checkNumber": {
+        "description": "Check operands that are typed as \`number\` when inspecting \\"loose boolean\\" operands.",
+        "type": "boolean"
+      },
+      "checkString": {
+        "description": "Check operands that are typed as \`string\` when inspecting \\"loose boolean\\" operands.",
+        "type": "boolean"
+      },
+      "checkUnknown": {
+        "description": "Check operands that are typed as \`unknown\` when inspecting \\"loose boolean\\" operands.",
+        "type": "boolean"
+      },
+      "requireNullish": {
+        "description": "Skip operands that are not typed with \`null\` and/or \`undefined\` when inspecting \\"loose boolean\\" operands.",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
 
 
 # TYPES:
 
-/** No options declared */
-type Options = [];"
+type Options = [
+  {
+    /** Check operands that are typed as \`any\` when inspecting "loose boolean" operands. */
+    checkAny?: boolean;
+    /** Check operands that are typed as \`bigint\` when inspecting "loose boolean" operands. */
+    checkBigInt?: boolean;
+    /** Check operands that are typed as \`boolean\` when inspecting "loose boolean" operands. */
+    checkBoolean?: boolean;
+    /** Check operands that are typed as \`number\` when inspecting "loose boolean" operands. */
+    checkNumber?: boolean;
+    /** Check operands that are typed as \`string\` when inspecting "loose boolean" operands. */
+    checkString?: boolean;
+    /** Check operands that are typed as \`unknown\` when inspecting "loose boolean" operands. */
+    checkUnknown?: boolean;
+    /** Skip operands that are not typed with \`null\` and/or \`undefined\` when inspecting "loose boolean" operands. */
+    requireNullish?: boolean;
+  },
+];
+"
 `;
