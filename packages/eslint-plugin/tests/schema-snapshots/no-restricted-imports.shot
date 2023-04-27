@@ -1,0 +1,183 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-restricted-imports 1`] = `
+"
+# SCHEMA:
+
+{
+  "anyOf": [
+    {
+      "items": {
+        "anyOf": [
+          {
+            "type": "string"
+          },
+          {
+            "additionalProperties": false,
+            "properties": {
+              "allowTypeImports": {
+                "description": "Disallow value imports, but allow type-only imports.",
+                "type": "boolean"
+              },
+              "importNames": {
+                "items": {
+                  "type": "string"
+                },
+                "type": "array"
+              },
+              "message": {
+                "minLength": 1,
+                "type": "string"
+              },
+              "name": {
+                "type": "string"
+              }
+            },
+            "required": ["name"],
+            "type": "object"
+          }
+        ]
+      },
+      "type": "array",
+      "uniqueItems": true
+    },
+    {
+      "additionalItems": false,
+      "items": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "paths": {
+              "items": {
+                "anyOf": [
+                  {
+                    "type": "string"
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "allowTypeImports": {
+                        "description": "Disallow value imports, but allow type-only imports.",
+                        "type": "boolean"
+                      },
+                      "importNames": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "type": "array"
+                      },
+                      "message": {
+                        "minLength": 1,
+                        "type": "string"
+                      },
+                      "name": {
+                        "type": "string"
+                      }
+                    },
+                    "required": ["name"],
+                    "type": "object"
+                  }
+                ]
+              },
+              "type": "array",
+              "uniqueItems": true
+            },
+            "patterns": {
+              "anyOf": [
+                {
+                  "items": {
+                    "type": "string"
+                  },
+                  "type": "array",
+                  "uniqueItems": true
+                },
+                {
+                  "items": {
+                    "additionalProperties": false,
+                    "properties": {
+                      "allowTypeImports": {
+                        "description": "Disallow value imports, but allow type-only imports.",
+                        "type": "boolean"
+                      },
+                      "caseSensitive": {
+                        "type": "boolean"
+                      },
+                      "group": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "minItems": 1,
+                        "type": "array",
+                        "uniqueItems": true
+                      },
+                      "importNames": {
+                        "items": {
+                          "type": "string"
+                        },
+                        "minItems": 1,
+                        "type": "array",
+                        "uniqueItems": true
+                      },
+                      "message": {
+                        "minLength": 1,
+                        "type": "string"
+                      }
+                    },
+                    "required": ["group"],
+                    "type": "object"
+                  },
+                  "type": "array",
+                  "uniqueItems": true
+                }
+              ]
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "type": "array"
+    }
+  ]
+}
+
+
+# TYPES:
+
+type Options =
+  | (
+      | {
+          /** Disallow value imports, but allow type-only imports. */
+          allowTypeImports?: boolean;
+          importNames?: string[];
+          message?: string;
+          name: string;
+        }
+      | string
+    )[]
+  | []
+  | [
+      {
+        paths?: (
+          | {
+              /** Disallow value imports, but allow type-only imports. */
+              allowTypeImports?: boolean;
+              importNames?: string[];
+              message?: string;
+              name: string;
+            }
+          | string
+        )[];
+        patterns?:
+          | {
+              /** Disallow value imports, but allow type-only imports. */
+              allowTypeImports?: boolean;
+              caseSensitive?: boolean;
+              group: [string, ...string[]];
+              importNames?: [string, ...string[]];
+              message?: string;
+            }[]
+          | string[];
+      },
+    ];
+"
+`;

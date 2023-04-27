@@ -1,0 +1,13 @@
+diff --git a/node_modules/ajv/lib/ajv.d.ts b/node_modules/ajv/lib/ajv.d.ts
+index 078364d..21cf7bf 100644
+--- a/node_modules/ajv/lib/ajv.d.ts
++++ b/node_modules/ajv/lib/ajv.d.ts
+@@ -153,7 +153,7 @@ declare namespace ajv {
+       parentData?: object | Array<any>,
+       parentDataProperty?: string | number,
+       rootData?: object | Array<any>
+-    ): boolean | PromiseLike<any>;
++    ): boolean;
+     schema?: object | boolean;
+     errors?: null | Array<ErrorObject>;
+     refs?: object;

@@ -1,0 +1,43 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes array-type 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "$defs": {
+      "arrayOption": {
+        "enum": ["array", "array-simple", "generic"]
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "default": {
+        "$ref": "#/items/0/$defs/arrayOption",
+        "description": "The array type expected for mutable cases."
+      },
+      "readonly": {
+        "$ref": "#/items/0/$defs/arrayOption",
+        "description": "The array type expected for readonly cases. If omitted, the value for \`default\` will be used."
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type ArrayOption = 'array' | 'array-simple' | 'generic';
+
+type Options = [
+  {
+    /** The array type expected for mutable cases. */
+    default?: ArrayOption;
+    /** The array type expected for readonly cases. If omitted, the value for \`default\` will be used. */
+    readonly?: ArrayOption;
+  },
+];
+"
+`;

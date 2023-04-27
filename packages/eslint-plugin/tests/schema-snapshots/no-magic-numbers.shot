@@ -1,0 +1,81 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-magic-numbers 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "detectObjects": {
+        "default": false,
+        "type": "boolean"
+      },
+      "enforceConst": {
+        "default": false,
+        "type": "boolean"
+      },
+      "ignore": {
+        "items": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "pattern": "^[+-]?(?:0|[1-9][0-9]*)n$",
+              "type": "string"
+            }
+          ]
+        },
+        "type": "array",
+        "uniqueItems": true
+      },
+      "ignoreArrayIndexes": {
+        "default": false,
+        "type": "boolean"
+      },
+      "ignoreClassFieldInitialValues": {
+        "default": false,
+        "type": "boolean"
+      },
+      "ignoreDefaultValues": {
+        "default": false,
+        "type": "boolean"
+      },
+      "ignoreEnums": {
+        "type": "boolean"
+      },
+      "ignoreNumericLiteralTypes": {
+        "type": "boolean"
+      },
+      "ignoreReadonlyClassProperties": {
+        "type": "boolean"
+      },
+      "ignoreTypeIndexes": {
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    detectObjects?: boolean;
+    enforceConst?: boolean;
+    ignore?: (number | string)[];
+    ignoreArrayIndexes?: boolean;
+    ignoreClassFieldInitialValues?: boolean;
+    ignoreDefaultValues?: boolean;
+    ignoreEnums?: boolean;
+    ignoreNumericLiteralTypes?: boolean;
+    ignoreReadonlyClassProperties?: boolean;
+    ignoreTypeIndexes?: boolean;
+  },
+];
+"
+`;

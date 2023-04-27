@@ -1,0 +1,228 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes key-spacing 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "anyOf": [
+      {
+        "additionalProperties": false,
+        "properties": {
+          "afterColon": {
+            "type": "boolean"
+          },
+          "align": {
+            "anyOf": [
+              {
+                "enum": ["colon", "value"]
+              },
+              {
+                "additionalProperties": false,
+                "properties": {
+                  "afterColon": {
+                    "type": "boolean"
+                  },
+                  "beforeColon": {
+                    "type": "boolean"
+                  },
+                  "mode": {
+                    "enum": ["minimum", "strict"]
+                  },
+                  "on": {
+                    "enum": ["colon", "value"]
+                  }
+                },
+                "type": "object"
+              }
+            ]
+          },
+          "beforeColon": {
+            "type": "boolean"
+          },
+          "mode": {
+            "enum": ["minimum", "strict"]
+          }
+        },
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "properties": {
+          "multiLine": {
+            "additionalProperties": false,
+            "properties": {
+              "afterColon": {
+                "type": "boolean"
+              },
+              "align": {
+                "anyOf": [
+                  {
+                    "enum": ["colon", "value"]
+                  },
+                  {
+                    "additionalProperties": false,
+                    "properties": {
+                      "afterColon": {
+                        "type": "boolean"
+                      },
+                      "beforeColon": {
+                        "type": "boolean"
+                      },
+                      "mode": {
+                        "enum": ["minimum", "strict"]
+                      },
+                      "on": {
+                        "enum": ["colon", "value"]
+                      }
+                    },
+                    "type": "object"
+                  }
+                ]
+              },
+              "beforeColon": {
+                "type": "boolean"
+              },
+              "mode": {
+                "enum": ["minimum", "strict"]
+              }
+            },
+            "type": "object"
+          },
+          "singleLine": {
+            "additionalProperties": false,
+            "properties": {
+              "afterColon": {
+                "type": "boolean"
+              },
+              "beforeColon": {
+                "type": "boolean"
+              },
+              "mode": {
+                "enum": ["minimum", "strict"]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "properties": {
+          "align": {
+            "additionalProperties": false,
+            "properties": {
+              "afterColon": {
+                "type": "boolean"
+              },
+              "beforeColon": {
+                "type": "boolean"
+              },
+              "mode": {
+                "enum": ["minimum", "strict"]
+              },
+              "on": {
+                "enum": ["colon", "value"]
+              }
+            },
+            "type": "object"
+          },
+          "multiLine": {
+            "additionalProperties": false,
+            "properties": {
+              "afterColon": {
+                "type": "boolean"
+              },
+              "beforeColon": {
+                "type": "boolean"
+              },
+              "mode": {
+                "enum": ["minimum", "strict"]
+              }
+            },
+            "type": "object"
+          },
+          "singleLine": {
+            "additionalProperties": false,
+            "properties": {
+              "afterColon": {
+                "type": "boolean"
+              },
+              "beforeColon": {
+                "type": "boolean"
+              },
+              "mode": {
+                "enum": ["minimum", "strict"]
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      }
+    ]
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  | {
+      afterColon?: boolean;
+      align?:
+        | 'colon'
+        | 'value'
+        | {
+            afterColon?: boolean;
+            beforeColon?: boolean;
+            mode?: 'minimum' | 'strict';
+            on?: 'colon' | 'value';
+          };
+      beforeColon?: boolean;
+      mode?: 'minimum' | 'strict';
+    }
+  | {
+      align?: {
+        afterColon?: boolean;
+        beforeColon?: boolean;
+        mode?: 'minimum' | 'strict';
+        on?: 'colon' | 'value';
+      };
+      multiLine?: {
+        afterColon?: boolean;
+        beforeColon?: boolean;
+        mode?: 'minimum' | 'strict';
+      };
+      singleLine?: {
+        afterColon?: boolean;
+        beforeColon?: boolean;
+        mode?: 'minimum' | 'strict';
+      };
+    }
+  | {
+      multiLine?: {
+        afterColon?: boolean;
+        align?:
+          | 'colon'
+          | 'value'
+          | {
+              afterColon?: boolean;
+              beforeColon?: boolean;
+              mode?: 'minimum' | 'strict';
+              on?: 'colon' | 'value';
+            };
+        beforeColon?: boolean;
+        mode?: 'minimum' | 'strict';
+      };
+      singleLine?: {
+        afterColon?: boolean;
+        beforeColon?: boolean;
+        mode?: 'minimum' | 'strict';
+      };
+    },
+];
+"
+`;

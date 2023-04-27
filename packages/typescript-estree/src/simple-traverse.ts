@@ -1,3 +1,4 @@
+import type { VisitorKeys } from '@typescript-eslint/visitor-keys';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 
 import type { TSESTree } from './ts-estree';
@@ -19,25 +20,33 @@ function getVisitorKeysForNode(
   return (keys ?? []) as never;
 }
 
-type SimpleTraverseOptions =
+type SimpleTraverseOptions = Readonly<
   | {
+      visitorKeys?: Readonly<VisitorKeys>;
       enter: (node: TSESTree.Node, parent: TSESTree.Node | undefined) => void;
     }
   | {
-      [key: string]: (
-        node: TSESTree.Node,
-        parent: TSESTree.Node | undefined,
-      ) => void;
-    };
+      visitorKeys?: Readonly<VisitorKeys>;
+      visitors: {
+        [key: string]: (
+          node: TSESTree.Node,
+          parent: TSESTree.Node | undefined,
+        ) => void;
+      };
+    }
+>;
 
 class SimpleTraverser {
-  private readonly allVisitorKeys = visitorKeys;
+  private readonly allVisitorKeys: Readonly<VisitorKeys> = visitorKeys;
   private readonly selectors: SimpleTraverseOptions;
   private readonly setParentPointers: boolean;
 
   constructor(selectors: SimpleTraverseOptions, setParentPointers = false) {
     this.selectors = selectors;
     this.setParentPointers = setParentPointers;
+    if (selectors.visitorKeys) {
+      this.allVisitorKeys = selectors.visitorKeys;
+    }
   }
 
   traverse(node: unknown, parent: TSESTree.Node | undefined): void {
@@ -51,8 +60,8 @@ class SimpleTraverser {
 
     if ('enter' in this.selectors) {
       this.selectors.enter(node, parent);
-    } else if (node.type in this.selectors) {
-      this.selectors[node.type](node, parent);
+    } else if (node.type in this.selectors.visitors) {
+      this.selectors.visitors[node.type](node, parent);
     }
 
     const keys = getVisitorKeysForNode(this.allVisitorKeys, node);

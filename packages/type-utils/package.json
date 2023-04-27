@@ -1,10 +1,10 @@
 {
   "name": "@typescript-eslint/type-utils",
-  "version": "5.58.0",
+  "version": "5.59.1",
   "description": "Type utilities for working with TypeScript + ESLint together",
   "files": [
     "dist",
-    "_ts4.2",
+    "_ts4.3",
     "package.json",
     "README.md",
     "LICENSE"
@@ -36,22 +36,22 @@
   ],
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
-    "postbuild": "downlevel-dts dist _ts4.2/dist --to=4.2",
+    "postbuild": "downlevel-dts dist _ts4.3/dist --to=4.3",
     "clean": "tsc -b tsconfig.build.json --clean",
-    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf _ts4.2 && rimraf coverage",
+    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf _ts4.3 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "nx lint",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/typescript-estree": "5.58.0",
-    "@typescript-eslint/utils": "5.58.0",
+    "@typescript-eslint/typescript-estree": "5.59.1",
+    "@typescript-eslint/utils": "5.59.1",
     "debug": "^4.3.4",
     "ts-api-utils": "^0.0.46"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "5.58.0",
+    "@typescript-eslint/parser": "5.59.1",
     "ajv": "^8.12.0",
     "typescript": "*"
   },
@@ -70,7 +70,7 @@
   "typesVersions": {
     "<4.7": {
       "*": [
-        "_ts4.2/*"
+        "_ts4.3/*"
       ]
     }
   }
