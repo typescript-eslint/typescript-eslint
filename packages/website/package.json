@@ -45,11 +45,11 @@
     "react": "^18.0.0"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.4.5",
+    "@axe-core/playwright": "^4.6.1",
     "@docusaurus/module-type-aliases": "~2.4.0",
-    "@playwright/test": "^1.27.1",
+    "@playwright/test": "^1.32.3",
     "@types/react": "^18.0.9",
-    "@types/react-helmet": "^6.1.5",
+    "@types/react-helmet": "^6.1.6",
     "@types/react-router-dom": "^5.3.3",
     "@typescript-eslint/eslint-plugin": "5.59.1",
     "@typescript-eslint/rule-schema-to-typescript-types": "5.59.1",
@@ -58,13 +58,13 @@
     "cross-fetch": "*",
     "globby": "^11.1.0",
     "make-dir": "*",
-    "monaco-editor": "^0.37.0",
+    "monaco-editor": "^0.37.1",
     "rimraf": "*",
-    "stylelint": "^15.3.0",
+    "stylelint": "^15.6.0",
     "stylelint-config-recommended": "^11.0.0",
     "stylelint-config-standard": "^31.0.0",
     "stylelint-order": "^6.0.3",
-    "webpack": "^5.74.0"
+    "webpack": "^5.81.0"
   },
   "browserslist": {
     "production": [

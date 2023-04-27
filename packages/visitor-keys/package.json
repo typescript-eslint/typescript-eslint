@@ -46,10 +46,7 @@
   },
   "dependencies": {
     "@typescript-eslint/types": "5.59.1",
-    "eslint-visitor-keys": "^3.3.0"
-  },
-  "devDependencies": {
-    "@types/eslint-visitor-keys": "*"
+    "eslint-visitor-keys": "^3.4.0"
   },
   "funding": {
     "type": "opencollective",

@@ -3,8 +3,6 @@
   ignoreDeps: [
     // globby is ESM so we can't go any higher right now
     'globby',
-    // this dep now uses package.json exports - we will be removing it next major
-    'eslint-scope',
     // this dep is now ESM only
     'execa',
     // Some kind of weird caching issue:

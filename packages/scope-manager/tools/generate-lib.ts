@@ -3,7 +3,7 @@ import { AST_TOKEN_TYPES } from '@typescript-eslint/types';
 import * as fs from 'fs';
 import * as path from 'path';
 import { format, resolveConfig } from 'prettier';
-import rimraf from 'rimraf';
+import { rimraf } from 'rimraf';
 import * as ts from 'typescript';
 
 import type { ScopeManager, Variable } from '../src';
