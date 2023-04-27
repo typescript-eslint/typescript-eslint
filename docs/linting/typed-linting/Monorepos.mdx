@@ -43,6 +43,7 @@ Paths may be provided as [Node globs](https://github.com/isaacs/node-glob/blob/f
 For each file being linted, the first matching project path will be used as its backing TSConfig.
 
 ```js title=".eslintrc.js"
+/* eslint-env node */
 module.exports = {
   extends: [
     'eslint:recommended',
@@ -68,6 +69,7 @@ Using wide globs `**` in your `parserOptions.project` may degrade linting perfor
 Instead of globs that use `**` to recursively check all folders, prefer paths that use a single `*` at a time.
 
 ```js title=".eslintrc.js"
+/* eslint-env node */
 module.exports = {
   extends: [
     'eslint:recommended',
@@ -99,7 +101,7 @@ See [#1192](https://github.com/typescript-eslint/typescript-eslint/issues/1192) 
 If you do run into an OOM, please comment on the above issue and let us know about your repo - the more information we have, the better.
 As an interim workaround, consider one of the following:
 
-- Switching to one root `tsconfig.eslint.json` (see below)
+- Switching to one root `tsconfig.eslint.json` (see [One root `tsconfig.json`](#one-root-tsconfigjson))
 - Using a shell script to only lint one package at a time, using your existing config above.
 
 ## Troubleshooting

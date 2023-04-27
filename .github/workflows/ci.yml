@@ -95,6 +95,21 @@ jobs:
       - name: Run Check
         run: yarn ${{ matrix.lint-task }}
 
+  stylelint:
+    name: Stylelint
+    needs: [install]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Run stylelint check
+        run: yarn stylelint
+        working-directory: packages/website
+
   integration_tests:
     name: Run integration tests on primary Node.js version
     needs: [build]
@@ -130,6 +145,7 @@ jobs:
             'eslint-plugin-tslint',
             'parser',
             'repo-tools',
+            'rule-schema-to-typescript-types',
             'scope-manager',
             'type-utils',
             'typescript-estree',

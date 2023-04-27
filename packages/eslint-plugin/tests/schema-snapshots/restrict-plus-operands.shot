@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes restrict-plus-operands 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "allowAny": {
+        "description": "Whether to allow \`any\` typed values.",
+        "type": "boolean"
+      },
+      "checkCompoundAssignments": {
+        "description": "Whether to check compound assignments such as \`+=\`.",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    /** Whether to allow \`any\` typed values. */
+    allowAny?: boolean;
+    /** Whether to check compound assignments such as \`+=\`. */
+    checkCompoundAssignments?: boolean;
+  },
+];
+"
+`;

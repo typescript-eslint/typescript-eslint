@@ -6,14 +6,14 @@
   "targets": {
     "build": {
       "executor": "nx:run-commands",
-      "outputs": ["{projectRoot}/dist", "{projectRoot}/_ts4.2"],
+      "outputs": ["{projectRoot}/dist", "{projectRoot}/_ts4.3"],
       "options": {
         "parallel": false,
         "cwd": "packages/scope-manager",
         "commands": [
-          "rimraf _ts4.2",
+          "rimraf _ts4.3",
           "tsc -b tsconfig.build.json",
-          "downlevel-dts dist _ts4.2/dist --to=4.2"
+          "downlevel-dts dist _ts4.3/dist --to=4.3"
         ]
       }
     },
@@ -36,8 +36,7 @@
         "commands": [
           "tsc -b tsconfig.build.json --clean",
           "rimraf dist",
-          "rimraf _ts4.2",
-          "rimraf _ts3.4",
+          "rimraf _ts4.3",
           "rimraf coverage"
         ]
       }

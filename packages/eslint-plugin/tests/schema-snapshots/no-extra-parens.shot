@@ -1,0 +1,87 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-extra-parens 1`] = `
+"
+# SCHEMA:
+
+{
+  "anyOf": [
+    {
+      "items": [
+        {
+          "enum": ["functions"]
+        }
+      ],
+      "maxItems": 1,
+      "minItems": 0,
+      "type": "array"
+    },
+    {
+      "items": [
+        {
+          "enum": ["all"]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "allowParensAfterCommentPattern": {
+              "type": "string"
+            },
+            "conditionalAssign": {
+              "type": "boolean"
+            },
+            "enforceForArrowConditionals": {
+              "type": "boolean"
+            },
+            "enforceForFunctionPrototypeMethods": {
+              "type": "boolean"
+            },
+            "enforceForNewInMemberExpressions": {
+              "type": "boolean"
+            },
+            "enforceForSequenceExpressions": {
+              "type": "boolean"
+            },
+            "ignoreJSX": {
+              "enum": ["all", "multi-line", "none", "single-line"]
+            },
+            "nestedBinaryExpressions": {
+              "type": "boolean"
+            },
+            "returnAssign": {
+              "type": "boolean"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 0,
+      "type": "array"
+    }
+  ]
+}
+
+
+# TYPES:
+
+type Options =
+  | []
+  | ['all']
+  | ['functions']
+  | [
+      'all',
+      {
+        allowParensAfterCommentPattern?: string;
+        conditionalAssign?: boolean;
+        enforceForArrowConditionals?: boolean;
+        enforceForFunctionPrototypeMethods?: boolean;
+        enforceForNewInMemberExpressions?: boolean;
+        enforceForSequenceExpressions?: boolean;
+        ignoreJSX?: 'all' | 'multi-line' | 'none' | 'single-line';
+        nestedBinaryExpressions?: boolean;
+        returnAssign?: boolean;
+      },
+    ];
+"
+`;

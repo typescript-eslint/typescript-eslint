@@ -1,38 +1,37 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+import type * as ts from 'typescript';
 
 export type CompilerFlags = Record<string, unknown>;
 
 export type SourceType = TSESLint.SourceType;
 
 export type RulesRecord = TSESLint.Linter.RulesRecord;
-export type RuleEntry = TSESLint.Linter.RuleEntry;
 
 export interface RuleDetails {
   name: string;
   description?: string;
+  url?: string;
 }
 
 export type TabType = 'code' | 'tsconfig' | 'eslintrc';
 
+export type ConfigFileType = `${ts.Extension}`;
+
+export type ConfigShowAst = false | 'es' | 'ts' | 'scope';
+
 export interface ConfigModel {
-  jsx?: boolean;
+  fileType?: ConfigFileType;
   sourceType?: SourceType;
   eslintrc: string;
   tsconfig: string;
   code: string;
   ts: string;
-  showAST?: boolean | 'ts' | 'es' | 'scope';
+  showAST?: ConfigShowAst;
+  scroll?: boolean;
+  showTokens?: boolean;
 }
 
-export interface SelectedPosition {
-  line: number;
-  column: number;
-}
-
-export interface SelectedRange {
-  start: SelectedPosition;
-  end: SelectedPosition;
-}
+export type SelectedRange = [number, number];
 
 export interface ErrorItem {
   message: string;

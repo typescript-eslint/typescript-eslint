@@ -1,7 +1,7 @@
 import type MonacoEditor from 'monaco-editor';
 
 import type * as SandboxFactory from '../../vendor/sandbox';
-import type { LintUtils } from '../linter/WebLinter';
+import type { WebLinterModule } from '../linter/types';
 
 type Monaco = typeof MonacoEditor;
 type Sandbox = typeof SandboxFactory;
@@ -9,7 +9,7 @@ type Sandbox = typeof SandboxFactory;
 export interface SandboxModel {
   main: Monaco;
   sandboxFactory: Sandbox;
-  lintUtils: LintUtils;
+  lintUtils: WebLinterModule;
 }
 
 function loadSandbox(tsVersion: string): Promise<SandboxModel> {
@@ -32,7 +32,7 @@ function loadSandbox(tsVersion: string): Promise<SandboxModel> {
       });
 
       // Grab a copy of monaco, TypeScript and the sandbox
-      window.require<[Monaco, Sandbox, LintUtils]>(
+      window.require<[Monaco, Sandbox, WebLinterModule]>(
         ['vs/editor/editor.main', 'sandbox/index', 'linter/index'],
         (main, sandboxFactory, lintUtils) => {
           resolve({ main, sandboxFactory, lintUtils });
