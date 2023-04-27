@@ -594,6 +594,7 @@ export default util.createRule<Options, MessageIds>({
     },
     fixable: 'whitespace',
     hasSuggestions: false,
+    // This is intentionally an array schema as you can pass 0..n config objects
     schema: {
       $defs: {
         paddingType: {
@@ -613,6 +614,7 @@ export default util.createRule<Options, MessageIds>({
         },
       },
       type: 'array',
+      additionalItems: false,
       items: {
         type: 'object',
         properties: {
@@ -623,7 +625,6 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         required: ['blankLine', 'prev', 'next'],
       },
-      additionalItems: false,
     },
     messages: {
       unexpectedBlankLine: 'Unexpected blank line before this statement.',

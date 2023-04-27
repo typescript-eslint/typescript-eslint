@@ -137,6 +137,43 @@ ruleTester.run('ban-types', rule, {
       options,
     },
     {
+      code: 'let a: Object;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'Object',
+            customMessage: [
+              ' The `Object` type actually means "any non-nullish value", so it is marginally better than `unknown`.',
+              '- If you want a type meaning "any object", you probably want `object` instead.',
+              '- If you want a type meaning "any value", you probably want `unknown` instead.',
+              '- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead.',
+            ].join('\n'),
+          },
+          line: 1,
+          column: 8,
+          suggestions: [
+            {
+              messageId: 'bannedTypeReplacement',
+              data: { name: 'Object', replacement: 'object' },
+              output: 'let a: object;',
+            },
+            {
+              messageId: 'bannedTypeReplacement',
+              data: { name: 'Object', replacement: 'unknown' },
+              output: 'let a: unknown;',
+            },
+            {
+              messageId: 'bannedTypeReplacement',
+              data: { name: 'Object', replacement: 'NonNullable<unknown>' },
+              output: 'let a: NonNullable<unknown>;',
+            },
+          ],
+        },
+      ],
+      options: [{}],
+    },
+    {
       code: 'let aa: Foo;',
       errors: [
         {
@@ -616,6 +653,27 @@ let baz: object = {};
         {
           types: {
             '[]': '`[]` does only allow empty arrays.',
+          },
+        },
+      ],
+    },
+    {
+      code: 'let a: Foo;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+          data: {
+            name: 'Foo',
+            customMessage: '',
+          },
+          line: 1,
+          column: 8,
+        },
+      ],
+      options: [
+        {
+          types: {
+            Foo: true,
           },
         },
       ],

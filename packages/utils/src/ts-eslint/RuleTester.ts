@@ -4,6 +4,7 @@ import type { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
 import type { Linter } from './Linter';
 import type { ParserOptions } from './ParserOptions';
 import type {
+  ReportDescriptorMessageData,
   RuleCreateFunction,
   RuleModule,
   SharedConfigurationSettings,
@@ -62,7 +63,7 @@ interface SuggestionOutput<TMessageIds extends string> {
   /**
    * The data used to fill the message template.
    */
-  readonly data?: Readonly<Record<string, unknown>>;
+  readonly data?: ReportDescriptorMessageData;
   /**
    * NOTE: Suggestions will be applied as a stand-alone change, without triggering multi-pass fixes.
    * Each individual error has its own suggestion, so you have to show the correct, _isolated_ output for each suggestion.
@@ -95,7 +96,7 @@ interface TestCaseError<TMessageIds extends string> {
   /**
    * The data used to fill the message template.
    */
-  readonly data?: Readonly<Record<string, unknown>>;
+  readonly data?: ReportDescriptorMessageData;
   /**
    * The 1-based column number of the reported end location.
    */

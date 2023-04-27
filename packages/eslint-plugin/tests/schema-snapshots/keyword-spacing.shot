@@ -1,0 +1,1146 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes keyword-spacing 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "after": {
+        "default": true,
+        "type": "boolean"
+      },
+      "before": {
+        "default": true,
+        "type": "boolean"
+      },
+      "overrides": {
+        "additionalProperties": false,
+        "properties": {
+          "abstract": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "as": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "async": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "await": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "boolean": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "break": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "byte": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "case": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "catch": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "char": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "class": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "const": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "continue": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "debugger": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "default": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "delete": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "do": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "double": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "else": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "enum": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "export": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "extends": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "false": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "final": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "finally": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "float": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "for": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "from": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "function": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "get": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "goto": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "if": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "implements": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "import": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "in": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "instanceof": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "int": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "interface": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "let": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "long": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "native": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "new": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "null": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "of": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "package": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "private": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "protected": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "public": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "return": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "set": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "short": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "static": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "super": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "switch": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "synchronized": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "this": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "throw": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "throws": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "transient": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "true": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "try": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "type": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "typeof": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "var": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "void": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "volatile": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "while": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "with": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "yield": {
+            "additionalProperties": false,
+            "properties": {
+              "after": {
+                "type": "boolean"
+              },
+              "before": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    after?: boolean;
+    before?: boolean;
+    overrides?: {
+      abstract?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      as?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      async?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      await?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      boolean?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      break?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      byte?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      case?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      catch?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      char?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      class?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      const?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      continue?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      debugger?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      default?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      delete?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      do?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      double?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      else?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      enum?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      export?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      extends?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      false?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      final?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      finally?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      float?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      for?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      from?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      function?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      get?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      goto?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      if?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      implements?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      import?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      in?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      instanceof?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      int?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      interface?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      let?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      long?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      native?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      new?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      null?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      of?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      package?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      private?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      protected?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      public?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      return?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      set?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      short?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      static?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      super?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      switch?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      synchronized?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      this?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      throw?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      throws?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      transient?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      true?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      try?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      type?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      typeof?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      var?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      void?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      volatile?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      while?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      with?: {
+        after?: boolean;
+        before?: boolean;
+      };
+      yield?: {
+        after?: boolean;
+        before?: boolean;
+      };
+    };
+  },
+];
+"
+`;

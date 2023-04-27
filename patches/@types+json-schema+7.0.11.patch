@@ -1,0 +1,35 @@
+diff --git a/node_modules/@types/json-schema/index.d.ts b/node_modules/@types/json-schema/index.d.ts
+index 7a92dec..44d9691 100755
+--- a/node_modules/@types/json-schema/index.d.ts
++++ b/node_modules/@types/json-schema/index.d.ts
+@@ -154,9 +154,18 @@ export interface JSONSchema4 {
+      */
+     additionalProperties?: boolean | JSONSchema4 | undefined;
+ 
++    /**
++     * Reusable definitions that can be referenced via `$ref`
++     */
+     definitions?: {
+         [k: string]: JSONSchema4;
+     } | undefined;
++    /**
++     * Reusable definitions that can be referenced via `$ref`
++     */
++    $defs?: {
++      [k: string]: JSONSchema4;
++    } | undefined;
+ 
+     /**
+      * This attribute is an object with property definitions that define the
+@@ -232,11 +241,6 @@ export interface JSONSchema4 {
+      */
+     extends?: string | string[] | undefined;
+ 
+-    /**
+-     * @see https://tools.ietf.org/html/draft-zyp-json-schema-04#section-5.6
+-     */
+-    [k: string]: any;
+-
+     format?: string | undefined;
+ }
+ 

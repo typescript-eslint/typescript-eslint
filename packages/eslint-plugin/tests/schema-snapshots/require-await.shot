@@ -1,0 +1,14 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes require-await 1`] = `
+"
+# SCHEMA:
+
+[]
+
+
+# TYPES:
+
+/** No options declared */
+type Options = [];"
+`;

@@ -42,6 +42,7 @@ module.exports = {
         'architecture/eslint-plugin',
         'architecture/eslint-plugin-tslint',
         'architecture/parser',
+        'architecture/rule-tester',
         'architecture/scope-manager',
         'architecture/typescript-estree',
         'architecture/utils',

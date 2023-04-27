@@ -1,6 +1,8 @@
 {
   enabledManagers: ['github-actions', 'npm'],
   ignoreDeps: [
+    // AJV is out-of-date, but it's intentionally synced with ESLint - https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/package.json#L70
+    'ajv',
     // globby is ESM so we can't go any higher right now
     'globby',
     // this dep now uses package.json exports - we will be removing it next major

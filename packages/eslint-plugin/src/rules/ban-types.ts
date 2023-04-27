@@ -6,11 +6,12 @@ import * as util from '../util';
 type Types = Record<
   string,
   | null
-  | false
+  | boolean
   | string
   | {
       message: string;
       fixWith?: string;
+      suggest?: readonly string[];
     }
 >;
 
@@ -20,7 +21,7 @@ export type Options = [
     extendDefaults?: boolean;
   },
 ];
-export type MessageIds = 'bannedTypeMessage';
+export type MessageIds = 'bannedTypeMessage' | 'bannedTypeReplacement';
 
 function removeSpaces(str: string): string {
   return str.replace(/\s/g, '');
@@ -34,9 +35,9 @@ function stringifyNode(
 }
 
 function getCustomMessage(
-  bannedType: null | string | { message?: string; fixWith?: string },
+  bannedType: null | true | string | { message?: string; fixWith?: string },
 ): string {
-  if (bannedType == null) {
+  if (bannedType == null || bannedType === true) {
     return '';
   }
 
@@ -88,7 +89,9 @@ const defaultTypes: Types = {
       'The `Object` type actually means "any non-nullish value", so it is marginally better than `unknown`.',
       '- If you want a type meaning "any object", you probably want `object` instead.',
       '- If you want a type meaning "any value", you probably want `unknown` instead.',
+      '- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead.',
     ].join('\n'),
+    suggest: ['object', 'unknown', 'NonNullable<unknown>'],
   },
   '{}': {
     message: [
@@ -96,7 +99,14 @@ const defaultTypes: Types = {
       '- If you want a type meaning "any object", you probably want `object` instead.',
       '- If you want a type meaning "any value", you probably want `unknown` instead.',
       '- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.',
+      '- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead.',
     ].join('\n'),
+    suggest: [
+      'object',
+      'unknown',
+      'Record<string, never>',
+      'NonNullable<unknown>',
+    ],
   },
 };
 
@@ -123,29 +133,64 @@ export default util.createRule<Options, MessageIds>({
       recommended: 'recommended',
     },
     fixable: 'code',
+    hasSuggestions: true,
     messages: {
       bannedTypeMessage: "Don't use `{{name}}` as a type.{{customMessage}}",
+      bannedTypeReplacement: 'Replace `{{name}}` with `{{replacement}}`.',
     },
     schema: [
       {
+        $defs: {
+          banConfig: {
+            oneOf: [
+              {
+                type: 'null',
+                description: 'Bans the type with the default message',
+              },
+              {
+                enum: [false],
+                description:
+                  'Un-bans the type (useful when paired with `extendDefaults`)',
+              },
+              {
+                enum: [true],
+                description: 'Bans the type with the default message',
+              },
+              {
+                type: 'string',
+                description: 'Bans the type with a custom message',
+              },
+              {
+                type: 'object',
+                description: 'Bans a type',
+                properties: {
+                  message: {
+                    type: 'string',
+                    description: 'Custom error message',
+                  },
+                  fixWith: {
+                    type: 'string',
+                    description:
+                      'Type to autofix replace with. Note that autofixers can be applied automatically - so you need to be careful with this option.',
+                  },
+                  suggest: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    description: 'Types to suggest replacing with.',
+                    additionalItems: false,
+                  },
+                },
+                additionalProperties: false,
+              },
+            ],
+          },
+        },
         type: 'object',
         properties: {
           types: {
             type: 'object',
             additionalProperties: {
-              oneOf: [
-                { type: 'null' },
-                { type: 'boolean' },
-                { type: 'string' },
-                {
-                  type: 'object',
-                  properties: {
-                    message: { type: 'string' },
-                    fixWith: { type: 'string' },
-                  },
-                  additionalProperties: false,
-                },
-              ],
+              $ref: '#/items/0/$defs/banConfig',
             },
           },
           extendDefaults: {
@@ -182,6 +227,10 @@ export default util.createRule<Options, MessageIds>({
       const customMessage = getCustomMessage(bannedType);
       const fixWith =
         bannedType && typeof bannedType === 'object' && bannedType.fixWith;
+      const suggest =
+        bannedType && typeof bannedType === 'object'
+          ? bannedType.suggest
+          : undefined;
 
       context.report({
         node: typeNode,
@@ -193,6 +242,15 @@ export default util.createRule<Options, MessageIds>({
         fix: fixWith
           ? (fixer): TSESLint.RuleFix => fixer.replaceText(typeNode, fixWith)
           : null,
+        suggest: suggest?.map(replacement => ({
+          messageId: 'bannedTypeReplacement',
+          data: {
+            name,
+            replacement,
+          },
+          fix: (fixer): TSESLint.RuleFix =>
+            fixer.replaceText(typeNode, replacement),
+        })),
       });
     }
 

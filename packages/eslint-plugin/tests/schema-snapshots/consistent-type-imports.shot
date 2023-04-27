@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes consistent-type-imports 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "disallowTypeAnnotations": {
+        "type": "boolean"
+      },
+      "fixStyle": {
+        "enum": ["inline-type-imports", "separate-type-imports"]
+      },
+      "prefer": {
+        "enum": ["no-type-imports", "type-imports"]
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    disallowTypeAnnotations?: boolean;
+    fixStyle?: 'inline-type-imports' | 'separate-type-imports';
+    prefer?: 'no-type-imports' | 'type-imports';
+  },
+];
+"
+`;
