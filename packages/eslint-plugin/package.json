@@ -67,7 +67,6 @@
   },
   "devDependencies": {
     "@types/debug": "*",
-    "@types/json-schema": "*",
     "@types/marked": "*",
     "@types/natural-compare": "*",
     "@types/prettier": "*",
