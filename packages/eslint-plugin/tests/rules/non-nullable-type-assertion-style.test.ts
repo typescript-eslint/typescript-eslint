@@ -202,6 +202,7 @@ const y = x!;
 
 const ruleTesterWithNoUncheckedIndexAccess = new RuleTester({
   parserOptions: {
+    EXPERIMENTAL_useProjectService: false,
     sourceType: 'module',
     tsconfigRootDir: getFixturesRootDir(),
     project: './tsconfig.noUncheckedIndexedAccess.json',

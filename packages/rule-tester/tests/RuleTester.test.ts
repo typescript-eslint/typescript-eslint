@@ -8,10 +8,10 @@ import type { RuleTesterTestFrameworkFunctionBase } from '../src/TestFramework';
 import * as dependencyConstraintsModule from '../src/utils/dependencyConstraints';
 
 // we can't spy on the exports of an ES module - so we instead have to mock the entire module
-jest.mock('../src/dependencyConstraints', () => {
+jest.mock('../src/utils/dependencyConstraints', () => {
   const dependencyConstraints = jest.requireActual<
     typeof dependencyConstraintsModule
-  >('../src/dependencyConstraints');
+  >('../src/utils/dependencyConstraints');
 
   return {
     ...dependencyConstraints,
@@ -169,6 +169,7 @@ describe('RuleTester', () => {
           {
             code: 'type-aware parser options should override the constructor config',
             parserOptions: {
+              EXPERIMENTAL_useProjectService: false,
               project: 'tsconfig.test-specific.json',
               tsconfigRootDir: '/set/in/the/test/',
             },
@@ -209,6 +210,7 @@ describe('RuleTester', () => {
             "code": "type-aware parser options should override the constructor config",
             "filename": "/set/in/the/test/file.ts",
             "parserOptions": {
+              "EXPERIMENTAL_useProjectService": false,
               "project": "tsconfig.test-specific.json",
               "tsconfigRootDir": "/set/in/the/test/",
             },
