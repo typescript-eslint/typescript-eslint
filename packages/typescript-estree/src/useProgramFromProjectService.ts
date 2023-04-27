@@ -17,7 +17,7 @@ export function useProgramFromProjectService(
     absolutify(parseSettings.filePath),
     parseSettings.codeFullText,
     /* scriptKind */ undefined,
-    parseSettings.tsconfigRootDir,
+    parseSettings.projects[0],
   );
   if (!opened.configFileName) {
     return undefined;

@@ -1,7 +1,7 @@
 import debug from 'debug';
 import type * as ts from 'typescript';
 
-import { createProjectService } from '../create-program/createProjectService';
+import { createOrUpdateProjectService } from '../create-program/createOrUpdateProjectService';
 import { ensureAbsolutePath } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
 import { isSourceFile } from '../source-files';
@@ -21,19 +21,31 @@ const log = debug(
 
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
 
-let TSSERVER_PROJECT_SERVICE: ReturnType<typeof createProjectService> | null =
-  null;
-
 export function createParseSettings(
   code: string | ts.SourceFile,
   options: Partial<TSESTreeOptions> = {},
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);
-  const singleRun = inferSingleRun(options);
   const tsconfigRootDir =
     typeof options.tsconfigRootDir === 'string'
       ? options.tsconfigRootDir
       : process.cwd();
+  const filePath = ensureAbsolutePath(
+    typeof options.filePath === 'string' && options.filePath !== '<input>'
+      ? options.filePath
+      : getFileName(options.jsx),
+    tsconfigRootDir,
+  );
+  const singleRun = inferSingleRun(options);
+  const tsconfigMatchCache = (TSCONFIG_MATCH_CACHE ??= new ExpiringCache(
+    singleRun
+      ? 'Infinity'
+      : options.cacheLifetime?.glob ?? DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
+  ));
+  const projectConfigFiles = getProjectConfigFiles(
+    { filePath, tsconfigMatchCache, tsconfigRootDir },
+    options.project,
+  );
   const parseSettings: MutableParseSettings = {
     allowInvalidAST: options.allowInvalidAST === true,
     code,
@@ -54,7 +66,11 @@ export function createParseSettings(
     EXPERIMENTAL_projectService:
       options.EXPERIMENTAL_useProjectService === true ||
       process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true'
-        ? (TSSERVER_PROJECT_SERVICE ??= createProjectService())
+        ? createOrUpdateProjectService(
+            codeFullText,
+            filePath,
+            projectConfigFiles,
+          )
         : undefined,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect:
       options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect === true,
@@ -63,12 +79,7 @@ export function createParseSettings(
       options.extraFileExtensions.every(ext => typeof ext === 'string')
         ? options.extraFileExtensions
         : [],
-    filePath: ensureAbsolutePath(
-      typeof options.filePath === 'string' && options.filePath !== '<input>'
-        ? options.filePath
-        : getFileName(options.jsx),
-      tsconfigRootDir,
-    ),
+    filePath,
     jsx: options.jsx === true,
     loc: options.loc === true,
     log:
@@ -86,12 +97,7 @@ export function createParseSettings(
       options.suppressDeprecatedPropertyWarnings ??
       process.env.NODE_ENV !== 'test',
     tokens: options.tokens === true ? [] : null,
-    tsconfigMatchCache: (TSCONFIG_MATCH_CACHE ??= new ExpiringCache(
-      singleRun
-        ? 'Infinity'
-        : options.cacheLifetime?.glob ??
-          DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
-    )),
+    tsconfigMatchCache,
     tsconfigRootDir,
   };
 
@@ -127,7 +133,7 @@ export function createParseSettings(
   if (!parseSettings.programs) {
     parseSettings.projects = resolveProjectList({
       cacheLifetime: options.cacheLifetime,
-      project: getProjectConfigFiles(parseSettings, options.project),
+      project: projectConfigFiles,
       projectFolderIgnoreList: options.projectFolderIgnoreList,
       singleRun: parseSettings.singleRun,
       tsconfigRootDir: tsconfigRootDir,
@@ -141,10 +147,6 @@ export function createParseSettings(
 
 export function clearTSConfigMatchCache(): void {
   TSCONFIG_MATCH_CACHE?.clear();
-}
-
-export function clearTSServerProjectService(): void {
-  TSSERVER_PROJECT_SERVICE = null;
 }
 
 /**
