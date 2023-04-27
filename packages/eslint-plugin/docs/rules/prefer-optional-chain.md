@@ -57,9 +57,179 @@ foo?.a?.b?.c?.d?.e;
 
 <!--/tabs-->
 
-:::note
-There are a few edge cases where this rule will false positive. Use your best judgement when evaluating reported errors.
-:::
+## Options
+
+In the context of the descriptions below a "loose boolean" operand is any operand that implicitly coerces the value to a boolean.
+Specifically the argument of the not operator (`!loose`) or a bare value in a logical expression (`loose && looser`).
+
+### `checkAny`
+
+When this option is `true` the rule will check operands that are typed as `any` when inspecting "loose boolean" operands.
+
+<!--tabs-->
+
+#### ❌ Incorrect for `checkAny: true`
+
+```ts
+declare const thing: any;
+
+thing && thing.toString();
+```
+
+#### ✅ Correct for `checkAny: false`
+
+```ts
+declare const thing: any;
+
+thing && thing.toString();
+```
+
+<!--/tabs-->
+
+### `checkUnknown`
+
+When this option is `true` the rule will check operands that are typed as `unknown` when inspecting "loose boolean" operands.
+
+<!--tabs-->
+
+#### ❌ Incorrect for `checkUnknown: true`
+
+```ts
+declare const thing: unknown;
+
+thing && thing.toString();
+```
+
+#### ✅ Correct for `checkUnknown: false`
+
+```ts
+declare const thing: unknown;
+
+thing && thing.toString();
+```
+
+<!--/tabs-->
+
+### `checkString`
+
+When this option is `true` the rule will check operands that are typed as `string` when inspecting "loose boolean" operands.
+
+<!--tabs-->
+
+#### ❌ Incorrect for `checkString: true`
+
+```ts
+declare const thing: string;
+
+thing && thing.toString();
+```
+
+#### ✅ Correct for `checkString: false`
+
+```ts
+declare const thing: string;
+
+thing && thing.toString();
+```
+
+<!--/tabs-->
+
+### `checkNumber`
+
+When this option is `true` the rule will check operands that are typed as `number` when inspecting "loose boolean" operands.
+
+<!--tabs-->
+
+#### ❌ Incorrect for `checkNumber: true`
+
+```ts
+declare const thing: number;
+
+thing && thing.toString();
+```
+
+#### ✅ Correct for `checkNumber: false`
+
+```ts
+declare const thing: number;
+
+thing && thing.toString();
+```
+
+<!--/tabs-->
+
+### `checkBoolean`
+
+When this option is `true` the rule will check operands that are typed as `boolean` when inspecting "loose boolean" operands.
+
+<!--tabs-->
+
+#### ❌ Incorrect for `checkBoolean: true`
+
+```ts
+declare const thing: boolean;
+
+thing && thing.toString();
+```
+
+#### ✅ Correct for `checkBoolean: false`
+
+```ts
+declare const thing: boolean;
+
+thing && thing.toString();
+```
+
+<!--/tabs-->
+
+### `checkBigInt`
+
+When this option is `true` the rule will check operands that are typed as `bigint` when inspecting "loose boolean" operands.
+
+<!--tabs-->
+
+#### ❌ Incorrect for `checkBigInt: true`
+
+```ts
+declare const thing: bigint;
+
+thing && thing.toString();
+```
+
+#### ✅ Correct for `checkBigInt: false`
+
+```ts
+declare const thing: bigint;
+
+thing && thing.toString();
+```
+
+<!--/tabs-->
+
+### `requireNullish`
+
+When this option is `true` the rule will skip operands that are not typed with `null` and/or `undefined` when inspecting "loose boolean" operands.
+
+<!--tabs-->
+
+#### ❌ Incorrect for `requireNullish: true`
+
+```ts
+declare const thing1: string | null;
+thing1 && thing1.toString();
+```
+
+#### ✅ Correct for `requireNullish: true`
+
+```ts
+declare const thing1: string | null;
+thing1?.toString();
+
+declare const thing2: string;
+thing2 && thing2.toString();
+```
+
+<!--/tabs-->
 
 ## When Not To Use It
 
