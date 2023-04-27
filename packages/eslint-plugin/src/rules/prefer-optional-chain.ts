@@ -961,7 +961,7 @@ export default util.createRule<TOptions, TMessageIds>({
     docs: {
       description:
         'Enforce using concise optional chain expressions instead of chained logical ands, negated logical ors, or empty objects',
-      recommended: 'strict',
+      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
