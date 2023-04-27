@@ -242,7 +242,7 @@ obj.foo = (() =>
 (function () {
   console.log(this);
   z(x => console.log(x, this));
-}.call(obj));
+}).call(obj);
     `,
     `
 var foo = function () {
@@ -264,7 +264,7 @@ Reflect.apply(
 (function () {
   console.log(this);
   z(x => console.log(x, this));
-}.apply(obj));
+}).apply(obj);
     `,
 
     // Class Instance Methods.
@@ -725,7 +725,7 @@ var foo = function () {
 (function () {
   console.log(this);
   z(x => console.log(x, this));
-}.call(undefined));
+}).call(undefined);
       `,
 
       errors,
@@ -736,7 +736,7 @@ var foo = function () {
 (function () {
   console.log(this);
   z(x => console.log(x, this));
-}.apply(void 0));
+}).apply(void 0);
       `,
 
       errors,

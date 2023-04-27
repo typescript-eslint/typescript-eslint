@@ -1451,6 +1451,7 @@ class Foo {
       ],
     },
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting -- "A decorator can only decorate a method implementation, not an overload"
       code: `
 class Foo {
   constructor() {}
@@ -1471,6 +1472,7 @@ class Foo {
       ],
     },
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting -- "A decorator can only decorate a method implementation, not an overload"
       code: `
 class Foo {
   @Dec() private A(): void;
@@ -1507,6 +1509,7 @@ class Foo {
     },
     // class + ignore decorator
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting -- "A decorator can only decorate a method implementation, not an overload"
       code: `
 class Foo {
   public A(): string;

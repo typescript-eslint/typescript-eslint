@@ -777,6 +777,7 @@ export interface Event<T> {
       ],
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2369
+    // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting -- "Decorators are not valid here"
     `
 export default function (@Optional() value = []) {
   return value;

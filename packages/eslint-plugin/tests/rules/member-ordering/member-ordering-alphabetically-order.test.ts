@@ -1967,6 +1967,7 @@ const foo = class Foo {
     },
     // default option + class + decorators + custom order + wrong order within group and wrong group order + alphabetically
     {
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting -- "A decorator can only decorate a method implementation, not an overload"
       code: `
 class Foo {
   @Dec() a1: string;

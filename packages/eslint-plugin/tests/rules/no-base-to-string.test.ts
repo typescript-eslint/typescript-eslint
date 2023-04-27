@@ -131,7 +131,7 @@ tag\`\${{}}\`;
       ],
     },
     {
-      code: '({}.toString());',
+      code: '({}).toString();',
       errors: [
         {
           data: {
