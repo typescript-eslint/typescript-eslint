@@ -244,6 +244,7 @@ If you author any ESLint rules that refer to the syntax mentioned by them, these
   - `TSIndexSignature`, `TSMethodSignature`, and `TSPropertySignatureBase` no longer have an `export` property.
   - `TSPropertySignatureBase` no longer has an `initializer` property.
 - [fix(typescript-estree): account for namespace nesting in AST conversion](https://github.com/typescript-eslint/typescript-eslint/pull/6272): Namespaces with qualified names like `Abc.Def` now use a `TSQualifiedName` node, instead of a nested body structure.
+- [feat: remove semantically invalid properties from TSEnumDeclaration, TSInterfaceDeclaration and TSModuleDeclaration](https://github.com/typescript-eslint/typescript-eslint/pull/4863): Removes some properties from those AST node types that should generally not have existed to begin with.
 
 ### Errors on Invalid AST Parsing
 
@@ -275,9 +276,47 @@ For more information, see:
 - The backing issue: [Parsing: strictly enforce the produced AST matches the spec and enforce most "error recovery" parsing errors](https://github.com/typescript-eslint/typescript-eslint/issues/1852)
 - The implementing pull request: [feat(typescript-estree): added allowInvalidAST option to throw on invalid tokens](https://github.com/typescript-eslint/typescript-eslint/pull/6247)
 
+### Standalone `RuleTester` package
+
+Previously we provided a version of ESLint's `RuleTester` class from `@typescript-eslint/utils/eslint-utils`. This version was a sub-class of the original version and was implemented in a very fragile way that made it hard to test, maintain and build new features into.
+
+This was also reasonably cumbersome for users to access as users had to do deep imports in order to access the class without a namespace.
+
+In v6 we have extracted this into its own package - `@typescript-eslint/rule-tester`. Additionally instead of being a hacky subclass it's now a complete fork of the original tooling. For the most part you should be able to update your tests as follows:
+
+```ts
+// Remove this line
+import { TSESLint } from '@typescript-eslint/utils';
+// Add this line
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
+import rule from '../src/rules/my-rule';
+
+// Remove this line
+const ruleTester = new TSESLint.RuleTester({
+// Add this line
+const ruleTester = new RuleTester({
+  parser: '@typescript-eslint/parser',
+});
+
+ruleTester.run('my-rule', rule, { /* ... */ });
+```
+
+Breaking changes:
+
+- Previously if you set `parserOptions.ecmaFeatures.jsx = true` the rule tester would attempt to look for a fixture named `file.tsx`. Now instead the rule tester will look for a file named `react.tsx`.
+  - The previous behavior was incorrect because it would encourage you to have both `file.ts` and `file.tsx` and TypeScript would ignore one of those files, causing weird breakages in tests.
+  - You can control the default filenames by passing `defaultFilenames` to the `RuleTester` constructor.
+
+New features:
+
+- `skip: boolean` - the inverse option of `only: boolean`. When `true` we will use your test framework's test skip functionality (`it.skip`) to mark the test as skipped. This is useful during development as it enables you to control which tests run without needing to comment blocks out.
+- Dependency version filtering. It's useful to test your rule against multiple versions of your dependencies to ensure it doesn't break on older versions. However in some cases certain tests will not work on older versions of some dependencies due to features that didn't exist until recently - for example a test might use newer syntax that didn't exist in an older version of TypeScript. Our rule tester includes options that allow you to declare the allowed version ranges for a test so that it is automatically skipped when necessary.
+
+For more information on the package, [see the package documentation](/architecture/rule-tester).
+
 ### Other Developer-Facing Breaking Changes
 
-- [feat: remove semantically invalid properties from TSEnumDeclaration, TSInterfaceDeclaration and TSModuleDeclaration](https://github.com/typescript-eslint/typescript-eslint/pull/4863): Removes some properties from those AST node types that should generally not have existed to begin with.
 - [fix(utils): removed TRuleListener generic from the createRule](https://github.com/typescript-eslint/typescript-eslint/pull/5036): Makes `createRule`-created rules more portable in the type system.
 - [feat(utils): remove (ts-)eslint-scope types](https://github.com/typescript-eslint/typescript-eslint/pull/5256): Removes no-longer-useful `TSESLintScope` types from the `@typescript-eslint/utils` package. Use `@typescript-eslint/scope-manager` directly instead.
 - [fix: rename typeParameters to typeArguments where needed](https://github.com/typescript-eslint/typescript-eslint/pull/5384): corrects the names of AST properties that were called _parameters_ instead of _arguments_.
@@ -287,8 +326,8 @@ For more information, see:
   - [Enhancement: Add test-only console warnings to deprecated AST properties](https://github.com/typescript-eslint/typescript-eslint/issues/6469): The properties will include a `console.log` that triggers only in test environments, to encourage developers to move off of them.
 - [feat(scope-manager): ignore ECMA version](https://github.com/typescript-eslint/typescript-eslint/pull/5889): `@typescript-eslint/scope-manager` no longer includes properties referring to `ecmaVersion`, `isES6`, or other ECMA versioning options. It instead now always assumes ESNext.
 - [feat: remove partial type-information program](https://github.com/typescript-eslint/typescript-eslint/pull/6066): When user configurations don't provide a `parserOptions.project`, parser services will no longer include a `program` with incomplete type information. `program` will be `null` instead.
-- [feat: remove experimental-utils](https://github.com/typescript-eslint/typescript-eslint/pull/6468): The `@typescript-eslint/experimental-utils` package has since been renamed to `@typescript-eslint/utils`.
   - As a result, the `errorOnTypeScriptSyntacticAndSemanticIssues` option will no longer be allowed if `parserOptions.project` is not provided.
+- [feat: remove experimental-utils](https://github.com/typescript-eslint/typescript-eslint/pull/6468): The `@typescript-eslint/experimental-utils` package has since been renamed to `@typescript-eslint/utils`.
 - [feat(typescript-estree): remove optionality from AST boolean properties](https://github.com/typescript-eslint/typescript-eslint/pull/6274): Switches most AST properties marked as `?: boolean` to `: boolean`, as well as some properties marked as `?:` optional to `| undefined`. This results in more predictable AST node object shapes.
 - [chore(typescript-estree): remove visitor-keys backwards compat export](https://github.com/typescript-eslint/typescript-eslint/pull/6242): `visitorKeys` can now only be imported from `@typescript-eslint/visitor-keys`. Previously it was also re-exported by `@typescript-eslint/utils`.
 - [feat: add package.json exports for public packages](https://github.com/typescript-eslint/typescript-eslint/pull/6458): `@typescript-eslint/*` packages now use `exports` to prevent importing internal file paths.
