@@ -17,6 +17,9 @@ packages/ast-spec/src/element/AccessorProperty/fixtures
 # prettier doesn't yet support `const` modifiers for type parameters
 packages/ast-spec/src/special/TSTypeParameter/fixtures
 
+# "Decorators are not valid here."
+packages/scope-manager/tests/fixtures/decorators/parameter.ts
+
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md
 
