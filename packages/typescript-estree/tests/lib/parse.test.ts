@@ -690,48 +690,50 @@ describe('parseAndGenerateServices', () => {
     });
   });
 
-  describe('projectFolderIgnoreList', () => {
-    beforeEach(() => {
-      parser.clearCaches();
-    });
+  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+    describe('projectFolderIgnoreList', () => {
+      beforeEach(() => {
+        parser.clearCaches();
+      });
 
-    const PROJECT_DIR = resolve(FIXTURES_DIR, '../projectFolderIgnoreList');
-    const code = 'var a = true';
-    const config: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-      tsconfigRootDir: PROJECT_DIR,
-      project: './**/tsconfig.json',
-    };
-
-    const testParse =
-      (
-        filePath: 'ignoreme' | 'includeme',
-        projectFolderIgnoreList?: TSESTreeOptions['projectFolderIgnoreList'],
-      ) =>
-      (): void => {
-        parser.parseAndGenerateServices(code, {
-          ...config,
-          projectFolderIgnoreList,
-          filePath: join(PROJECT_DIR, filePath, './file.ts'),
-        });
+      const PROJECT_DIR = resolve(FIXTURES_DIR, '../projectFolderIgnoreList');
+      const code = 'var a = true';
+      const config: TSESTreeOptions = {
+        comment: true,
+        tokens: true,
+        range: true,
+        loc: true,
+        tsconfigRootDir: PROJECT_DIR,
+        project: './**/tsconfig.json',
       };
 
-    it('ignores nothing when given nothing', () => {
-      expect(testParse('ignoreme')).not.toThrow();
-      expect(testParse('includeme')).not.toThrow();
-    });
+      const testParse =
+        (
+          filePath: 'ignoreme' | 'includeme',
+          projectFolderIgnoreList?: TSESTreeOptions['projectFolderIgnoreList'],
+        ) =>
+        (): void => {
+          parser.parseAndGenerateServices(code, {
+            ...config,
+            projectFolderIgnoreList,
+            filePath: join(PROJECT_DIR, filePath, './file.ts'),
+          });
+        };
 
-    it('ignores a folder when given a string glob', () => {
-      const ignore = ['**/ignoreme/**'];
-      // cspell:disable-next-line
-      expect(testParse('ignoreme', ignore)).toThrow();
-      // cspell:disable-next-line
-      expect(testParse('includeme', ignore)).not.toThrow();
+      it('ignores nothing when given nothing', () => {
+        expect(testParse('ignoreme')).not.toThrow();
+        expect(testParse('includeme')).not.toThrow();
+      });
+
+      it('ignores a folder when given a string glob', () => {
+        const ignore = ['**/ignoreme/**'];
+        // cspell:disable-next-line
+        expect(testParse('ignoreme', ignore)).toThrow();
+        // cspell:disable-next-line
+        expect(testParse('includeme', ignore)).not.toThrow();
+      });
     });
-  });
+  }
 
   describe('cacheLifetime', () => {
     describe('glob', () => {

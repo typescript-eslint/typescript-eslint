@@ -3,10 +3,7 @@ import type * as ts from 'typescript';
 import type { server } from 'typescript/lib/tsserverlibrary';
 
 import { createProjectProgram } from './create-program/createProjectProgram';
-import {
-  type ASTAndDefiniteProgram,
-  getCanonicalFileName,
-} from './create-program/shared';
+import { type ASTAndDefiniteProgram } from './create-program/shared';
 import type { MutableParseSettings } from './parseSettings';
 
 export function useProgramFromProjectService(
@@ -31,16 +28,6 @@ export function useProgramFromProjectService(
 
   if (!program) {
     return undefined;
-  }
-
-  const configFilePath = program.getCompilerOptions().configFilePath as string;
-  if (
-    !parseSettings.projects
-      .map(absolutify)
-      .map(getCanonicalFileName)
-      .includes(getCanonicalFileName(configFilePath))
-  ) {
-    throw new Error(`Cannot read file '${parseSettings.projects[0]}'`);
   }
 
   return createProjectProgram(parseSettings, [program as ts.Program]);

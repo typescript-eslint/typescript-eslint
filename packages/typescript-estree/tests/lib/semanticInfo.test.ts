@@ -257,34 +257,34 @@ describe('semanticInfo', () => {
     );
   });
 
-  it('non-existent project file', () => {
-    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
-    const badConfig = createOptions(fileName);
-    badConfig.project = './tsconfigs.json';
-    expect(() =>
-      parseCodeAndGenerateServices(
-        fs.readFileSync(fileName, 'utf8'),
-        badConfig,
-      ),
-    ).toThrow(/Cannot read file .+tsconfigs\.json'/);
-  });
-
-  it('fail to read project file', () => {
-    const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
-    const badConfig = createOptions(fileName);
-    badConfig.project = '.';
-    expect(() =>
-      parseCodeAndGenerateServices(
-        fs.readFileSync(fileName, 'utf8'),
-        badConfig,
-      ),
-    ).toThrow(
-      // case insensitive because unix based systems are case insensitive
-      /Cannot read file .+semanticInfo'/i,
-    );
-  });
-
   if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+    it('non-existent project file', () => {
+      const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+      const badConfig = createOptions(fileName);
+      badConfig.project = './tsconfigs.json';
+      expect(() =>
+        parseCodeAndGenerateServices(
+          fs.readFileSync(fileName, 'utf8'),
+          badConfig,
+        ),
+      ).toThrow(/Cannot read file .+tsconfigs\.json'/);
+    });
+
+    it('fail to read project file', () => {
+      const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
+      const badConfig = createOptions(fileName);
+      badConfig.project = '.';
+      expect(() =>
+        parseCodeAndGenerateServices(
+          fs.readFileSync(fileName, 'utf8'),
+          badConfig,
+        ),
+      ).toThrow(
+        // case insensitive because unix based systems are case insensitive
+        /Cannot read file .+semanticInfo'/i,
+      );
+    });
+
     it('malformed project file', () => {
       const fileName = path.resolve(FIXTURES_DIR, 'isolated-file.src.ts');
       const badConfig = createOptions(fileName);
