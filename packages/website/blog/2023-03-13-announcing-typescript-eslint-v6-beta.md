@@ -313,7 +313,7 @@ New features:
 - `skip: boolean` - the inverse option of `only: boolean`. When `true` we will use your test framework's test skip functionality (`it.skip`) to mark the test as skipped. This is useful during development as it enables you to control which tests run without needing to comment blocks out.
 - Dependency version filtering. It's useful to test your rule against multiple versions of your dependencies to ensure it doesn't break on older versions. However in some cases certain tests will not work on older versions of some dependencies due to features that didn't exist until recently - for example a test might use newer syntax that didn't exist in an older version of TypeScript. Our rule tester includes options that allow you to declare the allowed version ranges for a test so that it is automatically skipped when necessary.
 
-For more information on the package, [see the package documentation](/architecture/rule-tester).
+For more information on the package, [see the `rule-tester` package documentation](/architecture/rule-tester).
 
 ### Other Developer-Facing Breaking Changes
 
