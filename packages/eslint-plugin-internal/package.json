@@ -13,6 +13,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@typescript-eslint/rule-tester": "5.59.1",
     "@typescript-eslint/scope-manager": "5.59.1",
     "@typescript-eslint/type-utils": "5.59.1",
     "@typescript-eslint/utils": "5.59.1",

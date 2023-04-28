@@ -67,6 +67,7 @@
   },
   "devDependencies": {
     "@typescript-eslint/rule-schema-to-typescript-types": "5.59.1",
+    "@typescript-eslint/rule-tester": "5.59.1",
     "cross-fetch": "*",
     "jest-specific-snapshot": "*",
     "json-schema": "*",
