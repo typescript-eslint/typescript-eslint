@@ -109,6 +109,7 @@ export default util.createRule<Options, MessageIds>({
       {
         $defs: {
           arrayOption: {
+            type: 'string',
             enum: ['array', 'generic', 'array-simple'],
           },
         },

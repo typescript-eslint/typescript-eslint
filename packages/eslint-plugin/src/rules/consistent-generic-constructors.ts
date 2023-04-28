@@ -24,6 +24,7 @@ export default createRule<Options, MessageIds>({
     fixable: 'code',
     schema: [
       {
+        type: 'string',
         enum: ['type-annotation', 'constructor'],
       },
     ],

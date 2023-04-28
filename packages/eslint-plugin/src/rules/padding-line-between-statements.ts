@@ -598,14 +598,21 @@ export default util.createRule<Options, MessageIds>({
     schema: {
       $defs: {
         paddingType: {
+          type: 'string',
           enum: Object.keys(PaddingTypes),
         },
         statementType: {
           anyOf: [
-            { enum: Object.keys(StatementTypes) },
+            {
+              type: 'string',
+              enum: Object.keys(StatementTypes),
+            },
             {
               type: 'array',
-              items: { enum: Object.keys(StatementTypes) },
+              items: {
+                type: 'string',
+                enum: Object.keys(StatementTypes),
+              },
               minItems: 1,
               uniqueItems: true,
               additionalItems: false,

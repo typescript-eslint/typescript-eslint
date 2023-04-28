@@ -251,6 +251,7 @@ export default util.createRule<Options, MessageIds>({
       {
         oneOf: [
           {
+            type: 'string',
             enum: ['nofunc'],
           },
           {

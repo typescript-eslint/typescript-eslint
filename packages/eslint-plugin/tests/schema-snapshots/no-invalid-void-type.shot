@@ -20,7 +20,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "items": {
               "type": "string"
             },
-            "minLength": 1,
+            "minItems": 1,
             "type": "array"
           }
         ]
@@ -36,7 +36,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 type Options = [
   {
     allowAsThisParameter?: boolean;
-    allowInGenericTypeArguments?: boolean | string[];
+    allowInGenericTypeArguments?: [string, ...string[]] | boolean;
   },
 ];
 "

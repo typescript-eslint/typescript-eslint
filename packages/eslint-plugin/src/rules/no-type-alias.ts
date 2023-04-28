@@ -50,6 +50,7 @@ export default util.createRule<Options, MessageIds>({
       {
         $defs: {
           expandedOptions: {
+            type: 'string',
             enum: [
               'always',
               'never',
@@ -59,6 +60,7 @@ export default util.createRule<Options, MessageIds>({
             ] satisfies Values[],
           },
           simpleOptions: {
+            type: 'string',
             enum: ['always', 'never'],
           },
         },

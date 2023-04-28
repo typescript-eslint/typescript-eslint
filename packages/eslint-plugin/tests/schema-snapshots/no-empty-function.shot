@@ -25,7 +25,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "private-constructors",
             "protected-constructors",
             "setters"
-          ]
+          ],
+          "type": "string"
         },
         "type": "array",
         "uniqueItems": true

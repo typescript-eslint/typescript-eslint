@@ -1,5 +1,5 @@
 import { requiresQuoting } from '@typescript-eslint/type-utils';
-import type { JSONSchema4 } from 'json-schema';
+import type { JSONSchema4ObjectSchema } from '@typescript-eslint/utils/json-schema';
 
 import { generateType } from './generateType';
 import { getCommentLines } from './getCommentLines';
@@ -7,7 +7,7 @@ import { isArray } from './isArray';
 import type { AST, ObjectAST, RefMap } from './types';
 
 export function generateObjectType(
-  schema: JSONSchema4,
+  schema: JSONSchema4ObjectSchema,
   refMap: RefMap,
 ): ObjectAST {
   const commentLines = getCommentLines(schema);

@@ -14,7 +14,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "type": "boolean"
           },
           {
-            "enum": ["allow-with-description"]
+            "enum": ["allow-with-description"],
+            "type": "string"
           },
           {
             "additionalProperties": false,

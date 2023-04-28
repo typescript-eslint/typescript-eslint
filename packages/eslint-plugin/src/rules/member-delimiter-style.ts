@@ -150,9 +150,15 @@ export default util.createRule<Options, MessageIds>({
     schema: [
       {
         $defs: {
-          multiLineOption: { enum: ['none', 'semi', 'comma'] },
+          multiLineOption: {
+            type: 'string',
+            enum: ['none', 'semi', 'comma'],
+          },
           // note can't have "none" for single line delimiter as it's invalid syntax
-          singleLineOption: { enum: ['semi', 'comma'] },
+          singleLineOption: {
+            type: 'string',
+            enum: ['semi', 'comma'],
+          },
           // note - need to define this last as it references the enums
           delimiterConfig: BASE_SCHEMA,
         },
@@ -172,6 +178,7 @@ export default util.createRule<Options, MessageIds>({
             additionalProperties: false,
           },
           multilineDetection: {
+            type: 'string',
             enum: ['brackets', 'last-member'],
           },
         },

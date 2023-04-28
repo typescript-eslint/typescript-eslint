@@ -148,11 +148,13 @@ export default util.createRule<Options, MessageIds>({
                 description: 'Bans the type with the default message',
               },
               {
+                type: 'boolean',
                 enum: [false],
                 description:
                   'Un-bans the type (useful when paired with `extendDefaults`)',
               },
               {
+                type: 'boolean',
                 enum: [true],
                 description: 'Bans the type with the default message',
               },

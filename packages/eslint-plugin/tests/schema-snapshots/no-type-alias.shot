@@ -14,10 +14,12 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "in-unions",
           "in-unions-and-intersections",
           "never"
-        ]
+        ],
+        "type": "string"
       },
       "simpleOptions": {
-        "enum": ["always", "never"]
+        "enum": ["always", "never"],
+        "type": "string"
       }
     },
     "additionalProperties": false,

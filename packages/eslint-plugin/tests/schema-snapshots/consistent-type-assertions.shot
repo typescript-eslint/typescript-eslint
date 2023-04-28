@@ -11,7 +11,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "additionalProperties": false,
         "properties": {
           "assertionStyle": {
-            "enum": ["never"]
+            "enum": ["never"],
+            "type": "string"
           }
         },
         "required": ["assertionStyle"],
@@ -21,10 +22,12 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "additionalProperties": false,
         "properties": {
           "assertionStyle": {
-            "enum": ["angle-bracket", "as"]
+            "enum": ["angle-bracket", "as"],
+            "type": "string"
           },
           "objectLiteralTypeAssertions": {
-            "enum": ["allow", "allow-as-parameter", "never"]
+            "enum": ["allow", "allow-as-parameter", "never"],
+            "type": "string"
           }
         },
         "required": ["assertionStyle"],

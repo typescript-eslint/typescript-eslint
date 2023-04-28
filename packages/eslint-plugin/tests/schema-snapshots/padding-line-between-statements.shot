@@ -7,7 +7,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 {
   "$defs": {
     "paddingType": {
-      "enum": ["always", "any", "never"]
+      "enum": ["always", "any", "never"],
+      "type": "string"
     },
     "statementType": {
       "anyOf": [
@@ -53,7 +54,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "var",
             "while",
             "with"
-          ]
+          ],
+          "type": "string"
         },
         {
           "additionalItems": false,
@@ -99,7 +101,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
               "var",
               "while",
               "with"
-            ]
+            ],
+            "type": "string"
           },
           "minItems": 1,
           "type": "array",

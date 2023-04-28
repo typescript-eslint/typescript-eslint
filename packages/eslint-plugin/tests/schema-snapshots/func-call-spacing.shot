@@ -9,7 +9,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     {
       "items": [
         {
-          "enum": ["never"]
+          "enum": ["never"],
+          "type": "string"
         }
       ],
       "maxItems": 1,
@@ -19,7 +20,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     {
       "items": [
         {
-          "enum": ["always"]
+          "enum": ["always"],
+          "type": "string"
         },
         {
           "additionalProperties": false,

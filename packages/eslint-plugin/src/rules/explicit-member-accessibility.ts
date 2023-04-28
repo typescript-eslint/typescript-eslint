@@ -51,14 +51,17 @@ export default util.createRule<Options, MessageIds>({
           accessibilityLevel: {
             oneOf: [
               {
+                type: 'string',
                 enum: ['explicit'],
                 description: 'Always require an accessor.',
               },
               {
+                type: 'string',
                 enum: ['no-public'],
                 description: 'Require an accessor except when public.',
               },
               {
+                type: 'string',
                 enum: ['off'],
                 description: 'Never check whether there is an accessor.',
               },

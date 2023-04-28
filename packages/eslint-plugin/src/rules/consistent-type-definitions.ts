@@ -18,6 +18,7 @@ export default util.createRule({
     },
     schema: [
       {
+        type: 'string',
         enum: ['interface', 'type'],
       },
     ],

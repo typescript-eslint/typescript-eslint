@@ -22,6 +22,7 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
+        type: 'string',
         enum: ['property', 'method'],
       },
     ],

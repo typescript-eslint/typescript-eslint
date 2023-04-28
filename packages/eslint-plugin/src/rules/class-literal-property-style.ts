@@ -50,7 +50,12 @@ export default util.createRule<Options, MessageIds>({
       preferFieldStyle: 'Literals should be exposed using readonly fields.',
       preferGetterStyle: 'Literals should be exposed using getters.',
     },
-    schema: [{ enum: ['fields', 'getters'] }],
+    schema: [
+      {
+        type: 'string',
+        enum: ['fields', 'getters'],
+      },
+    ],
   },
   defaultOptions: ['fields'],
   create(context, [style]) {

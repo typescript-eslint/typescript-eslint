@@ -8,19 +8,22 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
   {
     "oneOf": [
       {
-        "enum": ["all", "local"]
+        "enum": ["all", "local"],
+        "type": "string"
       },
       {
         "additionalProperties": false,
         "properties": {
           "args": {
-            "enum": ["after-used", "all", "none"]
+            "enum": ["after-used", "all", "none"],
+            "type": "string"
           },
           "argsIgnorePattern": {
             "type": "string"
           },
           "caughtErrors": {
-            "enum": ["all", "none"]
+            "enum": ["all", "none"],
+            "type": "string"
           },
           "caughtErrorsIgnorePattern": {
             "type": "string"
@@ -32,7 +35,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             "type": "boolean"
           },
           "vars": {
-            "enum": ["all", "local"]
+            "enum": ["all", "local"],
+            "type": "string"
           },
           "varsIgnorePattern": {
             "type": "string"

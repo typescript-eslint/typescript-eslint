@@ -12,10 +12,12 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "boolean"
       },
       "fixStyle": {
-        "enum": ["inline-type-imports", "separate-type-imports"]
+        "enum": ["inline-type-imports", "separate-type-imports"],
+        "type": "string"
       },
       "prefer": {
-        "enum": ["no-type-imports", "type-imports"]
+        "enum": ["no-type-imports", "type-imports"],
+        "type": "string"
       }
     },
     "type": "object"

@@ -37,6 +37,7 @@ export default util.createRule({
     },
     schema: [
       {
+        type: 'string',
         enum: ['in-try-catch', 'always', 'never'],
       },
     ],

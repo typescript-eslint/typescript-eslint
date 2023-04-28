@@ -49,6 +49,7 @@ export default util.createRule<[Options], MessageIds>({
                 default: true,
               },
               {
+                type: 'string',
                 enum: ['allow-with-description'],
               },
               {

@@ -16,7 +16,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "public",
           "public readonly",
           "readonly"
-        ]
+        ],
+        "type": "string"
       }
     },
     "additionalProperties": false,
@@ -29,7 +30,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "array"
       },
       "prefer": {
-        "enum": ["class-property", "parameter-property"]
+        "enum": ["class-property", "parameter-property"],
+        "type": "string"
       }
     },
     "type": "object"

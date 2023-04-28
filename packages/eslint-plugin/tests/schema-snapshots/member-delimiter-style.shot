@@ -38,10 +38,12 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "object"
       },
       "multiLineOption": {
-        "enum": ["comma", "none", "semi"]
+        "enum": ["comma", "none", "semi"],
+        "type": "string"
       },
       "singleLineOption": {
-        "enum": ["comma", "semi"]
+        "enum": ["comma", "semi"],
+        "type": "string"
       }
     },
     "additionalProperties": false,
@@ -59,7 +61,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "object"
       },
       "multilineDetection": {
-        "enum": ["brackets", "last-member"]
+        "enum": ["brackets", "last-member"],
+        "type": "string"
       },
       "overrides": {
         "additionalProperties": false,

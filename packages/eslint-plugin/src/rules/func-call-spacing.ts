@@ -29,6 +29,7 @@ export default util.createRule<Options, MessageIds>({
           type: 'array',
           items: [
             {
+              type: 'string',
               enum: ['never'],
             },
           ],
@@ -39,6 +40,7 @@ export default util.createRule<Options, MessageIds>({
           type: 'array',
           items: [
             {
+              type: 'string',
               enum: ['always'],
             },
             {

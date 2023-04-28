@@ -1,4 +1,7 @@
-import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+import type {
+  JSONSchema4,
+  JSONSchema4ArraySchema,
+} from '@typescript-eslint/utils/json-schema';
 
 import { NotSupportedError, UnexpectedError } from './errors';
 import { generateType } from './generateType';
@@ -13,7 +16,7 @@ import type { ArrayAST, AST, RefMap, TupleAST, UnionAST } from './types';
 const MAX_ITEMS_TO_TUPLIZE = 20;
 
 export function generateArrayType(
-  schema: JSONSchema4,
+  schema: JSONSchema4ArraySchema,
   refMap: RefMap,
 ): ArrayAST | TupleAST | UnionAST {
   if (!schema.items) {
