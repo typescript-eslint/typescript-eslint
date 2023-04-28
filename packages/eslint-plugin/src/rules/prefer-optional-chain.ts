@@ -10,7 +10,7 @@ import * as ts from 'typescript';
 
 import * as util from '../util';
 
-type TMessageIds = 'preferOptionalChain' | 'optionalChainSuggest';
+export type TMessageIds = 'preferOptionalChain' | 'optionalChainSuggest';
 interface TypeAwareOptions {
   checkAny?: boolean;
   checkUnknown?: boolean;
@@ -20,7 +20,7 @@ interface TypeAwareOptions {
   checkBigInt?: boolean;
   requireNullish?: boolean;
 }
-type TOptions = [TypeAwareOptions];
+export type TOptions = [TypeAwareOptions];
 
 const enum ComparisonValueType {
   Null = 'Null', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum

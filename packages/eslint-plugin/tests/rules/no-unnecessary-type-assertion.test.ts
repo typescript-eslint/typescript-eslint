@@ -1,7 +1,7 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import path from 'path';
 
 import rule from '../../src/rules/no-unnecessary-type-assertion';
-import { RuleTester } from '../RuleTester';
 
 const rootDir = path.resolve(__dirname, '../fixtures/');
 const ruleTester = new RuleTester({
@@ -153,7 +153,11 @@ function Test(props: { id?: null | string | number }) {
   return <div key={props.id!} />;
 }
       `,
-      filename: 'react.tsx',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     {
       code: `
@@ -488,7 +492,11 @@ function Test(props: { id?: string | number }) {
           line: 9,
         },
       ],
-      filename: 'react.tsx',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     {
       code: `

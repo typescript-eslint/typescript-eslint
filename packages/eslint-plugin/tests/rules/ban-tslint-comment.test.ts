@@ -1,5 +1,6 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/ban-tslint-comment';
-import { RuleTester } from '../RuleTester';
 
 interface Testable {
   code: string;

@@ -1,10 +1,12 @@
-import rule from '../../../src/rules/prefer-optional-chain';
+import type { InvalidTestCase } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+
 import type {
-  InferMessageIdsTypeFromRule,
-  InferOptionsTypeFromRule,
-} from '../../../src/util';
-import type { InvalidTestCase } from '../../RuleTester';
-import { getFixturesRootDir, noFormat, RuleTester } from '../../RuleTester';
+  TMessageIds,
+  TOptions,
+} from '../../../src/rules/prefer-optional-chain';
+import rule from '../../../src/rules/prefer-optional-chain';
+import { getFixturesRootDir } from '../../RuleTester';
 import * as BaseCases from './base-cases';
 
 const ruleTester = new RuleTester({
@@ -18,10 +20,7 @@ const ruleTester = new RuleTester({
 function tempRemoveFixerTODO({
   output: _,
   ...invalid
-}: InvalidTestCase<string, unknown[]>): InvalidTestCase<
-  InferMessageIdsTypeFromRule<typeof rule>,
-  InferOptionsTypeFromRule<typeof rule>
-> {
+}: InvalidTestCase<string, unknown[]>): InvalidTestCase<TMessageIds, TOptions> {
   return {
     ...invalid,
     output: null,

@@ -1,5 +1,13 @@
+/* eslint-disable deprecation/deprecation -- TODO - migrate this test away from `batchedSingleLineTests` */
+
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
+import type {
+  MessageIds,
+  Options,
+} from '../../src/rules/consistent-type-assertions';
 import rule from '../../src/rules/consistent-type-assertions';
-import { batchedSingleLineTests, RuleTester } from '../RuleTester';
+import { batchedSingleLineTests } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -64,7 +72,7 @@ print?.call(<Foo>{ bar: 5 })
 
 ruleTester.run('consistent-type-assertions', rule, {
   valid: [
-    ...batchedSingleLineTests({
+    ...batchedSingleLineTests<Options>({
       code: AS_TESTS,
       options: [
         {
@@ -73,7 +81,7 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
-    ...batchedSingleLineTests({
+    ...batchedSingleLineTests<Options>({
       code: ANGLE_BRACKET_TESTS,
       options: [
         {
@@ -82,7 +90,7 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
-    ...batchedSingleLineTests({
+    ...batchedSingleLineTests<Options>({
       code: `${OBJECT_LITERAL_AS_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_AS_CASTS}`,
       options: [
         {
@@ -91,7 +99,7 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
-    ...batchedSingleLineTests({
+    ...batchedSingleLineTests<Options>({
       code: `${OBJECT_LITERAL_ANGLE_BRACKET_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS}`,
       options: [
         {
@@ -100,7 +108,7 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
-    ...batchedSingleLineTests({
+    ...batchedSingleLineTests<Options>({
       code: OBJECT_LITERAL_ARGUMENT_AS_CASTS,
       options: [
         {
@@ -109,7 +117,7 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
-    ...batchedSingleLineTests({
+    ...batchedSingleLineTests<Options>({
       code: OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS,
       options: [
         {
@@ -150,7 +158,7 @@ ruleTester.run('consistent-type-assertions', rule, {
     },
   ],
   invalid: [
-    ...batchedSingleLineTests({
+    ...batchedSingleLineTests<MessageIds, Options>({
       code: AS_TESTS,
       options: [
         {
@@ -200,7 +208,7 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
-    ...batchedSingleLineTests({
+    ...batchedSingleLineTests<MessageIds, Options>({
       code: ANGLE_BRACKET_TESTS,
       options: [
         {
@@ -251,7 +259,7 @@ ruleTester.run('consistent-type-assertions', rule, {
       ],
       output: AS_TESTS,
     }),
-    ...batchedSingleLineTests({
+    ...batchedSingleLineTests<MessageIds, Options>({
       code: AS_TESTS_EXCEPT_CONST_CASE,
       options: [
         {
@@ -297,7 +305,7 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
-    ...batchedSingleLineTests({
+    ...batchedSingleLineTests<MessageIds, Options>({
       code: ANGLE_BRACKET_TESTS_EXCEPT_CONST_CASE,
       options: [
         {
@@ -343,7 +351,7 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
-    ...batchedSingleLineTests({
+    ...batchedSingleLineTests<MessageIds, Options>({
       code: OBJECT_LITERAL_AS_CASTS,
       options: [
         {
@@ -397,7 +405,7 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
-    ...batchedSingleLineTests({
+    ...batchedSingleLineTests<MessageIds, Options>({
       code: OBJECT_LITERAL_ANGLE_BRACKET_CASTS,
       options: [
         {
@@ -451,7 +459,7 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
-    ...batchedSingleLineTests({
+    ...batchedSingleLineTests<MessageIds, Options>({
       code: `${OBJECT_LITERAL_AS_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_AS_CASTS}`,
       options: [
         {
@@ -582,7 +590,7 @@ ruleTester.run('consistent-type-assertions', rule, {
         },
       ],
     }),
-    ...batchedSingleLineTests({
+    ...batchedSingleLineTests<MessageIds, Options>({
       code: `${OBJECT_LITERAL_ANGLE_BRACKET_CASTS.trimEnd()}${OBJECT_LITERAL_ARGUMENT_ANGLE_BRACKET_CASTS}`,
       options: [
         {
