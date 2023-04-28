@@ -1,5 +1,6 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/explicit-module-boundary-types';
-import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -197,7 +198,6 @@ export const x: Foo = {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2864
     {
-      filename: 'test.ts',
       code: `
 export const x = {
   foo: { bar: () => {} },
@@ -206,7 +206,6 @@ export const x = {
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 export const x = <Foo>{
   foo: { bar: () => {} },
@@ -215,7 +214,6 @@ export const x = <Foo>{
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 export const x: Foo = {
   foo: { bar: () => {} },
