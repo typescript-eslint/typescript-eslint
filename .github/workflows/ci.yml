@@ -98,7 +98,7 @@ jobs:
     name: Lint From Root
     # because we lint with our own tooling, we need to build
     needs: [build]
-    runs-on: ubuntu-latest
+    runs-on: macos-latest
     strategy:
       matrix:
         tsserver: ['false', 'true']
@@ -111,8 +111,10 @@ jobs:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
       - name: Build
         uses: ./.github/actions/prepare-build
-      - name: Run Lint
-        run: TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER=${{ matrix.tsserver }} npx eslint .
+      - env:
+          TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER: true
+        name: Run Lint With TSServer ${{ matrix.tsserver }}
+        run: npx eslint .
 
   stylelint:
     name: Stylelint
