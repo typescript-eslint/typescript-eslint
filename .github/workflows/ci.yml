@@ -91,9 +91,28 @@ jobs:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
       - name: Build
         uses: ./.github/actions/prepare-build
-
-      - name: Run Check
+      - name: Run Lint
         run: yarn ${{ matrix.lint-task }}
+
+  lint_with_build_from_root:
+    name: Lint From Root
+    # because we lint with our own tooling, we need to build
+    needs: [build]
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        tsserver: ['false', 'true']
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Build
+        uses: ./.github/actions/prepare-build
+      - name: Run Lint
+        run: TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER=${{ matrix.tsserver }} npx eslint .
 
   stylelint:
     name: Stylelint
