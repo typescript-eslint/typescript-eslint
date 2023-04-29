@@ -212,11 +212,9 @@ export default util.createRule<Options, MessageIds>({
       const bTypeParams =
         b.typeParameters !== undefined ? b.typeParameters.params : undefined;
 
-      if (
-        ignoreDifferentlyNamedParameters &&
-        a.params.length === b.params.length
-      ) {
-        for (let i = 0; i < a.params.length; i += 1) {
+      if (ignoreDifferentlyNamedParameters) {
+        const commonParamsLength = Math.min(a.params.length, b.params.length);
+        for (let i = 0; i < commonParamsLength; i += 1) {
           if (
             a.params[i].type === b.params[i].type &&
             getStaticParameterName(a.params[i]) !==

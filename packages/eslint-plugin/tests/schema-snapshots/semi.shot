@@ -1,0 +1,70 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes semi 1`] = `
+"
+# SCHEMA:
+
+{
+  "anyOf": [
+    {
+      "items": [
+        {
+          "enum": ["never"]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "beforeStatementContinuationChars": {
+              "enum": ["always", "any", "never"]
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 0,
+      "type": "array"
+    },
+    {
+      "items": [
+        {
+          "enum": ["always"]
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "omitLastInOneLineBlock": {
+              "type": "boolean"
+            }
+          },
+          "type": "object"
+        }
+      ],
+      "maxItems": 2,
+      "minItems": 0,
+      "type": "array"
+    }
+  ]
+}
+
+
+# TYPES:
+
+type Options =
+  | []
+  | ['always']
+  | ['never']
+  | [
+      'always',
+      {
+        omitLastInOneLineBlock?: boolean;
+      },
+    ]
+  | [
+      'never',
+      {
+        beforeStatementContinuationChars?: 'always' | 'any' | 'never';
+      },
+    ];
+"
+`;

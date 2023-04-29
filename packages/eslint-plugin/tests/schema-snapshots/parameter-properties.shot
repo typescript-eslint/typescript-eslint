@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes parameter-properties 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "$defs": {
+      "modifier": {
+        "enum": [
+          "private",
+          "private readonly",
+          "protected",
+          "protected readonly",
+          "public",
+          "public readonly",
+          "readonly"
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "allow": {
+        "items": {
+          "$ref": "#/items/0/$defs/modifier"
+        },
+        "minItems": 1,
+        "type": "array"
+      },
+      "prefer": {
+        "enum": ["class-property", "parameter-property"]
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Modifier =
+  | 'private readonly'
+  | 'private'
+  | 'protected readonly'
+  | 'protected'
+  | 'public readonly'
+  | 'public'
+  | 'readonly';
+
+type Options = [
+  {
+    allow?: [Modifier, ...Modifier[]];
+    prefer?: 'class-property' | 'parameter-property';
+  },
+];
+"
+`;

@@ -27,6 +27,8 @@ export interface ConfigModel {
   code: string;
   ts: string;
   showAST?: ConfigShowAst;
+  scroll?: boolean;
+  showTokens?: boolean;
 }
 
 export type SelectedRange = [number, number];

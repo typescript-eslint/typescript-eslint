@@ -255,8 +255,14 @@ export default createRule<Options, MessageId>({
 
     function checkNodeForNullish(node: TSESTree.Expression): void {
       const type = getConstrainedTypeAtLocation(services, node);
-      // Conditional is always necessary if it involves `any` or `unknown`
-      if (isTypeAnyType(type) || isTypeUnknownType(type)) {
+
+      // Conditional is always necessary if it involves `any`, `unknown` or a naked type parameter
+      if (
+        isTypeFlagSet(
+          type,
+          ts.TypeFlags.Any | ts.TypeFlags.Unknown | ts.TypeFlags.TypeParameter,
+        )
+      ) {
         return;
       }
 

@@ -12,7 +12,6 @@ function semverCheck(version: string): boolean {
 }
 
 const versions = [
-  '4.2',
   '4.3',
   '4.4',
   '4.5',

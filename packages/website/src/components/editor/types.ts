@@ -6,6 +6,6 @@ export interface CommonEditorProps extends ConfigModel {
   readonly selectedRange?: SelectedRange;
   readonly onChange: (cfg: Partial<ConfigModel>) => void;
   readonly onASTChange: (value: undefined | UpdateModel) => void;
-  readonly onMarkersChange: (value: ErrorGroup[] | Error) => void;
+  readonly onMarkersChange: (value: ErrorGroup[]) => void;
   readonly onSelect: (position?: number) => void;
 }

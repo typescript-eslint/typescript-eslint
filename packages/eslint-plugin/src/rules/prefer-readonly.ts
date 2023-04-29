@@ -35,7 +35,7 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
-        allowAdditionalProperties: false,
+        additionalProperties: false,
         properties: {
           onlyInlineLambdas: {
             type: 'boolean',

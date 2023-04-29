@@ -89,6 +89,7 @@ const parseStateFromUrl = (hash: string): Partial<ConfigModel> | undefined => {
       fileType,
       eslintrc: eslintrc ?? '',
       tsconfig: tsconfig ?? '',
+      showTokens: searchParams.get('tokens') === 'true',
     };
   } catch (e) {
     console.warn(e);
@@ -112,6 +113,7 @@ const writeStateToUrl = (newState: ConfigModel): string | undefined => {
     searchParams.set('code', writeQueryParam(newState.code));
     searchParams.set('eslintrc', writeQueryParam(newState.eslintrc));
     searchParams.set('tsconfig', writeQueryParam(newState.tsconfig));
+    searchParams.set('tokens', String(!!newState.showTokens));
     return searchParams.toString();
   } catch (e) {
     console.warn(e);
@@ -150,6 +152,7 @@ const retrieveStateFromLocalStorage = (): Partial<ConfigModel> | undefined => {
         state.showAST = readShowAST(showAST);
       }
     }
+    state.scroll = hasOwnProperty('scroll', config) && !!config.scroll;
 
     return state;
   } catch (e) {
@@ -164,6 +167,7 @@ const writeStateToLocalStorage = (newState: ConfigModel): void => {
     fileType: newState.fileType,
     sourceType: newState.sourceType,
     showAST: newState.showAST,
+    scroll: newState.scroll,
   };
   window.localStorage.setItem('config', JSON.stringify(config));
 };

@@ -9,13 +9,6 @@ type Values =
   | 'in-unions'
   | 'in-intersections'
   | 'in-unions-and-intersections';
-const enumValues: Values[] = [
-  'always',
-  'never',
-  'in-unions',
-  'in-intersections',
-  'in-unions-and-intersections',
-];
 
 type Options = [
   {
@@ -55,40 +48,54 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
+        $defs: {
+          expandedOptions: {
+            enum: [
+              'always',
+              'never',
+              'in-unions',
+              'in-intersections',
+              'in-unions-and-intersections',
+            ] satisfies Values[],
+          },
+          simpleOptions: {
+            enum: ['always', 'never'],
+          },
+        },
         type: 'object',
         properties: {
           allowAliases: {
             description: 'Whether to allow direct one-to-one type aliases.',
-            enum: enumValues,
+            $ref: '#/items/0/$defs/expandedOptions',
           },
           allowCallbacks: {
             description: 'Whether to allow type aliases for callbacks.',
-            enum: ['always', 'never'],
+            $ref: '#/items/0/$defs/simpleOptions',
           },
           allowConditionalTypes: {
             description: 'Whether to allow type aliases for conditional types.',
-            enum: ['always', 'never'],
+            $ref: '#/items/0/$defs/simpleOptions',
           },
           allowConstructors: {
             description: 'Whether to allow type aliases with constructors.',
-            enum: ['always', 'never'],
+            $ref: '#/items/0/$defs/simpleOptions',
           },
           allowLiterals: {
             description:
               'Whether to allow type aliases with object literal types.',
-            enum: enumValues,
+            $ref: '#/items/0/$defs/expandedOptions',
           },
           allowMappedTypes: {
             description: 'Whether to allow type aliases with mapped types.',
-            enum: enumValues,
+            $ref: '#/items/0/$defs/expandedOptions',
           },
           allowTupleTypes: {
             description: 'Whether to allow type aliases with tuple types.',
-            enum: enumValues,
+            $ref: '#/items/0/$defs/expandedOptions',
           },
           allowGenerics: {
             description: 'Whether to allow type aliases with generic types.',
-            enum: ['always', 'never'],
+            $ref: '#/items/0/$defs/simpleOptions',
           },
         },
         additionalProperties: false,

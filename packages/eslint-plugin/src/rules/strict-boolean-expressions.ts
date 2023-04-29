@@ -731,7 +731,12 @@ export default util.createRule<Options, MessageId>({
         is('nullish', 'number', 'enum') ||
         is('nullish', 'string', 'enum') ||
         is('nullish', 'truthy number', 'enum') ||
-        is('nullish', 'truthy string', 'enum')
+        is('nullish', 'truthy string', 'enum') ||
+        // mixed enums
+        is('nullish', 'truthy number', 'truthy string', 'enum') ||
+        is('nullish', 'truthy number', 'string', 'enum') ||
+        is('nullish', 'truthy string', 'number', 'enum') ||
+        is('nullish', 'number', 'string', 'enum')
       ) {
         if (!options.allowNullableEnum) {
           if (isLogicalNegationExpression(node.parent!)) {

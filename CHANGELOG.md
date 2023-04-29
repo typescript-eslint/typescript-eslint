@@ -3,6 +3,62 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.59.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.0...v5.59.1) (2023-04-24)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [prefer-regexp-exec] skip malformed regexes ([#6935](https://github.com/typescript-eslint/typescript-eslint/issues/6935)) ([05ed60e](https://github.com/typescript-eslint/typescript-eslint/commit/05ed60e25f1de9d1bb83d56c81a349130960bec8))
+* **eslint-plugin:** [unified-signatures] no parameters function ([#6940](https://github.com/typescript-eslint/typescript-eslint/issues/6940)) ([2970861](https://github.com/typescript-eslint/typescript-eslint/commit/297086154acc568a0ae8eb41c8977b7a7ba4e0ed))
+
+
+
+
+
+# [5.59.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.58.0...v5.59.0) (2023-04-17)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-unnecessary-condition] allow nullish coalescing for naked type parameter ([#6910](https://github.com/typescript-eslint/typescript-eslint/issues/6910)) ([3e5f858](https://github.com/typescript-eslint/typescript-eslint/commit/3e5f8583f1e4fe045c2fe2143d6f280b7381f96b))
+
+
+### Features
+
+* **eslint-plugin:** [ban-types] add NonNullable suggestion and allow custom suggestions ([#6876](https://github.com/typescript-eslint/typescript-eslint/issues/6876)) ([ff65235](https://github.com/typescript-eslint/typescript-eslint/commit/ff65235246bb6214fb64f0e0317373ca99f8bcbe))
+
+
+
+
+
+# [5.58.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.1...v5.58.0) (2023-04-10)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [unified-signatures] allow overloads with different named and different number of parameters ([#6877](https://github.com/typescript-eslint/typescript-eslint/issues/6877)) ([939d665](https://github.com/typescript-eslint/typescript-eslint/commit/939d6656ebcb94fab048a08d719b3e77362ab5b4))
+* update getLib for new TypeScript targets ES2021, ES2022 ([#6782](https://github.com/typescript-eslint/typescript-eslint/issues/6782)) ([1c04664](https://github.com/typescript-eslint/typescript-eslint/commit/1c0466414300f338c6c4111f8d1eac0c3e6a8983))
+
+
+### Features
+
+* **eslint-plugin:** [no-unsafe-enum-comparison] add rule ([#6107](https://github.com/typescript-eslint/typescript-eslint/issues/6107)) ([915f9c2](https://github.com/typescript-eslint/typescript-eslint/commit/915f9c2dc8934eef491a672786ec9f016f3658ba))
+
+
+
+
+
+## [5.57.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.0...v5.57.1) (2023-04-03)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [strict-boolean-expressions] support mixed enums in allowNullableEnum option ([#6740](https://github.com/typescript-eslint/typescript-eslint/issues/6740)) ([49be8a8](https://github.com/typescript-eslint/typescript-eslint/commit/49be8a814c82f3784308ef5a6e90478eb56e55c1))
+
+
+
+
+
 # [5.57.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.56.0...v5.57.0) (2023-03-27)
 
 

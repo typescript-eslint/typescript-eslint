@@ -4,6 +4,8 @@ declare module 'typescript' {
   interface TypeChecker {
     // internal TS APIs
 
+    getContextualTypeForArgumentAtIndex(node: Node, argIndex: number): Type;
+
     /**
      * @returns `true` if the given type is an array type:
      * - `Array<foo>`

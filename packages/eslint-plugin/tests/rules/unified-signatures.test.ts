@@ -1,5 +1,6 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/unified-signatures';
-import { RuleTester } from '../RuleTester';
 
 //------------------------------------------------------------------------------
 // Tests
@@ -164,6 +165,36 @@ async function rest(...args: any[], y?: string): Promise<number[] | string> {
 function f(a: number): void;
 function f(b: string): void;
 function f(a: number | string): void {}
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+function f(m: number): void;
+function f(v: number, u: string): void;
+function f(v: number, u?: string): void {}
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+function f(v: boolean): number;
+function f(): string;
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+function f(v: boolean, u: boolean): number;
+function f(v: boolean): string;
+      `,
+      options: [{ ignoreDifferentlyNamedParameters: true }],
+    },
+    {
+      code: `
+function f(v: number, u?: string): void {}
+function f(v: number): void;
+function f(): string;
       `,
       options: [{ ignoreDifferentlyNamedParameters: true }],
     },

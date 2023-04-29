@@ -217,6 +217,7 @@ export function filterProperties(
   key: string,
   value: unknown,
   type: ParentNodeType,
+  showTokens?: boolean,
 ): boolean {
   if (
     value === undefined ||
@@ -227,8 +228,9 @@ export function filterProperties(
   }
 
   switch (type) {
-    case 'esNode':
-      return key !== 'tokens' && key !== 'comments';
+    case 'esNode': {
+      return key !== 'tokens' || !!showTokens;
+    }
     case 'scopeManager':
       return (
         key !== 'declaredVariables' &&

@@ -42,4 +42,6 @@ export const defaultConfig: ConfigModel = {
   eslintrc: toJson({
     rules: {},
   }),
+  scroll: true,
+  showTokens: false,
 };

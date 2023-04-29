@@ -102,8 +102,9 @@ export function parseMarkers(
 
     result[group].items.push({
       message:
-        (marker.owner !== 'eslint' && code ? `${code.value}: ` : '') +
-        marker.message,
+        (marker.owner !== 'eslint' && marker.owner !== 'json' && code.value
+          ? `${code.value}: `
+          : '') + marker.message,
       location: `${marker.startLineNumber}:${marker.startColumn} - ${marker.endLineNumber}:${marker.endColumn}`,
       severity: marker.severity,
       fixer: fixers.find(item => item.isPreferred),
@@ -135,7 +136,7 @@ export function parseLintResults(
             value: message.ruleId,
             target: ruleUri(message.ruleId),
           }
-        : 'FATAL',
+        : 'Internal error',
       severity:
         message.severity === 2
           ? 8 // MarkerSeverity.Error

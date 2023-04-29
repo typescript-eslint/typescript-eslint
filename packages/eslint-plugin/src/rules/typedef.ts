@@ -31,6 +31,7 @@ export default util.createRule<[Options], MessageIds>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           [OptionKeys.ArrayDestructuring]: { type: 'boolean' },
           [OptionKeys.ArrowParameter]: { type: 'boolean' },

@@ -23,7 +23,7 @@ import type { ErrorGroup, RuleDetails, SelectedRange, TabType } from './types';
 function Playground(): JSX.Element {
   const [state, setState] = useHashState(defaultConfig);
   const [astModel, setAstModel] = useState<UpdateModel>();
-  const [markers, setMarkers] = useState<ErrorGroup[] | Error>();
+  const [markers, setMarkers] = useState<ErrorGroup[]>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [tsVersions, setTSVersion] = useState<readonly string[]>([]);
@@ -73,7 +73,6 @@ function Playground(): JSX.Element {
         >
           <div className={clsx(styles.options, 'thin-scrollbar')}>
             <OptionsSelector
-              isLoading={isLoading}
               state={state}
               tsVersions={tsVersions}
               setState={setState}
@@ -178,7 +177,8 @@ function Playground(): JSX.Element {
                         ? astModel.storedAST
                         : undefined
                     }
-                    enableScrolling={true}
+                    showTokens={state.showTokens}
+                    enableScrolling={state.scroll}
                     cursorPosition={position}
                     onHoverNode={setSelectedRange}
                   />

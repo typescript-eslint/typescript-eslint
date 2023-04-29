@@ -39,4 +39,4 @@
 
 [[redirects]]
   from = "/docs/*"
-  to = "/"
+  to = "/:splat"

@@ -26,6 +26,7 @@ export interface JsonRenderProps<T> {
   readonly level: string;
   readonly onHover?: OnHoverNodeFn;
   readonly selectedPath?: string;
+  readonly showTokens?: boolean;
 }
 
 export interface ExpandableRenderProps
@@ -47,6 +48,7 @@ function RenderExpandableObject({
   level,
   onHover,
   selectedPath,
+  showTokens,
 }: ExpandableRenderProps): JSX.Element {
   const [expanded, toggleExpanded, setExpanded] = useBool(
     () => level === 'ast' || !!selectedPath?.startsWith(level),
@@ -121,6 +123,7 @@ function RenderExpandableObject({
               onHover={onHover}
               selectedPath={selectedPath}
               nodeType={nodeType}
+              showTokens={showTokens}
             />
           ))}
         </div>
@@ -143,10 +146,10 @@ function JsonObject(
       nodeType: nodeType,
       typeName: getTypeName(props.value, nodeType),
       value: Object.entries(props.value).filter(item =>
-        filterProperties(item[0], item[1], nodeType),
+        filterProperties(item[0], item[1], nodeType, props.showTokens),
       ),
     };
-  }, [props.value]);
+  }, [props.value, props.showTokens]);
 
   return (
     <RenderExpandableObject
