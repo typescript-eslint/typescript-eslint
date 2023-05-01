@@ -1,9 +1,9 @@
 import { requiresQuoting } from '@typescript-eslint/type-utils';
+import { TSUtils } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from 'json-schema';
 
 import { generateType } from './generateType';
 import { getCommentLines } from './getCommentLines';
-import { isArray } from './isArray';
 import type { AST, ObjectAST, RefMap } from './types';
 
 export function generateObjectType(
@@ -28,7 +28,9 @@ export function generateObjectType(
   }
 
   const properties: ObjectAST['properties'] = [];
-  const required = new Set(isArray(schema.required) ? schema.required : []);
+  const required = new Set(
+    TSUtils.isArray(schema.required) ? schema.required : [],
+  );
   if (schema.properties) {
     const propertyDefs = Object.entries(schema.properties);
     for (const [propName, propSchema] of propertyDefs) {

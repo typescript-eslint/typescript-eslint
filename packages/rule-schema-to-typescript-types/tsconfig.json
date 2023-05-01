@@ -4,6 +4,6 @@
     "composite": false,
     "rootDir": "."
   },
-  "include": ["src", "tests", "typings"],
+  "include": ["src", "tests", "typings", "../utils/src/ts-utils/isArray.ts"],
   "references": []
 }

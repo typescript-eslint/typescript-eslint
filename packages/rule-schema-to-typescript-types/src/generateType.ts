@@ -1,3 +1,4 @@
+import { TSUtils } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import { NotSupportedError, UnexpectedError } from './errors';
@@ -5,7 +6,6 @@ import { generateArrayType } from './generateArrayType';
 import { generateObjectType } from './generateObjectType';
 import { generateUnionType } from './generateUnionType';
 import { getCommentLines } from './getCommentLines';
-import { isArray } from './isArray';
 import type { AST, RefMap } from './types';
 
 // keywords we probably should support but currently do not support
@@ -68,7 +68,7 @@ export function generateType(schema: JSONSchema4, refMap: RefMap): AST {
     };
   }
 
-  if (isArray(schema.type)) {
+  if (TSUtils.isArray(schema.type)) {
     throw new NotSupportedError('schemas with multiple types', schema);
   }
   if (schema.type == null) {

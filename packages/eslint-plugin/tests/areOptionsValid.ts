@@ -1,3 +1,4 @@
+import { TSUtils } from '@typescript-eslint/utils';
 import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 import Ajv from 'ajv';
 import type { JSONSchema4 } from 'json-schema';
@@ -22,8 +23,8 @@ export function areOptionsValid(
 function normalizeSchema(
   schema: JSONSchema4 | readonly JSONSchema4[],
 ): JSONSchema4 {
-  if (!Array.isArray(schema)) {
-    return schema as JSONSchema4;
+  if (!TSUtils.isArray(schema)) {
+    return schema;
   }
 
   if (schema.length === 0) {
