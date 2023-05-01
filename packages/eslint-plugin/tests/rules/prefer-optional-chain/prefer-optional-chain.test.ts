@@ -1,5 +1,6 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../../src/rules/prefer-optional-chain';
-import { noFormat, RuleTester } from '../../RuleTester';
 import * as BaseCases from './base-cases';
 
 const ruleTester = new RuleTester({

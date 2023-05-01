@@ -13,7 +13,7 @@ It adds support for TypeScript syntax.
 
 See the [ESLint documentation](https://eslint.org/docs/rules/comma-dangle) for more details on the `comma-dangle` rule.
 
-## How to Use
+## Options
 
 In addition to the options supported by the `comma-dangle` rule in ESLint core, the rule adds the following options:
 

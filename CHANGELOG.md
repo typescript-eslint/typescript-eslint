@@ -3,6 +3,18 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.59.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.0...v5.59.1) (2023-04-24)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [prefer-regexp-exec] skip malformed regexes ([#6935](https://github.com/typescript-eslint/typescript-eslint/issues/6935)) ([05ed60e](https://github.com/typescript-eslint/typescript-eslint/commit/05ed60e25f1de9d1bb83d56c81a349130960bec8))
+* **eslint-plugin:** [unified-signatures] no parameters function ([#6940](https://github.com/typescript-eslint/typescript-eslint/issues/6940)) ([2970861](https://github.com/typescript-eslint/typescript-eslint/commit/297086154acc568a0ae8eb41c8977b7a7ba4e0ed))
+
+
+
+
+
 # [5.59.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.58.0...v5.59.0) (2023-04-17)
 
 

@@ -1,0 +1,218 @@
+---
+id: rule-tester
+sidebar_label: rule-tester
+---
+
+import CodeBlock from '@theme/CodeBlock';
+
+# `@typescript-eslint/rule-tester`
+
+> A utility for testing ESLint rules
+
+This is a fork of ESLint's built-in `RuleTester` to provide some better types and additional features for testing TypeScript rules.
+
+## Usage
+
+For non-type-aware rules you can test them as follows:
+
+```ts
+import { RuleTester } from '@typescript-eslint/rule-tester';
+import rule from '../src/rules/my-rule.ts';
+
+const ruleTester = new RuleTester({
+  parser: '@typescript-eslint/parser',
+});
+
+ruleTester.run('my-rule', rule, {
+  valid: [
+    // valid tests can be a raw string,
+    'const x = 1;',
+    // or they can be an object
+    {
+      code: 'const y = 2;',
+      options: [{ ruleOption: true }],
+    },
+
+    // you can enable JSX parsing by passing parserOptions.ecmaFeatures.jsx = true
+    {
+      code: 'const z = <div />;',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+  ],
+  invalid: [
+    // invalid tests must always be an object
+    {
+      code: 'const a = 1;',
+      // invalid tests must always specify the expected errors
+      errors: [
+        {
+          messageId: 'ruleMessage',
+          // If applicable - it's recommended that you also assert the data in
+          // addition to the messageId so that you can ensure the correct message
+          // is generated
+          data: {
+            placeholder1: 'a',
+          },
+        },
+      ],
+    },
+
+    // fixers can be tested using the output parameter
+    {
+      code: 'const b = 1;',
+      output: 'const c = 1;',
+      errors: [
+        /* ... */
+      ],
+    },
+    // passing `output = null` will enforce the code is NOT changed
+    {
+      code: 'const c = 1;',
+      output: null,
+      errors: [
+        /* ... */
+      ],
+    },
+
+    // suggestions can be tested via errors
+    {
+      code: 'const d = 1;',
+      output: null,
+      errors: [
+        {
+          messageId: 'suggestionError',
+          suggestions: [
+            {
+              messageId: 'suggestionOne',
+              output: 'const e = 1;',
+            },
+          ],
+        },
+      ],
+    },
+    // passing `suggestions = null` will enforce there are NO suggestions
+    {
+      code: 'const d = 1;',
+      output: null,
+      errors: [
+        {
+          messageId: 'noSuggestionError',
+          suggestions: null,
+        },
+      ],
+    },
+  ],
+});
+```
+
+### Type-Aware Testing
+
+Type-aware rules can be tested in almost exactly the same way, except you need to create some files on disk.
+We require files on disk due to a limitation with TypeScript in that it requires physical files on disk to initialize the project.
+We suggest creating a `fixture` folder nearby that contains three files:
+
+1. `file.ts` - this should be an empty file.
+2. `react.tsx` - this should be an empty file.
+3. `tsconfig.json` - this should be the config to use for your test, for example:
+   ```json
+   {
+     "compilerOptions": {
+       "strict": true
+     },
+     "include": ["file.ts", "react.tsx"]
+   }
+   ```
+
+:::caution
+It's important to note that both `file.ts` and `react.tsx` must both be empty files!
+The rule tester will automatically use the string content from your tests - the empty files are just there for initialization.
+:::
+
+You can then test your rule by providing the type-aware config:
+
+```ts
+const ruleTester = new RuleTester({
+  parser: '@typescript-eslint/parser',
+  // Added lines start
+  parserOptions: {
+    tsconfigRootDir: './path/to/your/folder/fixture',
+    project: './tsconfig.json',
+  },
+  // Added lines end
+});
+```
+
+With that config the parser will automatically run in type-aware mode and you can write tests just like before.
+
+### Test Dependency Constraints
+
+Sometimes it's desirable to test your rule against multiple versions of a dependency to ensure backwards and forwards compatibility.
+With backwards-compatibility testing there comes a complication in that some tests may not be compatible with an older version of a dependency.
+For example - if you're testing against an older version of TypeScript, certain features might cause a parser error!
+
+import DependencyConstraint from '!!raw-loader!../../packages/rule-tester/src/types/DependencyConstraint.ts';
+
+<CodeBlock language="ts">{DependencyConstraint}</CodeBlock>
+
+The `RuleTester` allows you to apply dependency constraints at either an individual test or constructor level.
+
+```ts
+const ruleTester = new RuleTester({
+  parser: '@typescript-eslint/parser',
+  // Added lines start
+  dependencyConstraints: {
+    // none of the tests will run unless `my-dependency` matches the semver range `>=1.2.3`
+    'my-dependency': '1.2.3',
+    // you can also provide granular semver ranges
+    'my-granular-dep': {
+      // none of the tests will run unless `my-granular-dep` matches the semver range `~3.2.1`
+      range: '~3.2.1',
+    },
+  },
+  // Added lines end
+});
+
+ruleTester.run('my-rule', rule, {
+  valid: [
+    {
+      code: 'const y = 2;',
+      // Added lines start
+      dependencyConstraints: {
+        // this test won't run unless BOTH dependencies match the given ranges
+        first: '1.2.3',
+        second: '3.2.1',
+      },
+      // Added lines end
+    },
+  ],
+  invalid: [
+    /* ... */
+  ],
+});
+```
+
+All dependencies provided in the `dependencyConstraints` object must match their given ranges in order for a test to not be skipped.
+
+## Options
+
+### `RuleTester` constructor options
+
+import RuleTesterConfig from '!!raw-loader!../../packages/rule-tester/src/types/RuleTesterConfig.ts';
+
+<CodeBlock language="ts">{RuleTesterConfig}</CodeBlock>
+
+### Valid test case options
+
+import ValidTestCase from '!!raw-loader!../../packages/rule-tester/src/types/ValidTestCase.ts';
+
+<CodeBlock language="ts">{ValidTestCase}</CodeBlock>
+
+### Invalid test case options
+
+import InvalidTestCase from '!!raw-loader!../../packages/rule-tester/src/types/InvalidTestCase.ts';
+
+<CodeBlock language="ts">{InvalidTestCase}</CodeBlock>

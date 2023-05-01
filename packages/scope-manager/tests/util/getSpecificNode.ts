@@ -32,13 +32,15 @@ function getSpecificNode(
   simpleTraverse(
     ast,
     {
-      [selector](n) {
-        const res = cb ? cb(n) : n;
-        if (res) {
-          // the callback shouldn't match multiple nodes or else tests may behave weirdly
-          expect(node).toBeFalsy();
-          node = typeof res === 'boolean' ? n : res;
-        }
+      visitors: {
+        [selector](n) {
+          const res = cb ? cb(n) : n;
+          if (res) {
+            // the callback shouldn't match multiple nodes or else tests may behave weirdly
+            expect(node).toBeFalsy();
+            node = typeof res === 'boolean' ? n : res;
+          }
+        },
       },
     },
     true,
