@@ -9,7 +9,7 @@ Thanks goes to these wonderful people:
     <td align="center"><a href="https://github.com/bradzacher"><img src="https://avatars.githubusercontent.com/u/7462525?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Brad Zacher</b></sub></a></td>
     <td align="center"><a href="https://github.com/JamesHenry"><img src="https://avatars.githubusercontent.com/u/900523?v=4&size=100" width="100px;" alt=""/><br /><sub><b>James Henry</b></sub></a></td>
     <td align="center"><a href="https://github.com/armano2"><img src="https://avatars.githubusercontent.com/u/625469?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Armano</b></sub></a></td>
-    <td align="center"><a href="https://github.com/JoshuaKGoldberg"><img src="https://avatars.githubusercontent.com/u/3335181?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Josh Goldberg</b></sub></a></td>
+    <td align="center"><a href="https://github.com/JoshuaKGoldberg"><img src="https://avatars.githubusercontent.com/u/3335181?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Josh Goldberg ✨</b></sub></a></td>
     <td align="center"><a href="https://github.com/a-tarasyuk"><img src="https://avatars.githubusercontent.com/u/509265?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Oleksandr T.</b></sub></a></td>
   </tr>
   <tr>
@@ -49,7 +49,7 @@ Thanks goes to these wonderful people:
   </tr>
   <tr>
     <td align="center"><a href="https://github.com/ikatyang"><img src="https://avatars.githubusercontent.com/u/8341033?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Ika</b></sub></a></td>
-    <td align="center"><a href="https://github.com/cherryblossom000"><img src="https://avatars.githubusercontent.com/u/31467609?v=4&size=100" width="100px;" alt=""/><br /><sub><b>cherryblossom</b></sub></a></td>
+    <td align="center"><a href="https://github.com/cherryblossom000"><img src="https://avatars.githubusercontent.com/u/31467609?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Lauren Yim</b></sub></a></td>
     <td align="center"><a href="https://github.com/macklinu"><img src="https://avatars.githubusercontent.com/u/2344137?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Mackie Underdown</b></sub></a></td>
     <td align="center"><a href="https://github.com/sviat9440"><img src="https://avatars.githubusercontent.com/u/13107421?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Sviatoslav Zaytsev</b></sub></a></td>
     <td align="center"><a href="https://github.com/bmish"><img src="https://avatars.githubusercontent.com/u/698306?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Bryan Mishkin</b></sub></a></td>
@@ -57,28 +57,12 @@ Thanks goes to these wonderful people:
   <tr>
     <td align="center"><a href="https://github.com/lukyth"><img src="https://avatars.githubusercontent.com/u/7040242?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Kanitkorn Sujautra</b></sub></a></td>
     <td align="center"><a href="https://github.com/islandryu"><img src="https://avatars.githubusercontent.com/u/65934663?v=4&size=100" width="100px;" alt=""/><br /><sub><b>SHIMA RYUHEI</b></sub></a></td>
-    <td align="center"><a href="https://github.com/Zzzen"><img src="https://avatars.githubusercontent.com/u/6630042?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Zzzen</b></sub></a></td>
-    <td align="center"><a href="https://github.com/anikethsaha"><img src="https://avatars.githubusercontent.com/u/26347874?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Anix</b></sub></a></td>
-    <td align="center"><a href="https://github.com/cparros"><img src="https://avatars.githubusercontent.com/u/65684072?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Cparros</b></sub></a></td>
-  </tr>
-  <tr>
     <td align="center"><a href="https://github.com/ddubrava"><img src="https://avatars.githubusercontent.com/u/22116465?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Daniil Dubrava</b></sub></a></td>
-    <td align="center"><a href="https://github.com/octogonz"><img src="https://avatars.githubusercontent.com/u/4673363?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Pete Gonzalez</b></sub></a></td>
     <td align="center"><a href="https://github.com/ldrick"><img src="https://avatars.githubusercontent.com/u/3674067?v=4&size=100" width="100px;" alt=""/><br /><sub><b>ldrick</b></sub></a></td>
     <td align="center"><a href="https://github.com/susisu"><img src="https://avatars.githubusercontent.com/u/2443491?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Susisu</b></sub></a></td>
-    <td align="center"><a href="https://github.com/kmin-jeong"><img src="https://avatars.githubusercontent.com/u/53456037?v=4&size=100" width="100px;" alt=""/><br /><sub><b>kmin-jeong</b></sub></a></td>
   </tr>
   <tr>
-    <td align="center"><a href="https://github.com/gavinbarron"><img src="https://avatars.githubusercontent.com/u/7122716?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Gavin Barron</b></sub></a></td>
     <td align="center"><a href="https://github.com/platinumazure"><img src="https://avatars.githubusercontent.com/u/284282?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Kevin Partington</b></sub></a></td>
-    <td align="center"><a href="https://github.com/duailibe"><img src="https://avatars.githubusercontent.com/u/1574588?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Lucas Duailibe</b></sub></a></td>
-    <td align="center"><a href="https://github.com/Validark"><img src="https://avatars.githubusercontent.com/u/15217173?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Niles Salter</b></sub></a></td>
-    <td align="center"><a href="https://github.com/pablobirukov"><img src="https://avatars.githubusercontent.com/u/1861546?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Pavel Birukov </b></sub></a></td>
-  </tr>
-  <tr>
-    <td align="center"><a href="https://github.com/mightyiam"><img src="https://avatars.githubusercontent.com/u/635591?v=4&size=100" width="100px;" alt=""/><br /><sub><b>Shahar "Dawn" Or</b></sub></a></td>
-    <td align="center"><a href="https://github.com/koooge"><img src="https://avatars.githubusercontent.com/u/7419215?v=4&size=100" width="100px;" alt=""/><br /><sub><b>koooge</b></sub></a></td>
-    <td align="center"><a href="https://github.com/thomasmichaelwallace"><img src="https://avatars.githubusercontent.com/u/1954845?v=4&size=100" width="100px;" alt=""/><br /><sub><b>thomas michael wallace</b></sub></a></td>
   </tr>
 </table>
 
