@@ -125,8 +125,8 @@ export function createParseSettings(
     );
   }
 
-  // Providing a program overrides project resolution
-  if (!parseSettings.programs) {
+  // Providing a program or project service overrides project resolution
+  if (!parseSettings.programs && !parseSettings.EXPERIMENTAL_projectService) {
     parseSettings.projects = resolveProjectList({
       cacheLifetime: options.cacheLifetime,
       project: getProjectConfigFiles(parseSettings, options.project),

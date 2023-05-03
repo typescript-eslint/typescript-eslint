@@ -49,6 +49,16 @@ function getProgramAndAST(
   parseSettings: ParseSettings,
   hasFullTypeInformation: boolean,
 ): ASTAndProgram {
+  if (parseSettings.EXPERIMENTAL_projectService) {
+    const fromProjectService = useProgramFromProjectService(
+      parseSettings.EXPERIMENTAL_projectService,
+      parseSettings,
+    );
+    if (fromProjectService) {
+      return fromProjectService;
+    }
+  }
+
   if (parseSettings.programs) {
     const fromProvidedPrograms = useProvidedPrograms(
       parseSettings.programs,
@@ -63,16 +73,6 @@ function getProgramAndAST(
   // so we can save time and just create a lonesome source file
   if (!hasFullTypeInformation) {
     return createNoProgram(parseSettings);
-  }
-
-  if (parseSettings.EXPERIMENTAL_projectService) {
-    const fromProjectService = useProgramFromProjectService(
-      parseSettings.EXPERIMENTAL_projectService,
-      parseSettings,
-    );
-    if (fromProjectService) {
-      return fromProjectService;
-    }
   }
 
   const fromProjectProgram = createProjectProgram(
