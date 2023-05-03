@@ -246,16 +246,18 @@ describe('semanticInfo', () => {
     expect(parseResult.services.program).toBeDefined();
   });
 
-  it(`non-existent file should throw error when project provided`, () => {
-    expect(() =>
-      parseCodeAndGenerateServices(
-        `function M() { return Base }`,
-        createOptions('<input>'),
-      ),
-    ).toThrow(
-      /ESLint was configured to run on `<tsconfigRootDir>\/estree\.ts` using/,
-    );
-  });
+  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+    it(`non-existent file should throw error when project provided`, () => {
+      expect(() =>
+        parseCodeAndGenerateServices(
+          `function M() { return Base }`,
+          createOptions('<input>'),
+        ),
+      ).toThrow(
+        /ESLint was configured to run on `<tsconfigRootDir>\/estree\.ts` using/,
+      );
+    });
+  }
 
   if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
     it('non-existent project file', () => {
@@ -318,20 +320,22 @@ describe('semanticInfo', () => {
     );
   });
 
-  it(`first matching provided program instance is returned in result`, () => {
-    const filename = testFiles[0];
-    const program1 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
-    const program2 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
-    const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
-    const options = createOptions(filename);
-    const optionsProjectString = {
-      ...options,
-      programs: [program1, program2],
-      project: './tsconfig.json',
-    };
-    const parseResult = parseAndGenerateServices(code, optionsProjectString);
-    expect(parseResult.services.program).toBe(program1);
-  });
+  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+    it(`first matching provided program instance is returned in result`, () => {
+      const filename = testFiles[0];
+      const program1 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
+      const program2 = createProgram(path.join(FIXTURES_DIR, 'tsconfig.json'));
+      const code = fs.readFileSync(path.join(FIXTURES_DIR, filename), 'utf8');
+      const options = createOptions(filename);
+      const optionsProjectString = {
+        ...options,
+        programs: [program1, program2],
+        project: './tsconfig.json',
+      };
+      const parseResult = parseAndGenerateServices(code, optionsProjectString);
+      expect(parseResult.services.program).toBe(program1);
+    });
+  }
 
   it('file not in provided program instance(s)', () => {
     const filename = 'non-existent-file.ts';
@@ -373,6 +377,10 @@ describe('semanticInfo', () => {
 function testIsolatedFile(
   parseResult: ParseAndGenerateServicesResult<TSESTreeOptions>,
 ): void {
+  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true') {
+    return;
+  }
+
   // get type checker
   expectToHaveParserServices(parseResult.services);
   const checker = parseResult.services.program.getTypeChecker();
