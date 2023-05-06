@@ -24,7 +24,7 @@ delete array[index];
 
 ### ✅ Correct
 
-```js
+```ts
 declare const array: unknown[];
 declare const index: number;
 
