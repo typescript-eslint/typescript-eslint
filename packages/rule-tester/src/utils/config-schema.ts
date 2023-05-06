@@ -2,6 +2,7 @@
 
 import type { JSONSchema } from '@typescript-eslint/utils';
 
+// need to keep this in sync with the types in `RuleTesterConfig.ts`
 const baseConfigProperties: JSONSchema.JSONSchema4['properties'] = {
   $schema: { type: 'string' },
   defaultFilenames: {
@@ -35,6 +36,24 @@ const baseConfigProperties: JSONSchema.JSONSchema4['properties'] = {
   reportUnusedDisableDirectives: { type: 'boolean' },
   rules: { type: 'object' },
   settings: { type: 'object' },
+  snapshots: {
+    oneOf: [
+      {
+        type: 'object',
+        properties: {
+          snapshotBasePath: {
+            type: 'string',
+          },
+        },
+        additionalProperties: false,
+        required: ['snapshotBasePath'],
+      },
+      {
+        type: 'boolean',
+        enum: [false],
+      },
+    ],
+  },
 
   ecmaFeatures: { type: 'object' }, // deprecated; logs a warning when used
 };

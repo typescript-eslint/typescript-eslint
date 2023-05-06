@@ -2,6 +2,7 @@ import type { Linter, ParserOptions } from '@typescript-eslint/utils/ts-eslint';
 
 import type { DependencyConstraint } from './DependencyConstraint';
 
+// need to keep this in sync with the schema in `config-schema.ts`
 export interface RuleTesterConfig extends Linter.Config {
   /**
    * The default parser to use for tests.
@@ -24,4 +25,16 @@ export interface RuleTesterConfig extends Linter.Config {
     ts: string;
     tsx: string;
   }>;
+  /**
+   * Whether or not to do snapshot testing for "invalid" test cases.
+   * @default false
+   */
+  readonly snapshots?:
+    | false
+    | {
+        /**
+         * The absolute path to use as the basis for writing snapshots.
+         */
+        readonly snapshotBasePath: string;
+      };
 }

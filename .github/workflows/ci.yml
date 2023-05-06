@@ -146,6 +146,7 @@ jobs:
             'parser',
             'repo-tools',
             'rule-schema-to-typescript-types',
+            'rule-tester',
             'scope-manager',
             'type-utils',
             'typescript-estree',

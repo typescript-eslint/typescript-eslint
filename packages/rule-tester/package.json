@@ -49,11 +49,14 @@
   "dependencies": {
     "@typescript-eslint/typescript-estree": "5.59.1",
     "@typescript-eslint/utils": "5.59.1",
+    "ajv": "^6.10.0",
     "lodash.merge": "4.6.2",
     "semver": "^7.3.7",
-    "ajv": "^6.10.0"
+    "make-dir": "^3.1.0",
+    "std-env": "^3.3.3"
   },
   "peerDependencies": {
+    "@babel/code-frame": "^7.21.4",
     "@eslint/eslintrc": ">=2",
     "eslint": ">=8"
   },

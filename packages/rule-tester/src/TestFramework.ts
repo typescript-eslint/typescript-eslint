@@ -1,3 +1,8 @@
+import { isCI } from 'std-env';
+
+import type { RuleTesterExpectSnapshotFunction } from './snapshot/expectSnapshot';
+import { expectSnapshot } from './snapshot/expectSnapshot';
+
 /**
  * @param text a string describing the rule
  * @param callback the test callback
@@ -24,6 +29,10 @@ export type RuleTesterTestFrameworkItFunction =
      */
     skip?: RuleTesterTestFrameworkFunctionBase;
   };
+export type * from './snapshot/expectSnapshot';
+export type RuleTesterFrameworkSnapshotUpdateType = 'new' | 'all' | 'none';
+export type RuleTesterFrameworkShouldUpdateSnapshot =
+  () => RuleTesterFrameworkSnapshotUpdateType;
 
 type Maybe<T> = T | null | undefined;
 
@@ -38,6 +47,9 @@ let OVERRIDE_DESCRIBE_SKIP: Maybe<RuleTesterTestFrameworkFunctionBase> = null;
 let OVERRIDE_IT: Maybe<RuleTesterTestFrameworkItFunction> = null;
 let OVERRIDE_IT_ONLY: Maybe<RuleTesterTestFrameworkFunctionBase> = null;
 let OVERRIDE_IT_SKIP: Maybe<RuleTesterTestFrameworkFunctionBase> = null;
+let OVERRIDE_EXPECT_SNAPSHOT: Maybe<RuleTesterExpectSnapshotFunction> = null;
+let OVERRIDE_GET_SHOULD_UPDATE_SNAPSHOT: Maybe<RuleTesterFrameworkShouldUpdateSnapshot> =
+  null;
 
 /*
  * NOTE - If people use `mocha test.js --watch` command, the test function
@@ -216,5 +228,58 @@ export abstract class TestFramework {
   }
   static set itSkip(value: Maybe<RuleTesterTestFrameworkFunctionBase>) {
     OVERRIDE_IT_SKIP = value;
+  }
+
+  static get expectSnapshot(): RuleTesterExpectSnapshotFunction {
+    if (OVERRIDE_EXPECT_SNAPSHOT != null) {
+      return OVERRIDE_EXPECT_SNAPSHOT;
+    }
+
+    return expectSnapshot;
+  }
+
+  static set expectSnapshot(value: Maybe<RuleTesterExpectSnapshotFunction>) {
+    OVERRIDE_EXPECT_SNAPSHOT = value;
+  }
+
+  static get getShouldUpdateSnapshots(): RuleTesterFrameworkShouldUpdateSnapshot {
+    if (OVERRIDE_GET_SHOULD_UPDATE_SNAPSHOT != null) {
+      return OVERRIDE_GET_SHOULD_UPDATE_SNAPSHOT;
+    }
+
+    return (): RuleTesterFrameworkSnapshotUpdateType => {
+      if (isCI) {
+        // never update snapshots on CI
+        return 'none';
+      }
+
+      if (process.env.UPDATE_SNAPSHOT != null) {
+        return process.env.UPDATE_SNAPSHOT !== '0' &&
+          process.env.UPDATE_SNAPSHOT !== 'false'
+          ? 'new'
+          : 'all';
+      }
+
+      if (typeof expect !== 'undefined') {
+        // https://github.com/jestjs/jest/blob/bc26cd79e60b7bf29d854293f0f011936fda1a5a/packages/jest-snapshot/src/State.ts#L59
+        // this should also work for vitest as it maintains compat with jest
+        const maybeJestState = (
+          expect.getState().snapshotState as {
+            _updateSnapshot?: RuleTesterFrameworkSnapshotUpdateType;
+          }
+        )?._updateSnapshot;
+        if (maybeJestState != null) {
+          return maybeJestState;
+        }
+      }
+
+      return 'new';
+    };
+  }
+
+  static set getShouldUpdateSnapshots(
+    value: Maybe<RuleTesterFrameworkShouldUpdateSnapshot>,
+  ) {
+    OVERRIDE_GET_SHOULD_UPDATE_SNAPSHOT = value;
   }
 }
