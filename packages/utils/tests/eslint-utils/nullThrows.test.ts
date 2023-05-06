@@ -1,8 +1,11 @@
 import { nullThrows, NullThrowsReasons } from '../../src/eslint-utils';
 
 describe('nullThrows', () => {
-  it('returns a falsy value when it exists', () => {
+  it.only('returns a falsy value when it exists', () => {
     const value = 0;
+    const x = { prop: {} };
+    x.prop = x;
+    console.log(x);
 
     const actual = nullThrows(value, NullThrowsReasons.MissingParent);
 
