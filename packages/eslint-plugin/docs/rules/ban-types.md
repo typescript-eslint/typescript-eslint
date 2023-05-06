@@ -113,6 +113,7 @@ const defaultTypes = {
       '- If you want a type meaning "any value", you probably want `unknown` instead.',
       '- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead.',
     ].join('\n'),
+    suggest: ['object', 'unknown', 'NonNullable<unknown>'],
   },
   '{}': {
     message: [
@@ -122,6 +123,12 @@ const defaultTypes = {
       '- If you want a type meaning "empty object", you probably want `Record<string, never>` instead.',
       '- If you really want a type meaning "any non-nullish value", you probably want `NonNullable<unknown>` instead.',
     ].join('\n'),
+    suggest: [
+      'object',
+      'unknown',
+      'Record<string, never>',
+      'NonNullable<unknown>',
+    ],
   },
 };
 ```
@@ -141,6 +148,7 @@ The values can be:
 - An object with the following properties:
   - `message: string` - the message to display when the type is matched.
   - `fixWith?: string` - a string to replace the banned type with when the fixer is run. If this is omitted, no fix will be done.
+  - `suggest?: string[]` - a list of suggested replacements for the banned type.
 
 ### `extendDefaults`
 
