@@ -129,7 +129,7 @@ export default createRule({
           caseTypes.add(getNodeType(switchCase.test));
         }
         const missingBranchTypes = unionTypes.filter(unionType => {
-          const test = isTypeFlagSet(
+          const type = isTypeFlagSet(
             unionType,
             ts.TypeFlags.Number |
               ts.TypeFlags.String |
@@ -137,7 +137,7 @@ export default createRule({
               ts.TypeFlags.Intersection,
           );
 
-          if (test) {
+          if (type) {
             return caseTypes.has(unionType);
           }
 
