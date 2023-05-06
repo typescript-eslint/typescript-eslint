@@ -268,6 +268,7 @@ jobs:
         run: npx lerna publish --loglevel=verbose --canary --exact --force-publish --yes
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
 
   publish_canary_version_v6:
     name: Publish the next major version code as a canary version
@@ -293,3 +294,4 @@ jobs:
         run: npx lerna publish premajor --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v6
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
