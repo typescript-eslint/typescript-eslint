@@ -1,17 +1,29 @@
 import type {
   ParserServicesWithTypeInformation,
-  TSESLint,
   TSESTree,
 } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type {
+  ReportDescriptor,
+  ReportFixFunction,
+  RuleContext,
+  RuleFix,
+  SourceCode,
+} from '@typescript-eslint/utils/ts-eslint';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
-import { isBooleanLiteralType, unionTypeParts } from 'ts-api-utils';
+import {
+  isBigIntLiteralType,
+  isBooleanLiteralType,
+  isNumberLiteralType,
+  isStringLiteralType,
+  unionTypeParts,
+} from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
 
 export type TMessageIds = 'preferOptionalChain' | 'optionalChainSuggest';
-interface TypeAwareOptions {
+interface Options {
   checkAny?: boolean;
   checkUnknown?: boolean;
   checkString?: boolean;
@@ -19,8 +31,9 @@ interface TypeAwareOptions {
   checkBoolean?: boolean;
   checkBigInt?: boolean;
   requireNullish?: boolean;
+  allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing?: boolean;
 }
-export type TOptions = [TypeAwareOptions];
+export type TOptions = [Options];
 
 const enum ComparisonValueType {
   Null = 'Null', // eslint-disable-line @typescript-eslint/internal/prefer-ast-types-enum
@@ -72,20 +85,21 @@ interface InvalidOperand {
 }
 type Operand = ValidOperand | InvalidOperand;
 
+const NULLISH_FLAGS = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
 function isValidFalseBooleanCheckType(
   node: TSESTree.Node,
   operator: TSESTree.LogicalExpression['operator'],
   checkType: 'true' | 'false',
   parserServices: ParserServicesWithTypeInformation,
-  options: TypeAwareOptions,
+  options: Options,
 ): boolean {
   const type = parserServices.getTypeAtLocation(node);
   const types = unionTypeParts(type);
 
-  const disallowFalseLiteral =
+  const disallowFalseyLiteral =
     (operator === '||' && checkType === 'false') ||
     (operator === '&&' && checkType === 'true');
-  if (disallowFalseLiteral) {
+  if (disallowFalseyLiteral) {
     /*
     ```
     declare const x: false | {a: string};
@@ -94,22 +108,24 @@ function isValidFalseBooleanCheckType(
     ```
 
     We don't want to consider these two cases because the boolean expression
-    narrows out the `false` - so converting the chain to `x?.a` would introduce
-    a build error
+    narrows out the non-nullish falsey cases - so converting the chain to `x?.a`
+    would introduce a build error
     */
     if (
-      types.some(t => isBooleanLiteralType(t) && t.intrinsicName === 'false')
+      types.some(t => isBooleanLiteralType(t) && t.intrinsicName === 'false') ||
+      types.some(t => isStringLiteralType(t) && t.value === '') ||
+      types.some(t => isNumberLiteralType(t) && t.value === 0) ||
+      types.some(t => isBigIntLiteralType(t) && t.value.base10Value === '0')
     ) {
       return false;
     }
   }
 
-  const nullishFlags = ts.TypeFlags.Null | ts.TypeFlags.Undefined;
   if (options.requireNullish === true) {
-    return types.some(t => util.isTypeFlagSet(t, nullishFlags));
+    return types.some(t => util.isTypeFlagSet(t, NULLISH_FLAGS));
   }
 
-  let allowedFlags = nullishFlags | ts.TypeFlags.Object;
+  let allowedFlags = NULLISH_FLAGS | ts.TypeFlags.Object;
   if (options.checkAny === true) {
     allowedFlags |= ts.TypeFlags.Any;
   }
@@ -134,7 +150,7 @@ function isValidFalseBooleanCheckType(
 function gatherLogicalOperands(
   node: TSESTree.LogicalExpression,
   parserServices: ParserServicesWithTypeInformation,
-  options: TypeAwareOptions,
+  options: Options,
 ): {
   operands: Operand[];
   seenLogicals: Set<TSESTree.LogicalExpression>;
@@ -699,13 +715,13 @@ function compareNodesUncached(
         nodeA.quasis.length === nodeBTemplate.quasis.length &&
         nodeA.quasis.every((elA, idx) => {
           const elB = nodeBTemplate.quasis[idx];
-          return elA === elB;
+          return elA.value.cooked === elB.value.cooked;
         });
       if (!areQuasisEqual) {
         return NodeComparisonResult.Invalid;
       }
 
-      return compareNodes(nodeA, nodeBTemplate);
+      return NodeComparisonResult.Equal;
     }
 
     case AST_NODE_TYPES.TemplateElement: {
@@ -864,8 +880,227 @@ const analyzeOrChainOperand: OperandAnalyzer = (operand, index, chain) => {
   }
 };
 
+function getFixer(
+  sourceCode: SourceCode,
+  parserServices: ParserServicesWithTypeInformation,
+  options: Options,
+  chain: ValidOperand[],
+):
+  | {
+      suggest: NonNullable<ReportDescriptor<TMessageIds>['suggest']>;
+    }
+  | {
+      fix: NonNullable<ReportDescriptor<TMessageIds>['fix']>;
+    } {
+  const lastOperand = chain[chain.length - 1];
+
+  let useSuggestionFixer: boolean;
+  if (
+    options.allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing ===
+    true
+  ) {
+    // user has opted-in to the unsafe behavior
+    useSuggestionFixer = false;
+  } else {
+    // optional chain specifically will union `undefined` into the final type
+    // so we need to make sure that there is at least one operand that includes
+    // `undefined`, or else we're going to change the final type - which is
+    // unsafe and might cause downstream type errors.
+
+    if (
+      lastOperand.comparisonType !== NullishComparisonType.Boolean &&
+      lastOperand.comparisonType !== NullishComparisonType.NotBoolean
+    ) {
+      // we know the last operand is an equality check - so the change in types
+      // DOES NOT matter and will not change the runtime result or cause a type
+      // check error
+      useSuggestionFixer = false;
+    } else {
+      useSuggestionFixer = true;
+
+      // TODO - we could further reduce the false-positive rate of this check by
+      //        checking for cases where the change in types don't matter like
+      //        the test location of an if/while/etc statement.
+      //        but it's quite complex to do this without false-negatives, so
+      //        for now we'll just be over-eager with our matching.
+      for (const operand of chain) {
+        const types = unionTypeParts(
+          parserServices.getTypeAtLocation(operand.node),
+        );
+        if (types.some(t => util.isTypeFlagSet(t, ts.TypeFlags.Undefined))) {
+          useSuggestionFixer = false;
+          break;
+        }
+      }
+    }
+  }
+
+  // In its most naive form we could just slap `?.` for every single part of the
+  // chain. However this would be undesirable because it'd create unnecessary
+  // conditions in the user's code where there were none before - and it would
+  // cause errors with rules like our `no-unnecessary-condition`.
+  //
+  // Instead we want to include the minimum number of `?.` required to correctly
+  // unify the code into a single chain. Naively you might think that we can
+  // just take the final operand add `?.` after the locations from the previous
+  // operands - however this won't be correct either because earlier operands
+  // can include a necessary `?.` that's not needed or included in a later
+  // operand.
+  //
+  // So instead what we need to do is to start at the first operand and
+  // iteratively diff it against the next operand, and add the difference to the
+  // first operand.
+  //
+  // eg
+  // `foo && foo.bar && foo.bar.baz?.bam && foo.bar.baz.bam()`
+  // 1) `foo`
+  // 2) diff(`foo`, `foo.bar`) = `.bar`
+  // 3) result = `foo?.bar`
+  // 4) diff(`foo.bar`, `foo.bar.baz?.bam`) = `.baz?.bam`
+  // 5) result = `foo?.bar?.baz?.bam`
+  // 6) diff(`foo.bar.baz?.bam`, `foo.bar.baz.bam()`) = `()`
+  // 7) result = `foo?.bar?.baz?.bam?.()`
+
+  let current = flattenChainExpression(sourceCode, chain[0].comparedName);
+  const parts = [...current];
+
+  for (let i = 1; i < chain.length; i += 1) {
+    const nextOperand = flattenChainExpression(
+      sourceCode,
+      chain[i].comparedName,
+    );
+    const diff = nextOperand.slice(parts.length);
+    // we need to make the first operand of the diff optional so it matches the
+    // logic before merging
+    // foo.bar && foo.bar.baz
+    // diff = .baz
+    // result = foo.bar?.baz
+    if (diff.length > 0) {
+      diff[0].optional = true;
+      parts.push(...diff);
+    }
+    current = nextOperand;
+  }
+
+  let newCode = parts
+    .map(part => {
+      let str = '';
+      if (part.optional) {
+        str += '?.';
+      } else if (part.requiresDot) {
+        str += '.';
+      }
+      str += part.text;
+      return str;
+    })
+    .join('');
+
+  if (lastOperand.node.type === AST_NODE_TYPES.BinaryExpression) {
+    // retain the ending comparison for cases like
+    // x && x.a != null
+    newCode +=
+      ' ' +
+      lastOperand.node.operator +
+      ' ' +
+      sourceCode.getText(lastOperand.node.right);
+  }
+
+  const fix: ReportFixFunction = fixer =>
+    fixer.replaceTextRange(
+      [chain[0].node.range[0], lastOperand.node.range[1]],
+      newCode,
+    );
+
+  return useSuggestionFixer
+    ? { suggest: [{ fix, messageId: 'optionalChainSuggest' }] }
+    : { fix };
+
+  interface FlattenedChain {
+    text: string;
+    optional: boolean;
+    requiresDot: boolean;
+  }
+  function flattenChainExpression(
+    sourceCode: SourceCode,
+    node: TSESTree.Node,
+  ): FlattenedChain[] {
+    switch (node.type) {
+      case AST_NODE_TYPES.ChainExpression:
+        return flattenChainExpression(sourceCode, node.expression);
+
+      case AST_NODE_TYPES.CallExpression: {
+        const argumentsText = (() => {
+          const closingParenToken = util.nullThrows(
+            sourceCode.getLastToken(node),
+            util.NullThrowsReasons.MissingToken(
+              'closing parenthesis',
+              node.type,
+            ),
+          );
+          const openingParenToken = util.nullThrows(
+            sourceCode.getFirstTokenBetween(
+              node.typeArguments ?? node.callee,
+              closingParenToken,
+              util.isOpeningParenToken,
+            ),
+            util.NullThrowsReasons.MissingToken(
+              'opening parenthesis',
+              node.type,
+            ),
+          );
+          return sourceCode.text.substring(
+            openingParenToken.range[0],
+            closingParenToken.range[1],
+          );
+        })();
+
+        const typeArgumentsText = (() => {
+          if (node.typeArguments == null) {
+            return '';
+          }
+
+          return sourceCode.getText(node.typeArguments);
+        })();
+
+        return [
+          ...flattenChainExpression(sourceCode, node.callee),
+          {
+            text: typeArgumentsText + argumentsText,
+            optional: node.optional,
+            requiresDot: false,
+          },
+        ];
+      }
+
+      case AST_NODE_TYPES.MemberExpression: {
+        const propertyText = sourceCode.getText(node.property);
+        return [
+          ...flattenChainExpression(sourceCode, node.object),
+          {
+            text: node.computed ? `[${propertyText}]` : propertyText,
+            optional: node.optional,
+            requiresDot: !node.computed,
+          },
+        ];
+      }
+
+      default:
+        return [
+          {
+            text: sourceCode.getText(node),
+            optional: false,
+            requiresDot: false,
+          },
+        ];
+    }
+  }
+}
+
 function analyzeChain(
-  context: TSESLint.RuleContext<TMessageIds, TOptions>,
+  context: RuleContext<TMessageIds, TOptions>,
+  sourceCode: SourceCode,
+  parserServices: ParserServicesWithTypeInformation,
+  options: Options,
   operator: TSESTree.LogicalExpression['operator'],
   chain: ValidOperand[],
 ): void {
@@ -902,8 +1137,7 @@ function analyzeChain(
           start: subChain[0].node.loc.start,
           end: subChain[subChain.length - 1].node.loc.end,
         },
-        // TODO add an auto fixer if and only if the result type would be unchanged
-        //      else add the fixer as a suggestion fixer
+        ...getFixer(sourceCode, parserServices, options, subChain),
       });
     }
 
@@ -964,6 +1198,7 @@ export default util.createRule<TOptions, TMessageIds>({
       recommended: 'stylistic',
       requiresTypeChecking: true,
     },
+    fixable: 'code',
     hasSuggestions: true,
     messages: {
       preferOptionalChain:
@@ -1009,6 +1244,11 @@ export default util.createRule<TOptions, TMessageIds>({
             type: 'boolean',
             description:
               'Skip operands that are not typed with `null` and/or `undefined` when inspecting "loose boolean" operands.',
+          },
+          allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: {
+            type: 'boolean',
+            description:
+              'Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build.',
           },
         },
       },
@@ -1073,7 +1313,7 @@ export default util.createRule<TOptions, TMessageIds>({
           suggest: [
             {
               messageId: 'optionalChainSuggest',
-              fix: (fixer): TSESLint.RuleFix => {
+              fix: (fixer): RuleFix => {
                 const leftNodeText = sourceCode.getText(leftNode);
                 // Any node that is made of an operator with higher or equal precedence,
                 const maybeWrappedLeftNode = isLeftSideLowerPrecedence()
@@ -1112,7 +1352,14 @@ export default util.createRule<TOptions, TMessageIds>({
         let currentChain: ValidOperand[] = [];
         for (const operand of operands) {
           if (operand.type === OperandValidity.Invalid) {
-            analyzeChain(context, node.operator, currentChain);
+            analyzeChain(
+              context,
+              sourceCode,
+              parserServices,
+              options,
+              node.operator,
+              currentChain,
+            );
             currentChain = [];
           } else {
             currentChain.push(operand);
@@ -1120,7 +1367,16 @@ export default util.createRule<TOptions, TMessageIds>({
         }
 
         // make sure to check whatever's left
-        analyzeChain(context, node.operator, currentChain);
+        if (currentChain.length > 0) {
+          analyzeChain(
+            context,
+            sourceCode,
+            parserServices,
+            options,
+            node.operator,
+            currentChain,
+          );
+        }
       },
     };
   },
