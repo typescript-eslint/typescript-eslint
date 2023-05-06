@@ -129,15 +129,18 @@ export default createRule({
           caseTypes.add(getNodeType(switchCase.test));
         }
         const missingBranchTypes = unionTypes.filter(unionType => {
-          if (
-            unionType.flags === ts.TypeFlags.Number ||
-            unionType.flags === ts.TypeFlags.String ||
-            unionType.flags === ts.TypeFlags.Object ||
-            unionType.flags === ts.TypeFlags.Unknown ||
-            unionType.flags === ts.TypeFlags.Intersection
-          ) {
+          const test = isTypeFlagSet(
+            unionType,
+            ts.TypeFlags.Number |
+              ts.TypeFlags.String |
+              ts.TypeFlags.Object |
+              ts.TypeFlags.Intersection,
+          );
+
+          if (test) {
             return caseTypes.has(unionType);
           }
+
           return !caseTypes.has(unionType);
         });
 
