@@ -1,3 +1,4 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESLint } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/prefer-readonly-parameter-types';
@@ -6,7 +7,7 @@ import type {
   InferOptionsTypeFromRule,
 } from '../../src/util';
 import { readonlynessOptionsDefaults } from '../../src/util';
-import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;
