@@ -3,6 +3,14 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.59.4](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.3...v5.59.4) (2023-05-08)
+
+**Note:** Version bump only for package @typescript-eslint/parser
+
+
+
+
+
 ## [5.59.3](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.2...v5.59.3) (2023-05-08)
 
 **Note:** Version bump only for package @typescript-eslint/parser
