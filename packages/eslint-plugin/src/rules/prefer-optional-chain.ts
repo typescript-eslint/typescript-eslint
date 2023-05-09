@@ -78,6 +78,7 @@ interface ValidOperand {
   type: OperandValidity.Valid;
   comparedName: TSESTree.Node;
   comparisonType: NullishComparisonType;
+  isYoda: boolean;
   node: TSESTree.Expression;
 }
 interface InvalidOperand {
@@ -163,18 +164,20 @@ function gatherLogicalOperands(
       case AST_NODE_TYPES.BinaryExpression: {
         // check for "yoda" style logical: null != x
 
-        const { comparedExpression, comparedValue } = (() => {
+        const { comparedExpression, comparedValue, isYoda } = (() => {
           // non-yoda checks are by far the most common, so check for them first
           const comparedValueRight = getComparisonValueType(operand.right);
           if (comparedValueRight) {
             return {
               comparedExpression: operand.left,
               comparedValue: comparedValueRight,
+              isYoda: false,
             };
           } else {
             return {
               comparedExpression: operand.right,
               comparedValue: getComparisonValueType(operand.left),
+              isYoda: true,
             };
           }
         })();
@@ -191,6 +194,7 @@ function gatherLogicalOperands(
               comparisonType: operand.operator.startsWith('!')
                 ? NullishComparisonType.NotStrictEqualUndefined
                 : NullishComparisonType.StrictEqualUndefined,
+              isYoda,
               node: operand,
             });
             continue;
@@ -215,6 +219,7 @@ function gatherLogicalOperands(
                 comparisonType: operand.operator.startsWith('!')
                   ? NullishComparisonType.NotEqualNullOrUndefined
                   : NullishComparisonType.EqualNullOrUndefined,
+                isYoda,
                 node: operand,
               });
               continue;
@@ -234,6 +239,7 @@ function gatherLogicalOperands(
                   comparisonType: operand.operator.startsWith('!')
                     ? NullishComparisonType.NotStrictEqualNull
                     : NullishComparisonType.StrictEqualNull,
+                  isYoda,
                   node: operand,
                 });
                 continue;
@@ -245,6 +251,7 @@ function gatherLogicalOperands(
                   comparisonType: operand.operator.startsWith('!')
                     ? NullishComparisonType.NotStrictEqualUndefined
                     : NullishComparisonType.StrictEqualUndefined,
+                  isYoda,
                   node: operand,
                 });
                 continue;
@@ -276,6 +283,7 @@ function gatherLogicalOperands(
             type: OperandValidity.Valid,
             comparedName: operand.argument,
             comparisonType: NullishComparisonType.NotBoolean,
+            isYoda: false,
             node: operand,
           });
           continue;
@@ -302,6 +310,7 @@ function gatherLogicalOperands(
             type: OperandValidity.Valid,
             comparedName: operand,
             comparisonType: NullishComparisonType.Boolean,
+            isYoda: false,
             node: operand,
           });
         } else {
@@ -787,16 +796,37 @@ function compareNodes(
   return result;
 }
 
+function includesType(
+  parserServices: ParserServicesWithTypeInformation,
+  node: TSESTree.Node,
+  typeFlagIn: ts.TypeFlags,
+): boolean {
+  const typeFlag = typeFlagIn | ts.TypeFlags.Any | ts.TypeFlags.Unknown;
+  const types = unionTypeParts(parserServices.getTypeAtLocation(node));
+  for (const type of types) {
+    if (util.isTypeFlagSet(type, typeFlag)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 // I hate that these functions are identical aside from the enum values used
 // I can't think of a good way to reuse the code here in a way that will preserve
 // the type safety and simplicity.
 
 type OperandAnalyzer = (
+  parserServices: ParserServicesWithTypeInformation,
   operand: ValidOperand,
   index: number,
   chain: readonly ValidOperand[],
 ) => readonly [ValidOperand] | readonly [ValidOperand, ValidOperand] | null;
-const analyzeAndChainOperand: OperandAnalyzer = (operand, index, chain) => {
+const analyzeAndChainOperand: OperandAnalyzer = (
+  parserServices,
+  operand,
+  index,
+  chain,
+) => {
   switch (operand.comparisonType) {
     case NullishComparisonType.Boolean:
     case NullishComparisonType.NotEqualNullOrUndefined:
@@ -812,9 +842,21 @@ const analyzeAndChainOperand: OperandAnalyzer = (operand, index, chain) => {
           NodeComparisonResult.Equal
       ) {
         return [operand, nextOperand];
-      } else {
-        return [operand];
       }
+      if (
+        includesType(
+          parserServices,
+          operand.comparedName,
+          ts.TypeFlags.Undefined,
+        )
+      ) {
+        // we know the next operand is not an `undefined` check and that this
+        // operand includes `undefined` - which means that making this an
+        // optional chain would change the runtime behavior of the expression
+        return null;
+      }
+
+      return [operand];
     }
 
     case NullishComparisonType.NotStrictEqualUndefined: {
@@ -827,24 +869,39 @@ const analyzeAndChainOperand: OperandAnalyzer = (operand, index, chain) => {
           NodeComparisonResult.Equal
       ) {
         return [operand, nextOperand];
-      } else {
-        return [operand];
       }
+      if (
+        includesType(
+          parserServices,
+          operand.comparedName,
+          ts.TypeFlags.Undefined,
+        )
+      ) {
+        // we know the next operand is not a `null` check and that this
+        // operand includes `null` - which means that making this an
+        // optional chain would change the runtime behavior of the expression
+        return null;
+      }
+
+      return [operand];
     }
 
     default:
       return null;
   }
 };
-const analyzeOrChainOperand: OperandAnalyzer = (operand, index, chain) => {
+const analyzeOrChainOperand: OperandAnalyzer = (
+  parserServices,
+  operand,
+  index,
+  chain,
+) => {
   switch (operand.comparisonType) {
     case NullishComparisonType.NotBoolean:
     case NullishComparisonType.EqualNullOrUndefined:
       return [operand];
 
     case NullishComparisonType.StrictEqualNull: {
-      // TODO(#4820) - use types here to determine if the value is just `null` (eg `=== null` would be enough on its own)
-
       // handle `x === null || x === undefined`
       const nextOperand = chain[index + 1] as ValidOperand | undefined;
       if (
@@ -854,14 +911,24 @@ const analyzeOrChainOperand: OperandAnalyzer = (operand, index, chain) => {
           NodeComparisonResult.Equal
       ) {
         return [operand, nextOperand];
-      } else {
+      }
+      if (
+        includesType(
+          parserServices,
+          operand.comparedName,
+          ts.TypeFlags.Undefined,
+        )
+      ) {
+        // we know the next operand is not an `undefined` check and that this
+        // operand includes `undefined` - which means that making this an
+        // optional chain would change the runtime behavior of the expression
         return null;
       }
+
+      return [operand];
     }
 
     case NullishComparisonType.StrictEqualUndefined: {
-      // TODO(#4820) - use types here to determine if the value is just `undefined` (eg `=== undefined` would be enough on its own)
-
       // handle `x === undefined || x === null`
       const nextOperand = chain[index + 1] as ValidOperand | undefined;
       if (
@@ -870,9 +937,21 @@ const analyzeOrChainOperand: OperandAnalyzer = (operand, index, chain) => {
           NodeComparisonResult.Equal
       ) {
         return [operand, nextOperand];
-      } else {
+      }
+      if (
+        includesType(
+          parserServices,
+          operand.comparedName,
+          ts.TypeFlags.Undefined,
+        )
+      ) {
+        // we know the next operand is not a `null` check and that this
+        // operand includes `null` - which means that making this an
+        // optional chain would change the runtime behavior of the expression
         return null;
       }
+
+      return [operand];
     }
 
     default:
@@ -883,6 +962,7 @@ const analyzeOrChainOperand: OperandAnalyzer = (operand, index, chain) => {
 function getFixer(
   sourceCode: SourceCode,
   parserServices: ParserServicesWithTypeInformation,
+  operator: '&&' | '||',
   options: Options,
   chain: ValidOperand[],
 ):
@@ -908,8 +988,16 @@ function getFixer(
     // unsafe and might cause downstream type errors.
 
     if (
-      lastOperand.comparisonType !== NullishComparisonType.Boolean &&
-      lastOperand.comparisonType !== NullishComparisonType.NotBoolean
+      lastOperand.comparisonType ===
+        NullishComparisonType.EqualNullOrUndefined ||
+      lastOperand.comparisonType ===
+        NullishComparisonType.NotEqualNullOrUndefined ||
+      lastOperand.comparisonType ===
+        NullishComparisonType.StrictEqualUndefined ||
+      lastOperand.comparisonType ===
+        NullishComparisonType.NotStrictEqualUndefined ||
+      (operator === '||' &&
+        lastOperand.comparisonType === NullishComparisonType.NotBoolean)
     ) {
       // we know the last operand is an equality check - so the change in types
       // DOES NOT matter and will not change the runtime result or cause a type
@@ -918,20 +1006,20 @@ function getFixer(
     } else {
       useSuggestionFixer = true;
 
+      for (const operand of chain) {
+        if (
+          includesType(parserServices, operand.node, ts.TypeFlags.Undefined)
+        ) {
+          useSuggestionFixer = false;
+          break;
+        }
+      }
+
       // TODO - we could further reduce the false-positive rate of this check by
       //        checking for cases where the change in types don't matter like
       //        the test location of an if/while/etc statement.
       //        but it's quite complex to do this without false-negatives, so
       //        for now we'll just be over-eager with our matching.
-      for (const operand of chain) {
-        const types = unionTypeParts(
-          parserServices.getTypeAtLocation(operand.node),
-        );
-        if (types.some(t => util.isTypeFlagSet(t, ts.TypeFlags.Undefined))) {
-          useSuggestionFixer = false;
-          break;
-        }
-      }
     }
   }
 
@@ -961,25 +1049,24 @@ function getFixer(
   // 6) diff(`foo.bar.baz?.bam`, `foo.bar.baz.bam()`) = `()`
   // 7) result = `foo?.bar?.baz?.bam?.()`
 
-  let current = flattenChainExpression(sourceCode, chain[0].comparedName);
-  const parts = [...current];
-
-  for (let i = 1; i < chain.length; i += 1) {
+  const parts = [];
+  for (const current of chain) {
     const nextOperand = flattenChainExpression(
       sourceCode,
-      chain[i].comparedName,
+      current.comparedName,
     );
     const diff = nextOperand.slice(parts.length);
-    // we need to make the first operand of the diff optional so it matches the
-    // logic before merging
-    // foo.bar && foo.bar.baz
-    // diff = .baz
-    // result = foo.bar?.baz
     if (diff.length > 0) {
-      diff[0].optional = true;
+      if (parts.length > 0) {
+        // we need to make the first operand of the diff optional so it matches the
+        // logic before merging
+        // foo.bar && foo.bar.baz
+        // diff = .baz
+        // result = foo.bar?.baz
+        diff[0].optional = true;
+      }
       parts.push(...diff);
     }
-    current = nextOperand;
   }
 
   let newCode = parts
@@ -987,10 +1074,22 @@ function getFixer(
       let str = '';
       if (part.optional) {
         str += '?.';
-      } else if (part.requiresDot) {
-        str += '.';
+      } else {
+        if (part.nonNull) {
+          str += '!';
+        }
+        if (part.requiresDot) {
+          str += '.';
+        }
       }
-      str += part.text;
+      if (
+        part.precedence !== util.OperatorPrecedence.Invalid &&
+        part.precedence < util.OperatorPrecedence.Member
+      ) {
+        str += `(${part.text})`;
+      } else {
+        str += part.text;
+      }
       return str;
     })
     .join('');
@@ -998,11 +1097,34 @@ function getFixer(
   if (lastOperand.node.type === AST_NODE_TYPES.BinaryExpression) {
     // retain the ending comparison for cases like
     // x && x.a != null
-    newCode +=
-      ' ' +
-      lastOperand.node.operator +
-      ' ' +
-      sourceCode.getText(lastOperand.node.right);
+    // x && typeof x.a !== 'undefined'
+    const operator = lastOperand.node.operator;
+    const { left, right } = (() => {
+      if (lastOperand.isYoda) {
+        const unaryOperator =
+          lastOperand.node.right.type === AST_NODE_TYPES.UnaryExpression
+            ? lastOperand.node.right.operator + ' '
+            : '';
+
+        return {
+          left: sourceCode.getText(lastOperand.node.left),
+          right: unaryOperator + newCode,
+        };
+      } else {
+        const unaryOperator =
+          lastOperand.node.left.type === AST_NODE_TYPES.UnaryExpression
+            ? lastOperand.node.left.operator + ' '
+            : '';
+        return {
+          left: unaryOperator + newCode,
+          right: sourceCode.getText(lastOperand.node.right),
+        };
+      }
+    })();
+
+    newCode = `${left} ${operator} ${right}`;
+  } else if (lastOperand.comparisonType === NullishComparisonType.NotBoolean) {
+    newCode = `!${newCode}`;
   }
 
   const fix: ReportFixFunction = fixer =>
@@ -1016,9 +1138,11 @@ function getFixer(
     : { fix };
 
   interface FlattenedChain {
-    text: string;
+    nonNull: boolean;
     optional: boolean;
+    precedence: util.OperatorPrecedence;
     requiresDot: boolean;
+    text: string;
   }
   function flattenChainExpression(
     sourceCode: SourceCode,
@@ -1065,9 +1189,12 @@ function getFixer(
         return [
           ...flattenChainExpression(sourceCode, node.callee),
           {
-            text: typeArgumentsText + argumentsText,
+            nonNull: false,
             optional: node.optional,
+            // no precedence for this
+            precedence: util.OperatorPrecedence.Invalid,
             requiresDot: false,
+            text: typeArgumentsText + argumentsText,
           },
         ];
       }
@@ -1077,19 +1204,29 @@ function getFixer(
         return [
           ...flattenChainExpression(sourceCode, node.object),
           {
-            text: node.computed ? `[${propertyText}]` : propertyText,
+            nonNull: node.object.type === AST_NODE_TYPES.TSNonNullExpression,
             optional: node.optional,
+            precedence: node.computed
+              ? // computed is already wrapped in [] so no need to wrap in () as well
+                util.OperatorPrecedence.Invalid
+              : util.getOperatorPrecedenceForNode(node.property),
             requiresDot: !node.computed,
+            text: node.computed ? `[${propertyText}]` : propertyText,
           },
         ];
       }
 
+      case AST_NODE_TYPES.TSNonNullExpression:
+        return flattenChainExpression(sourceCode, node.expression);
+
       default:
         return [
           {
-            text: sourceCode.getText(node),
+            nonNull: false,
             optional: false,
+            precedence: util.getOperatorPrecedenceForNode(node),
             requiresDot: false,
+            text: sourceCode.getText(node),
           },
         ];
     }
@@ -1105,7 +1242,11 @@ function analyzeChain(
   chain: ValidOperand[],
 ): void {
   // need at least 2 operands in a chain for it to be a chain
-  if (chain.length <= 1) {
+  if (
+    chain.length <= 1 ||
+    /* istanbul ignore next -- previous checks make this unreachable, but keep it for exhaustiveness check */
+    operator === '??'
+  ) {
     return;
   }
 
@@ -1116,10 +1257,6 @@ function analyzeChain(
 
       case '||':
         return analyzeOrChainOperand;
-
-      case '??':
-        /* istanbul ignore next -- previous checks make this unreachable, but keep it for exhaustiveness check */
-        return null;
     }
   })();
   if (!analyzeOperand) {
@@ -1137,7 +1274,7 @@ function analyzeChain(
           start: subChain[0].node.loc.start,
           end: subChain[subChain.length - 1].node.loc.end,
         },
-        ...getFixer(sourceCode, parserServices, options, subChain),
+        ...getFixer(sourceCode, parserServices, operator, options, subChain),
       });
     }
 
@@ -1152,7 +1289,7 @@ function analyzeChain(
       | undefined;
     const operand = chain[i];
 
-    const validatedOperands = analyzeOperand(operand, i, chain);
+    const validatedOperands = analyzeOperand(parserServices, operand, i, chain);
     if (!validatedOperands) {
       maybeReportThenReset();
       continue;
@@ -1160,14 +1297,14 @@ function analyzeChain(
     // in case multiple operands were consumed - make sure to correctly increment the index
     i += validatedOperands.length - 1;
 
-    // purposely inspect and push the last operand because the prior operands don't matter
-    // this also means we won't false-positive in cases like
-    // foo !== null && foo !== undefined
-    const currentOperand = validatedOperands[validatedOperands.length - 1];
+    const currentOperand = validatedOperands[0];
     if (lastOperand) {
       const comparisonResult = compareNodes(
         lastOperand.comparedName,
-        currentOperand.comparedName,
+        // purposely inspect and push the last operand because the prior operands don't matter
+        // this also means we won't false-positive in cases like
+        // foo !== null && foo !== undefined
+        validatedOperands[validatedOperands.length - 1].comparedName,
       );
       if (comparisonResult === NodeComparisonResult.Subset) {
         // the operands are comparable, so we can continue searching
@@ -1263,6 +1400,7 @@ export default util.createRule<TOptions, TMessageIds>({
       checkBoolean: true,
       checkBigInt: true,
       requireNullish: false,
+      allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing: false,
     },
   ],
   create(context, [options]) {
