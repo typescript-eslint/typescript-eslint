@@ -2,7 +2,7 @@
 # `nx migrate` when renovate opens a PR to change the version of @nx/workspace.
 #
 # You will therefore also notice that in the renovate configuration, we ignore any packages which
-# Nx will manage for us as part of `nx migrate` such as the remaining @nrwl/* packages and jest.
+# Nx will manage for us as part of `nx migrate` such as the remaining @nx/* packages and jest.
 
 name: Nx Migrate
 

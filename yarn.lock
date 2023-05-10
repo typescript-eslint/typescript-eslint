@@ -3206,6 +3206,13 @@
   dependencies:
     "@nx/js" "16.1.4"
 
+"@nrwl/linter@16.1.4":
+  version "16.1.4"
+  resolved "https://registry.yarnpkg.com/@nrwl/linter/-/linter-16.1.4.tgz#1181a1014749174ca57ad66c7c9cebf8bc6ae191"
+  integrity sha512-r0nKnC4EsGFVZO9caYDJ6y8wJLhZMj3TRi+Arf/1ALKEPYTAv8rrqgqf8t+4IiBzxY8DDausIwHfa3e4T3JH4g==
+  dependencies:
+    "@nx/linter" "16.1.4"
+
 "@nrwl/nx-cloud@16.0.5":
   version "16.0.5"
   resolved "https://registry.yarnpkg.com/@nrwl/nx-cloud/-/nx-cloud-16.0.5.tgz#c963480a71c4afa964fbbe9e4d6bbf222764e9cd"
@@ -3286,6 +3293,18 @@
     minimatch "3.0.5"
     source-map-support "0.5.19"
     tree-kill "1.2.2"
+    tslib "^2.3.0"
+
+"@nx/linter@16.1.4":
+  version "16.1.4"
+  resolved "https://registry.yarnpkg.com/@nx/linter/-/linter-16.1.4.tgz#5cfdcac3f5e9b5ef48e400ed6dbbfd2c0b9301d5"
+  integrity sha512-wxgyOvQJuBUCU0n6YY7QSgCFGUPTqoGp/zXfrcpDYOZZPYEygENw3Y7NPDrffXvJOcNh2Wb5z0ZaVH5sp2LYNw==
+  dependencies:
+    "@nrwl/linter" "16.1.4"
+    "@nx/devkit" "16.1.4"
+    "@nx/js" "16.1.4"
+    "@phenomnomnominal/tsquery" "~5.0.1"
+    tmp "~0.2.1"
     tslib "^2.3.0"
 
 "@nx/nx-darwin-arm64@16.1.4":
