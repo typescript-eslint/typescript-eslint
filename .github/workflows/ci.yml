@@ -283,6 +283,8 @@ jobs:
   publish_canary_version:
     name: Publish the latest code as a canary version
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     needs: [integration_tests, lint_with_build, lint_without_build, unit_tests]
     if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
     steps:
@@ -308,6 +310,8 @@ jobs:
   publish_canary_version_v6:
     name: Publish the next major version code as a canary version
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     needs: [integration_tests, lint_with_build, lint_without_build, unit_tests]
     if: github.ref == 'refs/heads/v6'
     steps:
