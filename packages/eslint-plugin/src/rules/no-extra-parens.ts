@@ -241,6 +241,10 @@ export default util.createRule<Options, MessageIds>({
           });
         }
 
+        if (node.object.type === AST_NODE_TYPES.TSSatisfiesExpression) {
+          return; // ignore
+        }
+
         return rules.MemberExpression(node);
       },
       NewExpression: callExp,

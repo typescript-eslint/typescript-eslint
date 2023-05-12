@@ -242,6 +242,11 @@ f<(number | string)[]>(['a', 1])
         },
       },
     }),
+    {
+      code: `
+const a = (['a', 'b'] satisfies A[]).includes('a');
+      `,
+    },
   ],
 
   invalid: [
