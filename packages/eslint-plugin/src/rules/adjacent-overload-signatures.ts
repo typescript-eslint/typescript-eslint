@@ -4,12 +4,12 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 type RuleNode =
+  | TSESTree.BlockStatement
   | TSESTree.ClassBody
   | TSESTree.Program
-  | TSESTree.TSModuleBlock
-  | TSESTree.TSTypeLiteral
   | TSESTree.TSInterfaceBody
-  | TSESTree.BlockStatement;
+  | TSESTree.TSModuleBlock
+  | TSESTree.TSTypeLiteral;
 type Member =
   | TSESTree.ClassElement
   | TSESTree.ProgramStatement

@@ -44,8 +44,8 @@ export function batchedSingleLineTests<
   TMessageIds extends string,
   TOptions extends readonly unknown[],
 >(
-  options: ValidTestCase<TOptions> | InvalidTestCase<TMessageIds, TOptions>,
-): (ValidTestCase<TOptions> | InvalidTestCase<TMessageIds, TOptions>)[] {
+  options: InvalidTestCase<TMessageIds, TOptions> | ValidTestCase<TOptions>,
+): (InvalidTestCase<TMessageIds, TOptions> | ValidTestCase<TOptions>)[] {
   // -- eslint counts lines from 1
   const lineOffset = options.code.startsWith('\n') ? 2 : 1;
   const output =

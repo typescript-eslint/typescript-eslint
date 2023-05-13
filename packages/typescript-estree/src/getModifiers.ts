@@ -6,7 +6,7 @@ const isAtLeast48 = typescriptVersionIsAtLeast['4.8'];
 
 export function getModifiers(
   node: ts.Node | null | undefined,
-): undefined | ts.Modifier[] {
+): ts.Modifier[] | undefined {
   if (node == null) {
     return undefined;
   }
@@ -32,7 +32,7 @@ export function getModifiers(
 
 export function getDecorators(
   node: ts.Node | null | undefined,
-): undefined | ts.Decorator[] {
+): ts.Decorator[] | undefined {
   if (node == null) {
     return undefined;
   }

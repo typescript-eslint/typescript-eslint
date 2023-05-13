@@ -528,7 +528,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function getDeclaredLocation(
       variable: TSESLint.Scope.Variable,
-    ): { global: true } | { global: false; line: number; column: number } {
+    ): { global: false; line: number; column: number } | { global: true } {
       const identifier = variable.identifiers[0];
       if (identifier) {
         return {

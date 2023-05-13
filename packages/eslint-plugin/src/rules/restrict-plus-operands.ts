@@ -10,9 +10,9 @@ type Options = [
   },
 ];
 type MessageIds =
+  | 'notBigInts'
   | 'notNumbers'
   | 'notStrings'
-  | 'notBigInts'
   | 'notValidAnys'
   | 'notValidTypes';
 
@@ -64,7 +64,7 @@ export default util.createRule<Options, MessageIds>({
     const services = util.getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    type BaseLiteral = 'string' | 'number' | 'bigint' | 'invalid' | 'any';
+    type BaseLiteral = 'any' | 'bigint' | 'invalid' | 'number' | 'string';
 
     /**
      * Helper function to get base type of node
@@ -133,7 +133,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkPlusOperands(
-      node: TSESTree.BinaryExpression | TSESTree.AssignmentExpression,
+      node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
     ): void {
       const leftType = getNodeType(node.left);
       const rightType = getNodeType(node.right);

@@ -28,10 +28,10 @@ type Config = BaseOptions & {
 };
 type Options = [Config];
 type MessageIds =
-  | 'unexpectedComma'
-  | 'unexpectedSemi'
   | 'expectedComma'
-  | 'expectedSemi';
+  | 'expectedSemi'
+  | 'unexpectedComma'
+  | 'unexpectedSemi';
 type LastTokenType = TSESTree.Token;
 
 interface MakeFixFunctionParams {

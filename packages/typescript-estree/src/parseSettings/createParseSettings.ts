@@ -21,7 +21,7 @@ const log = debug(
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
 
 export function createParseSettings(
-  code: string | ts.SourceFile,
+  code: ts.SourceFile | string,
   options: Partial<TSESTreeOptions> = {},
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);

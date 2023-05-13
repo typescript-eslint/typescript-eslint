@@ -6,11 +6,11 @@ import * as ts from 'typescript';
 import * as util from '../util';
 
 type MessageIds =
-  | 'direct'
-  | 'negated'
+  | 'comparingNullableToFalse'
   | 'comparingNullableToTrueDirect'
   | 'comparingNullableToTrueNegated'
-  | 'comparingNullableToFalse';
+  | 'direct'
+  | 'negated';
 
 type Options = [
   {

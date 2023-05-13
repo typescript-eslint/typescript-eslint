@@ -3,8 +3,8 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type MessageIds = 'preferRecord' | 'preferIndexSignature';
-type Options = ['record' | 'index-signature'];
+type MessageIds = 'preferIndexSignature' | 'preferRecord';
+type Options = ['index-signature' | 'record'];
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-indexed-object-style',
@@ -31,7 +31,7 @@ export default createRule<Options, MessageIds>({
 
     function checkMembers(
       members: TSESTree.TypeElement[],
-      node: TSESTree.TSTypeLiteral | TSESTree.TSInterfaceDeclaration,
+      node: TSESTree.TSInterfaceDeclaration | TSESTree.TSTypeLiteral,
       parentId: TSESTree.Identifier | undefined,
       prefix: string,
       postfix: string,

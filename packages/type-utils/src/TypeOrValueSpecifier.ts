@@ -4,26 +4,26 @@ import type * as ts from 'typescript';
 
 interface FileSpecifier {
   from: 'file';
-  name: string | string[];
+  name: string[] | string;
   path?: string;
 }
 
 interface LibSpecifier {
   from: 'lib';
-  name: string | string[];
+  name: string[] | string;
 }
 
 interface PackageSpecifier {
   from: 'package';
-  name: string | string[];
+  name: string[] | string;
   package: string;
 }
 
 export type TypeOrValueSpecifier =
-  | string
   | FileSpecifier
   | LibSpecifier
-  | PackageSpecifier;
+  | PackageSpecifier
+  | string;
 
 export const typeOrValueSpecifierSchema: JSONSchema4 = {
   oneOf: [
@@ -117,7 +117,7 @@ export const typeOrValueSpecifierSchema: JSONSchema4 = {
   ],
 };
 
-function specifierNameMatches(type: ts.Type, name: string | string[]): boolean {
+function specifierNameMatches(type: ts.Type, name: string[] | string): boolean {
   if (typeof name === 'string') {
     name = [name];
   }

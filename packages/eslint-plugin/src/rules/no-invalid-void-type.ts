@@ -4,14 +4,14 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 interface Options {
-  allowInGenericTypeArguments?: boolean | string[];
+  allowInGenericTypeArguments?: string[] | boolean;
   allowAsThisParameter?: boolean;
 }
 
 type MessageIds =
   | 'invalidVoidForGeneric'
-  | 'invalidVoidNotReturnOrGeneric'
   | 'invalidVoidNotReturn'
+  | 'invalidVoidNotReturnOrGeneric'
   | 'invalidVoidNotReturnOrThisParam'
   | 'invalidVoidNotReturnOrThisParamOrGeneric'
   | 'invalidVoidUnionConstituent';

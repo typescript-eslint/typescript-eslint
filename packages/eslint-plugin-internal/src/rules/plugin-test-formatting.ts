@@ -67,7 +67,7 @@ function doIndent(line: string, indent: number): string {
   return line;
 }
 
-function getQuote(code: string): "'" | '"' | null {
+function getQuote(code: string): '"' | "'" | null {
   const hasSingleQuote = code.includes("'");
   const hasDoubleQuote = code.includes('"');
   if (hasSingleQuote && hasDoubleQuote) {
@@ -95,12 +95,12 @@ type Options = [
 type MessageIds =
   | 'invalidFormatting'
   | 'invalidFormattingErrorTest'
+  | 'prettierException'
   | 'singleLineQuotes'
   | 'templateLiteralEmptyEnds'
   | 'templateLiteralLastLineIndent'
-  | 'templateStringRequiresIndent'
   | 'templateStringMinimumIndent'
-  | 'prettierException';
+  | 'templateStringRequiresIndent';
 
 export default createRule<Options, MessageIds>({
   name: 'plugin-test-formatting',

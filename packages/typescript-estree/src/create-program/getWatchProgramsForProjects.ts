@@ -91,7 +91,7 @@ function saveWatchCallback(
  * Holds information about the file currently being linted
  */
 const currentLintOperationState: {
-  code: string | ts.SourceFile;
+  code: ts.SourceFile | string;
   filePath: CanonicalPath;
 } = {
   code: '',

@@ -20,7 +20,7 @@ export function getProjectConfigFiles(
     ParseSettings,
     'filePath' | 'tsconfigMatchCache' | 'tsconfigRootDir'
   >,
-  project: string | string[] | true | undefined | null,
+  project: string[] | string | true | null | undefined,
 ): string[] | null {
   if (project !== true) {
     if (project == null) {

@@ -9,9 +9,12 @@ import { applyDefault } from './applyDefault';
 
 // we automatically add the url
 export type NamedCreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
-export type NamedCreateRuleMeta<TMessageIds extends string> = {
+export type NamedCreateRuleMeta<TMessageIds extends string> = Omit<
+  RuleMetaData<TMessageIds>,
+  'docs'
+> & {
   docs: NamedCreateRuleMetaDocs;
-} & Omit<RuleMetaData<TMessageIds>, 'docs'>;
+};
 
 export interface RuleCreateAndOptions<
   TOptions extends readonly unknown[],

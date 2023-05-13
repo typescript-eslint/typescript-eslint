@@ -12,6 +12,6 @@ export function isSourceFile(code: unknown): code is ts.SourceFile {
   );
 }
 
-export function getCodeText(code: string | ts.SourceFile): string {
+export function getCodeText(code: ts.SourceFile | string): string {
   return isSourceFile(code) ? code.getFullText(code) : code;
 }

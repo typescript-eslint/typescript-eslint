@@ -11,7 +11,7 @@ type Options = [
     allowWithDecorator?: boolean;
   },
 ];
-type MessageIds = 'empty' | 'onlyStatic' | 'onlyConstructor';
+type MessageIds = 'empty' | 'onlyConstructor' | 'onlyStatic';
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-extraneous-class',

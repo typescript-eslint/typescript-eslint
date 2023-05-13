@@ -103,7 +103,7 @@ describe('convert', () => {
     instance.convertProgram();
     const maps = instance.getASTMaps();
 
-    function checkMaps(child: ts.SourceFile | ts.Node): void {
+    function checkMaps(child: ts.Node | ts.SourceFile): void {
       child.forEachChild(node => {
         if (
           node.kind !== ts.SyntaxKind.EndOfFileToken &&
@@ -135,7 +135,7 @@ describe('convert', () => {
     instance.convertProgram();
     const maps = instance.getASTMaps();
 
-    function checkMaps(child: ts.SourceFile | ts.Node): void {
+    function checkMaps(child: ts.Node | ts.SourceFile): void {
       child.forEachChild(node => {
         if (
           node.kind !== ts.SyntaxKind.EndOfFileToken &&
@@ -166,7 +166,7 @@ describe('convert', () => {
     const program = instance.convertProgram();
     const maps = instance.getASTMaps();
 
-    function checkMaps(child: ts.SourceFile | ts.Node): void {
+    function checkMaps(child: ts.Node | ts.SourceFile): void {
       child.forEachChild(node => {
         if (node.kind !== ts.SyntaxKind.EndOfFileToken) {
           expect(ast).toBe(

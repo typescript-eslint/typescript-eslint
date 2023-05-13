@@ -72,7 +72,7 @@ function typeNeedsParentheses(node: TSESTree.Node): boolean {
   }
 }
 
-export type OptionString = 'array' | 'generic' | 'array-simple';
+export type OptionString = 'array-simple' | 'array' | 'generic';
 type Options = [
   {
     default: OptionString;
@@ -80,9 +80,9 @@ type Options = [
   },
 ];
 type MessageIds =
-  | 'errorStringGeneric'
   | 'errorStringArray'
   | 'errorStringArraySimple'
+  | 'errorStringGeneric'
   | 'errorStringGenericSimple';
 
 export default util.createRule<Options, MessageIds>({

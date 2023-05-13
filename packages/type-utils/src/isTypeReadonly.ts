@@ -230,7 +230,7 @@ function isTypeReadonlyRecurser(
   type: ts.Type,
   options: ReadonlynessOptions,
   seenTypes: Set<ts.Type>,
-): Readonlyness.Readonly | Readonlyness.Mutable {
+): Readonlyness.Mutable | Readonlyness.Readonly {
   const checker = program.getTypeChecker();
   seenTypes.add(type);
 

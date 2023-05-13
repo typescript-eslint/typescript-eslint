@@ -6,8 +6,8 @@ type Mutable<T> = {
   -readonly [P in keyof T]: T[P];
 };
 export type TesterConfigWithDefaults = Mutable<
-  RuleTesterConfig &
-    Required<Pick<RuleTesterConfig, 'parser' | 'rules' | 'defaultFilenames'>>
+  Required<Pick<RuleTesterConfig, 'defaultFilenames' | 'parser' | 'rules'>> &
+    RuleTesterConfig
 >;
 
 export interface RunTests<

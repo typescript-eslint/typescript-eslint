@@ -73,7 +73,7 @@ let defaultConfig = deepMerge(
 
 export class RuleTester extends TestFramework {
   readonly #testerConfig: TesterConfigWithDefaults;
-  readonly #rules: Record<string, AnyRuleModule | AnyRuleCreateFunction> = {};
+  readonly #rules: Record<string, AnyRuleCreateFunction | AnyRuleModule> = {};
   readonly #linter: Linter = new Linter();
 
   /**
@@ -145,7 +145,7 @@ export class RuleTester extends TestFramework {
    * Adds the `only` property to a test to run it in isolation.
    */
   static only<TOptions extends Readonly<unknown[]>>(
-    item: string | ValidTestCase<TOptions>,
+    item: ValidTestCase<TOptions> | string,
   ): ValidTestCase<TOptions>;
   /**
    * Adds the `only` property to a test to run it in isolation.
@@ -155,10 +155,10 @@ export class RuleTester extends TestFramework {
   ): InvalidTestCase<TMessageIds, TOptions>;
   static only<TMessageIds extends string, TOptions extends Readonly<unknown[]>>(
     item:
-      | string
+      | InvalidTestCase<TMessageIds, TOptions>
       | ValidTestCase<TOptions>
-      | InvalidTestCase<TMessageIds, TOptions>,
-  ): ValidTestCase<TOptions> | InvalidTestCase<TMessageIds, TOptions> {
+      | string,
+  ): InvalidTestCase<TMessageIds, TOptions> | ValidTestCase<TOptions> {
     if (typeof item === 'string') {
       return { code: item, only: true };
     }
@@ -169,7 +169,7 @@ export class RuleTester extends TestFramework {
   /**
    * Define a rule for one particular run of tests.
    */
-  defineRule(name: string, rule: AnyRuleModule | AnyRuleCreateFunction): void {
+  defineRule(name: string, rule: AnyRuleCreateFunction | AnyRuleModule): void {
     this.#rules[name] = rule;
   }
 
@@ -208,8 +208,8 @@ export class RuleTester extends TestFramework {
       TMessageIds extends string,
       TOptions extends readonly unknown[],
       T extends
-        | ValidTestCase<TOptions>
-        | InvalidTestCase<TMessageIds, TOptions>,
+        | InvalidTestCase<TMessageIds, TOptions>
+        | ValidTestCase<TOptions>,
     >(
       test: T,
     ): T => {
@@ -286,8 +286,8 @@ export class RuleTester extends TestFramework {
     */
     const maybeMarkAsOnly = <
       T extends
-        | ValidTestCase<TOptions>
-        | InvalidTestCase<TMessageIds, TOptions>,
+        | InvalidTestCase<TMessageIds, TOptions>
+        | ValidTestCase<TOptions>,
     >(
       test: T,
     ): T => {
@@ -438,7 +438,7 @@ export class RuleTester extends TestFramework {
   >(
     ruleName: string,
     rule: RuleModule<TMessageIds, TOptions>,
-    item: ValidTestCase<TOptions> | InvalidTestCase<TMessageIds, TOptions>,
+    item: InvalidTestCase<TMessageIds, TOptions> | ValidTestCase<TOptions>,
   ): {
     messages: Linter.LintMessage[];
     output: string;
@@ -627,7 +627,7 @@ export class RuleTester extends TestFramework {
   >(
     ruleName: string,
     rule: RuleModule<TMessageIds, TOptions>,
-    itemIn: string | ValidTestCase<TOptions>,
+    itemIn: ValidTestCase<TOptions> | string,
   ): void {
     const item: ValidTestCase<TOptions> =
       typeof itemIn === 'object' ? itemIn : { code: itemIn };
@@ -1015,7 +1015,7 @@ function assertASTDidntChange(beforeAST: unknown, afterAST: unknown): void {
  * value is a regular expression, it is checked against the actual
  * value.
  */
-function assertMessageMatches(actual: string, expected: string | RegExp): void {
+function assertMessageMatches(actual: string, expected: RegExp | string): void {
   if (expected instanceof RegExp) {
     // assert.js doesn't have a built-in RegExp match function
     assert.ok(
