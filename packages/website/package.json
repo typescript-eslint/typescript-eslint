@@ -11,7 +11,7 @@
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
     "test": "playwright test",
-    "typecheck": "tsc"
+    "typecheck": "tsc -b ./tsconfig.json"
   },
   "dependencies": {
     "@babel/runtime": "^7.18.3",

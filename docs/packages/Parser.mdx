@@ -21,7 +21,7 @@ TS's AST is optimized for its use case of parsing incomplete code and typechecki
 ESTree is unoptimized and intended for "general purpose" use-cases of traversing the AST.
 
 :::tip
-You can select `@typescript-eslint/parser` on the [typescript-eslint playground](https://typescript-eslint.io/play#showAST=es)'s left sidebar under _Options_ > _AST Explorer_ by selecting _ESTree_.
+You can select `@typescript-eslint/parser` on the [typescript-eslint playground](/play#showAST=es)'s left sidebar under _Options_ > _AST Explorer_ by selecting _ESTree_.
 :::
 
 ## Configuration
@@ -109,7 +109,7 @@ Specifies the version of ECMAScript syntax you want to use. This is used by the 
 
 > Default `undefined`.
 
-This option allow you to tell parser to act as if `emitDecoratorMetadata: true` is set in `tsconfig.json`, but without [type-aware linting](https://typescript-eslint.io/linting/typed-linting). In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
+This option allow you to tell parser to act as if `emitDecoratorMetadata: true` is set in `tsconfig.json`, but without [type-aware linting](../linting/typed-linting). In other words, you don't have to specify `parserOptions.project` in this case, making the linting process faster.
 
 ### `extraFileExtensions`
 
