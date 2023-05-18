@@ -11,7 +11,7 @@ on:
   merge_group:
 
 env:
-  PRIMARY_NODE_VERSION: 18
+  PRIMARY_NODE_VERSION: 20
   # Only set the read-write token if we are on the main branch
   NX_CLOUD_ACCESS_TOKEN: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') && secrets.NX_CLOUD_ACCESS_TOKEN || '' }}
 
@@ -136,7 +136,7 @@ jobs:
     strategy:
       matrix:
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
-        node-version: [14, 18]
+        node-version: [16, 20]
         package:
           [
             'ast-spec',
@@ -283,6 +283,8 @@ jobs:
   publish_canary_version:
     name: Publish the latest code as a canary version
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     needs: [integration_tests, lint_with_build, lint_without_build, unit_tests]
     if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
     steps:
@@ -308,6 +310,8 @@ jobs:
   publish_canary_version_v6:
     name: Publish the next major version code as a canary version
     runs-on: ubuntu-latest
+    permissions:
+      id-token: write
     needs: [integration_tests, lint_with_build, lint_without_build, unit_tests]
     if: github.ref == 'refs/heads/v6'
     steps:
