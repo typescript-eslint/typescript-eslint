@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
@@ -90,7 +90,7 @@ export default util.createRule<Options, MessageIds>({
             suggest: [
               {
                 messageId: 'preferFieldStyleSuggestion',
-                fix(fixer) {
+                fix(fixer): TSESLint.RuleFix {
                   const sourceCode = context.getSourceCode();
                   const name = sourceCode.getText(node.key);
 
@@ -125,7 +125,7 @@ export default util.createRule<Options, MessageIds>({
             suggest: [
               {
                 messageId: 'preferGetterStyleSuggestion',
-                fix(fixer) {
+                fix(fixer): TSESLint.RuleFix {
                   const sourceCode = context.getSourceCode();
                   const name = sourceCode.getText(node.key);
 
