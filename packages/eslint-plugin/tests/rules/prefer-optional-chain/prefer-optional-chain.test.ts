@@ -34,7 +34,7 @@ describe('|| {}', () => {
         code: '(foo || {}).bar;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 16,
             suggestions: [
@@ -50,7 +50,7 @@ describe('|| {}', () => {
         code: noFormat`(foo || ({})).bar;`,
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 18,
             suggestions: [
@@ -66,7 +66,7 @@ describe('|| {}', () => {
         code: noFormat`(await foo || {}).bar;`,
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 22,
             suggestions: [
@@ -82,7 +82,7 @@ describe('|| {}', () => {
         code: '(foo1?.foo2 || {}).foo3;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 24,
             suggestions: [
@@ -98,7 +98,7 @@ describe('|| {}', () => {
         code: '((() => foo())() || {}).bar;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 28,
             suggestions: [
@@ -114,7 +114,7 @@ describe('|| {}', () => {
         code: 'const foo = (bar || {}).baz;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 13,
             endColumn: 28,
             suggestions: [
@@ -130,7 +130,7 @@ describe('|| {}', () => {
         code: '(foo.bar || {})[baz];',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 21,
             suggestions: [
@@ -146,7 +146,7 @@ describe('|| {}', () => {
         code: '((foo1 || {}).foo2 || {}).foo3;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 31,
             suggestions: [
@@ -157,7 +157,7 @@ describe('|| {}', () => {
             ],
           },
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 2,
             endColumn: 19,
             suggestions: [
@@ -173,7 +173,7 @@ describe('|| {}', () => {
         code: '(foo || undefined || {}).bar;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             suggestions: [
               {
                 messageId: 'optionalChainSuggest',
@@ -187,7 +187,7 @@ describe('|| {}', () => {
         code: '(foo() || bar || {}).baz;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 25,
             suggestions: [
@@ -203,7 +203,7 @@ describe('|| {}', () => {
         code: '((foo1 ? foo2 : foo3) || {}).foo4;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 34,
             suggestions: [
@@ -223,7 +223,7 @@ describe('|| {}', () => {
         `,
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 13,
             endColumn: 28,
             suggestions: [
@@ -247,7 +247,7 @@ describe('|| {}', () => {
         `,
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 15,
             endColumn: 30,
             suggestions: [
@@ -267,7 +267,7 @@ describe('|| {}', () => {
         code: noFormat`(undefined && foo || {}).bar;`,
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 29,
             suggestions: [
@@ -283,7 +283,7 @@ describe('|| {}', () => {
         code: '(foo ?? {}).bar;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 16,
             suggestions: [
@@ -299,7 +299,7 @@ describe('|| {}', () => {
         code: noFormat`(foo ?? ({})).bar;`,
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 18,
             suggestions: [
@@ -315,7 +315,7 @@ describe('|| {}', () => {
         code: noFormat`(await foo ?? {}).bar;`,
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 22,
             suggestions: [
@@ -331,7 +331,7 @@ describe('|| {}', () => {
         code: '(foo1?.foo2 ?? {}).foo3;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 24,
             suggestions: [
@@ -347,7 +347,7 @@ describe('|| {}', () => {
         code: '((() => foo())() ?? {}).bar;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 28,
             suggestions: [
@@ -363,7 +363,7 @@ describe('|| {}', () => {
         code: 'const foo = (bar ?? {}).baz;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 13,
             endColumn: 28,
             suggestions: [
@@ -379,7 +379,7 @@ describe('|| {}', () => {
         code: '(foo.bar ?? {})[baz];',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 21,
             suggestions: [
@@ -395,7 +395,7 @@ describe('|| {}', () => {
         code: '((foo1 ?? {}).foo2 ?? {}).foo3;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 31,
             suggestions: [
@@ -406,7 +406,7 @@ describe('|| {}', () => {
             ],
           },
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 2,
             endColumn: 19,
             suggestions: [
@@ -422,7 +422,7 @@ describe('|| {}', () => {
         code: '(foo ?? undefined ?? {}).bar;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             suggestions: [
               {
                 messageId: 'optionalChainSuggest',
@@ -436,7 +436,7 @@ describe('|| {}', () => {
         code: '(foo() ?? bar ?? {}).baz;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 25,
             suggestions: [
@@ -452,7 +452,7 @@ describe('|| {}', () => {
         code: '((foo1 ? foo2 : foo3) ?? {}).foo4;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 34,
             suggestions: [
@@ -468,7 +468,7 @@ describe('|| {}', () => {
         code: noFormat`if (foo) { (foo ?? {}).bar; }`,
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 12,
             endColumn: 27,
             suggestions: [
@@ -484,7 +484,7 @@ describe('|| {}', () => {
         code: noFormat`if ((foo ?? {}).bar) { foo.bar; }`,
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 5,
             endColumn: 20,
             suggestions: [
@@ -500,7 +500,7 @@ describe('|| {}', () => {
         code: noFormat`(undefined && foo ?? {}).bar;`,
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 29,
             suggestions: [
@@ -516,7 +516,7 @@ describe('|| {}', () => {
         code: '(a > b || {}).bar;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 18,
             suggestions: [
@@ -532,7 +532,7 @@ describe('|| {}', () => {
         code: noFormat`(((typeof x) as string) || {}).bar;`,
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 35,
             suggestions: [
@@ -548,7 +548,7 @@ describe('|| {}', () => {
         code: '(void foo() || {}).bar;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 23,
             suggestions: [
@@ -564,7 +564,7 @@ describe('|| {}', () => {
         code: '((a ? b : c) || {}).bar;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 24,
             suggestions: [
@@ -580,7 +580,7 @@ describe('|| {}', () => {
         code: noFormat`((a instanceof Error) || {}).bar;`,
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 33,
             suggestions: [
@@ -596,7 +596,7 @@ describe('|| {}', () => {
         code: noFormat`((a << b) || {}).bar;`,
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 21,
             suggestions: [
@@ -612,7 +612,7 @@ describe('|| {}', () => {
         code: noFormat`((foo ** 2) || {}).bar;`,
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 23,
             suggestions: [
@@ -628,7 +628,7 @@ describe('|| {}', () => {
         code: '(foo ** 2 || {}).bar;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 21,
             suggestions: [
@@ -644,7 +644,7 @@ describe('|| {}', () => {
         code: '(foo++ || {}).bar;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 18,
             suggestions: [
@@ -660,7 +660,7 @@ describe('|| {}', () => {
         code: '(+foo || {}).bar;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             column: 1,
             endColumn: 17,
             suggestions: [
@@ -676,7 +676,7 @@ describe('|| {}', () => {
         code: '(this || {}).foo;',
         errors: [
           {
-            messageId: 'optionalChainSuggest',
+            messageId: 'preferOptionalChain',
             suggestions: [
               {
                 messageId: 'optionalChainSuggest',
@@ -874,7 +874,7 @@ describe('hand-crafted cases', () => {
       '`x` && `x`.length;',
       '`x${a}` && `x${a}`.length;',
 
-      // falsey unions should be ignored
+      // falsy unions should be ignored
       `
         declare const x: false | { a: string };
         x && x.a;
