@@ -2532,20 +2532,29 @@ export class Converter {
           );
         }
 
-        return this.createNode<TSESTree.TSMappedType>(node, {
-          type: AST_NODE_TYPES.TSMappedType,
-          nameType: this.convertChild(node.nameType) ?? null,
-          optional:
-            node.questionToken &&
-            (node.questionToken.kind === SyntaxKind.QuestionToken ||
-              getTextForTokenKind(node.questionToken.kind)),
-          readonly:
-            node.readonlyToken &&
-            (node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword ||
-              getTextForTokenKind(node.readonlyToken.kind)),
-          typeAnnotation: node.type && this.convertChild(node.type),
-          typeParameter: this.convertChild(node.typeParameter),
-        });
+        return this.createNode<TSESTree.TSMappedType>(
+          node,
+          this.#withDeprecatedGetter(
+            {
+              type: AST_NODE_TYPES.TSMappedType,
+              nameType: this.convertChild(node.nameType) ?? null,
+              optional:
+                node.questionToken &&
+                (node.questionToken.kind === SyntaxKind.QuestionToken ||
+                  getTextForTokenKind(node.questionToken.kind)),
+              readonly:
+                node.readonlyToken &&
+                (node.readonlyToken.kind === SyntaxKind.ReadonlyKeyword ||
+                  getTextForTokenKind(node.readonlyToken.kind)),
+              typeAnnotation: node.type && this.convertChild(node.type),
+              constraint: this.convertChild(node.typeParameter.constraint),
+              key: this.convertChild(node.typeParameter.name),
+            },
+            'typeParameter',
+            this.convertChild(node.typeParameter),
+            "'constraint' and 'key'",
+          ),
+        );
       }
 
       case SyntaxKind.ParenthesizedExpression:
@@ -3358,6 +3367,52 @@ export class Converter {
     });
 
     return node as Properties & Record<AliasKey, Properties[ValueKey]>;
+  }
+
+  /**
+   * Creates a getter for a property under key, returning the value.
+   * If suppressDeprecatedPropertyWarnings is not enabled, the
+   * getter also console warns about the deprecation.
+   *
+   * @see https://github.com/typescript-eslint/typescript-eslint/issues/6469
+   */
+  #withDeprecatedGetter<
+    Properties extends { type: string },
+    Key extends string,
+    Value,
+  >(
+    node: Properties,
+    key: Key,
+    value: Value,
+    instead: string,
+  ): Properties & Record<Key, Value> {
+    let warned = false;
+
+    Object.defineProperty(node, key, {
+      configurable: true,
+      get: this.options.suppressDeprecatedPropertyWarnings
+        ? (): Value => value
+        : (): Value => {
+            if (!warned) {
+              process.emitWarning(
+                `The '${key}' property is deprecated on ${node.type} nodes. Use ${instead} instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
+                'DeprecationWarning',
+              );
+              warned = true;
+            }
+
+            return value;
+          },
+      set(newValue): void {
+        Object.defineProperty(node, key, {
+          enumerable: true,
+          writable: true,
+          value: newValue,
+        });
+      },
+    });
+
+    return node as Properties & Record<Key, Value>;
   }
 
   #throwError(node: ts.Node | number, message: string): asserts node is never {
