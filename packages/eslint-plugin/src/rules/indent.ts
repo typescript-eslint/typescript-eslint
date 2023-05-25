@@ -376,9 +376,7 @@ export default util.createRule<Options, MessageIds>({
 
       TSMappedType(node: TSESTree.TSMappedType) {
         const sourceCode = context.getSourceCode();
-        const squareBracketStart = sourceCode.getTokenBefore(
-          node.typeParameter,
-        )!;
+        const squareBracketStart = sourceCode.getTokenBefore(node.key)!;
 
         // transform it to an ObjectExpression
         return rules['ObjectExpression, ObjectPattern']({
@@ -387,7 +385,7 @@ export default util.createRule<Options, MessageIds>({
             {
               parent: node,
               type: AST_NODE_TYPES.Property,
-              key: node.typeParameter as any,
+              key: node.key as any,
               value: node.typeAnnotation as any,
 
               // location data

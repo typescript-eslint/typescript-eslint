@@ -3340,33 +3340,12 @@ export class Converter {
     aliasKey: AliasKey,
     valueKey: ValueKey,
   ): Properties & Record<AliasKey, Properties[ValueKey]> {
-    let warned = false;
-
-    Object.defineProperty(node, aliasKey, {
-      configurable: true,
-      get: this.options.suppressDeprecatedPropertyWarnings
-        ? (): Properties[typeof valueKey] => node[valueKey]
-        : (): Properties[typeof valueKey] => {
-            if (!warned) {
-              process.emitWarning(
-                `The '${aliasKey}' property is deprecated on ${node.type} nodes. Use '${valueKey}' instead. See https://typescript-eslint.io/linting/troubleshooting#the-key-property-is-deprecated-on-type-nodes-use-key-instead-warnings.`,
-                'DeprecationWarning',
-              );
-              warned = true;
-            }
-
-            return node[valueKey];
-          },
-      set(value): void {
-        Object.defineProperty(node, aliasKey, {
-          enumerable: true,
-          writable: true,
-          value,
-        });
-      },
-    });
-
-    return node as Properties & Record<AliasKey, Properties[ValueKey]>;
+    return this.#withDeprecatedGetter(
+      node,
+      aliasKey,
+      node[valueKey],
+      `'${valueKey}'`,
+    );
   }
 
   /**
