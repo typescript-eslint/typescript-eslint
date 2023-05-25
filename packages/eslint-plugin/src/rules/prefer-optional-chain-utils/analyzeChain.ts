@@ -96,11 +96,7 @@ const analyzeAndChainOperand: OperandAnalyzer = (
         return [operand, nextOperand];
       }
       if (
-        includesType(
-          parserServices,
-          operand.comparedName,
-          ts.TypeFlags.Undefined,
-        )
+        includesType(parserServices, operand.comparedName, ts.TypeFlags.Null)
       ) {
         // we know the next operand is not a `null` check and that this
         // operand includes `null` - which means that making this an
@@ -164,11 +160,7 @@ const analyzeOrChainOperand: OperandAnalyzer = (
         return [operand, nextOperand];
       }
       if (
-        includesType(
-          parserServices,
-          operand.comparedName,
-          ts.TypeFlags.Undefined,
-        )
+        includesType(parserServices, operand.comparedName, ts.TypeFlags.Null)
       ) {
         // we know the next operand is not a `null` check and that this
         // operand includes `null` - which means that making this an
@@ -521,6 +513,13 @@ export function analyzeChain(
 
     const validatedOperands = analyzeOperand(parserServices, operand, i, chain);
     if (!validatedOperands) {
+      // TODO - check if the name is a superset/equal - if it is, then it was
+      //        likely intended to be part of the chain and something we should
+      //        include in the report, eg
+      //        foo == null || foo.bar;
+      //        ^^^^^^^^^^^ valid OR chain
+      //                       ^^^^^^^ invalid OR chain logical, but still part of the chain for combination purposes
+
       maybeReportThenReset();
       continue;
     }

@@ -1824,55 +1824,85 @@ describe('base cases', () => {
     ruleTester.run('prefer-optional-chain', rule, {
       valid: [],
       invalid: [
-        ...BaseCases('&&'),
+        ...BaseCases({
+          operator: '&&',
+        }),
         // it should ignore parts of the expression that aren't part of the expression chain
-        ...BaseCases('&&', c => `${c} && bing`),
-        ...BaseCases('&&', c => `${c} && bing.bong`),
+        ...BaseCases({
+          operator: '&&',
+          mutateCode: c => c.replace(/;$/, ' && bing;'),
+        }),
+        ...BaseCases({
+          operator: '&&',
+          mutateCode: c => c.replace(/;$/, ' && bing.bong;'),
+        }),
       ],
     });
 
     describe('strict nullish equality checks', () => {
       describe('!== null', () => {
         ruleTester.run('prefer-optional-chain', rule, {
-          valid: [],
-          invalid: BaseCases(
-            '&&',
-            c => c.replace(/&&/g, '!== null &&'),
-            identity,
-          ),
+          // with the `| null | undefined` type - `!== null` doesn't cover the
+          // `undefined` case - so optional chaining is not a valid conversion
+          valid: BaseCases({
+            operator: '&&',
+            mutateCode: c => c.replace(/&&/g, '!== null &&'),
+            mutateOutput: identity,
+          }),
+          // but if the type is just `| null` - then it covers the cases and is
+          // a valid conversion
+          invalid: BaseCases({
+            operator: '&&',
+            mutateCode: c => c.replace(/&&/g, '!== null &&'),
+            mutateOutput: identity,
+            mutateDeclaration: c => c.replace(/\| undefined/g, ''),
+            useSuggestionFixer: true,
+          }),
         });
       });
 
       describe('!= null', () => {
         ruleTester.run('prefer-optional-chain', rule, {
           valid: [],
-          invalid: BaseCases(
-            '&&',
-            c => c.replace(/&&/g, '!= null &&'),
-            identity,
-          ),
+          invalid: BaseCases({
+            operator: '&&',
+            mutateCode: c => c.replace(/&&/g, '!= null &&'),
+            mutateOutput: identity,
+            useSuggestionFixer: true,
+          }),
         });
       });
 
       describe('!== undefined', () => {
         ruleTester.run('prefer-optional-chain', rule, {
-          valid: [],
-          invalid: BaseCases(
-            '&&',
-            c => c.replace(/&&/g, '!== undefined &&'),
-            identity,
-          ),
+          // with the `| null | undefined` type - `!== undefined` doesn't cover the
+          // `null` case - so optional chaining is not a valid conversion
+          valid: BaseCases({
+            operator: '&&',
+            mutateCode: c => c.replace(/&&/g, '!== undefined &&'),
+            mutateOutput: identity,
+          }),
+          // but if the type is just `| undefined` - then it covers the cases and is
+          // a valid conversion
+          invalid: BaseCases({
+            operator: '&&',
+            mutateCode: c => c.replace(/&&/g, '!== undefined &&'),
+            mutateOutput: identity,
+            mutateDeclaration: c => c.replace(/\| null/g, ''),
+            useSuggestionFixer: true,
+          }),
         });
       });
 
       describe('!= undefined', () => {
         ruleTester.run('prefer-optional-chain', rule, {
           valid: [],
-          invalid: BaseCases(
-            '&&',
-            c => c.replace(/&&/g, '!= undefined &&'),
-            identity,
-          ),
+          invalid: BaseCases({
+            operator: '&&',
+            mutateCode: c => c.replace(/&&/g, '!= undefined &&'),
+            mutateOutput: identity,
+            useSuggestionFixer: true,
+          }),
         });
       });
     });
@@ -1881,51 +1911,77 @@ describe('base cases', () => {
   describe('or', () => {
     ruleTester.run('prefer-optional-chain', rule, {
       valid: [],
-      invalid: BaseCases('||', identity, c => `!${c}`),
+      invalid: BaseCases({
+        operator: '||',
+        mutateCode: identity,
+        mutateOutput: c => `!${c}`,
+      }),
     });
 
     describe('strict nullish equality checks', () => {
-      describe('=== null', () => {
+      describe(/*.only*/ '=== null', () => {
         ruleTester.run('prefer-optional-chain', rule, {
-          valid: [],
-          invalid: BaseCases(
-            '||',
-            c => c.replace(/\|\|/g, '=== null ||'),
-            identity,
-          ),
+          // with the `| null | undefined` type - `=== null` doesn't cover the
+          // `undefined` case - so optional chaining is not a valid conversion
+          valid: BaseCases({
+            operator: '||',
+            mutateCode: c => c.replace(/\|\|/g, '=== null ||'),
+            mutateOutput: identity,
+          }),
+          // but if the type is just `| null` - then it covers the cases and is
+          // a valid conversion
+          invalid: BaseCases({
+            operator: '||',
+            mutateCode: c => c.replace(/\|\|/g, '=== null ||'),
+            mutateOutput: identity,
+            mutateDeclaration: c => c.replace(/\| undefined/g, ''),
+            useSuggestionFixer: true,
+          }),
         });
       });
 
       describe('== null', () => {
         ruleTester.run('prefer-optional-chain', rule, {
           valid: [],
-          invalid: BaseCases(
-            '||',
-            c => c.replace(/\|\|/g, '== null ||'),
-            identity,
-          ),
+          invalid: BaseCases({
+            operator: '||',
+            mutateCode: c => c.replace(/\|\|/g, '== null ||'),
+            mutateOutput: identity,
+            useSuggestionFixer: true,
+          }),
         });
       });
 
       describe('=== undefined', () => {
         ruleTester.run('prefer-optional-chain', rule, {
-          valid: [],
-          invalid: BaseCases(
-            '||',
-            c => c.replace(/\|\|/g, '=== undefined ||'),
-            identity,
-          ),
+          // with the `| null | undefined` type - `=== undefined` doesn't cover the
+          // `null` case - so optional chaining is not a valid conversion
+          valid: BaseCases({
+            operator: '||',
+            mutateCode: c => c.replace(/\|\|/g, '=== undefined ||'),
+            mutateOutput: identity,
+          }),
+          // but if the type is just `| undefined` - then it covers the cases and is
+          // a valid conversion
+          invalid: BaseCases({
+            operator: '||',
+            mutateCode: c => c.replace(/\|\|/g, '=== undefined ||'),
+            mutateOutput: identity,
+            mutateDeclaration: c => c.replace(/\| null/g, ''),
+            useSuggestionFixer: true,
+          }),
         });
       });
 
       describe('== undefined', () => {
         ruleTester.run('prefer-optional-chain', rule, {
           valid: [],
-          invalid: BaseCases(
-            '||',
-            c => c.replace(/\|\|/g, '== undefined ||'),
-            identity,
-          ),
+          invalid: BaseCases({
+            operator: '||',
+            mutateCode: c => c.replace(/\|\|/g, '== undefined ||'),
+            mutateOutput: identity,
+            useSuggestionFixer: true,
+          }),
         });
       });
     });
@@ -1936,30 +1992,21 @@ describe('base cases', () => {
       valid: [],
       invalid: [
         // it should ignore whitespace in the expressions
-        ...BaseCases(
-          '&&',
-          c => c.replace(/\./g, '.      '),
+        ...BaseCases({
+          operator: '&&',
+          mutateCode: c => c.replace(/\./g, '.      '),
           // note - the rule will use raw text for computed expressions - so we
           //        need to ensure that the spacing for the computed member
           //        expressions is retained for correct fixer matching
-          c => c.replace(/(\[.+\])/g, m => m.replace(/\./g, '.      ')),
-        ),
-        ...BaseCases(
-          '&&',
-          c => c.replace(/\./g, '.\n'),
-          c => c.replace(/(\[.+\])/g, m => m.replace(/\./g, '.\n')),
-        ),
-      ],
-    });
-  });
-
-  describe('should skip trailing irrelevant operands sanity checks', () => {
-    ruleTester.run('prefer-optional-chain', rule, {
-      valid: [],
-      invalid: [
-        // it should ignore parts of the expression that aren't part of the expression chain
-        ...BaseCases('&&', c => `${c} && bing`),
-        ...BaseCases('&&', c => `${c} && bing.bong`),
+          mutateOutput: c =>
+            c.replace(/(\[.+\])/g, m => m.replace(/\./g, '.      ')),
+        }),
+        ...BaseCases({
+          operator: '&&',
+          mutateCode: c => c.replace(/\./g, '.\n'),
+          mutateOutput: c =>
+            c.replace(/(\[.+\])/g, m => m.replace(/\./g, '.\n')),
+        }),
       ],
     });
   });
