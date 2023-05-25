@@ -13,7 +13,7 @@ ScopeManager {
       ],
       name: "T",
       references: [
-        Reference$4 {
+        Reference$5 {
           identifier: Identifier<"T">,
           isRead: true,
           isTypeReference: true,
@@ -37,39 +37,10 @@ ScopeManager {
       isValueVariable: false,
       isTypeVariable: true,
     },
-    Variable$4 {
-      defs: [
-        TypeDefinition$3 {
-          name: Identifier<"k">,
-          node: TSTypeParameter$3,
-        },
-      ],
-      name: "k",
-      references: [
-        Reference$2 {
-          identifier: Identifier<"k">,
-          isRead: true,
-          isTypeReference: true,
-          isValueReference: false,
-          isWrite: false,
-          resolved: Variable$4,
-        },
-        Reference$3 {
-          identifier: Identifier<"k">,
-          isRead: true,
-          isTypeReference: true,
-          isValueReference: false,
-          isWrite: false,
-          resolved: Variable$4,
-        },
-      ],
-      isValueVariable: false,
-      isTypeVariable: true,
-    },
   ],
   scopes: [
     GlobalScope$1 {
-      block: Program$4,
+      block: Program$3,
       isStrict: false,
       references: [
         Reference$1 {
@@ -95,21 +66,39 @@ ScopeManager {
       ],
     },
     MappedTypeScope$2 {
-      block: TSMappedType$5,
+      block: TSMappedType$4,
       isStrict: true,
       references: [
-        Reference$2,
-        Reference$3,
-        Reference$4,
+        Reference$2 {
+          identifier: Identifier<"k">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: null,
+        },
+        Reference$3 {
+          identifier: Identifier<"k">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: null,
+        },
+        Reference$4 {
+          identifier: Identifier<"k">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: null,
+        },
+        Reference$5,
       ],
-      set: Map {
-        "k" => Variable$4,
-      },
+      set: Map {},
       type: "mappedType",
       upper: GlobalScope$1,
-      variables: [
-        Variable$4,
-      ],
+      variables: [],
     },
   ],
 }
