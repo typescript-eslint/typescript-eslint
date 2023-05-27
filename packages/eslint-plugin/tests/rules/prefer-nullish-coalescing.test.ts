@@ -826,5 +826,43 @@ x || y;
         ],
       }),
     ),
+    {
+      code: `
+declare const x: 0 | 'foo' | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: true,
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+        },
+      ],
+    },
+    {
+      code: `
+declare const x: 0 | 'foo' | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            number: true,
+            string: false,
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+        },
+      ],
+    }
   ],
 });
