@@ -133,7 +133,6 @@ a ?? (b && c && d);
 
 If you would like to ignore certain primitive types that can be falsy then you may pass an object containing a boolean value for each primitive:
 
-- Option entries in the object:
   - `string: true`, ignores `null` or `undefined` unions with `string` (default: false).
   - `number: true`, ignores `null` or `undefined` unions with `number` (default: false).
   - `boolean: true`, ignores `null` or `undefined` unions with `boolean` (default: false).
