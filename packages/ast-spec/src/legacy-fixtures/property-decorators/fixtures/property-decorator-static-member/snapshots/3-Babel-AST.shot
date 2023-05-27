@@ -3,16 +3,16 @@
 exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-static-member Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
-            decorators: Array [
+            decorators: [
               Decorator {
                 type: "Decorator",
                 expression: Identifier {
@@ -55,7 +55,7 @@ Program {
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
-            decorators: Array [
+            decorators: [
               Decorator {
                 type: "Decorator",
                 expression: Identifier {

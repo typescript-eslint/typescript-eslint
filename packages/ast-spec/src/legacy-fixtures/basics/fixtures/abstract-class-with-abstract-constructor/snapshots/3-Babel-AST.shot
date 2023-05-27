@@ -3,16 +3,16 @@
 exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-constructor Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
         abstract: true,
         body: ClassBody {
           type: "ClassBody",
-          body: Array [
+          body: [
             MethodDefinition {
               type: "MethodDefinition",
               abstract: true,
@@ -35,7 +35,7 @@ Program {
                 expression: false,
                 generator: false,
                 id: null,
-                params: Array [],
+                params: [],
 
                 range: [134, 137],
                 loc: {
@@ -78,7 +78,7 @@ Program {
       },
       exportKind: "value",
       source: null,
-      specifiers: Array [],
+      specifiers: [],
 
       range: [73, 139],
       loc: {

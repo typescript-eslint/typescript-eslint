@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics directive-in-namespace Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       body: TSModuleBlock {
         type: "TSModuleBlock",
-        body: Array [
+        body: [
           ExpressionStatement {
             type: "ExpressionStatement",
             expression: Literal {
@@ -31,7 +31,7 @@ Program {
           },
           VariableDeclaration {
             type: "VariableDeclaration",
-            declarations: Array [
+            declarations: [
               VariableDeclarator {
                 type: "VariableDeclarator",
                 id: Identifier {

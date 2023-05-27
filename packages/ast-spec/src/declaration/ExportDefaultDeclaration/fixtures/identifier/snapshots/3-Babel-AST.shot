@@ -3,7 +3,7 @@
 exports[`AST Fixtures declaration ExportDefaultDeclaration identifier Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportDefaultDeclaration {
       type: "ExportDefaultDeclaration",
       declaration: Identifier {

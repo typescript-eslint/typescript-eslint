@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures namespaces-and-modules shorthand-ambient-module-declaration TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       declare: true,

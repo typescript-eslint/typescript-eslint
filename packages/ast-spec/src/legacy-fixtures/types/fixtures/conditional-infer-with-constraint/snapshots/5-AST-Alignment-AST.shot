@@ -48,6 +48,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
                 type: 'TSInferType',
                 typeParameter: TSTypeParameter {
                   type: 'TSTypeParameter',
+-                 const: false,
                   constraint: TSNumberKeyword {
                     type: 'TSNumberKeyword',
 
@@ -162,6 +163,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -237,6 +239,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
                 type: 'TSInferType',
                 typeParameter: TSTypeParameter {
                   type: 'TSTypeParameter',
+-                 const: false,
                   constraint: TSNumberKeyword {
                     type: 'TSNumberKeyword',
 
@@ -277,6 +280,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
                 type: 'TSInferType',
                 typeParameter: TSTypeParameter {
                   type: 'TSTypeParameter',
+-                 const: false,
                   constraint: TSNumberKeyword {
                     type: 'TSNumberKeyword',
 
@@ -391,6 +395,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -466,6 +471,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
                 type: 'TSInferType',
                 typeParameter: TSTypeParameter {
                   type: 'TSTypeParameter',
+-                 const: false,
                   constraint: TSNumberKeyword {
                     type: 'TSNumberKeyword',
 
@@ -479,7 +485,8 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
 -                 name: Identifier {
 -                   type: 'Identifier',
 -                   name: 'U',
--
++                 name: 'U',
+
 -                   range: [281, 282],
 -                   loc: {
 -                     start: { column: 30, line: 7 },
@@ -487,8 +494,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
 -                   },
 -                 },
 -                 out: false,
-+                 name: 'U',
-
+-
                   range: [281, 297],
                   loc: {
                     start: { column: 30, line: 7 },
@@ -506,6 +512,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
                 type: 'TSInferType',
                 typeParameter: TSTypeParameter {
                   type: 'TSTypeParameter',
+-                 const: false,
 -                 in: false,
 -                 name: Identifier {
 -                   type: 'Identifier',
@@ -611,6 +618,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -686,6 +694,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
                 type: 'TSInferType',
                 typeParameter: TSTypeParameter {
                   type: 'TSTypeParameter',
+-                 const: false,
 -                 in: false,
 -                 name: Identifier {
 -                   type: 'Identifier',
@@ -717,6 +726,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
                 type: 'TSInferType',
                 typeParameter: TSTypeParameter {
                   type: 'TSTypeParameter',
+-                 const: false,
                   constraint: TSNumberKeyword {
                     type: 'TSNumberKeyword',
 
@@ -831,6 +841,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -906,6 +917,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
                 type: 'TSInferType',
                 typeParameter: TSTypeParameter {
                   type: 'TSTypeParameter',
+-                 const: false,
                   constraint: TSStringKeyword {
                     type: 'TSStringKeyword',
 
@@ -946,6 +958,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
                 type: 'TSInferType',
                 typeParameter: TSTypeParameter {
                   type: 'TSTypeParameter',
+-                 const: false,
                   constraint: TSNumberKeyword {
                     type: 'TSNumberKeyword',
 
@@ -1030,6 +1043,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-with-constraint AS
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',

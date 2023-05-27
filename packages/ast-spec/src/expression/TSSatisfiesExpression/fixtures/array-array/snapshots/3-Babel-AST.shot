@@ -3,14 +3,14 @@
 exports[`AST Fixtures expression TSSatisfiesExpression array-array Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: TSSatisfiesExpression {
         type: "TSSatisfiesExpression",
         expression: ArrayExpression {
           type: "ArrayExpression",
-          elements: Array [
+          elements: [
             Literal {
               type: "Literal",
               raw: "1",
@@ -54,7 +54,7 @@ Program {
         },
         typeAnnotation: TSTupleType {
           type: "TSTupleType",
-          elementTypes: Array [
+          elementTypes: [
             TSLiteralType {
               type: "TSLiteralType",
               literal: Literal {

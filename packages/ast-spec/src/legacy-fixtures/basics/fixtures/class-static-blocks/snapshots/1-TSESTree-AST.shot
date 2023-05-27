@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics class-static-blocks TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
@@ -45,13 +45,13 @@ Program {
           },
           StaticBlock {
             type: "StaticBlock",
-            body: Array [
+            body: [
               IfStatement {
                 type: "IfStatement",
                 alternate: null,
                 consequent: BlockStatement {
                   type: "BlockStatement",
-                  body: Array [
+                  body: [
                     ExpressionStatement {
                       type: "ExpressionStatement",
                       expression: UpdateExpression {
@@ -92,7 +92,7 @@ Program {
                 },
                 test: CallExpression {
                   type: "CallExpression",
-                  arguments: Array [],
+                  arguments: [],
                   callee: Identifier {
                     type: "Identifier",
                     name: "someCondition",

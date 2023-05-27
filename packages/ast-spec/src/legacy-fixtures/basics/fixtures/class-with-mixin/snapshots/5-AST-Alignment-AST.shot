@@ -118,6 +118,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSTypeReference {
                 type: 'TSTypeReference',
                 typeName: Identifier {
@@ -461,6 +462,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin AST Alignment - AS
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',

@@ -2,62 +2,62 @@
 
 exports[`class declaration generic 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$1 {
           name: Identifier<"Foo">,
           node: ClassDeclaration$1,
         },
       ],
       name: "Foo",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$2 {
           name: Identifier<"Foo">,
           node: ClassDeclaration$1,
         },
       ],
       name: "Foo",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         TypeDefinition$3 {
           name: Identifier<"A">,
           node: TSTypeParameter$2,
         },
       ],
       name: "A",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         TypeDefinition$4 {
           name: Identifier<"Unresolved">,
           node: TSTypeAliasDeclaration$3,
         },
       ],
       name: "Unresolved",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$4,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"A">,
           isRead: true,
@@ -74,7 +74,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$5,
@@ -83,14 +83,14 @@ ScopeManager {
     ClassScope$2 {
       block: ClassDeclaration$1,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "Foo" => Variable$3,
         "A" => Variable$4,
       },
       type: "class",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
         Variable$4,
       ],

@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics typed-keyword-boolean Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {

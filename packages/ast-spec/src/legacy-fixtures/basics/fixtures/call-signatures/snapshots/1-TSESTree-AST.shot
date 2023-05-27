@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics call-signatures TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -18,10 +18,10 @@ Program {
       },
       typeAnnotation: TSTypeLiteral {
         type: "TSTypeLiteral",
-        members: Array [
+        members: [
           TSCallSignatureDeclaration {
             type: "TSCallSignatureDeclaration",
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
                 name: "a",
@@ -78,7 +78,7 @@ Program {
           },
           TSConstructSignatureDeclaration {
             type: "TSConstructSignatureDeclaration",
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
                 name: "a",

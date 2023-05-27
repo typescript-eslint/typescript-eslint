@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics typed-this Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSInterfaceDeclaration {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [
+        body: [
           TSMethodSignature {
             type: "TSMethodSignature",
             computed: false,
@@ -23,7 +23,7 @@ Program {
               },
             },
             kind: "method",
-            parameters: Array [
+            parameters: [
               Identifier {
                 type: "Identifier",
                 name: "onclick",
@@ -31,7 +31,7 @@ Program {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSFunctionType {
                     type: "TSFunctionType",
-                    parameters: Array [
+                    parameters: [
                       Identifier {
                         type: "Identifier",
                         name: "this",

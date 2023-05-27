@@ -2,17 +2,17 @@
 
 exports[`class expression parameter-properties 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"outer">,
           node: VariableDeclarator$1,
         },
       ],
       name: "outer",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"outer">,
           init: true,
@@ -36,14 +36,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         TypeDefinition$2 {
           name: Identifier<"Outer">,
           node: TSTypeAliasDeclaration$3,
         },
       ],
       name: "Outer",
-      references: Array [
+      references: [
         Reference$8 {
           identifier: Identifier<"Outer">,
           isRead: true,
@@ -57,14 +57,14 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         VariableDefinition$3 {
           name: Identifier<"A">,
           node: VariableDeclarator$4,
         },
       ],
       name: "A",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"A">,
           init: true,
@@ -80,21 +80,21 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$5 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$6 {
-      defs: Array [
+      defs: [
         ParameterDefinition$4 {
           name: Identifier<"a">,
           node: FunctionExpression$6,
         },
       ],
       name: "a",
-      references: Array [
+      references: [
         Reference$5 {
           identifier: Identifier<"a">,
           isRead: true,
@@ -116,14 +116,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$7 {
-      defs: Array [
+      defs: [
         ParameterDefinition$5 {
           name: Identifier<"b">,
           node: FunctionExpression$6,
         },
       ],
       name: "b",
-      references: Array [
+      references: [
         Reference$3 {
           identifier: Identifier<"b">,
           init: true,
@@ -139,14 +139,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$8 {
-      defs: Array [
+      defs: [
         ParameterDefinition$6 {
           name: Identifier<"c">,
           node: FunctionExpression$6,
         },
       ],
       name: "c",
-      references: Array [
+      references: [
         Reference$4 {
           identifier: Identifier<"c">,
           init: true,
@@ -162,14 +162,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$9 {
-      defs: Array [
+      defs: [
         ParameterDefinition$7 {
           name: Identifier<"d">,
           node: FunctionExpression$6,
         },
       ],
       name: "d",
-      references: Array [
+      references: [
         Reference$6 {
           identifier: Identifier<"d">,
           init: true,
@@ -185,38 +185,38 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$10 {
-      defs: Array [
+      defs: [
         ParameterDefinition$8 {
           name: Identifier<"e">,
           node: FunctionExpression$6,
         },
       ],
       name: "e",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
     Variable$11 {
-      defs: Array [
+      defs: [
         ParameterDefinition$9 {
           name: Identifier<"f">,
           node: FunctionExpression$6,
         },
       ],
       name: "f",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
     Variable$12 {
-      defs: Array [
+      defs: [
         VariableDefinition$10 {
           name: Identifier<"unresovled">,
           node: VariableDeclarator$8,
         },
       ],
       name: "unresovled",
-      references: Array [
+      references: [
         Reference$10 {
           identifier: Identifier<"unresovled">,
           init: true,
@@ -232,11 +232,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$9,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
         Reference$10,
@@ -258,7 +258,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
@@ -269,16 +269,16 @@ ScopeManager {
     ClassScope$2 {
       block: ClassExpression$5,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {},
       type: "class",
       upper: GlobalScope$1,
-      variables: Array [],
+      variables: [],
     },
     FunctionScope$3 {
       block: FunctionExpression$6,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$3,
         Reference$4,
         Reference$5,
@@ -298,7 +298,7 @@ ScopeManager {
       },
       type: "function",
       upper: ClassScope$2,
-      variables: Array [
+      variables: [
         Variable$5,
         Variable$6,
         Variable$7,

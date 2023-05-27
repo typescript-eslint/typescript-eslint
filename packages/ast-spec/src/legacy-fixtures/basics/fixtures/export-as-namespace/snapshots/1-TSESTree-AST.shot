@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics export-as-namespace TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSNamespaceExportDeclaration {
       type: "TSNamespaceExportDeclaration",
       id: Identifier {

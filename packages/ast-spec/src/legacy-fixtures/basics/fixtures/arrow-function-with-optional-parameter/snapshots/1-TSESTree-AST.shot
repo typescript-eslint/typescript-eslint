@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics arrow-function-with-optional-parameter TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: CallExpression {
         type: "CallExpression",
-        arguments: Array [],
+        arguments: [],
         callee: ArrowFunctionExpression {
           type: "ArrowFunctionExpression",
           async: false,
@@ -46,7 +46,7 @@ Program {
           expression: true,
           generator: false,
           id: null,
-          params: Array [
+          params: [
             Identifier {
               type: "Identifier",
               name: "k",

@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures class-decorators class-decorator-factory TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [],
+        body: [],
 
         range: [127, 129],
         loc: {
@@ -16,15 +16,15 @@ Program {
           end: { column: 21, line: 6 },
         },
       },
-      decorators: Array [
+      decorators: [
         Decorator {
           type: "Decorator",
           expression: CallExpression {
             type: "CallExpression",
-            arguments: Array [
+            arguments: [
               ObjectExpression {
                 type: "ObjectExpression",
-                properties: Array [
+                properties: [
                   Property {
                     type: "Property",
                     computed: false,

@@ -2,29 +2,29 @@
 
 exports[`jsx factory jsxPragma-jsxFragmentName 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         ImportBindingDefinition$1 {
           name: Identifier<"React">,
           node: ImportDefaultSpecifier$1,
         },
       ],
       name: "React",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         ImportBindingDefinition$2 {
           name: Identifier<"h">,
           node: ImportSpecifier$2,
         },
       ],
       name: "h",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"h">,
           isRead: true,
@@ -38,14 +38,14 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         ImportBindingDefinition$3 {
           name: Identifier<"Fragment">,
           node: ImportSpecifier$3,
         },
       ],
       name: "Fragment",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"Fragment">,
           isRead: true,
@@ -59,24 +59,24 @@ ScopeManager {
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$4,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
       ],
     },
     ModuleScope$2 {
       block: Program$4,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
       ],
@@ -87,7 +87,7 @@ ScopeManager {
       },
       type: "module",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$2,
         Variable$3,
         Variable$4,

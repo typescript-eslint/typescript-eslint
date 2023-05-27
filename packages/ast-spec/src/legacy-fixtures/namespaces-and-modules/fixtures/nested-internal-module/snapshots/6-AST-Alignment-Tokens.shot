@@ -78,7 +78,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
     },
     String {
       type: 'String',
-      value: '\\\\'hello world\\\\'',
+      value: '\\'hello world\\'',
 
       range: [101, 114],
       loc: {

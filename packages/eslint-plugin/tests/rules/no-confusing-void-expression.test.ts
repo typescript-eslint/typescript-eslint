@@ -57,6 +57,18 @@ ruleTester.run('no-confusing-void-expression', rule, {
         return void console.log('foo');
       `,
     }),
+    `
+function cool(input: string) {
+  return console.log(input), input;
+}
+    `,
+    {
+      code: `
+function cool(input: string) {
+  return input, console.log(input), input;
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -87,6 +99,14 @@ ruleTester.run('no-confusing-void-expression', rule, {
       ],
     }),
 
+    {
+      code: `
+function notcool(input: string) {
+  return input, console.log(input);
+}
+      `,
+      errors: [{ line: 3, column: 17, messageId: 'invalidVoidExpr' }],
+    },
     {
       code: "() => console.log('foo');",
       errors: [{ line: 1, column: 7, messageId: 'invalidVoidExprArrow' }],

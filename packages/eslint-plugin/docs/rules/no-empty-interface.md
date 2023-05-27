@@ -42,7 +42,7 @@ interface Bar {
 }
 
 // an interface with more than one supertype
-// in this case the interface can be used as a replacement of a union type.
+// in this case the interface can be used as a replacement of an intersection type.
 interface Baz extends Foo, Bar {}
 ```
 

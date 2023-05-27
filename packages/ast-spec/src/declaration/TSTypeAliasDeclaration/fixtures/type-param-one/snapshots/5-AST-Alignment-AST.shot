@@ -45,6 +45,7 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -67,6 +68,7 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -89,6 +91,7 @@ exports[`AST Fixtures declaration TSTypeAliasDeclaration type-param-one AST Alig
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',

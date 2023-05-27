@@ -13,7 +13,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules shorthand-ambient-m
         declare: true,
         id: Literal {
           type: 'Literal',
-          raw: '\\\\'hot-new-module\\\\'',
+          raw: '\\'hot-new-module\\'',
           value: 'hot-new-module',
 
           range: [88, 104],

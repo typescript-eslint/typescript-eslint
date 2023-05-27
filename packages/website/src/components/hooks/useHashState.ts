@@ -218,9 +218,9 @@ function useHashState(
   };
 
   useEffect(() => {
-    window.addEventListener('hashchange', onHashChange);
+    window.addEventListener('popstate', onHashChange);
     return (): void => {
-      window.removeEventListener('hashchange', onHashChange);
+      window.removeEventListener('popstate', onHashChange);
     };
   }, []);
 

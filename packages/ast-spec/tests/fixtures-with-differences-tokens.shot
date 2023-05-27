@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AST Fixtures List fixtures with Token differences 1`] = `
-Set {
+[
   "declaration/ClassDeclaration/fixtures/implements-many/fixture.ts",
   "declaration/ClassDeclaration/fixtures/implements-one/fixture.ts",
   "declaration/ExportDefaultDeclaration/fixtures/interface/fixture.ts",
@@ -124,5 +124,10 @@ Set {
   "legacy-fixtures/types/fixtures/typeof-with-type-parameters/fixture.ts",
   "legacy-fixtures/types/fixtures/typeof/fixture.ts",
   "legacy-fixtures/types/fixtures/union-intersection/fixture.ts",
-}
+  "special/TSTypeParameter/fixtures/interface-const-in-modifier-multiple/fixture.ts",
+  "special/TSTypeParameter/fixtures/interface-const-modifier-extends/fixture.ts",
+  "special/TSTypeParameter/fixtures/interface-const-modifier-multiple/fixture.ts",
+  "special/TSTypeParameter/fixtures/interface-const-modifier/fixture.ts",
+  "special/TSTypeParameter/fixtures/interface-in-const-modifier-multiple/fixture.ts",
+]
 `;

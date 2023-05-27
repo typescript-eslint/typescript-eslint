@@ -3,7 +3,7 @@
 exports[`AST Fixtures declaration TSModuleDeclaration module-id-qualified-name Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       body: TSModuleDeclaration {
@@ -12,7 +12,7 @@ Program {
           type: "TSModuleDeclaration",
           body: TSModuleBlock {
             type: "TSModuleBlock",
-            body: Array [],
+            body: [],
 
             range: [13, 15],
             loc: {

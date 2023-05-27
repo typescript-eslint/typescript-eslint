@@ -3,12 +3,12 @@
 exports[`AST Fixtures declaration ClassDeclaration decorator-many TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [],
+        body: [],
 
         range: [38, 40],
         loc: {
@@ -16,7 +16,7 @@ Program {
           end: { column: 12, line: 3 },
         },
       },
-      decorators: Array [
+      decorators: [
         Decorator {
           type: "Decorator",
           expression: Identifier {

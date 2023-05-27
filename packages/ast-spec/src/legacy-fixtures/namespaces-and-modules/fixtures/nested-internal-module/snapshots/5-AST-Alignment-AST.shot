@@ -33,7 +33,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                     },
                     init: Literal {
                       type: 'Literal',
-                      raw: '\\\\'hello world\\\\'',
+                      raw: '\\'hello world\\'',
                       value: 'hello world',
 
                       range: [101, 114],

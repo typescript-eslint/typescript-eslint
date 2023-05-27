@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics typed-method-signature TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -18,7 +18,7 @@ Program {
       },
       typeAnnotation: TSTypeLiteral {
         type: "TSTypeLiteral",
-        members: Array [
+        members: [
           TSMethodSignature {
             type: "TSMethodSignature",
             computed: false,
@@ -33,7 +33,7 @@ Program {
               },
             },
             kind: "method",
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
                 name: "bar",
@@ -102,7 +102,7 @@ Program {
               },
             },
             kind: "method",
-            params: Array [
+            params: [
               Identifier {
                 type: "Identifier",
                 name: "bar",
@@ -172,9 +172,10 @@ Program {
             },
             typeParameters: TSTypeParameterDeclaration {
               type: "TSTypeParameterDeclaration",
-              params: Array [
+              params: [
                 TSTypeParameter {
                   type: "TSTypeParameter",
+                  const: false,
                   in: false,
                   name: Identifier {
                     type: "Identifier",

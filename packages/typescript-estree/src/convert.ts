@@ -2407,6 +2407,7 @@ export class Converter {
           default: node.default ? this.convertType(node.default) : undefined,
           in: hasModifier(SyntaxKind.InKeyword, node),
           out: hasModifier(SyntaxKind.OutKeyword, node),
+          const: hasModifier(SyntaxKind.ConstKeyword, node),
         });
       }
 
@@ -2553,8 +2554,8 @@ export class Converter {
             : undefined,
           initializer:
             this.convertChild(
-              // eslint-disable-next-line deprecation/deprecation -- TODO breaking change remove this from the AST
-              node.initializer,
+              // @ts-expect-error TODO breaking change remove this from the AST
+              node.initializer as ts.Node,
             ) || undefined,
           readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
           static: hasModifier(SyntaxKind.StaticKeyword, node) || undefined,

@@ -36,6 +36,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-type-parameter AST Align
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',

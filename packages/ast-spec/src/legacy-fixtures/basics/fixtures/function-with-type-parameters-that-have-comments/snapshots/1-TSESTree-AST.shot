@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics function-with-type-parameters-that-have-comments TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [],
+        body: [],
 
         range: [107, 109],
         loc: {
@@ -29,12 +29,13 @@ Program {
           end: { column: 16, line: 3 },
         },
       },
-      params: Array [],
+      params: [],
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
+            const: false,
             in: false,
             name: Identifier {
               type: "Identifier",

@@ -2,29 +2,29 @@
 
 exports[`type-declaration interface-heritage2 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TypeDefinition$1 {
           name: Identifier<"unreferenced">,
           node: TSTypeAliasDeclaration$1,
         },
       ],
       name: "unreferenced",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         TSModuleNameDefinition$2 {
           name: Identifier<"Member">,
           node: TSModuleDeclaration$2,
         },
       ],
       name: "Member",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"Member">,
           isRead: true,
@@ -38,35 +38,35 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         TypeDefinition$3 {
           name: Identifier<"unreferenced">,
           node: TSTypeAliasDeclaration$3,
         },
       ],
       name: "unreferenced",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         TypeDefinition$4 {
           name: Identifier<"Foo">,
           node: TSInterfaceDeclaration$4,
         },
       ],
       name: "Foo",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$5,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -77,7 +77,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
@@ -87,13 +87,13 @@ ScopeManager {
     TSModuleScope$2 {
       block: TSModuleDeclaration$2,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "unreferenced" => Variable$4,
       },
       type: "tsModule",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$4,
       ],
     },

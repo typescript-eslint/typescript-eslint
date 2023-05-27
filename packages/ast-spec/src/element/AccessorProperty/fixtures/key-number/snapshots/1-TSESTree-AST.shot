@@ -3,7 +3,7 @@
 exports[`AST Fixtures element AccessorProperty key-number TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [],
+  body: [],
   sourceType: "script",
 
   range: [0, 0],

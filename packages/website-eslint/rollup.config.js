@@ -1,7 +1,7 @@
 import commonjs from '@rollup/plugin-commonjs';
 import json from '@rollup/plugin-json';
 import resolve from '@rollup/plugin-node-resolve';
-import { terser } from 'rollup-plugin-terser';
+import terser from '@rollup/plugin-terser';
 
 const replace = require('./rollup-plugin/replace');
 
@@ -18,6 +18,14 @@ module.exports = {
   plugins: [
     terser({
       keep_classnames: true,
+      compress: {
+        global_defs: {
+          'process.platform': '"browser"',
+          'process.env.CI': 'undefined',
+          '@process.env.TSESTREE_SINGLE_RUN': 'undefined',
+          '@process.env.DEBUG': 'undefined',
+        },
+      },
     }),
     replace({
       // verbose: true,
@@ -33,9 +41,8 @@ module.exports = {
             /typescript-estree\/dist\/create-program\/getWatchProgramsForProjects\.js/,
             /typescript-estree\/dist\/create-program\/createProjectProgram\.js/,
             /typescript-estree\/dist\/create-program\/createIsolatedProgram\.js/,
+            /typescript-estree\/dist\/clear-caches\.js/,
             /utils\/dist\/ts-eslint\/ESLint\.js/,
-            // 'eslint/lib/shared/ajv.js',
-            // 'eslint/lib/shared/runtime-info.js',
             /ajv\/lib\/definition_schema\.js/,
             /stream/,
             /os/,
@@ -108,6 +115,16 @@ module.exports = {
           // replace all process.env.IGNORE_TEST_WIN32 with true
           test: /process\.env\.IGNORE_TEST_WIN32/u,
           replace: 'true',
+        },
+        {
+          // replace all process.cwd with "/"
+          test: /process\.cwd\(\)/u,
+          replace: '"/"',
+        },
+        {
+          // replace all process.emitWarning with console.warn
+          test: /process.emitWarning/u,
+          replace: 'console.warn',
         },
       ],
     }),

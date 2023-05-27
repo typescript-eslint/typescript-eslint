@@ -131,7 +131,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-property-values AST Alig
               static: false,
               value: Literal {
                 type: 'Literal',
-                raw: '\\\\'\\\\'',
+                raw: '\\'\\'',
                 value: '',
 
                 range: [120, 122],

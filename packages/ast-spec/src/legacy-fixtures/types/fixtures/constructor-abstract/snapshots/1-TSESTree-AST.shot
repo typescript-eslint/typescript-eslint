@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures types constructor-abstract TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           id: Identifier {
@@ -17,7 +17,7 @@ Program {
               typeAnnotation: TSConstructorType {
                 type: "TSConstructorType",
                 abstract: true,
-                params: Array [],
+                params: [],
                 returnType: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSVoidKeyword {

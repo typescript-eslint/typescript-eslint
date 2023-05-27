@@ -3,13 +3,13 @@
 exports[`AST Fixtures legacy-fixtures basics optional-chain-with-parens TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     FunctionDeclaration {
       type: "FunctionDeclaration",
       async: false,
       body: BlockStatement {
         type: "BlockStatement",
-        body: Array [
+        body: [
           ExpressionStatement {
             type: "ExpressionStatement",
             expression: ChainExpression {
@@ -513,7 +513,7 @@ Program {
           end: { column: 30, line: 3 },
         },
       },
-      params: Array [
+      params: [
         Identifier {
           type: "Identifier",
           name: "one",

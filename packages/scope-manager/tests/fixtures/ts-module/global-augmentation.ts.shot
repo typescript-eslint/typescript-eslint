@@ -2,40 +2,40 @@
 
 exports[`ts-module global-augmentation 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$1,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
       ],
     },
     ModuleScope$2 {
       block: Program$1,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {},
       type: "module",
       upper: GlobalScope$1,
-      variables: Array [],
+      variables: [],
     },
     TSModuleScope$3 {
       block: TSModuleDeclaration$2,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {},
       type: "tsModule",
       upper: ModuleScope$2,
-      variables: Array [],
+      variables: [],
     },
   ],
 }

@@ -3,7 +3,7 @@
 exports[`AST Fixtures expression TSSatisfiesExpression logical-no-parentheses Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: BinaryExpression {

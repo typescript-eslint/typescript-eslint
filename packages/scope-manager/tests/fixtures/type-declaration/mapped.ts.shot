@@ -2,17 +2,17 @@
 
 exports[`type-declaration mapped 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TypeDefinition$1 {
           name: Identifier<"T">,
           node: TSTypeAliasDeclaration$1,
         },
       ],
       name: "T",
-      references: Array [
+      references: [
         Reference$3 {
           identifier: Identifier<"T">,
           isRead: true,
@@ -26,26 +26,26 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         TypeDefinition$2 {
           name: Identifier<"A">,
           node: TSTypeAliasDeclaration$2,
         },
       ],
       name: "A",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         TypeDefinition$3 {
           name: Identifier<"k">,
           node: TSTypeParameter$3,
         },
       ],
       name: "k",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"k">,
           isRead: true,
@@ -59,11 +59,11 @@ ScopeManager {
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$4,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"Record">,
           isRead: true,
@@ -80,7 +80,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
@@ -89,7 +89,7 @@ ScopeManager {
     MappedTypeScope$2 {
       block: TSMappedType$5,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$2,
         Reference$3,
       ],
@@ -98,7 +98,7 @@ ScopeManager {
       },
       type: "mappedType",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$4,
       ],
     },

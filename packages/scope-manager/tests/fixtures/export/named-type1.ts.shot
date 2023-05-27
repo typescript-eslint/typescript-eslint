@@ -2,45 +2,45 @@
 
 exports[`export named-type1 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TypeDefinition$1 {
           name: Identifier<"X">,
           node: TSTypeAliasDeclaration$1,
         },
       ],
       name: "X",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$2,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
       ],
     },
     ModuleScope$2 {
       block: Program$2,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "X" => Variable$2,
       },
       type: "module",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$2,
       ],
     },

@@ -30,6 +30,7 @@ exports[`AST Fixtures declaration TSDeclareFunction type-param-one AST Alignment
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',

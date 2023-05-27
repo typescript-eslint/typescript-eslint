@@ -16,6 +16,16 @@
     '@nrwl/jest',
     '@nrwl/nx-cloud',
     '@nrwl/tao',
+    // TODO - once we bump pass the major, we can remove these. Currently renovate is creating broken, immortal PRs
+    '@rollup/plugin-babel',
+    '@rollup/plugin-commonjs',
+    '@rollup/plugin-json',
+    '@rollup/plugin-node-resolve',
+    '@rollup/plugin-replace',
+    '@rollup/plugin-terser',
+    '@rollup/pluginutils',
+    'rollup-plugin-terser',
+    'rollup',
   ],
   ignorePaths: [
     // integration test package.json's should never be updated as they're purposely fixed tests
@@ -23,6 +33,17 @@
   ],
   internalChecksFilter: 'strict',
   labels: ['dependencies'],
+  dependencyDashboard: true,
+  dependencyDashboardLabels: ['dependencies', 'repo maintenance'],
+  major: {
+    // most majors will require some manual effort to upgrade to, so we don't want to create
+    // PRs automatically or else we'll just spam ourselves.
+    dependencyDashboardApproval: true,
+  },
+  // by default renovate will auto-rebase whenever the dep pranch falls behind main.
+  // this is annoying as it spams notifications and creates unnecessary action runs.
+  // instead only auto-rebase when conflicted, and we can trigger a manual rebase if required.
+  rebaseWhen: 'conflicted',
   packageRules: [
     // automerge everything but major updates
     {
@@ -55,14 +76,13 @@
       groupName: 'nx',
     },
     {
-      extends: ['monorepo:babel'],
-      matchPackagePrefixes: ['@types/babel'],
+      matchPackagePrefixes: ['@babel', 'babel-'],
       groupName: 'babel',
     },
     {
       extends: ['monorepo:jest'],
       matchPackageNames: ['ts-jest', 'pretty-format'],
-      matchPackagePrefixes: ['@types/jest'],
+      matchPackagePrefixes: ['@types/jest', 'jest-', '@jest/'],
       groupName: 'jest',
     },
     {

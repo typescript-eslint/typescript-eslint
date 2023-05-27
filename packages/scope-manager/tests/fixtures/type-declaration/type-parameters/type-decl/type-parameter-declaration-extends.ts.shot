@@ -2,29 +2,29 @@
 
 exports[`type-declaration type-parameters type-decl type-parameter-declaration-extends 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TypeDefinition$1 {
           name: Identifier<"Foo">,
           node: TSTypeAliasDeclaration$1,
         },
       ],
       name: "Foo",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         TypeDefinition$2 {
           name: Identifier<"T">,
           node: TSTypeParameter$2,
         },
       ],
       name: "T",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"T">,
           isRead: true,
@@ -38,30 +38,30 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         TypeDefinition$3 {
           name: Identifier<"U">,
           node: TSTypeParameter$3,
         },
       ],
       name: "U",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$4,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
         "Foo" => Variable$2,
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
       ],
@@ -69,7 +69,7 @@ ScopeManager {
     TypeScope$2 {
       block: TSTypeAliasDeclaration$1,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -78,7 +78,7 @@ ScopeManager {
       },
       type: "type",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
         Variable$4,
       ],

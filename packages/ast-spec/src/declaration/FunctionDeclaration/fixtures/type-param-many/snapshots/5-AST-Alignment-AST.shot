@@ -39,6 +39,7 @@ exports[`AST Fixtures declaration FunctionDeclaration type-param-many AST Alignm
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -61,6 +62,7 @@ exports[`AST Fixtures declaration FunctionDeclaration type-param-many AST Alignm
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -83,6 +85,7 @@ exports[`AST Fixtures declaration FunctionDeclaration type-param-many AST Alignm
             },
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',

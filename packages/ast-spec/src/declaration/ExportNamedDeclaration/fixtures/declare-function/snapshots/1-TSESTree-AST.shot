@@ -3,10 +3,10 @@
 exports[`AST Fixtures declaration ExportNamedDeclaration declare-function TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: TSDeclareFunction {
         type: "TSDeclareFunction",
         async: false,
@@ -23,7 +23,7 @@ Program {
             end: { column: 27, line: 1 },
           },
         },
-        params: Array [],
+        params: [],
         returnType: TSTypeAnnotation {
           type: "TSTypeAnnotation",
           typeAnnotation: TSVoidKeyword {
@@ -51,7 +51,7 @@ Program {
       },
       exportKind: "type",
       source: null,
-      specifiers: Array [],
+      specifiers: [],
 
       range: [0, 36],
       loc: {

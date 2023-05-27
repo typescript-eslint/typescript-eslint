@@ -1,0 +1,86 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures special TSTypeParameter interface-const-modifier-extends Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSInterfaceDeclaration {
+      type: "TSInterfaceDeclaration",
+      body: TSInterfaceBody {
+        type: "TSInterfaceBody",
+        body: [],
+
+        range: [31, 33],
+        loc: {
+          start: { column: 31, line: 1 },
+          end: { column: 33, line: 1 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "J",
+
+        range: [10, 11],
+        loc: {
+          start: { column: 10, line: 1 },
+          end: { column: 11, line: 1 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            const: true,
+            constraint: TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "U",
+
+                range: [28, 29],
+                loc: {
+                  start: { column: 28, line: 1 },
+                  end: { column: 29, line: 1 },
+                },
+              },
+
+              range: [28, 29],
+              loc: {
+                start: { column: 28, line: 1 },
+                end: { column: 29, line: 1 },
+              },
+            },
+            name: "T",
+
+            range: [12, 29],
+            loc: {
+              start: { column: 12, line: 1 },
+              end: { column: 29, line: 1 },
+            },
+          },
+        ],
+
+        range: [11, 30],
+        loc: {
+          start: { column: 11, line: 1 },
+          end: { column: 30, line: 1 },
+        },
+      },
+
+      range: [0, 33],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 33, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 34],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

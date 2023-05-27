@@ -3,7 +3,7 @@
 exports[`AST Fixtures declaration TSDeclareFunction generator TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSDeclareFunction {
       type: "TSDeclareFunction",
       async: false,
@@ -20,7 +20,7 @@ Program {
           end: { column: 21, line: 1 },
         },
       },
-      params: Array [],
+      params: [],
 
       range: [0, 24],
       loc: {

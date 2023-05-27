@@ -2,17 +2,17 @@
 
 exports[`global-resolution module class 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$1 {
           name: Identifier<"Foo">,
           node: ClassDeclaration$1,
         },
       ],
       name: "Foo",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"Foo">,
           isRead: true,
@@ -26,36 +26,36 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$2 {
           name: Identifier<"Foo">,
           node: ClassDeclaration$1,
         },
       ],
       name: "Foo",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$2,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
       ],
     },
     ModuleScope$2 {
       block: Program$2,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -63,20 +63,20 @@ ScopeManager {
       },
       type: "module",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$2,
       ],
     },
     ClassScope$3 {
       block: ClassDeclaration$1,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "Foo" => Variable$3,
       },
       type: "class",
       upper: ModuleScope$2,
-      variables: Array [
+      variables: [
         Variable$3,
       ],
     },

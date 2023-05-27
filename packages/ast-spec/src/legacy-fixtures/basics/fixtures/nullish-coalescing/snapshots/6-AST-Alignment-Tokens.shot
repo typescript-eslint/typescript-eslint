@@ -150,7 +150,7 @@ exports[`AST Fixtures legacy-fixtures basics nullish-coalescing AST Alignment - 
     },
     String {
       type: 'String',
-      value: '\\\\'\\\\'',
+      value: '\\'\\'',
 
       range: [136, 138],
       loc: {

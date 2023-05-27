@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics interface-with-method Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSInterfaceDeclaration {
       type: "TSInterfaceDeclaration",
       body: TSInterfaceBody {
         type: "TSInterfaceBody",
-        body: Array [
+        body: [
           TSMethodSignature {
             type: "TSMethodSignature",
             computed: false,
@@ -23,7 +23,7 @@ Program {
               },
             },
             kind: "method",
-            parameters: Array [
+            parameters: [
               Identifier {
                 type: "Identifier",
                 name: "bar",
@@ -92,7 +92,7 @@ Program {
               },
             },
             kind: "method",
-            parameters: Array [
+            parameters: [
               Identifier {
                 type: "Identifier",
                 name: "bar",
@@ -162,7 +162,7 @@ Program {
             },
             typeParameters: TSTypeParameterDeclaration {
               type: "TSTypeParameterDeclaration",
-              params: Array [
+              params: [
                 TSTypeParameter {
                   type: "TSTypeParameter",
                   name: "T",

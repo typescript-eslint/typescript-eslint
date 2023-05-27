@@ -3,7 +3,7 @@
 exports[`AST Fixtures declaration ExportDefaultDeclaration arrow-function-expression Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportDefaultDeclaration {
       type: "ExportDefaultDeclaration",
       declaration: ArrowFunctionExpression {
@@ -11,7 +11,7 @@ Program {
         async: false,
         body: BlockStatement {
           type: "BlockStatement",
-          body: Array [],
+          body: [],
 
           range: [21, 23],
           loc: {
@@ -22,7 +22,7 @@ Program {
         expression: false,
         generator: false,
         id: null,
-        params: Array [],
+        params: [],
 
         range: [15, 23],
         loc: {

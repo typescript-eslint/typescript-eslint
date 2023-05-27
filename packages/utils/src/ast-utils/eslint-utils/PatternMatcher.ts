@@ -1,24 +1,24 @@
-import * as eslintUtils from 'eslint-utils';
+import * as eslintUtils from '@eslint-community/eslint-utils';
 
 interface PatternMatcher {
   /**
    * Iterate all matched parts in a given string.
    *
-   * @see {@link https://eslint-utils.mysticatea.dev/api/ast-utils.html#matcher-execall}
+   * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#matcher-execall}
    */
   execAll(str: string): IterableIterator<RegExpExecArray>;
 
   /**
    * Check whether this pattern matches a given string or not.
    *
-   * @see {@link https://eslint-utils.mysticatea.dev/api/ast-utils.html#matcher-test}
+   * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#matcher-test}
    */
   test(str: string): boolean;
 
   /**
    * Replace all matched parts by a given replacer.
    *
-   * @see {@link https://eslint-utils.mysticatea.dev/api/ast-utils.html#matcher-symbol-replace}
+   * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#matcher-symbol-replace}
    * @example
    * const { PatternMatcher } = require("eslint-utils")
    * const matcher = new PatternMatcher(/\\p{Script=Greek}/g)
@@ -47,7 +47,7 @@ interface PatternMatcher {
  * The class to find a pattern in strings as handling escape sequences.
  * It ignores the found pattern if it's escaped with `\`.
  *
- * @see {@link https://eslint-utils.mysticatea.dev/api/ast-utils.html#patternmatcher-class}
+ * @see {@link https://eslint-community.github.io/eslint-utils/api/ast-utils.html#patternmatcher-class}
  */
 const PatternMatcher = eslintUtils.PatternMatcher as {
   new (pattern: RegExp, options?: { escaped?: boolean }): PatternMatcher;

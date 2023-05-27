@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics parenthesized-use-strict Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: Literal {

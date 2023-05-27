@@ -182,7 +182,9 @@ export type TSNode =
   | ts.ExportAssignment
   | ts.SourceFile
   | ts.Bundle
+  // eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions
   | ts.InputFiles
+  // eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions
   | ts.UnparsedSource
   | ts.JsonMinusNumericLiteral
   | ts.TemplateLiteralTypeNode

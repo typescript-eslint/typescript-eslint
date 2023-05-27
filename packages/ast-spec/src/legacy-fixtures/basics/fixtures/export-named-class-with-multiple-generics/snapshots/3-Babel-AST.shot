@@ -3,15 +3,15 @@
 exports[`AST Fixtures legacy-fixtures basics export-named-class-with-multiple-generics Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
         body: ClassBody {
           type: "ClassBody",
-          body: Array [],
+          body: [],
 
           range: [96, 98],
           loc: {
@@ -32,7 +32,7 @@ Program {
         superClass: null,
         typeParameters: TSTypeParameterDeclaration {
           type: "TSTypeParameterDeclaration",
-          params: Array [
+          params: [
             TSTypeParameter {
               type: "TSTypeParameter",
               name: "T",
@@ -70,7 +70,7 @@ Program {
       },
       exportKind: "value",
       source: null,
-      specifiers: Array [],
+      specifiers: [],
 
       range: [73, 98],
       loc: {

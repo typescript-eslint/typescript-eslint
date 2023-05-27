@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics type-alias-object-without-annotation Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -18,7 +18,7 @@ Program {
       },
       typeAnnotation: TSTypeLiteral {
         type: "TSTypeLiteral",
-        members: Array [
+        members: [
           TSPropertySignature {
             type: "TSPropertySignature",
             computed: false,

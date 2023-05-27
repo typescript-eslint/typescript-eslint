@@ -2,17 +2,17 @@
 
 exports[`functions function-declaration inherited-scope 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"parentScoped">,
           node: VariableDeclarator$1,
         },
       ],
       name: "parentScoped",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"parentScoped">,
           init: true,
@@ -36,30 +36,30 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         FunctionNameDefinition$2 {
           name: Identifier<"foo">,
           node: FunctionDeclaration$3,
         },
       ],
       name: "foo",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
     Variable$4 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$4,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -69,7 +69,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
@@ -78,7 +78,7 @@ ScopeManager {
     FunctionScope$2 {
       block: FunctionDeclaration$3,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$2,
       ],
       set: Map {
@@ -86,7 +86,7 @@ ScopeManager {
       },
       type: "function",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$4,
       ],
     },

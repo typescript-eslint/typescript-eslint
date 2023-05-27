@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures basics export-declare-const-named-enum TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: TSEnumDeclaration {
         type: "TSEnumDeclaration",
         const: true,
@@ -21,7 +21,7 @@ Program {
             end: { column: 29, line: 3 },
           },
         },
-        members: Array [
+        members: [
           TSEnumMember {
             type: "TSEnumMember",
             id: Identifier {
@@ -81,7 +81,7 @@ Program {
       },
       exportKind: "type",
       source: null,
-      specifiers: Array [],
+      specifiers: [],
 
       range: [73, 124],
       loc: {

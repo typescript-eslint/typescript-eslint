@@ -2,17 +2,17 @@
 
 exports[`global-resolution module function 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         FunctionNameDefinition$1 {
           name: Identifier<"top">,
           node: FunctionDeclaration$1,
         },
       ],
       name: "top",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"top">,
           isRead: true,
@@ -26,31 +26,31 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$2,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
       ],
     },
     ModuleScope$2 {
       block: Program$2,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -58,20 +58,20 @@ ScopeManager {
       },
       type: "module",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$2,
       ],
     },
     FunctionScope$3 {
       block: FunctionDeclaration$1,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "arguments" => Variable$3,
       },
       type: "function",
       upper: ModuleScope$2,
-      variables: Array [
+      variables: [
         Variable$3,
       ],
     },

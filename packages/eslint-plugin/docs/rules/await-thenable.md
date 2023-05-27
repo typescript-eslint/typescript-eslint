@@ -6,7 +6,7 @@ description: 'Disallow awaiting a value that is not a Thenable.'
 >
 > See **https://typescript-eslint.io/rules/await-thenable** for documentation.
 
-A "Thenable" value is an object with has a `then` method, such as a Promise.
+A "Thenable" value is an object which has a `then` method, such as a Promise.
 The `await` keyword is generally used to retrieve the result of calling a Thenable's `then` method.
 
 If the `await` keyword is used on a value that is not a Thenable, the value is directly resolved immediately.

@@ -3,7 +3,7 @@
 exports[`AST Fixtures expression TSSatisfiesExpression arrow-func-with-parentheses TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: TSSatisfiesExpression {
@@ -25,7 +25,7 @@ Program {
           expression: true,
           generator: false,
           id: null,
-          params: Array [],
+          params: [],
 
           range: [1, 8],
           loc: {
@@ -35,7 +35,7 @@ Program {
         },
         typeAnnotation: TSFunctionType {
           type: "TSFunctionType",
-          params: Array [],
+          params: [],
           returnType: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSNumberKeyword {

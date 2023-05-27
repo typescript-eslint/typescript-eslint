@@ -32,7 +32,7 @@ html:root {
 
 html[data-theme='dark']:root {
   --ifm-color-feedback-background: #f0f8ff;
-  --ifm-color-primary: #3255bb;
+  --ifm-color-primary: #6582d9;
   --ifm-color-primary-dark: #1f459d;
   --ifm-color-primary-darker: #1f417f;
   --ifm-color-primary-darkest: #163162;
@@ -71,20 +71,57 @@ html[data-theme='dark']:root {
   --gray-border-shadow: var(--ifm-color-secondary-dark);
 }
 
+.image-link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.image-link:before {
+  content: '';
+  display: flex;
+}
+
+/* assumes icons are black by default and inverts them for dark mode so they're white */
+html[data-theme='dark'] .image-link:before {
+  filter: invert(100%);
+}
+
+.bug-report-link:before {
+  background: url('/img/bug-report.svg') no-repeat;
+}
+.discord-link:before {
+  background: url('/img/discord.svg') no-repeat;
+  background-position: center;
+}
+.github-link:before {
+  background: url('/img/github.svg') no-repeat;
+}
+.mastodon-link:before {
+  background: url('/img/mastodon.svg') no-repeat;
+}
+.stack-overflow-link:before {
+  background: url('/img/stack-overflow.svg') no-repeat;
+}
+.stack-overflow-link:before {
+  background: url('/img/stack-overflow.svg') no-repeat;
+}
+.twitter-link:before {
+  background: url('/img/twitter.svg') no-repeat;
+}
 .header-github-link:hover {
   opacity: 0.6;
 }
-
 .header-github-link:before {
-  content: '';
-  width: 24px;
   height: 24px;
-  display: flex;
-  background: url('/img/github.svg') no-repeat;
+  width: 24px;
 }
 
-html[data-theme='dark'] .header-github-link:before {
-  background: url('/img/github-dark.svg') no-repeat;
+.social-link-icon:before {
+  height: 20px;
+  margin-right: 4px;
+  width: 20px;
 }
 
 .theme-doc-sidebar-item-link-level-1 > a,

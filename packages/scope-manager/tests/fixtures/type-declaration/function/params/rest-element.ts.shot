@@ -2,29 +2,29 @@
 
 exports[`type-declaration function params rest-element 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TypeDefinition$1 {
           name: Identifier<"Fn">,
           node: TSTypeAliasDeclaration$1,
         },
       ],
       name: "Fn",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         TypeDefinition$2 {
           name: Identifier<"A">,
           node: TSTypeParameter$2,
         },
       ],
       name: "A",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"A">,
           isRead: true,
@@ -38,30 +38,30 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         ParameterDefinition$3 {
           name: Identifier<"a">,
           node: TSFunctionType$3,
         },
       ],
       name: "a",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$4,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
         "Fn" => Variable$2,
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
       ],
@@ -69,20 +69,20 @@ ScopeManager {
     TypeScope$2 {
       block: TSTypeAliasDeclaration$1,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "A" => Variable$3,
       },
       type: "type",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
       ],
     },
     FunctionTypeScope$3 {
       block: TSFunctionType$3,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -90,7 +90,7 @@ ScopeManager {
       },
       type: "functionType",
       upper: TypeScope$2,
-      variables: Array [
+      variables: [
         Variable$4,
       ],
     },

@@ -136,7 +136,7 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
    */
   const parseSettings = createParseSettings(code, options);
 
-  if (typeof options !== 'undefined') {
+  if (options !== undefined) {
     if (
       typeof options.errorOnTypeScriptSyntacticAndSemanticIssues ===
         'boolean' &&

@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures types template-literal-type-4 Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -20,7 +20,7 @@ Program {
         type: "TSLiteralType",
         literal: TemplateLiteral {
           type: "TemplateLiteral",
-          expressions: Array [
+          expressions: [
             TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
@@ -35,7 +35,7 @@ Program {
               },
               typeParameters: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
-                params: Array [
+                params: [
                   TSTypeReference {
                     type: "TSTypeReference",
                     typeName: Identifier {
@@ -84,7 +84,7 @@ Program {
               },
               typeParameters: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
-                params: Array [
+                params: [
                   TSTypeReference {
                     type: "TSTypeReference",
                     typeName: Identifier {
@@ -133,7 +133,7 @@ Program {
               },
               typeParameters: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
-                params: Array [
+                params: [
                   TSTypeReference {
                     type: "TSTypeReference",
                     typeName: Identifier {
@@ -182,7 +182,7 @@ Program {
               },
               typeParameters: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
-                params: Array [
+                params: [
                   TSTypeReference {
                     type: "TSTypeReference",
                     typeName: Identifier {
@@ -218,11 +218,11 @@ Program {
               },
             },
           ],
-          quasis: Array [
+          quasis: [
             TemplateElement {
               type: "TemplateElement",
               tail: false,
-              value: Object {
+              value: {
                 "cooked": "",
                 "raw": "",
               },
@@ -236,7 +236,7 @@ Program {
             TemplateElement {
               type: "TemplateElement",
               tail: false,
-              value: Object {
+              value: {
                 "cooked": " - ",
                 "raw": " - ",
               },
@@ -250,7 +250,7 @@ Program {
             TemplateElement {
               type: "TemplateElement",
               tail: false,
-              value: Object {
+              value: {
                 "cooked": " - ",
                 "raw": " - ",
               },
@@ -264,7 +264,7 @@ Program {
             TemplateElement {
               type: "TemplateElement",
               tail: false,
-              value: Object {
+              value: {
                 "cooked": " - ",
                 "raw": " - ",
               },
@@ -278,7 +278,7 @@ Program {
             TemplateElement {
               type: "TemplateElement",
               tail: true,
-              value: Object {
+              value: {
                 "cooked": "",
                 "raw": "",
               },
@@ -306,7 +306,7 @@ Program {
       },
       typeParameters: TSTypeParameterDeclaration {
         type: "TSTypeParameterDeclaration",
-        params: Array [
+        params: [
           TSTypeParameter {
             type: "TSTypeParameter",
             constraint: TSStringKeyword {
@@ -367,7 +367,7 @@ Program {
         },
         typeParameters: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
-          params: Array [
+          params: [
             TSLiteralType {
               type: "TSLiteralType",
               literal: Literal {

@@ -38,7 +38,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-properties AST 
     },
     String {
       type: 'String',
-      value: '\\\\'buzz\\\\'',
+      value: '\\'buzz\\'',
 
       range: [90, 96],
       loc: {
@@ -88,7 +88,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-properties AST 
     },
     String {
       type: 'String',
-      value: '\\\\'bazz\\\\'',
+      value: '\\'bazz\\'',
 
       range: [116, 122],
       loc: {
@@ -340,7 +340,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-properties AST 
     },
     String {
       type: 'String',
-      value: '\\\\'literal\\\\'',
+      value: '\\'literal\\'',
 
       range: [202, 211],
       loc: {
@@ -510,7 +510,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-optional-properties AST 
     },
     String {
       type: 'String',
-      value: '\\\\'literal2\\\\'',
+      value: '\\'literal2\\'',
 
       range: [250, 260],
       loc: {

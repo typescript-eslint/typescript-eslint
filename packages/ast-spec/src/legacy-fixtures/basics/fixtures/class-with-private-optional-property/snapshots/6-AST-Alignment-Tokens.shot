@@ -144,7 +144,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-optional-propert
     },
     String {
       type: 'String',
-      value: '\\\\'\\\\'',
+      value: '\\'\\'',
 
       range: [139, 141],
       loc: {
@@ -197,7 +197,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-private-optional-propert
     },
     String {
       type: 'String',
-      value: '\\\\'\\\\'',
+      value: '\\'\\'',
 
       range: [171, 173],
       loc: {

@@ -2,17 +2,17 @@
 
 exports[`functions function-expression scope 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"foo">,
           node: VariableDeclarator$1,
         },
       ],
       name: "foo",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"foo">,
           init: true,
@@ -28,21 +28,21 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         VariableDefinition$2 {
           name: Identifier<"i">,
           node: VariableDeclarator$3,
         },
       ],
       name: "i",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"i">,
           init: true,
@@ -66,14 +66,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         VariableDefinition$3 {
           name: Identifier<"j">,
           node: VariableDeclarator$5,
         },
       ],
       name: "j",
-      references: Array [
+      references: [
         Reference$3 {
           identifier: Identifier<"j">,
           init: true,
@@ -89,14 +89,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$6 {
-      defs: Array [
+      defs: [
         VariableDefinition$4 {
           name: Identifier<"unresolved">,
           node: VariableDeclarator$7,
         },
       ],
       name: "unresolved",
-      references: Array [
+      references: [
         Reference$5 {
           identifier: Identifier<"unresolved">,
           init: true,
@@ -112,11 +112,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$8,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
         Reference$5,
         Reference$6 {
@@ -135,7 +135,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$6,
@@ -144,7 +144,7 @@ ScopeManager {
     FunctionScope$2 {
       block: FunctionExpression$2,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$2,
         Reference$3,
         Reference$4,
@@ -156,7 +156,7 @@ ScopeManager {
       },
       type: "function",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
         Variable$4,
         Variable$5,

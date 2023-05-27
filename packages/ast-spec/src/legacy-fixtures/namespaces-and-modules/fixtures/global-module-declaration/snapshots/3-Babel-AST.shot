@@ -3,17 +3,17 @@
 exports[`AST Fixtures legacy-fixtures namespaces-and-modules global-module-declaration Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       body: TSModuleBlock {
         type: "TSModuleBlock",
-        body: Array [
+        body: [
           TSModuleDeclaration {
             type: "TSModuleDeclaration",
             body: TSModuleBlock {
               type: "TSModuleBlock",
-              body: Array [],
+              body: [],
 
               range: [114, 116],
               loc: {
@@ -43,7 +43,7 @@ Program {
             type: "TSModuleDeclaration",
             body: TSModuleBlock {
               type: "TSModuleBlock",
-              body: Array [],
+              body: [],
 
               range: [144, 146],
               loc: {

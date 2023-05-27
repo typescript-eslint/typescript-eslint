@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics class-multi-line-keyword-declare Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: Identifier {
@@ -27,7 +27,7 @@ Program {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [],
+        body: [],
 
         range: [90, 92],
         loc: {

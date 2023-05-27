@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures class-decorators class-parameter-property TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
@@ -30,7 +30,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [],
+                body: [],
 
                 range: [119, 121],
                 loc: {
@@ -41,11 +41,11 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [
+              params: [
                 TSParameterProperty {
                   type: "TSParameterProperty",
                   accessibility: "private",
-                  decorators: Array [
+                  decorators: [
                     Decorator {
                       type: "Decorator",
                       expression: Identifier {

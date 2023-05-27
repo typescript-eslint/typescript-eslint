@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures types template-literal-type-1 Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -20,12 +20,12 @@ Program {
         type: "TSLiteralType",
         literal: TemplateLiteral {
           type: "TemplateLiteral",
-          expressions: Array [],
-          quasis: Array [
+          expressions: [],
+          quasis: [
             TemplateElement {
               type: "TemplateElement",
               tail: true,
-              value: Object {
+              value: {
                 "cooked": "foo",
                 "raw": "foo",
               },

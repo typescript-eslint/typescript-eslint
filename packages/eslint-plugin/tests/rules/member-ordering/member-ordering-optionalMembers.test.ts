@@ -105,8 +105,8 @@ class X {
       code: `
 class X {
   a: string;
-  static {}
   b: string;
+  static {}
 }
       `,
       options: [
@@ -332,6 +332,35 @@ class X {
           column: 3,
           data: {
             member: 'a',
+            optionalOrRequired: 'required',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+class X {
+  b: string;
+  a: string;
+}
+      `,
+      options: [
+        {
+          default: {
+            memberTypes: 'never',
+            order: 'natural-case-insensitive',
+            optionalityOrder: 'required-first',
+          },
+        },
+      ],
+      errors: [
+        {
+          messageId: 'incorrectOrder',
+          line: 4,
+          column: 3,
+          data: {
+            member: 'a',
+            beforeMember: 'b',
             optionalOrRequired: 'required',
           },
         },

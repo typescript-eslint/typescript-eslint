@@ -23,6 +23,7 @@ exports[`AST Fixtures legacy-fixtures types mapped-untypped AST Alignment - AST 
                   nameType: null,
                   typeParameter: TSTypeParameter {
                     type: 'TSTypeParameter',
+-                   const: false,
                     constraint: TSStringKeyword {
                       type: 'TSStringKeyword',
 

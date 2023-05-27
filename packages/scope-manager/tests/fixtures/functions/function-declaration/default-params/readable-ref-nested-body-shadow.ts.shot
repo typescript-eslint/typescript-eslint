@@ -2,17 +2,17 @@
 
 exports[`functions function-declaration default-params readable-ref-nested-body-shadow 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"a">,
           node: VariableDeclarator$1,
         },
       ],
       name: "a",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"a">,
           isRead: true,
@@ -26,33 +26,33 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         FunctionNameDefinition$2 {
           name: Identifier<"foo">,
           node: FunctionDeclaration$2,
         },
       ],
       name: "foo",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
     Variable$4 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         ParameterDefinition$3 {
           name: Identifier<"b">,
           node: FunctionDeclaration$2,
         },
       ],
       name: "b",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"b">,
           init: true,
@@ -68,30 +68,30 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$6 {
-      defs: Array [],
+      defs: [],
       name: "arguments",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$7 {
-      defs: Array [
+      defs: [
         VariableDefinition$4 {
           name: Identifier<"a">,
           node: VariableDeclarator$4,
         },
       ],
       name: "a",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$5,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
         "a" => Variable$2,
@@ -99,7 +99,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,
@@ -108,7 +108,7 @@ ScopeManager {
     FunctionScope$2 {
       block: FunctionDeclaration$2,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
       ],
       set: Map {
@@ -118,7 +118,7 @@ ScopeManager {
       },
       type: "function",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$4,
         Variable$5,
         Variable$7,
@@ -127,7 +127,7 @@ ScopeManager {
     FunctionScope$3 {
       block: FunctionExpression$3,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$2,
       ],
       set: Map {
@@ -135,7 +135,7 @@ ScopeManager {
       },
       type: "function",
       upper: FunctionScope$2,
-      variables: Array [
+      variables: [
         Variable$6,
       ],
     },

@@ -1,8 +1,11 @@
 import type React from 'react';
 import { useRef } from 'react';
 
-function useFocus(): [React.RefObject<HTMLOrSVGElement>, () => void] {
-  const htmlElRef = useRef<HTMLOrSVGElement>(null);
+function useFocus<T extends HTMLOrSVGElement>(): [
+  React.RefObject<T>,
+  () => void,
+] {
+  const htmlElRef = useRef<T>(null);
   const setFocus = (): void => {
     htmlElRef.current?.focus();
   };

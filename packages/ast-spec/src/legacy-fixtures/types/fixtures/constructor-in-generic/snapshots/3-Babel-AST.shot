@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures types constructor-in-generic Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           id: Identifier {
@@ -28,11 +28,11 @@ Program {
                 },
                 typeParameters: TSTypeParameterInstantiation {
                   type: "TSTypeParameterInstantiation",
-                  params: Array [
+                  params: [
                     TSConstructorType {
                       type: "TSConstructorType",
                       abstract: false,
-                      parameters: Array [],
+                      parameters: [],
                       typeAnnotation: TSTypeAnnotation {
                         type: "TSTypeAnnotation",
                         typeAnnotation: TSStringKeyword {

@@ -2,17 +2,17 @@
 
 exports[`destructuring array 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"a">,
           node: VariableDeclarator$1,
         },
       ],
       name: "a",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"a">,
           init: true,
@@ -28,14 +28,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         VariableDefinition$2 {
           name: Identifier<"b">,
           node: VariableDeclarator$1,
         },
       ],
       name: "b",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"b">,
           init: true,
@@ -51,14 +51,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         VariableDefinition$3 {
           name: Identifier<"c">,
           node: VariableDeclarator$1,
         },
       ],
       name: "c",
-      references: Array [
+      references: [
         Reference$3 {
           identifier: Identifier<"c">,
           init: true,
@@ -74,14 +74,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         VariableDefinition$4 {
           name: Identifier<"d">,
           node: VariableDeclarator$1,
         },
       ],
       name: "d",
-      references: Array [
+      references: [
         Reference$4 {
           identifier: Identifier<"d">,
           init: true,
@@ -107,14 +107,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$6 {
-      defs: Array [
+      defs: [
         VariableDefinition$5 {
           name: Identifier<"e">,
           node: VariableDeclarator$1,
         },
       ],
       name: "e",
-      references: Array [
+      references: [
         Reference$6 {
           identifier: Identifier<"e">,
           init: true,
@@ -130,14 +130,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$7 {
-      defs: Array [
+      defs: [
         VariableDefinition$6 {
           name: Identifier<"f">,
           node: VariableDeclarator$1,
         },
       ],
       name: "f",
-      references: Array [
+      references: [
         Reference$7 {
           identifier: Identifier<"f">,
           init: true,
@@ -163,14 +163,14 @@ ScopeManager {
       isTypeVariable: false,
     },
     Variable$8 {
-      defs: Array [
+      defs: [
         VariableDefinition$7 {
           name: Identifier<"rest">,
           node: VariableDeclarator$1,
         },
       ],
       name: "rest",
-      references: Array [
+      references: [
         Reference$9 {
           identifier: Identifier<"rest">,
           init: true,
@@ -186,11 +186,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$4,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
         Reference$3,
@@ -221,7 +221,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,

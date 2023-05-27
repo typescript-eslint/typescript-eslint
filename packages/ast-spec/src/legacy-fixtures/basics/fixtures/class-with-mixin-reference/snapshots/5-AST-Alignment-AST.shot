@@ -78,6 +78,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-mixin-reference AST Alig
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               constraint: TSTypeReference {
                 type: 'TSTypeReference',
                 typeName: Identifier {

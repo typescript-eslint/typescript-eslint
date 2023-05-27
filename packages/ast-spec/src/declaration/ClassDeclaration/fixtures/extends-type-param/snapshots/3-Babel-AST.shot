@@ -3,12 +3,12 @@
 exports[`AST Fixtures declaration ClassDeclaration extends-type-param Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [],
+        body: [],
 
         range: [30, 32],
         loc: {
@@ -38,7 +38,7 @@ Program {
       },
       superTypeParameters: TSTypeParameterInstantiation {
         type: "TSTypeParameterInstantiation",
-        params: Array [
+        params: [
           TSStringKeyword {
             type: "TSStringKeyword",
 

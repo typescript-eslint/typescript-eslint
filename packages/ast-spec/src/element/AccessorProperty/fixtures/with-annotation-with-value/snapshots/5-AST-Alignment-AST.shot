@@ -51,7 +51,7 @@ exports[`AST Fixtures element AccessorProperty with-annotation-with-value AST Al
               },
               value: Literal {
                 type: 'Literal',
-                raw: '\\\\'str\\\\'',
+                raw: '\\'str\\'',
                 value: 'str',
 
                 range: [38, 43],

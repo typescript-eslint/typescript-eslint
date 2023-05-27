@@ -10,6 +10,7 @@ import {
 } from 'tsutils';
 import * as ts from 'typescript';
 
+import { getTypeArguments } from './getTypeArguments';
 import { getTypeOfPropertyOfType } from './propertyTypes';
 
 const enum Readonlyness {
@@ -52,9 +53,7 @@ function isTypeReadonlyArrayOrTuple(
   function checkTypeArguments(arrayType: ts.TypeReference): Readonlyness {
     const typeArguments =
       // getTypeArguments was only added in TS3.7
-      checker.getTypeArguments
-        ? checker.getTypeArguments(arrayType)
-        : arrayType.typeArguments ?? [];
+      getTypeArguments(arrayType, checker);
 
     // this shouldn't happen in reality as:
     // - tuples require at least 1 type argument

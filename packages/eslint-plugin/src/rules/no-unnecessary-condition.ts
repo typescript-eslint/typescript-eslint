@@ -263,8 +263,14 @@ export default createRule<Options, MessageId>({
 
     function checkNodeForNullish(node: TSESTree.Expression): void {
       const type = getNodeType(node);
-      // Conditional is always necessary if it involves `any` or `unknown`
-      if (isTypeAnyType(type) || isTypeUnknownType(type)) {
+
+      // Conditional is always necessary if it involves `any`, `unknown` or a naked type parameter
+      if (
+        isTypeFlagSet(
+          type,
+          ts.TypeFlags.Any | ts.TypeFlags.Unknown | ts.TypeFlags.TypeParameter,
+        )
+      ) {
         return;
       }
 
@@ -636,7 +642,20 @@ export default createRule<Options, MessageId>({
       checkOptionalChain(node, node.callee, '');
     }
 
+    function checkAssignmentExpression(
+      node: TSESTree.AssignmentExpression,
+    ): void {
+      // Similar to checkLogicalExpressionForUnnecessaryConditionals, since
+      // a ||= b is equivalent to a || (a = b)
+      if (['||=', '&&='].includes(node.operator)) {
+        checkNode(node.left);
+      } else if (node.operator === '??=') {
+        checkNodeForNullish(node.left);
+      }
+    }
+
     return {
+      AssignmentExpression: checkAssignmentExpression,
       BinaryExpression: checkIfBinaryExpressionIsNecessaryConditional,
       CallExpression: checkCallExpression,
       ConditionalExpression: (node): void => checkNode(node.test),

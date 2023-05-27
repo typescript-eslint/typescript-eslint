@@ -1,0 +1,1 @@
+(function <T, const U>() {});

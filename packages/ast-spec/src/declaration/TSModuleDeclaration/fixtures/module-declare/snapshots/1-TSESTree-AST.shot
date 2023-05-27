@@ -3,12 +3,12 @@
 exports[`AST Fixtures declaration TSModuleDeclaration module-declare TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       body: TSModuleBlock {
         type: "TSModuleBlock",
-        body: Array [],
+        body: [],
 
         range: [17, 19],
         loc: {

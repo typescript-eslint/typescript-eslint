@@ -3,7 +3,7 @@
 exports[`AST Fixtures declaration TSEnumDeclaration with-member-one Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSEnumDeclaration {
       type: "TSEnumDeclaration",
       id: Identifier {
@@ -16,7 +16,7 @@ Program {
           end: { column: 8, line: 1 },
         },
       },
-      members: Array [
+      members: [
         TSEnumMember {
           type: "TSEnumMember",
           id: Identifier {

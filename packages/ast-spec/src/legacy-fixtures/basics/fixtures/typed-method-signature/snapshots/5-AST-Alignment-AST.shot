@@ -183,6 +183,7 @@ exports[`AST Fixtures legacy-fixtures basics typed-method-signature AST Alignmen
                 params: Array [
                   TSTypeParameter {
                     type: 'TSTypeParameter',
+-                   const: false,
 -                   in: false,
 -                   name: Identifier {
 -                     type: 'Identifier',

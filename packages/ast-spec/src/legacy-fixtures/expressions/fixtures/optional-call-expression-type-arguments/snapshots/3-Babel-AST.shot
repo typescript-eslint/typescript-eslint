@@ -3,14 +3,14 @@
 exports[`AST Fixtures legacy-fixtures expressions optional-call-expression-type-arguments Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: ChainExpression {
         type: "ChainExpression",
         expression: CallExpression {
           type: "CallExpression",
-          arguments: Array [],
+          arguments: [],
           callee: MemberExpression {
             type: "MemberExpression",
             computed: false,
@@ -45,7 +45,7 @@ Program {
           optional: false,
           typeParameters: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
-            params: Array [
+            params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
@@ -100,7 +100,7 @@ Program {
         type: "ChainExpression",
         expression: CallExpression {
           type: "CallExpression",
-          arguments: Array [],
+          arguments: [],
           callee: MemberExpression {
             type: "MemberExpression",
             computed: false,
@@ -135,7 +135,7 @@ Program {
           optional: false,
           typeParameters: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
-            params: Array [
+            params: [
               TSNumberKeyword {
                 type: "TSNumberKeyword",
 

@@ -3,7 +3,7 @@
 exports[`AST Fixtures expression TSSatisfiesExpression arrow-func-no-parentheses TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: ArrowFunctionExpression {
@@ -41,7 +41,7 @@ Program {
         expression: true,
         generator: false,
         id: null,
-        params: Array [],
+        params: [],
 
         range: [0, 24],
         loc: {

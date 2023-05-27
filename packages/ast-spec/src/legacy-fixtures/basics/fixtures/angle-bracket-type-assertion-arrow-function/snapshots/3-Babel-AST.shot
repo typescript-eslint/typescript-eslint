@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures basics angle-bracket-type-assertion-arrow-function Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           id: Identifier {
@@ -26,7 +26,7 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ReturnStatement {
                     type: "ReturnStatement",
                     argument: Identifier {
@@ -57,7 +57,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [
+              params: [
                 Identifier {
                   type: "Identifier",
                   name: "n",

@@ -121,6 +121,10 @@ export function createParseSettings(
   return parseSettings;
 }
 
+export function clearTSConfigMatchCache(): void {
+  TSCONFIG_MATCH_CACHE?.clear();
+}
+
 /**
  * Ensures source code is a string.
  */

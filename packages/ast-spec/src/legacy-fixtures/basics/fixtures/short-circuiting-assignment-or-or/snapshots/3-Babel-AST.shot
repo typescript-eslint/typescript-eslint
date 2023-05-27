@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics short-circuiting-assignment-or-or Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExpressionStatement {
       type: "ExpressionStatement",
       expression: AssignmentExpression {

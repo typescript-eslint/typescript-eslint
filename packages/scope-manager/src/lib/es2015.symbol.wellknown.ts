@@ -12,6 +12,7 @@ export const es2015_symbol_wellknown = {
   SymbolConstructor: TYPE,
   Symbol: TYPE,
   Array: TYPE,
+  ReadonlyArray: TYPE,
   Date: TYPE,
   Map: TYPE,
   WeakMap: TYPE,

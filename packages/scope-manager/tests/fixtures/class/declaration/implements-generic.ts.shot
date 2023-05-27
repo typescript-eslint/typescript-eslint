@@ -2,17 +2,17 @@
 
 exports[`class declaration implements-generic 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         TypeDefinition$1 {
           name: Identifier<"A">,
           node: TSInterfaceDeclaration$1,
         },
       ],
       name: "A",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"A">,
           isRead: true,
@@ -26,26 +26,26 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         TypeDefinition$2 {
           name: Identifier<"U">,
           node: TSTypeParameter$2,
         },
       ],
       name: "U",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         TypeDefinition$3 {
           name: Identifier<"T">,
           node: TSTypeAliasDeclaration$3,
         },
       ],
       name: "T",
-      references: Array [
+      references: [
         Reference$2 {
           identifier: Identifier<"T">,
           isRead: true,
@@ -59,35 +59,35 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$4 {
           name: Identifier<"B">,
           node: ClassDeclaration$4,
         },
       ],
       name: "B",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$6 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$5 {
           name: Identifier<"B">,
           node: ClassDeclaration$4,
         },
       ],
       name: "B",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$5,
       isStrict: false,
-      references: Array [],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
         "A" => Variable$2,
@@ -96,7 +96,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$4,
@@ -106,20 +106,20 @@ ScopeManager {
     TypeScope$2 {
       block: TSInterfaceDeclaration$1,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "U" => Variable$3,
       },
       type: "type",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
       ],
     },
     ClassScope$3 {
       block: ClassDeclaration$4,
       isStrict: true,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
       ],
@@ -128,7 +128,7 @@ ScopeManager {
       },
       type: "class",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$6,
       ],
     },

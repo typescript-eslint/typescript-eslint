@@ -2,17 +2,17 @@
 
 exports[`class declaration type-reference 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$1 {
           name: Identifier<"A">,
           node: ClassDeclaration$1,
         },
       ],
       name: "A",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"A">,
           isRead: true,
@@ -42,50 +42,50 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         ClassNameDefinition$2 {
           name: Identifier<"A">,
           node: ClassDeclaration$1,
         },
       ],
       name: "A",
-      references: Array [],
+      references: [],
       isValueVariable: true,
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         TypeDefinition$3 {
           name: Identifier<"T1">,
           node: TSTypeAliasDeclaration$2,
         },
       ],
       name: "T1",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$5 {
-      defs: Array [
+      defs: [
         TypeDefinition$4 {
           name: Identifier<"T2">,
           node: TSTypeAliasDeclaration$3,
         },
       ],
       name: "T2",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$6 {
-      defs: Array [
+      defs: [
         VariableDefinition$5 {
           name: Identifier<"v">,
           node: VariableDeclarator$4,
         },
       ],
       name: "v",
-      references: Array [
+      references: [
         Reference$3 {
           identifier: Identifier<"v">,
           init: true,
@@ -101,11 +101,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$5,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
         Reference$3,
@@ -120,7 +120,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$4,
@@ -131,13 +131,13 @@ ScopeManager {
     ClassScope$2 {
       block: ClassDeclaration$1,
       isStrict: true,
-      references: Array [],
+      references: [],
       set: Map {
         "A" => Variable$3,
       },
       type: "class",
       upper: GlobalScope$1,
-      variables: Array [
+      variables: [
         Variable$3,
       ],
     },

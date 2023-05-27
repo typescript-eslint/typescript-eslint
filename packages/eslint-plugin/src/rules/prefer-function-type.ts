@@ -79,7 +79,7 @@ export default util.createRule({
       if (
         (member.type === AST_NODE_TYPES.TSCallSignatureDeclaration ||
           member.type === AST_NODE_TYPES.TSConstructSignatureDeclaration) &&
-        typeof member.returnType !== 'undefined'
+        member.returnType !== undefined
       ) {
         if (
           tsThisTypes?.length &&
@@ -123,7 +123,7 @@ export default util.createRule({
               }
 
               if (node.type === AST_NODE_TYPES.TSInterfaceDeclaration) {
-                if (typeof node.typeParameters !== 'undefined') {
+                if (node.typeParameters !== undefined) {
                   suggestion = `type ${sourceCode
                     .getText()
                     .slice(

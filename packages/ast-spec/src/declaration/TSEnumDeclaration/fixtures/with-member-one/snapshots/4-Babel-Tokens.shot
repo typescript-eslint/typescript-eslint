@@ -1,7 +1,7 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
 exports[`AST Fixtures declaration TSEnumDeclaration with-member-one Babel - Tokens 1`] = `
-Array [
+[
   Identifier {
     type: "Identifier",
     value: "enum",

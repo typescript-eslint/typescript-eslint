@@ -1,0 +1,78 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures special TSTypeParameter interface-in-const-modifier-multiple TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSInterfaceDeclaration {
+      type: "TSInterfaceDeclaration",
+      body: TSInterfaceBody {
+        type: "TSInterfaceBody",
+        body: [],
+
+        range: [24, 26],
+        loc: {
+          start: { column: 24, line: 1 },
+          end: { column: 26, line: 1 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "L",
+
+        range: [10, 11],
+        loc: {
+          start: { column: 10, line: 1 },
+          end: { column: 11, line: 1 },
+        },
+      },
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            const: true,
+            in: true,
+            name: Identifier {
+              type: "Identifier",
+              name: "T",
+
+              range: [21, 22],
+              loc: {
+                start: { column: 21, line: 1 },
+                end: { column: 22, line: 1 },
+              },
+            },
+            out: false,
+
+            range: [12, 22],
+            loc: {
+              start: { column: 12, line: 1 },
+              end: { column: 22, line: 1 },
+            },
+          },
+        ],
+
+        range: [11, 23],
+        loc: {
+          start: { column: 11, line: 1 },
+          end: { column: 23, line: 1 },
+        },
+      },
+
+      range: [0, 26],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 26, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 27],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

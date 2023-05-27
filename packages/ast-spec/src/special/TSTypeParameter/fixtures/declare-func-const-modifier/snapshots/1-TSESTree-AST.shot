@@ -1,0 +1,73 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures special TSTypeParameter declare-func-const-modifier TSESTree - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    TSDeclareFunction {
+      type: "TSDeclareFunction",
+      async: false,
+      declare: true,
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "d",
+
+        range: [17, 18],
+        loc: {
+          start: { column: 17, line: 1 },
+          end: { column: 18, line: 1 },
+        },
+      },
+      params: [],
+      typeParameters: TSTypeParameterDeclaration {
+        type: "TSTypeParameterDeclaration",
+        params: [
+          TSTypeParameter {
+            type: "TSTypeParameter",
+            const: true,
+            in: false,
+            name: Identifier {
+              type: "Identifier",
+              name: "T",
+
+              range: [25, 26],
+              loc: {
+                start: { column: 25, line: 1 },
+                end: { column: 26, line: 1 },
+              },
+            },
+            out: false,
+
+            range: [19, 26],
+            loc: {
+              start: { column: 19, line: 1 },
+              end: { column: 26, line: 1 },
+            },
+          },
+        ],
+
+        range: [18, 27],
+        loc: {
+          start: { column: 18, line: 1 },
+          end: { column: 27, line: 1 },
+        },
+      },
+
+      range: [0, 30],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 30, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 31],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

@@ -3,10 +3,10 @@
 exports[`AST Fixtures declaration ExportNamedDeclaration enum Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: TSEnumDeclaration {
         type: "TSEnumDeclaration",
         id: Identifier {
@@ -19,7 +19,7 @@ Program {
             end: { column: 15, line: 1 },
           },
         },
-        members: Array [],
+        members: [],
 
         range: [7, 18],
         loc: {
@@ -29,7 +29,7 @@ Program {
       },
       exportKind: "value",
       source: null,
-      specifiers: Array [],
+      specifiers: [],
 
       range: [0, 18],
       loc: {

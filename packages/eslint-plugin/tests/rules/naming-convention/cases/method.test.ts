@@ -32,8 +32,12 @@ createTestCases([
     code: [
       'interface Ignored { %(): string }',
       'interface Ignored { "%"(): string }',
+      'interface Ignored { %: () => string }',
+      'interface Ignored { "%": () => string }',
       'type Ignored = { %(): string }',
       'type Ignored = { "%"(): string }',
+      'type Ignored = { %: () => string }',
+      'type Ignored = { "%": () => string }',
     ],
     options: {
       selector: 'typeMethod',

@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-property-values Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           PropertyDefinition {
             type: "PropertyDefinition",
             computed: false,
@@ -57,7 +57,7 @@ Program {
             static: false,
             value: ObjectExpression {
               type: "ObjectExpression",
-              properties: Array [],
+              properties: [],
 
               range: [100, 102],
               loc: {
@@ -88,7 +88,7 @@ Program {
             static: false,
             value: ArrayExpression {
               type: "ArrayExpression",
-              elements: Array [],
+              elements: [],
 
               range: [110, 112],
               loc: {
@@ -151,13 +151,13 @@ Program {
             static: false,
             value: NewExpression {
               type: "NewExpression",
-              arguments: Array [
+              arguments: [
                 ArrayExpression {
                   type: "ArrayExpression",
-                  elements: Array [
+                  elements: [
                     ObjectExpression {
                       type: "ObjectExpression",
-                      properties: Array [],
+                      properties: [],
 
                       range: [141, 143],
                       loc: {
@@ -167,7 +167,7 @@ Program {
                     },
                     ArrayExpression {
                       type: "ArrayExpression",
-                      elements: Array [],
+                      elements: [],
 
                       range: [145, 147],
                       loc: {

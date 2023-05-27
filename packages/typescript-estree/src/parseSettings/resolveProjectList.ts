@@ -21,6 +21,10 @@ const log = debug(
 let RESOLUTION_CACHE: ExpiringCache<string, readonly CanonicalPath[]> | null =
   null;
 
+export function clearGlobCache(): void {
+  RESOLUTION_CACHE?.clear();
+}
+
 /**
  * Normalizes, sanitizes, resolves and filters the provided project paths
  */

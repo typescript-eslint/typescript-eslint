@@ -3,15 +3,15 @@
 exports[`AST Fixtures legacy-fixtures namespaces-and-modules declare-namespace-with-exported-function Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       body: TSModuleBlock {
         type: "TSModuleBlock",
-        body: Array [
+        body: [
           ExportNamedDeclaration {
             type: "ExportNamedDeclaration",
-            assertions: Array [],
+            assertions: [],
             declaration: TSDeclareFunction {
               type: "TSDeclareFunction",
               async: false,
@@ -27,7 +27,7 @@ Program {
                   end: { column: 24, line: 4 },
                 },
               },
-              params: Array [
+              params: [
                 Identifier {
                   type: "Identifier",
                   name: "selector",
@@ -73,7 +73,7 @@ Program {
                   },
                   typeParameters: TSTypeParameterInstantiation {
                     type: "TSTypeParameterInstantiation",
-                    params: Array [
+                    params: [
                       TSAnyKeyword {
                         type: "TSAnyKeyword",
 
@@ -114,7 +114,7 @@ Program {
             },
             exportKind: "value",
             source: null,
-            specifiers: Array [],
+            specifiers: [],
 
             range: [98, 155],
             loc: {

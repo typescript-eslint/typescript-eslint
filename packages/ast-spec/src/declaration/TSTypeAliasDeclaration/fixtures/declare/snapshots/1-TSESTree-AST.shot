@@ -3,7 +3,7 @@
 exports[`AST Fixtures declaration TSTypeAliasDeclaration declare TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       declare: true,

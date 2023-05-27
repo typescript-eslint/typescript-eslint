@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures declare namespace Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSModuleDeclaration {
       type: "TSModuleDeclaration",
       body: TSModuleBlock {
         type: "TSModuleBlock",
-        body: Array [],
+        body: [],
 
         range: [95, 97],
         loc: {

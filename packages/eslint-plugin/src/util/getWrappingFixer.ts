@@ -69,7 +69,7 @@ export function getWrappingFixer(
 /**
  * Check if a node will always have the same precedence if it's parent changes.
  */
-function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
+export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
   return (
     innerNode.type === AST_NODE_TYPES.Literal ||
     innerNode.type === AST_NODE_TYPES.Identifier ||

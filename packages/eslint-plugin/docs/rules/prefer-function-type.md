@@ -85,3 +85,8 @@ type Intersection = ((data: string) => number) & ((id: number) => string);
 ## When Not To Use It
 
 If you specifically want to use an interface or type literal with a single call signature for stylistic reasons, you can disable this rule.
+
+This rule has a known edge case of sometimes triggering on global augmentations such as `interface Function`.
+These edge cases are rare and often symptomatic of odd code.
+We recommend you use an [inline ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1).
+See [#454](https://github.com/typescript-eslint/typescript-eslint/issues/454) for details.

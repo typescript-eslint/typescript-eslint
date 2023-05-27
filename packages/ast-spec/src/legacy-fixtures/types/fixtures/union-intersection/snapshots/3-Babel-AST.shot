@@ -3,10 +3,10 @@
 exports[`AST Fixtures legacy-fixtures types union-intersection Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           id: Identifier {
@@ -16,7 +16,7 @@ Program {
               type: "TSTypeAnnotation",
               typeAnnotation: TSUnionType {
                 type: "TSUnionType",
-                types: Array [
+                types: [
                   TSNumberKeyword {
                     type: "TSNumberKeyword",
 
@@ -85,7 +85,7 @@ Program {
     },
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           id: Identifier {
@@ -95,7 +95,7 @@ Program {
               type: "TSTypeAnnotation",
               typeAnnotation: TSIntersectionType {
                 type: "TSIntersectionType",
-                types: Array [
+                types: [
                   TSNumberKeyword {
                     type: "TSNumberKeyword",
 
@@ -155,7 +155,7 @@ Program {
     },
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           id: Identifier {
@@ -165,7 +165,7 @@ Program {
               type: "TSTypeAnnotation",
               typeAnnotation: TSUnionType {
                 type: "TSUnionType",
-                types: Array [
+                types: [
                   TSNumberKeyword {
                     type: "TSNumberKeyword",
 
@@ -179,7 +179,7 @@ Program {
                     type: "TSParenthesizedType",
                     typeAnnotation: TSIntersectionType {
                       type: "TSIntersectionType",
-                      types: Array [
+                      types: [
                         TSStringKeyword {
                           type: "TSStringKeyword",
 
@@ -254,7 +254,7 @@ Program {
     },
     VariableDeclaration {
       type: "VariableDeclaration",
-      declarations: Array [
+      declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
           id: Identifier {
@@ -264,12 +264,12 @@ Program {
               type: "TSTypeAnnotation",
               typeAnnotation: TSUnionType {
                 type: "TSUnionType",
-                types: Array [
+                types: [
                   TSParenthesizedType {
                     type: "TSParenthesizedType",
                     typeAnnotation: TSIntersectionType {
                       type: "TSIntersectionType",
-                      types: Array [
+                      types: [
                         TSNumberKeyword {
                           type: "TSNumberKeyword",
 

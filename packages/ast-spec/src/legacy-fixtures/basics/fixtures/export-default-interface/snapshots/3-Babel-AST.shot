@@ -3,14 +3,14 @@
 exports[`AST Fixtures legacy-fixtures basics export-default-interface Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportDefaultDeclaration {
       type: "ExportDefaultDeclaration",
       declaration: TSInterfaceDeclaration {
         type: "TSInterfaceDeclaration",
         body: TSInterfaceBody {
           type: "TSInterfaceBody",
-          body: Array [
+          body: [
             TSMethodSignature {
               type: "TSMethodSignature",
               computed: false,
@@ -25,7 +25,7 @@ Program {
                 },
               },
               kind: "method",
-              parameters: Array [],
+              parameters: [],
               typeAnnotation: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSVoidKeyword {

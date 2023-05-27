@@ -22,6 +22,11 @@
 </small>
 </p>
 <p align="center">
+<small>
+  See <strong><a href="https://v6--typescript-eslint.netlify.app">v6--typescript-eslint.netlify.app</a></strong> for documentation on <a href="https://main--typescript-eslint.netlify.app/blog/announcing-typescript-eslint-v6-beta">upcoming v6 release</a>.
+</small>
+</p>
+<p align="center">
 👆
 </p>
 <!-- markdownlint-enable MD033 -->

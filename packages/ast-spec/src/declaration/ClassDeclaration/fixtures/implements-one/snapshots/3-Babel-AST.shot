@@ -3,12 +3,12 @@
 exports[`AST Fixtures declaration ClassDeclaration implements-one Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [],
+        body: [],
 
         range: [28, 30],
         loc: {
@@ -26,7 +26,7 @@ Program {
           end: { column: 9, line: 1 },
         },
       },
-      implements: Array [
+      implements: [
         TSExpressionWithTypeArguments {
           type: "TSExpressionWithTypeArguments",
           expression: Identifier {

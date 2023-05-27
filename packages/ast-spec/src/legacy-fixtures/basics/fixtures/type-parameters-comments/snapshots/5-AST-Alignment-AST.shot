@@ -99,6 +99,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -165,6 +166,7 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
           params: Array [
             TSTypeParameter {
               type: 'TSTypeParameter',
+-             const: false,
               default: TSTypeReference {
                 type: 'TSTypeReference',
                 typeName: Identifier {
@@ -182,8 +184,8 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
                 loc: {
                   start: { column: 37, line: 5 },
                   end: { column: 40, line: 5 },
--               },
--             },
+                },
+              },
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
@@ -193,8 +195,8 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
 -               loc: {
 -                 start: { column: 23, line: 5 },
 -                 end: { column: 24, line: 5 },
-                },
-              },
+-               },
+-             },
 -             out: false,
 +             name: 'A',
 

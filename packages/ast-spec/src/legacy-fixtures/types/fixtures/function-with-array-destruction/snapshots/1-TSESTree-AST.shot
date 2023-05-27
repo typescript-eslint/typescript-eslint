@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures types function-with-array-destruction TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -18,10 +18,10 @@ Program {
       },
       typeAnnotation: TSFunctionType {
         type: "TSFunctionType",
-        params: Array [
+        params: [
           ArrayPattern {
             type: "ArrayPattern",
-            elements: Array [
+            elements: [
               Identifier {
                 type: "Identifier",
                 name: "a",

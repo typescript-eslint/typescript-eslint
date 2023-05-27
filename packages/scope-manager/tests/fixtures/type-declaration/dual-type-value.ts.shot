@@ -2,10 +2,10 @@
 
 exports[`type-declaration dual-type-value 1`] = `
 ScopeManager {
-  variables: Array [
+  variables: [
     ImplicitGlobalConstTypeVariable,
     Variable$2 {
-      defs: Array [
+      defs: [
         VariableDefinition$1 {
           name: Identifier<"dual">,
           node: VariableDeclarator$1,
@@ -16,7 +16,7 @@ ScopeManager {
         },
       ],
       name: "dual",
-      references: Array [
+      references: [
         Reference$1 {
           identifier: Identifier<"dual">,
           init: true,
@@ -48,26 +48,26 @@ ScopeManager {
       isTypeVariable: true,
     },
     Variable$3 {
-      defs: Array [
+      defs: [
         TypeDefinition$3 {
           name: Identifier<"reference1">,
           node: TSTypeAliasDeclaration$4,
         },
       ],
       name: "reference1",
-      references: Array [],
+      references: [],
       isValueVariable: false,
       isTypeVariable: true,
     },
     Variable$4 {
-      defs: Array [
+      defs: [
         VariableDefinition$4 {
           name: Identifier<"reference2">,
           node: VariableDeclarator$5,
         },
       ],
       name: "reference2",
-      references: Array [
+      references: [
         Reference$3 {
           identifier: Identifier<"reference2">,
           init: true,
@@ -83,11 +83,11 @@ ScopeManager {
       isTypeVariable: false,
     },
   ],
-  scopes: Array [
+  scopes: [
     GlobalScope$1 {
       block: Program$6,
       isStrict: false,
-      references: Array [
+      references: [
         Reference$1,
         Reference$2,
         Reference$3,
@@ -101,7 +101,7 @@ ScopeManager {
       },
       type: "global",
       upper: null,
-      variables: Array [
+      variables: [
         ImplicitGlobalConstTypeVariable,
         Variable$2,
         Variable$3,

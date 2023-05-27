@@ -3,7 +3,7 @@
 exports[`AST Fixtures legacy-fixtures basics call-signatures Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
       id: Identifier {
@@ -18,10 +18,10 @@ Program {
       },
       typeAnnotation: TSTypeLiteral {
         type: "TSTypeLiteral",
-        members: Array [
+        members: [
           TSCallSignatureDeclaration {
             type: "TSCallSignatureDeclaration",
-            parameters: Array [
+            parameters: [
               Identifier {
                 type: "Identifier",
                 name: "a",
@@ -78,7 +78,7 @@ Program {
           },
           TSConstructSignatureDeclaration {
             type: "TSConstructSignatureDeclaration",
-            parameters: Array [
+            parameters: [
               Identifier {
                 type: "Identifier",
                 name: "a",

@@ -3,12 +3,12 @@
 exports[`AST Fixtures legacy-fixtures basics class-with-constructor-and-parameter-proptery-with-override-modifier TSESTree - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ClassDeclaration {
       type: "ClassDeclaration",
       body: ClassBody {
         type: "ClassBody",
-        body: Array [
+        body: [
           MethodDefinition {
             type: "MethodDefinition",
             computed: false,
@@ -30,12 +30,12 @@ Program {
               async: false,
               body: BlockStatement {
                 type: "BlockStatement",
-                body: Array [
+                body: [
                   ExpressionStatement {
                     type: "ExpressionStatement",
                     expression: CallExpression {
                       type: "CallExpression",
-                      arguments: Array [],
+                      arguments: [],
                       callee: Super {
                         type: "Super",
 
@@ -71,7 +71,7 @@ Program {
               expression: false,
               generator: false,
               id: null,
-              params: Array [
+              params: [
                 TSParameterProperty {
                   type: "TSParameterProperty",
                   override: true,

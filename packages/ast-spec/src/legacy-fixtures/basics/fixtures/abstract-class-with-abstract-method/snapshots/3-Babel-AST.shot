@@ -3,16 +3,16 @@
 exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-method Babel - AST 1`] = `
 Program {
   type: "Program",
-  body: Array [
+  body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: Array [],
+      assertions: [],
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
         abstract: true,
         body: ClassBody {
           type: "ClassBody",
-          body: Array [
+          body: [
             MethodDefinition {
               type: "MethodDefinition",
               abstract: true,
@@ -35,7 +35,7 @@ Program {
                 expression: false,
                 generator: false,
                 id: null,
-                params: Array [],
+                params: [],
                 returnType: TSTypeAnnotation {
                   type: "TSTypeAnnotation",
                   typeAnnotation: TSTypeReference {
@@ -52,7 +52,7 @@ Program {
                     },
                     typeParameters: TSTypeParameterInstantiation {
                       type: "TSTypeParameterInstantiation",
-                      params: Array [
+                      params: [
                         TSStringKeyword {
                           type: "TSStringKeyword",
 
@@ -126,7 +126,7 @@ Program {
       },
       exportKind: "value",
       source: null,
-      specifiers: Array [],
+      specifiers: [],
 
       range: [73, 157],
       loc: {
