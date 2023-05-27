@@ -863,6 +863,6 @@ x || y;
           messageId: 'preferNullishOverOr',
         },
       ],
-    }
+    },
   ],
 });
