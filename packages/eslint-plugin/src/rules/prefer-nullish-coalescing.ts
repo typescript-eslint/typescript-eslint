@@ -300,13 +300,13 @@ export default util.createRule<Options, MessageIds>({
 
         if (tsutils.isUnionOrIntersectionType(type)) {
           if (
-            ignorePrimitives?.string &&
+            ignorePrimitives!.string &&
             type.types.some(t => tsutils.isTypeFlagSet(t, ts.TypeFlags.String))
           ) {
             return;
           }
           if (
-            ignorePrimitives?.boolean &&
+            ignorePrimitives!.boolean &&
             type.types.some(t =>
               tsutils.isTypeFlagSet(t, ts.TypeFlags.BooleanLiteral),
             )
@@ -314,9 +314,9 @@ export default util.createRule<Options, MessageIds>({
             return;
           }
           const ignorableFlags = [
-            ignorePrimitives?.boolean && ts.TypeFlags.BooleanLiteral,
-            ignorePrimitives?.number && ts.TypeFlags.Number,
-            ignorePrimitives?.string && ts.TypeFlags.String,
+            ignorePrimitives!.boolean && ts.TypeFlags.BooleanLiteral,
+            ignorePrimitives!.number && ts.TypeFlags.Number,
+            ignorePrimitives!.string && ts.TypeFlags.String,
           ]
             .filter((flag): flag is number => flag !== undefined)
             .reduce((previous, flag) => previous | flag, 0);
