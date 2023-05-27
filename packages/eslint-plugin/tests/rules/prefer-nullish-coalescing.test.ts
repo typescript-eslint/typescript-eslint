@@ -781,5 +781,50 @@ x || y;
         },
       ],
     })),
+    ...[
+      // falsy
+      { ignoreablePrimitive: 'string', literalPrimitive: "''" },
+      { ignoreablePrimitive: 'string', literalPrimitive: '``' },
+      { ignoreablePrimitive: 'number', literalPrimitive: '0' },
+      { ignoreablePrimitive: 'number', literalPrimitive: '0n' },
+      { ignoreablePrimitive: 'boolean', literalPrimitive: 'false' },
+      // truthy
+      { ignoreablePrimitive: 'string', literalPrimitive: "'a'" },
+      { ignoreablePrimitive: 'string', literalPrimitive: "`hello${'string'}`" },
+      { ignoreablePrimitive: 'number', literalPrimitive: '1' },
+      { ignoreablePrimitive: 'number', literalPrimitive: '1n' },
+      { ignoreablePrimitive: 'boolean', literalPrimitive: 'true' },
+      // unions
+      { ignoreablePrimitive: 'string', literalPrimitive: "'a' | 'b'" },
+      { ignoreablePrimitive: 'string', literalPrimitive: "'a' | `b`" },
+      { ignoreablePrimitive: 'number', literalPrimitive: '0 | 1' },
+      { ignoreablePrimitive: 'number', literalPrimitive: '1 | 2 | 3' },
+      { ignoreablePrimitive: 'boolean', literalPrimitive: 'true | false' },
+      {
+        ignoreablePrimitive: 'boolean',
+        literalPrimitive: 'true | false | null',
+      },
+    ].map<TSESLint.InvalidTestCase<MessageIds, Options>>(
+      ({ ignoreablePrimitive, literalPrimitive }) => ({
+        code: `
+    declare const x: ${literalPrimitive} | undefined;
+    x || y;
+    `,
+        options: [
+          {
+            ignorePrimitives: Object.fromEntries(
+              ignorablePrimitiveTypes
+                .filter(t => t !== ignoreablePrimitive)
+                .map(t => [t, true]),
+            ),
+          },
+        ],
+        errors: [
+          {
+            messageId: 'preferNullishOverOr',
+          },
+        ],
+      }),
+    ),
   ],
 });
