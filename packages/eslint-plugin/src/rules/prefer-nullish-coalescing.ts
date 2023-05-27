@@ -313,10 +313,14 @@ export default util.createRule<Options, MessageIds>({
           ) {
             return;
           }
-          if (
-            ignorePrimitives?.number &&
-            type.types.some(t => tsutils.isTypeFlagSet(t, ts.TypeFlags.Number))
-          ) {
+          const ignorableFlags = [
+            ignorePrimitives?.boolean && ts.TypeFlags.BooleanLiteral,
+            ignorePrimitives?.number && ts.TypeFlags.Number,
+            ignorePrimitives?.string && ts.TypeFlags.String,
+          ]
+            .filter((flag): flag is number => flag !== undefined)
+            .reduce((previous, flag) => previous | flag, 0);
+          if (type.types.some(t => tsutils.isTypeFlagSet(t, ignorableFlags))) {
             return;
           }
         }
