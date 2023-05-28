@@ -8,7 +8,7 @@ description: 'Disallow unnecessary constraints on generic types.'
 
 Generic type parameters (`<T>`) in TypeScript may be "constrained" with an [`extends` keyword](https://www.typescriptlang.org/docs/handbook/generics.html#generic-constraints).
 When no `extends` is provided, type parameters default a constraint to `unknown`.
-It is therefore redundant to `extend` from `unknown`.
+It is therefore redundant to `extend` from `any` or `unknown`.
 
 ## Examples
 
