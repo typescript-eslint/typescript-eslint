@@ -1,9 +1,9 @@
 body:
   - attributes:
-      label: RFC
+      label: Body
       value: |
-        Suggested changes...
-    id: rfc
+        Body of the technical discussion...
+    id: body
     type: textarea
   - attributes:
       label: Additional Info
@@ -12,7 +12,7 @@ body:
     id: additional
     type: textarea
   - attributes:
-      label: Before you submit your RFC, please confirm the following. If any of these required steps are not taken, we may not be able to review your RFC. Help us to help you!
+      label: Before you submit your discussion, please confirm the following. If any of these required steps are not taken, we may not be able to review your RFC. Help us to help you!
       options:
         - label: I have [read the discussions guidelines](https://typescript-eslint.io/contributing/discussions) and per those guidelines, this fits a discussion category, _not_ a help request or standard issue.
           required: true
