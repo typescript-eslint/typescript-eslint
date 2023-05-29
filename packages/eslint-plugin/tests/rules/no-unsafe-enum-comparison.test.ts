@@ -297,6 +297,13 @@ ruleTester.run('strict-enums-comparison', rule, {
 
       const bitShift = 1 << Fruit.Apple;
     `,
+    `
+      enum Fruit {
+        Apple,
+      }
+
+      const bitShift = 1 >> Fruit.Apple;
+    `,
   ],
   invalid: [
     {
