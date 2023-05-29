@@ -290,6 +290,13 @@ ruleTester.run('strict-enums-comparison', rule, {
       num === someFunction;
       mixed === someFunction;
     `,
+    `
+      enum Fruit {
+        Apple,
+      }
+
+      const bitShift = 1 << Fruit.Apple;
+    `,
   ],
   invalid: [
     {
