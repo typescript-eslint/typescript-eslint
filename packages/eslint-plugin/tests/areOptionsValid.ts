@@ -6,7 +6,7 @@ import type { JSONSchema4 } from 'json-schema';
 const ajv = new Ajv({ async: false });
 
 export function areOptionsValid(
-  rule: RuleModule<string, unknown[]>,
+  rule: RuleModule<string, readonly unknown[]>,
   options: unknown,
 ): boolean {
   const normalizedSchema = normalizeSchema(rule.meta.schema);
@@ -37,7 +37,7 @@ function normalizeSchema(
 
   return {
     type: 'array',
-    items: schema,
+    items: schema as JSONSchema4[],
     minItems: 0,
     maxItems: schema.length,
   };
