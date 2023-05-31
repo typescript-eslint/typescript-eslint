@@ -63,22 +63,9 @@ export default util.createRule({
     }
 
     return {
-      'BinaryExpression[operator=/=|<|>/]'(
+      'BinaryExpression[operator=/^[<>!]?={0,3}$/]'(
         node: TSESTree.BinaryExpression,
       ): void {
-        // Exempt bit shift operators since they are not comparisons
-        //
-        // ```ts
-        // enum Fruit {
-        //  Apple,
-        // }
-        //
-        // const myBitShift = 1 << Fruit.Apple;
-        // ```
-        if (node.operator === '>>' || node.operator === '<<') {
-          return;
-        }
-
         const left = getTypeFromNode(node.left);
         const right = getTypeFromNode(node.right);
 
