@@ -2878,21 +2878,21 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@lerna/child-process@7.0.0-alpha.0":
-  version "7.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@lerna/child-process/-/child-process-7.0.0-alpha.0.tgz#0d297551a34ebdf459fb3b6d51cb77ac832972a4"
-  integrity sha512-ZnFKrkjQms/ABsJFq/nDhmxZjgM9i1uO8I6MAMyItFKT4dcW5ut/LjNFCDP9kadlT52uFCd1W/vnU/OFDNKZaA==
+"@lerna/child-process@7.0.0-alpha.3":
+  version "7.0.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@lerna/child-process/-/child-process-7.0.0-alpha.3.tgz#4c5aab324555981cece2297b6266045831abc60f"
+  integrity sha512-/viJMNY2pQ+py3X2NAjzYrkZ1ZoTgCoRhU6/MryHex4BEQan0KKHQFRKKEG02xBKzPajJEMd8MghJe2UpttwOQ==
   dependencies:
     chalk "^4.1.0"
     execa "^5.0.0"
     strong-log-transformer "^2.1.0"
 
-"@lerna/create@7.0.0-alpha.0":
-  version "7.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/@lerna/create/-/create-7.0.0-alpha.0.tgz#f445dac6323620192ed14581f2aaea5646a1862a"
-  integrity sha512-QeslfpF5qF8usQzo2wimtBJiDZ02hnBn+FroCUmNBKhTqVeji5o/uyGforywMiwQXRooLOQyeqOFHFBowZynJQ==
+"@lerna/create@7.0.0-alpha.3":
+  version "7.0.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/@lerna/create/-/create-7.0.0-alpha.3.tgz#ff44a44a62f1ec96de5964bda3c8fc500a5e402d"
+  integrity sha512-+ZsCiiFRjIUs8QcCPfTSHzWcZU+dRcWq4QrpRHqDNvA9eA3VhKrtB7AyR2Ju+ktUX1u27WRyF/esxfs2mG8/tg==
   dependencies:
-    "@lerna/child-process" "7.0.0-alpha.0"
+    "@lerna/child-process" "7.0.0-alpha.3"
     dedent "^0.7.0"
     fs-extra "^9.1.0"
     init-package-json "^3.0.2"
@@ -6141,21 +6141,20 @@ core-util-is@^1.0.3, core-util-is@~1.0.0:
   resolved "https://registry.yarnpkg.com/core-util-is/-/core-util-is-1.0.3.tgz#a6042d3634c2b27e9328f837b965fac83808db85"
   integrity sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==
 
-cosmiconfig@7.0.0:
-  version "7.0.0"
-  resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-7.0.0.tgz#ef9b44d773959cae63ddecd122de23853b60f8d3"
-  integrity sha512-pondGvTuVYDk++upghXJabWzL6Kxu6f26ljFw64Swq9v6sQPUL3EUlVDV56diOjpCayKihL6hVe8exIACU4XcA==
-  dependencies:
-    "@types/parse-json" "^4.0.0"
-    import-fresh "^3.2.1"
-    parse-json "^5.0.0"
-    path-type "^4.0.0"
-    yaml "^1.10.0"
-
 cosmiconfig@8.0.0:
   version "8.0.0"
   resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-8.0.0.tgz#e9feae014eab580f858f8a0288f38997a7bebe97"
   integrity sha512-da1EafcpH6b/TD8vDRaWV7xFINlHlF6zKsGwS1TsuVJTZRkquaS5HTMq7uq6h31619QjbsYl21gVDOm32KM1vQ==
+  dependencies:
+    import-fresh "^3.2.1"
+    js-yaml "^4.1.0"
+    parse-json "^5.0.0"
+    path-type "^4.0.0"
+
+cosmiconfig@8.1.3:
+  version "8.1.3"
+  resolved "https://registry.yarnpkg.com/cosmiconfig/-/cosmiconfig-8.1.3.tgz#0e614a118fcc2d9e5afc2f87d53cd09931015689"
+  integrity sha512-/UkO2JKI18b5jVMJUp0lvKFMpa/Gye+ZgZjKD+DGEN9y7NRcf/nK1A0sp67ONmKtnDCNMS44E6jrk0Yc3bDuUw==
   dependencies:
     import-fresh "^3.2.1"
     js-yaml "^4.1.0"
@@ -6810,13 +6809,6 @@ dot-case@^3.0.4:
   dependencies:
     no-case "^3.0.4"
     tslib "^2.0.3"
-
-dot-prop@6.0.1:
-  version "6.0.1"
-  resolved "https://registry.yarnpkg.com/dot-prop/-/dot-prop-6.0.1.tgz#fc26b3cf142b9e59b74dbd39ed66ce620c681083"
-  integrity sha512-tE7ztYzXHIeyvc7N+hR3oi7FIbf/NIjVP9hmAt3yMXzrQ072/fpjGLx2GxNxGxUl5V73MEqYzioOMoVhGMJ5cA==
-  dependencies:
-    is-obj "^2.0.0"
 
 dot-prop@^5.1.0, dot-prop@^5.2.0:
   version "5.3.0"
@@ -9508,7 +9500,7 @@ jest-config@^29, jest-config@^29.4.1, jest-config@^29.5.0:
     slash "^3.0.0"
     strip-json-comments "^3.1.1"
 
-jest-diff@*, jest-diff@^29, jest-diff@^29.0.3, jest-diff@^29.5.0:
+jest-diff@*, jest-diff@29.4.3, jest-diff@^29, jest-diff@^29.0.3, jest-diff@^29.5.0:
   version "29.5.0"
   resolved "https://registry.yarnpkg.com/jest-diff/-/jest-diff-29.5.0.tgz#e0d83a58eb5451dcc1fa61b1c3ee4e8f5a290d63"
   integrity sha512-LtxijLLZBduXnHSniy0WMdaHjmQnt3g5sa16W4p0HqukYTTsyTW3GD1q41TyGl5YFXj/5B2U6dlh5FM1LIMgxw==
@@ -10062,13 +10054,13 @@ latest-version@^5.1.0:
   dependencies:
     package-json "^6.3.0"
 
-lerna@7.0.0-alpha.0:
-  version "7.0.0-alpha.0"
-  resolved "https://registry.yarnpkg.com/lerna/-/lerna-7.0.0-alpha.0.tgz#9ac8562c684bf5baaa4812b11a58c086b19d16ba"
-  integrity sha512-FyRCXnU4lJ4h+oUYZyKh034vLIlRr7Bxa6EQIgc12VBXb+UPcFtCGRFjNWEqrf69Sl1X/c15vim4nmEUd4O2BA==
+lerna@7.0.0-alpha.3:
+  version "7.0.0-alpha.3"
+  resolved "https://registry.yarnpkg.com/lerna/-/lerna-7.0.0-alpha.3.tgz#1ecd6a3b69fdb195cfd98d4424a9a844df6b5f0c"
+  integrity sha512-oWIlVJtItPFeoewZOvPGJb27KEIRuyEqVhr5RVCZGBku4csblRLh2QVPJ9flRwWo3sAHmL673hY+lXV01vCOyA==
   dependencies:
-    "@lerna/child-process" "7.0.0-alpha.0"
-    "@lerna/create" "7.0.0-alpha.0"
+    "@lerna/child-process" "7.0.0-alpha.3"
+    "@lerna/create" "7.0.0-alpha.3"
     "@npmcli/arborist" "6.2.3"
     "@npmcli/run-script" "4.1.7"
     "@nx/devkit" ">=16.1.3 < 17"
@@ -10083,9 +10075,8 @@ lerna@7.0.0-alpha.0:
     conventional-changelog-angular "5.0.12"
     conventional-changelog-core "4.2.4"
     conventional-recommended-bump "6.1.0"
-    cosmiconfig "7.0.0"
+    cosmiconfig "8.1.3"
     dedent "0.7.0"
-    dot-prop "6.0.1"
     envinfo "^7.7.4"
     execa "5.0.0"
     fs-extra "9.1.0"
@@ -10101,6 +10092,7 @@ lerna@7.0.0-alpha.0:
     inquirer "^8.2.4"
     is-ci "2.0.0"
     is-stream "2.0.0"
+    jest-diff "29.4.3"
     js-yaml "^4.1.0"
     libnpmaccess "^6.0.3"
     libnpmpublish "7.1.4"
