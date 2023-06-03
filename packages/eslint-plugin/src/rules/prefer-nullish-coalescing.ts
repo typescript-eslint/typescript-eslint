@@ -299,20 +299,6 @@ export default util.createRule<Options, MessageIds>({
         }
 
         if (tsutils.isUnionOrIntersectionType(type)) {
-          if (
-            ignorePrimitives!.string &&
-            type.types.some(t => tsutils.isTypeFlagSet(t, ts.TypeFlags.String))
-          ) {
-            return;
-          }
-          if (
-            ignorePrimitives!.boolean &&
-            type.types.some(t =>
-              tsutils.isTypeFlagSet(t, ts.TypeFlags.BooleanLiteral),
-            )
-          ) {
-            return;
-          }
           const ignorableFlags = [
             ignorePrimitives!.boolean && ts.TypeFlags.BooleanLiteral,
             ignorePrimitives!.number && ts.TypeFlags.Number,
