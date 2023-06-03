@@ -137,6 +137,7 @@ If you would like to ignore certain primitive types that can be falsy then you m
 
 - `string: true`, ignores `null` or `undefined` unions with `string` (default: false).
 - `number: true`, ignores `null` or `undefined` unions with `number` (default: false).
+- `bigint: true`, ignores `null` or `undefined` unions with `bigint` (default: false).
 - `boolean: true`, ignores `null` or `undefined` unions with `boolean` (default: false).
 
 ## When Not To Use It
