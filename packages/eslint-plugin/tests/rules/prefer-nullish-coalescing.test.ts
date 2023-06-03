@@ -783,57 +783,67 @@ x || y;
     })),
     ...[
       // falsy
-      { ignoreablePrimitive: 'string', literalPrimitive: "''" },
-      { ignoreablePrimitive: 'string', literalPrimitive: '``' },
-      { ignoreablePrimitive: 'number', literalPrimitive: '0' },
-      { ignoreablePrimitive: 'bigint', literalPrimitive: '0n' },
-      { ignoreablePrimitive: 'boolean', literalPrimitive: 'false' },
+      { ignoreablePrimitive: ['string'], literalPrimitive: "''" },
+      { ignoreablePrimitive: ['string'], literalPrimitive: '``' },
+      { ignoreablePrimitive: ['number'], literalPrimitive: '0' },
+      { ignoreablePrimitive: ['bigint'], literalPrimitive: '0n' },
+      { ignoreablePrimitive: ['boolean'], literalPrimitive: 'false' },
       // truthy
-      { ignoreablePrimitive: 'string', literalPrimitive: "'a'" },
-      { ignoreablePrimitive: 'string', literalPrimitive: "`hello${'string'}`" },
-      { ignoreablePrimitive: 'number', literalPrimitive: '1' },
-      { ignoreablePrimitive: 'bigint', literalPrimitive: '1n' },
-      { ignoreablePrimitive: 'boolean', literalPrimitive: 'true' },
-      // unions
-      { ignoreablePrimitive: 'string', literalPrimitive: "'a' | 'b'" },
-      { ignoreablePrimitive: 'string', literalPrimitive: "'a' | `b`" },
-      { ignoreablePrimitive: 'number', literalPrimitive: '0 | 1' },
-      { ignoreablePrimitive: 'number', literalPrimitive: '1 | 2 | 3' },
-      { ignoreablePrimitive: 'bigint', literalPrimitive: '0n | 1n' },
-      { ignoreablePrimitive: 'bigint', literalPrimitive: '1n | 2n | 3n' },
-      { ignoreablePrimitive: 'boolean', literalPrimitive: 'true | false' },
-      // Mixed unions
-      { ignoreablePrimitive: 'number', literalPrimitive: '0 | 1 | 0n | 1n' },
-      { ignoreablePrimitive: 'bigint', literalPrimitive: '0 | 1 | 0n | 1n' },
+      { ignoreablePrimitive: ['string'], literalPrimitive: "'a'" },
       {
-        ignoreablePrimitive: 'number | bigint',
+        ignoreablePrimitive: ['string'],
+        literalPrimitive: "`hello${'string'}`",
+      },
+      { ignoreablePrimitive: ['number'], literalPrimitive: '1' },
+      { ignoreablePrimitive: ['bigint'], literalPrimitive: '1n' },
+      { ignoreablePrimitive: ['boolean'], literalPrimitive: 'true' },
+      // unions
+      { ignoreablePrimitive: ['string'], literalPrimitive: "'a' | 'b'" },
+      { ignoreablePrimitive: ['string'], literalPrimitive: "'a' | `b`" },
+      { ignoreablePrimitive: ['number'], literalPrimitive: '0 | 1' },
+      { ignoreablePrimitive: ['number'], literalPrimitive: '1 | 2 | 3' },
+      { ignoreablePrimitive: ['bigint'], literalPrimitive: '0n | 1n' },
+      { ignoreablePrimitive: ['bigint'], literalPrimitive: '1n | 2n | 3n' },
+      { ignoreablePrimitive: ['boolean'], literalPrimitive: 'true | false' },
+      // Mixed unions
+      {
+        ignoreablePrimitive: ['number'],
         literalPrimitive: '0 | 1 | 0n | 1n',
       },
       {
-        ignoreablePrimitive: 'boolean',
+        ignoreablePrimitive: ['bigint'],
+        literalPrimitive: '0 | 1 | 0n | 1n',
+      },
+      {
+        ignoreablePrimitive: ['number', 'bigint'],
+        literalPrimitive: '0 | 1 | 0n | 1n',
+      },
+      {
+        ignoreablePrimitive: ['boolean'],
         literalPrimitive: 'true | false | null',
       },
     ].map<TSESLint.InvalidTestCase<MessageIds, Options>>(
-      ({ ignoreablePrimitive, literalPrimitive }) => ({
-        code: `
+      ({ ignoreablePrimitive, literalPrimitive }) => {
+        const ignorePrimitives = Object.fromEntries(
+          ignorablePrimitiveTypes.map(t => [
+            t,
+            !ignoreablePrimitive.includes(t),
+          ]),
+        );
+        return {
+          code: `
     declare const x: ${literalPrimitive} | undefined;
     x || y;
+    // ${JSON.stringify(ignorePrimitives)}
     `,
-        options: [
-          {
-            ignorePrimitives: Object.fromEntries(
-              ignorablePrimitiveTypes
-                .filter(t => t !== ignoreablePrimitive)
-                .map(t => [t, true]),
-            ),
-          },
-        ],
-        errors: [
-          {
-            messageId: 'preferNullishOverOr',
-          },
-        ],
-      }),
+          options: [{ ignorePrimitives }],
+          errors: [
+            {
+              messageId: 'preferNullishOverOr',
+            },
+          ],
+        };
+      },
     ),
     {
       code: `
