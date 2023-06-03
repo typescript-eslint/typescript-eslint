@@ -20,7 +20,7 @@ const ruleTester = new RuleTester({
 
 const types = ['string', 'number', 'boolean', 'object'];
 const nullishTypes = ['null', 'undefined', 'null | undefined'];
-const ignorablePrimitiveTypes = ['string', 'number', 'boolean'];
+const ignorablePrimitiveTypes = ['string', 'number', 'boolean', 'bigint'];
 
 function typeValidTest(
   cb: (type: string) => TSESLint.ValidTestCase<Options> | string,
@@ -786,20 +786,29 @@ x || y;
       { ignoreablePrimitive: 'string', literalPrimitive: "''" },
       { ignoreablePrimitive: 'string', literalPrimitive: '``' },
       { ignoreablePrimitive: 'number', literalPrimitive: '0' },
-      { ignoreablePrimitive: 'number', literalPrimitive: '0n' },
+      { ignoreablePrimitive: 'bigint', literalPrimitive: '0n' },
       { ignoreablePrimitive: 'boolean', literalPrimitive: 'false' },
       // truthy
       { ignoreablePrimitive: 'string', literalPrimitive: "'a'" },
       { ignoreablePrimitive: 'string', literalPrimitive: "`hello${'string'}`" },
       { ignoreablePrimitive: 'number', literalPrimitive: '1' },
-      { ignoreablePrimitive: 'number', literalPrimitive: '1n' },
+      { ignoreablePrimitive: 'bigint', literalPrimitive: '1n' },
       { ignoreablePrimitive: 'boolean', literalPrimitive: 'true' },
       // unions
       { ignoreablePrimitive: 'string', literalPrimitive: "'a' | 'b'" },
       { ignoreablePrimitive: 'string', literalPrimitive: "'a' | `b`" },
       { ignoreablePrimitive: 'number', literalPrimitive: '0 | 1' },
       { ignoreablePrimitive: 'number', literalPrimitive: '1 | 2 | 3' },
+      { ignoreablePrimitive: 'bigint', literalPrimitive: '0n | 1n' },
+      { ignoreablePrimitive: 'bigint', literalPrimitive: '1n | 2n | 3n' },
       { ignoreablePrimitive: 'boolean', literalPrimitive: 'true | false' },
+      // Mixed unions
+      { ignoreablePrimitive: 'number', literalPrimitive: '0 | 1 | 0n | 1n' },
+      { ignoreablePrimitive: 'bigint', literalPrimitive: '0 | 1 | 0n | 1n' },
+      {
+        ignoreablePrimitive: 'number | bigint',
+        literalPrimitive: '0 | 1 | 0n | 1n',
+      },
       {
         ignoreablePrimitive: 'boolean',
         literalPrimitive: 'true | false | null',

@@ -11,6 +11,7 @@ export type Options = [
     ignoreConditionalTests?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
     ignorePrimitives?: {
+      bigint?: boolean;
       boolean?: boolean;
       number?: boolean;
       string?: boolean;
@@ -61,6 +62,7 @@ export default util.createRule<Options, MessageIds>({
           ignorePrimitives: {
             type: 'object',
             properties: {
+              bigint: { type: 'boolean' },
               boolean: { type: 'boolean' },
               number: { type: 'boolean' },
               string: { type: 'boolean' },
@@ -81,6 +83,7 @@ export default util.createRule<Options, MessageIds>({
       ignoreTernaryTests: true,
       ignoreMixedLogicalExpressions: true,
       ignorePrimitives: {
+        bigint: false,
         boolean: false,
         number: false,
         string: false,
@@ -299,6 +302,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const ignorableFlags = [
+          ignorePrimitives!.bigint && ts.TypeFlags.BigInt,
           ignorePrimitives!.boolean && ts.TypeFlags.BooleanLiteral,
           ignorePrimitives!.number && ts.TypeFlags.Number,
           ignorePrimitives!.string && ts.TypeFlags.String,
