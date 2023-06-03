@@ -298,17 +298,19 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        if (tsutils.isUnionOrIntersectionType(type)) {
-          const ignorableFlags = [
-            ignorePrimitives!.boolean && ts.TypeFlags.BooleanLiteral,
-            ignorePrimitives!.number && ts.TypeFlags.Number,
-            ignorePrimitives!.string && ts.TypeFlags.String,
-          ]
-            .filter((flag): flag is number => flag !== undefined)
-            .reduce((previous, flag) => previous | flag, 0);
-          if (type.types.some(t => tsutils.isTypeFlagSet(t, ignorableFlags))) {
-            return;
-          }
+        const ignorableFlags = [
+          ignorePrimitives!.boolean && ts.TypeFlags.BooleanLiteral,
+          ignorePrimitives!.number && ts.TypeFlags.Number,
+          ignorePrimitives!.string && ts.TypeFlags.String,
+        ]
+          .filter((flag): flag is number => flag !== undefined)
+          .reduce((previous, flag) => previous | flag, 0);
+        if (
+          (type as ts.UnionOrIntersectionType).types.some(t =>
+            tsutils.isTypeFlagSet(t, ignorableFlags),
+          )
+        ) {
+          return;
         }
 
         const barBarOperator = util.nullThrows(
