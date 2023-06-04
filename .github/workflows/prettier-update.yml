@@ -41,6 +41,11 @@ jobs:
           git config --global user.name "JamesHenry"
           git remote set-url origin https://x-access-token:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git
 
-          git add --all
-          git commit -m "chore: update formatting after prettier upgrade"
-          git push
+          # If the status is empty, there are no uncommitted changes
+          if [[ -z $(git status --porcelain) ]]; then
+            echo "No uncommitted changes"
+          else
+            git add --all
+            git commit -m "chore: update formatting after prettier upgrade"
+            git push
+          fi
