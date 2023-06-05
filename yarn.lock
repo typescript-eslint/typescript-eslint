@@ -2903,21 +2903,21 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@lerna/child-process@7.0.0-alpha.6":
-  version "7.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/@lerna/child-process/-/child-process-7.0.0-alpha.6.tgz#2b0a386a76f84cca54ee1ecae4a87776d30f2046"
-  integrity sha512-AEr2PgM//YH854xB7RvLx9zJB2lrY2yk/ikUPjmUqOUgnyYREVy4lVTs1eyTCbsi3v3qAyAn1Agsi4PX1QGqBA==
+"@lerna/child-process@7.0.0-alpha.7":
+  version "7.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@lerna/child-process/-/child-process-7.0.0-alpha.7.tgz#70705c9b64c1e2bbb61d2947187b8af4780d2251"
+  integrity sha512-W+LVyQrcqZyBxdxXf17X1WS9SCD4SXGbv8xAP2lYkVB+G2uiyPHOOXpLVbchzHNe9ASICbeSKvINEX4y1b8gWg==
   dependencies:
     chalk "^4.1.0"
     execa "^5.0.0"
     strong-log-transformer "^2.1.0"
 
-"@lerna/create@7.0.0-alpha.6":
-  version "7.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/@lerna/create/-/create-7.0.0-alpha.6.tgz#2f174093c7685cca35cfc2e1d2a9d091ae50efce"
-  integrity sha512-Q5o+qotv/0LjkK+ShXgDMgRo8cIMszVDua2ixeFMm/3zJ76HxLmhtzrMLIpi9q+4FmWh8twPmrqhTseLdb7XwA==
+"@lerna/create@7.0.0-alpha.7":
+  version "7.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/@lerna/create/-/create-7.0.0-alpha.7.tgz#64655508912e24d2cf495264f876d7edc2ce61e0"
+  integrity sha512-uSkgv5cfMpKpksOy7F5So/DJJx0b70lLKC2bavYIldgP3gecwsUIo7jxZIgVNZYVudyjH8TkdB6YYxSvXCNKQg==
   dependencies:
-    "@lerna/child-process" "7.0.0-alpha.6"
+    "@lerna/child-process" "7.0.0-alpha.7"
     dedent "^0.7.0"
     fs-extra "^9.1.0"
     init-package-json "^3.0.2"
@@ -10176,13 +10176,13 @@ latest-version@^5.1.0:
   dependencies:
     package-json "^6.3.0"
 
-lerna@7.0.0-alpha.6:
-  version "7.0.0-alpha.6"
-  resolved "https://registry.yarnpkg.com/lerna/-/lerna-7.0.0-alpha.6.tgz#5199f595544cf2f1d39887433d81acde0d8ef36a"
-  integrity sha512-iZk2QoWiRz2p/EcktFdjYYpNmvg28ZVX1DaR539HP84jRs4oxqdAa+UT/HUOdzjsPj/NYQphxUbCFJEEmzMdpw==
+lerna@7.0.0-alpha.7:
+  version "7.0.0-alpha.7"
+  resolved "https://registry.yarnpkg.com/lerna/-/lerna-7.0.0-alpha.7.tgz#1f9446e0108d91fa42d76bb38e547cc520ae2951"
+  integrity sha512-c7kOZ9oDzIGHpcU7a7wxioLTC4uGwnN0a6gWBxq9DjhV8ws8fXRbRDf2l+UJWR0QpH+RbT7QVO2xEEZJ2laMCg==
   dependencies:
-    "@lerna/child-process" "7.0.0-alpha.6"
-    "@lerna/create" "7.0.0-alpha.6"
+    "@lerna/child-process" "7.0.0-alpha.7"
+    "@lerna/create" "7.0.0-alpha.7"
     "@npmcli/arborist" "6.2.3"
     "@npmcli/run-script" "4.1.7"
     "@nx/devkit" ">=16.1.3 < 17"
