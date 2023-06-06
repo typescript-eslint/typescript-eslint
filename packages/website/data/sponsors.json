@@ -10,14 +10,14 @@
     "id": "Nx (by Nrwl)",
     "image": "https://images.opencollective.com/nx/0efbe42/logo.png",
     "name": "Nx (by Nrwl)",
-    "totalDonations": 700000,
+    "totalDonations": 725000,
     "website": "https://nx.dev"
   },
   {
     "id": "ESLint",
     "image": "https://images.opencollective.com/eslint/96b09dc/logo.png",
     "name": "ESLint",
-    "totalDonations": 305000,
+    "totalDonations": 320000,
     "website": "https://eslint.org/"
   },
   {
@@ -31,14 +31,14 @@
     "id": "Airbnb",
     "image": "https://images.opencollective.com/airbnb/d327d66/logo.png",
     "name": "Airbnb",
-    "totalDonations": 170800,
+    "totalDonations": 175800,
     "website": "https://www.airbnb.com/"
   },
   {
     "id": "Codecademy",
     "image": "https://images.opencollective.com/codecademy/d56a48d/logo.png",
     "name": "Codecademy",
-    "totalDonations": 160000,
+    "totalDonations": 170000,
     "website": "https://codecademy.com"
   },
   {
@@ -63,18 +63,18 @@
     "website": "https://blog.coinbase.com/engineering-and-security/home"
   },
   {
+    "id": "Sourcegraph",
+    "image": "https://images.opencollective.com/sourcegraph/67e40ff/logo.png",
+    "name": "Sourcegraph",
+    "totalDonations": 120000,
+    "website": "https://about.sourcegraph.com"
+  },
+  {
     "id": "Sentry",
     "image": "https://images.opencollective.com/sentry/9620d33/logo.png",
     "name": "Sentry",
     "totalDonations": 114800,
     "website": "https://sentry.io/welcome/"
-  },
-  {
-    "id": "Sourcegraph",
-    "image": "https://images.opencollective.com/sourcegraph/67e40ff/logo.png",
-    "name": "Sourcegraph",
-    "totalDonations": 110000,
-    "website": "https://about.sourcegraph.com"
   },
   {
     "id": "EY Doberman",
@@ -115,7 +115,7 @@
     "id": "STORIS",
     "image": "https://images.opencollective.com/storis/dfb0e13/logo.png",
     "name": "STORIS",
-    "totalDonations": 36000,
+    "totalDonations": 38500,
     "website": "https://www.storis.com/"
   },
   {
@@ -150,7 +150,7 @@
     "id": "David Johnston",
     "image": "https://images.opencollective.com/blacksheepcode/976d69a/avatar.png",
     "name": "David Johnston",
-    "totalDonations": 18000,
+    "totalDonations": 18500,
     "website": "https://blacksheepcode.com"
   },
   {
@@ -185,28 +185,28 @@
     "id": "Evil Martians",
     "image": "https://images.opencollective.com/evilmartians/707ab4d/logo.png",
     "name": "Evil Martians",
-    "totalDonations": 13000,
+    "totalDonations": 13500,
     "website": "https://evilmartians.com/"
   },
   {
     "id": "Balsa",
     "image": "https://images.opencollective.com/balsa/77de498/logo.png",
     "name": "Balsa",
-    "totalDonations": 13000,
+    "totalDonations": 13500,
     "website": "https://balsa.com"
   },
   {
     "id": "THE PADDING",
     "image": "https://images.opencollective.com/thepadding/55e79ad/logo.png",
     "name": "THE PADDING",
-    "totalDonations": 11000,
+    "totalDonations": 12000,
     "website": "https://paddn.com/%e9%a6%99%e6%b8%af%e7%b6%b2%e9%a0%81%e8%a8%ad%e8%a8%88%e5%85%ac%e5%8f%b8/"
   },
   {
     "id": "Corellium",
     "image": "https://images.opencollective.com/corellium/aa8c228/logo.png",
     "name": "Corellium",
-    "totalDonations": 10800,
+    "totalDonations": 11400,
     "website": "https://www.corellium.com"
   },
   {

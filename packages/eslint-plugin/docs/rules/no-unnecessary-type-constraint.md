@@ -7,8 +7,8 @@ description: 'Disallow unnecessary constraints on generic types.'
 > See **https://typescript-eslint.io/rules/no-unnecessary-type-constraint** for documentation.
 
 Generic type parameters (`<T>`) in TypeScript may be "constrained" with an [`extends` keyword](https://www.typescriptlang.org/docs/handbook/generics.html#generic-constraints).
-When no `extends` is provided, type parameters default a constraint to `any`.
-It is therefore redundant to `extend` from `any`.
+When no `extends` is provided, type parameters default a constraint to `unknown`.
+It is therefore redundant to `extend` from `any` or `unknown`.
 
 ## Examples
 
@@ -19,7 +19,11 @@ It is therefore redundant to `extend` from `any`.
 ```ts
 interface FooAny<T extends any> {}
 
+interface FooUnknown<T extends unknown> {}
+
 type BarAny<T extends any> = {};
+
+type BarUnknown<T extends unknown> = {};
 
 class BazAny<T extends any> {
   quxAny<U extends any>() {}
