@@ -46,7 +46,6 @@
     "typescript": "*"
   },
   "devDependencies": {
-    "@types/lodash": "*",
     "@typescript-eslint/parser": "5.59.9"
   }
 }
