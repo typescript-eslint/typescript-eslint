@@ -123,12 +123,12 @@ Program {
           type: "VariableDeclarator",
           id: Identifier {
             type: "Identifier",
-            name: "x",
+            name: "componentDashed",
 
-            range: [96, 97],
+            range: [96, 111],
             loc: {
               start: { column: 6, line: 7 },
-              end: { column: 7, line: 7 },
+              end: { column: 21, line: 7 },
             },
           },
           init: JSXElement {
@@ -144,64 +144,64 @@ Program {
                   type: "JSXIdentifier",
                   name: "baz-bam",
 
-                  range: [109, 116],
+                  range: [123, 130],
                   loc: {
-                    start: { column: 19, line: 7 },
-                    end: { column: 26, line: 7 },
+                    start: { column: 33, line: 7 },
+                    end: { column: 40, line: 7 },
                   },
                 },
                 namespace: JSXIdentifier {
                   type: "JSXIdentifier",
                   name: "foo-bar",
 
-                  range: [101, 108],
+                  range: [115, 122],
                   loc: {
-                    start: { column: 11, line: 7 },
-                    end: { column: 18, line: 7 },
+                    start: { column: 25, line: 7 },
+                    end: { column: 32, line: 7 },
                   },
                 },
 
-                range: [101, 116],
+                range: [115, 130],
                 loc: {
-                  start: { column: 11, line: 7 },
-                  end: { column: 26, line: 7 },
+                  start: { column: 25, line: 7 },
+                  end: { column: 40, line: 7 },
                 },
               },
               selfClosing: true,
 
-              range: [100, 119],
+              range: [114, 133],
               loc: {
-                start: { column: 10, line: 7 },
-                end: { column: 29, line: 7 },
+                start: { column: 24, line: 7 },
+                end: { column: 43, line: 7 },
               },
             },
 
-            range: [100, 119],
+            range: [114, 133],
             loc: {
-              start: { column: 10, line: 7 },
-              end: { column: 29, line: 7 },
+              start: { column: 24, line: 7 },
+              end: { column: 43, line: 7 },
             },
           },
 
-          range: [96, 119],
+          range: [96, 133],
           loc: {
             start: { column: 6, line: 7 },
-            end: { column: 29, line: 7 },
+            end: { column: 43, line: 7 },
           },
         },
       ],
       kind: "const",
 
-      range: [90, 120],
+      range: [90, 134],
       loc: {
         start: { column: 0, line: 7 },
-        end: { column: 30, line: 7 },
+        end: { column: 44, line: 7 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 121],
+  range: [0, 135],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 8 },
