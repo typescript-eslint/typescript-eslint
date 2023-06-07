@@ -42,6 +42,22 @@ class Foo {
   }
 }
     `,
+    `
+class Foo {
+  constructor(private name: string) {
+    this['name'] = name;
+  }
+}
+    `,
+    `
+class Foo {
+  names: unknown[];
+
+  constructor(...names: unknown[]) {
+    this.names = names;
+  }
+}
+    `,
   ],
   invalid: [
     {
