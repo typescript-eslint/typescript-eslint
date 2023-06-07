@@ -4,4 +4,4 @@ namespace JSX {
   }
 }
 
-const x = <foo-bar:baz-bam />;
+const componentDashed = <foo-bar:baz-bam />;
