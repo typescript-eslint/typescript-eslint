@@ -38,7 +38,7 @@
     "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "nx lint",
-    "test": "jest --coverage --runInBand",
+    "test": "jest --coverage --runInBand --verbose",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
