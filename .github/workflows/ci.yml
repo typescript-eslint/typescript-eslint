@@ -57,7 +57,7 @@ jobs:
         uses: ./.github/actions/prepare-build
 
   unit_tests:
-    name: Run Unit Tests
+    name: Run Specific Unit Tests
     needs: [build]
     runs-on: ubuntu-latest
     strategy:
