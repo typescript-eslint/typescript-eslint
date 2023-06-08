@@ -27,7 +27,9 @@ describe('parseAndGenerateServices', () => {
     };
 
     describe('when file is not in the project and createDefaultProgram=true', () => {
-      it('resolves __PLACEHOLDER__ correctly', () => {
+      // https://github.com/typescript-eslint/typescript-eslint/pull/7088
+      // eslint-disable-next-line jest/no-disabled-tests
+      it.skip('resolves __PLACEHOLDER__ correctly', () => {
         expect(
           parser
             .parseAndGenerateServices(code, {
