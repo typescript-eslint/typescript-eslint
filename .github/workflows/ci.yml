@@ -94,7 +94,7 @@ jobs:
         uses: ./.github/actions/prepare-build
       - name: Swap TypeScript Resolution
         run: |
-          node ./replace-typescript-resolution.mjs {{ matrix.version }}
+          node ./replace-typescript-resolution.mjs ${{ matrix.version }}
           cat package.json
       - name: Install Again
         run: yarn
