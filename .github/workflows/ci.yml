@@ -121,7 +121,7 @@ jobs:
     strategy:
       matrix:
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
-        node-version: [20]
+        node-version: [14, 18]
         package:
           [
             'ast-spec',
