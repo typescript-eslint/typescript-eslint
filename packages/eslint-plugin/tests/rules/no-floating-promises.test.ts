@@ -31,7 +31,6 @@ async function test() {
     .catch(() => {})
     .finally(() => {});
   Promise.resolve('value').catch(() => {});
-  Promise.resolve('value').finally(() => {});
   return Promise.resolve('value');
 }
     `,
@@ -58,7 +57,6 @@ async function test() {
     .catch(() => {})
     .finally(() => {});
   Promise.reject(new Error('message')).catch(() => {});
-  Promise.reject(new Error('message')).finally(() => {});
   return Promise.reject(new Error('message'));
 }
     `,
@@ -77,7 +75,6 @@ async function test() {
     .catch(() => {})
     .finally(() => {});
   (async () => true)().catch(() => {});
-  (async () => true)().finally(() => {});
   return (async () => true)();
 }
     `,
@@ -97,7 +94,6 @@ async function test() {
     .catch(() => {})
     .finally(() => {});
   returnsPromise().catch(() => {});
-  returnsPromise().finally(() => {});
   return returnsPromise();
 }
     `,
@@ -106,7 +102,6 @@ async function test() {
   const x = Promise.resolve();
   const y = x.then(() => {});
   y.catch(() => {});
-  y.finally(() => {});
 }
     `,
     `
@@ -117,7 +112,6 @@ async function test() {
     `
 async function test() {
   Promise.resolve().catch(() => {}), 123;
-  Promise.resolve().finally(() => {}), 123;
   123,
     Promise.resolve().then(
       () => {},
@@ -160,7 +154,6 @@ async function test() {
     .catch(() => {})
     .finally(() => {});
   promiseValue.catch(() => {});
-  promiseValue.finally(() => {});
   return promiseValue;
 }
     `,
@@ -193,12 +186,8 @@ async function test() {
     () => {},
   );
   promiseIntersection.then(() => {}).catch(() => {});
-  promiseIntersection
-    .then(() => {})
-    .catch(() => {})
-    .finally(() => {});
+  promiseIntersection.then(() => {}).catch(() => {});
   promiseIntersection.catch(() => {});
-  promiseIntersection.finally(() => {});
   return promiseIntersection;
 }
     `,
@@ -218,7 +207,6 @@ async function test() {
     .catch(() => {})
     .finally(() => {});
   canThen.catch(() => {});
-  canThen.finally(() => {});
   return canThen;
 }
     `,
@@ -315,7 +303,6 @@ async function test() {
     .catch(() => {})
     .finally(() => {});
   promise.catch(() => {});
-  promise.finally(() => {});
   return promise;
 }
     `,
@@ -333,7 +320,6 @@ async function test() {
     ?.then(() => {})
     ?.catch(() => {});
   returnsPromise()?.catch(() => {});
-  returnsPromise()?.finally(() => {});
   return returnsPromise();
 }
     `,
@@ -464,6 +450,22 @@ declare const definitelyCallable: () => void;
 Promise.reject().catch(definitelyCallable);
       `,
       options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+Promise.reject()
+  .catch(() => {})
+  .finally(() => {});
+Promise.reject()
+  .catch(() => {})
+  .finally(() => {})
+  .finally(() => {});
+Promise.reject()
+  .catch(() => {})
+  .finally(() => {})
+  .finally(() => {})
+  .finally(() => {});
+      `,
     },
   ],
 
@@ -612,7 +614,6 @@ async function test() {
   (async () => true)();
   (async () => true)().then(() => {});
   (async () => true)().catch();
-  (async () => true)().finally();
 }
       `,
       errors: [
@@ -626,10 +627,6 @@ async function test() {
         },
         {
           line: 5,
-          messageId: 'floatingVoid',
-        },
-        {
-          line: 6,
           messageId: 'floatingVoid',
         },
       ],
@@ -940,7 +937,6 @@ async function test() {
   promiseIntersection;
   promiseIntersection.then(() => {});
   promiseIntersection.catch();
-  promiseIntersection.finally();
 }
       `,
       errors: [
@@ -954,10 +950,6 @@ async function test() {
         },
         {
           line: 7,
-          messageId: 'floatingVoid',
-        },
-        {
-          line: 8,
           messageId: 'floatingVoid',
         },
       ],
@@ -1584,6 +1576,102 @@ Promise.reject() || 3;
         {
           line: 2,
           messageId: 'floating',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject().finally(() => {});
+Promise.reject()
+  .finally(() => {})
+  .finally(() => {});
+Promise.reject()
+  .finally(() => {})
+  .finally(() => {})
+  .finally(() => {});
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'floatingVoid',
+        },
+        {
+          line: 3,
+          messageId: 'floatingVoid',
+        },
+        {
+          line: 6,
+          messageId: 'floatingVoid',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject()
+  .then(() => {})
+  .finally(() => {});
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'floatingVoid',
+        },
+      ],
+    },
+    {
+      code: `
+declare const returnsPromise: () => Promise<void> | null;
+returnsPromise()?.finally(() => {});
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'floatingVoid',
+        },
+      ],
+    },
+    {
+      code: `
+const promiseIntersection: Promise<number> & number;
+promiseIntersection.finally(() => {});
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'floatingVoid',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.resolve().finally(() => {}), 123;
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'floatingVoid',
+        },
+      ],
+    },
+    {
+      code: `
+(async () => true)().finally();
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'floatingVoid',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject(new Error('message')).finally(() => {});
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'floatingVoid',
         },
       ],
     },

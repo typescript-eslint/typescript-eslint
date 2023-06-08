@@ -233,8 +233,8 @@ export default util.createRule<Options, MessageId>({
       }
 
       if (node.type === AST_NODE_TYPES.CallExpression) {
-        // If the outer expression is a call, it must be either a `.then()` or
-        // `.catch()` that handles the promise.
+        // If the outer expression is a call, a `.catch()` or `.then()` with
+        // rejection handler handles the promise.
 
         const catchRejectionHandler = getRejectionHandlerFromCatchCall(node);
         if (catchRejectionHandler) {
@@ -254,10 +254,13 @@ export default util.createRule<Options, MessageId>({
           }
         }
 
-        if (isPromiseFinallyCallWithHandler(node)) {
-          return { isUnhandled: false };
+        // `x.finally()` is transparent to resolution of the promise, so check `x`.
+        const promiseFinally = parsePromiseFinallyCall(node);
+        if (promiseFinally) {
+          return isUnhandledPromise(checker, promiseFinally.object);
         }
 
+        // All other cases are unhandled.
         return { isUnhandled: true };
       } else if (node.type === AST_NODE_TYPES.ConditionalExpression) {
         // We must be getting the promise-like value from one of the branches of the
@@ -381,13 +384,12 @@ function getRejectionHandlerFromThenCall(
   }
 }
 
-function isPromiseFinallyCallWithHandler(
+function parsePromiseFinallyCall(
   expression: TSESTree.CallExpression,
-): boolean {
-  return (
-    expression.callee.type === AST_NODE_TYPES.MemberExpression &&
+): { object: TSESTree.Expression } | undefined {
+  return expression.callee.type === AST_NODE_TYPES.MemberExpression &&
     expression.callee.property.type === AST_NODE_TYPES.Identifier &&
-    expression.callee.property.name === 'finally' &&
-    expression.arguments.length >= 1
-  );
+    expression.callee.property.name === 'finally'
+    ? { object: expression.callee.object }
+    : undefined;
 }
