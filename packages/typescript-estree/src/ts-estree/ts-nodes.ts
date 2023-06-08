@@ -16,6 +16,12 @@ declare module 'typescript' {
   export interface AssertEntry extends ts.Node {}
   // added in TS 4.9
   export interface SatisfiesExpression extends ts.Node {}
+  // added in TS 5.1
+  export interface JsxNamespacedName extends ts.Node {
+    readonly kind: ts.SyntaxKind.JsxNamespacedName;
+    readonly name: ts.Identifier;
+    readonly namespace: ts.Identifier;
+  }
   /* eslint-enable @typescript-eslint/no-empty-interface */
 }
 

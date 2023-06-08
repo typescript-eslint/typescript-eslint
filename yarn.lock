@@ -14723,9 +14723,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@*, "typescript@>=3 < 6", "typescript@>=3.3.1 <5.2.0", "typescript@https://typescript.visualstudio.com/cf7ac146-d525-443c-b23c-0d58337efebc/_apis/build/builds/155350/artifacts?artifactName=tgz&fileId=25390837027CDB2F59440AFD227BEAC42D7474DF7E5DDBB45B82274982C27B3002&fileName=/typescript-5.2.0-insiders.20230605.tgz", typescript@next, typescript@~4.8.4:
-  version "5.2.0-insiders.20230605"
-  resolved "https://typescript.visualstudio.com/cf7ac146-d525-443c-b23c-0d58337efebc/_apis/build/builds/155350/artifacts?artifactName=tgz&fileId=25390837027CDB2F59440AFD227BEAC42D7474DF7E5DDBB45B82274982C27B3002&fileName=/typescript-5.2.0-insiders.20230605.tgz#4488f5f7ab8deeb1349b5b45d664ff0fcc8f432f"
+typescript@*, typescript@5.1.0-dev.20230301, "typescript@>=3 < 6", "typescript@>=3.3.1 <5.2.0", typescript@next, typescript@~4.8.4:
+  version "5.1.0-dev.20230301"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.1.0-dev.20230301.tgz#3250b647dfd19942326bf904211350cdbbfdfe79"
+  integrity sha512-aJ0PIgQ00zlf9npD2tri7MWDAooMoh3iIn4v0hAMSRCSKqJjTzt7fVopvdtbvWPKripipxeXnX5mhkBZcGrEKQ==
 
 ua-parser-js@^0.7.30:
   version "0.7.31"

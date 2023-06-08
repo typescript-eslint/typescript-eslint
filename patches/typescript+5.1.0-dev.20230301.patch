@@ -1,0 +1,22 @@
+diff --git a/node_modules/typescript/lib/typescript.d.ts b/node_modules/typescript/lib/typescript.d.ts
+index b7a1a45..14362a6 100644
+--- a/node_modules/typescript/lib/typescript.d.ts
++++ b/node_modules/typescript/lib/typescript.d.ts
+@@ -43,6 +43,8 @@ declare namespace ts {
+         readonly end: number;
+     }
+     enum SyntaxKind {
++        JsxNamespacedName = 9001,
++
+         Unknown = 0,
+         EndOfFileToken = 1,
+         SingleLineCommentTrivia = 2,
+@@ -439,7 +441,7 @@ declare namespace ts {
+         FirstJSDocNode = 312,
+         LastJSDocNode = 353,
+         FirstJSDocTagNode = 330,
+-        LastJSDocTagNode = 353
++        LastJSDocTagNode = 353,
+     }
+     type TriviaSyntaxKind = SyntaxKind.SingleLineCommentTrivia | SyntaxKind.MultiLineCommentTrivia | SyntaxKind.NewLineTrivia | SyntaxKind.WhitespaceTrivia | SyntaxKind.ShebangTrivia | SyntaxKind.ConflictMarkerTrivia;
+     type LiteralSyntaxKind = SyntaxKind.NumericLiteral | SyntaxKind.BigIntLiteral | SyntaxKind.StringLiteral | SyntaxKind.JsxText | SyntaxKind.JsxTextAllWhiteSpaces | SyntaxKind.RegularExpressionLiteral | SyntaxKind.NoSubstitutionTemplateLiteral;

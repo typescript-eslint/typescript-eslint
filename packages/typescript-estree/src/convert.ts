@@ -590,7 +590,7 @@ export class Converter {
     // this is intentional we can ignore conversion if `:` is in first character
     if (colonIndex > 0) {
       const range = getRange(node, this.ast);
-      // @ts-expect-error -- TypeScript@<5.1 doesn't have ts.JsxNamespacedName
+      // @ts-ignore -- -- TypeScript@<5.1 doesn't have ts.JsxNamespacedName
       const result = this.createNode<TSESTree.JSXNamespacedName>(node, {
         type: AST_NODE_TYPES.JSXNamespacedName,
         namespace: this.createNode<TSESTree.JSXIdentifier>(node, {
@@ -2574,7 +2574,7 @@ export class Converter {
             : undefined,
           initializer:
             this.convertChild(
-              // @ts-expect-error TODO breaking change remove this from the AST
+              // @ts-ignore -- TODO breaking change remove this from the AST
               node.initializer as ts.Node,
             ) || undefined,
           readonly: hasModifier(SyntaxKind.ReadonlyKeyword, node) || undefined,
