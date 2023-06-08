@@ -93,9 +93,11 @@ jobs:
       - name: Build
         uses: ./.github/actions/prepare-build
       - name: Swap TypeScript Resolution
-        run: node ./replace-typescript-resolution.mjs {{ matrix.version }}
+        run: |
+          node ./replace-typescript-resolution.mjs {{ matrix.version }}
+          cat package.json
       - name: Install Again
-        run: yarn --ignore-engines --ignore-scripts
+        run: yarn
       - name: Run unit tests for Node 18
         run: npx nx test ${{ matrix.package }} --coverage=false default-program-success.test.ts
         env:
