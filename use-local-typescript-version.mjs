@@ -1,4 +1,5 @@
 import * as execa from 'execa';
+import * as fs from 'node:fs/promises';
 
 const commit = process.argv[2];
 
@@ -28,6 +29,14 @@ for (const command of [
     stdio: 'inherit',
   });
 }
+
+// Add an informative log to the top of the local file
+await fs.writeFile(
+  [
+    `console.log("Local TypeScript updated for commit: ${commit}");`,
+    (await fs.readFile('./typescript-local/lib/typescript.js')).toString(),
+  ].join('\n\n'),
+);
 
 // Link to the typescript-local version of TypeScript
 for (const command of [

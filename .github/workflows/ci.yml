@@ -67,16 +67,9 @@ jobs:
           [
             'HEAD',
             '746a6feb2e7ba6987b6c72db538dd498b35cd461',
-            '6e4f0a430e5b1a4d310be2ee8cc2d4d69f295b31',
-            'f555ad73dbd9edbcde063fa81c12fac1de3e1269',
-            '137c461bd096d0c0a948fda299e56316798df8eb',
-            '4af97b0572ca5163813ff924d08220a65630a7be',
-            'd747277edf6a9b0f2639953788f100201fe44bc4',
             '88adf8014b617fb8492587941ffcf4f75986e9cc',
             '3f4d16a25ed82c43d06606da3e2001efc82b58eb',
             '2f229ab870c1436845d9a6b8915fd419b04c5756',
-            'ff1e08f8595600625852b5b4d6c48fd2b3678cf3',
-            '3236ac9336b389815226bc3d65f813fc34e46e18',
             'a6be79d535475c0062f3028afa51cabdb83d02ff',
           ]
         package: ['typescript-estree']
