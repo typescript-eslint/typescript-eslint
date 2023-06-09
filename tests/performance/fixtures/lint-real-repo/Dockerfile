@@ -8,7 +8,7 @@ WORKDIR /usr/vega-lite
 RUN git checkout f1e4c1ebe50fdf3b9131ba5dde915e6efbe4bd87
 
 # Run the equivalent of the project's travis build before linting starts
-RUN yarn install && yarn cache clean
+RUN yarn install --frozen-lockfile && yarn cache clean
 RUN yarn build
 
 # Keep the container alive forever
