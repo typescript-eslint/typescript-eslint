@@ -66,9 +66,18 @@ jobs:
         commit:
           [
             'HEAD',
-            'dcc766f2b25796bea41e7118830326e8639eb7c8',
-            '941b30c975e6a58fbe535bbe9319412942b028f5',
-            '74814345ce99e939e21a82e9d311981f80c6de3a',
+            '4b6fb95f040c5c81743e19a56df8fa99bf3d139f',
+            'd5ccec377def9ba398b097b10ceb7e351d188350',
+            'b19cfc03f2cdd3b21bdec2ea1367732ef2bce937',
+            '40cd0de05b66bbb387db8ee6063b51959c7b6c45',
+            '6b71882c4caac478e612aa8ffecac7e2279380c7',
+            '7bee9c55b1b90a7711c8a635dfc6de102ab069fe',
+            '1da6d87a053746901a7eca6395a4bd15190b13c4',
+            '8b87de17503b15b08be40adcf3255d5d67aa2427',
+            '4c7e3279810318b389aa2af843ee1df897efd479',
+            '958487bedac2f9990387ca0f65f977a7f7c18297',
+            '211a60dc7931326eaaa02d3b7e2c1c20b1e6dfa3',
+            'fc756ebc17295c3cb5eed18cde87835641099440',
           ]
         package: ['typescript-estree']
     env:
