@@ -15,10 +15,8 @@ for (const command of [
   // Reset the TypeScript directory to the desired commit
   `git reset --hard ${commit}`,
   // Install and build up through having lib/
-  'npm i',
-  'npx hereby',
-  'npx hereby local',
-  'npx hereby services',
+  'npm ci',
+  'npx hereby lkg',
   'cp -r built/local lib',
   // Link it globally
   'yarn link',
