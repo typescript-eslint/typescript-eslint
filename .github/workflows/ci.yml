@@ -86,10 +86,11 @@ jobs:
           node-version: 18
       - name: Build
         uses: ./.github/actions/prepare-build
-      - name: Swap TypeScript Resolution
+      - name: Use Local TypeScript Version
         run: |
           node ./use-local-typescript-version.mjs ${{ matrix.commit }}
-          cat package.json
+          cat typescript-local/package.json
+          node typescript-local/lib/tsc.js --version
       - name: Run unit tests for Node 18
         if: always()
         run: npx nx test ${{ matrix.package }} --coverage=false default-program-success.test.ts

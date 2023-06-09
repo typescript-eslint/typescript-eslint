@@ -15,9 +15,9 @@ for (const command of [
   `git reset --hard ${commit}`,
   // Install and build up through having lib/
   'npm i',
-  'hereby',
-  'hereby local',
-  'hereby services',
+  'npx hereby',
+  'npx hereby local',
+  'npx hereby services',
   'cp -r built/local lib',
   // Link it globally
   'yarn link',
