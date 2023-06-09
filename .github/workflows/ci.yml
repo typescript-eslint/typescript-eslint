@@ -66,11 +66,21 @@ jobs:
         commit:
           [
             'HEAD',
-            '746a6feb2e7ba6987b6c72db538dd498b35cd461',
-            '88adf8014b617fb8492587941ffcf4f75986e9cc',
-            '3f4d16a25ed82c43d06606da3e2001efc82b58eb',
-            '2f229ab870c1436845d9a6b8915fd419b04c5756',
-            'a6be79d535475c0062f3028afa51cabdb83d02ff',
+            '0e34f187c82ec725aa7dd5588c249ca3c32d999c',
+            '6dbec02a88156121c24a152d1e8e5e82d52fdc1d',
+            '43cc362cef72e5fa1372f59736a9c4b55d85def0',
+            '4b6fb95f040c5c81743e19a56df8fa99bf3d139f',
+            '7bee9c55b1b90a7711c8a635dfc6de102ab069fe',
+            '1da6d87a053746901a7eca6395a4bd15190b13c4',
+            '8b87de17503b15b08be40adcf3255d5d67aa2427',
+            '4c7e3279810318b389aa2af843ee1df897efd479',
+            '958487bedac2f9990387ca0f65f977a7f7c18297',
+            '211a60dc7931326eaaa02d3b7e2c1c20b1e6dfa3',
+            'fc756ebc17295c3cb5eed18cde87835641099440',
+            'dcc766f2b25796bea41e7118830326e8639eb7c8',
+            '941b30c975e6a58fbe535bbe9319412942b028f5',
+            'e2283e99b47942b863d016c65a3e430dca1549b9',
+            '835fff8106e0cdf2e53028cd0e2c9759b426ebb4',
           ]
         package: ['typescript-estree']
     env:
