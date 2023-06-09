@@ -22,7 +22,7 @@ for (const command of [
   // Link it globally
   'yarn link',
 ]) {
-  console.log('\nRunning in typescript-local:', command);
+  console.log('\n\nRunning in typescript-local:', command);
   await execa.command(command, {
     cwd: 'typescript-local',
     stdio: 'inherit',
@@ -34,7 +34,7 @@ for (const command of [
   'yarn link typescript',
   // TODO: Will this need to install/build? I hope not?
 ]) {
-  console.log('\nRunning:', command);
+  console.log('\n\nRunning:', command);
   await execa.command(command, {
     stdio: 'inherit',
   });

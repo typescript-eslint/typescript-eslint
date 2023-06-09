@@ -4,9 +4,8 @@ import { getModifiers } from './getModifiers';
 import { xhtmlEntities } from './jsx/xhtml-entities';
 import type { TSESTree } from './ts-estree';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from './ts-estree';
-import { typescriptVersionIsAtLeast } from './version-check';
 
-const isAtLeast50 = typescriptVersionIsAtLeast['5.0'];
+const isAtLeast50 = false; // typescriptVersionIsAtLeast['5.0'];
 
 const SyntaxKind = ts.SyntaxKind;
 
