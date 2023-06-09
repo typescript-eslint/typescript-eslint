@@ -31,10 +31,12 @@ for (const command of [
 }
 
 // Add an informative log to the top of the local file
+const localTypeScript = './typescript-local/lib/typescript.js';
 await fs.writeFile(
+  localTypeScript,
   [
     `console.log("Local TypeScript updated for commit: ${commit}");`,
-    (await fs.readFile('./typescript-local/lib/typescript.js')).toString(),
+    (await fs.readFile(localTypeScript)).toString(),
   ].join('\n\n'),
 );
 
