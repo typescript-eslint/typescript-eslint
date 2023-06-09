@@ -125,7 +125,12 @@ export default createRule({
           argumentNode.type === AST_NODE_TYPES.Literal &&
           typeof argumentNode.value === 'string'
         ) {
-          const regExp = RegExp(argumentNode.value);
+          let regExp: RegExp;
+          try {
+            regExp = RegExp(argumentNode.value);
+          } catch {
+            return;
+          }
           return context.report({
             node: memberNode.property,
             messageId: 'regExpExecOverStringMatch',

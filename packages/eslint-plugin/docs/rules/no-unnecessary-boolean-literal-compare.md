@@ -115,16 +115,16 @@ if (!(someNullCondition ?? true)) {
 
 ## Fixer
 
-|           Comparison           | Fixer Output                    | Notes                                                                               |
-| :----------------------------: | ------------------------------- | ----------------------------------------------------------------------------------- |
-|     `booleanVar === true`      | `booleanVar`                    |                                                                                     |
-|     `booleanVar !== true`      | `!booleanVar`                   |                                                                                     |
-|     `booleanVar === false`     | `!booleanVar`                   |                                                                                     |
-|     `booleanVar !== false`     | `booleanVar`                    |                                                                                     |
-| `nullableBooleanVar === true`  | `nullableBooleanVar`            | Only checked/fixed if the `allowComparingNullableBooleansToTrue` option is `false`  |
-| `nullableBooleanVar !== true`  | `!nullableBooleanVar`           | Only checked/fixed if the `allowComparingNullableBooleansToTrue` option is `false`  |
-| `nullableBooleanVar === false` | `nullableBooleanVar ?? true`    | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
-| `nullableBooleanVar !== false` | `!(nullableBooleanVar ?? true)` | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
+|            Comparison             | Fixer Output                    | Notes                                                                               |
+| :-------------------------------: | ------------------------------- | ----------------------------------------------------------------------------------- |
+|       `booleanVar === true`       | `booleanVar`                    |                                                                                     |
+|       `booleanVar !== true`       | `!booleanVar`                   |                                                                                     |
+|      `booleanVar === false`       | `!booleanVar`                   |                                                                                     |
+|      `booleanVar !== false`       | `booleanVar`                    |                                                                                     |
+|   `nullableBooleanVar === true`   | `nullableBooleanVar`            | Only checked/fixed if the `allowComparingNullableBooleansToTrue` option is `false`  |
+|   `nullableBooleanVar !== true`   | `!nullableBooleanVar`           | Only checked/fixed if the `allowComparingNullableBooleansToTrue` option is `false`  |
+| `!(nullableBooleanVar === false)` | `nullableBooleanVar ?? true`    | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
+| `!(nullableBooleanVar !== false)` | `!(nullableBooleanVar ?? true)` | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 
 ## Not To Use It
 

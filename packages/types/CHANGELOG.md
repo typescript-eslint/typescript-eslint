@@ -3,6 +3,86 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [5.59.8](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.7...v5.59.8) (2023-05-29)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+## [5.59.7](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.6...v5.59.7) (2023-05-22)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+## [5.59.6](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.5...v5.59.6) (2023-05-15)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+## [5.59.5](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.4...v5.59.5) (2023-05-08)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+## [5.59.4](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.3...v5.59.4) (2023-05-08)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+## [5.59.3](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.2...v5.59.3) (2023-05-08)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+## [5.59.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.1...v5.59.2) (2023-05-01)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+## [5.59.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.0...v5.59.1) (2023-04-24)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+# [5.59.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.58.0...v5.59.0) (2023-04-17)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
+# [5.58.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.1...v5.58.0) (2023-04-10)
+
+**Note:** Version bump only for package @typescript-eslint/types
+
+
+
+
+
 ## [5.57.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.57.0...v5.57.1) (2023-04-03)
 
 **Note:** Version bump only for package @typescript-eslint/types
