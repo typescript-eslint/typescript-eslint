@@ -63,17 +63,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        package: ['typescript-estree']
-        version:
+        commit:
           [
-            '5.0.4',
-            '5.1.0-dev.20230302',
-            '5.1.0-dev.20230301',
-            '5.1.0-dev.20230227',
-            '5.0.0-dev.20230226',
-            '5.0.0-dev.20230225',
-            '5.0.0-dev.20230224',
+            'HEAD',
+            'dcc766f2b25796bea41e7118830326e8639eb7c8',
+            '941b30c975e6a58fbe535bbe9319412942b028f5',
+            '74814345ce99e939e21a82e9d311981f80c6de3a',
           ]
+        package: ['typescript-estree']
     env:
       # Added the - at the end to function as a separator to improve readability in the PR comment from the Nx cloud app
       NX_CLOUD_ENV_NAME: 'Node 18 Testing -'
@@ -91,10 +88,8 @@ jobs:
         uses: ./.github/actions/prepare-build
       - name: Swap TypeScript Resolution
         run: |
-          node ./replace-typescript-resolution.mjs ${{ matrix.version }}
+          node ./use-local-typescript-version.mjs ${{ matrix.commit }}
           cat package.json
-      - name: Install Again
-        run: yarn
       - name: Run unit tests for Node 18
         if: always()
         run: npx nx test ${{ matrix.package }} --coverage=false default-program-success.test.ts
