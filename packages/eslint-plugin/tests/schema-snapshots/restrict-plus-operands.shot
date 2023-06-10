@@ -12,8 +12,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "description": "Whether to allow \`any\` typed values.",
         "type": "boolean"
       },
-      "checkCompoundAssignments": {
-        "description": "Whether to check compound assignments such as \`+=\`.",
+      "skipCompoundAssignments": {
+        "description": "Whether to skip checking compound assignments such as \`+=\`.",
         "type": "boolean"
       }
     },
@@ -28,8 +28,8 @@ type Options = [
   {
     /** Whether to allow \`any\` typed values. */
     allowAny?: boolean;
-    /** Whether to check compound assignments such as \`+=\`. */
-    checkCompoundAssignments?: boolean;
+    /** Whether to skip checking compound assignments such as \`+=\`. */
+    skipCompoundAssignments?: boolean;
   },
 ];
 "
