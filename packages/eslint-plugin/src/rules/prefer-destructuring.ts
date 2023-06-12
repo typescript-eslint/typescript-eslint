@@ -1,3 +1,5 @@
+import type { JSONSchema4 } from 'json-schema';
+
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
@@ -10,6 +12,43 @@ const baseRule = getESLintCoreRule('prefer-destructuring');
 type Options = InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
+const destructuringTypeConfig: JSONSchema4 = {
+  type: 'object',
+  properties: {
+    array: {
+      type: 'boolean',
+    },
+    object: {
+      type: 'boolean',
+    },
+  },
+  additionalProperties: false,
+};
+
+const schema: readonly JSONSchema4[] = [
+  {
+    oneOf: [
+      {
+        type: 'object',
+        properties: {
+          VariableDeclarator: destructuringTypeConfig,
+          AssignmentExpression: destructuringTypeConfig,
+        },
+        additionalProperties: false,
+      },
+      destructuringTypeConfig,
+    ],
+  },
+  {
+    type: 'object',
+    properties: {
+      enforceForRenamedProperties: {
+        type: 'boolean',
+      },
+    },
+  },
+];
+
 export default createRule<Options, MessageIds>({
   name: 'prefer-destructuring',
   meta: {
@@ -20,7 +59,7 @@ export default createRule<Options, MessageIds>({
       extendsBaseRule: true,
       requiresTypeChecking: false,
     },
-    schema: baseRule.meta?.schema,
+    schema,
     fixable: baseRule.meta?.fixable,
     hasSuggestions: baseRule.meta?.hasSuggestions,
     messages: baseRule.meta?.messages,
