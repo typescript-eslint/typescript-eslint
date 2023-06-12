@@ -843,6 +843,22 @@ ruleTester.run('prefer-desctructuring', rule, {
     // type annotated
     'var foo: string = object.foo;',
     'const bar: number = array[0];',
+    {
+      code: 'var { foo } = object;',
+      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+    },
+    {
+      code: 'var { foo }: { foo: number } = object;',
+      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+    },
+    {
+      code: 'var [foo] = array;',
+      options: [{ array: true }, { enforceForTypeAnnotatedProperties: true }],
+    },
+    {
+      code: 'var [foo]: [foo: number] = array;',
+      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+    },
   ],
   invalid: [
     ...baseTests.invalid,
