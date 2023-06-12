@@ -837,4 +837,38 @@ const baseTests: RunTests<'preferDestructuring', unknown[]> = {
   /* eslint-enable @typescript-eslint/internal/plugin-test-formatting */
 };
 
-ruleTester.run('prefer-desctructuring', rule, baseTests);
+ruleTester.run('prefer-desctructuring', rule, {
+  valid: [
+    ...baseTests.valid,
+    // type annotated
+    'var foo: string = object.foo;',
+    'const bar: number = array[0];',
+  ],
+  invalid: [
+    ...baseTests.invalid,
+    {
+      code: 'var foo: string = object.foo;',
+      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+      output: 'var {foo} = object;',
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'object' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+    {
+      code: 'var foo: string = array[0];',
+      options: [{ array: true }, { enforceForTypeAnnotatedProperties: true }],
+      output: null,
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'array' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+  ],
+});

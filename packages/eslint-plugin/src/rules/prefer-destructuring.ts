@@ -9,7 +9,13 @@ import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('prefer-destructuring');
 
-type Options = InferOptionsTypeFromRule<typeof baseRule>;
+type BaseOptions = InferOptionsTypeFromRule<typeof baseRule>;
+type Options = [
+  BaseOptions[0],
+  BaseOptions[1] & {
+    enforceForTypeAnnotatedProperties?: boolean;
+  },
+];
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const destructuringTypeConfig: JSONSchema4 = {
@@ -45,6 +51,9 @@ const schema: readonly JSONSchema4[] = [
       enforceForRenamedProperties: {
         type: 'boolean',
       },
+      enforceForTypeAnnotatedProperties: {
+        type: 'boolean',
+      },
     },
   },
 ];
@@ -77,12 +86,24 @@ export default createRule<Options, MessageIds>({
     },
     {
       enforceForRenamedProperties: false,
+      enforceForTypeAnnotatedProperties: false,
     },
   ],
-  create(context) {
+  create(context, [, { enforceForTypeAnnotatedProperties = false }]) {
     const rules = baseRule.create(context);
     return {
-      ...rules,
+      VariableDeclarator(node): void {
+        if (
+          node.id.typeAnnotation !== undefined &&
+          !enforceForTypeAnnotatedProperties
+        ) {
+          return;
+        }
+        rules.VariableDeclarator(node);
+      },
+      AssignmentExpression(node): void {
+        rules.AssignmentExpression(node);
+      },
     };
   },
 });
