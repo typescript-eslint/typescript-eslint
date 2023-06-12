@@ -865,7 +865,7 @@ ruleTester.run('prefer-desctructuring', rule, {
     {
       code: 'var foo: string = object.foo;',
       options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
-      output: 'var {foo} = object;',
+      output: null,
       errors: [
         {
           messageId: 'preferDestructuring',
