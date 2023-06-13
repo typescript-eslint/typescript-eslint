@@ -32,7 +32,7 @@ function createProjectProgram(
   log('Creating project program for: %s', parseSettings.filePath);
 
   const astAndProgram = firstDefined(programsForProjects, currentProgram =>
-    getAstFromProgram(currentProgram, parseSettings),
+    getAstFromProgram(currentProgram, parseSettings.filePath),
   );
 
   // The file was either matched within the tsconfig, or we allow creating a default program

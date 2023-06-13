@@ -1,6 +1,7 @@
 import debug from 'debug';
 import type * as ts from 'typescript';
 
+import type { TypeScriptProjectService } from '../create-program/createProjectService';
 import { createProjectService } from '../create-program/createProjectService';
 import { ensureAbsolutePath } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
@@ -20,9 +21,7 @@ const log = debug(
 );
 
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
-
-let TSSERVER_PROJECT_SERVICE: ReturnType<typeof createProjectService> | null =
-  null;
+let TSSERVER_PROJECT_SERVICE: TypeScriptProjectService | null = null;
 
 export function createParseSettings(
   code: string | ts.SourceFile,

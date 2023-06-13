@@ -6,7 +6,9 @@ const createStubFileWatcher = (): ts.FileWatcher => ({
   close: doNothing,
 });
 
-export function createProjectService(): ts.server.ProjectService {
+export type TypeScriptProjectService = ts.server.ProjectService;
+
+export function createProjectService(): TypeScriptProjectService {
   // We import this lazily to avoid its cost for users who don't use the service
   const tsserver = require('typescript/lib/tsserverlibrary') as typeof ts;
 
@@ -24,7 +26,7 @@ export function createProjectService(): ts.server.ProjectService {
     watchFile: createStubFileWatcher,
   };
 
-  const projectService = new tsserver.server.ProjectService({
+  return new tsserver.server.ProjectService({
     host: system,
     cancellationToken: { isCancellationRequested: (): boolean => false },
     useSingleInferredProject: false,
@@ -53,6 +55,4 @@ export function createProjectService(): ts.server.ProjectService {
     },
     session: undefined,
   });
-
-  return projectService;
 }

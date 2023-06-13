@@ -37,7 +37,7 @@ describe('parser', () => {
       filePath: './isolated-file.src.ts',
       project: 'tsconfig.json',
       errorOnTypeScriptSyntacticAndSemanticIssues: false,
-      tsconfigRootDir: path.join(__dirname, '../fixtures/services'),
+      tsconfigRootDir: path.resolve(__dirname, '../fixtures/services'),
       extraFileExtensions: ['.foo'],
     };
     parseForESLint(code, config);
