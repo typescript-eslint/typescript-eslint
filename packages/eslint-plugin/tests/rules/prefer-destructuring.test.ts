@@ -843,6 +843,7 @@ ruleTester.run('prefer-desctructuring', rule, {
     // type annotated
     'var foo: string = object.foo;',
     'const bar: number = array[0];',
+    // enforceForTypeAnnotatedProperties: true
     {
       code: 'var { foo } = object;',
       options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
@@ -859,9 +860,22 @@ ruleTester.run('prefer-desctructuring', rule, {
       code: 'var [foo]: [foo: number] = array;',
       options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
     },
+    {
+      code: 'var foo: unknown = object.bar;',
+      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+    },
+    {
+      code: 'var { foo: bar } = object;',
+      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+    },
+    {
+      code: 'var { foo: bar }: { foo: boolean } = object;',
+      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+    },
   ],
   invalid: [
     ...baseTests.invalid,
+    // enforceForTypeAnnotatedProperties: true
     {
       code: 'var foo: string = object.foo;',
       options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
@@ -882,6 +896,24 @@ ruleTester.run('prefer-desctructuring', rule, {
         {
           messageId: 'preferDestructuring',
           data: { type: 'array' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+    {
+      code: 'var foo: unknown = object.bar;',
+      options: [
+        { object: true },
+        {
+          enforceForTypeAnnotatedProperties: true,
+          enforceForRenamedProperties: true,
+        },
+      ],
+      output: null,
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'object' },
           type: AST_NODE_TYPES.VariableDeclarator,
         },
       ],
