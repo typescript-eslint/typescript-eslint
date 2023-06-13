@@ -1,7 +1,7 @@
 const baseConfig = require('../../eslint.config.js');
-const jsxA11y = require('eslint-plugin-jsx-a11y');
-const react = require('eslint-plugin-react');
-const reactHooks = require('eslint-plugin-react-hooks');
+// const jsxA11y = require('eslint-plugin-jsx-a11y');
+// const react = require('eslint-plugin-react');
+// const reactHooks = require('eslint-plugin-react-hooks');
 const { FlatCompat } = require('@eslint/eslintrc');
 
 const eslintrc = new FlatCompat({
@@ -16,11 +16,11 @@ module.exports = [
     'plugin:react-hooks/recommended',
   ),
   {
-    plugins: {
-      react,
-      'react-hooks': reactHooks,
-      'jsx-a11y': jsxA11y,
-    },
+    // plugins: {
+    //   react,
+    //   'react-hooks': reactHooks,
+    //   'jsx-a11y': jsxA11y,
+    // },
     rules: {
       'react/jsx-no-target-blank': 'off',
       'react/no-unescaped-entities': 'off',

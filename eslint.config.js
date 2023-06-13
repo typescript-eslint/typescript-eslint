@@ -1,8 +1,8 @@
-const typescriptESLint = require('@typescript-eslint/eslint-plugin');
+// const typescriptESLint = require('@typescript-eslint/eslint-plugin');
 const typeScriptESLintInternal = require('@typescript-eslint/eslint-plugin-internal');
 const deprecation = require('eslint-plugin-deprecation');
 const eslintComments = require('eslint-plugin-eslint-comments');
-const eslintPlugin = require('eslint-plugin-eslint-plugin');
+// const eslintPlugin = require('eslint-plugin-eslint-plugin');
 const importPlugin = require('eslint-plugin-import');
 const jest = require('eslint-plugin-jest');
 const simpleImportSort = require('eslint-plugin-simple-import-sort');
@@ -47,11 +47,11 @@ module.exports = [
   ),
   {
     plugins: {
-      '@typescript-eslint': typescriptESLint,
+      // '@typescript-eslint': typescriptESLint,
       '@typescript-eslint/internal': typeScriptESLintInternal,
       deprecation,
       'eslint-comments': eslintComments,
-      'eslint-plugin': eslintPlugin,
+      // 'eslint-plugin': eslintPlugin,
       import: importPlugin,
       jest,
       'simple-import-sort': simpleImportSort,
