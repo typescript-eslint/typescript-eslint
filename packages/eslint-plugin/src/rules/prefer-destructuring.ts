@@ -11,12 +11,13 @@ import { getESLintCoreRule } from '../util/getESLintCoreRule';
 const baseRule = getESLintCoreRule('prefer-destructuring');
 
 type BaseOptions = InferOptionsTypeFromRule<typeof baseRule>;
-type Options = [
-  BaseOptions[0],
-  BaseOptions[1] & {
-    enforceForTypeAnnotatedProperties?: boolean;
-  },
-];
+type FullBaseOptions = BaseOptions & [unknown, unknown];
+type Options0 = FullBaseOptions[0];
+type Options1 = FullBaseOptions[1] & {
+  enforceForTypeAnnotatedProperties?: boolean;
+};
+type Options = [] | [Options0] | [Options0, Options1];
+
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const destructuringTypeConfig: JSONSchema4 = {
@@ -90,7 +91,7 @@ export default createRule<Options, MessageIds>({
       enforceForTypeAnnotatedProperties: false,
     },
   ],
-  create(context, [, { enforceForTypeAnnotatedProperties = false }]) {
+  create(context, [, { enforceForTypeAnnotatedProperties = false } = {}]) {
     const rules = baseRule.create(context);
     return {
       VariableDeclarator(node): void {

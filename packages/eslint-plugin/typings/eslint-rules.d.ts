@@ -996,24 +996,21 @@ declare module 'eslint/lib/rules/prefer-destructuring' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   interface DestructuringTypeConfig {
-    object: boolean;
-    array: boolean;
+    object?: boolean;
+    array?: boolean;
   }
-
+  type Option0 =
+    | DestructuringTypeConfig
+    | {
+        VariableDeclarator?: DestructuringTypeConfig;
+        AssignmentExpression?: DestructuringTypeConfig;
+      };
+  interface Option1 {
+    enforceForRenamedProperties?: boolean;
+  }
   const rule: TSESLint.RuleModule<
     'preferDestructuring',
-    [
-      (
-        | DestructuringTypeConfig
-        | {
-            VariableDeclarator?: DestructuringTypeConfig;
-            AssignmentExpression?: DestructuringTypeConfig;
-          }
-      ),
-      {
-        enforceForRenamedProperties?: boolean;
-      },
-    ],
+    [] | [Option0] | [Option0, Option1],
     {
       VariableDeclarator(node: TSESTree.VariableDeclarator): void;
       AssignmentExpression(node: TSESTree.AssignmentExpression): void;
