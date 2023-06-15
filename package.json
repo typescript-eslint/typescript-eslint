@@ -124,6 +124,7 @@
     "typescript": ">=4.3.5 <5.1.0"
   },
   "resolutions": {
+    "eslint-visitor-keys": "^3.4.1",
     "typescript": "~5.0.4",
     "@types/node": "^18.16.1",
     "@jest/reporters": "^29",
