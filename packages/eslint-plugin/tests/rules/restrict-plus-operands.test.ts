@@ -161,23 +161,23 @@ const b = A('') + '!';
     `,
     {
       code: `
-let foo: number = 0;
-foo += 1;
+let foo = '';
+foo += 0;
       `,
       options: [
         {
-          checkCompoundAssignments: false,
+          skipCompoundAssignments: true,
         },
       ],
     },
     {
       code: `
-let foo: number = 0;
-foo += 'string';
+let foo = 0;
+foo += '';
       `,
       options: [
         {
-          checkCompoundAssignments: false,
+          skipCompoundAssignments: true,
         },
       ],
     },
@@ -801,14 +801,9 @@ function foo<T extends 1>(a: T) {
     },
     {
       code: `
-let foo: string | undefined;
-foo += 'some data';
+let foo: string = '';
+foo += 1;
       `,
-      options: [
-        {
-          checkCompoundAssignments: true,
-        },
-      ],
       errors: [
         {
           messageId: 'notStrings',
@@ -819,14 +814,9 @@ foo += 'some data';
     },
     {
       code: `
-let foo = '';
-foo += 0;
+let foo = 0;
+foo += '';
       `,
-      options: [
-        {
-          checkCompoundAssignments: true,
-        },
-      ],
       errors: [
         {
           messageId: 'notStrings',

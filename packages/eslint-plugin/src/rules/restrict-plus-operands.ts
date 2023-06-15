@@ -5,8 +5,8 @@ import * as util from '../util';
 
 type Options = [
   {
-    checkCompoundAssignments?: boolean;
     allowAny?: boolean;
+    skipCompoundAssignments?: boolean;
   },
 ];
 type MessageIds =
@@ -42,12 +42,13 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
-          checkCompoundAssignments: {
-            description: 'Whether to check compound assignments such as `+=`.',
-            type: 'boolean',
-          },
           allowAny: {
             description: 'Whether to allow `any` typed values.',
+            type: 'boolean',
+          },
+          skipCompoundAssignments: {
+            description:
+              'Whether to skip checking compound assignments such as `+=`.',
             type: 'boolean',
           },
         },
@@ -56,11 +57,11 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      checkCompoundAssignments: false,
       allowAny: false,
+      skipCompoundAssignments: false,
     },
   ],
-  create(context, [{ checkCompoundAssignments, allowAny }]) {
+  create(context, [{ allowAny, skipCompoundAssignments }]) {
     const services = util.getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -191,7 +192,7 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       "BinaryExpression[operator='+']": checkPlusOperands,
-      ...(checkCompoundAssignments && {
+      ...(!skipCompoundAssignments && {
         "AssignmentExpression[operator='+=']"(node): void {
           checkPlusOperands(node);
         },

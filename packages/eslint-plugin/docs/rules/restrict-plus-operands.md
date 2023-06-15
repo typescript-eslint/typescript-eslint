@@ -31,36 +31,6 @@ var foo = 1n + 1n;
 
 ## Options
 
-### `checkCompoundAssignments`
-
-Examples of code for this rule with `{ checkCompoundAssignments: true }`:
-
-<!--tabs-->
-
-#### ❌ Incorrect
-
-```ts
-/*eslint @typescript-eslint/restrict-plus-operands: ["error", { "checkCompoundAssignments": true }]*/
-
-let foo: string | undefined;
-foo += 'some data';
-
-let bar: string = '';
-bar += 0;
-```
-
-#### ✅ Correct
-
-```ts
-/*eslint @typescript-eslint/restrict-plus-operands: ["error", { "checkCompoundAssignments": true }]*/
-
-let foo: number = 0;
-foo += 1;
-
-let bar = '';
-bar += 'test';
-```
-
 ### `allowAny`
 
 Examples of code for this rule with `{ allowAny: true }`:
@@ -82,6 +52,38 @@ var fn = (a: any, b: any) => a + b;
 var fn = (a: any, b: string) => a + b;
 var fn = (a: any, b: bigint) => a + b;
 var fn = (a: any, b: number) => a + b;
+```
+
+### `skipCompoundAssignments`
+
+Whether to skip checking `+=` assignments.
+
+Examples of code for this rule with `{ skipCompoundAssignments: true }`:
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+/*eslint @typescript-eslint/restrict-plus-operands: ["error", { "skipCompoundAssignments": true }]*/
+
+let numeric = 0;
+numeric = numeric + 'some data';
+
+let stringy = 'some data';
+stringy = stringy + 0;
+```
+
+#### ✅ Correct
+
+```ts
+/*eslint @typescript-eslint/restrict-plus-operands: ["error", { "skipCompoundAssignments": true }]*/
+
+let numeric = 0;
+numeric += 'some data';
+
+let stringy = 'some data';
+stringy += 0;
 ```
 
 ## When Not To Use It
