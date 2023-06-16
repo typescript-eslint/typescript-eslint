@@ -5,7 +5,7 @@ import * as ts from 'typescript';
 import * as util from '../util';
 
 enum Usefulness {
-  Always,
+  Always = 'always',
   Never = 'will',
   Sometimes = 'may',
 }

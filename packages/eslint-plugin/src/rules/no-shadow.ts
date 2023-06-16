@@ -364,6 +364,7 @@ export default util.createRule<Options, MessageIds>({
     ): TSESLint.Scope.Scope | null {
       const upper = scope.upper;
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
       if (upper?.type === 'function-expression-name') {
         return upper.upper;
       }

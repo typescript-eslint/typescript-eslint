@@ -126,7 +126,7 @@ function specifierNameMatches(type: ts.Type, name: string | string[]): boolean {
   if (symbol === undefined) {
     return false;
   }
-  return name.some(item => item === symbol.escapedName);
+  return name.some(item => (item as ts.__String) === symbol.escapedName);
 }
 
 function typeDeclaredInFile(

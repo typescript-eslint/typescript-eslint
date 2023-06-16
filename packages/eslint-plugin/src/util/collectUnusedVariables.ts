@@ -97,6 +97,7 @@ class UnusedVarsVisitor<
       const scope = this.#scopeManager.acquire(node, inner);
 
       if (scope) {
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
         if (scope.type === 'function-expression-name') {
           return scope.childScopes[0] as T;
         }

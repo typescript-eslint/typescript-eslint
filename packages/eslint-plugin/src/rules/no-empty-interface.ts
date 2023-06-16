@@ -84,6 +84,7 @@ export default util.createRule<Options, MessageIds>({
 
             const isInAmbientDeclaration = !!(
               util.isDefinitionFile(filename) &&
+              // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
               scope.type === 'tsModule' &&
               scope.block.declare
             );

@@ -87,6 +87,7 @@ function describeLiteralType(type: ts.Type): string {
   }
 
   if (type.isLiteral()) {
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
     return type.value.toString();
   }
 
