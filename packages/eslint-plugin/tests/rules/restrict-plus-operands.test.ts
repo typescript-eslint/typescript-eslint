@@ -1127,7 +1127,7 @@ foo += 'some data';
       `,
       options: [
         {
-          checkCompoundAssignments: true,
+          skipCompoundAssignments: false,
         },
       ],
       errors: [
@@ -1167,10 +1167,11 @@ foo += 1;
       errors: [
         {
           data: {
+            left: 'string',
+            right: 'number',
             stringLike: 'string',
-            type: 'string | null',
           },
-          messageId: 'invalid',
+          messageId: 'mismatched',
           line: 3,
           column: 1,
         },
@@ -1184,8 +1185,8 @@ foo += '';
       errors: [
         {
           data: {
-            left: 'string',
-            right: 'number',
+            left: 'number',
+            right: 'string',
             stringLike: 'string',
           },
           messageId: 'mismatched',

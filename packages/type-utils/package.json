@@ -48,7 +48,7 @@
     "@typescript-eslint/typescript-estree": "5.59.11",
     "@typescript-eslint/utils": "5.59.11",
     "debug": "^4.3.4",
-    "ts-api-utils": "^0.0.46"
+    "ts-api-utils": "^1.0.0"
   },
   "devDependencies": {
     "@typescript-eslint/parser": "5.59.11",

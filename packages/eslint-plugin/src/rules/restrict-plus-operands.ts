@@ -1,5 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -24,7 +24,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require both operands of addition to be the same type and be `bigint`, `number`, or `string`',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -88,8 +88,8 @@ export default util.createRule<Options, MessageIds>({
       },
     ],
   ) {
-    const service = util.getParserServices(context);
-    const typeChecker = service.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const typeChecker = services.program.getTypeChecker();
 
     const stringLikes = [
       allowAny && '`any`',
@@ -106,10 +106,7 @@ export default util.createRule<Options, MessageIds>({
 
     function getTypeConstrained(node: TSESTree.Node): ts.Type {
       return typeChecker.getBaseTypeOfLiteralType(
-        util.getConstrainedTypeAtLocation(
-          typeChecker,
-          service.esTreeNodeToTSNodeMap.get(node),
-        ),
+        util.getConstrainedTypeAtLocation(services, node),
       );
     }
 
