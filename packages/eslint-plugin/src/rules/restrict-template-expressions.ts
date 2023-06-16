@@ -71,7 +71,11 @@ export default util.createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
+      allowAny: true,
+      allowBoolean: true,
+      allowNullish: true,
       allowNumber: true,
+      allowRegExp: true,
     },
   ],
   create(context, [options]) {

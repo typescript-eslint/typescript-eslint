@@ -19,6 +19,7 @@ export = {
     'dot-notation': 'off',
     '@typescript-eslint/dot-notation': 'error',
     '@typescript-eslint/no-confusing-non-null-assertion': 'error',
+    '@typescript-eslint/no-confusing-void-expression': 'error',
     'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': 'error',
     '@typescript-eslint/no-empty-interface': 'error',

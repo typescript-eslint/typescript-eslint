@@ -72,6 +72,11 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
+      allowAny: true,
+      allowBoolean: true,
+      allowNullish: true,
+      allowNumberAndString: true,
+      allowRegExp: true,
       skipCompoundAssignments: false,
     },
   ],
@@ -79,12 +84,12 @@ export default util.createRule<Options, MessageIds>({
     context,
     [
       {
-        skipCompoundAssignments,
         allowAny,
         allowBoolean,
         allowNullish,
         allowNumberAndString,
         allowRegExp,
+        skipCompoundAssignments,
       },
     ],
   ) {
