@@ -1,0 +1,95 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-type-alias 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "$defs": {
+      "expandedOptions": {
+        "enum": [
+          "always",
+          "in-intersections",
+          "in-unions",
+          "in-unions-and-intersections",
+          "never"
+        ]
+      },
+      "simpleOptions": {
+        "enum": ["always", "never"]
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "allowAliases": {
+        "$ref": "#/items/0/$defs/expandedOptions",
+        "description": "Whether to allow direct one-to-one type aliases."
+      },
+      "allowCallbacks": {
+        "$ref": "#/items/0/$defs/simpleOptions",
+        "description": "Whether to allow type aliases for callbacks."
+      },
+      "allowConditionalTypes": {
+        "$ref": "#/items/0/$defs/simpleOptions",
+        "description": "Whether to allow type aliases for conditional types."
+      },
+      "allowConstructors": {
+        "$ref": "#/items/0/$defs/simpleOptions",
+        "description": "Whether to allow type aliases with constructors."
+      },
+      "allowGenerics": {
+        "$ref": "#/items/0/$defs/simpleOptions",
+        "description": "Whether to allow type aliases with generic types."
+      },
+      "allowLiterals": {
+        "$ref": "#/items/0/$defs/expandedOptions",
+        "description": "Whether to allow type aliases with object literal types."
+      },
+      "allowMappedTypes": {
+        "$ref": "#/items/0/$defs/expandedOptions",
+        "description": "Whether to allow type aliases with mapped types."
+      },
+      "allowTupleTypes": {
+        "$ref": "#/items/0/$defs/expandedOptions",
+        "description": "Whether to allow type aliases with tuple types."
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type ExpandedOptions =
+  | 'always'
+  | 'in-intersections'
+  | 'in-unions'
+  | 'in-unions-and-intersections'
+  | 'never';
+
+type SimpleOptions = 'always' | 'never';
+
+type Options = [
+  {
+    /** Whether to allow direct one-to-one type aliases. */
+    allowAliases?: ExpandedOptions;
+    /** Whether to allow type aliases for callbacks. */
+    allowCallbacks?: SimpleOptions;
+    /** Whether to allow type aliases for conditional types. */
+    allowConditionalTypes?: SimpleOptions;
+    /** Whether to allow type aliases with constructors. */
+    allowConstructors?: SimpleOptions;
+    /** Whether to allow type aliases with generic types. */
+    allowGenerics?: SimpleOptions;
+    /** Whether to allow type aliases with object literal types. */
+    allowLiterals?: ExpandedOptions;
+    /** Whether to allow type aliases with mapped types. */
+    allowMappedTypes?: ExpandedOptions;
+    /** Whether to allow type aliases with tuple types. */
+    allowTupleTypes?: ExpandedOptions;
+  },
+];
+"
+`;

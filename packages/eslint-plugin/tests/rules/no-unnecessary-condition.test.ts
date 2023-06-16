@@ -1,3 +1,4 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import type {
   InvalidTestCase,
   TestCaseError,
@@ -9,7 +10,7 @@ import type {
   Options,
 } from '../../src/rules/no-unnecessary-condition';
 import rule from '../../src/rules/no-unnecessary-condition';
-import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -279,6 +280,16 @@ function test(a: string | null | undefined) {
     `,
     `
 function test(a: unknown) {
+  return a ?? 'default';
+}
+    `,
+    `
+function test<T>(a: T) {
+  return a ?? 'default';
+}
+    `,
+    `
+function test<T extends string | null>(a: T) {
   return a ?? 'default';
 }
     `,
@@ -831,6 +842,14 @@ function test(a: string | false) {
       `,
       errors: [ruleError(3, 10, 'neverNullish')],
     },
+    {
+      code: `
+function test<T extends string>(a: T) {
+  return a ?? 'default';
+}
+      `,
+      errors: [ruleError(3, 10, 'neverNullish')],
+    },
     // nullish + array index without optional chaining
     {
       code: `
@@ -852,6 +871,14 @@ function test(a: null) {
       code: `
 function test(a: null[]) {
   return a[0] ?? 'default';
+}
+      `,
+      errors: [ruleError(3, 10, 'alwaysNullish')],
+    },
+    {
+      code: `
+function test<T extends null>(a: T) {
+  return a ?? 'default';
 }
       `,
       errors: [ruleError(3, 10, 'alwaysNullish')],

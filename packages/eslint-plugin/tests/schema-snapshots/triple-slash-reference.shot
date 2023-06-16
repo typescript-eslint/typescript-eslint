@@ -1,0 +1,36 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes triple-slash-reference 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "lib": {
+        "enum": ["always", "never"]
+      },
+      "path": {
+        "enum": ["always", "never"]
+      },
+      "types": {
+        "enum": ["always", "never", "prefer-import"]
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    lib?: 'always' | 'never';
+    path?: 'always' | 'never';
+    types?: 'always' | 'never' | 'prefer-import';
+  },
+];
+"
+`;

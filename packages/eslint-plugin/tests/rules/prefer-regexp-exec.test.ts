@@ -1,5 +1,7 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/prefer-regexp-exec';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -73,6 +75,12 @@ function test(pattern: string) {
 const matchCount = (str: string, re: RegExp) => {
   return (str.match(re) || []).length;
 };
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/6928
+    `
+function test(str: string) {
+  str.match('[a-z');
+}
     `,
   ],
   invalid: [

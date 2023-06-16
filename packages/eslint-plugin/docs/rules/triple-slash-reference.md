@@ -10,8 +10,6 @@ TypeScript's `///` triple-slash references are a way to indicate that types from
 Use of triple-slash reference type directives is generally discouraged in favor of ECMAScript Module `import`s.
 This rule reports on the use of `/// <reference path="..." />`, `/// <reference types="..." />`, or `/// <reference lib="..." />` directives.
 
-## Examples
-
 ## Options
 
 With `{ "path": "never", "types": "never", "lib": "never" }` options set, the following will all be **incorrect** usage:

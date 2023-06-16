@@ -1,6 +1,6 @@
 import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import naturalCompare from 'natural-compare-lite';
+import naturalCompare from 'natural-compare';
 
 import * as util from '../util';
 
@@ -85,42 +85,34 @@ const neverConfig: JSONSchema.JSONSchema4 = {
   enum: ['never'],
 };
 
-const arrayConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
+const arrayConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
   type: 'array',
   items: {
     oneOf: [
       {
-        enum: memberTypes,
+        $ref: memberTypes,
       },
       {
         type: 'array',
         items: {
-          enum: memberTypes,
+          $ref: memberTypes,
         },
       },
     ],
   },
 });
 
-const objectConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
+const objectConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
   type: 'object',
   properties: {
     memberTypes: {
       oneOf: [arrayConfig(memberTypes), neverConfig],
     },
     order: {
-      type: 'string',
-      enum: [
-        'alphabetically',
-        'alphabetically-case-insensitive',
-        'as-written',
-        'natural',
-        'natural-case-insensitive',
-      ],
+      $ref: '#/items/0/$defs/orderOptions',
     },
     optionalityOrder: {
-      type: 'string',
-      enum: ['optional-first', 'required-first'],
+      $ref: '#/items/0/$defs/optionalityOrderOptions',
     },
   },
   additionalProperties: false,
@@ -635,70 +627,68 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
+        $defs: {
+          orderOptions: {
+            type: 'string',
+            enum: [
+              'alphabetically',
+              'alphabetically-case-insensitive',
+              'as-written',
+              'natural',
+              'natural-case-insensitive',
+            ],
+          },
+          optionalityOrderOptions: {
+            type: 'string',
+            enum: ['optional-first', 'required-first'],
+          },
+          allItems: {
+            type: 'string',
+            enum: allMemberTypes,
+          },
+          typeItems: {
+            type: 'string',
+            enum: [
+              'readonly-signature',
+              'signature',
+              'readonly-field',
+              'field',
+              'method',
+              'constructor',
+            ],
+          },
+
+          baseConfig: {
+            oneOf: [
+              neverConfig,
+              arrayConfig('#/items/0/$defs/allItems'),
+              objectConfig('#/items/0/$defs/allItems'),
+            ],
+          },
+          typesConfig: {
+            oneOf: [
+              neverConfig,
+              arrayConfig('#/items/0/$defs/typeItems'),
+              objectConfig('#/items/0/$defs/typeItems'),
+            ],
+          },
+        },
         type: 'object',
         properties: {
           default: {
-            oneOf: [
-              neverConfig,
-              arrayConfig(allMemberTypes),
-              objectConfig(allMemberTypes),
-            ],
+            $ref: '#/items/0/$defs/baseConfig',
           },
           classes: {
-            oneOf: [
-              neverConfig,
-              arrayConfig(allMemberTypes),
-              objectConfig(allMemberTypes),
-            ],
+            $ref: '#/items/0/$defs/baseConfig',
           },
           classExpressions: {
-            oneOf: [
-              neverConfig,
-              arrayConfig(allMemberTypes),
-              objectConfig(allMemberTypes),
-            ],
+            $ref: '#/items/0/$defs/baseConfig',
           },
           interfaces: {
-            oneOf: [
-              neverConfig,
-              arrayConfig([
-                'readonly-signature',
-                'signature',
-                'readonly-field',
-                'field',
-                'method',
-                'constructor',
-              ]),
-              objectConfig([
-                'readonly-signature',
-                'signature',
-                'readonly-field',
-                'field',
-                'method',
-                'constructor',
-              ]),
-            ],
+            $ref: '#/items/0/$defs/typesConfig',
           },
           typeLiterals: {
-            oneOf: [
-              neverConfig,
-              arrayConfig([
-                'readonly-signature',
-                'signature',
-                'readonly-field',
-                'field',
-                'method',
-                'constructor',
-              ]),
-              objectConfig([
-                'readonly-signature',
-                'signature',
-                'readonly-field',
-                'field',
-                'method',
-                'constructor',
-              ]),
-            ],
+            $ref: '#/items/0/$defs/typesConfig',
           },
         },
         additionalProperties: false,

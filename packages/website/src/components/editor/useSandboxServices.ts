@@ -93,7 +93,7 @@ export const useSandboxServices = (
           Array.from(
             new Set([...sandboxInstance.supportedVersions, window.ts.version]),
           )
-            .filter(item => parseFloat(item) >= 4.2)
+            .filter(item => parseFloat(item) >= 4.3)
             .sort((a, b) => b.localeCompare(a)),
         );
 

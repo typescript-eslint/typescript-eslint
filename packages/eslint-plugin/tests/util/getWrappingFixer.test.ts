@@ -1,7 +1,8 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { createRule, getWrappingFixer } from '../../src/util';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rule = createRule({
   name: 'void-everything',

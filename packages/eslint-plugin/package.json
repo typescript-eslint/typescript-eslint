@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "5.58.0",
+  "version": "5.59.11",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
@@ -23,7 +23,7 @@
     }
   },
   "engines": {
-    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
+    "node": "^16.0.0 || >=18.0.0"
   },
   "repository": {
     "type": "git",
@@ -54,33 +54,31 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@eslint-community/regexpp": "^4.4.0",
-    "@typescript-eslint/scope-manager": "5.58.0",
-    "@typescript-eslint/type-utils": "5.58.0",
-    "@typescript-eslint/utils": "5.58.0",
+    "@eslint-community/regexpp": "^4.5.0",
+    "@typescript-eslint/scope-manager": "5.59.11",
+    "@typescript-eslint/type-utils": "5.59.11",
+    "@typescript-eslint/utils": "5.59.11",
     "debug": "^4.3.4",
     "grapheme-splitter": "^1.0.4",
-    "ignore": "^5.2.0",
-    "natural-compare-lite": "^1.4.0",
-    "semver": "^7.3.7",
-    "ts-api-utils": "^0.0.44"
+    "ignore": "^5.2.4",
+    "natural-compare": "^1.4.0",
+    "semver": "^7.5.0",
+    "ts-api-utils": "^1.0.0"
   },
   "devDependencies": {
-    "@types/debug": "*",
-    "@types/json-schema": "*",
-    "@types/marked": "*",
-    "@types/natural-compare-lite": "^1.4.0",
-    "@types/prettier": "*",
+    "@typescript-eslint/rule-schema-to-typescript-types": "5.59.11",
+    "@typescript-eslint/rule-tester": "5.59.11",
     "cross-fetch": "*",
+    "jest-specific-snapshot": "*",
     "json-schema": "*",
-    "markdown-table": "^3.0.2",
-    "marked": "^4.0.15",
+    "markdown-table": "^3.0.3",
+    "marked": "^4.3.0",
     "prettier": "*",
     "title-case": "^3.0.3",
     "typescript": "*"
   },
   "peerDependencies": {
-    "@typescript-eslint/parser": "^5.0.0 || ^6.0.0 || ^6.0.0-alpha",
+    "@typescript-eslint/parser": "^6.0.0 || ^6.0.0-alpha",
     "eslint": "^7.0.0 || ^8.0.0"
   },
   "peerDependenciesMeta": {

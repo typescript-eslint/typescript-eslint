@@ -136,7 +136,7 @@ export function parseLintResults(
             value: message.ruleId,
             target: ruleUri(message.ruleId),
           }
-        : 'FATAL',
+        : 'Internal error',
       severity:
         message.severity === 2
           ? 8 // MarkerSeverity.Error

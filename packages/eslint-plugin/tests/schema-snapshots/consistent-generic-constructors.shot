@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes consistent-generic-constructors 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "enum": ["constructor", "type-annotation"]
+  }
+]
+
+
+# TYPES:
+
+type Options = ['constructor' | 'type-annotation'];
+"
+`;

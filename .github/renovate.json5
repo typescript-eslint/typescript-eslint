@@ -1,10 +1,10 @@
 {
   enabledManagers: ['github-actions', 'npm'],
   ignoreDeps: [
+    // AJV is out-of-date, but it's intentionally synced with ESLint - https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/package.json#L70
+    'ajv',
     // globby is ESM so we can't go any higher right now
     'globby',
-    // this dep now uses package.json exports - we will be removing it next major
-    'eslint-scope',
     // this dep is now ESM only
     'execa',
     // Some kind of weird caching issue:
@@ -12,9 +12,13 @@
     'ts-node',
     // the nx packages get updated using the nx migrate CLI
     '@nrwl/cli',
+    '@nx/cli',
     '@nrwl/devkit',
+    '@nx/devkit',
     '@nrwl/jest',
+    '@nx/jest',
     '@nrwl/nx-cloud',
+    'nx-cloud',
     '@nrwl/tao',
   ],
   ignorePaths: [
