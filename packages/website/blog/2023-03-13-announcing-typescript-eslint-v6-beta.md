@@ -332,6 +332,7 @@ For more information on the package, [see the `rule-tester` package documentatio
 - [feat(typescript-estree): remove optionality from AST boolean properties](https://github.com/typescript-eslint/typescript-eslint/pull/6274): Switches most AST properties marked as `?: boolean` to `: boolean`, as well as some properties marked as `?:` optional to `| undefined`. This results in more predictable AST node object shapes.
 - [chore(typescript-estree): remove visitor-keys backwards compat export](https://github.com/typescript-eslint/typescript-eslint/pull/6242): `visitorKeys` can now only be imported from `@typescript-eslint/visitor-keys`. Previously it was also re-exported by `@typescript-eslint/utils`.
 - [feat: add package.json exports for public packages](https://github.com/typescript-eslint/typescript-eslint/pull/6458): `@typescript-eslint/*` packages now use `exports` to prevent importing internal file paths.
+- [feat: fork json schema types for better compat with ESLint rule validation #6963](https://github.com/typescript-eslint/typescript-eslint/pull/6963): `@typescript-eslint/utils` now exports a more strict version of `JSONSchema4` types, which are more strict in type checking rule options types
 
 ## Appreciation
 
