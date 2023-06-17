@@ -29,18 +29,22 @@ export default util.createRule<Options, MessageIds>({
       {
         oneOf: [
           {
+            type: 'string',
             enum: ['always', 'never'],
           },
           {
             type: 'object',
             properties: {
               anonymous: {
+                type: 'string',
                 enum: ['always', 'never', 'ignore'],
               },
               named: {
+                type: 'string',
                 enum: ['always', 'never', 'ignore'],
               },
               asyncArrow: {
+                type: 'string',
                 enum: ['always', 'never', 'ignore'],
               },
             },

@@ -48,6 +48,7 @@ export default util.createRule<Options, MessageIds>({
             type: 'object',
             properties: {
               assertionStyle: {
+                type: 'string',
                 enum: ['never'],
               },
             },
@@ -58,9 +59,11 @@ export default util.createRule<Options, MessageIds>({
             type: 'object',
             properties: {
               assertionStyle: {
+                type: 'string',
                 enum: ['as', 'angle-bracket'],
               },
               objectLiteralTypeAssertions: {
+                type: 'string',
                 enum: ['allow', 'allow-as-parameter', 'never'],
               },
             },

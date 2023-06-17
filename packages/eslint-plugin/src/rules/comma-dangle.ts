@@ -49,9 +49,11 @@ export default util.createRule<Options, MessageIds>({
     schema: {
       $defs: {
         value: {
+          type: 'string',
           enum: OPTION_VALUE_SCHEME,
         },
         valueWithIgnore: {
+          type: 'string',
           enum: [...OPTION_VALUE_SCHEME, 'ignore'],
         },
       },
@@ -79,7 +81,7 @@ export default util.createRule<Options, MessageIds>({
           ],
         },
       ],
-      additionalProperties: false,
+      additionalItems: false,
     },
     fixable: 'code',
     hasSuggestions: baseRule.meta.hasSuggestions,

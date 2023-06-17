@@ -65,12 +65,14 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           prefer: {
+            type: 'string',
             enum: ['type-imports', 'no-type-imports'],
           },
           disallowTypeAnnotations: {
             type: 'boolean',
           },
           fixStyle: {
+            type: 'string',
             enum: ['separate-type-imports', 'inline-type-imports'],
           },
         },

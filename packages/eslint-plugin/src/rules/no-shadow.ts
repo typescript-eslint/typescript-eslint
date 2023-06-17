@@ -43,6 +43,7 @@ export default util.createRule<Options, MessageIds>({
             type: 'boolean',
           },
           hoist: {
+            type: 'string',
             enum: ['all', 'functions', 'never'],
           },
           allow: {

@@ -9,7 +9,7 @@ import { isArray } from './isArray';
 import type { AST, RefMap } from './types';
 
 // keywords we probably should support but currently do not support
-const UNSUPPORTED_KEYWORDS = new Set<string>([
+const UNSUPPORTED_KEYWORDS = new Set([
   'allOf',
   'dependencies',
   'extends',
@@ -18,7 +18,7 @@ const UNSUPPORTED_KEYWORDS = new Set<string>([
   'multipleOf',
   'not',
   'patternProperties',
-] satisfies (keyof JSONSchema4)[]);
+]);
 
 export function generateType(schema: JSONSchema4, refMap: RefMap): AST {
   const unsupportedProps = Object.keys(schema).filter(key =>
@@ -46,13 +46,13 @@ export function generateType(schema: JSONSchema4, refMap: RefMap): AST {
       commentLines,
     };
   }
-  if (schema.enum) {
+  if ('enum' in schema && schema.enum) {
     return {
       ...generateUnionType(schema.enum, refMap),
       commentLines,
     };
   }
-  if (schema.anyOf) {
+  if ('anyOf' in schema && schema.anyOf) {
     return {
       // a union isn't *TECHNICALLY* correct - technically anyOf is actually
       // anyOf: [T, U, V] -> T | U | V | T & U | T & V | U & V
@@ -61,21 +61,21 @@ export function generateType(schema: JSONSchema4, refMap: RefMap): AST {
       commentLines,
     };
   }
-  if (schema.oneOf) {
+  if ('oneOf' in schema && schema.oneOf) {
     return {
       ...generateUnionType(schema.oneOf, refMap),
       commentLines,
     };
   }
 
-  if (isArray(schema.type)) {
-    throw new NotSupportedError('schemas with multiple types', schema);
-  }
-  if (schema.type == null) {
+  if (!('type' in schema) || schema.type == null) {
     throw new NotSupportedError(
       'untyped schemas without one of [$ref, enum, oneOf]',
       schema,
     );
+  }
+  if (isArray(schema.type)) {
+    throw new NotSupportedError('schemas with multiple types', schema);
   }
 
   switch (schema.type) {
