@@ -422,6 +422,6 @@ describe('TypeOrValueSpecifier', () => {
     it.each<[string, TypeOrValueSpecifier]>([
       ['type Test = Foo;', { from: 'lib', name: 'Foo' }],
       ['type Test = Foo;', { from: 'lib', name: ['Foo', 'number'] }],
-    ])("doesn't match a error types: %s", runTestNegative);
+    ])("doesn't match an error type: %s", runTestNegative);
   });
 });
