@@ -1,0 +1,18 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes consistent-type-definitions 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "enum": ["interface", "type"]
+  }
+]
+
+
+# TYPES:
+
+type Options = ['interface' | 'type'];
+"
+`;

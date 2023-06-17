@@ -274,18 +274,20 @@ This can be necessary for TypeScript APIs not wrapped by the parser services.
 
 ## Testing
 
-`@typescript-eslint/utils` exports a `RuleTester` with a similar API to the built-in [ESLint `RuleTester`](https://eslint.org/docs/developer-guide/nodejs-api#ruletester).
+`@typescript-eslint/rule-tester` exports a `RuleTester` with a similar API to the built-in ESLint `RuleTester`.
 It should be provided with the same `parser` and `parserOptions` you would use in your ESLint configuration.
+
+Below is a quick-start guide. For more in-depth docs and examples [see the `@typescript-eslint/rule-tester` package documentation](./architecture/Rule_Tester.mdx).
 
 ### Testing Untyped Rules
 
 For rules that don't need type information, passing just the `parser` will do:
 
 ```ts
-import { ESLintUtils } from '@typescript-eslint/utils';
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import rule from './my-rule';
 
-const ruleTester = new ESLintUtils.RuleTester({
+const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
@@ -305,10 +307,10 @@ For rules that do need type information, `parserOptions` must be passed in as we
 Tests must have at least an absolute `tsconfigRootDir` path provided as well as a relative `project` path from that directory:
 
 ```ts
-import { ESLintUtils } from '@typescript-eslint/utils';
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import rule from './my-typed-rule';
 
-const ruleTester = new ESLintUtils.RuleTester({
+const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
     project: './tsconfig.json',
@@ -327,11 +329,11 @@ ruleTester.run('my-typed-rule', rule, {
 ```
 
 :::note
-For now, `ESLintUtils.RuleTester` requires the following physical files be present on disk for typed rules:
+For now, `RuleTester` requires the following physical files be present on disk for typed rules:
 
 - `tsconfig.json`: tsconfig used as the test "project"
 - One of the following two files:
   - `file.ts`: blank test file used for normal TS tests
-  - `file.tsx`: blank test file used for tests with `parserOptions: { ecmaFeatures: { jsx: true } }`
+  - `react.tsx`: blank test file used for tests with `parserOptions: { ecmaFeatures: { jsx: true } }`
 
 :::

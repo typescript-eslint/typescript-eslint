@@ -16,18 +16,20 @@ describe('ScopeManager.prototype.getDeclaredVariables', () => {
     });
 
     simpleTraverse(ast, {
-      [type](node) {
-        const expected = expectedNamesList.shift()!;
-        const actual = scopeManager.getDeclaredVariables(node);
+      visitors: {
+        [type](node) {
+          const expected = expectedNamesList.shift()!;
+          const actual = scopeManager.getDeclaredVariables(node);
 
-        expect(actual).toHaveLength(expected.length);
-        if (actual.length > 0) {
-          const end = actual.length - 1;
+          expect(actual).toHaveLength(expected.length);
+          if (actual.length > 0) {
+            const end = actual.length - 1;
 
-          for (let i = 0; i <= end; i++) {
-            expect(actual[i].name).toBe(expected[i]);
+            for (let i = 0; i <= end; i++) {
+              expect(actual[i].name).toBe(expected[i]);
+            }
           }
-        }
+        },
       },
     });
 

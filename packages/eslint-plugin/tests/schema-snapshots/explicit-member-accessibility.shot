@@ -1,0 +1,89 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes explicit-member-accessibility 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "$defs": {
+      "accessibilityLevel": {
+        "oneOf": [
+          {
+            "description": "Always require an accessor.",
+            "enum": ["explicit"]
+          },
+          {
+            "description": "Require an accessor except when public.",
+            "enum": ["no-public"]
+          },
+          {
+            "description": "Never check whether there is an accessor.",
+            "enum": ["off"]
+          }
+        ]
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "accessibility": {
+        "$ref": "#/items/0/$defs/accessibilityLevel"
+      },
+      "ignoredMethodNames": {
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "overrides": {
+        "additionalProperties": false,
+        "properties": {
+          "accessors": {
+            "$ref": "#/items/0/$defs/accessibilityLevel"
+          },
+          "constructors": {
+            "$ref": "#/items/0/$defs/accessibilityLevel"
+          },
+          "methods": {
+            "$ref": "#/items/0/$defs/accessibilityLevel"
+          },
+          "parameterProperties": {
+            "$ref": "#/items/0/$defs/accessibilityLevel"
+          },
+          "properties": {
+            "$ref": "#/items/0/$defs/accessibilityLevel"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type AccessibilityLevel =
+  /** Always require an accessor. */
+  | 'explicit'
+  /** Never check whether there is an accessor. */
+  | 'off'
+  /** Require an accessor except when public. */
+  | 'no-public';
+
+type Options = [
+  {
+    accessibility?: AccessibilityLevel;
+    ignoredMethodNames?: string[];
+    overrides?: {
+      accessors?: AccessibilityLevel;
+      constructors?: AccessibilityLevel;
+      methods?: AccessibilityLevel;
+      parameterProperties?: AccessibilityLevel;
+      properties?: AccessibilityLevel;
+    };
+  },
+];
+"
+`;

@@ -1,5 +1,6 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/explicit-member-accessibility';
-import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -8,7 +9,6 @@ const ruleTester = new RuleTester({
 ruleTester.run('explicit-member-accessibility', rule, {
   valid: [
     {
-      filename: 'test.ts',
       code: `
 class Test {
   public constructor(private foo: string) {}
@@ -22,7 +22,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   public constructor(private readonly foo: string) {}
@@ -36,7 +35,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   public constructor(private foo: string) {}
@@ -50,7 +48,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   public constructor(protected foo: string) {}
@@ -64,7 +61,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   public constructor(public foo: string) {}
@@ -78,7 +74,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   public constructor(readonly foo: string) {}
@@ -92,7 +87,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   public constructor(private readonly foo: string) {}
@@ -106,7 +100,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   protected name: string;
@@ -118,7 +111,6 @@ class Test {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   protected name: string;
@@ -128,7 +120,6 @@ class Test {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   public constructor({ x, y }: { x: number; y: number }) {}
@@ -136,7 +127,6 @@ class Test {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   protected name: string;
@@ -149,7 +139,6 @@ class Test {
       options: [{ accessibility: 'explicit' }],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   protected name: string;
@@ -162,7 +151,6 @@ class Test {
       options: [{ accessibility: 'no-public' }],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   name: string;
@@ -178,7 +166,6 @@ class Test {
       options: [{ accessibility: 'no-public' }],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   private x: number;
@@ -199,7 +186,6 @@ class Test {
       options: [{ overrides: { constructors: 'off', accessors: 'off' } }],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   private x: number;
@@ -223,7 +209,6 @@ class Test {
       options: [{ overrides: { methods: 'off' } }],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   constructor(private x: number) {}
@@ -232,7 +217,6 @@ class Test {
       options: [{ accessibility: 'no-public' }],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   constructor(public x: number) {}
@@ -246,7 +230,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   constructor(public foo: number) {}
@@ -255,7 +238,6 @@ class Test {
       options: [{ accessibility: 'no-public' }],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   public getX() {
@@ -266,7 +248,6 @@ class Test {
       options: [{ ignoredMethodNames: ['getX'] }],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   public static getX() {
@@ -277,7 +258,6 @@ class Test {
       options: [{ ignoredMethodNames: ['getX'] }],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   get getX() {
@@ -288,7 +268,6 @@ class Test {
       options: [{ ignoredMethodNames: ['getX'] }],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   getX() {
@@ -299,7 +278,6 @@ class Test {
       options: [{ ignoredMethodNames: ['getX'] }],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   x = 2;
@@ -308,7 +286,6 @@ class Test {
       options: [{ overrides: { properties: 'off' } }],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   private x = 2;
@@ -317,7 +294,6 @@ class Test {
       options: [{ overrides: { properties: 'explicit' } }],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   x = 2;
@@ -347,7 +323,6 @@ class Test {
   ],
   invalid: [
     {
-      filename: 'test.ts',
       code: `
 export class XXXX {
   public constructor(readonly value: string) {}
@@ -399,7 +374,6 @@ export class XXXX {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export class WithParameterProperty {
   public constructor(readonly value: string) {}
@@ -442,7 +416,6 @@ export class WithParameterProperty {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 export class XXXX {
   public constructor(readonly samosa: string) {}
@@ -493,7 +466,6 @@ export class XXXX {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   public constructor(readonly foo: string) {}
@@ -541,7 +513,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   x: number;
@@ -604,7 +575,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   private x: number;
@@ -664,7 +634,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   x?: number;
@@ -771,7 +740,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   protected name: string;
@@ -804,7 +772,6 @@ class Test {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   protected name: string;
@@ -837,7 +804,6 @@ class Test {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   public x: number;
@@ -869,7 +835,6 @@ class Test {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   private x: number;
@@ -1011,7 +976,6 @@ class Test {
       options: [{ overrides: { constructors: 'no-public' } }],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   private x: number;
@@ -1213,7 +1177,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   constructor(public x: number) {}
@@ -1274,7 +1237,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   constructor(public x: number) {}
@@ -1318,7 +1280,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   constructor(public readonly x: number) {}
@@ -1344,7 +1305,6 @@ class Test {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   x = 2;
@@ -1394,7 +1354,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   public x = 2;
@@ -1466,7 +1425,6 @@ class Test {
       ],
     },
     {
-      filename: 'test.ts',
       code: noFormat`
 class Test {
   public /*public*/constructor(private foo: string) {}
@@ -1491,7 +1449,6 @@ class Test {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   @public
@@ -1519,7 +1476,6 @@ class Test {
     },
 
     {
-      filename: 'test.ts',
       code: `
 class Test {
   @public
@@ -1546,7 +1502,6 @@ class Test {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   public foo = '';
@@ -1572,7 +1527,6 @@ class Test {
     },
 
     {
-      filename: 'test.ts',
       code: noFormat`
 class Test {
   constructor(public/* Hi there */ readonly foo) {}
@@ -1598,7 +1552,6 @@ class Test {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 class Test {
   constructor(public readonly foo: string) {}
@@ -1623,7 +1576,6 @@ class Test {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 class EnsureWhiteSPaceSpan {
   public constructor() {}
@@ -1649,7 +1601,6 @@ class EnsureWhiteSPaceSpan {
       `,
     },
     {
-      filename: 'test.ts',
       code: `
 class EnsureWhiteSPaceSpan {
   public /* */ constructor() {}

@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import * as util from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
@@ -9,17 +10,21 @@ const baseRule = getESLintCoreRule('lines-between-class-members');
 type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const schema = util.deepMerge(
-  { ...baseRule.meta.schema },
-  {
-    1: {
-      exceptAfterOverload: {
-        type: 'boolean',
-        default: true,
+const schema = Object.values(
+  util.deepMerge(
+    { ...baseRule.meta.schema },
+    {
+      1: {
+        properties: {
+          exceptAfterOverload: {
+            type: 'boolean',
+            default: true,
+          },
+        },
       },
     },
-  },
-);
+  ),
+) as JSONSchema4[];
 
 export default util.createRule<Options, MessageIds>({
   name: 'lines-between-class-members',

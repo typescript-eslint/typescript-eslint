@@ -27,23 +27,6 @@ type MessageIds =
   | 'missingAccessibility'
   | 'addExplicitAccessibility';
 
-const accessibilityLevel = {
-  oneOf: [
-    {
-      const: 'explicit',
-      description: 'Always require an accessor.',
-    },
-    {
-      const: 'no-public',
-      description: 'Require an accessor except when public.',
-    },
-    {
-      const: 'off',
-      description: 'Never check whether there is an accessor.',
-    },
-  ],
-};
-
 export default util.createRule<Options, MessageIds>({
   name: 'explicit-member-accessibility',
   meta: {
@@ -62,41 +45,53 @@ export default util.createRule<Options, MessageIds>({
         'Public accessibility modifier on {{type}} {{name}}.',
       addExplicitAccessibility: "Add '{{ type }}' accessibility modifier",
     },
-    schema: {
-      $defs: {
-        accessibilityLevel,
-      },
-      prefixItems: [
-        {
-          type: 'object',
-          properties: {
-            accessibility: { $ref: '#/$defs/accessibilityLevel' },
-            overrides: {
-              type: 'object',
-              properties: {
-                accessors: { $ref: '#/$defs/accessibilityLevel' },
-                constructors: { $ref: '#/$defs/accessibilityLevel' },
-                methods: { $ref: '#/$defs/accessibilityLevel' },
-                properties: { $ref: '#/$defs/accessibilityLevel' },
-                parameterProperties: {
-                  $ref: '#/$defs/accessibilityLevel',
-                },
+    schema: [
+      {
+        $defs: {
+          accessibilityLevel: {
+            oneOf: [
+              {
+                enum: ['explicit'],
+                description: 'Always require an accessor.',
               },
-
-              additionalProperties: false,
+              {
+                enum: ['no-public'],
+                description: 'Require an accessor except when public.',
+              },
+              {
+                enum: ['off'],
+                description: 'Never check whether there is an accessor.',
+              },
+            ],
+          },
+        },
+        type: 'object',
+        properties: {
+          accessibility: { $ref: '#/items/0/$defs/accessibilityLevel' },
+          overrides: {
+            type: 'object',
+            properties: {
+              accessors: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              constructors: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              methods: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              properties: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              parameterProperties: {
+                $ref: '#/items/0/$defs/accessibilityLevel',
+              },
             },
-            ignoredMethodNames: {
-              type: 'array',
-              items: {
-                type: 'string',
-              },
+
+            additionalProperties: false,
+          },
+          ignoredMethodNames: {
+            type: 'array',
+            items: {
+              type: 'string',
             },
           },
-          additionalProperties: false,
         },
-      ],
-      type: 'array',
-    },
+        additionalProperties: false,
+      },
+    ],
   },
   defaultOptions: [{ accessibility: 'explicit' }],
   create(context, [option]) {

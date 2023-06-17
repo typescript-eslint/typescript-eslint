@@ -1,4 +1,5 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -36,7 +37,7 @@ export const readonlynessOptionsSchema = {
       items: typeOrValueSpecifierSchema,
     },
   },
-};
+} satisfies JSONSchema4;
 
 export const readonlynessOptionsDefaults: ReadonlynessOptions = {
   treatMethodsAsReadonly: false,

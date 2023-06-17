@@ -124,6 +124,7 @@ export default util.createRule<Options, MessageIds>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           checkIntersections: {
             description: 'Whether to check intersection types.',

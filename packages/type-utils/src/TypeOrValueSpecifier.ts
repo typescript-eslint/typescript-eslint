@@ -1,3 +1,5 @@
+import { getCanonicalFileName } from '@typescript-eslint/typescript-estree';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import path from 'path';
 import type * as ts from 'typescript';
 
@@ -24,7 +26,7 @@ export type TypeOrValueSpecifier =
   | LibSpecifier
   | PackageSpecifier;
 
-export const typeOrValueSpecifierSchema = {
+export const typeOrValueSpecifierSchema: JSONSchema4 = {
   oneOf: [
     {
       type: 'string',
@@ -35,7 +37,7 @@ export const typeOrValueSpecifierSchema = {
       properties: {
         from: {
           type: 'string',
-          const: 'file',
+          enum: ['file'],
         },
         name: {
           oneOf: [
@@ -64,7 +66,7 @@ export const typeOrValueSpecifierSchema = {
       properties: {
         from: {
           type: 'string',
-          const: 'lib',
+          enum: ['lib'],
         },
         name: {
           oneOf: [
@@ -90,7 +92,7 @@ export const typeOrValueSpecifierSchema = {
       properties: {
         from: {
           type: 'string',
-          const: 'package',
+          enum: ['package'],
         },
         name: {
           oneOf: [
@@ -133,16 +135,16 @@ function typeDeclaredInFile(
   program: ts.Program,
 ): boolean {
   if (relativePath === undefined) {
-    const cwd = program.getCurrentDirectory().toLowerCase();
+    const cwd = getCanonicalFileName(program.getCurrentDirectory());
     return declarationFiles.some(declaration =>
-      declaration.fileName.toLowerCase().startsWith(cwd),
+      getCanonicalFileName(declaration.fileName).startsWith(cwd),
     );
   }
-  const absolutePath = path
-    .join(program.getCurrentDirectory(), relativePath)
-    .toLowerCase();
+  const absolutePath = getCanonicalFileName(
+    path.join(program.getCurrentDirectory(), relativePath),
+  );
   return declarationFiles.some(
-    declaration => declaration.fileName.toLowerCase() === absolutePath,
+    declaration => getCanonicalFileName(declaration.fileName) === absolutePath,
   );
 }
 
