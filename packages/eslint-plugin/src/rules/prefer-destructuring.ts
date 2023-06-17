@@ -1,11 +1,14 @@
-import type { TSESLint } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from 'json-schema';
+import * as tsutils from 'tsutils';
+import type * as ts from 'typescript';
 
 import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
-import { createRule } from '../util';
+import { createRule, getParserServices, isTypeAnyType } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('prefer-destructuring');
@@ -91,24 +94,76 @@ export default createRule<Options, MessageIds>({
       enforceForTypeAnnotatedProperties: false,
     },
   ],
-  create(context, [, { enforceForTypeAnnotatedProperties = false } = {}]) {
-    const rules = baseRule.create(context);
+  create(
+    context,
+    [
+      enabledTypes,
+      {
+        enforceForRenamedProperties = false,
+        enforceForTypeAnnotatedProperties = false,
+      } = {},
+    ],
+  ) {
+    const { program, esTreeNodeToTSNodeMap } = getParserServices(context);
+    const typeChecker = program.getTypeChecker();
+    const baseRules = baseRule.create(context);
     return {
       VariableDeclarator(node): void {
-        if (node.id.typeAnnotation === undefined) {
-          rules.VariableDeclarator(node);
+        const rules =
+          node.id.typeAnnotation === undefined
+            ? baseRules
+            : baseRule.create(noFixContext(context));
+        if (
+          node.id.typeAnnotation !== undefined &&
+          !enforceForTypeAnnotatedProperties
+        ) {
           return;
         }
-        if (!enforceForTypeAnnotatedProperties) {
-          return;
+        if (
+          node.init != null &&
+          node.init.type === AST_NODE_TYPES.MemberExpression &&
+          isArrayLiteralIntegerIndexAccess(node.init)
+        ) {
+          const tsObj = esTreeNodeToTSNodeMap.get(node.init.object);
+          const objType = typeChecker.getTypeAtLocation(tsObj);
+          if (!isTypeIterableType(objType, typeChecker)) {
+            if (
+              !enforceForRenamedProperties ||
+              !getNormalizedEnabledType(node.type, 'object')
+            ) {
+              return;
+            }
+            context.report({
+              node,
+              messageId: 'preferDestructuring',
+              data: { type: 'object' },
+            });
+            return;
+          }
         }
-        const noFixRules = baseRule.create(noFixContext(context));
-        noFixRules.VariableDeclarator(node);
+        rules.VariableDeclarator(node);
       },
       AssignmentExpression(node): void {
+        const rules = baseRules;
         rules.AssignmentExpression(node);
       },
     };
+    function getNormalizedEnabledType(
+      nodeType:
+        | AST_NODE_TYPES.VariableDeclarator
+        | AST_NODE_TYPES.AssignmentExpression,
+      destructuringType: 'array' | 'object',
+    ): boolean | undefined {
+      if (enabledTypes === undefined) {
+        return true;
+      }
+      if ('object' in enabledTypes || 'array' in enabledTypes) {
+        return enabledTypes[destructuringType];
+      }
+      return enabledTypes[nodeType as keyof typeof enabledTypes]?.[
+        destructuringType as keyof typeof enabledTypes[keyof typeof enabledTypes]
+      ];
+    }
   },
 });
 
@@ -137,4 +192,31 @@ function noFixContext(context: Context): Context {
       return Reflect.get(target, path, receiver);
     },
   });
+}
+
+function isTypeIterableType(
+  type: ts.Type,
+  typeChecker: ts.TypeChecker,
+): boolean {
+  if (isTypeAnyType(type)) {
+    return true;
+  }
+  if (!type.isUnion()) {
+    const iterator = tsutils.getWellKnownSymbolPropertyOfType(
+      type,
+      'iterator',
+      typeChecker,
+    );
+    return iterator !== undefined;
+  }
+  return type.types.every(t => isTypeIterableType(t, typeChecker));
+}
+
+function isArrayLiteralIntegerIndexAccess(
+  node: TSESTree.MemberExpression,
+): boolean {
+  if (node.property.type !== AST_NODE_TYPES.Literal) {
+    return false;
+  }
+  return Number.isInteger(node.property.value);
 }
