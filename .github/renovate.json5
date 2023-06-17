@@ -5,8 +5,6 @@
     'ajv',
     // globby is ESM so we can't go any higher right now
     'globby',
-    // this dep now uses package.json exports - we will be removing it next major
-    'eslint-scope',
     // this dep is now ESM only
     'execa',
     // Some kind of weird caching issue:
@@ -14,9 +12,13 @@
     'ts-node',
     // the nx packages get updated using the nx migrate CLI
     '@nrwl/cli',
+    '@nx/cli',
     '@nrwl/devkit',
+    '@nx/devkit',
     '@nrwl/jest',
+    '@nx/jest',
     '@nrwl/nx-cloud',
+    'nx-cloud',
     '@nrwl/tao',
   ],
   ignorePaths: [

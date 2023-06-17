@@ -25,6 +25,7 @@ import {
   isESTreeClassMember,
   isOptional,
   isThisInTypeQuery,
+  nodeCanBeDecorated,
   nodeHasIllegalDecorators,
   nodeIsPresent,
   unescapeStringLiteralText,
@@ -3118,6 +3119,7 @@ export class Converter {
       return;
     }
 
+    // typescript<5.0.0
     if (nodeHasIllegalDecorators(node)) {
       this.#throwError(
         node.illegalDecorators[0],
@@ -3125,7 +3127,27 @@ export class Converter {
       );
     }
 
-    for (const modifier of getModifiers(node) ?? []) {
+    for (const decorator of getDecorators(
+      node,
+      /* includeIllegalDecorators */ true,
+    ) ?? []) {
+      // `checkGrammarModifiers` function in typescript
+      if (!nodeCanBeDecorated(node as TSNode)) {
+        if (ts.isMethodDeclaration(node) && !nodeIsPresent(node.body)) {
+          this.#throwError(
+            decorator,
+            'A decorator can only decorate a method implementation, not an overload.',
+          );
+        } else {
+          this.#throwError(decorator, 'Decorators are not valid here.');
+        }
+      }
+    }
+
+    for (const modifier of getModifiers(
+      node,
+      /* includeIllegalModifiers */ true,
+    ) ?? []) {
       if (modifier.kind !== SyntaxKind.ReadonlyKeyword) {
         if (
           node.kind === SyntaxKind.PropertySignature ||

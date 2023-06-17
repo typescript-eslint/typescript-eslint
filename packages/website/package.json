@@ -1,6 +1,6 @@
 {
   "name": "website",
-  "version": "5.59.1",
+  "version": "5.59.11",
   "private": true,
   "scripts": {
     "build": "docusaurus build",
@@ -24,8 +24,8 @@
     "@docusaurus/remark-plugin-npm2yarn": "~2.4.0",
     "@docusaurus/theme-common": "~2.4.0",
     "@mdx-js/react": "1.6.22",
-    "@typescript-eslint/parser": "5.59.1",
-    "@typescript-eslint/website-eslint": "5.59.1",
+    "@typescript-eslint/parser": "5.59.11",
+    "@typescript-eslint/website-eslint": "5.59.11",
     "clsx": "^1.1.1",
     "eslint": "*",
     "json-schema": "^0.4.0",
@@ -45,27 +45,27 @@
     "react": "^18.0.0"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.4.5",
+    "@axe-core/playwright": "^4.6.1",
     "@docusaurus/module-type-aliases": "~2.4.0",
-    "@playwright/test": "^1.27.1",
+    "@playwright/test": "^1.32.3",
     "@types/react": "^18.0.9",
-    "@types/react-helmet": "^6.1.5",
+    "@types/react-helmet": "^6.1.6",
     "@types/react-router-dom": "^5.3.3",
-    "@typescript-eslint/eslint-plugin": "5.59.1",
-    "@typescript-eslint/rule-schema-to-typescript-types": "5.59.1",
-    "@typescript-eslint/types": "5.59.1",
+    "@typescript-eslint/eslint-plugin": "5.59.11",
+    "@typescript-eslint/rule-schema-to-typescript-types": "5.59.11",
+    "@typescript-eslint/types": "5.59.11",
     "copy-webpack-plugin": "^11.0.0",
     "cross-fetch": "*",
     "globby": "^11.1.0",
     "make-dir": "*",
-    "monaco-editor": "^0.37.0",
+    "monaco-editor": "^0.38.0",
     "raw-loader": "^4.0.2",
     "rimraf": "*",
-    "stylelint": "^15.3.0",
+    "stylelint": "^15.6.0",
     "stylelint-config-recommended": "^11.0.0",
     "stylelint-config-standard": "^31.0.0",
     "stylelint-order": "^6.0.3",
-    "webpack": "^5.74.0"
+    "webpack": "^5.81.0"
   },
   "browserslist": {
     "production": [
