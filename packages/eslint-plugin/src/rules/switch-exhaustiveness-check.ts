@@ -1,12 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-import {
-  isIntersectionType,
-  isLiteralType,
-  isTypeFlagSet,
-  isUnionOrIntersectionType,
-  isUnionType,
-  unionTypeParts,
-} from 'tsutils';
+import { isLiteralType, isTypeFlagSet, unionTypeParts } from 'tsutils';
 import * as ts from 'typescript';
 
 import {
@@ -136,14 +129,26 @@ export default createRule({
           caseTypes.add(getNodeType(switchCase.test));
         }
 
-        const isInfiniteType = unionTypes.every(isLiteralType);
-        const missingBranchTypes = unionTypes.filter(unionType => {
-          if (isInfiniteType && isUnionOrIntersectionType(unionType)) {
-            return;
-          }
+        const isFiniteType = unionTypes.every(isLiteralType);
+        const isSymbolType = unionTypes.some(type =>
+          isTypeFlagSet(type, ts.TypeFlags.UniqueESSymbol),
+        );
+        const isStringLiteralOrBoolean = unionTypes.some(type =>
+          isTypeFlagSet(
+            type,
+            ts.TypeFlags.BooleanLiteral || ts.TypeFlags.StringLiteral,
+          ),
+        );
 
-          return !caseTypes.has(unionType);
-        });
+        if (!isFiniteType && !isSymbolType && !isStringLiteralOrBoolean) {
+          return;
+        }
+
+        const missingBranchTypes = unionTypes.filter(
+          unionType => !caseTypes.has(unionType),
+        );
+
+        // console.log('Here', missingBranchTypes);
 
         if (missingBranchTypes.length === 0) {
           // All cases matched - do nothing.
