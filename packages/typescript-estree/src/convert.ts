@@ -227,7 +227,7 @@ export class Converter {
    * @param parent parentNode
    * @returns the converted ESTree node
    */
-  private convertPattern(child?: ts.Node, parent?: ts.Node): any | null {
+  private convertPattern(child?: ts.Node, parent?: ts.Node): any {
     return this.converter(child, parent, true);
   }
 
@@ -237,7 +237,7 @@ export class Converter {
    * @param parent parentNode
    * @returns the converted ESTree node
    */
-  private convertChild(child?: ts.Node, parent?: ts.Node): any | null {
+  private convertChild(child?: ts.Node, parent?: ts.Node): any {
     return this.converter(child, parent, false);
   }
 
@@ -1310,7 +1310,7 @@ export class Converter {
       case SyntaxKind.Constructor: {
         const lastModifier = getLastModifier(node);
         const constructorToken =
-          (lastModifier && findNextToken(lastModifier, node, this.ast)) ||
+          (lastModifier && findNextToken(lastModifier, node, this.ast)) ??
           node.getFirstToken()!;
 
         const constructor = this.createNode<

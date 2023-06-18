@@ -365,7 +365,7 @@ export default util.createRule<Options, MessageIds>({
     ): TSESLint.Scope.Scope | null {
       const upper = scope.upper;
 
-      if (upper?.type === 'function-expression-name') {
+      if (upper?.type === ScopeType.functionExpressionName) {
         return upper.upper;
       }
       return upper;
