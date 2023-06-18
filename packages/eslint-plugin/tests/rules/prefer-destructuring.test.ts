@@ -124,6 +124,16 @@ ruleTester.run('prefer-desctructuring', rule, {
       `,
       options: [{ array: true }, { enforceForRenamedProperties: true }],
     },
+    {
+      code: `
+        let x: { 0: unknown };
+        y += x[0];
+      `,
+      options: [
+        { object: true, array: true },
+        { enforceForRenamedProperties: true },
+      ],
+    },
   ],
   invalid: [
     // enforceForTypeAnnotatedProperties: true

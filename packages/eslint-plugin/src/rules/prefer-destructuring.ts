@@ -109,6 +109,9 @@ export default createRule<Options, MessageIds>({
         performCheck(node.id, node.init, node);
       },
       AssignmentExpression(node): void {
+        if (node.operator !== '=') {
+          return;
+        }
         performCheck(node.left, node.right, node);
       },
     };
