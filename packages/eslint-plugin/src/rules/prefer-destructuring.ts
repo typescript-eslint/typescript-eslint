@@ -104,50 +104,62 @@ export default createRule<Options, MessageIds>({
       } = {},
     ],
   ) {
-    const { program, esTreeNodeToTSNodeMap } = getParserServices(context);
-    const typeChecker = program.getTypeChecker();
-    const baseRules = baseRule.create(context);
     return {
       VariableDeclarator(node): void {
-        const rules =
-          node.id.typeAnnotation === undefined
-            ? baseRules
-            : baseRule.create(noFixContext(context));
-        if (
-          node.id.typeAnnotation !== undefined &&
-          !enforceForTypeAnnotatedProperties
-        ) {
-          return;
-        }
-        if (
-          node.init != null &&
-          node.init.type === AST_NODE_TYPES.MemberExpression &&
-          isArrayLiteralIntegerIndexAccess(node.init)
-        ) {
-          const tsObj = esTreeNodeToTSNodeMap.get(node.init.object);
-          const objType = typeChecker.getTypeAtLocation(tsObj);
-          if (!isTypeIterableType(objType, typeChecker)) {
-            if (
-              !enforceForRenamedProperties ||
-              !getNormalizedEnabledType(node.type, 'object')
-            ) {
-              return;
-            }
-            context.report({
-              node,
-              messageId: 'preferDestructuring',
-              data: { type: 'object' },
-            });
-            return;
-          }
-        }
-        rules.VariableDeclarator(node);
+        performCheck(node.id, node.init, node);
       },
       AssignmentExpression(node): void {
-        const rules = baseRules;
-        rules.AssignmentExpression(node);
+        performCheck(node.left, node.right, node);
       },
     };
+
+    function performCheck(
+      leftNode: TSESTree.BindingName | TSESTree.Expression,
+      rightNode: TSESTree.Expression | null,
+      reportNode: TSESTree.VariableDeclarator | TSESTree.AssignmentExpression,
+    ): void {
+      const { program, esTreeNodeToTSNodeMap } = getParserServices(context);
+      const typeChecker = program.getTypeChecker();
+      const baseRules = baseRule.create(context);
+      const rules =
+        leftNode.type === AST_NODE_TYPES.Identifier &&
+        leftNode.typeAnnotation === undefined
+          ? baseRules
+          : baseRule.create(noFixContext(context));
+      if (
+        'typeAnnotation' in leftNode &&
+        leftNode.typeAnnotation !== undefined &&
+        !enforceForTypeAnnotatedProperties
+      ) {
+        return;
+      }
+
+      if (rightNode != null && isArrayLiteralIntegerIndexAccess(rightNode)) {
+        const tsObj = esTreeNodeToTSNodeMap.get(rightNode.object);
+        const objType = typeChecker.getTypeAtLocation(tsObj);
+        if (!isTypeIterableType(objType, typeChecker)) {
+          if (
+            !enforceForRenamedProperties ||
+            !getNormalizedEnabledType(reportNode.type, 'object')
+          ) {
+            return;
+          }
+          context.report({
+            node: reportNode,
+            messageId: 'preferDestructuring',
+            data: { type: 'object' },
+          });
+          return;
+        }
+      }
+
+      if (reportNode.type === AST_NODE_TYPES.AssignmentExpression) {
+        rules.AssignmentExpression(reportNode);
+      } else {
+        rules.VariableDeclarator(reportNode);
+      }
+    }
+
     function getNormalizedEnabledType(
       nodeType:
         | AST_NODE_TYPES.VariableDeclarator
@@ -213,8 +225,11 @@ function isTypeIterableType(
 }
 
 function isArrayLiteralIntegerIndexAccess(
-  node: TSESTree.MemberExpression,
-): boolean {
+  node: TSESTree.Expression,
+): node is TSESTree.MemberExpression {
+  if (node.type !== AST_NODE_TYPES.MemberExpression) {
+    return false;
+  }
   if (node.property.type !== AST_NODE_TYPES.Literal) {
     return false;
   }

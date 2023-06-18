@@ -55,20 +55,40 @@ ruleTester.run('prefer-desctructuring', rule, {
       let y = x[0];
     `,
     `
+      let x: { 0: unknown };
+      y = x[0];
+    `,
+    `
       let x: unknown;
       let y = x[0];
+    `,
+    `
+      let x: unknown;
+      y = x[0];
     `,
     `
       let x: { 0: unknown } | unknown[];
       let y = x[0];
     `,
     `
+      let x: { 0: unknown } | unknown[];
+      y = x[0];
+    `,
+    `
       let x: { 0: unknown } & (() => void);
       let y = x[0];
     `,
     `
+      let x: { 0: unknown } & (() => void);
+      y = x[0];
+    `,
+    `
       let x: Record<number, unknown>;
       let y = x[0];
+    `,
+    `
+      let x: Record<number, unknown>;
+      y = x[0];
     `,
     {
       code: `
@@ -83,7 +103,24 @@ ruleTester.run('prefer-desctructuring', rule, {
     {
       code: `
         let x: { 0: unknown };
+        ({ 0: y } = x);
+      `,
+      options: [
+        { array: true, object: true },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        let x: { 0: unknown };
         let y = x[0];
+      `,
+      options: [{ array: true }, { enforceForRenamedProperties: true }],
+    },
+    {
+      code: `
+        let x: { 0: unknown };
+        y = x[0];
       `,
       options: [{ array: true }, { enforceForRenamedProperties: true }],
     },
@@ -150,6 +187,20 @@ ruleTester.run('prefer-desctructuring', rule, {
     },
     {
       code: `
+        let x: { [Symbol.iterator]: unknown };
+        y = x[0];
+      `,
+      output: null,
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'array' },
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+    },
+    {
+      code: `
         let x: [1, 2, 3];
         let y = x[0];
       `,
@@ -158,6 +209,19 @@ ruleTester.run('prefer-desctructuring', rule, {
           messageId: 'preferDestructuring',
           data: { type: 'array' },
           type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+    {
+      code: `
+        let x: [1, 2, 3];
+        y = x[0];
+      `,
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'array' },
+          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
     },
@@ -178,6 +242,21 @@ ruleTester.run('prefer-desctructuring', rule, {
     },
     {
       code: `
+        function* it() {
+          yield 1;
+        }
+        y = it()[0];
+      `,
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'array' },
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+    },
+    {
+      code: `
         let x: any;
         let y = x[0];
       `,
@@ -186,6 +265,19 @@ ruleTester.run('prefer-desctructuring', rule, {
           messageId: 'preferDestructuring',
           data: { type: 'array' },
           type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+    {
+      code: `
+        let x: any;
+        y = x[0];
+      `,
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'array' },
+          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
     },
@@ -204,6 +296,19 @@ ruleTester.run('prefer-desctructuring', rule, {
     },
     {
       code: `
+        let x: string[] | { [Symbol.iterator]: unknown };
+        y = x[0];
+      `,
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'array' },
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+    },
+    {
+      code: `
         let x: object & unknown[];
         let y = x[0];
       `,
@@ -212,6 +317,19 @@ ruleTester.run('prefer-desctructuring', rule, {
           messageId: 'preferDestructuring',
           data: { type: 'array' },
           type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+    {
+      code: `
+        let x: object & unknown[];
+        y = x[0];
+      `,
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'array' },
+          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
     },
@@ -231,6 +349,20 @@ ruleTester.run('prefer-desctructuring', rule, {
     },
     {
       code: `
+        let x: { 0: string };
+        y = x[0];
+      `,
+      options: [{ object: true }, { enforceForRenamedProperties: true }],
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'object' },
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+    },
+    {
+      code: `
         let x: { 0: unknown } | unknown[];
         let y = x[0];
       `,
@@ -240,6 +372,20 @@ ruleTester.run('prefer-desctructuring', rule, {
           messageId: 'preferDestructuring',
           data: { type: 'object' },
           type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+    {
+      code: `
+        let x: { 0: unknown } | unknown[];
+        y = x[0];
+      `,
+      options: [{ object: true }, { enforceForRenamedProperties: true }],
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'object' },
+          type: AST_NODE_TYPES.AssignmentExpression,
         },
       ],
     },
