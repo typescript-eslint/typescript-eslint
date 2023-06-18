@@ -255,8 +255,7 @@ export default util.createRule<Options, MessageIds>({
 
         // Node.js or ES modules has a special scope.
         if (
-          // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-          scope.type === 'global' &&
+          scope.type === ScopeType.global &&
           scope.childScopes[0] &&
           // The special scope's block is the Program node.
           scope.block === scope.childScopes[0].block

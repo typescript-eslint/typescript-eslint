@@ -109,8 +109,7 @@ class ScopeManager {
    */
   public acquire(node: TSESTree.Node, inner = false): Scope | null {
     function predicate(testScope: Scope): boolean {
-      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-      if (testScope.type === 'function' && testScope.functionExpressionScope) {
+      if (testScope.type === ScopeType.function && testScope.functionExpressionScope) {
         return false;
       }
       return true;
