@@ -18,7 +18,7 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallow enums from having both number and string members',
-      recommended: 'recommended',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {
