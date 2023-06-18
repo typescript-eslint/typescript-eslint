@@ -48,6 +48,16 @@ ruleTester.run('prefer-desctructuring', rule, {
       code: 'var { foo: bar }: { foo: boolean } = object;',
       options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
     },
+    {
+      code: `
+        class Bar extends Foo {
+          static foo() {
+            var foo: any = super.foo;
+          }
+        }
+      `,
+      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+    },
 
     // numeric property for iterable / non-iterable
     `
@@ -128,6 +138,38 @@ ruleTester.run('prefer-desctructuring', rule, {
       code: `
         let x: { 0: unknown };
         y += x[0];
+      `,
+      options: [
+        { object: true, array: true },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        class Bar {
+          public [0]: unknown;
+        }
+        class Foo extends Bar {
+          static foo() {
+            let y = super[0];
+          }
+        }
+      `,
+      options: [
+        { object: true, array: true },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        class Bar {
+          public [0]: unknown;
+        }
+        class Foo extends Bar {
+          static foo() {
+            y = super[0];
+          }
+        }
       `,
       options: [
         { object: true, array: true },

@@ -137,7 +137,11 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (rightNode != null && isArrayLiteralIntegerIndexAccess(rightNode)) {
+      if (
+        rightNode != null &&
+        isArrayLiteralIntegerIndexAccess(rightNode) &&
+        rightNode.object.type !== AST_NODE_TYPES.Super
+      ) {
         const tsObj = esTreeNodeToTSNodeMap.get(rightNode.object);
         const objType = typeChecker.getTypeAtLocation(tsObj);
         if (!isTypeIterableType(objType, typeChecker)) {
