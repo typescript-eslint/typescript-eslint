@@ -52,10 +52,6 @@ module.exports = {
     // make sure we're not leveraging any deprecated APIs
     'deprecation/deprecation': 'error',
 
-    // Pending: https://github.com/typescript-eslint/typescript-eslint/issues/4820
-    // (too many false positives)
-    '@typescript-eslint/prefer-nullish-coalescing': 'off',
-
     //
     // our plugin :D
     //
