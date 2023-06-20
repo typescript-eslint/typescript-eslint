@@ -3,6 +3,17 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.60.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.11...v5.60.0) (2023-06-19)
+
+
+### Features
+
+* **eslint-plugin:** [restrict-plus-operands] add allow* options ([#6161](https://github.com/typescript-eslint/typescript-eslint/issues/6161)) ([def09f8](https://github.com/typescript-eslint/typescript-eslint/commit/def09f88cdb4a85cebb8619b45931f7e2c88dfc0))
+
+
+
+
+
 ## [5.59.11](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.10...v5.59.11) (2023-06-12)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin
