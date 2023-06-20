@@ -17,7 +17,7 @@ type BaseOptions = InferOptionsTypeFromRule<typeof baseRule>;
 type FullBaseOptions = BaseOptions & [unknown, unknown];
 type Options0 = FullBaseOptions[0];
 type Options1 = FullBaseOptions[1] & {
-  enforceForTypeAnnotatedProperties?: boolean;
+  enforceForDeclarationWithTypeAnnotation?: boolean;
 };
 type Options = [] | [Options0] | [Options0, Options1];
 
@@ -56,7 +56,7 @@ const schema: readonly JSONSchema4[] = [
       enforceForRenamedProperties: {
         type: 'boolean',
       },
-      enforceForTypeAnnotatedProperties: {
+      enforceForDeclarationWithTypeAnnotation: {
         type: 'boolean',
       },
     },
@@ -71,7 +71,7 @@ export default createRule<Options, MessageIds>({
       description: 'Require destructuring from arrays and/or objects',
       recommended: false,
       extendsBaseRule: true,
-      requiresTypeChecking: false,
+      requiresTypeChecking: true,
     },
     schema,
     fixable: baseRule.meta?.fixable,
@@ -91,7 +91,7 @@ export default createRule<Options, MessageIds>({
     },
     {
       enforceForRenamedProperties: false,
-      enforceForTypeAnnotatedProperties: false,
+      enforceForDeclarationWithTypeAnnotation: false,
     },
   ],
   create(
@@ -100,7 +100,7 @@ export default createRule<Options, MessageIds>({
       enabledTypes,
       {
         enforceForRenamedProperties = false,
-        enforceForTypeAnnotatedProperties = false,
+        enforceForDeclarationWithTypeAnnotation = false,
       } = {},
     ],
   ) {
@@ -132,7 +132,7 @@ export default createRule<Options, MessageIds>({
       if (
         'typeAnnotation' in leftNode &&
         leftNode.typeAnnotation !== undefined &&
-        !enforceForTypeAnnotatedProperties
+        !enforceForDeclarationWithTypeAnnotation
       ) {
         return;
       }

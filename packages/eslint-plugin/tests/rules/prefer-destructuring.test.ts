@@ -19,34 +19,55 @@ ruleTester.run('prefer-desctructuring', rule, {
     // type annotated
     'var foo: string = object.foo;',
     'const bar: number = array[0];',
-    // enforceForTypeAnnotatedProperties: true
+    // enforceForDeclarationWithTypeAnnotation: true
     {
       code: 'var { foo } = object;',
-      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
     },
     {
       code: 'var { foo }: { foo: number } = object;',
-      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
     },
     {
       code: 'var [foo] = array;',
-      options: [{ array: true }, { enforceForTypeAnnotatedProperties: true }],
+      options: [
+        { array: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
     },
     {
       code: 'var [foo]: [foo: number] = array;',
-      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
     },
     {
       code: 'var foo: unknown = object.bar;',
-      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
     },
     {
       code: 'var { foo: bar } = object;',
-      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
     },
     {
       code: 'var { foo: bar }: { foo: boolean } = object;',
-      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
     },
     {
       code: `
@@ -56,7 +77,10 @@ ruleTester.run('prefer-desctructuring', rule, {
           }
         }
       `,
-      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
     },
 
     // numeric property for iterable / non-iterable
@@ -178,10 +202,13 @@ ruleTester.run('prefer-desctructuring', rule, {
     },
   ],
   invalid: [
-    // enforceForTypeAnnotatedProperties: true
+    // enforceForDeclarationWithTypeAnnotation: true
     {
       code: 'var foo: string = object.foo;',
-      options: [{ object: true }, { enforceForTypeAnnotatedProperties: true }],
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
       output: null,
       errors: [
         {
@@ -193,7 +220,10 @@ ruleTester.run('prefer-desctructuring', rule, {
     },
     {
       code: 'var foo: string = array[0];',
-      options: [{ array: true }, { enforceForTypeAnnotatedProperties: true }],
+      options: [
+        { array: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
       output: null,
       errors: [
         {
@@ -208,7 +238,7 @@ ruleTester.run('prefer-desctructuring', rule, {
       options: [
         { object: true },
         {
-          enforceForTypeAnnotatedProperties: true,
+          enforceForDeclarationWithTypeAnnotation: true,
           enforceForRenamedProperties: true,
         },
       ],
