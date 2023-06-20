@@ -252,7 +252,6 @@ interface ParserServices {
   program: ts.Program;
   esTreeNodeToTSNodeMap: WeakMap<TSESTree.Node, ts.Node | ts.Token>;
   tsNodeToESTreeNodeMap: WeakMap<ts.Node | ts.Token, TSESTree.Node>;
-  hasFullTypeInformation: boolean;
 }
 
 interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
