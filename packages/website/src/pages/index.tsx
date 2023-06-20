@@ -134,28 +134,33 @@ function Home(): JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout description={`${siteConfig.tagline}`}>
-      <header className={clsx('hero hero--dark', styles.hero)}>
-        <div className="container">
-          <img alt="" className={styles.hero__logo} src="/img/logo.svg" />
-          <h1 className="hero__title">{siteConfig.title}</h1>
-          <p className="hero__subtitle">{siteConfig.tagline}</p>
-          <div className={styles.buttons}>
-            <Link
-              className="button button--primary"
-              to={useBaseUrl('getting-started')}
-            >
-              Get Started
-            </Link>
-            <Link
-              className="button button--secondary button--outline"
-              to={useBaseUrl('play/')}
-            >
-              Playground
-            </Link>
-          </div>
-        </div>
-      </header>
       <main>
+        <header className={clsx('hero hero--dark', styles.hero)}>
+          <div className="container">
+            <img
+              alt="Hero Logo"
+              className={styles.hero__logo}
+              src="/img/logo.svg"
+            />
+            <h1 className="hero__title">{siteConfig.title}</h1>
+            <p className="hero__subtitle">{siteConfig.tagline}</p>
+            <div className={styles.buttons}>
+              <Link
+                className="button button--primary"
+                to={useBaseUrl('getting-started')}
+              >
+                Get Started
+              </Link>
+              <Link
+                className="button button--secondary button--outline"
+                to={useBaseUrl('play/')}
+              >
+                Playground
+              </Link>
+            </div>
+          </div>
+        </header>
+
         {features.map((props, idx) => (
           <section
             key={idx}
