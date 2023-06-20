@@ -8,7 +8,7 @@ description: 'Require destructuring from arrays and/or objects.'
 
 ## Examples
 
-This rule extends the base [`eslint/prefer-destructuring`](https://eslint.org/docs/rules/prfer-destructuring) rule.
+This rule extends the base [`eslint/prefer-destructuring`](https://eslint.org/docs/latest/rules/prefer-destructuring) rule.
 It adds support for TypeScript's type annotations in variable declarations.
 
 <!-- tabs -->
