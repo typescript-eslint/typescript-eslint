@@ -130,7 +130,7 @@ export default createRule<Options, MessageIds>({
       invalidFormattingErrorTest:
         'This snippet should be formatted correctly. Use the fixer to format the code. Note that the automated fixer may break your test locations.',
       noUnnecessaryNoFormat:
-        'NoFormat is unnecessary here. Use the fixer to remove it.',
+        'noFormat is unnecessary here. Use the fixer to remove it.',
       singleLineQuotes: 'Use quotes (\' or ") for single line tests.',
       templateLiteralEmptyEnds:
         'Template literals must start and end with an empty line.',
