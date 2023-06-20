@@ -42,7 +42,7 @@ const y = x[0];
 ### ✅ Correct
 
 ```ts
-const x: = { 0: 'a' };
+const x = { 0: 'a' };
 const y = x[0];
 ```
 
