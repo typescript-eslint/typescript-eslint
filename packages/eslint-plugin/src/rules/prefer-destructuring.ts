@@ -19,7 +19,7 @@ type Options0 = FullBaseOptions[0];
 type Options1 = FullBaseOptions[1] & {
   enforceForDeclarationWithTypeAnnotation?: boolean;
 };
-type Options = [] | [Options0] | [Options0, Options1];
+type Options = [Options0, Options1?];
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
@@ -74,9 +74,9 @@ export default createRule<Options, MessageIds>({
       requiresTypeChecking: true,
     },
     schema,
-    fixable: baseRule.meta?.fixable,
-    hasSuggestions: baseRule.meta?.hasSuggestions,
-    messages: baseRule.meta?.messages,
+    fixable: baseRule.meta.fixable,
+    hasSuggestions: baseRule.meta.hasSuggestions,
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [
     {
@@ -89,21 +89,13 @@ export default createRule<Options, MessageIds>({
         object: true,
       },
     },
-    {
-      enforceForRenamedProperties: false,
-      enforceForDeclarationWithTypeAnnotation: false,
-    },
+    {},
   ],
-  create(
-    context,
-    [
-      enabledTypes = { object: true, array: true },
-      {
-        enforceForRenamedProperties = false,
-        enforceForDeclarationWithTypeAnnotation = false,
-      } = {},
-    ],
-  ) {
+  create(context, [enabledTypes, options1]) {
+    const {
+      enforceForRenamedProperties = false,
+      enforceForDeclarationWithTypeAnnotation = false,
+    } = options1!;
     return {
       VariableDeclarator(node): void {
         performCheck(node.id, node.init, node);
@@ -176,7 +168,7 @@ export default createRule<Options, MessageIds>({
       if ('object' in enabledTypes || 'array' in enabledTypes) {
         return enabledTypes[destructuringType];
       }
-      return enabledTypes[nodeType as keyof typeof enabledTypes]?.[
+      return enabledTypes[nodeType as keyof typeof enabledTypes][
         destructuringType as keyof typeof enabledTypes[keyof typeof enabledTypes]
       ];
     }

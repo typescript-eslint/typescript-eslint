@@ -1010,7 +1010,7 @@ declare module 'eslint/lib/rules/prefer-destructuring' {
   }
   const rule: TSESLint.RuleModule<
     'preferDestructuring',
-    [] | [Option0] | [Option0, Option1],
+    [Option0, Option1?],
     {
       VariableDeclarator(node: TSESTree.VariableDeclarator): void;
       AssignmentExpression(node: TSESTree.AssignmentExpression): void;
