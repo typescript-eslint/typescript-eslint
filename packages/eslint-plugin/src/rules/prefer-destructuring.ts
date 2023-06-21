@@ -97,7 +97,7 @@ export default createRule<Options, MessageIds>({
   create(
     context,
     [
-      enabledTypes,
+      enabledTypes = { object: true, array: true },
       {
         enforceForRenamedProperties = false,
         enforceForDeclarationWithTypeAnnotation = false,
@@ -173,9 +173,6 @@ export default createRule<Options, MessageIds>({
         | AST_NODE_TYPES.AssignmentExpression,
       destructuringType: 'array' | 'object',
     ): boolean | undefined {
-      if (enabledTypes === undefined) {
-        return true;
-      }
       if ('object' in enabledTypes || 'array' in enabledTypes) {
         return enabledTypes[destructuringType];
       }

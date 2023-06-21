@@ -161,6 +161,32 @@ ruleTester.run('prefer-desctructuring', rule, {
     {
       code: `
         let x: { 0: unknown };
+        let y = x[0];
+      `,
+      options: [
+        {
+          VariableDeclarator: { array: true, object: false },
+          AssignmentExpression: { array: true, object: true },
+        },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        let x: { 0: unknown };
+        y = x[0];
+      `,
+      options: [
+        {
+          VariableDeclarator: { array: true, object: true },
+          AssignmentExpression: { array: true, object: false },
+        },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        let x: { 0: unknown };
         y += x[0];
       `,
       options: [
@@ -435,6 +461,46 @@ ruleTester.run('prefer-desctructuring', rule, {
         y = x[0];
       `,
       options: [{ object: true }, { enforceForRenamedProperties: true }],
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'object' },
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+    },
+    {
+      code: `
+        let x: { 0: string };
+        let y = x[0];
+      `,
+      options: [
+        {
+          VariableDeclarator: { object: true, array: false },
+          AssignmentExpression: { object: false, array: false },
+        },
+        { enforceForRenamedProperties: true },
+      ],
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'object' },
+          type: AST_NODE_TYPES.VariableDeclarator,
+        },
+      ],
+    },
+    {
+      code: `
+        let x: { 0: string };
+        y = x[0];
+      `,
+      options: [
+        {
+          VariableDeclarator: { object: false, array: false },
+          AssignmentExpression: { object: true, array: false },
+        },
+        { enforceForRenamedProperties: true },
+      ],
       errors: [
         {
           messageId: 'preferDestructuring',
