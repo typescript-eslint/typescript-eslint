@@ -657,6 +657,21 @@ let baz: object = {};
         },
       ],
     },
+    {
+      code: 'type Baz = 1 & Foo;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+        },
+      ],
+      options: [
+        {
+          types: {
+            Foo: { message: '' },
+          },
+        },
+      ],
+    },
     ...objectReduceKey(
       TYPE_KEYWORDS,
       (acc: TSESLint.InvalidTestCase<MessageIds, Options>[], key) => {
