@@ -1,20 +1,21 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import * as tsutils from 'tsutils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
 
 type Options = [
   {
-    checkCompoundAssignments?: boolean;
     allowAny?: boolean;
+    allowBoolean?: boolean;
+    allowNullish?: boolean;
+    allowNumberAndString?: boolean;
+    allowRegExp?: boolean;
+    checkCompoundAssignments?: boolean;
   },
 ];
-type MessageIds =
-  | 'notNumbers'
-  | 'notStrings'
-  | 'notBigInts'
-  | 'notValidAnys'
-  | 'notValidTypes';
+
+type MessageIds = 'bigintAndNumber' | 'invalid' | 'mismatched';
 
 export default util.createRule<Options, MessageIds>({
   name: 'restrict-plus-operands',
@@ -27,27 +28,42 @@ export default util.createRule<Options, MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      notNumbers:
-        "Operands of '+' operation must either be both strings or both numbers.",
-      notStrings:
-        "Operands of '+' operation must either be both strings or both numbers. Consider using a template literal.",
-      notBigInts: "Operands of '+' operation must be both bigints.",
-      notValidAnys:
-        "Operands of '+' operation with any is possible only with string, number, bigint or any",
-      notValidTypes:
-        "Operands of '+' operation must either be one of string, number, bigint or any (if allowed by option)",
+      bigintAndNumber:
+        "Numeric '+' operations must either be both bigints or both numbers. Got `{{left}}` + `{{right}}`.",
+      invalid:
+        "Invalid operand for a '+' operation. Operands must each be a number or {{stringLike}}. Got `{{type}}`.",
+      mismatched:
+        "Operands of '+' operations must be a number or {{stringLike}}. Got `{{left}}` + `{{right}}`.",
     },
     schema: [
       {
         type: 'object',
         additionalProperties: false,
         properties: {
-          checkCompoundAssignments: {
-            description: 'Whether to check compound assignments such as `+=`.',
-            type: 'boolean',
-          },
           allowAny: {
             description: 'Whether to allow `any` typed values.',
+            type: 'boolean',
+          },
+          allowBoolean: {
+            description: 'Whether to allow `boolean` typed values.',
+            type: 'boolean',
+          },
+          allowNullish: {
+            description:
+              'Whether to allow potentially `null` or `undefined` typed values.',
+            type: 'boolean',
+          },
+          allowNumberAndString: {
+            description:
+              'Whether to allow `bigint`/`number` typed values and `string` typed values to be added together.',
+            type: 'boolean',
+          },
+          allowRegExp: {
+            description: 'Whether to allow `regexp` typed values.',
+            type: 'boolean',
+          },
+          checkCompoundAssignments: {
+            description: 'Whether to check compound assignments such as `+=`.',
             type: 'boolean',
           },
         },
@@ -57,136 +73,159 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [
     {
       checkCompoundAssignments: false,
-      allowAny: false,
     },
   ],
-  create(context, [{ checkCompoundAssignments, allowAny }]) {
+  create(
+    context,
+    [
+      {
+        checkCompoundAssignments,
+        allowAny,
+        allowBoolean,
+        allowNullish,
+        allowNumberAndString,
+        allowRegExp,
+      },
+    ],
+  ) {
     const service = util.getParserServices(context);
     const typeChecker = service.program.getTypeChecker();
 
-    type BaseLiteral = 'string' | 'number' | 'bigint' | 'invalid' | 'any';
+    const stringLikes = [
+      allowAny && '`any`',
+      allowBoolean && '`boolean`',
+      allowNullish && '`null`',
+      allowRegExp && '`RegExp`',
+      allowNullish && '`undefined`',
+    ].filter((value): value is string => typeof value === 'string');
+    const stringLike = stringLikes.length
+      ? stringLikes.length === 1
+        ? `string, allowing a string + ${stringLikes[0]}`
+        : `string, allowing a string + any of: ${stringLikes.join(', ')}`
+      : 'string';
 
-    /**
-     * Helper function to get base type of node
-     */
-    function getBaseTypeOfLiteralType(type: ts.Type): BaseLiteral {
-      if (type.isNumberLiteral()) {
-        return 'number';
-      }
-      if (
-        type.isStringLiteral() ||
-        util.isTypeFlagSet(type, ts.TypeFlags.TemplateLiteral)
-      ) {
-        return 'string';
-      }
-      // is BigIntLiteral
-      if (type.flags & ts.TypeFlags.BigIntLiteral) {
-        return 'bigint';
-      }
-      if (type.isUnion()) {
-        const types = type.types.map(getBaseTypeOfLiteralType);
-
-        return types.every(value => value === types[0]) ? types[0] : 'invalid';
-      }
-
-      if (type.isIntersection()) {
-        const types = type.types.map(getBaseTypeOfLiteralType);
-
-        if (types.some(value => value === 'string')) {
-          return 'string';
-        }
-
-        if (types.some(value => value === 'number')) {
-          return 'number';
-        }
-
-        if (types.some(value => value === 'bigint')) {
-          return 'bigint';
-        }
-
-        return 'invalid';
-      }
-
-      const stringType = typeChecker.typeToString(type);
-
-      if (
-        stringType === 'number' ||
-        stringType === 'string' ||
-        stringType === 'bigint' ||
-        stringType === 'any'
-      ) {
-        return stringType;
-      }
-      return 'invalid';
-    }
-
-    /**
-     * Helper function to get base type of node
-     * @param node the node to be evaluated.
-     */
-    function getNodeType(
-      node: TSESTree.Expression | TSESTree.PrivateIdentifier,
-    ): BaseLiteral {
-      const tsNode = service.esTreeNodeToTSNodeMap.get(node);
-      const type = util.getConstrainedTypeAtLocation(typeChecker, tsNode);
-
-      return getBaseTypeOfLiteralType(type);
+    function getTypeConstrained(node: TSESTree.Node): ts.Type {
+      return typeChecker.getBaseTypeOfLiteralType(
+        util.getConstrainedTypeAtLocation(
+          typeChecker,
+          service.esTreeNodeToTSNodeMap.get(node),
+        ),
+      );
     }
 
     function checkPlusOperands(
-      node: TSESTree.BinaryExpression | TSESTree.AssignmentExpression,
+      node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
     ): void {
-      const leftType = getNodeType(node.left);
-      const rightType = getNodeType(node.right);
+      const leftType = getTypeConstrained(node.left);
+      const rightType = getTypeConstrained(node.right);
 
-      if (leftType === rightType) {
-        if (leftType === 'invalid') {
-          context.report({
-            node,
-            messageId: 'notValidTypes',
-          });
-        }
-
-        if (!allowAny && leftType === 'any') {
-          context.report({
-            node,
-            messageId: 'notValidAnys',
-          });
-        }
-
+      if (
+        leftType === rightType &&
+        tsutils.isTypeFlagSet(
+          leftType,
+          ts.TypeFlags.BigIntLike |
+            ts.TypeFlags.NumberLike |
+            ts.TypeFlags.StringLike,
+        )
+      ) {
         return;
       }
 
-      if (leftType === 'any' || rightType === 'any') {
-        if (!allowAny || leftType === 'invalid' || rightType === 'invalid') {
+      let hadIndividualComplaint = false;
+
+      for (const [baseNode, baseType, otherType] of [
+        [node.left, leftType, rightType],
+        [node.right, rightType, leftType],
+      ] as const) {
+        if (
+          isTypeFlagSetInUnion(
+            baseType,
+            ts.TypeFlags.ESSymbolLike |
+              ts.TypeFlags.Never |
+              ts.TypeFlags.Unknown,
+          ) ||
+          (!allowAny && isTypeFlagSetInUnion(baseType, ts.TypeFlags.Any)) ||
+          (!allowBoolean &&
+            isTypeFlagSetInUnion(baseType, ts.TypeFlags.BooleanLike)) ||
+          (!allowNullish &&
+            util.isTypeFlagSet(
+              baseType,
+              ts.TypeFlags.Null | ts.TypeFlags.Undefined,
+            ))
+        ) {
           context.report({
-            node,
-            messageId: 'notValidAnys',
+            data: {
+              stringLike,
+              type: typeChecker.typeToString(baseType),
+            },
+            messageId: 'invalid',
+            node: baseNode,
           });
+          hadIndividualComplaint = true;
+          continue;
         }
 
+        // RegExps also contain ts.TypeFlags.Any & ts.TypeFlags.Object
+        for (const subBaseType of tsutils.unionTypeParts(baseType)) {
+          const typeName = util.getTypeName(typeChecker, subBaseType);
+          if (
+            typeName === 'RegExp'
+              ? !allowRegExp ||
+                tsutils.isTypeFlagSet(otherType, ts.TypeFlags.NumberLike)
+              : (!allowAny && util.isTypeAnyType(subBaseType)) ||
+                isDeeplyObjectType(subBaseType)
+          ) {
+            context.report({
+              data: {
+                stringLike,
+                type: typeChecker.typeToString(subBaseType),
+              },
+              messageId: 'invalid',
+              node: baseNode,
+            });
+            hadIndividualComplaint = true;
+            continue;
+          }
+        }
+      }
+
+      if (hadIndividualComplaint) {
         return;
       }
 
-      if (leftType === 'string' || rightType === 'string') {
-        return context.report({
-          node,
-          messageId: 'notStrings',
-        });
-      }
+      for (const [baseType, otherType] of [
+        [leftType, rightType],
+        [rightType, leftType],
+      ] as const) {
+        if (
+          !allowNumberAndString &&
+          isTypeFlagSetInUnion(baseType, ts.TypeFlags.StringLike) &&
+          isTypeFlagSetInUnion(otherType, ts.TypeFlags.NumberLike)
+        ) {
+          return context.report({
+            data: {
+              stringLike,
+              left: typeChecker.typeToString(leftType),
+              right: typeChecker.typeToString(rightType),
+            },
+            messageId: 'mismatched',
+            node,
+          });
+        }
 
-      if (leftType === 'bigint' || rightType === 'bigint') {
-        return context.report({
-          node,
-          messageId: 'notBigInts',
-        });
-      }
-
-      if (leftType === 'number' || rightType === 'number') {
-        return context.report({
-          node,
-          messageId: 'notNumbers',
-        });
+        if (
+          isTypeFlagSetInUnion(baseType, ts.TypeFlags.NumberLike) &&
+          isTypeFlagSetInUnion(otherType, ts.TypeFlags.BigIntLike)
+        ) {
+          return context.report({
+            data: {
+              left: typeChecker.typeToString(leftType),
+              right: typeChecker.typeToString(rightType),
+            },
+            messageId: 'bigintAndNumber',
+            node,
+          });
+        }
       }
     }
 
@@ -200,3 +239,15 @@ export default util.createRule<Options, MessageIds>({
     };
   },
 });
+
+function isDeeplyObjectType(type: ts.Type): boolean {
+  return type.isIntersection()
+    ? tsutils.intersectionTypeParts(type).every(tsutils.isObjectType)
+    : tsutils.unionTypeParts(type).every(tsutils.isObjectType);
+}
+
+function isTypeFlagSetInUnion(type: ts.Type, flag: ts.TypeFlags): boolean {
+  return tsutils
+    .unionTypeParts(type)
+    .some(subType => tsutils.isTypeFlagSet(subType, flag));
+}
