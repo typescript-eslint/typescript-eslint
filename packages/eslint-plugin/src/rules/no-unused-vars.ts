@@ -11,7 +11,7 @@ export type Options = [
   | {
       vars?: 'all' | 'local';
       varsIgnorePattern?: string;
-      args?: 'all' | 'after-used' | 'none';
+      args?: 'after-used' | 'all' | 'none';
       ignoreRestSiblings?: boolean;
       argsIgnorePattern?: string;
       caughtErrors?: 'all' | 'none';
@@ -23,7 +23,7 @@ export type Options = [
 interface TranslatedOptions {
   vars: 'all' | 'local';
   varsIgnorePattern?: RegExp;
-  args: 'all' | 'after-used' | 'none';
+  args: 'after-used' | 'all' | 'none';
   ignoreRestSiblings: boolean;
   argsIgnorePattern?: RegExp;
   caughtErrors: 'all' | 'none';
@@ -486,13 +486,13 @@ export default util.createRule<Options, MessageIds>({
     }
 
     type DeclarationSelectorNode =
-      | TSESTree.TSInterfaceDeclaration
-      | TSESTree.TSTypeAliasDeclaration
       | TSESTree.ClassDeclaration
       | TSESTree.FunctionDeclaration
       | TSESTree.TSDeclareFunction
       | TSESTree.TSEnumDeclaration
+      | TSESTree.TSInterfaceDeclaration
       | TSESTree.TSModuleDeclaration
+      | TSESTree.TSTypeAliasDeclaration
       | TSESTree.VariableDeclaration;
     function ambientDeclarationSelector(
       parent: string,

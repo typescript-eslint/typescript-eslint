@@ -131,7 +131,7 @@ export default util.createRule<Options, MessageIds>({
      * @private
      */
     function isAllowedEmptyDecoratedFunctions(
-      node: TSESTree.FunctionExpression | TSESTree.FunctionDeclaration,
+      node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
     ): boolean {
       if (isAllowedDecoratedFunctions && isBodyEmpty(node)) {
         const decorators =

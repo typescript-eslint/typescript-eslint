@@ -13,7 +13,7 @@ interface NodeWithModifiers {
 
 const printNodeModifiers = (
   node: NodeWithModifiers,
-  final: 'readonly' | 'get',
+  final: 'get' | 'readonly',
 ): string =>
   `${node.accessibility ?? ''}${
     node.static ? ' static' : ''

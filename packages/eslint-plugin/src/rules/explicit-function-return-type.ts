@@ -102,8 +102,8 @@ export default util.createRule<Options, MessageIds>({
     function isAllowedFunction(
       node:
         | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionExpression
-        | TSESTree.FunctionDeclaration,
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
     ): boolean {
       if (options.allowFunctionsWithoutTypeParameters && !node.typeParameters) {
         return true;
@@ -164,8 +164,8 @@ export default util.createRule<Options, MessageIds>({
     function isIIFE(
       node:
         | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionExpression
-        | TSESTree.FunctionDeclaration,
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
     ): boolean {
       return node.parent.type === AST_NODE_TYPES.CallExpression;
     }

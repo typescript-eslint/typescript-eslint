@@ -65,9 +65,9 @@ export default util.createRule<Options, MessageIds>({
     }
 
     type KeyTypeNode =
+      | TSESTree.PropertyDefinition
       | TSESTree.TSIndexSignature
-      | TSESTree.TSPropertySignature
-      | TSESTree.PropertyDefinition;
+      | TSESTree.TSPropertySignature;
 
     type KeyTypeNodeWithTypeAnnotation = KeyTypeNode & {
       typeAnnotation: TSESTree.TSTypeAnnotation;
@@ -127,7 +127,7 @@ export default util.createRule<Options, MessageIds>({
     function checkBeforeColon(
       node: KeyTypeNodeWithTypeAnnotation,
       expectedWhitespaceBeforeColon: number,
-      mode: 'strict' | 'minimum',
+      mode: 'minimum' | 'strict',
     ): void {
       const { typeAnnotation } = node;
       const colon = typeAnnotation.loc.start.column;
@@ -161,7 +161,7 @@ export default util.createRule<Options, MessageIds>({
     function checkAfterColon(
       node: KeyTypeNodeWithTypeAnnotation,
       expectedWhitespaceAfterColon: number,
-      mode: 'strict' | 'minimum',
+      mode: 'minimum' | 'strict',
     ): void {
       const { typeAnnotation } = node;
       const colon = typeAnnotation.loc.start.column;
@@ -239,7 +239,7 @@ export default util.createRule<Options, MessageIds>({
 
     function checkAlignGroup(group: TSESTree.Node[]): void {
       let alignColumn = 0;
-      const align: 'value' | 'colon' =
+      const align: 'colon' | 'value' =
         (typeof options.align === 'object'
           ? options.align.on
           : typeof options.multiLine?.align === 'object'
@@ -372,9 +372,9 @@ export default util.createRule<Options, MessageIds>({
 
     function validateBody(
       body:
-        | TSESTree.TSTypeLiteral
+        | TSESTree.ClassBody
         | TSESTree.TSInterfaceBody
-        | TSESTree.ClassBody,
+        | TSESTree.TSTypeLiteral,
     ): void {
       const isSingleLine = body.loc.start.line === body.loc.end.line;
 

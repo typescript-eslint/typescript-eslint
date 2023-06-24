@@ -144,8 +144,8 @@ export function getBinaryExpressionType<T extends ts.SyntaxKind>(
   operator: ts.Token<T>,
 ):
   | AST_NODE_TYPES.AssignmentExpression
-  | AST_NODE_TYPES.LogicalExpression
-  | AST_NODE_TYPES.BinaryExpression {
+  | AST_NODE_TYPES.BinaryExpression
+  | AST_NODE_TYPES.LogicalExpression {
   if (isAssignmentOperator(operator)) {
     return AST_NODE_TYPES.AssignmentExpression;
   } else if (isLogicalOperator(operator)) {
@@ -193,10 +193,10 @@ export function getLocFor(
  */
 export function canContainDirective(
   node:
-    | ts.SourceFile
     | ts.Block
+    | ts.ClassStaticBlockDeclaration
     | ts.ModuleBlock
-    | ts.ClassStaticBlockDeclaration,
+    | ts.SourceFile,
 ): boolean {
   if (node.kind === ts.SyntaxKind.Block) {
     switch (node.parent.kind) {
@@ -257,7 +257,7 @@ export function isJSXToken(node: ts.Node): boolean {
  */
 export function getDeclarationKind(
   node: ts.VariableDeclarationList,
-): 'let' | 'const' | 'var' {
+): 'const' | 'let' | 'var' {
   if (node.flags & ts.NodeFlags.Let) {
     return 'let';
   }
@@ -274,7 +274,7 @@ export function getDeclarationKind(
  */
 export function getTSNodeAccessibility(
   node: ts.Node,
-): 'public' | 'protected' | 'private' | undefined {
+): 'private' | 'protected' | 'public' | undefined {
   const modifiers = getModifiers(node);
   if (modifiers == null) {
     return undefined;
@@ -414,10 +414,10 @@ export function isChainExpression(
  */
 export function isChildUnwrappableOptionalChain(
   node:
-    | ts.PropertyAccessExpression
-    | ts.ElementAccessExpression
     | ts.CallExpression
-    | ts.NonNullExpression,
+    | ts.ElementAccessExpression
+    | ts.NonNullExpression
+    | ts.PropertyAccessExpression,
   child: TSESTree.Node,
 ): boolean {
   return (
@@ -434,7 +434,7 @@ export function isChildUnwrappableOptionalChain(
  */
 export function getTokenType(
   token: ts.Identifier | ts.Token<ts.SyntaxKind>,
-): Exclude<AST_TOKEN_TYPES, AST_TOKEN_TYPES.Line | AST_TOKEN_TYPES.Block> {
+): Exclude<AST_TOKEN_TYPES, AST_TOKEN_TYPES.Block | AST_TOKEN_TYPES.Line> {
   let keywordKind: ts.SyntaxKind | undefined;
   if (isAtLeast50 && token.kind === SyntaxKind.Identifier) {
     keywordKind = ts.identifierToKeywordKind(token as ts.Identifier);

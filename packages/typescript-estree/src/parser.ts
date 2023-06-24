@@ -82,8 +82,8 @@ function getProgramAndAST(
 
 interface EmptyObject {}
 type AST<T extends TSESTreeOptions> = TSESTree.Program &
-  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : EmptyObject) &
-  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : EmptyObject);
+  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : EmptyObject) &
+  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : EmptyObject);
 
 interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
@@ -103,7 +103,7 @@ function parse<T extends TSESTreeOptions = TSESTreeOptions>(
 }
 
 function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
-  code: string | ts.SourceFile,
+  code: ts.SourceFile | string,
   options: T | undefined,
   shouldPreserveNodeMaps: boolean,
 ): ParseWithNodeMapsResult<T> {
@@ -149,7 +149,7 @@ function clearParseAndGenerateServicesCalls(): void {
 }
 
 function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
-  code: string | ts.SourceFile,
+  code: ts.SourceFile | string,
   options: T,
 ): ParseAndGenerateServicesResult<T> {
   /**

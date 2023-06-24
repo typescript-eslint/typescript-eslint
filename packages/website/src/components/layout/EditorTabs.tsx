@@ -4,15 +4,15 @@ import React from 'react';
 
 import styles from './EditorTabs.module.css';
 
-export interface EditorTabsProps<T extends string | boolean> {
-  readonly tabs: ({ value: T; label: string } | T)[];
+export interface EditorTabsProps<T extends boolean | string> {
+  readonly tabs: (T | { value: T; label: string })[];
   readonly active: T;
   readonly showVisualEditor?: boolean;
   readonly change: (name: T) => void;
   readonly showModal?: (name: T) => void;
 }
 
-function EditorTabs<T extends string | boolean>({
+function EditorTabs<T extends boolean | string>({
   tabs,
   active,
   showVisualEditor,

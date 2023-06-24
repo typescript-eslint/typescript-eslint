@@ -53,7 +53,7 @@ export interface ConverterOptions {
  * @returns converted error object
  */
 export function convertError(
-  error: ts.DiagnosticWithLocation | SemanticOrSyntacticError,
+  error: SemanticOrSyntacticError | ts.DiagnosticWithLocation,
 ): TSError {
   return createError(
     ('message' in error && error.message) || (error.messageText as string),
@@ -146,17 +146,17 @@ export class Converter {
       | TSESTree.NamedExportDeclarations,
   >(
     node:
-      | ts.FunctionDeclaration
-      | ts.VariableStatement
       | ts.ClassDeclaration
       | ts.ClassExpression
-      | ts.TypeAliasDeclaration
+      | ts.EnumDeclaration
+      | ts.FunctionDeclaration
       | ts.ImportEqualsDeclaration
       | ts.InterfaceDeclaration
-      | ts.EnumDeclaration
-      | ts.ModuleDeclaration,
+      | ts.ModuleDeclaration
+      | ts.TypeAliasDeclaration
+      | ts.VariableStatement,
     result: T,
-  ): TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration | T {
+  ): T | TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration {
     const modifiers = getModifiers(node);
     if (modifiers?.[0].kind === SyntaxKind.ExportKeyword) {
       /**
@@ -309,10 +309,10 @@ export class Converter {
   private convertBodyExpressions(
     nodes: ts.NodeArray<ts.Statement>,
     parent:
-      | ts.SourceFile
       | ts.Block
+      | ts.ClassStaticBlockDeclaration
       | ts.ModuleBlock
-      | ts.ClassStaticBlockDeclaration,
+      | ts.SourceFile,
   ): TSESTree.Statement[] {
     let allowDirectives = canContainDirective(parent);
 
@@ -409,11 +409,11 @@ export class Converter {
   private convertChainExpression(
     node: TSESTree.ChainElement,
     tsNode:
-      | ts.PropertyAccessExpression
-      | ts.ElementAccessExpression
       | ts.CallExpression
-      | ts.NonNullExpression,
-  ): TSESTree.ChainExpression | TSESTree.ChainElement {
+      | ts.ElementAccessExpression
+      | ts.NonNullExpression
+      | ts.PropertyAccessExpression,
+  ): TSESTree.ChainElement | TSESTree.ChainExpression {
     const { child, isOptional } = ((): {
       child: TSESTree.Node;
       isOptional: boolean;
@@ -628,8 +628,8 @@ export class Converter {
 
   private convertMethodSignature(
     node:
-      | ts.MethodSignature
       | ts.GetAccessorDeclaration
+      | ts.MethodSignature
       | ts.SetAccessorDeclaration,
   ): TSESTree.TSMethodSignature {
     return this.createNode<TSESTree.TSMethodSignature>(node, {
@@ -637,7 +637,7 @@ export class Converter {
       accessibility: getTSNodeAccessibility(node),
       computed: isComputedProperty(node.name),
       key: this.convertChild(node.name),
-      kind: ((): 'get' | 'set' | 'method' => {
+      kind: ((): 'get' | 'method' | 'set' => {
         switch (node.kind) {
           case SyntaxKind.GetAccessor:
             return 'get';
@@ -917,7 +917,7 @@ export class Converter {
         const isDeclare = hasModifier(SyntaxKind.DeclareKeyword, node);
 
         const result = this.createNode<
-          TSESTree.TSDeclareFunction | TSESTree.FunctionDeclaration
+          TSESTree.FunctionDeclaration | TSESTree.TSDeclareFunction
         >(node, {
           type:
             isDeclare || !node.body
@@ -1172,10 +1172,10 @@ export class Converter {
         const key = this.convertChild(node.name);
 
         return this.createNode<
+          | TSESTree.AccessorProperty
+          | TSESTree.PropertyDefinition
           | TSESTree.TSAbstractAccessorProperty
           | TSESTree.TSAbstractPropertyDefinition
-          | TSESTree.PropertyDefinition
-          | TSESTree.AccessorProperty
         >(node, {
           type,
           key,
@@ -1213,7 +1213,7 @@ export class Converter {
       // otherwise, it is a non-type accessor - intentional fallthrough
       case SyntaxKind.MethodDeclaration: {
         const method = this.createNode<
-          TSESTree.TSEmptyBodyFunctionExpression | TSESTree.FunctionExpression
+          TSESTree.FunctionExpression | TSESTree.TSEmptyBodyFunctionExpression
         >(node, {
           type: !node.body
             ? AST_NODE_TYPES.TSEmptyBodyFunctionExpression
@@ -1239,9 +1239,9 @@ export class Converter {
         }
 
         let result:
+          | TSESTree.MethodDefinition
           | TSESTree.Property
-          | TSESTree.TSAbstractMethodDefinition
-          | TSESTree.MethodDefinition;
+          | TSESTree.TSAbstractMethodDefinition;
 
         if (parent.kind === SyntaxKind.ObjectLiteralExpression) {
           method.params = node.parameters.map(el => this.convertChild(el));
@@ -1275,7 +1275,7 @@ export class Converter {
             : AST_NODE_TYPES.MethodDefinition;
 
           result = this.createNode<
-            TSESTree.TSAbstractMethodDefinition | TSESTree.MethodDefinition
+            TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition
           >(node, {
             type: methodDefinitionType,
             accessibility: getTSNodeAccessibility(node),
@@ -1314,7 +1314,7 @@ export class Converter {
           node.getFirstToken()!;
 
         const constructor = this.createNode<
-          TSESTree.TSEmptyBodyFunctionExpression | TSESTree.FunctionExpression
+          TSESTree.FunctionExpression | TSESTree.TSEmptyBodyFunctionExpression
         >(node, {
           type: !node.body
             ? AST_NODE_TYPES.TSEmptyBodyFunctionExpression
@@ -1351,7 +1351,7 @@ export class Converter {
         const isStatic = hasModifier(SyntaxKind.StaticKeyword, node);
 
         return this.createNode<
-          TSESTree.TSAbstractMethodDefinition | TSESTree.MethodDefinition
+          TSESTree.MethodDefinition | TSESTree.TSAbstractMethodDefinition
         >(node, {
           type: hasModifier(SyntaxKind.AbstractKeyword, node)
             ? AST_NODE_TYPES.TSAbstractMethodDefinition
@@ -1440,7 +1440,7 @@ export class Converter {
             return arrayItem;
           }
         } else {
-          let result: TSESTree.RestElement | TSESTree.Property;
+          let result: TSESTree.Property | TSESTree.RestElement;
           if (node.dotDotDotToken) {
             result = this.createNode<TSESTree.RestElement>(node, {
               type: AST_NODE_TYPES.RestElement,
@@ -1610,8 +1610,8 @@ export class Converter {
       }
 
       case SyntaxKind.Parameter: {
-        let parameter: TSESTree.RestElement | TSESTree.BindingName;
-        let result: TSESTree.RestElement | TSESTree.AssignmentPattern;
+        let parameter: TSESTree.BindingName | TSESTree.RestElement;
+        let result: TSESTree.AssignmentPattern | TSESTree.RestElement;
 
         if (node.dotDotDotToken) {
           parameter = result = this.createNode<TSESTree.RestElement>(node, {
@@ -2018,8 +2018,8 @@ export class Converter {
           }
           return this.createNode<
             | TSESTree.AssignmentExpression
-            | TSESTree.LogicalExpression
             | TSESTree.BinaryExpression
+            | TSESTree.LogicalExpression
           >(node, {
             type,
             operator: getTextForTokenKind(node.operatorToken.kind),
@@ -2642,9 +2642,9 @@ export class Converter {
             : AST_NODE_TYPES.TSFunctionType;
 
         return this.createNode<
-          | TSESTree.TSFunctionType
           | TSESTree.TSCallSignatureDeclaration
           | TSESTree.TSConstructSignatureDeclaration
+          | TSESTree.TSFunctionType
         >(node, {
           type,
           params: this.convertParameters(node.parameters),
@@ -2667,9 +2667,9 @@ export class Converter {
             : AST_NODE_TYPES.TSInstantiationExpression;
 
         return this.createNode<
-          | TSESTree.TSInterfaceHeritage
           | TSESTree.TSClassImplements
           | TSESTree.TSInstantiationExpression
+          | TSESTree.TSInterfaceHeritage
         >(
           node,
           this.#withDeprecatedAliasGetter(
@@ -3347,7 +3347,7 @@ export class Converter {
   #withDeprecatedAliasGetter<
     Properties extends { type: string },
     AliasKey extends string,
-    ValueKey extends keyof Properties & string,
+    ValueKey extends string & keyof Properties,
   >(
     node: Properties,
     aliasKey: AliasKey,

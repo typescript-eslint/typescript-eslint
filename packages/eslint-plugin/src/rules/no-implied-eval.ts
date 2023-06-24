@@ -131,7 +131,7 @@ export default util.createRule({
     }
 
     function checkImpliedEval(
-      node: TSESTree.NewExpression | TSESTree.CallExpression,
+      node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
       const calleeName = getCalleeName(node.callee);
       if (calleeName == null) {

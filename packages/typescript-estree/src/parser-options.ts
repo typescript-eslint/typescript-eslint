@@ -68,7 +68,7 @@ interface ParseOptions {
    * When value is `false`, no logging will occur.
    * When value is not provided, `console.log()` will be used.
    */
-  loggerFn?: ((message: string) => void) | false;
+  loggerFn?: false | ((message: string) => void);
 
   /**
    * Controls whether the `range` property is included on AST nodes.
@@ -135,7 +135,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
    */
-  project?: string | string[] | true | null;
+  project?: string[] | string | true | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -226,5 +226,5 @@ export interface ParserServicesWithoutTypeInformation
   program: null;
 }
 export type ParserServices =
-  | ParserServicesWithTypeInformation
-  | ParserServicesWithoutTypeInformation;
+  | ParserServicesWithoutTypeInformation
+  | ParserServicesWithTypeInformation;

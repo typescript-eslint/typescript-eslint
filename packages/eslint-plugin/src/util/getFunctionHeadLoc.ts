@@ -3,8 +3,8 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 type FunctionNode =
   | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionExpression
-  | TSESTree.FunctionDeclaration;
+  | TSESTree.FunctionDeclaration
+  | TSESTree.FunctionExpression;
 
 /**
  * Creates a report location for the given function.

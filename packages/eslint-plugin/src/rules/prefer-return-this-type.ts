@@ -9,8 +9,8 @@ type ClassLikeDeclaration =
   | TSESTree.ClassExpression;
 
 type FunctionLike =
-  | TSESTree.MethodDefinition['value']
-  | TSESTree.ArrowFunctionExpression;
+  | TSESTree.ArrowFunctionExpression
+  | TSESTree.MethodDefinition['value'];
 
 export default createRule({
   name: 'prefer-return-this-type',

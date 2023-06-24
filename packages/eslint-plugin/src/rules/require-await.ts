@@ -13,9 +13,9 @@ interface ScopeInfo {
   isAsyncYield: boolean;
 }
 type FunctionNode =
+  | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
-  | TSESTree.FunctionExpression
-  | TSESTree.ArrowFunctionExpression;
+  | TSESTree.FunctionExpression;
 
 export default util.createRule({
   name: 'require-await',
@@ -148,7 +148,7 @@ export default util.createRule({
       'ArrowFunctionExpression[async = true] > :not(BlockStatement, AwaitExpression)'(
         node: Exclude<
           TSESTree.Node,
-          TSESTree.BlockStatement | TSESTree.AwaitExpression
+          TSESTree.AwaitExpression | TSESTree.BlockStatement
         >,
       ): void {
         const expression = services.esTreeNodeToTSNodeMap.get(node);

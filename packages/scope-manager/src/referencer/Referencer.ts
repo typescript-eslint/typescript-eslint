@@ -307,8 +307,8 @@ class Referencer extends Visitor {
   protected visitTypeAssertion(
     node:
       | TSESTree.TSAsExpression
-      | TSESTree.TSTypeAssertion
-      | TSESTree.TSSatisfiesExpression,
+      | TSESTree.TSSatisfiesExpression
+      | TSESTree.TSTypeAssertion,
   ): void {
     this.visit(node.expression);
     this.visitType(node.typeAnnotation);

@@ -177,7 +177,7 @@ describe('parseAndGenerateServices', () => {
       jsxSetting,
       shouldThrow = false,
     }: {
-      ext: '.js' | '.jsx' | '.ts' | '.tsx' | '.vue' | '.json';
+      ext: '.js' | '.json' | '.jsx' | '.ts' | '.tsx' | '.vue';
       jsxContent: boolean;
       jsxSetting: boolean;
       shouldThrow?: boolean;

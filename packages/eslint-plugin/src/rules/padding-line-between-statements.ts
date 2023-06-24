@@ -28,8 +28,8 @@ interface NodeTestObject {
 
 interface PaddingOption {
   blankLine: keyof typeof PaddingTypes;
-  prev: string | string[];
-  next: string | string[];
+  prev: string[] | string;
+  next: string[] | string;
 }
 
 type MessageIds = 'expectedBlankLine' | 'unexpectedBlankLine';
@@ -644,10 +644,10 @@ export default util.createRule<Options, MessageIds>({
     // eslint-disable-next-line no-restricted-syntax -- We need all raw options.
     const configureList = context.options || [];
 
-    type Scope = null | {
+    type Scope = {
       upper: Scope;
       prevNode: TSESTree.Node | null;
-    };
+    } | null;
 
     let scopeInfo: Scope = null;
 
@@ -682,7 +682,7 @@ export default util.createRule<Options, MessageIds>({
      * @returns `true` if the statement node matched the type.
      * @private
      */
-    function match(node: TSESTree.Node, type: string | string[]): boolean {
+    function match(node: TSESTree.Node, type: string[] | string): boolean {
       let innerStatementNode = node;
 
       while (innerStatementNode.type === AST_NODE_TYPES.LabeledStatement) {

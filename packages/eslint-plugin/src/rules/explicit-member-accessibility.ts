@@ -23,9 +23,9 @@ interface Config {
 type Options = [Config];
 
 type MessageIds =
-  | 'unwantedPublicAccessibility'
+  | 'addExplicitAccessibility'
   | 'missingAccessibility'
-  | 'addExplicitAccessibility';
+  | 'unwantedPublicAccessibility';
 
 export default util.createRule<Options, MessageIds>({
   name: 'explicit-member-accessibility',

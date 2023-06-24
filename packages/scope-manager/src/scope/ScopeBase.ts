@@ -124,7 +124,7 @@ function registerScope(scopeManager: ScopeManager, scope: Scope): void {
 
 const generator = createIdGenerator();
 
-type VariableScope = GlobalScope | FunctionScope | ModuleScope | TSModuleScope;
+type VariableScope = FunctionScope | GlobalScope | ModuleScope | TSModuleScope;
 const VARIABLE_SCOPE_TYPES = new Set([
   ScopeType.classFieldInitializer,
   ScopeType.classStaticBlock,
@@ -413,7 +413,7 @@ abstract class ScopeBase<
   }
 
   protected defineVariable(
-    nameOrVariable: string | Variable,
+    nameOrVariable: Variable | string,
     set: Map<string, Variable>,
     variables: Variable[],
     node: TSESTree.Identifier | null,

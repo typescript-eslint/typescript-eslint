@@ -19,6 +19,7 @@ declare module 'typescript' {
 
 export type TSToken = ts.Token<ts.SyntaxKind>;
 
+/* eslint-disable @typescript-eslint/sort-type-constituents */
 export type TSNode =
   | ts.AssertClause
   | ts.AssertEntry
@@ -213,3 +214,4 @@ export type TSNode =
   | ts.JSDocOptionalType
   | ts.JSDocVariadicType
   | ts.JSDocAuthorTag;
+/* eslint-enable @typescript-eslint/sort-type-constituents */

@@ -14,12 +14,12 @@ export type Options = [
 
 export type MessageId =
   | 'invalidVoidExpr'
-  | 'invalidVoidExprWrapVoid'
   | 'invalidVoidExprArrow'
   | 'invalidVoidExprArrowWrapVoid'
   | 'invalidVoidExprReturn'
   | 'invalidVoidExprReturnLast'
   | 'invalidVoidExprReturnWrapVoid'
+  | 'invalidVoidExprWrapVoid'
   | 'voidExprWrapVoid';
 
 export default util.createRule<Options, MessageId>({

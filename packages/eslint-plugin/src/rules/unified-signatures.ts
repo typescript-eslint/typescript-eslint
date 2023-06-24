@@ -10,14 +10,14 @@ interface Failure {
 
 type Unify =
   | {
-      kind: 'single-parameter-difference';
-      p0: TSESTree.Parameter;
-      p1: TSESTree.Parameter;
-    }
-  | {
       kind: 'extra-parameter';
       extraParameter: TSESTree.Parameter;
       otherSignature: SignatureDefinition;
+    }
+  | {
+      kind: 'single-parameter-difference';
+      p0: TSESTree.Parameter;
+      p1: TSESTree.Parameter;
     };
 
 /**
@@ -27,16 +27,16 @@ type Unify =
 type IsTypeParameter = (typeName: string) => boolean;
 
 type ScopeNode =
-  | TSESTree.Program
-  | TSESTree.TSModuleBlock
-  | TSESTree.TSInterfaceBody
   | TSESTree.ClassBody
+  | TSESTree.Program
+  | TSESTree.TSInterfaceBody
+  | TSESTree.TSModuleBlock
   | TSESTree.TSTypeLiteral;
 
 type OverloadNode = MethodDefinition | SignatureDefinition;
 type ContainingNode =
-  | TSESTree.ExportNamedDeclaration
-  | TSESTree.ExportDefaultDeclaration;
+  | TSESTree.ExportDefaultDeclaration
+  | TSESTree.ExportNamedDeclaration;
 
 type SignatureDefinition =
   | TSESTree.FunctionExpression
@@ -582,8 +582,8 @@ export default util.createRule<Options, MessageIds>({
 function getExportingNode(
   node: TSESTree.TSDeclareFunction,
 ):
-  | TSESTree.ExportNamedDeclaration
   | TSESTree.ExportDefaultDeclaration
+  | TSESTree.ExportNamedDeclaration
   | undefined {
   return node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
     node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration

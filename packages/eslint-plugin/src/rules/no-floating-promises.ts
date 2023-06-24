@@ -15,9 +15,9 @@ type Options = [
 
 type MessageId =
   | 'floating'
-  | 'floatingVoid'
+  | 'floatingFixAwait'
   | 'floatingFixVoid'
-  | 'floatingFixAwait';
+  | 'floatingVoid';
 
 export default util.createRule<Options, MessageId>({
   name: 'no-floating-promises',

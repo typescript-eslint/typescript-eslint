@@ -8,7 +8,7 @@ import * as util from '../util';
 type Options = [
   {
     checksConditionals?: boolean;
-    checksVoidReturn?: boolean | ChecksVoidReturnOptions;
+    checksVoidReturn?: ChecksVoidReturnOptions | boolean;
     checksSpreads?: boolean;
   },
 ];
@@ -23,15 +23,15 @@ interface ChecksVoidReturnOptions {
 
 type MessageId =
   | 'conditional'
+  | 'spread'
   | 'voidReturnArgument'
-  | 'voidReturnVariable'
+  | 'voidReturnAttribute'
   | 'voidReturnProperty'
   | 'voidReturnReturnValue'
-  | 'voidReturnAttribute'
-  | 'spread';
+  | 'voidReturnVariable';
 
 function parseChecksVoidReturn(
-  checksVoidReturn: boolean | ChecksVoidReturnOptions | undefined,
+  checksVoidReturn: ChecksVoidReturnOptions | boolean | undefined,
 ): ChecksVoidReturnOptions | false {
   switch (checksVoidReturn) {
     case false:
