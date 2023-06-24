@@ -41,6 +41,7 @@ export default util.createRule<Options, MessageIds>({
       {
         $defs: {
           modifier: {
+            type: 'string',
             enum: [
               'readonly',
               'private',
@@ -62,6 +63,7 @@ export default util.createRule<Options, MessageIds>({
             minItems: 1,
           },
           prefer: {
+            type: 'string',
             enum: ['class-property', 'parameter-property'],
           },
         },

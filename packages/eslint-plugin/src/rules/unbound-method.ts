@@ -271,6 +271,7 @@ function checkMethod(
       const firstParam = decl.parameters[0];
       const firstParamIsThis =
         firstParam?.name.kind === ts.SyntaxKind.Identifier &&
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
         firstParam?.name.escapedText === 'this';
       const thisArgIsVoid =
         firstParamIsThis &&

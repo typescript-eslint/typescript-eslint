@@ -18,7 +18,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "boolean"
       },
       "hoist": {
-        "enum": ["all", "functions", "never"]
+        "enum": ["all", "functions", "never"],
+        "type": "string"
       },
       "ignoreFunctionTypeParameterNameValueShadow": {
         "type": "boolean"

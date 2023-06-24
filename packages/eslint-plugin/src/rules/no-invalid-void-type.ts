@@ -47,7 +47,7 @@ export default util.createRule<[Options], MessageIds>({
               {
                 type: 'array',
                 items: { type: 'string' },
-                minLength: 1,
+                minItems: 1,
               },
             ],
           },

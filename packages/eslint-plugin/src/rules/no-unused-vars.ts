@@ -44,18 +44,21 @@ export default util.createRule<Options, MessageIds>({
       {
         oneOf: [
           {
+            type: 'string',
             enum: ['all', 'local'],
           },
           {
             type: 'object',
             properties: {
               vars: {
+                type: 'string',
                 enum: ['all', 'local'],
               },
               varsIgnorePattern: {
                 type: 'string',
               },
               args: {
+                type: 'string',
                 enum: ['all', 'after-used', 'none'],
               },
               ignoreRestSiblings: {
@@ -65,6 +68,7 @@ export default util.createRule<Options, MessageIds>({
                 type: 'string',
               },
               caughtErrors: {
+                type: 'string',
                 enum: ['all', 'none'],
               },
               caughtErrorsIgnorePattern: {

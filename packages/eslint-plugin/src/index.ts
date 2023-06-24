@@ -17,6 +17,7 @@ export = {
     'disable-type-checked': disableTypeChecked,
     'eslint-recommended': eslintRecommended,
     recommended,
+    /** @deprecated - please use "recommended-type-checked" instead. */
     'recommended-requiring-type-checking': recommendedTypeChecked,
     'recommended-type-checked': recommendedTypeChecked,
     strict,

@@ -25,6 +25,7 @@ import {
   isESTreeClassMember,
   isOptional,
   isThisInTypeQuery,
+  nodeCanBeDecorated,
   nodeHasIllegalDecorators,
   nodeIsPresent,
   unescapeStringLiteralText,
@@ -226,7 +227,7 @@ export class Converter {
    * @param parent parentNode
    * @returns the converted ESTree node
    */
-  private convertPattern(child?: ts.Node, parent?: ts.Node): any | null {
+  private convertPattern(child?: ts.Node, parent?: ts.Node): any {
     return this.converter(child, parent, true);
   }
 
@@ -236,7 +237,7 @@ export class Converter {
    * @param parent parentNode
    * @returns the converted ESTree node
    */
-  private convertChild(child?: ts.Node, parent?: ts.Node): any | null {
+  private convertChild(child?: ts.Node, parent?: ts.Node): any {
     return this.converter(child, parent, false);
   }
 
@@ -1309,7 +1310,7 @@ export class Converter {
       case SyntaxKind.Constructor: {
         const lastModifier = getLastModifier(node);
         const constructorToken =
-          (lastModifier && findNextToken(lastModifier, node, this.ast)) ||
+          (lastModifier && findNextToken(lastModifier, node, this.ast)) ??
           node.getFirstToken()!;
 
         const constructor = this.createNode<
@@ -3118,6 +3119,7 @@ export class Converter {
       return;
     }
 
+    // typescript<5.0.0
     if (nodeHasIllegalDecorators(node)) {
       this.#throwError(
         node.illegalDecorators[0],
@@ -3125,7 +3127,27 @@ export class Converter {
       );
     }
 
-    for (const modifier of getModifiers(node) ?? []) {
+    for (const decorator of getDecorators(
+      node,
+      /* includeIllegalDecorators */ true,
+    ) ?? []) {
+      // `checkGrammarModifiers` function in typescript
+      if (!nodeCanBeDecorated(node as TSNode)) {
+        if (ts.isMethodDeclaration(node) && !nodeIsPresent(node.body)) {
+          this.#throwError(
+            decorator,
+            'A decorator can only decorate a method implementation, not an overload.',
+          );
+        } else {
+          this.#throwError(decorator, 'Decorators are not valid here.');
+        }
+      }
+    }
+
+    for (const modifier of getModifiers(
+      node,
+      /* includeIllegalModifiers */ true,
+    ) ?? []) {
       if (modifier.kind !== SyntaxKind.ReadonlyKeyword) {
         if (
           node.kind === SyntaxKind.PropertySignature ||

@@ -142,13 +142,6 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   };
 }
 
-function parseWithNodeMaps<T extends TSESTreeOptions = TSESTreeOptions>(
-  code: string,
-  options?: T,
-): ParseWithNodeMapsResult<T> {
-  return parseWithNodeMapsInternal(code, options, true);
-}
-
 let parseAndGenerateServicesCalls: { [fileName: string]: number } = {};
 // Privately exported utility intended for use in typescript-eslint unit tests only
 function clearParseAndGenerateServicesCalls(): void {
@@ -278,9 +271,7 @@ export {
   AST,
   parse,
   parseAndGenerateServices,
-  parseWithNodeMaps,
   ParseAndGenerateServicesResult,
-  ParseWithNodeMapsResult,
   clearProgramCache,
   clearParseAndGenerateServicesCalls,
 };

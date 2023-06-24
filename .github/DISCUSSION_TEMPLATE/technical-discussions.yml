@@ -1,0 +1,25 @@
+body:
+  - attributes:
+      label: Body
+      value: |
+        Body of the technical discussion...
+    id: body
+    type: textarea
+  - attributes:
+      label: Additional Info
+      value: |
+        Any additional info...
+    id: additional
+    type: textarea
+  - attributes:
+      label: Before you submit your discussion, please confirm the following. If any of these required steps are not taken, we may not be able to review your RFC. Help us to help you!
+      options:
+        - label: I have [read the discussions guidelines](https://typescript-eslint.io/contributing/discussions) and per those guidelines, this fits a discussion category, _not_ a help request or standard issue.
+          required: true
+        - label: I have [searched for related discussions](https://github.com/typescript-eslint/typescript-eslint/discussions) and [searched for related issues](https://github.com/typescript-eslint/typescript-eslint/issues) and found none that match my proposal.
+          required: true
+        - label: I have [read the FAQ](https://typescript-eslint.io/linting/troubleshooting) and my problem is not listed.
+          required: true
+    id: required-checks
+    type: checkboxes
+title: Your Title Here

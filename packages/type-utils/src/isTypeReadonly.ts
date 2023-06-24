@@ -86,6 +86,7 @@ function isTypeReadonlyArrayOrTuple(
       ESLintUtils.NullThrowsReasons.MissingToken('symbol', 'array type'),
     );
     const escapedName = symbol.getEscapedName();
+    // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
     if (escapedName === 'Array') {
       return Readonlyness.Mutable;
     }

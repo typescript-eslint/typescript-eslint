@@ -5,7 +5,7 @@ import * as ts from 'typescript';
 import * as util from '../util';
 
 enum Usefulness {
-  Always,
+  Always = 'always',
   Never = 'will',
   Sometimes = 'may',
 }
@@ -23,7 +23,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require `.toString()` to only be called on objects which provide useful information when stringified',
-      recommended: 'strict',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
