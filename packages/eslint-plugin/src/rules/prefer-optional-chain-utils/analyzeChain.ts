@@ -472,7 +472,7 @@ export function analyzeChain(
     return;
   }
 
-  const analyzeOperand = ((): OperandAnalyzer | null => {
+  const analyzeOperand = (() => {
     switch (operator) {
       case '&&':
         return analyzeAndChainOperand;
@@ -481,9 +481,6 @@ export function analyzeChain(
         return analyzeOrChainOperand;
     }
   })();
-  if (!analyzeOperand) {
-    return;
-  }
 
   let subChain: ValidOperand[] = [];
   const maybeReportThenReset = (
