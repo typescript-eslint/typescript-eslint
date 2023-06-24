@@ -214,7 +214,7 @@ export default util.createRule<
 });
 
 /*
-TODO(bradzacher)
+TODO
 
 ```
 declare const foo: { bar: number } | null;
