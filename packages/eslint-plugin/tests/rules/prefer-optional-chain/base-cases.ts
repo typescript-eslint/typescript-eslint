@@ -12,6 +12,7 @@ type BaseCaseCreator = (args: {
   mutateOutput?: MutateFn;
   mutateDeclaration?: MutateFn;
   useSuggestionFixer?: true;
+  skipIds?: number[];
 }) => InvalidTestCase<
   PreferOptionalChainMessageIds,
   [PreferOptionalChainOptions]
@@ -234,38 +235,49 @@ export const BaseCases: BaseCaseCreator = ({
   mutateOutput = mutateCode,
   mutateDeclaration = identity,
   useSuggestionFixer = false,
-}) =>
-  RawBaseCases(operator).map(
-    ({
-      id,
-      declaration: originalDeclaration,
-      chain,
-      outputChain,
-    }): InvalidTestCase<
-      PreferOptionalChainMessageIds,
-      [PreferOptionalChainOptions]
-    > => {
-      const declaration = mutateDeclaration(originalDeclaration);
-      const code = `// ${id}\n${declaration}\n${chain}`;
-      const output = `// ${id}\n${declaration}\n${outputChain}`;
+  skipIds = [],
+}) => {
+  const skipIdsSet = new Set(skipIds);
+  const skipSpecifiedIds: (
+    arg: ReturnType<typeof RawBaseCases>[number],
+  ) => boolean =
+    skipIds.length === 0
+      ? (): boolean => true
+      : ({ id }): boolean => !skipIdsSet.has(id);
 
-      const fixOutput = mutateOutput(output);
-      return {
-        code: mutateCode(code),
-        output: useSuggestionFixer ? null : fixOutput,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: !useSuggestionFixer
-              ? null
-              : [
-                  {
-                    messageId: 'optionalChainSuggest',
-                    output: fixOutput,
-                  },
-                ],
-          },
-        ],
-      };
-    },
-  );
+  return RawBaseCases(operator)
+    .filter(skipSpecifiedIds)
+    .map(
+      ({
+        id,
+        declaration: originalDeclaration,
+        chain,
+        outputChain,
+      }): InvalidTestCase<
+        PreferOptionalChainMessageIds,
+        [PreferOptionalChainOptions]
+      > => {
+        const declaration = mutateDeclaration(originalDeclaration);
+        const code = `// ${id}\n${declaration}\n${mutateCode(chain)}`;
+        const output = `// ${id}\n${declaration}\n${mutateOutput(outputChain)}`;
+
+        return {
+          code,
+          output: useSuggestionFixer ? null : output,
+          errors: [
+            {
+              messageId: 'preferOptionalChain',
+              suggestions: !useSuggestionFixer
+                ? null
+                : [
+                    {
+                      messageId: 'optionalChainSuggest',
+                      output,
+                    },
+                  ],
+            },
+          ],
+        };
+      },
+    );
+};
