@@ -8,10 +8,10 @@ import type { RuleTesterTestFrameworkFunctionBase } from '../src/TestFramework';
 import * as dependencyConstraintsModule from '../src/utils/dependencyConstraints';
 
 // we can't spy on the exports of an ES module - so we instead have to mock the entire module
-jest.mock('../src/dependencyConstraints', () => {
+jest.mock('../src/utils/dependencyConstraints', () => {
   const dependencyConstraints = jest.requireActual<
     typeof dependencyConstraintsModule
-  >('../src/dependencyConstraints');
+  >('../src/utils/dependencyConstraints');
 
   return {
     ...dependencyConstraints,
@@ -125,7 +125,7 @@ const NOOP_RULE: RuleModule<'error', []> = {
       error: 'error',
     },
     type: 'problem',
-    schema: {},
+    schema: [],
   },
   defaultOptions: [],
   create() {

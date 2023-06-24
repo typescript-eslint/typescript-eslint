@@ -63,9 +63,9 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      ignoreConditionalTests: true,
-      ignoreTernaryTests: true,
-      ignoreMixedLogicalExpressions: true,
+      ignoreConditionalTests: false,
+      ignoreTernaryTests: false,
+      ignoreMixedLogicalExpressions: false,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
     },
   ],

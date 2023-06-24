@@ -162,6 +162,7 @@ Several rules were changed in significant enough ways to be considered breaking 
 
 - [feat(typescript-estree): deprecate createDefaultProgram](https://github.com/typescript-eslint/typescript-eslint/pull/5890): Renames `createDefaultProgram` to `deprecated__createDefaultProgram`, with associated `@deprecated` TSDoc tags and warnings.
 - [feat: drop support for node v12](https://github.com/typescript-eslint/typescript-eslint/pull/5918)
+- [feat: drop support for node v14](https://github.com/typescript-eslint/typescript-eslint/pull/7022)
 - [feat: bump minimum supported TS version to 4.3.5](https://github.com/typescript-eslint/typescript-eslint/issues/6923): this matches [DefinitelyTyped's 2-year support window](https://github.com/DefinitelyTyped/DefinitelyTyped#support-window).
 - [chore: drop support for ESLint v6](https://github.com/typescript-eslint/typescript-eslint/pull/5972)
 - [feat(eslint-plugin): [prefer-readonly-parameter-types] added an optional type allowlist](https://github.com/typescript-eslint/typescript-eslint/pull/4436): changes the public `isTypeReadonlyArrayOrTuple` function's first argument from a `checker: ts.TypeChecker` to a full `program: ts.Program`
@@ -331,6 +332,7 @@ For more information on the package, [see the `rule-tester` package documentatio
 - [feat(typescript-estree): remove optionality from AST boolean properties](https://github.com/typescript-eslint/typescript-eslint/pull/6274): Switches most AST properties marked as `?: boolean` to `: boolean`, as well as some properties marked as `?:` optional to `| undefined`. This results in more predictable AST node object shapes.
 - [chore(typescript-estree): remove visitor-keys backwards compat export](https://github.com/typescript-eslint/typescript-eslint/pull/6242): `visitorKeys` can now only be imported from `@typescript-eslint/visitor-keys`. Previously it was also re-exported by `@typescript-eslint/utils`.
 - [feat: add package.json exports for public packages](https://github.com/typescript-eslint/typescript-eslint/pull/6458): `@typescript-eslint/*` packages now use `exports` to prevent importing internal file paths.
+- [feat: fork json schema types for better compat with ESLint rule validation #6963](https://github.com/typescript-eslint/typescript-eslint/pull/6963): `@typescript-eslint/utils` now exports a more strict version of `JSONSchema4` types, which are more strict in type checking rule options types
 
 ## Appreciation
 

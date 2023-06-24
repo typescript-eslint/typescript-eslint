@@ -12,9 +12,13 @@
     'ts-node',
     // the nx packages get updated using the nx migrate CLI
     '@nrwl/cli',
+    '@nx/cli',
     '@nrwl/devkit',
+    '@nx/devkit',
     '@nrwl/jest',
+    '@nx/jest',
     '@nrwl/nx-cloud',
+    'nx-cloud',
     '@nrwl/tao',
   ],
   ignorePaths: [

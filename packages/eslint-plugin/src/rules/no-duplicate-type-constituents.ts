@@ -73,6 +73,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow duplicate constituents of union or intersection types',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     fixable: 'code',

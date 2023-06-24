@@ -1,4 +1,4 @@
-import type { JSONSchema4 } from 'json-schema';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import path from 'path';
 import { format as prettierFormat, resolveConfig } from 'prettier';
 

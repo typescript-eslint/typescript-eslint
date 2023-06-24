@@ -644,7 +644,7 @@ export default util.createRule<Options, MessageIds>({
           },
           allItems: {
             type: 'string',
-            enum: allMemberTypes,
+            enum: allMemberTypes as string[],
           },
           typeItems: {
             type: 'string',

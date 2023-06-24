@@ -1835,7 +1835,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -1861,7 +1861,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -1882,7 +1882,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -1903,7 +1903,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -1931,7 +1931,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -1952,7 +1952,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -1973,7 +1973,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -2001,7 +2001,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -2022,7 +2022,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -2043,7 +2043,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -2071,7 +2071,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -2092,7 +2092,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -2113,7 +2113,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -2141,7 +2141,7 @@ class DecoratedClass {
   public get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -2162,7 +2162,7 @@ class DecoratedClass {
   private get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -2183,7 +2183,7 @@ class DecoratedClass {
   protected get y() {
     return this.x;
   }
-  @foo @bar() set y(@foo @bar() value: x) {
+  @foo @bar() set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -2211,7 +2211,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() public set y(@foo @bar() value: x) {
+  @foo @bar() public set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -2232,7 +2232,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() private set y(@foo @bar() value: x) {
+  @foo @bar() private set z(@foo @bar() value: x) {
     this.x = x;
   }
 }
@@ -2253,7 +2253,7 @@ class DecoratedClass {
   get y() {
     return this.x;
   }
-  @foo @bar() protected set y(@foo @bar() value: x) {
+  @foo @bar() protected set z(@foo @bar() value: x) {
     this.x = x;
   }
 }

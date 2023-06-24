@@ -42,7 +42,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow comparing an enum value with a non-enum value',
-      recommended: 'strict',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
