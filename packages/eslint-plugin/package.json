@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin",
-  "version": "5.59.11",
+  "version": "5.60.0",
   "description": "TypeScript plugin for ESLint",
   "files": [
     "dist",
@@ -55,9 +55,9 @@
   },
   "dependencies": {
     "@eslint-community/regexpp": "^4.5.0",
-    "@typescript-eslint/scope-manager": "5.59.11",
-    "@typescript-eslint/type-utils": "5.59.11",
-    "@typescript-eslint/utils": "5.59.11",
+    "@typescript-eslint/scope-manager": "5.60.0",
+    "@typescript-eslint/type-utils": "5.60.0",
+    "@typescript-eslint/utils": "5.60.0",
     "debug": "^4.3.4",
     "grapheme-splitter": "^1.0.4",
     "ignore": "^5.2.4",
@@ -70,8 +70,8 @@
     "@types/marked": "*",
     "@types/natural-compare": "*",
     "@types/prettier": "*",
-    "@typescript-eslint/rule-schema-to-typescript-types": "5.59.11",
-    "@typescript-eslint/rule-tester": "5.59.11",
+    "@typescript-eslint/rule-schema-to-typescript-types": "5.60.0",
+    "@typescript-eslint/rule-tester": "5.60.0",
     "cross-fetch": "*",
     "jest-specific-snapshot": "*",
     "json-schema": "*",
