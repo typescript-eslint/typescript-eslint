@@ -8,6 +8,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
   {
     "additionalProperties": false,
     "properties": {
+      "allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing": {
+        "description": "Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build.",
+        "type": "boolean"
+      },
       "checkAny": {
         "description": "Check operands that are typed as \`any\` when inspecting \\"loose boolean\\" operands.",
         "type": "boolean"
@@ -46,6 +50,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
+    /** Allow autofixers that will change the return type of the expression. This option is considered unsafe as it may break the build. */
+    allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing?: boolean;
     /** Check operands that are typed as \`any\` when inspecting "loose boolean" operands. */
     checkAny?: boolean;
     /** Check operands that are typed as \`bigint\` when inspecting "loose boolean" operands. */
