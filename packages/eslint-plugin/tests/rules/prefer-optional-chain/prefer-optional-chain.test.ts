@@ -1816,6 +1816,55 @@ describe('hand-crafted cases', () => {
         ],
       },
 
+      {
+        code: `
+          declare const foo: { bar: number } | null | undefined;
+          foo && foo.bar != null;
+        `,
+        output: `
+          declare const foo: { bar: number } | null | undefined;
+          foo?.bar != null;
+        `,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+      },
+      {
+        code: `
+          declare const foo: { bar: number } | undefined;
+          foo && typeof foo.bar !== 'undefined';
+        `,
+        output: `
+          declare const foo: { bar: number } | undefined;
+          typeof foo?.bar !== 'undefined';
+        `,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+      },
+      {
+        code: `
+          declare const foo: { bar: number } | undefined;
+          foo && 'undefined' !== typeof foo.bar;
+        `,
+        output: `
+          declare const foo: { bar: number } | undefined;
+          'undefined' !== typeof foo?.bar;
+        `,
+        errors: [
+          {
+            messageId: 'preferOptionalChain',
+            suggestions: null,
+          },
+        ],
+      },
+
       // allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing
       {
         code: `
@@ -1863,55 +1912,6 @@ describe('hand-crafted cases', () => {
         `,
               },
             ],
-          },
-        ],
-      },
-
-      {
-        code: `
-          declare const foo: { bar: number } | null | undefined;
-          foo && foo.bar != null;
-        `,
-        output: `
-          declare const foo: { bar: number } | null | undefined;
-          foo?.bar != null;
-        `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
-      },
-      {
-        code: `
-          declare const foo: { bar: number } | undefined;
-          foo && typeof foo.bar !== 'undefined';
-        `,
-        output: `
-          declare const foo: { bar: number } | undefined;
-          typeof foo?.bar !== 'undefined';
-        `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
-          },
-        ],
-      },
-      {
-        code: `
-          declare const foo: { bar: number } | undefined;
-          foo && 'undefined' !== typeof foo.bar;
-        `,
-        output: `
-          declare const foo: { bar: number } | undefined;
-          'undefined' !== typeof foo?.bar;
-        `,
-        errors: [
-          {
-            messageId: 'preferOptionalChain',
-            suggestions: null,
           },
         ],
       },
