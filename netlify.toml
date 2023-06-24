@@ -19,7 +19,7 @@
 
 [[redirects]]
   from = "/docs/development/architecture/packages"
-  to = "/architecture"
+  to = "/packages"
 
 [[redirects]]
   from = "/docs/development/custom-rules"
