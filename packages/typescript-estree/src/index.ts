@@ -2,9 +2,7 @@ export {
   AST,
   parse,
   parseAndGenerateServices,
-  parseWithNodeMaps,
   ParseAndGenerateServicesResult,
-  ParseWithNodeMapsResult,
 } from './parser';
 export {
   ParserServices,
