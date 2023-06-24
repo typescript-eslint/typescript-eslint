@@ -1,12 +1,14 @@
+// @ts-check
+/** @type {import('@docusaurus/plugin-content-docs/lib/sidebars/types.js').SidebarsConfig} */
 module.exports = {
   docs: [
     {
       collapsible: false,
       items: [
         {
-          label: 'Linting with Type Information',
-          items: ['linting/typed-linting/monorepos'],
           collapsible: false,
+          items: ['linting/typed-linting/monorepos'],
+          label: 'Linting with Type Information',
           link: {
             id: 'linting/typed-linting',
             type: 'doc',
@@ -15,40 +17,64 @@ module.exports = {
         },
         'linting/configs',
         {
-          label: 'Troubleshooting & FAQs',
-          link: {
-            id: 'linting/troubleshooting',
-            type: 'doc',
-          },
           collapsible: false,
-          type: 'category',
           items: [
             'linting/troubleshooting/performance-troubleshooting',
             'linting/troubleshooting/formatting',
             'linting/troubleshooting/tslint',
           ],
+          label: 'Troubleshooting & FAQs',
+          link: {
+            id: 'linting/troubleshooting',
+            type: 'doc',
+          },
+          type: 'category',
         },
       ],
+      label: 'Getting Started',
       link: {
         id: 'getting-started',
         type: 'doc',
       },
-      label: 'Getting Started',
       type: 'category',
     },
-    'custom-rules',
     {
+      collapsible: false,
       items: [
-        'architecture/eslint-plugin',
-        'architecture/eslint-plugin-tslint',
-        'architecture/parser',
-        'architecture/scope-manager',
-        'architecture/typescript-estree',
-        'architecture/utils',
+        'users/dependency-versions',
+        'users/releases',
+        'users/versioning',
       ],
-      label: 'Architecture',
+      label: 'Users',
       link: {
-        id: 'architecture',
+        id: 'users',
+        type: 'doc',
+      },
+      type: 'category',
+    },
+    {
+      collapsible: false,
+      items: ['developers/custom-rules'],
+      label: 'Developers',
+      link: {
+        id: 'developers',
+        type: 'doc',
+      },
+      type: 'category',
+    },
+    {
+      collapsible: false,
+      items: [
+        'packages/eslint-plugin',
+        'packages/eslint-plugin-tslint',
+        'packages/parser',
+        'packages/scope-manager',
+        'packages/typescript-estree',
+        'packages/utils',
+      ],
+      label: 'Packages',
+      link: {
+        id: 'packages',
         type: 'doc',
       },
       type: 'category',
@@ -70,6 +96,7 @@ module.exports = {
     {
       items: [
         'maintenance/branding',
+        'maintenance/dependency-version-upgrades',
         {
           collapsible: false,
           items: ['maintenance/issues/rule-deprecations'],
@@ -80,18 +107,8 @@ module.exports = {
           },
           type: 'category',
         },
+        'maintenance/major-release-steps',
         'maintenance/pull-requests',
-        'maintenance/releases',
-        {
-          collapsible: false,
-          items: ['maintenance/versioning/dependant-version-upgrades'],
-          label: 'Versioning',
-          link: {
-            id: 'maintenance/versioning',
-            type: 'doc',
-          },
-          type: 'category',
-        },
       ],
       label: 'Maintenance',
       link: {
