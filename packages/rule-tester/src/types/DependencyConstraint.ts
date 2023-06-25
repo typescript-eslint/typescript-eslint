@@ -12,9 +12,4 @@ export type AtLeastVersionConstraint =
 export type VersionConstraint =
   | AtLeastVersionConstraint
   | SemverVersionConstraint;
-export interface DependencyConstraint {
-  /**
-   * Passing a string for the value is shorthand for a '>=' constraint
-   */
-  readonly [packageName: string]: VersionConstraint;
-}
+export type DependencyConstraint = Readonly<Record<string, VersionConstraint>>;

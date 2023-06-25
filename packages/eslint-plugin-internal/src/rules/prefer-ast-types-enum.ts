@@ -28,7 +28,7 @@ export default createRule({
     const report = (
       enumName: 'AST_NODE_TYPES' | 'AST_TOKEN_TYPES' | 'DefinitionType',
       literal: TSESTree.StringLiteral,
-    ): void =>
+    ): void => {
       context.report({
         data: { enumName, literal: literal.value },
         messageId: 'preferEnum',
@@ -36,6 +36,7 @@ export default createRule({
         fix: fixer =>
           fixer.replaceText(literal, `${enumName}.${literal.value}`),
       });
+    };
 
     return {
       Literal(node: TSESTree.Literal): void {

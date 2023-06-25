@@ -438,12 +438,9 @@ function verifyForAlways(
     messageId: 'expectedBlankLine',
     fix(fixer) {
       const sourceCode = context.getSourceCode();
-      let prevToken = getActualLastToken(
-        prevNode,
-        sourceCode,
-      ) as TSESTree.Token;
+      let prevToken = getActualLastToken(prevNode, sourceCode)!;
       const nextToken =
-        (sourceCode.getFirstTokenBetween(prevToken, nextNode, {
+        sourceCode.getFirstTokenBetween(prevToken, nextNode, {
           includeComments: true,
 
           /**
@@ -473,7 +470,7 @@ function verifyForAlways(
             }
             return true;
           },
-        }) as TSESTree.Token) || nextNode;
+        })! || nextNode;
       const insertText = util.isTokenOnSameLine(prevToken, nextToken)
         ? '\n\n'
         : '\n';

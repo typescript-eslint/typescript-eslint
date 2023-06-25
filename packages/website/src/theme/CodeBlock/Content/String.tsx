@@ -107,7 +107,9 @@ export default function CodeBlockString({
           {(wordWrap.isEnabled || wordWrap.isCodeScrollable) && (
             <WordWrapButton
               className={styles.codeButton}
-              onClick={(): void => wordWrap.toggle()}
+              onClick={(): void => {
+                wordWrap.toggle();
+              }}
               isEnabled={wordWrap.isEnabled}
             />
           )}

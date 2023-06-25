@@ -60,7 +60,9 @@ jest.mock('@typescript-eslint/parser', () => {
 /* eslint-disable jest/prefer-spy-on --
      we need to specifically assign to the properties or else it will use the
      global value and register actual tests! */
-const IMMEDIATE_CALLBACK: RuleTesterTestFrameworkFunctionBase = (_, cb) => cb();
+const IMMEDIATE_CALLBACK: RuleTesterTestFrameworkFunctionBase = (_, cb) => {
+  cb();
+};
 RuleTester.afterAll =
   jest.fn(/* intentionally don't immediate callback here */);
 RuleTester.describe = jest.fn(IMMEDIATE_CALLBACK);
@@ -305,7 +307,7 @@ describe('RuleTester', () => {
       },
     });
 
-    expect(() =>
+    expect(() => {
       ruleTester.run('my-rule', NOOP_RULE, {
         valid: [
           {
@@ -315,8 +317,8 @@ describe('RuleTester', () => {
         ],
 
         invalid: [],
-      }),
-    ).toThrowErrorMatchingInlineSnapshot(
+      });
+    }).toThrowErrorMatchingInlineSnapshot(
       `"Do not set the parser at the test level unless you want to use a parser other than "@typescript-eslint/parser""`,
     );
   });

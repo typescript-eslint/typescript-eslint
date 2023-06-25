@@ -196,13 +196,13 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        checkFunctionReturnType(node, options, sourceCode, loc =>
+        checkFunctionReturnType(node, options, sourceCode, loc => {
           context.report({
             node,
             loc,
             messageId: 'missingReturnType',
-          }),
-        );
+          });
+        });
       },
       FunctionDeclaration(node): void {
         if (isAllowedFunction(node)) {
@@ -212,13 +212,13 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        checkFunctionReturnType(node, options, sourceCode, loc =>
+        checkFunctionReturnType(node, options, sourceCode, loc => {
           context.report({
             node,
             loc,
             messageId: 'missingReturnType',
-          }),
-        );
+          });
+        });
       },
     };
   },

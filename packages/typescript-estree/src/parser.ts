@@ -80,6 +80,7 @@ function getProgramAndAST(
   return createNoProgram(parseSettings);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface EmptyObject {}
 type AST<T extends TSESTreeOptions> = TSESTree.Program &
   (T['comment'] extends true ? { comments: TSESTree.Comment[] } : EmptyObject) &
@@ -142,7 +143,7 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   };
 }
 
-let parseAndGenerateServicesCalls: { [fileName: string]: number } = {};
+let parseAndGenerateServicesCalls: Record<string, number> = {};
 // Privately exported utility intended for use in typescript-eslint unit tests only
 function clearParseAndGenerateServicesCalls(): void {
   parseAndGenerateServicesCalls = {};

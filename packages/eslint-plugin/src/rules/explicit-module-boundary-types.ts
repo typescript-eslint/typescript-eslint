@@ -212,8 +212,10 @@ export default util.createRule<Options, MessageIds>({
             }
             return;
 
-          case AST_NODE_TYPES.TSParameterProperty:
-            return checkParameter(param.parameter);
+          case AST_NODE_TYPES.TSParameterProperty: {
+            checkParameter(param.parameter);
+            return;
+          }
 
           case AST_NODE_TYPES.AssignmentPattern: // ignored as it has a type via its assignment
             return;
@@ -337,8 +339,10 @@ export default util.createRule<Options, MessageIds>({
 
       switch (node.type) {
         case AST_NODE_TYPES.ArrowFunctionExpression:
-        case AST_NODE_TYPES.FunctionExpression:
-          return checkFunctionExpression(node);
+        case AST_NODE_TYPES.FunctionExpression: {
+          checkFunctionExpression(node);
+          return;
+        }
 
         case AST_NODE_TYPES.ArrayExpression:
           for (const element of node.elements) {
@@ -353,7 +357,10 @@ export default util.createRule<Options, MessageIds>({
           ) {
             return;
           }
-          return checkNode(node.value);
+          {
+            checkNode(node.value);
+            return;
+          }
 
         case AST_NODE_TYPES.ClassDeclaration:
         case AST_NODE_TYPES.ClassExpression:
@@ -362,8 +369,10 @@ export default util.createRule<Options, MessageIds>({
           }
           return;
 
-        case AST_NODE_TYPES.FunctionDeclaration:
-          return checkFunction(node);
+        case AST_NODE_TYPES.FunctionDeclaration: {
+          checkFunction(node);
+          return;
+        }
 
         case AST_NODE_TYPES.MethodDefinition:
         case AST_NODE_TYPES.TSAbstractMethodDefinition:
@@ -373,10 +382,15 @@ export default util.createRule<Options, MessageIds>({
           ) {
             return;
           }
-          return checkNode(node.value);
+          {
+            checkNode(node.value);
+            return;
+          }
 
-        case AST_NODE_TYPES.Identifier:
-          return followReference(node);
+        case AST_NODE_TYPES.Identifier: {
+          followReference(node);
+          return;
+        }
 
         case AST_NODE_TYPES.ObjectExpression:
           for (const property of node.properties) {
@@ -384,11 +398,15 @@ export default util.createRule<Options, MessageIds>({
           }
           return;
 
-        case AST_NODE_TYPES.Property:
-          return checkNode(node.value);
+        case AST_NODE_TYPES.Property: {
+          checkNode(node.value);
+          return;
+        }
 
-        case AST_NODE_TYPES.TSEmptyBodyFunctionExpression:
-          return checkEmptyBodyFunctionExpression(node);
+        case AST_NODE_TYPES.TSEmptyBodyFunctionExpression: {
+          checkEmptyBodyFunctionExpression(node);
+          return;
+        }
 
         case AST_NODE_TYPES.VariableDeclaration:
           for (const declaration of node.declarations) {
@@ -396,8 +414,10 @@ export default util.createRule<Options, MessageIds>({
           }
           return;
 
-        case AST_NODE_TYPES.VariableDeclarator:
-          return checkNode(node.init);
+        case AST_NODE_TYPES.VariableDeclarator: {
+          checkNode(node.init);
+          return;
+        }
       }
     }
 

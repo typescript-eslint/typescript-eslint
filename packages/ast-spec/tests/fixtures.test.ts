@@ -333,7 +333,9 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
 }
 
 describe('AST Fixtures', () => {
-  FIXTURES.forEach(f => nestDescribe(f));
+  FIXTURES.forEach(f => {
+    nestDescribe(f);
+  });
 
   // once we've run all the tests, snapshot the list of fixtures that have differences for easy reference
   it('List fixtures with AST differences', () => {

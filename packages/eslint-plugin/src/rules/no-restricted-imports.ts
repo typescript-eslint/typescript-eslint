@@ -183,7 +183,7 @@ export default createRule<Options, MessageIds>({
     }
 
     const restrictedPaths = getRestrictedPaths(options);
-    const allowedTypeImportPathNameSet: Set<string> = new Set();
+    const allowedTypeImportPathNameSet = new Set<string>();
     for (const restrictedPath of restrictedPaths) {
       if (
         typeof restrictedPath === 'object' &&
@@ -227,10 +227,12 @@ export default createRule<Options, MessageIds>({
             !isAllowedTypeImportPath(importSource) &&
             !isAllowedTypeImportPattern(importSource)
           ) {
-            return rules.ImportDeclaration(node);
+            rules.ImportDeclaration(node);
+            return;
           }
         } else {
-          return rules.ImportDeclaration(node);
+          rules.ImportDeclaration(node);
+          return;
         }
       },
       'ExportNamedDeclaration[source]'(
@@ -244,10 +246,12 @@ export default createRule<Options, MessageIds>({
             !isAllowedTypeImportPath(importSource) &&
             !isAllowedTypeImportPattern(importSource)
           ) {
-            return rules.ExportNamedDeclaration(node);
+            rules.ExportNamedDeclaration(node);
+            return;
           }
         } else {
-          return rules.ExportNamedDeclaration(node);
+          rules.ExportNamedDeclaration(node);
+          return;
         }
       },
       ExportAllDeclaration: rules.ExportAllDeclaration,

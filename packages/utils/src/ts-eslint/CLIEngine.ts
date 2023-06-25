@@ -106,7 +106,7 @@ declare class CLIEngineBase {
 namespace CLIEngine {
   export interface Options {
     allowInlineConfig?: boolean;
-    baseConfig?: false | { [name: string]: unknown };
+    baseConfig?: Record<string, unknown> | false;
     cache?: boolean;
     cacheFile?: string;
     cacheLocation?: string;
@@ -125,9 +125,7 @@ namespace CLIEngine {
     parserOptions?: Linter.ParserOptions;
     plugins?: string[];
     resolvePluginsRelativeTo?: string;
-    rules?: {
-      [name: string]: Linter.RuleLevel | Linter.RuleLevelAndOptions;
-    };
+    rules?: Record<string, Linter.RuleLevel | Linter.RuleLevelAndOptions>;
     rulePaths?: string[];
     reportUnusedDisableDirectives?: boolean;
   }
@@ -158,9 +156,7 @@ namespace CLIEngine {
   }
 
   export interface LintResultData<TMessageIds extends string> {
-    rulesMeta: {
-      [ruleId: string]: RuleMetaData<TMessageIds>;
-    };
+    rulesMeta: Record<string, RuleMetaData<TMessageIds>>;
   }
 
   export type Formatter = <TMessageIds extends string>(

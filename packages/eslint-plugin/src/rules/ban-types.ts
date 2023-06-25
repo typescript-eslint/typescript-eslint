@@ -260,8 +260,9 @@ export default util.createRule<Options, MessageIds>({
       TYPE_KEYWORDS,
       (acc: TSESLint.RuleListener, keyword) => {
         if (bannedTypes.has(keyword)) {
-          acc[TYPE_KEYWORDS[keyword]] = (node: TSESTree.Node): void =>
+          acc[TYPE_KEYWORDS[keyword]] = (node: TSESTree.Node): void => {
             checkBannedTypes(node, keyword);
+          };
         }
 
         return acc;

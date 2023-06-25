@@ -109,7 +109,7 @@ export default util.createRule<Options, MessageIds>({
 
       if (option === 'never') {
         if (hasWhitespace) {
-          return context.report({
+          context.report({
             node,
             loc: lastCalleeToken.loc.start,
             messageId: 'unexpectedWhitespace',
@@ -132,6 +132,7 @@ export default util.createRule<Options, MessageIds>({
               return null;
             },
           });
+          return;
         }
       } else if (isOptionalCall) {
         // disallow:

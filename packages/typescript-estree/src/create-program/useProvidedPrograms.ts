@@ -70,7 +70,7 @@ function createProgramFromConfigFile(
       },
       fileExists: fs.existsSync,
       getCurrentDirectory: () =>
-        (projectDirectory && path.resolve(projectDirectory)) || process.cwd(),
+        (projectDirectory && path.resolve(projectDirectory)) ?? process.cwd(),
       readDirectory: ts.sys.readDirectory,
       readFile: file => fs.readFileSync(file, 'utf-8'),
       useCaseSensitiveFileNames: ts.sys.useCaseSensitiveFileNames,

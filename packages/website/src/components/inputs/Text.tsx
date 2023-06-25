@@ -18,7 +18,9 @@ const Text = React.forwardRef<HTMLInputElement, DropdownProps>(
     return (
       <input
         value={props.value}
-        onChange={(e): void => props.onChange(e.target.value)}
+        onChange={(e): void => {
+          props.onChange(e.target.value);
+        }}
         name={props.name}
         className={clsx(styles.textInput, props.className)}
         type={props.type ?? 'text'}

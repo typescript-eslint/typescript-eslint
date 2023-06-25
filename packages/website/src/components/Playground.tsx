@@ -152,7 +152,9 @@ function Playground(): JSX.Element {
                 <EditorTabs
                   tabs={detailTabs}
                   active={state.showAST ?? false}
-                  change={(v): void => setState({ showAST: v })}
+                  change={(v): void => {
+                    setState({ showAST: v });
+                  }}
                 />
                 {state.showAST === 'es' && (
                   <ESQueryFilter

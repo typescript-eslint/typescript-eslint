@@ -56,7 +56,7 @@ export function forEachReturnStatement<T>(
   function traverse(node: ts.Node): T | undefined {
     switch (node.kind) {
       case ts.SyntaxKind.ReturnStatement:
-        return visitor(<ts.ReturnStatement>node);
+        return visitor(node as ts.ReturnStatement);
       case ts.SyntaxKind.CaseBlock:
       case ts.SyntaxKind.Block:
       case ts.SyntaxKind.IfStatement:

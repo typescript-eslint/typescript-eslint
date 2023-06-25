@@ -24,8 +24,8 @@ describe('nullThrows', () => {
   });
 
   it('throws an error when the value is undefined', () => {
-    expect(() =>
-      nullThrows(undefined, NullThrowsReasons.MissingParent),
-    ).toThrow(NullThrowsReasons.MissingParent);
+    expect(() => {
+      nullThrows(undefined, NullThrowsReasons.MissingParent);
+    }).toThrow(NullThrowsReasons.MissingParent);
   });
 });

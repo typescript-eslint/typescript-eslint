@@ -170,6 +170,7 @@ type ReportDescriptor<TMessageIds extends string> =
  * Plugins can add their settings using declaration
  * merging against this interface.
  */
+// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
 interface SharedConfigurationSettings {
   [name: string]: unknown;
 }
@@ -428,10 +429,9 @@ interface RuleListenerBaseSelectors {
 type RuleListenerExitSelectors = {
   [K in keyof RuleListenerBaseSelectors as `${K}:exit`]: RuleListenerBaseSelectors[K];
 };
-interface RuleListenerCatchAllBaseCase {
-  [nodeSelector: string]: RuleFunction | undefined;
-}
+type RuleListenerCatchAllBaseCase = Record<string, RuleFunction | undefined>;
 // Interface to merge into for anyone that wants to add more selectors
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface RuleListenerExtension {}
 
 type RuleListener = RuleListenerBaseSelectors &

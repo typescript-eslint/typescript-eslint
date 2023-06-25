@@ -30,9 +30,9 @@ function Checkbox(props: CheckboxProps): JSX.Element {
       name={props.name}
       checked={props.checked && !props.indeterminate}
       type="checkbox"
-      onChange={(e): void =>
-        props.onChange(e.target.checked, props.value ?? '')
-      }
+      onChange={(e): void => {
+        props.onChange(e.target.checked, props.value ?? '');
+      }}
     />
   );
 }

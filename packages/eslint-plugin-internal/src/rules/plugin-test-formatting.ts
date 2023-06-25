@@ -267,7 +267,7 @@ export default createRule<Options, MessageIds>({
 
       if (literal.loc.end.line === literal.loc.start.line) {
         // don't use template strings for single line tests
-        return context.report({
+        context.report({
           node: literal,
           messageId: 'singleLineQuotes',
           fix(fixer) {
@@ -288,6 +288,7 @@ export default createRule<Options, MessageIds>({
             ];
           },
         });
+        return;
       }
 
       const lines = text.split('\n');
@@ -298,7 +299,7 @@ export default createRule<Options, MessageIds>({
       const isEndEmpty = lastLine.trimStart() === '';
       if (!isStartEmpty || !isEndEmpty) {
         // multiline template strings must have an empty first/last line
-        return context.report({
+        context.report({
           node: literal,
           messageId: 'templateLiteralEmptyEnds',
           *fix(fixer) {
@@ -317,11 +318,12 @@ export default createRule<Options, MessageIds>({
             }
           },
         });
+        return;
       }
 
       const parentIndent = getExpectedIndentForNode(literal, sourceCode.lines);
       if (lastLine.length !== parentIndent) {
-        return context.report({
+        context.report({
           node: literal,
           messageId: 'templateLiteralLastLineIndent',
           fix(fixer) {
@@ -331,6 +333,7 @@ export default createRule<Options, MessageIds>({
             );
           },
         });
+        return;
       }
 
       // remove the empty lines
@@ -346,13 +349,14 @@ export default createRule<Options, MessageIds>({
       const requiresIndent = firstLineIndent.length > 0;
       if (requiresIndent) {
         if (firstLineIndent.length !== expectedIndent) {
-          return context.report({
+          context.report({
             node: literal,
             messageId: 'templateStringRequiresIndent',
             data: {
               indent: expectedIndent,
             },
           });
+          return;
         }
 
         // quick-and-dirty validation that lines are roughly indented correctly
@@ -366,13 +370,14 @@ export default createRule<Options, MessageIds>({
 
           const indent = matches[1];
           if (indent.length < expectedIndent) {
-            return context.report({
+            context.report({
               node: literal,
               messageId: 'templateStringMinimumIndent',
               data: {
                 indent: expectedIndent,
               },
             });
+            return;
           }
         }
 
@@ -397,7 +402,7 @@ export default createRule<Options, MessageIds>({
               .join('\n')
           : formatted;
 
-        return context.report({
+        context.report({
           node: literal,
           messageId: isErrorTest
             ? 'invalidFormattingErrorTest'
@@ -412,6 +417,7 @@ export default createRule<Options, MessageIds>({
             );
           },
         });
+        return;
       }
     }
 

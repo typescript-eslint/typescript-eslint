@@ -199,7 +199,8 @@ export default createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.UnaryExpression &&
         node.operator === '!'
       ) {
-        return checkNode(node.argument, true);
+        checkNode(node.argument, true);
+        return;
       }
 
       // Since typescript array index signature types don't represent the
@@ -219,7 +220,8 @@ export default createRule<Options, MessageId>({
         node.type === AST_NODE_TYPES.LogicalExpression &&
         node.operator !== '??'
       ) {
-        return checkNode(node.right);
+        checkNode(node.right);
+        return;
       }
 
       const type = getConstrainedTypeAtLocation(services, node);
@@ -435,7 +437,8 @@ export default createRule<Options, MessageId>({
           // Two special cases, where we can directly check the node that's returned:
           // () => something
           if (callback.body.type !== AST_NODE_TYPES.BlockStatement) {
-            return checkNode(callback.body);
+            checkNode(callback.body);
+            return;
           }
           // () => { return something; }
           const callbackBody = callback.body.body;
@@ -444,7 +447,8 @@ export default createRule<Options, MessageId>({
             callbackBody[0].type === AST_NODE_TYPES.ReturnStatement &&
             callbackBody[0].argument
           ) {
-            return checkNode(callbackBody[0].argument);
+            checkNode(callbackBody[0].argument);
+            return;
           }
           // Potential enhancement: could use code-path analysis to check
           //   any function with a single return statement
@@ -465,16 +469,18 @@ export default createRule<Options, MessageId>({
           return;
         }
         if (!returnTypes.some(isPossiblyFalsy)) {
-          return context.report({
+          context.report({
             node: callback,
             messageId: 'alwaysTruthyFunc',
           });
+          return;
         }
         if (!returnTypes.some(isPossiblyTruthy)) {
-          return context.report({
+          context.report({
             node: callback,
             messageId: 'alwaysFalsyFunc',
           });
+          return;
         }
       }
     }
@@ -657,10 +663,14 @@ export default createRule<Options, MessageId>({
       AssignmentExpression: checkAssignmentExpression,
       BinaryExpression: checkIfBinaryExpressionIsNecessaryConditional,
       CallExpression: checkCallExpression,
-      ConditionalExpression: (node): void => checkNode(node.test),
+      ConditionalExpression: (node): void => {
+        checkNode(node.test);
+      },
       DoWhileStatement: checkIfLoopIsNecessaryConditional,
       ForStatement: checkIfLoopIsNecessaryConditional,
-      IfStatement: (node): void => checkNode(node.test),
+      IfStatement: (node): void => {
+        checkNode(node.test);
+      },
       LogicalExpression: checkLogicalExpressionForUnnecessaryConditionals,
       WhileStatement: checkIfLoopIsNecessaryConditional,
       'MemberExpression[optional = true]': checkOptionalMemberExpression,

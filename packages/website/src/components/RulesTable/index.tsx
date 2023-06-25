@@ -87,8 +87,9 @@ function RuleFilterCheckBox({
   setMode: (mode: FilterMode) => void;
   mode: FilterMode;
 }): JSX.Element {
-  const toNextMode = (): void =>
+  const toNextMode = (): void => {
     setMode(filterModes[(filterModes.indexOf(mode) + 1) % filterModes.length]);
+  };
   return (
     <li className={styles.checkboxListItem}>
       <button
@@ -164,17 +165,23 @@ export default function RulesTable({
         <ul className={clsx('clean-list', styles.checkboxList)}>
           <RuleFilterCheckBox
             mode={filters.recommended}
-            setMode={(newMode): void => changeFilter('recommended', newMode)}
+            setMode={(newMode): void => {
+              changeFilter('recommended', newMode);
+            }}
             label="✅ recommended"
           />
           <RuleFilterCheckBox
             mode={filters.strict}
-            setMode={(newMode): void => changeFilter('strict', newMode)}
+            setMode={(newMode): void => {
+              changeFilter('strict', newMode);
+            }}
             label="🔒 strict"
           />
           <RuleFilterCheckBox
             mode={filters.stylistic}
-            setMode={(newMode): void => changeFilter('stylistic', newMode)}
+            setMode={(newMode): void => {
+              changeFilter('stylistic', newMode);
+            }}
             label="🎨 stylistic"
           />
         </ul>
@@ -184,19 +191,23 @@ export default function RulesTable({
         <ul className={clsx('clean-list', styles.checkboxList)}>
           <RuleFilterCheckBox
             mode={filters.fixable}
-            setMode={(newMode): void => changeFilter('fixable', newMode)}
+            setMode={(newMode): void => {
+              changeFilter('fixable', newMode);
+            }}
             label="🔧 fixable"
           />
           <RuleFilterCheckBox
             mode={filters.suggestions}
-            setMode={(newMode): void => changeFilter('suggestions', newMode)}
+            setMode={(newMode): void => {
+              changeFilter('suggestions', newMode);
+            }}
             label="💡 has suggestions"
           />
           <RuleFilterCheckBox
             mode={filters.typeInformation}
-            setMode={(newMode): void =>
-              changeFilter('typeInformation', newMode)
-            }
+            setMode={(newMode): void => {
+              changeFilter('typeInformation', newMode);
+            }}
             label="💭 requires type information"
           />
         </ul>

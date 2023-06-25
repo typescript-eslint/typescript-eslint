@@ -33,7 +33,9 @@ function EditorTabs<T extends boolean | string>({
             key={item.label}
             aria-selected={active === item.value}
             disabled={active === item.value}
-            onClick={(): void => change(item.value)}
+            onClick={(): void => {
+              change(item.value);
+            }}
           >
             {item.label}
           </button>

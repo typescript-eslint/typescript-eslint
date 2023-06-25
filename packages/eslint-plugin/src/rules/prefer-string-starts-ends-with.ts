@@ -84,8 +84,7 @@ export default createRule({
       return (
         evaluated != null &&
         typeof evaluated.value === 'string' &&
-        // checks if the string is a character long
-        evaluated.value[0] === evaluated.value
+        evaluated.value.length === 1
       );
     }
 

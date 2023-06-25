@@ -137,13 +137,14 @@ export default util.createRule({
         }
 
         // If the function return type was not unknown/unknown[], mark usage as unsafeReturn.
-        return context.report({
+        context.report({
           node: reportingNode,
           messageId,
           data: {
             type: anyType === util.AnyType.Any ? 'any' : 'any[]',
           },
         });
+        return;
       }
 
       for (const signature of functionType.getCallSignatures()) {
@@ -159,7 +160,7 @@ export default util.createRule({
         }
 
         const { sender, receiver } = result;
-        return context.report({
+        context.report({
           node: reportingNode,
           messageId: 'unsafeReturnAssignment',
           data: {
@@ -167,6 +168,7 @@ export default util.createRule({
             receiver: checker.typeToString(receiver),
           },
         });
+        return;
       }
     }
 

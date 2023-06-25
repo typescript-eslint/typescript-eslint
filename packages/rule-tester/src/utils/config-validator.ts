@@ -227,8 +227,9 @@ function formatErrors(errors: AjvErrorObject[]): string {
         return `Property "${formattedField}" is the wrong type (expected ${formattedExpectedType} but got \`${formattedValue}\`)`;
       }
 
-      const field =
-        error.dataPath[0] === '.' ? error.dataPath.slice(1) : error.dataPath;
+      const field = error.dataPath.startsWith('.')
+        ? error.dataPath.slice(1)
+        : error.dataPath;
 
       return `"${field}" ${error.message}. Value: ${JSON.stringify(
         error.data,

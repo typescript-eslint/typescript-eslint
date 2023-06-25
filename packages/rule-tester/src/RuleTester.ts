@@ -530,10 +530,9 @@ export class RuleTester extends TestFramework {
       if (ajv.errors) {
         const errors = ajv.errors
           .map(error => {
-            const field =
-              error.dataPath[0] === '.'
-                ? error.dataPath.slice(1)
-                : error.dataPath;
+            const field = error.dataPath.startsWith('.')
+              ? error.dataPath.slice(1)
+              : error.dataPath;
 
             return `\t${field}: ${error.message}`;
           })

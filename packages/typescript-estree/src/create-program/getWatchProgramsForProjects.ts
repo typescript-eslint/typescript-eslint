@@ -146,9 +146,9 @@ function getWatchProgramsForProjects(
     fileWatchCallbacks &&
     fileWatchCallbacks.size > 0
   ) {
-    fileWatchCallbacks.forEach(cb =>
-      cb(filePath, ts.FileWatcherEventKind.Changed),
-    );
+    fileWatchCallbacks.forEach(cb => {
+      cb(filePath, ts.FileWatcherEventKind.Changed);
+    });
   }
 
   const currentProjectsFromSettings = new Set(parseSettings.projects);
@@ -264,6 +264,8 @@ function createWatchProgram(
     ts.sys,
     ts.createAbstractBuilder,
     diagnosticReporter,
+    // TODO: file issue on TypeScript to suggest making optional?
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     /*reportWatchStatus*/ () => {},
   ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
 
@@ -398,9 +400,9 @@ function maybeInvalidateProgram(
      * We need to make sure typescript knows this so it can update appropriately
      */
     log('tsconfig has changed - triggering program update. %s', tsconfigPath);
-    fileWatchCallbackTrackingMap
-      .get(tsconfigPath)!
-      .forEach(cb => cb(tsconfigPath, ts.FileWatcherEventKind.Changed));
+    fileWatchCallbackTrackingMap.get(tsconfigPath)!.forEach(cb => {
+      cb(tsconfigPath, ts.FileWatcherEventKind.Changed);
+    });
 
     // tsconfig change means that the file list more than likely changed, so clear the cache
     programFileListCache.delete(tsconfigPath);
@@ -485,9 +487,9 @@ function maybeInvalidateProgram(
   }
 
   log('Marking file as deleted. %s', deletedFile);
-  fileWatchCallbacks.forEach(cb =>
-    cb(deletedFile, ts.FileWatcherEventKind.Deleted),
-  );
+  fileWatchCallbacks.forEach(cb => {
+    cb(deletedFile, ts.FileWatcherEventKind.Deleted);
+  });
 
   // deleted files means that the file list _has_ changed, so clear the cache
   programFileListCache.delete(tsconfigPath);

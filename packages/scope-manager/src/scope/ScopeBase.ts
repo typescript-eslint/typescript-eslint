@@ -232,7 +232,7 @@ abstract class ScopeBase<
     block: TBlock,
     isMethodDefinition: boolean,
   ) {
-    const upperScopeAsScopeBase = upperScope as Scope;
+    const upperScopeAsScopeBase = upperScope!;
 
     this.type = type;
     this.#dynamic =
@@ -371,7 +371,9 @@ abstract class ScopeBase<
 
     // Try Resolving all references in this scope.
     assert(this.leftToResolve);
-    this.leftToResolve.forEach(ref => closeRef(ref, scopeManager));
+    this.leftToResolve.forEach(ref => {
+      closeRef(ref, scopeManager);
+    });
     this.leftToResolve = null;
 
     return this.upper;
@@ -386,7 +388,7 @@ abstract class ScopeBase<
   }
 
   protected delegateToUpperScope(ref: Reference): void {
-    const upper = this.upper as Scope as AnyScope;
+    const upper = this.upper! as AnyScope;
     if (upper?.leftToResolve) {
       upper.leftToResolve.push(ref);
     }

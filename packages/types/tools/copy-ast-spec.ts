@@ -19,9 +19,15 @@ async function execAsync(
       stdio: 'inherit',
     });
 
-    child.on('error', e => reject(e));
-    child.on('exit', () => resolve());
-    child.on('close', () => resolve());
+    child.on('error', e => {
+      reject(e);
+    });
+    child.on('exit', () => {
+      resolve();
+    });
+    child.on('close', () => {
+      resolve();
+    });
   });
 }
 

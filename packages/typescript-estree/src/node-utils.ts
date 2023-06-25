@@ -363,7 +363,7 @@ export function hasJSXAncestor(node: ts.Node): boolean {
 export function unescapeStringLiteralText(text: string): string {
   return text.replace(/&(?:#\d+|#x[\da-fA-F]+|[0-9a-zA-Z]+);/g, entity => {
     const item = entity.slice(1, -1);
-    if (item[0] === '#') {
+    if (item.startsWith('#')) {
       const codePoint =
         item[1] === 'x'
           ? parseInt(item.slice(2), 16)

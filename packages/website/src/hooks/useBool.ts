@@ -6,10 +6,9 @@ export function useBool(
 ): [boolean, () => void, Dispatch<SetStateAction<boolean>>] {
   const [value, setValue] = useState(initialState);
 
-  const toggle = useCallback(
-    (): void => setValue(currentValue => !currentValue),
-    [],
-  );
+  const toggle = useCallback((): void => {
+    setValue(currentValue => !currentValue);
+  }, []);
 
   return [value, toggle, setValue];
 }
