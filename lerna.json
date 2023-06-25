@@ -5,7 +5,7 @@
   "stream": true,
   "command": {
     "version": {
-      "changelogEntryAdditionalMarkdown": "\nOn our website you can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases)"
+      "changelogEntryAdditionalMarkdown": "You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website."
     }
   }
 }
