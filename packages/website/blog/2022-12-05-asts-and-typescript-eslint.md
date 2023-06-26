@@ -79,7 +79,7 @@ On the other hand, TypeScript's type checking APIs require nodes in the TypeScri
 
 ### Enter TSESTree
 
-To resolve the incompatibilities between ESTrees and the TypeScript AST typescript-eslint provides its own [`@typescript-eslint/parser` package](https://typescript-eslint.io/architecture/Parser.mdx) which:
+To resolve the incompatibilities between ESTrees and the TypeScript AST typescript-eslint provides its own [`@typescript-eslint/parser` package](https://typescript-eslint.io/packages/Parser.mdx) which:
 
 1. First parses TypeScript syntax into a TypeScript AST
 1. Creates an ESTree AST based on that TypeScript AST
