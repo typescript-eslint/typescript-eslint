@@ -41,27 +41,25 @@ export default util.createRule<Options, MessageIds>({
         return; // ignore
       }
       if (isLeftTypeAssertion) {
-        rule({
+        return rule({
           ...node,
           left: {
             ...node.left,
             type: AST_NODE_TYPES.SequenceExpression as any,
           },
         });
-        return;
       }
       if (isRightTypeAssertion) {
-        rule({
+        return rule({
           ...node,
           right: {
             ...node.right,
             type: AST_NODE_TYPES.SequenceExpression as any,
           },
         });
-        return;
       }
 
-      rule(node);
+      return rule(node);
     }
     function callExp(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
@@ -70,14 +68,13 @@ export default util.createRule<Options, MessageIds>({
 
       if (util.isTypeAssertion(node.callee)) {
         // reduces the precedence of the node so the rule thinks it needs to be wrapped
-        rule({
+        return rule({
           ...node,
           callee: {
             ...node.callee,
             type: AST_NODE_TYPES.SequenceExpression as any,
           },
         });
-        return;
       }
 
       if (
@@ -88,7 +85,7 @@ export default util.createRule<Options, MessageIds>({
             param.type === AST_NODE_TYPES.TSArrayType,
         )
       ) {
-        rule({
+        return rule({
           ...node,
           arguments: [
             {
@@ -97,10 +94,9 @@ export default util.createRule<Options, MessageIds>({
             },
           ],
         });
-        return;
       }
 
-      rule(node);
+      return rule(node);
     }
     function unaryUpdateExpression(
       node: TSESTree.UnaryExpression | TSESTree.UpdateExpression,
@@ -109,137 +105,125 @@ export default util.createRule<Options, MessageIds>({
 
       if (util.isTypeAssertion(node.argument)) {
         // reduces the precedence of the node so the rule thinks it needs to be wrapped
-        rule({
+        return rule({
           ...node,
           argument: {
             ...node.argument,
             type: AST_NODE_TYPES.SequenceExpression as any,
           },
         });
-        return;
       }
 
-      rule(node);
+      return rule(node);
     }
 
     const overrides: TSESLint.RuleListener = {
       // ArrayExpression
       ArrowFunctionExpression(node) {
         if (!util.isTypeAssertion(node.body)) {
-          rules.ArrowFunctionExpression(node);
-          return;
+          return rules.ArrowFunctionExpression(node);
         }
       },
       // AssignmentExpression
       AwaitExpression(node) {
         if (util.isTypeAssertion(node.argument)) {
           // reduces the precedence of the node so the rule thinks it needs to be wrapped
-          rules.AwaitExpression({
+          return rules.AwaitExpression({
             ...node,
             argument: {
               ...node.argument,
               type: AST_NODE_TYPES.SequenceExpression as any,
             },
           });
-          return;
         }
-        rules.AwaitExpression(node);
+        return rules.AwaitExpression(node);
       },
       BinaryExpression: binaryExp,
       CallExpression: callExp,
       ClassDeclaration(node) {
         if (node.superClass?.type === AST_NODE_TYPES.TSAsExpression) {
-          rules.ClassDeclaration({
+          return rules.ClassDeclaration({
             ...node,
             superClass: {
               ...node.superClass,
               type: AST_NODE_TYPES.SequenceExpression as any,
             },
           });
-          return;
         }
-        rules.ClassDeclaration(node);
+        return rules.ClassDeclaration(node);
       },
       ClassExpression(node) {
         if (node.superClass?.type === AST_NODE_TYPES.TSAsExpression) {
-          rules.ClassExpression({
+          return rules.ClassExpression({
             ...node,
             superClass: {
               ...node.superClass,
               type: AST_NODE_TYPES.SequenceExpression as any,
             },
           });
-          return;
         }
-        rules.ClassExpression(node);
+        return rules.ClassExpression(node);
       },
       ConditionalExpression(node) {
         // reduces the precedence of the node so the rule thinks it needs to be wrapped
         if (util.isTypeAssertion(node.test)) {
-          rules.ConditionalExpression({
+          return rules.ConditionalExpression({
             ...node,
             test: {
               ...node.test,
               type: AST_NODE_TYPES.SequenceExpression as any,
             },
           });
-          return;
         }
         if (util.isTypeAssertion(node.consequent)) {
-          rules.ConditionalExpression({
+          return rules.ConditionalExpression({
             ...node,
             consequent: {
               ...node.consequent,
               type: AST_NODE_TYPES.SequenceExpression as any,
             },
           });
-          return;
         }
         if (util.isTypeAssertion(node.alternate)) {
           // reduces the precedence of the node so the rule thinks it needs to be wrapped
-          rules.ConditionalExpression({
+          return rules.ConditionalExpression({
             ...node,
             alternate: {
               ...node.alternate,
               type: AST_NODE_TYPES.SequenceExpression as any,
             },
           });
-          return;
         }
-        rules.ConditionalExpression(node);
+        return rules.ConditionalExpression(node);
       },
       // DoWhileStatement
       // ForIn and ForOf are guarded by eslint version
       ForStatement(node) {
         // make the rule skip the piece by removing it entirely
         if (node.init && util.isTypeAssertion(node.init)) {
-          rules.ForStatement({
+          return rules.ForStatement({
             ...node,
             init: null,
           });
-          return;
         }
         if (node.test && util.isTypeAssertion(node.test)) {
-          rules.ForStatement({
+          return rules.ForStatement({
             ...node,
             test: null,
           });
-          return;
         }
         if (node.update && util.isTypeAssertion(node.update)) {
-          rules.ForStatement({
+          return rules.ForStatement({
             ...node,
             update: null,
           });
-          return;
         }
 
-        rules.ForStatement(node);
+        return rules.ForStatement(node);
       },
       'ForStatement > *.init:exit'(node: TSESTree.Node) {
         if (!util.isTypeAssertion(node)) {
-          rules['ForStatement > *.init:exit'](node);
-          return;
+          return rules['ForStatement > *.init:exit'](node);
         }
       },
       // IfStatement
@@ -247,17 +231,16 @@ export default util.createRule<Options, MessageIds>({
       MemberExpression(node) {
         if (util.isTypeAssertion(node.object)) {
           // reduces the precedence of the node so the rule thinks it needs to be wrapped
-          rules.MemberExpression({
+          return rules.MemberExpression({
             ...node,
             object: {
               ...node.object,
               type: AST_NODE_TYPES.SequenceExpression as any,
             },
           });
-          return;
         }
 
-        rules.MemberExpression(node);
+        return rules.MemberExpression(node);
       },
       NewExpression: callExp,
       // ObjectExpression
@@ -265,21 +248,18 @@ export default util.createRule<Options, MessageIds>({
       // SequenceExpression
       SpreadElement(node) {
         if (!util.isTypeAssertion(node.argument)) {
-          rules.SpreadElement(node);
-          return;
+          return rules.SpreadElement(node);
         }
       },
       SwitchCase(node) {
         if (node.test && !util.isTypeAssertion(node.test)) {
-          rules.SwitchCase(node);
-          return;
+          return rules.SwitchCase(node);
         }
       },
       // SwitchStatement
       ThrowStatement(node) {
         if (node.argument && !util.isTypeAssertion(node.argument)) {
-          rules.ThrowStatement(node);
-          return;
+          return rules.ThrowStatement(node);
         }
       },
       UnaryExpression: unaryUpdateExpression,
@@ -289,8 +269,7 @@ export default util.createRule<Options, MessageIds>({
       // WithStatement - i'm not going to even bother implementing this terrible and never used feature
       YieldExpression(node) {
         if (node.argument && !util.isTypeAssertion(node.argument)) {
-          rules.YieldExpression(node);
-          return;
+          return rules.YieldExpression(node);
         }
       },
     };
@@ -302,12 +281,12 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        rules.ForInStatement(node);
+        return rules.ForInStatement(node);
       };
       overrides.ForOfStatement = function (node): void {
         if (util.isTypeAssertion(node.right)) {
           // makes the rule skip checking of the right
-          rules.ForOfStatement({
+          return rules.ForOfStatement({
             ...node,
             type: AST_NODE_TYPES.ForOfStatement,
             right: {
@@ -315,10 +294,9 @@ export default util.createRule<Options, MessageIds>({
               type: AST_NODE_TYPES.SequenceExpression as any,
             },
           });
-          return;
         }
 
-        rules.ForOfStatement(node);
+        return rules.ForOfStatement(node);
       };
     } else {
       overrides['ForInStatement, ForOfStatement'] = function (
@@ -326,7 +304,7 @@ export default util.createRule<Options, MessageIds>({
       ): void {
         if (util.isTypeAssertion(node.right)) {
           // makes the rule skip checking of the right
-          rules['ForInStatement, ForOfStatement']({
+          return rules['ForInStatement, ForOfStatement']({
             ...node,
             type: AST_NODE_TYPES.ForOfStatement as any,
             right: {
@@ -334,10 +312,9 @@ export default util.createRule<Options, MessageIds>({
               type: AST_NODE_TYPES.SequenceExpression as any,
             },
           });
-          return;
         }
 
-        rules['ForInStatement, ForOfStatement'](node);
+        return rules['ForInStatement, ForOfStatement'](node);
       };
     }
     return Object.assign({}, rules, overrides);

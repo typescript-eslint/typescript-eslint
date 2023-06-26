@@ -57,9 +57,7 @@ class ClassVisitor extends Visitor {
         .defineIdentifier(node.id, new ClassNameDefinition(node.id, node));
     }
 
-    node.decorators.forEach(d => {
-      this.#referencer.visit(d);
-    });
+    node.decorators.forEach(d => this.#referencer.visit(d));
 
     this.#referencer.scopeManager.nestClassScope(node);
 
@@ -77,9 +75,7 @@ class ClassVisitor extends Visitor {
     this.visitType(node.typeParameters);
     // then the usages
     this.visitType(node.superTypeArguments);
-    node.implements?.forEach(imp => {
-      this.visitType(imp);
-    });
+    node.implements?.forEach(imp => this.visitType(imp));
 
     this.visit(node.body);
 
@@ -223,9 +219,7 @@ class ClassVisitor extends Visitor {
         { processRightHandNodes: true },
       );
       this.visitFunctionParameterTypeAnnotation(param, withMethodDecorators);
-      param.decorators.forEach(d => {
-        this.visit(d);
-      });
+      param.decorators.forEach(d => this.visit(d));
     }
 
     this.visitMetadataType(node.returnType, withMethodDecorators);
@@ -277,9 +271,7 @@ class ClassVisitor extends Visitor {
       }
     }
 
-    node.decorators.forEach(d => {
-      this.#referencer.visit(d);
-    });
+    node.decorators.forEach(d => this.#referencer.visit(d));
   }
 
   protected visitMethod(node: TSESTree.MethodDefinition): void {
@@ -293,9 +285,7 @@ class ClassVisitor extends Visitor {
       this.#referencer.visit(node.value);
     }
 
-    node.decorators.forEach(d => {
-      this.#referencer.visit(d);
-    });
+    node.decorators.forEach(d => this.#referencer.visit(d));
   }
 
   protected visitType(node: TSESTree.Node | null | undefined): void {
@@ -399,9 +389,7 @@ class ClassVisitor extends Visitor {
   protected StaticBlock(node: TSESTree.StaticBlock): void {
     this.#referencer.scopeManager.nestClassStaticBlockScope(node);
 
-    node.body.forEach(b => {
-      this.visit(b);
-    });
+    node.body.forEach(b => this.visit(b));
 
     this.#referencer.close(node);
   }

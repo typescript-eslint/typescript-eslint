@@ -78,7 +78,7 @@ export default createRule({
             continue;
           }
 
-          context.report({
+          return context.report({
             node,
             messageId: banned.fixWith ? 'doNotUseWithFixer' : 'doNotUse',
             data: banned,
@@ -96,7 +96,6 @@ export default createRule({
               },
             ],
           });
-          return;
         }
       },
     };

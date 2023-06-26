@@ -40,7 +40,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        coreListener(node);
+        return coreListener(node);
       };
     }
 

@@ -371,9 +371,7 @@ abstract class ScopeBase<
 
     // Try Resolving all references in this scope.
     assert(this.leftToResolve);
-    this.leftToResolve.forEach(ref => {
-      closeRef(ref, scopeManager);
-    });
+    this.leftToResolve.forEach(ref => closeRef(ref, scopeManager));
     this.leftToResolve = null;
 
     return this.upper;

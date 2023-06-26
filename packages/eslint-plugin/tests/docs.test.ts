@@ -94,9 +94,9 @@ describe('Validating rule docs', () => {
         // Get all H2 headers objects as the other levels are variable by design.
         const headers = tokens.filter(tokenIsH2);
 
-        headers.forEach(header => {
-          expect(header.text).toBe(titleCase(header.text));
-        });
+        headers.forEach(header =>
+          expect(header.text).toBe(titleCase(header.text)),
+        );
       });
 
       const importantHeadings = new Set([

@@ -1,7 +1,9 @@
 import type { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/types';
 import * as eslintVisitorKeys from 'eslint-visitor-keys';
 
-type VisitorKeys = Readonly<Record<string, readonly string[] | undefined>>;
+interface VisitorKeys {
+  readonly [type: string]: readonly string[] | undefined;
+}
 
 type GetNodeTypeKeys<T extends AST_NODE_TYPES> = Exclude<
   keyof Extract<TSESTree.Node, { type: T }>,

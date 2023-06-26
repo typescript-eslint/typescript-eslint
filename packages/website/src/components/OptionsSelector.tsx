@@ -55,9 +55,7 @@ function OptionsSelectorContent({
             className="text--right"
             value={state.ts}
             disabled={!tsVersions.length}
-            onChange={(ts): void => {
-              setState({ ts });
-            }}
+            onChange={(ts): void => setState({ ts })}
             options={(tsVersions.length && tsVersions) || [state.ts]}
           />
         </InputLabel>
@@ -69,9 +67,7 @@ function OptionsSelectorContent({
           <Dropdown
             name="fileType"
             value={state.fileType}
-            onChange={(fileType): void => {
-              setState({ fileType });
-            }}
+            onChange={(fileType): void => setState({ fileType })}
             options={fileTypes}
           />
         </InputLabel>
@@ -79,9 +75,7 @@ function OptionsSelectorContent({
           <Dropdown
             name="sourceType"
             value={state.sourceType}
-            onChange={(sourceType): void => {
-              setState({ sourceType });
-            }}
+            onChange={(sourceType): void => setState({ sourceType })}
             options={['script', 'module']}
           />
         </InputLabel>
@@ -89,18 +83,14 @@ function OptionsSelectorContent({
           <Checkbox
             name="enableScrolling"
             checked={state.scroll}
-            onChange={(scroll): void => {
-              setState({ scroll });
-            }}
+            onChange={(scroll): void => setState({ scroll })}
           />
         </InputLabel>
         <InputLabel name="Show tokens">
           <Checkbox
             name="showTokens"
             checked={state.showTokens}
-            onChange={(showTokens): void => {
-              setState({ showTokens });
-            }}
+            onChange={(showTokens): void => setState({ showTokens })}
           />
         </InputLabel>
       </Expander>

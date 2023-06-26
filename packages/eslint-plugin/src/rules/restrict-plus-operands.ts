@@ -204,7 +204,7 @@ export default util.createRule<Options, MessageIds>({
           isTypeFlagSetInUnion(baseType, ts.TypeFlags.StringLike) &&
           isTypeFlagSetInUnion(otherType, ts.TypeFlags.NumberLike)
         ) {
-          context.report({
+          return context.report({
             data: {
               stringLike,
               left: typeChecker.typeToString(leftType),
@@ -213,14 +213,13 @@ export default util.createRule<Options, MessageIds>({
             messageId: 'mismatched',
             node,
           });
-          return;
         }
 
         if (
           isTypeFlagSetInUnion(baseType, ts.TypeFlags.NumberLike) &&
           isTypeFlagSetInUnion(otherType, ts.TypeFlags.BigIntLike)
         ) {
-          context.report({
+          return context.report({
             data: {
               left: typeChecker.typeToString(leftType),
               right: typeChecker.typeToString(rightType),
@@ -228,7 +227,6 @@ export default util.createRule<Options, MessageIds>({
             messageId: 'bigintAndNumber',
             node,
           });
-          return;
         }
       }
     }

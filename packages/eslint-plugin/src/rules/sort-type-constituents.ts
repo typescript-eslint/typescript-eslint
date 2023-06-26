@@ -233,7 +233,7 @@ export default util.createRule<Options, MessageIds>({
 
             return fixer.replaceText(node, sorted);
           };
-          context.report({
+          return context.report({
             node,
             messageId,
             data,
@@ -250,7 +250,6 @@ export default util.createRule<Options, MessageIds>({
                 }
               : { fix }),
           });
-          return;
         }
       }
     }

@@ -17,26 +17,26 @@ https://gist.github.com/mathiasbynens/6334847
 function isPascalCase(name: string): boolean {
   return (
     name.length === 0 ||
-    (name.startsWith(name[0].toUpperCase()) && !name.includes('_'))
+    (name[0] === name[0].toUpperCase() && !name.includes('_'))
   );
 }
 function isStrictPascalCase(name: string): boolean {
   return (
     name.length === 0 ||
-    (name.startsWith(name[0].toUpperCase()) && hasStrictCamelHumps(name, true))
+    (name[0] === name[0].toUpperCase() && hasStrictCamelHumps(name, true))
   );
 }
 
 function isCamelCase(name: string): boolean {
   return (
     name.length === 0 ||
-    (name.startsWith(name[0].toLowerCase()) && !name.includes('_'))
+    (name[0] === name[0].toLowerCase() && !name.includes('_'))
   );
 }
 function isStrictCamelCase(name: string): boolean {
   return (
     name.length === 0 ||
-    (name.startsWith(name[0].toLowerCase()) && hasStrictCamelHumps(name, false))
+    (name[0] === name[0].toLowerCase() && hasStrictCamelHumps(name, false))
   );
 }
 

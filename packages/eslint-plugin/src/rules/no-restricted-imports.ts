@@ -227,12 +227,10 @@ export default createRule<Options, MessageIds>({
             !isAllowedTypeImportPath(importSource) &&
             !isAllowedTypeImportPattern(importSource)
           ) {
-            rules.ImportDeclaration(node);
-            return;
+            return rules.ImportDeclaration(node);
           }
         } else {
-          rules.ImportDeclaration(node);
-          return;
+          return rules.ImportDeclaration(node);
         }
       },
       'ExportNamedDeclaration[source]'(
@@ -246,12 +244,10 @@ export default createRule<Options, MessageIds>({
             !isAllowedTypeImportPath(importSource) &&
             !isAllowedTypeImportPattern(importSource)
           ) {
-            rules.ExportNamedDeclaration(node);
-            return;
+            return rules.ExportNamedDeclaration(node);
           }
         } else {
-          rules.ExportNamedDeclaration(node);
-          return;
+          return rules.ExportNamedDeclaration(node);
         }
       },
       ExportAllDeclaration: rules.ExportAllDeclaration,

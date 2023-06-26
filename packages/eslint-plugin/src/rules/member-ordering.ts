@@ -832,7 +832,7 @@ export default util.createRule<Options, MessageIds>({
           i && isMemberOptional(member) !== isMemberOptional(members[i - 1]),
       );
 
-      const report = (member: Member): void => {
+      const report = (member: Member): void =>
         context.report({
           messageId: 'incorrectRequiredMembersOrder',
           loc: member.loc,
@@ -842,7 +842,6 @@ export default util.createRule<Options, MessageIds>({
               optionalityOrder === 'required-first' ? 'required' : 'optional',
           },
         });
-      };
 
       // if the optionality of the first item is correct (based on optionalityOrder)
       // then the first 0 inclusive to switchIndex exclusive members all

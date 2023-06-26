@@ -143,7 +143,7 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   };
 }
 
-let parseAndGenerateServicesCalls: Record<string, number> = {};
+let parseAndGenerateServicesCalls: { [fileName: string]: number } = {};
 // Privately exported utility intended for use in typescript-eslint unit tests only
 function clearParseAndGenerateServicesCalls(): void {
   parseAndGenerateServicesCalls = {};

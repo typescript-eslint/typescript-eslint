@@ -7,9 +7,7 @@ export function createEventsBinder<T extends (...args: any[]) => void>(): {
 
   return {
     trigger(...args: Parameters<T>): void {
-      events.forEach(cb => {
-        cb(...args);
-      });
+      events.forEach(cb => cb(...args));
     },
     register(cb: T): () => void {
       events.add(cb);

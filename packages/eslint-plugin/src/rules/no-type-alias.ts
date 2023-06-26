@@ -188,17 +188,16 @@ export default util.createRule<Options, MessageIds>({
       type: string,
     ): void {
       if (isRoot) {
-        context.report({
+        return context.report({
           node,
           messageId: 'noTypeAlias',
           data: {
             alias: type.toLowerCase(),
           },
         });
-        return;
       }
 
-      context.report({
+      return context.report({
         node,
         messageId: 'noCompositionAlias',
         data: {

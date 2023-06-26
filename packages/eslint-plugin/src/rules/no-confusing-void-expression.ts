@@ -105,17 +105,16 @@ export default util.createRule<Options, MessageId>({
 
           if (options.ignoreVoidOperator) {
             // handle wrapping with `void`
-            context.report({
+            return context.report({
               node,
               messageId: 'invalidVoidExprArrowWrapVoid',
               fix: wrapVoidFix,
             });
-            return;
           }
 
           // handle wrapping with braces
           const arrowFunction = invalidAncestor;
-          context.report({
+          return context.report({
             node,
             messageId: 'invalidVoidExprArrow',
             fix(fixer) {
@@ -139,7 +138,6 @@ export default util.createRule<Options, MessageId>({
               return fixer.replaceText(arrowBody, newArrowBodyText);
             },
           });
-          return;
         }
 
         if (invalidAncestor.type === AST_NODE_TYPES.ReturnStatement) {
@@ -147,19 +145,18 @@ export default util.createRule<Options, MessageId>({
 
           if (options.ignoreVoidOperator) {
             // handle wrapping with `void`
-            context.report({
+            return context.report({
               node,
               messageId: 'invalidVoidExprReturnWrapVoid',
               fix: wrapVoidFix,
             });
-            return;
           }
 
           const returnStmt = invalidAncestor;
 
           if (isFinalReturn(returnStmt)) {
             // remove the `return` keyword
-            context.report({
+            return context.report({
               node,
               messageId: 'invalidVoidExprReturnLast',
               fix(fixer) {
@@ -173,11 +170,10 @@ export default util.createRule<Options, MessageId>({
                 return fixer.replaceText(returnStmt, newReturnStmtText);
               },
             });
-            return;
           }
 
           // move before the `return` keyword
-          context.report({
+          return context.report({
             node,
             messageId: 'invalidVoidExprReturn',
             fix(fixer) {
@@ -196,18 +192,16 @@ export default util.createRule<Options, MessageId>({
               return fixer.replaceText(returnStmt, newReturnStmtText);
             },
           });
-          return;
         }
 
         // handle generic case
         if (options.ignoreVoidOperator) {
           // this would be reported by this rule btw. such irony
-          context.report({
+          return context.report({
             node,
             messageId: 'invalidVoidExprWrapVoid',
             suggest: [{ messageId: 'voidExprWrapVoid', fix: wrapVoidFix }],
           });
-          return;
         }
 
         context.report({

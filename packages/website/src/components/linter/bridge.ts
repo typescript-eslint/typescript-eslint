@@ -48,9 +48,7 @@ export function createFileSystem(
   ): void => {
     fileWatcherCallbacks.forEach((callbacks, key) => {
       if (key.test(path)) {
-        callbacks.forEach(cb => {
-          cb(path, type);
-        });
+        callbacks.forEach(cb => cb(path, type));
       }
     });
   };

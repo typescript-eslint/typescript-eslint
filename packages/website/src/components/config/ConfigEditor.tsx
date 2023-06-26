@@ -68,12 +68,9 @@ function ConfigEditorField({
           value={item.key}
           indeterminate={Boolean(value) && !isDefault(value, item.defaults)}
           checked={Boolean(value)}
-          onChange={(checked): void => {
-            onChange(
-              item.key,
-              checked ? item.defaults?.[0] ?? true : undefined,
-            );
-          }}
+          onChange={(checked): void =>
+            onChange(item.key, checked ? item.defaults?.[0] ?? true : undefined)
+          }
         />
       )) ||
         (item.type === 'string' && item.enum && (
@@ -81,9 +78,7 @@ function ConfigEditorField({
             name={`config_${item.key}`}
             value={String(value)}
             options={item.enum}
-            onChange={(value): void => {
-              onChange(item.key, value);
-            }}
+            onChange={(value): void => onChange(item.key, value)}
           />
         ))}
     </label>

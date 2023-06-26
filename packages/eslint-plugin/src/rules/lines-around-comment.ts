@@ -403,7 +403,7 @@ export default util.createRule<Options, MessageIds>({
           }
         }
       }
-      context.report(descriptor);
+      return context.report(descriptor);
     };
 
     const customContext = { report: customReport };

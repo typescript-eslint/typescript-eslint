@@ -111,16 +111,10 @@ export function wrapParser(parser: Linter.ParserModule): Linter.ParserModule {
 
     simpleTraverse(ast, {
       visitorKeys: visitorKeys,
-      enter: node => {
-        defineStartEndAsError('node', node);
-      },
+      enter: node => defineStartEndAsError('node', node),
     });
-    ast.tokens?.forEach(token => {
-      defineStartEndAsError('token', token);
-    });
-    ast.comments?.forEach(comment => {
-      defineStartEndAsError('token', comment);
-    });
+    ast.tokens?.forEach(token => defineStartEndAsError('token', token));
+    ast.comments?.forEach(comment => defineStartEndAsError('token', comment));
   }
 
   if ('parseForESLint' in parser) {

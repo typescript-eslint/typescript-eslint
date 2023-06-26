@@ -447,7 +447,7 @@ describe('References:', () => {
       'new function({b: a = 0} = {}) {}',
     ];
 
-    trueCodes.forEach(code => {
+    trueCodes.forEach(code =>
       it(`"${code}", all references should be true.`, () => {
         const { scopeManager } = parseAndAnalyze(code);
 
@@ -464,8 +464,8 @@ describe('References:', () => {
           expect(reference.isWrite()).toBeTruthy();
           expect(reference.init).toBeTruthy();
         });
-      });
-    });
+      }),
+    );
 
     let falseCodes = [
       'let a; a = 0;',
@@ -481,7 +481,7 @@ describe('References:', () => {
       'let a; for ({a = 0} in []);',
     ];
 
-    falseCodes.forEach(code => {
+    falseCodes.forEach(code =>
       it(`"${code}", all references should be false.`, () => {
         const { scopeManager } = parseAndAnalyze(code);
 
@@ -498,8 +498,8 @@ describe('References:', () => {
           expect(reference.isWrite()).toBeTruthy();
           expect(reference.init).toBeFalsy();
         });
-      });
-    });
+      }),
+    );
 
     falseCodes = [
       'let a; let b = a;',
@@ -517,7 +517,7 @@ describe('References:', () => {
       'let a; a.foo = 0;',
       'let a,b; b = a.foo;',
     ];
-    falseCodes.forEach(code => {
+    falseCodes.forEach(code =>
       it(`"${code}", readonly references of "a" should be undefined.`, () => {
         const { scopeManager } = parseAndAnalyze(code);
 
@@ -537,8 +537,8 @@ describe('References:', () => {
           expect(reference.isRead()).toBeTruthy();
           expect(reference.init).toBeUndefined();
         });
-      });
-    });
+      }),
+    );
   });
 
   describe('When emitDecoratorMetadata is true', () => {

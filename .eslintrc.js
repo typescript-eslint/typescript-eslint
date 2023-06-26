@@ -53,8 +53,13 @@ module.exports = {
     // make sure we're not leveraging any deprecated APIs
     'deprecation/deprecation': 'error',
 
-    // TODO(#7138): Enable this soon ✨
+    // TODO(#7138): Investigate enabling these soon ✨
+    '@typescript-eslint/consistent-indexed-object-style': 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
+
+    // TODO(#7130): Investigate changing these in or removing these from presets
+    '@typescript-eslint/no-confusing-void-expression': 'off',
+    '@typescript-eslint/prefer-string-starts-ends-with': 'off',
 
     //
     // our plugin :D
