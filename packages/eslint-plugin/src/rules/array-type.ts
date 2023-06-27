@@ -79,6 +79,7 @@ type Options = [
     readonly?: OptionString;
   },
 ];
+// ============== JUST_AS_SAMPLE ==============
 type MessageIds =
   | 'errorStringGeneric'
   | 'errorStringArray'
@@ -102,7 +103,7 @@ interface Message {
   };
 }
 
-const JUST_FOR_EXAMPLE = util.createRule<Options, Message>({
+const JUST_AS_SAMPLE = util.createRule<Options, Message>({
   name: 'array-type',
   meta: {
     type: 'suggestion',
@@ -147,6 +148,7 @@ const JUST_FOR_EXAMPLE = util.createRule<Options, Message>({
     return {};
   },
 });
+// ============== JUST_AS_SAMPLE ==============
 
 export default util.createRule<Options, MessageIds>({
   name: 'array-type',

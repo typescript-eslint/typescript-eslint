@@ -122,8 +122,6 @@ type ReportFixFunction = (
 ) => null | RuleFix | readonly RuleFix[] | IterableIterator<RuleFix>;
 type ReportSuggestionArray<TMessageIds extends string> =
   SuggestionReportDescriptor<TMessageIds>[];
-// type ReportSuggestionArrayWithDataType<TMessageIds extends string> =
-//   SuggestionReportDescriptor<TMessageIds>[];
 
 interface ReportDescriptorBase<TMessageIds extends string> {
   /**
@@ -143,14 +141,6 @@ interface ReportDescriptorBase<TMessageIds extends string> {
   // readonly desc?: string;
 }
 
-// interface ReportDescriptorBaseWithDataType<TMessage extends Record<string, object>>
-//   extends Omit<ReportDescriptorBase<keyof TMessage & string>, 'data'> {
-//   /**
-//    * The parameters for the message string associated with `messageId`.
-//    */
-//   readonly data: Readonly<any>;
-// }
-
 interface ReportDescriptorWithSuggestion<TMessageIds extends string>
   extends ReportDescriptorBase<TMessageIds> {
   /**
@@ -158,14 +148,6 @@ interface ReportDescriptorWithSuggestion<TMessageIds extends string>
    */
   readonly suggest?: Readonly<ReportSuggestionArray<TMessageIds>> | null;
 }
-
-// interface ReportDescriptorWithSuggestionWithDataType<TMessageIds extends string>
-//   extends ReportDescriptorBase<TMessageIds> {
-//   /**
-//    * 6.7's Suggestions API
-//    */
-//   readonly suggest?: Readonly<ReportSuggestionArray<TMessageIds>> | null;
-// }
 
 interface ReportDescriptorNodeOptionalLoc {
   /**
