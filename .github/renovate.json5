@@ -12,10 +12,15 @@
     'ts-node',
     // the nx packages get updated using the nx migrate CLI
     '@nrwl/cli',
+    '@nx/cli',
     '@nrwl/devkit',
+    '@nx/devkit',
     '@nrwl/jest',
+    '@nx/jest',
     '@nrwl/nx-cloud',
+    'nx-cloud',
     '@nrwl/tao',
+    '@nx/tao',
     // TODO - once we bump pass the major, we can remove these. Currently renovate is creating broken, immortal PRs
     '@rollup/plugin-babel',
     '@rollup/plugin-commonjs',
