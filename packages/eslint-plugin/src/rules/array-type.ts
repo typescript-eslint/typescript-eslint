@@ -85,6 +85,69 @@ type MessageIds =
   | 'errorStringArraySimple'
   | 'errorStringGenericSimple';
 
+interface Message {
+  errorStringGeneric: {
+    foo: string;
+  };
+  errorStringArray: {
+    bar: string[];
+  };
+  errorStringArraySimple: {
+    baz: number[];
+  };
+  errorStringGenericSimple: {
+    baz1: {
+      x: string;
+    };
+  };
+}
+
+const JUST_FOR_EXAMPLE = util.createRule<Options, Message>({
+  name: 'array-type',
+  meta: {
+    type: 'suggestion',
+    docs: {
+      description:
+        'Require consistently using either `T[]` or `Array<T>` for arrays',
+      recommended: 'strict',
+    },
+    fixable: 'code',
+    messages: {
+      errorStringGeneric:
+        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden. Use '{{className}}<{{type}}>' instead.",
+      errorStringArray:
+        "Array type using '{{className}}<{{type}}>' is forbidden. Use '{{readonlyPrefix}}{{type}}[]' instead.",
+      errorStringArraySimple:
+        "Array type using '{{className}}<{{type}}>' is forbidden for simple types. Use '{{readonlyPrefix}}{{type}}[]' instead.",
+      errorStringGenericSimple:
+        "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden for non-simple types. Use '{{className}}<{{type}}>' instead.",
+    },
+    schema: {},
+  },
+  defaultOptions: [
+    {
+      default: 'array',
+    },
+  ],
+  create(context, [options]) {
+    context.report({
+      messageId: 'errorStringArraySimple',
+      data: {
+        baz: [1],
+      },
+    });
+    context.report({
+      messageId: 'errorStringArraySimple',
+      data: {
+        // @ts-expect-error TS2322: Type 'string' is not assignable to type 'number'.
+        baz: [''],
+      },
+    });
+
+    return {};
+  },
+});
+
 export default util.createRule<Options, MessageIds>({
   name: 'array-type',
   meta: {

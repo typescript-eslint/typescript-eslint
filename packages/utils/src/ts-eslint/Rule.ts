@@ -6,6 +6,8 @@ import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
 
 export type RuleRecommendation = 'error' | 'strict' | 'warn' | false;
+// `export type IMessage = Record<string, object>;` cause: "Index signature for type 'string' is missing in type 'xxx'."
+export type IMessage = object;
 
 interface RuleMetaDataDocs {
   /**
@@ -120,6 +122,8 @@ type ReportFixFunction = (
 ) => null | RuleFix | readonly RuleFix[] | IterableIterator<RuleFix>;
 type ReportSuggestionArray<TMessageIds extends string> =
   SuggestionReportDescriptor<TMessageIds>[];
+// type ReportSuggestionArrayWithDataType<TMessageIds extends string> =
+//   SuggestionReportDescriptor<TMessageIds>[];
 
 interface ReportDescriptorBase<TMessageIds extends string> {
   /**
@@ -138,6 +142,15 @@ interface ReportDescriptorBase<TMessageIds extends string> {
   // we disallow this because it's much better to use messageIds for reusable errors that are easily testable
   // readonly desc?: string;
 }
+
+// interface ReportDescriptorBaseWithDataType<TMessage extends Record<string, object>>
+//   extends Omit<ReportDescriptorBase<keyof TMessage & string>, 'data'> {
+//   /**
+//    * The parameters for the message string associated with `messageId`.
+//    */
+//   readonly data: Readonly<any>;
+// }
+
 interface ReportDescriptorWithSuggestion<TMessageIds extends string>
   extends ReportDescriptorBase<TMessageIds> {
   /**
@@ -145,6 +158,14 @@ interface ReportDescriptorWithSuggestion<TMessageIds extends string>
    */
   readonly suggest?: Readonly<ReportSuggestionArray<TMessageIds>> | null;
 }
+
+// interface ReportDescriptorWithSuggestionWithDataType<TMessageIds extends string>
+//   extends ReportDescriptorBase<TMessageIds> {
+//   /**
+//    * 6.7's Suggestions API
+//    */
+//   readonly suggest?: Readonly<ReportSuggestionArray<TMessageIds>> | null;
+// }
 
 interface ReportDescriptorNodeOptionalLoc {
   /**
@@ -260,6 +281,22 @@ interface RuleContext<
    * Reports a problem in the code.
    */
   report(descriptor: ReportDescriptor<TMessageIds>): void;
+}
+
+type PossibleReportDescriptorWithDataType<
+  Message extends IMessage,
+  TMessageIds extends keyof Message = keyof Message,
+> = TMessageIds extends unknown
+  ? Omit<ReportDescriptor<TMessageIds & string>, 'data'> & {
+      readonly data: Message[TMessageIds];
+    }
+  : never;
+
+export interface RuleContextWithReportDataType<
+  Message extends IMessage,
+  TOptions extends readonly unknown[],
+> extends Omit<RuleContext<keyof Message & string, TOptions>, 'report'> {
+  report(descriptor: PossibleReportDescriptorWithDataType<Message>): void;
 }
 
 // This isn't the correct signature, but it makes it easier to do custom unions within reusable listeners

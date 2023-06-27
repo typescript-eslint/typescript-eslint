@@ -1,10 +1,12 @@
 import type {
+  IMessage,
   RuleContext,
   RuleListener,
   RuleMetaData,
   RuleMetaDataDocs,
   RuleModule,
 } from '../ts-eslint/Rule';
+import type { RuleContextWithReportDataType } from '../ts-eslint/Rule';
 import { applyDefault } from './applyDefault';
 
 // we automatically add the url
@@ -42,6 +44,25 @@ export interface RuleWithMetaAndName<
   name: string;
 }
 
+export interface RuleWithMetaAndNameWithReportDataType<
+  TOptions extends readonly unknown[],
+  TMessage extends IMessage,
+  TRuleListener extends RuleListener,
+> extends Omit<
+    RuleWithMetaAndName<TOptions, keyof TMessage & string, TRuleListener>,
+    'create'
+  > {
+  create: (
+    context: Readonly<RuleContextWithReportDataType<TMessage, TOptions>>,
+    optionsWithDefault: Readonly<TOptions>,
+  ) => TRuleListener;
+}
+
+export type TMessage = string | IMessage;
+export type GetMessageIds<T extends TMessage> = [T] extends [string]
+  ? T
+  : keyof T & string;
+
 /**
  * Creates reusable function to create rules with default options and docs URLs.
  *
@@ -53,16 +74,22 @@ export function RuleCreator(urlCreator: (ruleName: string) => string) {
   // TODO - when the above PR lands; add type checking for the context.report `data` property
   return function createNamedRule<
     TOptions extends readonly unknown[],
-    TMessageIds extends string,
+    TMessage_ extends TMessage,
     TRuleListener extends RuleListener = RuleListener,
   >({
     name,
     meta,
     ...rule
   }: Readonly<
-    RuleWithMetaAndName<TOptions, TMessageIds, TRuleListener>
-  >): RuleModule<TMessageIds, TOptions, TRuleListener> {
-    return createRule<TOptions, TMessageIds, TRuleListener>({
+    [TMessage_] extends [string]
+      ? RuleWithMetaAndName<TOptions, TMessage_, TRuleListener>
+      : RuleWithMetaAndNameWithReportDataType<
+          TOptions,
+          Exclude<TMessage_, string>,
+          TRuleListener
+        >
+  >): RuleModule<GetMessageIds<TMessage_>, TOptions, TRuleListener> {
+    return createRule<TOptions, GetMessageIds<TMessage_>, TRuleListener>({
       meta: {
         ...meta,
         docs: {
@@ -70,8 +97,8 @@ export function RuleCreator(urlCreator: (ruleName: string) => string) {
           url: urlCreator(name),
         },
       },
-      ...rule,
-    });
+      rule,
+    } as any); // TODO - eliminate `as any`
   };
 }
 
