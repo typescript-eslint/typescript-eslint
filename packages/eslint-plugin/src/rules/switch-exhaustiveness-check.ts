@@ -148,8 +148,6 @@ export default createRule({
           unionType => !caseTypes.has(unionType),
         );
 
-        // console.log('Here', missingBranchTypes);
-
         if (missingBranchTypes.length === 0) {
           // All cases matched - do nothing.
           return;
