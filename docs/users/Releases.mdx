@@ -1,0 +1,83 @@
+---
+id: releases
+sidebar_label: Releases
+title: Releases
+---
+
+## Latest
+
+<a href="https://www.npmjs.com/package/@typescript-eslint/parser">
+  <img
+    src="https://img.shields.io/npm/v/@typescript-eslint/parser/latest.svg?style=flat-square"
+    alt="NPM Version"
+  />
+</a>
+
+We release a latest version every Monday at 1pm US Eastern time using the latest commit to `main` at that time. This release is performed automatically by a Github action located in a private repository. This release goes to the standard `latest` tag on npm.
+
+See [Versioning](./Versioning.mdx) for how the version number is calculated.
+
+If there have been no commits that impact public-facing packages then a patch-level release shall be released.
+
+Latest releases shall only ever be "minor" or "patch" releases.
+
+### Release Notes
+
+Every release is documented on the [Github Release page](https://github.com/typescript-eslint/typescript-eslint/releases).
+
+These release notes will list the PRs included in the release.
+
+## Canary
+
+<a href="https://www.npmjs.com/package/@typescript-eslint/parser">
+  <img
+    src="https://img.shields.io/npm/v/@typescript-eslint/parser/canary.svg?style=flat-square"
+    alt="NPM Version"
+  />
+</a>
+
+We release a canary version for each commit to `main` that passes all required checks. This release is performed automatically by the [`publish_canary_version` step](https://github.com/typescript-eslint/typescript-eslint/blob/5feb2dba9da2bd5e233451b7b0f1c99414b5aef9/.github/workflows/ci.yml#L234-L263).
+
+This release is goes to the `canary` tag on npm and it is versioned as an incremental canary patch release on top of the current `latest` version. I.e. if the current version is `5.6.1`, then the first canary version will be `5.6.2-alpha.0`, the second `5.6.2-alpha.1`, and so on.
+
+### Installing Canary Versions
+
+To try out the latest canary versions of typescript-eslint, install `@typescript-eslint/eslint-plugin@canary` and `@typescript-eslint/parser@canary`.
+Note that npm may need a `--force` to override version requirements.
+
+<!--tabs-->
+
+### npm
+
+```bash
+npm i @typescript-eslint/eslint-plugin@canary @typescript-eslint/parser@canary --save-dev --force
+```
+
+### Yarn
+
+```bash
+yarn add @typescript-eslint/eslint-plugin@canary @typescript-eslint/parser@canary --dev
+```
+
+<!--/tabs-->
+
+## Major Releases
+
+We currently do not have a set schedule around when major releases shall be performed; instead they are done as the need arises.
+
+We keep a backlog of breaking issues as a milestone on GitHub that is named in the form `${major}.0.0`.
+When we do do a major release, we release a release candidate version to the `rc-v${major}` tag on npm for each commit to the major branch.
+
+See [Maintenance > Major Release Steps](../maintenance/Major_Release_Steps.mdx) for steps to perform a major release.
+
+## Out-of-Band
+
+We will do releases "out-of-band" (outside the [latest](#latest) schedule) for rare emergencies.
+We assess need on a case-by-case basis though generally an emergency is defined as a critical regression specifically introduced in the latest release.
+
+These releases are done manually by a maintainer with the required access privileges.
+
+## Back-Porting Releases
+
+We **_do not_** back port releases to previously released major/minor versions.
+We only ever release forward.
