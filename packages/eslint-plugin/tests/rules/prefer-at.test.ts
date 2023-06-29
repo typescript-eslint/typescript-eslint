@@ -174,6 +174,18 @@ ruleTester.run('prefer-at', rule, {
         }
       }
     `,
+    `
+      declare const str: String;
+
+      const lastItem = str[str['length'] - 1];
+    `,
+    `
+      declare const a: string;
+
+      function* generator() {
+        const lastItem = (yield a)[(yield a)['length'] - 1];
+      }
+    `,
   ],
   invalid: [
     {
@@ -227,6 +239,184 @@ ruleTester.run('prefer-at', rule, {
         declare const i: number;
 
         const lastItem = str.at(-i);
+      `,
+    },
+    {
+      code: `
+        declare const str: unknown;
+
+        const lastItem = (str as string)[(str as string).length - 1];
+      `,
+      errors: [
+        {
+          messageId: 'preferAt',
+        },
+      ],
+      output: `
+        declare const str: unknown;
+
+        const lastItem = (str as string).at(-1);
+      `,
+    },
+    {
+      code: `
+        declare const str: unknown;
+        declare const a: string;
+
+        const lastItem = (str = a)[(str = a).length - 1];
+      `,
+      errors: [
+        {
+          messageId: 'preferAt',
+        },
+      ],
+      output: `
+        declare const str: unknown;
+        declare const a: string;
+
+        const lastItem = (str = a).at(-1);
+      `,
+    },
+    {
+      code: `
+        const lastItem = [1, 2, 3][[1, 2, 3].length - 1];
+      `,
+      errors: [
+        {
+          messageId: 'preferAt',
+        },
+      ],
+      output: `
+        const lastItem = [1, 2, 3].at(-1);
+      `,
+    },
+    {
+      code: `
+        declare const a: string;
+
+        const lastItem = (() => a)()[(() => a)().length - 1];
+      `,
+      errors: [
+        {
+          messageId: 'preferAt',
+        },
+      ],
+      output: `
+        declare const a: string;
+
+        const lastItem = (() => a)().at(-1);
+      `,
+    },
+    {
+      code: `
+        declare const str: Promise<string>;
+
+        const lastItem = (await str)[(await str).length - 1];
+      `,
+      errors: [
+        {
+          messageId: 'preferAt',
+        },
+      ],
+      output: `
+        declare const str: Promise<string>;
+
+        const lastItem = (await str).at(-1);
+      `,
+    },
+    {
+      code: `
+        declare const a: string;
+        declare const b: string;
+
+        const lastItem = (a || b)[(a || b).length - 1];
+      `,
+      errors: [
+        {
+          messageId: 'preferAt',
+        },
+      ],
+      output: `
+        declare const a: string;
+        declare const b: string;
+
+        const lastItem = (a || b).at(-1);
+      `,
+    },
+    {
+      code: `
+        declare const a: string;
+        declare const b: string;
+
+        const lastItem = (a + b)[(a + b).length - 1];
+      `,
+      errors: [
+        {
+          messageId: 'preferAt',
+        },
+      ],
+      output: `
+        declare const a: string;
+        declare const b: string;
+
+        const lastItem = (a + b).at(-1);
+      `,
+    },
+    {
+      code: `
+        declare const cond: boolean;
+        declare const a: string;
+        declare const b: string;
+
+        const lastItem = (cond ? a : b)[(cond ? a : b).length - 1];
+      `,
+      errors: [
+        {
+          messageId: 'preferAt',
+        },
+      ],
+      output: `
+        declare const cond: boolean;
+        declare const a: string;
+        declare const b: string;
+
+        const lastItem = (cond ? a : b).at(-1);
+      `,
+    },
+    {
+      code: `
+        declare const a: string;
+        declare const b: string;
+
+        const lastItem = (a, b)[(a, b).length - 1];
+      `,
+      errors: [
+        {
+          messageId: 'preferAt',
+        },
+      ],
+      output: `
+        declare const a: string;
+        declare const b: string;
+
+        const lastItem = (a, b).at(-1);
+      `,
+    },
+    {
+      code: `
+        declare const a: string;
+
+        const lastItem = (a += 'test')[(a += 'test').length - 1];
+      `,
+      errors: [
+        {
+          messageId: 'preferAt',
+        },
+      ],
+      output: `
+        declare const a: string;
+
+        const lastItem = (a += 'test').at(-1);
       `,
     },
     {

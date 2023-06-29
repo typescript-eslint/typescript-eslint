@@ -58,15 +58,23 @@ export default util.createRule({
     }
 
     function getFullName(node: TSESTree.Node): string {
-      return sourceCode.text.slice(node.range[0], node.range[1]);
+      const name = sourceCode.text.slice(node.range[0], node.range[1]);
+      switch (node.type) {
+        case AST_NODE_TYPES.AssignmentExpression:
+        case AST_NODE_TYPES.AwaitExpression:
+        case AST_NODE_TYPES.BinaryExpression:
+        case AST_NODE_TYPES.ConditionalExpression:
+        case AST_NODE_TYPES.SequenceExpression:
+        case AST_NODE_TYPES.LogicalExpression:
+        case AST_NODE_TYPES.TSAsExpression:
+          return `(${name})`;
+        default:
+          return name;
+      }
     }
 
     function hasCallExpression(node: TSESTree.MemberExpression): boolean {
-      return (
-        node.object.type === AST_NODE_TYPES.CallExpression ||
-        (node.object.type === AST_NODE_TYPES.MemberExpression &&
-          hasCallExpression(node.object))
-      );
+      return node.object.type === AST_NODE_TYPES.CallExpression;
     }
 
     function getTypeAtLocation(node: TSESTree.Node): ts.Type {
@@ -75,36 +83,28 @@ export default util.createRule({
       );
     }
 
-    type SupportedObject = (type: ts.Type) => boolean;
-
-    function checkObjectName(name: string): SupportedObject {
-      return type => type.getSymbol()?.name === name;
-    }
-
-    function checkObjectType(flags: ts.TypeFlags): SupportedObject {
-      return type => type.getFlags() === flags;
-    }
-
-    const supporterObjects: Array<SupportedObject> = [
-      checkObjectName('Array'),
-      checkObjectName('Int8Array'),
-      checkObjectName('Uint8Array'),
-      checkObjectName('Uint8ClampedArray'),
-      checkObjectName('Int16Array'),
-      checkObjectName('Uint16Array'),
-      checkObjectName('Int32Array'),
-      checkObjectName('Float32Array'),
-      checkObjectName('Uint32Array'),
-      checkObjectName('Float64Array'),
-      checkObjectName('BigInt64Array'),
-      checkObjectName('BigUint64Array'),
+    const supportedObjects = new Set<string | undefined>([
       // eslint-disable-next-line @typescript-eslint/internal/prefer-ast-types-enum
-      checkObjectName('String'),
-      checkObjectType(ts.TypeFlags.String),
-    ];
+      'String',
+      'Array',
+      'Int8Array',
+      'Uint8Array',
+      'Uint8ClampedArray',
+      'Int16Array',
+      'Uint16Array',
+      'Int32Array',
+      'Float32Array',
+      'Uint32Array',
+      'Float64Array',
+      'BigInt64Array',
+      'BigUint64Array',
+    ]);
 
     function isSupportedObject(type: ts.Type): boolean {
-      return supporterObjects.some(check => check(type));
+      return (
+        supportedObjects.has(type.getSymbol()?.name) ||
+        tsutils.isTypeFlagSet(type, ts.TypeFlags.String)
+      );
     }
 
     function isExpectedObject(
