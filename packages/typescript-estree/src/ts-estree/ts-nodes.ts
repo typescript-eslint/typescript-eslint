@@ -131,6 +131,7 @@ export type TSNode =
   | ts.JsxSpreadAttribute
   | ts.JsxClosingElement
   | ts.JsxExpression
+  | ts.JsxNamespacedName
   | ts.JsxText
   | ts.NotEmittedStatement
   | ts.CommaListExpression
