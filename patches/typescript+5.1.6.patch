@@ -1,18 +1,18 @@
 diff --git a/node_modules/typescript/lib/typescript.d.ts b/node_modules/typescript/lib/typescript.d.ts
-index 3f78e1a..70e66cd 100644
+index ff7896e..17a56d3 100644
 --- a/node_modules/typescript/lib/typescript.d.ts
 +++ b/node_modules/typescript/lib/typescript.d.ts
-@@ -371,8 +371,8 @@ declare namespace ts {
-         JSDocFunctionType = 324,
-         JSDocVariadicType = 325,
-         JSDocNamepathType = 326,
+@@ -370,8 +370,8 @@ declare namespace ts {
+         JSDocFunctionType = 323,
+         JSDocVariadicType = 324,
+         JSDocNamepathType = 325,
 +        /** @deprecated This was only added in 4.7 */
-         JSDoc = 327,
+         JSDoc = 326,
 -        /** @deprecated Use SyntaxKind.JSDoc */
-         JSDocComment = 327,
-         JSDocText = 328,
-         JSDocTypeLiteral = 329,
-@@ -4581,7 +4581,13 @@ declare namespace ts {
+         JSDocComment = 326,
+         JSDocText = 327,
+         JSDocTypeLiteral = 328,
+@@ -4570,7 +4570,13 @@ declare namespace ts {
      function symbolName(symbol: Symbol): string;
      function getNameOfJSDocTypedef(declaration: JSDocTypedefTag): Identifier | PrivateIdentifier | undefined;
      function getNameOfDeclaration(declaration: Declaration | Expression | undefined): DeclarationName | undefined;
@@ -26,7 +26,7 @@ index 3f78e1a..70e66cd 100644
      function getModifiers(node: HasModifiers): readonly Modifier[] | undefined;
      /**
       * Gets the JSDoc parameter tags for the node if present.
-@@ -5107,7 +5113,13 @@ declare namespace ts {
+@@ -5096,7 +5102,13 @@ declare namespace ts {
      function isModuleName(node: Node): node is ModuleName;
      function isBinaryOperatorToken(node: Node): node is BinaryOperatorToken;
      function setTextRange<T extends TextRange>(range: T, location: TextRange | undefined): T;
