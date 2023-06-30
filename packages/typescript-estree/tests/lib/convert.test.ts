@@ -23,7 +23,7 @@ describe('convert', () => {
 
   /* eslint-disable @typescript-eslint/dot-notation */
   describe('deeplyCopy', () => {
-    it('deeplyCopy should convert node correctly', () => {
+    it('should convert node correctly', () => {
       const ast = convertCode('type foo = ?foo<T> | ?(() => void)?');
 
       function fakeUnknownKind(node: ts.Node): void {
