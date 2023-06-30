@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`convert deeplyCopy deeplyCopy should convert array of nodes 1`] = `
+exports[`convert deeplyCopy should convert array of nodes 1`] = `
 {
   "ambientModuleNames": undefined,
   "amdDependencies": [],
@@ -195,7 +195,7 @@ exports[`convert deeplyCopy deeplyCopy should convert array of nodes 1`] = `
 }
 `;
 
-exports[`convert deeplyCopy deeplyCopy should convert node correctly 1`] = `
+exports[`convert deeplyCopy should convert node correctly 1`] = `
 {
   "body": [
     {
@@ -258,7 +258,7 @@ exports[`convert deeplyCopy deeplyCopy should convert node correctly 1`] = `
 }
 `;
 
-exports[`convert deeplyCopy deeplyCopy should convert node with decorators correctly 1`] = `
+exports[`convert deeplyCopy should convert node with decorators correctly 1`] = `
 {
   "decorators": [
     {
@@ -341,7 +341,7 @@ exports[`convert deeplyCopy deeplyCopy should convert node with decorators corre
 }
 `;
 
-exports[`convert deeplyCopy deeplyCopy should convert node with type arguments correctly 1`] = `
+exports[`convert deeplyCopy should convert node with type arguments correctly 1`] = `
 {
   "arguments": [],
   "expression": {
@@ -441,7 +441,7 @@ exports[`convert deeplyCopy deeplyCopy should convert node with type arguments c
 }
 `;
 
-exports[`convert deeplyCopy deeplyCopy should convert node with type parameters correctly 1`] = `
+exports[`convert deeplyCopy should convert node with type parameters correctly 1`] = `
 {
   "loc": {
     "end": {
