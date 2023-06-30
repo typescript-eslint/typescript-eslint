@@ -14523,10 +14523,10 @@ typedarray@^0.0.6:
   resolved "https://registry.yarnpkg.com/typedarray/-/typedarray-0.0.6.tgz#867ac74e3864187b1d3d47d996a78ec5c8830777"
   integrity sha1-hnrHTjhkGHsdPUfZlqeOxciDB3c=
 
-typescript@*, "typescript@>=3 < 6", typescript@next, "typescript@npm:@typescript-deploys/pr-build@5.2.0-pr-54781-9", typescript@~4.8.4:
-  version "5.2.0-pr-54781-9"
-  resolved "https://registry.yarnpkg.com/@typescript-deploys/pr-build/-/pr-build-5.2.0-pr-54781-9.tgz#be68eed62d3267b91753b695d2042ca48b3676f4"
-  integrity sha512-vVAKIq32HzbybbrPIYpOPB3OWMNMcNPqj9PqWTRRpZSTYNEW0Egqw8FaL9W0QKpjhIKGCNohi/KsuiafkXBt7g==
+typescript@*, typescript@5.1.6, "typescript@>=3 < 6", typescript@next, typescript@~4.8.4:
+  version "5.1.6"
+  resolved "https://registry.yarnpkg.com/typescript/-/typescript-5.1.6.tgz#02f8ac202b6dad2c0dd5e0913745b47a37998274"
+  integrity sha512-zaWCozRZ6DLEWAWFrVDz1H6FVXzUSfTy5FUMWsQlU8Ym5JP9eO4xkTIROFCQvhQf61z6O/G6ugw3SgAnvvm+HA==
 
 ua-parser-js@^0.7.30:
   version "0.7.31"
