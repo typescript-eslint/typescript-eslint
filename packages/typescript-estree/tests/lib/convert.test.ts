@@ -39,7 +39,7 @@ describe('convert', () => {
       expect(instance.convertProgram()).toMatchSnapshot();
     });
 
-    it('deeplyCopy should convert node with decorators correctly', () => {
+    it('should convert node with decorators correctly', () => {
       const ast = convertCode('@test class foo {}');
 
       const instance = new Converter(ast);
@@ -49,7 +49,7 @@ describe('convert', () => {
       ).toMatchSnapshot();
     });
 
-    it('deeplyCopy should convert node with type parameters correctly', () => {
+    it('should convert node with type parameters correctly', () => {
       const ast = convertCode('class foo<T> {}');
 
       const instance = new Converter(ast);
@@ -59,7 +59,7 @@ describe('convert', () => {
       ).toMatchSnapshot();
     });
 
-    it('deeplyCopy should convert node with type arguments correctly', () => {
+    it('should convert node with type arguments correctly', () => {
       const ast = convertCode('new foo<T>()');
 
       const instance = new Converter(ast);
@@ -72,14 +72,14 @@ describe('convert', () => {
       ).toMatchSnapshot();
     });
 
-    it('deeplyCopy should convert array of nodes', () => {
+    it('should convert array of nodes', () => {
       const ast = convertCode('new foo<T>()');
 
       const instance = new Converter(ast);
       expect(instance['deeplyCopy'](ast)).toMatchSnapshot();
     });
 
-    it('deeplyCopy should fail on unknown node', () => {
+    it('should fail on unknown node', () => {
       const ast = convertCode('type foo = ?foo<T> | ?(() => void)?');
 
       const instance = new Converter(ast, {
