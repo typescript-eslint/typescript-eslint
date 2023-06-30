@@ -116,7 +116,7 @@ export default createRule({
 
       if (discriminantType.isUnion()) {
         const unionTypes = tsutils.unionTypeParts(discriminantType);
-        const caseTypes: Set<ts.Type> = new Set();
+        const caseTypes = new Set<ts.Type>();
         for (const switchCase of node.cases) {
           if (switchCase.test == null) {
             // Switch has 'default' branch - do nothing.

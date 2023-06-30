@@ -80,6 +80,7 @@ function getProgramAndAST(
   return createNoProgram(parseSettings);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface EmptyObject {}
 type AST<T extends TSESTreeOptions> = TSESTree.Program &
   (T['comment'] extends true ? { comments: TSESTree.Comment[] } : EmptyObject) &

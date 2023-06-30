@@ -21,73 +21,77 @@ describe('convert', () => {
     );
   }
 
-  it('deeplyCopy should convert node correctly', () => {
-    const ast = convertCode('type foo = ?foo<T> | ?(() => void)?');
+  /* eslint-disable @typescript-eslint/dot-notation */
+  describe('deeplyCopy', () => {
+    it('should convert node correctly', () => {
+      const ast = convertCode('type foo = ?foo<T> | ?(() => void)?');
 
-    function fakeUnknownKind(node: ts.Node): void {
-      ts.forEachChild(node, fakeUnknownKind);
-      // @ts-expect-error -- intentionally writing to a readonly field
-      // eslint-disable-next-line deprecation/deprecation
-      node.kind = ts.SyntaxKind.UnparsedPrologue;
-    }
+      function fakeUnknownKind(node: ts.Node): void {
+        ts.forEachChild(node, fakeUnknownKind);
+        // @ts-expect-error -- intentionally writing to a readonly field
+        // eslint-disable-next-line deprecation/deprecation
+        node.kind = ts.SyntaxKind.UnparsedPrologue;
+      }
 
-    ts.forEachChild(ast, fakeUnknownKind);
+      ts.forEachChild(ast, fakeUnknownKind);
 
-    const instance = new Converter(ast);
-    expect(instance.convertProgram()).toMatchSnapshot();
-  });
-
-  it('deeplyCopy should convert node with decorators correctly', () => {
-    const ast = convertCode('@test class foo {}');
-
-    const instance = new Converter(ast);
-
-    expect(
-      instance['deeplyCopy'](ast.statements[0] as ts.ClassDeclaration),
-    ).toMatchSnapshot();
-  });
-
-  it('deeplyCopy should convert node with type parameters correctly', () => {
-    const ast = convertCode('class foo<T> {}');
-
-    const instance = new Converter(ast);
-
-    expect(
-      instance['deeplyCopy'](ast.statements[0] as ts.ClassDeclaration),
-    ).toMatchSnapshot();
-  });
-
-  it('deeplyCopy should convert node with type arguments correctly', () => {
-    const ast = convertCode('new foo<T>()');
-
-    const instance = new Converter(ast);
-
-    expect(
-      instance['deeplyCopy'](
-        (ast.statements[0] as ts.ExpressionStatement)
-          .expression as ts.NewExpression,
-      ),
-    ).toMatchSnapshot();
-  });
-
-  it('deeplyCopy should convert array of nodes', () => {
-    const ast = convertCode('new foo<T>()');
-
-    const instance = new Converter(ast);
-    expect(instance['deeplyCopy'](ast)).toMatchSnapshot();
-  });
-
-  it('deeplyCopy should fail on unknown node', () => {
-    const ast = convertCode('type foo = ?foo<T> | ?(() => void)?');
-
-    const instance = new Converter(ast, {
-      errorOnUnknownASTType: true,
+      const instance = new Converter(ast);
+      expect(instance.convertProgram()).toMatchSnapshot();
     });
 
-    expect(() => instance['deeplyCopy'](ast)).toThrow(
-      'Unknown AST_NODE_TYPE: "TSSourceFile"',
-    );
+    it('should convert node with decorators correctly', () => {
+      const ast = convertCode('@test class foo {}');
+
+      const instance = new Converter(ast);
+
+      expect(
+        instance['deeplyCopy'](ast.statements[0] as ts.ClassDeclaration),
+      ).toMatchSnapshot();
+    });
+
+    it('should convert node with type parameters correctly', () => {
+      const ast = convertCode('class foo<T> {}');
+
+      const instance = new Converter(ast);
+
+      expect(
+        instance['deeplyCopy'](ast.statements[0] as ts.ClassDeclaration),
+      ).toMatchSnapshot();
+    });
+
+    it('should convert node with type arguments correctly', () => {
+      const ast = convertCode('new foo<T>()');
+
+      const instance = new Converter(ast);
+
+      expect(
+        instance['deeplyCopy'](
+          (ast.statements[0] as ts.ExpressionStatement)
+            .expression as ts.NewExpression,
+        ),
+      ).toMatchSnapshot();
+    });
+
+    it('should convert array of nodes', () => {
+      const ast = convertCode('new foo<T>()');
+
+      const instance = new Converter(ast);
+      expect(instance['deeplyCopy'](ast)).toMatchSnapshot();
+    });
+
+    it('should fail on unknown node', () => {
+      const ast = convertCode('type foo = ?foo<T> | ?(() => void)?');
+
+      const instance = new Converter(ast, {
+        errorOnUnknownASTType: true,
+      });
+
+      expect(() => instance['deeplyCopy'](ast)).toThrow(
+        'Unknown AST_NODE_TYPE: "TSSourceFile"',
+      );
+    });
   });
+  /* eslint-enable @typescript-eslint/dot-notation */
 
   it('nodeMaps should contain basic nodes', () => {
     const ast = convertCode(`
@@ -188,46 +192,50 @@ describe('convert', () => {
     checkMaps(ast);
   });
 
-  it('should correctly create node with range and loc set', () => {
-    const ast = convertCode('');
-    const instance = new Converter(ast, {
-      shouldPreserveNodeMaps: true,
-    });
+  /* eslint-disable @typescript-eslint/dot-notation */
+  describe('createNode', () => {
+    it('should correctly create node with range and loc set', () => {
+      const ast = convertCode('');
+      const instance = new Converter(ast, {
+        shouldPreserveNodeMaps: true,
+      });
 
-    const tsNode: ts.KeywordToken<ts.SyntaxKind.AbstractKeyword> = {
-      ...ts.factory.createToken(ts.SyntaxKind.AbstractKeyword),
-      end: 10,
-      pos: 0,
-    };
-    const convertedNode = instance['createNode'](tsNode, {
-      type: AST_NODE_TYPES.TSAbstractKeyword,
-      range: [0, 20],
-      loc: {
-        start: {
-          line: 10,
-          column: 20,
+      const tsNode: ts.KeywordToken<ts.SyntaxKind.AbstractKeyword> = {
+        ...ts.factory.createToken(ts.SyntaxKind.AbstractKeyword),
+        end: 10,
+        pos: 0,
+      };
+      const convertedNode = instance['createNode'](tsNode, {
+        type: AST_NODE_TYPES.TSAbstractKeyword,
+        range: [0, 20],
+        loc: {
+          start: {
+            line: 10,
+            column: 20,
+          },
+          end: {
+            line: 15,
+            column: 25,
+          },
         },
-        end: {
-          line: 15,
-          column: 25,
+      });
+      expect(convertedNode).toEqual({
+        type: AST_NODE_TYPES.TSAbstractKeyword,
+        range: [0, 20],
+        loc: {
+          start: {
+            line: 10,
+            column: 20,
+          },
+          end: {
+            line: 15,
+            column: 25,
+          },
         },
-      },
-    });
-    expect(convertedNode).toEqual({
-      type: AST_NODE_TYPES.TSAbstractKeyword,
-      range: [0, 20],
-      loc: {
-        start: {
-          line: 10,
-          column: 20,
-        },
-        end: {
-          line: 15,
-          column: 25,
-        },
-      },
+      });
     });
   });
+  /* eslint-enable @typescript-eslint/dot-notation */
 
   it('should throw error on jsDoc node', () => {
     const jsDocCode = [

@@ -432,6 +432,7 @@ interface RuleListenerCatchAllBaseCase {
   [nodeSelector: string]: RuleFunction | undefined;
 }
 // Interface to merge into for anyone that wants to add more selectors
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface RuleListenerExtension {}
 
 type RuleListener = RuleListenerBaseSelectors &

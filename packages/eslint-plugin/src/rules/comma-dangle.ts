@@ -98,7 +98,7 @@ export default util.createRule<Options, MessageIds>({
       'always-multiline': forceCommaIfMultiline,
       'only-multiline': allowCommaIfMultiline,
       never: forbidComma,
-      ignore: (): void => {},
+      ignore: undefined,
     };
 
     function last(nodes: TSESTree.Node[]): TSESTree.Node | null {

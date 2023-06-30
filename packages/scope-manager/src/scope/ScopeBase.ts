@@ -232,7 +232,7 @@ abstract class ScopeBase<
     block: TBlock,
     isMethodDefinition: boolean,
   ) {
-    const upperScopeAsScopeBase = upperScope as Scope;
+    const upperScopeAsScopeBase = upperScope!;
 
     this.type = type;
     this.#dynamic =
@@ -386,7 +386,7 @@ abstract class ScopeBase<
   }
 
   protected delegateToUpperScope(ref: Reference): void {
-    const upper = this.upper as Scope as AnyScope;
+    const upper = this.upper! as AnyScope;
     if (upper?.leftToResolve) {
       upper.leftToResolve.push(ref);
     }

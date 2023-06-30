@@ -264,6 +264,8 @@ function createWatchProgram(
     ts.sys,
     ts.createAbstractBuilder,
     diagnosticReporter,
+    // TODO: file issue on TypeScript to suggest making optional?
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     /*reportWatchStatus*/ () => {},
   ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
 
