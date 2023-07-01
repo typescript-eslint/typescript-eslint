@@ -4,50 +4,38 @@ authors:
     name: Josh Goldberg
     title: typescript-eslint Maintainer
     url: https://github.com/JoshuaKGoldberg
-description: Announcing the release of typescript-eslint's v6 beta, including its changes and timeline.
-slug: announcing-typescript-eslint-v6-beta
+description: Announcing the release of typescript-eslint's stable v6 release, including its changes and timeline.
+slug: announcing-typescript-eslint-v6
 tags: [breaking changes, typescript-eslint, v5, v6]
-title: Announcing typescript-eslint v6 Beta
+title: Announcing typescript-eslint v6
 ---
 
-:::caution Newer Information Available
-This blog post is now out of date, as we've released typescript-eslint v6! 🚀
-Please see [Announcing typescript-eslint v6](./2023-07-09-announcing-typescript-eslint-v6.md) for the latest information.
-:::
-
 [typescript-eslint](https://typescript-eslint.io) is the tooling that enables standard JavaScript tools such as [ESLint](https://eslint.org) and [Prettier](https://prettier.io) to support TypeScript code.
-We've been working on a set of breaking changes and general features that we're excited to get in front of users soon.
-And now, after over two years of development, we're excited to say that typescript-eslint v6 is ready for public beta testing! 🎉
+We've been working on a set of breaking changes and general features that we're excited to get in released! 🎉
 
-Our plan for typescript-eslint v6 is to:
-
-1. Have users try out betas starting in early March of 2023
-2. Respond to user feedback for the next 1-3 months
-3. Release a stable version summer of 2023
-
-Nothing mentioned in this blog post is set in stone.
-If you feel passionately about any of the choices we've made here -positively or negatively- then do let us know on [the typescript-eslint Discord](https://discord.gg/FSxKq8Tdyg)'s `#v6` channel!
+We'd previously blogged about v6 in [Announcing typescript-eslint v6 Beta](./2023-03-13-announcing-typescript-eslint-v6-beta.md).
+This blog post contains much of the same information as that one, but updated for changes made since the beta - including a few breaking changes.
 
 <!--truncate-->
 
-## Trying Out v6
+> ✨ indicates a change that was not present in the v6 beta.
 
-Please do try out the typescript-eslint v6 beta!
-Its documentation site is hosted on a preview deploy link: **[v6--typescript-eslint.netlify.app](https://v6--typescript-eslint.netlify.app)**.
+## Using v6
+
+Whether you're new to linting your TypeScript code or a returning user, please do upgrade to the latest major version of typescript-eslint!
+V6 comes with a suite of quality-of-life improvements we think you'll appreciate.
 
 ### As A New User
 
-If you don't yet use typescript-eslint, you can go through our [configuration steps on the v6 _Getting Started_ docs](https://v6--typescript-eslint.netlify.app/getting-started).
+If you don't yet use typescript-eslint, you can go through our [configuration steps on the _Getting Started_ docs](/getting-started).
 It'll walk you through setting up typescript-eslint in a project.
-
-To use v6 specifically, see the following section for an updated install command.
 
 ### As An Existing User
 
-If you already use typescript-eslint, you'll need to first replace your package's previous versions of `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` with `@rc-v6` versions:
+If you already use typescript-eslint, you'll need to first replace your package's previous versions of `@typescript-eslint/eslint-plugin` and `@typescript-eslint/parser` with the latest versions:
 
 ```shell
-npm i @typescript-eslint/eslint-plugin@rc-v6 @typescript-eslint/parser@rc-v6 --save-dev
+npm i @typescript-eslint/eslint-plugin@latest @typescript-eslint/parser@latest --save-dev
 ```
 
 We highly recommend then basing your ESLint configuration on the reworked typescript-eslint [recommended configurations mentioned later in this post](#configuration-breaking-changes) — especially if it's been a while since you've reworked your linter config.
@@ -56,17 +44,14 @@ We highly recommend then basing your ESLint configuration on the reworked typesc
 
 These are the changes that users of typescript-eslint -generally, any developer running ESLint on TypeScript code- should pay attention to when upgrading typescript-eslint from v5 to v6.
 
-> ⏳ indicates a change that has been scheduled for v6 but not yet released.
-> We'll update this blog post as the corresponding pull requests land.
-
 ### Reworked Configuration Names
 
-The biggest configuration change in typescript-eslint v6 is that we've reworked the names of our [provided user configuration files](https://v6--typescript-eslint.netlify.app/linting/configs).
+The biggest configuration change in typescript-eslint v6 is that we've reworked the names of our [provided user configuration files](https://typescript-eslint.io/linting/configs).
 typescript-eslint v5 provided three recommended configurations:
 
-- [`recommended`](https://v6--typescript-eslint.netlify.app/linting/configs#recommended): Recommended rules for code correctness that you can drop in without additional configuration.
-- [`recommended-requiring-type-checking`](https://v6--typescript-eslint.netlify.app/linting/configs#recommended-requiring-type-checking): Additional recommended rules that require type information.
-- [`strict`](https://v6--typescript-eslint.netlify.app/linting/configs#strict): Additional strict rules that can also catch bugs but are more opinionated than recommended rules.
+- [`recommended`](https://typescript-eslint.io/linting/configs#recommended): Recommended rules for code correctness that you can drop in without additional configuration.
+- [`recommended-requiring-type-checking`](https://typescript-eslint.io/linting/configs#recommended-requiring-type-checking): Additional recommended rules that require type information.
+- [`strict`](https://typescript-eslint.io/linting/configs#strict): Additional strict rules that can also catch bugs but are more opinionated than recommended rules.
 
 Those configurations worked well for most projects.
 However, some users correctly noted two flaws in that approach:
@@ -121,7 +106,7 @@ module.exports = {
 };
 ```
 
-See [_Configurations_ on the v6 docs site preview](https://v6--typescript-eslint.netlify.app/linting/configs) for the updated documentation on configurations provided by typescript-eslint.
+See [our _Configurations_ linting docs](/linting/configs) for the updated documentation on configurations provided by typescript-eslint.
 
 For more information on these changes, see:
 
@@ -132,9 +117,7 @@ For more information on these changes, see:
 
 Every new major version of typescript-eslint comes with changes to which rules are enabled in the preset configurations - and with which options.
 Because this release also includes a reworking of the configurations themselves, the list of changes is too large to put in this blog post.
-Instead see the table in [Changes to configurations for 6.0.0](https://github.com/typescript-eslint/typescript-eslint/discussions/6014) for a full list of the changes.
-
-Please do try out the new rule configurations presets and let us know in that discussion!
+Instead see the table in [Changes to configurations for 6.0.0](https://github.com/typescript-eslint/typescript-eslint/discussions/6014) and [Configs: Last round of "final" changes to configs for v6](https://github.com/typescript-eslint/typescript-eslint/discussions/7130) for a full description of the changes.
 
 :::tip
 If your ESLint configuration contains many `rules` configurations, we suggest the following strategy to start anew:
@@ -153,11 +136,6 @@ Miscellaneous changes to all shared configurations include:
 
 ### Rule Breaking Changes
 
-:::caution Newer Information Available
-This section is now out of date, as we've released typescript-eslint v6! 🚀
-Please see [Announcing typescript-eslint v6 > Rule Breaking Changes](./2023-07-09-announcing-typescript-eslint-v6.md#rule-breaking-changes) for the latest information.
-:::
-
 Several rules were changed in significant enough ways to be considered breaking changes:
 
 - Previously deprecated rules are deleted ([chore(eslint-plugin): remove deprecated rules for v6](https://github.com/typescript-eslint/typescript-eslint/pull/6112)):
@@ -165,21 +143,20 @@ Several rules were changed in significant enough ways to be considered breaking 
   - `@typescript-eslint/no-implicit-any-catch`
   - `@typescript-eslint/no-parameter-properties`
   - `@typescript-eslint/sort-type-union-intersection-members`
-- [feat(eslint-plugin): [prefer-nullish-coalescing]: add support for assignment expressions](https://github.com/typescript-eslint/typescript-eslint/pull/5234): Enhances the [`@typescript-eslint/prefer-nullish-coalescing`](https://v6--typescript-eslint.netlify.app/prefer-nullish-coalescing) rule to also check `||=` expressions.
-- [feat(eslint-plugin): [prefer-optional-chain] use type checking for strict falsiness](https://github.com/typescript-eslint/typescript-eslint/pull/6240): Fixes edge case bugs in the [`@typescript-eslint/prefer-optional-chain`](https://v6--typescript-eslint.netlify.app/prefer-optional-chain) rule around false positives, at the cost of making it require type information.
+- [feat(eslint-plugin): [prefer-nullish-coalescing]: add support for assignment expressions](https://github.com/typescript-eslint/typescript-eslint/pull/5234): Enhances the [`@typescript-eslint/prefer-nullish-coalescing`](https://typescript-eslint.io/prefer-nullish-coalescing) rule to also check `||=` expressions.
+- [feat(eslint-plugin): [prefer-optional-chain] use type checking for strict falsiness](https://github.com/typescript-eslint/typescript-eslint/pull/6240): Fixes edge case bugs in the [`@typescript-eslint/prefer-optional-chain`](https://typescript-eslint.io/prefer-optional-chain) rule around false positives, at the cost of making it require type information.
+- ✨ [feat(eslint-plugin): [restrict-plus-operands] change checkCompoundAssignments to skipCompoundAssignments](https://github.com/typescript-eslint/typescript-eslint/pull/7027): inverses the logical value of the option and renames it
+- ✨ [feat(eslint-plugin): [prefer-optional-chain] handle cases where the first operands are unrelated to the rest of the chain and add type info](https://github.com/typescript-eslint/typescript-eslint/pull/6397): uses type information to make the rule more intelligent about when to flag violations
 
 ### Tooling Breaking Changes
-
-:::caution Newer Information Available
-This section is now out of date, as we've released typescript-eslint v6! 🚀
-Please see [Announcing typescript-eslint v6 > Tooling Breaking Changes](./2023-07-09-announcing-typescript-eslint-v6.md#tooling-breaking-changes) for the latest information.
-:::
 
 - [feat(typescript-estree): deprecate createDefaultProgram](https://github.com/typescript-eslint/typescript-eslint/pull/5890): Renames `createDefaultProgram` to `deprecated__createDefaultProgram`, with associated `@deprecated` TSDoc tags and warnings.
 - [feat: drop support for node v12](https://github.com/typescript-eslint/typescript-eslint/pull/5918)
 - [feat: bump minimum supported TS version to 4.2.4](https://github.com/typescript-eslint/typescript-eslint/pull/5915): this matches [DefinitelyTyped's 2-year support window](https://github.com/DefinitelyTyped/DefinitelyTyped#support-window).
 - [chore: drop support for ESLint v6](https://github.com/typescript-eslint/typescript-eslint/pull/5972)
 - [feat(eslint-plugin): [prefer-readonly-parameter-types] added an optional type allowlist](https://github.com/typescript-eslint/typescript-eslint/pull/4436): changes the public `isTypeReadonlyArrayOrTuple` function's first argument from a `checker: ts.TypeChecker` to a full `program: ts.Program`
+- ✨ [feat: add new package `rule-tester`](https://github.com/typescript-eslint/typescript-eslint/pull/6777): creates a new `@typescript-eslint/rule-tester` package for testing rules, and updates our documentation to recommend it
+- ✨ [feat: drop support for node v14 and test against node v20](https://github.com/typescript-eslint/typescript-eslint/pull/7022): as Node 14 is now EOL
 
 ## Developer-Facing Changes
 
@@ -188,7 +165,7 @@ If you author any ESLint plugins or other tools that interact with TypeScript sy
 It includes some breaking changes that you may need to accommodate for.
 
 :::tip
-If you're having trouble working with the changes, please let us know on [the typescript-eslint Discord](https://discord.gg/FSxKq8Tdyg)'s `#v6` channel!
+If you're having trouble with the changes, please let us know on [the typescript-eslint Discord](https://discord.gg/FSxKq8Tdyg)!
 :::
 
 ### Type Checker Wrapper APIs
@@ -236,12 +213,12 @@ For now, the available wrapper APIs are:
 We hope these wrapper APIs make it more convenient to write lint rules that rely on the awesome power of TypeScript's type checking.
 In the future, we may add more wrapper APIs, and may even add internal caching to those APIs to improve performance.
 
-:::caution Newer Information Available
+:::note
 Rules can still retrieve their full backing TypeScript type checker with `services.program.getTypeChecker()`.
 This can be necessary for TypeScript APIs not wrapped by the parser services.
 :::
 
-See [_Custom Rules_ on the v6 docs site preview](https://v6--typescript-eslint.netlify.app/custom-rules) for the updated documentation on creating custom rules with typescript-eslint.
+See [_Custom Rules_](https://typescript-eslint.io/custom-rules) for the updated documentation on creating custom rules with typescript-eslint.
 
 ### AST Breaking Changes
 
@@ -262,7 +239,7 @@ If you author any ESLint rules that refer to the syntax mentioned by them, these
 
 ### Errors on Invalid AST Parsing
 
-:::caution Newer Information Available
+:::note
 These changes only impact API consumers of typescript-eslint that work at parsing level.
 If the extent of your API usage is writing custom rules, these changes don't impact you.
 :::
@@ -292,11 +269,6 @@ For more information, see:
 
 ### Other Developer-Facing Breaking Changes
 
-:::caution Newer Information Available
-This section is now out of date, as we've released typescript-eslint v6! 🚀
-Please see [Announcing typescript-eslint v6 > Other Developer-Facing Breaking Changes](./2023-07-09-announcing-typescript-eslint-v6.md#other-developer-facing-breaking-changes) for the latest information.
-:::
-
 - [feat: remove semantically invalid properties from TSEnumDeclaration, TSInterfaceDeclaration and TSModuleDeclaration](https://github.com/typescript-eslint/typescript-eslint/pull/4863): Removes some properties from those AST node types that should generally not have existed to begin with.
 - [fix(utils): removed TRuleListener generic from the createRule](https://github.com/typescript-eslint/typescript-eslint/pull/5036): Makes `createRule`-created rules more portable in the type system.
 - [feat(utils): remove (ts-)eslint-scope types](https://github.com/typescript-eslint/typescript-eslint/pull/5256): Removes no-longer-useful `TSESLintScope` types from the `@typescript-eslint/utils` package. Use `@typescript-eslint/scope-manager` directly instead.
@@ -312,6 +284,9 @@ Please see [Announcing typescript-eslint v6 > Other Developer-Facing Breaking Ch
 - [feat(typescript-estree): remove optionality from AST boolean properties](https://github.com/typescript-eslint/typescript-eslint/pull/6274): Switches most AST properties marked as `?: boolean` to `: boolean`, as well as some properties marked as `?:` optional to `| undefined`. This results in more predictable AST node object shapes.
 - [chore(typescript-estree): remove visitor-keys backwards compat export](https://github.com/typescript-eslint/typescript-eslint/pull/6242): `visitorKeys` can now only be imported from `@typescript-eslint/visitor-keys`. Previously it was also re-exported by `@typescript-eslint/utils`.
 - [feat: add package.json exports for public packages](https://github.com/typescript-eslint/typescript-eslint/pull/6458): `@typescript-eslint/*` packages now use `exports` to prevent importing internal file paths.
+- ✨ [fix: fix illegal decorator check](https://github.com/typescript-eslint/typescript-eslint/pull/6723): improves how invalid decorator syntax is parsed and reported on
+- ✨ [feat: fork json schema types for better compat with ESLint rule validation](https://github.com/typescript-eslint/typescript-eslint/pull/6963): clarifies the JSON schema types exported for rule options to match ESLint's and remove an unsafe `[string: any]` index
+- ✨ [feat(typescript-estree): remove parseWithNodeMaps](https://github.com/typescript-eslint/typescript-eslint/pull/7120): removed a `parseWithNodeMaps` API previously intended only for Prettier that is no longer used by Prettier
 
 ## Appreciation
 
@@ -332,6 +307,12 @@ We'd like to extend a sincere _thank you_ to everybody who pitched in to make ty
   - [Marek Dědič](https://github.com/marekdedic)
   - [Mateusz Burzyński](https://github.com/Andarist)
   <!-- cspell:enable -->
+- Community projects that worked with us to try out the reworked preset configs:
+  - [Astro](https://github.com/withastro/astro/pull/7425)
+  - [Babel](https://github.com/babel/babel/pull/15716)
+  - [create-t3-app](https://github.com/t3-oss/create-t3-app/pull/1476)
+  - [trpc](https://github.com/trpc/trpc/pull/4541)
+  - [TypeScript](https://github.com/microsoft/TypeScript/pull/54693)
 
 See the [v6.0.0 milestone](https://github.com/typescript-eslint/typescript-eslint/milestone/8) for the list of issues and associated merged pull requests.
 
