@@ -287,6 +287,7 @@ For more information, see:
 - ✨ [fix: fix illegal decorator check](https://github.com/typescript-eslint/typescript-eslint/pull/6723): improves how invalid decorator syntax is parsed and reported on
 - ✨ [feat: fork json schema types for better compat with ESLint rule validation](https://github.com/typescript-eslint/typescript-eslint/pull/6963): clarifies the JSON schema types exported for rule options to match ESLint's and remove an unsafe `[string: any]` index
 - ✨ [feat(typescript-estree): remove parseWithNodeMaps](https://github.com/typescript-eslint/typescript-eslint/pull/7120): removed a `parseWithNodeMaps` API previously intended only for Prettier that is no longer used by Prettier
+- ✨ [Consider keeping parserServices.hasFullTypeInformation for another major version?](https://github.com/typescript-eslint/typescript-eslint/issues/7124): we're removing an old, undocumented `hasFullTypeInformation` property from `parserServices`.
 
 ## Appreciation
 
