@@ -145,7 +145,7 @@ export default util.createRule<Options, MessageId>({
       allowNullableBoolean: false,
       allowNullableString: false,
       allowNullableNumber: false,
-      allowNullableEnum: true,
+      allowNullableEnum: false,
       allowAny: false,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
     },
