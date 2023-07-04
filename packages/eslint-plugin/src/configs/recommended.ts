@@ -13,6 +13,7 @@ export = {
     'no-array-constructor': 'off',
     '@typescript-eslint/no-array-constructor': 'error',
     '@typescript-eslint/no-duplicate-enum-values': 'error',
+    '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-extra-non-null-assertion': 'error',
     'no-loss-of-precision': 'off',
     '@typescript-eslint/no-loss-of-precision': 'error',
