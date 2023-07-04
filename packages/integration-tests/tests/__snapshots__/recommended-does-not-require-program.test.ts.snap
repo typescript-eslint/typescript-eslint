@@ -21,7 +21,7 @@ exports[`recommended-does-not-require-program should lint successfully 1`] = `
         "severity": 2,
       },
     ],
-    "output": "const foo: any = true;
+    "output": "const foo: unknown = true;
 ",
     "suppressedMessages": [],
     "usedDeprecatedRules": [],
