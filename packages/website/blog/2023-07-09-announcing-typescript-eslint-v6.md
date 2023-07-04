@@ -134,6 +134,353 @@ Miscellaneous changes to all shared configurations include:
 
 - [fix(eslint-plugin): remove valid-typeof disable in eslint-recommended](https://github.com/typescript-eslint/typescript-eslint/pull/5381): Removes the disabling of ESLint's `valid-typeof` rule from our preset configs.
 
+<!-- markdownlint-disable MD033 -->
+
+<details>
+<summary>Diff patch from v5's <em><code>recommended</code></em> to v6's <em><code>recommended</code></em> and <em><code>stylistic</code></em> configs</summary>
+
+```diff
+{
+   '@typescript-eslint/adjacent-overload-signatures': '...',
++  '@typescript-eslint/array-type': '...',
+   '@typescript-eslint/ban-ts-comment': '...',
++  '@typescript-eslint/ban-tslint-comment': '...',
+   '@typescript-eslint/ban-types': '...',
++  '@typescript-eslint/class-literal-property-style': '...',
++  '@typescript-eslint/consistent-generic-constructors': '...',
++  '@typescript-eslint/consistent-indexed-object-style': '...',
++  '@typescript-eslint/consistent-type-assertions': '...',
++  '@typescript-eslint/consistent-type-definitions': '...',
+   'no-array-constructor': '...',
+   '@typescript-eslint/no-array-constructor': '...',
++  '@typescript-eslint/no-confusing-non-null-assertion': '...',
++  '@typescript-eslint/no-duplicate-enum-values': '...',
+   'no-empty-function': '...',
+   '@typescript-eslint/no-empty-function': '...',
+   '@typescript-eslint/no-empty-interface': '...',
+-  '@typescript-eslint/no-explicit-any': '...',
+   '@typescript-eslint/no-extra-non-null-assertion': '...',
+-  'no-extra-semi': '...',
+-  '@typescript-eslint/no-extra-semi': '...',
+   '@typescript-eslint/no-inferrable-types': '...',
+   'no-loss-of-precision': '...',
+   '@typescript-eslint/no-loss-of-precision': '...',
+   '@typescript-eslint/no-misused-new': '...',
+   '@typescript-eslint/no-namespace': '...',
+   '@typescript-eslint/no-non-null-asserted-optional-chain': '...',
+-  '@typescript-eslint/no-non-null-assertion': '...',
+   '@typescript-eslint/no-this-alias': '...',
+   '@typescript-eslint/no-unnecessary-type-constraint': '...',
++  '@typescript-eslint/no-unsafe-declaration-merging': '...',
+   'no-unused-vars': '...',
+   '@typescript-eslint/no-unused-vars': '...',
+   '@typescript-eslint/no-var-requires': '...',
+   '@typescript-eslint/prefer-as-const': '...',
++  '@typescript-eslint/prefer-for-of': '...',
++  '@typescript-eslint/prefer-function-type': '...',
+   '@typescript-eslint/prefer-namespace-keyword': '...',
++  '@typescript-eslint/prefer-optional-chain': '...',
++  '@typescript-eslint/sort-type-constituents': '...',
+   '@typescript-eslint/triple-slash-reference': '...',
+}
+```
+
+</details>
+
+<details>
+<summary>Diff patch from v5's <em><code>recommended</code></em> and  <em><code>recommended-type-checked</code></em> to v6's <em><code>recommended-type-checked</code></em> and <em><code>stylistic-type-checked</code></em> configs</summary>
+
+```diff
+{
+   '@typescript-eslint/adjacent-overload-signatures': '...',
++  '@typescript-eslint/array-type': '...',
+   '@typescript-eslint/await-thenable': '...',
+   '@typescript-eslint/ban-ts-comment': '...',
++  '@typescript-eslint/ban-tslint-comment': '...',
+   '@typescript-eslint/ban-types': '...',
++  '@typescript-eslint/class-literal-property-style': '...',
++  '@typescript-eslint/consistent-generic-constructors': '...',
++  '@typescript-eslint/consistent-indexed-object-style': '...',
++  '@typescript-eslint/consistent-type-assertions': '...',
++  '@typescript-eslint/consistent-type-definitions': '...',
++  'dot-notation': '...',
++  '@typescript-eslint/dot-notation': '...',
+   'no-array-constructor': '...',
+   '@typescript-eslint/no-array-constructor': '...',
++  '@typescript-eslint/no-base-to-string': '...',
++  '@typescript-eslint/no-confusing-non-null-assertion': '...',
++  '@typescript-eslint/no-confusing-void-expression': '...',
++  '@typescript-eslint/no-duplicate-enum-values': '...',
++  '@typescript-eslint/no-duplicate-type-constituents': '...',
+   'no-empty-function': '...',
+   '@typescript-eslint/no-empty-function': '...',
+   '@typescript-eslint/no-empty-interface': '...',
+-  '@typescript-eslint/no-explicit-any': '...',
+   '@typescript-eslint/no-extra-non-null-assertion': '...',
+-  'no-extra-semi': '...',
+-  '@typescript-eslint/no-extra-semi': '...',
+   '@typescript-eslint/no-floating-promises': '...',
+   '@typescript-eslint/no-for-in-array': '...',
+   'no-implied-eval': '...',
+   '@typescript-eslint/no-implied-eval': '...',
+   '@typescript-eslint/no-inferrable-types': '...',
+   'no-loss-of-precision': '...',
+   '@typescript-eslint/no-loss-of-precision': '...',
+   '@typescript-eslint/no-misused-new': '...',
+   '@typescript-eslint/no-misused-promises': '...',
+   '@typescript-eslint/no-namespace': '...',
+   '@typescript-eslint/no-non-null-asserted-optional-chain': '...',
+-  '@typescript-eslint/no-non-null-assertion': '...',
++  '@typescript-eslint/no-redundant-type-constituents': '...',
+   '@typescript-eslint/no-this-alias': '...',
+   '@typescript-eslint/no-unnecessary-type-assertion': '...',
+   '@typescript-eslint/no-unnecessary-type-constraint': '...',
+   '@typescript-eslint/no-unsafe-argument': '...',
+   '@typescript-eslint/no-unsafe-assignment': '...',
+   '@typescript-eslint/no-unsafe-call': '...',
++  '@typescript-eslint/no-unsafe-declaration-merging': '...',
++  '@typescript-eslint/no-unsafe-enum-comparison': '...',
+   '@typescript-eslint/no-unsafe-member-access': '...',
+   '@typescript-eslint/no-unsafe-return': '...',
+   'no-unused-vars': '...',
+   '@typescript-eslint/no-unused-vars': '...',
+   '@typescript-eslint/no-var-requires': '...',
++  '@typescript-eslint/non-nullable-type-assertion-style': '...',
+   '@typescript-eslint/prefer-as-const': '...',
++  '@typescript-eslint/prefer-for-of': '...',
++  '@typescript-eslint/prefer-function-type': '...',
+   '@typescript-eslint/prefer-namespace-keyword': '...',
++  '@typescript-eslint/prefer-nullish-coalescing': '...',
++  '@typescript-eslint/prefer-optional-chain': '...',
++  '@typescript-eslint/prefer-string-starts-ends-with': '...',
+   'require-await': '...',
+   '@typescript-eslint/require-await': '...',
+   '@typescript-eslint/restrict-plus-operands': '...',
+   '@typescript-eslint/restrict-template-expressions': '...',
++  '@typescript-eslint/sort-type-constituents': '...',
+   '@typescript-eslint/triple-slash-reference': '...',
+   '@typescript-eslint/unbound-method': '...',
+}
+```
+
+</details>
+
+<details>
+<summary>Code that generated those diffs</summary>
+
+```js
+const v5Recommended = {
+  '@typescript-eslint/adjacent-overload-signatures': 'error',
+  '@typescript-eslint/ban-ts-comment': 'error',
+  '@typescript-eslint/ban-types': 'error',
+  'no-array-constructor': 'off',
+  '@typescript-eslint/no-array-constructor': 'error',
+  'no-empty-function': 'off',
+  '@typescript-eslint/no-empty-function': 'error',
+  '@typescript-eslint/no-empty-interface': 'error',
+  '@typescript-eslint/no-explicit-any': 'warn',
+  '@typescript-eslint/no-extra-non-null-assertion': 'error',
+  'no-extra-semi': 'off',
+  '@typescript-eslint/no-extra-semi': 'error',
+  '@typescript-eslint/no-inferrable-types': 'error',
+  'no-loss-of-precision': 'off',
+  '@typescript-eslint/no-loss-of-precision': 'error',
+  '@typescript-eslint/no-misused-new': 'error',
+  '@typescript-eslint/no-namespace': 'error',
+  '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
+  '@typescript-eslint/no-non-null-assertion': 'warn',
+  '@typescript-eslint/no-this-alias': 'error',
+  '@typescript-eslint/no-unnecessary-type-constraint': 'error',
+  'no-unused-vars': 'off',
+  '@typescript-eslint/no-unused-vars': 'warn',
+  '@typescript-eslint/no-var-requires': 'error',
+  '@typescript-eslint/prefer-as-const': 'error',
+  '@typescript-eslint/prefer-namespace-keyword': 'error',
+  '@typescript-eslint/triple-slash-reference': 'error',
+};
+
+const v5RecommendedRequiringTypeChecking = {
+  '@typescript-eslint/await-thenable': 'error',
+  '@typescript-eslint/no-floating-promises': 'error',
+  '@typescript-eslint/no-for-in-array': 'error',
+  'no-implied-eval': 'off',
+  '@typescript-eslint/no-implied-eval': 'error',
+  '@typescript-eslint/no-misused-promises': 'error',
+  '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+  '@typescript-eslint/no-unsafe-argument': 'error',
+  '@typescript-eslint/no-unsafe-assignment': 'error',
+  '@typescript-eslint/no-unsafe-call': 'error',
+  '@typescript-eslint/no-unsafe-member-access': 'error',
+  '@typescript-eslint/no-unsafe-return': 'error',
+  'require-await': 'off',
+  '@typescript-eslint/require-await': 'error',
+  '@typescript-eslint/restrict-plus-operands': 'error',
+  '@typescript-eslint/restrict-template-expressions': 'error',
+  '@typescript-eslint/unbound-method': 'error',
+};
+
+const v6RecommendedTypeChecked = {
+  '@typescript-eslint/await-thenable': 'error',
+  '@typescript-eslint/ban-ts-comment': 'error',
+  '@typescript-eslint/ban-types': 'error',
+  'no-array-constructor': 'off',
+  '@typescript-eslint/no-array-constructor': 'error',
+  '@typescript-eslint/no-base-to-string': 'error',
+  '@typescript-eslint/no-duplicate-enum-values': 'error',
+  '@typescript-eslint/no-duplicate-type-constituents': 'error',
+  '@typescript-eslint/no-extra-non-null-assertion': 'error',
+  '@typescript-eslint/no-floating-promises': 'error',
+  '@typescript-eslint/no-for-in-array': 'error',
+  'no-implied-eval': 'off',
+  '@typescript-eslint/no-implied-eval': 'error',
+  'no-loss-of-precision': 'off',
+  '@typescript-eslint/no-loss-of-precision': 'error',
+  '@typescript-eslint/no-misused-new': 'error',
+  '@typescript-eslint/no-misused-promises': 'error',
+  '@typescript-eslint/no-namespace': 'error',
+  '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
+  '@typescript-eslint/no-redundant-type-constituents': 'error',
+  '@typescript-eslint/no-this-alias': 'error',
+  '@typescript-eslint/no-unnecessary-type-assertion': 'error',
+  '@typescript-eslint/no-unnecessary-type-constraint': 'error',
+  '@typescript-eslint/no-unsafe-argument': 'error',
+  '@typescript-eslint/no-unsafe-assignment': 'error',
+  '@typescript-eslint/no-unsafe-call': 'error',
+  '@typescript-eslint/no-unsafe-declaration-merging': 'error',
+  '@typescript-eslint/no-unsafe-enum-comparison': 'error',
+  '@typescript-eslint/no-unsafe-member-access': 'error',
+  '@typescript-eslint/no-unsafe-return': 'error',
+  'no-unused-vars': 'off',
+  '@typescript-eslint/no-unused-vars': 'error',
+  '@typescript-eslint/no-var-requires': 'error',
+  '@typescript-eslint/prefer-as-const': 'error',
+  'require-await': 'off',
+  '@typescript-eslint/require-await': 'error',
+  '@typescript-eslint/restrict-plus-operands': 'error',
+  '@typescript-eslint/restrict-template-expressions': 'error',
+  '@typescript-eslint/triple-slash-reference': 'error',
+  '@typescript-eslint/unbound-method': 'error',
+};
+
+const v6Recommended = {
+  '@typescript-eslint/ban-ts-comment': 'error',
+  '@typescript-eslint/ban-types': 'error',
+  'no-array-constructor': 'off',
+  '@typescript-eslint/no-array-constructor': 'error',
+  '@typescript-eslint/no-duplicate-enum-values': 'error',
+  '@typescript-eslint/no-extra-non-null-assertion': 'error',
+  'no-loss-of-precision': 'off',
+  '@typescript-eslint/no-loss-of-precision': 'error',
+  '@typescript-eslint/no-misused-new': 'error',
+  '@typescript-eslint/no-namespace': 'error',
+  '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
+  '@typescript-eslint/no-this-alias': 'error',
+  '@typescript-eslint/no-unnecessary-type-constraint': 'error',
+  '@typescript-eslint/no-unsafe-declaration-merging': 'error',
+  'no-unused-vars': 'off',
+  '@typescript-eslint/no-unused-vars': 'error',
+  '@typescript-eslint/no-var-requires': 'error',
+  '@typescript-eslint/prefer-as-const': 'error',
+  '@typescript-eslint/triple-slash-reference': 'error',
+};
+
+const v6Stylistic = {
+  '@typescript-eslint/adjacent-overload-signatures': 'error',
+  '@typescript-eslint/array-type': 'error',
+  '@typescript-eslint/ban-tslint-comment': 'error',
+  '@typescript-eslint/class-literal-property-style': 'error',
+  '@typescript-eslint/consistent-generic-constructors': 'error',
+  '@typescript-eslint/consistent-indexed-object-style': 'error',
+  '@typescript-eslint/consistent-type-assertions': 'error',
+  '@typescript-eslint/consistent-type-definitions': 'error',
+  '@typescript-eslint/no-confusing-non-null-assertion': 'error',
+  'no-empty-function': 'off',
+  '@typescript-eslint/no-empty-function': 'error',
+  '@typescript-eslint/no-empty-interface': 'error',
+  '@typescript-eslint/no-inferrable-types': 'error',
+  '@typescript-eslint/prefer-for-of': 'error',
+  '@typescript-eslint/prefer-function-type': 'error',
+  '@typescript-eslint/prefer-namespace-keyword': 'error',
+  '@typescript-eslint/prefer-optional-chain': 'error',
+  '@typescript-eslint/sort-type-constituents': 'error',
+};
+
+const v6StylisticTypeChecked = {
+  '@typescript-eslint/adjacent-overload-signatures': 'error',
+  '@typescript-eslint/array-type': 'error',
+  '@typescript-eslint/ban-tslint-comment': 'error',
+  '@typescript-eslint/class-literal-property-style': 'error',
+  '@typescript-eslint/consistent-generic-constructors': 'error',
+  '@typescript-eslint/consistent-indexed-object-style': 'error',
+  '@typescript-eslint/consistent-type-assertions': 'error',
+  '@typescript-eslint/consistent-type-definitions': 'error',
+  'dot-notation': 'off',
+  '@typescript-eslint/dot-notation': 'error',
+  '@typescript-eslint/no-confusing-non-null-assertion': 'error',
+  '@typescript-eslint/no-confusing-void-expression': 'error',
+  'no-empty-function': 'off',
+  '@typescript-eslint/no-empty-function': 'error',
+  '@typescript-eslint/no-empty-interface': 'error',
+  '@typescript-eslint/no-inferrable-types': 'error',
+  '@typescript-eslint/non-nullable-type-assertion-style': 'error',
+  '@typescript-eslint/prefer-for-of': 'error',
+  '@typescript-eslint/prefer-function-type': 'error',
+  '@typescript-eslint/prefer-namespace-keyword': 'error',
+  '@typescript-eslint/prefer-nullish-coalescing': 'error',
+  '@typescript-eslint/prefer-optional-chain': 'error',
+  '@typescript-eslint/prefer-string-starts-ends-with': 'error',
+  '@typescript-eslint/sort-type-constituents': 'error',
+};
+
+function createDiffPatch(v5, v6) {
+  const v5Keys = new Set(Object.keys(v5));
+  const v6Keys = new Set(Object.keys(v6));
+  const output = ['{'];
+
+  for (const key of Array.from(new Set([...v5Keys, ...v6Keys])).sort((a, b) =>
+    trimSlash(a).localeCompare(trimSlash(b)),
+  )) {
+    const prefix = v5Keys.has(key) ? (v6Keys.has(key) ? ' ' : '-') : '+';
+
+    output.push(`${prefix}  '${key}': '...',`);
+  }
+
+  output.push('}');
+
+  return output.join('\n');
+}
+
+function trimSlash(text) {
+  return text.startsWith('@typescript-eslint/')
+    ? text.slice('@typescript-eslint/'.length)
+    : text;
+}
+
+console.log('From v5 recommended to v6 recommended & stylistic:');
+
+console.log(
+  createDiffPatch(v5Recommended, { ...v6Recommended, ...v6Stylistic }),
+);
+
+console.log(
+  '\nFrom v5 recommended & recommended-requiring-type-checking to v6 recommended-type-checked & stylistic-type-checked:',
+);
+
+console.log(
+  createDiffPatch(
+    {
+      ...v5Recommended,
+      ...v5RecommendedRequiringTypeChecking,
+    },
+    { ...v6RecommendedTypeChecked, ...v6StylisticTypeChecked },
+  ),
+);
+```
+
+</details>
+
+<!-- markdownlint-enable MD033 -->
+
 ### Rule Breaking Changes
 
 Several rules were changed in significant enough ways to be considered breaking changes:
@@ -152,8 +499,8 @@ Several rules were changed in significant enough ways to be considered breaking 
 
 - [feat(typescript-estree): deprecate createDefaultProgram](https://github.com/typescript-eslint/typescript-eslint/pull/5890): Renames `createDefaultProgram` to `deprecated__createDefaultProgram`, with associated `@deprecated` TSDoc tags and warnings.
 - Drop support for Node v12 and v14
-    - [feat: drop support for node v12](https://github.com/typescript-eslint/typescript-eslint/pull/5918)
-    - ✨ [feat: drop support for node v14 and test against node v20](https://github.com/typescript-eslint/typescript-eslint/pull/7022): as Node 14 is now EOL
+  - [feat: drop support for node v12](https://github.com/typescript-eslint/typescript-eslint/pull/5918)
+  - ✨ [feat: drop support for node v14 and test against node v20](https://github.com/typescript-eslint/typescript-eslint/pull/7022): as Node 14 is now EOL
 - [feat: bump minimum supported TS version to 4.2.4](https://github.com/typescript-eslint/typescript-eslint/pull/5915): this matches [DefinitelyTyped's 2-year support window](https://github.com/DefinitelyTyped/DefinitelyTyped#support-window).
 - [chore: drop support for ESLint v6](https://github.com/typescript-eslint/typescript-eslint/pull/5972)
 - [feat(eslint-plugin): [prefer-readonly-parameter-types] added an optional type allowlist](https://github.com/typescript-eslint/typescript-eslint/pull/4436): changes the public `isTypeReadonlyArrayOrTuple` function's first argument from a `checker: ts.TypeChecker` to a full `program: ts.Program`
