@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.61.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.60.1...v5.61.0) (2023-07-03)
+
+
+### Features
+
+* support TypeScript 5.1 ([#7088](https://github.com/typescript-eslint/typescript-eslint/issues/7088)) ([4bf2d73](https://github.com/typescript-eslint/typescript-eslint/commit/4bf2d7360eaf74c9ef87b196ff4c459b8f50800b))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 ## [5.60.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.60.0...v5.60.1) (2023-06-26)
 
 **Note:** Version bump only for package website
