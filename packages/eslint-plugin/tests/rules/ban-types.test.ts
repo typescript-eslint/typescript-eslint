@@ -657,6 +657,81 @@ let baz: object = {};
         },
       ],
     },
+    {
+      code: 'type Baz = 1 & Foo;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+        },
+      ],
+      options: [
+        {
+          types: {
+            Foo: { message: '' },
+          },
+        },
+      ],
+    },
+    {
+      code: 'interface Foo extends Bar {}',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+        },
+      ],
+      options: [
+        {
+          types: {
+            Bar: { message: '' },
+          },
+        },
+      ],
+    },
+    {
+      code: 'interface Foo extends Bar, Baz {}',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+        },
+      ],
+      options: [
+        {
+          types: {
+            Bar: { message: '' },
+          },
+        },
+      ],
+    },
+    {
+      code: 'class Foo implements Bar {}',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+        },
+      ],
+      options: [
+        {
+          types: {
+            Bar: { message: '' },
+          },
+        },
+      ],
+    },
+    {
+      code: 'class Foo implements Bar, Baz {}',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+        },
+      ],
+      options: [
+        {
+          types: {
+            Bar: { message: 'Bla' },
+          },
+        },
+      ],
+    },
     ...objectReduceKey(
       TYPE_KEYWORDS,
       (acc: TSESLint.InvalidTestCase<MessageIds, Options>[], key) => {

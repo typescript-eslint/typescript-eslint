@@ -1,0 +1,215 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures jsx JSXNamespacedName component-dashed AST Alignment - AST 1`] = `
+"Snapshot Diff:
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSModuleDeclaration {
+        type: 'TSModuleDeclaration',
+        body: TSModuleBlock {
+          type: 'TSModuleBlock',
+          body: Array [
+            ExportNamedDeclaration {
+              type: 'ExportNamedDeclaration',
+              assertions: Array [],
+              declaration: TSInterfaceDeclaration {
+                type: 'TSInterfaceDeclaration',
+                body: TSInterfaceBody {
+                  type: 'TSInterfaceBody',
+                  body: Array [
+                    TSPropertySignature {
+                      type: 'TSPropertySignature',
+                      computed: false,
+                      key: Literal {
+                        type: 'Literal',
+                        raw: '\\'foo-bar:baz-bam\\'',
+                        value: 'foo-bar:baz-bam',
+
+                        range: [59, 76],
+                        loc: {
+                          start: { column: 4, line: 3 },
+                          end: { column: 21, line: 3 },
+                        },
+                      },
+                      typeAnnotation: TSTypeAnnotation {
+                        type: 'TSTypeAnnotation',
+                        typeAnnotation: TSAnyKeyword {
+                          type: 'TSAnyKeyword',
+
+                          range: [78, 81],
+                          loc: {
+                            start: { column: 23, line: 3 },
+                            end: { column: 26, line: 3 },
+                          },
+                        },
+
+                        range: [76, 81],
+                        loc: {
+                          start: { column: 21, line: 3 },
+                          end: { column: 26, line: 3 },
+                        },
+                      },
+
+                      range: [59, 82],
+                      loc: {
+                        start: { column: 4, line: 3 },
+                        end: { column: 27, line: 3 },
+                      },
+                    },
+                  ],
+
+                  range: [53, 86],
+                  loc: {
+                    start: { column: 37, line: 2 },
+                    end: { column: 3, line: 4 },
+                  },
+                },
+                id: Identifier {
+                  type: 'Identifier',
+                  name: 'IntrinsicElements',
+
+                  range: [35, 52],
+                  loc: {
+                    start: { column: 19, line: 2 },
+                    end: { column: 36, line: 2 },
+                  },
+                },
+
+                range: [25, 86],
+                loc: {
+                  start: { column: 9, line: 2 },
+                  end: { column: 3, line: 4 },
+                },
+              },
+              exportKind: 'type',
+              source: null,
+              specifiers: Array [],
+
+              range: [18, 86],
+              loc: {
+                start: { column: 2, line: 2 },
+                end: { column: 3, line: 4 },
+              },
+            },
+          ],
+
+          range: [14, 88],
+          loc: {
+            start: { column: 14, line: 1 },
+            end: { column: 1, line: 5 },
+          },
+        },
+        id: Identifier {
+          type: 'Identifier',
+          name: 'JSX',
+
+          range: [10, 13],
+          loc: {
+            start: { column: 10, line: 1 },
+            end: { column: 13, line: 1 },
+          },
+        },
+-       kind: 'namespace',
+
+        range: [0, 88],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 1, line: 5 },
+        },
+      },
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+            id: Identifier {
+              type: 'Identifier',
+              name: 'componentDashed',
+
+              range: [96, 111],
+              loc: {
+                start: { column: 6, line: 7 },
+                end: { column: 21, line: 7 },
+              },
+            },
+            init: JSXElement {
+              type: 'JSXElement',
+              children: Array [],
+              closingElement: null,
+              openingElement: JSXOpeningElement {
+                type: 'JSXOpeningElement',
+                attributes: Array [],
+                name: JSXNamespacedName {
+                  type: 'JSXNamespacedName',
+                  name: JSXIdentifier {
+                    type: 'JSXIdentifier',
+                    name: 'baz-bam',
+
+                    range: [123, 130],
+                    loc: {
+                      start: { column: 33, line: 7 },
+                      end: { column: 40, line: 7 },
+                    },
+                  },
+                  namespace: JSXIdentifier {
+                    type: 'JSXIdentifier',
+                    name: 'foo-bar',
+
+                    range: [115, 122],
+                    loc: {
+                      start: { column: 25, line: 7 },
+                      end: { column: 32, line: 7 },
+                    },
+                  },
+
+                  range: [115, 130],
+                  loc: {
+                    start: { column: 25, line: 7 },
+                    end: { column: 40, line: 7 },
+                  },
+                },
+                selfClosing: true,
+
+                range: [114, 133],
+                loc: {
+                  start: { column: 24, line: 7 },
+                  end: { column: 43, line: 7 },
+                },
+              },
+
+              range: [114, 133],
+              loc: {
+                start: { column: 24, line: 7 },
+                end: { column: 43, line: 7 },
+              },
+            },
+
+            range: [96, 133],
+            loc: {
+              start: { column: 6, line: 7 },
+              end: { column: 43, line: 7 },
+            },
+          },
+        ],
+        kind: 'const',
+
+        range: [90, 134],
+        loc: {
+          start: { column: 0, line: 7 },
+          end: { column: 44, line: 7 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 135],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 8 },
+    },
+  }"
+`;
