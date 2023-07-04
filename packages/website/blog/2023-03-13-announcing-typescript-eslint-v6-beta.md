@@ -166,7 +166,7 @@ Several rules were changed in significant enough ways to be considered breaking 
   - `@typescript-eslint/no-parameter-properties`
   - `@typescript-eslint/sort-type-union-intersection-members`
 - [feat(eslint-plugin): [prefer-nullish-coalescing]: add support for assignment expressions](https://github.com/typescript-eslint/typescript-eslint/pull/5234): Enhances the [`@typescript-eslint/prefer-nullish-coalescing`](https://v6--typescript-eslint.netlify.app/prefer-nullish-coalescing) rule to also check `||=` expressions.
-- [feat(eslint-plugin): [prefer-optional-chain] use type checking for strict falsiness](https://github.com/typescript-eslint/typescript-eslint/pull/6240): Fixes edge case bugs in the [`@typescript-eslint/prefer-optional-chain`](https://v6--typescript-eslint.netlify.app/prefer-optional-chain) rule around false positives, at the cost of making it require type information.
+- [feat(eslint-plugin): [prefer-optional-chain] use type checking for strict falsiness](https://github.com/typescript-eslint/typescript-eslint/pull/6240): Rewrites the [`@typescript-eslint/prefer-optional-chain`](https://v6--typescript-eslint.netlify.app/prefer-optional-chain) rule to fix numerous false positives, at the cost of making it require type information.
 
 ### Tooling Breaking Changes
 

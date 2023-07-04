@@ -151,12 +151,13 @@ Several rules were changed in significant enough ways to be considered breaking 
 ### Tooling Breaking Changes
 
 - [feat(typescript-estree): deprecate createDefaultProgram](https://github.com/typescript-eslint/typescript-eslint/pull/5890): Renames `createDefaultProgram` to `deprecated__createDefaultProgram`, with associated `@deprecated` TSDoc tags and warnings.
-- [feat: drop support for node v12](https://github.com/typescript-eslint/typescript-eslint/pull/5918)
+- Drop support for Node v12 and v14
+    - [feat: drop support for node v12](https://github.com/typescript-eslint/typescript-eslint/pull/5918)
+    - ✨ [feat: drop support for node v14 and test against node v20](https://github.com/typescript-eslint/typescript-eslint/pull/7022): as Node 14 is now EOL
 - [feat: bump minimum supported TS version to 4.2.4](https://github.com/typescript-eslint/typescript-eslint/pull/5915): this matches [DefinitelyTyped's 2-year support window](https://github.com/DefinitelyTyped/DefinitelyTyped#support-window).
 - [chore: drop support for ESLint v6](https://github.com/typescript-eslint/typescript-eslint/pull/5972)
 - [feat(eslint-plugin): [prefer-readonly-parameter-types] added an optional type allowlist](https://github.com/typescript-eslint/typescript-eslint/pull/4436): changes the public `isTypeReadonlyArrayOrTuple` function's first argument from a `checker: ts.TypeChecker` to a full `program: ts.Program`
 - ✨ [feat: add new package `rule-tester`](https://github.com/typescript-eslint/typescript-eslint/pull/6777): creates a new `@typescript-eslint/rule-tester` package for testing rules, and updates our documentation to recommend it
-- ✨ [feat: drop support for node v14 and test against node v20](https://github.com/typescript-eslint/typescript-eslint/pull/7022): as Node 14 is now EOL
 
 ## Developer-Facing Changes
 
