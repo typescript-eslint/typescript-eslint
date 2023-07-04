@@ -23,5 +23,5 @@ We can always move an issue to a discussion if it becomes unexpectedly deep.
 
 :::caution
 Please don't use Discussions as a support forum.
-See [Issues > Questions and Support Requests](./Issues.mdx#questions-and-support-requests).
+See [Contributing > Issues > Questions and Support Requests](./Issues.mdx#questions-and-support-requests).
 :::

@@ -194,6 +194,8 @@ jobs:
           retention-days: 1
 
   website_tests:
+    # The NETLIFY_TOKEN secret will not be available on forks
+    if: github.repository_owner == 'typescript-eslint'
     permissions:
       contents: read # to fetch code (actions/checkout)
 
