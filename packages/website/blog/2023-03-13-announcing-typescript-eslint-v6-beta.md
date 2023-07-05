@@ -4,11 +4,16 @@ authors:
     name: Josh Goldberg
     title: typescript-eslint Maintainer
     url: https://github.com/JoshuaKGoldberg
-description: Describing what an AST (Abstract Syntax Tree) is and why it's useful for ESLint and TypeScript tooling.
+description: Announcing the release of typescript-eslint's v6 beta, including its changes and timeline.
 slug: announcing-typescript-eslint-v6-beta
 tags: [breaking changes, typescript-eslint, v5, v6]
 title: Announcing typescript-eslint v6 Beta
 ---
+
+:::caution Newer Information Available
+This blog post is now out of date, as we've released typescript-eslint v6! 🚀
+Please see [Announcing typescript-eslint v6](./2023-07-09-announcing-typescript-eslint-v6.md) for the latest information.
+:::
 
 [typescript-eslint](https://typescript-eslint.io) is the tooling that enables standard JavaScript tools such as [ESLint](https://eslint.org) and [Prettier](https://prettier.io) to support TypeScript code.
 We've been working on a set of breaking changes and general features that we're excited to get in front of users soon.
@@ -148,6 +153,11 @@ Miscellaneous changes to all shared configurations include:
 
 ### Rule Breaking Changes
 
+:::caution Newer Information Available
+This section is now out of date, as we've released typescript-eslint v6! 🚀
+Please see [Announcing typescript-eslint v6 > Rule Breaking Changes](./2023-07-09-announcing-typescript-eslint-v6.md#rule-breaking-changes) for the latest information.
+:::
+
 Several rules were changed in significant enough ways to be considered breaking changes:
 
 - Previously deprecated rules are deleted ([chore(eslint-plugin): remove deprecated rules for v6](https://github.com/typescript-eslint/typescript-eslint/pull/6112)):
@@ -156,9 +166,14 @@ Several rules were changed in significant enough ways to be considered breaking 
   - `@typescript-eslint/no-parameter-properties`
   - `@typescript-eslint/sort-type-union-intersection-members`
 - [feat(eslint-plugin): [prefer-nullish-coalescing]: add support for assignment expressions](https://github.com/typescript-eslint/typescript-eslint/pull/5234): Enhances the [`@typescript-eslint/prefer-nullish-coalescing`](https://v6--typescript-eslint.netlify.app/prefer-nullish-coalescing) rule to also check `||=` expressions.
-- ⏳ [feat(eslint-plugin): [prefer-optional-chain] use type checking for strict falsiness](https://github.com/typescript-eslint/typescript-eslint/pull/6240): Fixes edge case bugs in the [`@typescript-eslint/prefer-optional-chain`](https://v6--typescript-eslint.netlify.app/prefer-optional-chain) rule around false positives, at the cost of making it require type information.
+- [feat(eslint-plugin): [prefer-optional-chain] use type checking for strict falsiness](https://github.com/typescript-eslint/typescript-eslint/pull/6240): Rewrites the [`@typescript-eslint/prefer-optional-chain`](https://v6--typescript-eslint.netlify.app/prefer-optional-chain) rule to fix numerous false positives, at the cost of making it require type information.
 
 ### Tooling Breaking Changes
+
+:::caution Newer Information Available
+This section is now out of date, as we've released typescript-eslint v6! 🚀
+Please see [Announcing typescript-eslint v6 > Tooling Breaking Changes](./2023-07-09-announcing-typescript-eslint-v6.md#tooling-breaking-changes) for the latest information.
+:::
 
 - [feat(typescript-estree): deprecate createDefaultProgram](https://github.com/typescript-eslint/typescript-eslint/pull/5890): Renames `createDefaultProgram` to `deprecated__createDefaultProgram`, with associated `@deprecated` TSDoc tags and warnings.
 - [feat: drop support for node v12](https://github.com/typescript-eslint/typescript-eslint/pull/5918)
@@ -221,7 +236,7 @@ For now, the available wrapper APIs are:
 We hope these wrapper APIs make it more convenient to write lint rules that rely on the awesome power of TypeScript's type checking.
 In the future, we may add more wrapper APIs, and may even add internal caching to those APIs to improve performance.
 
-:::note
+:::caution Newer Information Available
 Rules can still retrieve their full backing TypeScript type checker with `services.program.getTypeChecker()`.
 This can be necessary for TypeScript APIs not wrapped by the parser services.
 :::
@@ -247,7 +262,7 @@ If you author any ESLint rules that refer to the syntax mentioned by them, these
 
 ### Errors on Invalid AST Parsing
 
-:::note
+:::caution Newer Information Available
 These changes only impact API consumers of typescript-eslint that work at parsing level.
 If the extent of your API usage is writing custom rules, these changes don't impact you.
 :::
@@ -277,6 +292,11 @@ For more information, see:
 
 ### Other Developer-Facing Breaking Changes
 
+:::caution Newer Information Available
+This section is now out of date, as we've released typescript-eslint v6! 🚀
+Please see [Announcing typescript-eslint v6 > Other Developer-Facing Breaking Changes](./2023-07-09-announcing-typescript-eslint-v6.md#other-developer-facing-breaking-changes) for the latest information.
+:::
+
 - [feat: remove semantically invalid properties from TSEnumDeclaration, TSInterfaceDeclaration and TSModuleDeclaration](https://github.com/typescript-eslint/typescript-eslint/pull/4863): Removes some properties from those AST node types that should generally not have existed to begin with.
 - [fix(utils): removed TRuleListener generic from the createRule](https://github.com/typescript-eslint/typescript-eslint/pull/5036): Makes `createRule`-created rules more portable in the type system.
 - [feat(utils): remove (ts-)eslint-scope types](https://github.com/typescript-eslint/typescript-eslint/pull/5256): Removes no-longer-useful `TSESLintScope` types from the `@typescript-eslint/utils` package. Use `@typescript-eslint/scope-manager` directly instead.
@@ -284,7 +304,7 @@ For more information, see:
   - To recap the terminology:
     - An _argument_ is something you provide to a recipient, such as a type provided explicitly to a call expression.
     - A _parameter_ is how the recipient receives what you provide, such as a function declaration's generic type parameter.
-  - [Enhancement: Add test-only console warnings to deprecated AST properties](https://github.com/typescript-eslint/typescript-eslint/issues/6469): The properties will include a `console.log` that triggers only in test environments, to encourage developers to move off of them.
+- [Enhancement: Add test-only console warnings to deprecated AST properties](https://github.com/typescript-eslint/typescript-eslint/issues/6469): The properties will include a `console.log` that triggers only in test environments, to encourage developers to move off of them.
 - [feat(scope-manager): ignore ECMA version](https://github.com/typescript-eslint/typescript-eslint/pull/5889): `@typescript-eslint/scope-manager` no longer includes properties referring to `ecmaVersion`, `isES6`, or other ECMA versioning options. It instead now always assumes ESNext.
 - [feat: remove partial type-information program](https://github.com/typescript-eslint/typescript-eslint/pull/6066): When user configurations don't provide a `parserOptions.project`, parser services will no longer include a `program` with incomplete type information. `program` will be `null` instead.
 - [feat: remove experimental-utils](https://github.com/typescript-eslint/typescript-eslint/pull/6468): The `@typescript-eslint/experimental-utils` package has since been renamed to `@typescript-eslint/utils`.

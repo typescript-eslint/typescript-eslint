@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "5.60.0",
+  "version": "5.61.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",
@@ -38,12 +38,12 @@
     "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "nx lint",
-    "test": "jest --coverage",
+    "test": "jest --coverage --runInBand --verbose",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "5.60.0",
-    "@typescript-eslint/visitor-keys": "5.60.0",
+    "@typescript-eslint/types": "5.61.0",
+    "@typescript-eslint/visitor-keys": "5.61.0",
     "debug": "^4.3.4",
     "globby": "^11.1.0",
     "is-glob": "^4.0.3",

@@ -260,6 +260,12 @@ export default util.createRule<Options, MessageIds>({
           checkBannedTypes(node);
         }
       },
+      TSInterfaceHeritage(node): void {
+        checkBannedTypes(node);
+      },
+      TSClassImplements(node): void {
+        checkBannedTypes(node);
+      },
     };
   },
 });
