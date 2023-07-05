@@ -28,6 +28,13 @@ class Foo {
     `,
     `
 class Foo {
+  constructor(private name: string) {
+    this.name = this.someAssignment;
+  }
+}
+    `,
+    `
+class Foo {
   name: string;
   constructor(name: string) {
     this.name = name;
