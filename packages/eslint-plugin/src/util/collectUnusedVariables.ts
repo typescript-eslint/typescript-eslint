@@ -1,4 +1,8 @@
-import { ImplicitLibVariable, Visitor } from '@typescript-eslint/scope-manager';
+import {
+  ImplicitLibVariable,
+  ScopeType,
+  Visitor,
+} from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import {
   AST_NODE_TYPES,
@@ -97,7 +101,7 @@ class UnusedVarsVisitor<
       const scope = this.#scopeManager.acquire(node, inner);
 
       if (scope) {
-        if (scope.type === 'function-expression-name') {
+        if (scope.type === ScopeType.functionExpressionName) {
           return scope.childScopes[0] as T;
         }
         return scope as T;

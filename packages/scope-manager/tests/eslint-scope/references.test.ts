@@ -582,7 +582,7 @@ describe('References:', () => {
 
         declare class C {
           @deco
-          foo(): TypeC;
+          foo(): TypeC {};
         }
       `,
         {

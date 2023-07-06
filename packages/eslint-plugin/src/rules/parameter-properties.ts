@@ -4,13 +4,13 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 type Modifier =
-  | 'readonly'
-  | 'private'
-  | 'protected'
-  | 'public'
   | 'private readonly'
+  | 'private'
   | 'protected readonly'
-  | 'public readonly';
+  | 'protected'
+  | 'public readonly'
+  | 'public'
+  | 'readonly';
 
 type Prefer = 'class-property' | 'parameter-property';
 
@@ -41,6 +41,7 @@ export default util.createRule<Options, MessageIds>({
       {
         $defs: {
           modifier: {
+            type: 'string',
             enum: [
               'readonly',
               'private',
@@ -62,6 +63,7 @@ export default util.createRule<Options, MessageIds>({
             minItems: 1,
           },
           prefer: {
+            type: 'string',
             enum: ['class-property', 'parameter-property'],
           },
         },

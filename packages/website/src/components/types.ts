@@ -13,11 +13,11 @@ export interface RuleDetails {
   url?: string;
 }
 
-export type TabType = 'code' | 'tsconfig' | 'eslintrc';
+export type TabType = 'code' | 'eslintrc' | 'tsconfig';
 
 export type ConfigFileType = `${ts.Extension}`;
 
-export type ConfigShowAst = false | 'es' | 'ts' | 'scope';
+export type ConfigShowAst = 'es' | 'scope' | 'ts' | false;
 
 export interface ConfigModel {
   fileType?: ConfigFileType;

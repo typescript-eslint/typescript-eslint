@@ -1,8 +1,8 @@
 // Forked from https://github.com/eslint/eslint/blob/ad9dd6a933fd098a0d99c6a9aa059850535c23ee/conf/config-schema.js
 
-import type { JSONSchema } from '@typescript-eslint/utils';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
-const baseConfigProperties: JSONSchema.JSONSchema4['properties'] = {
+const baseConfigProperties: Record<string, JSONSchema4> = {
   $schema: { type: 'string' },
   defaultFilenames: {
     type: 'object',
@@ -39,7 +39,7 @@ const baseConfigProperties: JSONSchema.JSONSchema4['properties'] = {
   ecmaFeatures: { type: 'object' }, // deprecated; logs a warning when used
 };
 
-export const configSchema: JSONSchema.JSONSchema4 = {
+export const configSchema: JSONSchema4 = {
   definitions: {
     stringOrStrings: {
       oneOf: [

@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import * as util from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
@@ -26,7 +27,7 @@ const schema = util.deepMerge(
       },
     },
   },
-);
+) as unknown as JSONSchema4;
 
 export default util.createRule<Options, MessageIds>({
   name: 'keyword-spacing',

@@ -78,7 +78,7 @@ enum MetaSelectors {
     Selectors.typeProperty,
 }
 type MetaSelectorsString = keyof typeof MetaSelectors;
-type IndividualAndMetaSelectorsString = SelectorsString | MetaSelectorsString;
+type IndividualAndMetaSelectorsString = MetaSelectorsString | SelectorsString;
 
 enum Modifiers {
   // const variable

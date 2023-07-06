@@ -25,9 +25,9 @@ interface ReportValueExport {
 }
 
 type MessageIds =
-  | 'typeOverValue'
+  | 'multipleExportsAreTypes'
   | 'singleExportIsType'
-  | 'multipleExportsAreTypes';
+  | 'typeOverValue';
 
 export default util.createRule<Options, MessageIds>({
   name: 'consistent-type-exports',
@@ -84,6 +84,7 @@ export default util.createRule<Options, MessageIds>({
       const symbol = services.getSymbolAtLocation(specifier.exported);
       const aliasedSymbol = checker.getAliasedSymbol(symbol!);
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
       if (!aliasedSymbol || aliasedSymbol.escapedName === 'unknown') {
         return undefined;
       }

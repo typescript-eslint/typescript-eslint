@@ -1,1 +1,1 @@
-var foo: any = true;
+var foo: unknown = true;

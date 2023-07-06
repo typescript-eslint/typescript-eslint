@@ -14,7 +14,7 @@ export function printASTWithComment(ast: AST): string {
 function printComment({
   commentLines: commentLinesIn,
 }: {
-  readonly commentLines?: string[] | undefined | null;
+  readonly commentLines?: string[] | null | undefined;
 }): string {
   if (commentLinesIn == null || commentLinesIn.length === 0) {
     return '';

@@ -1,16 +1,16 @@
 import 'jest-specific-snapshot';
 
+import fs from 'node:fs';
+import path from 'node:path';
+
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
-import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
-import fs, { mkdirSync } from 'fs';
-import path from 'path';
 import { format, resolveConfig } from 'prettier';
 
 import rules from '../src/rules/index';
 
 const snapshotFolder = path.resolve(__dirname, 'schema-snapshots');
 try {
-  mkdirSync(snapshotFolder);
+  fs.mkdirSync(snapshotFolder);
 } catch {
   // ignore failure as it means it already exists probably
 }
@@ -129,7 +129,7 @@ const VALID_SCHEMA_PROPS = new Set([
   'title',
   'type',
   'uniqueItems',
-] satisfies (keyof JSONSchema4)[]);
+]);
 describe('Rules should only define valid keys on schemas', () => {
   for (const [ruleName, ruleDef] of Object.entries(rules)) {
     (ruleName === ONLY ? it.only : it)(ruleName, () => {

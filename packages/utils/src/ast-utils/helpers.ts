@@ -28,12 +28,12 @@ export const isNodeOfTypeWithConditions = <
   conditions: Conditions,
 ): ((
   node: TSESTree.Node | null | undefined,
-) => node is ExtractedNode & Conditions) => {
+) => node is Conditions & ExtractedNode) => {
   const entries = Object.entries(conditions) as ObjectEntries<TSESTree.Node>;
 
   return (
     node: TSESTree.Node | null | undefined,
-  ): node is ExtractedNode & Conditions =>
+  ): node is Conditions & ExtractedNode =>
     node?.type === nodeType &&
     entries.every(([key, value]) => node[key as keyof TSESTree.Node] === value);
 };
@@ -47,12 +47,12 @@ export const isTokenOfTypeWithConditions = <
   conditions: Conditions,
 ): ((
   token: TSESTree.Token | null | undefined,
-) => token is ExtractedToken & Conditions) => {
+) => token is Conditions & ExtractedToken) => {
   const entries = Object.entries(conditions) as ObjectEntries<TSESTree.Token>;
 
   return (
     token: TSESTree.Token | null | undefined,
-  ): token is ExtractedToken & Conditions =>
+  ): token is Conditions & ExtractedToken =>
     token?.type === tokenType &&
     entries.every(
       ([key, value]) => token[key as keyof TSESTree.Token] === value,
@@ -69,6 +69,6 @@ export const isNotTokenOfTypeWithConditions =
     conditions: Conditions,
   ): ((
     token: TSESTree.Token | null | undefined,
-  ) => token is Exclude<TSESTree.Token, ExtractedToken & Conditions>) =>
-  (token): token is Exclude<TSESTree.Token, ExtractedToken & Conditions> =>
+  ) => token is Exclude<TSESTree.Token, Conditions & ExtractedToken>) =>
+  (token): token is Exclude<TSESTree.Token, Conditions & ExtractedToken> =>
     !isTokenOfTypeWithConditions(tokenType, conditions)(token);

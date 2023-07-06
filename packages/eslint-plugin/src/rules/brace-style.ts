@@ -119,7 +119,7 @@ export default createRule<Options, MessageIds>({
     return {
       ...rules,
       'TSInterfaceBody, TSModuleBlock'(
-        node: TSESTree.TSModuleBlock | TSESTree.TSInterfaceBody,
+        node: TSESTree.TSInterfaceBody | TSESTree.TSModuleBlock,
       ): void {
         const openingCurly = sourceCode.getFirstToken(node)!;
         const closingCurly = sourceCode.getLastToken(node)!;

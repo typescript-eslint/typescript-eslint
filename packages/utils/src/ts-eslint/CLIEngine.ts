@@ -119,7 +119,7 @@ namespace CLIEngine {
     globals?: string[];
     ignore?: boolean;
     ignorePath?: string;
-    ignorePattern?: string | string[];
+    ignorePattern?: string[] | string;
     useEslintrc?: boolean;
     parser?: string;
     parserOptions?: Linter.ParserOptions;

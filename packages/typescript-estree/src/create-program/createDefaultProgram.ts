@@ -32,7 +32,12 @@ function createDefaultProgram(
   const commandLine = ts.getParsedCommandLineOfConfigFile(
     tsconfigPath,
     createDefaultCompilerOptionsFromExtra(parseSettings),
-    { ...ts.sys, onUnRecoverableConfigFileDiagnostic: () => {} },
+    {
+      ...ts.sys,
+      // TODO: file issue on TypeScript to suggest making optional?
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      onUnRecoverableConfigFileDiagnostic: () => {},
+    },
   );
 
   if (!commandLine) {

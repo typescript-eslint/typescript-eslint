@@ -14,7 +14,7 @@ type Options = [
     after: boolean;
   },
 ];
-type MessageIds = 'unexpected' | 'missing';
+type MessageIds = 'missing' | 'unexpected';
 
 export default createRule<Options, MessageIds>({
   name: 'comma-spacing',

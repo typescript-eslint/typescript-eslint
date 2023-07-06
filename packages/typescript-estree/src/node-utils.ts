@@ -2,7 +2,7 @@ import * as ts from 'typescript';
 
 import { getModifiers } from './getModifiers';
 import { xhtmlEntities } from './jsx/xhtml-entities';
-import type { TSESTree } from './ts-estree';
+import type { TSESTree, TSNode } from './ts-estree';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from './ts-estree';
 import { typescriptVersionIsAtLeast } from './version-check';
 
@@ -144,8 +144,8 @@ export function getBinaryExpressionType<T extends ts.SyntaxKind>(
   operator: ts.Token<T>,
 ):
   | AST_NODE_TYPES.AssignmentExpression
-  | AST_NODE_TYPES.LogicalExpression
-  | AST_NODE_TYPES.BinaryExpression {
+  | AST_NODE_TYPES.BinaryExpression
+  | AST_NODE_TYPES.LogicalExpression {
   if (isAssignmentOperator(operator)) {
     return AST_NODE_TYPES.AssignmentExpression;
   } else if (isLogicalOperator(operator)) {
@@ -193,10 +193,10 @@ export function getLocFor(
  */
 export function canContainDirective(
   node:
-    | ts.SourceFile
     | ts.Block
+    | ts.ClassStaticBlockDeclaration
     | ts.ModuleBlock
-    | ts.ClassStaticBlockDeclaration,
+    | ts.SourceFile,
 ): boolean {
   if (node.kind === ts.SyntaxKind.Block) {
     switch (node.parent.kind) {
@@ -257,7 +257,7 @@ export function isJSXToken(node: ts.Node): boolean {
  */
 export function getDeclarationKind(
   node: ts.VariableDeclarationList,
-): 'let' | 'const' | 'var' {
+): 'const' | 'let' | 'var' {
   if (node.flags & ts.NodeFlags.Let) {
     return 'let';
   }
@@ -274,7 +274,7 @@ export function getDeclarationKind(
  */
 export function getTSNodeAccessibility(
   node: ts.Node,
-): 'public' | 'protected' | 'private' | undefined {
+): 'private' | 'protected' | 'public' | undefined {
   const modifiers = getModifiers(node);
   if (modifiers == null) {
     return undefined;
@@ -414,10 +414,10 @@ export function isChainExpression(
  */
 export function isChildUnwrappableOptionalChain(
   node:
-    | ts.PropertyAccessExpression
-    | ts.ElementAccessExpression
     | ts.CallExpression
-    | ts.NonNullExpression,
+    | ts.ElementAccessExpression
+    | ts.NonNullExpression
+    | ts.PropertyAccessExpression,
   child: TSESTree.Node,
 ): boolean {
   return (
@@ -434,7 +434,7 @@ export function isChildUnwrappableOptionalChain(
  */
 export function getTokenType(
   token: ts.Identifier | ts.Token<ts.SyntaxKind>,
-): Exclude<AST_TOKEN_TYPES, AST_TOKEN_TYPES.Line | AST_TOKEN_TYPES.Block> {
+): Exclude<AST_TOKEN_TYPES, AST_TOKEN_TYPES.Block | AST_TOKEN_TYPES.Line> {
   let keywordKind: ts.SyntaxKind | undefined;
   if (isAtLeast50 && token.kind === SyntaxKind.Identifier) {
     keywordKind = ts.identifierToKeywordKind(token as ts.Identifier);
@@ -763,4 +763,87 @@ export function getContainingFunction(
   node: ts.Node,
 ): ts.SignatureDeclaration | undefined {
   return ts.findAncestor(node.parent, ts.isFunctionLike);
+}
+
+// `ts.hasAbstractModifier`
+function hasAbstractModifier(node: ts.Node): boolean {
+  return hasModifier(SyntaxKind.AbstractKeyword, node);
+}
+
+// `ts.getThisParameter`
+function getThisParameter(
+  signature: ts.SignatureDeclaration,
+): ts.ParameterDeclaration | null {
+  if (signature.parameters.length && !ts.isJSDocSignature(signature)) {
+    const thisParameter = signature.parameters[0];
+    if (parameterIsThisKeyword(thisParameter)) {
+      return thisParameter;
+    }
+  }
+
+  return null;
+}
+
+// `ts.parameterIsThisKeyword`
+function parameterIsThisKeyword(parameter: ts.ParameterDeclaration): boolean {
+  return isThisIdentifier(parameter.name);
+}
+
+// Rewrite version of `ts.nodeCanBeDecorated`
+// Returns `true` for both `useLegacyDecorators: true` and `useLegacyDecorators: false`
+export function nodeCanBeDecorated(node: TSNode): boolean {
+  switch (node.kind) {
+    case SyntaxKind.ClassDeclaration:
+      return true;
+    case SyntaxKind.ClassExpression:
+      // `ts.nodeCanBeDecorated` returns `false` if `useLegacyDecorators: true`
+      return true;
+    case SyntaxKind.PropertyDeclaration: {
+      const { parent } = node;
+
+      // `ts.nodeCanBeDecorated` uses this if `useLegacyDecorators: true`
+      if (ts.isClassDeclaration(parent)) {
+        return true;
+      }
+
+      // `ts.nodeCanBeDecorated` uses this if `useLegacyDecorators: false`
+      if (ts.isClassLike(parent) && !hasAbstractModifier(node)) {
+        return true;
+      }
+
+      return false;
+    }
+    case SyntaxKind.GetAccessor:
+    case SyntaxKind.SetAccessor:
+    case SyntaxKind.MethodDeclaration: {
+      const { parent } = node;
+      // In `ts.nodeCanBeDecorated`
+      // when `useLegacyDecorators: true` uses `ts.isClassDeclaration`
+      // when `useLegacyDecorators: true` uses `ts.isClassLike`
+      return (
+        Boolean(node.body) &&
+        (ts.isClassDeclaration(parent) || ts.isClassLike(parent))
+      );
+    }
+    case SyntaxKind.Parameter: {
+      // `ts.nodeCanBeDecorated` returns `false` if `useLegacyDecorators: false`
+
+      const { parent } = node;
+      const grandparent = parent.parent;
+
+      return (
+        Boolean(parent) &&
+        'body' in parent &&
+        Boolean(parent.body) &&
+        (parent.kind === SyntaxKind.Constructor ||
+          parent.kind === SyntaxKind.MethodDeclaration ||
+          parent.kind === SyntaxKind.SetAccessor) &&
+        getThisParameter(parent) !== node &&
+        Boolean(grandparent) &&
+        grandparent.kind === SyntaxKind.ClassDeclaration
+      );
+    }
+  }
+
+  return false;
 }

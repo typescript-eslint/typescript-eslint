@@ -55,7 +55,7 @@ interface AnalyzeOptions {
   /**
    * The source type of the script.
    */
-  sourceType?: 'script' | 'module';
+  sourceType?: 'module' | 'script';
 
   /**
    * Emit design-type metadata for decorated declarations in source.

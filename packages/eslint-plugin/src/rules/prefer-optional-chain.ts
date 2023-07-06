@@ -9,10 +9,10 @@ type ValidChainTarget =
   | TSESTree.CallExpression
   | TSESTree.ChainExpression
   | TSESTree.Identifier
-  | TSESTree.PrivateIdentifier
   | TSESTree.MemberExpression
-  | TSESTree.ThisExpression
-  | TSESTree.MetaProperty;
+  | TSESTree.MetaProperty
+  | TSESTree.PrivateIdentifier
+  | TSESTree.ThisExpression;
 
 /*
 The AST is always constructed such the first element is always the deepest element.
@@ -479,7 +479,7 @@ interface ReportIfMoreThanOneOptions {
   sourceCode: Readonly<TSESLint.SourceCode>;
   context: Readonly<
     TSESLint.RuleContext<
-      'preferOptionalChain' | 'optionalChainSuggest',
+      'optionalChainSuggest' | 'preferOptionalChain',
       never[]
     >
   >;
