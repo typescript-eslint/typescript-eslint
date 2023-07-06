@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`type-declaration mapped-named 1`] = `
+exports[`type-declaration mapped-named-literal-referenced 1`] = `
 ScopeManager {
   variables: [
     ImplicitGlobalConstTypeVariable,
@@ -13,7 +13,7 @@ ScopeManager {
       ],
       name: "T",
       references: [
-        Reference$5 {
+        Reference$2 {
           identifier: Identifier<"T">,
           isRead: true,
           isTypeReference: true,
@@ -28,11 +28,11 @@ ScopeManager {
     Variable$3 {
       defs: [
         TypeDefinition$2 {
-          name: Identifier<"A">,
+          name: Identifier<"M">,
           node: TSTypeAliasDeclaration$2,
         },
       ],
-      name: "A",
+      name: "M",
       references: [],
       isValueVariable: false,
       isTypeVariable: true,
@@ -42,20 +42,11 @@ ScopeManager {
     GlobalScope$1 {
       block: Program$3,
       isStrict: false,
-      references: [
-        Reference$1 {
-          identifier: Identifier<"Record">,
-          isRead: true,
-          isTypeReference: true,
-          isValueReference: false,
-          isWrite: false,
-          resolved: null,
-        },
-      ],
+      references: [],
       set: Map {
         "const" => ImplicitGlobalConstTypeVariable,
         "T" => Variable$2,
-        "A" => Variable$3,
+        "M" => Variable$3,
       },
       type: "global",
       upper: null,
@@ -69,31 +60,15 @@ ScopeManager {
       block: TSMappedType$4,
       isStrict: true,
       references: [
-        Reference$2 {
-          identifier: Identifier<"k">,
+        Reference$1 {
+          identifier: Identifier<"K">,
           isRead: true,
           isTypeReference: true,
           isValueReference: false,
           isWrite: false,
           resolved: null,
         },
-        Reference$3 {
-          identifier: Identifier<"k">,
-          isRead: true,
-          isTypeReference: true,
-          isValueReference: false,
-          isWrite: false,
-          resolved: null,
-        },
-        Reference$4 {
-          identifier: Identifier<"k">,
-          isRead: true,
-          isTypeReference: true,
-          isValueReference: false,
-          isWrite: false,
-          resolved: null,
-        },
-        Reference$5,
+        Reference$2,
       ],
       set: Map {
         "k" => Variable$4,

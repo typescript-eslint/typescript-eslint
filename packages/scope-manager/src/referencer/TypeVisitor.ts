@@ -197,7 +197,13 @@ class TypeVisitor extends Visitor {
   protected TSMappedType(node: TSESTree.TSMappedType): void {
     // mapped types key can only be referenced within their return value
     this.#referencer.scopeManager.nestMappedTypeScope(node);
+    // So now we'll need to update our visitor so that we declare the key as a type variable, then visit the constraint, then the name type, then the type annotation.
+    // this.visit(node.key);
+    // this.visit(node.constraint);
+    // this.visit(node.nameType);
+    // this.visit(node.typeAnnotation);
     this.visitChildren(node);
+
     this.#referencer.close(node);
   }
 
