@@ -1,6 +1,7 @@
-namespace JSX {
-  export interface IntrinsicElements {
+declare namespace JSX {
+  interface IntrinsicElements {
     'foo-bar:baz-bam': any;
+    foo: any;
   }
 }
 
