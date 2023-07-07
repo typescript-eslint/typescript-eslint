@@ -197,8 +197,21 @@ class TypeVisitor extends Visitor {
   protected TSMappedType(node: TSESTree.TSMappedType): void {
     // mapped types key can only be referenced within their return value
     this.#referencer.scopeManager.nestMappedTypeScope(node);
-    this.visitChildren(node);
-
+    this.#referencer
+      .currentScope()
+      .defineIdentifier(
+        node.key,
+        new TypeDefinition(
+          node.key,
+          node.parent as
+            | TSESTree.TSInterfaceDeclaration
+            | TSESTree.TSTypeAliasDeclaration
+            | TSESTree.TSTypeParameter,
+        ),
+      );
+    this.visit(node.constraint);
+    this.visit(node.nameType);
+    this.visit(node.typeAnnotation);
     this.#referencer.close(node);
   }
 

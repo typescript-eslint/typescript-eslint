@@ -13,7 +13,7 @@ ScopeManager {
       ],
       name: "T",
       references: [
-        Reference$4 {
+        Reference$3 {
           identifier: Identifier<"T">,
           isRead: true,
           isTypeReference: true,
@@ -34,6 +34,26 @@ ScopeManager {
       ],
       name: "A",
       references: [],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$4 {
+      defs: [
+        TypeDefinition$3 {
+          name: Identifier<"k">,
+        },
+      ],
+      name: "k",
+      references: [
+        Reference$2 {
+          identifier: Identifier<"k">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$4,
+        },
+      ],
       isValueVariable: false,
       isTypeVariable: true,
     },
@@ -69,28 +89,17 @@ ScopeManager {
       block: TSMappedType$4,
       isStrict: true,
       references: [
-        Reference$2 {
-          identifier: Identifier<"k">,
-          isRead: true,
-          isTypeReference: true,
-          isValueReference: false,
-          isWrite: false,
-          resolved: null,
-        },
-        Reference$3 {
-          identifier: Identifier<"k">,
-          isRead: true,
-          isTypeReference: true,
-          isValueReference: false,
-          isWrite: false,
-          resolved: null,
-        },
-        Reference$4,
+        Reference$2,
+        Reference$3,
       ],
-      set: Map {},
+      set: Map {
+        "k" => Variable$4,
+      },
       type: "mappedType",
       upper: GlobalScope$1,
-      variables: [],
+      variables: [
+        Variable$4,
+      ],
     },
   ],
 }
