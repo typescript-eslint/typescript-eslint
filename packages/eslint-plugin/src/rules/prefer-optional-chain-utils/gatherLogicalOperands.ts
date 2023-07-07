@@ -125,10 +125,10 @@ export function gatherLogicalOperands(
   options: PreferOptionalChainOptions,
 ): {
   operands: Operand[];
-  seenLogicals: Set<TSESTree.LogicalExpression>;
+  newlySeenLogicals: Set<TSESTree.LogicalExpression>;
 } {
   const result: Operand[] = [];
-  const { operands, seenLogicals } = flattenLogicalOperands(node);
+  const { operands, newlySeenLogicals } = flattenLogicalOperands(node);
 
   for (const operand of operands) {
     switch (operand.type) {
@@ -293,7 +293,7 @@ export function gatherLogicalOperands(
 
   return {
     operands: result,
-    seenLogicals,
+    newlySeenLogicals,
   };
 
   /*
@@ -319,10 +319,10 @@ export function gatherLogicalOperands(
   */
   function flattenLogicalOperands(node: TSESTree.LogicalExpression): {
     operands: TSESTree.Expression[];
-    seenLogicals: Set<TSESTree.LogicalExpression>;
+    newlySeenLogicals: Set<TSESTree.LogicalExpression>;
   } {
     const operands: TSESTree.Expression[] = [];
-    const seenLogicals = new Set<TSESTree.LogicalExpression>([node]);
+    const newlySeenLogicals = new Set<TSESTree.LogicalExpression>([node]);
 
     const stack: TSESTree.Expression[] = [node.right, node.left];
     let current: TSESTree.Expression | undefined;
@@ -331,7 +331,7 @@ export function gatherLogicalOperands(
         current.type === AST_NODE_TYPES.LogicalExpression &&
         current.operator === node.operator
       ) {
-        seenLogicals.add(current);
+        newlySeenLogicals.add(current);
         stack.push(current.right);
         stack.push(current.left);
       } else {
@@ -341,7 +341,7 @@ export function gatherLogicalOperands(
 
     return {
       operands,
-      seenLogicals,
+      newlySeenLogicals,
     };
   }
 

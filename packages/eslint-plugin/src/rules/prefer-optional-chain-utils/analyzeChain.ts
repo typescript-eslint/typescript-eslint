@@ -239,6 +239,10 @@ function getFixer(
       //        the test location of an if/while/etc statement.
       //        but it's quite complex to do this without false-negatives, so
       //        for now we'll just be over-eager with our matching.
+      //
+      //        it's MUCH better to false-positive here and only provide a
+      //        suggestion fixer, rather than false-negative and autofix to
+      //        broken code.
     }
   }
 
@@ -498,7 +502,17 @@ export function analyzeChain(
     }
 
     // we've reached the end of a chain of logical expressions
-    // we know the validated
+    // i.e. the current operand doesn't belong to the previous chain.
+    //
+    // we don't want to throw away the current operand otherwise we will skip it
+    // and that can cause us to miss chains. So instead we seed the new chain
+    // with the current operand
+    //
+    // eg this means we can catch cases like:
+    //     unrelated != null && foo != null && foo.bar != null;
+    //     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ first "chain"
+    //                          ^^^^^^^^^^^ newChainSeed
+    //                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ second chain
     subChain = newChainSeed ? [...newChainSeed] : [];
   };
 
@@ -510,12 +524,14 @@ export function analyzeChain(
 
     const validatedOperands = analyzeOperand(parserServices, operand, i, chain);
     if (!validatedOperands) {
-      // TODO - check if the name is a superset/equal - if it is, then it was
-      //        likely intended to be part of the chain and something we should
-      //        include in the report, eg
-      //        foo == null || foo.bar;
-      //        ^^^^^^^^^^^ valid OR chain
-      //                       ^^^^^^^ invalid OR chain logical, but still part of the chain for combination purposes
+      // TODO - #7170
+      // check if the name is a superset/equal - if it is, then it likely
+      // intended to be part of the chain and something we should include in the
+      // report, eg
+      //     foo == null || foo.bar;
+      //     ^^^^^^^^^^^ valid OR chain
+      //                    ^^^^^^^ invalid OR chain logical, but still part of
+      //                            the chain for combination purposes
 
       maybeReportThenReset();
       continue;

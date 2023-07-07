@@ -173,10 +173,13 @@ export default util.createRule<
           return;
         }
 
-        const { operands, seenLogicals: newSeenLogicals } =
-          gatherLogicalOperands(node, parserServices, options);
+        const { operands, newlySeenLogicals } = gatherLogicalOperands(
+          node,
+          parserServices,
+          options,
+        );
 
-        for (const logical of newSeenLogicals) {
+        for (const logical of newlySeenLogicals) {
           seenLogicals.add(logical);
         }
 
@@ -212,33 +215,3 @@ export default util.createRule<
     };
   },
 });
-
-/*
-TODO
-
-```
-declare const foo: { bar: number } | null;
-foo === null || foo.bar;
-foo !== null && !foo.bar;
-```
-
-In the first case foo.bar is seen by my code as a "truthy boolean" check - which
-isn't a valid operand in an "OR" chain.
-Similarly in the second case !foo.bar is seen as a "falsy boolean" check - which
-isn't a valid operand in an "AND" chain.
-
-This theme carries on to the following styles of code:
-
-```
-foo && foo.bar && foo.bar.baz === 1
-// rule will currently fix to
-foo?.bar && foo.bar.baz === 1
-```
-
-Wherein the last operand is "invalid" when evaluating the chain.
-
-For now we do not handle these cases to keep the logic simpler - however we will
-probably want to handle them in future.
-This sort of check is easy for a human to do visually but is hard for code to do
-based on the AST.
-*/
