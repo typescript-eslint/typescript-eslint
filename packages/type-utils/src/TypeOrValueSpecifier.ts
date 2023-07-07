@@ -1,6 +1,6 @@
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import path from 'path';
-import * as ts from 'typescript';
+import type * as ts from 'typescript';
 
 interface FileSpecifier {
   from: 'file';
@@ -125,7 +125,7 @@ function specifierNameMatches(type: ts.Type, name: string | string[]): boolean {
   if (symbol === undefined) {
     return false;
   }
-  return name.some(item => item === symbol.escapedName);
+  return name.some(item => item === (symbol.escapedName as string));
 }
 
 function typeDeclaredInFile(

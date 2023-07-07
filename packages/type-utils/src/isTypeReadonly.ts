@@ -85,7 +85,7 @@ function isTypeReadonlyArrayOrTuple(
       type.getSymbol(),
       ESLintUtils.NullThrowsReasons.MissingToken('symbol', 'array type'),
     );
-    const escapedName = symbol.getEscapedName();
+    const escapedName = symbol.getEscapedName() as string;
     if (escapedName === 'Array') {
       return Readonlyness.Mutable;
     }
