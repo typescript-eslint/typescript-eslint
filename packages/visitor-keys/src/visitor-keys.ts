@@ -109,11 +109,27 @@ type AdditionalKeys = {
   >]: readonly GetNodeTypeKeys<T>[];
 };
 
-/**
- * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT NOTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- *
- * The key arrays should be sorted in the order in which you would want to visit
- * the child keys - don't just sort them alphabetically.
+/*
+ ********************************** IMPORTANT NOTE ********************************
+ *                                                                                *
+ * The key arrays should be sorted in the order in which you would want to visit  *
+ * the child keys.                                                                *
+ *                                                                                *
+ *                        DO NOT SORT THEM ALPHABETICALLY!                        *
+ *                                                                                *
+ * They should be sorted in the order that they appear in the source code.        *
+ * For example:                                                                   *
+ *                                                                                *
+ * class Foo extends Bar { prop: 1 }                                              *
+ * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ClassDeclaration                             *
+ *       ^^^ id      ^^^ superClass                                               *
+ *                       ^^^^^^^^^^^ body                                         *
+ *                                                                                *
+ * It would be incorrect to provide the visitor keys ['body', 'id', 'superClass'] *
+ * because the body comes AFTER everything else in the source code.               *
+ * Instead the correct ordering would be ['id', 'superClass', 'body'].            *
+ *                                                                                *
+ **********************************************************************************
  */
 
 const SharedVisitorKeys = (() => {

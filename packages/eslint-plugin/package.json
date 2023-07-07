@@ -51,6 +51,7 @@
     "generate:configs": "yarn tsx tools/generate-configs.ts",
     "lint": "nx lint",
     "test": "jest --coverage",
+    "test-single": "jest --no-coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
@@ -58,6 +59,7 @@
     "@typescript-eslint/scope-manager": "5.61.0",
     "@typescript-eslint/type-utils": "5.61.0",
     "@typescript-eslint/utils": "5.61.0",
+    "@typescript-eslint/visitor-keys": "5.61.0",
     "debug": "^4.3.4",
     "grapheme-splitter": "^1.0.4",
     "graphemer": "^1.4.0",
@@ -65,7 +67,7 @@
     "natural-compare-lite": "^1.4.0",
     "natural-compare": "^1.4.0",
     "semver": "^7.5.0",
-    "ts-api-utils": "^1.0.0"
+    "ts-api-utils": "^1.0.1"
   },
   "devDependencies": {
     "@types/debug": "*",

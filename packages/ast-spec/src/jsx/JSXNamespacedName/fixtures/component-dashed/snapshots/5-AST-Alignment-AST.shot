@@ -13,104 +13,134 @@ exports[`AST Fixtures jsx JSXNamespacedName component-dashed AST Alignment - AST
         body: TSModuleBlock {
           type: 'TSModuleBlock',
           body: Array [
-            ExportNamedDeclaration {
-              type: 'ExportNamedDeclaration',
-              assertions: Array [],
-              declaration: TSInterfaceDeclaration {
-                type: 'TSInterfaceDeclaration',
-                body: TSInterfaceBody {
-                  type: 'TSInterfaceBody',
-                  body: Array [
-                    TSPropertySignature {
-                      type: 'TSPropertySignature',
-                      computed: false,
-                      key: Literal {
-                        type: 'Literal',
-                        raw: '\\'foo-bar:baz-bam\\'',
-                        value: 'foo-bar:baz-bam',
-
-                        range: [59, 76],
-                        loc: {
-                          start: { column: 4, line: 3 },
-                          end: { column: 21, line: 3 },
-                        },
-                      },
+            TSInterfaceDeclaration {
+              type: 'TSInterfaceDeclaration',
+              body: TSInterfaceBody {
+                type: 'TSInterfaceBody',
+                body: Array [
+                  TSPropertySignature {
+                    type: 'TSPropertySignature',
+                    computed: false,
+                    key: Identifier {
+                      type: 'Identifier',
+-                     decorators: Array [],
+                      name: 'foo',
 -                     optional: false,
--                     readonly: false,
--                     static: false,
-                      typeAnnotation: TSTypeAnnotation {
-                        type: 'TSTypeAnnotation',
-                        typeAnnotation: TSAnyKeyword {
-                          type: 'TSAnyKeyword',
 
-                          range: [78, 81],
-                          loc: {
-                            start: { column: 23, line: 3 },
-                            end: { column: 26, line: 3 },
-                          },
-                        },
-
-                        range: [76, 81],
-                        loc: {
-                          start: { column: 21, line: 3 },
-                          end: { column: 26, line: 3 },
-                        },
-                      },
-
-                      range: [59, 82],
+                      range: [60, 63],
                       loc: {
                         start: { column: 4, line: 3 },
-                        end: { column: 27, line: 3 },
+                        end: { column: 7, line: 3 },
                       },
                     },
-                  ],
+-                   optional: false,
+-                   readonly: false,
+-                   static: false,
+                    typeAnnotation: TSTypeAnnotation {
+                      type: 'TSTypeAnnotation',
+                      typeAnnotation: TSAnyKeyword {
+                        type: 'TSAnyKeyword',
 
-                  range: [53, 86],
-                  loc: {
-                    start: { column: 37, line: 2 },
-                    end: { column: 3, line: 4 },
+                        range: [65, 68],
+                        loc: {
+                          start: { column: 9, line: 3 },
+                          end: { column: 12, line: 3 },
+                        },
+                      },
+
+                      range: [63, 68],
+                      loc: {
+                        start: { column: 7, line: 3 },
+                        end: { column: 12, line: 3 },
+                      },
+                    },
+
+                    range: [60, 69],
+                    loc: {
+                      start: { column: 4, line: 3 },
+                      end: { column: 13, line: 3 },
+                    },
                   },
-                },
--               declare: false,
--               extends: Array [],
-                id: Identifier {
-                  type: 'Identifier',
--                 decorators: Array [],
-                  name: 'IntrinsicElements',
--                 optional: false,
+                  TSPropertySignature {
+                    type: 'TSPropertySignature',
+                    computed: false,
+                    key: Literal {
+                      type: 'Literal',
+                      raw: '\\'foo-bar:baz-bam\\'',
+                      value: 'foo-bar:baz-bam',
 
-                  range: [35, 52],
-                  loc: {
-                    start: { column: 19, line: 2 },
-                    end: { column: 36, line: 2 },
+                      range: [74, 91],
+                      loc: {
+                        start: { column: 4, line: 4 },
+                        end: { column: 21, line: 4 },
+                      },
+                    },
+-                   optional: false,
+-                   readonly: false,
+-                   static: false,
+                    typeAnnotation: TSTypeAnnotation {
+                      type: 'TSTypeAnnotation',
+                      typeAnnotation: TSAnyKeyword {
+                        type: 'TSAnyKeyword',
+
+                        range: [93, 96],
+                        loc: {
+                          start: { column: 23, line: 4 },
+                          end: { column: 26, line: 4 },
+                        },
+                      },
+
+                      range: [91, 96],
+                      loc: {
+                        start: { column: 21, line: 4 },
+                        end: { column: 26, line: 4 },
+                      },
+                    },
+
+                    range: [74, 97],
+                    loc: {
+                      start: { column: 4, line: 4 },
+                      end: { column: 27, line: 4 },
+                    },
                   },
-                },
+                ],
 
-                range: [25, 86],
+                range: [54, 101],
                 loc: {
-                  start: { column: 9, line: 2 },
-                  end: { column: 3, line: 4 },
+                  start: { column: 30, line: 2 },
+                  end: { column: 3, line: 5 },
                 },
               },
-              exportKind: 'type',
-              source: null,
-              specifiers: Array [],
+-             declare: false,
+-             extends: Array [],
+              id: Identifier {
+                type: 'Identifier',
+-               decorators: Array [],
+                name: 'IntrinsicElements',
+-               optional: false,
 
-              range: [18, 86],
+                range: [36, 53],
+                loc: {
+                  start: { column: 12, line: 2 },
+                  end: { column: 29, line: 2 },
+                },
+              },
+
+              range: [26, 101],
               loc: {
                 start: { column: 2, line: 2 },
-                end: { column: 3, line: 4 },
+                end: { column: 3, line: 5 },
               },
             },
           ],
 
-          range: [14, 88],
+          range: [22, 103],
           loc: {
-            start: { column: 14, line: 1 },
-            end: { column: 1, line: 5 },
+            start: { column: 22, line: 1 },
+            end: { column: 1, line: 6 },
           },
         },
--       declare: false,
+        declare: true,
 -       global: false,
         id: Identifier {
           type: 'Identifier',
@@ -118,18 +148,85 @@ exports[`AST Fixtures jsx JSXNamespacedName component-dashed AST Alignment - AST
           name: 'JSX',
 -         optional: false,
 
-          range: [10, 13],
+          range: [18, 21],
           loc: {
-            start: { column: 10, line: 1 },
-            end: { column: 13, line: 1 },
+            start: { column: 18, line: 1 },
+            end: { column: 21, line: 1 },
           },
         },
 -       kind: 'namespace',
 
-        range: [0, 88],
+        range: [0, 103],
         loc: {
           start: { column: 0, line: 1 },
-          end: { column: 1, line: 5 },
+          end: { column: 1, line: 6 },
+        },
+      },
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'componentBasic',
+-             optional: false,
+
+              range: [201, 215],
+              loc: {
+                start: { column: 6, line: 9 },
+                end: { column: 20, line: 9 },
+              },
+            },
+            init: JSXElement {
+              type: 'JSXElement',
+              children: Array [],
+              closingElement: null,
+              openingElement: JSXOpeningElement {
+                type: 'JSXOpeningElement',
+                attributes: Array [],
+                name: JSXIdentifier {
+                  type: 'JSXIdentifier',
+                  name: 'foo',
+
+                  range: [219, 222],
+                  loc: {
+                    start: { column: 24, line: 9 },
+                    end: { column: 27, line: 9 },
+                  },
+                },
+                selfClosing: true,
+
+                range: [218, 225],
+                loc: {
+                  start: { column: 23, line: 9 },
+                  end: { column: 30, line: 9 },
+                },
+              },
+
+              range: [218, 225],
+              loc: {
+                start: { column: 23, line: 9 },
+                end: { column: 30, line: 9 },
+              },
+            },
+
+            range: [201, 225],
+            loc: {
+              start: { column: 6, line: 9 },
+              end: { column: 30, line: 9 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'const',
+
+        range: [195, 226],
+        loc: {
+          start: { column: 0, line: 9 },
+          end: { column: 31, line: 9 },
         },
       },
       VariableDeclaration {
@@ -144,10 +241,10 @@ exports[`AST Fixtures jsx JSXNamespacedName component-dashed AST Alignment - AST
               name: 'componentDashed',
 -             optional: false,
 
-              range: [96, 111],
+              range: [323, 338],
               loc: {
-                start: { column: 6, line: 7 },
-                end: { column: 21, line: 7 },
+                start: { column: 6, line: 11 },
+                end: { column: 21, line: 11 },
               },
             },
             init: JSXElement {
@@ -163,68 +260,68 @@ exports[`AST Fixtures jsx JSXNamespacedName component-dashed AST Alignment - AST
                     type: 'JSXIdentifier',
                     name: 'baz-bam',
 
-                    range: [123, 130],
+                    range: [350, 357],
                     loc: {
-                      start: { column: 33, line: 7 },
-                      end: { column: 40, line: 7 },
+                      start: { column: 33, line: 11 },
+                      end: { column: 40, line: 11 },
                     },
                   },
                   namespace: JSXIdentifier {
                     type: 'JSXIdentifier',
                     name: 'foo-bar',
 
-                    range: [115, 122],
+                    range: [342, 349],
                     loc: {
-                      start: { column: 25, line: 7 },
-                      end: { column: 32, line: 7 },
+                      start: { column: 25, line: 11 },
+                      end: { column: 32, line: 11 },
                     },
                   },
 
-                  range: [115, 130],
+                  range: [342, 357],
                   loc: {
-                    start: { column: 25, line: 7 },
-                    end: { column: 40, line: 7 },
+                    start: { column: 25, line: 11 },
+                    end: { column: 40, line: 11 },
                   },
                 },
                 selfClosing: true,
 
-                range: [114, 133],
+                range: [341, 360],
                 loc: {
-                  start: { column: 24, line: 7 },
-                  end: { column: 43, line: 7 },
+                  start: { column: 24, line: 11 },
+                  end: { column: 43, line: 11 },
                 },
               },
 
-              range: [114, 133],
+              range: [341, 360],
               loc: {
-                start: { column: 24, line: 7 },
-                end: { column: 43, line: 7 },
+                start: { column: 24, line: 11 },
+                end: { column: 43, line: 11 },
               },
             },
 
-            range: [96, 133],
+            range: [323, 360],
             loc: {
-              start: { column: 6, line: 7 },
-              end: { column: 43, line: 7 },
+              start: { column: 6, line: 11 },
+              end: { column: 43, line: 11 },
             },
           },
         ],
 -       declare: false,
         kind: 'const',
 
-        range: [90, 134],
+        range: [317, 361],
         loc: {
-          start: { column: 0, line: 7 },
-          end: { column: 44, line: 7 },
+          start: { column: 0, line: 11 },
+          end: { column: 44, line: 11 },
         },
       },
     ],
     sourceType: 'script',
 
-    range: [0, 135],
+    range: [0, 362],
     loc: {
       start: { column: 0, line: 1 },
-      end: { column: 0, line: 8 },
+      end: { column: 0, line: 12 },
     },
   }"
 `;

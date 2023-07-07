@@ -72,9 +72,8 @@ export default util.createRule<Options, MessageIds>({
     ): boolean => {
       return !!(
         allowWithDecorator &&
-        node &&
-        node.decorators &&
-        node.decorators.length
+        node?.decorators &&
+        node.decorators.length !== 0
       );
     };
 

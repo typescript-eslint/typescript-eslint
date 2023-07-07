@@ -198,7 +198,7 @@ export default util.createRule<Options, MessageIds>({
         // transform it to a BinaryExpression
         return rules['BinaryExpression, LogicalExpression']({
           type: AST_NODE_TYPES.BinaryExpression,
-          operator: 'as',
+          operator: 'as' as any,
           left: node.expression,
           // the first typeAnnotation includes the as token
           right: node.typeAnnotation as any,
@@ -217,7 +217,7 @@ export default util.createRule<Options, MessageIds>({
           test: {
             parent: node,
             type: AST_NODE_TYPES.BinaryExpression,
-            operator: 'extends',
+            operator: 'extends' as any,
             left: node.checkType as any,
             right: node.extendsType as any,
 

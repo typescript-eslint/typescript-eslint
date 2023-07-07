@@ -158,7 +158,7 @@ Miscellaneous changes to all shared configurations include:
    'no-empty-function': '...',
    '@typescript-eslint/no-empty-function': '...',
    '@typescript-eslint/no-empty-interface': '...',
--  '@typescript-eslint/no-explicit-any': '...',
+   '@typescript-eslint/no-explicit-any': '...',
    '@typescript-eslint/no-extra-non-null-assertion': '...',
 -  'no-extra-semi': '...',
 -  '@typescript-eslint/no-extra-semi': '...',
@@ -179,8 +179,6 @@ Miscellaneous changes to all shared configurations include:
 +  '@typescript-eslint/prefer-for-of': '...',
 +  '@typescript-eslint/prefer-function-type': '...',
    '@typescript-eslint/prefer-namespace-keyword': '...',
-+  '@typescript-eslint/prefer-optional-chain': '...',
-+  '@typescript-eslint/sort-type-constituents': '...',
    '@typescript-eslint/triple-slash-reference': '...',
 }
 ```
@@ -209,13 +207,12 @@ Miscellaneous changes to all shared configurations include:
    '@typescript-eslint/no-array-constructor': '...',
 +  '@typescript-eslint/no-base-to-string': '...',
 +  '@typescript-eslint/no-confusing-non-null-assertion': '...',
-+  '@typescript-eslint/no-confusing-void-expression': '...',
 +  '@typescript-eslint/no-duplicate-enum-values': '...',
 +  '@typescript-eslint/no-duplicate-type-constituents': '...',
    'no-empty-function': '...',
    '@typescript-eslint/no-empty-function': '...',
    '@typescript-eslint/no-empty-interface': '...',
--  '@typescript-eslint/no-explicit-any': '...',
+   '@typescript-eslint/no-explicit-any': '...',
    '@typescript-eslint/no-extra-non-null-assertion': '...',
 -  'no-extra-semi': '...',
 -  '@typescript-eslint/no-extra-semi': '...',
@@ -257,7 +254,6 @@ Miscellaneous changes to all shared configurations include:
    '@typescript-eslint/require-await': '...',
    '@typescript-eslint/restrict-plus-operands': '...',
    '@typescript-eslint/restrict-template-expressions': '...',
-+  '@typescript-eslint/sort-type-constituents': '...',
    '@typescript-eslint/triple-slash-reference': '...',
    '@typescript-eslint/unbound-method': '...',
 }
@@ -319,6 +315,29 @@ const v5RecommendedRequiringTypeChecking = {
   '@typescript-eslint/unbound-method': 'error',
 };
 
+const v6Recommended = {
+  '@typescript-eslint/ban-ts-comment': 'error',
+  '@typescript-eslint/ban-types': 'error',
+  'no-array-constructor': 'off',
+  '@typescript-eslint/no-array-constructor': 'error',
+  '@typescript-eslint/no-duplicate-enum-values': 'error',
+  '@typescript-eslint/no-explicit-any': 'error',
+  '@typescript-eslint/no-extra-non-null-assertion': 'error',
+  'no-loss-of-precision': 'off',
+  '@typescript-eslint/no-loss-of-precision': 'error',
+  '@typescript-eslint/no-misused-new': 'error',
+  '@typescript-eslint/no-namespace': 'error',
+  '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
+  '@typescript-eslint/no-this-alias': 'error',
+  '@typescript-eslint/no-unnecessary-type-constraint': 'error',
+  '@typescript-eslint/no-unsafe-declaration-merging': 'error',
+  'no-unused-vars': 'off',
+  '@typescript-eslint/no-unused-vars': 'error',
+  '@typescript-eslint/no-var-requires': 'error',
+  '@typescript-eslint/prefer-as-const': 'error',
+  '@typescript-eslint/triple-slash-reference': 'error',
+};
+
 const v6RecommendedTypeChecked = {
   '@typescript-eslint/await-thenable': 'error',
   '@typescript-eslint/ban-ts-comment': 'error',
@@ -328,6 +347,7 @@ const v6RecommendedTypeChecked = {
   '@typescript-eslint/no-base-to-string': 'error',
   '@typescript-eslint/no-duplicate-enum-values': 'error',
   '@typescript-eslint/no-duplicate-type-constituents': 'error',
+  '@typescript-eslint/no-explicit-any': 'error',
   '@typescript-eslint/no-extra-non-null-assertion': 'error',
   '@typescript-eslint/no-floating-promises': 'error',
   '@typescript-eslint/no-for-in-array': 'error',
@@ -362,28 +382,6 @@ const v6RecommendedTypeChecked = {
   '@typescript-eslint/unbound-method': 'error',
 };
 
-const v6Recommended = {
-  '@typescript-eslint/ban-ts-comment': 'error',
-  '@typescript-eslint/ban-types': 'error',
-  'no-array-constructor': 'off',
-  '@typescript-eslint/no-array-constructor': 'error',
-  '@typescript-eslint/no-duplicate-enum-values': 'error',
-  '@typescript-eslint/no-extra-non-null-assertion': 'error',
-  'no-loss-of-precision': 'off',
-  '@typescript-eslint/no-loss-of-precision': 'error',
-  '@typescript-eslint/no-misused-new': 'error',
-  '@typescript-eslint/no-namespace': 'error',
-  '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
-  '@typescript-eslint/no-this-alias': 'error',
-  '@typescript-eslint/no-unnecessary-type-constraint': 'error',
-  '@typescript-eslint/no-unsafe-declaration-merging': 'error',
-  'no-unused-vars': 'off',
-  '@typescript-eslint/no-unused-vars': 'error',
-  '@typescript-eslint/no-var-requires': 'error',
-  '@typescript-eslint/prefer-as-const': 'error',
-  '@typescript-eslint/triple-slash-reference': 'error',
-};
-
 const v6Stylistic = {
   '@typescript-eslint/adjacent-overload-signatures': 'error',
   '@typescript-eslint/array-type': 'error',
@@ -401,8 +399,6 @@ const v6Stylistic = {
   '@typescript-eslint/prefer-for-of': 'error',
   '@typescript-eslint/prefer-function-type': 'error',
   '@typescript-eslint/prefer-namespace-keyword': 'error',
-  '@typescript-eslint/prefer-optional-chain': 'error',
-  '@typescript-eslint/sort-type-constituents': 'error',
 };
 
 const v6StylisticTypeChecked = {
@@ -417,7 +413,6 @@ const v6StylisticTypeChecked = {
   'dot-notation': 'off',
   '@typescript-eslint/dot-notation': 'error',
   '@typescript-eslint/no-confusing-non-null-assertion': 'error',
-  '@typescript-eslint/no-confusing-void-expression': 'error',
   'no-empty-function': 'off',
   '@typescript-eslint/no-empty-function': 'error',
   '@typescript-eslint/no-empty-interface': 'error',
@@ -429,7 +424,6 @@ const v6StylisticTypeChecked = {
   '@typescript-eslint/prefer-nullish-coalescing': 'error',
   '@typescript-eslint/prefer-optional-chain': 'error',
   '@typescript-eslint/prefer-string-starts-ends-with': 'error',
-  '@typescript-eslint/sort-type-constituents': 'error',
 };
 
 function createDiffPatch(v5, v6) {
