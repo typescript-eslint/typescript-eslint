@@ -1,6 +1,7 @@
 import { getCanonicalFileName } from '@typescript-eslint/typescript-estree';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import path from 'path';
+import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
 interface FileSpecifier {
@@ -186,8 +187,7 @@ export function typeMatchesSpecifier(
   specifier: TypeOrValueSpecifier,
   program: ts.Program,
 ): boolean {
-  // TODO: use `tsutils.isErrorType(type)` -- That function doesn't exists yet.
-  if (type.intrinsicName === 'error') {
+  if (tsutils.isIntrinsicErrorType(type)) {
     return false;
   }
   if (typeof specifier === 'string') {
