@@ -8,7 +8,7 @@ const exampleRule = util.createRule<['value-a' | 'value-b'], never>({
     docs: {
       description: 'Detects something or other',
     },
-    schema: [{ enum: ['value-a', 'value-b'] }],
+    schema: [{ type: 'string', enum: ['value-a', 'value-b'] }],
     messages: {},
   },
   defaultOptions: ['value-a'],
