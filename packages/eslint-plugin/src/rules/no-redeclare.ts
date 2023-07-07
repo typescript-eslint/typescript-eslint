@@ -67,8 +67,8 @@ export default util.createRule<Options, MessageIds>({
 
     function* iterateDeclarations(variable: TSESLint.Scope.Variable): Generator<
       {
-        type: 'builtin' | 'syntax' | 'comment';
-        node?: TSESTree.Identifier | TSESTree.Comment;
+        type: 'builtin' | 'comment' | 'syntax';
+        node?: TSESTree.Comment | TSESTree.Identifier;
         loc?: TSESTree.SourceLocation;
       },
       void,

@@ -1,7 +1,7 @@
 import React from 'react';
 
 export interface AlertBlockProps {
-  readonly type: 'success' | 'info' | 'note' | 'warning' | 'danger';
+  readonly type: 'danger' | 'info' | 'note' | 'success' | 'warning';
   readonly children: React.ReactNode;
 }
 

@@ -63,7 +63,7 @@ interface RuleMetaData<TMessageIds extends string> {
    * - `"suggestion"` means the rule is identifying something that could be done in a better way but no errors will occur if the code isn’t changed.
    * - `"layout"` means the rule cares primarily about whitespace, semicolons, commas, and parentheses, all the parts of the program that determine how the code looks rather than how it executes. These rules work on parts of the code that aren’t specified in the AST.
    */
-  type: 'suggestion' | 'problem' | 'layout';
+  type: 'layout' | 'problem' | 'suggestion';
   /**
    * The name of the rule this rule was replaced by, if it was deprecated.
    */
@@ -113,7 +113,7 @@ interface SuggestionReportDescriptor<TMessageIds extends string>
 
 type ReportFixFunction = (
   fixer: RuleFixer,
-) => null | RuleFix | readonly RuleFix[] | IterableIterator<RuleFix>;
+) => IterableIterator<RuleFix> | RuleFix | readonly RuleFix[] | null;
 type ReportSuggestionArray<TMessageIds extends string> =
   SuggestionReportDescriptor<TMessageIds>[];
 
@@ -153,18 +153,18 @@ interface ReportDescriptorNodeOptionalLoc {
    * An override of the location of the report
    */
   readonly loc?:
-    | Readonly<TSESTree.SourceLocation>
-    | Readonly<TSESTree.Position>;
+    | Readonly<TSESTree.Position>
+    | Readonly<TSESTree.SourceLocation>;
 }
 interface ReportDescriptorLocOnly {
   /**
    * An override of the location of the report
    */
-  loc: Readonly<TSESTree.SourceLocation> | Readonly<TSESTree.Position>;
+  loc: Readonly<TSESTree.Position> | Readonly<TSESTree.SourceLocation>;
 }
 type ReportDescriptor<TMessageIds extends string> =
   ReportDescriptorWithSuggestion<TMessageIds> &
-    (ReportDescriptorNodeOptionalLoc | ReportDescriptorLocOnly);
+    (ReportDescriptorLocOnly | ReportDescriptorNodeOptionalLoc);
 
 /**
  * Plugins can add their settings using declaration
@@ -432,11 +432,12 @@ interface RuleListenerCatchAllBaseCase {
   [nodeSelector: string]: RuleFunction | undefined;
 }
 // Interface to merge into for anyone that wants to add more selectors
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface RuleListenerExtension {}
 
 type RuleListener = RuleListenerBaseSelectors &
-  RuleListenerExitSelectors &
-  RuleListenerCatchAllBaseCase;
+  RuleListenerCatchAllBaseCase &
+  RuleListenerExitSelectors;
 
 interface RuleModule<
   TMessageIds extends string,

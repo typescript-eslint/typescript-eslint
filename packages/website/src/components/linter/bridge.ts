@@ -6,7 +6,7 @@ import type { ConfigModel } from '../types';
 import type { PlaygroundSystem } from './types';
 
 export function createFileSystem(
-  config: Pick<ConfigModel, 'eslintrc' | 'tsconfig' | 'code' | 'fileType'>,
+  config: Pick<ConfigModel, 'code' | 'eslintrc' | 'fileType' | 'tsconfig'>,
   vfs: typeof tsvfs,
 ): PlaygroundSystem {
   const files = new Map<string, string>();

@@ -244,8 +244,8 @@ class ClassVisitor extends Visitor {
       | TSESTree.AccessorProperty
       | TSESTree.PropertyDefinition
       | TSESTree.TSAbstractAccessorProperty
-      | TSESTree.TSAbstractPropertyDefinition
-      | TSESTree.TSAbstractMethodDefinition,
+      | TSESTree.TSAbstractMethodDefinition
+      | TSESTree.TSAbstractPropertyDefinition,
   ): void {
     if (node.computed) {
       this.#referencer.visit(node.key);
@@ -417,7 +417,7 @@ class ClassVisitor extends Visitor {
  */
 function getLiteralMethodKeyName(
   node: TSESTree.MethodDefinition,
-): string | number | null {
+): number | string | null {
   if (node.computed && node.key.type === AST_NODE_TYPES.Literal) {
     if (
       typeof node.key.value === 'string' ||

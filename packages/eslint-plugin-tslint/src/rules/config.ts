@@ -32,14 +32,14 @@ const createRule = ESLintUtils.RuleCreator(
 );
 export type RawRulesConfig = Record<
   string,
-  | null
-  | undefined
-  | boolean
   | unknown[]
+  | boolean
   | {
-      severity?: RuleSeverity | 'warn' | 'none' | 'default';
+      severity?: RuleSeverity | 'default' | 'none' | 'warn';
       options?: unknown;
     }
+  | null
+  | undefined
 >;
 
 export type MessageIds = 'failure';

@@ -13,19 +13,19 @@
  * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.1
  */
 export type JSONSchema4TypeName =
-  | 'string'
-  | 'number'
-  | 'integer'
-  | 'boolean'
-  | 'object'
+  | 'any'
   | 'array'
+  | 'boolean'
+  | 'integer'
   | 'null'
-  | 'any';
+  | 'number'
+  | 'object'
+  | 'string';
 
 /**
  * @see https://tools.ietf.org/html/draft-zyp-json-schema-04#section-3.5
  */
-export type JSONSchema4Type = string | number | boolean | null;
+export type JSONSchema4Type = boolean | number | string | null;
 
 /**
  * Meta schema
@@ -47,18 +47,18 @@ export type JSONSchema4Version = string;
  * @see https://tools.ietf.org/html/draft-zyp-json-schema-04
  */
 export type JSONSchema4 =
-  | JSONSchema4ObjectSchema
-  | JSONSchema4ArraySchema
-  | JSONSchema4StringSchema
-  | JSONSchema4NumberSchema
-  | JSONSchema4BoleanSchema
-  | JSONSchema4NullSchema
-  | JSONSchema4AnySchema
-  | JSONSchema4RefSchema
   | JSONSchema4AllOfSchema
   | JSONSchema4AnyOfSchema
+  | JSONSchema4AnySchema
+  | JSONSchema4ArraySchema
+  | JSONSchema4BoleanSchema
+  | JSONSchema4MultiSchema
+  | JSONSchema4NullSchema
+  | JSONSchema4NumberSchema
+  | JSONSchema4ObjectSchema
   | JSONSchema4OneOfSchema
-  | JSONSchema4MultiSchema;
+  | JSONSchema4RefSchema
+  | JSONSchema4StringSchema;
 
 interface JSONSchema4Base {
   id?: string | undefined;
@@ -136,7 +136,7 @@ interface JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.26
    */
-  extends?: string | string[] | undefined;
+  extends?: string[] | string | undefined;
 
   /**
    * The default value for the item if not present
@@ -150,7 +150,7 @@ interface JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.7
    */
-  required?: boolean | string[] | undefined;
+  required?: string[] | boolean | undefined;
 
   /**
    * (NOT) Must not be valid against the given schema
@@ -191,13 +191,13 @@ export interface JSONSchema4OneOfSchema extends JSONSchema4Base {
 }
 
 export interface JSONSchema4MultiSchema
-  extends Omit<JSONSchema4ObjectSchema, 'type' | 'enum'>,
-    Omit<JSONSchema4ArraySchema, 'type' | 'enum'>,
-    Omit<JSONSchema4StringSchema, 'type' | 'enum'>,
-    Omit<JSONSchema4NumberSchema, 'type' | 'enum'>,
-    Omit<JSONSchema4BoleanSchema, 'type' | 'enum'>,
-    Omit<JSONSchema4NullSchema, 'type' | 'enum'>,
-    Omit<JSONSchema4AnySchema, 'type' | 'enum'> {
+  extends Omit<JSONSchema4ObjectSchema, 'enum' | 'type'>,
+    Omit<JSONSchema4ArraySchema, 'enum' | 'type'>,
+    Omit<JSONSchema4StringSchema, 'enum' | 'type'>,
+    Omit<JSONSchema4NumberSchema, 'enum' | 'type'>,
+    Omit<JSONSchema4BoleanSchema, 'enum' | 'type'>,
+    Omit<JSONSchema4NullSchema, 'enum' | 'type'>,
+    Omit<JSONSchema4AnySchema, 'enum' | 'type'> {
   type: JSONSchema4TypeName[];
   /**
    * This provides an enumeration of all possible values that are valid
@@ -227,7 +227,7 @@ export interface JSONSchema4ObjectSchema extends JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.4
    */
-  additionalProperties?: boolean | JSONSchema4 | undefined;
+  additionalProperties?: JSONSchema4 | boolean | undefined;
 
   /**
    * This attribute is an object with property definitions that define the
@@ -302,7 +302,7 @@ export interface JSONSchema4ArraySchema extends JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.6
    */
-  additionalItems?: boolean | JSONSchema4 | undefined;
+  additionalItems?: JSONSchema4 | boolean | undefined;
 
   /**
    * This attribute defines the allowed items in an instance array, and
@@ -384,22 +384,22 @@ export interface JSONSchema4StringSchema extends JSONSchema4Base {
    * to throw during schema compilation
    */
   format?:
-    | 'date'
-    | 'time'
     | 'date-time'
-    | 'uri'
-    | 'uri-reference'
-    | 'uri-template'
-    | 'url'
+    | 'date'
     | 'email'
     | 'hostname'
     | 'ipv4'
     | 'ipv6'
-    | 'regex'
-    | 'uuid'
-    | 'json-pointer'
     | 'json-pointer-uri-fragment'
+    | 'json-pointer'
+    | 'regex'
     | 'relative-json-pointer'
+    | 'time'
+    | 'uri-reference'
+    | 'uri-template'
+    | 'uri'
+    | 'url'
+    | 'uuid'
     | undefined;
 
   enum?: string[] | undefined;
@@ -409,7 +409,7 @@ export interface JSONSchema4StringSchema extends JSONSchema4Base {
  * @see https://json-schema.org/understanding-json-schema/reference/numeric.html
  */
 export interface JSONSchema4NumberSchema extends JSONSchema4Base {
-  type: 'number' | 'integer';
+  type: 'integer' | 'number';
 
   /**
    * Numbers can be restricted to a multiple of a given number, using the

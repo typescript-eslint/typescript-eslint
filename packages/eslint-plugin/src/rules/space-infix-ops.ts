@@ -70,8 +70,8 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkAndReportAssignmentSpace(
-      leftNode: TSESTree.Token | TSESTree.Node | null,
-      rightNode?: TSESTree.Token | TSESTree.Node | null,
+      leftNode: TSESTree.Node | TSESTree.Token | null,
+      rightNode?: TSESTree.Node | TSESTree.Token | null,
     ): void {
       if (!rightNode || !leftNode) {
         return;

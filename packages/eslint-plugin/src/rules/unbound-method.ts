@@ -205,7 +205,7 @@ export default util.createRule<Options, MessageIds>({
         checkMethodAndReport(node, services.getSymbolAtLocation(node));
       },
       'VariableDeclarator, AssignmentExpression'(
-        node: TSESTree.VariableDeclarator | TSESTree.AssignmentExpression,
+        node: TSESTree.AssignmentExpression | TSESTree.VariableDeclarator,
       ): void {
         const [idNode, initNode] =
           node.type === AST_NODE_TYPES.VariableDeclarator

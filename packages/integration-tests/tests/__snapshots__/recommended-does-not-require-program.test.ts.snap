@@ -11,7 +11,7 @@ exports[`recommended-does-not-require-program should lint successfully 1`] = `
     "messages": [
       {
         "column": 7,
-        "endColumn": 15,
+        "endColumn": 19,
         "endLine": 1,
         "line": 1,
         "message": "'foo' is assigned a value but never used.",
@@ -21,7 +21,7 @@ exports[`recommended-does-not-require-program should lint successfully 1`] = `
         "severity": 2,
       },
     ],
-    "output": "const foo: any = true;
+    "output": "const foo: unknown = true;
 ",
     "suppressedMessages": [],
     "usedDeprecatedRules": [],

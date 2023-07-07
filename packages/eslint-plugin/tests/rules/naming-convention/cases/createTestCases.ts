@@ -13,7 +13,7 @@ import type {
 import { selectorTypeToMessageString } from '../../../../src/rules/naming-convention-utils';
 
 export const formatTestNames: Readonly<
-  Record<PredefinedFormatsString, Record<'valid' | 'invalid', string[]>>
+  Record<PredefinedFormatsString, Record<'invalid' | 'valid', string[]>>
 > = {
   camelCase: {
     valid: ['strictCamelCase', 'lower', 'camelCaseUNSTRICT'],

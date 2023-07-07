@@ -183,7 +183,7 @@ export default createRule<Options, MessageIds>({
     }
 
     const restrictedPaths = getRestrictedPaths(options);
-    const allowedTypeImportPathNameSet: Set<string> = new Set();
+    const allowedTypeImportPathNameSet = new Set<string>();
     for (const restrictedPath of restrictedPaths) {
       if (
         typeof restrictedPath === 'object' &&

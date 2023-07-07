@@ -25,11 +25,11 @@ type Options = [
   },
 ];
 type MessageIds =
-  | 'missingReturnType'
+  | 'anyTypedArg'
+  | 'anyTypedArgUnnamed'
   | 'missingArgType'
   | 'missingArgTypeUnnamed'
-  | 'anyTypedArg'
-  | 'anyTypedArgUnnamed';
+  | 'missingReturnType';
 
 export default util.createRule<Options, MessageIds>({
   name: 'explicit-module-boundary-types',
@@ -154,7 +154,7 @@ export default util.createRule<Options, MessageIds>({
     };
 
     function checkParameters(
-      node: TSESTree.TSEmptyBodyFunctionExpression | FunctionNode,
+      node: FunctionNode | TSESTree.TSEmptyBodyFunctionExpression,
     ): void {
       function checkParameter(param: TSESTree.Parameter): void {
         function report(

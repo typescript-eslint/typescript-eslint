@@ -19,8 +19,8 @@ export const defaultMinimumDescriptionLength = 3;
 
 type MessageIds =
   | 'tsDirectiveComment'
-  | 'tsDirectiveCommentRequiresDescription'
-  | 'tsDirectiveCommentDescriptionNotMatchPattern';
+  | 'tsDirectiveCommentDescriptionNotMatchPattern'
+  | 'tsDirectiveCommentRequiresDescription';
 
 export default util.createRule<[Options], MessageIds>({
   name: 'ban-ts-comment',

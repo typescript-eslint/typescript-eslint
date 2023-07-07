@@ -6,9 +6,9 @@ import * as util from '../util';
 
 type MessageIds =
   | 'unsafeArgument'
-  | 'unsafeTupleSpread'
   | 'unsafeArraySpread'
-  | 'unsafeSpread';
+  | 'unsafeSpread'
+  | 'unsafeTupleSpread';
 
 const enum RestTypeKind {
   Array,
@@ -22,13 +22,13 @@ type RestType =
       index: number;
     }
   | {
-      typeArguments: readonly ts.Type[];
-      kind: RestTypeKind.Tuple;
+      type: ts.Type;
+      kind: RestTypeKind.Other;
       index: number;
     }
   | {
-      type: ts.Type;
-      kind: RestTypeKind.Other;
+      typeArguments: readonly ts.Type[];
+      kind: RestTypeKind.Tuple;
       index: number;
     };
 

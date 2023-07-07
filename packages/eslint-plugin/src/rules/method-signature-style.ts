@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
-export type Options = [('property' | 'method')?];
+export type Options = [('method' | 'property')?];
 export type MessageIds = 'errorMethod' | 'errorProperty';
 
 export default util.createRule<Options, MessageIds>({
@@ -49,7 +49,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function getMethodParams(
-      node: TSESTree.TSMethodSignature | TSESTree.TSFunctionType,
+      node: TSESTree.TSFunctionType | TSESTree.TSMethodSignature,
     ): string {
       let params = '()';
       if (node.params.length > 0) {
@@ -78,7 +78,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function getMethodReturnType(
-      node: TSESTree.TSMethodSignature | TSESTree.TSFunctionType,
+      node: TSESTree.TSFunctionType | TSESTree.TSMethodSignature,
     ): string {
       return node.returnType == null
         ? // if the method has no return type, it implicitly has an `any` return type

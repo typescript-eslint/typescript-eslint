@@ -1,5 +1,11 @@
 {
-  "version": "5.60.0",
+  "$schema": "node_modules/lerna/schemas/lerna-schema.json",
+  "version": "5.61.0",
   "npmClient": "yarn",
-  "stream": true
+  "stream": true,
+  "command": {
+    "version": {
+      "changelogEntryAdditionalMarkdown": "You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website."
+    }
+  }
 }

@@ -3,8 +3,8 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type MessageIds = 'preferTypeAnnotation' | 'preferConstructor';
-type Options = ['type-annotation' | 'constructor'];
+type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
+type Options = ['constructor' | 'type-annotation'];
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-generic-constructors',
@@ -35,9 +35,9 @@ export default createRule<Options, MessageIds>({
     return {
       'VariableDeclarator,PropertyDefinition,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
         node:
-          | TSESTree.VariableDeclarator
+          | TSESTree.AssignmentPattern
           | TSESTree.PropertyDefinition
-          | TSESTree.AssignmentPattern,
+          | TSESTree.VariableDeclarator,
       ): void {
         function getLHSRHS(): [
           TSESTree.BindingName | TSESTree.PropertyDefinition,
@@ -84,8 +84,8 @@ export default createRule<Options, MessageIds>({
               messageId: 'preferTypeAnnotation',
               fix(fixer) {
                 function getIDToAttachAnnotation():
-                  | TSESTree.Token
-                  | TSESTree.Node {
+                  | TSESTree.Node
+                  | TSESTree.Token {
                   if (node.type !== AST_NODE_TYPES.PropertyDefinition) {
                     return lhsName;
                   }

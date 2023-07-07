@@ -9,7 +9,7 @@ export type Options = [
     ignoreRestArgs?: boolean;
   },
 ];
-export type MessageIds = 'unexpectedAny' | 'suggestUnknown' | 'suggestNever';
+export type MessageIds = 'suggestNever' | 'suggestUnknown' | 'unexpectedAny';
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-explicit-any',
@@ -17,7 +17,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow the `any` type',
-      recommended: 'strict',
+      recommended: 'recommended',
     },
     fixable: 'code',
     hasSuggestions: true,

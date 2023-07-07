@@ -1064,8 +1064,8 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
 });
 
 type Case<TMessageIds extends string, TOptions extends Readonly<unknown[]>> =
-  | TSESLint.ValidTestCase<TOptions>
-  | TSESLint.InvalidTestCase<TMessageIds, TOptions>;
+  | TSESLint.InvalidTestCase<TMessageIds, TOptions>
+  | TSESLint.ValidTestCase<TOptions>;
 function addOptional<TOptions extends Readonly<unknown[]>>(
   cases: (TSESLint.ValidTestCase<TOptions> | string)[],
 ): TSESLint.ValidTestCase<TOptions>[];

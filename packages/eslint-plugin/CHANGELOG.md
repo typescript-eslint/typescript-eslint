@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.61.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.60.1...v5.61.0) (2023-07-03)
+
+
+### Features
+
+* **eslint-plugin:** [ban-types] ban types in extends and implements ([#7129](https://github.com/typescript-eslint/typescript-eslint/issues/7129)) ([997783f](https://github.com/typescript-eslint/typescript-eslint/commit/997783ff108ca18af709667ef3fdfa7134a8eefe))
+* use graphemer instead of grapheme-splitter ([#7069](https://github.com/typescript-eslint/typescript-eslint/issues/7069)) ([faea3ff](https://github.com/typescript-eslint/typescript-eslint/commit/faea3ff8b4d750974c41262b44db314f20d0c99c))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+## [5.60.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.60.0...v5.60.1) (2023-06-26)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [5.60.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.11...v5.60.0) (2023-06-19)
 
 

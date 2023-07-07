@@ -3,15 +3,15 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 export type Options = [
-  'never' | 'always',
+  'always' | 'never',
   {
     allowNewlines?: boolean;
   }?,
 ];
 export type MessageIds =
-  | 'unexpectedWhitespace'
+  | 'missing'
   | 'unexpectedNewline'
-  | 'missing';
+  | 'unexpectedWhitespace';
 
 export default util.createRule<Options, MessageIds>({
   name: 'func-call-spacing',

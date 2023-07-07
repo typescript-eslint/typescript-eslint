@@ -9,7 +9,7 @@ const ENABLE_DISABLE_REGEX =
 
 const toText = (
   text: string,
-  type: AST_TOKEN_TYPES.Line | AST_TOKEN_TYPES.Block,
+  type: AST_TOKEN_TYPES.Block | AST_TOKEN_TYPES.Line,
 ): string =>
   type === AST_TOKEN_TYPES.Line
     ? ['//', text.trim()].join(' ')
