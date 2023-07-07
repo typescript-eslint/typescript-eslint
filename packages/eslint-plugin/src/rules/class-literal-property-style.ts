@@ -13,7 +13,7 @@ interface NodeWithModifiers {
 
 const printNodeModifiers = (
   node: NodeWithModifiers,
-  final: 'readonly' | 'get',
+  final: 'get' | 'readonly',
 ): string =>
   `${node.accessibility ?? ''}${
     node.static ? ' static' : ''
@@ -50,7 +50,12 @@ export default util.createRule<Options, MessageIds>({
       preferFieldStyle: 'Literals should be exposed using readonly fields.',
       preferGetterStyle: 'Literals should be exposed using getters.',
     },
-    schema: [{ enum: ['fields', 'getters'] }],
+    schema: [
+      {
+        type: 'string',
+        enum: ['fields', 'getters'],
+      },
+    ],
   },
   defaultOptions: ['fields'],
   create(context, [style]) {
@@ -60,7 +65,7 @@ export default util.createRule<Options, MessageIds>({
           if (
             node.kind !== 'get' ||
             !node.value.body ||
-            !node.value.body.body.length
+            node.value.body.body.length === 0
           ) {
             return;
           }

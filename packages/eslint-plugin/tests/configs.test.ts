@@ -130,7 +130,7 @@ describe('recommended-type-checked.ts', () => {
 
 describe('strict.ts', () => {
   const unfilteredConfigRules: Record<string, string> =
-    plugin.configs['strict'].rules;
+    plugin.configs.strict.rules;
 
   it('contains all strict rules, excluding type checked ones', () => {
     const configRules = filterRules(unfilteredConfigRules);
@@ -166,7 +166,7 @@ describe('strict-type-checked.ts', () => {
 
 describe('stylistic.ts', () => {
   const unfilteredConfigRules: Record<string, string> =
-    plugin.configs['stylistic'].rules;
+    plugin.configs.stylistic.rules;
 
   it('contains all stylistic rules, excluding deprecated or type checked ones', () => {
     const configRules = filterRules(unfilteredConfigRules);

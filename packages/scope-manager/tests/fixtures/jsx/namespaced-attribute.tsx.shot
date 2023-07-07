@@ -1,0 +1,203 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`jsx namespaced-attribute 1`] = `
+ScopeManager {
+  variables: [
+    ImplicitGlobalConstTypeVariable,
+    Variable$2 {
+      defs: [
+        ImportBindingDefinition$1 {
+          name: Identifier<"React">,
+          node: ImportNamespaceSpecifier$1,
+        },
+      ],
+      name: "React",
+      references: [
+        Reference$2 {
+          identifier: Identifier<"React">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$2,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$3 {
+      defs: [
+        VariableDefinition$2 {
+          name: Identifier<"x">,
+          node: VariableDeclarator$2,
+        },
+      ],
+      name: "x",
+      references: [
+        Reference$1 {
+          identifier: Identifier<"x">,
+          init: true,
+          isRead: false,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: true,
+          resolved: Variable$3,
+          writeExpr: JSXElement$3,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$4 {
+      defs: [
+        VariableDefinition$3 {
+          name: Identifier<"y">,
+          node: VariableDeclarator$4,
+        },
+      ],
+      name: "y",
+      references: [
+        Reference$4 {
+          identifier: Identifier<"y">,
+          init: true,
+          isRead: false,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: true,
+          resolved: Variable$4,
+          writeExpr: JSXElement$5,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$5 {
+      defs: [
+        TypeDefinition$4 {
+          name: Identifier<"FooProps">,
+          node: TSInterfaceDeclaration$6,
+        },
+      ],
+      name: "FooProps",
+      references: [
+        Reference$6 {
+          identifier: Identifier<"FooProps">,
+          isRead: true,
+          isTypeReference: true,
+          isValueReference: false,
+          isWrite: false,
+          resolved: Variable$5,
+        },
+      ],
+      isValueVariable: false,
+      isTypeVariable: true,
+    },
+    Variable$6 {
+      defs: [
+        FunctionNameDefinition$5 {
+          name: Identifier<"Foo">,
+          node: FunctionDeclaration$7,
+        },
+      ],
+      name: "Foo",
+      references: [
+        Reference$3 {
+          identifier: JSXIdentifier$8,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$6,
+        },
+        Reference$5 {
+          identifier: JSXIdentifier$9,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$6,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+    Variable$7 {
+      defs: [],
+      name: "arguments",
+      references: [],
+      isValueVariable: true,
+      isTypeVariable: true,
+    },
+    Variable$8 {
+      defs: [
+        ParameterDefinition$6 {
+          name: Identifier<"props">,
+          node: FunctionDeclaration$7,
+        },
+      ],
+      name: "props",
+      references: [
+        Reference$7 {
+          identifier: Identifier<"props">,
+          isRead: true,
+          isTypeReference: false,
+          isValueReference: true,
+          isWrite: false,
+          resolved: Variable$8,
+        },
+      ],
+      isValueVariable: true,
+      isTypeVariable: false,
+    },
+  ],
+  scopes: [
+    GlobalScope$1 {
+      block: Program$10,
+      isStrict: false,
+      references: [
+        Reference$1,
+        Reference$2,
+        Reference$3,
+        Reference$4,
+        Reference$5,
+      ],
+      set: Map {
+        "const" => ImplicitGlobalConstTypeVariable,
+        "React" => Variable$2,
+        "x" => Variable$3,
+        "y" => Variable$4,
+        "FooProps" => Variable$5,
+        "Foo" => Variable$6,
+      },
+      type: "global",
+      upper: null,
+      variables: [
+        ImplicitGlobalConstTypeVariable,
+        Variable$2,
+        Variable$3,
+        Variable$4,
+        Variable$5,
+        Variable$6,
+      ],
+    },
+    FunctionScope$2 {
+      block: FunctionDeclaration$7,
+      isStrict: false,
+      references: [
+        Reference$6,
+        Reference$7,
+      ],
+      set: Map {
+        "arguments" => Variable$7,
+        "props" => Variable$8,
+      },
+      type: "function",
+      upper: GlobalScope$1,
+      variables: [
+        Variable$7,
+        Variable$8,
+      ],
+    },
+  ],
+}
+`;

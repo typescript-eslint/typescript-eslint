@@ -336,10 +336,10 @@ class ClassScope {
 
   public enterConstructor(
     node:
+      | ts.ConstructorDeclaration
       | ts.GetAccessorDeclaration
-      | ts.SetAccessorDeclaration
       | ts.MethodDeclaration
-      | ts.ConstructorDeclaration,
+      | ts.SetAccessorDeclaration,
   ): void {
     this.constructorScopeDepth = DIRECTLY_INSIDE_CONSTRUCTOR;
 

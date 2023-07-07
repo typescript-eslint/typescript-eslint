@@ -13,6 +13,10 @@ packages/ast-spec/src/element/AccessorProperty/fixtures/modifier-abstract-with-v
 # prettier doesn't yet support `const` modifiers for type parameters
 packages/ast-spec/src/special/TSTypeParameter/fixtures
 
+# prettier doesn't yet support JSX namespaced attributes
+packages/ast-spec/src/jsx/JSXNamespacedName/fixtures/component/fixture.tsx
+packages/scope-manager/tests/fixtures/jsx/namespaced-attribute.tsx
+
 # Ignore CHANGELOG.md files to avoid issues with automated release job
 CHANGELOG.md
 

@@ -14,12 +14,12 @@ export type Options = [
 
 export type MessageId =
   | 'invalidVoidExpr'
-  | 'invalidVoidExprWrapVoid'
   | 'invalidVoidExprArrow'
   | 'invalidVoidExprArrowWrapVoid'
   | 'invalidVoidExprReturn'
   | 'invalidVoidExprReturnLast'
   | 'invalidVoidExprReturnWrapVoid'
+  | 'invalidVoidExprWrapVoid'
   | 'voidExprWrapVoid';
 
 export default util.createRule<Options, MessageId>({
@@ -28,6 +28,7 @@ export default util.createRule<Options, MessageId>({
     docs: {
       description:
         'Require expressions of type void to appear in statement position',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {

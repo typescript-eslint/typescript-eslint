@@ -27,33 +27,33 @@ declare module 'esquery' {
     // Unions
     //
     type Selector =
-      | Field
-      | Type
-      | Sequence
-      | Identifier
-      | Wildcard
+      | Adjacent
       | Attribute
+      | Child
+      | Class
+      | Descendant
+      | Field
+      | Has
+      | Identifier
+      | Matches
+      | Negation
       | NthChild
       | NthLastChild
-      | Descendant
-      | Child
+      | Sequence
       | Sibling
-      | Adjacent
-      | Negation
-      | Matches
-      | Has
-      | Class;
-    type MultiSelector = Sequence | Negation | Matches | Has;
-    type BinarySelector = Descendant | Child | Sibling | Adjacent;
+      | Type
+      | Wildcard;
+    type MultiSelector = Has | Matches | Negation | Sequence;
+    type BinarySelector = Adjacent | Child | Descendant | Sibling;
     type NthSelector = NthChild | NthLastChild;
     type SubjectSelector =
-      | NthSelector
+      | Attribute
       | BinarySelector
-      | MultiSelector
       | Identifier
-      | Wildcard
-      | Attribute;
-    type Literal = StringLiteral | NumericLiteral;
+      | MultiSelector
+      | NthSelector
+      | Wildcard;
+    type Literal = NumericLiteral | StringLiteral;
 
     //
     // Base Atoms
@@ -68,7 +68,7 @@ declare module 'esquery' {
       index: NumericLiteral;
     }
     interface BinarySelectorAtom extends SubjectSelectorAtom {
-      type: 'child' | 'sibling' | 'adjacent' | 'descendant';
+      type: 'adjacent' | 'child' | 'descendant' | 'sibling';
       left: SubjectSelector;
       right: SubjectSelector;
     }
@@ -77,7 +77,7 @@ declare module 'esquery' {
     }
     interface LiteralAtom extends Atom {
       type: 'literal';
-      value: string | number;
+      value: number | string;
     }
 
     //
@@ -119,7 +119,7 @@ declare module 'esquery' {
     interface Attribute extends SubjectSelectorAtom {
       type: 'attribute';
       name: string;
-      operator?: '=' | '!=' | '>' | '<' | '>=' | '<=' | undefined;
+      operator?: '!=' | '<' | '<=' | '=' | '>' | '>=' | undefined;
       value?: Literal | RegExpLiteral | Type | undefined;
     }
     interface NthChild extends NthSelectorAtom {

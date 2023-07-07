@@ -315,7 +315,7 @@ export default createRule({
     function* fixWithRightOperand(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.BinaryExpression,
-      kind: 'start' | 'end',
+      kind: 'end' | 'start',
       isNegative: boolean,
       isOptional: boolean,
     ): IterableIterator<TSESLint.RuleFix> {
@@ -346,7 +346,7 @@ export default createRule({
       node: TSESTree.BinaryExpression,
       callNode: TSESTree.CallExpression,
       calleeNode: TSESTree.MemberExpression,
-      kind: 'start' | 'end',
+      kind: 'end' | 'start',
       negative: boolean,
       isOptional: boolean,
     ): IterableIterator<TSESLint.RuleFix> {

@@ -25,7 +25,7 @@ export interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   /**
    * The additional global variables.
    */
-  readonly globals?: Record<string, 'readonly' | 'writable' | 'off' | true>;
+  readonly globals?: Record<string, 'off' | 'readonly' | 'writable' | true>;
   /**
    * Options for the test case.
    */

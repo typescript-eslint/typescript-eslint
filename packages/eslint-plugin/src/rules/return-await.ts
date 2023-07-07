@@ -7,9 +7,9 @@ import * as util from '../util';
 import { getOperatorPrecedence } from '../util/getOperatorPrecedence';
 
 type FunctionNode =
+  | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
-  | TSESTree.FunctionExpression
-  | TSESTree.ArrowFunctionExpression;
+  | TSESTree.FunctionExpression;
 
 interface ScopeInfo {
   hasAsync: boolean;
@@ -37,6 +37,7 @@ export default util.createRule({
     },
     schema: [
       {
+        type: 'string',
         enum: ['in-try-catch', 'always', 'never'],
       },
     ],

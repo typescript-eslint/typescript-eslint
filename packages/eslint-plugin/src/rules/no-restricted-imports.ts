@@ -1,5 +1,9 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+import type {
+  JSONSchema4AnyOfSchema,
+  JSONSchema4ArraySchema,
+  JSONSchema4ObjectSchema,
+} from '@typescript-eslint/utils/json-schema';
 import type {
   ArrayOfStringOrObject,
   ArrayOfStringOrObjectPatterns,
@@ -46,7 +50,7 @@ const baseSchema = baseRule.meta.schema as {
                   { type: 'string' },
                   {
                     type: 'object';
-                    properties: JSONSchema4['properties'];
+                    properties: JSONSchema4ObjectSchema['properties'];
                     required: string[];
                   },
                 ];
@@ -59,7 +63,7 @@ const baseSchema = baseRule.meta.schema as {
                   type: 'array';
                   items: {
                     type: 'object';
-                    properties: JSONSchema4['properties'];
+                    properties: JSONSchema4ObjectSchema['properties'];
                     required: string[];
                   };
                 },
@@ -72,14 +76,14 @@ const baseSchema = baseRule.meta.schema as {
   ];
 };
 
-const allowTypeImportsOptionSchema: JSONSchema4['properties'] = {
+const allowTypeImportsOptionSchema: JSONSchema4ObjectSchema['properties'] = {
   allowTypeImports: {
     type: 'boolean',
     description: 'Disallow value imports, but allow type-only imports.',
   },
 };
 
-const arrayOfStringsOrObjects: JSONSchema4 = {
+const arrayOfStringsOrObjects: JSONSchema4ArraySchema = {
   type: 'array',
   items: {
     anyOf: [
@@ -108,7 +112,7 @@ const arrayOfStringsOrObjects: JSONSchema4 = {
   uniqueItems: true,
 };
 
-const arrayOfStringsOrObjectPatterns: JSONSchema4 = {
+const arrayOfStringsOrObjectPatterns: JSONSchema4AnyOfSchema = {
   anyOf: [
     {
       type: 'array',
@@ -143,7 +147,7 @@ const arrayOfStringsOrObjectPatterns: JSONSchema4 = {
   ],
 };
 
-const schema: JSONSchema4 = {
+const schema: JSONSchema4AnyOfSchema = {
   anyOf: [
     arrayOfStringsOrObjects,
     {
@@ -228,7 +232,7 @@ export default createRule<Options, MessageIds>({
     }
 
     const restrictedPaths = getRestrictedPaths(options);
-    const allowedTypeImportPathNameSet: Set<string> = new Set();
+    const allowedTypeImportPathNameSet = new Set<string>();
     for (const restrictedPath of restrictedPaths) {
       if (
         typeof restrictedPath === 'object' &&

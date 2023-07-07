@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/dot-notation -- ['implicit'] is private */
 import { DefinitionType } from '../../src/definition';
 import {
   expectToBeGlobalScope,
