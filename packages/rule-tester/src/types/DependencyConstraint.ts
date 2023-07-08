@@ -2,16 +2,16 @@ import type { RangeOptions } from 'semver';
 
 export interface SemverVersionConstraint {
   readonly range: string;
-  readonly options?: boolean | RangeOptions;
+  readonly options?: RangeOptions | boolean;
 }
 export type AtLeastVersionConstraint =
-  | `${number}`
-  | `${number}.${number}`
+  | `${number}.${number}.${number}-${string}`
   | `${number}.${number}.${number}`
-  | `${number}.${number}.${number}-${string}`;
+  | `${number}.${number}`
+  | `${number}`;
 export type VersionConstraint =
-  | SemverVersionConstraint
-  | AtLeastVersionConstraint;
+  | AtLeastVersionConstraint
+  | SemverVersionConstraint;
 export interface DependencyConstraint {
   /**
    * Passing a string for the value is shorthand for a '>=' constraint

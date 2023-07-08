@@ -1982,7 +1982,7 @@ class Foo {
   b2: string;
 
   public c(): void;
-  @Dec() d(): void;
+  @Dec() d(): void {}
 }
       `,
       options: [

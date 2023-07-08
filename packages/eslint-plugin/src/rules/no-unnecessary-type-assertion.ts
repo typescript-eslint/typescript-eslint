@@ -228,7 +228,7 @@ export default util.createRule<Options, MessageIds>({
         }
       },
       'TSAsExpression, TSTypeAssertion'(
-        node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
+        node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
       ): void {
         if (
           options.typesToIgnore?.includes(

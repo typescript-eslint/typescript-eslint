@@ -11,7 +11,7 @@ const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-const valid = (operator: '|' | '&'): TSESLint.ValidTestCase<Options>[] => [
+const valid = (operator: '&' | '|'): TSESLint.ValidTestCase<Options>[] => [
   {
     code: `type T = A ${operator} B;`,
   },
@@ -86,7 +86,7 @@ type T =
   },
 ];
 const invalid = (
-  operator: '|' | '&',
+  operator: '&' | '|',
 ): TSESLint.InvalidTestCase<MessageIds, Options>[] => {
   const type = operator === '|' ? 'Union' : 'Intersection';
   return [

@@ -10,7 +10,7 @@ const SENTINEL_TYPE =
 /**
  * Parses a given value as options.
  */
-function parseOptions(options: string | Config | null): Required<Config> {
+function parseOptions(options: Config | string | null): Required<Config> {
   let functions = true;
   let classes = true;
   let enums = true;
@@ -233,7 +233,7 @@ interface Config {
   ignoreTypeReferences?: boolean;
   allowNamedExports?: boolean;
 }
-type Options = ['nofunc' | Config];
+type Options = [Config | 'nofunc'];
 type MessageIds = 'noUseBeforeDefine';
 
 export default util.createRule<Options, MessageIds>({
@@ -251,6 +251,7 @@ export default util.createRule<Options, MessageIds>({
       {
         oneOf: [
           {
+            type: 'string',
             enum: ['nofunc'],
           },
           {

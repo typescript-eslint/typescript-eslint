@@ -15,10 +15,10 @@ export type Options = [
 ];
 
 export type MessageIds =
+  | 'noStrictNullCheck'
   | 'preferNullishOverOr'
   | 'preferNullishOverTernary'
-  | 'suggestNullish'
-  | 'noStrictNullCheck';
+  | 'suggestNullish';
 
 export default util.createRule<Options, MessageIds>({
   name: 'prefer-nullish-coalescing',
@@ -63,9 +63,9 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      ignoreConditionalTests: true,
-      ignoreTernaryTests: true,
-      ignoreMixedLogicalExpressions: true,
+      ignoreConditionalTests: false,
+      ignoreTernaryTests: false,
+      ignoreMixedLogicalExpressions: false,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
     },
   ],
@@ -174,7 +174,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        let operator: '==' | '!=' | '===' | '!==' | undefined;
+        let operator: '!=' | '!==' | '==' | '===' | undefined;
         let nodesInsideTestExpression: TSESTree.Node[] = [];
         if (node.test.type === AST_NODE_TYPES.BinaryExpression) {
           nodesInsideTestExpression = [node.test.left, node.test.right];

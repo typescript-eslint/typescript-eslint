@@ -60,17 +60,17 @@ type T2 = { a: string } & { b: string };
 type T3 = [1, 2, 3] & [1, 2, 4];
 
 type T4 =
-  | any
-  | string
   | A
   | B
   | number[]
   | string[]
+  | any
+  | string
   | readonly number[]
   | readonly string[]
   | 'a'
-  | 'b'
   | 'a'
+  | 'b'
   | 'b'
   | (() => string)
   | (() => void)

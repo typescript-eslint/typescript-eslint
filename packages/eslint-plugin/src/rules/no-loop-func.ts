@@ -35,8 +35,8 @@ export default util.createRule<Options, MessageIds>({
     function checkForLoops(
       node:
         | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionExpression
-        | TSESTree.FunctionDeclaration,
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
     ): void {
       const loopNode = getContainingLoopNode(node);
 

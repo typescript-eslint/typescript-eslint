@@ -55,7 +55,7 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ allowDestructuring, allowedNames }]) {
     return {
       "VariableDeclarator[init.type='ThisExpression'], AssignmentExpression[right.type='ThisExpression']"(
-        node: TSESTree.VariableDeclarator | TSESTree.AssignmentExpression,
+        node: TSESTree.AssignmentExpression | TSESTree.VariableDeclarator,
       ): void {
         const id =
           node.type === AST_NODE_TYPES.VariableDeclarator ? node.id : node.left;

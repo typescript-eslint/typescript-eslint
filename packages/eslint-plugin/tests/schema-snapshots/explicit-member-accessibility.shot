@@ -11,15 +11,18 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "oneOf": [
           {
             "description": "Always require an accessor.",
-            "enum": ["explicit"]
+            "enum": ["explicit"],
+            "type": "string"
           },
           {
             "description": "Require an accessor except when public.",
-            "enum": ["no-public"]
+            "enum": ["no-public"],
+            "type": "string"
           },
           {
             "description": "Never check whether there is an accessor.",
-            "enum": ["off"]
+            "enum": ["off"],
+            "type": "string"
           }
         ]
       }

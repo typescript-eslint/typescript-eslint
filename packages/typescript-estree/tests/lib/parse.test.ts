@@ -5,26 +5,12 @@ import { join, resolve } from 'path';
 import type * as typescriptModule from 'typescript';
 
 import * as parser from '../../src';
-import * as astConverterModule from '../../src/ast-converter';
 import * as sharedParserUtilsModule from '../../src/create-program/shared';
 import type { TSESTreeOptions } from '../../src/parser-options';
 import { clearGlobResolutionCache } from '../../src/parseSettings/resolveProjectList';
-import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/simpleProject');
 
-// we can't spy on the exports of an ES module - so we instead have to mock the entire module
-jest.mock('../../src/ast-converter', () => {
-  const astConverterActual = jest.requireActual<typeof astConverterModule>(
-    '../../src/ast-converter',
-  );
-
-  return {
-    ...astConverterActual,
-    __esModule: true,
-    astConverter: jest.fn(astConverterActual.astConverter),
-  };
-});
 jest.mock('../../src/create-program/shared', () => {
   const sharedActual = jest.requireActual<typeof sharedParserUtilsModule>(
     '../../src/create-program/shared',
@@ -62,7 +48,6 @@ jest.mock('globby', () => {
 
 const hrtimeSpy = jest.spyOn(process, 'hrtime');
 
-const astConverterMock = jest.mocked(astConverterModule.astConverter);
 const createDefaultCompilerOptionsFromExtra = jest.mocked(
   sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
 );
@@ -79,139 +64,6 @@ function alignErrorPath(error: Error): never {
 beforeEach(() => {
   jest.clearAllMocks();
   clearGlobResolutionCache();
-});
-
-describe('parseWithNodeMaps()', () => {
-  describe('basic functionality', () => {
-    it('should parse an empty string', () => {
-      expect(parser.parseWithNodeMaps('').ast.body).toEqual([]);
-      expect(parser.parseWithNodeMaps('', {}).ast.body).toEqual([]);
-    });
-
-    it('parse() should be the same as parseWithNodeMaps().ast', () => {
-      const code = 'const x: number = 1;';
-      expect(parser.parseWithNodeMaps(code).ast).toMatchObject(
-        parser.parse(code),
-      );
-    });
-
-    it('should simple code', () => {
-      const result = parser.parseWithNodeMaps('1;');
-      expect(result.ast).toMatchInlineSnapshot(`
-        {
-          "body": [
-            {
-              "directive": undefined,
-              "expression": {
-                "raw": "1",
-                "type": "Literal",
-                "value": 1,
-              },
-              "type": "ExpressionStatement",
-            },
-          ],
-          "comments": undefined,
-          "sourceType": "script",
-          "tokens": undefined,
-          "type": "Program",
-        }
-      `);
-      const tsNode = result.esTreeNodeToTSNodeMap.get(result.ast.body[0]);
-      expect(tsNode).toBeDefined();
-      expect(result.tsNodeToESTreeNodeMap.get(tsNode)).toBeDefined();
-    });
-  });
-
-  describe('modules', () => {
-    it('should have correct column number when strict mode error occurs', () => {
-      try {
-        parser.parseWithNodeMaps('function fn(a, a) {\n}');
-      } catch (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        err: any
-      ) {
-        expect(err.column).toBe(16);
-      }
-    });
-  });
-
-  describe('general', () => {
-    const code = 'let foo = bar;';
-    const config: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-    };
-
-    it(
-      'output tokens, comments, locs, and ranges when called with those options',
-      createSnapshotTestBlock(code, config),
-    );
-
-    it(
-      'output should not contain loc',
-      createSnapshotTestBlock(code, {
-        range: true,
-        loc: false,
-      }),
-    );
-
-    it(
-      'output should not contain range',
-      createSnapshotTestBlock(code, {
-        range: false,
-        loc: true,
-      }),
-    );
-  });
-
-  describe('non string code', () => {
-    // testing a non string code..
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const code = 12345 as any as string;
-    const config: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-    };
-
-    it(
-      'should correctly convert code to a string for parse()',
-      createSnapshotTestBlock(code, config),
-    );
-
-    it(
-      'should correctly convert code to a string for parseAndGenerateServices()',
-      createSnapshotTestBlock(code, config, true),
-    );
-  });
-
-  describe('loggerFn should be propagated to ast-converter', () => {
-    it('output tokens, comments, locs, and ranges when called with those options', () => {
-      const loggerFn = jest.fn(() => {});
-
-      parser.parseWithNodeMaps('let foo = bar;', {
-        loggerFn,
-        comment: true,
-        tokens: true,
-        range: true,
-        loc: true,
-      });
-
-      expect(astConverterMock).toHaveBeenCalled();
-      expect(astConverterMock.mock.calls[0][1]).toMatchObject({
-        code: 'let foo = bar;',
-        comment: true,
-        comments: [],
-        loc: true,
-        log: loggerFn,
-        range: true,
-        tokens: expect.any(Array),
-      });
-    });
-  });
 });
 
 describe('parseAndGenerateServices', () => {
@@ -244,31 +96,6 @@ describe('parseAndGenerateServices', () => {
         ...baseConfig,
         preserveNodeMaps: undefined,
       });
-
-      expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToTrue);
-      expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToFalse);
-      expect(resultWithNoOptionSet).toMatchObject(
-        resultWithOptionSetExplicitlyToUndefined,
-      );
-    });
-
-    it('should not impact the use of parseWithNodeMaps()', () => {
-      const resultWithNoOptionSet = parser.parseWithNodeMaps(code, baseConfig);
-      const resultWithOptionSetToTrue = parser.parseWithNodeMaps(code, {
-        ...baseConfig,
-        preserveNodeMaps: true,
-      });
-      const resultWithOptionSetToFalse = parser.parseWithNodeMaps(code, {
-        ...baseConfig,
-        preserveNodeMaps: false,
-      });
-      const resultWithOptionSetExplicitlyToUndefined = parser.parseWithNodeMaps(
-        code,
-        {
-          ...baseConfig,
-          preserveNodeMaps: undefined,
-        },
-      );
 
       expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToTrue);
       expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToFalse);
@@ -350,7 +177,7 @@ describe('parseAndGenerateServices', () => {
       jsxSetting,
       shouldThrow = false,
     }: {
-      ext: '.js' | '.jsx' | '.ts' | '.tsx' | '.vue' | '.json';
+      ext: '.js' | '.json' | '.jsx' | '.ts' | '.tsx' | '.vue';
       jsxContent: boolean;
       jsxSetting: boolean;
       shouldThrow?: boolean;

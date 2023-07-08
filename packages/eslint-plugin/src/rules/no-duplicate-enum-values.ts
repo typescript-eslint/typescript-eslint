@@ -45,7 +45,7 @@ export default util.createRule({
             return;
           }
 
-          let value: string | number | undefined;
+          let value: number | string | undefined;
           if (isStringLiteral(member.initializer)) {
             value = String(member.initializer.value);
           } else if (isNumberLiteral(member.initializer)) {

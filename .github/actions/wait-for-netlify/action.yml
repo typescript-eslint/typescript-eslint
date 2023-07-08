@@ -1,0 +1,15 @@
+name: Wait for the Netlify deployment for the current commit to be ready
+description: Wait for the Netlify deployment for the current commit to be ready
+
+inputs:
+  netlify_token:
+    description: The value of secrets.NETLIFY_TOKEN
+    required: true
+  max_timeout:
+    description: The maximum length of time to keep retrying the Netlify api
+  retry_interval:
+    description: How long to wait between retries of the Netlify api
+
+runs:
+  using: node16
+  main: index.js

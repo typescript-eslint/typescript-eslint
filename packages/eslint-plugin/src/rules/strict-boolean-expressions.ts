@@ -23,29 +23,29 @@ export type Options = [
 ];
 
 export type MessageId =
-  | 'conditionErrorOther'
   | 'conditionErrorAny'
-  | 'conditionErrorNullish'
   | 'conditionErrorNullableBoolean'
-  | 'conditionErrorString'
-  | 'conditionErrorNullableString'
-  | 'conditionErrorNumber'
-  | 'conditionErrorNullableNumber'
-  | 'conditionErrorObject'
-  | 'conditionErrorNullableObject'
   | 'conditionErrorNullableEnum'
-  | 'noStrictNullCheck'
-  | 'conditionFixDefaultFalse'
-  | 'conditionFixDefaultEmptyString'
-  | 'conditionFixDefaultZero'
-  | 'conditionFixCompareNullish'
+  | 'conditionErrorNullableNumber'
+  | 'conditionErrorNullableObject'
+  | 'conditionErrorNullableString'
+  | 'conditionErrorNullish'
+  | 'conditionErrorNumber'
+  | 'conditionErrorObject'
+  | 'conditionErrorOther'
+  | 'conditionErrorString'
   | 'conditionFixCastBoolean'
-  | 'conditionFixCompareTrue'
-  | 'conditionFixCompareFalse'
-  | 'conditionFixCompareStringLength'
   | 'conditionFixCompareEmptyString'
+  | 'conditionFixCompareFalse'
+  | 'conditionFixCompareNaN'
+  | 'conditionFixCompareNullish'
+  | 'conditionFixCompareStringLength'
+  | 'conditionFixCompareTrue'
   | 'conditionFixCompareZero'
-  | 'conditionFixCompareNaN';
+  | 'conditionFixDefaultEmptyString'
+  | 'conditionFixDefaultFalse'
+  | 'conditionFixDefaultZero'
+  | 'noStrictNullCheck';
 
 export default util.createRule<Options, MessageId>({
   name: 'strict-boolean-expressions',
@@ -145,7 +145,7 @@ export default util.createRule<Options, MessageId>({
       allowNullableBoolean: false,
       allowNullableString: false,
       allowNullableNumber: false,
-      allowNullableEnum: true,
+      allowNullableEnum: false,
       allowAny: false,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
     },
@@ -792,17 +792,17 @@ export default util.createRule<Options, MessageId>({
 
     /** The types we care about */
     type VariantType =
-      | 'nullish'
-      | 'boolean'
-      | 'truthy boolean'
-      | 'string'
-      | 'truthy string'
-      | 'number'
-      | 'truthy number'
-      | 'object'
-      | 'enum'
       | 'any'
-      | 'never';
+      | 'boolean'
+      | 'enum'
+      | 'never'
+      | 'nullish'
+      | 'number'
+      | 'object'
+      | 'string'
+      | 'truthy boolean'
+      | 'truthy number'
+      | 'truthy string';
 
     /**
      * Check union variants for the types we care about

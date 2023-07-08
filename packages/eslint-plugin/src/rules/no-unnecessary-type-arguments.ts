@@ -6,15 +6,15 @@ import * as util from '../util';
 import { findFirstResult } from '../util';
 
 type ParameterCapableTSNode =
-  | ts.TaggedTemplateExpression
-  | ts.ImportTypeNode
   | ts.CallExpression
-  | ts.NewExpression
-  | ts.TypeReferenceNode
   | ts.ExpressionWithTypeArguments
+  | ts.ImportTypeNode
   | ts.JsxOpeningElement
   | ts.JsxSelfClosingElement
-  | ts.TypeQueryNode;
+  | ts.NewExpression
+  | ts.TaggedTemplateExpression
+  | ts.TypeQueryNode
+  | ts.TypeReferenceNode;
 
 type MessageIds = 'unnecessaryTypeParameter';
 
@@ -136,7 +136,7 @@ function getTypeParametersFromNode(
 }
 
 function getTypeParametersFromType(
-  type: ts.EntityName | ts.Expression | ts.ClassDeclaration,
+  type: ts.ClassDeclaration | ts.EntityName | ts.Expression,
   checker: ts.TypeChecker,
 ): readonly ts.TypeParameterDeclaration[] | undefined {
   const symAtLocation = checker.getSymbolAtLocation(type);

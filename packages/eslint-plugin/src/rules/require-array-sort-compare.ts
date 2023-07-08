@@ -13,7 +13,7 @@ export default util.createRule<Options, MessageIds>({
   name: 'require-array-sort-compare',
   defaultOptions: [
     {
-      ignoreStringArrays: false,
+      ignoreStringArrays: true,
     },
   ],
 

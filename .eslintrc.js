@@ -21,7 +21,8 @@ module.exports = {
     'eslint:recommended',
     'plugin:eslint-plugin/recommended',
     'plugin:@typescript-eslint/recommended-type-checked',
-    // TODO: consider enabling strict-type-checked and/or stylistic-type-checked
+    'plugin:@typescript-eslint/stylistic-type-checked',
+    // TODO: consider enabling strict-type-checked
   ],
   parserOptions: {
     sourceType: 'module',
@@ -52,11 +53,18 @@ module.exports = {
     // make sure we're not leveraging any deprecated APIs
     'deprecation/deprecation': 'error',
 
+    // TODO(#7138): Investigate enabling these soon ✨
+    '@typescript-eslint/consistent-indexed-object-style': 'off',
+    '@typescript-eslint/prefer-nullish-coalescing': 'off',
+
+    // TODO(#7130): Investigate changing these in or removing these from presets
+    '@typescript-eslint/no-confusing-void-expression': 'off',
+    '@typescript-eslint/prefer-string-starts-ends-with': 'off',
+
     //
     // our plugin :D
     //
 
-    '@typescript-eslint/array-type': 'error',
     '@typescript-eslint/ban-ts-comment': [
       'error',
       {
@@ -67,7 +75,6 @@ module.exports = {
         minimumDescriptionLength: 5,
       },
     ],
-    '@typescript-eslint/consistent-type-definitions': ['error', 'interface'],
     '@typescript-eslint/consistent-type-imports': [
       'error',
       { prefer: 'type-imports', disallowTypeAnnotations: true },
@@ -76,19 +83,10 @@ module.exports = {
       'error',
       { allowIIFEs: true },
     ],
-    '@typescript-eslint/explicit-module-boundary-types': 'off',
-    '@typescript-eslint/no-empty-function': [
-      'error',
-      { allow: ['arrowFunctions'] },
-    ],
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-non-null-assertion': 'off',
     '@typescript-eslint/no-var-requires': 'off',
-    '@typescript-eslint/prefer-for-of': 'error',
-    '@typescript-eslint/prefer-nullish-coalescing': 'error',
-    '@typescript-eslint/prefer-optional-chain': 'error',
     '@typescript-eslint/unbound-method': 'off',
-    '@typescript-eslint/prefer-as-const': 'error',
     '@typescript-eslint/restrict-template-expressions': [
       'error',
       {
@@ -238,6 +236,10 @@ module.exports = {
         'jest/globals': true,
       },
       rules: {
+        '@typescript-eslint/no-empty-function': [
+          'error',
+          { allow: ['arrowFunctions'] },
+        ],
         '@typescript-eslint/no-unsafe-assignment': 'off',
         '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-unsafe-member-access': 'off',
