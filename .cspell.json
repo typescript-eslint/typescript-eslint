@@ -109,6 +109,7 @@
     "rulesets",
     "serializers",
     "Sourcegraph",
+    "stringification",
     "superset",
     "thenables",
     "transpiled",
