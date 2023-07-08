@@ -140,6 +140,20 @@ If you would like to ignore certain primitive types that can be falsy then you m
 - `bigint: true`, ignores `null` or `undefined` unions with `bigint` (default: false).
 - `boolean: true`, ignores `null` or `undefined` unions with `boolean` (default: false).
 
+Incorrect code for `ignorePrimitives: { string: true }`, and correct code for `ignorePrimitives: { string: false }`:
+
+```ts
+const foo: string | undefined = 'bar';
+foo || 'a string';
+```
+
+Correct code for `ignorePrimitives: { string: true }`:
+
+```ts
+const foo: string | undefined = 'bar';
+foo ?? 'a string';
+```
+
 ## When Not To Use It
 
 If you are not using TypeScript 3.7 (or greater), then you will not be able to use this rule, as the operator is not supported.
