@@ -781,70 +781,367 @@ x || y;
         },
       ],
     })),
-    ...[
-      // falsy
-      { ignoreablePrimitive: ['string'], literalPrimitive: "''" },
-      { ignoreablePrimitive: ['string'], literalPrimitive: '``' },
-      { ignoreablePrimitive: ['number'], literalPrimitive: '0' },
-      { ignoreablePrimitive: ['bigint'], literalPrimitive: '0n' },
-      { ignoreablePrimitive: ['boolean'], literalPrimitive: 'false' },
-      // truthy
-      { ignoreablePrimitive: ['string'], literalPrimitive: "'a'" },
-      {
-        ignoreablePrimitive: ['string'],
-        literalPrimitive: "`hello${'string'}`",
-      },
-      { ignoreablePrimitive: ['number'], literalPrimitive: '1' },
-      { ignoreablePrimitive: ['bigint'], literalPrimitive: '1n' },
-      { ignoreablePrimitive: ['boolean'], literalPrimitive: 'true' },
-      // unions
-      { ignoreablePrimitive: ['string'], literalPrimitive: "'a' | 'b'" },
-      { ignoreablePrimitive: ['string'], literalPrimitive: "'a' | `b`" },
-      { ignoreablePrimitive: ['number'], literalPrimitive: '0 | 1' },
-      { ignoreablePrimitive: ['number'], literalPrimitive: '1 | 2 | 3' },
-      { ignoreablePrimitive: ['bigint'], literalPrimitive: '0n | 1n' },
-      { ignoreablePrimitive: ['bigint'], literalPrimitive: '1n | 2n | 3n' },
-      { ignoreablePrimitive: ['boolean'], literalPrimitive: 'true | false' },
-      // Mixed unions
-      {
-        ignoreablePrimitive: ['number'],
-        literalPrimitive: '0 | 1 | 0n | 1n',
-      },
-      {
-        ignoreablePrimitive: ['bigint'],
-        literalPrimitive: '0 | 1 | 0n | 1n',
-      },
-      {
-        ignoreablePrimitive: ['number', 'bigint'],
-        literalPrimitive: '0 | 1 | 0n | 1n',
-      },
-      {
-        ignoreablePrimitive: ['boolean'],
-        literalPrimitive: 'true | false | null',
-      },
-    ].map<TSESLint.InvalidTestCase<MessageIds, Options>>(
-      ({ ignoreablePrimitive, literalPrimitive }) => {
-        const ignorePrimitives = Object.fromEntries(
-          ignorablePrimitiveTypes.map(t => [
-            t,
-            !ignoreablePrimitive.includes(t),
-          ]),
-        );
-        return {
-          code: `
-    declare const x: ${literalPrimitive} | undefined;
-    x || y;
-    // ${JSON.stringify(ignorePrimitives)}
-    `,
-          options: [{ ignorePrimitives }],
-          errors: [
-            {
-              messageId: 'preferNullishOverOr',
-            },
-          ],
-        };
-      },
-    ),
+    // falsy
+    {
+      code: `
+declare const x: '' | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: false,
+            number: true,
+            boolean: true,
+            bigint: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: \`\` | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: false,
+            number: true,
+            boolean: true,
+            bigint: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: 0 | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: false,
+            boolean: true,
+            bigint: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: 0n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: true,
+            boolean: true,
+            bigint: false,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: false | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: true,
+            boolean: false,
+            bigint: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    // truthy
+    {
+      code: `
+declare const x: 'a' | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: false,
+            number: true,
+            boolean: true,
+            bigint: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: \`hello\${'string'}\` | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: false,
+            number: true,
+            boolean: true,
+            bigint: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: 1 | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: false,
+            boolean: true,
+            bigint: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: 1n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: true,
+            boolean: true,
+            bigint: false,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: true | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: true,
+            boolean: false,
+            bigint: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    // Unions of same primitive
+    {
+      code: `
+declare const x: 'a' | 'b' | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: false,
+            number: true,
+            boolean: true,
+            bigint: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: 'a' | \`b\` | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: false,
+            number: true,
+            boolean: true,
+            bigint: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: 0 | 1 | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: false,
+            boolean: true,
+            bigint: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: 1 | 2 | 3 | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: false,
+            boolean: true,
+            bigint: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: 0n | 1n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: true,
+            boolean: true,
+            bigint: false,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: 1n | 2n | 3n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: true,
+            boolean: true,
+            bigint: false,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: true | false | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: true,
+            boolean: false,
+            bigint: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    // Mixed unions
+    {
+      code: `
+declare const x: 0 | 1 | 0n | 1n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: false,
+            boolean: true,
+            bigint: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: 0 | 1 | 0n | 1n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: true,
+            boolean: true,
+            bigint: false,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: 0 | 1 | 0n | 1n | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: false,
+            boolean: true,
+            bigint: false,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: true | false | null | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: {
+            string: true,
+            number: true,
+            boolean: false,
+            bigint: true,
+          },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
     {
       code: `
 declare const x: 0 | 'foo' | undefined;
