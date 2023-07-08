@@ -4,11 +4,19 @@ import * as parser from '../../src';
 import type { TSESTreeOptions } from '../../src/parser-options';
 import { createAndPrepareParseConfig } from '../../tools/test-utils';
 
+console.log(
+  'Start of file: parse.moduleResolver.default-program-success.test.ts',
+);
+
 beforeEach(() => {
   jest.clearAllMocks();
 });
 
 describe('parseAndGenerateServices', () => {
+  console.log(
+    'Start of describe: parse.moduleResolver.default-program-success.test.ts',
+  );
+
   describe('moduleResolver', () => {
     const { code, config, projectDirectory } = createAndPrepareParseConfig();
 

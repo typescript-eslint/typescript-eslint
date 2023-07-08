@@ -564,13 +564,33 @@ export class Converter {
   }
 
   private convertJSXNamespaceOrIdentifier(
-    node: ts.Identifier | ts.ThisExpression,
+    node: ts.JsxNamespacedName | ts.Identifier | ts.ThisExpression,
   ): TSESTree.JSXIdentifier | TSESTree.JSXNamespacedName {
+    // TypeScript@5.1 added in ts.JsxNamespacedName directly
+    // We prefer using that if it's relevant for this node type
+    if (node.kind === ts.SyntaxKind.JsxNamespacedName) {
+      const result = this.createNode<TSESTree.JSXNamespacedName>(node, {
+        type: AST_NODE_TYPES.JSXNamespacedName,
+        namespace: this.createNode(node.namespace, {
+          type: AST_NODE_TYPES.JSXIdentifier,
+          name: node.namespace.text,
+        }),
+        name: this.createNode(node.name, {
+          type: AST_NODE_TYPES.JSXIdentifier,
+          name: node.name.text,
+        }),
+      });
+      this.registerTSNodeInNodeMap(node, result);
+      return result;
+    }
+
+    // TypeScript@<5.1 has to manually parse the JSX attributes
     const text = node.getText();
     const colonIndex = text.indexOf(':');
     // this is intentional we can ignore conversion if `:` is in first character
     if (colonIndex > 0) {
       const range = getRange(node, this.ast);
+      // @ts-expect-error -- TypeScript@<5.1 doesn't have ts.JsxNamespacedName
       const result = this.createNode<TSESTree.JSXNamespacedName>(node, {
         type: AST_NODE_TYPES.JSXNamespacedName,
         namespace: this.createNode<TSESTree.JSXIdentifier>(node, {

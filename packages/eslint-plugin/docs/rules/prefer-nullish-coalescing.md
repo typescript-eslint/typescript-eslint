@@ -131,6 +131,29 @@ a ?? (b && c && d);
 
 **_NOTE:_** Errors for this specific case will be presented as suggestions (see below), instead of fixes. This is because it is not always safe to automatically convert `||` to `??` within a mixed logical expression, as we cannot tell the intended precedence of the operator. Note that by design, `??` requires parentheses when used with `&&` or `||` in the same expression.
 
+### `ignorePrimitives`
+
+If you would like to ignore certain primitive types that can be falsy then you may pass an object containing a boolean value for each primitive:
+
+- `string: true`, ignores `null` or `undefined` unions with `string` (default: false).
+- `number: true`, ignores `null` or `undefined` unions with `number` (default: false).
+- `bigint: true`, ignores `null` or `undefined` unions with `bigint` (default: false).
+- `boolean: true`, ignores `null` or `undefined` unions with `boolean` (default: false).
+
+Incorrect code for `ignorePrimitives: { string: true }`, and correct code for `ignorePrimitives: { string: false }`:
+
+```ts
+const foo: string | undefined = 'bar';
+foo || 'a string';
+```
+
+Correct code for `ignorePrimitives: { string: true }`:
+
+```ts
+const foo: string | undefined = 'bar';
+foo ?? 'a string';
+```
+
 ## When Not To Use It
 
 If you are not using TypeScript 3.7 (or greater), then you will not be able to use this rule, as the operator is not supported.
