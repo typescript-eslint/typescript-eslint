@@ -759,28 +759,55 @@ declare const c: ${type};
         },
       ],
     })),
-    ...ignorablePrimitiveTypes.map<
-      TSESLint.InvalidTestCase<MessageIds, Options>
-    >(ignoreablePrimitive => ({
+    // default for missing option
+    {
       code: `
-declare const x: ${ignoreablePrimitive} | undefined;
+declare const x: string | undefined;
 x || y;
       `,
       options: [
         {
-          ignorePrimitives: Object.fromEntries(
-            ignorablePrimitiveTypes
-              .filter(t => t !== ignoreablePrimitive)
-              .map(t => [t, true]),
-          ),
+          ignorePrimitives: { number: true, boolean: true, bigint: true },
         },
       ],
-      errors: [
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: number | undefined;
+x || y;
+      `,
+      options: [
         {
-          messageId: 'preferNullishOverOr',
+          ignorePrimitives: { string: true, boolean: true, bigint: true },
         },
       ],
-    })),
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: boolean | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: { string: true, number: true, bigint: true },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
+    {
+      code: `
+declare const x: bigint | undefined;
+x || y;
+      `,
+      options: [
+        {
+          ignorePrimitives: { string: true, number: true, boolean: true },
+        },
+      ],
+      errors: [{ messageId: 'preferNullishOverOr' }],
+    },
     // falsy
     {
       code: `
