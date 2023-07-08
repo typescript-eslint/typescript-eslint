@@ -13,6 +13,8 @@ This rule reports on values used in a template literal string that aren't string
 :::note
 
 This rule intentionally does not allow objects with a custom `toString()` method to be used in template literals, because the stringification result may not be user-friendly.
+
+For example, arrays have a custom [`toString()`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/toString) method, which only calls `join()` internally, which joins the array elements with commas. This means that (1) array elements are not necessarily stringified to useful results (2) the commas don't have spaces after them, making the result not user-friendly. The best way to format arrays is to use [`Intl.ListFormat`](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl/ListFormat), which even supports adding the "and" conjunction where necessary.
 You must explicitly call `object.toString()` if you want to use this object in a template literal.
 The [`no-base-to-string`](./no-base-to-string.md) rule can be used to guard this case against producing `"[object Object]"` by accident.
 
