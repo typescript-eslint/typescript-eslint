@@ -52,8 +52,7 @@ export default util.createRule<Options, MessageIds>({
     hasSuggestions: true,
     messages: {
       preferFieldStyle: 'Literals should be exposed using readonly fields.',
-      preferFieldStyleSuggestion:
-        'Replace the literals with readonly fields.',
+      preferFieldStyleSuggestion:'Replace the literals with readonly fields.',
       preferGetterStyle: 'Literals should be exposed using getters.',
       preferGetterStyleSuggestion: 'Replace the literals with getters.',
     },
