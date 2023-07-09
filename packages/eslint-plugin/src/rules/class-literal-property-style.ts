@@ -55,7 +55,7 @@ export default util.createRule<Options, MessageIds>({
       preferFieldStyleSuggestion:
         'Try replacing the literals with readonly fields.',
       preferGetterStyle: 'Literals should be exposed using getters.',
-      preferGetterStyleSuggestion: 'Try replacing the literals with getters.',
+      preferGetterStyleSuggestion: 'Replace the literals with readonly fields.',
     },
     schema: [{ enum: ['fields', 'getters'] }],
   },
