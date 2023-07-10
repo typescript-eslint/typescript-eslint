@@ -60,7 +60,6 @@ export default util.createRule<Options, MessageIds>({
             items: {
               $ref: '#/items/0/$defs/modifier',
             },
-            minItems: 1,
           },
           prefer: {
             type: 'string',
