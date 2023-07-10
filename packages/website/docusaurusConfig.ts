@@ -91,7 +91,7 @@ const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
       },
       {
         position: 'right',
-        value: `<div class="menu__link">v${version}</div>`,
+        value: `<div class="menu__version-item">v${version}</div>`,
         type: 'html',
       },
       {
