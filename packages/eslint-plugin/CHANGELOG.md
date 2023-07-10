@@ -3,6 +3,26 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [5.62.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.61.0...v5.62.0) (2023-07-10)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [comma-spacing] allow no space after trailing comma in objects and arrays ([#6938](https://github.com/typescript-eslint/typescript-eslint/issues/6938)) ([24bdacc](https://github.com/typescript-eslint/typescript-eslint/commit/24bdacc7e5df40c92031a1bd7e9815d66a35b31d))
+* **eslint-plugin:** [prefer-includes] escape special characters ([#7161](https://github.com/typescript-eslint/typescript-eslint/issues/7161)) ([5a347a5](https://github.com/typescript-eslint/typescript-eslint/commit/5a347a5978bc5737412bd12d61eb6058163cf4a0)), closes [#7145](https://github.com/typescript-eslint/typescript-eslint/issues/7145)
+* **eslint-plugin:** replace auto-fix of class literal property style rule with suggestion ([#7054](https://github.com/typescript-eslint/typescript-eslint/issues/7054)) ([a8c824a](https://github.com/typescript-eslint/typescript-eslint/commit/a8c824a1e84453f93cd2b464fc102bc878c1aff3))
+
+
+### Features
+
+* **eslint-plugin:** [prefer-nullish-coalescing] add `ignorePrimitives` option ([#6487](https://github.com/typescript-eslint/typescript-eslint/issues/6487)) ([6edaa04](https://github.com/typescript-eslint/typescript-eslint/commit/6edaa04565576f0af7e60bc08602bd781c847804))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [5.61.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.60.1...v5.61.0) (2023-07-03)
 
 
