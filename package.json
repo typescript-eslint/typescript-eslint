@@ -32,7 +32,7 @@
     "clean": "lerna clean -y && nx run-many --target=clean",
     "format": "prettier --write .",
     "generate-breaking-changes": "nx run eslint-plugin:generate-breaking-changes",
-    "generate-configs": "nx run eslint-plugin:generate-configs",
+    "generate-configs": "nx run eslint-plugin:generate:configs",
     "generate-contributors": "nx run repo-tools:generate-contributors",
     "generate-sponsors": "nx run repo-tools:generate-sponsors",
     "generate-website-dts": "nx run website:generate-website-dts",
