@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
-  "version": "5.61.0",
+  "version": "5.62.0",
   "private": true,
   "type": "commonjs",
   "exports": {
@@ -33,7 +33,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/type-utils": "5.61.0",
+    "@typescript-eslint/type-utils": "5.62.0",
     "natural-compare": "^1.4.0",
     "prettier": "*"
   },
