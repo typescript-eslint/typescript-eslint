@@ -20,7 +20,9 @@ exports[`AST Fixtures legacy-fixtures basics export-default-interface AST Alignm
                 computed: false,
                 key: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'method1',
+-                 optional: false,
 
                   range: [104, 111],
                   loc: {
@@ -29,7 +31,9 @@ exports[`AST Fixtures legacy-fixtures basics export-default-interface AST Alignm
                   },
                 },
                 kind: 'method',
+-               optional: false,
 -               params: Array [],
+-               readonly: false,
 -               returnType: TSTypeAnnotation {
 +               parameters: Array [],
 +               typeAnnotation: TSTypeAnnotation {
@@ -50,6 +54,7 @@ exports[`AST Fixtures legacy-fixtures basics export-default-interface AST Alignm
                     end: { column: 17, line: 4 },
                   },
                 },
+-               static: false,
 
                 range: [104, 120],
                 loc: {
@@ -65,9 +70,13 @@ exports[`AST Fixtures legacy-fixtures basics export-default-interface AST Alignm
               end: { column: 1, line: 5 },
             },
           },
+-         declare: false,
+-         extends: Array [],
           id: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'T',
+-           optional: false,
 
             range: [98, 99],
             loc: {

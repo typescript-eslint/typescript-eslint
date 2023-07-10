@@ -2,5 +2,85 @@
 
 exports[`AST Fixtures declaration ImportDeclaration default-and-namespace AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ImportDeclaration {
+        type: 'ImportDeclaration',
+        assertions: Array [],
+        importKind: 'value',
+        source: Literal {
+          type: 'Literal',
+          raw: '\\'mod\\'',
+          value: 'mod',
+
+          range: [22, 27],
+          loc: {
+            start: { column: 22, line: 1 },
+            end: { column: 27, line: 1 },
+          },
+        },
+        specifiers: Array [
+          ImportDefaultSpecifier {
+            type: 'ImportDefaultSpecifier',
+            local: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'a',
+-             optional: false,
+
+              range: [7, 8],
+              loc: {
+                start: { column: 7, line: 1 },
+                end: { column: 8, line: 1 },
+              },
+            },
+
+            range: [7, 8],
+            loc: {
+              start: { column: 7, line: 1 },
+              end: { column: 8, line: 1 },
+            },
+          },
+          ImportNamespaceSpecifier {
+            type: 'ImportNamespaceSpecifier',
+            local: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'b',
+-             optional: false,
+
+              range: [15, 16],
+              loc: {
+                start: { column: 15, line: 1 },
+                end: { column: 16, line: 1 },
+              },
+            },
+
+            range: [10, 16],
+            loc: {
+              start: { column: 10, line: 1 },
+              end: { column: 16, line: 1 },
+            },
+          },
+        ],
+
+        range: [0, 28],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 28, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'module',
+
+    range: [0, 29],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;

@@ -1,7 +1,8 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
 import { createRule, isNodeEqual } from '../../src/util';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rule = createRule({
   name: 'no-useless-expression',
@@ -11,7 +12,6 @@ const rule = createRule({
     fixable: 'code',
     docs: {
       description: 'Remove useless expressions.',
-      recommended: false,
     },
     messages: {
       removeExpression: 'Remove useless expression',

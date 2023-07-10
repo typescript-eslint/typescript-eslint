@@ -11,7 +11,9 @@ Program {
         arguments: [],
         callee: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "foo",
+          optional: false,
 
           range: [73, 76],
           loc: {
@@ -20,14 +22,16 @@ Program {
           },
         },
         optional: false,
-        typeParameters: TSTypeParameterInstantiation {
+        typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
           params: [
             TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "A",
+                optional: false,
 
                 range: [77, 78],
                 loc: {
@@ -71,7 +75,9 @@ Program {
         arguments: [],
         callee: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "foo",
+          optional: false,
 
           range: [83, 86],
           loc: {
@@ -80,7 +86,7 @@ Program {
           },
         },
         optional: false,
-        typeParameters: TSTypeParameterInstantiation {
+        typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
           params: [
             TSNumberKeyword {

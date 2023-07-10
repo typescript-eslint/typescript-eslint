@@ -4,6 +4,7 @@ exports[`typescript basics async-function-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "arguments": Array [],
         "callee": Object {
@@ -26,9 +27,11 @@ Object {
             ],
             "type": "BlockStatement",
           },
+          "declare": false,
           "expression": false,
           "generator": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 20,
@@ -40,11 +43,13 @@ Object {
               },
             },
             "name": "test",
+            "optional": false,
             "range": Array [
               16,
               20,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -61,7 +66,9 @@ Object {
             1,
             26,
           ],
+          "returnType": undefined,
           "type": "FunctionExpression",
+          "typeParameters": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -79,6 +86,7 @@ Object {
           29,
         ],
         "type": "CallExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

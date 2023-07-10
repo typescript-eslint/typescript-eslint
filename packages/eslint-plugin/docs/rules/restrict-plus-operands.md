@@ -168,9 +168,9 @@ let fn = (a: number, b: RegExp) => a + b;
 let fn = (a: string, b: RegExp) => a + b;
 ```
 
-### `checkCompoundAssignments`
+### `skipCompoundAssignments`
 
-Examples of code for this rule with `{ checkCompoundAssignments: true }`:
+Examples of code for this rule with `{ skipCompoundAssignments: true }`:
 
 <!--tabs-->
 

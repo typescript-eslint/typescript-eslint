@@ -4,7 +4,9 @@ exports[`typescript types conditional-infer-nested.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 13,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "Unpacked",
+        "optional": false,
         "range": Array [
           5,
           13,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -55,6 +59,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 3,
@@ -66,11 +71,13 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               21,
               22,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },
@@ -106,6 +113,7 @@ Object {
                 },
               },
               "name": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 20,
@@ -117,11 +125,13 @@ Object {
                   },
                 },
                 "name": "U",
+                "optional": false,
                 "range": Array [
                   38,
                   39,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "out": false,
               "range": Array [
@@ -165,6 +175,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 5,
@@ -176,11 +187,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 53,
                 54,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": undefined,
           },
@@ -215,6 +228,7 @@ Object {
                 },
               },
               "name": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 21,
@@ -226,11 +240,13 @@ Object {
                   },
                 },
                 "name": "U",
+                "optional": false,
                 "range": Array [
                   69,
                   70,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "out": false,
               "range": Array [
@@ -258,6 +274,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 7,
@@ -269,11 +286,13 @@ Object {
                   },
                 },
                 "name": "T",
+                "optional": false,
                 "range": Array [
                   83,
                   84,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -294,6 +313,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 23,
@@ -305,11 +325,13 @@ Object {
                   },
                 },
                 "name": "Promise",
+                "optional": false,
                 "range": Array [
                   93,
                   100,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": Object {
                 "loc": Object {
@@ -354,6 +376,7 @@ Object {
                         },
                       },
                       "name": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 31,
@@ -365,11 +388,13 @@ Object {
                           },
                         },
                         "name": "U",
+                        "optional": false,
                         "range": Array [
                           107,
                           108,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "out": false,
                       "range": Array [
@@ -404,6 +429,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 9,
@@ -415,11 +441,13 @@ Object {
                   },
                 },
                 "name": "T",
+                "optional": false,
                 "range": Array [
                   124,
                   125,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -454,6 +482,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 36,
@@ -465,11 +494,13 @@ Object {
                   },
                 },
                 "name": "U",
+                "optional": false,
                 "range": Array [
                   112,
                   113,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -506,6 +537,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 25,
@@ -517,11 +549,13 @@ Object {
                 },
               },
               "name": "U",
+              "optional": false,
               "range": Array [
                 73,
                 74,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": undefined,
           },
@@ -558,6 +592,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 27,
@@ -569,11 +604,13 @@ Object {
               },
             },
             "name": "U",
+            "optional": false,
             "range": Array [
               45,
               46,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },
@@ -606,6 +643,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 15,
@@ -617,11 +655,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 14,
                 15,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [

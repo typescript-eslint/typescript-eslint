@@ -3,8 +3,8 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
-type Prefer = 'type-imports' | 'no-type-imports';
-type FixStyle = 'separate-type-imports' | 'inline-type-imports';
+type Prefer = 'no-type-imports' | 'type-imports';
+type FixStyle = 'inline-type-imports' | 'separate-type-imports';
 
 type Options = [
   {
@@ -33,20 +33,19 @@ interface ReportValueImport {
 }
 
 type MessageIds =
-  | 'typeOverValue'
-  | 'someImportsAreOnlyTypes'
+  | 'aImportInDecoMeta'
   | 'aImportIsOnlyTypes'
-  | 'valueOverType'
   | 'noImportTypeAnnotations'
+  | 'someImportsAreOnlyTypes'
   | 'someImportsInDecoMeta'
-  | 'aImportInDecoMeta';
+  | 'typeOverValue'
+  | 'valueOverType';
 export default util.createRule<Options, MessageIds>({
   name: 'consistent-type-imports',
   meta: {
     type: 'suggestion',
     docs: {
       description: 'Enforce consistent usage of type imports',
-      recommended: false,
     },
     messages: {
       typeOverValue:
@@ -66,12 +65,14 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           prefer: {
+            type: 'string',
             enum: ['type-imports', 'no-type-imports'],
           },
           disallowTypeAnnotations: {
             type: 'boolean',
           },
           fixStyle: {
+            type: 'string',
             enum: ['separate-type-imports', 'inline-type-imports'],
           },
         },

@@ -9,35 +9,35 @@ import { applyDefault } from './applyDefault';
 
 // we automatically add the url
 export type NamedCreateRuleMetaDocs = Omit<RuleMetaDataDocs, 'url'>;
-export type NamedCreateRuleMeta<TMessageIds extends string> = {
+export type NamedCreateRuleMeta<TMessageIds extends string> = Omit<
+  RuleMetaData<TMessageIds>,
+  'docs'
+> & {
   docs: NamedCreateRuleMetaDocs;
-} & Omit<RuleMetaData<TMessageIds>, 'docs'>;
+};
 
 export interface RuleCreateAndOptions<
   TOptions extends readonly unknown[],
   TMessageIds extends string,
-  TRuleListener extends RuleListener,
 > {
   create: (
     context: Readonly<RuleContext<TMessageIds, TOptions>>,
     optionsWithDefault: Readonly<TOptions>,
-  ) => TRuleListener;
+  ) => RuleListener;
   defaultOptions: Readonly<TOptions>;
 }
 
 export interface RuleWithMeta<
   TOptions extends readonly unknown[],
   TMessageIds extends string,
-  TRuleListener extends RuleListener,
-> extends RuleCreateAndOptions<TOptions, TMessageIds, TRuleListener> {
+> extends RuleCreateAndOptions<TOptions, TMessageIds> {
   meta: RuleMetaData<TMessageIds>;
 }
 
 export interface RuleWithMetaAndName<
   TOptions extends readonly unknown[],
   TMessageIds extends string,
-  TRuleListener extends RuleListener,
-> extends RuleCreateAndOptions<TOptions, TMessageIds, TRuleListener> {
+> extends RuleCreateAndOptions<TOptions, TMessageIds> {
   meta: NamedCreateRuleMeta<TMessageIds>;
   name: string;
 }
@@ -54,15 +54,15 @@ export function RuleCreator(urlCreator: (ruleName: string) => string) {
   return function createNamedRule<
     TOptions extends readonly unknown[],
     TMessageIds extends string,
-    TRuleListener extends RuleListener = RuleListener,
   >({
     name,
     meta,
     ...rule
-  }: Readonly<
-    RuleWithMetaAndName<TOptions, TMessageIds, TRuleListener>
-  >): RuleModule<TMessageIds, TOptions, TRuleListener> {
-    return createRule<TOptions, TMessageIds, TRuleListener>({
+  }: Readonly<RuleWithMetaAndName<TOptions, TMessageIds>>): RuleModule<
+    TMessageIds,
+    TOptions
+  > {
+    return createRule<TOptions, TMessageIds>({
       meta: {
         ...meta,
         docs: {
@@ -84,20 +84,18 @@ export function RuleCreator(urlCreator: (ruleName: string) => string) {
 function createRule<
   TOptions extends readonly unknown[],
   TMessageIds extends string,
-  TRuleListener extends RuleListener = RuleListener,
 >({
   create,
   defaultOptions,
   meta,
-}: Readonly<RuleWithMeta<TOptions, TMessageIds, TRuleListener>>): RuleModule<
+}: Readonly<RuleWithMeta<TOptions, TMessageIds>>): RuleModule<
   TMessageIds,
-  TOptions,
-  TRuleListener
+  TOptions
 > {
   return {
     create(
       context: Readonly<RuleContext<TMessageIds, TOptions>>,
-    ): TRuleListener {
+    ): RuleListener {
       const optionsWithDefault = applyDefault(defaultOptions, context.options);
       return create(context, optionsWithDefault);
     },

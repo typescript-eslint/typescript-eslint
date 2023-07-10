@@ -16,7 +16,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Require spacing around infix operators',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: baseRule.meta.fixable,
@@ -71,8 +70,8 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkAndReportAssignmentSpace(
-      leftNode: TSESTree.Token | TSESTree.Node | null,
-      rightNode?: TSESTree.Token | TSESTree.Node | null,
+      leftNode: TSESTree.Node | TSESTree.Token | null,
+      rightNode?: TSESTree.Node | TSESTree.Token | null,
     ): void {
       if (!rightNode || !leftNode) {
         return;

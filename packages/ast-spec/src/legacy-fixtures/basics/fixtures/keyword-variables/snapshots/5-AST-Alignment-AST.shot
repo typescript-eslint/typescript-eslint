@@ -16,9 +16,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'abstract',
+-                 optional: false,
 
                   range: [83, 91],
                   loc: {
@@ -45,6 +48,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [77, 96],
@@ -58,9 +62,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'as',
+-                 optional: false,
 
                   range: [105, 107],
                   loc: {
@@ -87,6 +94,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [99, 112],
@@ -100,9 +108,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'asserts',
+-                 optional: false,
 
                   range: [121, 128],
                   loc: {
@@ -129,6 +140,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [115, 133],
@@ -142,9 +154,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'any',
+-                 optional: false,
 
                   range: [142, 145],
                   loc: {
@@ -171,6 +186,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [136, 150],
@@ -184,9 +200,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'async',
+-                 optional: false,
 
                   range: [159, 164],
                   loc: {
@@ -213,6 +232,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [153, 169],
@@ -226,9 +246,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'await',
+-                 optional: false,
 
                   range: [178, 183],
                   loc: {
@@ -255,6 +278,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [172, 188],
@@ -268,9 +292,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'boolean',
+-                 optional: false,
 
                   range: [197, 204],
                   loc: {
@@ -297,6 +324,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [191, 209],
@@ -310,9 +338,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'constructor',
+-                 optional: false,
 
                   range: [218, 229],
                   loc: {
@@ -339,6 +370,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [212, 234],
@@ -352,9 +384,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'declare',
+-                 optional: false,
 
                   range: [243, 250],
                   loc: {
@@ -381,6 +416,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [237, 255],
@@ -394,9 +430,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'get',
+-                 optional: false,
 
                   range: [264, 267],
                   loc: {
@@ -423,6 +462,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [258, 272],
@@ -436,9 +476,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'infer',
+-                 optional: false,
 
                   range: [281, 286],
                   loc: {
@@ -465,6 +508,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [275, 291],
@@ -478,9 +522,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'is',
+-                 optional: false,
 
                   range: [300, 302],
                   loc: {
@@ -507,6 +554,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [294, 307],
@@ -520,9 +568,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'keyof',
+-                 optional: false,
 
                   range: [316, 321],
                   loc: {
@@ -549,6 +600,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [310, 326],
@@ -562,9 +614,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'module',
+-                 optional: false,
 
                   range: [335, 341],
                   loc: {
@@ -591,6 +646,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [329, 346],
@@ -604,9 +660,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'namespace',
+-                 optional: false,
 
                   range: [355, 364],
                   loc: {
@@ -633,6 +692,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [349, 369],
@@ -646,9 +706,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'never',
+-                 optional: false,
 
                   range: [378, 383],
                   loc: {
@@ -675,6 +738,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [372, 388],
@@ -688,9 +752,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'readonly',
+-                 optional: false,
 
                   range: [397, 405],
                   loc: {
@@ -717,6 +784,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [391, 410],
@@ -730,9 +798,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'require',
+-                 optional: false,
 
                   range: [419, 426],
                   loc: {
@@ -759,6 +830,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [413, 431],
@@ -772,9 +844,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'number',
+-                 optional: false,
 
                   range: [440, 446],
                   loc: {
@@ -801,6 +876,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [434, 451],
@@ -814,9 +890,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'object',
+-                 optional: false,
 
                   range: [460, 466],
                   loc: {
@@ -843,6 +922,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [454, 471],
@@ -856,9 +936,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'set',
+-                 optional: false,
 
                   range: [480, 483],
                   loc: {
@@ -885,6 +968,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [474, 488],
@@ -898,9 +982,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'string',
+-                 optional: false,
 
                   range: [497, 503],
                   loc: {
@@ -927,6 +1014,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [491, 508],
@@ -940,9 +1028,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'symbol',
+-                 optional: false,
 
                   range: [517, 523],
                   loc: {
@@ -969,6 +1060,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [511, 528],
@@ -982,9 +1074,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'type',
+-                 optional: false,
 
                   range: [537, 541],
                   loc: {
@@ -1011,6 +1106,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [531, 546],
@@ -1024,9 +1120,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'undefined',
+-                 optional: false,
 
                   range: [555, 564],
                   loc: {
@@ -1053,6 +1152,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [549, 569],
@@ -1066,9 +1166,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'unique',
+-                 optional: false,
 
                   range: [578, 584],
                   loc: {
@@ -1095,6 +1198,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [572, 589],
@@ -1108,9 +1212,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'unknown',
+-                 optional: false,
 
                   range: [598, 605],
                   loc: {
@@ -1137,6 +1244,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [592, 610],
@@ -1150,9 +1258,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'from',
+-                 optional: false,
 
                   range: [619, 623],
                   loc: {
@@ -1179,6 +1290,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [613, 628],
@@ -1192,9 +1304,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'global',
+-                 optional: false,
 
                   range: [637, 643],
                   loc: {
@@ -1221,6 +1336,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [631, 648],
@@ -1234,9 +1350,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'bigint',
+-                 optional: false,
 
                   range: [657, 663],
                   loc: {
@@ -1263,6 +1382,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [651, 668],
@@ -1276,9 +1396,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             declarations: Array [
               VariableDeclarator {
                 type: 'VariableDeclarator',
+-               definite: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'of',
+-                 optional: false,
 
                   range: [677, 679],
                   loc: {
@@ -1305,6 +1428,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
             ],
+-           declare: false,
             kind: 'const',
 
             range: [671, 684],
@@ -1341,7 +1465,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'abstract',
+-             optional: false,
 
               range: [699, 707],
               loc: {
@@ -1352,7 +1478,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'abstract',
+-             optional: false,
 
               range: [699, 707],
               loc: {
@@ -1371,7 +1499,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'as',
+-             optional: false,
 
               range: [711, 713],
               loc: {
@@ -1382,7 +1512,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'as',
+-             optional: false,
 
               range: [711, 713],
               loc: {
@@ -1401,7 +1533,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'asserts',
+-             optional: false,
 
               range: [717, 724],
               loc: {
@@ -1412,7 +1546,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'asserts',
+-             optional: false,
 
               range: [717, 724],
               loc: {
@@ -1431,7 +1567,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'any',
+-             optional: false,
 
               range: [728, 731],
               loc: {
@@ -1442,7 +1580,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'any',
+-             optional: false,
 
               range: [728, 731],
               loc: {
@@ -1461,7 +1601,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'async',
+-             optional: false,
 
               range: [735, 740],
               loc: {
@@ -1472,7 +1614,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'async',
+-             optional: false,
 
               range: [735, 740],
               loc: {
@@ -1491,7 +1635,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'await',
+-             optional: false,
 
               range: [744, 749],
               loc: {
@@ -1502,7 +1648,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'await',
+-             optional: false,
 
               range: [744, 749],
               loc: {
@@ -1521,7 +1669,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'boolean',
+-             optional: false,
 
               range: [753, 760],
               loc: {
@@ -1532,7 +1682,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'boolean',
+-             optional: false,
 
               range: [753, 760],
               loc: {
@@ -1551,7 +1703,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'constructor',
+-             optional: false,
 
               range: [764, 775],
               loc: {
@@ -1562,7 +1716,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'constructor',
+-             optional: false,
 
               range: [764, 775],
               loc: {
@@ -1581,7 +1737,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'declare',
+-             optional: false,
 
               range: [779, 786],
               loc: {
@@ -1592,7 +1750,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'declare',
+-             optional: false,
 
               range: [779, 786],
               loc: {
@@ -1611,7 +1771,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'get',
+-             optional: false,
 
               range: [790, 793],
               loc: {
@@ -1622,7 +1784,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'get',
+-             optional: false,
 
               range: [790, 793],
               loc: {
@@ -1641,7 +1805,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'infer',
+-             optional: false,
 
               range: [797, 802],
               loc: {
@@ -1652,7 +1818,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'infer',
+-             optional: false,
 
               range: [797, 802],
               loc: {
@@ -1671,7 +1839,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'is',
+-             optional: false,
 
               range: [806, 808],
               loc: {
@@ -1682,7 +1852,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'is',
+-             optional: false,
 
               range: [806, 808],
               loc: {
@@ -1701,7 +1873,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'keyof',
+-             optional: false,
 
               range: [812, 817],
               loc: {
@@ -1712,7 +1886,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'keyof',
+-             optional: false,
 
               range: [812, 817],
               loc: {
@@ -1731,7 +1907,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'module',
+-             optional: false,
 
               range: [821, 827],
               loc: {
@@ -1742,7 +1920,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'module',
+-             optional: false,
 
               range: [821, 827],
               loc: {
@@ -1761,7 +1941,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'namespace',
+-             optional: false,
 
               range: [831, 840],
               loc: {
@@ -1772,7 +1954,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'namespace',
+-             optional: false,
 
               range: [831, 840],
               loc: {
@@ -1791,7 +1975,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'never',
+-             optional: false,
 
               range: [844, 849],
               loc: {
@@ -1802,7 +1988,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'never',
+-             optional: false,
 
               range: [844, 849],
               loc: {
@@ -1821,7 +2009,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'readonly',
+-             optional: false,
 
               range: [853, 861],
               loc: {
@@ -1832,7 +2022,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'readonly',
+-             optional: false,
 
               range: [853, 861],
               loc: {
@@ -1851,7 +2043,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'require',
+-             optional: false,
 
               range: [865, 872],
               loc: {
@@ -1862,7 +2056,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'require',
+-             optional: false,
 
               range: [865, 872],
               loc: {
@@ -1881,7 +2077,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'number',
+-             optional: false,
 
               range: [876, 882],
               loc: {
@@ -1892,7 +2090,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'number',
+-             optional: false,
 
               range: [876, 882],
               loc: {
@@ -1911,7 +2111,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'object',
+-             optional: false,
 
               range: [886, 892],
               loc: {
@@ -1922,7 +2124,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'object',
+-             optional: false,
 
               range: [886, 892],
               loc: {
@@ -1941,7 +2145,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'set',
+-             optional: false,
 
               range: [896, 899],
               loc: {
@@ -1952,7 +2158,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'set',
+-             optional: false,
 
               range: [896, 899],
               loc: {
@@ -1971,7 +2179,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'string',
+-             optional: false,
 
               range: [903, 909],
               loc: {
@@ -1982,7 +2192,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'string',
+-             optional: false,
 
               range: [903, 909],
               loc: {
@@ -2001,7 +2213,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'symbol',
+-             optional: false,
 
               range: [913, 919],
               loc: {
@@ -2012,7 +2226,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'symbol',
+-             optional: false,
 
               range: [913, 919],
               loc: {
@@ -2031,7 +2247,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'type',
+-             optional: false,
 
               range: [923, 927],
               loc: {
@@ -2042,7 +2260,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'type',
+-             optional: false,
 
               range: [923, 927],
               loc: {
@@ -2061,7 +2281,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'undefined',
+-             optional: false,
 
               range: [931, 940],
               loc: {
@@ -2072,7 +2294,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'undefined',
+-             optional: false,
 
               range: [931, 940],
               loc: {
@@ -2091,7 +2315,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'unique',
+-             optional: false,
 
               range: [944, 950],
               loc: {
@@ -2102,7 +2328,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'unique',
+-             optional: false,
 
               range: [944, 950],
               loc: {
@@ -2121,7 +2349,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'unknown',
+-             optional: false,
 
               range: [954, 961],
               loc: {
@@ -2132,7 +2362,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'unknown',
+-             optional: false,
 
               range: [954, 961],
               loc: {
@@ -2151,7 +2383,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'from',
+-             optional: false,
 
               range: [965, 969],
               loc: {
@@ -2162,7 +2396,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'from',
+-             optional: false,
 
               range: [965, 969],
               loc: {
@@ -2181,7 +2417,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'global',
+-             optional: false,
 
               range: [973, 979],
               loc: {
@@ -2192,7 +2430,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'global',
+-             optional: false,
 
               range: [973, 979],
               loc: {
@@ -2211,7 +2451,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'bigint',
+-             optional: false,
 
               range: [983, 989],
               loc: {
@@ -2222,7 +2464,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'bigint',
+-             optional: false,
 
               range: [983, 989],
               loc: {
@@ -2241,7 +2485,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             type: 'ImportSpecifier',
             imported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'of',
+-             optional: false,
 
               range: [993, 995],
               loc: {
@@ -2252,7 +2498,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             importKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'of',
+-             optional: false,
 
               range: [993, 995],
               loc: {
@@ -2287,9 +2535,13 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             end: { column: 14, line: 71 },
           },
         },
+-       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'X',
+-         optional: false,
 
           range: [1030, 1031],
           loc: {
@@ -2306,15 +2558,19 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
       },
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'a',
+-               optional: false,
 
                 range: [1067, 1068],
                 loc: {
@@ -2323,6 +2579,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: true,
               value: FunctionExpression {
@@ -2338,6 +2595,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                     end: { column: 15, line: 73 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -2360,9 +2618,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
               type: 'MethodDefinition',
               accessibility: 'private',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'b',
+-               optional: false,
 
                 range: [1084, 1085],
                 loc: {
@@ -2371,6 +2632,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -2386,6 +2648,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                     end: { column: 16, line: 74 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -2408,9 +2671,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
               type: 'MethodDefinition',
               accessibility: 'public',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'c',
+-               optional: false,
 
                 range: [1100, 1101],
                 loc: {
@@ -2419,6 +2685,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -2434,6 +2701,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                     end: { column: 15, line: 75 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -2456,9 +2724,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
               type: 'MethodDefinition',
               accessibility: 'protected',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'd',
+-               optional: false,
 
                 range: [1120, 1121],
                 loc: {
@@ -2467,6 +2738,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -2480,9 +2752,12 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                       declarations: Array [
                         VariableDeclarator {
                           type: 'VariableDeclarator',
+-                         definite: false,
                           id: Identifier {
                             type: 'Identifier',
+-                           decorators: Array [],
                             name: 'x',
+-                           optional: false,
 
                             range: [1134, 1135],
                             loc: {
@@ -2509,6 +2784,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                           },
                         },
                       ],
+-                     declare: false,
                       kind: 'let',
 
                       range: [1130, 1144],
@@ -2525,6 +2801,7 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
                     end: { column: 3, line: 78 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: true,
                 id: null,
@@ -2551,9 +2828,13 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
             end: { column: 1, line: 79 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'C',
+-         optional: false,
 
           range: [1041, 1042],
           loc: {
@@ -2568,7 +2849,9 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'X',
+-             optional: false,
 
               range: [1054, 1055],
               loc: {

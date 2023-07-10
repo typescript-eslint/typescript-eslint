@@ -10,9 +10,12 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'X',
+-         optional: false,
 
           range: [78, 79],
           loc: {
@@ -22,40 +25,40 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
         },
         typeAnnotation: TSTypeReference {
           type: 'TSTypeReference',
-          typeName: Identifier {
-            type: 'Identifier',
-            name: 'A',
-
-            range: [82, 83],
-            loc: {
-              start: { column: 9, line: 3 },
-              end: { column: 10, line: 3 },
-            },
-          },
-          typeParameters: TSTypeParameterInstantiation {
+-         typeArguments: TSTypeParameterInstantiation {
++         typeName: Identifier {
++           type: 'Identifier',
++           name: 'A',
++
++           range: [82, 83],
++           loc: {
++             start: { column: 9, line: 3 },
++             end: { column: 10, line: 3 },
++           },
++         },
++         typeParameters: TSTypeParameterInstantiation {
             type: 'TSTypeParameterInstantiation',
             params: Array [
               TSImportType {
                 type: 'TSImportType',
--               isTypeOf: false,
--               parameter: TSLiteralType {
+-               argument: TSLiteralType {
 -                 type: 'TSLiteralType',
 -                 literal: Literal {
 -                   type: 'Literal',
 -                   raw: '\\'\\'',
 -                   value: '',
--
++               argument: Literal {
++                 type: 'Literal',
++                 raw: '\\'\\'',
++                 value: '',
+
 -                   range: [91, 93],
 -                   loc: {
 -                     start: { column: 18, line: 3 },
 -                     end: { column: 20, line: 3 },
 -                   },
 -                 },
-+               argument: Literal {
-+                 type: 'Literal',
-+                 raw: '\\'\\'',
-+                 value: '',
-
+-
                   range: [91, 93],
                   loc: {
                     start: { column: 18, line: 3 },
@@ -64,7 +67,9 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
                 },
                 qualifier: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'B',
+-                 optional: false,
 
                   range: [95, 96],
                   loc: {
@@ -72,7 +77,8 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
                     end: { column: 23, line: 3 },
                   },
                 },
-                typeParameters: TSTypeParameterInstantiation {
+-               typeArguments: TSTypeParameterInstantiation {
++               typeParameters: TSTypeParameterInstantiation {
                   type: 'TSTypeParameterInstantiation',
                   params: Array [
                     TSAnyKeyword {
@@ -105,6 +111,18 @@ exports[`AST Fixtures legacy-fixtures basics type-import-type-with-type-paramete
             loc: {
               start: { column: 10, line: 3 },
               end: { column: 29, line: 3 },
+-           },
+-         },
+-         typeName: Identifier {
+-           type: 'Identifier',
+-           decorators: Array [],
+-           name: 'A',
+-           optional: false,
+-
+-           range: [82, 83],
+-           loc: {
+-             start: { column: 9, line: 3 },
+-             end: { column: 10, line: 3 },
             },
           },
 

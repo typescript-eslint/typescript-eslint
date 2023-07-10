@@ -1,3 +1,12 @@
+<!-- ------------------------------------------
+ |      DO NOT MODIFY THIS FILE MANUALLY      |
+ |                                            |
+ | THIS FILE HAS BEEN AUTOMATICALLY GENERATED |
+ |                                            |
+ |     YOU CAN REGENERATE THIS FILE USING     |
+ |         yarn generate-contributors         |
+ ------------------------------------------- -->
+
 # Contributors
 
 Thanks goes to these wonderful people:

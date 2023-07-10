@@ -6,10 +6,13 @@ Program {
   body: [
     TSEnumDeclaration {
       type: "TSEnumDeclaration",
+      const: false,
       declare: true,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [86, 89],
         loc: {
@@ -20,9 +23,12 @@ Program {
       members: [
         TSEnumMember {
           type: "TSEnumMember",
+          computed: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "Bar",
+            optional: false,
 
             range: [94, 97],
             loc: {
@@ -39,9 +45,12 @@ Program {
         },
         TSEnumMember {
           type: "TSEnumMember",
+          computed: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "Baz",
+            optional: false,
 
             range: [101, 104],
             loc: {

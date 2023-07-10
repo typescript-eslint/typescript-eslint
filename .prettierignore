@@ -1,18 +1,14 @@
-**/tests/fixtures/**/*
-!packages/scope-manager/tests/fixtures/**/*
-**/tests/fixture-project/**/*
 **/dist
 **/coverage
 **/.vscode
 **/.nyc_output
 **/.vs
-packages/eslint-plugin-tslint/tests/test-tslint-rules-directory/alwaysFailRule.js
-packages/eslint-plugin/src/configs/*.json
 CONTRIBUTORS.md
 packages/ast-spec/src/*/*/fixtures/_error_/*/fixture.ts
+packages/eslint-plugin/tests/fixtures/indent/
 
-# prettier doesn't yet support auto-accessors
-packages/ast-spec/src/element/AccessorProperty/fixtures
+# prettier errors on this case because it's semantically valid
+packages/ast-spec/src/element/AccessorProperty/fixtures/modifier-abstract-with-value/fixture.ts
 
 # prettier doesn't yet support `const` modifiers for type parameters
 packages/ast-spec/src/special/TSTypeParameter/fixtures
@@ -26,4 +22,6 @@ CHANGELOG.md
 
 packages/website/.docusaurus
 packages/website/build
-packages/website/src/vendor
+
+# see the file header in eslint-base.test.js for more info
+packages/rule-tester/tests/eslint-base

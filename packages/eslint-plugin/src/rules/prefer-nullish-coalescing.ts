@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -21,10 +21,10 @@ export type Options = [
 ];
 
 export type MessageIds =
+  | 'noStrictNullCheck'
   | 'preferNullishOverOr'
   | 'preferNullishOverTernary'
-  | 'suggestNullish'
-  | 'noStrictNullCheck';
+  | 'suggestNullish';
 
 export default util.createRule<Options, MessageIds>({
   name: 'prefer-nullish-coalescing',
@@ -32,8 +32,8 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Enforce using the nullish coalescing operator instead of logical chaining',
-      recommended: 'strict',
+        'Enforce using the nullish coalescing operator instead of logical assignments or chaining',
+      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
@@ -79,9 +79,9 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [
     {
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
-      ignoreConditionalTests: true,
-      ignoreTernaryTests: true,
-      ignoreMixedLogicalExpressions: true,
+      ignoreConditionalTests: false,
+      ignoreTernaryTests: false,
+      ignoreMixedLogicalExpressions: false,
       ignorePrimitives: {
         bigint: false,
         boolean: false,
@@ -130,7 +130,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        let operator: '==' | '!=' | '===' | '!==' | undefined;
+        let operator: '!=' | '!==' | '==' | '===' | undefined;
         let nodesInsideTestExpression: TSESTree.Node[] = [];
         if (node.test.type === AST_NODE_TYPES.BinaryExpression) {
           nodesInsideTestExpression = [node.test.left, node.test.right];

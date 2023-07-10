@@ -1,0 +1,15 @@
+diff --git a/node_modules/eslint/lib/rules/indent.js b/node_modules/eslint/lib/rules/indent.js
+index cda0203..66714b4 100644
+--- a/node_modules/eslint/lib/rules/indent.js
++++ b/node_modules/eslint/lib/rules/indent.js
+@@ -12,7 +12,9 @@
+ // Requirements
+ //------------------------------------------------------------------------------
+ 
+-const { OrderedMap } = require("js-sdsl");
++// make this a deep import so that rollup doesn't attempt to bundle the downleveled ESM build
++// https://github.com/js-sdsl/js-sdsl/issues/158
++const { default: OrderedMap } = require("js-sdsl/dist/cjs/container/TreeContainer/OrderedMap");
+ 
+ const astUtils = require("./utils/ast-utils");
+ 

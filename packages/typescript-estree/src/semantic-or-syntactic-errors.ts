@@ -22,18 +22,18 @@ export function getFirstSemanticOrSyntacticError(
   ast: SourceFile,
 ): SemanticOrSyntacticError | undefined {
   try {
-    const supportedSyntacticDiagnostics = whitelistSupportedDiagnostics(
+    const supportedSyntacticDiagnostics = allowlistSupportedDiagnostics(
       program.getSyntacticDiagnostics(ast),
     );
-    if (supportedSyntacticDiagnostics.length) {
+    if (supportedSyntacticDiagnostics.length > 0) {
       return convertDiagnosticToSemanticOrSyntacticError(
         supportedSyntacticDiagnostics[0],
       );
     }
-    const supportedSemanticDiagnostics = whitelistSupportedDiagnostics(
+    const supportedSemanticDiagnostics = allowlistSupportedDiagnostics(
       program.getSemanticDiagnostics(ast),
     );
-    if (supportedSemanticDiagnostics.length) {
+    if (supportedSemanticDiagnostics.length > 0) {
       return convertDiagnosticToSemanticOrSyntacticError(
         supportedSemanticDiagnostics[0],
       );
@@ -57,9 +57,9 @@ export function getFirstSemanticOrSyntacticError(
   }
 }
 
-function whitelistSupportedDiagnostics(
-  diagnostics: readonly (DiagnosticWithLocation | Diagnostic)[],
-): readonly (DiagnosticWithLocation | Diagnostic)[] {
+function allowlistSupportedDiagnostics(
+  diagnostics: readonly (Diagnostic | DiagnosticWithLocation)[],
+): readonly (Diagnostic | DiagnosticWithLocation)[] {
   return diagnostics.filter(diagnostic => {
     switch (diagnostic.code) {
       case 1013: // "A rest parameter or binding pattern may not have a trailing comma."

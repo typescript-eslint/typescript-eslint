@@ -10,9 +10,12 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-simple AST Alignme
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [78, 81],
           loc: {
@@ -26,7 +29,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-simple AST Alignme
             type: 'TSTypeReference',
             typeName: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'T',
+-             optional: false,
 
               range: [87, 88],
               loc: {
@@ -49,7 +54,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-simple AST Alignme
                 computed: false,
                 key: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'a',
+-                 optional: false,
 
                   range: [99, 100],
                   loc: {
@@ -57,6 +64,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-simple AST Alignme
                     end: { column: 27, line: 3 },
                   },
                 },
+-               optional: false,
+-               readonly: false,
+-               static: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: 'TSTypeAnnotation',
                   typeAnnotation: TSInferType {
@@ -67,8 +77,11 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-simple AST Alignme
 -                     in: false,
 -                     name: Identifier {
 -                       type: 'Identifier',
+-                       decorators: Array [],
 -                       name: 'U',
--
+-                       optional: false,
++                     name: 'U',
+
 -                       range: [108, 109],
 -                       loc: {
 -                         start: { column: 35, line: 3 },
@@ -76,8 +89,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-simple AST Alignme
 -                       },
 -                     },
 -                     out: false,
-+                     name: 'U',
-
+-
                       range: [108, 109],
                       loc: {
                         start: { column: 35, line: 3 },
@@ -110,7 +122,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-simple AST Alignme
                 computed: false,
                 key: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'b',
+-                 optional: false,
 
                   range: [111, 112],
                   loc: {
@@ -118,6 +132,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-simple AST Alignme
                     end: { column: 39, line: 3 },
                   },
                 },
+-               optional: false,
+-               readonly: false,
+-               static: false,
                 typeAnnotation: TSTypeAnnotation {
                   type: 'TSTypeAnnotation',
                   typeAnnotation: TSInferType {
@@ -128,7 +145,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-simple AST Alignme
 -                     in: false,
 -                     name: Identifier {
 -                       type: 'Identifier',
+-                       decorators: Array [],
 -                       name: 'U',
+-                       optional: false,
 -
 -                       range: [120, 121],
 -                       loc: {
@@ -187,7 +206,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-simple AST Alignme
             type: 'TSTypeReference',
             typeName: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'U',
+-             optional: false,
 
               range: [126, 127],
               loc: {
@@ -218,7 +239,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-simple AST Alignme
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [82, 83],
 -               loc: {

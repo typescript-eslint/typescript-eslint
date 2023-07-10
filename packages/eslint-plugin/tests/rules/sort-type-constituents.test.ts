@@ -1,3 +1,4 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESLint } from '@typescript-eslint/utils';
 
 import type {
@@ -5,13 +6,12 @@ import type {
   Options,
 } from '../../src/rules/sort-type-constituents';
 import rule from '../../src/rules/sort-type-constituents';
-import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
-const valid = (operator: '|' | '&'): TSESLint.ValidTestCase<Options>[] => [
+const valid = (operator: '&' | '|'): TSESLint.ValidTestCase<Options>[] => [
   {
     code: `type T = A ${operator} B;`,
   },
@@ -86,7 +86,7 @@ type T =
   },
 ];
 const invalid = (
-  operator: '|' | '&',
+  operator: '&' | '|',
 ): TSESLint.InvalidTestCase<MessageIds, Options>[] => {
   const type = operator === '|' ? 'Union' : 'Intersection';
   return [

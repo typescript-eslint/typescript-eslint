@@ -50,7 +50,7 @@ interface ReferenceTrackerStatic {
        * If this is `"strict"`, the method binds CommonJS modules to the default export. Otherwise, the method binds
        * CommonJS modules to both the default export and named exports. Optional. Default is `"strict"`.
        */
-      mode?: 'strict' | 'legacy';
+      mode?: 'legacy' | 'strict';
       /**
        * The name list of Global Object. Optional. Default is `["global", "globalThis", "self", "window"]`.
        */
@@ -69,7 +69,7 @@ namespace ReferenceTracker {
   export type CALL = ReferenceTrackerStatic['CALL'];
   export type CONSTRUCT = ReferenceTrackerStatic['CONSTRUCT'];
   export type ESM = ReferenceTrackerStatic['ESM'];
-  export type ReferenceType = READ | CALL | CONSTRUCT;
+  export type ReferenceType = CALL | CONSTRUCT | READ;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   export type TraceMap<T = any> = Record<string, TraceMapElement<T>>;
   export interface TraceMapElement<T> {

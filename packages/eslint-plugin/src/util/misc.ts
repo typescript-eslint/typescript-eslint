@@ -32,7 +32,7 @@ function upperCaseFirst(str: string): string {
   return str[0].toUpperCase() + str.slice(1);
 }
 
-function arrayGroupByToMap<T, Key extends string | number>(
+function arrayGroupByToMap<T, Key extends number | string>(
   array: T[],
   getKey: (item: T) => Key,
 ): Map<Key, T[]> {
@@ -108,11 +108,11 @@ enum MemberNameType {
 function getNameFromMember(
   member:
     | TSESTree.MethodDefinition
-    | TSESTree.TSMethodSignature
-    | TSESTree.TSAbstractMethodDefinition
-    | TSESTree.PropertyDefinition
-    | TSESTree.TSAbstractPropertyDefinition
     | TSESTree.Property
+    | TSESTree.PropertyDefinition
+    | TSESTree.TSAbstractMethodDefinition
+    | TSESTree.TSAbstractPropertyDefinition
+    | TSESTree.TSMethodSignature
     | TSESTree.TSPropertySignature,
   sourceCode: TSESLint.SourceCode,
 ): { type: MemberNameType; name: string } {
@@ -188,7 +188,7 @@ function formatWordList(words: string[]): string {
  */
 function findLastIndex<T>(
   members: T[],
-  predicate: (member: T) => boolean | undefined | null,
+  predicate: (member: T) => boolean | null | undefined,
 ): number {
   let idx = members.length - 1;
 

@@ -23,15 +23,14 @@ export interface FunctionBase extends BaseNode {
    * - For a `TSDeclareFunction` this is always `undefined`.
    * - For a `TSEmptyBodyFunctionExpression` this is always `null`.
    */
-  body?: BlockStatement | Expression | null;
+  body: BlockStatement | Expression | null | undefined;
   /**
    * This is only `true` if and only if the node is a `TSDeclareFunction` and it has `declare`:
    * ```
    * declare function foo(...) {...}
    * ```
    */
-  // TODO(#5020) - make this always `false` if it is not `declare`d instead of `undefined`
-  declare?: boolean;
+  declare: boolean;
   /**
    * This is only ever `true` if and only the node is an `ArrowFunctionExpression` and the body
    * is an expression:
@@ -63,12 +62,10 @@ export interface FunctionBase extends BaseNode {
   params: Parameter[];
   /**
    * The return type annotation for the function.
-   * This is `undefined` if there is no return type declared.
    */
-  returnType?: TSTypeAnnotation;
+  returnType: TSTypeAnnotation | undefined;
   /**
    * The generic type parameter declaration for the function.
-   * This is `undefined` if there are no generic type parameters declared.
    */
-  typeParameters?: TSTypeParameterDeclaration;
+  typeParameters: TSTypeParameterDeclaration | undefined;
 }

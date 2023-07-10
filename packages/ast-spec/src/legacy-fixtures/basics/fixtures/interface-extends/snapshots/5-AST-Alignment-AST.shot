@@ -20,6 +20,7 @@ exports[`AST Fixtures legacy-fixtures basics interface-extends AST Alignment - A
             end: { column: 28, line: 3 },
           },
         },
+-       declare: false,
         extends: Array [
 -         TSInterfaceHeritage {
 -           type: 'TSInterfaceHeritage',
@@ -27,7 +28,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-extends AST Alignment - A
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'Bar',
+-             optional: false,
 
               range: [95, 98],
               loc: {
@@ -45,7 +48,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-extends AST Alignment - A
         ],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [83, 86],
           loc: {

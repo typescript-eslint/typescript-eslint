@@ -57,13 +57,204 @@ foo?.a?.b?.c?.d?.e;
 
 <!--/tabs-->
 
-:::note
-There are a few edge cases where this rule will false positive. Use your best judgement when evaluating reported errors.
-:::
+## Options
+
+In the context of the descriptions below a "loose boolean" operand is any operand that implicitly coerces the value to a boolean.
+Specifically the argument of the not operator (`!loose`) or a bare value in a logical expression (`loose && looser`).
+
+### `allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing`
+
+When this option is `true`, the rule will not provide an auto-fixer for cases where the return type of the expression would change. For example for the expression `!foo || foo.bar` the return type of the expression is `true | T`, however for the equivalent optional chain `foo?.bar` the return type of the expression is `undefined | T`. Thus changing the code from a logical expression to an optional chain expression has altered the type of the expression.
+
+In some cases this distinction _may_ matter - which is why these fixers are considered unsafe - they may break the build! For example in the following code:
+
+```ts
+declare const foo: { bar: boolean } | null | undefined;
+declare function acceptsBoolean(arg: boolean): void;
+
+// ✅ typechecks succesfully as the expression only returns `boolean`
+acceptsBoolean(foo != null && foo.bar);
+
+// ❌ typechecks UNSUCCESSFULLY as the expression returns `boolean | undefined`
+acceptsBoolean(foo != null && foo.bar);
+```
+
+This style of code isn't super common - which means having this option set to `true` _should_ be safe in most codebases. However we default it to `false` due to its unsafe nature. We have provided this option for convenience because it increases the autofix cases covered by the rule. If you set option to `true` the onus is entirely on you and your team to ensure that each fix is correct and safe and that it does not break the build.
+
+When this option is `false` unsafe cases will have suggestion fixers provided instead of auto-fixers - meaning you can manually apply the fix using your IDE tooling.
+
+### `checkAny`
+
+When this option is `true` the rule will check operands that are typed as `any` when inspecting "loose boolean" operands.
+
+<!--tabs-->
+
+#### ❌ Incorrect for `checkAny: true`
+
+```ts
+declare const thing: any;
+
+thing && thing.toString();
+```
+
+#### ✅ Correct for `checkAny: false`
+
+```ts
+declare const thing: any;
+
+thing && thing.toString();
+```
+
+<!--/tabs-->
+
+### `checkUnknown`
+
+When this option is `true` the rule will check operands that are typed as `unknown` when inspecting "loose boolean" operands.
+
+<!--tabs-->
+
+#### ❌ Incorrect for `checkUnknown: true`
+
+```ts
+declare const thing: unknown;
+
+thing && thing.toString();
+```
+
+#### ✅ Correct for `checkUnknown: false`
+
+```ts
+declare const thing: unknown;
+
+thing && thing.toString();
+```
+
+<!--/tabs-->
+
+### `checkString`
+
+When this option is `true` the rule will check operands that are typed as `string` when inspecting "loose boolean" operands.
+
+<!--tabs-->
+
+#### ❌ Incorrect for `checkString: true`
+
+```ts
+declare const thing: string;
+
+thing && thing.toString();
+```
+
+#### ✅ Correct for `checkString: false`
+
+```ts
+declare const thing: string;
+
+thing && thing.toString();
+```
+
+<!--/tabs-->
+
+### `checkNumber`
+
+When this option is `true` the rule will check operands that are typed as `number` when inspecting "loose boolean" operands.
+
+<!--tabs-->
+
+#### ❌ Incorrect for `checkNumber: true`
+
+```ts
+declare const thing: number;
+
+thing && thing.toString();
+```
+
+#### ✅ Correct for `checkNumber: false`
+
+```ts
+declare const thing: number;
+
+thing && thing.toString();
+```
+
+<!--/tabs-->
+
+### `checkBoolean`
+
+When this option is `true` the rule will check operands that are typed as `boolean` when inspecting "loose boolean" operands.
+
+<!--tabs-->
+
+#### ❌ Incorrect for `checkBoolean: true`
+
+```ts
+declare const thing: boolean;
+
+thing && thing.toString();
+```
+
+#### ✅ Correct for `checkBoolean: false`
+
+```ts
+declare const thing: boolean;
+
+thing && thing.toString();
+```
+
+<!--/tabs-->
+
+### `checkBigInt`
+
+When this option is `true` the rule will check operands that are typed as `bigint` when inspecting "loose boolean" operands.
+
+<!--tabs-->
+
+#### ❌ Incorrect for `checkBigInt: true`
+
+```ts
+declare const thing: bigint;
+
+thing && thing.toString();
+```
+
+#### ✅ Correct for `checkBigInt: false`
+
+```ts
+declare const thing: bigint;
+
+thing && thing.toString();
+```
+
+<!--/tabs-->
+
+### `requireNullish`
+
+When this option is `true` the rule will skip operands that are not typed with `null` and/or `undefined` when inspecting "loose boolean" operands.
+
+<!--tabs-->
+
+#### ❌ Incorrect for `requireNullish: true`
+
+```ts
+declare const thing1: string | null;
+thing1 && thing1.toString();
+```
+
+#### ✅ Correct for `requireNullish: true`
+
+```ts
+declare const thing1: string | null;
+thing1?.toString();
+
+declare const thing2: string;
+thing2 && thing2.toString();
+```
+
+<!--/tabs-->
 
 ## When Not To Use It
 
-If you don't mind using more explicit `&&`s, you don't need this rule.
+If you don't mind using more explicit `&&`s/`||`s, you don't need this rule.
 
 ## Further Reading
 

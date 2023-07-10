@@ -1,7 +1,7 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import path from 'path';
 
 import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-check';
-import { RuleTester } from '../RuleTester';
 
 const rootPath = path.join(process.cwd(), 'tests/fixtures/');
 

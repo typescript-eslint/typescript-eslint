@@ -19,6 +19,7 @@ Program {
             end: { column: 27, line: 1 },
           },
         },
+        declare: false,
         expression: false,
         generator: false,
         id: null,
@@ -32,7 +33,9 @@ Program {
               in: false,
               name: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "T",
+                optional: false,
 
                 range: [11, 12],
                 loc: {
@@ -54,7 +57,9 @@ Program {
               in: false,
               name: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "U",
+                optional: false,
 
                 range: [20, 21],
                 loc: {

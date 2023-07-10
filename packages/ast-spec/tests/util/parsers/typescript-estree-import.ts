@@ -13,6 +13,5 @@
  * This should be the only place in the package that we import from typescript-estree.
  */
 
-// We need to ignore this lint error regarding it being missing from the package.json, see above.
-// eslint-disable-next-line import/no-extraneous-dependencies
-export { parse } from '@typescript-eslint/typescript-estree';
+// eslint-disable-next-line no-restricted-imports -- the only safe and valid import from typescript-estree in this package
+export { parse, TSError } from '@typescript-eslint/typescript-estree';

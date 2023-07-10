@@ -4,11 +4,15 @@ exports[`javascript destructuring class-constructor-params-defaults-array.src 1`
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 15,
@@ -20,11 +24,13 @@ Object {
                 },
               },
               "name": "consturctor",
+              "optional": false,
               "range": Array [
                 14,
                 25,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -37,6 +43,7 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               14,
@@ -44,6 +51,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -64,6 +72,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -79,9 +88,12 @@ Object {
               },
               "params": Array [
                 Object {
+                  "decorators": Array [],
                   "elements": Array [
                     Object {
+                      "decorators": Array [],
                       "left": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 20,
@@ -93,11 +105,13 @@ Object {
                           },
                         },
                         "name": "foo",
+                        "optional": false,
                         "range": Array [
                           27,
                           30,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "loc": Object {
                         "end": Object {
@@ -109,6 +123,7 @@ Object {
                           "line": 2,
                         },
                       },
+                      "optional": false,
                       "range": Array [
                         27,
                         32,
@@ -133,9 +148,12 @@ Object {
                         "value": 3,
                       },
                       "type": "AssignmentPattern",
+                      "typeAnnotation": undefined,
                     },
                     Object {
+                      "decorators": Array [],
                       "left": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 27,
@@ -147,11 +165,13 @@ Object {
                           },
                         },
                         "name": "bar",
+                        "optional": false,
                         "range": Array [
                           34,
                           37,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "loc": Object {
                         "end": Object {
@@ -163,6 +183,7 @@ Object {
                           "line": 2,
                         },
                       },
+                      "optional": false,
                       "range": Array [
                         34,
                         39,
@@ -187,6 +208,7 @@ Object {
                         "value": 4,
                       },
                       "type": "AssignmentPattern",
+                      "typeAnnotation": undefined,
                     },
                   ],
                   "loc": Object {
@@ -199,18 +221,22 @@ Object {
                       "line": 2,
                     },
                   },
+                  "optional": false,
                   "range": Array [
                     26,
                     40,
                   ],
                   "type": "ArrayPattern",
+                  "typeAnnotation": undefined,
                 },
               ],
               "range": Array [
                 25,
                 49,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -230,7 +256,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 7,
@@ -242,12 +271,15 @@ Object {
           },
         },
         "name": "A",
+        "optional": false,
         "range": Array [
           6,
           7,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -263,7 +295,9 @@ Object {
         51,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

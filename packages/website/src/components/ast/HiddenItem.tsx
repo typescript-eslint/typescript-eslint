@@ -2,10 +2,9 @@ import React, { useEffect, useState } from 'react';
 
 import styles from './ASTViewer.module.css';
 import PropertyValue from './PropertyValue';
-import type { ASTViewerModelMap } from './types';
 
 export interface HiddenItemProps {
-  readonly value: ASTViewerModelMap[];
+  readonly value: [string, unknown][];
   readonly level: string;
   readonly isArray?: boolean;
 }
@@ -20,8 +19,8 @@ export default function HiddenItem({
 
   useEffect(() => {
     if (isArray) {
-      const filtered = value.filter(item => !isNaN(Number(item.key)));
-      setIsComplex(filtered.some(item => item.model.type !== 'number'));
+      const filtered = value.filter(([key]) => !isNaN(Number(key)));
+      setIsComplex(filtered.some(([, item]) => typeof item !== 'number'));
       setLength(filtered.length);
     }
   }, [value, isArray]);
@@ -29,7 +28,7 @@ export default function HiddenItem({
   return (
     <span className={styles.hidden}>
       {isArray && !isComplex ? (
-        value.map((item, index) => (
+        value.map(([, item], index) => (
           <span key={`${level}_[${index}]`}>
             {index > 0 && ', '}
             <PropertyValue value={item} />
@@ -40,10 +39,10 @@ export default function HiddenItem({
           {length} {length === 1 ? 'element' : 'elements'}
         </>
       ) : (
-        value.map((item, index) => (
+        value.map(([key], index) => (
           <span key={`${level}_[${index}]`}>
             {index > 0 && ', '}
-            {String(item.key)}
+            {String(key)}
           </span>
         ))
       )}

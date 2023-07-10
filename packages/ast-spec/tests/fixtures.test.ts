@@ -12,6 +12,7 @@ import type {
 } from './util/parsers/parser-types';
 import { ParserResponseType } from './util/parsers/parser-types';
 import { parseTSESTree } from './util/parsers/typescript-estree';
+import { serializeError } from './util/serialize-error';
 import { diffHasChanges, snapshotDiff } from './util/snapshot-diff';
 
 const PACKAGE_ROOT = path.resolve(__dirname, '..');
@@ -38,10 +39,18 @@ const fixturesWithErrorDifferences = {
 } as const;
 
 const VALID_FIXTURES: readonly string[] = glob.sync(
-  `${SRC_DIR}/**/fixtures/*/fixture.{ts,tsx}`,
+  `**/fixtures/*/fixture.{ts,tsx}`,
+  {
+    cwd: SRC_DIR,
+    absolute: true,
+  },
 );
 const ERROR_FIXTURES: readonly string[] = glob.sync(
-  `${SRC_DIR}/**/fixtures/_error_/*/fixture.{ts,tsx}`,
+  `**/fixtures/_error_/*/fixture.{ts,tsx}`,
+  {
+    cwd: SRC_DIR,
+    absolute: true,
+  },
 );
 
 const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
@@ -66,7 +75,7 @@ const FIXTURES: readonly Fixture[] = [...VALID_FIXTURES, ...ERROR_FIXTURES].map(
       isError: absolute.includes('/_error_/'),
       isJSX: ext.endsWith('x'),
       name,
-      relative: path.relative(SRC_DIR, absolute),
+      relative: path.relative(SRC_DIR, absolute).replace(/\\/g, '/'),
       segments,
       snapshotFiles: {
         success: {
@@ -163,7 +172,9 @@ function nestDescribe(fixture: Fixture, segments = fixture.segments): void {
         }
 
         it('TSESTree - Error', () => {
-          expect(tsestreeParsed.error).toMatchSpecificSnapshot(
+          expect(
+            serializeError(tsestreeParsed.error, contents),
+          ).toMatchSpecificSnapshot(
             fixture.snapshotFiles.error.tsestree(snapshotCounter++),
           );
         });

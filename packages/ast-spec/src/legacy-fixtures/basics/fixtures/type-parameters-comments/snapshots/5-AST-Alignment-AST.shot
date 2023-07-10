@@ -15,7 +15,9 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
           arguments: Array [],
           callee: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'foo',
+-           optional: false,
 
             range: [73, 76],
             loc: {
@@ -24,14 +26,17 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
             },
           },
           optional: false,
-          typeParameters: TSTypeParameterInstantiation {
+-         typeArguments: TSTypeParameterInstantiation {
++         typeParameters: TSTypeParameterInstantiation {
             type: 'TSTypeParameterInstantiation',
             params: Array [
               TSTypeReference {
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'A',
+-                 optional: false,
 
                   range: [93, 94],
                   loc: {
@@ -81,11 +86,14 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
             end: { column: 40, line: 4 },
           },
         },
+-       declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'bar',
+-         optional: false,
 
           range: [124, 127],
           loc: {
@@ -103,7 +111,9 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'A',
+-               optional: false,
 -
 -               range: [138, 139],
 -               loc: {
@@ -148,11 +158,14 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
             end: { column: 46, line: 5 },
           },
         },
+-       declare: false,
         expression: false,
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'baz',
+-         optional: false,
 
           range: [165, 168],
           loc: {
@@ -171,7 +184,9 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'Foo',
+-                 optional: false,
 
                   range: [193, 196],
                   loc: {
@@ -189,7 +204,9 @@ exports[`AST Fixtures legacy-fixtures basics type-parameters-comments AST Alignm
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'A',
+-               optional: false,
 -
 -               range: [179, 180],
 -               loc: {

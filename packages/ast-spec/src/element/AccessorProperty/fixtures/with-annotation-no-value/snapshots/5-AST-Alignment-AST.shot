@@ -10,6 +10,7 @@ exports[`AST Fixtures element AccessorProperty with-annotation-no-value AST Alig
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
@@ -19,9 +20,13 @@ exports[`AST Fixtures element AccessorProperty with-annotation-no-value AST Alig
 +             type: 'ClassAccessorProperty',
               computed: false,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'prop',
+-               optional: false,
 
                 range: [23, 27],
                 loc: {
@@ -29,7 +34,9 @@ exports[`AST Fixtures element AccessorProperty with-annotation-no-value AST Alig
                   end: { column: 15, line: 2 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -65,9 +72,13 @@ exports[`AST Fixtures element AccessorProperty with-annotation-no-value AST Alig
             end: { column: 1, line: 3 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [6, 9],
           loc: {
@@ -75,6 +86,7 @@ exports[`AST Fixtures element AccessorProperty with-annotation-no-value AST Alig
             end: { column: 9, line: 1 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [0, 38],

@@ -28,8 +28,8 @@ interface NodeTestObject {
 
 interface PaddingOption {
   blankLine: keyof typeof PaddingTypes;
-  prev: string | string[];
-  next: string | string[];
+  prev: string[] | string;
+  next: string[] | string;
 }
 
 type MessageIds = 'expectedBlankLine' | 'unexpectedBlankLine';
@@ -438,12 +438,9 @@ function verifyForAlways(
     messageId: 'expectedBlankLine',
     fix(fixer) {
       const sourceCode = context.getSourceCode();
-      let prevToken = getActualLastToken(
-        prevNode,
-        sourceCode,
-      ) as TSESTree.Token;
+      let prevToken = getActualLastToken(prevNode, sourceCode)!;
       const nextToken =
-        (sourceCode.getFirstTokenBetween(prevToken, nextNode, {
+        sourceCode.getFirstTokenBetween(prevToken, nextNode, {
           includeComments: true,
 
           /**
@@ -473,7 +470,7 @@ function verifyForAlways(
             }
             return true;
           },
-        }) as TSESTree.Token) || nextNode;
+        })! || nextNode;
       const insertText = util.isTokenOnSameLine(prevToken, nextToken)
         ? '\n\n'
         : '\n';
@@ -590,22 +587,29 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Require or disallow padding lines between statements',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
     hasSuggestions: false,
+    // This is intentionally an array schema as you can pass 0..n config objects
     schema: {
       $defs: {
         paddingType: {
+          type: 'string',
           enum: Object.keys(PaddingTypes),
         },
         statementType: {
           anyOf: [
-            { enum: Object.keys(StatementTypes) },
+            {
+              type: 'string',
+              enum: Object.keys(StatementTypes),
+            },
             {
               type: 'array',
-              items: { enum: Object.keys(StatementTypes) },
+              items: {
+                type: 'string',
+                enum: Object.keys(StatementTypes),
+              },
               minItems: 1,
               uniqueItems: true,
               additionalItems: false,
@@ -614,6 +618,7 @@ export default util.createRule<Options, MessageIds>({
         },
       },
       type: 'array',
+      additionalItems: false,
       items: {
         type: 'object',
         properties: {
@@ -624,7 +629,6 @@ export default util.createRule<Options, MessageIds>({
         additionalProperties: false,
         required: ['blankLine', 'prev', 'next'],
       },
-      additionalItems: false,
     },
     messages: {
       unexpectedBlankLine: 'Unexpected blank line before this statement.',
@@ -637,10 +641,10 @@ export default util.createRule<Options, MessageIds>({
     // eslint-disable-next-line no-restricted-syntax -- We need all raw options.
     const configureList = context.options || [];
 
-    type Scope = null | {
+    type Scope = {
       upper: Scope;
       prevNode: TSESTree.Node | null;
-    };
+    } | null;
 
     let scopeInfo: Scope = null;
 
@@ -675,7 +679,7 @@ export default util.createRule<Options, MessageIds>({
      * @returns `true` if the statement node matched the type.
      * @private
      */
-    function match(node: TSESTree.Node, type: string | string[]): boolean {
+    function match(node: TSESTree.Node, type: string[] | string): boolean {
       let innerStatementNode = node;
 
       while (innerStatementNode.type === AST_NODE_TYPES.LabeledStatement) {
@@ -699,7 +703,7 @@ export default util.createRule<Options, MessageIds>({
     function getPaddingType(
       prevNode: TSESTree.Node,
       nextNode: TSESTree.Node,
-    ): typeof PaddingTypes[keyof typeof PaddingTypes] {
+    ): (typeof PaddingTypes)[keyof typeof PaddingTypes] {
       for (let i = configureList.length - 1; i >= 0; --i) {
         const configure = configureList[i];
         if (

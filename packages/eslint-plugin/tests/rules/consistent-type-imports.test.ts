@@ -1,5 +1,7 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/consistent-type-imports';
-import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -681,11 +683,11 @@ export type Y = {
     {
       code: `
         import foo from 'foo';
-        type Baz = typeof foo.bar['Baz']; // TSQualifiedName & TSTypeQuery
+        type Baz = (typeof foo.bar)['Baz']; // TSQualifiedName & TSTypeQuery
       `,
       output: `
         import type foo from 'foo';
-        type Baz = typeof foo.bar['Baz']; // TSQualifiedName & TSTypeQuery
+        type Baz = (typeof foo.bar)['Baz']; // TSQualifiedName & TSTypeQuery
       `,
       errors: [
         {
