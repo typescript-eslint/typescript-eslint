@@ -23,6 +23,7 @@ exports[`AST Fixtures special TSTypeParameter func-expr-const-modifier AST Align
               end: { column: 24, line: 1 },
             },
           },
+-         declare: false,
           expression: false,
           generator: false,
           id: null,
@@ -36,7 +37,9 @@ exports[`AST Fixtures special TSTypeParameter func-expr-const-modifier AST Align
 -               in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
+-                 decorators: Array [],
 -                 name: 'T',
+-                 optional: false,
 -
 -                 range: [17, 18],
 -                 loc: {

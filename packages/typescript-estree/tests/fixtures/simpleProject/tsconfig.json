@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     "skipLibCheck": true,
-    "strict": true
+    "strict": true,
+    "target": "ES2022"
   }
 }

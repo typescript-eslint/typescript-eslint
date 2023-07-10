@@ -20,9 +20,13 @@ exports[`AST Fixtures special TSTypeParameter interface-const-modifier-extends A
             end: { column: 33, line: 1 },
           },
         },
+-       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'J',
+-         optional: false,
 
           range: [10, 11],
           loc: {
@@ -40,7 +44,9 @@ exports[`AST Fixtures special TSTypeParameter interface-const-modifier-extends A
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'U',
+-                 optional: false,
 
                   range: [28, 29],
                   loc: {
@@ -58,7 +64,9 @@ exports[`AST Fixtures special TSTypeParameter interface-const-modifier-extends A
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [18, 19],
 -               loc: {

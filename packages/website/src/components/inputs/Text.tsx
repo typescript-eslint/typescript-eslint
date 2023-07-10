@@ -8,7 +8,7 @@ export interface DropdownProps {
   readonly value: string;
   readonly name: string;
   readonly className?: string;
-  readonly type?: 'text' | 'search';
+  readonly type?: 'search' | 'text';
   readonly placeholder?: string;
 }
 
@@ -22,6 +22,7 @@ const Text = React.forwardRef<HTMLInputElement, DropdownProps>(
         name={props.name}
         className={clsx(styles.textInput, props.className)}
         type={props.type ?? 'text'}
+        autoComplete="off"
         placeholder={props.placeholder}
         ref={ref}
       />

@@ -4,10 +4,12 @@ exports[`typescript basics cast-as-multi-assign.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
           "expression": Object {
             "expression": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 2,
@@ -19,11 +21,13 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 1,
                 2,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {

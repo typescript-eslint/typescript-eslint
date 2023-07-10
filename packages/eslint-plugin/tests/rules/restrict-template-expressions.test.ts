@@ -1,5 +1,7 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/restrict-template-expressions';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -289,6 +291,11 @@ ruleTester.run('restrict-template-expressions', rule, {
         }
       `,
     },
+    'const msg = `arg = ${false}`;',
+    'const msg = `arg = ${null}`;',
+    'const msg = `arg = ${undefined}`;',
+    'const msg = `arg = ${123}`;',
+    "const msg = `arg = ${'abc'}`;",
   ],
 
   invalid: [
@@ -318,6 +325,7 @@ ruleTester.run('restrict-template-expressions', rule, {
           column: 30,
         },
       ],
+      options: [{ allowBoolean: false }],
     },
     {
       code: `
@@ -331,6 +339,7 @@ ruleTester.run('restrict-template-expressions', rule, {
           column: 30,
         },
       ],
+      options: [{ allowNullish: false }],
     },
     {
       code: `
@@ -358,6 +367,11 @@ ruleTester.run('restrict-template-expressions', rule, {
           data: { type: 'boolean' },
           line: 3,
           column: 30,
+        },
+      ],
+      options: [
+        {
+          allowBoolean: false,
         },
       ],
     },
@@ -397,7 +411,14 @@ ruleTester.run('restrict-template-expressions', rule, {
       ],
     },
     {
-      options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],
+      options: [
+        {
+          allowAny: false,
+          allowNumber: true,
+          allowBoolean: true,
+          allowNullish: true,
+        },
+      ],
       code: `
         function test<TWithNoConstraint>(arg: T) {
           return \`arg = \${arg}\`;
@@ -418,7 +439,14 @@ ruleTester.run('restrict-template-expressions', rule, {
       ],
     },
     {
-      options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],
+      options: [
+        {
+          allowAny: false,
+          allowNumber: true,
+          allowBoolean: true,
+          allowNullish: true,
+        },
+      ],
       code: `
         function test(arg: any) {
           return \`arg = \${arg}\`;

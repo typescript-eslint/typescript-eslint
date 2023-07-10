@@ -6,9 +6,12 @@ Program {
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Mapper",
+        optional: false,
 
         range: [78, 84],
         loc: {
@@ -21,14 +24,18 @@ Program {
         params: [
           Identifier {
             type: "Identifier",
+            decorators: [],
             name: "x",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "T",
+                  optional: false,
 
                   range: [104, 105],
                   loc: {
@@ -64,7 +71,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "U",
+              optional: false,
 
               range: [110, 111],
               loc: {
@@ -102,7 +111,9 @@ Program {
             in: true,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [88, 89],
               loc: {
@@ -124,7 +135,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "U",
+              optional: false,
 
               range: [95, 96],
               loc: {

@@ -1,7 +1,7 @@
-const a = 1
+const a = 1;
 namespace N {
-    export const a = 2
-    a
+  export const a = 2;
+  a;
 }
-a
-N.a
+a;
+N.a;

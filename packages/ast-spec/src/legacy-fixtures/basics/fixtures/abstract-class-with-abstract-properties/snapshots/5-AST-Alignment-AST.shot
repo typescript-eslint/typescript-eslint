@@ -21,9 +21,13 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-proper
 +             abstract: true,
               computed: false,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'bar',
+-               optional: false,
 
                 range: [105, 108],
                 loc: {
@@ -31,7 +35,9 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-proper
                   end: { column: 14, line: 4 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               value: null,
 
@@ -48,9 +54,13 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-proper
 +             abstract: true,
               computed: false,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'baz',
+-               optional: false,
 
                 range: [121, 124],
                 loc: {
@@ -58,7 +68,9 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-proper
                   end: { column: 14, line: 5 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -94,9 +106,13 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-proper
             end: { column: 1, line: 6 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [88, 91],
           loc: {
@@ -104,6 +120,7 @@ exports[`AST Fixtures legacy-fixtures basics abstract-class-with-abstract-proper
             end: { column: 18, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 135],

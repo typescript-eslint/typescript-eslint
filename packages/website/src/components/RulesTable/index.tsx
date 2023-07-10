@@ -34,17 +34,21 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
         <br />
         {interpolateCode(rule.docs.description)}
       </td>
-      <td
-        className={styles.attrCol}
-        title={
-          recommended === 'strict'
-            ? 'strict'
-            : recommended
-            ? 'recommended'
-            : undefined
-        }
-      >
-        {recommended === 'strict' ? '🔒' : recommended ? '✅' : ''}
+      <td className={styles.attrCol} title={recommended}>
+        {(() => {
+          switch (recommended) {
+            case 'recommended':
+              return '✅';
+            case 'strict':
+              return '🔒';
+            case 'stylistic':
+              return '🎨';
+            default:
+              // for some reason the current version of babel loader won't elide this correctly
+              // recommended satisfies undefined;
+              return '';
+          }
+        })()}
       </td>
       <td
         className={styles.attrCol}
@@ -72,7 +76,7 @@ function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
 }
 
 const filterModes = ['neutral', 'include', 'exclude'] as const;
-type FilterMode = typeof filterModes[number];
+type FilterMode = (typeof filterModes)[number];
 
 function RuleFilterCheckBox({
   label,
@@ -137,11 +141,13 @@ export default function RulesTable({
         .filter(r => !!extensionRules === !!r.docs?.extendsBaseRule)
         .filter(r => {
           const opinions = [
+            match(filters.recommended, r.docs?.recommended === 'recommended'),
             match(
-              filters.recommended,
-              r.docs?.recommended === 'error' || r.docs?.recommended === 'warn',
+              filters.strict,
+              r.docs?.recommended === 'recommended' ||
+                r.docs?.recommended === 'strict',
             ),
-            match(filters.strict, r.docs?.recommended === 'strict'),
+            match(filters.stylistic, r.docs?.recommended === 'stylistic'),
             match(filters.fixable, !!r.fixable),
             match(filters.suggestions, !!r.hasSuggestions),
             match(filters.typeInformation, !!r.docs?.requiresTypeChecking),
@@ -153,49 +159,55 @@ export default function RulesTable({
 
   return (
     <>
-      <ul className={clsx('clean-list', styles.checkboxList)}>
-        <RuleFilterCheckBox
-          mode={filters.recommended}
-          setMode={(newMode): void => changeFilter('recommended', newMode)}
-          label="✅ recommended"
-        />
-        <RuleFilterCheckBox
-          mode={filters.strict}
-          setMode={(newMode): void => changeFilter('strict', newMode)}
-          label="🔒 strict"
-        />
-        <RuleFilterCheckBox
-          mode={filters.fixable}
-          setMode={(newMode): void => changeFilter('fixable', newMode)}
-          label="🔧 fixable"
-        />
-        <RuleFilterCheckBox
-          mode={filters.suggestions}
-          setMode={(newMode): void => changeFilter('suggestions', newMode)}
-          label="💡 has suggestions"
-        />
-        <RuleFilterCheckBox
-          mode={filters.typeInformation}
-          setMode={(newMode): void => changeFilter('typeInformation', newMode)}
-          label="💭 requires type information"
-        />
-      </ul>
+      <div className={styles.checkboxListArea}>
+        <em>Config Group</em>
+        <ul className={clsx('clean-list', styles.checkboxList)}>
+          <RuleFilterCheckBox
+            mode={filters.recommended}
+            setMode={(newMode): void => changeFilter('recommended', newMode)}
+            label="✅ recommended"
+          />
+          <RuleFilterCheckBox
+            mode={filters.strict}
+            setMode={(newMode): void => changeFilter('strict', newMode)}
+            label="🔒 strict"
+          />
+          <RuleFilterCheckBox
+            mode={filters.stylistic}
+            setMode={(newMode): void => changeFilter('stylistic', newMode)}
+            label="🎨 stylistic"
+          />
+        </ul>
+      </div>
+      <div className={styles.checkboxListArea}>
+        <em>Metadata</em>
+        <ul className={clsx('clean-list', styles.checkboxList)}>
+          <RuleFilterCheckBox
+            mode={filters.fixable}
+            setMode={(newMode): void => changeFilter('fixable', newMode)}
+            label="🔧 fixable"
+          />
+          <RuleFilterCheckBox
+            mode={filters.suggestions}
+            setMode={(newMode): void => changeFilter('suggestions', newMode)}
+            label="💡 has suggestions"
+          />
+          <RuleFilterCheckBox
+            mode={filters.typeInformation}
+            setMode={(newMode): void =>
+              changeFilter('typeInformation', newMode)
+            }
+            label="💭 requires type information"
+          />
+        </ul>
+      </div>
       <table className={styles.rulesTable}>
         <thead>
           <tr>
             <th className={styles.ruleCol}>Rule</th>
-            <th className={styles.attrCol} title={'✅ recommended\n🔒 strict'}>
-              ✅{'\n'}🔒
-            </th>
-            <th
-              className={styles.attrCol}
-              title={'🔧 fixable\n💡 has suggestions'}
-            >
-              🔧{'\n'}💡
-            </th>
-            <th className={styles.attrCol} title="💭 requires type information">
-              💭
-            </th>
+            <th className={styles.attrCol}>Config</th>
+            <th className={styles.attrCol}>Fixer</th>
+            <th className={styles.attrCol}>Typed</th>
           </tr>
         </thead>
         <tbody>
@@ -209,15 +221,17 @@ export default function RulesTable({
 }
 
 type FilterCategory =
+  | 'fixable'
   | 'recommended'
   | 'strict'
-  | 'fixable'
+  | 'stylistic'
   | 'suggestions'
   | 'typeInformation';
 type FiltersState = Record<FilterCategory, FilterMode>;
 const neutralFiltersState: FiltersState = {
   recommended: 'neutral',
   strict: 'neutral',
+  stylistic: 'neutral',
   fixable: 'neutral',
   suggestions: 'neutral',
   typeInformation: 'neutral',

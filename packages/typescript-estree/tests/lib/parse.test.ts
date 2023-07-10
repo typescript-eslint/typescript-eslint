@@ -5,26 +5,12 @@ import { join, resolve } from 'path';
 import type * as typescriptModule from 'typescript';
 
 import * as parser from '../../src';
-import * as astConverterModule from '../../src/ast-converter';
 import * as sharedParserUtilsModule from '../../src/create-program/shared';
 import type { TSESTreeOptions } from '../../src/parser-options';
 import { clearGlobResolutionCache } from '../../src/parseSettings/resolveProjectList';
-import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/simpleProject');
 
-// we can't spy on the exports of an ES module - so we instead have to mock the entire module
-jest.mock('../../src/ast-converter', () => {
-  const astConverterActual = jest.requireActual<typeof astConverterModule>(
-    '../../src/ast-converter',
-  );
-
-  return {
-    ...astConverterActual,
-    __esModule: true,
-    astConverter: jest.fn(astConverterActual.astConverter),
-  };
-});
 jest.mock('../../src/create-program/shared', () => {
   const sharedActual = jest.requireActual<typeof sharedParserUtilsModule>(
     '../../src/create-program/shared',
@@ -62,7 +48,6 @@ jest.mock('globby', () => {
 
 const hrtimeSpy = jest.spyOn(process, 'hrtime');
 
-const astConverterMock = jest.mocked(astConverterModule.astConverter);
 const createDefaultCompilerOptionsFromExtra = jest.mocked(
   sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
 );
@@ -81,170 +66,7 @@ beforeEach(() => {
   clearGlobResolutionCache();
 });
 
-describe('parseWithNodeMaps()', () => {
-  describe('basic functionality', () => {
-    it('should parse an empty string', () => {
-      expect(parser.parseWithNodeMaps('').ast.body).toEqual([]);
-      expect(parser.parseWithNodeMaps('', {}).ast.body).toEqual([]);
-    });
-
-    it('parse() should be the same as parseWithNodeMaps().ast', () => {
-      const code = 'const x: number = 1;';
-      expect(parser.parseWithNodeMaps(code).ast).toMatchObject(
-        parser.parse(code),
-      );
-    });
-
-    it('should simple code', () => {
-      const result = parser.parseWithNodeMaps('1;');
-      expect(result.ast).toMatchInlineSnapshot(`
-        {
-          "body": [
-            {
-              "expression": {
-                "raw": "1",
-                "type": "Literal",
-                "value": 1,
-              },
-              "type": "ExpressionStatement",
-            },
-          ],
-          "sourceType": "script",
-          "type": "Program",
-        }
-      `);
-      const tsNode = result.esTreeNodeToTSNodeMap.get(result.ast.body[0]);
-      expect(tsNode).toBeDefined();
-      expect(result.tsNodeToESTreeNodeMap.get(tsNode)).toBeDefined();
-    });
-  });
-
-  describe('modules', () => {
-    it('should have correct column number when strict mode error occurs', () => {
-      try {
-        parser.parseWithNodeMaps('function fn(a, a) {\n}');
-      } catch (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        err: any
-      ) {
-        expect(err.column).toBe(16);
-      }
-    });
-  });
-
-  describe('general', () => {
-    const code = 'let foo = bar;';
-    const config: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-    };
-
-    it(
-      'output tokens, comments, locs, and ranges when called with those options',
-      createSnapshotTestBlock(code, config),
-    );
-
-    it(
-      'output should not contain loc',
-      createSnapshotTestBlock(code, {
-        range: true,
-        loc: false,
-      }),
-    );
-
-    it(
-      'output should not contain range',
-      createSnapshotTestBlock(code, {
-        range: false,
-        loc: true,
-      }),
-    );
-  });
-
-  describe('non string code', () => {
-    // testing a non string code..
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const code = 12345 as any as string;
-    const config: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-    };
-
-    it(
-      'should correctly convert code to a string for parse()',
-      createSnapshotTestBlock(code, config),
-    );
-
-    it(
-      'should correctly convert code to a string for parseAndGenerateServices()',
-      createSnapshotTestBlock(code, config, true),
-    );
-  });
-
-  describe('loggerFn should be propagated to ast-converter', () => {
-    it('output tokens, comments, locs, and ranges when called with those options', () => {
-      const loggerFn = jest.fn(() => {});
-
-      parser.parseWithNodeMaps('let foo = bar;', {
-        loggerFn,
-        comment: true,
-        tokens: true,
-        range: true,
-        loc: true,
-      });
-
-      expect(astConverterMock).toHaveBeenCalled();
-      expect(astConverterMock.mock.calls[0][1]).toMatchObject({
-        code: 'let foo = bar;',
-        comment: true,
-        comments: [],
-        loc: true,
-        log: loggerFn,
-        range: true,
-        tokens: expect.any(Array),
-      });
-    });
-  });
-});
-
 describe('parseAndGenerateServices', () => {
-  describe('errorOnTypeScriptSyntacticAndSemanticIssues', () => {
-    const code = '@test const foo = 2';
-    const options: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-      errorOnTypeScriptSyntacticAndSemanticIssues: true,
-    };
-
-    it('should throw on invalid option when used in parseWithNodeMaps', () => {
-      expect(() => {
-        parser.parseWithNodeMaps(code, options);
-      }).toThrow(
-        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
-      );
-    });
-
-    it('should not throw when used in parseAndGenerateServices', () => {
-      expect(() => {
-        parser.parseAndGenerateServices(code, options);
-      }).not.toThrow(
-        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
-      );
-    });
-
-    it('should error on invalid code', () => {
-      expect(() => {
-        parser.parseAndGenerateServices(code, options);
-      }).toThrow('Decorators are not valid here.');
-    });
-  });
-
   describe('preserveNodeMaps', () => {
     const code = 'var a = true';
     const baseConfig: TSESTreeOptions = {
@@ -274,31 +96,6 @@ describe('parseAndGenerateServices', () => {
         ...baseConfig,
         preserveNodeMaps: undefined,
       });
-
-      expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToTrue);
-      expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToFalse);
-      expect(resultWithNoOptionSet).toMatchObject(
-        resultWithOptionSetExplicitlyToUndefined,
-      );
-    });
-
-    it('should not impact the use of parseWithNodeMaps()', () => {
-      const resultWithNoOptionSet = parser.parseWithNodeMaps(code, baseConfig);
-      const resultWithOptionSetToTrue = parser.parseWithNodeMaps(code, {
-        ...baseConfig,
-        preserveNodeMaps: true,
-      });
-      const resultWithOptionSetToFalse = parser.parseWithNodeMaps(code, {
-        ...baseConfig,
-        preserveNodeMaps: false,
-      });
-      const resultWithOptionSetExplicitlyToUndefined = parser.parseWithNodeMaps(
-        code,
-        {
-          ...baseConfig,
-          preserveNodeMaps: undefined,
-        },
-      );
 
       expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToTrue);
       expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToFalse);
@@ -337,16 +134,9 @@ describe('parseAndGenerateServices', () => {
           preserveNodeMaps: setting,
         });
 
-        expect(parseResult.services.esTreeNodeToTSNodeMap).toBeDefined();
-        expect(parseResult.services.tsNodeToESTreeNodeMap).toBeDefined();
         expect(
-          parseResult.services.esTreeNodeToTSNodeMap.has(
+          parseResult.services.esTreeNodeToTSNodeMap?.has(
             parseResult.ast.body[0],
-          ),
-        ).toBe(setting);
-        expect(
-          parseResult.services.tsNodeToESTreeNodeMap.has(
-            parseResult.services.program.getSourceFile('estree.ts'),
           ),
         ).toBe(setting);
       });
@@ -357,18 +147,9 @@ describe('parseAndGenerateServices', () => {
           preserveNodeMaps: setting,
         });
 
-        expect(parseResult.services.esTreeNodeToTSNodeMap).toBeDefined();
-        expect(parseResult.services.tsNodeToESTreeNodeMap).toBeDefined();
         expect(
           parseResult.services.esTreeNodeToTSNodeMap.has(
             parseResult.ast.body[0],
-          ),
-        ).toBe(setting);
-        expect(
-          parseResult.services.tsNodeToESTreeNodeMap.has(
-            parseResult.services.program.getSourceFile(
-              join(FIXTURES_DIR, 'file.ts'),
-            ),
           ),
         ).toBe(setting);
       });
@@ -396,7 +177,7 @@ describe('parseAndGenerateServices', () => {
       jsxSetting,
       shouldThrow = false,
     }: {
-      ext: '.js' | '.jsx' | '.ts' | '.tsx' | '.vue' | '.json';
+      ext: '.js' | '.json' | '.jsx' | '.ts' | '.tsx' | '.vue';
       jsxContent: boolean;
       jsxSetting: boolean;
       shouldThrow?: boolean;
@@ -428,14 +209,16 @@ describe('parseAndGenerateServices', () => {
         }
 
         if (!shouldThrow) {
-          expect(result?.services.program).toBeDefined();
           expect(result?.ast).toBeDefined();
           expect({
             ...result,
             services: {
               ...result?.services,
-              // Reduce noise in snapshot
-              program: {},
+              // Reduce noise in snapshot by not printing the TS program
+              program:
+                result?.services.program == null
+                  ? 'No Program'
+                  : 'With Program',
             },
           }).toMatchSnapshot();
         }
@@ -717,9 +500,14 @@ describe('parseAndGenerateServices', () => {
     });
 
     it('should turn on typescript debugger', () => {
-      parser.parseAndGenerateServices('const x = 1;', {
-        debugLevel: ['typescript'],
-      });
+      expect(() =>
+        parser.parseAndGenerateServices('const x = 1;', {
+          debugLevel: ['typescript'],
+          filePath: './path-that-doesnt-exist.ts',
+          project: ['./tsconfig-that-doesnt-exist.json'],
+        }),
+      ) // should throw because the file and tsconfig don't exist
+        .toThrow();
       expect(createDefaultCompilerOptionsFromExtra).toHaveBeenCalled();
       expect(createDefaultCompilerOptionsFromExtra).toHaveReturnedWith(
         expect.objectContaining({

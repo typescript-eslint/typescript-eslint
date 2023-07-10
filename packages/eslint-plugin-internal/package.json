@@ -14,6 +14,7 @@
   },
   "dependencies": {
     "@types/prettier": "*",
+    "@typescript-eslint/rule-tester": "5.62.0",
     "@typescript-eslint/scope-manager": "5.62.0",
     "@typescript-eslint/type-utils": "5.62.0",
     "@typescript-eslint/utils": "5.62.0",

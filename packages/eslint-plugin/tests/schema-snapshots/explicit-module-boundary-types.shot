@@ -1,0 +1,63 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes explicit-module-boundary-types 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "allowArgumentsExplicitlyTypedAsAny": {
+        "description": "Whether to ignore arguments that are explicitly typed as \`any\`.",
+        "type": "boolean"
+      },
+      "allowDirectConstAssertionInArrowFunctions": {
+        "description": "Whether to ignore return type annotations on body-less arrow functions that return an \`as const\` type assertion.\\nYou must still type the parameters of the function.",
+        "type": "boolean"
+      },
+      "allowedNames": {
+        "description": "An array of function/method names that will not have their arguments or return values checked.",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      },
+      "allowHigherOrderFunctions": {
+        "description": "Whether to ignore return type annotations on functions immediately returning another function expression.\\nYou must still type the parameters of the function.",
+        "type": "boolean"
+      },
+      "allowTypedFunctionExpressions": {
+        "description": "Whether to ignore type annotations on the variable of a function expresion.",
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    /** Whether to ignore arguments that are explicitly typed as \`any\`. */
+    allowArgumentsExplicitlyTypedAsAny?: boolean;
+    /**
+     * Whether to ignore return type annotations on body-less arrow functions that return an \`as const\` type assertion.
+     * You must still type the parameters of the function.
+     */
+    allowDirectConstAssertionInArrowFunctions?: boolean;
+    /**
+     * Whether to ignore return type annotations on functions immediately returning another function expression.
+     * You must still type the parameters of the function.
+     */
+    allowHigherOrderFunctions?: boolean;
+    /** Whether to ignore type annotations on the variable of a function expresion. */
+    allowTypedFunctionExpressions?: boolean;
+    /** An array of function/method names that will not have their arguments or return values checked. */
+    allowedNames?: string[];
+  },
+];
+"
+`;

@@ -13,24 +13,28 @@ exports[`AST Fixtures legacy-fixtures types function-in-generic AST Alignment - 
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'x',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypeReference {
                   type: 'TSTypeReference',
-                  typeName: Identifier {
-                    type: 'Identifier',
-                    name: 'Array',
-
-                    range: [80, 85],
-                    loc: {
-                      start: { column: 7, line: 3 },
-                      end: { column: 12, line: 3 },
-                    },
-                  },
-                  typeParameters: TSTypeParameterInstantiation {
+-                 typeArguments: TSTypeParameterInstantiation {
++                 typeName: Identifier {
++                   type: 'Identifier',
++                   name: 'Array',
++
++                   range: [80, 85],
++                   loc: {
++                     start: { column: 7, line: 3 },
++                     end: { column: 12, line: 3 },
++                   },
++                 },
++                 typeParameters: TSTypeParameterInstantiation {
                     type: 'TSTypeParameterInstantiation',
                     params: Array [
                       TSFunctionType {
@@ -71,7 +75,19 @@ exports[`AST Fixtures legacy-fixtures types function-in-generic AST Alignment - 
                       end: { column: 24, line: 3 },
                     },
                   },
+-                 typeName: Identifier {
+-                   type: 'Identifier',
+-                   decorators: Array [],
+-                   name: 'Array',
+-                   optional: false,
 
+-                   range: [80, 85],
+-                   loc: {
+-                     start: { column: 7, line: 3 },
+-                     end: { column: 12, line: 3 },
+-                   },
+-                 },
+-
                   range: [80, 97],
                   loc: {
                     start: { column: 7, line: 3 },
@@ -101,6 +117,7 @@ exports[`AST Fixtures legacy-fixtures types function-in-generic AST Alignment - 
             },
           },
         ],
+-       declare: false,
         kind: 'let',
 
         range: [73, 98],

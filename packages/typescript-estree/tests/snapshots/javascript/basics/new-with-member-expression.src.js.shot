@@ -4,6 +4,7 @@ exports[`javascript basics new-with-member-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "arguments": Array [],
         "callee": Object {
@@ -19,6 +20,7 @@ Object {
             },
           },
           "object": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -30,14 +32,17 @@ Object {
               },
             },
             "name": "foo",
+            "optional": false,
             "range": Array [
               4,
               7,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "optional": false,
           "property": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 11,
@@ -49,11 +54,13 @@ Object {
               },
             },
             "name": "bar",
+            "optional": false,
             "range": Array [
               8,
               11,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             4,
@@ -76,6 +83,7 @@ Object {
           13,
         ],
         "type": "NewExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

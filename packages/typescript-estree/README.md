@@ -1,5 +1,7 @@
 # `@typescript-eslint/typescript-estree`
 
+> A parser that produces an ESTree-compatible AST for TypeScript code.
+
 [![NPM Version](https://img.shields.io/npm/v/@typescript-eslint/typescript-estree.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/utils)
 [![NPM Downloads](https://img.shields.io/npm/dm/@typescript-eslint/typescript-estree.svg?style=flat-square)](https://www.npmjs.com/package/@typescript-eslint/utils)
 
@@ -8,3 +10,5 @@
 👉 See **https://typescript-eslint.io/packages/typescript-estree** for documentation on this package.
 
 > See https://typescript-eslint.io for general documentation on typescript-eslint, the tooling that allows you to run ESLint and Prettier on TypeScript code.
+
+<!-- Local path for docs: docs/packages/TypeScript_ESTree.mdx -->

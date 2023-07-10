@@ -20,7 +20,8 @@ Object {
             "params": Array [
               Object {
                 "accessibility": "public",
-                "export": undefined,
+                "decorators": Array [],
+                "export": false,
                 "loc": Object {
                   "end": Object {
                     "column": 17,
@@ -31,8 +32,9 @@ Object {
                     "line": 2,
                   },
                 },
-                "override": undefined,
+                "override": false,
                 "parameter": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 17,
@@ -44,23 +46,26 @@ Object {
                     },
                   },
                   "name": "x",
+                  "optional": false,
                   "range": Array [
                     33,
                     34,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   26,
                   34,
                 ],
-                "readonly": undefined,
-                "static": undefined,
+                "readonly": false,
+                "static": false,
                 "type": "TSParameterProperty",
               },
               Object {
                 "accessibility": "private",
-                "export": undefined,
+                "decorators": Array [],
+                "export": false,
                 "loc": Object {
                   "end": Object {
                     "column": 28,
@@ -71,8 +76,9 @@ Object {
                     "line": 2,
                   },
                 },
-                "override": undefined,
+                "override": false,
                 "parameter": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 28,
@@ -84,18 +90,20 @@ Object {
                     },
                   },
                   "name": "y",
+                  "optional": false,
                   "range": Array [
                     44,
                     45,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   36,
                   45,
                 ],
-                "readonly": undefined,
-                "static": undefined,
+                "readonly": false,
+                "static": false,
                 "type": "TSParameterProperty",
               },
             ],
@@ -103,7 +111,9 @@ Object {
               21,
               47,
             ],
+            "returnType": undefined,
             "type": "TSConstructSignatureDeclaration",
+            "typeParameters": undefined,
           },
         ],
         "loc": Object {
@@ -122,7 +132,10 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
+      "extends": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 14,
@@ -134,11 +147,13 @@ Object {
           },
         },
         "name": "Test",
+        "optional": false,
         "range": Array [
           10,
           14,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -155,6 +170,7 @@ Object {
         49,
       ],
       "type": "TSInterfaceDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

@@ -17,7 +17,7 @@ interface NodeWithModifiers {
 
 const printNodeModifiers = (
   node: NodeWithModifiers,
-  final: 'readonly' | 'get',
+  final: 'get' | 'readonly',
 ): string =>
   `${node.accessibility ?? ''}${
     node.static ? ' static' : ''
@@ -47,7 +47,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce that literals on classes are exposed in a consistent style',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
     hasSuggestions: true,
     messages: {
@@ -56,7 +56,12 @@ export default util.createRule<Options, MessageIds>({
       preferGetterStyle: 'Literals should be exposed using getters.',
       preferGetterStyleSuggestion: 'Replace the literals with getters.',
     },
-    schema: [{ enum: ['fields', 'getters'] }],
+    schema: [
+      {
+        type: 'string',
+        enum: ['fields', 'getters'],
+      },
+    ],
   },
   defaultOptions: ['fields'],
   create(context, [style]) {
@@ -66,7 +71,7 @@ export default util.createRule<Options, MessageIds>({
           if (
             node.kind !== 'get' ||
             !node.value.body ||
-            !node.value.body.body.length
+            node.value.body.body.length === 0
           ) {
             return;
           }

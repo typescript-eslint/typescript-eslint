@@ -20,9 +20,13 @@ exports[`AST Fixtures special TSTypeParameter interface-const-modifier-multiple 
             end: { column: 26, line: 1 },
           },
         },
+-       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'I',
+-         optional: false,
 
           range: [10, 11],
           loc: {
@@ -39,9 +43,10 @@ exports[`AST Fixtures special TSTypeParameter interface-const-modifier-multiple 
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
-+             name: 'T',
-
+-               optional: false,
+-
 -               range: [12, 13],
 -               loc: {
 -                 start: { column: 12, line: 1 },
@@ -49,7 +54,8 @@ exports[`AST Fixtures special TSTypeParameter interface-const-modifier-multiple 
 -               },
 -             },
 -             out: false,
--
++             name: 'T',
+
               range: [12, 13],
               loc: {
                 start: { column: 12, line: 1 },
@@ -62,7 +68,9 @@ exports[`AST Fixtures special TSTypeParameter interface-const-modifier-multiple 
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [21, 22],
 -               loc: {

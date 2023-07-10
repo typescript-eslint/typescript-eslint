@@ -11,7 +11,7 @@ export type Options = [
   | {
       vars?: 'all' | 'local';
       varsIgnorePattern?: string;
-      args?: 'all' | 'after-used' | 'none';
+      args?: 'after-used' | 'all' | 'none';
       ignoreRestSiblings?: boolean;
       argsIgnorePattern?: string;
       caughtErrors?: 'all' | 'none';
@@ -23,7 +23,7 @@ export type Options = [
 interface TranslatedOptions {
   vars: 'all' | 'local';
   varsIgnorePattern?: RegExp;
-  args: 'all' | 'after-used' | 'none';
+  args: 'after-used' | 'all' | 'none';
   ignoreRestSiblings: boolean;
   argsIgnorePattern?: RegExp;
   caughtErrors: 'all' | 'none';
@@ -37,25 +37,28 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow unused variables',
-      recommended: 'warn',
+      recommended: 'recommended',
       extendsBaseRule: true,
     },
     schema: [
       {
         oneOf: [
           {
+            type: 'string',
             enum: ['all', 'local'],
           },
           {
             type: 'object',
             properties: {
               vars: {
+                type: 'string',
                 enum: ['all', 'local'],
               },
               varsIgnorePattern: {
                 type: 'string',
               },
               args: {
+                type: 'string',
                 enum: ['all', 'after-used', 'none'],
               },
               ignoreRestSiblings: {
@@ -65,6 +68,7 @@ export default util.createRule<Options, MessageIds>({
                 type: 'string',
               },
               caughtErrors: {
+                type: 'string',
                 enum: ['all', 'none'],
               },
               caughtErrorsIgnorePattern: {
@@ -165,10 +169,10 @@ export default util.createRule<Options, MessageIds>({
       ): boolean {
         if (options.ignoreRestSiblings) {
           const hasRestSiblingDefinition = variable.defs.some(def =>
-            hasRestSibling(def.name.parent!),
+            hasRestSibling(def.name.parent),
           );
           const hasRestSiblingReference = variable.references.some(ref =>
-            hasRestSibling(ref.identifier.parent!),
+            hasRestSibling(ref.identifier.parent),
           );
 
           return hasRestSiblingDefinition || hasRestSiblingReference;
@@ -482,13 +486,13 @@ export default util.createRule<Options, MessageIds>({
     }
 
     type DeclarationSelectorNode =
-      | TSESTree.TSInterfaceDeclaration
-      | TSESTree.TSTypeAliasDeclaration
       | TSESTree.ClassDeclaration
       | TSESTree.FunctionDeclaration
       | TSESTree.TSDeclareFunction
       | TSESTree.TSEnumDeclaration
+      | TSESTree.TSInterfaceDeclaration
       | TSESTree.TSModuleDeclaration
+      | TSESTree.TSTypeAliasDeclaration
       | TSESTree.VariableDeclaration;
     function ambientDeclarationSelector(
       parent: string,

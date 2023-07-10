@@ -30,7 +30,9 @@ Object {
             "left": Object {
               "declarations": Array [
                 Object {
+                  "definite": false,
                   "id": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 25,
@@ -42,11 +44,13 @@ Object {
                       },
                     },
                     "name": "item",
+                    "optional": false,
                     "range": Array [
                       44,
                       48,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "init": null,
                   "loc": Object {
@@ -66,6 +70,7 @@ Object {
                   "type": "VariableDeclarator",
                 },
               ],
+              "declare": false,
               "kind": "const",
               "loc": Object {
                 "end": Object {
@@ -98,6 +103,7 @@ Object {
               67,
             ],
             "right": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 34,
@@ -109,11 +115,13 @@ Object {
                 },
               },
               "name": "items",
+              "optional": false,
               "range": Array [
                 52,
                 57,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "type": "ForOfStatement",
           },
@@ -134,9 +142,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 18,
@@ -148,11 +158,13 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           15,
           18,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -169,7 +181,9 @@ Object {
         0,
         69,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

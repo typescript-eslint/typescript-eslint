@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration ExportDefaultDeclaration _error_ type-alias TSESTree - Error 1`] = `[TSError: ';' expected.]`;
+exports[`AST Fixtures declaration ExportDefaultDeclaration _error_ type-alias TSESTree - Error 1`] = `
+"TSError
+> 1 | export default type Foo = 1;
+    |                     ^ ';' expected.
+  2 |"
+`;

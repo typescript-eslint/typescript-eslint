@@ -6,6 +6,74 @@ title: Versioning
 We follow [semantic versioning (semver)](https://semver.org).
 This page exists to help set guidelines around when what we consider to fall within each of the semver categories.
 
+All of the packages in this project are published with the same version number to make it easier to coordinate both releases and installations.
+
+We publish a canary release on every successful merge to `main`, so **you never need to wait for a new stable version to make use of any updates**.
+
+Additionally, we promote to the `latest` tag on NPM once per week, **on Mondays at 1 pm Eastern**.
+
+The latest version under the `latest` tag is:
+
+<a href="https://www.npmjs.com/package/@typescript-eslint/parser">
+  <img
+    src="https://img.shields.io/npm/v/@typescript-eslint/parser/latest.svg?style=flat-square"
+    alt="NPM Version"
+  />
+</a>
+
+The latest version under the `canary` tag **(latest commit to `main`)** is:
+
+<a href="https://www.npmjs.com/package/@typescript-eslint/parser">
+  <img
+    src="https://img.shields.io/npm/v/@typescript-eslint/parser/canary.svg?style=flat-square"
+    alt="NPM Version"
+  />
+</a>
+
+:::note
+The only exception to the automated publishes described above is when we are in the final phases of creating the next major version of the libraries - e.g. going from `1.x.x` to `2.x.x`.
+During these periods, we manually publish `canary` releases until we are happy with the release and promote it to `latest`.
+:::
+
+### ESLint
+
+> The version range of ESLint currently supported is `^6.0.0 || ^7.0.0 || ^8.0.0`.
+
+We generally support at least the latest two major versions of ESLint.
+
+### Node
+
+This project makes an effort to support Active LTS and Maintenance LTS release statuses of Node according to [Node's release document](https://nodejs.org/en/about/releases).
+Support for specific Current status releases are considered periodically.
+
+### TypeScript
+
+> The version range of TypeScript currently supported is `>=4.3.5 <5.1.0`.
+
+Note that we mirror [DefinitelyTyped's version support window](https://github.com/DefinitelyTyped/DefinitelyTyped/#support-window) - meaning we only support versions of TypeScript less than 2 years old.
+
+You may find that our tooling works on older TypeScript versions however we provide no guarantees and **_we will not accept issues against unsupported versions_**.
+
+#### Supporting New TypeScript Releases
+
+With each new TypeScript release we file an issue to track the changes in the new version. The issue should always be pinned, and you can also [find the issues by searching for issues tagged with "New TypeScript Version"](https://github.com/typescript-eslint/typescript-eslint/issues?q=is%3Aissue+label%3A%22New+TypeScript+Version%22+sort%3Acreated-desc). If the issue is open, we do not have official support yet - please be patient.
+
+In terms of what versions we support:
+
+- We do not support the `beta` releases.
+- We _generally_ do not officially support the `rc` releases.
+- We endeavor to support the latest stable TypeScript versions as soon as possible after the release.
+
+Generally we will begin working on supporting the next release when the `rc` version is released.
+
+#### Version Warning Logs
+
+Note that our packages have an open `peerDependency` requirement in order to allow for experimentation on newer/beta versions of TypeScript.
+
+However if you use a non-supported version of TypeScript, the parser will log a warning to the console.
+If you want to disable this warning, you can configure this in your `parserOptions`.
+See: [Parser > `warnOnUnsupportedTypeScriptVersion`](../packages/Parser.mdx#warnonunsupportedtypescriptversion).
+
 ## Breaking Changes
 
 When considering whether a change should be counted as "breaking" we first need to consider what package(s) it impacts. For example breaking changes for the parser packages have a different standard to those for the ESLint plugins. This is because not only do they have _very_ different API surfaces, they also are consumed in very different ways.

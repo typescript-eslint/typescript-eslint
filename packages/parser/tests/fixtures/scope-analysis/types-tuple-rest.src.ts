@@ -1,1 +1,1 @@
-let x: [string, ...number[]]
+let x: [string, ...number[]];

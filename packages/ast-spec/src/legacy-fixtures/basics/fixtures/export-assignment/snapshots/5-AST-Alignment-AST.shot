@@ -12,7 +12,9 @@ exports[`AST Fixtures legacy-fixtures basics export-assignment AST Alignment - A
         type: 'TSExportAssignment',
         expression: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'foo',
+-         optional: false,
 
           range: [82, 85],
           loc: {

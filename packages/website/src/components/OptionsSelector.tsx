@@ -1,153 +1,113 @@
-/* eslint-disable jsx-a11y/label-has-associated-control */
 import {
   NavbarSecondaryMenuFiller,
   useWindowSize,
 } from '@docusaurus/theme-common';
+import Checkbox from '@site/src/components/inputs/Checkbox';
 import CopyIcon from '@site/src/icons/copy.svg';
+import IconExternalLink from '@theme/Icon/ExternalLink';
 import React, { useCallback } from 'react';
 
-import useDebouncedToggle from './hooks/useDebouncedToggle';
-import Checkbox from './inputs/Checkbox';
+import { useClipboard } from '../hooks/useClipboard';
 import Dropdown from './inputs/Dropdown';
 import Tooltip from './inputs/Tooltip';
+import ActionLabel from './layout/ActionLabel';
 import Expander from './layout/Expander';
+import InputLabel from './layout/InputLabel';
 import { createMarkdown, createMarkdownParams } from './lib/markdown';
-import styles from './OptionsSelector.module.css';
+import { fileTypes } from './options';
 import type { ConfigModel } from './types';
 
 export interface OptionsSelectorParams {
   readonly state: ConfigModel;
   readonly setState: (cfg: Partial<ConfigModel>) => void;
   readonly tsVersions: readonly string[];
-  readonly isLoading: boolean;
 }
-
-const ASTOptions = [
-  { value: false, label: 'Disabled' },
-  { value: 'es', label: 'ESTree' },
-  { value: 'ts', label: 'TypeScript' },
-  { value: 'scope', label: 'Scope' },
-] as const;
 
 function OptionsSelectorContent({
   state,
   setState,
   tsVersions,
-  isLoading,
 }: OptionsSelectorParams): JSX.Element {
-  const [copyLink, setCopyLink] = useDebouncedToggle<boolean>(false);
-  const [copyMarkdown, setCopyMarkdown] = useDebouncedToggle<boolean>(false);
-
-  const updateTS = useCallback(
-    (version: string) => {
-      setState({ ts: version });
-    },
-    [setState],
+  const [copyLink, copyLinkToClipboard] = useClipboard(() =>
+    document.location.toString(),
+  );
+  const [copyMarkdown, copyMarkdownToClipboard] = useClipboard(() =>
+    createMarkdown(state),
   );
 
-  const copyLinkToClipboard = useCallback(() => {
-    void navigator.clipboard
-      .writeText(document.location.toString())
-      .then(() => {
-        setCopyLink(true);
-      });
-  }, [setCopyLink]);
-
-  const copyMarkdownToClipboard = useCallback(() => {
-    if (isLoading) {
-      return;
-    }
-    void navigator.clipboard.writeText(createMarkdown(state)).then(() => {
-      setCopyMarkdown(true);
-    });
-  }, [isLoading, state, setCopyMarkdown]);
-
   const openIssue = useCallback(() => {
-    if (isLoading) {
-      return;
-    }
+    const params = createMarkdownParams(state);
+
     window
       .open(
-        `https://github.com/typescript-eslint/typescript-eslint/issues/new?${createMarkdownParams(
-          state,
-        )}`,
+        `https://github.com/typescript-eslint/typescript-eslint/issues/new?${params}`,
         '_blank',
       )
       ?.focus();
-  }, [state, isLoading]);
+  }, [state]);
 
   return (
     <>
       <Expander label="Info">
-        <label className={styles.optionLabel}>
-          TypeScript
+        <InputLabel name="TypeScript">
           <Dropdown
             name="ts"
             className="text--right"
             value={state.ts}
             disabled={!tsVersions.length}
-            onChange={updateTS}
+            onChange={(ts): void => setState({ ts })}
             options={(tsVersions.length && tsVersions) || [state.ts]}
           />
-        </label>
-        <label className={styles.optionLabel}>
-          Eslint
-          <span>{process.env.ESLINT_VERSION}</span>
-        </label>
-        <label className={styles.optionLabel}>
-          TSEslint
-          <span>{process.env.TS_ESLINT_VERSION}</span>
-        </label>
+        </InputLabel>
+        <InputLabel name="Eslint">{process.env.ESLINT_VERSION}</InputLabel>
+        <InputLabel name="TSEslint">{process.env.TS_ESLINT_VERSION}</InputLabel>
       </Expander>
       <Expander label="Options">
-        <label className={styles.optionLabel}>
-          Enable jsx
-          <Checkbox
-            name="jsx"
-            checked={state.jsx}
-            onChange={(e): void => setState({ jsx: e })}
-            className={styles.optionCheckbox}
-          />
-        </label>
-        <label className={styles.optionLabel}>
-          AST Viewer
+        <InputLabel name="File type">
           <Dropdown
-            name="showAST"
-            value={state.showAST}
-            onChange={(e): void => setState({ showAST: e })}
-            options={ASTOptions}
+            name="fileType"
+            value={state.fileType}
+            onChange={(fileType): void => setState({ fileType })}
+            options={fileTypes}
           />
-        </label>
-        <label className={styles.optionLabel}>
-          Source type
+        </InputLabel>
+        <InputLabel name="Source type">
           <Dropdown
             name="sourceType"
             value={state.sourceType}
-            onChange={(e): void => setState({ sourceType: e })}
+            onChange={(sourceType): void => setState({ sourceType })}
             options={['script', 'module']}
           />
-        </label>
+        </InputLabel>
+        <InputLabel name="Auto scroll">
+          <Checkbox
+            name="enableScrolling"
+            checked={state.scroll}
+            onChange={(scroll): void => setState({ scroll })}
+          />
+        </InputLabel>
+        <InputLabel name="Show tokens">
+          <Checkbox
+            name="showTokens"
+            checked={state.showTokens}
+            onChange={(showTokens): void => setState({ showTokens })}
+          />
+        </InputLabel>
       </Expander>
       <Expander label="Actions">
-        <button className={styles.optionLabel} onClick={copyLinkToClipboard}>
-          Copy Link
+        <ActionLabel name="Copy link" onClick={copyLinkToClipboard}>
           <Tooltip open={copyLink} text="Copied">
-            <CopyIcon />
+            <CopyIcon width="13.5" height="13.5" />
           </Tooltip>
-        </button>
-        <button
-          className={styles.optionLabel}
-          onClick={copyMarkdownToClipboard}
-        >
-          Copy Markdown
+        </ActionLabel>
+        <ActionLabel name="Copy Markdown" onClick={copyMarkdownToClipboard}>
           <Tooltip open={copyMarkdown} text="Copied">
-            <CopyIcon />
+            <CopyIcon width="13.5" height="13.5" />
           </Tooltip>
-        </button>
-        <button className={styles.optionLabel} onClick={openIssue}>
-          Report as Issue
-          <CopyIcon />
-        </button>
+        </ActionLabel>
+        <ActionLabel name="Report as Issue" onClick={openIssue}>
+          <IconExternalLink width="13.5" height="13.5" />
+        </ActionLabel>
       </Expander>
     </>
   );

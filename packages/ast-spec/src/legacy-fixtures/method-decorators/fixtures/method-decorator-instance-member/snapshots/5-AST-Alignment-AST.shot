@@ -10,6 +10,7 @@ exports[`AST Fixtures legacy-fixtures method-decorators method-decorator-instanc
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
@@ -21,7 +22,9 @@ exports[`AST Fixtures legacy-fixtures method-decorators method-decorator-instanc
                   type: 'Decorator',
                   expression: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'onlyRead',
+-                   optional: false,
 
                     range: [86, 94],
                     loc: {
@@ -39,7 +42,9 @@ exports[`AST Fixtures legacy-fixtures method-decorators method-decorator-instanc
               ],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'instanceMethod',
+-               optional: false,
 
                 range: [97, 111],
                 loc: {
@@ -48,6 +53,7 @@ exports[`AST Fixtures legacy-fixtures method-decorators method-decorator-instanc
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -63,6 +69,7 @@ exports[`AST Fixtures legacy-fixtures method-decorators method-decorator-instanc
                     end: { column: 21, line: 5 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -89,9 +96,13 @@ exports[`AST Fixtures legacy-fixtures method-decorators method-decorator-instanc
             end: { column: 1, line: 6 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'A',
+-         optional: false,
 
           range: [79, 80],
           loc: {
@@ -99,6 +110,7 @@ exports[`AST Fixtures legacy-fixtures method-decorators method-decorator-instanc
             end: { column: 7, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 118],

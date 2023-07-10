@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration TSTypeAliasDeclaration _error_ non-identifier-name TSESTree - Error 1`] = `[TSError: Type alias name cannot be '1'.]`;
+exports[`AST Fixtures declaration TSTypeAliasDeclaration _error_ non-identifier-name TSESTree - Error 1`] = `
+"TSError
+> 1 | type 1 = 2;
+    |      ^ Type alias name cannot be '1'.
+  2 |"
+`;

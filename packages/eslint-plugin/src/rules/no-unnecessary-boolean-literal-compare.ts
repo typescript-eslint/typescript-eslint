@@ -1,16 +1,16 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
 
 type MessageIds =
-  | 'direct'
-  | 'negated'
+  | 'comparingNullableToFalse'
   | 'comparingNullableToTrueDirect'
   | 'comparingNullableToTrueNegated'
-  | 'comparingNullableToFalse';
+  | 'direct'
+  | 'negated';
 
 type Options = [
   {
@@ -78,8 +78,7 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
     const sourceCode = context.getSourceCode();
 
     function getBooleanComparison(
@@ -90,9 +89,7 @@ export default util.createRule<Options, MessageIds>({
         return undefined;
       }
 
-      const expressionType = checker.getTypeAtLocation(
-        parserServices.esTreeNodeToTSNodeMap.get(comparison.expression),
-      );
+      const expressionType = services.getTypeAtLocation(comparison.expression);
 
       if (isBooleanType(expressionType)) {
         return {
@@ -231,7 +228,7 @@ export default util.createRule<Options, MessageIds>({
             const shouldNegate =
               comparison.negated !== comparison.literalBooleanInComparison;
 
-            const mutatedNode = isUnaryNegation ? node.parent! : node;
+            const mutatedNode = isUnaryNegation ? node.parent : node;
 
             yield fixer.replaceText(
               mutatedNode,

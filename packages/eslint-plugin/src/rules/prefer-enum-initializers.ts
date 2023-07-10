@@ -11,7 +11,6 @@ export default util.createRule<[], MessageIds>({
     docs: {
       description:
         'Require each enum member value to be explicitly initialized',
-      recommended: false,
     },
     hasSuggestions: true,
     messages: {

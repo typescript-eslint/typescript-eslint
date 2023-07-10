@@ -21,7 +21,7 @@ export default createRule({
     docs: {
       description:
         "Enforce that packages rules don't do `import ts from 'typescript';`",
-      recommended: 'error',
+      recommended: 'recommended',
     },
     fixable: 'code',
     schema: [],

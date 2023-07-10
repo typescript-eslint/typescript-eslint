@@ -6,9 +6,12 @@ Program {
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "X",
+        optional: false,
 
         range: [78, 79],
         loc: {
@@ -18,23 +21,12 @@ Program {
       },
       typeAnnotation: TSTypeReference {
         type: "TSTypeReference",
-        typeName: Identifier {
-          type: "Identifier",
-          name: "A",
-
-          range: [82, 83],
-          loc: {
-            start: { column: 9, line: 3 },
-            end: { column: 10, line: 3 },
-          },
-        },
-        typeParameters: TSTypeParameterInstantiation {
+        typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
           params: [
             TSImportType {
               type: "TSImportType",
-              isTypeOf: false,
-              parameter: TSLiteralType {
+              argument: TSLiteralType {
                 type: "TSLiteralType",
                 literal: Literal {
                   type: "Literal",
@@ -56,7 +48,9 @@ Program {
               },
               qualifier: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "B",
+                optional: false,
 
                 range: [95, 96],
                 loc: {
@@ -64,7 +58,7 @@ Program {
                   end: { column: 23, line: 3 },
                 },
               },
-              typeParameters: TSTypeParameterInstantiation {
+              typeArguments: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
                 params: [
                   TSAnyKeyword {
@@ -97,6 +91,18 @@ Program {
           loc: {
             start: { column: 10, line: 3 },
             end: { column: 29, line: 3 },
+          },
+        },
+        typeName: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "A",
+          optional: false,
+
+          range: [82, 83],
+          loc: {
+            start: { column: 9, line: 3 },
+            end: { column: 10, line: 3 },
           },
         },
 

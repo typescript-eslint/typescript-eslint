@@ -1,3 +1,4 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESLint } from '@typescript-eslint/utils';
 
 import type {
@@ -10,10 +11,9 @@ import type {
   Selector,
 } from '../../../../src/rules/naming-convention-utils';
 import { selectorTypeToMessageString } from '../../../../src/rules/naming-convention-utils';
-import { RuleTester } from '../../../RuleTester';
 
 export const formatTestNames: Readonly<
-  Record<PredefinedFormatsString, Record<'valid' | 'invalid', string[]>>
+  Record<PredefinedFormatsString, Record<'invalid' | 'valid', string[]>>
 > = {
   camelCase: {
     valid: ['strictCamelCase', 'lower', 'camelCaseUNSTRICT'],

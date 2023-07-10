@@ -5,14 +5,14 @@ import * as util from '../util';
 
 type Types = Record<
   string,
-  | null
-  | false
+  | boolean
   | string
   | {
       message: string;
       fixWith?: string;
       suggest?: readonly string[];
     }
+  | null
 >;
 
 export type Options = [
@@ -35,9 +35,9 @@ function stringifyNode(
 }
 
 function getCustomMessage(
-  bannedType: null | string | { message?: string; fixWith?: string },
+  bannedType: string | true | { message?: string; fixWith?: string } | null,
 ): string {
-  if (bannedType == null) {
+  if (bannedType == null || bannedType === true) {
     return '';
   }
 
@@ -130,7 +130,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow certain types',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     fixable: 'code',
     hasSuggestions: true,
@@ -140,28 +140,59 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
+        $defs: {
+          banConfig: {
+            oneOf: [
+              {
+                type: 'null',
+                description: 'Bans the type with the default message',
+              },
+              {
+                type: 'boolean',
+                enum: [false],
+                description:
+                  'Un-bans the type (useful when paired with `extendDefaults`)',
+              },
+              {
+                type: 'boolean',
+                enum: [true],
+                description: 'Bans the type with the default message',
+              },
+              {
+                type: 'string',
+                description: 'Bans the type with a custom message',
+              },
+              {
+                type: 'object',
+                description: 'Bans a type',
+                properties: {
+                  message: {
+                    type: 'string',
+                    description: 'Custom error message',
+                  },
+                  fixWith: {
+                    type: 'string',
+                    description:
+                      'Type to autofix replace with. Note that autofixers can be applied automatically - so you need to be careful with this option.',
+                  },
+                  suggest: {
+                    type: 'array',
+                    items: { type: 'string' },
+                    description: 'Types to suggest replacing with.',
+                    additionalItems: false,
+                  },
+                },
+                additionalProperties: false,
+              },
+            ],
+          },
+        },
         type: 'object',
         properties: {
           types: {
             type: 'object',
             additionalProperties: {
-              oneOf: [
-                { type: 'null' },
-                { type: 'boolean' },
-                { type: 'string' },
-                {
-                  type: 'object',
-                  properties: {
-                    message: { type: 'string' },
-                    fixWith: { type: 'string' },
-                    suggest: {
-                      type: 'array',
-                      items: { type: 'string' },
-                    },
-                  },
-                  additionalProperties: false,
-                },
-              ],
+              $ref: '#/items/0/$defs/banConfig',
             },
           },
           extendDefaults: {
@@ -256,7 +287,7 @@ export default util.createRule<Options, MessageIds>({
       TSTypeReference(node): void {
         checkBannedTypes(node.typeName);
 
-        if (node.typeParameters) {
+        if (node.typeArguments) {
           checkBannedTypes(node);
         }
       },
