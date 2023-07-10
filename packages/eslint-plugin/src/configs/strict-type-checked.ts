@@ -60,6 +60,7 @@ export = {
     '@typescript-eslint/prefer-as-const': 'error',
     '@typescript-eslint/prefer-includes': 'error',
     '@typescript-eslint/prefer-literal-enum-member': 'error',
+    '@typescript-eslint/prefer-nullish-coalescing': 'error',
     '@typescript-eslint/prefer-reduce-type-parameter': 'error',
     '@typescript-eslint/prefer-return-this-type': 'error',
     '@typescript-eslint/prefer-ts-expect-error': 'error',
