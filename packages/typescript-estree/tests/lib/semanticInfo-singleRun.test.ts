@@ -1,4 +1,4 @@
-import glob from 'glob';
+import glob = require('glob');
 import * as path from 'path';
 
 import { getCanonicalFileName } from '../../src/create-program/shared';

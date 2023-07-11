@@ -52,8 +52,7 @@ exports[`AST Fixtures legacy-fixtures basics import-equal-type-declaration AST A
         },
       },
     ],
--   sourceType: 'module',
-+   sourceType: 'script',
+    sourceType: 'module',
 
     range: [73, 107],
     loc: {
