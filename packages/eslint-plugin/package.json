@@ -76,6 +76,7 @@
     "@types/prettier": "*",
     "@typescript-eslint/rule-schema-to-typescript-types": "6.0.0",
     "@typescript-eslint/rule-tester": "6.0.0",
+    "ajv": "^6.12.6",
     "chalk": "^5.0.1",
     "cross-fetch": "*",
     "jest-specific-snapshot": "*",
