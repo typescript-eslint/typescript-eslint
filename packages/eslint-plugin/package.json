@@ -61,7 +61,6 @@
     "@typescript-eslint/utils": "6.0.0",
     "@typescript-eslint/visitor-keys": "6.0.0",
     "debug": "^4.3.4",
-    "grapheme-splitter": "^1.0.4",
     "graphemer": "^1.4.0",
     "ignore": "^5.2.4",
     "natural-compare": "^1.4.0",
