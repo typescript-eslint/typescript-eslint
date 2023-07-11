@@ -113,13 +113,30 @@ export default createRule({
       );
     }
 
+    function isTypeFinite(type: ts.Type): boolean {
+      return (
+        // Check literal or unique symbol
+        isTypeFlagSet(
+          type,
+          ts.TypeFlags.Literal | ts.TypeFlags.UniqueESSymbol,
+        ) &&
+        // Cannot be a general primitive
+        !isTypeFlagSet(
+          type,
+          ts.TypeFlags.Boolean | ts.TypeFlags.Number | ts.TypeFlags.String,
+        )
+      );
+    }
+
     function checkSwitchExhaustive(node: TSESTree.SwitchStatement): void {
       const discriminantType = getNodeType(node.discriminant);
       const symbolName = discriminantType.getSymbol()?.escapedName;
 
       if (discriminantType.isUnion()) {
         const unionTypes = unionTypeParts(discriminantType);
+
         const caseTypes: Set<ts.Type> = new Set();
+
         for (const switchCase of node.cases) {
           if (switchCase.test == null) {
             // Switch has 'default' branch - do nothing.
@@ -129,18 +146,10 @@ export default createRule({
           caseTypes.add(getNodeType(switchCase.test));
         }
 
-        const isFiniteType = unionTypes.every(isLiteralType);
-        const isSymbolType = unionTypes.some(type =>
-          isTypeFlagSet(type, ts.TypeFlags.UniqueESSymbol),
-        );
-        const isStringLiteralOrBoolean = unionTypes.some(type =>
-          isTypeFlagSet(
-            type,
-            ts.TypeFlags.BooleanLiteral || ts.TypeFlags.StringLiteral,
-          ),
-        );
+        const isFinite = unionTypes.every(isTypeFinite);
 
-        if (!isFiniteType && !isSymbolType && !isStringLiteralOrBoolean) {
+        if (!isFinite) {
+          // Union type is not finite - do nothing.
           return;
         }
 
