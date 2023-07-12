@@ -11,7 +11,7 @@ on:
   merge_group:
 
 env:
-  PRIMARY_NODE_VERSION: 18
+  PRIMARY_NODE_VERSION: 20
   # Only set the read-write token if we are on the main branch
   NX_CLOUD_ACCESS_TOKEN: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') && secrets.NX_CLOUD_ACCESS_TOKEN || '' }}
 
@@ -95,6 +95,21 @@ jobs:
       - name: Run Check
         run: yarn ${{ matrix.lint-task }}
 
+  stylelint:
+    name: Stylelint
+    needs: [install]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - name: Run stylelint check
+        run: yarn stylelint
+        working-directory: packages/website
+
   integration_tests:
     name: Run integration tests on primary Node.js version
     needs: [build]
@@ -121,7 +136,7 @@ jobs:
     strategy:
       matrix:
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
-        node-version: [14, 18]
+        node-version: [16, 20]
         package:
           [
             'ast-spec',
@@ -129,6 +144,8 @@ jobs:
             'eslint-plugin-internal',
             'eslint-plugin-tslint',
             'parser',
+            'repo-tools',
+            'rule-schema-to-typescript-types',
             'scope-manager',
             'type-utils',
             'typescript-estree',

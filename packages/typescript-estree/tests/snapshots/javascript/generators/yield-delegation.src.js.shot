@@ -4,13 +4,16 @@ exports[`javascript generators yield-delegation.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
           "body": Array [
             Object {
+              "directive": undefined,
               "expression": Object {
                 "argument": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 24,
@@ -22,11 +25,13 @@ Object {
                     },
                   },
                   "name": "v",
+                  "optional": false,
                   "range": Array [
                     23,
                     24,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "delegate": true,
                 "loc": Object {
@@ -78,6 +83,7 @@ Object {
           ],
           "type": "BlockStatement",
         },
+        "declare": false,
         "expression": false,
         "generator": true,
         "id": null,
@@ -96,7 +102,9 @@ Object {
           1,
           26,
         ],
+        "returnType": undefined,
         "type": "FunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

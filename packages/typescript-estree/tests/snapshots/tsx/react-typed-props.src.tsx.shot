@@ -52,6 +52,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 17,
@@ -63,11 +64,13 @@ Object {
               },
             },
             "name": "React",
+            "optional": false,
             "range": Array [
               12,
               17,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             7,
@@ -79,7 +82,9 @@ Object {
       "type": "ImportDeclaration",
     },
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 10,
@@ -91,11 +96,13 @@ Object {
           },
         },
         "name": "Props",
+        "optional": false,
         "range": Array [
           36,
           41,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -125,10 +132,12 @@ Object {
         },
         "members": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
-            "export": undefined,
+            "export": false,
             "initializer": undefined,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -140,11 +149,13 @@ Object {
                 },
               },
               "name": "title",
+              "optional": false,
               "range": Array [
                 48,
                 53,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -156,13 +167,13 @@ Object {
                 "line": 3,
               },
             },
-            "optional": undefined,
+            "optional": false,
             "range": Array [
               48,
               61,
             ],
-            "readonly": undefined,
-            "static": undefined,
+            "readonly": false,
+            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -206,6 +217,7 @@ Object {
         ],
         "type": "TSTypeLiteral",
       },
+      "typeParameters": undefined,
     },
     Object {
       "declaration": Object {
@@ -250,6 +262,7 @@ Object {
                         },
                       },
                       "object": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 12,
@@ -261,14 +274,17 @@ Object {
                           },
                         },
                         "name": "props",
+                        "optional": false,
                         "range": Array [
                           136,
                           141,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "optional": false,
                       "property": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 18,
@@ -280,11 +296,13 @@ Object {
                           },
                         },
                         "name": "title",
+                        "optional": false,
                         "range": Array [
                           142,
                           147,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "range": Array [
                         136,
@@ -452,9 +470,11 @@ Object {
           ],
           "type": "BlockStatement",
         },
+        "declare": false,
         "expression": false,
         "generator": false,
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 27,
@@ -466,11 +486,13 @@ Object {
             },
           },
           "name": "App",
+          "optional": false,
           "range": Array [
             89,
             92,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -484,6 +506,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 40,
@@ -495,6 +518,7 @@ Object {
               },
             },
             "name": "props",
+            "optional": false,
             "range": Array [
               93,
               105,
@@ -533,6 +557,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 40,
@@ -544,11 +569,13 @@ Object {
                     },
                   },
                   "name": "Props",
+                  "optional": false,
                   "range": Array [
                     100,
                     105,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -559,7 +586,9 @@ Object {
           80,
           164,
         ],
+        "returnType": undefined,
         "type": "FunctionDeclaration",
+        "typeParameters": undefined,
       },
       "exportKind": "value",
       "loc": Object {

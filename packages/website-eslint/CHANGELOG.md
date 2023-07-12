@@ -3,6 +3,47 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.62.0...v6.0.0) (2023-07-10)
+
+
+### Bug Fixes
+
+* update `exports` field in package.json files ([#6550](https://github.com/typescript-eslint/typescript-eslint/issues/6550)) ([53776c2](https://github.com/typescript-eslint/typescript-eslint/commit/53776c244f8bbdc852d57c7b313b0935e755ddc4))
+
+
+### chore
+
+* drop support for node v14.17, v17 ([#5971](https://github.com/typescript-eslint/typescript-eslint/issues/5971)) ([cc62015](https://github.com/typescript-eslint/typescript-eslint/commit/cc62015b8ae5f207912ff8988e2a0b3fe9a79243))
+
+
+### Features
+
+* add package.json exports for public packages ([#6458](https://github.com/typescript-eslint/typescript-eslint/issues/6458)) ([d676683](https://github.com/typescript-eslint/typescript-eslint/commit/d6766838a05259556029acaac57dc7839b68c592))
+* drop support for node v12 ([#5918](https://github.com/typescript-eslint/typescript-eslint/issues/5918)) ([7e3fe9a](https://github.com/typescript-eslint/typescript-eslint/commit/7e3fe9a67abd394b0a114f2deb466edf5c9759ac))
+* drop support for node v14 and test against node v20 ([#7022](https://github.com/typescript-eslint/typescript-eslint/issues/7022)) ([e6235bf](https://github.com/typescript-eslint/typescript-eslint/commit/e6235bf61b781066653581b57b7cd976c9c4f905))
+
+
+### BREAKING CHANGES
+
+* drops support for node v17
+* drops support for node v12
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [5.62.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.61.0...v5.62.0) (2023-07-10)
+
+**Note:** Version bump only for package @typescript-eslint/website-eslint
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [5.61.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.60.1...v5.61.0) (2023-07-03)
 
 **Note:** Version bump only for package @typescript-eslint/website-eslint
@@ -198,49 +239,25 @@ You can read about our [versioning strategy](https://main--typescript-eslint.net
 
 **Note:** Version bump only for package @typescript-eslint/website-eslint
 
-
-
-
-
 # [5.51.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.50.0...v5.51.0) (2023-02-06)
 
 **Note:** Version bump only for package @typescript-eslint/website-eslint
-
-
-
-
 
 # [5.50.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.49.0...v5.50.0) (2023-01-31)
 
 **Note:** Version bump only for package @typescript-eslint/website-eslint
 
-
-
-
-
 # [5.49.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.2...v5.49.0) (2023-01-23)
 
 **Note:** Version bump only for package @typescript-eslint/website-eslint
-
-
-
-
 
 ## [5.48.2](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.1...v5.48.2) (2023-01-16)
 
 **Note:** Version bump only for package @typescript-eslint/website-eslint
 
-
-
-
-
 ## [5.48.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.48.0...v5.48.1) (2023-01-09)
 
 **Note:** Version bump only for package @typescript-eslint/website-eslint
-
-
-
-
 
 # [5.48.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.47.1...v5.48.0) (2023-01-02)
 

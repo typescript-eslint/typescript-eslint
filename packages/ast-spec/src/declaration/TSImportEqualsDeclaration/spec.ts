@@ -22,12 +22,4 @@ export interface TSImportEqualsDeclaration extends BaseNode {
   moduleReference: EntityName | TSExternalModuleReference;
   // TODO(#1852) - breaking change remove this as it is invalid
   importKind: ImportKind;
-  /**
-   * Whether this is immediately exported
-   * ```
-   * export import F = A;
-   * ```
-   */
-  // TODO(#4130) - this should be represented in the AST
-  isExport: boolean;
 }

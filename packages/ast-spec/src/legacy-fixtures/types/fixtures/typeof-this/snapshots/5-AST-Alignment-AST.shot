@@ -13,9 +13,12 @@ exports[`AST Fixtures legacy-fixtures types typeof-this AST Alignment - AST 1`] 
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'self',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypeQuery {
@@ -62,6 +65,7 @@ exports[`AST Fixtures legacy-fixtures types typeof-this AST Alignment - AST 1`] 
             },
           },
         ],
+-       declare: false,
         kind: 'let',
 
         range: [73, 95],
@@ -75,9 +79,12 @@ exports[`AST Fixtures legacy-fixtures types typeof-this AST Alignment - AST 1`] 
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'foo',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSTypeQuery {
@@ -98,7 +105,9 @@ exports[`AST Fixtures legacy-fixtures types typeof-this AST Alignment - AST 1`] 
                     },
                     right: Identifier {
                       type: 'Identifier',
+-                     decorators: Array [],
                       name: 'foo',
+-                     optional: false,
 
                       range: [117, 120],
                       loc: {
@@ -143,6 +152,7 @@ exports[`AST Fixtures legacy-fixtures types typeof-this AST Alignment - AST 1`] 
             },
           },
         ],
+-       declare: false,
         kind: 'let',
 
         range: [96, 121],

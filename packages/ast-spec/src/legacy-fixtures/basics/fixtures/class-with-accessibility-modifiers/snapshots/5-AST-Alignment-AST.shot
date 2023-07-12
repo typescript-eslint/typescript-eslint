@@ -10,6 +10,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
@@ -18,9 +19,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
               accessibility: 'private',
               computed: false,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'bar',
+-               optional: false,
 
                 range: [95, 98],
                 loc: {
@@ -28,7 +33,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
                   end: { column: 13, line: 4 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -61,9 +68,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
               accessibility: 'public',
               computed: false,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'baz',
+-               optional: false,
 
                 range: [124, 127],
                 loc: {
@@ -71,7 +82,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
                   end: { column: 19, line: 5 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: true,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -103,9 +116,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
               type: 'MethodDefinition',
               accessibility: 'public',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'getBar',
+-               optional: false,
 
                 range: [146, 152],
                 loc: {
@@ -114,6 +130,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -139,7 +156,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
                         optional: false,
                         property: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'bar',
+-                         optional: false,
 
                           range: [173, 176],
                           loc: {
@@ -169,6 +188,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
                     end: { column: 3, line: 8 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -191,9 +211,12 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
               type: 'MethodDefinition',
               accessibility: 'protected',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'setBar',
+-               optional: false,
 
                 range: [194, 200],
                 loc: {
@@ -202,6 +225,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -229,7 +253,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
                           optional: false,
                           property: Identifier {
                             type: 'Identifier',
+-                           decorators: Array [],
                             name: 'bar',
+-                           optional: false,
 
                             range: [225, 228],
                             loc: {
@@ -247,7 +273,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
                         operator: '=',
                         right: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'bar',
+-                         optional: false,
 
                           range: [231, 234],
                           loc: {
@@ -277,13 +305,16 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
                     end: { column: 3, line: 11 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
                 params: Array [
                   Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'bar',
+-                   optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: 'TSTypeAnnotation',
                       typeAnnotation: TSStringKeyword {
@@ -332,9 +363,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
             end: { column: 1, line: 12 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [79, 82],
           loc: {
@@ -342,6 +377,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-accessibility-modifiers 
             end: { column: 9, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 241],

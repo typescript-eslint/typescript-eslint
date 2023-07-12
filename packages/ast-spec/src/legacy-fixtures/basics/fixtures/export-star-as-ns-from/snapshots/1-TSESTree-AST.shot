@@ -9,7 +9,9 @@ Program {
       assertions: [],
       exported: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "foo",
+        optional: false,
 
         range: [85, 88],
         loc: {

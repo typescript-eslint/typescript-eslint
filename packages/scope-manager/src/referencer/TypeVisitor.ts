@@ -120,7 +120,7 @@ class TypeVisitor extends Visitor {
 
   protected TSImportType(node: TSESTree.TSImportType): void {
     // the TS parser allows any type to be the parameter, but it's a syntax error - so we can ignore it
-    this.visit(node.typeParameters);
+    this.visit(node.typeArguments);
     // the qualifier is just part of a standard EntityName, so it should not be visited
   }
 
@@ -187,7 +187,6 @@ class TypeVisitor extends Visitor {
     }
 
     node.extends?.forEach(this.visit, this);
-    node.implements?.forEach(this.visit, this);
     this.visit(node.body);
 
     if (node.typeParameters) {
@@ -260,7 +259,10 @@ class TypeVisitor extends Visitor {
 
   // a type query `typeof foo` is a special case that references a _non-type_ variable,
   protected TSTypeQuery(node: TSESTree.TSTypeQuery): void {
-    let entityName: TSESTree.Identifier | TSESTree.ThisExpression;
+    let entityName:
+      | TSESTree.Identifier
+      | TSESTree.ThisExpression
+      | TSESTree.TSImportType;
     if (node.exprName.type === AST_NODE_TYPES.TSQualifiedName) {
       let iter = node.exprName;
       while (iter.left.type === AST_NODE_TYPES.TSQualifiedName) {
@@ -269,12 +271,16 @@ class TypeVisitor extends Visitor {
       entityName = iter.left;
     } else {
       entityName = node.exprName;
+
+      if (node.exprName.type === AST_NODE_TYPES.TSImportType) {
+        this.visit(node.exprName);
+      }
     }
     if (entityName.type === AST_NODE_TYPES.Identifier) {
       this.#referencer.currentScope().referenceValue(entityName);
     }
 
-    this.visit(node.typeParameters);
+    this.visit(node.typeArguments);
   }
 
   protected TSTypeAnnotation(node: TSESTree.TSTypeAnnotation): void {

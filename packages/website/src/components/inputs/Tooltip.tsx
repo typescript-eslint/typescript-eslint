@@ -4,7 +4,7 @@ import React from 'react';
 import styles from './Tooltip.module.css';
 
 export interface TooltipProps {
-  readonly children: JSX.Element | (JSX.Element | false)[];
+  readonly children: (JSX.Element | false)[] | JSX.Element;
   readonly text: string;
   readonly position?: 'left' | 'right';
   readonly open?: boolean;

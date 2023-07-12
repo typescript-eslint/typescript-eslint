@@ -4,9 +4,11 @@ exports[`comments template-string-block.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "expressions": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 7,
@@ -18,11 +20,13 @@ Object {
               },
             },
             "name": "name",
+            "optional": false,
             "range": Array [
               3,
               7,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
         ],
         "loc": Object {
@@ -106,6 +110,7 @@ Object {
     Object {
       "body": Array [
         Object {
+          "directive": undefined,
           "expression": Object {
             "left": Object {
               "loc": Object {

@@ -1,0 +1,53 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`eslint-v7 should lint successfully 1`] = `
+[
+  {
+    "errorCount": 1,
+    "filePath": "<root>/index.ts",
+    "fixableErrorCount": 0,
+    "fixableWarningCount": 0,
+    "messages": [
+      {
+        "column": 15,
+        "endColumn": 18,
+        "endLine": 1,
+        "line": 1,
+        "message": "Unexpected any. Specify a different type.",
+        "messageId": "unexpectedAny",
+        "nodeType": "TSAnyKeyword",
+        "ruleId": "@typescript-eslint/no-explicit-any",
+        "severity": 2,
+        "suggestions": [
+          {
+            "desc": "Use \`unknown\` instead, this will force you to explicitly, and safely assert the type is correct.",
+            "fix": {
+              "range": [
+                14,
+                17,
+              ],
+              "text": "unknown",
+            },
+            "messageId": "suggestUnknown",
+          },
+          {
+            "desc": "Use \`never\` instead, this is useful when instantiating generic type parameters that you don't need to know the type of.",
+            "fix": {
+              "range": [
+                14,
+                17,
+              ],
+              "text": "never",
+            },
+            "messageId": "suggestNever",
+          },
+        ],
+      },
+    ],
+    "source": "const noSemi: any = true;
+",
+    "usedDeprecatedRules": [],
+    "warningCount": 0,
+  },
+]
+`;

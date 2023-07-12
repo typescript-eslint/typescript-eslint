@@ -13,7 +13,9 @@ exports[`AST Fixtures declaration ExportAllDeclaration kind-type AST Alignment -
         assertions: Array [],
         exported: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'x',
+-         optional: false,
 
           range: [17, 18],
           loc: {

@@ -6,6 +6,20 @@ description: 'Disallow type aliases.'
 >
 > See **https://typescript-eslint.io/rules/no-type-alias** for documentation.
 
+:::danger Deprecated
+
+This rule has been deprecated in favour of the [`@typescript-eslint/consistent-type-definitions`](./consistent-type-definitions.md) rule.
+TypeScript type aliases are a commonly necessary language feature; banning it altogether is oftentimes counterproductive.
+
+:::
+
+:::note
+
+If you want to ban certain classifications of type aliases, consider using [`no-restricted-syntax`](https://eslint.org/docs/latest/rules/no-restricted-syntax).
+See [Troubleshooting & FAQs](/linting/troubleshooting#how-can-i-ban-specific-language-feature).
+
+:::
+
 In TypeScript, type aliases serve three purposes:
 
 - Aliasing other types so that we can refer to them using a simpler name.

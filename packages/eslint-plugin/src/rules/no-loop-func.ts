@@ -16,7 +16,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow function declarations that contain unsafe references inside loop statements',
-      recommended: false,
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
@@ -36,8 +35,8 @@ export default util.createRule<Options, MessageIds>({
     function checkForLoops(
       node:
         | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionExpression
-        | TSESTree.FunctionDeclaration,
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
     ): void {
       const loopNode = getContainingLoopNode(node);
 

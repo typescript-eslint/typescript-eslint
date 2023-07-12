@@ -36,7 +36,7 @@ declare class ESLintBase {
    * @param patterns The lint target files. This can contain any of file paths, directory paths, and glob patterns.
    * @returns The promise that will be fulfilled with an array of LintResult objects.
    */
-  lintFiles(patterns: string | string[]): Promise<ESLint.LintResult[]>;
+  lintFiles(patterns: string[] | string): Promise<ESLint.LintResult[]>;
   /**
    * This method lints the given source code text and then returns the results.
    *
@@ -145,7 +145,7 @@ namespace ESLint {
     /**
      * The types of the rules that the eslint.lintFiles() and eslint.lintText() methods use for autofix.
      */
-    fixTypes?: ('directive' | 'problem' | 'suggestion' | 'layout')[] | null;
+    fixTypes?: ('directive' | 'layout' | 'problem' | 'suggestion')[] | null;
     /**
      * If false is present, the eslint.lintFiles() method doesn't interpret glob patterns.
      */
@@ -379,7 +379,7 @@ namespace ESLint {
      * The method to convert the LintResult objects to text.
      * Promise return supported since 8.4.0
      */
-    format(results: LintResult[]): string | Promise<string>;
+    format(results: LintResult[]): Promise<string> | string;
   }
 }
 

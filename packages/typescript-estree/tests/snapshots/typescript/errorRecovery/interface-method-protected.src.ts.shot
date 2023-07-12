@@ -9,7 +9,9 @@ Object {
           Object {
             "accessibility": "protected",
             "computed": false,
+            "export": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 13,
@@ -21,11 +23,13 @@ Object {
                 },
               },
               "name": "g",
+              "optional": false,
               "range": Array [
                 28,
                 29,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -38,8 +42,10 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 25,
@@ -51,6 +57,7 @@ Object {
                   },
                 },
                 "name": "bar",
+                "optional": false,
                 "range": Array [
                   30,
                   41,
@@ -96,6 +103,7 @@ Object {
               18,
               49,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -130,7 +138,9 @@ Object {
                 "type": "TSVoidKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
+            "typeParameters": undefined,
           },
         ],
         "loc": Object {
@@ -149,7 +159,10 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
+      "extends": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 13,
@@ -161,11 +174,13 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           10,
           13,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -182,6 +197,7 @@ Object {
         51,
       ],
       "type": "TSInterfaceDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

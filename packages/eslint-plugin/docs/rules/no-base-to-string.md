@@ -29,7 +29,7 @@ value + '';
 
 // Interpolation and manual .toString() calls too:
 `Value: ${value}`;
-({}.toString());
+({}).toString();
 ```
 
 ### ✅ Correct

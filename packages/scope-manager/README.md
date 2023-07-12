@@ -6,3 +6,5 @@
 👉 See **https://typescript-eslint.io/packages/scope-manager** for documentation on this package.
 
 > See https://typescript-eslint.io for general documentation on typescript-eslint, the tooling that allows you to run ESLint and Prettier on TypeScript code.
+
+<!-- Local path for docs: docs/packages/Scope_Manager.mdx -->

@@ -2,5 +2,50 @@
 
 exports[`AST Fixtures legacy-fixtures basics typed-keyword-symbol AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSTypeAliasDeclaration {
+        type: 'TSTypeAliasDeclaration',
+-       declare: false,
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'Foo',
+-         optional: false,
+
+          range: [78, 81],
+          loc: {
+            start: { column: 5, line: 3 },
+            end: { column: 8, line: 3 },
+          },
+        },
+        typeAnnotation: TSSymbolKeyword {
+          type: 'TSSymbolKeyword',
+
+          range: [84, 90],
+          loc: {
+            start: { column: 11, line: 3 },
+            end: { column: 17, line: 3 },
+          },
+        },
+
+        range: [73, 91],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 18, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 92],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
 `;

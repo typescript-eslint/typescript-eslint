@@ -23,9 +23,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 12,
@@ -37,11 +39,13 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           9,
           12,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -55,7 +59,9 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "left": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 25,
@@ -66,10 +72,12 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "properties": Array [
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 18,
@@ -81,11 +89,13 @@ Object {
                     },
                   },
                   "name": "foo",
+                  "optional": false,
                   "range": Array [
                     15,
                     18,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {
@@ -99,6 +109,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   15,
                   23,
@@ -106,7 +117,9 @@ Object {
                 "shorthand": true,
                 "type": "Property",
                 "value": Object {
+                  "decorators": Array [],
                   "left": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 18,
@@ -118,11 +131,13 @@ Object {
                       },
                     },
                     "name": "foo",
+                    "optional": false,
                     "range": Array [
                       15,
                       18,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "loc": Object {
                     "end": Object {
@@ -134,6 +149,7 @@ Object {
                       "line": 1,
                     },
                   },
+                  "optional": false,
                   "range": Array [
                     15,
                     23,
@@ -157,6 +173,7 @@ Object {
                     "type": "ArrayExpression",
                   },
                   "type": "AssignmentPattern",
+                  "typeAnnotation": undefined,
                 },
               },
             ],
@@ -165,6 +182,7 @@ Object {
               25,
             ],
             "type": "ObjectPattern",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -176,11 +194,13 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             13,
             31,
           ],
           "right": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 31,
@@ -192,20 +212,25 @@ Object {
               },
             },
             "name": "bar",
+            "optional": false,
             "range": Array [
               28,
               31,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "type": "AssignmentPattern",
+          "typeAnnotation": undefined,
         },
       ],
       "range": Array [
         0,
         37,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

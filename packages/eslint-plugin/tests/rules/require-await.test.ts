@@ -1,5 +1,7 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/require-await';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 
@@ -217,6 +219,18 @@ async function* test(source: MyType) {
 async function* foo(): Promise<string> {
   return new Promise(res => res(\`hello\`));
 }
+    `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/5458
+    `
+      async function* f() {
+        let x!: Omit<
+          {
+            [Symbol.asyncIterator](): AsyncIterator<any>;
+          },
+          'z'
+        >;
+        yield* x;
+      }
     `,
   ],
 

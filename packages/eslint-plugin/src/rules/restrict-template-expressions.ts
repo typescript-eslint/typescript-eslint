@@ -24,7 +24,7 @@ export default util.createRule<Options, MessageId>({
     docs: {
       description:
         'Enforce template literal expressions to be of `string` type',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -33,6 +33,7 @@ export default util.createRule<Options, MessageId>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           allowAny: {
             description:
@@ -70,12 +71,16 @@ export default util.createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
+      allowAny: true,
+      allowBoolean: true,
+      allowNullish: true,
       allowNumber: true,
+      allowRegExp: true,
     },
   ],
   create(context, [options]) {
-    const service = util.getParserServices(context);
-    const typeChecker = service.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     function isUnderlyingTypePrimitive(type: ts.Type): boolean {
       if (util.isTypeFlagSet(type, ts.TypeFlags.StringLike)) {
@@ -103,10 +108,7 @@ export default util.createRule<Options, MessageId>({
         return true;
       }
 
-      if (
-        options.allowRegExp &&
-        util.getTypeName(typeChecker, type) === 'RegExp'
-      ) {
+      if (options.allowRegExp && util.getTypeName(checker, type) === 'RegExp') {
         return true;
       }
 
@@ -127,14 +129,14 @@ export default util.createRule<Options, MessageId>({
     return {
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         // don't check tagged template literals
-        if (node.parent!.type === AST_NODE_TYPES.TaggedTemplateExpression) {
+        if (node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression) {
           return;
         }
 
         for (const expression of node.expressions) {
           const expressionType = util.getConstrainedTypeAtLocation(
-            typeChecker,
-            service.esTreeNodeToTSNodeMap.get(expression),
+            services,
+            expression,
           );
 
           if (
@@ -146,7 +148,7 @@ export default util.createRule<Options, MessageId>({
             context.report({
               node: expression,
               messageId: 'invalidType',
-              data: { type: typeChecker.typeToString(expressionType) },
+              data: { type: checker.typeToString(expressionType) },
             });
           }
         }

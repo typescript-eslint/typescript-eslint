@@ -14,12 +14,11 @@ import CopyButton from '@theme/CodeBlock/CopyButton';
 import Line from '@theme/CodeBlock/Line';
 import WordWrapButton from '@theme/CodeBlock/WordWrapButton';
 import clsx from 'clsx';
-import Highlight, { type Language, defaultProps } from 'prism-react-renderer';
+import Highlight, { defaultProps, type Language } from 'prism-react-renderer';
 import React from 'react';
 
 import styles from './styles.module.css';
 
-// eslint-disable-next-line import/no-default-export
 export default function CodeBlockString({
   children,
   className: blockClassName = '',

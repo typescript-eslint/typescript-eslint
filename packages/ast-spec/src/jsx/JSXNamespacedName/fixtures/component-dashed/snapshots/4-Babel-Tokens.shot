@@ -4,232 +4,352 @@ exports[`AST Fixtures jsx JSXNamespacedName component-dashed Babel - Tokens 1`] 
 [
   Identifier {
     type: "Identifier",
-    value: "namespace",
+    value: "declare",
 
-    range: [0, 9],
+    range: [0, 7],
     loc: {
       start: { column: 0, line: 1 },
-      end: { column: 9, line: 1 },
+      end: { column: 7, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "namespace",
+
+    range: [8, 17],
+    loc: {
+      start: { column: 8, line: 1 },
+      end: { column: 17, line: 1 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "JSX",
 
-    range: [10, 13],
+    range: [18, 21],
     loc: {
-      start: { column: 10, line: 1 },
-      end: { column: 13, line: 1 },
+      start: { column: 18, line: 1 },
+      end: { column: 21, line: 1 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "{",
 
-    range: [14, 15],
+    range: [22, 23],
     loc: {
-      start: { column: 14, line: 1 },
-      end: { column: 15, line: 1 },
-    },
-  },
-  Keyword {
-    type: "Keyword",
-    value: "export",
-
-    range: [18, 24],
-    loc: {
-      start: { column: 2, line: 2 },
-      end: { column: 8, line: 2 },
+      start: { column: 22, line: 1 },
+      end: { column: 23, line: 1 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "interface",
 
-    range: [25, 34],
+    range: [26, 35],
     loc: {
-      start: { column: 9, line: 2 },
-      end: { column: 18, line: 2 },
+      start: { column: 2, line: 2 },
+      end: { column: 11, line: 2 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "IntrinsicElements",
 
-    range: [35, 52],
+    range: [36, 53],
     loc: {
-      start: { column: 19, line: 2 },
-      end: { column: 36, line: 2 },
+      start: { column: 12, line: 2 },
+      end: { column: 29, line: 2 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "{",
 
-    range: [53, 54],
+    range: [54, 55],
     loc: {
-      start: { column: 37, line: 2 },
-      end: { column: 38, line: 2 },
+      start: { column: 30, line: 2 },
+      end: { column: 31, line: 2 },
     },
   },
-  String {
-    type: "String",
-    value: "'foo-bar:baz-bam'",
+  Identifier {
+    type: "Identifier",
+    value: "foo",
 
-    range: [59, 76],
+    range: [60, 63],
     loc: {
       start: { column: 4, line: 3 },
-      end: { column: 21, line: 3 },
+      end: { column: 7, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ":",
 
-    range: [76, 77],
+    range: [63, 64],
     loc: {
-      start: { column: 21, line: 3 },
-      end: { column: 22, line: 3 },
+      start: { column: 7, line: 3 },
+      end: { column: 8, line: 3 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "any",
 
-    range: [78, 81],
+    range: [65, 68],
     loc: {
-      start: { column: 23, line: 3 },
-      end: { column: 26, line: 3 },
+      start: { column: 9, line: 3 },
+      end: { column: 12, line: 3 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [81, 82],
+    range: [68, 69],
     loc: {
-      start: { column: 26, line: 3 },
-      end: { column: 27, line: 3 },
+      start: { column: 12, line: 3 },
+      end: { column: 13, line: 3 },
     },
   },
-  Punctuator {
-    type: "Punctuator",
-    value: "}",
+  String {
+    type: "String",
+    value: "'foo-bar:baz-bam'",
 
-    range: [85, 86],
+    range: [74, 91],
     loc: {
-      start: { column: 2, line: 4 },
-      end: { column: 3, line: 4 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "}",
-
-    range: [87, 88],
-    loc: {
-      start: { column: 0, line: 5 },
-      end: { column: 1, line: 5 },
-    },
-  },
-  Keyword {
-    type: "Keyword",
-    value: "const",
-
-    range: [90, 95],
-    loc: {
-      start: { column: 0, line: 7 },
-      end: { column: 5, line: 7 },
-    },
-  },
-  Identifier {
-    type: "Identifier",
-    value: "componentDashed",
-
-    range: [96, 111],
-    loc: {
-      start: { column: 6, line: 7 },
-      end: { column: 21, line: 7 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "=",
-
-    range: [112, 113],
-    loc: {
-      start: { column: 22, line: 7 },
-      end: { column: 23, line: 7 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "<",
-
-    range: [114, 115],
-    loc: {
-      start: { column: 24, line: 7 },
-      end: { column: 25, line: 7 },
-    },
-  },
-  JSXIdentifier {
-    type: "JSXIdentifier",
-    value: "foo-bar",
-
-    range: [115, 122],
-    loc: {
-      start: { column: 25, line: 7 },
-      end: { column: 32, line: 7 },
+      start: { column: 4, line: 4 },
+      end: { column: 21, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ":",
 
-    range: [122, 123],
+    range: [91, 92],
     loc: {
-      start: { column: 32, line: 7 },
-      end: { column: 33, line: 7 },
+      start: { column: 21, line: 4 },
+      end: { column: 22, line: 4 },
     },
   },
-  JSXIdentifier {
-    type: "JSXIdentifier",
-    value: "baz-bam",
+  Identifier {
+    type: "Identifier",
+    value: "any",
 
-    range: [123, 130],
+    range: [93, 96],
     loc: {
-      start: { column: 33, line: 7 },
-      end: { column: 40, line: 7 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: "/",
-
-    range: [131, 132],
-    loc: {
-      start: { column: 41, line: 7 },
-      end: { column: 42, line: 7 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: ">",
-
-    range: [132, 133],
-    loc: {
-      start: { column: 42, line: 7 },
-      end: { column: 43, line: 7 },
+      start: { column: 23, line: 4 },
+      end: { column: 26, line: 4 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ";",
 
-    range: [133, 134],
+    range: [96, 97],
     loc: {
-      start: { column: 43, line: 7 },
-      end: { column: 44, line: 7 },
+      start: { column: 26, line: 4 },
+      end: { column: 27, line: 4 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [100, 101],
+    loc: {
+      start: { column: 2, line: 5 },
+      end: { column: 3, line: 5 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [102, 103],
+    loc: {
+      start: { column: 0, line: 6 },
+      end: { column: 1, line: 6 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "const",
+
+    range: [195, 200],
+    loc: {
+      start: { column: 0, line: 9 },
+      end: { column: 5, line: 9 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "componentBasic",
+
+    range: [201, 215],
+    loc: {
+      start: { column: 6, line: 9 },
+      end: { column: 20, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [216, 217],
+    loc: {
+      start: { column: 21, line: 9 },
+      end: { column: 22, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "<",
+
+    range: [218, 219],
+    loc: {
+      start: { column: 23, line: 9 },
+      end: { column: 24, line: 9 },
+    },
+  },
+  JSXIdentifier {
+    type: "JSXIdentifier",
+    value: "foo",
+
+    range: [219, 222],
+    loc: {
+      start: { column: 24, line: 9 },
+      end: { column: 27, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "/",
+
+    range: [223, 224],
+    loc: {
+      start: { column: 28, line: 9 },
+      end: { column: 29, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ">",
+
+    range: [224, 225],
+    loc: {
+      start: { column: 29, line: 9 },
+      end: { column: 30, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [225, 226],
+    loc: {
+      start: { column: 30, line: 9 },
+      end: { column: 31, line: 9 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "const",
+
+    range: [317, 322],
+    loc: {
+      start: { column: 0, line: 11 },
+      end: { column: 5, line: 11 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "componentDashed",
+
+    range: [323, 338],
+    loc: {
+      start: { column: 6, line: 11 },
+      end: { column: 21, line: 11 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "=",
+
+    range: [339, 340],
+    loc: {
+      start: { column: 22, line: 11 },
+      end: { column: 23, line: 11 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "<",
+
+    range: [341, 342],
+    loc: {
+      start: { column: 24, line: 11 },
+      end: { column: 25, line: 11 },
+    },
+  },
+  JSXIdentifier {
+    type: "JSXIdentifier",
+    value: "foo-bar",
+
+    range: [342, 349],
+    loc: {
+      start: { column: 25, line: 11 },
+      end: { column: 32, line: 11 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ":",
+
+    range: [349, 350],
+    loc: {
+      start: { column: 32, line: 11 },
+      end: { column: 33, line: 11 },
+    },
+  },
+  JSXIdentifier {
+    type: "JSXIdentifier",
+    value: "baz-bam",
+
+    range: [350, 357],
+    loc: {
+      start: { column: 33, line: 11 },
+      end: { column: 40, line: 11 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "/",
+
+    range: [358, 359],
+    loc: {
+      start: { column: 41, line: 11 },
+      end: { column: 42, line: 11 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ">",
+
+    range: [359, 360],
+    loc: {
+      start: { column: 42, line: 11 },
+      end: { column: 43, line: 11 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [360, 361],
+    loc: {
+      start: { column: 43, line: 11 },
+      end: { column: 44, line: 11 },
     },
   },
 ]

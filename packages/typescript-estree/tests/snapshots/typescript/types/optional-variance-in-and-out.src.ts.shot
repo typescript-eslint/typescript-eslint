@@ -4,7 +4,9 @@ exports[`typescript types optional-variance-in-and-out.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 11,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "Mapper",
+        "optional": false,
         "range": Array [
           5,
           11,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -50,6 +54,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 32,
@@ -61,6 +66,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               28,
               32,
@@ -99,6 +105,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 32,
@@ -110,11 +117,13 @@ Object {
                     },
                   },
                   "name": "T",
+                  "optional": false,
                   "range": Array [
                     31,
                     32,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -158,6 +167,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 38,
@@ -169,16 +179,19 @@ Object {
                 },
               },
               "name": "U",
+              "optional": false,
               "range": Array [
                 37,
                 38,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": undefined,
           },
         },
         "type": "TSFunctionType",
+        "typeParameters": undefined,
       },
       "typeParameters": Object {
         "loc": Object {
@@ -207,6 +220,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 16,
@@ -218,11 +232,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 15,
                 16,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [
@@ -246,6 +262,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 23,
@@ -257,11 +274,13 @@ Object {
                 },
               },
               "name": "U",
+              "optional": false,
               "range": Array [
                 22,
                 23,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": true,
             "range": Array [

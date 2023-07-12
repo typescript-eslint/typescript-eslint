@@ -68,6 +68,7 @@ module.exports = {
         'packages/eslint-plugin',
         'packages/eslint-plugin-tslint',
         'packages/parser',
+        'packages/rule-tester',
         'packages/scope-manager',
         'packages/typescript-estree',
         'packages/utils',

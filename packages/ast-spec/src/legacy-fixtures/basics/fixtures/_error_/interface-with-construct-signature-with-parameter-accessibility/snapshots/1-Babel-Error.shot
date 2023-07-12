@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics _error_ interface-with-construct-signature-with-parameter-accessibility Babel - Error 1`] = `[SyntaxError: A parameter property is only allowed in a constructor implementation. (4:9)]`;

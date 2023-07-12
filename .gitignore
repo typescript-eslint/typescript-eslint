@@ -81,6 +81,11 @@ _ts4.2
 .watchmanconfig
 .rollup.cache
 
+# the downlevel-dts output folders
+_ts3.4
+_ts4.2
+_ts4.3
+
 # Files copied as part of the build
 packages/types/src/generated/**/*.ts
 

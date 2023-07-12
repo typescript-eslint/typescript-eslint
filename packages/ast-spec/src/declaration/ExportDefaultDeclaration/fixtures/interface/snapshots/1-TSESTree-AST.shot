@@ -18,9 +18,13 @@ Program {
             end: { column: 31, line: 1 },
           },
         },
+        declare: false,
+        extends: [],
         id: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "Foo",
+          optional: false,
 
           range: [25, 28],
           loc: {

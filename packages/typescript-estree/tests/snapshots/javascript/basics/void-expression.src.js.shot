@@ -4,6 +4,7 @@ exports[`javascript basics void-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "argument": Object {
           "loc": Object {
@@ -59,6 +60,7 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "argument": Object {
           "loc": Object {

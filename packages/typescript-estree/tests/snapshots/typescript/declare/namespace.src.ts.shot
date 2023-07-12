@@ -23,7 +23,9 @@ Object {
         "type": "TSModuleBlock",
       },
       "declare": true,
+      "global": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 21,
@@ -35,13 +37,14 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           18,
           21,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
-      "kind": "namespace",
       "loc": Object {
         "end": Object {
           "column": 1,

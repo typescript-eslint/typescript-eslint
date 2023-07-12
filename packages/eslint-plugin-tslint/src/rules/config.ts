@@ -32,14 +32,14 @@ const createRule = ESLintUtils.RuleCreator(
 );
 export type RawRulesConfig = Record<
   string,
-  | null
-  | undefined
-  | boolean
   | unknown[]
+  | boolean
   | {
-      severity?: RuleSeverity | 'warn' | 'none' | 'default';
+      severity?: RuleSeverity | 'default' | 'none' | 'warn';
       options?: unknown;
     }
+  | null
+  | undefined
 >;
 
 export type MessageIds = 'failure';
@@ -82,7 +82,6 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Wraps a TSLint configuration and lints the whole source using TSLint', // eslint-disable-line eslint-plugin/require-meta-docs-description
-      recommended: false,
     },
     fixable: 'code',
     type: 'problem',
@@ -121,8 +120,8 @@ export default createRule<Options, MessageIds>({
   ) {
     const fileName = context.getFilename();
     const sourceCode = context.getSourceCode().text;
-    const parserServices = ESLintUtils.getParserServices(context);
-    const program = parserServices.program;
+    const services = ESLintUtils.getParserServices(context);
+    const program = services.program;
 
     /**
      * Create an instance of TSLint
