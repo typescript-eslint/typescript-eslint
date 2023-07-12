@@ -1,0 +1,339 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures expression UpdateExpression valid-assignment Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ClassDeclaration {
+      type: "ClassDeclaration",
+      body: ClassBody {
+        type: "ClassBody",
+        body: [
+          PropertyDefinition {
+            type: "PropertyDefinition",
+            computed: false,
+            key: PrivateIdentifier {
+              type: "PrivateIdentifier",
+              name: "a",
+
+              range: [12, 14],
+              loc: {
+                start: { column: 2, line: 2 },
+                end: { column: 4, line: 2 },
+              },
+            },
+            static: false,
+            value: null,
+
+            range: [12, 15],
+            loc: {
+              start: { column: 2, line: 2 },
+              end: { column: 5, line: 2 },
+            },
+          },
+          MethodDefinition {
+            type: "MethodDefinition",
+            computed: false,
+            key: Identifier {
+              type: "Identifier",
+              name: "m",
+
+              range: [19, 20],
+              loc: {
+                start: { column: 2, line: 4 },
+                end: { column: 3, line: 4 },
+              },
+            },
+            kind: "method",
+            static: false,
+            value: FunctionExpression {
+              type: "FunctionExpression",
+              async: false,
+              body: BlockStatement {
+                type: "BlockStatement",
+                body: [
+                  ExpressionStatement {
+                    type: "ExpressionStatement",
+                    expression: UpdateExpression {
+                      type: "UpdateExpression",
+                      argument: MemberExpression {
+                        type: "MemberExpression",
+                        computed: false,
+                        object: ThisExpression {
+                          type: "ThisExpression",
+
+                          range: [29, 33],
+                          loc: {
+                            start: { column: 4, line: 5 },
+                            end: { column: 8, line: 5 },
+                          },
+                        },
+                        optional: false,
+                        property: PrivateIdentifier {
+                          type: "PrivateIdentifier",
+                          name: "a",
+
+                          range: [34, 36],
+                          loc: {
+                            start: { column: 9, line: 5 },
+                            end: { column: 11, line: 5 },
+                          },
+                        },
+
+                        range: [29, 36],
+                        loc: {
+                          start: { column: 4, line: 5 },
+                          end: { column: 11, line: 5 },
+                        },
+                      },
+                      operator: "++",
+                      prefix: false,
+
+                      range: [29, 38],
+                      loc: {
+                        start: { column: 4, line: 5 },
+                        end: { column: 13, line: 5 },
+                      },
+                    },
+
+                    range: [29, 39],
+                    loc: {
+                      start: { column: 4, line: 5 },
+                      end: { column: 14, line: 5 },
+                    },
+                  },
+                  ExpressionStatement {
+                    type: "ExpressionStatement",
+                    expression: UpdateExpression {
+                      type: "UpdateExpression",
+                      argument: MemberExpression {
+                        type: "MemberExpression",
+                        computed: false,
+                        object: CallExpression {
+                          type: "CallExpression",
+                          arguments: [],
+                          callee: MemberExpression {
+                            type: "MemberExpression",
+                            computed: false,
+                            object: ThisExpression {
+                              type: "ThisExpression",
+
+                              range: [44, 48],
+                              loc: {
+                                start: { column: 4, line: 6 },
+                                end: { column: 8, line: 6 },
+                              },
+                            },
+                            optional: false,
+                            property: Identifier {
+                              type: "Identifier",
+                              name: "m",
+
+                              range: [49, 50],
+                              loc: {
+                                start: { column: 9, line: 6 },
+                                end: { column: 10, line: 6 },
+                              },
+                            },
+
+                            range: [44, 50],
+                            loc: {
+                              start: { column: 4, line: 6 },
+                              end: { column: 10, line: 6 },
+                            },
+                          },
+                          optional: false,
+
+                          range: [44, 52],
+                          loc: {
+                            start: { column: 4, line: 6 },
+                            end: { column: 12, line: 6 },
+                          },
+                        },
+                        optional: false,
+                        property: Identifier {
+                          type: "Identifier",
+                          name: "a",
+
+                          range: [53, 54],
+                          loc: {
+                            start: { column: 13, line: 6 },
+                            end: { column: 14, line: 6 },
+                          },
+                        },
+
+                        range: [44, 54],
+                        loc: {
+                          start: { column: 4, line: 6 },
+                          end: { column: 14, line: 6 },
+                        },
+                      },
+                      operator: "++",
+                      prefix: false,
+
+                      range: [44, 56],
+                      loc: {
+                        start: { column: 4, line: 6 },
+                        end: { column: 16, line: 6 },
+                      },
+                    },
+
+                    range: [44, 57],
+                    loc: {
+                      start: { column: 4, line: 6 },
+                      end: { column: 17, line: 6 },
+                    },
+                  },
+                  ExpressionStatement {
+                    type: "ExpressionStatement",
+                    expression: AssignmentExpression {
+                      type: "AssignmentExpression",
+                      left: MemberExpression {
+                        type: "MemberExpression",
+                        computed: true,
+                        object: ThisExpression {
+                          type: "ThisExpression",
+
+                          range: [62, 66],
+                          loc: {
+                            start: { column: 4, line: 7 },
+                            end: { column: 8, line: 7 },
+                          },
+                        },
+                        optional: false,
+                        property: Literal {
+                          type: "Literal",
+                          raw: "1",
+                          value: 1,
+
+                          range: [67, 68],
+                          loc: {
+                            start: { column: 9, line: 7 },
+                            end: { column: 10, line: 7 },
+                          },
+                        },
+
+                        range: [62, 69],
+                        loc: {
+                          start: { column: 4, line: 7 },
+                          end: { column: 11, line: 7 },
+                        },
+                      },
+                      operator: "=",
+                      right: Literal {
+                        type: "Literal",
+                        raw: "1",
+                        value: 1,
+
+                        range: [72, 73],
+                        loc: {
+                          start: { column: 14, line: 7 },
+                          end: { column: 15, line: 7 },
+                        },
+                      },
+
+                      range: [62, 73],
+                      loc: {
+                        start: { column: 4, line: 7 },
+                        end: { column: 15, line: 7 },
+                      },
+                    },
+
+                    range: [62, 74],
+                    loc: {
+                      start: { column: 4, line: 7 },
+                      end: { column: 16, line: 7 },
+                    },
+                  },
+                  ExpressionStatement {
+                    type: "ExpressionStatement",
+                    expression: UpdateExpression {
+                      type: "UpdateExpression",
+                      argument: Identifier {
+                        type: "Identifier",
+                        name: "F",
+
+                        range: [79, 80],
+                        loc: {
+                          start: { column: 4, line: 8 },
+                          end: { column: 5, line: 8 },
+                        },
+                      },
+                      operator: "++",
+                      prefix: false,
+
+                      range: [79, 82],
+                      loc: {
+                        start: { column: 4, line: 8 },
+                        end: { column: 7, line: 8 },
+                      },
+                    },
+
+                    range: [79, 83],
+                    loc: {
+                      start: { column: 4, line: 8 },
+                      end: { column: 8, line: 8 },
+                    },
+                  },
+                ],
+
+                range: [23, 87],
+                loc: {
+                  start: { column: 6, line: 4 },
+                  end: { column: 3, line: 9 },
+                },
+              },
+              expression: false,
+              generator: false,
+              id: null,
+              params: [],
+
+              range: [20, 87],
+              loc: {
+                start: { column: 3, line: 4 },
+                end: { column: 3, line: 9 },
+              },
+            },
+
+            range: [19, 87],
+            loc: {
+              start: { column: 2, line: 4 },
+              end: { column: 3, line: 9 },
+            },
+          },
+        ],
+
+        range: [8, 89],
+        loc: {
+          start: { column: 8, line: 1 },
+          end: { column: 1, line: 10 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "F",
+
+        range: [6, 7],
+        loc: {
+          start: { column: 6, line: 1 },
+          end: { column: 7, line: 1 },
+        },
+      },
+      superClass: null,
+
+      range: [0, 89],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 1, line: 10 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 90],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 11 },
+  },
+}
+`;

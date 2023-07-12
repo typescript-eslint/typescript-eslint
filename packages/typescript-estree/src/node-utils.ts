@@ -929,6 +929,21 @@ export function nodeCanBeDecorated(node: TSNode): boolean {
   return false;
 }
 
+export function isValidAssignmentTarget(node: ts.Node): boolean {
+  switch (node.kind) {
+    case SyntaxKind.Identifier:
+    case SyntaxKind.PropertyAccessExpression:
+    case SyntaxKind.ElementAccessExpression:
+      return true;
+    case SyntaxKind.ParenthesizedExpression:
+      return isValidAssignmentTarget(
+        (node as ts.ParenthesizedExpression).expression,
+      );
+    default:
+      return false;
+  }
+}
+
 export function getNamespaceModifiers(
   node: ts.ModuleDeclaration,
 ): ts.Modifier[] | undefined {
