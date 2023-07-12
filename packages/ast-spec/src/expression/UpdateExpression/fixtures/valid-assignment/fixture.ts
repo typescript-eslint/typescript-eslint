@@ -6,5 +6,6 @@ class F {
     this.m().a++;
     this[1] = 1;
     F++;
+    this.#a++;
   }
 }

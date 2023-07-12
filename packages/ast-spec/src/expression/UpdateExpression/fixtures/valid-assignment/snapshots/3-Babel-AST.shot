@@ -275,12 +275,62 @@ Program {
                       end: { column: 8, line: 8 },
                     },
                   },
+                  ExpressionStatement {
+                    type: "ExpressionStatement",
+                    expression: UpdateExpression {
+                      type: "UpdateExpression",
+                      argument: MemberExpression {
+                        type: "MemberExpression",
+                        computed: false,
+                        object: ThisExpression {
+                          type: "ThisExpression",
+
+                          range: [89, 93],
+                          loc: {
+                            start: { column: 5, line: 9 },
+                            end: { column: 9, line: 9 },
+                          },
+                        },
+                        optional: false,
+                        property: PrivateIdentifier {
+                          type: "PrivateIdentifier",
+                          name: "a",
+
+                          range: [94, 96],
+                          loc: {
+                            start: { column: 10, line: 9 },
+                            end: { column: 12, line: 9 },
+                          },
+                        },
+
+                        range: [89, 96],
+                        loc: {
+                          start: { column: 5, line: 9 },
+                          end: { column: 12, line: 9 },
+                        },
+                      },
+                      operator: "++",
+                      prefix: false,
+
+                      range: [88, 99],
+                      loc: {
+                        start: { column: 4, line: 9 },
+                        end: { column: 15, line: 9 },
+                      },
+                    },
+
+                    range: [88, 100],
+                    loc: {
+                      start: { column: 4, line: 9 },
+                      end: { column: 16, line: 9 },
+                    },
+                  },
                 ],
 
-                range: [23, 87],
+                range: [23, 104],
                 loc: {
                   start: { column: 6, line: 4 },
-                  end: { column: 3, line: 9 },
+                  end: { column: 3, line: 10 },
                 },
               },
               expression: false,
@@ -288,25 +338,25 @@ Program {
               id: null,
               params: [],
 
-              range: [20, 87],
+              range: [20, 104],
               loc: {
                 start: { column: 3, line: 4 },
-                end: { column: 3, line: 9 },
+                end: { column: 3, line: 10 },
               },
             },
 
-            range: [19, 87],
+            range: [19, 104],
             loc: {
               start: { column: 2, line: 4 },
-              end: { column: 3, line: 9 },
+              end: { column: 3, line: 10 },
             },
           },
         ],
 
-        range: [8, 89],
+        range: [8, 106],
         loc: {
           start: { column: 8, line: 1 },
-          end: { column: 1, line: 10 },
+          end: { column: 1, line: 11 },
         },
       },
       id: Identifier {
@@ -321,19 +371,19 @@ Program {
       },
       superClass: null,
 
-      range: [0, 89],
+      range: [0, 106],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 1, line: 10 },
+        end: { column: 1, line: 11 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 90],
+  range: [0, 107],
   loc: {
     start: { column: 0, line: 1 },
-    end: { column: 0, line: 11 },
+    end: { column: 0, line: 12 },
   },
 }
 `;

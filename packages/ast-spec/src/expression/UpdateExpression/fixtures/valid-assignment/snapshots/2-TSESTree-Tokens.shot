@@ -334,22 +334,92 @@ exports[`AST Fixtures expression UpdateExpression valid-assignment TSESTree - To
   },
   Punctuator {
     type: "Punctuator",
-    value: "}",
+    value: "(",
 
-    range: [86, 87],
+    range: [88, 89],
     loc: {
-      start: { column: 2, line: 9 },
-      end: { column: 3, line: 9 },
+      start: { column: 4, line: 9 },
+      end: { column: 5, line: 9 },
+    },
+  },
+  Keyword {
+    type: "Keyword",
+    value: "this",
+
+    range: [89, 93],
+    loc: {
+      start: { column: 5, line: 9 },
+      end: { column: 9, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ".",
+
+    range: [93, 94],
+    loc: {
+      start: { column: 9, line: 9 },
+      end: { column: 10, line: 9 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "#a",
+
+    range: [94, 96],
+    loc: {
+      start: { column: 10, line: 9 },
+      end: { column: 12, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ")",
+
+    range: [96, 97],
+    loc: {
+      start: { column: 12, line: 9 },
+      end: { column: 13, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "++",
+
+    range: [97, 99],
+    loc: {
+      start: { column: 13, line: 9 },
+      end: { column: 15, line: 9 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ";",
+
+    range: [99, 100],
+    loc: {
+      start: { column: 15, line: 9 },
+      end: { column: 16, line: 9 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [88, 89],
+    range: [103, 104],
     loc: {
-      start: { column: 0, line: 10 },
-      end: { column: 1, line: 10 },
+      start: { column: 2, line: 10 },
+      end: { column: 3, line: 10 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "}",
+
+    range: [105, 106],
+    loc: {
+      start: { column: 0, line: 11 },
+      end: { column: 1, line: 11 },
     },
   },
 ]
