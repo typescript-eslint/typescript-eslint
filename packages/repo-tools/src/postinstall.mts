@@ -1,5 +1,12 @@
-import * as execa from 'execa';
+import { $ as $_config } from 'execa';
 import path from 'path';
+import * as url from 'url';
+
+const $ = $_config({
+  stdout: 'inherit',
+  stderr: 'inherit',
+  verbose: true,
+});
 
 /**
  * In certain circumstances we want to skip the below the steps and it may not always
@@ -15,6 +22,7 @@ if (process.env.SKIP_POSTINSTALL) {
   process.exit(0);
 }
 
+const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
 
 void (async function (): Promise<void> {
@@ -35,11 +43,3 @@ void (async function (): Promise<void> {
     await $`yarn build`;
   }
 })();
-
-async function $(cmd: TemplateStringsArray): Promise<execa.ExecaChildProcess> {
-  const command = cmd.join();
-  console.log(`\n$ ${command}`);
-  return execa.command(command, {
-    stdio: 'inherit',
-  });
-}

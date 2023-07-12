@@ -52,8 +52,7 @@ exports[`AST Fixtures declaration TSImportEqualsDeclaration external-module-ref-
         },
       },
     ],
--   sourceType: 'module',
-+   sourceType: 'script',
+    sourceType: 'module',
 
     range: [0, 27],
     loc: {

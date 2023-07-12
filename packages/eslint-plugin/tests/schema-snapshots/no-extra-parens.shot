@@ -50,6 +50,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
             },
             "returnAssign": {
               "type": "boolean"
+            },
+            "ternaryOperandBinaryExpressions": {
+              "type": "boolean"
             }
           },
           "type": "object"
@@ -81,6 +84,7 @@ type Options =
         ignoreJSX?: 'all' | 'multi-line' | 'none' | 'single-line';
         nestedBinaryExpressions?: boolean;
         returnAssign?: boolean;
+        ternaryOperandBinaryExpressions?: boolean;
       },
     ];
 "

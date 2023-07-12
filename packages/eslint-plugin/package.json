@@ -55,7 +55,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@eslint-community/regexpp": "^4.5.0",
+    "@eslint-community/regexpp": "^4.5.1",
     "@typescript-eslint/scope-manager": "6.0.0",
     "@typescript-eslint/type-utils": "6.0.0",
     "@typescript-eslint/utils": "6.0.0",
@@ -65,7 +65,7 @@
     "ignore": "^5.2.4",
     "natural-compare": "^1.4.0",
     "natural-compare-lite": "^1.4.0",
-    "semver": "^7.5.0",
+    "semver": "^7.5.4",
     "ts-api-utils": "^1.0.1"
   },
   "devDependencies": {
@@ -76,12 +76,12 @@
     "@typescript-eslint/rule-schema-to-typescript-types": "6.0.0",
     "@typescript-eslint/rule-tester": "6.0.0",
     "ajv": "^6.12.6",
-    "chalk": "^5.0.1",
+    "chalk": "^5.3.0",
     "cross-fetch": "*",
     "jest-specific-snapshot": "*",
     "json-schema": "*",
     "markdown-table": "^3.0.3",
-    "marked": "^4.3.0",
+    "marked": "^5.1.1",
     "prettier": "*",
     "title-case": "^3.0.3",
     "typescript": "*"

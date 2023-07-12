@@ -51,7 +51,7 @@
     "@typescript-eslint/utils": "6.0.0",
     "ajv": "^6.10.0",
     "lodash.merge": "4.6.2",
-    "semver": "^7.3.7"
+    "semver": "^7.5.4"
   },
   "peerDependencies": {
     "@eslint/eslintrc": ">=2",
@@ -60,7 +60,7 @@
   "devDependencies": {
     "@types/lodash.merge": "4.6.7",
     "@typescript-eslint/parser": "6.0.0",
-    "chai": "^4.0.1",
+    "chai": "^4.3.7",
     "mocha": "^8.3.2",
     "sinon": "^11.0.0",
     "source-map-support": "^0.5.21"
