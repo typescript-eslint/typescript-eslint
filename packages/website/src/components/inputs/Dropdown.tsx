@@ -19,7 +19,7 @@ export interface DropdownProps<T> {
 
 function Dropdown<T extends boolean | number | string>(
   props: DropdownProps<T>,
-): JSX.Element {
+): React.JSX.Element {
   const options: DropdownOption<T>[] = props.options.map(option =>
     typeof option !== 'object'
       ? { label: String(option), value: option }

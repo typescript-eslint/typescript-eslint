@@ -14,7 +14,7 @@ export default function PropertyName({
   onHover: onHoverProp,
   className,
   value,
-}: PropertyNameProps): JSX.Element {
+}: PropertyNameProps): React.JSX.Element {
   const onClick = useCallback(
     (e: MouseEvent<HTMLElement>) => {
       e.preventDefault();

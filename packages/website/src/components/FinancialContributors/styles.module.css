@@ -32,7 +32,7 @@
   --ifm-button-color: var(--ifm-color-white);
 }
 
-@media screen and (min-width: 1150px) {
+@media screen and (width >= 1150px) {
   .sponsorsContainer {
     display: grid;
     grid-template-columns: 50% 50%;

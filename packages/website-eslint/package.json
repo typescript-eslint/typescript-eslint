@@ -27,22 +27,17 @@
     "@typescript-eslint/utils": "6.0.0"
   },
   "devDependencies": {
-    "@eslint/js": "8.39.0",
-    "@rollup/plugin-commonjs": "^23.0.0",
-    "@rollup/plugin-json": "^5.0.0",
-    "@rollup/plugin-node-resolve": "^15.0.0",
-    "@rollup/plugin-terser": "^0.4.0",
-    "@rollup/pluginutils": "^5.0.0",
+    "@eslint/js": "8.44.0",
     "@typescript-eslint/eslint-plugin": "6.0.0",
     "@typescript-eslint/parser": "6.0.0",
     "@typescript-eslint/scope-manager": "6.0.0",
-    "@typescript-eslint/types": "5.62.0",
+    "@typescript-eslint/types": "6.0.0",
     "@typescript-eslint/typescript-estree": "6.0.0",
-    "@typescript-eslint/utils": "5.62.0",
+    "@typescript-eslint/utils": "6.0.0",
     "@typescript-eslint/visitor-keys": "6.0.0",
-    "esbuild": "~0.17.18",
+    "esbuild": "~0.17.19",
     "eslint": "*",
     "esquery": "*",
-    "semver": "^7.5.0"
+    "semver": "^7.5.4"
   }
 }
