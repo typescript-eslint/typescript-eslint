@@ -12,7 +12,7 @@ interface ASTAndDefiniteProgram {
   ast: ts.SourceFile;
   program: ts.Program;
 }
-type ASTAndProgram = ASTAndNoProgram | ASTAndDefiniteProgram;
+type ASTAndProgram = ASTAndDefiniteProgram | ASTAndNoProgram;
 
 /**
  * Compiler options required to avoid critical functionality issues

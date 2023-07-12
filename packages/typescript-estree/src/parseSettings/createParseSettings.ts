@@ -24,7 +24,7 @@ let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
 let TSSERVER_PROJECT_SERVICE: TypeScriptProjectService | null = null;
 
 export function createParseSettings(
-  code: string | ts.SourceFile,
+  code: ts.SourceFile | string,
   options: Partial<TSESTreeOptions> = {},
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);
@@ -76,7 +76,7 @@ export function createParseSettings(
       typeof options.loggerFn === 'function'
         ? options.loggerFn
         : options.loggerFn === false
-        ? (): void => {}
+        ? (): void => {} // eslint-disable-line @typescript-eslint/no-empty-function
         : console.log, // eslint-disable-line no-console
     preserveNodeMaps: options.preserveNodeMaps !== false,
     programs: Array.isArray(options.programs) ? options.programs : null,

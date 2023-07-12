@@ -125,7 +125,7 @@ const NOOP_RULE: RuleModule<'error', []> = {
       error: 'error',
     },
     type: 'problem',
-    schema: {},
+    schema: [],
   },
   defaultOptions: [],
   create() {

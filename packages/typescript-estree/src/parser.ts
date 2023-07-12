@@ -95,10 +95,11 @@ function getProgramAndAST(
   return createIsolatedProgram(parseSettings);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface EmptyObject {}
 type AST<T extends TSESTreeOptions> = TSESTree.Program &
-  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : EmptyObject) &
-  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : EmptyObject);
+  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : EmptyObject) &
+  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : EmptyObject);
 
 interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
@@ -118,7 +119,7 @@ function parse<T extends TSESTreeOptions = TSESTreeOptions>(
 }
 
 function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
-  code: string | ts.SourceFile,
+  code: ts.SourceFile | string,
   options: T | undefined,
   shouldPreserveNodeMaps: boolean,
 ): ParseWithNodeMapsResult<T> {
@@ -157,13 +158,6 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   };
 }
 
-function parseWithNodeMaps<T extends TSESTreeOptions = TSESTreeOptions>(
-  code: string,
-  options?: T,
-): ParseWithNodeMapsResult<T> {
-  return parseWithNodeMapsInternal(code, options, true);
-}
-
 let parseAndGenerateServicesCalls: { [fileName: string]: number } = {};
 // Privately exported utility intended for use in typescript-eslint unit tests only
 function clearParseAndGenerateServicesCalls(): void {
@@ -171,7 +165,7 @@ function clearParseAndGenerateServicesCalls(): void {
 }
 
 function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
-  code: string | ts.SourceFile,
+  code: ts.SourceFile | string,
   options: T,
 ): ParseAndGenerateServicesResult<T> {
   /**
@@ -293,9 +287,7 @@ export {
   AST,
   parse,
   parseAndGenerateServices,
-  parseWithNodeMaps,
   ParseAndGenerateServicesResult,
-  ParseWithNodeMapsResult,
   clearProgramCache,
   clearParseAndGenerateServicesCalls,
 };

@@ -7,8 +7,8 @@
 
 ## Contributing
 
-👉 See **https://typescript-eslint.io/architecture/typescript-estree** for documentation on this package.
+👉 See **https://typescript-eslint.io/packages/typescript-estree** for documentation on this package.
 
 > See https://typescript-eslint.io for general documentation on typescript-eslint, the tooling that allows you to run ESLint and Prettier on TypeScript code.
 
-<!-- Local path for docs: docs/architecture/TypeScript_ESTree.mdx -->
+<!-- Local path for docs: docs/packages/TypeScript_ESTree.mdx -->

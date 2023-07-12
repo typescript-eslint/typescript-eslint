@@ -64,16 +64,16 @@ export type Options = [
 ];
 
 export type MessageId =
-  | 'alwaysTruthy'
   | 'alwaysFalsy'
-  | 'alwaysTruthyFunc'
   | 'alwaysFalsyFunc'
-  | 'neverNullish'
   | 'alwaysNullish'
+  | 'alwaysTruthy'
+  | 'alwaysTruthyFunc'
   | 'literalBooleanExpression'
-  | 'noOverlapBooleanExpression'
   | 'never'
+  | 'neverNullish'
   | 'neverOptionalChain'
+  | 'noOverlapBooleanExpression'
   | 'noStrictNullCheck';
 
 export default createRule<Options, MessageId>({
@@ -488,7 +488,7 @@ export default createRule<Options, MessageId>({
     //    ?.y // This access is considered "unnecessary" according to the types
     //  ```
     function optionChainContainsOptionArrayIndex(
-      node: TSESTree.MemberExpression | TSESTree.CallExpression,
+      node: TSESTree.CallExpression | TSESTree.MemberExpression,
     ): boolean {
       const lhsNode =
         node.type === AST_NODE_TYPES.CallExpression ? node.callee : node.object;
@@ -588,9 +588,9 @@ export default createRule<Options, MessageId>({
     }
 
     function checkOptionalChain(
-      node: TSESTree.MemberExpression | TSESTree.CallExpression,
+      node: TSESTree.CallExpression | TSESTree.MemberExpression,
       beforeOperator: TSESTree.Node,
-      fix: '' | '.',
+      fix: '.' | '',
     ): void {
       // We only care if this step in the chain is optional. If just descend
       // from an optional chain, then that's fine.

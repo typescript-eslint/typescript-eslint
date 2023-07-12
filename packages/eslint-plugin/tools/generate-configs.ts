@@ -52,7 +52,7 @@ async function main(): Promise<void> {
   }
 
   interface LinterConfig extends TSESLint.Linter.Config {
-    extends?: string | string[];
+    extends?: string[] | string;
     plugins?: string[];
   }
 

@@ -8,7 +8,7 @@ export interface DropdownProps {
   readonly value: string;
   readonly name: string;
   readonly className?: string;
-  readonly type?: 'text' | 'search';
+  readonly type?: 'search' | 'text';
   readonly placeholder?: string;
 }
 

@@ -1,9 +1,9 @@
-import type { JSONSchema4 } from 'json-schema';
+import { TSUtils } from '@typescript-eslint/utils';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import path from 'path';
 import { format as prettierFormat, resolveConfig } from 'prettier';
 
 import { generateType } from './generateType';
-import { isArray } from './isArray';
 import { optimizeAST } from './optimizeAST';
 import { printTypeAlias } from './printAST';
 import type { AST } from './types';
@@ -17,7 +17,7 @@ export function compile(
   schemaIn: JSONSchema4 | readonly JSONSchema4[],
 ): string {
   const { schema, isArraySchema } = (() => {
-    if (isArray(schemaIn)) {
+    if (TSUtils.isArray(schemaIn)) {
       return {
         schema: schemaIn,
         isArraySchema: true,

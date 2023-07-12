@@ -19,7 +19,7 @@ interface TsParsedEnums {
  * e.g. SyntaxKind.EqualsToken = 63, SyntaxKind.FirstAssignment = 63
  */
 export function extractEnum(
-  obj: Record<number, string | number>,
+  obj: Record<number, number | string>,
 ): Record<number, string> {
   const result: Record<number, string> = {};
   const keys = Object.entries(obj);

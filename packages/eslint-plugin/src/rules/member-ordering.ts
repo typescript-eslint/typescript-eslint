@@ -12,9 +12,9 @@ export type MessageIds =
 type ReadonlyType = 'readonly-field' | 'readonly-signature';
 
 type MemberKind =
+  | ReadonlyType
   | 'call-signature'
   | 'constructor'
-  | ReadonlyType
   | 'field'
   | 'get'
   | 'method'
@@ -25,16 +25,16 @@ type MemberKind =
 type DecoratedMemberKind =
   | Exclude<ReadonlyType, 'readonly-signature'>
   | 'field'
-  | 'method'
   | 'get'
+  | 'method'
   | 'set';
 
 type NonCallableMemberKind = Exclude<
   MemberKind,
-  'constructor' | 'signature' | 'readonly-signature'
+  'constructor' | 'readonly-signature' | 'signature'
 >;
 
-type MemberScope = 'static' | 'instance' | 'abstract';
+type MemberScope = 'abstract' | 'instance' | 'static';
 
 type Accessibility = TSESTree.Accessibility | '#private';
 
@@ -42,20 +42,20 @@ type BaseMemberType =
   | MemberKind
   | `${Accessibility}-${Exclude<
       MemberKind,
-      'signature' | 'readonly-signature' | 'static-initialization'
+      'readonly-signature' | 'signature' | 'static-initialization'
     >}`
-  | `${Accessibility}-decorated-${DecoratedMemberKind}`
-  | `decorated-${DecoratedMemberKind}`
   | `${Accessibility}-${MemberScope}-${NonCallableMemberKind}`
-  | `${MemberScope}-${NonCallableMemberKind}`;
+  | `${Accessibility}-decorated-${DecoratedMemberKind}`
+  | `${MemberScope}-${NonCallableMemberKind}`
+  | `decorated-${DecoratedMemberKind}`;
 
 type MemberType = BaseMemberType | BaseMemberType[];
 
 type AlphabeticalOrder =
-  | 'alphabetically'
   | 'alphabetically-case-insensitive'
-  | 'natural'
-  | 'natural-case-insensitive';
+  | 'alphabetically'
+  | 'natural-case-insensitive'
+  | 'natural';
 
 type Order = AlphabeticalOrder | 'as-written';
 
@@ -372,11 +372,11 @@ function getNodeType(node: Member): MemberKind | null {
 function getMemberRawName(
   member:
     | TSESTree.MethodDefinition
-    | TSESTree.TSMethodSignature
-    | TSESTree.TSAbstractMethodDefinition
-    | TSESTree.PropertyDefinition
-    | TSESTree.TSAbstractPropertyDefinition
     | TSESTree.Property
+    | TSESTree.PropertyDefinition
+    | TSESTree.TSAbstractMethodDefinition
+    | TSESTree.TSAbstractPropertyDefinition
+    | TSESTree.TSMethodSignature
     | TSESTree.TSPropertySignature,
   sourceCode: TSESLint.SourceCode,
 ): string {
@@ -644,7 +644,7 @@ export default util.createRule<Options, MessageIds>({
           },
           allItems: {
             type: 'string',
-            enum: allMemberTypes,
+            enum: allMemberTypes as string[],
           },
           typeItems: {
             type: 'string',
@@ -885,7 +885,7 @@ export default util.createRule<Options, MessageIds>({
 
       // Standardize config
       let order: Order | undefined;
-      let memberTypes: string | MemberType[] | undefined;
+      let memberTypes: MemberType[] | string | undefined;
       let optionalityOrder: OptionalityOrder | undefined;
 
       // returns true if everything is good and false if an error was reported

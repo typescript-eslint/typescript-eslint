@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
 const doNothing = (): void => {};
@@ -56,3 +57,4 @@ export function createProjectService(): TypeScriptProjectService {
     session: undefined,
   });
 }
+/* eslint-enable @typescript-eslint/no-empty-function */

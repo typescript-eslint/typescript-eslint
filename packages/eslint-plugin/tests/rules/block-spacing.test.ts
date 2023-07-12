@@ -12,7 +12,7 @@ const ruleTester = new RuleTester({
 });
 
 type InvalidBlockSpacingTestCase = InvalidTestCase<
-  'missing' | 'extra',
+  'extra' | 'missing',
   ['always' | 'never']
 >;
 

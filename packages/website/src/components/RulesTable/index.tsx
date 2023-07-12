@@ -221,10 +221,10 @@ export default function RulesTable({
 }
 
 type FilterCategory =
+  | 'fixable'
   | 'recommended'
   | 'strict'
   | 'stylistic'
-  | 'fixable'
   | 'suggestions'
   | 'typeInformation';
 type FiltersState = Record<FilterCategory, FilterMode>;

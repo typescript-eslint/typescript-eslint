@@ -8,7 +8,8 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
   {
     "oneOf": [
       {
-        "enum": ["nofunc"]
+        "enum": ["nofunc"],
+        "type": "string"
       },
       {
         "additionalProperties": false,

@@ -32,7 +32,7 @@ export default util.createRule({
     const sourceCode = context.getSourceCode();
     return {
       'BinaryExpression, AssignmentExpression'(
-        node: TSESTree.BinaryExpression | TSESTree.AssignmentExpression,
+        node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
       ): void {
         function isLeftHandPrimaryExpression(
           node: TSESTree.Expression | TSESTree.PrivateIdentifier,

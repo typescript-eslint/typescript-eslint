@@ -1,6 +1,6 @@
-import GraphemeSplitter from 'grapheme-splitter';
+import Graphemer from 'graphemer';
 
-let splitter: GraphemeSplitter;
+let splitter: Graphemer;
 
 function isASCII(value: string): boolean {
   return /^[\u0020-\u007f]*$/u.test(value);
@@ -11,7 +11,7 @@ export function getStringLength(value: string): number {
     return value.length;
   }
 
-  splitter ??= new GraphemeSplitter();
+  splitter ??= new Graphemer();
 
   return splitter.countGraphemes(value);
 }

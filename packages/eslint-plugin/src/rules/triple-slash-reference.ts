@@ -30,12 +30,15 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           lib: {
+            type: 'string',
             enum: ['always', 'never'],
           },
           path: {
+            type: 'string',
             enum: ['always', 'never'],
           },
           types: {
+            type: 'string',
             enum: ['always', 'never', 'prefer-import'],
           },
         },

@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
-type Option = 'never' | 'always';
+type Option = 'always' | 'never';
 type FuncOption = Option | 'ignore';
 
 export type Options = [
@@ -14,7 +14,7 @@ export type Options = [
       asyncArrow?: FuncOption;
     },
 ];
-export type MessageIds = 'unexpected' | 'missing';
+export type MessageIds = 'missing' | 'unexpected';
 
 export default util.createRule<Options, MessageIds>({
   name: 'space-before-function-paren',
@@ -29,18 +29,22 @@ export default util.createRule<Options, MessageIds>({
       {
         oneOf: [
           {
+            type: 'string',
             enum: ['always', 'never'],
           },
           {
             type: 'object',
             properties: {
               anonymous: {
+                type: 'string',
                 enum: ['always', 'never', 'ignore'],
               },
               named: {
+                type: 'string',
                 enum: ['always', 'never', 'ignore'],
               },
               asyncArrow: {
+                type: 'string',
                 enum: ['always', 'never', 'ignore'],
               },
             },
@@ -71,8 +75,8 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression
-        | TSESTree.TSEmptyBodyFunctionExpression
-        | TSESTree.TSDeclareFunction,
+        | TSESTree.TSDeclareFunction
+        | TSESTree.TSEmptyBodyFunctionExpression,
     ): boolean {
       if (node.id != null) {
         return true;
@@ -98,8 +102,8 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression
-        | TSESTree.TSEmptyBodyFunctionExpression
-        | TSESTree.TSDeclareFunction,
+        | TSESTree.TSDeclareFunction
+        | TSESTree.TSEmptyBodyFunctionExpression,
     ): FuncOption {
       if (node.type === AST_NODE_TYPES.ArrowFunctionExpression) {
         // Always ignore non-async functions and arrow functions without parens, e.g. async foo => bar
@@ -130,8 +134,8 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression
-        | TSESTree.TSEmptyBodyFunctionExpression
-        | TSESTree.TSDeclareFunction,
+        | TSESTree.TSDeclareFunction
+        | TSESTree.TSEmptyBodyFunctionExpression,
     ): void {
       const functionConfig = getConfigForFunction(node);
 

@@ -7,18 +7,18 @@ interface VisitorKeys {
 
 type GetNodeTypeKeys<T extends AST_NODE_TYPES> = Exclude<
   keyof Extract<TSESTree.Node, { type: T }>,
-  'type' | 'loc' | 'range' | 'parent'
+  'loc' | 'parent' | 'range' | 'type'
 >;
 
 type KeysDefinedInESLintVisitorKeysCore =
-  | AST_NODE_TYPES.AssignmentExpression
-  | AST_NODE_TYPES.AssignmentPattern
   | AST_NODE_TYPES.ArrayExpression
   | AST_NODE_TYPES.ArrayPattern
   | AST_NODE_TYPES.ArrowFunctionExpression
+  | AST_NODE_TYPES.AssignmentExpression
+  | AST_NODE_TYPES.AssignmentPattern
   | AST_NODE_TYPES.AwaitExpression
-  | AST_NODE_TYPES.BlockStatement
   | AST_NODE_TYPES.BinaryExpression
+  | AST_NODE_TYPES.BlockStatement
   | AST_NODE_TYPES.BreakStatement
   | AST_NODE_TYPES.CallExpression
   | AST_NODE_TYPES.CatchClause
@@ -36,11 +36,9 @@ type KeysDefinedInESLintVisitorKeysCore =
   | AST_NODE_TYPES.ExportNamedDeclaration
   | AST_NODE_TYPES.ExportSpecifier
   | AST_NODE_TYPES.ExpressionStatement
-  // | AST_NODE_TYPES.ExperimentalRestProperty
-  // | AST_NODE_TYPES.ExperimentalSpreadProperty
-  | AST_NODE_TYPES.ForStatement
   | AST_NODE_TYPES.ForInStatement
   | AST_NODE_TYPES.ForOfStatement
+  | AST_NODE_TYPES.ForStatement
   | AST_NODE_TYPES.FunctionDeclaration
   | AST_NODE_TYPES.FunctionExpression
   | AST_NODE_TYPES.Identifier
@@ -52,20 +50,20 @@ type KeysDefinedInESLintVisitorKeysCore =
   | AST_NODE_TYPES.ImportSpecifier
   | AST_NODE_TYPES.JSXAttribute
   | AST_NODE_TYPES.JSXClosingElement
+  | AST_NODE_TYPES.JSXClosingFragment
   | AST_NODE_TYPES.JSXElement
   | AST_NODE_TYPES.JSXEmptyExpression
   | AST_NODE_TYPES.JSXExpressionContainer
+  | AST_NODE_TYPES.JSXFragment
   | AST_NODE_TYPES.JSXIdentifier
   | AST_NODE_TYPES.JSXMemberExpression
   | AST_NODE_TYPES.JSXNamespacedName
   | AST_NODE_TYPES.JSXOpeningElement
+  | AST_NODE_TYPES.JSXOpeningFragment
   | AST_NODE_TYPES.JSXSpreadAttribute
   | AST_NODE_TYPES.JSXText
-  | AST_NODE_TYPES.JSXFragment
-  | AST_NODE_TYPES.JSXClosingFragment
-  | AST_NODE_TYPES.JSXOpeningFragment
-  | AST_NODE_TYPES.Literal
   | AST_NODE_TYPES.LabeledStatement
+  | AST_NODE_TYPES.Literal
   | AST_NODE_TYPES.LogicalExpression
   | AST_NODE_TYPES.MemberExpression
   | AST_NODE_TYPES.MetaProperty
@@ -83,8 +81,8 @@ type KeysDefinedInESLintVisitorKeysCore =
   | AST_NODE_TYPES.SpreadElement
   | AST_NODE_TYPES.StaticBlock
   | AST_NODE_TYPES.Super
-  | AST_NODE_TYPES.SwitchStatement
   | AST_NODE_TYPES.SwitchCase
+  | AST_NODE_TYPES.SwitchStatement
   | AST_NODE_TYPES.TaggedTemplateExpression
   | AST_NODE_TYPES.TemplateElement
   | AST_NODE_TYPES.TemplateLiteral
@@ -101,21 +99,37 @@ type KeysDefinedInESLintVisitorKeysCore =
 
 // strictly type the arrays of keys provided to make sure we keep this config in sync with the type defs
 type AdditionalKeys = {
+  // optionally allow keys for all nodes defined in `eslint-visitor-keys`
+  readonly [T in KeysDefinedInESLintVisitorKeysCore]?: readonly GetNodeTypeKeys<T>[];
+} & {
   // require keys for all nodes NOT defined in `eslint-visitor-keys`
   readonly [T in Exclude<
     AST_NODE_TYPES,
     KeysDefinedInESLintVisitorKeysCore
   >]: readonly GetNodeTypeKeys<T>[];
-} & {
-  // optionally allow keys for all nodes defined in `eslint-visitor-keys`
-  readonly [T in KeysDefinedInESLintVisitorKeysCore]?: readonly GetNodeTypeKeys<T>[];
 };
 
-/**
- * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! IMPORTANT NOTE !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
- *
- * The key arrays should be sorted in the order in which you would want to visit
- * the child keys - don't just sort them alphabetically.
+/*
+ ********************************** IMPORTANT NOTE ********************************
+ *                                                                                *
+ * The key arrays should be sorted in the order in which you would want to visit  *
+ * the child keys.                                                                *
+ *                                                                                *
+ *                        DO NOT SORT THEM ALPHABETICALLY!                        *
+ *                                                                                *
+ * They should be sorted in the order that they appear in the source code.        *
+ * For example:                                                                   *
+ *                                                                                *
+ * class Foo extends Bar { prop: 1 }                                              *
+ * ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ ClassDeclaration                             *
+ *       ^^^ id      ^^^ superClass                                               *
+ *                       ^^^^^^^^^^^ body                                         *
+ *                                                                                *
+ * It would be incorrect to provide the visitor keys ['body', 'id', 'superClass'] *
+ * because the body comes AFTER everything else in the source code.               *
+ * Instead the correct ordering would be ['id', 'superClass', 'body'].            *
+ *                                                                                *
+ **********************************************************************************
  */
 
 const SharedVisitorKeys = (() => {

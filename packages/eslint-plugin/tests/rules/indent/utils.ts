@@ -68,7 +68,7 @@ export function expectedErrors(
   providedErrors: ProvidedError | ProvidedError[],
 ): TSESLint.TestCaseError<MessageIds>[];
 export function expectedErrors(
-  providedIndentType: string | ProvidedError | ProvidedError[],
+  providedIndentType: ProvidedError | ProvidedError[] | string,
   providedErrors?: ProvidedError | ProvidedError[],
 ): TSESLint.TestCaseError<MessageIds>[] {
   let indentType: string;
