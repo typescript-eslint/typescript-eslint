@@ -32,17 +32,6 @@ export function createProjectService(): TypeScriptProjectService {
     cancellationToken: { isCancellationRequested: (): boolean => false },
     useSingleInferredProject: false,
     useInferredProjectPerProjectRoot: false,
-    // TODO: https://github.com/microsoft/TypeScript/issues/53803
-    typingsInstaller: {
-      attach: (): void => {},
-      enqueueInstallTypingsRequest: (): void => {},
-      installPackage: (): Promise<never> => {
-        throw new Error('This should never be called.');
-      },
-      isKnownTypesPackageName: () => false,
-      onProjectClosed: (): void => {},
-      globalTypingsCacheLocation: '',
-    },
     logger: {
       close: doNothing,
       endGroup: doNothing,
