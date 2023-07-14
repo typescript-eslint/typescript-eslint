@@ -1208,5 +1208,47 @@ x || y;
         },
       ],
     },
+    {
+      code: `
+declare const x: null;
+x || y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+        },
+      ],
+    },
+    {
+      code: `
+const x = undefined;
+x || y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+        },
+      ],
+    },
+    {
+      code: `
+null || y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+        },
+      ],
+    },
+    {
+      code: `
+undefined || y;
+      `,
+      errors: [
+        {
+          messageId: 'preferNullishOverOr',
+        },
+      ],
+    },
   ],
 });

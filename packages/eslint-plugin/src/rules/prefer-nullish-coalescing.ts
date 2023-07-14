@@ -310,6 +310,8 @@ export default util.createRule<Options, MessageIds>({
           .filter((flag): flag is number => flag !== undefined)
           .reduce((previous, flag) => previous | flag, 0);
         if (
+          type.flags !== ts.TypeFlags.Null &&
+          type.flags !== ts.TypeFlags.Undefined &&
           (type as ts.UnionOrIntersectionType).types.some(t =>
             tsutils.isTypeFlagSet(t, ignorableFlags),
           )
