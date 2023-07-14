@@ -192,13 +192,12 @@ export default util.createRule<Options, MessageId>({
     }
 
     function isValidRejectionHandler(rejectionHandler: TSESTree.Node): boolean {
-      // Note - when merged with main, getTypeAtLocation will be available as an
-      // instance method and these expressions can be chained.
-
       return (
-        services.esTreeNodeToTSNodeMap
-          .get(rejectionHandler)
-          .getTypeAtLocation()
+        services.program
+          .getTypeChecker()
+          .getTypeAtLocation(
+            services.esTreeNodeToTSNodeMap.get(rejectionHandler),
+          )
           .getCallSignatures().length > 0
       );
     }
