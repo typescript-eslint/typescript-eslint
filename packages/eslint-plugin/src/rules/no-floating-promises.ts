@@ -61,7 +61,7 @@ export default util.createRule<Options, MessageId>({
           },
           ignoreIIFE: {
             description:
-              'Whether to ignore async IIFEs (Immediately Invocated Function Expressions).',
+              'Whether to ignore async IIFEs (Immediately Invoked Function Expressions).',
             type: 'boolean',
           },
         },
