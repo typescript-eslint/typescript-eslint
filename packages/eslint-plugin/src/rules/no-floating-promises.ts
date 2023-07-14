@@ -19,8 +19,7 @@ type MessageId =
   | 'floatingUselessRejectionHandler'
   | 'floatingUselessRejectionHandlerVoid'
   | 'floatingFixAwait'
-  | 'floatingFixVoid'
-  | 'floatingFixAwait';
+  | 'floatingFixVoid';
 
 const messageBase =
   'Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.';
