@@ -29,7 +29,7 @@ function jsonStringifyRecursive(obj: unknown): string {
   );
 }
 
-function CopyButton({ value, className }: CopyButtonProps): JSX.Element {
+function CopyButton({ value, className }: CopyButtonProps): React.JSX.Element {
   const [on, onCopy] = useClipboard(() => jsonStringifyRecursive(value));
 
   return (

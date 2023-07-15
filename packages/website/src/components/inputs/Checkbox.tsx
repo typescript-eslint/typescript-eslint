@@ -9,7 +9,7 @@ export interface CheckboxProps {
   readonly className?: string;
 }
 
-function Checkbox(props: CheckboxProps): JSX.Element {
+function Checkbox(props: CheckboxProps): React.JSX.Element {
   const { indeterminate } = props;
 
   const checkboxRef = useCallback(

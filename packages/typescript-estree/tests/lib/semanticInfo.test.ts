@@ -1,5 +1,5 @@
 import * as fs from 'fs';
-import glob from 'glob';
+import glob = require('glob');
 import * as path from 'path';
 import * as ts from 'typescript';
 

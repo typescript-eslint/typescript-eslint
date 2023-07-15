@@ -98,7 +98,9 @@ export default util.createRule<Options, MessageIds>({
       'always-multiline': forceCommaIfMultiline,
       'only-multiline': allowCommaIfMultiline,
       never: forbidComma,
-      ignore: undefined,
+      // https://github.com/typescript-eslint/typescript-eslint/issues/7220
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-empty-function
+      ignore: () => {},
     };
 
     function last(nodes: TSESTree.Node[]): TSESTree.Node | null {

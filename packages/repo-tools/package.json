@@ -8,7 +8,7 @@
     "generate-contributors": "tsx ./src/generate-contributors.ts",
     "generate-sponsors": "tsx ./src/generate-sponsors.ts",
     "lint": "nx lint",
-    "postinstall-script": "tsx ./src/postinstall.ts",
+    "postinstall-script": "tsx ./src/postinstall.mts",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

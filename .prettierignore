@@ -22,6 +22,7 @@ CHANGELOG.md
 
 packages/website/.docusaurus
 packages/website/build
+packages/website/playwright-report
 
 # see the file header in eslint-base.test.js for more info
 packages/rule-tester/tests/eslint-base

@@ -4,14 +4,14 @@ import React from 'react';
 import styles from './Tooltip.module.css';
 
 export interface TooltipProps {
-  readonly children: (JSX.Element | false)[] | JSX.Element;
+  readonly children: (React.JSX.Element | false)[] | React.JSX.Element;
   readonly text: string;
   readonly position?: 'left' | 'right';
   readonly open?: boolean;
   readonly hover?: boolean;
 }
 
-function Tooltip(props: TooltipProps): JSX.Element {
+function Tooltip(props: TooltipProps): React.JSX.Element {
   return (
     <span
       aria-label={((props.open || props.hover) && props.text) || undefined}

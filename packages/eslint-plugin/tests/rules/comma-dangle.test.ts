@@ -76,6 +76,9 @@ ruleTester.run('comma-dangle', rule, {
     { code: 'type Foo = [string\n]', options: [{ tuples: 'only-multiline' }] },
     { code: 'type Foo = [string,\n]', options: [{ tuples: 'only-multiline' }] },
 
+    // ignore
+    { code: 'const a = <TYPE,>() => {}', options: [{ generics: 'ignore' }] },
+
     // each options
     {
       code: `

@@ -14,7 +14,7 @@ export interface DropdownProps {
 
 // eslint-disable-next-line react/display-name
 const Text = React.forwardRef<HTMLInputElement, DropdownProps>(
-  (props, ref): JSX.Element => {
+  (props, ref): React.JSX.Element => {
     return (
       <input
         value={props.value}

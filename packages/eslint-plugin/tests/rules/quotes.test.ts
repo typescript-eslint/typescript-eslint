@@ -742,12 +742,12 @@ abstract class Foo {
     },
     {
       code: '() => { foo(); `use strict`; }',
-      output: '() => { foo(); "use strict"; }',
+      output: null,
       errors: [useDoubleQuote],
     },
     {
       code: 'foo(); `use strict`;',
-      output: 'foo(); "use strict";',
+      output: null,
       errors: [useDoubleQuote],
     },
 

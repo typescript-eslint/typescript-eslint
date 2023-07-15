@@ -54,7 +54,7 @@ function ConfigEditorField({
   item,
   value,
   onChange,
-}: ConfigEditorFieldProps): JSX.Element {
+}: ConfigEditorFieldProps): React.JSX.Element {
   return (
     <label className={styles.searchResult}>
       <span className={styles.searchResultDescription}>
@@ -90,7 +90,7 @@ function ConfigEditor({
   values,
   options,
   className,
-}: ConfigEditorProps): JSX.Element {
+}: ConfigEditorProps): React.JSX.Element {
   const [filter, setFilter] = useState<string>('');
 
   const filteredOptions = useMemo(() => {

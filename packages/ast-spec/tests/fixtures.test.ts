@@ -1,5 +1,5 @@
 import fs from 'fs';
-import glob from 'glob';
+import glob = require('glob');
 import makeDir from 'make-dir';
 import path from 'path';
 
