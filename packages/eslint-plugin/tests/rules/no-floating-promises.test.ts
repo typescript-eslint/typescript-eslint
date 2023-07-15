@@ -147,7 +147,7 @@ async function test() {
     `,
     `
 async function test() {
-  const promiseValue: Promise<number>;
+  declare const promiseValue: Promise<number>;
 
   await promiseValue;
   promiseValue.then(
@@ -166,7 +166,7 @@ async function test() {
     `,
     `
 async function test() {
-  const promiseUnion: Promise<number> | number;
+  declare const promiseUnion: Promise<number> | number;
 
   await promiseUnion;
   promiseUnion.then(
@@ -185,7 +185,7 @@ async function test() {
     `,
     `
 async function test() {
-  const promiseIntersection: Promise<number> & number;
+  declare const promiseIntersection: Promise<number> & number;
 
   await promiseIntersection;
   promiseIntersection.then(
@@ -228,7 +228,7 @@ async function test() {
   await (Math.random() > 0.5 ? foo : 0);
   await (Math.random() > 0.5 ? bar : 0);
 
-  const intersectionPromise: Promise<number> & number;
+  declare const intersectionPromise: Promise<number> & number;
   await intersectionPromise;
 }
     `,
@@ -455,6 +455,13 @@ async function foo() {
   condition || myPromise();
   condition ?? myPromise();
 }
+      `,
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
+declare const definitelyCallable: () => void;
+Promise.reject().catch(definitelyCallable);
       `,
       options: [{ ignoreVoid: false }],
     },
@@ -883,7 +890,7 @@ async function test() {
     {
       code: `
 async function test() {
-  const promiseValue: Promise<number>;
+  declare const promiseValue: Promise<number>;
 
   promiseValue;
   promiseValue.then(() => {});
@@ -913,7 +920,7 @@ async function test() {
     {
       code: `
 async function test() {
-  const promiseUnion: Promise<number> | number;
+  declare const promiseUnion: Promise<number> | number;
 
   promiseUnion;
 }
@@ -928,7 +935,7 @@ async function test() {
     {
       code: `
 async function test() {
-  const promiseIntersection: Promise<number> & number;
+  declare const promiseIntersection: Promise<number> & number;
 
   promiseIntersection;
   promiseIntersection.then(() => {});
@@ -1143,7 +1150,7 @@ async function test() {
     {
       code: `
         (async function () {
-          const promiseIntersection: Promise<number> & number;
+          declare const promiseIntersection: Promise<number> & number;
           promiseIntersection;
           promiseIntersection.then(() => {});
           promiseIntersection.catch();
@@ -1426,6 +1433,157 @@ async function foo() {
       `,
             },
           ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const maybeCallable: string | (() => void);
+declare const definitelyCallable: () => void;
+Promise.resolve().then(() => {}, undefined);
+Promise.resolve().then(() => {}, null);
+Promise.resolve().then(() => {}, 3);
+Promise.resolve().then(() => {}, maybeCallable);
+Promise.resolve().then(() => {}, definitelyCallable);
+
+Promise.resolve().catch(undefined);
+Promise.resolve().catch(null);
+Promise.resolve().catch(3);
+Promise.resolve().catch(maybeCallable);
+Promise.resolve().catch(definitelyCallable);
+      `,
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingUselessRejectionHandlerVoid',
+        },
+        {
+          line: 5,
+          messageId: 'floatingUselessRejectionHandlerVoid',
+        },
+        {
+          line: 6,
+          messageId: 'floatingUselessRejectionHandlerVoid',
+        },
+        {
+          line: 7,
+          messageId: 'floatingUselessRejectionHandlerVoid',
+        },
+        {
+          line: 10,
+          messageId: 'floatingUselessRejectionHandlerVoid',
+        },
+        {
+          line: 11,
+          messageId: 'floatingUselessRejectionHandlerVoid',
+        },
+        {
+          line: 12,
+          messageId: 'floatingUselessRejectionHandlerVoid',
+        },
+        {
+          line: 13,
+          messageId: 'floatingUselessRejectionHandlerVoid',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject() || 3;
+      `,
+      errors: [
+        {
+          line: 2,
+          messageId: 'floatingVoid',
+        },
+      ],
+    },
+    {
+      code: `
+void Promise.resolve().then(() => {}, undefined);
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 2,
+          messageId: 'floatingUselessRejectionHandler',
+        },
+      ],
+    },
+    {
+      code: `
+declare const maybeCallable: string | (() => void);
+Promise.resolve().then(() => {}, maybeCallable);
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 3,
+          messageId: 'floatingUselessRejectionHandler',
+        },
+      ],
+    },
+    {
+      code: `
+declare const maybeCallable: string | (() => void);
+declare const definitelyCallable: () => void;
+Promise.resolve().then(() => {}, undefined);
+Promise.resolve().then(() => {}, null);
+Promise.resolve().then(() => {}, 3);
+Promise.resolve().then(() => {}, maybeCallable);
+Promise.resolve().then(() => {}, definitelyCallable);
+
+Promise.resolve().catch(undefined);
+Promise.resolve().catch(null);
+Promise.resolve().catch(3);
+Promise.resolve().catch(maybeCallable);
+Promise.resolve().catch(definitelyCallable);
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 4,
+          messageId: 'floatingUselessRejectionHandler',
+        },
+        {
+          line: 5,
+          messageId: 'floatingUselessRejectionHandler',
+        },
+        {
+          line: 6,
+          messageId: 'floatingUselessRejectionHandler',
+        },
+        {
+          line: 7,
+          messageId: 'floatingUselessRejectionHandler',
+        },
+        {
+          line: 10,
+          messageId: 'floatingUselessRejectionHandler',
+        },
+        {
+          line: 11,
+          messageId: 'floatingUselessRejectionHandler',
+        },
+        {
+          line: 12,
+          messageId: 'floatingUselessRejectionHandler',
+        },
+        {
+          line: 13,
+          messageId: 'floatingUselessRejectionHandler',
+        },
+      ],
+    },
+    {
+      code: `
+Promise.reject() || 3;
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [
+        {
+          line: 2,
+          messageId: 'floating',
         },
       ],
     },

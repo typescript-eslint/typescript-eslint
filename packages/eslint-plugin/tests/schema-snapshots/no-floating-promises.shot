@@ -9,7 +9,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "ignoreIIFE": {
-        "description": "Whether to ignore async IIFEs (Immediately Invocated Function Expressions).",
+        "description": "Whether to ignore async IIFEs (Immediately Invoked Function Expressions).",
         "type": "boolean"
       },
       "ignoreVoid": {
@@ -26,7 +26,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** Whether to ignore async IIFEs (Immediately Invocated Function Expressions). */
+    /** Whether to ignore async IIFEs (Immediately Invoked Function Expressions). */
     ignoreIIFE?: boolean;
     /** Whether to ignore \`void\` expressions. */
     ignoreVoid?: boolean;
