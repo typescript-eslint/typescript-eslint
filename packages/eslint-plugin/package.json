@@ -6,6 +6,7 @@
     "dist",
     "docs",
     "index.d.ts",
+    "rules.d.ts",
     "package.json",
     "README.md",
     "LICENSE"
