@@ -2696,10 +2696,10 @@
   resolved "https://registry.yarnpkg.com/@microsoft/tsdoc/-/tsdoc-0.14.2.tgz#c3ec604a0b54b9a9b87e9735dfc59e1a5da6a5fb"
   integrity sha512-9b8mPpKrfeGRuhFH5iO1iwCLeIIsV6+H1sRfxbkoGXIyQE2BTsPd9zqSqQJ+pv5sJ/hT5M1zvOFL02MnEezFug==
 
-"@netlify/open-api@^2.19.0":
-  version "2.19.0"
-  resolved "https://registry.yarnpkg.com/@netlify/open-api/-/open-api-2.19.0.tgz#de98f855d0a6052b5604eb01313cbed60319c5a0"
-  integrity sha512-Mx5oo3Ts90nRV3lsuQ+wrALpxCMrqWmRowJylbHsxmuMEemdihUPN0m86Ed6kpJyoVMvmtiJpmMaNUbOJMwLCA==
+"@netlify/open-api@^2.19.1":
+  version "2.19.1"
+  resolved "https://registry.yarnpkg.com/@netlify/open-api/-/open-api-2.19.1.tgz#041ddb16ba219332a256ce84dffc6fdd2c964922"
+  integrity sha512-RkucRf8o0vYhCDXCRHWU/EdhkVE3JhkqKmZFvMW6qCPD206GV2Cfo9JGSKb0NdN+nmHSNaYmd+9dvT6I9MP4pw==
 
 "@nicolo-ribaudo/eslint-scope-5-internals@5.1.1-v1":
   version "5.1.1-v1"
@@ -7851,12 +7851,13 @@ get-func-name@^2.0.0:
   integrity sha512-Hm0ixYtaSZ/V7C8FJrtZIuBBI+iSgL+1Aq82zSu8VQNB4S3Gk8e7Qs3VwBDJAhmRZcFqkl3tQu36g/Foh5I5ig==
 
 get-intrinsic@^1.0.2, get-intrinsic@^1.1.1, get-intrinsic@^1.1.3, get-intrinsic@^1.2.0:
-  version "1.2.0"
-  resolved "https://registry.yarnpkg.com/get-intrinsic/-/get-intrinsic-1.2.0.tgz#7ad1dc0535f3a2904bba075772763e5051f6d05f"
-  integrity sha512-L049y6nFOuom5wGyRc3/gdTLO94dySVKRACj1RmJZBQXlbTMhtNIgkWkUHq+jYmZvKf14EW1EoJnnjbmoHij0Q==
+  version "1.2.1"
+  resolved "https://registry.yarnpkg.com/get-intrinsic/-/get-intrinsic-1.2.1.tgz#d295644fed4505fc9cde952c37ee12b477a83d82"
+  integrity sha512-2DcsyfABl+gVHEfCOaTrWgyt+tb6MSEGmKq+kI5HwLbIYgjgmMcV8KQ41uaKz1xxUcn9tJtgFbQUEVcEbd0FYw==
   dependencies:
     function-bind "^1.1.1"
     has "^1.0.3"
+    has-proto "^1.0.1"
     has-symbols "^1.0.3"
 
 get-own-enumerable-property-symbols@^3.0.0:
@@ -10935,11 +10936,11 @@ neo-async@^2.6.0, neo-async@^2.6.2:
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
 netlify@^13.1.9:
-  version "13.1.9"
-  resolved "https://registry.yarnpkg.com/netlify/-/netlify-13.1.9.tgz#ba2133aac77e5381db744ebe33069314bb596e22"
-  integrity sha512-sG4e25tI1Nv8az3y4d+P6vESTeS0RYMwUCgimLJkOn+rdphNGohGnvAb6mGCMUJ3SsMlfItF5Zr8GrG21ePdeA==
+  version "13.1.10"
+  resolved "https://registry.yarnpkg.com/netlify/-/netlify-13.1.10.tgz#27520caf8582bd3c12d961e46b723f614c1d9b28"
+  integrity sha512-ByFz8S08HWVKd9r/lkTahZX7xSq4IRyPCUvuaduI4GHyQaSWEdVNK1krC05vlhL9W0SzDn8Yjowh0Ru4PKrOYw==
   dependencies:
-    "@netlify/open-api" "^2.19.0"
+    "@netlify/open-api" "^2.19.1"
     lodash-es "^4.17.21"
     micro-api-client "^3.3.0"
     node-fetch "^3.0.0"
