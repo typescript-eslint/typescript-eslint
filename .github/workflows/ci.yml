@@ -225,8 +225,8 @@ jobs:
           TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER: true
 
   website_tests:
-    # The NETLIFY_TOKEN secret will not be available on forks
-    if: github.repository_owner == 'typescript-eslint'
+    # The NETLIFY_TOKEN secret will not be available on forks, only run when it's available
+    if: github.repository_owner == 'typescript-eslint' && secrets.NETLIFY_TOKEN
     permissions:
       contents: read # to fetch code (actions/checkout)
 
