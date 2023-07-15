@@ -35,7 +35,7 @@
     "@typescript-eslint/typescript-estree": "6.0.0",
     "@typescript-eslint/utils": "6.0.0",
     "@typescript-eslint/visitor-keys": "6.0.0",
-    "esbuild": "~0.17.19",
+    "esbuild": "~0.18.0",
     "eslint": "*",
     "esquery": "*",
     "semver": "^7.5.4"
