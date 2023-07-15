@@ -2258,6 +2258,11 @@
   resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.44.0.tgz#961a5903c74139390478bdc808bcde3fc45ab7af"
   integrity sha512-Ag+9YM4ocKQx9AarydN0KY2j0ErMHNIocPDrVo8zAE44xLTjEtz81OdR68/cydGtk6m6jDb5Za3r2useMzYmSw==
 
+"@eslint/js@8.45.0":
+  version "8.45.0"
+  resolved "https://registry.yarnpkg.com/@eslint/js/-/js-8.45.0.tgz#b0d59168e76993bded2897a19aef618ebfc33ceb"
+  integrity sha512-p/4a2uaWVHCbAPLxPcv9rkhooU1FVfUUiLoZq09v1dOgtLym/Qlsyw2L3JWr9inVRt1XaLKPP5PBcDtTxRUJPg==
+
 "@gar/promisify@^1.1.3":
   version "1.1.3"
   resolved "https://registry.yarnpkg.com/@gar/promisify/-/promisify-1.1.3.tgz#555193ab2e3bb3b6adc3d551c9c030d9e860daf6"
@@ -3659,12 +3664,10 @@
     "@svgr/plugin-svgo" "^6.2.0"
 
 "@swc/core-android-arm-eabi@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-android-arm64@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-darwin-arm64@1.3.69":
   version "1.3.69"
@@ -3677,32 +3680,25 @@
   integrity sha512-/wBO0Rn5oS5dJI/L9kJRkPAdksVwl5H9nleW/NM3A40N98VV8T7h/i1nO051mxIjq0R6qXVGOWFbBoLrPYucJg==
 
 "@swc/core-freebsd-x64@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-linux-arm-gnueabihf@1.3.69":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-linux-arm-gnueabihf@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-linux-arm64-gnu@1.3.69":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-linux-arm64-gnu@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-linux-arm64-musl@1.3.69":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-linux-arm64-musl@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-linux-x64-gnu@1.3.69":
   version "1.3.69"
@@ -3715,20 +3711,16 @@
   integrity sha512-QXjsI+f8n9XPZHUvmGgkABpzN4M9kdSbhqBOZmv3o0AsDGNCA4uVowQqgZoPFAqlJTpwHeDmrv5sQ13HN+LOGw==
 
 "@swc/core-win32-arm64-msvc@1.3.69":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-win32-arm64-msvc@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-win32-ia32-msvc@1.3.69":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-win32-ia32-msvc@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-win32-x64-msvc@1.3.69":
   version "1.3.69"
@@ -3890,12 +3882,10 @@
     "@types/ms" "*"
 
 "@types/eslint-scope@^3.7.3":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@types/eslint-scope@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@types/eslint-visitor-keys@*":
   version "3.3.0"
@@ -3905,20 +3895,16 @@
     eslint-visitor-keys "*"
 
 "@types/eslint@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@types/estree@0.0.39":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@types/estree@^1.0.0":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@types/estree@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@types/express-serve-static-core@*", "@types/express-serve-static-core@^4.17.18":
   version "4.17.28"
