@@ -13,7 +13,7 @@ export interface ConfigEslintProps {
   readonly className?: string;
 }
 
-function ConfigEslint(props: ConfigEslintProps): JSX.Element {
+function ConfigEslint(props: ConfigEslintProps): React.JSX.Element {
   const { config, onChange: onChangeProp, ruleOptions, className } = props;
 
   const [configObject, updateConfigObject] = useState<Record<string, unknown>>(

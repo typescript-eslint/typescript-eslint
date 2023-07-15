@@ -20,7 +20,7 @@ import styles from './Playground.module.css';
 import ConditionalSplitPane from './SplitPane/ConditionalSplitPane';
 import type { ErrorGroup, RuleDetails, SelectedRange, TabType } from './types';
 
-function Playground(): JSX.Element {
+function Playground(): React.JSX.Element {
   const [state, setState] = useHashState(defaultConfig);
   const [esAst, setEsAst] = useState<TSESTree.Program | null>();
   const [tsAst, setTsAST] = useState<SourceFile | null>();

@@ -8,7 +8,7 @@ export interface InputLabelProps {
   readonly onClick: () => void;
 }
 
-function ActionLabel(props: InputLabelProps): JSX.Element {
+function ActionLabel(props: InputLabelProps): React.JSX.Element {
   return (
     <button onClick={props.onClick} className={styles.optionLabel}>
       <span>{props.name}</span>

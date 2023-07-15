@@ -13,14 +13,13 @@ import type * as MonacoEditor from 'monaco-editor';
 import type TypeScriptWorker = MonacoEditor.languages.typescript.TypeScriptWorker;
 import type lzstring from 'lz-string';
 import type * as tsvfs from './typescript-vfs';
-declare type CompilerOptions =
-  MonacoEditor.languages.typescript.CompilerOptions;
-declare type Monaco = typeof MonacoEditor;
+type CompilerOptions = MonacoEditor.languages.typescript.CompilerOptions;
+type Monaco = typeof MonacoEditor;
 /**
  * These are settings for the playground which are the equivalent to props in React
  * any changes to it should require a new setup of the playground
  */
-export declare type SandboxConfig = {
+export type SandboxConfig = {
   /** The default source code for the playground */
   text: string;
   /** @deprecated */
@@ -116,7 +115,9 @@ export declare const createTypeScriptSandbox: (
   };
   /** A list of TypeScript versions you can use with the TypeScript sandbox */
   supportedVersions: readonly [
-    '5.0.2',
+    '5.2.0-beta',
+    '5.1.6',
+    '5.0.4',
     '4.9.5',
     '4.8.4',
     '4.7.4',
@@ -308,5 +309,5 @@ export declare const createTypeScriptSandbox: (
   /** Adds a file to the vfs used by the editor */
   addLibraryToRuntime: (code: string, _path: string) => void;
 };
-export declare type Sandbox = ReturnType<typeof createTypeScriptSandbox>;
+export type Sandbox = ReturnType<typeof createTypeScriptSandbox>;
 export {};

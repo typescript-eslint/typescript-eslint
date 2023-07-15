@@ -11,7 +11,7 @@ export interface ExpanderProps {
   readonly label: string;
 }
 
-function Expander(props: ExpanderProps): JSX.Element {
+function Expander(props: ExpanderProps): React.JSX.Element {
   const { collapsed, toggleCollapsed } = useCollapsible({
     initialState: false,
   });

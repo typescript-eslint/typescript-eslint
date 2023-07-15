@@ -9,13 +9,13 @@
  **********************************************/
 
 import type * as ts from 'typescript';
-declare type System = ts.System;
-declare type CompilerOptions = ts.CompilerOptions;
-declare type CustomTransformers = ts.CustomTransformers;
-declare type LanguageServiceHost = ts.LanguageServiceHost;
-declare type CompilerHost = ts.CompilerHost;
-declare type SourceFile = ts.SourceFile;
-declare type TS = typeof ts;
+type System = ts.System;
+type CompilerOptions = ts.CompilerOptions;
+type CustomTransformers = ts.CustomTransformers;
+type LanguageServiceHost = ts.LanguageServiceHost;
+type CompilerHost = ts.CompilerHost;
+type SourceFile = ts.SourceFile;
+type TS = typeof ts;
 export interface VirtualTypeScriptEnvironment {
   sys: System;
   languageService: ts.LanguageService;

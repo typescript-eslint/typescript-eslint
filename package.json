@@ -138,6 +138,7 @@
     "@types/eslint": "link:./tools/dummypkg",
     "@types/estree": "link:./tools/dummypkg",
     "@types/node": "^18.16.19",
+    "@types/react": "^18.2.14",
     "eslint-visitor-keys": "^3.4.1",
     "jest-config": "^29",
     "jest-resolve": "^29",

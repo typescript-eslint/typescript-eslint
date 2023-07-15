@@ -59,7 +59,7 @@
   visibility: hidden;
 }
 
-@media only screen and (max-width: 996px) {
+@media only screen and (width <= 996px) {
   .codeContainer {
     display: block;
     width: 100%;

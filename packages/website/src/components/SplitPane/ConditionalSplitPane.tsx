@@ -8,7 +8,7 @@ import splitPaneStyles from './SplitPane.module.css';
 function ConditionalSplitPane({
   children,
   ...props
-}: SplitPaneProps): JSX.Element {
+}: SplitPaneProps): React.JSX.Element {
   const windowSize = useWindowSize();
 
   return windowSize !== 'mobile' ? (
