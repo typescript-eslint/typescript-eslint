@@ -3659,10 +3659,12 @@
     "@svgr/plugin-svgo" "^6.2.0"
 
 "@swc/core-android-arm-eabi@link:./tools/dummypkg":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
 "@swc/core-android-arm64@link:./tools/dummypkg":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
 "@swc/core-darwin-arm64@1.3.69":
   version "1.3.69"
@@ -3675,25 +3677,32 @@
   integrity sha512-/wBO0Rn5oS5dJI/L9kJRkPAdksVwl5H9nleW/NM3A40N98VV8T7h/i1nO051mxIjq0R6qXVGOWFbBoLrPYucJg==
 
 "@swc/core-freebsd-x64@link:./tools/dummypkg":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
 "@swc/core-linux-arm-gnueabihf@1.3.69":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
 "@swc/core-linux-arm-gnueabihf@link:./tools/dummypkg":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
 "@swc/core-linux-arm64-gnu@1.3.69":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
 "@swc/core-linux-arm64-gnu@link:./tools/dummypkg":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
 "@swc/core-linux-arm64-musl@1.3.69":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
 "@swc/core-linux-arm64-musl@link:./tools/dummypkg":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
 "@swc/core-linux-x64-gnu@1.3.69":
   version "1.3.69"
@@ -3706,16 +3715,20 @@
   integrity sha512-QXjsI+f8n9XPZHUvmGgkABpzN4M9kdSbhqBOZmv3o0AsDGNCA4uVowQqgZoPFAqlJTpwHeDmrv5sQ13HN+LOGw==
 
 "@swc/core-win32-arm64-msvc@1.3.69":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
 "@swc/core-win32-arm64-msvc@link:./tools/dummypkg":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
 "@swc/core-win32-ia32-msvc@1.3.69":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
 "@swc/core-win32-ia32-msvc@link:./tools/dummypkg":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
 "@swc/core-win32-x64-msvc@1.3.69":
   version "1.3.69"
@@ -3877,10 +3890,12 @@
     "@types/ms" "*"
 
 "@types/eslint-scope@^3.7.3":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
 "@types/eslint-scope@link:./tools/dummypkg":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
 "@types/eslint-visitor-keys@*":
   version "3.3.0"
@@ -3890,10 +3905,20 @@
     eslint-visitor-keys "*"
 
 "@types/eslint@link:./tools/dummypkg":
-  version "1.0.0"
+  version "0.0.0"
+  uid ""
 
-"@types/estree@*", "@types/estree@0.0.39", "@types/estree@^1.0.0", "@types/estree@link:./tools/dummypkg":
-  version "1.0.0"
+"@types/estree@0.0.39":
+  version "0.0.0"
+  uid ""
+
+"@types/estree@^1.0.0":
+  version "0.0.0"
+  uid ""
+
+"@types/estree@link:./tools/dummypkg":
+  version "0.0.0"
+  uid ""
 
 "@types/express-serve-static-core@*", "@types/express-serve-static-core@^4.17.18":
   version "4.17.28"
