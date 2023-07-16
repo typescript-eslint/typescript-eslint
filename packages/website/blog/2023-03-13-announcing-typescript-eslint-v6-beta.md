@@ -13,8 +13,6 @@ title: Announcing typescript-eslint v6 Beta
 :::caution Newer Information Available
 This blog post is now out of date, as we've released typescript-eslint v6! 🚀
 Please see [Announcing typescript-eslint v6](./2023-07-09-announcing-typescript-eslint-v6.md) for the latest information.
-
-**Links to v6-specific resources in this post may now be 404s.**
 :::
 
 [typescript-eslint](https://typescript-eslint.io) is the tooling that enables standard JavaScript tools such as [ESLint](https://eslint.org) and [Prettier](https://prettier.io) to support TypeScript code.
@@ -52,7 +50,7 @@ If you already use typescript-eslint, you'll need to first replace your package'
 npm i @typescript-eslint/eslint-plugin@rc-v6 @typescript-eslint/parser@rc-v6 --save-dev
 ```
 
-We highly recommend then basing your ESLint configuration on the reworked typescript-eslint [recommended configurations mentioned later in this post](#configuration-breaking-changes) — especially if it's been a while since you've reworked your linter config.
+We highly recommend then basing your ESLint configuration on the reworked typescript-eslint [recommended configurations mentioned later in this post](#reworked-configuration-names) — especially if it's been a while since you've reworked your linter config.
 
 ## User-Facing Breaking Changes
 
@@ -244,7 +242,7 @@ Rules can still retrieve their full backing TypeScript type checker with `servic
 This can be necessary for TypeScript APIs not wrapped by the parser services.
 :::
 
-See [_Custom Rules_ on the v6 docs site preview](https://v6--typescript-eslint.netlify.app/custom-rules) for the updated documentation on creating custom rules with typescript-eslint.
+See [_Custom Rules_ on the v6 docs site preview](https://v6--typescript-eslint.netlify.app/developers/custom-rules) for the updated documentation on creating custom rules with typescript-eslint.
 
 ### AST Breaking Changes
 
