@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - v6
   pull_request:
     branches:
       - '**'
@@ -314,32 +313,5 @@ jobs:
 
       - name: Publish all packages to npm
         run: npx lerna publish --loglevel=verbose --canary --exact --force-publish --yes
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-  publish_canary_version_v6:
-    name: Publish the next major version code as a canary version
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-    needs: [integration_tests, lint_with_build, lint_without_build, unit_tests]
-    if: github.ref == 'refs/heads/v6'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Install
-        uses: ./.github/actions/prepare-install
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-          registry-url: 'https://registry.npmjs.org'
-      - name: Build
-        uses: ./.github/actions/prepare-build
-
-      # Fetch all history for all tags and branches in this job because lerna needs it
-      - run: |
-          git fetch --prune --unshallow
-
-      - name: Publish all packages to npm
-        run: npx lerna publish premajor --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v6
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
