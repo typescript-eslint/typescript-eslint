@@ -186,7 +186,6 @@ async function test() {
     () => {},
   );
   promiseIntersection.then(() => {}).catch(() => {});
-  promiseIntersection.then(() => {}).catch(() => {});
   promiseIntersection.catch(() => {});
   return promiseIntersection;
 }
