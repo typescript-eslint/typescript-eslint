@@ -636,7 +636,7 @@ As of [feat: add package.json exports for public packages](https://github.com/ty
 Developers must now mostly import directly from the package names, e.g.:
 
 ```ts
-import * as TSESLint from '@typescript-eslint';
+import * as TSESLint from '@typescript-eslint/ts-eslint';
 ```
 
 See [RFC: Use package.json exports to "hide" the dist folder for packages and control our exported surface-area](https://github.com/typescript-eslint/typescript-eslint/discussions/6015) for more backing context.
