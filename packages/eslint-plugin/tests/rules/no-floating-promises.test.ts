@@ -456,10 +456,19 @@ Promise.reject().catch(definitelyCallable);
 Promise.reject()
   .catch(() => {})
   .finally(() => {});
+      `,
+    },
+    {
+      code: `
 Promise.reject()
   .catch(() => {})
   .finally(() => {})
   .finally(() => {});
+      `,
+      options: [{ ignoreVoid: false }],
+    },
+    {
+      code: `
 Promise.reject()
   .catch(() => {})
   .finally(() => {})
@@ -1582,28 +1591,26 @@ Promise.reject() || 3;
     {
       code: `
 Promise.reject().finally(() => {});
+      `,
+      errors: [{ line: 2, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
 Promise.reject()
   .finally(() => {})
   .finally(() => {});
+      `,
+      options: [{ ignoreVoid: false }],
+      errors: [{ line: 2, messageId: 'floating' }],
+    },
+    {
+      code: `
 Promise.reject()
   .finally(() => {})
   .finally(() => {})
   .finally(() => {});
       `,
-      errors: [
-        {
-          line: 2,
-          messageId: 'floatingVoid',
-        },
-        {
-          line: 3,
-          messageId: 'floatingVoid',
-        },
-        {
-          line: 6,
-          messageId: 'floatingVoid',
-        },
-      ],
+      errors: [{ line: 2, messageId: 'floatingVoid' }],
     },
     {
       code: `
@@ -1611,69 +1618,39 @@ Promise.reject()
   .then(() => {})
   .finally(() => {});
       `,
-      errors: [
-        {
-          line: 2,
-          messageId: 'floatingVoid',
-        },
-      ],
+      errors: [{ line: 2, messageId: 'floatingVoid' }],
     },
     {
       code: `
 declare const returnsPromise: () => Promise<void> | null;
 returnsPromise()?.finally(() => {});
       `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'floatingVoid',
-        },
-      ],
+      errors: [{ line: 3, messageId: 'floatingVoid' }],
     },
     {
       code: `
 const promiseIntersection: Promise<number> & number;
 promiseIntersection.finally(() => {});
       `,
-      errors: [
-        {
-          line: 3,
-          messageId: 'floatingVoid',
-        },
-      ],
+      errors: [{ line: 3, messageId: 'floatingVoid' }],
     },
     {
       code: `
 Promise.resolve().finally(() => {}), 123;
       `,
-      errors: [
-        {
-          line: 2,
-          messageId: 'floatingVoid',
-        },
-      ],
+      errors: [{ line: 2, messageId: 'floatingVoid' }],
     },
     {
       code: `
 (async () => true)().finally();
       `,
-      errors: [
-        {
-          line: 2,
-          messageId: 'floatingVoid',
-        },
-      ],
+      errors: [{ line: 2, messageId: 'floatingVoid' }],
     },
     {
       code: `
 Promise.reject(new Error('message')).finally(() => {});
       `,
-      errors: [
-        {
-          line: 2,
-          messageId: 'floatingVoid',
-        },
-      ],
+      errors: [{ line: 2, messageId: 'floatingVoid' }],
     },
   ],
 });
