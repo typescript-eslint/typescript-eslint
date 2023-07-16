@@ -255,9 +255,10 @@ export default util.createRule<Options, MessageId>({
         }
 
         // `x.finally()` is transparent to resolution of the promise, so check `x`.
-        const promiseFinally = parsePromiseFinallyCall(node);
-        if (promiseFinally) {
-          return isUnhandledPromise(checker, promiseFinally.object);
+        // ("object" in this context is the `x` in `x.finally()`)
+        const promiseFinallyObject = getObjectFromFinallyCall(node);
+        if (promiseFinallyObject) {
+          return isUnhandledPromise(checker, promiseFinallyObject);
         }
 
         // All other cases are unhandled.
@@ -384,12 +385,12 @@ function getRejectionHandlerFromThenCall(
   }
 }
 
-function parsePromiseFinallyCall(
+function getObjectFromFinallyCall(
   expression: TSESTree.CallExpression,
-): { object: TSESTree.Expression } | undefined {
+): TSESTree.Expression | undefined {
   return expression.callee.type === AST_NODE_TYPES.MemberExpression &&
     expression.callee.property.type === AST_NODE_TYPES.Identifier &&
     expression.callee.property.name === 'finally'
-    ? { object: expression.callee.object }
+    ? expression.callee.object
     : undefined;
 }
