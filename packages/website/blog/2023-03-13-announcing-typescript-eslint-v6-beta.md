@@ -13,6 +13,8 @@ title: Announcing typescript-eslint v6 Beta
 :::caution Newer Information Available
 This blog post is now out of date, as we've released typescript-eslint v6! 🚀
 Please see [Announcing typescript-eslint v6](./2023-07-09-announcing-typescript-eslint-v6.md) for the latest information.
+
+**Links to v6-specific resources in this post may now be 404s.**
 :::
 
 [typescript-eslint](https://typescript-eslint.io) is the tooling that enables standard JavaScript tools such as [ESLint](https://eslint.org) and [Prettier](https://prettier.io) to support TypeScript code.
