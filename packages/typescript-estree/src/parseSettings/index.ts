@@ -1,4 +1,5 @@
 import type * as ts from 'typescript';
+import type * as tsserverlibrary from 'typescript/lib/tsserverlibrary';
 
 import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTree } from '../ts-estree';
@@ -56,6 +57,13 @@ export interface MutableParseSettings {
    * Whether to error if an unknown AST node type is encountered.
    */
   errorOnUnknownASTType: boolean;
+
+  /**
+   * Experimental: TypeScript server to power program creation.
+   */
+  EXPERIMENTAL_projectService:
+    | tsserverlibrary.server.ProjectService
+    | undefined;
 
   /**
    * Whether TS should use the source files for referenced projects instead of the compiled .d.ts files.

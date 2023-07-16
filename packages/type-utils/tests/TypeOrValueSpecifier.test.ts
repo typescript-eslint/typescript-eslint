@@ -196,18 +196,18 @@ describe('TypeOrValueSpecifier', () => {
       ],
       [
         'interface Foo {prop: string}; type Test = Foo;',
-        { from: 'file', name: 'Foo', path: 'tests/fixtures/file.ts' },
+        { from: 'file', name: 'Foo', path: 'file.ts' },
       ],
       [
         'type Foo = {prop: string}; type Test = Foo;',
-        { from: 'file', name: 'Foo', path: 'tests/fixtures/file.ts' },
+        { from: 'file', name: 'Foo', path: 'file.ts' },
       ],
       [
         'interface Foo {prop: string}; type Test = Foo;',
         {
           from: 'file',
           name: 'Foo',
-          path: 'tests/../tests/fixtures/////file.ts',
+          path: './////file.ts',
         },
       ],
       [
@@ -215,7 +215,7 @@ describe('TypeOrValueSpecifier', () => {
         {
           from: 'file',
           name: 'Foo',
-          path: 'tests/../tests/fixtures/////file.ts',
+          path: './////file.ts',
         },
       ],
       [
@@ -223,7 +223,7 @@ describe('TypeOrValueSpecifier', () => {
         {
           from: 'file',
           name: ['Foo', 'Bar'],
-          path: 'tests/fixtures/file.ts',
+          path: 'file.ts',
         },
       ],
       [
@@ -231,7 +231,7 @@ describe('TypeOrValueSpecifier', () => {
         {
           from: 'file',
           name: ['Foo', 'Bar'],
-          path: 'tests/fixtures/file.ts',
+          path: 'file.ts',
         },
       ],
     ])('matches a matching file specifier: %s', runTestPositive);
@@ -247,14 +247,14 @@ describe('TypeOrValueSpecifier', () => {
       ],
       [
         'interface Foo {prop: string}; type Test = Foo;',
-        { from: 'file', name: 'Foo', path: 'tests/fixtures/wrong-file.ts' },
+        { from: 'file', name: 'Foo', path: 'wrong-file.ts' },
       ],
       [
         'interface Foo {prop: string}; type Test = Foo;',
         {
           from: 'file',
           name: ['Foo', 'Bar'],
-          path: 'tests/fixtures/wrong-file.ts',
+          path: 'wrong-file.ts',
         },
       ],
     ])("doesn't match a mismatched file specifier: %s", runTestNegative);
@@ -399,14 +399,14 @@ describe('TypeOrValueSpecifier', () => {
       ['type Test = RegExp;', { from: 'file', name: ['RegExp', 'BigInt'] }],
       [
         'type Test = RegExp;',
-        { from: 'file', name: 'RegExp', path: 'tests/fixtures/file.ts' },
+        { from: 'file', name: 'RegExp', path: 'file.ts' },
       ],
       [
         'type Test = RegExp;',
         {
           from: 'file',
           name: ['RegExp', 'BigInt'],
-          path: 'tests/fixtures/file.ts',
+          path: 'file.ts',
         },
       ],
       [

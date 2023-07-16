@@ -10,6 +10,7 @@ import {
   createNoProgram,
   createSourceFile,
 } from './create-program/createSourceFile';
+import { getWatchProgramsForProjects } from './create-program/getWatchProgramsForProjects';
 import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
 import {
   createProgramFromConfigFile,
@@ -25,6 +26,7 @@ import type { ParseSettings } from './parseSettings';
 import { createParseSettings } from './parseSettings/createParseSettings';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import type { TSESTree } from './ts-estree';
+import { useProgramFromProjectService } from './useProgramFromProjectService';
 
 const log = debug('typescript-eslint:typescript-estree:parser');
 
@@ -47,6 +49,16 @@ function getProgramAndAST(
   parseSettings: ParseSettings,
   hasFullTypeInformation: boolean,
 ): ASTAndProgram {
+  if (parseSettings.EXPERIMENTAL_projectService) {
+    const fromProjectService = useProgramFromProjectService(
+      parseSettings.EXPERIMENTAL_projectService,
+      parseSettings,
+    );
+    if (fromProjectService) {
+      return fromProjectService;
+    }
+  }
+
   if (parseSettings.programs) {
     const fromProvidedPrograms = useProvidedPrograms(
       parseSettings.programs,
@@ -57,27 +69,30 @@ function getProgramAndAST(
     }
   }
 
-  if (hasFullTypeInformation) {
-    const fromProjectProgram = createProjectProgram(parseSettings);
-    if (fromProjectProgram) {
-      return fromProjectProgram;
-    }
-
-    // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-    if (parseSettings.DEPRECATED__createDefaultProgram) {
-      // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-      const fromDefaultProgram = createDefaultProgram(parseSettings);
-      if (fromDefaultProgram) {
-        return fromDefaultProgram;
-      }
-    }
-
-    return createIsolatedProgram(parseSettings);
-  }
-
   // no need to waste time creating a program as the caller didn't want parser services
   // so we can save time and just create a lonesome source file
-  return createNoProgram(parseSettings);
+  if (!hasFullTypeInformation) {
+    return createNoProgram(parseSettings);
+  }
+
+  const fromProjectProgram = createProjectProgram(
+    parseSettings,
+    getWatchProgramsForProjects(parseSettings),
+  );
+  if (fromProjectProgram) {
+    return fromProjectProgram;
+  }
+
+  // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+  if (parseSettings.DEPRECATED__createDefaultProgram) {
+    // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+    const fromDefaultProgram = createDefaultProgram(parseSettings);
+    if (fromDefaultProgram) {
+      return fromDefaultProgram;
+    }
+  }
+
+  return createIsolatedProgram(parseSettings);
 }
 
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
