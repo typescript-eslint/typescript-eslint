@@ -4,6 +4,7 @@ exports[`typescript basics class-with-extends-generic-multiple.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -22,7 +23,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 9,
@@ -34,12 +38,15 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -55,6 +62,7 @@ Object {
         45,
       ],
       "superClass": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 34,
@@ -66,11 +74,13 @@ Object {
           },
         },
         "name": "Bar",
+        "optional": false,
         "range": Array [
           31,
           34,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "superTypeParameters": Object {
         "loc": Object {
@@ -101,6 +111,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 36,
@@ -112,11 +123,13 @@ Object {
                 },
               },
               "name": "C",
+              "optional": false,
               "range": Array [
                 35,
                 36,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": undefined,
           },
@@ -137,6 +150,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 39,
@@ -148,11 +162,13 @@ Object {
                 },
               },
               "name": "D",
+              "optional": false,
               "range": Array [
                 38,
                 39,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": undefined,
           },
@@ -194,6 +210,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 21,
@@ -205,11 +222,13 @@ Object {
                   },
                 },
                 "name": "B",
+                "optional": false,
                 "range": Array [
                   20,
                   21,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -226,6 +245,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 11,
@@ -237,11 +257,13 @@ Object {
                 },
               },
               "name": "A",
+              "optional": false,
               "range": Array [
                 10,
                 11,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [

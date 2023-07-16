@@ -26,7 +26,7 @@ export default createRule({
     docs: {
       description:
         'Enforce using `String#startsWith` and `String#endsWith` over other equivalent methods of checking substrings',
-      recommended: 'strict',
+      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
     messages: {
@@ -40,18 +40,16 @@ export default createRule({
   create(context) {
     const globalScope = context.getScope();
     const sourceCode = context.getSourceCode();
-    const service = getParserServices(context);
-    const typeChecker = service.program.getTypeChecker();
+    const services = getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     /**
      * Check if a given node is a string.
      * @param node The node to check.
      */
     function isStringType(node: TSESTree.Expression): boolean {
-      const objectType = typeChecker.getTypeAtLocation(
-        service.esTreeNodeToTSNodeMap.get(node),
-      );
-      return getTypeName(typeChecker, objectType) === 'string';
+      const objectType = services.getTypeAtLocation(node);
+      return getTypeName(checker, objectType) === 'string';
     }
 
     /**
@@ -317,7 +315,7 @@ export default createRule({
     function* fixWithRightOperand(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.BinaryExpression,
-      kind: 'start' | 'end',
+      kind: 'end' | 'start',
       isNegative: boolean,
       isOptional: boolean,
     ): IterableIterator<TSESLint.RuleFix> {
@@ -348,7 +346,7 @@ export default createRule({
       node: TSESTree.BinaryExpression,
       callNode: TSESTree.CallExpression,
       calleeNode: TSESTree.MemberExpression,
-      kind: 'start' | 'end',
+      kind: 'end' | 'start',
       negative: boolean,
       isOptional: boolean,
     ): IterableIterator<TSESLint.RuleFix> {

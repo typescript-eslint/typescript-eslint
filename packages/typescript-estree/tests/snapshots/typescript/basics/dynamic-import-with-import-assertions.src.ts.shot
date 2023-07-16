@@ -4,6 +4,7 @@ exports[`typescript basics dynamic-import-with-import-assertions.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "attributes": Object {
           "loc": Object {
@@ -20,6 +21,7 @@ Object {
             Object {
               "computed": false,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 22,
@@ -31,11 +33,13 @@ Object {
                   },
                 },
                 "name": "assert",
+                "optional": false,
                 "range": Array [
                   16,
                   22,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "init",
               "loc": Object {
@@ -49,6 +53,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 16,
                 40,
@@ -70,6 +75,7 @@ Object {
                   Object {
                     "computed": false,
                     "key": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 30,
@@ -81,11 +87,13 @@ Object {
                         },
                       },
                       "name": "type",
+                      "optional": false,
                       "range": Array [
                         26,
                         30,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "kind": "init",
                     "loc": Object {
@@ -99,6 +107,7 @@ Object {
                       },
                     },
                     "method": false,
+                    "optional": false,
                     "range": Array [
                       26,
                       38,

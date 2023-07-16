@@ -1,3 +1,4 @@
+import { ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
@@ -17,7 +18,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow variable redeclaration',
-      recommended: false,
       extendsBaseRule: true,
     },
     schema: [
@@ -67,8 +67,8 @@ export default util.createRule<Options, MessageIds>({
 
     function* iterateDeclarations(variable: TSESLint.Scope.Variable): Generator<
       {
-        type: 'builtin' | 'syntax' | 'comment';
-        node?: TSESTree.Identifier | TSESTree.Comment;
+        type: 'builtin' | 'comment' | 'syntax';
+        node?: TSESTree.Comment | TSESTree.Identifier;
         loc?: TSESTree.SourceLocation;
       },
       void,
@@ -103,7 +103,7 @@ export default util.createRule<Options, MessageIds>({
       const identifiers = variable.identifiers
         .map(id => ({
           identifier: id,
-          parent: id.parent!,
+          parent: id.parent,
         }))
         // ignore function declarations because TS will treat them as an overload
         .filter(
@@ -256,7 +256,7 @@ export default util.createRule<Options, MessageIds>({
 
         // Node.js or ES modules has a special scope.
         if (
-          scope.type === 'global' &&
+          scope.type === ScopeType.global &&
           scope.childScopes[0] &&
           // The special scope's block is the Program node.
           scope.block === scope.childScopes[0].block

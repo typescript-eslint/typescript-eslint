@@ -22,3 +22,11 @@
 .fixer {
   margin: 0.5rem 0 0.5rem 1.5rem;
 }
+
+.errorPre {
+  background: transparent;
+  margin: 0;
+  padding: 0;
+  white-space: break-spaces;
+  word-wrap: break-word;
+}

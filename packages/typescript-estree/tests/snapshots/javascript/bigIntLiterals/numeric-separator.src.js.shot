@@ -4,6 +4,7 @@ exports[`javascript bigIntLiterals numeric-separator.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "bigint": "123",
         "loc": Object {

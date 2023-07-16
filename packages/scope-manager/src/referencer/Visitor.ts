@@ -12,7 +12,7 @@ interface VisitPatternOptions extends PatternVisitorOptions {
 }
 class Visitor extends VisitorBase {
   readonly #options: VisitorOptions;
-  constructor(optionsOrVisitor: VisitorOptions | Visitor) {
+  constructor(optionsOrVisitor: Visitor | VisitorOptions) {
     super(
       optionsOrVisitor instanceof Visitor
         ? optionsOrVisitor.#options

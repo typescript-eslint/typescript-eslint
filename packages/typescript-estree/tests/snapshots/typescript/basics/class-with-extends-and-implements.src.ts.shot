@@ -4,6 +4,7 @@ exports[`typescript basics class-with-extends-and-implements.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -22,7 +23,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 33,
@@ -34,15 +38,18 @@ Object {
           },
         },
         "name": "ClassWithParentAndInterface",
+        "optional": false,
         "range": Array [
           6,
           33,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "implements": Array [
         Object {
           "expression": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 77,
@@ -54,11 +61,13 @@ Object {
               },
             },
             "name": "MyInterface",
+            "optional": false,
             "range": Array [
               66,
               77,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -75,6 +84,7 @@ Object {
             77,
           ],
           "type": "TSClassImplements",
+          "typeParameters": undefined,
         },
       ],
       "loc": Object {
@@ -92,6 +102,7 @@ Object {
         80,
       ],
       "superClass": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 54,
@@ -103,13 +114,17 @@ Object {
           },
         },
         "name": "MyOtherClass",
+        "optional": false,
         "range": Array [
           42,
           54,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

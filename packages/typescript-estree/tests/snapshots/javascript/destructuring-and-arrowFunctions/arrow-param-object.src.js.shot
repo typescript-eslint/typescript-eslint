@@ -4,9 +4,11 @@ exports[`javascript destructuring-and-arrowFunctions arrow-param-object.src 1`] 
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 10,
@@ -18,11 +20,13 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             9,
             10,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "expression": true,
         "generator": false,
@@ -39,6 +43,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 4,
@@ -49,10 +54,12 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "properties": Array [
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 3,
@@ -64,11 +71,13 @@ Object {
                     },
                   },
                   "name": "y",
+                  "optional": false,
                   "range": Array [
                     2,
                     3,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {
@@ -82,6 +91,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   2,
                   3,
@@ -89,6 +99,7 @@ Object {
                 "shorthand": true,
                 "type": "Property",
                 "value": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 3,
@@ -100,11 +111,13 @@ Object {
                     },
                   },
                   "name": "y",
+                  "optional": false,
                   "range": Array [
                     2,
                     3,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               },
             ],
@@ -113,13 +126,16 @@ Object {
               4,
             ],
             "type": "ObjectPattern",
+            "typeAnnotation": undefined,
           },
         ],
         "range": Array [
           0,
           10,
         ],
+        "returnType": undefined,
         "type": "ArrowFunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

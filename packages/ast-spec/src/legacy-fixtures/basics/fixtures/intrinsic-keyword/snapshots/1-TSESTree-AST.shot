@@ -6,9 +6,12 @@ Program {
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Uppercase",
+        optional: false,
 
         range: [78, 87],
         loc: {
@@ -43,7 +46,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "S",
+              optional: false,
 
               range: [88, 89],
               loc: {
@@ -76,9 +81,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Lowercase",
+        optional: false,
 
         range: [124, 133],
         loc: {
@@ -113,7 +121,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "S",
+              optional: false,
 
               range: [134, 135],
               loc: {
@@ -146,9 +156,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Capitalize",
+        optional: false,
 
         range: [170, 180],
         loc: {
@@ -183,7 +196,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "S",
+              optional: false,
 
               range: [181, 182],
               loc: {
@@ -216,9 +231,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Uncapitalize",
+        optional: false,
 
         range: [217, 229],
         loc: {
@@ -253,7 +271,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "S",
+              optional: false,
 
               range: [230, 231],
               loc: {

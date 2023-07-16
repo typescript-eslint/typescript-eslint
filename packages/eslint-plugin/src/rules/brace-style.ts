@@ -18,7 +18,6 @@ export default createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforce consistent brace style for blocks',
-      recommended: false,
       extendsBaseRule: true,
     },
     messages: baseRule.meta.messages,
@@ -120,7 +119,7 @@ export default createRule<Options, MessageIds>({
     return {
       ...rules,
       'TSInterfaceBody, TSModuleBlock'(
-        node: TSESTree.TSModuleBlock | TSESTree.TSInterfaceBody,
+        node: TSESTree.TSInterfaceBody | TSESTree.TSModuleBlock,
       ): void {
         const openingCurly = sourceCode.getFirstToken(node)!;
         const closingCurly = sourceCode.getLastToken(node)!;

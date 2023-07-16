@@ -4,11 +4,15 @@ exports[`javascript classes class-two-methods-computed-constructor.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 22,
@@ -20,11 +24,13 @@ Object {
                 },
               },
               "name": "constructor",
+              "optional": false,
               "range": Array [
                 9,
                 22,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "constructor",
             "loc": Object {
@@ -37,6 +43,7 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               9,
@@ -44,6 +51,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -64,6 +72,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -82,11 +91,15 @@ Object {
                 22,
                 26,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
+            "decorators": Array [],
             "key": Object {
               "loc": Object {
                 "end": Object {
@@ -117,6 +130,7 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               27,
@@ -124,6 +138,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -144,6 +159,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -162,7 +178,9 @@ Object {
                 42,
                 46,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -182,7 +200,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 7,
@@ -194,12 +215,15 @@ Object {
           },
         },
         "name": "A",
+        "optional": false,
         "range": Array [
           6,
           7,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 47,
@@ -215,7 +239,9 @@ Object {
         47,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
     Object {
       "loc": Object {

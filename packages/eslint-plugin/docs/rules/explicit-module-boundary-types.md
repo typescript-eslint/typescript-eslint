@@ -56,7 +56,7 @@ export var fn = function (): number {
 };
 
 // A return value of type string
-export var arrowFn = (arg: string): string => `test ${arg}`;
+export var arrowFn = (): string => 'test';
 
 // All arguments should be typed
 export var arrowFn = (arg: string): string => `test ${arg}`;

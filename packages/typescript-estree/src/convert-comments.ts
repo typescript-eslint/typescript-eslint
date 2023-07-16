@@ -1,4 +1,4 @@
-import { forEachComment } from 'tsutils/util/util';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { getLocFor } from './node-utils';
@@ -18,7 +18,7 @@ export function convertComments(
 ): TSESTree.Comment[] {
   const comments: TSESTree.Comment[] = [];
 
-  forEachComment(
+  tsutils.forEachComment(
     ast,
     (_, comment) => {
       const type =
@@ -26,7 +26,7 @@ export function convertComments(
           ? AST_TOKEN_TYPES.Line
           : AST_TOKEN_TYPES.Block;
       const range: TSESTree.Range = [comment.pos, comment.end];
-      const loc = getLocFor(range[0], range[1], ast);
+      const loc = getLocFor(range, ast);
 
       // both comments start with 2 characters - /* or //
       const textStart = range[0] + 2;

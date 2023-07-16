@@ -8,9 +8,9 @@ import type * as ts from 'typescript';
 interface DirectoryStructureHost {
   readDirectory?(
     path: string,
-    extensions?: ReadonlyArray<string>,
-    exclude?: ReadonlyArray<string>,
-    include?: ReadonlyArray<string>,
+    extensions?: readonly string[],
+    exclude?: readonly string[],
+    include?: readonly string[],
     depth?: number,
   ): string[];
 }
@@ -19,9 +19,9 @@ interface DirectoryStructureHost {
 interface CachedDirectoryStructureHost extends DirectoryStructureHost {
   readDirectory(
     path: string,
-    extensions?: ReadonlyArray<string>,
-    exclude?: ReadonlyArray<string>,
-    include?: ReadonlyArray<string>,
+    extensions?: readonly string[],
+    exclude?: readonly string[],
+    include?: readonly string[],
     depth?: number,
   ): string[];
 }

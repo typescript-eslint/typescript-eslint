@@ -1,5 +1,7 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/require-array-sort-compare';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -136,8 +138,25 @@ ruleTester.run('require-array-sort-compare', rule, {
     },
     {
       code: `
-        function f(a: string[]) {
+        function f(a: number[]) {
           a.sort();
+        }
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+    },
+    {
+      code: `
+        function f(a: number[]) {
+          a.sort();
+        }
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+      options: [{ ignoreStringArrays: false }],
+    },
+    {
+      code: `
+        function f(a: number | number[]) {
+          if (Array.isArray(a)) a.sort();
         }
       `,
       errors: [{ messageId: 'requireCompare' }],
@@ -149,6 +168,7 @@ ruleTester.run('require-array-sort-compare', rule, {
         }
       `,
       errors: [{ messageId: 'requireCompare' }],
+      options: [{ ignoreStringArrays: false }],
     },
     {
       code: `
@@ -177,7 +197,7 @@ ruleTester.run('require-array-sort-compare', rule, {
     // optional chain
     {
       code: `
-        function f(a: string[]) {
+        function f(a: number[]) {
           a?.sort();
         }
       `,
@@ -185,24 +205,24 @@ ruleTester.run('require-array-sort-compare', rule, {
     },
     {
       code: `
-        ['foo', 'bar', 'baz'].sort();
+        [1, 2, 3].sort();
       `,
       errors: [{ messageId: 'requireCompare' }],
     },
     {
       code: `
-        function getString() {
-          return 'foo';
+        function getNumber() {
+          return 1;
         }
-        [getString(), getString()].sort();
+        [getNumber(), getNumber()].sort();
       `,
       errors: [{ messageId: 'requireCompare' }],
     },
     {
       code: `
-        const foo = 'foo';
-        const bar = 'bar';
-        const baz = 'baz';
+        const foo = 1;
+        const bar = 2;
+        const baz = 3;
         [foo, bar, baz].sort();
       `,
       errors: [{ messageId: 'requireCompare' }],

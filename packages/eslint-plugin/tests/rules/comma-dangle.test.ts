@@ -2,8 +2,9 @@
 // this rule tests the new lines, which prettier will want to fix and break the tests
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/comma-dangle';
-import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -74,6 +75,9 @@ ruleTester.run('comma-dangle', rule, {
     },
     { code: 'type Foo = [string\n]', options: [{ tuples: 'only-multiline' }] },
     { code: 'type Foo = [string,\n]', options: [{ tuples: 'only-multiline' }] },
+
+    // ignore
+    { code: 'const a = <TYPE,>() => {}', options: [{ generics: 'ignore' }] },
 
     // each options
     {

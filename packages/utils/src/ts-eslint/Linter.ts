@@ -13,6 +13,12 @@ import type {
 import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
 
+export type MinimalRuleModule<
+  TMessageIds extends string = string,
+  TOptions extends readonly unknown[] = [],
+> = Partial<Omit<RuleModule<TMessageIds, TOptions>, 'create'>> &
+  Pick<RuleModule<TMessageIds, TOptions>, 'create'>;
+
 declare class LinterBase {
   /**
    * Initialize the Linter.
@@ -34,7 +40,7 @@ declare class LinterBase {
    */
   defineRule<TMessageIds extends string, TOptions extends readonly unknown[]>(
     ruleId: string,
-    ruleModule: RuleModule<TMessageIds, TOptions> | RuleCreateFunction,
+    ruleModule: MinimalRuleModule<TMessageIds, TOptions> | RuleCreateFunction,
   ): void;
 
   /**
@@ -44,7 +50,8 @@ declare class LinterBase {
   defineRules<TMessageIds extends string, TOptions extends readonly unknown[]>(
     rulesToDefine: Record<
       string,
-      RuleModule<TMessageIds, TOptions> | RuleCreateFunction
+      | MinimalRuleModule<TMessageIds, TOptions>
+      | RuleCreateFunction<TMessageIds, TOptions>
     >,
   ): void;
 
@@ -52,7 +59,7 @@ declare class LinterBase {
    * Gets an object with all loaded rules.
    * @returns All loaded rules
    */
-  getRules(): Map<string, RuleModule<string, unknown[]>>;
+  getRules(): Map<string, MinimalRuleModule<string, unknown[]>>;
 
   /**
    * Gets the `SourceCode` object representing the parsed source.
@@ -72,7 +79,7 @@ declare class LinterBase {
   verify(
     textOrSourceCode: SourceCode | string,
     config: Linter.Config,
-    filenameOrOptions?: string | Linter.VerifyOptions,
+    filenameOrOptions?: Linter.VerifyOptions | string,
   ): Linter.LintMessage[];
 
   /**
@@ -112,7 +119,7 @@ namespace Linter {
   }
 
   export type Severity = 0 | 1 | 2;
-  export type SeverityString = 'off' | 'warn' | 'error';
+  export type SeverityString = 'error' | 'off' | 'warn';
   export type RuleLevel = Severity | SeverityString;
 
   export type RuleLevelAndOptions = [RuleLevel, ...unknown[]];
@@ -120,7 +127,15 @@ namespace Linter {
   export type RuleEntry = RuleLevel | RuleLevelAndOptions;
   export type RulesRecord = Partial<Record<string, RuleEntry>>;
 
-  export type GlobalVariableOption = 'readonly' | 'writable' | 'off' | boolean;
+  export type GlobalVariableOptionBase = 'off' | 'readonly' | 'writable';
+  export type GlobalVariableOption = GlobalVariableOptionBase | boolean;
+
+  export interface GlobalsConfig {
+    [name: string]: GlobalVariableOption;
+  }
+  export interface EnvironmentConfig {
+    [name: string]: boolean;
+  }
 
   // https://github.com/eslint/eslint/blob/v6.8.0/conf/config-schema.js
   interface BaseConfig {
@@ -128,15 +143,15 @@ namespace Linter {
     /**
      * The environment settings.
      */
-    env?: { [name: string]: boolean };
+    env?: EnvironmentConfig;
     /**
      * The path to other config files or the package name of shareable configs.
      */
-    extends?: string | string[];
+    extends?: string[] | string;
     /**
      * The global variable settings.
      */
-    globals?: { [name: string]: GlobalVariableOption };
+    globals?: GlobalsConfig;
     /**
      * The flag that disables directive comments.
      */
@@ -176,15 +191,15 @@ namespace Linter {
   }
 
   export interface ConfigOverride extends BaseConfig {
-    excludedFiles?: string | string[];
-    files: string | string[];
+    excludedFiles?: string[] | string;
+    files: string[] | string;
   }
 
   export interface Config extends BaseConfig {
     /**
      * The glob patterns that ignore to lint.
      */
-    ignorePatterns?: string | string[];
+    ignorePatterns?: string[] | string;
     /**
      * The root flag.
      */
@@ -227,7 +242,7 @@ namespace Linter {
     /**
      * Adds reported errors for unused `eslint-disable` directives.
      */
-    reportUnusedDisableDirectives?: boolean | SeverityString;
+    reportUnusedDisableDirectives?: SeverityString | boolean;
   }
 
   export interface FixOptions extends VerifyOptions {
@@ -329,7 +344,7 @@ namespace Linter {
     preprocess?: (
       text: string,
       filename: string,
-    ) => Array<string | { text: string; filename: string }>;
+    ) => (string | { text: string; filename: string })[];
     /**
      * The function to merge messages.
      */

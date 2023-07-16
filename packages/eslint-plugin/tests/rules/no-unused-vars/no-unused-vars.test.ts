@@ -1,6 +1,8 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../../src/rules/no-unused-vars';
 import { collectUnusedVariables } from '../../../src/util';
-import { getFixturesRootDir, noFormat, RuleTester } from '../../RuleTester';
+import { getFixturesRootDir } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -12,6 +14,7 @@ const ruleTester = new RuleTester({
 });
 
 const withMetaParserOptions = {
+  EXPERIMENTAL_useProjectService: false,
   tsconfigRootDir: getFixturesRootDir(),
   project: './tsconfig-withmeta.json',
 };
@@ -587,7 +590,6 @@ export interface Bar extends foo.i18n<bar> {}
     `,
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/141
-      filename: 'test.tsx',
       code: `
 import { TypeA } from './interface';
 export const a = <GenericComponent<TypeA> />;
@@ -600,7 +602,6 @@ export const a = <GenericComponent<TypeA> />;
     },
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/160
-      filename: 'test.tsx',
       code: `
 const text = 'text';
 export function Foo() {
@@ -611,6 +612,11 @@ export function Foo() {
   );
 }
       `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     // https://github.com/eslint/typescript-eslint-parser/issues/535
     `
@@ -778,8 +784,10 @@ export interface Event<T> {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2369
     `
-export default function (@Optional() value = []) {
-  return value;
+export class Test {
+  constructor(@Optional() value: number[] = []) {
+    console.log(value);
+  }
 }
 
 function Optional() {

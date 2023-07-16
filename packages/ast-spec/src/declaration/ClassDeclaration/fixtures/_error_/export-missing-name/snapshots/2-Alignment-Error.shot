@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ClassDeclaration _error_ export-missing-name Error Alignment 1`] = `"Babel errored but TSESTree didn't"`;

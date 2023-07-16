@@ -12,13 +12,13 @@ function selectorTypeToMessageString(selectorType: SelectorsString): string {
 }
 
 function isMetaSelector(
-  selector: IndividualAndMetaSelectorsString | Selectors | MetaSelectors,
+  selector: IndividualAndMetaSelectorsString | MetaSelectors | Selectors,
 ): selector is MetaSelectorsString {
   return selector in MetaSelectors;
 }
 
 function isMethodOrPropertySelector(
-  selector: IndividualAndMetaSelectorsString | Selectors | MetaSelectors,
+  selector: IndividualAndMetaSelectorsString | MetaSelectors | Selectors,
 ): boolean {
   return (
     selector === MetaSelectors.method || selector === MetaSelectors.property

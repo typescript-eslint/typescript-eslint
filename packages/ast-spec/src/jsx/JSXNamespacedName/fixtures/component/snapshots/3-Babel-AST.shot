@@ -1,0 +1,485 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures jsx JSXNamespacedName component Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "x",
+
+            range: [6, 7],
+            loc: {
+              start: { column: 6, line: 1 },
+              end: { column: 7, line: 1 },
+            },
+          },
+          init: JSXElement {
+            type: "JSXElement",
+            children: [],
+            closingElement: null,
+            openingElement: JSXOpeningElement {
+              type: "JSXOpeningElement",
+              attributes: [
+                JSXAttribute {
+                  type: "JSXAttribute",
+                  name: JSXNamespacedName {
+                    type: "JSXNamespacedName",
+                    name: JSXIdentifier {
+                      type: "JSXIdentifier",
+                      name: "b",
+
+                      range: [36, 37],
+                      loc: {
+                        start: { column: 36, line: 1 },
+                        end: { column: 37, line: 1 },
+                      },
+                    },
+                    namespace: JSXIdentifier {
+                      type: "JSXIdentifier",
+                      name: "a",
+
+                      range: [34, 35],
+                      loc: {
+                        start: { column: 34, line: 1 },
+                        end: { column: 35, line: 1 },
+                      },
+                    },
+
+                    range: [34, 37],
+                    loc: {
+                      start: { column: 34, line: 1 },
+                      end: { column: 37, line: 1 },
+                    },
+                  },
+                  value: Literal {
+                    type: "Literal",
+                    raw: ""tight spacing"",
+                    value: "tight spacing",
+
+                    range: [38, 53],
+                    loc: {
+                      start: { column: 38, line: 1 },
+                      end: { column: 53, line: 1 },
+                    },
+                  },
+
+                  range: [34, 53],
+                  loc: {
+                    start: { column: 34, line: 1 },
+                    end: { column: 53, line: 1 },
+                  },
+                },
+              ],
+              name: JSXIdentifier {
+                type: "JSXIdentifier",
+                name: "NamespacePropComponent",
+
+                range: [11, 33],
+                loc: {
+                  start: { column: 11, line: 1 },
+                  end: { column: 33, line: 1 },
+                },
+              },
+              selfClosing: true,
+
+              range: [10, 56],
+              loc: {
+                start: { column: 10, line: 1 },
+                end: { column: 56, line: 1 },
+              },
+            },
+
+            range: [10, 56],
+            loc: {
+              start: { column: 10, line: 1 },
+              end: { column: 56, line: 1 },
+            },
+          },
+
+          range: [6, 56],
+          loc: {
+            start: { column: 6, line: 1 },
+            end: { column: 56, line: 1 },
+          },
+        },
+      ],
+      kind: "const",
+
+      range: [0, 57],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 57, line: 1 },
+      },
+    },
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "y",
+
+            range: [64, 65],
+            loc: {
+              start: { column: 6, line: 2 },
+              end: { column: 7, line: 2 },
+            },
+          },
+          init: JSXElement {
+            type: "JSXElement",
+            children: [],
+            closingElement: null,
+            openingElement: JSXOpeningElement {
+              type: "JSXOpeningElement",
+              attributes: [
+                JSXAttribute {
+                  type: "JSXAttribute",
+                  name: JSXNamespacedName {
+                    type: "JSXNamespacedName",
+                    name: JSXIdentifier {
+                      type: "JSXIdentifier",
+                      name: "b",
+
+                      range: [96, 97],
+                      loc: {
+                        start: { column: 38, line: 2 },
+                        end: { column: 39, line: 2 },
+                      },
+                    },
+                    namespace: JSXIdentifier {
+                      type: "JSXIdentifier",
+                      name: "a",
+
+                      range: [92, 93],
+                      loc: {
+                        start: { column: 34, line: 2 },
+                        end: { column: 35, line: 2 },
+                      },
+                    },
+
+                    range: [92, 97],
+                    loc: {
+                      start: { column: 34, line: 2 },
+                      end: { column: 39, line: 2 },
+                    },
+                  },
+                  value: Literal {
+                    type: "Literal",
+                    raw: ""loose spacing"",
+                    value: "loose spacing",
+
+                    range: [98, 113],
+                    loc: {
+                      start: { column: 40, line: 2 },
+                      end: { column: 55, line: 2 },
+                    },
+                  },
+
+                  range: [92, 113],
+                  loc: {
+                    start: { column: 34, line: 2 },
+                    end: { column: 55, line: 2 },
+                  },
+                },
+              ],
+              name: JSXIdentifier {
+                type: "JSXIdentifier",
+                name: "NamespacePropComponent",
+
+                range: [69, 91],
+                loc: {
+                  start: { column: 11, line: 2 },
+                  end: { column: 33, line: 2 },
+                },
+              },
+              selfClosing: true,
+
+              range: [68, 116],
+              loc: {
+                start: { column: 10, line: 2 },
+                end: { column: 58, line: 2 },
+              },
+            },
+
+            range: [68, 116],
+            loc: {
+              start: { column: 10, line: 2 },
+              end: { column: 58, line: 2 },
+            },
+          },
+
+          range: [64, 116],
+          loc: {
+            start: { column: 6, line: 2 },
+            end: { column: 58, line: 2 },
+          },
+        },
+      ],
+      kind: "const",
+
+      range: [58, 117],
+      loc: {
+        start: { column: 0, line: 2 },
+        end: { column: 59, line: 2 },
+      },
+    },
+    TSInterfaceDeclaration {
+      type: "TSInterfaceDeclaration",
+      body: TSInterfaceBody {
+        type: "TSInterfaceBody",
+        body: [
+          TSPropertySignature {
+            type: "TSPropertySignature",
+            computed: false,
+            key: Literal {
+              type: "Literal",
+              raw: ""a:b"",
+              value: "a:b",
+
+              range: [163, 168],
+              loc: {
+                start: { column: 4, line: 5 },
+                end: { column: 9, line: 5 },
+              },
+            },
+            typeAnnotation: TSTypeAnnotation {
+              type: "TSTypeAnnotation",
+              typeAnnotation: TSStringKeyword {
+                type: "TSStringKeyword",
+
+                range: [170, 176],
+                loc: {
+                  start: { column: 11, line: 5 },
+                  end: { column: 17, line: 5 },
+                },
+              },
+
+              range: [168, 176],
+              loc: {
+                start: { column: 9, line: 5 },
+                end: { column: 17, line: 5 },
+              },
+            },
+
+            range: [163, 177],
+            loc: {
+              start: { column: 4, line: 5 },
+              end: { column: 18, line: 5 },
+            },
+          },
+        ],
+
+        range: [157, 179],
+        loc: {
+          start: { column: 38, line: 4 },
+          end: { column: 1, line: 6 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "NamespacePropComponentProps",
+
+        range: [129, 156],
+        loc: {
+          start: { column: 10, line: 4 },
+          end: { column: 37, line: 4 },
+        },
+      },
+
+      range: [119, 179],
+      loc: {
+        start: { column: 0, line: 4 },
+        end: { column: 1, line: 6 },
+      },
+    },
+    FunctionDeclaration {
+      type: "FunctionDeclaration",
+      async: false,
+      body: BlockStatement {
+        type: "BlockStatement",
+        body: [
+          ReturnStatement {
+            type: "ReturnStatement",
+            argument: JSXElement {
+              type: "JSXElement",
+              children: [
+                JSXExpressionContainer {
+                  type: "JSXExpressionContainer",
+                  expression: MemberExpression {
+                    type: "MemberExpression",
+                    computed: true,
+                    object: Identifier {
+                      type: "Identifier",
+                      name: "props",
+
+                      range: [268, 273],
+                      loc: {
+                        start: { column: 17, line: 9 },
+                        end: { column: 22, line: 9 },
+                      },
+                    },
+                    optional: false,
+                    property: Literal {
+                      type: "Literal",
+                      raw: ""a:b"",
+                      value: "a:b",
+
+                      range: [274, 279],
+                      loc: {
+                        start: { column: 23, line: 9 },
+                        end: { column: 28, line: 9 },
+                      },
+                    },
+
+                    range: [268, 280],
+                    loc: {
+                      start: { column: 17, line: 9 },
+                      end: { column: 29, line: 9 },
+                    },
+                  },
+
+                  range: [267, 281],
+                  loc: {
+                    start: { column: 16, line: 9 },
+                    end: { column: 30, line: 9 },
+                  },
+                },
+              ],
+              closingElement: JSXClosingElement {
+                type: "JSXClosingElement",
+                name: JSXIdentifier {
+                  type: "JSXIdentifier",
+                  name: "div",
+
+                  range: [283, 286],
+                  loc: {
+                    start: { column: 32, line: 9 },
+                    end: { column: 35, line: 9 },
+                  },
+                },
+
+                range: [281, 287],
+                loc: {
+                  start: { column: 30, line: 9 },
+                  end: { column: 36, line: 9 },
+                },
+              },
+              openingElement: JSXOpeningElement {
+                type: "JSXOpeningElement",
+                attributes: [],
+                name: JSXIdentifier {
+                  type: "JSXIdentifier",
+                  name: "div",
+
+                  range: [263, 266],
+                  loc: {
+                    start: { column: 12, line: 9 },
+                    end: { column: 15, line: 9 },
+                  },
+                },
+                selfClosing: false,
+
+                range: [262, 267],
+                loc: {
+                  start: { column: 11, line: 9 },
+                  end: { column: 16, line: 9 },
+                },
+              },
+
+              range: [262, 287],
+              loc: {
+                start: { column: 11, line: 9 },
+                end: { column: 36, line: 9 },
+              },
+            },
+
+            range: [255, 288],
+            loc: {
+              start: { column: 4, line: 9 },
+              end: { column: 37, line: 9 },
+            },
+          },
+        ],
+
+        range: [249, 290],
+        loc: {
+          start: { column: 68, line: 8 },
+          end: { column: 1, line: 10 },
+        },
+      },
+      expression: false,
+      generator: false,
+      id: Identifier {
+        type: "Identifier",
+        name: "NamespacePropComponent",
+
+        range: [190, 212],
+        loc: {
+          start: { column: 9, line: 8 },
+          end: { column: 31, line: 8 },
+        },
+      },
+      params: [
+        Identifier {
+          type: "Identifier",
+          name: "props",
+          typeAnnotation: TSTypeAnnotation {
+            type: "TSTypeAnnotation",
+            typeAnnotation: TSTypeReference {
+              type: "TSTypeReference",
+              typeName: Identifier {
+                type: "Identifier",
+                name: "NamespacePropComponentProps",
+
+                range: [220, 247],
+                loc: {
+                  start: { column: 39, line: 8 },
+                  end: { column: 66, line: 8 },
+                },
+              },
+
+              range: [220, 247],
+              loc: {
+                start: { column: 39, line: 8 },
+                end: { column: 66, line: 8 },
+              },
+            },
+
+            range: [218, 247],
+            loc: {
+              start: { column: 37, line: 8 },
+              end: { column: 66, line: 8 },
+            },
+          },
+
+          range: [213, 247],
+          loc: {
+            start: { column: 32, line: 8 },
+            end: { column: 66, line: 8 },
+          },
+        },
+      ],
+
+      range: [181, 290],
+      loc: {
+        start: { column: 0, line: 8 },
+        end: { column: 1, line: 10 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 291],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 11 },
+  },
+}
+`;

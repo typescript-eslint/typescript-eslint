@@ -2,5 +2,118 @@
 
 exports[`AST Fixtures legacy-fixtures types type-literal AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'obj',
+-             optional: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSTypeLiteral {
+                  type: 'TSTypeLiteral',
+                  members: Array [
+                    TSPropertySignature {
+                      type: 'TSPropertySignature',
+                      computed: false,
+                      key: Identifier {
+                        type: 'Identifier',
+-                       decorators: Array [],
+                        name: 'x',
+-                       optional: false,
+
+                        range: [84, 85],
+                        loc: {
+                          start: { column: 11, line: 3 },
+                          end: { column: 12, line: 3 },
+                        },
+                      },
+-                     optional: false,
+-                     readonly: false,
+-                     static: false,
+                      typeAnnotation: TSTypeAnnotation {
+                        type: 'TSTypeAnnotation',
+                        typeAnnotation: TSNumberKeyword {
+                          type: 'TSNumberKeyword',
+
+                          range: [87, 93],
+                          loc: {
+                            start: { column: 14, line: 3 },
+                            end: { column: 20, line: 3 },
+                          },
+                        },
+
+                        range: [85, 93],
+                        loc: {
+                          start: { column: 12, line: 3 },
+                          end: { column: 20, line: 3 },
+                        },
+                      },
+
+                      range: [84, 93],
+                      loc: {
+                        start: { column: 11, line: 3 },
+                        end: { column: 20, line: 3 },
+                      },
+                    },
+                  ],
+
+                  range: [82, 95],
+                  loc: {
+                    start: { column: 9, line: 3 },
+                    end: { column: 22, line: 3 },
+                  },
+                },
+
+                range: [80, 95],
+                loc: {
+                  start: { column: 7, line: 3 },
+                  end: { column: 22, line: 3 },
+                },
+              },
+
+              range: [77, 95],
+              loc: {
+                start: { column: 4, line: 3 },
+                end: { column: 22, line: 3 },
+              },
+            },
+            init: null,
+
+            range: [77, 95],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 22, line: 3 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'let',
+
+        range: [73, 96],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 23, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 97],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
 `;

@@ -52,6 +52,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -63,11 +64,13 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               7,
               8,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             7,
@@ -79,8 +82,10 @@ Object {
       "type": "ImportDeclaration",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "argument": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 8,
@@ -92,11 +97,13 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             26,
             27,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {

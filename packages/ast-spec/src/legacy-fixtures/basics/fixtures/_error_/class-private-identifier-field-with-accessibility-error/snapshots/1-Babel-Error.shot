@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics _error_ class-private-identifier-field-with-accessibility-error Babel - Error 1`] = `[SyntaxError: Private elements cannot have an accessibility modifier ('private'). (4:2)]`;

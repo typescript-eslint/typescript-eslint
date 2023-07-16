@@ -112,7 +112,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce constituents of a type union/intersection to be sorted alphabetically',
-      recommended: false,
     },
     fixable: 'code',
     hasSuggestions: true,
@@ -124,6 +123,7 @@ export default util.createRule<Options, MessageIds>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           checkIntersections: {
             description: 'Whether to check intersection types.',

@@ -4,12 +4,12 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 type RuleNode =
+  | TSESTree.BlockStatement
   | TSESTree.ClassBody
   | TSESTree.Program
-  | TSESTree.TSModuleBlock
-  | TSESTree.TSTypeLiteral
   | TSESTree.TSInterfaceBody
-  | TSESTree.BlockStatement;
+  | TSESTree.TSModuleBlock
+  | TSESTree.TSTypeLiteral;
 type Member =
   | TSESTree.ClassElement
   | TSESTree.ProgramStatement
@@ -21,7 +21,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Require that function overload signatures be consecutive',
-      recommended: 'error',
+      recommended: 'stylistic',
     },
     schema: [],
     messages: {

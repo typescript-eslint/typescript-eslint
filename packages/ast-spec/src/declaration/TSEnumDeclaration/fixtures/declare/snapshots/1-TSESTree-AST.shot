@@ -6,10 +6,13 @@ Program {
   body: [
     TSEnumDeclaration {
       type: "TSEnumDeclaration",
+      const: false,
       declare: true,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [13, 16],
         loc: {

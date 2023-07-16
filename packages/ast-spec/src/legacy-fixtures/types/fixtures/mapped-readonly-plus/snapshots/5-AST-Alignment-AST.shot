@@ -13,9 +13,12 @@ exports[`AST Fixtures legacy-fixtures types mapped-readonly-plus AST Alignment -
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'map',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSMappedType {
@@ -47,8 +50,11 @@ exports[`AST Fixtures legacy-fixtures types mapped-readonly-plus AST Alignment -
 -                   in: false,
 -                   name: Identifier {
 -                     type: 'Identifier',
+-                     decorators: Array [],
 -                     name: 'P',
--
+-                     optional: false,
++                   name: 'P',
+
 -                     range: [95, 96],
 -                     loc: {
 -                       start: { column: 22, line: 3 },
@@ -56,8 +62,7 @@ exports[`AST Fixtures legacy-fixtures types mapped-readonly-plus AST Alignment -
 -                     },
 -                   },
 -                   out: false,
-+                   name: 'P',
-
+-
                     range: [95, 106],
                     loc: {
                       start: { column: 22, line: 3 },
@@ -94,6 +99,7 @@ exports[`AST Fixtures legacy-fixtures types mapped-readonly-plus AST Alignment -
             },
           },
         ],
+-       declare: false,
         kind: 'let',
 
         range: [73, 120],

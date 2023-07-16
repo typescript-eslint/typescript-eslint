@@ -25,7 +25,9 @@ Object {
       "init": Object {
         "declarations": Array [
           Object {
+            "definite": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -37,11 +39,13 @@ Object {
                 },
               },
               "name": "i",
+              "optional": false,
               "range": Array [
                 9,
                 10,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": Object {
               "loc": Object {
@@ -79,7 +83,9 @@ Object {
             "type": "VariableDeclarator",
           },
           Object {
+            "definite": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 17,
@@ -91,11 +97,13 @@ Object {
                 },
               },
               "name": "j",
+              "optional": false,
               "range": Array [
                 16,
                 17,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": Object {
               "loc": Object {
@@ -133,6 +141,7 @@ Object {
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "var",
         "loc": Object {
           "end": Object {
@@ -166,6 +175,7 @@ Object {
       ],
       "test": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 25,
@@ -177,11 +187,13 @@ Object {
             },
           },
           "name": "i",
+          "optional": false,
           "range": Array [
             24,
             25,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -199,6 +211,7 @@ Object {
           29,
         ],
         "right": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 29,
@@ -210,11 +223,13 @@ Object {
             },
           },
           "name": "j",
+          "optional": false,
           "range": Array [
             28,
             29,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "BinaryExpression",
       },
@@ -223,6 +238,7 @@ Object {
         "expressions": Array [
           Object {
             "argument": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 32,
@@ -234,11 +250,13 @@ Object {
                 },
               },
               "name": "i",
+              "optional": false,
               "range": Array [
                 31,
                 32,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -260,6 +278,7 @@ Object {
           },
           Object {
             "argument": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 37,
@@ -271,11 +290,13 @@ Object {
                 },
               },
               "name": "j",
+              "optional": false,
               "range": Array [
                 36,
                 37,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {

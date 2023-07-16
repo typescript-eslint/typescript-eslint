@@ -10,13 +10,27 @@ runs:
       id: build-cache
       with:
         path: '**/dist/**'
-        key: ${{ runner.os }}-build-${{ github.ref }}
+        key: ${{ runner.os }}-build-${{ github.ref }}-${{ github.run_id }}
+        # We don't want to share builds across runs even for the same branch
+        # because each commit can have different build artifacts and we don't
+        # want to accidentally share artifacts and poison the build output
         restore-keys: |
-          ${{ runner.os }}-build-
+          ${{ runner.os }}-build-${{ github.ref }}-${{ github.run_id }}
 
-    # if the cache was hit - this will run in <1s
+    # If the cache was hit, then we still run the types build because we generate source files
+    - name: Build AST Spec
+      if: steps['build-cache'].outputs.cache-hit == 'true'
+      shell: bash
+      run: |
+        npx nx run types:build
+      env:
+        SKIP_AST_SPEC_REBUILD: true
+
     - name: Build
+      if: steps['build-cache'].outputs.cache-hit != 'true'
       shell: bash
       # Website will be built by the Netlify GitHub App
       run: |
-        npx nx run-many --target=build --parallel --exclude website
+        npx nx run-many --target=build --parallel --exclude=website --exclude=website-eslint
+      env:
+        SKIP_AST_SPEC_REBUILD: true

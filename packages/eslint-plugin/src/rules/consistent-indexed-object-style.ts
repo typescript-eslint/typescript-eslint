@@ -3,8 +3,8 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type MessageIds = 'preferRecord' | 'preferIndexSignature';
-type Options = ['record' | 'index-signature'];
+type MessageIds = 'preferIndexSignature' | 'preferRecord';
+type Options = ['index-signature' | 'record'];
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-indexed-object-style',
@@ -12,7 +12,7 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require or disallow the `Record` type',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
     messages: {
       preferRecord: 'A record is preferred over an index signature.',
@@ -21,6 +21,7 @@ export default createRule<Options, MessageIds>({
     fixable: 'code',
     schema: [
       {
+        type: 'string',
         enum: ['record', 'index-signature'],
       },
     ],
@@ -31,7 +32,7 @@ export default createRule<Options, MessageIds>({
 
     function checkMembers(
       members: TSESTree.TypeElement[],
-      node: TSESTree.TSTypeLiteral | TSESTree.TSInterfaceDeclaration,
+      node: TSESTree.TSInterfaceDeclaration | TSESTree.TSTypeLiteral,
       parentId: TSESTree.Identifier | undefined,
       prefix: string,
       postfix: string,
@@ -108,7 +109,7 @@ export default createRule<Options, MessageIds>({
             return;
           }
 
-          const params = node.typeParameters?.params;
+          const params = node.typeArguments?.params;
           if (params?.length !== 2) {
             return;
           }
@@ -132,8 +133,8 @@ export default createRule<Options, MessageIds>({
         TSInterfaceDeclaration(node): void {
           let genericTypes = '';
 
-          if ((node.typeParameters?.params ?? []).length > 0) {
-            genericTypes = `<${node.typeParameters?.params
+          if (node.typeParameters?.params?.length) {
+            genericTypes = `<${node.typeParameters.params
               .map(p => sourceCode.getText(p))
               .join(', ')}>`;
           }
