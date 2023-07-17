@@ -1,5 +1,4 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
-import path from 'path';
 import type { RuleSeverity } from 'tslint';
 import { Configuration } from 'tslint';
 
@@ -119,7 +118,7 @@ export default createRule<Options, MessageIds>({
     context,
     [{ rules: tslintRules, rulesDirectory: tslintRulesDirectory, lintFile }],
   ) {
-    const fileName = path.resolve(context.getCwd(), context.getFilename());
+    const fileName = context.getFilename();
     const sourceCode = context.getSourceCode().text;
     const services = ESLintUtils.getParserServices(context);
     const program = services.program;

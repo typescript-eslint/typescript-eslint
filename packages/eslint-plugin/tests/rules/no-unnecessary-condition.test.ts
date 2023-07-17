@@ -595,7 +595,6 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
 }
       `,
       parserOptions: {
-        EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
       },

@@ -5,6 +5,7 @@ import * as ts from 'typescript';
 import { firstDefined } from '../node-utils';
 import type { ParseSettings } from '../parseSettings';
 import { describeFilePath } from './describeFilePath';
+import { getWatchProgramsForProjects } from './getWatchProgramsForProjects';
 import type { ASTAndDefiniteProgram } from './shared';
 import { getAstFromProgram } from './shared';
 
@@ -27,12 +28,12 @@ const DEFAULT_EXTRA_FILE_EXTENSIONS = [
  */
 function createProjectProgram(
   parseSettings: ParseSettings,
-  programsForProjects: readonly ts.Program[],
 ): ASTAndDefiniteProgram | undefined {
   log('Creating project program for: %s', parseSettings.filePath);
 
+  const programsForProjects = getWatchProgramsForProjects(parseSettings);
   const astAndProgram = firstDefined(programsForProjects, currentProgram =>
-    getAstFromProgram(currentProgram, parseSettings.filePath),
+    getAstFromProgram(currentProgram, parseSettings),
   );
 
   // The file was either matched within the tsconfig, or we allow creating a default program

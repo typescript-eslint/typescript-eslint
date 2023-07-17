@@ -97,12 +97,12 @@ function getExtension(fileName: string | undefined): string | null {
 
 function getAstFromProgram(
   currentProgram: Program,
-  filePath: string,
+  parseSettings: ParseSettings,
 ): ASTAndDefiniteProgram | undefined {
-  const ast = currentProgram.getSourceFile(filePath);
+  const ast = currentProgram.getSourceFile(parseSettings.filePath);
 
   // working around https://github.com/typescript-eslint/typescript-eslint/issues/1573
-  const expectedExt = getExtension(filePath);
+  const expectedExt = getExtension(parseSettings.filePath);
   const returnedExt = getExtension(ast?.fileName);
   if (expectedExt !== returnedExt) {
     return undefined;

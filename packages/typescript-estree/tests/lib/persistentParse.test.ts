@@ -2,7 +2,6 @@ import fs from 'fs';
 import path from 'path';
 import tmp from 'tmp';
 
-import { clearCaches } from '../../src/clear-caches';
 import { clearWatchCaches } from '../../src/create-program/getWatchProgramsForProjects';
 import { parseAndGenerateServices } from '../../src/parser';
 
@@ -87,11 +86,6 @@ function baseTests(
   tsConfigExcludeBar: Record<string, unknown>,
   tsConfigIncludeAll: Record<string, unknown>,
 ): void {
-  // The experimental project server creates a default project for files
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true') {
-    return;
-  }
-
   it('parses both files successfully when included', () => {
     const PROJECT_DIR = setup(tsConfigIncludeAll);
 
@@ -183,7 +177,6 @@ function baseTests(
 
     // change the config file so it now includes all files
     writeTSConfig(PROJECT_DIR, tsConfigIncludeAll);
-    clearCaches();
 
     expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
     expect(() => parseFile('bar', PROJECT_DIR)).not.toThrow();
@@ -264,48 +257,43 @@ describe('persistent parse', () => {
   /*
   If there is no includes, then typescript will ask for a slightly different set of watchers.
   */
+  describe('tsconfig with no includes / files', () => {
+    const tsConfigExcludeBar = {
+      exclude: ['./src/bar.ts'],
+    };
+    const tsConfigIncludeAll = {};
 
-  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
-    describe('tsconfig with no includes / files', () => {
-      const tsConfigExcludeBar = {
-        exclude: ['./src/bar.ts'],
-      };
-      const tsConfigIncludeAll = {};
+    baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
 
-      baseTests(tsConfigExcludeBar, tsConfigIncludeAll);
+    it('handles tsconfigs with no includes/excludes (single level)', () => {
+      const PROJECT_DIR = setup({}, false);
 
-      it('handles tsconfigs with no includes/excludes (single level)', () => {
-        const PROJECT_DIR = setup({}, false);
+      // parse once to: assert the config as correct, and to make sure the program is setup
+      expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+      expect(() => parseFile('bar', PROJECT_DIR)).toThrow();
 
-        // parse once to: assert the config as correct, and to make sure the program is setup
-        expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
-        expect(() => parseFile('bar', PROJECT_DIR)).toThrow();
+      // write a new file and attempt to parse it
+      writeFile(PROJECT_DIR, 'bar');
 
-        // write a new file and attempt to parse it
-        writeFile(PROJECT_DIR, 'bar');
-        clearCaches();
-
-        expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
-        expect(() => parseFile('bar', PROJECT_DIR)).not.toThrow();
-      });
-
-      it('handles tsconfigs with no includes/excludes (nested)', () => {
-        const PROJECT_DIR = setup({}, false);
-        const bazSlashBar = 'baz/bar' as const;
-
-        // parse once to: assert the config as correct, and to make sure the program is setup
-        expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
-        expect(() => parseFile(bazSlashBar, PROJECT_DIR)).toThrow();
-
-        // write a new file and attempt to parse it
-        writeFile(PROJECT_DIR, bazSlashBar);
-        clearCaches();
-
-        expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
-        expect(() => parseFile(bazSlashBar, PROJECT_DIR)).not.toThrow();
-      });
+      expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+      expect(() => parseFile('bar', PROJECT_DIR)).not.toThrow();
     });
-  }
+
+    it('handles tsconfigs with no includes/excludes (nested)', () => {
+      const PROJECT_DIR = setup({}, false);
+      const bazSlashBar = 'baz/bar' as const;
+
+      // parse once to: assert the config as correct, and to make sure the program is setup
+      expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+      expect(() => parseFile(bazSlashBar, PROJECT_DIR)).toThrow();
+
+      // write a new file and attempt to parse it
+      writeFile(PROJECT_DIR, bazSlashBar);
+
+      expect(() => parseFile('foo', PROJECT_DIR)).not.toThrow();
+      expect(() => parseFile(bazSlashBar, PROJECT_DIR)).not.toThrow();
+    });
+  });
 
   /*
   If there is no includes, then typescript will ask for a slightly different set of watchers.

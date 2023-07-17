@@ -13,7 +13,6 @@ export const defaultParseSettings: ParseSettings = {
   DEPRECATED__createDefaultProgram: false,
   errorOnTypeScriptSyntacticAndSemanticIssues: false,
   errorOnUnknownASTType: false,
-  EXPERIMENTAL_projectService: undefined,
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   extraFileExtensions: [],
   filePath: '',

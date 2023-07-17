@@ -6,7 +6,6 @@ import { getFixturesRootDir } from '../RuleTester';
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
   parserOptions: {
-    EXPERIMENTAL_useProjectService: false,
     project: './tsconfig.noImplicitThis.json',
     tsconfigRootDir: getFixturesRootDir(),
   },

@@ -16,7 +16,6 @@ const ruleTester = new RuleTester({
 });
 
 const withMetaParserOptions = {
-  EXPERIMENTAL_useProjectService: false,
   tsconfigRootDir: getFixturesRootDir(),
   project: './tsconfig-withmeta.json',
 };
