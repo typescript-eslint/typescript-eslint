@@ -51,7 +51,7 @@
     "generate:breaking-changes": "yarn tsx tools/generate-breaking-changes.mts",
     "generate:configs": "yarn tsx tools/generate-configs.ts",
     "lint": "nx lint",
-    "test": "jest --coverage",
+    "test": "jest --coverage --logHeapUsage",
     "test-single": "jest --no-coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
