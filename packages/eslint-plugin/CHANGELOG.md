@@ -3,6 +3,30 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.0.0...v6.1.0) (2023-07-17)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [comma-dangle] fixed crash from undefined predicate.ignore ([#7223](https://github.com/typescript-eslint/typescript-eslint/issues/7223)) ([d368164](https://github.com/typescript-eslint/typescript-eslint/commit/d368164478a8b141ad6b1c4ea5088fdc639ccafe))
+* **eslint-plugin:** [no-floating-promises] false negative calling .then with second argument undefined ([#6881](https://github.com/typescript-eslint/typescript-eslint/issues/6881)) ([606a52c](https://github.com/typescript-eslint/typescript-eslint/commit/606a52cefcecd594df6edc359bff291b835169f2)), closes [#6850](https://github.com/typescript-eslint/typescript-eslint/issues/6850)
+* **eslint-plugin:** [no-floating-promises] finally should be transparent to unhandled promises ([#7092](https://github.com/typescript-eslint/typescript-eslint/issues/7092)) ([2a4421c](https://github.com/typescript-eslint/typescript-eslint/commit/2a4421ccf072f866bb6c2dadab967aa69ac9bf4a))
+* **eslint-plugin:** [no-unnecessary-type-constraint] correctly fix in cts/mts files ([#6795](https://github.com/typescript-eslint/typescript-eslint/issues/6795)) ([1404796](https://github.com/typescript-eslint/typescript-eslint/commit/14047963d79e4d4a783854e2826a30004fa34570))
+* **eslint-plugin:** [no-unused-vars] check if any variable definition is exported ([#6873](https://github.com/typescript-eslint/typescript-eslint/issues/6873)) ([587ac30](https://github.com/typescript-eslint/typescript-eslint/commit/587ac306d9e53736ebe799f5b9edcb7dd030eed6)), closes [#6188](https://github.com/typescript-eslint/typescript-eslint/issues/6188)
+* **eslint-plugin:** fix schemas across several rules and add schema tests ([#6947](https://github.com/typescript-eslint/typescript-eslint/issues/6947)) ([dd31bed](https://github.com/typescript-eslint/typescript-eslint/commit/dd31bed1e921531abe039180c9aeccbd56934601))
+* **eslint-plugin:** include the rules types in the package ([#7215](https://github.com/typescript-eslint/typescript-eslint/issues/7215)) ([a3da11d](https://github.com/typescript-eslint/typescript-eslint/commit/a3da11d09b1d119fd5bc4cd776474e2520d7fefd))
+
+
+### Features
+
+* **typescript-estree:** add EXPERIMENTAL_useProjectService option to use TypeScript project service ([#6754](https://github.com/typescript-eslint/typescript-eslint/issues/6754)) ([6d3d162](https://github.com/typescript-eslint/typescript-eslint/commit/6d3d162ce032ebcf5f892a4edfb897797fc96191))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [6.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.62.0...v6.0.0) (2023-07-10)
 
 
