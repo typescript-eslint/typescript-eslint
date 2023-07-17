@@ -6,6 +6,7 @@ Program {
   body: [
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [],
@@ -16,9 +17,13 @@ Program {
           end: { column: 43, line: 3 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [79, 82],
         loc: {
@@ -26,9 +31,12 @@ Program {
           end: { column: 9, line: 3 },
         },
       },
+      implements: [],
       superClass: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Bar",
+        optional: false,
 
         range: [104, 107],
         loc: {
@@ -36,14 +44,16 @@ Program {
           end: { column: 34, line: 3 },
         },
       },
-      superTypeParameters: TSTypeParameterInstantiation {
+      superTypeArguments: TSTypeParameterInstantiation {
         type: "TSTypeParameterInstantiation",
         params: [
           TSTypeReference {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "C",
+              optional: false,
 
               range: [108, 109],
               loc: {
@@ -62,7 +72,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "D",
+              optional: false,
 
               range: [111, 112],
               loc: {
@@ -95,7 +107,9 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "B",
+                optional: false,
 
                 range: [93, 94],
                 loc: {
@@ -113,7 +127,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "A",
+              optional: false,
 
               range: [83, 84],
               loc: {

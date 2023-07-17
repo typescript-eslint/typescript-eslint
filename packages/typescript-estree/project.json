@@ -5,10 +5,13 @@
   "implicitDependencies": ["types"],
   "targets": {
     "lint": {
-      "executor": "@nrwl/linter:eslint",
+      "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/typescript-estree/**/*.ts"]
+        "lintFilePatterns": [
+          "packages/typescript-estree/**/*.{mts,cts,ts,tsx}"
+        ],
+        "ignorePath": ".eslintignore"
       }
     }
   }

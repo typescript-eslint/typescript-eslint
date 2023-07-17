@@ -13,9 +13,12 @@ exports[`AST Fixtures legacy-fixtures types function-with-rest AST Alignment - A
         declarations: Array [
           VariableDeclarator {
             type: 'VariableDeclarator',
+-           definite: false,
             id: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'f',
+-             optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSFunctionType {
@@ -26,7 +29,9 @@ exports[`AST Fixtures legacy-fixtures types function-with-rest AST Alignment - A
                       type: 'RestElement',
                       argument: Identifier {
                         type: 'Identifier',
+-                       decorators: Array [],
                         name: 'a',
+-                       optional: false,
 
                         range: [84, 85],
                         loc: {
@@ -34,6 +39,8 @@ exports[`AST Fixtures legacy-fixtures types function-with-rest AST Alignment - A
                           end: { column: 12, line: 3 },
                         },
                       },
+-                     decorators: Array [],
+-                     optional: false,
                       typeAnnotation: TSTypeAnnotation {
                         type: 'TSTypeAnnotation',
                         typeAnnotation: TSArrayType {
@@ -118,6 +125,7 @@ exports[`AST Fixtures legacy-fixtures types function-with-rest AST Alignment - A
             },
           },
         ],
+-       declare: false,
         kind: 'let',
 
         range: [73, 105],

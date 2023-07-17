@@ -1,7 +1,8 @@
+import type { RunTests } from '@typescript-eslint/rule-tester';
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import type { MessageIds, Options } from '../../src/rules/member-ordering';
 import rule from '../../src/rules/member-ordering';
-import type { RunTests } from '../RuleTester';
-import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -1454,7 +1455,7 @@ class Foo {
       code: `
 class Foo {
   constructor() {}
-  @Dec() public A(): void;
+  @Dec() public A(): void {}
   @Dec() private B: string;
   private C(): void;
   private D: string;
@@ -1473,7 +1474,7 @@ class Foo {
     {
       code: `
 class Foo {
-  @Dec() private A(): void;
+  @Dec() private A(): void {}
   @Dec() private B: string;
   constructor() {}
   private C(): void;
@@ -1510,7 +1511,7 @@ class Foo {
       code: `
 class Foo {
   public A(): string;
-  @Dec() public B(): string;
+  @Dec() public B(): string {}
   public C(): string;
 
   d: string;
@@ -4299,7 +4300,7 @@ class Foo {
   C: number;
   [A: string]: number;
   public static D(): {};
-  private static [B: string]: number;
+  static [B: string]: number;
 }
       `,
       options: [

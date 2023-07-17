@@ -1,3 +1,5 @@
+/* global Prism */
+
 // https://www.json.org/json-en.html
 Prism.languages.cjson = {
   property: {

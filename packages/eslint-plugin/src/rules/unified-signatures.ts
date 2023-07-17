@@ -10,14 +10,14 @@ interface Failure {
 
 type Unify =
   | {
-      kind: 'single-parameter-difference';
-      p0: TSESTree.Parameter;
-      p1: TSESTree.Parameter;
-    }
-  | {
       kind: 'extra-parameter';
       extraParameter: TSESTree.Parameter;
       otherSignature: SignatureDefinition;
+    }
+  | {
+      kind: 'single-parameter-difference';
+      p0: TSESTree.Parameter;
+      p1: TSESTree.Parameter;
     };
 
 /**
@@ -27,16 +27,16 @@ type Unify =
 type IsTypeParameter = (typeName: string) => boolean;
 
 type ScopeNode =
-  | TSESTree.Program
-  | TSESTree.TSModuleBlock
-  | TSESTree.TSInterfaceBody
   | TSESTree.ClassBody
+  | TSESTree.Program
+  | TSESTree.TSInterfaceBody
+  | TSESTree.TSModuleBlock
   | TSESTree.TSTypeLiteral;
 
 type OverloadNode = MethodDefinition | SignatureDefinition;
 type ContainingNode =
-  | TSESTree.ExportNamedDeclaration
-  | TSESTree.ExportDefaultDeclaration;
+  | TSESTree.ExportDefaultDeclaration
+  | TSESTree.ExportNamedDeclaration;
 
 type SignatureDefinition =
   | TSESTree.FunctionExpression
@@ -212,11 +212,9 @@ export default util.createRule<Options, MessageIds>({
       const bTypeParams =
         b.typeParameters !== undefined ? b.typeParameters.params : undefined;
 
-      if (
-        ignoreDifferentlyNamedParameters &&
-        a.params.length === b.params.length
-      ) {
-        for (let i = 0; i < a.params.length; i += 1) {
+      if (ignoreDifferentlyNamedParameters) {
+        const commonParamsLength = Math.min(a.params.length, b.params.length);
+        for (let i = 0; i < commonParamsLength; i += 1) {
           if (
             a.params[i].type === b.params[i].type &&
             getStaticParameterName(a.params[i]) !==
@@ -424,8 +422,7 @@ export default util.createRule<Options, MessageIds>({
 
       return (
         (a.type === AST_NODE_TYPES.RestElement) ===
-          (b.type === AST_NODE_TYPES.RestElement) &&
-        (optionalA !== undefined) === (optionalB !== undefined)
+          (b.type === AST_NODE_TYPES.RestElement) && optionalA === optionalB
       );
     }
 
@@ -585,12 +582,11 @@ export default util.createRule<Options, MessageIds>({
 function getExportingNode(
   node: TSESTree.TSDeclareFunction,
 ):
-  | TSESTree.ExportNamedDeclaration
   | TSESTree.ExportDefaultDeclaration
+  | TSESTree.ExportNamedDeclaration
   | undefined {
-  return node.parent &&
-    (node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
-      node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration)
+  return node.parent.type === AST_NODE_TYPES.ExportNamedDeclaration ||
+    node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration
     ? node.parent
     : undefined;
 }

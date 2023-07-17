@@ -26,9 +26,12 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules global-module-decla
                 },
               },
               declare: true,
+-             global: false,
               id: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'global',
+-               optional: false,
 
                 range: [107, 113],
                 loc: {
@@ -57,9 +60,12 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules global-module-decla
                 },
               },
               declare: true,
+-             global: false,
               id: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'global',
+-               optional: false,
 
                 range: [137, 143],
                 loc: {
@@ -87,7 +93,9 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules global-module-decla
         global: true,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'global',
+-         optional: false,
 
           range: [81, 87],
           loc: {

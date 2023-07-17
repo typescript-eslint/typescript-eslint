@@ -25,9 +25,12 @@ Object {
       "left": Object {
         "declarations": Array [
           Object {
+            "definite": false,
             "id": Object {
+              "decorators": Array [],
               "elements": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 14,
@@ -39,13 +42,16 @@ Object {
                     },
                   },
                   "name": "name",
+                  "optional": false,
                   "range": Array [
                     10,
                     14,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 21,
@@ -57,11 +63,13 @@ Object {
                     },
                   },
                   "name": "value",
+                  "optional": false,
                   "range": Array [
                     16,
                     21,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               ],
               "loc": Object {
@@ -74,11 +82,13 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "range": Array [
                 9,
                 22,
               ],
               "type": "ArrayPattern",
+              "typeAnnotation": undefined,
             },
             "init": null,
             "loc": Object {
@@ -98,6 +108,7 @@ Object {
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "var",
         "loc": Object {
           "end": Object {
@@ -130,6 +141,7 @@ Object {
         33,
       ],
       "right": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 29,
@@ -141,11 +153,13 @@ Object {
           },
         },
         "name": "obj",
+        "optional": false,
         "range": Array [
           26,
           29,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "type": "ForInStatement",
     },

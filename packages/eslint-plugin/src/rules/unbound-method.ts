@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -130,7 +130,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce unbound methods are called with their expected scope',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -161,9 +161,8 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ ignoreStatic }]) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
-    const currentSourceFile = parserServices.program.getSourceFile(
+    const services = util.getParserServices(context);
+    const currentSourceFile = services.program.getSourceFile(
       context.getFilename(),
     );
 
@@ -193,9 +192,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const objectSymbol = checker.getSymbolAtLocation(
-          parserServices.esTreeNodeToTSNodeMap.get(node.object),
-        );
+        const objectSymbol = services.getSymbolAtLocation(node.object);
 
         if (
           objectSymbol &&
@@ -205,12 +202,10 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        const originalNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-
-        checkMethodAndReport(node, checker.getSymbolAtLocation(originalNode));
+        checkMethodAndReport(node, services.getSymbolAtLocation(node));
       },
       'VariableDeclarator, AssignmentExpression'(
-        node: TSESTree.VariableDeclarator | TSESTree.AssignmentExpression,
+        node: TSESTree.AssignmentExpression | TSESTree.VariableDeclarator,
       ): void {
         const [idNode, initNode] =
           node.type === AST_NODE_TYPES.VariableDeclarator
@@ -218,9 +213,8 @@ export default util.createRule<Options, MessageIds>({
             : [node.left, node.right];
 
         if (initNode && idNode.type === AST_NODE_TYPES.ObjectPattern) {
-          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(initNode);
-          const rightSymbol = checker.getSymbolAtLocation(tsNode);
-          const initTypes = checker.getTypeAtLocation(tsNode);
+          const rightSymbol = services.getSymbolAtLocation(initNode);
+          const initTypes = services.getTypeAtLocation(initNode);
 
           const notImported =
             rightSymbol && isNotImported(rightSymbol, currentSourceFile);
@@ -277,6 +271,7 @@ function checkMethod(
       const firstParam = decl.parameters[0];
       const firstParamIsThis =
         firstParam?.name.kind === ts.SyntaxKind.Identifier &&
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
         firstParam?.name.escapedText === 'this';
       const thisArgIsVoid =
         firstParamIsThis &&
@@ -287,7 +282,7 @@ function checkMethod(
           !thisArgIsVoid &&
           !(
             ignoreStatic &&
-            tsutils.hasModifier(
+            tsutils.includesModifier(
               getModifiers(valueDeclaration),
               ts.SyntaxKind.StaticKeyword,
             )

@@ -6,9 +6,12 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "elements": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 6,
@@ -20,17 +23,21 @@ Object {
                   },
                 },
                 "name": "x",
+                "optional": false,
                 "range": Array [
                   5,
                   6,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               null,
               Object {
+                "decorators": Array [],
                 "elements": Array [
                   null,
                   Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 14,
@@ -42,11 +49,13 @@ Object {
                       },
                     },
                     "name": "z",
+                    "optional": false,
                     "range": Array [
                       13,
                       14,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                 ],
                 "loc": Object {
@@ -59,11 +68,13 @@ Object {
                     "line": 1,
                   },
                 },
+                "optional": false,
                 "range": Array [
                   10,
                   15,
                 ],
                 "type": "ArrayPattern",
+                "typeAnnotation": undefined,
               },
             ],
             "loc": Object {
@@ -76,11 +87,13 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "range": Array [
               4,
               16,
             ],
             "type": "ArrayPattern",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "elements": Array [
@@ -213,6 +226,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {

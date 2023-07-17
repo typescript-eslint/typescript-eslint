@@ -33,7 +33,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow variable declarations from shadowing variables declared in the outer scope',
-      recommended: false,
       extendsBaseRule: true,
     },
     schema: [
@@ -44,6 +43,7 @@ export default util.createRule<Options, MessageIds>({
             type: 'boolean',
           },
           hoist: {
+            type: 'string',
             enum: ['all', 'functions', 'never'],
           },
           allow: {
@@ -365,7 +365,7 @@ export default util.createRule<Options, MessageIds>({
     ): TSESLint.Scope.Scope | null {
       const upper = scope.upper;
 
-      if (upper?.type === 'function-expression-name') {
+      if (upper?.type === ScopeType.functionExpressionName) {
         return upper.upper;
       }
       return upper;
@@ -529,7 +529,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function getDeclaredLocation(
       variable: TSESLint.Scope.Variable,
-    ): { global: true } | { global: false; line: number; column: number } {
+    ): { global: false; line: number; column: number } | { global: true } {
       const identifier = variable.identifiers[0];
       if (identifier) {
         return {

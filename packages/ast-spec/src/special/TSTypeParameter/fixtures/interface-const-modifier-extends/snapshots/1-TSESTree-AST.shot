@@ -16,9 +16,13 @@ Program {
           end: { column: 33, line: 1 },
         },
       },
+      declare: false,
+      extends: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "J",
+        optional: false,
 
         range: [10, 11],
         loc: {
@@ -36,7 +40,9 @@ Program {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "U",
+                optional: false,
 
                 range: [28, 29],
                 loc: {
@@ -54,7 +60,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [18, 19],
               loc: {

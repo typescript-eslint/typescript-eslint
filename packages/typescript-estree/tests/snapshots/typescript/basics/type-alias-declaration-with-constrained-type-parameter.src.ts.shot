@@ -4,7 +4,9 @@ exports[`typescript basics type-alias-declaration-with-constrained-type-paramete
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 11,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "Result",
+        "optional": false,
         "range": Array [
           5,
           11,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -71,6 +75,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 35,
@@ -82,11 +87,13 @@ Object {
                 },
               },
               "name": "Success",
+              "optional": false,
               "range": Array [
                 28,
                 35,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": Object {
               "loc": Object {
@@ -117,6 +124,7 @@ Object {
                   ],
                   "type": "TSTypeReference",
                   "typeName": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 37,
@@ -128,11 +136,13 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       36,
                       37,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "typeParameters": undefined,
                 },
@@ -161,6 +171,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 48,
@@ -172,11 +183,13 @@ Object {
                 },
               },
               "name": "Failure",
+              "optional": false,
               "range": Array [
                 41,
                 48,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": undefined,
           },
@@ -226,6 +239,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 13,
@@ -237,11 +251,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 12,
                 13,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [

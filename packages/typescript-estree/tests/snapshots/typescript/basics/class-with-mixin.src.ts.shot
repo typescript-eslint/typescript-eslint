@@ -9,6 +9,7 @@ Object {
         "body": Array [
           Object {
             "argument": Object {
+              "abstract": false,
               "body": Object {
                 "body": Array [],
                 "loc": Object {
@@ -27,7 +28,10 @@ Object {
                 ],
                 "type": "ClassBody",
               },
+              "declare": false,
+              "decorators": Array [],
               "id": null,
+              "implements": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 33,
@@ -43,6 +47,7 @@ Object {
                 82,
               ],
               "superClass": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 29,
@@ -54,13 +59,17 @@ Object {
                   },
                 },
                 "name": "Base",
+                "optional": false,
                 "range": Array [
                   74,
                   78,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
+              "superTypeParameters": undefined,
               "type": "ClassExpression",
+              "typeParameters": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -95,9 +104,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 10,
@@ -109,11 +120,13 @@ Object {
           },
         },
         "name": "M",
+        "optional": false,
         "range": Array [
           9,
           10,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -127,6 +140,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 45,
@@ -138,6 +152,7 @@ Object {
             },
           },
           "name": "Base",
+          "optional": false,
           "range": Array [
             38,
             45,
@@ -176,6 +191,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 45,
@@ -187,11 +203,13 @@ Object {
                   },
                 },
                 "name": "T",
+                "optional": false,
                 "range": Array [
                   44,
                   45,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -202,6 +220,7 @@ Object {
         0,
         84,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
       "typeParameters": Object {
         "loc": Object {
@@ -233,6 +252,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 32,
@@ -244,11 +264,13 @@ Object {
                   },
                 },
                 "name": "Constructor",
+                "optional": false,
                 "range": Array [
                   21,
                   32,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": Object {
                 "loc": Object {
@@ -301,6 +323,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -312,11 +335,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 11,
                 12,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [
@@ -334,6 +359,7 @@ Object {
       },
     },
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -352,7 +378,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 7,
@@ -364,15 +393,18 @@ Object {
           },
         },
         "name": "X",
+        "optional": false,
         "range": Array [
           92,
           93,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "implements": Array [
         Object {
           "expression": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 38,
@@ -384,11 +416,13 @@ Object {
               },
             },
             "name": "I",
+            "optional": false,
             "range": Array [
               123,
               124,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -405,6 +439,7 @@ Object {
             124,
           ],
           "type": "TSClassImplements",
+          "typeParameters": undefined,
         },
       ],
       "loc": Object {
@@ -424,6 +459,7 @@ Object {
       "superClass": Object {
         "arguments": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 24,
@@ -435,14 +471,17 @@ Object {
               },
             },
             "name": "C",
+            "optional": false,
             "range": Array [
               109,
               110,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
         ],
         "callee": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 17,
@@ -454,11 +493,13 @@ Object {
             },
           },
           "name": "M",
+          "optional": false,
           "range": Array [
             102,
             103,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -513,9 +554,12 @@ Object {
           "type": "TSTypeParameterInstantiation",
         },
       },
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -534,7 +578,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 7,
@@ -546,12 +593,15 @@ Object {
           },
         },
         "name": "C",
+        "optional": false,
         "range": Array [
           136,
           137,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 11,
@@ -567,7 +617,9 @@ Object {
         141,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
     Object {
       "body": Object {
@@ -588,7 +640,10 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
+      "extends": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 11,
@@ -600,11 +655,13 @@ Object {
           },
         },
         "name": "I",
+        "optional": false,
         "range": Array [
           152,
           153,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -621,9 +678,12 @@ Object {
         157,
       ],
       "type": "TSInterfaceDeclaration",
+      "typeParameters": undefined,
     },
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 16,
@@ -635,11 +695,13 @@ Object {
           },
         },
         "name": "Constructor",
+        "optional": false,
         "range": Array [
           163,
           174,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -671,6 +733,7 @@ Object {
         "params": Array [
           Object {
             "argument": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 34,
@@ -682,12 +745,15 @@ Object {
                 },
               },
               "name": "args",
+              "optional": false,
               "range": Array [
                 188,
                 192,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 41,
@@ -698,6 +764,7 @@ Object {
                 "line": 9,
               },
             },
+            "optional": false,
             "range": Array [
               185,
               199,
@@ -754,6 +821,7 @@ Object {
                 "type": "TSArrayType",
               },
             },
+            "value": undefined,
           },
         ],
         "range": Array [
@@ -793,6 +861,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 47,
@@ -804,16 +873,19 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 204,
                 205,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": undefined,
           },
         },
         "type": "TSConstructorType",
+        "typeParameters": undefined,
       },
       "typeParameters": Object {
         "loc": Object {
@@ -842,6 +914,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 18,
@@ -853,11 +926,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 175,
                 176,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [

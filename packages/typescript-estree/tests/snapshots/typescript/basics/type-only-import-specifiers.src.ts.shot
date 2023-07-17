@@ -43,6 +43,7 @@ Object {
         Object {
           "importKind": "type",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 15,
@@ -54,11 +55,13 @@ Object {
               },
             },
             "name": "A",
+            "optional": false,
             "range": Array [
               14,
               15,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -71,6 +74,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 15,
@@ -82,11 +86,13 @@ Object {
               },
             },
             "name": "A",
+            "optional": false,
             "range": Array [
               14,
               15,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             9,
@@ -97,6 +103,7 @@ Object {
         Object {
           "importKind": "type",
           "imported": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 23,
@@ -108,11 +115,13 @@ Object {
               },
             },
             "name": "B",
+            "optional": false,
             "range": Array [
               22,
               23,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -125,6 +134,7 @@ Object {
             },
           },
           "local": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 23,
@@ -136,11 +146,13 @@ Object {
               },
             },
             "name": "B",
+            "optional": false,
             "range": Array [
               22,
               23,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             17,

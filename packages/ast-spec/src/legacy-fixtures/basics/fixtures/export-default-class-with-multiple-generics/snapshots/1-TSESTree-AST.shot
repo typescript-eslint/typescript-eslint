@@ -8,6 +8,7 @@ Program {
       type: "ExportDefaultDeclaration",
       declaration: ClassDeclaration {
         type: "ClassDeclaration",
+        abstract: false,
         body: ClassBody {
           type: "ClassBody",
           body: [],
@@ -18,7 +19,10 @@ Program {
             end: { column: 29, line: 3 },
           },
         },
+        declare: false,
+        decorators: [],
         id: null,
+        implements: [],
         superClass: null,
         typeParameters: TSTypeParameterDeclaration {
           type: "TSTypeParameterDeclaration",
@@ -29,7 +33,9 @@ Program {
               in: false,
               name: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "T",
+                optional: false,
 
                 range: [94, 95],
                 loc: {
@@ -51,7 +57,9 @@ Program {
               in: false,
               name: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "U",
+                optional: false,
 
                 range: [97, 98],
                 loc: {

@@ -3,8 +3,9 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/space-infix-ops';
-import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

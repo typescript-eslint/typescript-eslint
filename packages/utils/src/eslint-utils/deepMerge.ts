@@ -5,9 +5,7 @@ type ObjectLike<T = unknown> = Record<string, T>;
  * @param obj an object
  * @returns `true` if obj is an object
  */
-function isObjectNotArray<T extends ObjectLike>(
-  obj: unknown | unknown[],
-): obj is T {
+function isObjectNotArray<T extends ObjectLike>(obj: unknown): obj is T {
   return typeof obj === 'object' && obj != null && !Array.isArray(obj);
 }
 

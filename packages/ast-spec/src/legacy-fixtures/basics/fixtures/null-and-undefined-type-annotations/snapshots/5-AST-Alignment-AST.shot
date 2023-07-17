@@ -2,5 +2,127 @@
 
 exports[`AST Fixtures legacy-fixtures basics null-and-undefined-type-annotations AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'x',
+-             optional: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSNullKeyword {
+                  type: 'TSNullKeyword',
+
+                  range: [80, 84],
+                  loc: {
+                    start: { column: 7, line: 3 },
+                    end: { column: 11, line: 3 },
+                  },
+                },
+
+                range: [78, 84],
+                loc: {
+                  start: { column: 5, line: 3 },
+                  end: { column: 11, line: 3 },
+                },
+              },
+
+              range: [77, 84],
+              loc: {
+                start: { column: 4, line: 3 },
+                end: { column: 11, line: 3 },
+              },
+            },
+            init: null,
+
+            range: [77, 84],
+            loc: {
+              start: { column: 4, line: 3 },
+              end: { column: 11, line: 3 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'let',
+
+        range: [73, 85],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 12, line: 3 },
+        },
+      },
+      VariableDeclaration {
+        type: 'VariableDeclaration',
+        declarations: Array [
+          VariableDeclarator {
+            type: 'VariableDeclarator',
+-           definite: false,
+            id: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'y',
+-             optional: false,
+              typeAnnotation: TSTypeAnnotation {
+                type: 'TSTypeAnnotation',
+                typeAnnotation: TSUndefinedKeyword {
+                  type: 'TSUndefinedKeyword',
+
+                  range: [93, 102],
+                  loc: {
+                    start: { column: 7, line: 4 },
+                    end: { column: 16, line: 4 },
+                  },
+                },
+
+                range: [91, 102],
+                loc: {
+                  start: { column: 5, line: 4 },
+                  end: { column: 16, line: 4 },
+                },
+              },
+
+              range: [90, 102],
+              loc: {
+                start: { column: 4, line: 4 },
+                end: { column: 16, line: 4 },
+              },
+            },
+            init: null,
+
+            range: [90, 102],
+            loc: {
+              start: { column: 4, line: 4 },
+              end: { column: 16, line: 4 },
+            },
+          },
+        ],
+-       declare: false,
+        kind: 'let',
+
+        range: [86, 103],
+        loc: {
+          start: { column: 0, line: 4 },
+          end: { column: 17, line: 4 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 104],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 5 },
+    },
+  }"
 `;

@@ -11,7 +11,7 @@ import styles from './styles.module.css';
 
 interface FeatureItem {
   title: string;
-  description: JSX.Element;
+  description: React.JSX.Element;
   imageUrl?: string;
 }
 
@@ -106,7 +106,7 @@ const features: FeatureItem[] = [
   },
 ];
 
-function Feature({ title, description }: FeatureItem): JSX.Element {
+function Feature({ title, description }: FeatureItem): React.JSX.Element {
   return (
     <div className="col col--12 padding-vert--lg">
       <div className="text--center">
@@ -130,7 +130,7 @@ function Feature({ title, description }: FeatureItem): JSX.Element {
   );
 }
 
-function Home(): JSX.Element {
+function Home(): React.JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout description={`${siteConfig.tagline}`}>
@@ -161,7 +161,7 @@ function Home(): JSX.Element {
             key={idx}
             className={clsx(
               styles.features,
-              idx % 2 == 1 ? styles.lightBackground : '',
+              idx % 2 === 1 ? styles.lightBackground : '',
             )}
           >
             <div className="container">

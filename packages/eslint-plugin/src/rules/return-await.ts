@@ -1,16 +1,15 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
-import { isBinaryExpression } from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
 import { getOperatorPrecedence } from '../util/getOperatorPrecedence';
 
 type FunctionNode =
+  | TSESTree.ArrowFunctionExpression
   | TSESTree.FunctionDeclaration
-  | TSESTree.FunctionExpression
-  | TSESTree.ArrowFunctionExpression;
+  | TSESTree.FunctionExpression;
 
 interface ScopeInfo {
   hasAsync: boolean;
@@ -22,7 +21,6 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Enforce consistent returning of awaited values',
-      recommended: false,
       requiresTypeChecking: true,
       extendsBaseRule: 'no-return-await',
     },
@@ -39,6 +37,7 @@ export default util.createRule({
     },
     schema: [
       {
+        type: 'string',
         enum: ['in-try-catch', 'always', 'never'],
       },
     ],
@@ -46,8 +45,8 @@ export default util.createRule({
   defaultOptions: ['in-try-catch'],
 
   create(context, [option]) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
     const scopeInfoStack: ScopeInfo[] = [];
@@ -166,7 +165,7 @@ export default util.createRule({
     }
 
     function isHigherPrecedenceThanAwait(node: ts.Node): boolean {
-      const operator = isBinaryExpression(node)
+      const operator = ts.isBinaryExpression(node)
         ? node.operatorToken.kind
         : ts.SyntaxKind.Unknown;
       const nodePrecedence = getOperatorPrecedence(node.kind, operator);
@@ -301,7 +300,7 @@ export default util.createRule({
       ): void {
         if (node.body.type !== AST_NODE_TYPES.BlockStatement) {
           findPossiblyReturnedNodes(node.body).forEach(node => {
-            const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+            const tsNode = services.esTreeNodeToTSNodeMap.get(node);
             test(node, tsNode);
           });
         }
@@ -312,7 +311,7 @@ export default util.createRule({
           return;
         }
         findPossiblyReturnedNodes(node.argument).forEach(node => {
-          const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+          const tsNode = services.esTreeNodeToTSNodeMap.get(node);
           test(node, tsNode);
         });
       },

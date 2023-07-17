@@ -1,2 +1,2 @@
-declare function f(a: number): number
-f
+declare function f(a: number): number;
+f;

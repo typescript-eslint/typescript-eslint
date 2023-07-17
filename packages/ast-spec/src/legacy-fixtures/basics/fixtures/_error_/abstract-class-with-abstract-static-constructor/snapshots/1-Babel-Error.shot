@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics _error_ abstract-class-with-abstract-static-constructor Babel - Error 1`] = `[SyntaxError: 'static' modifier cannot be used with 'abstract' modifier. (4:11)]`;

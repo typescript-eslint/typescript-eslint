@@ -16,7 +16,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow literal numbers that lose precision',
-      recommended: 'error',
+      recommended: 'recommended',
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule?.meta.hasSuggestions,

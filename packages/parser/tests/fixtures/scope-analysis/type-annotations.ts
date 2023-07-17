@@ -1,7 +1,7 @@
-type A = number
-var a: { b: A }
+type A = number;
+var a: { b: A };
 class C {
-    f(a: { b: A }): { b: A } {
-        return {b: 1}
-    }
+  f(a: { b: A }): { b: A } {
+    return { b: 1 };
+  }
 }

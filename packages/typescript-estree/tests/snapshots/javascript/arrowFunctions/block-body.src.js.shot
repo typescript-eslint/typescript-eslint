@@ -4,11 +4,13 @@ exports[`javascript arrowFunctions block-body.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
           "body": Array [
             Object {
+              "directive": undefined,
               "expression": Object {
                 "loc": Object {
                   "end": Object {
@@ -76,6 +78,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 1,
@@ -87,18 +90,22 @@ Object {
               },
             },
             "name": "e",
+            "optional": false,
             "range": Array [
               0,
               1,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
         ],
         "range": Array [
           0,
           12,
         ],
+        "returnType": undefined,
         "type": "ArrowFunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

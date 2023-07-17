@@ -13,7 +13,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce the use of top-level import type qualifier when an import only has specifiers with inline type qualifiers',
-      recommended: false,
     },
     fixable: 'code',
     messages: {

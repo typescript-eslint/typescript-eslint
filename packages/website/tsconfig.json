@@ -1,7 +1,7 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
-    "module": "CommonJS",
+    "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "allowJs": true,
     "esModuleInterop": true,
@@ -16,5 +16,13 @@
     },
     "types": ["@docusaurus/module-type-aliases", "@docusaurus/theme-classic"]
   },
-  "include": ["src", "tests", "plugins", "typings", "./*.ts"]
+  "include": [
+    "src",
+    "tests",
+    "tools",
+    "plugins",
+    "typings",
+    "sidebars/*.js",
+    "./*.ts"
+  ]
 }

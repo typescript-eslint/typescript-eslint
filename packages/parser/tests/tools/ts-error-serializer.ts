@@ -1,4 +1,4 @@
-import { TSError } from '@typescript-eslint/typescript-estree/dist/node-utils';
+import { TSError } from '@typescript-eslint/typescript-estree';
 import type { Plugin } from 'pretty-format';
 
 export const serializer: Plugin = {

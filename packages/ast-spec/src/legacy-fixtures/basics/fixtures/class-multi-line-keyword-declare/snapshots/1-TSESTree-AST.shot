@@ -8,7 +8,9 @@ Program {
       type: "ExpressionStatement",
       expression: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "declare",
+        optional: false,
 
         range: [73, 80],
         loc: {
@@ -25,6 +27,7 @@ Program {
     },
     ClassDeclaration {
       type: "ClassDeclaration",
+      abstract: false,
       body: ClassBody {
         type: "ClassBody",
         body: [],
@@ -35,9 +38,13 @@ Program {
           end: { column: 10, line: 4 },
         },
       },
+      declare: false,
+      decorators: [],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "B",
+        optional: false,
 
         range: [88, 89],
         loc: {
@@ -45,6 +52,7 @@ Program {
           end: { column: 7, line: 4 },
         },
       },
+      implements: [],
       superClass: null,
 
       range: [82, 92],

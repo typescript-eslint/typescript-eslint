@@ -20,6 +20,7 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-member-expre
             end: { column: 32, line: 3 },
           },
         },
+-       declare: false,
         extends: Array [
 -         TSInterfaceHeritage {
 -           type: 'TSInterfaceHeritage',
@@ -33,7 +34,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-member-expre
 +             type: 'TSQualifiedName',
 +             left: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'bar',
+-               optional: false,
 
                 range: [95, 98],
                 loc: {
@@ -45,7 +48,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-member-expre
 -             property: Identifier {
 +             right: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'baz',
+-               optional: false,
 
                 range: [99, 102],
                 loc: {
@@ -70,7 +75,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-extends-member-expre
         ],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'foo',
+-         optional: false,
 
           range: [83, 86],
           loc: {

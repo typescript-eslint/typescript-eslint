@@ -10,6 +10,7 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-fac
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
@@ -25,7 +26,9 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-fac
                     arguments: Array [],
                     callee: Identifier {
                       type: 'Identifier',
+-                     decorators: Array [],
                       name: 'Input',
+-                     optional: false,
 
                       range: [98, 103],
                       loc: {
@@ -49,9 +52,12 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-fac
                   },
                 },
               ],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'data',
+-               optional: false,
 
                 range: [106, 110],
                 loc: {
@@ -59,7 +65,9 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-fac
                   end: { column: 15, line: 4 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               value: null,
 
@@ -81,7 +89,9 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-fac
                     arguments: Array [],
                     callee: Identifier {
                       type: 'Identifier',
+-                     decorators: Array [],
                       name: 'Output',
+-                     optional: false,
 
                       range: [115, 121],
                       loc: {
@@ -105,9 +115,12 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-fac
                   },
                 },
               ],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'click',
+-               optional: false,
 
                 range: [126, 131],
                 loc: {
@@ -115,14 +128,18 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-fac
                   end: { column: 7, line: 6 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               value: NewExpression {
                 type: 'NewExpression',
                 arguments: Array [],
                 callee: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'EventEmitter',
+-                 optional: false,
 
                   range: [138, 150],
                   loc: {
@@ -152,9 +169,13 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-fac
             end: { column: 1, line: 7 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'SomeComponent',
+-         optional: false,
 
           range: [79, 92],
           loc: {
@@ -162,6 +183,7 @@ exports[`AST Fixtures legacy-fixtures property-decorators property-decorator-fac
             end: { column: 19, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 155],

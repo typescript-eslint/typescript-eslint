@@ -5,26 +5,12 @@ import { join, resolve } from 'path';
 import type * as typescriptModule from 'typescript';
 
 import * as parser from '../../src';
-import * as astConverterModule from '../../src/ast-converter';
 import * as sharedParserUtilsModule from '../../src/create-program/shared';
 import type { TSESTreeOptions } from '../../src/parser-options';
 import { clearGlobResolutionCache } from '../../src/parseSettings/resolveProjectList';
-import { createSnapshotTestBlock } from '../../tools/test-utils';
 
 const FIXTURES_DIR = join(__dirname, '../fixtures/simpleProject');
 
-// we can't spy on the exports of an ES module - so we instead have to mock the entire module
-jest.mock('../../src/ast-converter', () => {
-  const astConverterActual = jest.requireActual<typeof astConverterModule>(
-    '../../src/ast-converter',
-  );
-
-  return {
-    ...astConverterActual,
-    __esModule: true,
-    astConverter: jest.fn(astConverterActual.astConverter),
-  };
-});
 jest.mock('../../src/create-program/shared', () => {
   const sharedActual = jest.requireActual<typeof sharedParserUtilsModule>(
     '../../src/create-program/shared',
@@ -62,7 +48,6 @@ jest.mock('globby', () => {
 
 const hrtimeSpy = jest.spyOn(process, 'hrtime');
 
-const astConverterMock = jest.mocked(astConverterModule.astConverter);
 const createDefaultCompilerOptionsFromExtra = jest.mocked(
   sharedParserUtilsModule.createDefaultCompilerOptionsFromExtra,
 );
@@ -81,170 +66,7 @@ beforeEach(() => {
   clearGlobResolutionCache();
 });
 
-describe('parseWithNodeMaps()', () => {
-  describe('basic functionality', () => {
-    it('should parse an empty string', () => {
-      expect(parser.parseWithNodeMaps('').ast.body).toEqual([]);
-      expect(parser.parseWithNodeMaps('', {}).ast.body).toEqual([]);
-    });
-
-    it('parse() should be the same as parseWithNodeMaps().ast', () => {
-      const code = 'const x: number = 1;';
-      expect(parser.parseWithNodeMaps(code).ast).toMatchObject(
-        parser.parse(code),
-      );
-    });
-
-    it('should simple code', () => {
-      const result = parser.parseWithNodeMaps('1;');
-      expect(result.ast).toMatchInlineSnapshot(`
-        {
-          "body": [
-            {
-              "expression": {
-                "raw": "1",
-                "type": "Literal",
-                "value": 1,
-              },
-              "type": "ExpressionStatement",
-            },
-          ],
-          "sourceType": "script",
-          "type": "Program",
-        }
-      `);
-      const tsNode = result.esTreeNodeToTSNodeMap.get(result.ast.body[0]);
-      expect(tsNode).toBeDefined();
-      expect(result.tsNodeToESTreeNodeMap.get(tsNode)).toBeDefined();
-    });
-  });
-
-  describe('modules', () => {
-    it('should have correct column number when strict mode error occurs', () => {
-      try {
-        parser.parseWithNodeMaps('function fn(a, a) {\n}');
-      } catch (
-        // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        err: any
-      ) {
-        expect(err.column).toBe(16);
-      }
-    });
-  });
-
-  describe('general', () => {
-    const code = 'let foo = bar;';
-    const config: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-    };
-
-    it(
-      'output tokens, comments, locs, and ranges when called with those options',
-      createSnapshotTestBlock(code, config),
-    );
-
-    it(
-      'output should not contain loc',
-      createSnapshotTestBlock(code, {
-        range: true,
-        loc: false,
-      }),
-    );
-
-    it(
-      'output should not contain range',
-      createSnapshotTestBlock(code, {
-        range: false,
-        loc: true,
-      }),
-    );
-  });
-
-  describe('non string code', () => {
-    // testing a non string code..
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const code = 12345 as any as string;
-    const config: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-    };
-
-    it(
-      'should correctly convert code to a string for parse()',
-      createSnapshotTestBlock(code, config),
-    );
-
-    it(
-      'should correctly convert code to a string for parseAndGenerateServices()',
-      createSnapshotTestBlock(code, config, true),
-    );
-  });
-
-  describe('loggerFn should be propagated to ast-converter', () => {
-    it('output tokens, comments, locs, and ranges when called with those options', () => {
-      const loggerFn = jest.fn(() => {});
-
-      parser.parseWithNodeMaps('let foo = bar;', {
-        loggerFn,
-        comment: true,
-        tokens: true,
-        range: true,
-        loc: true,
-      });
-
-      expect(astConverterMock).toHaveBeenCalled();
-      expect(astConverterMock.mock.calls[0][1]).toMatchObject({
-        code: 'let foo = bar;',
-        comment: true,
-        comments: [],
-        loc: true,
-        log: loggerFn,
-        range: true,
-        tokens: expect.any(Array),
-      });
-    });
-  });
-});
-
 describe('parseAndGenerateServices', () => {
-  describe('errorOnTypeScriptSyntacticAndSemanticIssues', () => {
-    const code = '@test const foo = 2';
-    const options: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-      errorOnTypeScriptSyntacticAndSemanticIssues: true,
-    };
-
-    it('should throw on invalid option when used in parseWithNodeMaps', () => {
-      expect(() => {
-        parser.parseWithNodeMaps(code, options);
-      }).toThrow(
-        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
-      );
-    });
-
-    it('should not throw when used in parseAndGenerateServices', () => {
-      expect(() => {
-        parser.parseAndGenerateServices(code, options);
-      }).not.toThrow(
-        `"errorOnTypeScriptSyntacticAndSemanticIssues" is only supported for parseAndGenerateServices()`,
-      );
-    });
-
-    it('should error on invalid code', () => {
-      expect(() => {
-        parser.parseAndGenerateServices(code, options);
-      }).toThrow('Decorators are not valid here.');
-    });
-  });
-
   describe('preserveNodeMaps', () => {
     const code = 'var a = true';
     const baseConfig: TSESTreeOptions = {
@@ -274,31 +96,6 @@ describe('parseAndGenerateServices', () => {
         ...baseConfig,
         preserveNodeMaps: undefined,
       });
-
-      expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToTrue);
-      expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToFalse);
-      expect(resultWithNoOptionSet).toMatchObject(
-        resultWithOptionSetExplicitlyToUndefined,
-      );
-    });
-
-    it('should not impact the use of parseWithNodeMaps()', () => {
-      const resultWithNoOptionSet = parser.parseWithNodeMaps(code, baseConfig);
-      const resultWithOptionSetToTrue = parser.parseWithNodeMaps(code, {
-        ...baseConfig,
-        preserveNodeMaps: true,
-      });
-      const resultWithOptionSetToFalse = parser.parseWithNodeMaps(code, {
-        ...baseConfig,
-        preserveNodeMaps: false,
-      });
-      const resultWithOptionSetExplicitlyToUndefined = parser.parseWithNodeMaps(
-        code,
-        {
-          ...baseConfig,
-          preserveNodeMaps: undefined,
-        },
-      );
 
       expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToTrue);
       expect(resultWithNoOptionSet).toMatchObject(resultWithOptionSetToFalse);
@@ -337,16 +134,9 @@ describe('parseAndGenerateServices', () => {
           preserveNodeMaps: setting,
         });
 
-        expect(parseResult.services.esTreeNodeToTSNodeMap).toBeDefined();
-        expect(parseResult.services.tsNodeToESTreeNodeMap).toBeDefined();
         expect(
-          parseResult.services.esTreeNodeToTSNodeMap.has(
+          parseResult.services.esTreeNodeToTSNodeMap?.has(
             parseResult.ast.body[0],
-          ),
-        ).toBe(setting);
-        expect(
-          parseResult.services.tsNodeToESTreeNodeMap.has(
-            parseResult.services.program.getSourceFile('estree.ts'),
           ),
         ).toBe(setting);
       });
@@ -357,18 +147,9 @@ describe('parseAndGenerateServices', () => {
           preserveNodeMaps: setting,
         });
 
-        expect(parseResult.services.esTreeNodeToTSNodeMap).toBeDefined();
-        expect(parseResult.services.tsNodeToESTreeNodeMap).toBeDefined();
         expect(
           parseResult.services.esTreeNodeToTSNodeMap.has(
             parseResult.ast.body[0],
-          ),
-        ).toBe(setting);
-        expect(
-          parseResult.services.tsNodeToESTreeNodeMap.has(
-            parseResult.services.program.getSourceFile(
-              join(FIXTURES_DIR, 'file.ts'),
-            ),
           ),
         ).toBe(setting);
       });
@@ -385,6 +166,7 @@ describe('parseAndGenerateServices', () => {
 
   describe('isolated parsing', () => {
     const config: TSESTreeOptions = {
+      EXPERIMENTAL_useProjectService: false,
       comment: true,
       tokens: true,
       range: true,
@@ -396,7 +178,7 @@ describe('parseAndGenerateServices', () => {
       jsxSetting,
       shouldThrow = false,
     }: {
-      ext: '.js' | '.jsx' | '.ts' | '.tsx' | '.vue' | '.json';
+      ext: '.js' | '.json' | '.jsx' | '.ts' | '.tsx' | '.vue';
       jsxContent: boolean;
       jsxSetting: boolean;
       shouldThrow?: boolean;
@@ -428,14 +210,16 @@ describe('parseAndGenerateServices', () => {
         }
 
         if (!shouldThrow) {
-          expect(result?.services.program).toBeDefined();
           expect(result?.ast).toBeDefined();
           expect({
             ...result,
             services: {
               ...result?.services,
-              // Reduce noise in snapshot
-              program: {},
+              // Reduce noise in snapshot by not printing the TS program
+              program:
+                result?.services.program == null
+                  ? 'No Program'
+                  : 'With Program',
             },
           }).toMatchSnapshot();
         }
@@ -556,100 +340,8 @@ describe('parseAndGenerateServices', () => {
     });
   });
 
-  describe('invalid file error messages', () => {
-    const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
-    const code = 'var a = true';
-    const config: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-      tsconfigRootDir: PROJECT_DIR,
-      project: './tsconfig.json',
-    };
-    const testParse =
-      (filePath: string, extraFileExtensions: string[] = ['.vue']) =>
-      (): void => {
-        try {
-          parser.parseAndGenerateServices(code, {
-            ...config,
-            extraFileExtensions,
-            filePath: join(PROJECT_DIR, filePath),
-          });
-        } catch (error) {
-          throw alignErrorPath(error as Error);
-        }
-      };
-
-    describe('project includes', () => {
-      it("doesn't error for matched files", () => {
-        expect(testParse('ts/included01.ts')).not.toThrow();
-        expect(testParse('ts/included02.tsx')).not.toThrow();
-        expect(testParse('js/included01.js')).not.toThrow();
-        expect(testParse('js/included02.jsx')).not.toThrow();
-      });
-
-      it('errors for not included files', () => {
-        expect(
-          testParse('ts/notIncluded0j1.ts'),
-        ).toThrowErrorMatchingSnapshot();
-        expect(
-          testParse('ts/notIncluded02.tsx'),
-        ).toThrowErrorMatchingSnapshot();
-        expect(testParse('js/notIncluded01.js')).toThrowErrorMatchingSnapshot();
-        expect(
-          testParse('js/notIncluded02.jsx'),
-        ).toThrowErrorMatchingSnapshot();
-      });
-    });
-
-    describe('"parserOptions.extraFileExtensions" is empty', () => {
-      it('should not error', () => {
-        expect(testParse('ts/included01.ts', [])).not.toThrow();
-      });
-
-      it('the extension does not match', () => {
-        expect(
-          testParse('other/unknownFileType.unknown', []),
-        ).toThrowErrorMatchingSnapshot();
-      });
-    });
-
-    describe('"parserOptions.extraFileExtensions" is non-empty', () => {
-      describe('the extension matches', () => {
-        it('the file is included', () => {
-          expect(testParse('other/included.vue')).not.toThrow();
-        });
-
-        it("the file isn't included", () => {
-          expect(
-            testParse('other/notIncluded.vue'),
-          ).toThrowErrorMatchingSnapshot();
-        });
-
-        it('duplicate extension', () => {
-          expect(
-            testParse('ts/notIncluded.ts', ['.ts']),
-          ).toThrowErrorMatchingSnapshot();
-        });
-      });
-
-      it('invalid extension', () => {
-        expect(
-          testParse('other/unknownFileType.unknown', ['unknown']),
-        ).toThrowErrorMatchingSnapshot();
-      });
-
-      it('the extension does not match', () => {
-        expect(
-          testParse('other/unknownFileType.unknown'),
-        ).toThrowErrorMatchingSnapshot();
-      });
-    });
-  });
-
-  describe('invalid project error messages', () => {
-    it('throws when non of multiple projects include the file', () => {
+  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+    describe('invalid file error messages', () => {
       const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
       const code = 'var a = true';
       const config: TSESTreeOptions = {
@@ -658,22 +350,174 @@ describe('parseAndGenerateServices', () => {
         range: true,
         loc: true,
         tsconfigRootDir: PROJECT_DIR,
-        project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+        project: './tsconfig.json',
       };
-      const testParse = (filePath: string) => (): void => {
-        try {
-          parser.parseAndGenerateServices(code, {
-            ...config,
-            filePath: join(PROJECT_DIR, filePath),
-          });
-        } catch (error) {
-          throw alignErrorPath(error as Error);
-        }
-      };
+      const testParse =
+        (filePath: string, extraFileExtensions: string[] = ['.vue']) =>
+        (): void => {
+          try {
+            parser.parseAndGenerateServices(code, {
+              ...config,
+              extraFileExtensions,
+              filePath: join(PROJECT_DIR, filePath),
+            });
+          } catch (error) {
+            throw alignErrorPath(error as Error);
+          }
+        };
 
-      expect(testParse('ts/notIncluded0j1.ts')).toThrowErrorMatchingSnapshot();
+      describe('project includes', () => {
+        it("doesn't error for matched files", () => {
+          expect(testParse('ts/included01.ts')).not.toThrow();
+          expect(testParse('ts/included02.tsx')).not.toThrow();
+          expect(testParse('js/included01.js')).not.toThrow();
+          expect(testParse('js/included02.jsx')).not.toThrow();
+        });
+
+        it('errors for not included files', () => {
+          expect(testParse('ts/notIncluded0j1.ts'))
+            .toThrowErrorMatchingInlineSnapshot(`
+            "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+            However, that TSConfig does not include this file. Either:
+            - Change ESLint's list of included files to not include this file
+            - Change that TSConfig to include this file
+            - Create a new TSConfig that includes this file and include it in your parserOptions.project
+            See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+          `);
+          expect(testParse('ts/notIncluded02.tsx'))
+            .toThrowErrorMatchingInlineSnapshot(`
+            "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded02.tsx\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+            However, that TSConfig does not include this file. Either:
+            - Change ESLint's list of included files to not include this file
+            - Change that TSConfig to include this file
+            - Create a new TSConfig that includes this file and include it in your parserOptions.project
+            See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+          `);
+          expect(testParse('js/notIncluded01.js'))
+            .toThrowErrorMatchingInlineSnapshot(`
+            "ESLint was configured to run on \`<tsconfigRootDir>/js/notIncluded01.js\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+            However, that TSConfig does not include this file. Either:
+            - Change ESLint's list of included files to not include this file
+            - Change that TSConfig to include this file
+            - Create a new TSConfig that includes this file and include it in your parserOptions.project
+            See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+          `);
+          expect(testParse('js/notIncluded02.jsx'))
+            .toThrowErrorMatchingInlineSnapshot(`
+            "ESLint was configured to run on \`<tsconfigRootDir>/js/notIncluded02.jsx\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+            However, that TSConfig does not include this file. Either:
+            - Change ESLint's list of included files to not include this file
+            - Change that TSConfig to include this file
+            - Create a new TSConfig that includes this file and include it in your parserOptions.project
+            See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+          `);
+        });
+      });
+
+      describe('"parserOptions.extraFileExtensions" is empty', () => {
+        it('should not error', () => {
+          expect(testParse('ts/included01.ts', [])).not.toThrow();
+        });
+
+        it('the extension does not match', () => {
+          expect(testParse('other/unknownFileType.unknown', []))
+            .toThrowErrorMatchingInlineSnapshot(`
+            "ESLint was configured to run on \`<tsconfigRootDir>/other/unknownFileType.unknown\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+            The extension for the file (\`.unknown\`) is non-standard. You should add \`parserOptions.extraFileExtensions\` to your config."
+          `);
+        });
+      });
+
+      describe('"parserOptions.extraFileExtensions" is non-empty', () => {
+        describe('the extension matches', () => {
+          it('the file is included', () => {
+            expect(testParse('other/included.vue')).not.toThrow();
+          });
+
+          it("the file isn't included", () => {
+            expect(testParse('other/notIncluded.vue'))
+              .toThrowErrorMatchingInlineSnapshot(`
+              "ESLint was configured to run on \`<tsconfigRootDir>/other/notIncluded.vue\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+              However, that TSConfig does not include this file. Either:
+              - Change ESLint's list of included files to not include this file
+              - Change that TSConfig to include this file
+              - Create a new TSConfig that includes this file and include it in your parserOptions.project
+              See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+            `);
+          });
+
+          it('duplicate extension', () => {
+            expect(testParse('ts/notIncluded.ts', ['.ts']))
+              .toThrowErrorMatchingInlineSnapshot(`
+              "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded.ts\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+              You unnecessarily included the extension \`.ts\` with the \`parserOptions.extraFileExtensions\` option. This extension is already handled by the parser by default.
+              However, that TSConfig does not include this file. Either:
+              - Change ESLint's list of included files to not include this file
+              - Change that TSConfig to include this file
+              - Create a new TSConfig that includes this file and include it in your parserOptions.project
+              See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+            `);
+          });
+        });
+
+        it('invalid extension', () => {
+          expect(testParse('other/unknownFileType.unknown', ['unknown']))
+            .toThrowErrorMatchingInlineSnapshot(`
+            "ESLint was configured to run on \`<tsconfigRootDir>/other/unknownFileType.unknown\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+            Found unexpected extension \`unknown\` specified with the \`parserOptions.extraFileExtensions\` option. Did you mean \`.unknown\`?
+            The extension for the file (\`.unknown\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`."
+          `);
+        });
+
+        it('the extension does not match', () => {
+          expect(testParse('other/unknownFileType.unknown'))
+            .toThrowErrorMatchingInlineSnapshot(`
+            "ESLint was configured to run on \`<tsconfigRootDir>/other/unknownFileType.unknown\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
+            The extension for the file (\`.unknown\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`."
+          `);
+        });
+      });
     });
-  });
+
+    describe('invalid project error messages', () => {
+      if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+        it('throws when none of multiple projects include the file', () => {
+          const PROJECT_DIR = resolve(FIXTURES_DIR, '../invalidFileErrors');
+          const code = 'var a = true';
+          const config: TSESTreeOptions = {
+            comment: true,
+            tokens: true,
+            range: true,
+            loc: true,
+            tsconfigRootDir: PROJECT_DIR,
+            project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+          };
+          const testParse = (filePath: string) => (): void => {
+            try {
+              parser.parseAndGenerateServices(code, {
+                ...config,
+                filePath: join(PROJECT_DIR, filePath),
+              });
+            } catch (error) {
+              throw alignErrorPath(error as Error);
+            }
+          };
+
+          expect(testParse('ts/notIncluded0j1.ts'))
+            .toThrowErrorMatchingInlineSnapshot(`
+            "ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`: 
+            - <tsconfigRootDir>/tsconfig.json
+            - <tsconfigRootDir>/tsconfig.extra.json
+            However, none of those TSConfigs include this file. Either:
+            - Change ESLint's list of included files to not include this file
+            - Change one of those TSConfigs to include this file
+            - Create a new TSConfig that includes this file and include it in your parserOptions.project
+            See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
+          `);
+        });
+      }
+    });
+  }
 
   describe('debug options', () => {
     const debugEnable = jest.fn();
@@ -716,118 +560,127 @@ describe('parseAndGenerateServices', () => {
       );
     });
 
-    it('should turn on typescript debugger', () => {
-      parser.parseAndGenerateServices('const x = 1;', {
-        debugLevel: ['typescript'],
+    if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+      it('should turn on typescript debugger', () => {
+        expect(() =>
+          parser.parseAndGenerateServices('const x = 1;', {
+            debugLevel: ['typescript'],
+            filePath: './path-that-doesnt-exist.ts',
+            project: ['./tsconfig-that-doesnt-exist.json'],
+          }),
+        ) // should throw because the file and tsconfig don't exist
+          .toThrow();
+        expect(createDefaultCompilerOptionsFromExtra).toHaveBeenCalled();
+        expect(createDefaultCompilerOptionsFromExtra).toHaveReturnedWith(
+          expect.objectContaining({
+            extendedDiagnostics: true,
+          }),
+        );
       });
-      expect(createDefaultCompilerOptionsFromExtra).toHaveBeenCalled();
-      expect(createDefaultCompilerOptionsFromExtra).toHaveReturnedWith(
-        expect.objectContaining({
-          extendedDiagnostics: true,
-        }),
-      );
-    });
+    }
   });
 
-  describe('projectFolderIgnoreList', () => {
-    beforeEach(() => {
-      parser.clearCaches();
-    });
+  if (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'true') {
+    describe('projectFolderIgnoreList', () => {
+      beforeEach(() => {
+        parser.clearCaches();
+      });
 
-    const PROJECT_DIR = resolve(FIXTURES_DIR, '../projectFolderIgnoreList');
-    const code = 'var a = true';
-    const config: TSESTreeOptions = {
-      comment: true,
-      tokens: true,
-      range: true,
-      loc: true,
-      tsconfigRootDir: PROJECT_DIR,
-      project: './**/tsconfig.json',
-    };
-
-    const testParse =
-      (
-        filePath: 'ignoreme' | 'includeme',
-        projectFolderIgnoreList?: TSESTreeOptions['projectFolderIgnoreList'],
-      ) =>
-      (): void => {
-        parser.parseAndGenerateServices(code, {
-          ...config,
-          projectFolderIgnoreList,
-          filePath: join(PROJECT_DIR, filePath, './file.ts'),
-        });
+      const PROJECT_DIR = resolve(FIXTURES_DIR, '../projectFolderIgnoreList');
+      const code = 'var a = true';
+      const config: TSESTreeOptions = {
+        comment: true,
+        tokens: true,
+        range: true,
+        loc: true,
+        tsconfigRootDir: PROJECT_DIR,
+        project: './**/tsconfig.json',
       };
 
-    it('ignores nothing when given nothing', () => {
-      expect(testParse('ignoreme')).not.toThrow();
-      expect(testParse('includeme')).not.toThrow();
+      const testParse =
+        (
+          filePath: 'ignoreme' | 'includeme',
+          projectFolderIgnoreList?: TSESTreeOptions['projectFolderIgnoreList'],
+        ) =>
+        (): void => {
+          parser.parseAndGenerateServices(code, {
+            ...config,
+            projectFolderIgnoreList,
+            filePath: join(PROJECT_DIR, filePath, './file.ts'),
+          });
+        };
+
+      it('ignores nothing when given nothing', () => {
+        expect(testParse('ignoreme')).not.toThrow();
+        expect(testParse('includeme')).not.toThrow();
+      });
+
+      it('ignores a folder when given a string glob', () => {
+        const ignore = ['**/ignoreme/**'];
+        // cspell:disable-next-line
+        expect(testParse('ignoreme', ignore)).toThrow();
+        // cspell:disable-next-line
+        expect(testParse('includeme', ignore)).not.toThrow();
+      });
     });
 
-    it('ignores a folder when given a string glob', () => {
-      const ignore = ['**/ignoreme/**'];
-      // cspell:disable-next-line
-      expect(testParse('ignoreme', ignore)).toThrow();
-      // cspell:disable-next-line
-      expect(testParse('includeme', ignore)).not.toThrow();
-    });
-  });
+    describe('cacheLifetime', () => {
+      describe('glob', () => {
+        function doParse(lifetime: CacheDurationSeconds): void {
+          parser.parseAndGenerateServices('const x = 1', {
+            cacheLifetime: {
+              glob: lifetime,
+            },
+            filePath: join(FIXTURES_DIR, 'file.ts'),
+            tsconfigRootDir: FIXTURES_DIR,
+            project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+          });
+        }
 
-  describe('cacheLifetime', () => {
-    describe('glob', () => {
-      function doParse(lifetime: CacheDurationSeconds): void {
-        parser.parseAndGenerateServices('const x = 1', {
-          cacheLifetime: {
-            glob: lifetime,
-          },
-          filePath: join(FIXTURES_DIR, 'file.ts'),
-          tsconfigRootDir: FIXTURES_DIR,
-          project: ['./**/tsconfig.json', './**/tsconfig.extra.json'],
+        it('should cache globs if the lifetime is non-zero', () => {
+          doParse(30);
+          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          doParse(30);
+          // shouldn't call globby again due to the caching
+          expect(globbySyncMock).toHaveBeenCalledTimes(1);
         });
-      }
 
-      it('should cache globs if the lifetime is non-zero', () => {
-        doParse(30);
-        expect(globbySyncMock).toHaveBeenCalledTimes(1);
-        doParse(30);
-        // shouldn't call globby again due to the caching
-        expect(globbySyncMock).toHaveBeenCalledTimes(1);
-      });
+        it('should not cache globs if the lifetime is zero', () => {
+          doParse(0);
+          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          doParse(0);
+          // should call globby again because we specified immediate cache expiry
+          expect(globbySyncMock).toHaveBeenCalledTimes(2);
+        });
 
-      it('should not cache globs if the lifetime is zero', () => {
-        doParse(0);
-        expect(globbySyncMock).toHaveBeenCalledTimes(1);
-        doParse(0);
-        // should call globby again because we specified immediate cache expiry
-        expect(globbySyncMock).toHaveBeenCalledTimes(2);
-      });
+        it('should evict the cache if the entry expires', () => {
+          hrtimeSpy.mockReturnValueOnce([1, 0]);
 
-      it('should evict the cache if the entry expires', () => {
-        hrtimeSpy.mockReturnValueOnce([1, 0]);
+          doParse(30);
+          expect(globbySyncMock).toHaveBeenCalledTimes(1);
 
-        doParse(30);
-        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          // wow so much time has passed
+          hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
-        // wow so much time has passed
-        hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
+          doParse(30);
+          // shouldn't call globby again due to the caching
+          expect(globbySyncMock).toHaveBeenCalledTimes(2);
+        });
 
-        doParse(30);
-        // shouldn't call globby again due to the caching
-        expect(globbySyncMock).toHaveBeenCalledTimes(2);
-      });
+        it('should infinitely cache if passed Infinity', () => {
+          hrtimeSpy.mockReturnValueOnce([1, 0]);
 
-      it('should infinitely cache if passed Infinity', () => {
-        hrtimeSpy.mockReturnValueOnce([1, 0]);
+          doParse('Infinity');
+          expect(globbySyncMock).toHaveBeenCalledTimes(1);
 
-        doParse('Infinity');
-        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          // wow so much time has passed
+          hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
 
-        // wow so much time has passed
-        hrtimeSpy.mockReturnValueOnce([Number.MAX_VALUE, 0]);
-
-        doParse('Infinity');
-        // shouldn't call globby again due to the caching
-        expect(globbySyncMock).toHaveBeenCalledTimes(1);
+          doParse('Infinity');
+          // shouldn't call globby again due to the caching
+          expect(globbySyncMock).toHaveBeenCalledTimes(1);
+        });
       });
     });
-  });
+  }
 });

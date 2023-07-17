@@ -71,14 +71,14 @@
   width: 45px;
 }
 
-@media screen and (min-width: 700px) {
+@media screen and (width >= 700px) {
   .tierArea {
     min-width: 500px;
     width: 50vw;
   }
 }
 
-@media screen and (min-width: 1150px) {
+@media screen and (width >= 1150px) {
   .tierArea {
     margin: 16px 0;
     width: auto;

@@ -9,24 +9,17 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "x",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypeReference {
                 type: "TSTypeReference",
-                typeName: Identifier {
-                  type: "Identifier",
-                  name: "Array",
-
-                  range: [80, 85],
-                  loc: {
-                    start: { column: 7, line: 3 },
-                    end: { column: 12, line: 3 },
-                  },
-                },
-                typeParameters: TSTypeParameterInstantiation {
+                typeArguments: TSTypeParameterInstantiation {
                   type: "TSTypeParameterInstantiation",
                   params: [
                     TSConstructorType {
@@ -66,6 +59,18 @@ Program {
                     end: { column: 30, line: 3 },
                   },
                 },
+                typeName: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "Array",
+                  optional: false,
+
+                  range: [80, 85],
+                  loc: {
+                    start: { column: 7, line: 3 },
+                    end: { column: 12, line: 3 },
+                  },
+                },
 
                 range: [80, 103],
                 loc: {
@@ -96,6 +101,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [73, 104],

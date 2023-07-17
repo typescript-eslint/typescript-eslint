@@ -9,7 +9,7 @@ export default util.createRule({
     docs: {
       description:
         'Require using `namespace` keyword over `module` keyword to declare custom TypeScript modules',
-      recommended: 'error',
+      recommended: 'stylistic',
     },
     fixable: 'code',
     messages: {

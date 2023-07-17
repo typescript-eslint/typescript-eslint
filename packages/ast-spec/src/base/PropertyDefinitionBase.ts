@@ -16,13 +16,13 @@ interface PropertyDefinitionBase extends BaseNode {
   computed: boolean;
   static: boolean;
   declare: boolean;
-  readonly?: boolean;
-  decorators?: Decorator[];
-  accessibility?: Accessibility;
-  optional?: boolean;
-  definite?: boolean;
-  typeAnnotation?: TSTypeAnnotation;
-  override?: boolean;
+  readonly: boolean;
+  decorators: Decorator[];
+  accessibility: Accessibility | undefined;
+  optional: boolean;
+  definite: boolean;
+  typeAnnotation: TSTypeAnnotation | undefined;
+  override: boolean;
 }
 
 export interface PropertyDefinitionComputedNameBase
