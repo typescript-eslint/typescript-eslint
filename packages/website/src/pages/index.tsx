@@ -135,7 +135,7 @@ function Home(): React.JSX.Element {
   return (
     <Layout description={`${siteConfig.tagline}`}>
       <main>
-        <header className={clsx('hero hero--dark', styles.hero)}>
+        <div className={clsx('hero hero--dark', styles.hero)}>
           <div className="container">
             <img
               alt="Hero Logo"
@@ -159,7 +159,7 @@ function Home(): React.JSX.Element {
               </Link>
             </div>
           </div>
-        </header>
+        </div>
 
         {features.map((props, idx) => (
           <section
