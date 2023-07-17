@@ -1,0 +1,96 @@
+---
+id: scope-manager
+sidebar_label: scope-manager
+---
+
+# `@typescript-eslint/scope-manager`
+
+> A fork of [`eslint-scope`](https://github.com/eslint/eslint-scope), enhanced to support TypeScript functionality. ✨
+
+A "scope analyser" traverses an AST and builds a model of how variables (and in our case, types) are defined and consumed by the source code.
+This form of static analysis allows you to understand and trace variables throughout the program, allowing you to access powerful information about a program without needing to drop into the much, much heavier type information.
+
+## API
+
+### `analyze(tree, options)`
+
+Analyses a given AST and returns the resulting `ScopeManager`.
+
+```ts
+interface AnalyzeOptions {
+  /**
+   * Known visitor keys.
+   */
+  childVisitorKeys?: Record<string, string[]> | null;
+
+  /**
+   * Whether the whole script is executed under node.js environment.
+   * When enabled, the scope manager adds a function scope immediately following the global scope.
+   * Defaults to `false`.
+   */
+  globalReturn?: boolean;
+
+  /**
+   * Implied strict mode.
+   * Defaults to `false`.
+   */
+  impliedStrict?: boolean;
+
+  /**
+   * The identifier that's used for JSX Element creation (after transpilation).
+   * This should not be a member expression - just the root identifier (i.e. use "React" instead of "React.createElement").
+   * Defaults to `"React"`.
+   */
+  jsxPragma?: string;
+
+  /**
+   * The identifier that's used for JSX fragment elements (after transpilation).
+   * If `null`, assumes transpilation will always use a member on `jsxFactory` (i.e. React.Fragment).
+   * This should not be a member expression - just the root identifier (i.e. use "h" instead of "h.Fragment").
+   * Defaults to `null`.
+   */
+  jsxFragmentName?: string | null;
+
+  /**
+   * The lib used by the project.
+   * This automatically defines a type variable for any types provided by the configured TS libs.
+   * For more information, see https://www.typescriptlang.org/tsconfig#lib
+   *
+   * Defaults to ['esnext'].
+   */
+  lib?: Lib[];
+
+  /**
+   * The source type of the script.
+   */
+  sourceType?: 'script' | 'module';
+
+  /**
+   * Emit design-type metadata for decorated declarations in source.
+   * Defaults to `false`.
+   */
+  emitDecoratorMetadata?: boolean;
+}
+```
+
+Example usage:
+
+```ts
+import { analyze } from '@typescript-eslint/scope-manager';
+import { parse } from '@typescript-eslint/typescript-estree';
+
+const code = `const hello: string = 'world';`;
+const ast = parse(code, {
+  // note that scope-manager requires ranges on the AST
+  range: true,
+});
+const scope = analyze(ast, {
+  sourceType: 'module',
+});
+```
+
+## References
+
+- [You can view the original BSD 2 license for the code here](https://github.com/eslint/eslint-scope/blob/dbddf14d5771b21b5da704213e4508c660ca1c64/LICENSE)
+- https://eslint.org/docs/developer-guide/scope-manager-interface
+- https://github.com/eslint/eslint-scope

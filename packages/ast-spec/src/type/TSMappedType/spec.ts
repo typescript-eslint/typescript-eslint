@@ -6,8 +6,8 @@ import type { TypeNode } from '../../unions/TypeNode';
 export interface TSMappedType extends BaseNode {
   type: AST_NODE_TYPES.TSMappedType;
   typeParameter: TSTypeParameter;
-  readonly?: boolean | '-' | '+';
-  optional?: boolean | '-' | '+';
-  typeAnnotation?: TypeNode;
+  readonly: boolean | '-' | '+' | undefined;
+  optional: boolean | '-' | '+' | undefined;
+  typeAnnotation: TypeNode | undefined;
   nameType: TypeNode | null;
 }

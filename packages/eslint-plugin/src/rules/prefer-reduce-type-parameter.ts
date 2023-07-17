@@ -43,8 +43,8 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const service = util.getParserServices(context);
-    const checker = service.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     return {
       'CallExpression > MemberExpression.callee'(
@@ -64,10 +64,9 @@ export default util.createRule({
         }
 
         // Get the symbol of the `reduce` method.
-        const tsNode = service.esTreeNodeToTSNodeMap.get(callee.object);
         const calleeObjType = util.getConstrainedTypeAtLocation(
-          checker,
-          tsNode,
+          services,
+          callee.object,
         );
 
         // Check the owner type of the `reduce` method.
@@ -87,7 +86,7 @@ export default util.createRule({
                 ]),
               ];
 
-              if (!callee.parent.typeParameters) {
+              if (!callee.parent.typeArguments) {
                 fixes.push(
                   fixer.insertTextAfter(
                     callee,

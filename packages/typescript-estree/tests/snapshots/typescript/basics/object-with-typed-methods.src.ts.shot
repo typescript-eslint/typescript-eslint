@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 9,
@@ -18,11 +20,13 @@ Object {
               },
             },
             "name": "foo",
+            "optional": false,
             "range": Array [
               6,
               9,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "loc": Object {
@@ -69,6 +73,7 @@ Object {
                   },
                 },
                 "method": true,
+                "optional": false,
                 "range": Array [
                   16,
                   61,
@@ -132,6 +137,7 @@ Object {
                     ],
                     "type": "BlockStatement",
                   },
+                  "declare": false,
                   "expression": false,
                   "generator": false,
                   "id": null,
@@ -212,6 +218,7 @@ Object {
                           },
                         },
                         "name": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 17,
@@ -223,11 +230,13 @@ Object {
                             },
                           },
                           "name": "T",
+                          "optional": false,
                           "range": Array [
                             30,
                             31,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "out": false,
                         "range": Array [
@@ -248,6 +257,7 @@ Object {
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 5,
@@ -259,11 +269,13 @@ Object {
                     },
                   },
                   "name": "foo",
+                  "optional": false,
                   "range": Array [
                     65,
                     68,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "init",
                 "loc": Object {
@@ -277,6 +289,7 @@ Object {
                   },
                 },
                 "method": true,
+                "optional": false,
                 "range": Array [
                   65,
                   100,
@@ -340,6 +353,7 @@ Object {
                     ],
                     "type": "BlockStatement",
                   },
+                  "declare": false,
                   "expression": false,
                   "generator": false,
                   "id": null,
@@ -420,6 +434,7 @@ Object {
                           },
                         },
                         "name": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 7,
@@ -431,11 +446,13 @@ Object {
                             },
                           },
                           "name": "T",
+                          "optional": false,
                           "range": Array [
                             69,
                             70,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "out": false,
                         "range": Array [
@@ -456,6 +473,7 @@ Object {
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 7,
@@ -467,11 +485,13 @@ Object {
                     },
                   },
                   "name": "a",
+                  "optional": false,
                   "range": Array [
                     108,
                     109,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "get",
                 "loc": Object {
@@ -485,6 +505,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   104,
                   138,
@@ -548,6 +569,7 @@ Object {
                     ],
                     "type": "BlockStatement",
                   },
+                  "declare": false,
                   "expression": false,
                   "generator": false,
                   "id": null,
@@ -601,11 +623,13 @@ Object {
                     },
                   },
                   "type": "FunctionExpression",
+                  "typeParameters": undefined,
                 },
               },
               Object {
                 "computed": false,
                 "key": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 7,
@@ -617,11 +641,13 @@ Object {
                     },
                   },
                   "name": "a",
+                  "optional": false,
                   "range": Array [
                     146,
                     147,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "kind": "set",
                 "loc": Object {
@@ -635,6 +661,7 @@ Object {
                   },
                 },
                 "method": false,
+                "optional": false,
                 "range": Array [
                   142,
                   172,
@@ -661,6 +688,7 @@ Object {
                     ],
                     "type": "BlockStatement",
                   },
+                  "declare": false,
                   "expression": false,
                   "generator": false,
                   "id": null,
@@ -676,6 +704,7 @@ Object {
                   },
                   "params": Array [
                     Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 17,
@@ -687,6 +716,7 @@ Object {
                         },
                       },
                       "name": "x",
+                      "optional": false,
                       "range": Array [
                         148,
                         157,
@@ -767,6 +797,7 @@ Object {
                     },
                   },
                   "type": "FunctionExpression",
+                  "typeParameters": undefined,
                 },
               },
             ],
@@ -793,6 +824,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {

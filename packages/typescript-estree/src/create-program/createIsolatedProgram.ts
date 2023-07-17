@@ -3,7 +3,7 @@ import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
 import { getScriptKind } from './getScriptKind';
-import type { ASTAndProgram } from './shared';
+import type { ASTAndDefiniteProgram } from './shared';
 import { createDefaultCompilerOptionsFromExtra } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createIsolatedProgram');
@@ -12,7 +12,9 @@ const log = debug('typescript-eslint:typescript-estree:createIsolatedProgram');
  * @param code The code of the file being linted
  * @returns Returns a new source file and program corresponding to the linted code
  */
-function createIsolatedProgram(parseSettings: ParseSettings): ASTAndProgram {
+function createIsolatedProgram(
+  parseSettings: ParseSettings,
+): ASTAndDefiniteProgram {
   log(
     'Getting isolated program in %s mode for: %s',
     parseSettings.jsx ? 'TSX' : 'TS',
@@ -43,7 +45,7 @@ function createIsolatedProgram(parseSettings: ParseSettings): ASTAndProgram {
     getSourceFile(filename: string) {
       return ts.createSourceFile(
         filename,
-        parseSettings.code,
+        parseSettings.codeFullText,
         ts.ScriptTarget.Latest,
         /* setParentNodes */ true,
         getScriptKind(parseSettings.filePath, parseSettings.jsx),

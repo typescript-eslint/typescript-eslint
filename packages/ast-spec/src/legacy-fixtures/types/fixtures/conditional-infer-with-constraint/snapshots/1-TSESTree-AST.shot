@@ -6,9 +6,12 @@ Program {
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "X3",
+        optional: false,
 
         range: [78, 80],
         loc: {
@@ -22,7 +25,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "T",
+            optional: false,
 
             range: [86, 87],
             loc: {
@@ -57,7 +62,9 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [103, 104],
                   loc: {
@@ -99,24 +106,16 @@ Program {
         },
         trueType: TSTypeReference {
           type: "TSTypeReference",
-          typeName: Identifier {
-            type: "Identifier",
-            name: "MustBeNumber",
-
-            range: [123, 135],
-            loc: {
-              start: { column: 50, line: 3 },
-              end: { column: 62, line: 3 },
-            },
-          },
-          typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
             params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [136, 137],
                   loc: {
@@ -137,6 +136,18 @@ Program {
             loc: {
               start: { column: 62, line: 3 },
               end: { column: 65, line: 3 },
+            },
+          },
+          typeName: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "MustBeNumber",
+            optional: false,
+
+            range: [123, 135],
+            loc: {
+              start: { column: 50, line: 3 },
+              end: { column: 62, line: 3 },
             },
           },
 
@@ -162,7 +173,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [81, 82],
               loc: {
@@ -195,9 +208,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "X4",
+        optional: false,
 
         range: [153, 155],
         loc: {
@@ -211,7 +227,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "T",
+            optional: false,
 
             range: [161, 162],
             loc: {
@@ -246,7 +264,9 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [178, 179],
                   loc: {
@@ -286,7 +306,9 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [202, 203],
                   loc: {
@@ -328,24 +350,16 @@ Program {
         },
         trueType: TSTypeReference {
           type: "TSTypeReference",
-          typeName: Identifier {
-            type: "Identifier",
-            name: "MustBeNumber",
-
-            range: [224, 236],
-            loc: {
-              start: { column: 4, line: 5 },
-              end: { column: 16, line: 5 },
-            },
-          },
-          typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
             params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [237, 238],
                   loc: {
@@ -366,6 +380,18 @@ Program {
             loc: {
               start: { column: 16, line: 5 },
               end: { column: 19, line: 5 },
+            },
+          },
+          typeName: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "MustBeNumber",
+            optional: false,
+
+            range: [224, 236],
+            loc: {
+              start: { column: 4, line: 5 },
+              end: { column: 16, line: 5 },
             },
           },
 
@@ -391,7 +417,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [156, 157],
               loc: {
@@ -424,9 +452,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "X5",
+        optional: false,
 
         range: [256, 258],
         loc: {
@@ -440,7 +471,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "T",
+            optional: false,
 
             range: [264, 265],
             loc: {
@@ -475,7 +508,9 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [281, 282],
                   loc: {
@@ -506,7 +541,9 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [305, 306],
                   loc: {
@@ -548,24 +585,16 @@ Program {
         },
         trueType: TSTypeReference {
           type: "TSTypeReference",
-          typeName: Identifier {
-            type: "Identifier",
-            name: "MustBeNumber",
-
-            range: [312, 324],
-            loc: {
-              start: { column: 4, line: 8 },
-              end: { column: 16, line: 8 },
-            },
-          },
-          typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
             params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [325, 326],
                   loc: {
@@ -586,6 +615,18 @@ Program {
             loc: {
               start: { column: 16, line: 8 },
               end: { column: 19, line: 8 },
+            },
+          },
+          typeName: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "MustBeNumber",
+            optional: false,
+
+            range: [312, 324],
+            loc: {
+              start: { column: 4, line: 8 },
+              end: { column: 16, line: 8 },
             },
           },
 
@@ -611,7 +652,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [259, 260],
               loc: {
@@ -644,9 +687,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "X6",
+        optional: false,
 
         range: [344, 346],
         loc: {
@@ -660,7 +706,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "T",
+            optional: false,
 
             range: [352, 353],
             loc: {
@@ -686,7 +734,9 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [369, 370],
                   loc: {
@@ -726,7 +776,9 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [378, 379],
                   loc: {
@@ -768,24 +820,16 @@ Program {
         },
         trueType: TSTypeReference {
           type: "TSTypeReference",
-          typeName: Identifier {
-            type: "Identifier",
-            name: "MustBeNumber",
-
-            range: [400, 412],
-            loc: {
-              start: { column: 4, line: 11 },
-              end: { column: 16, line: 11 },
-            },
-          },
-          typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
             params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [413, 414],
                   loc: {
@@ -806,6 +850,18 @@ Program {
             loc: {
               start: { column: 16, line: 11 },
               end: { column: 19, line: 11 },
+            },
+          },
+          typeName: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "MustBeNumber",
+            optional: false,
+
+            range: [400, 412],
+            loc: {
+              start: { column: 4, line: 11 },
+              end: { column: 16, line: 11 },
             },
           },
 
@@ -831,7 +887,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [347, 348],
               loc: {
@@ -864,9 +922,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "X7",
+        optional: false,
 
         range: [432, 434],
         loc: {
@@ -880,7 +941,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "T",
+            optional: false,
 
             range: [440, 441],
             loc: {
@@ -915,7 +978,9 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [457, 458],
                   loc: {
@@ -955,7 +1020,9 @@ Program {
                 in: false,
                 name: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "U",
+                  optional: false,
 
                   range: [481, 482],
                   loc: {
@@ -999,7 +1066,9 @@ Program {
           type: "TSTypeReference",
           typeName: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "U",
+            optional: false,
 
             range: [503, 504],
             loc: {
@@ -1030,7 +1099,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [435, 436],
               loc: {

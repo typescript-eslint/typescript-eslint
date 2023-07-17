@@ -1,10 +1,14 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
 type Options = ['fields' | 'getters'];
-type MessageIds = 'preferFieldStyle' | 'preferGetterStyle';
+type MessageIds =
+  | 'preferFieldStyle'
+  | 'preferFieldStyleSuggestion'
+  | 'preferGetterStyle'
+  | 'preferGetterStyleSuggestion';
 
 interface NodeWithModifiers {
   accessibility?: TSESTree.Accessibility;
@@ -13,7 +17,7 @@ interface NodeWithModifiers {
 
 const printNodeModifiers = (
   node: NodeWithModifiers,
-  final: 'readonly' | 'get',
+  final: 'get' | 'readonly',
 ): string =>
   `${node.accessibility ?? ''}${
     node.static ? ' static' : ''
@@ -43,14 +47,21 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce that literals on classes are exposed in a consistent style',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
-    fixable: 'code',
+    hasSuggestions: true,
     messages: {
       preferFieldStyle: 'Literals should be exposed using readonly fields.',
+      preferFieldStyleSuggestion: 'Replace the literals with readonly fields.',
       preferGetterStyle: 'Literals should be exposed using getters.',
+      preferGetterStyleSuggestion: 'Replace the literals with getters.',
     },
-    schema: [{ enum: ['fields', 'getters'] }],
+    schema: [
+      {
+        type: 'string',
+        enum: ['fields', 'getters'],
+      },
+    ],
   },
   defaultOptions: ['fields'],
   create(context, [style]) {
@@ -60,7 +71,7 @@ export default util.createRule<Options, MessageIds>({
           if (
             node.kind !== 'get' ||
             !node.value.body ||
-            !node.value.body.body.length
+            node.value.body.body.length === 0
           ) {
             return;
           }
@@ -80,18 +91,23 @@ export default util.createRule<Options, MessageIds>({
           context.report({
             node: node.key,
             messageId: 'preferFieldStyle',
-            fix(fixer) {
-              const sourceCode = context.getSourceCode();
-              const name = sourceCode.getText(node.key);
+            suggest: [
+              {
+                messageId: 'preferFieldStyleSuggestion',
+                fix(fixer): TSESLint.RuleFix {
+                  const sourceCode = context.getSourceCode();
+                  const name = sourceCode.getText(node.key);
 
-              let text = '';
+                  let text = '';
 
-              text += printNodeModifiers(node, 'readonly');
-              text += node.computed ? `[${name}]` : name;
-              text += ` = ${sourceCode.getText(argument)};`;
+                  text += printNodeModifiers(node, 'readonly');
+                  text += node.computed ? `[${name}]` : name;
+                  text += ` = ${sourceCode.getText(argument)};`;
 
-              return fixer.replaceText(node, text);
-            },
+                  return fixer.replaceText(node, text);
+                },
+              },
+            ],
           });
         },
       }),
@@ -110,18 +126,23 @@ export default util.createRule<Options, MessageIds>({
           context.report({
             node: node.key,
             messageId: 'preferGetterStyle',
-            fix(fixer) {
-              const sourceCode = context.getSourceCode();
-              const name = sourceCode.getText(node.key);
+            suggest: [
+              {
+                messageId: 'preferGetterStyleSuggestion',
+                fix(fixer): TSESLint.RuleFix {
+                  const sourceCode = context.getSourceCode();
+                  const name = sourceCode.getText(node.key);
 
-              let text = '';
+                  let text = '';
 
-              text += printNodeModifiers(node, 'get');
-              text += node.computed ? `[${name}]` : name;
-              text += `() { return ${sourceCode.getText(value)}; }`;
+                  text += printNodeModifiers(node, 'get');
+                  text += node.computed ? `[${name}]` : name;
+                  text += `() { return ${sourceCode.getText(value)}; }`;
 
-              return fixer.replaceText(node, text);
-            },
+                  return fixer.replaceText(node, text);
+                },
+              },
+            ],
           });
         },
       }),

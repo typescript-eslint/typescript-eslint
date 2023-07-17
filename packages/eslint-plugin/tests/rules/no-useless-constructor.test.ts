@@ -1,7 +1,7 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-useless-constructor';
-import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -138,11 +138,6 @@ class A {
     `
 abstract class A {
   constructor();
-}
-    `,
-    `
-abstract class A {
-  abstract constructor();
 }
     `,
     // https://github.com/typescript-eslint/typescript-eslint/issues/48

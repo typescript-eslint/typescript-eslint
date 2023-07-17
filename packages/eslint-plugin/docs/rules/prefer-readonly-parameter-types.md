@@ -129,6 +129,101 @@ interface Foo {
 
 ## Options
 
+### `allow`
+
+Some complex types cannot easily be made readonly, for example the `HTMLElement` type or the `JQueryStatic` type from `@types/jquery`. This option allows you to globally disable reporting of such types.
+
+Each item must be one of:
+
+- A type defined in a file (`{from: "file", name: "Foo", path: "src/foo-file.ts"}` with `path` being an optional path relative to the project root directory)
+- A type from the default library (`{from: "lib", name: "Foo"}`)
+- A type from a package (`{from: "package", name: "Foo", package: "foo-lib"}`, this also works for types defined in a typings package).
+
+Additionally, a type may be defined just as a simple string, which then matches the type independently of its origin.
+
+Examples of code for this rule with:
+
+```json
+{
+  "allow": [
+    "$",
+    { "source": "file", "name": "Foo" },
+    { "source": "lib", "name": "HTMLElement" },
+    { "from": "package", "name": "Bar", "package": "bar-lib" }
+  ]
+}
+```
+
+<!--tabs-->
+
+#### ❌ Incorrect
+
+```ts
+interface ThisIsMutable {
+  prop: string;
+}
+
+interface Wrapper {
+  sub: ThisIsMutable;
+}
+
+interface WrapperWithOther {
+  readonly sub: Foo;
+  otherProp: string;
+}
+
+function fn1(arg: ThisIsMutable) {} // Incorrect because ThisIsMutable is not readonly
+function fn2(arg: Wrapper) {} // Incorrect because Wrapper.sub is not readonly
+function fn3(arg: WrapperWithOther) {} // Incorrect because WrapperWithOther.otherProp is not readonly and not in the allowlist
+```
+
+```ts
+import { Foo } from 'some-lib';
+import { Bar } from 'incorrect-lib';
+
+interface HTMLElement {
+  prop: string;
+}
+
+function fn1(arg: Foo) {} // Incorrect because Foo is not a local type
+function fn2(arg: HTMLElement) {} // Incorrect because HTMLElement is not from the default library
+function fn3(arg: Bar) {} // Incorrect because Bar is not from "bar-lib"
+```
+
+#### ✅ Correct
+
+```ts
+interface Foo {
+  prop: string;
+}
+
+interface Wrapper {
+  readonly sub: Foo;
+  readonly otherProp: string;
+}
+
+function fn1(arg: Foo) {} // Works because Foo is allowed
+function fn2(arg: Wrapper) {} // Works even when Foo is nested somewhere in the type, with other properties still being checked
+```
+
+```ts
+import { Bar } from 'bar-lib';
+
+interface Foo {
+  prop: string;
+}
+
+function fn1(arg: Foo) {} // Works because Foo is a local type
+function fn2(arg: HTMLElement) {} // Works because HTMLElement is from the default library
+function fn3(arg: Bar) {} // Works because Bar is from "bar-lib"
+```
+
+```ts
+import { Foo } from './foo';
+
+function fn(arg: Foo) {} // Works because Foo is still a local type - it has to be in the same package
+```
+
 ### `checkParameterProperties`
 
 This option allows you to enable or disable the checking of parameter properties.

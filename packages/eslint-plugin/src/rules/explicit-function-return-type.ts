@@ -29,7 +29,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require explicit return types on functions and class methods',
-      recommended: false,
     },
     messages: {
       missingReturnType: 'Missing return type on function.',
@@ -103,8 +102,8 @@ export default util.createRule<Options, MessageIds>({
     function isAllowedFunction(
       node:
         | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionExpression
-        | TSESTree.FunctionDeclaration,
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
     ): boolean {
       if (options.allowFunctionsWithoutTypeParameters && !node.typeParameters) {
         return true;
@@ -165,10 +164,10 @@ export default util.createRule<Options, MessageIds>({
     function isIIFE(
       node:
         | TSESTree.ArrowFunctionExpression
-        | TSESTree.FunctionExpression
-        | TSESTree.FunctionDeclaration,
+        | TSESTree.FunctionDeclaration
+        | TSESTree.FunctionExpression,
     ): boolean {
-      return node.parent!.type === AST_NODE_TYPES.CallExpression;
+      return node.parent.type === AST_NODE_TYPES.CallExpression;
     }
 
     return {

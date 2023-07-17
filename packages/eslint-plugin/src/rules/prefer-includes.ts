@@ -34,7 +34,7 @@ export default createRule({
   create(context) {
     const globalScope = context.getScope();
     const services = getParserServices(context);
-    const types = services.program.getTypeChecker();
+    const checker = services.program.getTypeChecker();
 
     function isNumber(node: TSESTree.Node, value: number): boolean {
       const evaluated = getStaticValue(node, globalScope);
@@ -124,6 +124,27 @@ export default createRule({
       );
     }
 
+    function escapeString(str: string): string {
+      const EscapeMap = {
+        '\0': '\\0',
+        "'": "\\'",
+        '\\': '\\\\',
+        '\n': '\\n',
+        '\r': '\\r',
+        '\v': '\\v',
+        '\t': '\\t',
+        '\f': '\\f',
+        // "\b" cause unexpected replacements
+        // '\b': '\\b',
+      };
+      const replaceRegex = new RegExp(Object.values(EscapeMap).join('|'), 'g');
+
+      return str.replace(
+        replaceRegex,
+        char => EscapeMap[char as keyof typeof EscapeMap],
+      );
+    }
+
     function checkArrayIndexOf(
       node: TSESTree.MemberExpression,
       allowFixing: boolean,
@@ -141,9 +162,8 @@ export default createRule({
       }
 
       // Get the symbol of `indexOf` method.
-      const tsNode = services.esTreeNodeToTSNodeMap.get(node.property);
-      const indexofMethodDeclarations = types
-        .getSymbolAtLocation(tsNode)
+      const indexofMethodDeclarations = services
+        .getSymbolAtLocation(node.property)
         ?.getDeclarations();
       if (
         indexofMethodDeclarations == null ||
@@ -156,13 +176,12 @@ export default createRule({
       // and the two methods have the same parameters.
       for (const instanceofMethodDecl of indexofMethodDeclarations) {
         const typeDecl = instanceofMethodDecl.parent;
-        const type = types.getTypeAtLocation(typeDecl);
+        const type = checker.getTypeAtLocation(typeDecl);
         const includesMethodDecl = type
           .getProperty('includes')
           ?.getDeclarations();
         if (
-          includesMethodDecl == null ||
-          !includesMethodDecl.some(includesMethodDecl =>
+          !includesMethodDecl?.some(includesMethodDecl =>
             hasSameParameters(includesMethodDecl, instanceofMethodDecl),
           )
         ) {
@@ -202,20 +221,18 @@ export default createRule({
       },
 
       // /bar/.test(foo)
-      'CallExpression > MemberExpression.callee[property.name="test"][computed=false]'(
-        node: TSESTree.MemberExpression,
+      'CallExpression[arguments.length=1] > MemberExpression.callee[property.name="test"][computed=false]'(
+        node: TSESTree.MemberExpression & { parent: TSESTree.CallExpression },
       ): void {
-        const callNode = node.parent as TSESTree.CallExpression;
-        const text =
-          callNode.arguments.length === 1 ? parseRegExp(node.object) : null;
+        const callNode = node.parent;
+        const text = parseRegExp(node.object);
         if (text == null) {
           return;
         }
 
         //check the argument type of test methods
         const argument = callNode.arguments[0];
-        const tsNode = services.esTreeNodeToTSNodeMap.get(argument);
-        const type = getConstrainedTypeAtLocation(types, tsNode);
+        const type = getConstrainedTypeAtLocation(services, argument);
 
         const includesMethodDecl = type
           .getProperty('includes')
@@ -237,13 +254,14 @@ export default createRule({
               argNode.type !== AST_NODE_TYPES.CallExpression;
 
             yield fixer.removeRange([callNode.range[0], argNode.range[0]]);
+            yield fixer.removeRange([argNode.range[1], callNode.range[1]]);
             if (needsParen) {
               yield fixer.insertTextBefore(argNode, '(');
               yield fixer.insertTextAfter(argNode, ')');
             }
             yield fixer.insertTextAfter(
               argNode,
-              `${node.optional ? '?.' : '.'}includes('${text}'`,
+              `${node.optional ? '?.' : '.'}includes('${escapeString(text)}')`,
             );
           },
         });

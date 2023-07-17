@@ -10,6 +10,7 @@ exports[`AST Fixtures special TSTypeParameter class-decl-const-in-modifier AST A
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [],
@@ -20,9 +21,13 @@ exports[`AST Fixtures special TSTypeParameter class-decl-const-in-modifier AST A
             end: { column: 22, line: 1 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'E',
+-         optional: false,
 
           range: [6, 7],
           loc: {
@@ -30,6 +35,7 @@ exports[`AST Fixtures special TSTypeParameter class-decl-const-in-modifier AST A
             end: { column: 7, line: 1 },
           },
         },
+-       implements: Array [],
         superClass: null,
         typeParameters: TSTypeParameterDeclaration {
           type: 'TSTypeParameterDeclaration',
@@ -40,7 +46,9 @@ exports[`AST Fixtures special TSTypeParameter class-decl-const-in-modifier AST A
               in: true,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [17, 18],
 -               loc: {

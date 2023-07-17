@@ -1,1 +1,1 @@
-type foo = string
+type foo = string;

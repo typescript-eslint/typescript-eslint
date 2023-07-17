@@ -3,8 +3,8 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import { createRule } from '../util';
 
-type MessageIds = 'preferTypeAnnotation' | 'preferConstructor';
-type Options = ['type-annotation' | 'constructor'];
+type MessageIds = 'preferConstructor' | 'preferTypeAnnotation';
+type Options = ['constructor' | 'type-annotation'];
 
 export default createRule<Options, MessageIds>({
   name: 'consistent-generic-constructors',
@@ -13,7 +13,7 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce specifying generic type arguments on type annotation or constructor name of a constructor call',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
     messages: {
       preferTypeAnnotation:
@@ -24,6 +24,7 @@ export default createRule<Options, MessageIds>({
     fixable: 'code',
     schema: [
       {
+        type: 'string',
         enum: ['type-annotation', 'constructor'],
       },
     ],
@@ -34,9 +35,9 @@ export default createRule<Options, MessageIds>({
     return {
       'VariableDeclarator,PropertyDefinition,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
         node:
-          | TSESTree.VariableDeclarator
+          | TSESTree.AssignmentPattern
           | TSESTree.PropertyDefinition
-          | TSESTree.AssignmentPattern,
+          | TSESTree.VariableDeclarator,
       ): void {
         function getLHSRHS(): [
           TSESTree.BindingName | TSESTree.PropertyDefinition,
@@ -74,17 +75,17 @@ export default createRule<Options, MessageIds>({
           return;
         }
         if (mode === 'type-annotation') {
-          if (!lhs && rhs.typeParameters) {
-            const { typeParameters, callee } = rhs;
+          if (!lhs && rhs.typeArguments) {
+            const { typeArguments, callee } = rhs;
             const typeAnnotation =
-              sourceCode.getText(callee) + sourceCode.getText(typeParameters);
+              sourceCode.getText(callee) + sourceCode.getText(typeArguments);
             context.report({
               node,
               messageId: 'preferTypeAnnotation',
               fix(fixer) {
                 function getIDToAttachAnnotation():
-                  | TSESTree.Token
-                  | TSESTree.Node {
+                  | TSESTree.Node
+                  | TSESTree.Token {
                   if (node.type !== AST_NODE_TYPES.PropertyDefinition) {
                     return lhsName;
                   }
@@ -96,7 +97,7 @@ export default createRule<Options, MessageIds>({
                   return sourceCode.getTokenAfter(node.key)!;
                 }
                 return [
-                  fixer.remove(typeParameters),
+                  fixer.remove(typeArguments),
                   fixer.insertTextAfter(
                     getIDToAttachAnnotation(),
                     ': ' + typeAnnotation,
@@ -108,20 +109,20 @@ export default createRule<Options, MessageIds>({
           return;
         }
         if (mode === 'constructor') {
-          if (lhs?.typeParameters && !rhs.typeParameters) {
+          if (lhs?.typeArguments && !rhs.typeArguments) {
             const hasParens =
               sourceCode.getTokenAfter(rhs.callee)?.value === '(';
             const extraComments = new Set(
-              sourceCode.getCommentsInside(lhs.parent!),
+              sourceCode.getCommentsInside(lhs.parent),
             );
             sourceCode
-              .getCommentsInside(lhs.typeParameters)
+              .getCommentsInside(lhs.typeArguments)
               .forEach(c => extraComments.delete(c));
             context.report({
               node,
               messageId: 'preferConstructor',
               *fix(fixer) {
-                yield fixer.remove(lhs.parent!);
+                yield fixer.remove(lhs.parent);
                 for (const comment of extraComments) {
                   yield fixer.insertTextAfter(
                     rhs.callee,
@@ -130,7 +131,7 @@ export default createRule<Options, MessageIds>({
                 }
                 yield fixer.insertTextAfter(
                   rhs.callee,
-                  sourceCode.getText(lhs.typeParameters),
+                  sourceCode.getText(lhs.typeArguments),
                 );
                 if (!hasParens) {
                   yield fixer.insertTextAfter(rhs.callee, '()');

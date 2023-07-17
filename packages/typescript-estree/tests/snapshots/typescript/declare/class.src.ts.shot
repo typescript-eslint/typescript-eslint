@@ -4,6 +4,7 @@ exports[`typescript declare class.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -23,7 +24,9 @@ Object {
         "type": "ClassBody",
       },
       "declare": true,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 17,
@@ -35,12 +38,15 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           14,
           17,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -56,7 +62,9 @@ Object {
         22,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

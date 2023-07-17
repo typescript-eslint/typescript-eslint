@@ -1,0 +1,10 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures parameter TSParameterProperty _error_ override-method-parameter TSESTree - Error 1`] = `
+"TSError
+  1 | class Foo {
+> 2 |   method(override parameter) {}
+    |          ^^^^^^^^ A parameter property is only allowed in a constructor implementation.
+  3 | }
+  4 |"
+`;

@@ -4,7 +4,9 @@ exports[`typescript types conditional-infer.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 12,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "Element",
+        "optional": false,
         "range": Array [
           5,
           12,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -55,6 +59,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 19,
@@ -66,11 +71,13 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               18,
               19,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },
@@ -106,6 +113,7 @@ Object {
                 },
               },
               "name": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 36,
@@ -117,11 +125,13 @@ Object {
                   },
                 },
                 "name": "U",
+                "optional": false,
                 "range": Array [
                   35,
                   36,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "out": false,
               "range": Array [
@@ -164,6 +174,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 47,
@@ -175,11 +186,13 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               46,
               47,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },
@@ -214,6 +227,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 43,
@@ -225,11 +239,13 @@ Object {
               },
             },
             "name": "U",
+            "optional": false,
             "range": Array [
               42,
               43,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },
@@ -262,6 +278,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 14,
@@ -273,11 +290,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 13,
                 14,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [

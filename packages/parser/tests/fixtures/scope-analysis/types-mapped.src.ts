@@ -1,1 +1,1 @@
-let map: { [P in string]: number; };
+let map: { [P in string]: number };

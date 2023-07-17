@@ -1,2 +1,2 @@
-function X () {}
-new X;
+function X() {}
+new X();

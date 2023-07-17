@@ -4,6 +4,7 @@ exports[`javascript arrowFunctions error-dup-params.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
@@ -40,6 +41,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 2,
@@ -51,13 +53,16 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               1,
               2,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -69,18 +74,22 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               4,
               5,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
         ],
         "range": Array [
           0,
           12,
         ],
+        "returnType": undefined,
         "type": "ArrowFunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

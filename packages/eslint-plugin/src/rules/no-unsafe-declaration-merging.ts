@@ -10,7 +10,7 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description: 'Disallow unsafe declaration merging',
-      recommended: 'strict',
+      recommended: 'recommended',
       requiresTypeChecking: false,
     },
     messages: {

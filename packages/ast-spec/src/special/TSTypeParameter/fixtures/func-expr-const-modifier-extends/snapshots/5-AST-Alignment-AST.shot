@@ -23,6 +23,7 @@ exports[`AST Fixtures special TSTypeParameter func-expr-const-modifier-extends A
               end: { column: 34, line: 1 },
             },
           },
+-         declare: false,
           expression: false,
           generator: false,
           id: null,
@@ -37,7 +38,9 @@ exports[`AST Fixtures special TSTypeParameter func-expr-const-modifier-extends A
                   type: 'TSTypeReference',
                   typeName: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'U',
+-                   optional: false,
 
                     range: [27, 28],
                     loc: {
@@ -55,7 +58,9 @@ exports[`AST Fixtures special TSTypeParameter func-expr-const-modifier-extends A
 -               in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
+-                 decorators: Array [],
 -                 name: 'T',
+-                 optional: false,
 -
 -                 range: [17, 18],
 -                 loc: {

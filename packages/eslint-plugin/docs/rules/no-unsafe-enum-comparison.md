@@ -22,6 +22,8 @@ fruit === 999; // No error
 
 This rule flags when an enum typed value is compared to a non-enum `number`.
 
+## Examples
+
 <!--tabs-->
 
 ### ❌ Incorrect
@@ -70,6 +72,6 @@ vegetable === Vegetable.Asparagus;
 
 <!--/tabs-->
 
-## When Not to Use It
+## When Not To Use It
 
 If you don't mind number and/or literal string constants being compared against enums, you likely don't need this rule.

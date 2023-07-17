@@ -1,4 +1,4 @@
-import { isTypeReference, isUnionOrIntersectionType } from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { isTypeFlagSet } from './typeFlagUtils';
@@ -20,7 +20,7 @@ export function containsAllTypesByName(
     return !allowAny;
   }
 
-  if (isTypeReference(type)) {
+  if (tsutils.isTypeReference(type)) {
     type = type.target;
   }
 
@@ -32,7 +32,7 @@ export function containsAllTypesByName(
   const predicate = (t: ts.Type): boolean =>
     containsAllTypesByName(t, allowAny, allowedNames, matchAnyInstead);
 
-  if (isUnionOrIntersectionType(type)) {
+  if (tsutils.isUnionOrIntersectionType(type)) {
     return matchAnyInstead
       ? type.types.some(predicate)
       : type.types.every(predicate);

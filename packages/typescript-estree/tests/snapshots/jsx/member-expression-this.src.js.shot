@@ -4,6 +4,7 @@ exports[`jsx member-expression-this.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [],
         "closingElement": null,
@@ -148,6 +149,7 @@ Object {
       "type": "ExpressionStatement",
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [],
         "closingElement": null,

@@ -9,6 +9,7 @@ Object {
         "body": Array [
           Object {
             "argument": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 15,
@@ -20,11 +21,13 @@ Object {
                 },
               },
               "name": "name",
+              "optional": false,
               "range": Array [
                 50,
                 54,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -59,9 +62,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 16,
@@ -73,11 +78,13 @@ Object {
           },
         },
         "name": "message",
+        "optional": false,
         "range": Array [
           9,
           16,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -91,6 +98,7 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 28,
@@ -102,6 +110,7 @@ Object {
             },
           },
           "name": "name",
+          "optional": false,
           "range": Array [
             17,
             28,
@@ -182,6 +191,7 @@ Object {
         },
       },
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

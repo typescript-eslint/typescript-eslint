@@ -20,7 +20,6 @@ export default createRule<Options, MessageIds>({
     docs: {
       description:
         'Require or disallow initialization in variable declarations',
-      recommended: false,
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
@@ -49,7 +48,7 @@ export default createRule<Options, MessageIds>({
     function isAncestorNamespaceDeclared(
       node: TSESTree.VariableDeclaration,
     ): boolean {
-      let ancestor = node.parent;
+      let ancestor: TSESTree.Node | undefined = node.parent;
 
       while (ancestor) {
         if (

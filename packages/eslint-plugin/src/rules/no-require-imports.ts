@@ -9,7 +9,6 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description: 'Disallow invocation of `require()`',
-      recommended: false,
     },
     schema: [],
     messages: {

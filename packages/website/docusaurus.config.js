@@ -3,7 +3,6 @@
 require('ts-node').register({
   scope: true,
   scopeDir: __dirname,
-  swc: true,
   transpileOnly: true,
 });
 

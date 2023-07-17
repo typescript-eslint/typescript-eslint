@@ -32,14 +32,14 @@ function isSimpleType(node: TSESTree.Node): boolean {
         node.typeName.type === AST_NODE_TYPES.Identifier &&
         node.typeName.name === 'Array'
       ) {
-        if (!node.typeParameters) {
+        if (!node.typeArguments) {
           return true;
         }
-        if (node.typeParameters.params.length === 1) {
-          return isSimpleType(node.typeParameters.params[0]);
+        if (node.typeArguments.params.length === 1) {
+          return isSimpleType(node.typeArguments.params[0]);
         }
       } else {
-        if (node.typeParameters) {
+        if (node.typeArguments) {
           return false;
         }
         return isSimpleType(node.typeName);
@@ -72,7 +72,7 @@ function typeNeedsParentheses(node: TSESTree.Node): boolean {
   }
 }
 
-export type OptionString = 'array' | 'generic' | 'array-simple';
+export type OptionString = 'array-simple' | 'array' | 'generic';
 type Options = [
   {
     default: OptionString;
@@ -80,9 +80,9 @@ type Options = [
   },
 ];
 type MessageIds =
-  | 'errorStringGeneric'
   | 'errorStringArray'
   | 'errorStringArraySimple'
+  | 'errorStringGeneric'
   | 'errorStringGenericSimple';
 
 export default util.createRule<Options, MessageIds>({
@@ -92,7 +92,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require consistently using either `T[]` or `Array<T>` for arrays',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
     fixable: 'code',
     messages: {
@@ -105,30 +105,29 @@ export default util.createRule<Options, MessageIds>({
       errorStringGenericSimple:
         "Array type using '{{readonlyPrefix}}{{type}}[]' is forbidden for non-simple types. Use '{{className}}<{{type}}>' instead.",
     },
-    schema: {
-      $defs: {
-        arrayOption: {
-          enum: ['array', 'generic', 'array-simple'],
-        },
-      },
-      prefixItems: [
-        {
-          properties: {
-            default: {
-              $ref: '#/$defs/arrayOption',
-              description: 'The array type expected for mutable cases...',
-            },
-            readonly: {
-              $ref: '#/$defs/arrayOption',
-              description:
-                'The array type expected for readonly cases. If omitted, the value for `default` will be used.',
-            },
+    schema: [
+      {
+        $defs: {
+          arrayOption: {
+            type: 'string',
+            enum: ['array', 'generic', 'array-simple'],
           },
-          type: 'object',
         },
-      ],
-      type: 'array',
-    },
+        additionalProperties: false,
+        properties: {
+          default: {
+            $ref: '#/items/0/$defs/arrayOption',
+            description: 'The array type expected for mutable cases.',
+          },
+          readonly: {
+            $ref: '#/items/0/$defs/arrayOption',
+            description:
+              'The array type expected for readonly cases. If omitted, the value for `default` will be used.',
+          },
+        },
+        type: 'object',
+      },
+    ],
   },
   defaultOptions: [
     {
@@ -154,7 +153,6 @@ export default util.createRule<Options, MessageIds>({
     return {
       TSArrayType(node): void {
         const isReadonly =
-          node.parent &&
           node.parent.type === AST_NODE_TYPES.TSTypeOperator &&
           node.parent.operator === 'readonly';
 
@@ -171,7 +169,7 @@ export default util.createRule<Options, MessageIds>({
           currentOption === 'generic'
             ? 'errorStringGeneric'
             : 'errorStringGenericSimple';
-        const errorNode = isReadonly ? node.parent! : node;
+        const errorNode = isReadonly ? node.parent : node;
 
         context.report({
           node: errorNode,
@@ -220,7 +218,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const readonlyPrefix = isReadonlyArrayType ? 'readonly ' : '';
-        const typeParams = node.typeParameters?.params;
+        const typeParams = node.typeArguments?.params;
         const messageId =
           currentOption === 'array'
             ? 'errorStringArray'

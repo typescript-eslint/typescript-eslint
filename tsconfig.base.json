@@ -6,15 +6,15 @@
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true,
-    "module": "commonjs",
-    "moduleResolution": "node",
+    "module": "Node16",
+    "moduleResolution": "node16",
     "noImplicitReturns": true,
     "pretty": true,
     "skipLibCheck": true,
     "sourceMap": true,
     "strict": true,
-    "target": "es2017",
-    "lib": ["es2017"],
+    "target": "ES2021",
+    "lib": ["ES2021"],
     "paths": {}
   }
 }

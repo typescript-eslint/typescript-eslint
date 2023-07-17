@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics _error_ abstract-interface Babel - Error 1`] = `[SyntaxError: 'abstract' modifier can only appear on a class, method, or property declaration. (3:7)]`;

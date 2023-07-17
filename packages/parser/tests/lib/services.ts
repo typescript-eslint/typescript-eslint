@@ -1,6 +1,6 @@
 import { createProgram } from '@typescript-eslint/typescript-estree';
 import fs from 'fs';
-import glob from 'glob';
+import glob = require('glob');
 import path from 'path';
 
 import type { ParserOptions } from '../../src/parser';

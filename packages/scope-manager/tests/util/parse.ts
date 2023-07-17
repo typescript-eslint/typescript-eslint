@@ -42,8 +42,8 @@ function parseAndAnalyze(
 function parseAndAnalyze(
   code: string,
   sourceTypeOrAnalyzeOption:
-    | SourceType
-    | AnalyzeOptions = DEFAULT_ANALYZE_OPTIONS,
+    | AnalyzeOptions
+    | SourceType = DEFAULT_ANALYZE_OPTIONS,
   parserOptions: tseslint.TSESTreeOptions = DEFAULT_PARSER_OPTIONS,
 ): ParseAndAnalyze {
   const ast = parse(code, { ...parserOptions });
