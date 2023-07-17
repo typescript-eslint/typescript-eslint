@@ -9,7 +9,7 @@ export type Options = [
     ignoreRestArgs?: boolean;
   },
 ];
-export type MessageIds = 'unexpectedAny' | 'suggestUnknown' | 'suggestNever';
+export type MessageIds = 'suggestNever' | 'suggestUnknown' | 'unexpectedAny';
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-explicit-any',
@@ -17,7 +17,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow the `any` type',
-      recommended: 'warn',
+      recommended: 'recommended',
     },
     fixable: 'code',
     hasSuggestions: true,
@@ -83,7 +83,6 @@ export default util.createRule<Options, MessageIds>({
     function isNodeRestElementInFunction(node: TSESTree.Node): boolean {
       return (
         node.type === AST_NODE_TYPES.RestElement &&
-        node.parent !== undefined &&
         isNodeValidFunction(node.parent)
       );
     }

@@ -10,7 +10,7 @@ export default util.createRule({
     docs: {
       description:
         'Disallow non-null assertion in locations that may be confusing',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
     fixable: 'code',
     hasSuggestions: true,
@@ -32,7 +32,7 @@ export default util.createRule({
     const sourceCode = context.getSourceCode();
     return {
       'BinaryExpression, AssignmentExpression'(
-        node: TSESTree.BinaryExpression | TSESTree.AssignmentExpression,
+        node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
       ): void {
         function isLeftHandPrimaryExpression(
           node: TSESTree.Expression | TSESTree.PrivateIdentifier,

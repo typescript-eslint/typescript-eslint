@@ -4,6 +4,7 @@ exports[`javascript classes invalid-class-declaration.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [],
         "loc": Object {
@@ -22,7 +23,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": null,
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 8,
@@ -38,7 +42,9 @@ Object {
         8,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
     Object {
       "loc": Object {

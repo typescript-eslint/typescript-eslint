@@ -21,7 +21,7 @@ interface PropertyBase extends BaseNode {
   computed: boolean;
   method: boolean;
   shorthand: boolean;
-  optional?: boolean;
+  optional: boolean;
   kind: 'get' | 'init' | 'set';
 }
 

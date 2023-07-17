@@ -1,3 +1,5 @@
+import path from 'path';
+
 import { ExpiringCache } from '../../src/parseSettings/ExpiringCache';
 import { getProjectConfigFiles } from '../../src/parseSettings/getProjectConfigFiles';
 
@@ -41,7 +43,7 @@ describe('getProjectConfigFiles', () => {
 
     const actual = getProjectConfigFiles(parseSettings, project);
 
-    expect(actual).toEqual(project);
+    expect(actual).toBeNull();
   });
 
   describe('when caching hits', () => {
@@ -51,12 +53,16 @@ describe('getProjectConfigFiles', () => {
       getProjectConfigFiles(parseSettings, true);
       const actual = getProjectConfigFiles(parseSettings, true);
 
-      expect(actual).toEqual(['repos/repo/packages/package/tsconfig.json']);
+      expect(actual).toEqual([
+        path.normalize('repos/repo/packages/package/tsconfig.json'),
+      ]);
       expect(mockExistsSync).toHaveBeenCalledTimes(1);
     });
 
     it('returns a nearby parent tsconfig.json when it was previously cached by a different directory search', () => {
-      mockExistsSync.mockImplementation(input => input === 'a/tsconfig.json');
+      mockExistsSync.mockImplementation(
+        input => input === path.normalize('a/tsconfig.json'),
+      );
 
       const tsconfigMatchCache = new ExpiringCache<string, string>(1);
 
@@ -81,12 +87,14 @@ describe('getProjectConfigFiles', () => {
         true,
       );
 
-      expect(actual).toEqual(['a/tsconfig.json']);
+      expect(actual).toEqual([path.normalize('a/tsconfig.json')]);
       expect(mockExistsSync).toHaveBeenCalledTimes(4);
     });
 
     it('returns a distant parent tsconfig.json when it was previously cached by a different directory search', () => {
-      mockExistsSync.mockImplementation(input => input === 'a/tsconfig.json');
+      mockExistsSync.mockImplementation(
+        input => input === path.normalize('a/tsconfig.json'),
+      );
 
       const tsconfigMatchCache = new ExpiringCache<string, string>(1);
 
@@ -111,7 +119,7 @@ describe('getProjectConfigFiles', () => {
         true,
       );
 
-      expect(actual).toEqual(['a/tsconfig.json']);
+      expect(actual).toEqual([path.normalize('a/tsconfig.json')]);
       expect(mockExistsSync).toHaveBeenCalledTimes(6);
     });
   });
@@ -122,17 +130,19 @@ describe('getProjectConfigFiles', () => {
 
       const actual = getProjectConfigFiles(parseSettings, true);
 
-      expect(actual).toEqual(['repos/repo/packages/package/tsconfig.json']);
+      expect(actual).toEqual([
+        path.normalize('repos/repo/packages/package/tsconfig.json'),
+      ]);
     });
 
     it('returns a parent tsconfig.json when matched', () => {
       mockExistsSync.mockImplementation(
-        filePath => filePath === 'repos/repo/tsconfig.json',
+        filePath => filePath === path.normalize('repos/repo/tsconfig.json'),
       );
 
       const actual = getProjectConfigFiles(parseSettings, true);
 
-      expect(actual).toEqual(['repos/repo/tsconfig.json']);
+      expect(actual).toEqual([path.normalize('repos/repo/tsconfig.json')]);
     });
 
     it('throws when searching hits .', () => {

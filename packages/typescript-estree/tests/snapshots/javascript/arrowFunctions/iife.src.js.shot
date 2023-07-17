@@ -4,6 +4,7 @@ exports[`javascript arrowFunctions iife.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
@@ -21,6 +22,7 @@ Object {
             Object {
               "computed": false,
               "key": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 16,
@@ -32,11 +34,13 @@ Object {
                   },
                 },
                 "name": "property",
+                "optional": false,
                 "range": Array [
                   8,
                   16,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "kind": "init",
               "loc": Object {
@@ -50,6 +54,7 @@ Object {
                 },
               },
               "method": false,
+              "optional": false,
               "range": Array [
                 8,
                 20,
@@ -98,6 +103,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 1,
@@ -109,18 +115,22 @@ Object {
               },
             },
             "name": "e",
+            "optional": false,
             "range": Array [
               0,
               1,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
         ],
         "range": Array [
           0,
           23,
         ],
+        "returnType": undefined,
         "type": "ArrowFunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

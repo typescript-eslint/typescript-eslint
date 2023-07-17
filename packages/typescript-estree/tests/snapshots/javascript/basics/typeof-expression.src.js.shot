@@ -4,6 +4,7 @@ exports[`javascript basics typeof-expression.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "argument": Object {
           "loc": Object {

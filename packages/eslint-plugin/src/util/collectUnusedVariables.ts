@@ -1,5 +1,8 @@
-import { ImplicitLibVariable } from '@typescript-eslint/scope-manager';
-import { Visitor } from '@typescript-eslint/scope-manager/dist/referencer/Visitor';
+import {
+  ImplicitLibVariable,
+  ScopeType,
+  Visitor,
+} from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import {
   AST_NODE_TYPES,
@@ -98,7 +101,7 @@ class UnusedVarsVisitor<
       const scope = this.#scopeManager.acquire(node, inner);
 
       if (scope) {
-        if (scope.type === 'function-expression-name') {
+        if (scope.type === ScopeType.functionExpressionName) {
           return scope.childScopes[0] as T;
         }
         return scope as T;
@@ -321,7 +324,7 @@ class UnusedVarsVisitor<
   protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
     // -- global augmentation can be in any file, and they do not need exports
     if (node.global === true) {
-      this.markVariableAsUsed('global', node.parent!);
+      this.markVariableAsUsed('global', node.parent);
     }
   }
 
@@ -423,9 +426,7 @@ function isMergableExported(variable: TSESLint.Scope.Variable): boolean {
  * @returns True if the variable is exported, false if not.
  */
 function isExported(variable: TSESLint.Scope.Variable): boolean {
-  const definition = variable.defs[0];
-
-  if (definition) {
+  return variable.defs.some(definition => {
     let node = definition.node;
 
     if (node.type === AST_NODE_TYPES.VariableDeclarator) {
@@ -435,8 +436,7 @@ function isExported(variable: TSESLint.Scope.Variable): boolean {
     }
 
     return node.parent!.type.indexOf('Export') === 0;
-  }
-  return false;
+  });
 }
 
 /**
@@ -561,7 +561,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
     }
 
     const id = ref.identifier;
-    const parent = id.parent!;
+    const parent = id.parent;
     const grandparent = parent.parent!;
     const refScope = ref.from.variableScope;
     const varScope = ref.resolved!.scope.variableScope;
@@ -694,7 +694,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
     }
 
     const id = ref.identifier;
-    const parent = id.parent!;
+    const parent = id.parent;
     const grandparent = parent.parent!;
 
     return (

@@ -8,7 +8,7 @@ createTestCases([
       'class Ignored { private readonly % = 1 }',
       'class Ignored { private static % }',
       'class Ignored { private static readonly % = 1 }',
-      'class Ignored { abstract % = 1 }',
+      'class Ignored { abstract % }',
       'class Ignored { declare % }',
       'class Ignored { #% }',
       'class Ignored { static #% }',

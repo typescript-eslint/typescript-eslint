@@ -3,6 +3,8 @@ import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
+  isClosingBraceToken,
+  isClosingBracketToken,
   isClosingParenToken,
   isCommaToken,
   isTokenOnSameLine,
@@ -14,7 +16,7 @@ type Options = [
     after: boolean;
   },
 ];
-type MessageIds = 'unexpected' | 'missing';
+type MessageIds = 'missing' | 'unexpected';
 
 export default createRule<Options, MessageIds>({
   name: 'comma-spacing',
@@ -22,7 +24,6 @@ export default createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before and after commas',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
@@ -132,6 +133,14 @@ export default createRule<Options, MessageIds>({
       }
 
       if (nextToken && isClosingParenToken(nextToken)) {
+        return;
+      }
+
+      if (
+        spaceAfter &&
+        nextToken &&
+        (isClosingBraceToken(nextToken) || isClosingBracketToken(nextToken))
+      ) {
         return;
       }
 

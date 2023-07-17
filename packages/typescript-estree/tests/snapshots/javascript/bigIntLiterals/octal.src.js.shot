@@ -4,6 +4,7 @@ exports[`javascript bigIntLiterals octal.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "bigint": "1",
         "loc": Object {

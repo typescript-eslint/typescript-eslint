@@ -13,7 +13,7 @@ export default createRule({
   meta: {
     type: 'problem',
     docs: {
-      recommended: 'error',
+      recommended: 'recommended',
       description:
         'Enforce consistent usage of `AST_NODE_TYPES`, `AST_TOKEN_TYPES` and `DefinitionType` enums',
     },

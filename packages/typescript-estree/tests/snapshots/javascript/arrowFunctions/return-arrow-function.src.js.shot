@@ -4,6 +4,7 @@ exports[`javascript arrowFunctions return-arrow-function.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
@@ -42,6 +43,7 @@ Object {
           },
           "params": Array [
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 6,
@@ -53,18 +55,22 @@ Object {
                 },
               },
               "name": "y",
+              "optional": false,
               "range": Array [
                 5,
                 6,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
           ],
           "range": Array [
             5,
             12,
           ],
+          "returnType": undefined,
           "type": "ArrowFunctionExpression",
+          "typeParameters": undefined,
         },
         "expression": true,
         "generator": false,
@@ -81,6 +87,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 1,
@@ -92,18 +99,22 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               0,
               1,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
         ],
         "range": Array [
           0,
           12,
         ],
+        "returnType": undefined,
         "type": "ArrowFunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

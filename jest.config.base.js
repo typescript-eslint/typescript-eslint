@@ -11,6 +11,7 @@ module.exports = {
     'tsx',
     'mts',
     'mtsx',
+    'cjs',
     'js',
     'jsx',
     'mjs',
@@ -35,4 +36,5 @@ module.exports = {
       },
     ],
   },
+  workerIdleMemoryLimit: '300MB',
 };

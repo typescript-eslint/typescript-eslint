@@ -28,7 +28,9 @@ exports[`AST Fixtures legacy-fixtures basics import-type-star-as-ns AST Alignmen
             type: 'ImportNamespaceSpecifier',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'foo',
+-             optional: false,
 
               range: [90, 93],
               loc: {

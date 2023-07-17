@@ -3,8 +3,8 @@ import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 type FunctionNode =
   | TSESTree.ArrowFunctionExpression
-  | TSESTree.FunctionExpression
-  | TSESTree.FunctionDeclaration;
+  | TSESTree.FunctionDeclaration
+  | TSESTree.FunctionExpression;
 
 /**
  * Creates a report location for the given function.
@@ -28,7 +28,7 @@ export function getFunctionHeadLoc(
   sourceCode: TSESLint.SourceCode,
 ): TSESTree.SourceLocation {
   function getLocStart(): TSESTree.Position {
-    if (node.parent && node.parent.type === AST_NODE_TYPES.MethodDefinition) {
+    if (node.parent.type === AST_NODE_TYPES.MethodDefinition) {
       // return the start location for class method
 
       if (node.parent.decorators && node.parent.decorators.length > 0) {
@@ -41,11 +41,7 @@ export function getFunctionHeadLoc(
       return node.parent.loc.start;
     }
 
-    if (
-      node.parent &&
-      node.parent.type === AST_NODE_TYPES.Property &&
-      node.parent.method
-    ) {
+    if (node.parent.type === AST_NODE_TYPES.Property && node.parent.method) {
       // return the start location for object method shorthand
       return node.parent.loc.start;
     }

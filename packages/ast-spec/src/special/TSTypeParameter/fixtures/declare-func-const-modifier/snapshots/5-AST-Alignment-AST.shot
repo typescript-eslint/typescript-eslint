@@ -16,7 +16,9 @@ exports[`AST Fixtures special TSTypeParameter declare-func-const-modifier AST Al
         generator: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'd',
+-         optional: false,
 
           range: [17, 18],
           loc: {
@@ -34,7 +36,9 @@ exports[`AST Fixtures special TSTypeParameter declare-func-const-modifier AST Al
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [25, 26],
 -               loc: {

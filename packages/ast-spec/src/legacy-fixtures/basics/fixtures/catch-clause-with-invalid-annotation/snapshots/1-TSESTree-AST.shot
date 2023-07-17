@@ -31,7 +31,9 @@ Program {
         },
         param: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "e",
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSStringKeyword {

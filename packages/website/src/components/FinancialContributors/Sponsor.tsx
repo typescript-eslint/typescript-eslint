@@ -9,7 +9,10 @@ interface SponsorProps {
   sponsor: SponsorData;
 }
 
-export function Sponsor({ includeName, sponsor }: SponsorProps): JSX.Element {
+export function Sponsor({
+  includeName,
+  sponsor,
+}: SponsorProps): React.JSX.Element {
   let children = <img alt={`${sponsor.name} logo`} src={sponsor.image} />;
 
   if (includeName) {
