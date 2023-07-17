@@ -9,9 +9,12 @@ Program {
       assertions: [],
       declaration: TSTypeAliasDeclaration {
         type: "TSTypeAliasDeclaration",
+        declare: false,
         id: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "TestCallback",
+          optional: false,
 
           range: [85, 97],
           loc: {
@@ -24,7 +27,9 @@ Program {
           params: [
             Identifier {
               type: "Identifier",
+              decorators: [],
               name: "a",
+              optional: false,
               typeAnnotation: TSTypeAnnotation {
                 type: "TSTypeAnnotation",
                 typeAnnotation: TSNumberKeyword {

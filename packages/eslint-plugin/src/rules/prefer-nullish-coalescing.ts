@@ -1,24 +1,30 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
 
 export type Options = [
   {
-    ignoreConditionalTests?: boolean;
-    ignoreTernaryTests?: boolean;
-    ignoreMixedLogicalExpressions?: boolean;
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+    ignoreConditionalTests?: boolean;
+    ignoreMixedLogicalExpressions?: boolean;
+    ignorePrimitives?: {
+      bigint?: boolean;
+      boolean?: boolean;
+      number?: boolean;
+      string?: boolean;
+    };
+    ignoreTernaryTests?: boolean;
   },
 ];
 
 export type MessageIds =
+  | 'noStrictNullCheck'
   | 'preferNullishOverOr'
   | 'preferNullishOverTernary'
-  | 'suggestNullish'
-  | 'noStrictNullCheck';
+  | 'suggestNullish';
 
 export default util.createRule<Options, MessageIds>({
   name: 'prefer-nullish-coalescing',
@@ -26,8 +32,8 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description:
-        'Enforce using the nullish coalescing operator instead of logical chaining',
-      recommended: 'strict',
+        'Enforce using the nullish coalescing operator instead of logical assignments or chaining',
+      recommended: 'stylistic',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
@@ -44,16 +50,25 @@ export default util.createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          ignoreConditionalTests: {
+          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
             type: 'boolean',
           },
-          ignoreTernaryTests: {
+          ignoreConditionalTests: {
             type: 'boolean',
           },
           ignoreMixedLogicalExpressions: {
             type: 'boolean',
           },
-          allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: {
+          ignorePrimitives: {
+            type: 'object',
+            properties: {
+              bigint: { type: 'boolean' },
+              boolean: { type: 'boolean' },
+              number: { type: 'boolean' },
+              string: { type: 'boolean' },
+            },
+          },
+          ignoreTernaryTests: {
             type: 'boolean',
           },
         },
@@ -63,20 +78,27 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      ignoreConditionalTests: true,
-      ignoreTernaryTests: true,
-      ignoreMixedLogicalExpressions: true,
       allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing: false,
+      ignoreConditionalTests: false,
+      ignoreTernaryTests: false,
+      ignoreMixedLogicalExpressions: false,
+      ignorePrimitives: {
+        bigint: false,
+        boolean: false,
+        number: false,
+        string: false,
+      },
     },
   ],
   create(
     context,
     [
       {
-        ignoreConditionalTests,
-        ignoreTernaryTests,
-        ignoreMixedLogicalExpressions,
         allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing,
+        ignoreConditionalTests,
+        ignoreMixedLogicalExpressions,
+        ignorePrimitives,
+        ignoreTernaryTests,
       },
     ],
   ) {
@@ -108,7 +130,7 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
 
-        let operator: '==' | '!=' | '===' | '!==' | undefined;
+        let operator: '!=' | '!==' | '==' | '===' | undefined;
         let nodesInsideTestExpression: TSESTree.Node[] = [];
         if (node.test.type === AST_NODE_TYPES.BinaryExpression) {
           nodesInsideTestExpression = [node.test.left, node.test.right];
@@ -276,6 +298,24 @@ export default util.createRule<Options, MessageIds>({
 
         const isMixedLogical = isMixedLogicalExpression(node);
         if (ignoreMixedLogicalExpressions === true && isMixedLogical) {
+          return;
+        }
+
+        const ignorableFlags = [
+          ignorePrimitives!.bigint && ts.TypeFlags.BigInt,
+          ignorePrimitives!.boolean && ts.TypeFlags.BooleanLiteral,
+          ignorePrimitives!.number && ts.TypeFlags.Number,
+          ignorePrimitives!.string && ts.TypeFlags.String,
+        ]
+          .filter((flag): flag is number => flag !== undefined)
+          .reduce((previous, flag) => previous | flag, 0);
+        if (
+          type.flags !== ts.TypeFlags.Null &&
+          type.flags !== ts.TypeFlags.Undefined &&
+          (type as ts.UnionOrIntersectionType).types.some(t =>
+            tsutils.isTypeFlagSet(t, ignorableFlags),
+          )
+        ) {
           return;
         }
 

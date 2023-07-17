@@ -44,15 +44,16 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Require or disallow trailing commas',
-      recommended: false,
       extendsBaseRule: true,
     },
     schema: {
       $defs: {
         value: {
+          type: 'string',
           enum: OPTION_VALUE_SCHEME,
         },
         valueWithIgnore: {
+          type: 'string',
           enum: [...OPTION_VALUE_SCHEME, 'ignore'],
         },
       },
@@ -80,7 +81,7 @@ export default util.createRule<Options, MessageIds>({
           ],
         },
       ],
-      additionalProperties: false,
+      additionalItems: false,
     },
     fixable: 'code',
     hasSuggestions: baseRule.meta.hasSuggestions,
@@ -97,7 +98,9 @@ export default util.createRule<Options, MessageIds>({
       'always-multiline': forceCommaIfMultiline,
       'only-multiline': allowCommaIfMultiline,
       never: forbidComma,
-      ignore: (): void => {},
+      // https://github.com/typescript-eslint/typescript-eslint/issues/7220
+      // eslint-disable-next-line @typescript-eslint/explicit-function-return-type, @typescript-eslint/no-empty-function
+      ignore: () => {},
     };
 
     function last(nodes: TSESTree.Node[]): TSESTree.Node | null {

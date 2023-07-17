@@ -3,6 +3,62 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.0.0...v6.1.0) (2023-07-17)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.62.0...v6.0.0) (2023-07-10)
+
+
+### Features
+
+* add package.json exports for public packages ([#6458](https://github.com/typescript-eslint/typescript-eslint/issues/6458)) ([d676683](https://github.com/typescript-eslint/typescript-eslint/commit/d6766838a05259556029acaac57dc7839b68c592))
+* **eslint-plugin:** rework configs: recommended, strict, stylistic; -type-checked ([#5251](https://github.com/typescript-eslint/typescript-eslint/issues/5251)) ([5346b5b](https://github.com/typescript-eslint/typescript-eslint/commit/5346b5bbdbba81439ba761c282ba9cdcec7b45c8)), closes [#5036](https://github.com/typescript-eslint/typescript-eslint/issues/5036) [#5834](https://github.com/typescript-eslint/typescript-eslint/issues/5834) [#5882](https://github.com/typescript-eslint/typescript-eslint/issues/5882) [#5864](https://github.com/typescript-eslint/typescript-eslint/issues/5864) [#3076](https://github.com/typescript-eslint/typescript-eslint/issues/3076) [#5834](https://github.com/typescript-eslint/typescript-eslint/issues/5834) [#5882](https://github.com/typescript-eslint/typescript-eslint/issues/5882) [#5864](https://github.com/typescript-eslint/typescript-eslint/issues/5864) [#5889](https://github.com/typescript-eslint/typescript-eslint/issues/5889) [#5834](https://github.com/typescript-eslint/typescript-eslint/issues/5834) [#5882](https://github.com/typescript-eslint/typescript-eslint/issues/5882) [#5864](https://github.com/typescript-eslint/typescript-eslint/issues/5864) [#5883](https://github.com/typescript-eslint/typescript-eslint/issues/5883) [#4863](https://github.com/typescript-eslint/typescript-eslint/issues/4863) [#5381](https://github.com/typescript-eslint/typescript-eslint/issues/5381) [#5256](https://github.com/typescript-eslint/typescript-eslint/issues/5256) [#5399](https://github.com/typescript-eslint/typescript-eslint/issues/5399)
+* remove `RuleTester` in `/utils` in favour of the new `/rule-tester` package ([#6816](https://github.com/typescript-eslint/typescript-eslint/issues/6816)) ([c33f497](https://github.com/typescript-eslint/typescript-eslint/commit/c33f497ad8aec7c123c7374f7aff3e24025fe861))
+* **typescript-estree:** add type checker wrapper APIs to ParserServicesWithTypeInformation ([#6404](https://github.com/typescript-eslint/typescript-eslint/issues/6404)) ([62d5755](https://github.com/typescript-eslint/typescript-eslint/commit/62d57559564fb08512eafe03a2c1b167c4377601))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [5.62.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.61.0...v5.62.0) (2023-07-10)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [5.61.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.60.1...v5.61.0) (2023-07-03)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+## [5.60.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.60.0...v5.60.1) (2023-06-26)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [5.60.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.11...v5.60.0) (2023-06-19)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin-internal

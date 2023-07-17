@@ -1,5 +1,6 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/no-unnecessary-type-constraint';
-import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -121,7 +122,51 @@ function data<T extends TODO>() {}
           ],
         },
       ],
-      filename: 'react.tsx',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: 'const data = <T extends any>() => {};',
+      errors: [
+        {
+          data: { constraint: 'any', name: 'T' },
+          messageId: 'unnecessaryConstraint',
+          endColumn: 28,
+          column: 15,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
+              output: `const data = <T,>() => {};`,
+            },
+          ],
+        },
+      ],
+      filename: 'file.mts',
+    },
+    {
+      code: 'const data = <T extends any>() => {};',
+      errors: [
+        {
+          data: { constraint: 'any', name: 'T' },
+          messageId: 'unnecessaryConstraint',
+          endColumn: 28,
+          column: 15,
+          line: 1,
+          suggestions: [
+            {
+              messageId: 'removeUnnecessaryConstraint',
+              data: { constraint: 'any' },
+              output: `const data = <T,>() => {};`,
+            },
+          ],
+        },
+      ],
+      filename: 'file.cts',
     },
     {
       code: noFormat`const data = <T extends any,>() => {};`,
@@ -141,7 +186,11 @@ function data<T extends TODO>() {}
           ],
         },
       ],
-      filename: 'react.tsx',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     {
       code: noFormat`const data = <T extends any, >() => {};`,
@@ -161,7 +210,11 @@ function data<T extends TODO>() {}
           ],
         },
       ],
-      filename: 'react.tsx',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     {
       code: noFormat`const data = <T extends any ,>() => {};`,
@@ -181,7 +234,11 @@ function data<T extends TODO>() {}
           ],
         },
       ],
-      filename: 'react.tsx',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     {
       code: noFormat`const data = <T extends any , >() => {};`,
@@ -201,7 +258,11 @@ function data<T extends TODO>() {}
           ],
         },
       ],
-      filename: 'react.tsx',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     {
       code: 'const data = <T extends any = unknown>() => {};',
@@ -221,7 +282,11 @@ function data<T extends TODO>() {}
           ],
         },
       ],
-      filename: 'react.tsx',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     {
       code: 'const data = <T extends any, U extends any>() => {};',
@@ -255,7 +320,11 @@ function data<T extends TODO>() {}
           ],
         },
       ],
-      filename: 'react.tsx',
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
     },
     {
       code: 'function data<T extends unknown>() {}',

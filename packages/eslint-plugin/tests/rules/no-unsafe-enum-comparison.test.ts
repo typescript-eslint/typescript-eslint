@@ -1,5 +1,7 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/no-unsafe-enum-comparison';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
 
@@ -289,6 +291,20 @@ ruleTester.run('strict-enums-comparison', rule, {
       str === someFunction;
       num === someFunction;
       mixed === someFunction;
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+
+      const bitShift = 1 << Fruit.Apple;
+    `,
+    `
+      enum Fruit {
+        Apple,
+      }
+
+      const bitShift = 1 >> Fruit.Apple;
     `,
   ],
   invalid: [

@@ -4,6 +4,7 @@ exports[`javascript octalLiterals lowercase.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "loc": Object {
           "end": Object {

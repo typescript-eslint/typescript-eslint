@@ -18,7 +18,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-optional-properties 
               computed: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'foo',
+-               optional: false,
 
                 range: [92, 95],
                 loc: {
@@ -27,6 +29,8 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-optional-properties 
                 },
               },
               optional: true,
+-             readonly: false,
+-             static: false,
 
               range: [92, 97],
               loc: {
@@ -39,7 +43,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-optional-properties 
               computed: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'bar',
+-               optional: false,
 
                 range: [100, 103],
                 loc: {
@@ -48,6 +54,8 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-optional-properties 
                 },
               },
               optional: true,
+-             readonly: false,
+-             static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
                 typeAnnotation: TSStringKeyword {
@@ -78,7 +86,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-optional-properties 
               computed: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'baz',
+-               optional: false,
 
                 range: [116, 119],
                 loc: {
@@ -92,7 +102,9 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-optional-properties 
 +             parameters: Array [
                 Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'foo',
+-                 optional: false,
 
                   range: [121, 124],
                   loc: {
@@ -102,6 +114,7 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-optional-properties 
                 },
                 Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'bar',
                   optional: true,
                   typeAnnotation: TSTypeAnnotation {
@@ -131,6 +144,7 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-optional-properties 
                 },
                 Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'baz',
                   optional: true,
 
@@ -141,6 +155,8 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-optional-properties 
                   },
                 },
               ],
+-             readonly: false,
+-             static: false,
 
               range: [116, 146],
               loc: {
@@ -156,9 +172,13 @@ exports[`AST Fixtures legacy-fixtures basics interface-with-optional-properties 
             end: { column: 1, line: 7 },
           },
         },
+-       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'test',
+-         optional: false,
 
           range: [83, 87],
           loc: {

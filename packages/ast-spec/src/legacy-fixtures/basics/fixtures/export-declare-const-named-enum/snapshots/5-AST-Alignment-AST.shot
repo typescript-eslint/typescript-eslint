@@ -17,7 +17,9 @@ exports[`AST Fixtures legacy-fixtures basics export-declare-const-named-enum AST
           declare: true,
           id: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'Foo',
+-           optional: false,
 
             range: [99, 102],
             loc: {
@@ -28,9 +30,12 @@ exports[`AST Fixtures legacy-fixtures basics export-declare-const-named-enum AST
           members: Array [
             TSEnumMember {
               type: 'TSEnumMember',
+-             computed: false,
               id: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'foo',
+-               optional: false,
 
                 range: [107, 110],
                 loc: {
@@ -58,9 +63,12 @@ exports[`AST Fixtures legacy-fixtures basics export-declare-const-named-enum AST
             },
             TSEnumMember {
               type: 'TSEnumMember',
+-             computed: false,
               id: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'bar',
+-               optional: false,
 
                 range: [118, 121],
                 loc: {

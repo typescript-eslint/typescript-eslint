@@ -23,9 +23,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 10,
@@ -37,11 +39,13 @@ Object {
           },
         },
         "name": "a",
+        "optional": false,
         "range": Array [
           9,
           10,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -55,8 +59,10 @@ Object {
       },
       "params": Array [
         Object {
+          "decorators": Array [],
           "elements": Array [
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 13,
@@ -68,17 +74,21 @@ Object {
                 },
               },
               "name": "x",
+              "optional": false,
               "range": Array [
                 12,
                 13,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             null,
             Object {
+              "decorators": Array [],
               "elements": Array [
                 null,
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 21,
@@ -90,11 +100,13 @@ Object {
                     },
                   },
                   "name": "z",
+                  "optional": false,
                   "range": Array [
                     20,
                     21,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               ],
               "loc": Object {
@@ -107,11 +119,13 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "range": Array [
                 17,
                 22,
               ],
               "type": "ArrayPattern",
+              "typeAnnotation": undefined,
             },
           ],
           "loc": Object {
@@ -124,18 +138,22 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             11,
             23,
           ],
           "type": "ArrayPattern",
+          "typeAnnotation": undefined,
         },
       ],
       "range": Array [
         0,
         27,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
     Object {
       "loc": Object {

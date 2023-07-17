@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration ImportDeclaration _error_ non-string-source TSESTree - Error 1`] = `[TSError: Module specifier must be a string literal.]`;
+exports[`AST Fixtures declaration ImportDeclaration _error_ non-string-source TSESTree - Error 1`] = `
+"TSError
+> 1 | import * as x from module;
+    |                    ^^^^^^ Module specifier must be a string literal.
+  2 |"
+`;

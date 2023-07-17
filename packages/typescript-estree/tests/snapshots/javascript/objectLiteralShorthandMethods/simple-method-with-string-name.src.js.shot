@@ -4,8 +4,10 @@ exports[`javascript objectLiteralShorthandMethods simple-method-with-string-name
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 1,
@@ -17,11 +19,13 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             0,
             1,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -83,6 +87,7 @@ Object {
                 },
               },
               "method": true,
+              "optional": false,
               "range": Array [
                 10,
                 28,
@@ -109,6 +114,7 @@ Object {
                   ],
                   "type": "BlockStatement",
                 },
+                "declare": false,
                 "expression": false,
                 "generator": false,
                 "id": null,
@@ -127,7 +133,9 @@ Object {
                   18,
                   28,
                 ],
+                "returnType": undefined,
                 "type": "FunctionExpression",
+                "typeParameters": undefined,
               },
             },
           ],

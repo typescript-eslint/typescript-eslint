@@ -12,6 +12,7 @@ exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier-multiple
         type: 'ExpressionStatement',
         expression: ClassExpression {
           type: 'ClassExpression',
+-         abstract: false,
           body: ClassBody {
             type: 'ClassBody',
             body: Array [],
@@ -22,7 +23,10 @@ exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier-multiple
               end: { column: 22, line: 1 },
             },
           },
+-         declare: false,
+-         decorators: Array [],
           id: null,
+-         implements: Array [],
           superClass: null,
           typeParameters: TSTypeParameterDeclaration {
             type: 'TSTypeParameterDeclaration',
@@ -33,9 +37,10 @@ exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier-multiple
 -               in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
+-                 decorators: Array [],
 -                 name: 'T',
-+               name: 'T',
-
+-                 optional: false,
+-
 -                 range: [8, 9],
 -                 loc: {
 -                   start: { column: 8, line: 1 },
@@ -43,7 +48,8 @@ exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier-multiple
 -                 },
 -               },
 -               out: false,
--
++               name: 'T',
+
                 range: [8, 9],
                 loc: {
                   start: { column: 8, line: 1 },
@@ -56,7 +62,9 @@ exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier-multiple
 -               in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
+-                 decorators: Array [],
 -                 name: 'U',
+-                 optional: false,
 -
 -                 range: [17, 18],
 -                 loc: {

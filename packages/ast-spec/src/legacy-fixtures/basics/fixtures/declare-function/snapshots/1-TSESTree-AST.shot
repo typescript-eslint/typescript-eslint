@@ -12,7 +12,9 @@ Program {
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "foo",
+        optional: false,
 
         range: [90, 93],
         loc: {
@@ -23,7 +25,9 @@ Program {
       params: [
         Identifier {
           type: "Identifier",
+          decorators: [],
           name: "bar",
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSStringKeyword {

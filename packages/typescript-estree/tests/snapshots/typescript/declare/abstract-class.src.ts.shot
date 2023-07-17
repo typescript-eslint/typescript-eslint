@@ -24,7 +24,9 @@ Object {
         "type": "ClassBody",
       },
       "declare": true,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 26,
@@ -36,12 +38,15 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           23,
           26,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -57,7 +62,9 @@ Object {
         31,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

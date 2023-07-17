@@ -8,7 +8,9 @@ Object {
       "declaration": Object {
         "declarations": Array [
           Object {
+            "definite": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 14,
@@ -20,11 +22,13 @@ Object {
                 },
               },
               "name": "foo",
+              "optional": false,
               "range": Array [
                 11,
                 14,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": Object {
               "async": false,
@@ -46,6 +50,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -64,7 +69,9 @@ Object {
                 17,
                 31,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -83,6 +90,7 @@ Object {
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "var",
         "loc": Object {
           "end": Object {

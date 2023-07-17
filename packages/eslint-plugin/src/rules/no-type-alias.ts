@@ -5,17 +5,10 @@ import * as util from '../util';
 
 type Values =
   | 'always'
-  | 'never'
-  | 'in-unions'
   | 'in-intersections'
-  | 'in-unions-and-intersections';
-const enumValues: Values[] = [
-  'always',
-  'never',
-  'in-unions',
-  'in-intersections',
-  'in-unions-and-intersections',
-];
+  | 'in-unions-and-intersections'
+  | 'in-unions'
+  | 'never';
 
 type Options = [
   {
@@ -29,11 +22,11 @@ type Options = [
     allowGenerics?: 'always' | 'never';
   },
 ];
-type MessageIds = 'noTypeAlias' | 'noCompositionAlias';
+type MessageIds = 'noCompositionAlias' | 'noTypeAlias';
 
 type CompositionType =
-  | AST_NODE_TYPES.TSUnionType
-  | AST_NODE_TYPES.TSIntersectionType;
+  | AST_NODE_TYPES.TSIntersectionType
+  | AST_NODE_TYPES.TSUnionType;
 interface TypeWithLabel {
   node: TSESTree.Node;
   compositionType: CompositionType | null;
@@ -42,11 +35,11 @@ interface TypeWithLabel {
 export default util.createRule<Options, MessageIds>({
   name: 'no-type-alias',
   meta: {
+    deprecated: true,
     type: 'suggestion',
     docs: {
       description: 'Disallow type aliases',
       // too opinionated to be recommended
-      recommended: false,
     },
     messages: {
       noTypeAlias: 'Type {{alias}} are not allowed.',
@@ -55,40 +48,56 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
+        $defs: {
+          expandedOptions: {
+            type: 'string',
+            enum: [
+              'always',
+              'never',
+              'in-unions',
+              'in-intersections',
+              'in-unions-and-intersections',
+            ] satisfies Values[],
+          },
+          simpleOptions: {
+            type: 'string',
+            enum: ['always', 'never'],
+          },
+        },
         type: 'object',
         properties: {
           allowAliases: {
             description: 'Whether to allow direct one-to-one type aliases.',
-            enum: enumValues,
+            $ref: '#/items/0/$defs/expandedOptions',
           },
           allowCallbacks: {
             description: 'Whether to allow type aliases for callbacks.',
-            enum: ['always', 'never'],
+            $ref: '#/items/0/$defs/simpleOptions',
           },
           allowConditionalTypes: {
             description: 'Whether to allow type aliases for conditional types.',
-            enum: ['always', 'never'],
+            $ref: '#/items/0/$defs/simpleOptions',
           },
           allowConstructors: {
             description: 'Whether to allow type aliases with constructors.',
-            enum: ['always', 'never'],
+            $ref: '#/items/0/$defs/simpleOptions',
           },
           allowLiterals: {
             description:
               'Whether to allow type aliases with object literal types.',
-            enum: enumValues,
+            $ref: '#/items/0/$defs/expandedOptions',
           },
           allowMappedTypes: {
             description: 'Whether to allow type aliases with mapped types.',
-            enum: enumValues,
+            $ref: '#/items/0/$defs/expandedOptions',
           },
           allowTupleTypes: {
             description: 'Whether to allow type aliases with tuple types.',
-            enum: enumValues,
+            $ref: '#/items/0/$defs/expandedOptions',
           },
           allowGenerics: {
             description: 'Whether to allow type aliases with generic types.',
-            enum: ['always', 'never'],
+            $ref: '#/items/0/$defs/simpleOptions',
           },
         },
         additionalProperties: false,
@@ -220,7 +229,7 @@ export default util.createRule<Options, MessageIds>({
     const isValidGeneric = (type: TypeWithLabel): boolean => {
       return (
         type.node.type === AST_NODE_TYPES.TSTypeReference &&
-        type.node.typeParameters !== undefined
+        type.node.typeArguments !== undefined
       );
     };
 

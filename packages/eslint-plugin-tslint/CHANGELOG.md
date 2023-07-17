@@ -3,6 +3,88 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.1.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.0.0...v6.1.0) (2023-07-17)
+
+
+### Features
+
+* **typescript-estree:** add EXPERIMENTAL_useProjectService option to use TypeScript project service ([#6754](https://github.com/typescript-eslint/typescript-eslint/issues/6754)) ([6d3d162](https://github.com/typescript-eslint/typescript-eslint/commit/6d3d162ce032ebcf5f892a4edfb897797fc96191))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.0.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.62.0...v6.0.0) (2023-07-10)
+
+
+### Bug Fixes
+
+* update `exports` field in package.json files ([#6550](https://github.com/typescript-eslint/typescript-eslint/issues/6550)) ([53776c2](https://github.com/typescript-eslint/typescript-eslint/commit/53776c244f8bbdc852d57c7b313b0935e755ddc4))
+
+
+### chore
+
+* drop support for node v14.17, v17 ([#5971](https://github.com/typescript-eslint/typescript-eslint/issues/5971)) ([cc62015](https://github.com/typescript-eslint/typescript-eslint/commit/cc62015b8ae5f207912ff8988e2a0b3fe9a79243))
+
+
+### Features
+
+* add new package `rule-tester` ([#6777](https://github.com/typescript-eslint/typescript-eslint/issues/6777)) ([2ce1c1d](https://github.com/typescript-eslint/typescript-eslint/commit/2ce1c1d22c799a1ca027674fcb9b3a7ab0107428))
+* add package.json exports for public packages ([#6458](https://github.com/typescript-eslint/typescript-eslint/issues/6458)) ([d676683](https://github.com/typescript-eslint/typescript-eslint/commit/d6766838a05259556029acaac57dc7839b68c592))
+* drop support for ESLint v6 ([#5972](https://github.com/typescript-eslint/typescript-eslint/issues/5972)) ([bda806d](https://github.com/typescript-eslint/typescript-eslint/commit/bda806d78ee46133587d9383baff52d796a594e5))
+* drop support for node v12 ([#5918](https://github.com/typescript-eslint/typescript-eslint/issues/5918)) ([7e3fe9a](https://github.com/typescript-eslint/typescript-eslint/commit/7e3fe9a67abd394b0a114f2deb466edf5c9759ac))
+* drop support for node v14 and test against node v20 ([#7022](https://github.com/typescript-eslint/typescript-eslint/issues/7022)) ([e6235bf](https://github.com/typescript-eslint/typescript-eslint/commit/e6235bf61b781066653581b57b7cd976c9c4f905))
+* **eslint-plugin:** rework configs: recommended, strict, stylistic; -type-checked ([#5251](https://github.com/typescript-eslint/typescript-eslint/issues/5251)) ([5346b5b](https://github.com/typescript-eslint/typescript-eslint/commit/5346b5bbdbba81439ba761c282ba9cdcec7b45c8)), closes [#5036](https://github.com/typescript-eslint/typescript-eslint/issues/5036) [#5834](https://github.com/typescript-eslint/typescript-eslint/issues/5834) [#5882](https://github.com/typescript-eslint/typescript-eslint/issues/5882) [#5864](https://github.com/typescript-eslint/typescript-eslint/issues/5864) [#3076](https://github.com/typescript-eslint/typescript-eslint/issues/3076) [#5834](https://github.com/typescript-eslint/typescript-eslint/issues/5834) [#5882](https://github.com/typescript-eslint/typescript-eslint/issues/5882) [#5864](https://github.com/typescript-eslint/typescript-eslint/issues/5864) [#5889](https://github.com/typescript-eslint/typescript-eslint/issues/5889) [#5834](https://github.com/typescript-eslint/typescript-eslint/issues/5834) [#5882](https://github.com/typescript-eslint/typescript-eslint/issues/5882) [#5864](https://github.com/typescript-eslint/typescript-eslint/issues/5864) [#5883](https://github.com/typescript-eslint/typescript-eslint/issues/5883) [#4863](https://github.com/typescript-eslint/typescript-eslint/issues/4863) [#5381](https://github.com/typescript-eslint/typescript-eslint/issues/5381) [#5256](https://github.com/typescript-eslint/typescript-eslint/issues/5256) [#5399](https://github.com/typescript-eslint/typescript-eslint/issues/5399)
+* **typescript-estree:** add type checker wrapper APIs to ParserServicesWithTypeInformation ([#6404](https://github.com/typescript-eslint/typescript-eslint/issues/6404)) ([62d5755](https://github.com/typescript-eslint/typescript-eslint/commit/62d57559564fb08512eafe03a2c1b167c4377601))
+
+
+### BREAKING CHANGES
+
+* drop support for ESLint v6
+* drops support for node v17
+* drops support for node v12
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [5.62.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.61.0...v5.62.0) (2023-07-10)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [5.61.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.60.1...v5.61.0) (2023-07-03)
+
+
+### Features
+
+* support TypeScript 5.1 ([#7088](https://github.com/typescript-eslint/typescript-eslint/issues/7088)) ([4bf2d73](https://github.com/typescript-eslint/typescript-eslint/commit/4bf2d7360eaf74c9ef87b196ff4c459b8f50800b))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+## [5.60.1](https://github.com/typescript-eslint/typescript-eslint/compare/v5.60.0...v5.60.1) (2023-06-26)
+
+**Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [5.60.0](https://github.com/typescript-eslint/typescript-eslint/compare/v5.59.11...v5.60.0) (2023-06-19)
 
 **Note:** Version bump only for package @typescript-eslint/eslint-plugin-tslint

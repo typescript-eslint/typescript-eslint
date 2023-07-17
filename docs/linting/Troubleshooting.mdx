@@ -7,7 +7,7 @@ title: Troubleshooting & FAQs
 
 This happens because TypeScript adds new features that ESLint doesn't know about.
 
-The first step is to [check our list of "extension" rules here](https://typescript-eslint.io/rules/#extension-rules).
+The first step is to [check our list of "extension" rules here](/rules/#extension-rules).
 An extension rule is a rule which extends the base ESLint rules to support TypeScript syntax.
 If you find it in there, give it a go to see if it works for you.
 You can configure it by disabling the base rule, and turning on the extension rule.
@@ -23,10 +23,10 @@ Here's an example with the `semi` rule:
 ```
 
 If you don't find an existing extension rule, or the extension rule doesn't work for your case, then you can go ahead and check our issues.
-[The contributing guide outlines the best way to raise an issue](https://github.com/typescript-eslint/typescript-eslint/blob/main/CONTRIBUTING.md#raising-issues).
+[The contributing guide outlines the best way to raise an issue](../contributing/Issues.mdx).
 
 > We release a new version our tooling every week.
-> _Please_ ensure that you [check our the latest list of "extension" rules](https://typescript-eslint.io/rules/#extension-rules) **_before_** filing an issue.
+> _Please_ ensure that you [check our the latest list of "extension" rules](/rules/#extension-rules) **_before_** filing an issue.
 
 ## I get errors telling me "ESLint was configured to run ... However, that TSConfig does not / none of those TSConfigs include this file"
 
@@ -117,6 +117,42 @@ See our docs on [type aware linting](./Typed_Linting.mdx) for more information.
 You're using an outdated version of `@typescript-eslint/parser`.
 Update to the latest version to see a more informative version of this error message, explained [above](#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file 'backlink to I get errors telling me ESLint was configured to run ...').
 
+## How do I turn on a `@typescript-eslint` rule?
+
+First make sure you've read the docs and understand ESLint configuration files:
+
+- [Read our getting started guide](../Getting_Started.mdx) to ensure your config is properly setup to start configuring our rules.
+- [Checkout ESLint's documentation on configuring rules](https://eslint.org/docs/latest/use/configure/rules) to ensure you understand how to configure rules.
+
+Our [rule docs](/rules) detail the options each rule supports under the "Options" heading.
+We use TypeScript types to describe an `Options` tuple type for the rule which you can use to configure the a rule.
+In your config file the keys of the `rules` object are the names of the rules you wish to configure and the values follow the following form:
+
+```ts
+type Severity = 'off' | 'warn' | 'error';
+type RuleConfig =
+  | Severity
+  | [Severity]
+  | [
+      Severiy,
+      // Options is the tuple type from the rule docs
+      ...Options,
+    ];
+```
+
+Some examples
+
+```js title=".eslintrc.js"
+module.exports = {
+  rules: {
+    // turns a rule on with no configuration (i.e. uses the default configuration)
+    '@typescript-eslint/array-type': 'error',
+    // turns on a rule with configuration
+    '@typescript-eslint/no-explicit-any': ['warn', { ignoreRestArgs: true }],
+  },
+};
+```
+
 ## I use a framework (like Vue) that requires custom file extensions, and I get errors like "You should add `parserOptions.extraFileExtensions` to your config"
 
 You can use `parserOptions.extraFileExtensions` to specify an array of non-TypeScript extensions to allow, for example:
@@ -171,7 +207,7 @@ See [#2041](https://github.com/typescript-eslint/typescript-eslint/issues/2041) 
 ESLint core contains the rule [`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax).
 This generic rule allows you to specify a [selector](https://eslint.org/docs/developer-guide/selectors) for the code you want to ban, along with a custom error message.
 
-You can use an AST visualization tool such as [typescript-eslint playground](https://typescript-eslint.io/play#showAST=es) > _Options_ > _AST Explorer_ on its left sidebar by selecting _ESTree_ to help in figuring out the structure of the AST that you want to ban.
+You can use an AST visualization tool such as [typescript-eslint playground](/play#showAST=es) > _Options_ > _AST Explorer_ on its left sidebar by selecting _ESTree_ to help in figuring out the structure of the AST that you want to ban.
 
 For example, you can ban enums (or some variation of) using one of the following configs:
 
@@ -290,11 +326,33 @@ See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/
 ### I get `no-unsafe-*` complaints for cross-file changes
 
 See [Changes to one file are not reflected in linting other files in my IDE](#changes-to-one-file-are-not-reflected-when-linting-other-files-in-my-ide).
-Rules such as [`no-unsafe-argument`](https://typescript-eslint.io/rules/no-unsafe-argument), [`no-unsafe-assignment`](https://typescript-eslint.io/rules/no-unsafe-assignment), and [`no-unsafe-call`](https://typescript-eslint.io/rules/no-unsafe-call) are often impacted.
+Rules such as [`no-unsafe-argument`](/rules/no-unsafe-argument), [`no-unsafe-assignment`](/rules/no-unsafe-assignment), and [`no-unsafe-call`](/rules/no-unsafe-call) are often impacted.
+
+## "The '`<key>`' property is deprecated on '`<type>`' nodes. Use '`<key>`' instead." warnings
+
+If you're seeing this warning, it's likely you're using an ESLint plugin (or other tooling) that hasn't been updated for typescript-eslint v6.
+Make sure you're using the latest versions of each of your ESLint plugins (and other tooling).
+
+If you've using many ESLint plugins, have updated each to their latest version, and you're not sure which one this complaint is coming from, try disabling half of them at a time to narrow down which plugin it is.
+Then make sure each of those plugins has a GitHub issue asking that they release a version supporting typescript-eslint v6.
+
+:::tip
+For developers updating ESLint rules in plugins that still need to support typescript-eslint v5: you may need to `||` fall back to the old property key if the new one doesn't exist:
+
+```diff
+- node.typeParameters
++ node.typeArguments || node.typeParameters
+```
+
+:::
+
+For more context, see the [Some properties named typeParameters instead of typeArguments](https://github.com/typescript-eslint/typescript-eslint/issues/146) issue, and the implementing [fix: rename typeParameters to typeArguments where needed](https://github.com/typescript-eslint/typescript-eslint/pull/5384) pull request.
+
+The [typescript-eslint v6 release post](https://deploy-preview-6515--typescript-eslint.netlify.app/blog/announcing-typescript-eslint-v6-beta) has more information on typescript-eslint v6.
 
 ## My linting feels really slow
 
-If you think you're having issues with performance, see our [Performance Troubleshooting documentation](./troubleshooting/Performance.md).
+If you think you're having issues with performance, see our [Performance Troubleshooting documentation](./troubleshooting/Performance.mdx).
 
 ## Are TypeScript project references supported?
 

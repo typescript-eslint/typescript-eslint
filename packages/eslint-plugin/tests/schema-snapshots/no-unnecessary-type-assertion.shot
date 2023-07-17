@@ -1,0 +1,33 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes no-unnecessary-type-assertion 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "typesToIgnore": {
+        "description": "A list of type names to ignore.",
+        "items": {
+          "type": "string"
+        },
+        "type": "array"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    /** A list of type names to ignore. */
+    typesToIgnore?: string[];
+  },
+];
+"
+`;

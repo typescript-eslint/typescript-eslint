@@ -4,13 +4,13 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 type Modifier =
-  | 'readonly'
-  | 'private'
-  | 'protected'
-  | 'public'
   | 'private readonly'
+  | 'private'
   | 'protected readonly'
-  | 'public readonly';
+  | 'protected'
+  | 'public readonly'
+  | 'public'
+  | 'readonly';
 
 type Prefer = 'class-property' | 'parameter-property';
 
@@ -30,7 +30,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require or disallow parameter properties in class constructors',
-      recommended: false,
     },
     messages: {
       preferClassProperty:
@@ -38,40 +37,38 @@ export default util.createRule<Options, MessageIds>({
       preferParameterProperty:
         'Property {{parameter}} should be declared as a parameter property.',
     },
-    schema: {
-      $defs: {
-        modifier: {
-          enum: [
-            'readonly',
-            'private',
-            'protected',
-            'public',
-            'private readonly',
-            'protected readonly',
-            'public readonly',
-          ],
+    schema: [
+      {
+        $defs: {
+          modifier: {
+            type: 'string',
+            enum: [
+              'readonly',
+              'private',
+              'protected',
+              'public',
+              'private readonly',
+              'protected readonly',
+              'public readonly',
+            ],
+          },
         },
-      },
-      prefixItems: [
-        {
-          type: 'object',
-          properties: {
-            allow: {
-              type: 'array',
-              items: {
-                $ref: '#/$defs/modifier',
-              },
-              minItems: 1,
-            },
-            prefer: {
-              enum: ['class-property', 'parameter-property'],
+        type: 'object',
+        properties: {
+          allow: {
+            type: 'array',
+            items: {
+              $ref: '#/items/0/$defs/modifier',
             },
           },
-          additionalProperties: false,
+          prefer: {
+            type: 'string',
+            enum: ['class-property', 'parameter-property'],
+          },
         },
-      ],
-      type: 'array',
-    },
+        additionalProperties: false,
+      },
+    ],
   },
   defaultOptions: [
     {

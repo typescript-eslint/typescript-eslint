@@ -4,7 +4,9 @@ exports[`typescript basics typed-keyword-boolean.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 8,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           5,
           8,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -54,6 +58,7 @@ Object {
         ],
         "type": "TSBooleanKeyword",
       },
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

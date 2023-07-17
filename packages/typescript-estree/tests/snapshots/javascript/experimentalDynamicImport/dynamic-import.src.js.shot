@@ -4,9 +4,11 @@ exports[`javascript experimentalDynamicImport dynamic-import.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "arguments": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 23,
@@ -18,11 +20,13 @@ Object {
               },
             },
             "name": "main",
+            "optional": false,
             "range": Array [
               19,
               23,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
         ],
         "callee": Object {
@@ -76,6 +80,7 @@ Object {
           },
           "optional": false,
           "property": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 18,
@@ -87,11 +92,13 @@ Object {
               },
             },
             "name": "then",
+            "optional": false,
             "range": Array [
               14,
               18,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "range": Array [
             0,
@@ -115,6 +122,7 @@ Object {
           24,
         ],
         "type": "CallExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

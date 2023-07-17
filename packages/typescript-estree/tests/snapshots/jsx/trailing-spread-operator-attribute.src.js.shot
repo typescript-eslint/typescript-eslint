@@ -4,6 +4,7 @@ exports[`jsx trailing-spread-operator-attribute.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [],
         "closingElement": Object {
@@ -163,6 +164,7 @@ Object {
             },
             Object {
               "argument": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 45,
@@ -174,11 +176,13 @@ Object {
                   },
                 },
                 "name": "props",
+                "optional": false,
                 "range": Array [
                   40,
                   45,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {

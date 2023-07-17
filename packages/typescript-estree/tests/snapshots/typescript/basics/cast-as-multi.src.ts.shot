@@ -4,9 +4,11 @@ exports[`typescript basics cast-as-multi.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "expression": Object {
           "expression": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 1,
@@ -18,11 +20,13 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               0,
               1,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "loc": Object {
             "end": Object {
@@ -89,6 +93,7 @@ Object {
           ],
           "type": "TSTypeReference",
           "typeName": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 13,
@@ -100,11 +105,13 @@ Object {
               },
             },
             "name": "T",
+            "optional": false,
             "range": Array [
               12,
               13,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "typeParameters": undefined,
         },

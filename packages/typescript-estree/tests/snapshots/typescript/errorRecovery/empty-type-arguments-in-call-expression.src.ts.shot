@@ -4,9 +4,11 @@ exports[`typescript errorRecovery empty-type-arguments-in-call-expression.src 1`
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "arguments": Array [],
         "callee": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 3,
@@ -18,11 +20,13 @@ Object {
             },
           },
           "name": "foo",
+          "optional": false,
           "range": Array [
             0,
             3,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {

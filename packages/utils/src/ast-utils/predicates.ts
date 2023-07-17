@@ -116,7 +116,7 @@ const isConstructor = isNodeOfTypeWithConditions(
  */
 function isSetter(
   node: TSESTree.Node | undefined,
-): node is (TSESTree.MethodDefinition | TSESTree.Property) & { kind: 'set' } {
+): node is { kind: 'set' } & (TSESTree.MethodDefinition | TSESTree.Property) {
   return (
     !!node &&
     (node.type === AST_NODE_TYPES.MethodDefinition ||

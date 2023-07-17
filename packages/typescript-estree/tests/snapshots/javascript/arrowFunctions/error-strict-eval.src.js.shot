@@ -4,6 +4,7 @@ exports[`javascript arrowFunctions error-strict-eval.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
@@ -46,6 +47,7 @@ Object {
               "type": "ExpressionStatement",
             },
             Object {
+              "directive": undefined,
               "expression": Object {
                 "loc": Object {
                   "end": Object {
@@ -113,6 +115,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -124,18 +127,22 @@ Object {
               },
             },
             "name": "eval",
+            "optional": false,
             "range": Array [
               1,
               5,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
         ],
         "range": Array [
           0,
           30,
         ],
+        "returnType": undefined,
         "type": "ArrowFunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

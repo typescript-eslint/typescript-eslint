@@ -14,12 +14,11 @@ import CopyButton from '@theme/CodeBlock/CopyButton';
 import Line from '@theme/CodeBlock/Line';
 import WordWrapButton from '@theme/CodeBlock/WordWrapButton';
 import clsx from 'clsx';
-import Highlight, { type Language, defaultProps } from 'prism-react-renderer';
+import Highlight, { defaultProps, type Language } from 'prism-react-renderer';
 import React from 'react';
 
 import styles from './styles.module.css';
 
-// eslint-disable-next-line import/no-default-export
 export default function CodeBlockString({
   children,
   className: blockClassName = '',
@@ -27,7 +26,7 @@ export default function CodeBlockString({
   title: titleProp,
   showLineNumbers: showLineNumbersProp,
   language: languageProp,
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const {
     prism: { defaultLanguage, magicComments },
   } = useThemeConfig();
@@ -77,7 +76,7 @@ export default function CodeBlockString({
             tokens,
             getLineProps,
             getTokenProps,
-          }): JSX.Element => (
+          }): React.JSX.Element => (
             <pre
               // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
               tabIndex={0}
