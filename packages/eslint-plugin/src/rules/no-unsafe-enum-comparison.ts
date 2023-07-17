@@ -63,7 +63,7 @@ export default util.createRule({
     }
 
     return {
-      'BinaryExpression[operator=/=|<|>/]'(
+      'BinaryExpression[operator=/^[<>!=]?={0,2}$/]'(
         node: TSESTree.BinaryExpression,
       ): void {
         const left = getTypeFromNode(node.left);
