@@ -122,6 +122,26 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
     'type promiseNeverUnion = Promise<void> | never;',
     'const arrowGeneric1 = <T = void>(arg: T) => {};',
     'declare function functionDeclaration1<T = void>(arg: T): void;',
+    'function validFunctionReturnVoidUnion(): void | number {}',
+    'declare function validFunctionDeclarationReturnVoidUnion(): void | number;',
+    'const validArrowReturnVoidUnion = (): void | number => {};',
+    'const validFunctionExpresionReturnVoidUnion = function (): void | number {};',
+    'type FunctionTypeDeclaration = () => void | number;',
+    `
+interface IValidCallSignature {
+  (): void | number;
+}
+    `,
+    `
+interface IValidMethodSignature {
+  method(): void | number;
+}
+    `,
+    `
+interface IValidPropertySignature {
+  method: () => void | number;
+}
+    `,
   ],
   invalid: [
     {
