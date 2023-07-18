@@ -164,6 +164,24 @@ export default util.createRule<[Options], MessageIds>({
       );
     }
 
+    function isValidReturnUnion(node: TSESTree.TSUnionType): boolean {
+      if (node.parent.type === AST_NODE_TYPES.TSTypeAnnotation) {
+        if (
+          node.parent.parent.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          node.parent.parent.type === AST_NODE_TYPES.FunctionDeclaration ||
+          node.parent.parent.type === AST_NODE_TYPES.FunctionExpression ||
+          node.parent.parent.type ===
+            AST_NODE_TYPES.TSCallSignatureDeclaration ||
+          node.parent.parent.type === AST_NODE_TYPES.TSDeclareFunction ||
+          node.parent.parent.type === AST_NODE_TYPES.TSFunctionType ||
+          node.parent.parent.type === AST_NODE_TYPES.TSMethodSignature
+        ) {
+          return node.parent.parent.returnType === node.parent;
+        }
+      }
+      return false;
+    }
+
     return {
       TSVoidKeyword(node: TSESTree.TSVoidKeyword): void {
         // checks T<..., void, ...> against specification of allowInGenericArguments option
@@ -185,12 +203,16 @@ export default util.createRule<[Options], MessageIds>({
           return;
         }
 
-        // union w/ void must contain types from validUnionMembers, or a valid generic void type
-        if (
-          node.parent.type === AST_NODE_TYPES.TSUnionType &&
-          isValidUnionType(node.parent)
-        ) {
-          return;
+        if (node.parent.type === AST_NODE_TYPES.TSUnionType) {
+          // union w/ void must contain types from validUnionMembers, or a valid generic void type
+          if (isValidUnionType(node.parent)) {
+            return;
+          }
+
+          // A void union is valid in the return type position
+          if (isValidReturnUnion(node.parent)) {
+            return;
+          }
         }
 
         // this parameter is ok to be void.
