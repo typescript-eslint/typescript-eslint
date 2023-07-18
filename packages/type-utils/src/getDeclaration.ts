@@ -1,13 +1,17 @@
+import type {
+  ParserServicesWithTypeInformation,
+  TSESTree,
+} from '@typescript-eslint/typescript-estree';
 import type * as ts from 'typescript';
 
 /**
  * Gets the declaration for the given variable
  */
 export function getDeclaration(
-  checker: ts.TypeChecker,
-  node: ts.Expression,
+  services: ParserServicesWithTypeInformation,
+  node: TSESTree.Node,
 ): ts.Declaration | null {
-  const symbol = checker.getSymbolAtLocation(node);
+  const symbol = services.getSymbolAtLocation(node);
   if (!symbol) {
     return null;
   }

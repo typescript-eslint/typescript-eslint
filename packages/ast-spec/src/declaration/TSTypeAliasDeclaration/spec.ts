@@ -12,8 +12,7 @@ export interface TSTypeAliasDeclaration extends BaseNode {
    * declare type T = 1;
    * ```
    */
-  // TODO(#5020) - make this `false` if it is not `declare`d
-  declare?: boolean;
+  declare: boolean;
   /**
    * The name of the type.
    */
@@ -24,7 +23,6 @@ export interface TSTypeAliasDeclaration extends BaseNode {
   typeAnnotation: TypeNode;
   /**
    * The generic type parameters declared for the type.
-   * This is `undefined` if there are no generic type parameters declared.
    */
-  typeParameters?: TSTypeParameterDeclaration;
+  typeParameters: TSTypeParameterDeclaration | undefined;
 }

@@ -3,21 +3,21 @@ import path from 'path';
 import * as ts from 'typescript';
 
 import type { ParseSettings } from '../parseSettings';
-import type { ASTAndProgram } from './shared';
-import {
-  createDefaultCompilerOptionsFromExtra,
-  getModuleResolver,
-} from './shared';
+import type { ASTAndDefiniteProgram } from './shared';
+import { createDefaultCompilerOptionsFromExtra } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createDefaultProgram');
 
 /**
  * @param parseSettings Internal settings for parsing the file
  * @returns If found, returns the source file corresponding to the code and the containing program
+ * @deprecated
+ * This is a legacy option that comes with severe performance penalties.
+ * Please do not use it.
  */
 function createDefaultProgram(
   parseSettings: ParseSettings,
-): ASTAndProgram | undefined {
+): ASTAndDefiniteProgram | undefined {
   log(
     'Getting default program for: %s',
     parseSettings.filePath || 'unnamed file',
@@ -32,7 +32,12 @@ function createDefaultProgram(
   const commandLine = ts.getParsedCommandLineOfConfigFile(
     tsconfigPath,
     createDefaultCompilerOptionsFromExtra(parseSettings),
-    { ...ts.sys, onUnRecoverableConfigFileDiagnostic: () => {} },
+    {
+      ...ts.sys,
+      // TODO: file issue on TypeScript to suggest making optional?
+      // eslint-disable-next-line @typescript-eslint/no-empty-function
+      onUnRecoverableConfigFileDiagnostic: () => {},
+    },
   );
 
   if (!commandLine) {
@@ -44,17 +49,10 @@ function createDefaultProgram(
     /* setParentNodes */ true,
   );
 
-  if (parseSettings.moduleResolver) {
-    // eslint-disable-next-line deprecation/deprecation -- intentional for older TS versions
-    compilerHost.resolveModuleNames = getModuleResolver(
-      parseSettings.moduleResolver,
-    ).resolveModuleNames;
-  }
-
   const oldReadFile = compilerHost.readFile;
   compilerHost.readFile = (fileName: string): string | undefined =>
     path.normalize(fileName) === path.normalize(parseSettings.filePath)
-      ? parseSettings.code
+      ? parseSettings.codeFullText
       : oldReadFile(fileName);
 
   const program = ts.createProgram(
@@ -67,4 +65,5 @@ function createDefaultProgram(
   return ast && { ast, program };
 }
 
+// eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
 export { createDefaultProgram };

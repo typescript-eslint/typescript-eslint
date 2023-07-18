@@ -8,7 +8,9 @@ Program {
       type: "TSImportEqualsDeclaration",
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "foo",
+        optional: false,
 
         range: [80, 83],
         loc: {
@@ -17,7 +19,6 @@ Program {
         },
       },
       importKind: "value",
-      isExport: false,
       moduleReference: TSExternalModuleReference {
         type: "TSExternalModuleReference",
         expression: Literal {

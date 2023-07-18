@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures parameter-decorators _error_ parameter-array-pattern-decorator Babel - Error 1`] = `[SyntaxError: Unexpected token (4:28)]`;

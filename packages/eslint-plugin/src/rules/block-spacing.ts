@@ -16,7 +16,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow or enforce spaces inside of blocks after opening block and before closing block',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',

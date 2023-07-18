@@ -9,39 +9,22 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "x",
+            optional: false,
             typeAnnotation: TSTypeAnnotation {
               type: "TSTypeAnnotation",
               typeAnnotation: TSTypeReference {
                 type: "TSTypeReference",
-                typeName: Identifier {
-                  type: "Identifier",
-                  name: "Array",
-
-                  range: [80, 85],
-                  loc: {
-                    start: { column: 7, line: 3 },
-                    end: { column: 12, line: 3 },
-                  },
-                },
-                typeParameters: TSTypeParameterInstantiation {
+                typeArguments: TSTypeParameterInstantiation {
                   type: "TSTypeParameterInstantiation",
                   params: [
                     TSTypeReference {
                       type: "TSTypeReference",
-                      typeName: Identifier {
-                        type: "Identifier",
-                        name: "Array",
-
-                        range: [86, 91],
-                        loc: {
-                          start: { column: 13, line: 3 },
-                          end: { column: 18, line: 3 },
-                        },
-                      },
-                      typeParameters: TSTypeParameterInstantiation {
+                      typeArguments: TSTypeParameterInstantiation {
                         type: "TSTypeParameterInstantiation",
                         params: [
                           TSNumberKeyword {
@@ -61,6 +44,18 @@ Program {
                           end: { column: 26, line: 3 },
                         },
                       },
+                      typeName: Identifier {
+                        type: "Identifier",
+                        decorators: [],
+                        name: "Array",
+                        optional: false,
+
+                        range: [86, 91],
+                        loc: {
+                          start: { column: 13, line: 3 },
+                          end: { column: 18, line: 3 },
+                        },
+                      },
 
                       range: [86, 99],
                       loc: {
@@ -74,6 +69,18 @@ Program {
                   loc: {
                     start: { column: 12, line: 3 },
                     end: { column: 27, line: 3 },
+                  },
+                },
+                typeName: Identifier {
+                  type: "Identifier",
+                  decorators: [],
+                  name: "Array",
+                  optional: false,
+
+                  range: [80, 85],
+                  loc: {
+                    start: { column: 7, line: 3 },
+                    end: { column: 12, line: 3 },
                   },
                 },
 
@@ -106,6 +113,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "let",
 
       range: [73, 101],

@@ -6,8 +6,8 @@ namespace Scope {
   export type ScopeManager = scopeManager.ScopeManager;
   export type Reference = scopeManager.Reference;
   export type Variable =
-    | scopeManager.Variable
-    | scopeManager.ESLintScopeVariable;
+    | scopeManager.ESLintScopeVariable
+    | scopeManager.Variable;
   export type Scope = scopeManager.Scope;
   export const ScopeType = scopeManager.ScopeType;
   // TODO - in the next major, clean this up with a breaking change

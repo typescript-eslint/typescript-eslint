@@ -1,6 +1,6 @@
 import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import naturalCompare from 'natural-compare-lite';
+import naturalCompare from 'natural-compare';
 
 import * as util from '../util';
 
@@ -12,9 +12,9 @@ export type MessageIds =
 type ReadonlyType = 'readonly-field' | 'readonly-signature';
 
 type MemberKind =
+  | ReadonlyType
   | 'call-signature'
   | 'constructor'
-  | ReadonlyType
   | 'field'
   | 'get'
   | 'method'
@@ -25,16 +25,16 @@ type MemberKind =
 type DecoratedMemberKind =
   | Exclude<ReadonlyType, 'readonly-signature'>
   | 'field'
-  | 'method'
   | 'get'
+  | 'method'
   | 'set';
 
 type NonCallableMemberKind = Exclude<
   MemberKind,
-  'constructor' | 'signature' | 'readonly-signature'
+  'constructor' | 'readonly-signature' | 'signature'
 >;
 
-type MemberScope = 'static' | 'instance' | 'abstract';
+type MemberScope = 'abstract' | 'instance' | 'static';
 
 type Accessibility = TSESTree.Accessibility | '#private';
 
@@ -42,20 +42,20 @@ type BaseMemberType =
   | MemberKind
   | `${Accessibility}-${Exclude<
       MemberKind,
-      'signature' | 'readonly-signature' | 'static-initialization'
+      'readonly-signature' | 'signature' | 'static-initialization'
     >}`
-  | `${Accessibility}-decorated-${DecoratedMemberKind}`
-  | `decorated-${DecoratedMemberKind}`
   | `${Accessibility}-${MemberScope}-${NonCallableMemberKind}`
-  | `${MemberScope}-${NonCallableMemberKind}`;
+  | `${Accessibility}-decorated-${DecoratedMemberKind}`
+  | `${MemberScope}-${NonCallableMemberKind}`
+  | `decorated-${DecoratedMemberKind}`;
 
 type MemberType = BaseMemberType | BaseMemberType[];
 
 type AlphabeticalOrder =
-  | 'alphabetically'
   | 'alphabetically-case-insensitive'
-  | 'natural'
-  | 'natural-case-insensitive';
+  | 'alphabetically'
+  | 'natural-case-insensitive'
+  | 'natural';
 
 type Order = AlphabeticalOrder | 'as-written';
 
@@ -85,42 +85,34 @@ const neverConfig: JSONSchema.JSONSchema4 = {
   enum: ['never'],
 };
 
-const arrayConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
+const arrayConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
   type: 'array',
   items: {
     oneOf: [
       {
-        enum: memberTypes,
+        $ref: memberTypes,
       },
       {
         type: 'array',
         items: {
-          enum: memberTypes,
+          $ref: memberTypes,
         },
       },
     ],
   },
 });
 
-const objectConfig = (memberTypes: MemberType[]): JSONSchema.JSONSchema4 => ({
+const objectConfig = (memberTypes: string): JSONSchema.JSONSchema4 => ({
   type: 'object',
   properties: {
     memberTypes: {
       oneOf: [arrayConfig(memberTypes), neverConfig],
     },
     order: {
-      type: 'string',
-      enum: [
-        'alphabetically',
-        'alphabetically-case-insensitive',
-        'as-written',
-        'natural',
-        'natural-case-insensitive',
-      ],
+      $ref: '#/items/0/$defs/orderOptions',
     },
     optionalityOrder: {
-      type: 'string',
-      enum: ['optional-first', 'required-first'],
+      $ref: '#/items/0/$defs/optionalityOrderOptions',
     },
   },
   additionalProperties: false,
@@ -380,11 +372,11 @@ function getNodeType(node: Member): MemberKind | null {
 function getMemberRawName(
   member:
     | TSESTree.MethodDefinition
-    | TSESTree.TSMethodSignature
-    | TSESTree.TSAbstractMethodDefinition
-    | TSESTree.PropertyDefinition
-    | TSESTree.TSAbstractPropertyDefinition
     | TSESTree.Property
+    | TSESTree.PropertyDefinition
+    | TSESTree.TSAbstractMethodDefinition
+    | TSESTree.TSAbstractPropertyDefinition
+    | TSESTree.TSMethodSignature
     | TSESTree.TSPropertySignature,
   sourceCode: TSESLint.SourceCode,
 ): string {
@@ -529,7 +521,7 @@ function getRank(
   const memberGroups: BaseMemberType[] = [];
 
   if (supportsModifiers) {
-    const decorated = 'decorators' in node && node.decorators!.length > 0;
+    const decorated = 'decorators' in node && node.decorators.length > 0;
     if (
       decorated &&
       (type === 'readonly-field' ||
@@ -625,7 +617,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require a consistent member declaration order',
-      recommended: false,
     },
     messages: {
       incorrectOrder:
@@ -636,70 +627,68 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
+        $defs: {
+          orderOptions: {
+            type: 'string',
+            enum: [
+              'alphabetically',
+              'alphabetically-case-insensitive',
+              'as-written',
+              'natural',
+              'natural-case-insensitive',
+            ],
+          },
+          optionalityOrderOptions: {
+            type: 'string',
+            enum: ['optional-first', 'required-first'],
+          },
+          allItems: {
+            type: 'string',
+            enum: allMemberTypes as string[],
+          },
+          typeItems: {
+            type: 'string',
+            enum: [
+              'readonly-signature',
+              'signature',
+              'readonly-field',
+              'field',
+              'method',
+              'constructor',
+            ],
+          },
+
+          baseConfig: {
+            oneOf: [
+              neverConfig,
+              arrayConfig('#/items/0/$defs/allItems'),
+              objectConfig('#/items/0/$defs/allItems'),
+            ],
+          },
+          typesConfig: {
+            oneOf: [
+              neverConfig,
+              arrayConfig('#/items/0/$defs/typeItems'),
+              objectConfig('#/items/0/$defs/typeItems'),
+            ],
+          },
+        },
         type: 'object',
         properties: {
           default: {
-            oneOf: [
-              neverConfig,
-              arrayConfig(allMemberTypes),
-              objectConfig(allMemberTypes),
-            ],
+            $ref: '#/items/0/$defs/baseConfig',
           },
           classes: {
-            oneOf: [
-              neverConfig,
-              arrayConfig(allMemberTypes),
-              objectConfig(allMemberTypes),
-            ],
+            $ref: '#/items/0/$defs/baseConfig',
           },
           classExpressions: {
-            oneOf: [
-              neverConfig,
-              arrayConfig(allMemberTypes),
-              objectConfig(allMemberTypes),
-            ],
+            $ref: '#/items/0/$defs/baseConfig',
           },
           interfaces: {
-            oneOf: [
-              neverConfig,
-              arrayConfig([
-                'readonly-signature',
-                'signature',
-                'readonly-field',
-                'field',
-                'method',
-                'constructor',
-              ]),
-              objectConfig([
-                'readonly-signature',
-                'signature',
-                'readonly-field',
-                'field',
-                'method',
-                'constructor',
-              ]),
-            ],
+            $ref: '#/items/0/$defs/typesConfig',
           },
           typeLiterals: {
-            oneOf: [
-              neverConfig,
-              arrayConfig([
-                'readonly-signature',
-                'signature',
-                'readonly-field',
-                'field',
-                'method',
-                'constructor',
-              ]),
-              objectConfig([
-                'readonly-signature',
-                'signature',
-                'readonly-field',
-                'field',
-                'method',
-                'constructor',
-              ]),
-            ],
+            $ref: '#/items/0/$defs/typesConfig',
           },
         },
         additionalProperties: false,
@@ -725,9 +714,9 @@ export default util.createRule<Options, MessageIds>({
       members: Member[],
       groupOrder: MemberType[],
       supportsModifiers: boolean,
-    ): Array<Member[]> | null {
+    ): Member[][] | null {
       const previousRanks: number[] = [];
-      const memberGroups: Array<Member[]> = [];
+      const memberGroups: Member[][] = [];
       let isCorrectlySorted = true;
 
       // Find first member which isn't correctly sorted
@@ -900,7 +889,7 @@ export default util.createRule<Options, MessageIds>({
 
       // Standardize config
       let order: Order | undefined;
-      let memberTypes: string | MemberType[] | undefined;
+      let memberTypes: MemberType[] | string | undefined;
       let optionalityOrder: OptionalityOrder | undefined;
 
       // returns true if everything is good and false if an error was reported

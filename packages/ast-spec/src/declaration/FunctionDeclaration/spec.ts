@@ -6,8 +6,7 @@ import type { BlockStatement } from '../../statement/BlockStatement/spec';
 interface FunctionDeclarationBase extends FunctionBase {
   type: AST_NODE_TYPES.FunctionDeclaration;
   body: BlockStatement;
-  // TODO(#5020) - make this always `false` if it is not `declare`d instead of `undefined`
-  declare?: false;
+  declare: false;
   expression: false;
 }
 

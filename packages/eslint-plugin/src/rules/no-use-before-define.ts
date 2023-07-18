@@ -10,7 +10,7 @@ const SENTINEL_TYPE =
 /**
  * Parses a given value as options.
  */
-function parseOptions(options: string | Config | null): Required<Config> {
+function parseOptions(options: Config | string | null): Required<Config> {
   let functions = true;
   let classes = true;
   let enums = true;
@@ -116,9 +116,6 @@ function referenceContainsTypeQuery(node: TSESTree.Node): boolean {
 
     case AST_NODE_TYPES.TSQualifiedName:
     case AST_NODE_TYPES.Identifier:
-      if (!node.parent) {
-        return false;
-      }
       return referenceContainsTypeQuery(node.parent);
 
     default:
@@ -196,7 +193,7 @@ function isInInitializer(
     return false;
   }
 
-  let node = variable.identifiers[0].parent;
+  let node: TSESTree.Node | undefined = variable.identifiers[0].parent;
   const location = reference.identifier.range[1];
 
   while (node) {
@@ -236,7 +233,7 @@ interface Config {
   ignoreTypeReferences?: boolean;
   allowNamedExports?: boolean;
 }
-type Options = ['nofunc' | Config];
+type Options = [Config | 'nofunc'];
 type MessageIds = 'noUseBeforeDefine';
 
 export default util.createRule<Options, MessageIds>({
@@ -245,7 +242,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description: 'Disallow the use of variables before they are defined',
-      recommended: false,
       extendsBaseRule: true,
     },
     messages: {
@@ -255,6 +251,7 @@ export default util.createRule<Options, MessageIds>({
       {
         oneOf: [
           {
+            type: 'string',
             enum: ['nofunc'],
           },
           {

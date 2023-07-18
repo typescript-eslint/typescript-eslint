@@ -4,9 +4,11 @@ exports[`javascript spread multi-function-call.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "arguments": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -18,14 +20,17 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               4,
               5,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           Object {
             "argument": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 11,
@@ -37,11 +42,13 @@ Object {
                 },
               },
               "name": "b",
+              "optional": false,
               "range": Array [
                 10,
                 11,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -61,6 +68,7 @@ Object {
           },
         ],
         "callee": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 3,
@@ -72,11 +80,13 @@ Object {
             },
           },
           "name": "foo",
+          "optional": false,
           "range": Array [
             0,
             3,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -94,6 +104,7 @@ Object {
           12,
         ],
         "type": "CallExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

@@ -4,7 +4,9 @@ exports[`typescript types optional-variance-in.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 13,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "Consumer",
+        "optional": false,
         "range": Array [
           5,
           13,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -50,6 +54,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 27,
@@ -61,6 +66,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               23,
               27,
@@ -99,6 +105,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 27,
@@ -110,11 +117,13 @@ Object {
                     },
                   },
                   "name": "T",
+                  "optional": false,
                   "range": Array [
                     26,
                     27,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -160,6 +169,7 @@ Object {
           },
         },
         "type": "TSFunctionType",
+        "typeParameters": undefined,
       },
       "typeParameters": Object {
         "loc": Object {
@@ -188,6 +198,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 18,
@@ -199,11 +210,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 17,
                 18,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [

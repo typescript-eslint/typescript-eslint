@@ -1,5 +1,5 @@
 import fs from 'fs';
-import glob from 'glob';
+import glob = require('glob');
 import makeDir from 'make-dir';
 import path from 'path';
 
@@ -37,12 +37,11 @@ const fixtures = glob
 
 const FOUR_SLASH = /^\/\/\/\/[ ]+@(\w+)[ ]*=[ ]*(.+)$/;
 const QUOTED_STRING = /^["'](.+?)['"]$/;
-type ALLOWED_VALUE = ['number' | 'boolean' | 'string', Set<unknown>?];
+type ALLOWED_VALUE = ['boolean' | 'number' | 'string', Set<unknown>?];
 const ALLOWED_OPTIONS: Map<string, ALLOWED_VALUE> = new Map<
   keyof AnalyzeOptions,
   ALLOWED_VALUE
 >([
-  ['ecmaVersion', ['number']],
   ['globalReturn', ['boolean']],
   ['impliedStrict', ['boolean']],
   ['jsxPragma', ['string']],
@@ -52,7 +51,7 @@ const ALLOWED_OPTIONS: Map<string, ALLOWED_VALUE> = new Map<
 ]);
 
 function nestDescribe(
-  fixture: typeof fixtures[number],
+  fixture: (typeof fixtures)[number],
   segments = fixture.segments,
 ): void {
   if (segments.length > 0) {

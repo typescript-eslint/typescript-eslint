@@ -14,35 +14,45 @@ import {
   UnderscoreOptions,
 } from './enums';
 
-const UNDERSCORE_SCHEMA: JSONSchema.JSONSchema4 = {
-  type: 'string',
-  enum: util.getEnumNames(UnderscoreOptions),
-};
-const PREFIX_SUFFIX_SCHEMA: JSONSchema.JSONSchema4 = {
-  type: 'array',
-  items: {
+const $DEFS: Record<string, JSONSchema.JSONSchema4> = {
+  // enums
+  underscoreOptions: {
     type: 'string',
-    minLength: 1,
+    enum: util.getEnumNames(UnderscoreOptions),
   },
-  additionalItems: false,
-};
-const MATCH_REGEX_SCHEMA: JSONSchema.JSONSchema4 = {
-  type: 'object',
-  properties: {
-    match: { type: 'boolean' },
-    regex: { type: 'string' },
+  predefinedFormats: {
+    type: 'string',
+    enum: util.getEnumNames(PredefinedFormats),
   },
-  required: ['match', 'regex'],
-};
-type JSONSchemaProperties = Record<string, JSONSchema.JSONSchema4>;
-const FORMAT_OPTIONS_PROPERTIES: JSONSchemaProperties = {
-  format: {
+  typeModifiers: {
+    type: 'string',
+    enum: util.getEnumNames(TypeModifiers),
+  },
+
+  // repeated types
+  prefixSuffixConfig: {
+    type: 'array',
+    items: {
+      type: 'string',
+      minLength: 1,
+    },
+    additionalItems: false,
+  },
+  matchRegexConfig: {
+    type: 'object',
+    additionalProperties: false,
+    properties: {
+      match: { type: 'boolean' },
+      regex: { type: 'string' },
+    },
+    required: ['match', 'regex'],
+  },
+  formatOptionsConfig: {
     oneOf: [
       {
         type: 'array',
         items: {
-          type: 'string',
-          enum: util.getEnumNames(PredefinedFormats),
+          $ref: '#/$defs/predefinedFormats',
         },
         additionalItems: false,
       },
@@ -50,6 +60,22 @@ const FORMAT_OPTIONS_PROPERTIES: JSONSchemaProperties = {
         type: 'null',
       },
     ],
+  },
+};
+
+const UNDERSCORE_SCHEMA: JSONSchema.JSONSchema4 = {
+  $ref: '#/$defs/underscoreOptions',
+};
+const PREFIX_SUFFIX_SCHEMA: JSONSchema.JSONSchema4 = {
+  $ref: '#/$defs/prefixSuffixConfig',
+};
+const MATCH_REGEX_SCHEMA: JSONSchema.JSONSchema4 = {
+  $ref: '#/$defs/matchRegexConfig',
+};
+type JSONSchemaProperties = Record<string, JSONSchema.JSONSchema4>;
+const FORMAT_OPTIONS_PROPERTIES: JSONSchemaProperties = {
+  format: {
+    $ref: '#/$defs/formatOptionsConfig',
   },
   custom: MATCH_REGEX_SCHEMA,
   leadingUnderscore: UNDERSCORE_SCHEMA,
@@ -94,8 +120,7 @@ function selectorSchema(
     selector.types = {
       type: 'array',
       items: {
-        type: 'string',
-        enum: util.getEnumNames(TypeModifiers),
+        $ref: '#/$defs/typeModifiers',
       },
       additionalItems: false,
     };
@@ -104,6 +129,7 @@ function selectorSchema(
   return [
     {
       type: 'object',
+      description: `Selector '${selectorString}'`,
       properties: {
         ...FORMAT_OPTIONS_PROPERTIES,
         ...selector,
@@ -117,6 +143,7 @@ function selectorSchema(
 function selectorsSchema(): JSONSchema.JSONSchema4 {
   return {
     type: 'object',
+    description: 'Multiple selectors in one config',
     properties: {
       ...FORMAT_OPTIONS_PROPERTIES,
       ...{
@@ -151,8 +178,7 @@ function selectorsSchema(): JSONSchema.JSONSchema4 {
         types: {
           type: 'array',
           items: {
-            type: 'string',
-            enum: util.getEnumNames(TypeModifiers),
+            $ref: '#/$defs/typeModifiers',
           },
           additionalItems: false,
         },
@@ -164,6 +190,7 @@ function selectorsSchema(): JSONSchema.JSONSchema4 {
 }
 
 const SCHEMA: JSONSchema.JSONSchema4 = {
+  $defs: $DEFS,
   type: 'array',
   items: {
     oneOf: [

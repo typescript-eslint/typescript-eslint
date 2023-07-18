@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import * as util from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
@@ -18,6 +19,7 @@ const schema = util.deepMerge(
     properties: {
       allow: {
         items: {
+          type: 'string',
           enum: [
             'functions',
             'arrowFunctions',
@@ -38,7 +40,7 @@ const schema = util.deepMerge(
       },
     },
   },
-);
+) as unknown as JSONSchema4;
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-empty-function',
@@ -46,7 +48,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow empty functions',
-      recommended: 'error',
+      recommended: 'stylistic',
       extendsBaseRule: true,
     },
     hasSuggestions: baseRule.meta.hasSuggestions,
@@ -129,7 +131,7 @@ export default util.createRule<Options, MessageIds>({
      * @private
      */
     function isAllowedEmptyDecoratedFunctions(
-      node: TSESTree.FunctionExpression | TSESTree.FunctionDeclaration,
+      node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
     ): boolean {
       if (isAllowedDecoratedFunctions && isBodyEmpty(node)) {
         const decorators =
@@ -165,13 +167,6 @@ export default util.createRule<Options, MessageIds>({
         }
 
         rules.FunctionExpression(node);
-      },
-      FunctionDeclaration(node): void {
-        if (isAllowedEmptyDecoratedFunctions(node)) {
-          return;
-        }
-
-        rules.FunctionDeclaration(node);
       },
     };
   },

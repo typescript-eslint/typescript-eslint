@@ -124,7 +124,7 @@ function registerScope(scopeManager: ScopeManager, scope: Scope): void {
 
 const generator = createIdGenerator();
 
-type VariableScope = GlobalScope | FunctionScope | ModuleScope | TSModuleScope;
+type VariableScope = FunctionScope | GlobalScope | ModuleScope | TSModuleScope;
 const VARIABLE_SCOPE_TYPES = new Set([
   ScopeType.classFieldInitializer,
   ScopeType.classStaticBlock,
@@ -232,7 +232,7 @@ abstract class ScopeBase<
     block: TBlock,
     isMethodDefinition: boolean,
   ) {
-    const upperScopeAsScopeBase = upperScope as Scope;
+    const upperScopeAsScopeBase = upperScope!;
 
     this.type = type;
     this.#dynamic =
@@ -386,7 +386,7 @@ abstract class ScopeBase<
   }
 
   protected delegateToUpperScope(ref: Reference): void {
-    const upper = this.upper as Scope as AnyScope;
+    const upper = this.upper! as AnyScope;
     if (upper?.leftToResolve) {
       upper.leftToResolve.push(ref);
     }
@@ -413,7 +413,7 @@ abstract class ScopeBase<
   }
 
   protected defineVariable(
-    nameOrVariable: string | Variable,
+    nameOrVariable: Variable | string,
     set: Map<string, Variable>,
     variables: Variable[],
     node: TSESTree.Identifier | null,

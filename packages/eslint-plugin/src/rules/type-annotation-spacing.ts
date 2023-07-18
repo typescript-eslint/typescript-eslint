@@ -39,15 +39,6 @@ type MessageIds =
   | 'unexpectedSpaceBefore'
   | 'unexpectedSpaceBetween';
 
-const definition = {
-  type: 'object',
-  properties: {
-    before: { type: 'boolean' },
-    after: { type: 'boolean' },
-  },
-  additionalProperties: false,
-};
-
 function createRules(options?: Config): WhitespaceRules {
   const globals = {
     ...(options?.before !== undefined ? { before: options.before } : {}),
@@ -115,7 +106,6 @@ export default util.createRule<Options, MessageIds>({
     type: 'layout',
     docs: {
       description: 'Require consistent spacing around type annotations',
-      recommended: false,
     },
     fixable: 'whitespace',
     messages: {
@@ -128,6 +118,16 @@ export default util.createRule<Options, MessageIds>({
     },
     schema: [
       {
+        $defs: {
+          spacingConfig: {
+            type: 'object',
+            properties: {
+              before: { type: 'boolean' },
+              after: { type: 'boolean' },
+            },
+            additionalProperties: false,
+          },
+        },
         type: 'object',
         properties: {
           before: { type: 'boolean' },
@@ -135,12 +135,12 @@ export default util.createRule<Options, MessageIds>({
           overrides: {
             type: 'object',
             properties: {
-              colon: definition,
-              arrow: definition,
-              variable: definition,
-              parameter: definition,
-              property: definition,
-              returnType: definition,
+              colon: { $ref: '#/items/0/$defs/spacingConfig' },
+              arrow: { $ref: '#/items/0/$defs/spacingConfig' },
+              variable: { $ref: '#/items/0/$defs/spacingConfig' },
+              parameter: { $ref: '#/items/0/$defs/spacingConfig' },
+              property: { $ref: '#/items/0/$defs/spacingConfig' },
+              returnType: { $ref: '#/items/0/$defs/spacingConfig' },
             },
             additionalProperties: false,
           },

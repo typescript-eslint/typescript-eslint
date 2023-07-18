@@ -7,7 +7,7 @@ description: 'Require explicit accessibility modifiers on class properties and m
 > See **https://typescript-eslint.io/rules/explicit-member-accessibility** for documentation.
 
 TypeScript allows placing explicit `public`, `protected`, and `private` accessibility modifiers in front of class members.
-The modifiers exist solely in the type system and just server to describe who is allowed to access those members.
+The modifiers exist solely in the type system and just serve to describe who is allowed to access those members.
 
 Leaving off accessibility modifiers makes for less code to read and write.
 Members are `public` by default.

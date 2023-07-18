@@ -39,10 +39,6 @@ type Foo = (string: name) =>string;
 
 This rule aims to enforce specific spacing patterns around type annotations and function types in type literals.
 
-## Options
-
-Examples of code for this rule with no options at all:
-
 <!--tabs-->
 
 ### ❌ Incorrect
@@ -89,9 +85,13 @@ class Foo {
 type Foo = () => {};
 ```
 
+## Options
+
 ### after
 
-Examples of code for this rule with `{ "before": false, "after": true }`:
+```json
+{ "before": false, "after": true }
+```
 
 <!--tabs-->
 
@@ -141,7 +141,9 @@ type Foo = ()=> {};
 
 ### before
 
-Examples of code for this rule with `{ "before": true, "after": true }` options:
+```json
+{ "before": true, "after": true }
+```
 
 <!--tabs-->
 
@@ -191,7 +193,13 @@ type Foo = () => {};
 
 ### overrides - colon
 
-Examples of code for this rule with `{ "before": false, "after": false, overrides: { colon: { before: true, after: true }} }` options:
+```json
+{
+  "before": false,
+  "after": false,
+  "overrides": { "colon": { "before": true, "after": true } }
+}
+```
 
 <!--tabs-->
 
@@ -245,7 +253,13 @@ type Foo = ()=>{};
 
 ### overrides - arrow
 
-Examples of code for this rule with `{ "before": false, "after": false, overrides: { arrow: { before: true, after: true }} }` options:
+```json
+{
+  "before": false,
+  "after": false,
+  "overrides": { "arrow": { "before": true, "after": true } }
+}
+```
 
 <!--tabs-->
 

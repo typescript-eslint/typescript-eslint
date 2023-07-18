@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures legacy-fixtures basics _error_ abstract-interface Error Alignment 1`] = `"Babel errored but TSESTree didn't"`;

@@ -1,7 +1,7 @@
 declare global {
-    let C: number
+  let C: number;
 }
 
-C = 1
+C = 1;
 
-export {}
+export {};

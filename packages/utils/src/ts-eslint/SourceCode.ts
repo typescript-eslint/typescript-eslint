@@ -295,8 +295,8 @@ declare class SourceCodeBase extends TokenStore {
    * @returns True if there is a whitespace character between any of the tokens found between the two given nodes or tokens.
    */
   isSpaceBetween?(
-    first: TSESTree.Token | TSESTree.Node,
-    second: TSESTree.Token | TSESTree.Node,
+    first: TSESTree.Node | TSESTree.Token,
+    second: TSESTree.Node | TSESTree.Token,
   ): boolean;
   /**
    * Determines if two nodes or tokens have at least one whitespace character
@@ -410,8 +410,8 @@ namespace SourceCode {
       >;
 
   export type CursorWithSkipOptions =
-    | number
     | FilterPredicate
+    | number
     | {
         /**
          * The predicate function to choose tokens.
@@ -428,8 +428,8 @@ namespace SourceCode {
       };
 
   export type CursorWithCountOptions =
-    | number
     | FilterPredicate
+    | number
     | {
         /**
          * The predicate function to choose tokens.

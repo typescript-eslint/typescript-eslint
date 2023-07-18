@@ -4,6 +4,7 @@ exports[`javascript destructuring params-array-wrapped.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
@@ -24,9 +25,11 @@ Object {
           ],
           "type": "BlockStatement",
         },
+        "declare": false,
         "expression": false,
         "generator": false,
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 11,
@@ -38,11 +41,13 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             10,
             11,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -56,8 +61,10 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "elements": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 15,
@@ -69,13 +76,16 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   14,
                   15,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 18,
@@ -87,11 +97,13 @@ Object {
                   },
                 },
                 "name": "b",
+                "optional": false,
                 "range": Array [
                   17,
                   18,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
             ],
             "loc": Object {
@@ -104,18 +116,22 @@ Object {
                 "line": 1,
               },
             },
+            "optional": false,
             "range": Array [
               12,
               20,
             ],
             "type": "ArrayPattern",
+            "typeAnnotation": undefined,
           },
         ],
         "range": Array [
           1,
           23,
         ],
+        "returnType": undefined,
         "type": "FunctionExpression",
+        "typeParameters": undefined,
       },
       "loc": Object {
         "end": Object {

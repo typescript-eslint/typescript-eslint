@@ -2,5 +2,68 @@
 
 exports[`AST Fixtures declaration ExportNamedDeclaration class AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ExportNamedDeclaration {
+        type: 'ExportNamedDeclaration',
+        assertions: Array [],
+        declaration: ClassDeclaration {
+          type: 'ClassDeclaration',
+-         abstract: false,
+          body: ClassBody {
+            type: 'ClassBody',
+            body: Array [],
+
+            range: [17, 19],
+            loc: {
+              start: { column: 17, line: 1 },
+              end: { column: 19, line: 1 },
+            },
+          },
+-         declare: false,
+-         decorators: Array [],
+          id: Identifier {
+            type: 'Identifier',
+-           decorators: Array [],
+            name: 'Foo',
+-           optional: false,
+
+            range: [13, 16],
+            loc: {
+              start: { column: 13, line: 1 },
+              end: { column: 16, line: 1 },
+            },
+          },
+-         implements: Array [],
+          superClass: null,
+
+          range: [7, 19],
+          loc: {
+            start: { column: 7, line: 1 },
+            end: { column: 19, line: 1 },
+          },
+        },
+        exportKind: 'value',
+        source: null,
+        specifiers: Array [],
+
+        range: [0, 19],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 19, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'module',
+
+    range: [0, 20],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;

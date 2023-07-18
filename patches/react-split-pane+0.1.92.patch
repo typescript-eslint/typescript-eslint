@@ -1,12 +1,12 @@
 diff --git a/node_modules/react-split-pane/index.d.ts b/node_modules/react-split-pane/index.d.ts
-index d116f54..9329094 100644
+index d116f54..20a132e 100644
 --- a/node_modules/react-split-pane/index.d.ts
 +++ b/node_modules/react-split-pane/index.d.ts
-@@ -25,6 +25,7 @@ export type SplitPaneProps = {
-   pane2Style?: React.CSSProperties;
-   resizerClassName?: string;
-   step?: number;
-+  children?: React.ReactNode;
- };
+@@ -6,6 +6,7 @@ export type Split = 'vertical' | 'horizontal';
  
- export type SplitPaneState = {
+ export type SplitPaneProps = {
+   allowResize?: boolean;
++  children?: React.ReactNode;
+   className?: string;
+   primary?: 'first' | 'second';
+   minSize?: Size;

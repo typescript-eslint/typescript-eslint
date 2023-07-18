@@ -1,7 +1,11 @@
 import debug from 'debug';
+import type * as ts from 'typescript';
 
+import type { TypeScriptProjectService } from '../create-program/createProjectService';
+import { createProjectService } from '../create-program/createProjectService';
 import { ensureAbsolutePath } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
+import { isSourceFile } from '../source-files';
 import {
   DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS,
   ExpiringCache,
@@ -17,21 +21,27 @@ const log = debug(
 );
 
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
+let TSSERVER_PROJECT_SERVICE: TypeScriptProjectService | null = null;
 
 export function createParseSettings(
-  code: string,
+  code: ts.SourceFile | string,
   options: Partial<TSESTreeOptions> = {},
 ): MutableParseSettings {
+  const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(options);
   const tsconfigRootDir =
     typeof options.tsconfigRootDir === 'string'
       ? options.tsconfigRootDir
       : process.cwd();
   const parseSettings: MutableParseSettings = {
-    code: enforceString(code),
+    allowInvalidAST: options.allowInvalidAST === true,
+    code,
+    codeFullText,
     comment: options.comment === true,
     comments: [],
-    createDefaultProgram: options.createDefaultProgram === true,
+    DEPRECATED__createDefaultProgram:
+      // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+      options.DEPRECATED__createDefaultProgram === true,
     debugLevel:
       options.debugLevel === true
         ? new Set(['typescript-eslint'])
@@ -40,6 +50,13 @@ export function createParseSettings(
         : new Set(),
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: options.errorOnUnknownASTType === true,
+    EXPERIMENTAL_projectService:
+      (options.EXPERIMENTAL_useProjectService === true &&
+        process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'false') ||
+      (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true' &&
+        options.EXPERIMENTAL_useProjectService !== false)
+        ? (TSSERVER_PROJECT_SERVICE ??= createProjectService())
+        : undefined,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect:
       options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect === true,
     extraFileExtensions:
@@ -59,14 +76,16 @@ export function createParseSettings(
       typeof options.loggerFn === 'function'
         ? options.loggerFn
         : options.loggerFn === false
-        ? (): void => {}
+        ? (): void => {} // eslint-disable-line @typescript-eslint/no-empty-function
         : console.log, // eslint-disable-line no-console
-    moduleResolver: options.moduleResolver ?? '',
     preserveNodeMaps: options.preserveNodeMaps !== false,
     programs: Array.isArray(options.programs) ? options.programs : null,
     projects: [],
     range: options.range === true,
     singleRun,
+    suppressDeprecatedPropertyWarnings:
+      options.suppressDeprecatedPropertyWarnings ??
+      process.env.NODE_ENV !== 'test',
     tokens: options.tokens === true ? [] : null,
     tsconfigMatchCache: (TSCONFIG_MATCH_CACHE ??= new ExpiringCache(
       singleRun
@@ -105,8 +124,8 @@ export function createParseSettings(
     );
   }
 
-  // Providing a program overrides project resolution
-  if (!parseSettings.programs) {
+  // Providing a program or project service overrides project resolution
+  if (!parseSettings.programs && !parseSettings.EXPERIMENTAL_projectService) {
     parseSettings.projects = resolveProjectList({
       cacheLifetime: options.cacheLifetime,
       project: getProjectConfigFiles(parseSettings, options.project),
@@ -125,15 +144,19 @@ export function clearTSConfigMatchCache(): void {
   TSCONFIG_MATCH_CACHE?.clear();
 }
 
+export function clearTSServerProjectService(): void {
+  TSSERVER_PROJECT_SERVICE = null;
+}
+
 /**
  * Ensures source code is a string.
  */
-function enforceString(code: unknown): string {
-  if (typeof code !== 'string') {
-    return String(code);
-  }
-
-  return code;
+function enforceCodeString(code: unknown): string {
+  return isSourceFile(code)
+    ? code.getFullText(code)
+    : typeof code === 'string'
+    ? code
+    : String(code);
 }
 
 /**

@@ -1,15 +1,18 @@
+import type {
+  InvalidTestCase,
+  ValidTestCase,
+} from '@typescript-eslint/rule-tester';
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/block-spacing';
-import type { InvalidTestCase, ValidTestCase } from '../RuleTester';
-import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
 });
 
 type InvalidBlockSpacingTestCase = InvalidTestCase<
-  'missing' | 'extra',
+  'extra' | 'missing',
   ['always' | 'never']
 >;
 

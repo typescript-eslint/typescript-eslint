@@ -20,9 +20,13 @@ exports[`AST Fixtures special TSTypeParameter interface-const-modifier AST Align
             end: { column: 23, line: 1 },
           },
         },
+-       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'I',
+-         optional: false,
 
           range: [10, 11],
           loc: {
@@ -39,7 +43,9 @@ exports[`AST Fixtures special TSTypeParameter interface-const-modifier AST Align
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [18, 19],
 -               loc: {
