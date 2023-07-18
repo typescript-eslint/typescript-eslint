@@ -30,6 +30,8 @@ const defaultOptions: Options = {
 
 ### `ignoreOverrideMethods`
 
+Makes the rule to ignores any class member explicitly marked with `override`.
+
 Example of a correct code when `ignoreOverrideMethods` is set to `true`:
 
 ```ts
@@ -40,6 +42,10 @@ class X {
 ```
 
 ### `ignoreClassesThatImplementAnInterface`
+
+Makes the rule ignore all class members that are defined within a class that `implements` a type.
+
+It's important to note that this option does not only apply to members defined in the interface as that would require type information.
 
 Example of a correct code when `ignoreClassesThatImplementAnInterface` is set to `true`:
 

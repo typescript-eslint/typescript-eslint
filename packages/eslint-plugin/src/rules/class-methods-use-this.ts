@@ -99,7 +99,7 @@ export default util.createRule<Options, MessageIds>({
     function pushContext(
       member?: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
     ): void {
-      if (member && member.parent?.type === AST_NODE_TYPES.ClassBody) {
+      if (member?.parent.type === AST_NODE_TYPES.ClassBody) {
         stack = {
           member,
           class: member.parent.parent as
@@ -122,8 +122,8 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.ArrowFunctionExpression | TSESTree.FunctionExpression,
     ): void {
       if (
-        node.parent?.type === AST_NODE_TYPES.MethodDefinition ||
-        node.parent?.type === AST_NODE_TYPES.PropertyDefinition
+        node.parent.type === AST_NODE_TYPES.MethodDefinition ||
+        node.parent.type === AST_NODE_TYPES.PropertyDefinition
       ) {
         pushContext(node.parent);
       } else {
