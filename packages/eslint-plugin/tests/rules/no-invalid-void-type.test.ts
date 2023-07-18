@@ -125,7 +125,7 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
     'function validFunctionReturnVoidUnion(): void | number {}',
     'declare function validFunctionDeclarationReturnVoidUnion(): void | number;',
     'const validArrowReturnVoidUnion = (): void | number => {};',
-    'const validFunctionExpresionReturnVoidUnion = function (): void | number {};',
+    'const validFunctionExpressionReturnVoidUnion = function (): void | number {};',
     'type FunctionTypeDeclaration = () => void | number;',
     `
 interface IValidCallSignature {
@@ -139,7 +139,7 @@ interface IValidMethodSignature {
     `,
     `
 interface IValidPropertySignature {
-  method: () => void | number;
+  property: () => void | number;
 }
     `,
   ],
