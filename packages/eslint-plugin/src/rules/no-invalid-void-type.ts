@@ -164,19 +164,23 @@ export default util.createRule<[Options], MessageIds>({
       );
     }
 
-    function isValidReturnUnion(node: TSESTree.TSUnionType): boolean {
-      if (node.parent.type === AST_NODE_TYPES.TSTypeAnnotation) {
+    /**
+     * @brief checks whether a node is a return type annotation
+     * @return true if the node is a return type annotation
+     */
+    function isNodeReturnTypeAnnotation(node: TSESTree.Node): boolean {
+      if (node.parent?.type === AST_NODE_TYPES.TSTypeAnnotation) {
+        const parentParent = node.parent.parent;
         if (
-          node.parent.parent.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-          node.parent.parent.type === AST_NODE_TYPES.FunctionDeclaration ||
-          node.parent.parent.type === AST_NODE_TYPES.FunctionExpression ||
-          node.parent.parent.type ===
-            AST_NODE_TYPES.TSCallSignatureDeclaration ||
-          node.parent.parent.type === AST_NODE_TYPES.TSDeclareFunction ||
-          node.parent.parent.type === AST_NODE_TYPES.TSFunctionType ||
-          node.parent.parent.type === AST_NODE_TYPES.TSMethodSignature
+          parentParent.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          parentParent.type === AST_NODE_TYPES.FunctionDeclaration ||
+          parentParent.type === AST_NODE_TYPES.FunctionExpression ||
+          parentParent.type === AST_NODE_TYPES.TSCallSignatureDeclaration ||
+          parentParent.type === AST_NODE_TYPES.TSDeclareFunction ||
+          parentParent.type === AST_NODE_TYPES.TSFunctionType ||
+          parentParent.type === AST_NODE_TYPES.TSMethodSignature
         ) {
-          return node.parent.parent.returnType === node.parent;
+          return parentParent.returnType === node.parent;
         }
       }
       return false;
@@ -210,7 +214,7 @@ export default util.createRule<[Options], MessageIds>({
           }
 
           // A void union is valid in the return type position
-          if (isValidReturnUnion(node.parent)) {
+          if (isNodeReturnTypeAnnotation(node.parent)) {
             return;
           }
         }
