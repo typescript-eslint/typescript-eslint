@@ -932,12 +932,17 @@ export function nodeCanBeDecorated(node: TSNode): boolean {
 export function isValidAssignmentTarget(node: ts.Node): boolean {
   switch (node.kind) {
     case SyntaxKind.Identifier:
+      return true;
     case SyntaxKind.PropertyAccessExpression:
     case SyntaxKind.ElementAccessExpression:
+      if (node.flags & ts.NodeFlags.OptionalChain) {
+        return false;
+      }
       return true;
     case SyntaxKind.ParenthesizedExpression:
+    case SyntaxKind.TypeAssertionExpression:
       return isValidAssignmentTarget(
-        (node as ts.ParenthesizedExpression).expression,
+        (node as ts.ParenthesizedExpression | ts.TypeAssertion).expression,
       );
     default:
       return false;

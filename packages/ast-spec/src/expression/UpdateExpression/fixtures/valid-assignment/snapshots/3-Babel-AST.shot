@@ -285,10 +285,10 @@ Program {
                         object: ThisExpression {
                           type: "ThisExpression",
 
-                          range: [89, 93],
+                          range: [88, 92],
                           loc: {
-                            start: { column: 5, line: 9 },
-                            end: { column: 9, line: 9 },
+                            start: { column: 4, line: 9 },
+                            end: { column: 8, line: 9 },
                           },
                         },
                         optional: false,
@@ -296,38 +296,38 @@ Program {
                           type: "PrivateIdentifier",
                           name: "a",
 
-                          range: [94, 96],
+                          range: [93, 95],
                           loc: {
-                            start: { column: 10, line: 9 },
-                            end: { column: 12, line: 9 },
+                            start: { column: 9, line: 9 },
+                            end: { column: 11, line: 9 },
                           },
                         },
 
-                        range: [89, 96],
+                        range: [88, 95],
                         loc: {
-                          start: { column: 5, line: 9 },
-                          end: { column: 12, line: 9 },
+                          start: { column: 4, line: 9 },
+                          end: { column: 11, line: 9 },
                         },
                       },
                       operator: "++",
                       prefix: false,
 
-                      range: [88, 99],
+                      range: [88, 97],
                       loc: {
                         start: { column: 4, line: 9 },
-                        end: { column: 15, line: 9 },
+                        end: { column: 13, line: 9 },
                       },
                     },
 
-                    range: [88, 100],
+                    range: [88, 98],
                     loc: {
                       start: { column: 4, line: 9 },
-                      end: { column: 16, line: 9 },
+                      end: { column: 14, line: 9 },
                     },
                   },
                 ],
 
-                range: [23, 104],
+                range: [23, 102],
                 loc: {
                   start: { column: 6, line: 4 },
                   end: { column: 3, line: 10 },
@@ -338,14 +338,14 @@ Program {
               id: null,
               params: [],
 
-              range: [20, 104],
+              range: [20, 102],
               loc: {
                 start: { column: 3, line: 4 },
                 end: { column: 3, line: 10 },
               },
             },
 
-            range: [19, 104],
+            range: [19, 102],
             loc: {
               start: { column: 2, line: 4 },
               end: { column: 3, line: 10 },
@@ -353,7 +353,7 @@ Program {
           },
         ],
 
-        range: [8, 106],
+        range: [8, 104],
         loc: {
           start: { column: 8, line: 1 },
           end: { column: 1, line: 11 },
@@ -371,7 +371,7 @@ Program {
       },
       superClass: null,
 
-      range: [0, 106],
+      range: [0, 104],
       loc: {
         start: { column: 0, line: 1 },
         end: { column: 1, line: 11 },
@@ -380,7 +380,7 @@ Program {
   ],
   sourceType: "script",
 
-  range: [0, 107],
+  range: [0, 105],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 12 },
