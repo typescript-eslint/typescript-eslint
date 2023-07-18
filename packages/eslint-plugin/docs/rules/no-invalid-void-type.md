@@ -10,7 +10,7 @@ description: 'Disallow `void` type outside of generic or return types.'
 Attempting to use a `void` type outside of a return type or generic type argument is often a sign of programmer error.
 `void` can also be misleading for other developers even if used correctly.
 
-> The `void` type means cannot be mixed with any other types, other than `never`, which accepts all types.
+> The `void` type cannot be mixed with any other type (except `never`, which accepts all types).
 > If you think you need this then you probably want the `undefined` type instead.
 
 ## Examples
@@ -50,6 +50,8 @@ let trulyUndefined = void 0;
 async function promiseMeSomething(): Promise<void> {}
 
 type stillVoid = void | never;
+
+function voidReturnUnion(): void | number {}
 ```
 
 ## Options
