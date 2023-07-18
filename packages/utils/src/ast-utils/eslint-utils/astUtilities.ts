@@ -10,9 +10,9 @@ import type { TSESTree } from '../../ts-estree';
  */
 const getFunctionHeadLocation = eslintUtils.getFunctionHeadLocation as (
   node:
+    | TSESTree.ArrowFunctionExpression
     | TSESTree.FunctionDeclaration
-    | TSESTree.FunctionExpression
-    | TSESTree.ArrowFunctionExpression,
+    | TSESTree.FunctionExpression,
   sourceCode: TSESLint.SourceCode,
 ) => TSESTree.SourceLocation;
 
@@ -23,9 +23,9 @@ const getFunctionHeadLocation = eslintUtils.getFunctionHeadLocation as (
  */
 const getFunctionNameWithKind = eslintUtils.getFunctionNameWithKind as (
   node:
+    | TSESTree.ArrowFunctionExpression
     | TSESTree.FunctionDeclaration
-    | TSESTree.FunctionExpression
-    | TSESTree.ArrowFunctionExpression,
+    | TSESTree.FunctionExpression,
   sourceCode?: TSESLint.SourceCode,
 ) => string;
 
@@ -39,8 +39,8 @@ const getFunctionNameWithKind = eslintUtils.getFunctionNameWithKind as (
 const getPropertyName = eslintUtils.getPropertyName as (
   node:
     | TSESTree.MemberExpression
-    | TSESTree.Property
     | TSESTree.MethodDefinition
+    | TSESTree.Property
     | TSESTree.PropertyDefinition,
   initialScope?: TSESLint.Scope.Scope,
 ) => string | null;

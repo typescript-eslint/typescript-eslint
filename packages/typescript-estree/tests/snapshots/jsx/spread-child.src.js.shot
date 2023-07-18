@@ -4,6 +4,7 @@ exports[`jsx spread-child.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [
           Object {

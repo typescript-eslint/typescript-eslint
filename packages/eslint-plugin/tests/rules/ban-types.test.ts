@@ -1,10 +1,10 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESLint } from '@typescript-eslint/utils';
 
 import type { MessageIds, Options } from '../../src/rules/ban-types';
 import rule, { TYPE_KEYWORDS } from '../../src/rules/ban-types';
 import { objectReduceKey } from '../../src/util';
-import { noFormat, RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -653,6 +653,81 @@ let baz: object = {};
         {
           types: {
             '[]': '`[]` does only allow empty arrays.',
+          },
+        },
+      ],
+    },
+    {
+      code: 'type Baz = 1 & Foo;',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+        },
+      ],
+      options: [
+        {
+          types: {
+            Foo: { message: '' },
+          },
+        },
+      ],
+    },
+    {
+      code: 'interface Foo extends Bar {}',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+        },
+      ],
+      options: [
+        {
+          types: {
+            Bar: { message: '' },
+          },
+        },
+      ],
+    },
+    {
+      code: 'interface Foo extends Bar, Baz {}',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+        },
+      ],
+      options: [
+        {
+          types: {
+            Bar: { message: '' },
+          },
+        },
+      ],
+    },
+    {
+      code: 'class Foo implements Bar {}',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+        },
+      ],
+      options: [
+        {
+          types: {
+            Bar: { message: '' },
+          },
+        },
+      ],
+    },
+    {
+      code: 'class Foo implements Bar, Baz {}',
+      errors: [
+        {
+          messageId: 'bannedTypeMessage',
+        },
+      ],
+      options: [
+        {
+          types: {
+            Bar: { message: 'Bla' },
           },
         },
       ],

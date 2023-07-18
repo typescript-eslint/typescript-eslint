@@ -19,7 +19,9 @@ exports[`AST Fixtures declaration ExportNamedDeclaration declare-function AST Al
           generator: false,
           id: Identifier {
             type: 'Identifier',
+-           decorators: Array [],
             name: 'foo',
+-           optional: false,
 
             range: [24, 27],
             loc: {

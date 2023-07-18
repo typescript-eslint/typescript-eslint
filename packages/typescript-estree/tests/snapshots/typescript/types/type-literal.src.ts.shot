@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 22,
@@ -18,6 +20,7 @@ Object {
               },
             },
             "name": "obj",
+            "optional": false,
             "range": Array [
               4,
               22,
@@ -52,10 +55,12 @@ Object {
                 },
                 "members": Array [
                   Object {
+                    "accessibility": undefined,
                     "computed": false,
-                    "export": undefined,
+                    "export": false,
                     "initializer": undefined,
                     "key": Object {
+                      "decorators": Array [],
                       "loc": Object {
                         "end": Object {
                           "column": 12,
@@ -67,11 +72,13 @@ Object {
                         },
                       },
                       "name": "x",
+                      "optional": false,
                       "range": Array [
                         11,
                         12,
                       ],
                       "type": "Identifier",
+                      "typeAnnotation": undefined,
                     },
                     "loc": Object {
                       "end": Object {
@@ -83,13 +90,13 @@ Object {
                         "line": 1,
                       },
                     },
-                    "optional": undefined,
+                    "optional": false,
                     "range": Array [
                       11,
                       20,
                     ],
-                    "readonly": undefined,
-                    "static": undefined,
+                    "readonly": false,
+                    "static": false,
                     "type": "TSPropertySignature",
                     "typeAnnotation": Object {
                       "loc": Object {
@@ -153,6 +160,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {

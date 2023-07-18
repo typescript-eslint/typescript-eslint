@@ -40,10 +40,11 @@ function tokenIsH2(
 
 describe('Validating rule docs', () => {
   const ignoredFiles = new Set([
-    // this rule doc was left behind on purpose for legacy reasons
-    'camelcase.md',
     'README.md',
     'TEMPLATE.md',
+    // these rule docs were left behind on purpose for legacy reasons
+    'camelcase.md',
+    'no-duplicate-imports.md',
   ]);
   it('All rules must have a corresponding rule doc', () => {
     const files = fs
@@ -119,6 +120,10 @@ describe('Validating rule docs', () => {
 });
 
 describe('Validating rule metadata', () => {
+  const rulesThatRequireTypeInformationInAWayThatsHardToDetect = new Set([
+    // the core rule file doesn't use type information, instead it's used in `src/rules/naming-convention-utils/validator.ts`
+    'naming-convention',
+  ]);
   function requiresFullTypeInformation(content: string): boolean {
     return /getParserServices(\(\s*[^,\s)]+)\s*(,\s*false\s*)?\)/.test(content);
   }
@@ -134,6 +139,13 @@ describe('Validating rule metadata', () => {
       });
 
       it('`requiresTypeChecking` should be set if the rule uses type information', () => {
+        if (
+          rulesThatRequireTypeInformationInAWayThatsHardToDetect.has(ruleName)
+        ) {
+          expect(true).toEqual(rule.meta.docs?.requiresTypeChecking ?? false);
+          return;
+        }
+
         // quick-and-dirty check to see if it uses parserServices
         // not perfect but should be good enough
         const ruleFileContents = fs.readFileSync(

@@ -6,9 +6,12 @@ Program {
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "EnthusiasticGreeting",
+        optional: false,
 
         range: [78, 98],
         loc: {
@@ -93,24 +96,16 @@ Program {
         types: [
           TSTypeReference {
             type: "TSTypeReference",
-            typeName: Identifier {
-              type: "Identifier",
-              name: "Uppercase",
-
-              range: [124, 133],
-              loc: {
-                start: { column: 5, line: 4 },
-                end: { column: 14, line: 4 },
-              },
-            },
-            typeParameters: TSTypeParameterInstantiation {
+            typeArguments: TSTypeParameterInstantiation {
               type: "TSTypeParameterInstantiation",
               params: [
                 TSTypeReference {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "T",
+                    optional: false,
 
                     range: [134, 135],
                     loc: {
@@ -133,6 +128,18 @@ Program {
                 end: { column: 17, line: 4 },
               },
             },
+            typeName: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "Uppercase",
+              optional: false,
+
+              range: [124, 133],
+              loc: {
+                start: { column: 5, line: 4 },
+                end: { column: 14, line: 4 },
+              },
+            },
 
             range: [124, 136],
             loc: {
@@ -142,24 +149,16 @@ Program {
           },
           TSTypeReference {
             type: "TSTypeReference",
-            typeName: Identifier {
-              type: "Identifier",
-              name: "Lowercase",
-
-              range: [142, 151],
-              loc: {
-                start: { column: 23, line: 4 },
-                end: { column: 32, line: 4 },
-              },
-            },
-            typeParameters: TSTypeParameterInstantiation {
+            typeArguments: TSTypeParameterInstantiation {
               type: "TSTypeParameterInstantiation",
               params: [
                 TSTypeReference {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "T",
+                    optional: false,
 
                     range: [152, 153],
                     loc: {
@@ -182,6 +181,18 @@ Program {
                 end: { column: 35, line: 4 },
               },
             },
+            typeName: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "Lowercase",
+              optional: false,
+
+              range: [142, 151],
+              loc: {
+                start: { column: 23, line: 4 },
+                end: { column: 32, line: 4 },
+              },
+            },
 
             range: [142, 154],
             loc: {
@@ -191,24 +202,16 @@ Program {
           },
           TSTypeReference {
             type: "TSTypeReference",
-            typeName: Identifier {
-              type: "Identifier",
-              name: "Capitalize",
-
-              range: [160, 170],
-              loc: {
-                start: { column: 41, line: 4 },
-                end: { column: 51, line: 4 },
-              },
-            },
-            typeParameters: TSTypeParameterInstantiation {
+            typeArguments: TSTypeParameterInstantiation {
               type: "TSTypeParameterInstantiation",
               params: [
                 TSTypeReference {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "T",
+                    optional: false,
 
                     range: [171, 172],
                     loc: {
@@ -231,6 +234,18 @@ Program {
                 end: { column: 54, line: 4 },
               },
             },
+            typeName: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "Capitalize",
+              optional: false,
+
+              range: [160, 170],
+              loc: {
+                start: { column: 41, line: 4 },
+                end: { column: 51, line: 4 },
+              },
+            },
 
             range: [160, 173],
             loc: {
@@ -240,24 +255,16 @@ Program {
           },
           TSTypeReference {
             type: "TSTypeReference",
-            typeName: Identifier {
-              type: "Identifier",
-              name: "Uncapitalize",
-
-              range: [179, 191],
-              loc: {
-                start: { column: 60, line: 4 },
-                end: { column: 72, line: 4 },
-              },
-            },
-            typeParameters: TSTypeParameterInstantiation {
+            typeArguments: TSTypeParameterInstantiation {
               type: "TSTypeParameterInstantiation",
               params: [
                 TSTypeReference {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "T",
+                    optional: false,
 
                     range: [192, 193],
                     loc: {
@@ -278,6 +285,18 @@ Program {
               loc: {
                 start: { column: 72, line: 4 },
                 end: { column: 75, line: 4 },
+              },
+            },
+            typeName: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "Uncapitalize",
+              optional: false,
+
+              range: [179, 191],
+              loc: {
+                start: { column: 60, line: 4 },
+                end: { column: 72, line: 4 },
               },
             },
 
@@ -313,7 +332,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [99, 100],
               loc: {
@@ -346,9 +367,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "HELLO",
+        optional: false,
 
         range: [203, 208],
         loc: {
@@ -358,17 +382,7 @@ Program {
       },
       typeAnnotation: TSTypeReference {
         type: "TSTypeReference",
-        typeName: Identifier {
-          type: "Identifier",
-          name: "EnthusiasticGreeting",
-
-          range: [211, 231],
-          loc: {
-            start: { column: 13, line: 5 },
-            end: { column: 33, line: 5 },
-          },
-        },
-        typeParameters: TSTypeParameterInstantiation {
+        typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
           params: [
             TSLiteralType {
@@ -397,6 +411,18 @@ Program {
           loc: {
             start: { column: 33, line: 5 },
             end: { column: 42, line: 5 },
+          },
+        },
+        typeName: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "EnthusiasticGreeting",
+          optional: false,
+
+          range: [211, 231],
+          loc: {
+            start: { column: 13, line: 5 },
+            end: { column: 33, line: 5 },
           },
         },
 

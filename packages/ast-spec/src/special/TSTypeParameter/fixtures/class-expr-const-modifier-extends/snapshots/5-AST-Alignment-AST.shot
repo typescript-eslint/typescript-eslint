@@ -12,6 +12,7 @@ exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier-extends 
         type: 'ExpressionStatement',
         expression: ClassExpression {
           type: 'ClassExpression',
+-         abstract: false,
           body: ClassBody {
             type: 'ClassBody',
             body: Array [],
@@ -22,7 +23,10 @@ exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier-extends 
               end: { column: 29, line: 1 },
             },
           },
+-         declare: false,
+-         decorators: Array [],
           id: null,
+-         implements: Array [],
           superClass: null,
           typeParameters: TSTypeParameterDeclaration {
             type: 'TSTypeParameterDeclaration',
@@ -34,7 +38,9 @@ exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier-extends 
                   type: 'TSTypeReference',
                   typeName: Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'U',
+-                   optional: false,
 
                     range: [24, 25],
                     loc: {
@@ -52,7 +58,9 @@ exports[`AST Fixtures special TSTypeParameter class-expr-const-modifier-extends 
 -               in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
+-                 decorators: Array [],
 -                 name: 'T',
+-                 optional: false,
 -
 -                 range: [14, 15],
 -                 loc: {

@@ -4,11 +4,15 @@ exports[`javascript destructuring defaults-array.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "elements": Array [
             Object {
+              "decorators": Array [],
               "left": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 2,
@@ -20,11 +24,13 @@ Object {
                   },
                 },
                 "name": "x",
+                "optional": false,
                 "range": Array [
                   1,
                   2,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -36,6 +42,7 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "range": Array [
                 1,
                 5,
@@ -60,6 +67,7 @@ Object {
                 "value": 10,
               },
               "type": "AssignmentPattern",
+              "typeAnnotation": undefined,
             },
           ],
           "loc": Object {
@@ -72,11 +80,13 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             0,
             6,
           ],
           "type": "ArrayPattern",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -94,6 +104,7 @@ Object {
           10,
         ],
         "right": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 10,
@@ -105,11 +116,13 @@ Object {
             },
           },
           "name": "x",
+          "optional": false,
           "range": Array [
             9,
             10,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "AssignmentExpression",
       },

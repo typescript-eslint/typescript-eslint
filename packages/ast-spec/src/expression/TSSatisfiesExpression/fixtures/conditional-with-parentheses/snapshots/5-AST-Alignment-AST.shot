@@ -2,5 +2,89 @@
 
 exports[`AST Fixtures expression TSSatisfiesExpression conditional-with-parentheses AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ExpressionStatement {
+        type: 'ExpressionStatement',
+        expression: TSSatisfiesExpression {
+          type: 'TSSatisfiesExpression',
+          expression: ConditionalExpression {
+            type: 'ConditionalExpression',
+            alternate: Literal {
+              type: 'Literal',
+              raw: '0',
+              value: 0,
+
+              range: [11, 12],
+              loc: {
+                start: { column: 11, line: 1 },
+                end: { column: 12, line: 1 },
+              },
+            },
+            consequent: Literal {
+              type: 'Literal',
+              raw: '1',
+              value: 1,
+
+              range: [7, 8],
+              loc: {
+                start: { column: 7, line: 1 },
+                end: { column: 8, line: 1 },
+              },
+            },
+            test: Identifier {
+              type: 'Identifier',
+-             decorators: Array [],
+              name: 'foo',
+-             optional: false,
+
+              range: [1, 4],
+              loc: {
+                start: { column: 1, line: 1 },
+                end: { column: 4, line: 1 },
+              },
+            },
+
+            range: [1, 12],
+            loc: {
+              start: { column: 1, line: 1 },
+              end: { column: 12, line: 1 },
+            },
+          },
+          typeAnnotation: TSNumberKeyword {
+            type: 'TSNumberKeyword',
+
+            range: [24, 30],
+            loc: {
+              start: { column: 24, line: 1 },
+              end: { column: 30, line: 1 },
+            },
+          },
+
+          range: [0, 30],
+          loc: {
+            start: { column: 0, line: 1 },
+            end: { column: 30, line: 1 },
+          },
+        },
+
+        range: [0, 31],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 31, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [0, 32],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;

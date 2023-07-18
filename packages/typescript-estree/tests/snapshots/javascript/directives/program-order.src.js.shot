@@ -80,7 +80,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -92,11 +94,13 @@ Object {
               },
             },
             "name": "a",
+            "optional": false,
             "range": Array [
               31,
               32,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": null,
           "loc": Object {
@@ -116,6 +120,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {

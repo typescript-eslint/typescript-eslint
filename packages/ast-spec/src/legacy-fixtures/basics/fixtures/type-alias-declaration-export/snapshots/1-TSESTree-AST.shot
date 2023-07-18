@@ -9,9 +9,12 @@ Program {
       assertions: [],
       declaration: TSTypeAliasDeclaration {
         type: "TSTypeAliasDeclaration",
+        declare: false,
         id: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "TestAlias",
+          optional: false,
 
           range: [85, 94],
           loc: {

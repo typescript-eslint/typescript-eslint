@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -18,11 +20,13 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               17,
               18,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "expression": Object {
@@ -76,6 +80,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 19,
@@ -87,11 +92,13 @@ Object {
                   },
                 },
                 "name": "const",
+                "optional": false,
                 "range": Array [
                   27,
                   32,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -113,6 +120,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {
@@ -133,7 +141,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -145,11 +155,13 @@ Object {
               },
             },
             "name": "y",
+            "optional": false,
             "range": Array [
               67,
               68,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "expression": Object {
@@ -241,6 +253,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 25,
@@ -252,11 +265,13 @@ Object {
                   },
                 },
                 "name": "const",
+                "optional": false,
                 "range": Array [
                   83,
                   88,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -278,6 +293,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {
@@ -298,7 +314,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -310,11 +328,13 @@ Object {
               },
             },
             "name": "z",
+            "optional": false,
             "range": Array [
               132,
               133,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "expression": Object {
@@ -332,6 +352,7 @@ Object {
                 Object {
                   "computed": false,
                   "key": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 14,
@@ -343,11 +364,13 @@ Object {
                       },
                     },
                     "name": "text",
+                    "optional": false,
                     "range": Array [
                       138,
                       142,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "kind": "init",
                   "loc": Object {
@@ -361,6 +384,7 @@ Object {
                     },
                   },
                   "method": false,
+                  "optional": false,
                   "range": Array [
                     138,
                     151,
@@ -426,6 +450,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 34,
@@ -437,11 +462,13 @@ Object {
                   },
                 },
                 "name": "const",
+                "optional": false,
                 "range": Array [
                   157,
                   162,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -463,6 +490,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {
@@ -483,7 +511,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -495,11 +525,13 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               182,
               183,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "expression": Object {
@@ -553,6 +585,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -564,11 +597,13 @@ Object {
                   },
                 },
                 "name": "const",
+                "optional": false,
                 "range": Array [
                   187,
                   192,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -590,6 +625,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {
@@ -610,7 +646,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -622,11 +660,13 @@ Object {
               },
             },
             "name": "y",
+            "optional": false,
             "range": Array [
               230,
               231,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "expression": Object {
@@ -718,6 +758,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -729,11 +770,13 @@ Object {
                   },
                 },
                 "name": "const",
+                "optional": false,
                 "range": Array [
                   235,
                   240,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -755,6 +798,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {
@@ -775,7 +819,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 5,
@@ -787,11 +833,13 @@ Object {
               },
             },
             "name": "z",
+            "optional": false,
             "range": Array [
               293,
               294,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "expression": Object {
@@ -809,6 +857,7 @@ Object {
                 Object {
                   "computed": false,
                   "key": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 21,
@@ -820,11 +869,13 @@ Object {
                       },
                     },
                     "name": "text",
+                    "optional": false,
                     "range": Array [
                       306,
                       310,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "kind": "init",
                   "loc": Object {
@@ -838,6 +889,7 @@ Object {
                     },
                   },
                   "method": false,
+                  "optional": false,
                   "range": Array [
                     306,
                     319,
@@ -903,6 +955,7 @@ Object {
               ],
               "type": "TSTypeReference",
               "typeName": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -914,11 +967,13 @@ Object {
                   },
                 },
                 "name": "const",
+                "optional": false,
                 "range": Array [
                   298,
                   303,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "typeParameters": undefined,
             },
@@ -940,6 +995,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {

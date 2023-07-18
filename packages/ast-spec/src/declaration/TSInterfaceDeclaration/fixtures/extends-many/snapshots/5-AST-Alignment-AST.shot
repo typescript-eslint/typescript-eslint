@@ -20,6 +20,7 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration extends-many AST Alignm
             end: { column: 30, line: 1 },
           },
         },
+-       declare: false,
         extends: Array [
 -         TSInterfaceHeritage {
 -           type: 'TSInterfaceHeritage',
@@ -27,7 +28,9 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration extends-many AST Alignm
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'A',
+-             optional: false,
 
               range: [20, 21],
               loc: {
@@ -48,7 +51,9 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration extends-many AST Alignm
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'B',
+-             optional: false,
 
               range: [23, 24],
               loc: {
@@ -69,7 +74,9 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration extends-many AST Alignm
 +           type: 'TSExpressionWithTypeArguments',
             expression: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'C',
+-             optional: false,
 
               range: [26, 27],
               loc: {
@@ -87,7 +94,9 @@ exports[`AST Fixtures declaration TSInterfaceDeclaration extends-many AST Alignm
         ],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'F',
+-         optional: false,
 
           range: [10, 11],
           loc: {

@@ -12,7 +12,7 @@ export interface ESQueryFilterProps {
 export function ESQueryFilter({
   onChange,
   onError,
-}: ESQueryFilterProps): JSX.Element {
+}: ESQueryFilterProps): React.JSX.Element {
   const [value, setValue] = useState('');
   const changeEvent = (value: string): void => {
     setValue(value);

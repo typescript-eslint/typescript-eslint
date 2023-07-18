@@ -36,7 +36,9 @@ Program {
         },
         tag: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "foo",
+          optional: false,
 
           range: [73, 76],
           loc: {
@@ -44,14 +46,16 @@ Program {
             end: { column: 3, line: 3 },
           },
         },
-        typeParameters: TSTypeParameterInstantiation {
+        typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
           params: [
             TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "bar",
+                optional: false,
 
                 range: [77, 80],
                 loc: {

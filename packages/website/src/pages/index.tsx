@@ -11,7 +11,7 @@ import styles from './styles.module.css';
 
 interface FeatureItem {
   title: string;
-  description: JSX.Element;
+  description: React.JSX.Element;
   imageUrl?: string;
 }
 
@@ -106,7 +106,7 @@ const features: FeatureItem[] = [
   },
 ];
 
-function Feature({ title, description }: FeatureItem): JSX.Element {
+function Feature({ title, description }: FeatureItem): React.JSX.Element {
   return (
     <div className="col col--12 padding-vert--lg">
       <div className="text--center">
@@ -130,38 +130,43 @@ function Feature({ title, description }: FeatureItem): JSX.Element {
   );
 }
 
-function Home(): JSX.Element {
+function Home(): React.JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout description={`${siteConfig.tagline}`}>
-      <header className={clsx('hero hero--dark', styles.hero)}>
-        <div className="container">
-          <img alt="" className={styles.hero__logo} src="/img/logo.svg" />
-          <h1 className="hero__title">{siteConfig.title}</h1>
-          <p className="hero__subtitle">{siteConfig.tagline}</p>
-          <div className={styles.buttons}>
-            <Link
-              className="button button--primary"
-              to={useBaseUrl('getting-started')}
-            >
-              Get Started
-            </Link>
-            <Link
-              className="button button--secondary button--outline"
-              to={useBaseUrl('play/')}
-            >
-              Playground
-            </Link>
+      <main>
+        <div className={clsx('hero hero--dark', styles.hero)}>
+          <div className="container">
+            <img
+              alt="Hero Logo"
+              className={styles.hero__logo}
+              src="/img/logo.svg"
+            />
+            <h1 className="hero__title">{siteConfig.title}</h1>
+            <p className="hero__subtitle">{siteConfig.tagline}</p>
+            <div className={styles.buttons}>
+              <Link
+                className="button button--primary"
+                to={useBaseUrl('getting-started')}
+              >
+                Get Started
+              </Link>
+              <Link
+                className="button button--secondary button--outline"
+                to={useBaseUrl('play/')}
+              >
+                Playground
+              </Link>
+            </div>
           </div>
         </div>
-      </header>
-      <main>
+
         {features.map((props, idx) => (
           <section
             key={idx}
             className={clsx(
               styles.features,
-              idx % 2 == 1 ? styles.lightBackground : '',
+              idx % 2 === 1 ? styles.lightBackground : '',
             )}
           >
             <div className="container">

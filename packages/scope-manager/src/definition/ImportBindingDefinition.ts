@@ -5,9 +5,9 @@ import { DefinitionType } from './DefinitionType';
 
 class ImportBindingDefinition extends DefinitionBase<
   DefinitionType.ImportBinding,
-  | TSESTree.ImportSpecifier
   | TSESTree.ImportDefaultSpecifier
   | TSESTree.ImportNamespaceSpecifier
+  | TSESTree.ImportSpecifier
   | TSESTree.TSImportEqualsDeclaration,
   TSESTree.ImportDeclaration | TSESTree.TSImportEqualsDeclaration,
   TSESTree.Identifier

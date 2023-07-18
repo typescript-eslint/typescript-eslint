@@ -1,38 +1,43 @@
 {
   "name": "@typescript-eslint/website-eslint",
-  "version": "5.59.11",
+  "version": "6.1.0",
   "private": true,
   "description": "ESLint which works in browsers.",
-  "engines": {
-    "node": "^12.22.0 || ^14.17.0 || >=16.0.0"
-  },
-  "types": "types/index.d.ts",
-  "main": "dist/index.js",
   "files": [
     "dist"
   ],
+  "type": "commonjs",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./dist/index.js"
+    }
+  },
+  "engines": {
+    "node": "^16.0.0 || >=18.0.0"
+  },
   "scripts": {
-    "build": "rollup --config=rollup.config.js",
-    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore"
+    "build": "yarn tsx ./build.ts",
+    "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
+    "lint": "nx lint",
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "5.59.11",
-    "@typescript-eslint/utils": "5.59.11"
+    "@typescript-eslint/types": "6.1.0",
+    "@typescript-eslint/utils": "6.1.0"
   },
   "devDependencies": {
-    "@rollup/plugin-commonjs": "^23.0.0",
-    "@rollup/plugin-json": "^5.0.0",
-    "@rollup/plugin-node-resolve": "^15.0.0",
-    "@rollup/plugin-terser": "^0.4.0",
-    "@rollup/pluginutils": "^5.0.0",
-    "@typescript-eslint/eslint-plugin": "5.59.11",
-    "@typescript-eslint/parser": "5.59.11",
-    "@typescript-eslint/scope-manager": "5.59.11",
-    "@typescript-eslint/typescript-estree": "5.59.11",
-    "@typescript-eslint/visitor-keys": "5.59.11",
+    "@eslint/js": "8.45.0",
+    "@typescript-eslint/eslint-plugin": "6.1.0",
+    "@typescript-eslint/parser": "6.1.0",
+    "@typescript-eslint/scope-manager": "6.1.0",
+    "@typescript-eslint/types": "6.0.0",
+    "@typescript-eslint/typescript-estree": "6.1.0",
+    "@typescript-eslint/utils": "6.0.0",
+    "@typescript-eslint/visitor-keys": "6.1.0",
+    "esbuild": "~0.18.0",
     "eslint": "*",
     "esquery": "*",
-    "rollup": "^2.75.4",
-    "semver": "^7.3.7"
+    "semver": "^7.5.4"
   }
 }

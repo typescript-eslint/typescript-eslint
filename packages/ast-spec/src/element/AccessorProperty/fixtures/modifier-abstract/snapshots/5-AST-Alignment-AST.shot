@@ -21,9 +21,13 @@ exports[`AST Fixtures element AccessorProperty modifier-abstract AST Alignment -
 +             abstract: true,
               computed: false,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'foo',
+-               optional: false,
 
                 range: [41, 44],
                 loc: {
@@ -31,7 +35,9 @@ exports[`AST Fixtures element AccessorProperty modifier-abstract AST Alignment -
                   end: { column: 23, line: 2 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -67,9 +73,13 @@ exports[`AST Fixtures element AccessorProperty modifier-abstract AST Alignment -
             end: { column: 1, line: 3 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [15, 18],
           loc: {
@@ -77,6 +87,7 @@ exports[`AST Fixtures element AccessorProperty modifier-abstract AST Alignment -
             end: { column: 18, line: 1 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [0, 55],

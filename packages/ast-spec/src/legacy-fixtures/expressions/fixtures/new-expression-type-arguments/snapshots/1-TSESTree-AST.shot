@@ -9,9 +9,12 @@ Program {
       declarations: [
         VariableDeclarator {
           type: "VariableDeclarator",
+          definite: false,
           id: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "a",
+            optional: false,
 
             range: [79, 80],
             loc: {
@@ -24,7 +27,9 @@ Program {
             arguments: [],
             callee: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "A",
+              optional: false,
 
               range: [87, 88],
               loc: {
@@ -32,14 +37,16 @@ Program {
                 end: { column: 15, line: 3 },
               },
             },
-            typeParameters: TSTypeParameterInstantiation {
+            typeArguments: TSTypeParameterInstantiation {
               type: "TSTypeParameterInstantiation",
               params: [
                 TSTypeReference {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "B",
+                    optional: false,
 
                     range: [89, 90],
                     loc: {
@@ -77,6 +84,7 @@ Program {
           },
         },
       ],
+      declare: false,
       kind: "const",
 
       range: [73, 94],

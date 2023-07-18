@@ -294,7 +294,7 @@ function checkFunctionExpressionReturnType(
  * Check whether any ancestor of the provided function has a valid return type.
  */
 function ancestorHasReturnType(node: FunctionNode): boolean {
-  let ancestor = node.parent;
+  let ancestor: TSESTree.Node | undefined = node.parent;
 
   if (ancestor?.type === AST_NODE_TYPES.Property) {
     ancestor = ancestor.value;

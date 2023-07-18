@@ -1,1 +1,1 @@
-type Foo = string[]
+type Foo = string[];

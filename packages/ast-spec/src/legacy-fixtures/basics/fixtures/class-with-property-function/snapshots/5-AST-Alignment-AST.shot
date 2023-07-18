@@ -10,6 +10,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-property-function AST Al
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
@@ -17,9 +18,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-property-function AST Al
               type: 'PropertyDefinition',
               computed: false,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'foo',
+-               optional: false,
 
                 range: [87, 90],
                 loc: {
@@ -27,7 +32,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-property-function AST Al
                   end: { column: 5, line: 4 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -122,9 +129,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-property-function AST Al
               type: 'PropertyDefinition',
               computed: false,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'bar',
+-               optional: false,
 
                 range: [131, 134],
                 loc: {
@@ -132,7 +143,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-property-function AST Al
                   end: { column: 5, line: 5 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -157,7 +170,9 @@ exports[`AST Fixtures legacy-fixtures basics class-with-property-function AST Al
                 async: false,
                 body: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'test',
+-                 optional: false,
 
                   range: [151, 155],
                   loc: {
@@ -191,9 +206,13 @@ exports[`AST Fixtures legacy-fixtures basics class-with-property-function AST Al
             end: { column: 1, line: 6 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Foo',
+-         optional: false,
 
           range: [79, 82],
           loc: {
@@ -201,6 +220,7 @@ exports[`AST Fixtures legacy-fixtures basics class-with-property-function AST Al
             end: { column: 9, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 158],
