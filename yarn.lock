@@ -2696,21 +2696,21 @@
   resolved "https://registry.yarnpkg.com/@leichtgewicht/ip-codec/-/ip-codec-2.0.4.tgz#b2ac626d6cb9c8718ab459166d4bb405b8ffa78b"
   integrity sha512-Hcv+nVC0kZnQ3tD9GVu5xSMR4VVYOteQIr/hwFPVEvPdlXqgGEuRjiheChHgdM+JyqdgNcmzZOX/tnl0JOiI7A==
 
-"@lerna/child-process@7.1.3":
-  version "7.1.3"
-  resolved "https://registry.yarnpkg.com/@lerna/child-process/-/child-process-7.1.3.tgz#8037449080e0d2fdbff957e15bf1877a5d9872c3"
-  integrity sha512-ZXHo30G5Ia/RCWKVyBm+3kAe/liWy7KaRF+CPWZpxYo+ysFPBIJ/7XZlGMzmq8fQaMsPj1z61q4wyqeAlUwuvQ==
+"@lerna/child-process@7.1.4":
+  version "7.1.4"
+  resolved "https://registry.yarnpkg.com/@lerna/child-process/-/child-process-7.1.4.tgz#5ab64540b01a339ecc6787f4f06d29aee99d71d5"
+  integrity sha512-cSiMDx9oI9vvVT+V/WHcbqrksNoc9PIPFiks1lPS7zrVWkEbgA6REQyYmRd2H71kihzqhX5TJ20f2dWv6oEPdA==
   dependencies:
     chalk "^4.1.0"
     execa "^5.0.0"
     strong-log-transformer "^2.1.0"
 
-"@lerna/create@7.1.3":
-  version "7.1.3"
-  resolved "https://registry.yarnpkg.com/@lerna/create/-/create-7.1.3.tgz#497b50cee176083f7457a7ac1cd5e8f180761e73"
-  integrity sha512-i/xUmT7sMNTUhGpSUuQJ8N776YiT/fJaKPrzMSAoxqDBhyDryi4o4JUR+rrN9oELOEsO+SOXQEusBdkmUdVTMg==
+"@lerna/create@7.1.4":
+  version "7.1.4"
+  resolved "https://registry.yarnpkg.com/@lerna/create/-/create-7.1.4.tgz#bfff377c36734ef9a95e3fe8cb030d6498844928"
+  integrity sha512-D5YWXsXIxWb1aGqcbtttczg86zMzkNhcs00/BleFNxdNYlTRdjLIReELOGBGrq3Hij05UN+7Dv9EKnPFJVbqAw==
   dependencies:
-    "@lerna/child-process" "7.1.3"
+    "@lerna/child-process" "7.1.4"
     dedent "0.7.0"
     fs-extra "^11.1.1"
     init-package-json "5.0.0"
@@ -2956,7 +2956,7 @@
   dependencies:
     "@nx/workspace" "16.5.2"
 
-"@nx/devkit@16.5.2", "@nx/devkit@>=16.1.3 < 17":
+"@nx/devkit@16.5.2", "@nx/devkit@>=16.5.1 < 17":
   version "16.5.2"
   resolved "https://registry.yarnpkg.com/@nx/devkit/-/devkit-16.5.2.tgz#0a30fc4e3beeea7d7bf16a0496d1ff3c5fa05299"
   integrity sha512-QDOQeFzVhQCA65g+2RfoGKZBUnCb151+F7/PvwRESEM+jybXHoXwR9PSE3ClnnmO/d0LUKB2ohU3Z9WQrQDALQ==
@@ -9888,15 +9888,15 @@ latest-version@^5.1.0:
   dependencies:
     package-json "^6.3.0"
 
-lerna@7.1.3:
-  version "7.1.3"
-  resolved "https://registry.yarnpkg.com/lerna/-/lerna-7.1.3.tgz#9aef15620b54038b1e4c5ea620c6b9b7590f26a4"
-  integrity sha512-LMs9HU0z5fNFMNOyDVinJcf04QaScReJ8Q2pqxO+nPOmbvNsBwykBgMTWLboL1rI1CCR0/WLdMnvObvR52MtTw==
+lerna@7.1.4:
+  version "7.1.4"
+  resolved "https://registry.yarnpkg.com/lerna/-/lerna-7.1.4.tgz#0778732f4c77ead71a20ba1e9b0a77edc75cb383"
+  integrity sha512-/cabvmTTkmayyALIZx7OpHRex72i8xSOkiJchEkrKxAZHoLNaGSwqwKkj+x6WtmchhWl/gLlqwQXGRuxrJKiBw==
   dependencies:
-    "@lerna/child-process" "7.1.3"
-    "@lerna/create" "7.1.3"
+    "@lerna/child-process" "7.1.4"
+    "@lerna/create" "7.1.4"
     "@npmcli/run-script" "6.0.2"
-    "@nx/devkit" ">=16.1.3 < 17"
+    "@nx/devkit" ">=16.5.1 < 17"
     "@octokit/plugin-enterprise-rest" "6.0.1"
     "@octokit/rest" "19.0.11"
     byte-size "8.1.1"
@@ -9930,6 +9930,7 @@ lerna@7.1.3:
     libnpmaccess "7.0.2"
     libnpmpublish "7.3.0"
     load-json-file "6.2.0"
+    lodash "^4.17.21"
     make-dir "3.1.0"
     minimatch "3.0.5"
     multimatch "5.0.0"
@@ -9938,7 +9939,7 @@ lerna@7.1.3:
     npm-packlist "5.1.1"
     npm-registry-fetch "^14.0.5"
     npmlog "^6.0.2"
-    nx ">=16.1.3 < 17"
+    nx ">=16.5.1 < 17"
     p-map "4.0.0"
     p-map-series "2.1.0"
     p-pipe "3.1.0"
@@ -11237,7 +11238,7 @@ nx-cloud@16.1.0:
     tar "6.1.11"
     yargs-parser ">=21.1.1"
 
-nx@16.5.2, "nx@>=16.1.3 < 17":
+nx@16.5.2, "nx@>=16.5.1 < 17":
   version "16.5.2"
   resolved "https://registry.yarnpkg.com/nx/-/nx-16.5.2.tgz#a271513abe73324fdf2924277d5f273d807a6f0e"
   integrity sha512-3XAkVBhXuoFgD7r0lASOh2589XSmBUjioevZb13lDjKDN/FHFWedwMZWtmmbzxBGO3EAWjl+3owBS1RIPm1UHw==
