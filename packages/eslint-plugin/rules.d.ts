@@ -41,4 +41,4 @@ export interface TypeScriptESLintRules {
   [ruleName: string]: RuleModule<string, unknown[]>;
 }
 declare const rules: TypeScriptESLintRules;
-export = rules;
+export default rules;
