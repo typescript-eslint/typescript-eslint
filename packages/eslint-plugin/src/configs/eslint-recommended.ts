@@ -1,9 +1,11 @@
+import type { Linter } from '@typescript-eslint/utils/ts-eslint';
+
 /**
  * This is a compatibility ruleset that:
  * - disables rules from eslint:recommended which are already handled by TypeScript.
  * - enables rules that make sense due to TS's typechecking / transpilation.
  */
-export = {
+const config: Linter.Config = {
   overrides: [
     {
       files: ['*.ts', '*.tsx', '*.mts', '*.cts'],
@@ -32,3 +34,4 @@ export = {
     },
   ],
 };
+export = config;

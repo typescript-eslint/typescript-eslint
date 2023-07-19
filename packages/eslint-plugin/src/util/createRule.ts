@@ -1,5 +1,5 @@
-import { ESLintUtils } from '@typescript-eslint/utils';
+import { RuleCreator } from '@typescript-eslint/utils/eslint-utils';
 
-export const createRule = ESLintUtils.RuleCreator(
+export const createRule = RuleCreator(
   name => `https://typescript-eslint.io/rules/${name}`,
 );

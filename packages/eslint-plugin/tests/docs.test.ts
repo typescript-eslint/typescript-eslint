@@ -3,7 +3,7 @@ import { marked } from 'marked';
 import path from 'path';
 import { titleCase } from 'title-case';
 
-import rules from '../src/rules';
+import { rules } from '../src/rules';
 
 const docsRoot = path.resolve(__dirname, '../docs/rules');
 const rulesData = Object.entries(rules);

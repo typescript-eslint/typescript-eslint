@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 
 import eslintPlugin from '../src';
-import rules from '../src/rules';
+import { rules } from '../src/rules';
 
 describe('eslint-plugin ("./src/index.ts")', () => {
   const ruleKeys = Object.keys(rules);

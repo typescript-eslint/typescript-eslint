@@ -132,7 +132,7 @@ import typedef from './typedef';
 import unboundMethod from './unbound-method';
 import unifiedSignatures from './unified-signatures';
 
-export default {
+export const rules = {
   'adjacent-overload-signatures': adjacentOverloadSignatures,
   'array-type': arrayType,
   'await-thenable': awaitThenable,

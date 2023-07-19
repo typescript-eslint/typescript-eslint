@@ -5,8 +5,6 @@
   "files": [
     "dist",
     "docs",
-    "index.d.ts",
-    "rules.d.ts",
     "package.json",
     "README.md",
     "LICENSE"
@@ -14,13 +12,17 @@
   "type": "commonjs",
   "exports": {
     ".": {
-      "types": "./index.d.ts",
+      "types": "./dist/_types/index.d.ts",
       "default": "./dist/index.js"
     },
     "./package.json": "./package.json",
     "./use-at-your-own-risk/rules": {
-      "types": "./rules.d.ts",
+      "types": "./dist/_types/rules.d.ts",
       "default": "./dist/rules/index.js"
+    },
+    "./use-at-your-own-risk/configs": {
+      "types": "./dist/_types/configs.d.ts",
+      "default": "./dist/configs/index.js"
     }
   },
   "engines": {
@@ -42,7 +44,7 @@
     "typescript"
   ],
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
+    "build": "tsc -b tsconfig.build.json && yarn generate:type-decls",
     "check-docs": "jest tests/docs.test.ts --runTestsByPath --silent --runInBand",
     "check-configs": "jest tests/configs.test.ts --runTestsByPath --silent --runInBand",
     "clean": "tsc -b tsconfig.build.json --clean",
@@ -50,6 +52,7 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate:breaking-changes": "yarn tsx tools/generate-breaking-changes.mts",
     "generate:configs": "yarn tsx tools/generate-configs.ts",
+    "generate:type-decls": "yarn tsx tools/generate-types.ts",
     "lint": "nx lint",
     "test": "jest --coverage --logHeapUsage",
     "test-single": "jest --no-coverage",
@@ -70,6 +73,7 @@
     "ts-api-utils": "^1.0.1"
   },
   "devDependencies": {
+    "@microsoft/api-extractor": "*",
     "@types/debug": "*",
     "@types/marked": "*",
     "@types/natural-compare": "*",
@@ -81,6 +85,7 @@
     "cross-fetch": "*",
     "jest-specific-snapshot": "*",
     "json-schema": "*",
+    "make-dir": "*",
     "markdown-table": "^3.0.3",
     "marked": "^5.1.1",
     "prettier": "*",

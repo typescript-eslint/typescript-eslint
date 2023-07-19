@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-import rules from '../../src/rules';
+import { rules } from '../../src/rules';
 
 describe('./src/rules/index.ts', () => {
   const ruleNames = Object.keys(rules)

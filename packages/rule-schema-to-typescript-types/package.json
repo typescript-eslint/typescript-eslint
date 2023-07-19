@@ -24,11 +24,10 @@
   "license": "MIT",
   "scripts": {
     "build": "tsc -b tsconfig.build.json",
+    "clean": "tsc -b tsconfig.build.json --clean",
+    "postclean": "rimraf dist && rimraf _ts3.4 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate-contributors": "tsx ./src/generate-contributors.ts",
-    "generate-sponsors": "tsx ./src/generate-sponsors.ts",
     "lint": "nx lint",
-    "postinstall-script": "tsx ./src/postinstall.ts",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

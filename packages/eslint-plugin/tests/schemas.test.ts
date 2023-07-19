@@ -6,7 +6,7 @@ import path from 'node:path';
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import { format, resolveConfig } from 'prettier';
 
-import rules from '../src/rules/index';
+import { rules } from '../src/rules/index';
 import { areOptionsValid } from './areOptionsValid';
 
 const snapshotFolder = path.resolve(__dirname, 'schema-snapshots');

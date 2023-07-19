@@ -1,7 +1,7 @@
 import type { RuleRecommendation } from '@typescript-eslint/utils/ts-eslint';
 
 import plugin from '../src/index';
-import rules from '../src/rules';
+import { rules } from '../src/rules';
 
 const RULE_NAME_PREFIX = '@typescript-eslint/';
 const EXTENSION_RULES = Object.entries(rules)
@@ -16,6 +16,8 @@ const EXTENSION_RULES = Object.entries(rules)
       ] as const,
   );
 
+type Config = Record<string, unknown>;
+
 function entriesToObject<T = unknown>(value: [string, T][]): Record<string, T> {
   return value.reduce<Record<string, T>>((accum, [k, v]) => {
     accum[k] = v;
@@ -23,9 +25,10 @@ function entriesToObject<T = unknown>(value: [string, T][]): Record<string, T> {
   }, {});
 }
 
-function filterRules(values: Record<string, string>): [string, string][] {
-  return Object.entries(values).filter(([name]) =>
-    name.startsWith(RULE_NAME_PREFIX),
+function filterRules(values: Config = {}): [string, string][] {
+  return Object.entries(values).filter(
+    (rule): rule is [string, string] =>
+      rule[0].startsWith(RULE_NAME_PREFIX) && rule[1] != null,
   );
 }
 
@@ -59,9 +62,7 @@ function filterAndMapRuleConfigs({
   return result.map(([name]) => [`${RULE_NAME_PREFIX}${name}`, 'error']);
 }
 
-function itHasBaseRulesOverriden(
-  unfilteredConfigRules: Record<string, string>,
-): void {
+function itHasBaseRulesOverriden(unfilteredConfigRules: object = {}): void {
   it('has the base rules overriden by the appropriate extension rules', () => {
     const ruleNames = new Set(Object.keys(unfilteredConfigRules));
     EXTENSION_RULES.forEach(([ruleName, extRuleName]) => {
@@ -77,8 +78,7 @@ function itHasBaseRulesOverriden(
 }
 
 describe('all.ts', () => {
-  const unfilteredConfigRules: Record<string, string> =
-    plugin.configs.all.rules;
+  const unfilteredConfigRules = plugin.configs.all.rules;
 
   it('contains all of the rules', () => {
     const configRules = filterRules(unfilteredConfigRules);
@@ -94,8 +94,7 @@ describe('all.ts', () => {
 });
 
 describe('recommended.ts', () => {
-  const unfilteredConfigRules: Record<string, string> =
-    plugin.configs.recommended.rules;
+  const unfilteredConfigRules = plugin.configs.recommended.rules;
 
   it('contains all recommended rules, excluding type checked ones', () => {
     const configRules = filterRules(unfilteredConfigRules);
@@ -112,7 +111,7 @@ describe('recommended.ts', () => {
 });
 
 describe('recommended-type-checked.ts', () => {
-  const unfilteredConfigRules: Record<string, string> =
+  const unfilteredConfigRules =
     plugin.configs['recommended-type-checked'].rules;
 
   it('contains all recommended rules', () => {
@@ -129,8 +128,7 @@ describe('recommended-type-checked.ts', () => {
 });
 
 describe('strict.ts', () => {
-  const unfilteredConfigRules: Record<string, string> =
-    plugin.configs.strict.rules;
+  const unfilteredConfigRules = plugin.configs.strict.rules;
 
   it('contains all strict rules, excluding type checked ones', () => {
     const configRules = filterRules(unfilteredConfigRules);
@@ -148,8 +146,7 @@ describe('strict.ts', () => {
 });
 
 describe('strict-type-checked.ts', () => {
-  const unfilteredConfigRules: Record<string, string> =
-    plugin.configs['strict-type-checked'].rules;
+  const unfilteredConfigRules = plugin.configs['strict-type-checked'].rules;
 
   it('contains all strict rules', () => {
     const configRules = filterRules(unfilteredConfigRules);
@@ -165,8 +162,7 @@ describe('strict-type-checked.ts', () => {
 });
 
 describe('stylistic.ts', () => {
-  const unfilteredConfigRules: Record<string, string> =
-    plugin.configs.stylistic.rules;
+  const unfilteredConfigRules = plugin.configs.stylistic.rules;
 
   it('contains all stylistic rules, excluding deprecated or type checked ones', () => {
     const configRules = filterRules(unfilteredConfigRules);
@@ -183,8 +179,7 @@ describe('stylistic.ts', () => {
 });
 
 describe('stylistic-type-checked.ts', () => {
-  const unfilteredConfigRules: Record<string, string> =
-    plugin.configs['stylistic-type-checked'].rules;
+  const unfilteredConfigRules = plugin.configs['stylistic-type-checked'].rules;
   const configRules = filterRules(unfilteredConfigRules);
   // note: include deprecated rules so that the config doesn't change between major bumps
   const ruleConfigs = filterAndMapRuleConfigs({

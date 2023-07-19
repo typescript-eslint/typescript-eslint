@@ -4,6 +4,9 @@
     "module": "NodeNext",
     "moduleResolution": "NodeNext",
     "allowJs": true,
+    // no need for type declarations as this isn't a consumed library module
+    "declaration": false,
+    "declarationMap": false,
     "esModuleInterop": true,
     "jsx": "react",
     "lib": ["DOM", "ESNext"],

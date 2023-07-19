@@ -5,7 +5,9 @@
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `yarn generate:configs`
 
-export = {
+import type { Linter } from '@typescript-eslint/utils/ts-eslint';
+
+const config: Linter.Config = {
   parserOptions: { project: null, program: null },
   rules: {
     '@typescript-eslint/await-thenable': 'off',
@@ -55,3 +57,4 @@ export = {
     '@typescript-eslint/unbound-method': 'off',
   },
 };
+export = config;

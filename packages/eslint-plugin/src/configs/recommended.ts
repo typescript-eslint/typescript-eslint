@@ -5,7 +5,9 @@
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `yarn generate:configs`
 
-export = {
+import type { Linter } from '@typescript-eslint/utils/ts-eslint';
+
+const config: Linter.Config = {
   extends: ['./configs/base', './configs/eslint-recommended'],
   rules: {
     '@typescript-eslint/ban-ts-comment': 'error',
@@ -30,3 +32,4 @@ export = {
     '@typescript-eslint/triple-slash-reference': 'error',
   },
 };
+export = config;

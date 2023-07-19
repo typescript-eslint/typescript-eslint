@@ -1,4 +1,4 @@
-import rules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
+import { rules } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 
 export const rulesMeta = Object.entries(rules).map(([name, content]) => ({
   name,

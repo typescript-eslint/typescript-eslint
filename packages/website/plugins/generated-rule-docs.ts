@@ -1,4 +1,4 @@
-import pluginRules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
+import { rules as pluginRules } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import * as fs from 'fs';
 import * as lz from 'lz-string';
@@ -50,9 +50,11 @@ export const generatedRuleDocs: Plugin = () => {
       return;
     }
 
-    const rule = pluginRules[file.stem];
+    const rule = pluginRules[file.stem] as
+      | (typeof pluginRules)[keyof typeof pluginRules]
+      | undefined;
     const meta = rule?.meta;
-    if (!meta?.docs) {
+    if (!rule || !meta?.docs) {
       return;
     }
 

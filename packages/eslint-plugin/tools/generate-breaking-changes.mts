@@ -1,17 +1,9 @@
-import type { TypeScriptESLintRules } from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import { fetch } from 'cross-fetch';
 // markdown-table is ESM, hence this file needs to be `.mts`
 import { markdownTable } from 'markdown-table';
 
 async function main(): Promise<void> {
-  const rulesImport = await import('../src/rules/index.js');
-  /*
-  weird TS resolution which adds an additional default layer in the type like:
-      { default: { default: Rules }}
-  instead of just
-      { default: Rules }
-  @ts-expect-error */
-  const rules = rulesImport.default as TypeScriptESLintRules;
+  const rules = (await import('../src/rules/index.js')).rules;
 
   // Annotate which rules are new since the last version
   async function getNewRulesAsOfMajorVersion(
@@ -30,7 +22,7 @@ async function main(): Promise<void> {
     // Normally we wouldn't condone using the 'eval' API...
     // But this is an internal-only script and it's the easiest way to convert
     // the JS raw text into a runtime object. 🤷
-    let oldRulesObject!: { rules: TypeScriptESLintRules };
+    let oldRulesObject!: { rules: typeof rules };
     eval('oldRulesObject = ' + oldObjectText);
     const oldRuleNames = new Set(Object.keys(oldRulesObject.rules));
 

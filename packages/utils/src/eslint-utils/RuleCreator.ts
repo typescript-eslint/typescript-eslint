@@ -42,27 +42,26 @@ export interface RuleWithMetaAndName<
   name: string;
 }
 
+export type NamedRuleCreator = <
+  TOptions extends readonly unknown[] = readonly unknown[],
+  TMessageIds extends string = string,
+>(
+  config: Readonly<RuleWithMetaAndName<TOptions, TMessageIds>>,
+) => RuleModule<TMessageIds, TOptions>;
+
 /**
  * Creates reusable function to create rules with default options and docs URLs.
  *
  * @param urlCreator Creates a documentation URL for a given rule name.
  * @returns Function to create a rule with the docs URL format.
  */
-export function RuleCreator(urlCreator: (ruleName: string) => string) {
+export function RuleCreator(
+  urlCreator: (ruleName: string) => string,
+): NamedRuleCreator {
   // This function will get much easier to call when this is merged https://github.com/Microsoft/TypeScript/pull/26349
   // TODO - when the above PR lands; add type checking for the context.report `data` property
-  return function createNamedRule<
-    TOptions extends readonly unknown[],
-    TMessageIds extends string,
-  >({
-    name,
-    meta,
-    ...rule
-  }: Readonly<RuleWithMetaAndName<TOptions, TMessageIds>>): RuleModule<
-    TMessageIds,
-    TOptions
-  > {
-    return createRule<TOptions, TMessageIds>({
+  return function createNamedRule({ name, meta, ...rule }) {
+    return createRule({
       meta: {
         ...meta,
         docs: {
@@ -75,33 +74,34 @@ export function RuleCreator(urlCreator: (ruleName: string) => string) {
   };
 }
 
-/**
- * Creates a well-typed TSESLint custom ESLint rule without a docs URL.
- *
- * @returns Well-typed TSESLint custom ESLint rule.
- * @remarks It is generally better to provide a docs URL function to RuleCreator.
- */
-function createRule<
+export type UnnamedRuleCreator = <
   TOptions extends readonly unknown[],
   TMessageIds extends string,
->({
-  create,
-  defaultOptions,
-  meta,
-}: Readonly<RuleWithMeta<TOptions, TMessageIds>>): RuleModule<
-  TMessageIds,
-  TOptions
-> {
+>(
+  config: Readonly<RuleWithMeta<TOptions, TMessageIds>>,
+) => RuleModule<TMessageIds, TOptions>;
+
+const createRule: UnnamedRuleCreator = ({ create, defaultOptions, meta }) => {
   return {
-    create(
-      context: Readonly<RuleContext<TMessageIds, TOptions>>,
-    ): RuleListener {
+    create(context): RuleListener {
       const optionsWithDefault = applyDefault(defaultOptions, context.options);
       return create(context, optionsWithDefault);
     },
     defaultOptions,
     meta,
   };
-}
+};
 
-RuleCreator.withoutDocs = createRule;
+// We purposely use a namespace here to provide a typed, but partially hidden API
+// for consumers that don't care about having a docs URL for their rules (eg for
+// projects that define local rules without hosted docs)
+// eslint-disable-next-line @typescript-eslint/no-namespace
+export namespace RuleCreator {
+  /**
+   * Creates a well-typed TSESLint custom ESLint rule without a docs URL.
+   *
+   * @returns Well-typed TSESLint custom ESLint rule.
+   * @remarks It is generally better to provide a docs URL function to RuleCreator.
+   */
+  export const withoutDocs = createRule;
+}

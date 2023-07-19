@@ -5,8 +5,11 @@
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `yarn generate:configs`
 
-export = {
+import type { Linter } from '@typescript-eslint/utils/ts-eslint';
+
+const config: Linter.Config = {
   parser: '@typescript-eslint/parser',
   parserOptions: { sourceType: 'module' },
   plugins: ['@typescript-eslint'],
 };
+export = config;

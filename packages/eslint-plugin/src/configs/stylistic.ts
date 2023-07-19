@@ -5,7 +5,9 @@
 // For developers working in the typescript-eslint monorepo:
 // You can regenerate it using `yarn generate:configs`
 
-export = {
+import type { Linter } from '@typescript-eslint/utils/ts-eslint';
+
+const config: Linter.Config = {
   extends: ['./configs/base', './configs/eslint-recommended'],
   rules: {
     '@typescript-eslint/adjacent-overload-signatures': 'error',
@@ -26,3 +28,4 @@ export = {
     '@typescript-eslint/prefer-namespace-keyword': 'error',
   },
 };
+export = config;

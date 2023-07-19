@@ -25,8 +25,11 @@ exports.esquery = esquery;
 
 exports.createLinter = function () {
   const linter = new Linter();
-  for (const name in plugin.rules) {
-    linter.defineRule(`@typescript-eslint/${name}`, plugin.rules[name]);
+  for (const name of Object.keys(plugin.rules)) {
+    linter.defineRule(
+      `@typescript-eslint/${name}`,
+      plugin.rules[/** @type {keyof typeof plugin.rules} */ (name)],
+    );
   }
   return linter;
 };
