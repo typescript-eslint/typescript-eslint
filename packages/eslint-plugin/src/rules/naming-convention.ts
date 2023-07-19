@@ -221,6 +221,41 @@ export default util.createRule<Options, MessageIds>({
         ) => void;
       }>;
     } = {
+      // #region import
+
+      'ImportDefaultSpecifier, ImportNamespaceSpecifier, ImportSpecifier': {
+        validator: validators.import,
+        handler: (
+          node:
+            | TSESTree.ImportDefaultSpecifier
+            | TSESTree.ImportNamespaceSpecifier
+            | TSESTree.ImportSpecifier,
+          validator,
+        ): void => {
+          const modifiers = new Set<Modifiers>();
+
+          switch (node.type) {
+            case AST_NODE_TYPES.ImportDefaultSpecifier:
+              modifiers.add(Modifiers.default);
+              break;
+            case AST_NODE_TYPES.ImportNamespaceSpecifier:
+              modifiers.add(Modifiers.namespace);
+              break;
+            case AST_NODE_TYPES.ImportSpecifier:
+              // Handle `import { default as Foo }`
+              if (node.imported.name !== 'default') {
+                return;
+              }
+              modifiers.add(Modifiers.default);
+              break;
+          }
+
+          validator(node.local, modifiers);
+        },
+      },
+
+      // #endregion
+
       // #region variable
 
       VariableDeclarator: {
