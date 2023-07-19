@@ -1,6 +1,6 @@
 import { simpleTraverse } from '@typescript-eslint/typescript-estree';
 import type { TSESTree } from '@typescript-eslint/utils';
-import type { Linter, SourceCode } from '@typescript-eslint/utils/ts-eslint';
+import type { Parser, SourceCode } from '@typescript-eslint/utils/ts-eslint';
 
 /*
  * List every parameters possible on a test case that are not related to eslint
@@ -75,7 +75,7 @@ const parserSymbol = Symbol.for('eslint.RuleTester.parser');
  * Wraps the given parser in order to intercept and modify return values from the `parse` and `parseForESLint` methods, for test purposes.
  * In particular, to modify ast nodes, tokens and comments to throw on access to their `start` and `end` properties.
  */
-export function wrapParser(parser: Linter.ParserModule): Linter.ParserModule {
+export function wrapParser(parser: Parser.ParserModule): Parser.ParserModule {
   /**
    * Define `start`/`end` properties of all nodes of the given AST as throwing error.
    */
@@ -121,7 +121,7 @@ export function wrapParser(parser: Linter.ParserModule): Linter.ParserModule {
     return {
       // @ts-expect-error -- see above
       [parserSymbol]: parser,
-      parseForESLint(...args): Linter.ESLintParseResult {
+      parseForESLint(...args): Parser.ParseResult {
         const ret = parser.parseForESLint(...args);
 
         defineStartEndAsErrorInTree(ret.ast, ret.visitorKeys);

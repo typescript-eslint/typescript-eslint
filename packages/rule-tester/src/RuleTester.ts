@@ -10,6 +10,7 @@ import { deepMerge } from '@typescript-eslint/utils/eslint-utils';
 import type {
   AnyRuleCreateFunction,
   AnyRuleModule,
+  Parser,
   ParserOptions,
   RuleContext,
   RuleModule,
@@ -521,7 +522,7 @@ export class RuleTester extends TestFramework {
 
     this.#linter.defineParser(
       config.parser,
-      wrapParser(require(config.parser) as Linter.ParserModule),
+      wrapParser(require(config.parser) as Parser.ParserModule),
     );
 
     if (schema) {

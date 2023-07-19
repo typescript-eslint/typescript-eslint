@@ -1,4 +1,10 @@
-import type { TSESLint } from '@typescript-eslint/utils';
+import type {
+  ClassicConfig,
+  Linter,
+  RuleListener,
+  RuleModule,
+  RuleRecommendation,
+} from '@typescript-eslint/utils/ts-eslint';
 import * as fs from 'fs';
 import * as path from 'path';
 import prettier from 'prettier';
@@ -48,10 +54,10 @@ async function main(): Promise<void> {
   const prettierConfig = prettier.resolveConfig.sync(__dirname);
 
   interface LinterConfigRules {
-    [name: string]: TSESLint.Linter.RuleLevel;
+    [name: string]: ClassicConfig.RuleLevel;
   }
 
-  interface LinterConfig extends TSESLint.Linter.Config {
+  interface LinterConfig extends ClassicConfig.Config {
     extends?: string[] | string;
     plugins?: string[];
   }
@@ -78,7 +84,7 @@ async function main(): Promise<void> {
 
   type RuleEntry = [
     string,
-    TSESLint.RuleModule<string, readonly unknown[], TSESLint.RuleListener>,
+    RuleModule<string, readonly unknown[], RuleListener>,
   ];
 
   const allRuleEntries: RuleEntry[] = Object.entries(rules).sort((a, b) =>
@@ -89,7 +95,7 @@ async function main(): Promise<void> {
     deprecated?: 'exclude';
     typeChecked?: 'exclude' | 'include-only';
     baseRuleForExtensionRule?: 'exclude';
-    forcedRuleLevel?: TSESLint.Linter.RuleLevel;
+    forcedRuleLevel?: Linter.RuleLevel;
   }
 
   /**
@@ -190,7 +196,7 @@ async function main(): Promise<void> {
   }
 
   function filterRuleEntriesTo(
-    ...recommendations: (TSESLint.RuleRecommendation | undefined)[]
+    ...recommendations: (RuleRecommendation | undefined)[]
   ): RuleEntry[] {
     return allRuleEntries.filter(([, rule]) =>
       recommendations.includes(rule.meta.docs?.recommended),
