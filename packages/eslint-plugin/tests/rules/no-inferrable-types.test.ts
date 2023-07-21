@@ -289,5 +289,57 @@ class Foo {
         },
       ],
     },
+    {
+      code: `
+class Foo {
+  constructor(
+    a: number = 5,
+    public b: boolean = true,
+    readonly c: string = 'foo',
+  ) {}
+}
+      `,
+      output: `
+class Foo {
+  constructor(
+    a = 5,
+    public b = true,
+    readonly c = 'foo',
+  ) {}
+}
+      `,
+      options: [
+        {
+          ignoreParameters: false,
+          ignoreProperties: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noInferrableType',
+          data: {
+            type: 'number',
+          },
+          line: 4,
+          column: 5,
+        },
+        {
+          messageId: 'noInferrableType',
+          data: {
+            type: 'boolean',
+          },
+          line: 5,
+          column: 12,
+        },
+        {
+          messageId: 'noInferrableType',
+          data: {
+            type: 'string',
+          },
+          line: 6,
+          column: 14,
+        },
+      ],
+    },
   ],
 });
