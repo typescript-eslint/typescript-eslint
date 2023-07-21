@@ -6,7 +6,8 @@ description: 'Disallow delete operator for arrays.'
 >
 > See **https://typescript-eslint.io/rules/no-array-delete** for documentation.
 
-In JavaScript `delete` operator in arrays makes the given index empty, and leaves the array length unchanged.
+In JavaScript, using the `delete` operator on an array makes the given index empty and leaves the array length unchanged.
+See [MDN's _Deleting array elements_ documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/delete#deleting_array_elements) for more information.
 This can sometimes cause problems with performance and unexpected behaviors around array loops and index accesses.
 
 ## Examples
