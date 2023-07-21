@@ -641,7 +641,9 @@ import * as TSESLint from '@typescript-eslint/utils';
 
 See [RFC: Use package.json exports to "hide" the dist folder for packages and control our exported surface-area](https://github.com/typescript-eslint/typescript-eslint/discussions/6015) for more backing context.
 
-Note that if you update your imports and you still get an error from TypeScript saying "Cannot find module '@typescript-eslint/utils' or its corresponding type declarations", then you might need to change the value of `moduleResolution` to `node16` in your TypeScript config, as detailed in [this issue](https://github.com/typescript-eslint/typescript-eslint/issues/7279).
+:::note
+If you update your imports and you still get an error from TypeScript saying _`"Cannot find module '@typescript-eslint/...' or its corresponding type declarations"`_, then you might need to change the value of `moduleResolution` in your TypeScript config. See [this tracking issue for `package.json` exports types](https://github.com/typescript-eslint/typescript-eslint/issues/7284).
+:::
 
 ### Other Developer-Facing Breaking Changes
 
