@@ -199,6 +199,42 @@ declare const x: T;
 const y = x!;
       `,
     },
+    {
+      code: `
+declare function nullablePromise(): Promise<string | null>;
+
+async function fn(): Promise<string> {
+  return (await nullablePromise()) as string;
+}
+
+declare const a: string | null;
+
+const b = (a || undefined) as string;
+      `,
+      errors: [
+        {
+          column: 10,
+          line: 5,
+          messageId: 'preferNonNullAssertion',
+        },
+        {
+          column: 11,
+          line: 10,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare function nullablePromise(): Promise<string | null>;
+
+async function fn(): Promise<string> {
+  return (await nullablePromise())!;
+}
+
+declare const a: string | null;
+
+const b = (a || undefined)!;
+      `,
+    },
   ],
 });
 
