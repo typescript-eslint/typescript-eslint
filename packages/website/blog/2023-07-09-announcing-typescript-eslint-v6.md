@@ -619,7 +619,7 @@ For more information, see:
 
 ### Package Exports
 
-The v5 `@typescript-eslint/` packages don't use [Node.js package.json exports](https://nodejs.org/api/packages.html#package-entry-points), so anyone can import any file in any package by directly referencing a path within the dist folder.
+The v5 `@typescript-eslint/` packages don't use [Node.js package.json exports](https://nodejs.org/api/packages.html#package-entry-points), which allows someone to import any file in any package by directly referencing a path within the `dist` directory.
 For example:
 
 ```ts
@@ -628,18 +628,20 @@ import * as TSESLint from '@typescript-eslint/utils/dist/ts-eslint';
 
 That presents a few issues for developers:
 
-- It can be unclear which of many potential import paths to use
-- TypeScript sometimes suggests importing types or values meant to be private
-- Consumers using deep import paths can be broken by internal refactors that rename files
+- It can be unclear which of many potential import paths to use.
+- TypeScript sometimes suggests importing types or values meant to be private.
+- Consumers using deep import paths might get broken code after internal refactors rename files.
 
 As of [feat: add package.json exports for public packages](https://github.com/typescript-eslint/typescript-eslint/pull/6458), `@typescript-eslint/*` packages now use `exports` to prevent importing internal file paths.
-Developers must now mostly import directly from the package names, e.g.:
+Developers must now mostly import directly from the package names. For example, to fix the code from the previous example, you would use the following:
 
 ```ts
-import * as TSESLint from '@typescript-eslint/ts-eslint';
+import * as TSESLint from '@typescript-eslint/utils';
 ```
 
 See [RFC: Use package.json exports to "hide" the dist folder for packages and control our exported surface-area](https://github.com/typescript-eslint/typescript-eslint/discussions/6015) for more backing context.
+
+Note that if you update your imports and you still get an error from TypeScript saying "Cannot find module '@typescript-eslint/utils' or its corresponding type declarations", then you might need to change the value of `moduleResolution` to `node16` in your TypeScript config, as detailed in [this issue](https://github.com/typescript-eslint/typescript-eslint/issues/7279).
 
 ### Other Developer-Facing Breaking Changes
 
