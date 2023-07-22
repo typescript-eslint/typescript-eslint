@@ -225,8 +225,8 @@ jobs:
           TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER: true
 
   website_tests:
-    # The NETLIFY_TOKEN secret will not be available on forks
-    if: github.repository_owner == 'typescript-eslint'
+    # The NETLIFY_TOKEN secret will not be available on PRs from forks
+    if: github.event.pull_request.head.repo.full_name == github.repository
     permissions:
       contents: read # to fetch code (actions/checkout)
 
