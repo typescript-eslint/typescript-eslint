@@ -226,7 +226,7 @@ jobs:
 
   website_tests:
     # The NETLIFY_TOKEN secret will not be available on PRs from forks
-    if: github.event.pull_request.head.repo.full_name == github.repository
+    if: (github.event_name == 'push' && github.ref_name == 'main') || (github.event.pull_request.head.repo.full_name == github.repository)
     permissions:
       contents: read # to fetch code (actions/checkout)
 
