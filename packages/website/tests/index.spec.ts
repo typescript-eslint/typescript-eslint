@@ -21,7 +21,8 @@ test.describe('Website', () => {
       }
       errorMessages.push(`[${type}] ${text}`);
     });
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await expect(page).toHaveTitle("typescript-eslint");
     expect(errorMessages).toStrictEqual([]);
   });
 });
