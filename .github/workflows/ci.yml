@@ -246,7 +246,7 @@ jobs:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
+        run: npx playwright install --with-deps chrome
 
       - name: Wait for Netlify deployment
         if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
