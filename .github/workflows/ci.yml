@@ -262,6 +262,10 @@ jobs:
         env:
           PLAYWRIGHT_TEST_BASE_URL: ${{ steps.waitForDeployment.outputs.url }}
 
+      - name: Build
+        if: github.repository != 'typescript-eslint/typescript-eslint' || github.ref != 'refs/heads/main'
+        uses: ./.github/actions/prepare-build
+
       - name: Run Playwright tests against local deployment
         if: github.repository != 'typescript-eslint/typescript-eslint' || github.ref != 'refs/heads/main'
         run: yarn playwright test --reporter=list
