@@ -265,6 +265,7 @@ export function getOperatorPrecedence(
       return OperatorPrecedence.Member;
 
     case SyntaxKind.AsExpression:
+    case SyntaxKind.SatisfiesExpression:
       return OperatorPrecedence.Relational;
 
     case SyntaxKind.ThisKeyword:
