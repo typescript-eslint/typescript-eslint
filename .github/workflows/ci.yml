@@ -225,8 +225,6 @@ jobs:
           TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER: true
 
   website_tests:
-    # The NETLIFY_TOKEN secret will not be available on forks, only run when it's available
-    if: github.repository_owner == 'typescript-eslint' && secrets.NETLIFY_TOKEN
     permissions:
       contents: read # to fetch code (actions/checkout)
 
@@ -251,16 +249,23 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Wait for Netlify deployment
+        if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
         uses: ./.github/actions/wait-for-netlify
         id: waitForDeployment
         with:
           netlify_token: ${{ secrets.NETLIFY_TOKEN }}
 
       - name: Run Playwright tests against the Netlify deployment
+        if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
         run: yarn playwright test --reporter=list
         working-directory: packages/website
         env:
           PLAYWRIGHT_TEST_BASE_URL: ${{ steps.waitForDeployment.outputs.url }}
+
+      - name: Run Playwright tests against local deployment
+        if: github.repository != 'typescript-eslint/typescript-eslint' || github.ref != 'refs/heads/main'
+        run: yarn playwright test --reporter=list
+        working-directory: packages/website
 
       - if: always()
         uses: actions/upload-artifact@v3
