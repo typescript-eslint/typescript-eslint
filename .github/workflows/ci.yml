@@ -268,7 +268,7 @@ jobs:
 
       - name: Run Playwright tests against local deployment
         if: github.repository != 'typescript-eslint/typescript-eslint' || github.ref != 'refs/heads/main'
-        run: yarn playwright test --reporter=list
+        run: yarn build && yarn playwright test --reporter=list
         working-directory: packages/website
 
       - if: always()
