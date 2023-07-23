@@ -12,6 +12,7 @@
     "LICENSE"
   ],
   "type": "commonjs",
+  "main": "dist/index.js",
   "exports": {
     ".": {
       "types": "./index.d.ts",
