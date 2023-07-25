@@ -619,7 +619,7 @@ For more information, see:
 
 ### Package Exports
 
-The v5 `@typescript-eslint/` packages don't use [Node.js package.json exports](https://nodejs.org/api/packages.html#package-entry-points), which allows someone to import any file in any package by directly referencing a path within the `dist` directory.
+The v5 `@typescript-eslint/*` packages don't use [Node.js package.json exports](https://nodejs.org/api/packages.html#package-entry-points), which allows importing any file in any package by directly referencing a path within the package's `dist/` directory.
 For example:
 
 ```ts
