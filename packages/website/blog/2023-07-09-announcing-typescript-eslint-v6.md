@@ -630,7 +630,7 @@ That presents a few issues for developers:
 
 - It can be unclear which of many potential import paths to use.
 - TypeScript sometimes suggests importing types or values meant to be private.
-- Consumers using deep import paths might get broken code after internal refactors rename files.
+- Consumers using deep import paths can be broken by internal refactors that rename files.
 
 As of [feat: add package.json exports for public packages](https://github.com/typescript-eslint/typescript-eslint/pull/6458), `@typescript-eslint/*` packages now use `exports` to prevent importing internal file paths.
 Developers must now mostly import directly from the package names. For example, to fix the code from the previous example, you would use the following:
