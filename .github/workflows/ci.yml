@@ -250,7 +250,7 @@ jobs:
         run: NX_VERBOSE_LOGGING=true yarn patch-package && yarn nx build website
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chrome
+        run: npx playwright install --with-deps
 
       - name: Wait for Netlify deployment
         if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
