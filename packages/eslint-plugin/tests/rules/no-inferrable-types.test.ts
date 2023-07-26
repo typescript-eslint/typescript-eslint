@@ -158,7 +158,7 @@ class Foo {
 class Foo {
   constructor(public a = true) {}
 }
-       `,
+      `,
     },
   ],
 
