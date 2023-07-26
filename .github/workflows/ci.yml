@@ -264,8 +264,7 @@ jobs:
 
       - name: Build website
         if: github.repository != 'typescript-eslint/typescript-eslint' || github.ref != 'refs/heads/main'
-        run: yarn && yarn build
-        working-directory: packages/website
+        run: NX_VERBOSE_LOGGING=true yarn patch-package && yarn nx build website
 
       - name: Run Playwright tests against local deployment
         if: github.repository != 'typescript-eslint/typescript-eslint' || github.ref != 'refs/heads/main'

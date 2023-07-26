@@ -1,12 +1,12 @@
 {
   "extends": "../../tsconfig.base.json",
   "compilerOptions": {
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "allowJs": true,
     "esModuleInterop": true,
     "jsx": "react",
     "lib": ["DOM", "ESNext"],
-    "module": "NodeNext",
-    "moduleResolution": "NodeNext",
     "noEmit": true,
     "noImplicitAny": false,
     "resolveJsonModule": true,
