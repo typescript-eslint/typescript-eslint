@@ -19,6 +19,10 @@ test.describe('Website', () => {
       if (text.includes('ReactDOM.render is no longer supported in React 18')) {
         return;
       }
+      // some external images may return 404 when test is run in CI
+      if (text.includes('Failed to load resource: the server responded with a status of 404')) {
+        return;
+      }
       errorMessages.push(`[${type}] ${text}`);
     });
     await page.goto('/', { waitUntil: 'domcontentloaded' });
