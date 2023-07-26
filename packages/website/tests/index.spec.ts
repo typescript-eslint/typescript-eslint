@@ -20,7 +20,11 @@ test.describe('Website', () => {
         return;
       }
       // some external images may return 404 when test is run in CI
-      if (text.includes('Failed to load resource: the server responded with a status of 404')) {
+      if (
+        text.includes(
+          'Failed to load resource: the server responded with a status of 404',
+        )
+      ) {
         return;
       }
       errorMessages.push(`[${type}] ${text}`);
