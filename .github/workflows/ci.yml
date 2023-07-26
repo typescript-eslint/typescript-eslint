@@ -245,6 +245,10 @@ jobs:
         with:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
 
+      - name: Build website
+        if: github.repository != 'typescript-eslint/typescript-eslint' || github.ref != 'refs/heads/main'
+        run: NX_VERBOSE_LOGGING=true yarn patch-package && yarn nx build website
+
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chrome
 
@@ -261,10 +265,6 @@ jobs:
         working-directory: packages/website
         env:
           PLAYWRIGHT_TEST_BASE_URL: ${{ steps.waitForDeployment.outputs.url }}
-
-      - name: Build website
-        if: github.repository != 'typescript-eslint/typescript-eslint' || github.ref != 'refs/heads/main'
-        run: NX_VERBOSE_LOGGING=true yarn patch-package && yarn nx build website
 
       - name: Run Playwright tests against local deployment
         if: github.repository != 'typescript-eslint/typescript-eslint' || github.ref != 'refs/heads/main'
