@@ -5,6 +5,7 @@
     "esModuleInterop": true,
     "jsx": "react",
     "lib": ["DOM", "ESNext"],
+    "moduleResolution": "bundler",
     "noEmit": true,
     "noImplicitAny": false,
     "resolveJsonModule": true,
