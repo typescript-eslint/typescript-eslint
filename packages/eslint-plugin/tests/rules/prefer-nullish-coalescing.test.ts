@@ -215,6 +215,13 @@ x || y;
       `,
       options: [{ ignorePrimitives: { [type]: true } }],
     })),
+    ...ignorablePrimitiveTypes.map<TSESLint.ValidTestCase<Options>>(type => ({
+      code: `
+declare const x: ${type} | undefined;
+x || y;
+      `,
+      options: [{ ignorePrimitives: true }],
+    })),
   ],
   invalid: [
     ...nullishTypeInvalidTest((nullish, type) => ({
