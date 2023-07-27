@@ -3,9 +3,9 @@ import { expect, test } from '@playwright/test';
 
 test.describe('Website', () => {
   test.beforeEach(async ({ context }) => {
-    // This image link is broken
+    // Sponsor logos are sometimes changed or removed between deploys
     await context.route(
-      'https://images.opencollective.com/whiteboxinc/ef0d11d/logo.png',
+      'https://images.opencollective.com/**/*.png',
       route =>
         route.fulfill({
           status: 200,
