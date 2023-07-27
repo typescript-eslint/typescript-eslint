@@ -208,19 +208,7 @@ declare class TokenStore {
   getTokensBetween<T extends SourceCode.CursorWithCountOptions>(
     left: TSESTree.Node | TSESTree.Token,
     right: TSESTree.Node | TSESTree.Token,
-    padding?: T,
-  ): SourceCode.ReturnTypeFromOptions<T>[];
-  /**
-   * Gets all of the tokens between two non-overlapping nodes.
-   * @param left Node before the desired token range.
-   * @param right Node after the desired token range.
-   * @param padding Number of extra tokens on either side of center.
-   * @returns Tokens between left and right.
-   */
-  getTokensBetween<T extends SourceCode.CursorWithCountOptions>(
-    left: TSESTree.Node | TSESTree.Token,
-    right: TSESTree.Node | TSESTree.Token,
-    padding?: number,
+    padding?: T | number,
   ): SourceCode.ReturnTypeFromOptions<T>[];
 }
 

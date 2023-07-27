@@ -71,8 +71,7 @@ export default util.createRule<Options, MessageIds>({
         node?: TSESTree.Comment | TSESTree.Identifier;
         loc?: TSESTree.SourceLocation;
       },
-      void,
-      unknown
+      void
     > {
       if (
         options?.builtinGlobals &&

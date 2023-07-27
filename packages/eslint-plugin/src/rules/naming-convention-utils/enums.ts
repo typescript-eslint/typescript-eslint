@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/prefer-literal-enum-member */
 enum PredefinedFormats {
   camelCase = 1,
   strictCamelCase,

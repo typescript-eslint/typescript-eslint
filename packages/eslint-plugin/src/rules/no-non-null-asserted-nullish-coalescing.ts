@@ -26,9 +26,7 @@ function isDefinitionWithAssignment(definition: Definition): boolean {
   }
 
   const variableDeclarator = definition.node;
-  return (
-    variableDeclarator.definite === true || variableDeclarator.init != null
-  );
+  return variableDeclarator.definite || variableDeclarator.init != null;
 }
 
 export default util.createRule({

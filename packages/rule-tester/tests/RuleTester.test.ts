@@ -119,7 +119,7 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-const NOOP_RULE: RuleModule<'error', []> = {
+const NOOP_RULE: RuleModule<'error'> = {
   meta: {
     messages: {
       error: 'error',

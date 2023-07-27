@@ -15,8 +15,7 @@ class ParameterDefinition extends DefinitionBase<
   | TSESTree.TSEmptyBodyFunctionExpression
   | TSESTree.TSFunctionType
   | TSESTree.TSMethodSignature,
-  null,
-  TSESTree.BindingName
+  null
 > {
   /**
    * Whether the parameter definition is a part of a rest parameter.

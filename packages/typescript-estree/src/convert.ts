@@ -190,7 +190,7 @@ export class Converter {
         const isType =
           result.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
           result.type === AST_NODE_TYPES.TSTypeAliasDeclaration;
-        const isDeclare = 'declare' in result && result.declare === true;
+        const isDeclare = 'declare' in result && result.declare;
         return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
           type: AST_NODE_TYPES.ExportNamedDeclaration,
           // @ts-expect-error - TODO, narrow the types here
