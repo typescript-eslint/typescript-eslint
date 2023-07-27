@@ -58,7 +58,7 @@ returnsPromise().then(
 
 Promise.reject('value').catch(() => {});
 
-Promise.reject('value').finally(() => {});
+await Promise.reject('value').finally(() => {});
 ```
 
 ## Options
