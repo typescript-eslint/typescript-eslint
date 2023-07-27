@@ -2,6 +2,18 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 test.describe('Website', () => {
+  test.beforeEach(async ({ context }) => {
+    // This image link is broken
+    await context.route(
+      'https://images.opencollective.com/whiteboxinc/ef0d11d/logo.png',
+      route =>
+        route.fulfill({
+          status: 200,
+          body: '',
+        }),
+    );
+  });
+
   test('Axe', async ({ page }) => {
     await page.goto('/');
     await new AxeBuilder({ page }).analyze();
@@ -17,14 +29,6 @@ test.describe('Website', () => {
       const text = msg.text();
       // this log is fine because the ReactDOM usage is controlled by docusaurus, not us
       if (text.includes('ReactDOM.render is no longer supported in React 18')) {
-        return;
-      }
-      // some external images may return 404 when test is run in CI
-      if (
-        text.includes(
-          'Failed to load resource: the server responded with a status of 404',
-        )
-      ) {
         return;
       }
       errorMessages.push(`[${type}] ${text}`);
