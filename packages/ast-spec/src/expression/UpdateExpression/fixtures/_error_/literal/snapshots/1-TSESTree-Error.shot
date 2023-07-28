@@ -3,6 +3,6 @@
 exports[`AST Fixtures expression UpdateExpression _error_ literal TSESTree - Error 1`] = `
 "TSError
 > 1 | 1++;
-    | ^^^ Invalid left-hand side expression in unary operation
+    | ^ Invalid left-hand side expression in unary operation
   2 |"
 `;
