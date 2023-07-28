@@ -51,7 +51,7 @@
     "generate:breaking-changes": "yarn tsx tools/generate-breaking-changes.mts",
     "generate:configs": "yarn tsx tools/generate-configs.ts",
     "lint": "nx lint",
-    "test": "jest --coverage --logHeapUsage",
+    "test": "NODE_OPTIONS=\"--max-old-space-size=1024\" node --expose-gc ../../node_modules/.bin/jest --coverage --logHeapUsage",
     "test-single": "jest --no-coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
