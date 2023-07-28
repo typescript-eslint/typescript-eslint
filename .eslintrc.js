@@ -122,6 +122,7 @@ module.exports = {
         null: 'never',
       },
     ],
+    'no-else-return': 'error',
     'no-mixed-operators': 'error',
     'no-console': 'error',
     'no-process-exit': 'error',
