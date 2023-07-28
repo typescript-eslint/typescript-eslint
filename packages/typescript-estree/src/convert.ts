@@ -2023,7 +2023,7 @@ export class Converter {
         if (operator === '++' || operator === '--') {
           if (!isValidAssignmentTarget(node.operand)) {
             this.#throwUnlessAllowInvalidAST(
-              node,
+              node.operand,
               'Invalid left-hand side expression in unary operation',
             );
           }
