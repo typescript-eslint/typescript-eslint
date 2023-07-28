@@ -144,6 +144,5 @@
     "pretty-format": "^29",
     "tsx": "^3.12.7",
     "typescript": "5.1.6"
-  },
-  "packageManager": "yarn@1.22.19"
+  }
 }
