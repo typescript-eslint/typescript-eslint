@@ -6,8 +6,6 @@ description: 'Enforce that class methods utilize `this`.'
 >
 > See **https://typescript-eslint.io/rules/class-methods-use-this** for documentation.
 
-## Examples
-
 This rule extends the base [`eslint/class-methods-use-this`](https://eslint.org/docs/rules/class-methods-use-this) rule.
 It adds support for ignoring `override` methods or methods on classes that implement an interface.
 

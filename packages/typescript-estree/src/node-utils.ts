@@ -639,16 +639,15 @@ export function convertToken(
         flags: value.slice(value.lastIndexOf('/') + 1),
       },
     };
-  } else {
-    // @ts-expect-error TS is complaining about `value` not being the correct
-    // type but it is
-    return {
-      type: tokenType,
-      value,
-      range,
-      loc,
-    };
   }
+  // @ts-expect-error TS is complaining about `value` not being the correct
+  // type but it is
+  return {
+    type: tokenType,
+    value,
+    range,
+    loc,
+  };
 }
 
 /**

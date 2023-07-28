@@ -76,9 +76,8 @@ function getIdentifierRules(
     return rules.variable;
   } else if (isFunctionOrFunctionType(scope)) {
     return rules.parameter;
-  } else {
-    return rules.colon;
   }
+  return rules.colon;
 }
 
 function getRules(
@@ -95,9 +94,8 @@ function getRules(
     return rules.property;
   } else if (isFunction(scope)) {
     return rules.returnType;
-  } else {
-    return rules.colon;
   }
+  return rules.colon;
 }
 
 export default util.createRule<Options, MessageIds>({
