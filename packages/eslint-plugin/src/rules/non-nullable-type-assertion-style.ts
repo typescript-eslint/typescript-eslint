@@ -50,11 +50,8 @@ export default util.createRule({
           }
         }
         return false;
-      } else {
-        return (
-          (type.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0
-        );
       }
+      return (type.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0;
     };
 
     const sameTypeWithoutNullish = (

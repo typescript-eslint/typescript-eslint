@@ -15,7 +15,7 @@ interface RuleMetaDataDocs {
   /**
    * The recommendation level for the rule.
    * Used by the build tools to generate the recommended and strict configs.
-   * Set to false to not include it as a recommendation
+   * Exclude to not include it as a recommendation.
    */
   recommended?: RuleRecommendation;
   /**
