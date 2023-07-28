@@ -6,8 +6,8 @@ description: 'Disallow the `any` type.'
 >
 > See **https://typescript-eslint.io/rules/no-explicit-any** for documentation.
 
-The `any` type in TypeScript is a dangerous "escape hatch" from the type system.
-Using `any` disables many type checking rules and is generally best used only as a last resort or when prototyping code.
+The `any` type in TypeScript is a potentially dangerous "escape hatch" from the type system.
+Using `any` disables many type checking rules and is generally best used only when it's required or when prototyping code.
 This rule reports on explicit uses of the `any` keyword as a type annotation.
 
 > TypeScript's `--noImplicitAny` compiler option prevents an implied `any`, but doesn't prevent `any` from being explicitly used the way this rule does.
@@ -158,7 +158,24 @@ interface Garply {
 
 ## When Not To Use It
 
-If an unknown type or a library without typings is used
+**Higher Order Functions**. If you're typing a higher order function such as `compose`, `pipe`, etc, you may need `any` because TypeScript types are not fully co-expressive with idiomatic functional JavaScript. Such functions are intentionally generic, and you can assign explicit types later to the returned functions, e.g.:
+
+```TypeScript
+// eslint-disable-next-line no-explicit-any
+type a2a = (x: any) => any;
+type compose = (...fns: a2a[]) => a2a;
+const pipe: compose = (...fns) => x => fns.reduce((y, f) => f(y), x);
+const compose: compose = (...fns) => x => fns.reduceRight((y, f) => f(y), x);
+
+type n2n = (n: number) => number;
+const g: n2n = n => n + 1;
+const f: n2n = n => n * 2;
+
+const h: n2n = pipe(g, f);
+const j: n2n = compose(f, g);
+```
+
+**Unknown Types**. If an unknown type or a library without typings is used
 and you want to be able to specify `any`.
 
 ## Related To
