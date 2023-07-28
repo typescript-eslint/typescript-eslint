@@ -271,7 +271,7 @@ This option should bring two main benefits:
   - Initial versions of this option demonstrated performance changes in subsets of the typescript-eslint monorepo ranging from 11% slower to 70% faster
 
 We're hopeful this option will eventually become the standard way to enable typed linting.
-It switches the parser from manually creating TypeScript uses the same "project services" API used by editors such as VS Code.
+It switches the parser from manually creating TypeScript programs to instead calling the same "project services" API used by editors such as VS Code.
 However, because it's so new and untested, we're keeping it under the `EXPERIMENTAL_` prefix for at least all of the `6.X` versions.
 
 See [feat(typescript-estree): add EXPERIMENTAL_useProjectService option to use TypeScript project service](https://github.com/typescript-eslint/typescript-eslint/pull/6754) for more information.
