@@ -186,7 +186,7 @@ declare class TokenStore {
    */
   getTokensAfter<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
-    options?: T,
+    options?: T | number,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
    * Gets the `count` tokens that precedes a given node or token.
@@ -196,19 +196,19 @@ declare class TokenStore {
    */
   getTokensBefore<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
-    options?: T,
+    options?: T | number,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
    * Gets all of the tokens between two non-overlapping nodes.
    * @param left Node before the desired token range.
    * @param right Node after the desired token range.
-   * @param options The option object. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
    * @returns Tokens between left and right.
    */
   getTokensBetween<T extends SourceCode.CursorWithCountOptions>(
     left: TSESTree.Node | TSESTree.Token,
     right: TSESTree.Node | TSESTree.Token,
-    padding?: T | number,
+    options?: T | number,
   ): SourceCode.ReturnTypeFromOptions<T>[];
 }
 

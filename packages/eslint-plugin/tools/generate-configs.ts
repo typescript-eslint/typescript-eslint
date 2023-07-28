@@ -76,6 +76,7 @@ async function main(): Promise<void> {
   );
   const EXTENDS = ['./configs/base', './configs/eslint-recommended'];
 
+  // TODO: migrate to import { RuleModule } from '@typescript-eslint/utils/ts-eslint'
   type RuleEntry = [string, TSESLint.RuleModule<string, readonly unknown[]>];
 
   const allRuleEntries: RuleEntry[] = Object.entries(rules).sort((a, b) =>
