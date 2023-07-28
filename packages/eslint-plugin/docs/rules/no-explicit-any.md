@@ -158,21 +158,23 @@ interface Garply {
 
 ## When Not To Use It
 
-**Higher Order Functions**. If you're typing a higher order function such as `compose`, `pipe`, etc, you may need `any` because TypeScript types are not fully co-expressive with idiomatic functional JavaScript. Such functions are intentionally generic, and you can assign explicit types later to the returned functions, e.g.:
+**Higher Order Functions**. If you're typing a higher order function such as `compose`, `pipe`, etc, you may need `any` because TypeScript types can't always fully represent functional JavaScript patterns. For example, functions like `compose` and `pipe` compose many different functions with many different types which TypeScript can't accurately represent. Instead, you can assign explicit types later to the returned functions, e.g.:
 
 ```TypeScript
-// eslint-disable-next-line no-explicit-any
+// eslint-disable no-explicit-any
 type a2a = (x: any) => any;
-type compose = (...fns: a2a[]) => a2a;
-const pipe: compose = (...fns) => x => fns.reduce((y, f) => f(y), x);
-const compose: compose = (...fns) => x => fns.reduceRight((y, f) => f(y), x);
+const pipe = (...fns: a2a[]) => (x: any) => fns.reduce((y, f) => f(y), x);
+const compose = (...fns: a2a[]) => (x: any) => fns.reduceRight((y, f) => f(y), x);
+// eslint-enable no-explicit-any
 
 type n2n = (n: number) => number;
 const g: n2n = n => n + 1;
 const f: n2n = n => n * 2;
+type n2s = (n: number) => string;
+const exclaim:n2s = (n) => `${n}!`;
 
-const h: n2n = pipe(g, f);
-const j: n2n = compose(f, g);
+const h: n2s = pipe(g, f, exclaim);
+const j: n2s = compose(exclaim, f, g);
 ```
 
 **Unknown Types**. If an unknown type or a library without typings is used
