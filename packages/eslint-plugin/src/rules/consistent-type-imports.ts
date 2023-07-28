@@ -96,7 +96,7 @@ export default util.createRule<Options, MessageIds>({
     const fixStyle = option.fixStyle ?? 'separate-type-imports';
     const sourceCode = context.getSourceCode();
 
-    const sourceImportsMap: { [key: string]: SourceImports } = {};
+    const sourceImportsMap: Record<string, SourceImports> = {};
 
     return {
       ...(prefer === 'type-imports'

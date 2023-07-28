@@ -67,7 +67,7 @@ export default util.createRule<Options, MessageIds>({
 
   create(context, [{ fixMixedExportsWithInlineTypeSpecifier }]) {
     const sourceCode = context.getSourceCode();
-    const sourceExportsMap: { [key: string]: SourceExports } = {};
+    const sourceExportsMap: Record<string, SourceExports> = {};
     const services = util.getParserServices(context);
 
     /**
