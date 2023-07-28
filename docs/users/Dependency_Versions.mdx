@@ -3,6 +3,8 @@ id: dependency-versions
 title: Dependency Versions
 ---
 
+import packageJson from '../../package.json';
+
 ## ESLint
 
 > The version range of ESLint currently supported is `^6.0.0 || ^7.0.0 || ^8.0.0`.
@@ -16,7 +18,12 @@ Support for specific Current status releases are considered periodically.
 
 ## TypeScript
 
-> The version range of TypeScript currently supported is `>=3.3.1 <5.2.0`.
+<blockquote>
+  <p>
+    The version range of TypeScript currently supported is{' '}
+    <code>{packageJson.devDependencies.typescript}</code>.
+  </p>
+</blockquote>
 
 These versions are what we test against.
 
