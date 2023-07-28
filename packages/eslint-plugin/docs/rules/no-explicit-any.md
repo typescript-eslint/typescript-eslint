@@ -158,7 +158,8 @@ interface Garply {
 
 ## When Not To Use It
 
-**Higher Order Functions**. If you're typing a higher order function such as `compose`, `pipe`, etc, you may need `any` because TypeScript types can't always fully represent functional JavaScript patterns. For example, functions like `compose` and `pipe` compose many different functions with many different types which TypeScript can't accurately represent. Instead, you can assign explicit types later to the returned functions, e.g.:
+**Difficult-to-represent TypeScript types**.
+Some code patterns can be difficult to represent exactly in the TypeScript type system, and/or expose legitimate edge cases for using `any`. For example, functional programming concepts such as composing and piping sometimes necessitate using `any`.
 
 ```TypeScript
 // eslint-disable no-explicit-any
