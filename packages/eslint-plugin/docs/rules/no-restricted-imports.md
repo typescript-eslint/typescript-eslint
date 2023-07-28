@@ -6,8 +6,6 @@ description: 'Disallow specified modules when loaded by `import`.'
 >
 > See **https://typescript-eslint.io/rules/no-restricted-imports** for documentation.
 
-## Examples
-
 This rule extends the base [`eslint/no-restricted-imports`](https://eslint.org/docs/rules/no-restricted-imports) rule.
 
 ## Options

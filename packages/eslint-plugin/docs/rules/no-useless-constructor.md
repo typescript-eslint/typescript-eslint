@@ -6,8 +6,6 @@ description: 'Disallow unnecessary constructors.'
 >
 > See **https://typescript-eslint.io/rules/no-useless-constructor** for documentation.
 
-## Examples
-
 This rule extends the base [`eslint/no-useless-constructor`](https://eslint.org/docs/rules/no-useless-constructor) rule.
 It adds support for:
 
