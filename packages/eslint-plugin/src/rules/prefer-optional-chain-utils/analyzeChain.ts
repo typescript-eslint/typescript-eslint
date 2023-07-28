@@ -333,16 +333,15 @@ function getFixer(
           left: sourceCode.getText(lastOperand.node.left),
           right: unaryOperator + newCode,
         };
-      } else {
-        const unaryOperator =
-          lastOperand.node.left.type === AST_NODE_TYPES.UnaryExpression
-            ? lastOperand.node.left.operator + ' '
-            : '';
-        return {
-          left: unaryOperator + newCode,
-          right: sourceCode.getText(lastOperand.node.right),
-        };
       }
+      const unaryOperator =
+        lastOperand.node.left.type === AST_NODE_TYPES.UnaryExpression
+          ? lastOperand.node.left.operator + ' '
+          : '';
+      return {
+        left: unaryOperator + newCode,
+        right: sourceCode.getText(lastOperand.node.right),
+      };
     })();
 
     newCode = `${left} ${operator} ${right}`;

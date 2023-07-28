@@ -6,10 +6,6 @@ description: 'Require or disallow semicolons instead of ASI.'
 >
 > See **https://typescript-eslint.io/rules/semi** for documentation.
 
-This rule enforces consistent use of semicolons after statements.
-
-## Examples
-
 This rule extends the base [`eslint/semi`](https://eslint.org/docs/rules/semi) rule.
 It adds support for TypeScript features that require semicolons.
 
