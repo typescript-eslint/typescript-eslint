@@ -27,6 +27,8 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: ['all'],
   create(context) {
+    const sourceCode = context.getSourceCode();
+
     const rules = baseRule.create(context);
 
     function binaryExp(
@@ -79,11 +81,9 @@ export default util.createRule<Options, MessageIds>({
 
       if (
         node.arguments.length === 1 &&
-        node.typeArguments?.params.some(
-          param =>
-            param.type === AST_NODE_TYPES.TSImportType ||
-            param.type === AST_NODE_TYPES.TSArrayType,
-        )
+        // is there any opening parenthesis in type arguments
+        sourceCode.getTokenAfter(node.callee, util.isOpeningParenToken) !==
+          sourceCode.getTokenBefore(node.arguments[0], util.isOpeningParenToken)
       ) {
         return rule({
           ...node,
