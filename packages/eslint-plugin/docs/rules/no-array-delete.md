@@ -31,3 +31,7 @@ declare const index: number;
 
 array.splice(index, 1);
 ```
+
+## When Not To Use It
+
+If you don't care about having empty element in array, then you will not need this rule.

@@ -5,7 +5,9 @@ import * as ts from 'typescript';
 
 import * as util from '../util';
 
-export default util.createRule({
+type MessageIds = 'arrayDelete' | 'suggestFunctionalDelete';
+
+export default util.createRule<[], MessageIds>({
   name: 'no-array-delete',
   meta: {
     hasSuggestions: true,
@@ -16,6 +18,8 @@ export default util.createRule({
     },
     messages: {
       arrayDelete: 'Using the delete operator on an array is dangerous.',
+      suggestFunctionalDelete:
+        'Using Array.slice instead of delete keyword prevents empty array element.',
     },
     schema: [],
     type: 'problem',
@@ -45,7 +49,7 @@ export default util.createRule({
 
         const keyType = util.getConstrainedTypeAtLocation(checker, key);
 
-        if (!isTypeNumberOrNumberLiteralOrNumberLikeType(keyType)) {
+        if (!util.isTypeFlagSet(keyType, ts.TypeFlags.NumberLike)) {
           return;
         }
 
@@ -54,11 +58,15 @@ export default util.createRule({
           messageId: 'arrayDelete',
           suggest: [
             {
-              messageId: 'arrayDelete',
-              fix(fixer): TSESLint.RuleFix {
+              messageId: 'suggestFunctionalDelete',
+              fix(fixer): TSESLint.RuleFix | null {
                 const requiresParens =
                   node.property.type === AST_NODE_TYPES.SequenceExpression;
                 const keyText = key.getText();
+
+                if (util.isTypeFlagSet(keyType, ts.TypeFlags.String)) {
+                  return null;
+                }
 
                 return fixer.replaceText(
                   node.parent,
@@ -80,11 +88,4 @@ function isTypeArrayTypeOrArrayInUnionOfTypes(
   checker: ts.TypeChecker,
 ): boolean {
   return unionTypeParts(type).some(checker.isArrayType);
-}
-
-function isTypeNumberOrNumberLiteralOrNumberLikeType(type: ts.Type): boolean {
-  return util.isTypeFlagSet(
-    type,
-    ts.TypeFlags.Number | ts.TypeFlags.NumberLiteral | ts.TypeFlags.NumberLike,
-  );
 }

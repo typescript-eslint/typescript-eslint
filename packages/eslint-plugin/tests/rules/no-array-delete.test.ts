@@ -46,7 +46,7 @@ delete arr[i];
           messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDelete',
+              messageId: 'suggestFunctionalDelete',
               output: `
 declare const arr: unknown[];
 declare const i: number;
@@ -69,7 +69,7 @@ delete arr[10];
           messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDelete',
+              messageId: 'suggestFunctionalDelete',
               output: `
 declare const arr: unknown[];
 
@@ -96,7 +96,7 @@ delete arr[Enum.X];
           messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDelete',
+              messageId: 'suggestFunctionalDelete',
               output: `
 declare const arr: unknown[];
 
@@ -124,7 +124,7 @@ delete arr[i];
           messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDelete',
+              messageId: 'suggestFunctionalDelete',
               output: `
 declare const arr: Array<unknown>;
 declare const i: number;
@@ -148,7 +148,7 @@ delete obj.prop.arr[indexObj.i];
           messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDelete',
+              messageId: 'suggestFunctionalDelete',
               output: `
 declare const obj: { prop: { arr: unknown[] } };
 declare const indexObj: { i: number };
@@ -172,7 +172,7 @@ delete getTarget()[i];
           messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDelete',
+              messageId: 'suggestFunctionalDelete',
               output: `
 declare const i: number;
 declare function getTarget(): unknown[];
@@ -196,7 +196,7 @@ delete data[getKey()];
           messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDelete',
+              messageId: 'suggestFunctionalDelete',
               output: `
 declare const data: unknown[];
 declare function getKey(): number;
@@ -220,7 +220,7 @@ delete mayBeArr[i];
           messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDelete',
+              messageId: 'suggestFunctionalDelete',
               output: `
 declare const mayBeArr: number | number[];
 declare const i: number;
@@ -244,7 +244,7 @@ delete multiDimesnional[i][i][i][i][i];
           messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDelete',
+              messageId: 'suggestFunctionalDelete',
               output: `
 declare const multiDimesnional: Array<unknown>[][][][];
 declare const i: number;
@@ -269,7 +269,7 @@ function trickyCase<T extends unknown[]>(t: T) {
           messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDelete',
+              messageId: 'suggestFunctionalDelete',
               output: `
 declare const i: number;
 
@@ -295,7 +295,7 @@ function trickyCase1<T extends unknown>(t: T[]) {
           messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDelete',
+              messageId: 'suggestFunctionalDelete',
               output: `
 declare const i: number;
 
@@ -318,7 +318,7 @@ delete arr[Math.random() ? 1 : 1];
           messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDelete',
+              messageId: 'suggestFunctionalDelete',
               output: `
 declare const arr: unknown[];
 arr.splice(Math.random() ? 1 : 1, 1);
@@ -338,7 +338,7 @@ delete arr[Math.random() ? 1 : 'prop'];
           messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDelete',
+              messageId: 'suggestFunctionalDelete',
               output: `
 declare const arr: unknown[];
 arr.splice(Math.random() ? 1 : 'prop', 1);
@@ -360,7 +360,7 @@ delete arr[(something(), 1)];
           messageId: 'arrayDelete',
           suggestions: [
             {
-              messageId: 'arrayDelete',
+              messageId: 'suggestFunctionalDelete',
               output: `
 declare const arr: unknown[];
 declare function something(): unknown;
@@ -369,6 +369,20 @@ arr.splice(((something(), 1)), 1);
       `,
             },
           ],
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: unknown[];
+declare const i: number | string;
+
+delete arr[i];
+      `,
+      errors: [
+        {
+          messageId: 'arrayDelete',
+          suggestions: [],
         },
       ],
     },
