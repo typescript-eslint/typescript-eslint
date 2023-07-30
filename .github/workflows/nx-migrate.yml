@@ -55,12 +55,12 @@ jobs:
           # Revert renovate's changes to package.json and yarn.lock so that it is a clean migrate from the status quo
           git checkout HEAD~1 -- package.json yarn.lock
 
-          yarn --ignore-scripts
+          yarn
 
           npx nx migrate @nx/workspace@$NX_VERSION
 
           # Sometimes Nx can require config formatting changes after a migrate command
-          yarn --ignore-scripts
+          yarn
           npx nx format
 
           # migrations.json may or may not exist after running nx migrate
@@ -71,6 +71,9 @@ jobs:
             # After we have run its migrations, we no longer need the migrations.json file
             rm migrations.json
           fi
+
+          # Run the special nx repair command to ensure config matches latest and greatest
+          npx nx repair
 
           # Ensure all the changed files are formatted appropriately
           yarn format

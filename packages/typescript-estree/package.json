@@ -64,8 +64,11 @@
     "@babel/code-frame": "*",
     "@babel/parser": "*",
     "glob": "*",
-    "jest-specific-snapshot": "*",
+    "jest": "29.6.1",
+    "jest-specific-snapshot": "^8.0.0",
     "make-dir": "*",
+    "prettier": "^2.8.4",
+    "rimraf": "*",
     "tmp": "*",
     "typescript": "*"
   },

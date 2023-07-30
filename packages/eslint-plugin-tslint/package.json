@@ -54,7 +54,11 @@
     "typescript": "*"
   },
   "devDependencies": {
-    "@typescript-eslint/parser": "6.4.0"
+    "@types/lodash": "*",
+    "@typescript-eslint/parser": "6.4.0",
+    "jest": "29.6.1",
+    "prettier": "^2.8.4",
+    "rimraf": "*"
   },
   "funding": {
     "type": "opencollective",

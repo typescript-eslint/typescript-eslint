@@ -73,6 +73,10 @@
     }
   },
   "devDependencies": {
+    "downlevel-dts": "*",
+    "prettier": "^2.8.4",
+    "rimraf": "*",
+    "tsx": "*",
     "typescript": "*"
   },
   "funding": {

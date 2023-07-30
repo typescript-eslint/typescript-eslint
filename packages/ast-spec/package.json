@@ -49,11 +49,14 @@
     "@babel/parser": "*",
     "@microsoft/api-extractor": "^7.36.1",
     "glob": "*",
-    "jest-diff": "*",
-    "jest-snapshot": "*",
-    "jest-specific-snapshot": "*",
+    "jest": "29.6.1",
+    "jest-diff": "^29.6.1",
+    "jest-snapshot": "^29.6.1",
+    "jest-specific-snapshot": "^8.0.0",
     "make-dir": "*",
+    "prettier": "^2.8.4",
     "pretty-format": "*",
+    "rimraf": "*",
     "typescript": "*"
   }
 }

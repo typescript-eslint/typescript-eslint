@@ -58,7 +58,12 @@
     "debug": "^4.3.4"
   },
   "devDependencies": {
+    "@types/glob": "*",
+    "downlevel-dts": "*",
     "glob": "*",
+    "jest": "29.6.1",
+    "prettier": "^2.8.4",
+    "rimraf": "*",
     "typescript": "*"
   },
   "peerDependenciesMeta": {

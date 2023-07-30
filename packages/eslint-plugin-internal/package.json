@@ -18,6 +18,10 @@
     "@typescript-eslint/scope-manager": "6.4.0",
     "@typescript-eslint/type-utils": "6.4.0",
     "@typescript-eslint/utils": "6.4.0",
-    "prettier": "*"
+    "prettier": "^2.8.4"
+  },
+  "devDependencies": {
+    "jest": "29.6.1",
+    "rimraf": "*"
   }
 }
