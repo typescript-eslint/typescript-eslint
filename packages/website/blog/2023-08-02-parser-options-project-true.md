@@ -62,7 +62,7 @@ In other words, many developers want our [issue #101: Feature request: support l
 
 ## Introducing `true`
 
-As of typescript-eslint@5.52.0, we now support providing `true` as the value `parserOptions.project`:
+As of typescript-eslint@5.52.0, we now support providing `true` for `parserOptions.project`:
 
 ```js
 module.exports = {
@@ -83,33 +83,68 @@ We recommend specifying [`tsconfigRootDir`](http://localhost:3000/packages/parse
 That way, if you accidentally delete or rename the root `tsconfig.json` file, `@typescript-eslint/parser` won't search parent directories for higher `tsconfig.json` files.
 :::
 
-We're hopeful that `parserOptions.project: true` is satisfactory for most projects to use typed linting.
+### Why Try `true`
+
+If your project uses typed linting and manually specifies `tsconfig.json` files, we'd highly recommend trying out `parserOptions.project: true`.
 We've seen it reduce lines of codes of ESLint configurations in many projects that have switched to it.
-It's even occasionally even reduced time spent on typed linting by helping projects use a simpler set of TSConfigs.
+It's even occasionally even reduced time spent on typed linting by helping projects use a simpler set of TSConfigs. 🚀
 
-### Mix-and-Matching Projects
-
-TODO: need to confirm whether this works!
+In the long term, we're hoping to further improve the configuration and performance for typed linting (see _[Project Services](#project-services)_ below).
+Simplifying your configuration now will make it easier to onboard to our new options when they're available.
 
 ### How It Works
 
-TODO: mention the caching just a bit
+When `@typescript-eslint/parser` is configured to generate type information, it attaches a backing TypeScript "Program" for to file it parses.
+Those Programs provide type checking APIs used by lint rules.
+Each TSConfig file on disk is generally used to create exactly one Program, so files that refer to the same TSConfig file will reuse the same Program.
 
-See [feat(typescript-estree): allow specifying project: true](https://github.com/typescript-eslint/typescript-eslint/pull/6084) for more information.
+Depending on how the ESLint config's `parserOptions.project` was specified, determining _which_ TSConfig file to use for each file can be different:
+
+- For a single string (e.g. `"tsconfig.json"`), then only one Program will be created, and all linted files will reuse it.
+- For globs and/or arrays (e.g. `"./packages/*/tsconfig.json"`), then each linted file will reuse a Program based on the _first_ matched TSConfig file.
+
+For `true`, each linted file will first try the `tsconfig.json` in its directory, then its parent directory, and so on until one is found on disk or the directory root (`parserOptions.tsconfigRootDir`) is reached.
+
+:::note
+`@typescript-eslint/parser` caches those directory `tsconfig.json` file lookups for a duration corresponding to [`parserOptions.cacheLifetime`](/packages/parser#cachelifetime).
+No potential TSConfig path should be checked more than once in a lint run.
+:::
+
+See [feat(typescript-estree): allow specifying project: true](https://github.com/typescript-eslint/typescript-eslint/pull/6084) for the backing code changes.
 
 ## What's Next
 
 ### Custom TSConfig Names
 
-TODO: find or file an issue asking about allowing e.g. `tsconfig.eslint.json`
+Some projects use TSConfig files with names other than `tsconfig.json`: most commonly, `tsconfig.eslint.json`.
+`parserOptions.project: true` does not support specifying different name(s) to search for.
+We have two followup issues filed to investigate fleshing out that support:
+
+- [Enhancement: Allow altering the file names that project: true searches for](https://github.com/typescript-eslint/typescript-eslint/issues/7383)
+- [Enhancement: Allow parserOptions.project to be (true | string)[]?](https://github.com/typescript-eslint/typescript-eslint/issues/7384)
+
+If either of those two issues would benefit you, please 👍 react to them.
+And if your project has a use case not yet mentioned in their comments, please post that use case.
+We want to know what's important for users!
 
 ### Project Services
 
-TODO: reference `EXPERIMENTAL_useProjectService`
+The downside of having users specify `parserOptions.project` at all is that `@typescript-eslint/parser` needs manual logic to create TypeScript Programs and associate them with linted files.
+Manual Program creation logic comes with a few issues:
 
-### A Complete Rewrite of ESLint
+- Complex project setups can be difficult to get right.
+  - For example, [typescript-eslint does not yet support Project References](https://github.com/typescript-eslint/typescript-eslint/issues/2094).
+- The TypeScript compiler options used in the user's editor might differ from the compiler options in the TSConfigs they specified on disk.
+- Files not included in created Programs can't be linted with type information, even though editors still typically surface type information when editing those files.
+  - Most commonly, `.eslintrc.(c)js` files can be tricky to lint, resulting in the dreaded [_TSConfig does not include this file_ error](/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file).
 
-TODO: reference the ESLint discussion, and phrase it as many-years-down-the-road.
+We're working on an option to instead call the same TypeScript "Project Service" APIs that editors such as VS Code use to create Programs for us instead.
+Project Services will automatically detect the TSConfig for each file (like `project: true`), and will also allow type information to be computed for JavaScript files without the `allowJs` compiler option (unlike `project: true`).
+
+We're hopeful this option will eventually become the standard way to enable typed linting.
+However, because it's so new and untested, we're keeping it under the `EXPERIMENTAL_` prefix for at least all of the `6.X` versions.
+
+See [Packages > Parser > `EXPERIMENTAL_useProjectService`](/packages/parser#EXPERIMENTAL_useProjectService) for more information.
 
 ## Supporting typescript-eslint
 
