@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type {
   JSONSchema4AnyOfSchema,
   JSONSchema4ArraySchema,
@@ -269,8 +270,15 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      ImportDeclaration(node): void {
-        if (node.importKind === 'type') {
+      ImportDeclaration(node: TSESTree.ImportDeclaration): void {
+        if (
+          node.importKind === 'type' ||
+          node.specifiers.every(
+            specifier =>
+              specifier.type === AST_NODE_TYPES.ImportSpecifier &&
+              specifier.importKind === 'type',
+          )
+        ) {
           const importSource = node.source.value.trim();
           if (
             !isAllowedTypeImportPath(importSource) &&
@@ -287,7 +295,10 @@ export default createRule<Options, MessageIds>({
           source: NonNullable<TSESTree.ExportNamedDeclaration['source']>;
         },
       ): void {
-        if (node.exportKind === 'type') {
+        if (
+          node.exportKind === 'type' ||
+          node.specifiers.every(specifier => specifier.exportKind === 'type')
+        ) {
           const importSource = node.source.value.trim();
           if (
             !isAllowedTypeImportPath(importSource) &&
