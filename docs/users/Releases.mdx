@@ -36,9 +36,14 @@ These release notes will list the PRs included in the release.
   />
 </a>
 
-We release a canary version for each commit to `main` that passes all required checks. This release is performed automatically by the [`publish_canary_version` step](https://github.com/typescript-eslint/typescript-eslint/blob/5feb2dba9da2bd5e233451b7b0f1c99414b5aef9/.github/workflows/ci.yml#L234-L263).
+We release a canary version for each commit to `main` that passes all required checks. This release is performed automatically by the [`publish_canary_version` step](https://github.com/typescript-eslint/typescript-eslint/blob/5feb2dba9da2bd5e233451b7b0f1c99414b5aef9/.github/workflows/ci.yml#L234-L263). So **you never need to wait for a new stable version to make use of any updates**.
 
 This release is goes to the `canary` tag on npm and it is versioned as an incremental canary patch release on top of the current `latest` version. I.e. if the current version is `5.6.1`, then the first canary version will be `5.6.2-alpha.0`, the second `5.6.2-alpha.1`, and so on.
+
+:::note
+The only exception to the automated publishes described above is when we are in the final phases of creating the next major version of the libraries - e.g. going from `1.x.x` to `2.x.x`.
+During these periods, we manually publish `canary` releases until we are happy with the release and promote it to `latest`.
+:::
 
 ### Installing Canary Versions
 
