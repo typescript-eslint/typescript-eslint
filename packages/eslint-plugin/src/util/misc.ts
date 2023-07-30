@@ -135,12 +135,11 @@ function getNameFromMember(
         type: MemberNameType.Quoted,
         name: `"${name}"`,
       };
-    } else {
-      return {
-        type: MemberNameType.Normal,
-        name,
-      };
     }
+    return {
+      type: MemberNameType.Normal,
+      name,
+    };
   }
 
   return {

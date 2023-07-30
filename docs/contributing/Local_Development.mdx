@@ -66,6 +66,16 @@ Coverage reports are be generated locally whenever `yarn test` is run.
 
 The `codecov` bot should also comment on your PR with the percentage, as well as links to the line-by-line coverage of each file touched by your PR.
 
+#### Granular Unit Tests
+
+Most tests in most packages are set up as small, self-contained unit tests.
+We generally prefer that to keep tests and their failure reports granular.
+
+For rule tests we recommend, when reasonable:
+
+- Including both `valid` and `invalid` code changes in most PRs that affect rule behavior
+- Limiting to one error per `invalid` case
+
 ### Type Checking
 
 All code should pass TypeScript type checking.

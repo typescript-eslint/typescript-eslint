@@ -156,12 +156,11 @@ export default util.createRule({
     ): TSESLint.RuleFix | TSESLint.RuleFix[] {
       if (isHighPrecendence) {
         return fixer.insertTextBefore(node, 'await ');
-      } else {
-        return [
-          fixer.insertTextBefore(node, 'await ('),
-          fixer.insertTextAfter(node, ')'),
-        ];
       }
+      return [
+        fixer.insertTextBefore(node, 'await ('),
+        fixer.insertTextAfter(node, ')'),
+      ];
     }
 
     function isHigherPrecedenceThanAwait(node: ts.Node): boolean {

@@ -6,8 +6,6 @@ description: 'Enforce dot notation whenever possible.'
 >
 > See **https://typescript-eslint.io/rules/dot-notation** for documentation.
 
-## Examples
-
 This rule extends the base [`eslint/dot-notation`](https://eslint.org/docs/rules/dot-notation) rule.
 It adds:
 

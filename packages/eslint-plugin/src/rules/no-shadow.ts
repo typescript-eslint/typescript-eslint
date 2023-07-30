@@ -537,11 +537,10 @@ export default util.createRule<Options, MessageIds>({
           line: identifier.loc.start.line,
           column: identifier.loc.start.column + 1,
         };
-      } else {
-        return {
-          global: true,
-        };
       }
+      return {
+        global: true,
+      };
     }
 
     /**
