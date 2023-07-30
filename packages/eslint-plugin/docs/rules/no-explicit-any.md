@@ -159,7 +159,7 @@ interface Garply {
 ## When Not To Use It
 
 **Difficult-to-represent TypeScript types**.
-Some code patterns can be difficult to represent exactly in the TypeScript type system, and/or expose legitimate edge cases for using `any`. For example, functional programming concepts such as composing and piping sometimes necessitate using `any`.
+Some code patterns can be difficult to represent exactly in the TypeScript type system. For example, functional programming concepts such as composing and piping sometimes necessitate using `any`.
 
 ```TypeScript
 // eslint-disable no-explicit-any
