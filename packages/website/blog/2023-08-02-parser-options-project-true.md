@@ -114,7 +114,7 @@ See [feat(typescript-estree): allow specifying project: true](https://github.com
 
 ## What's Next
 
-### Custom TSConfig Names
+### Investigating Custom TSConfig Names
 
 Some projects use TSConfig files with names other than `tsconfig.json`: most commonly, `tsconfig.eslint.json`.
 `parserOptions.project: true` does not support specifying different name(s) to search for.
