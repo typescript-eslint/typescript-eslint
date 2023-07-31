@@ -47,6 +47,28 @@ function bar<T>(arg: string) {
 ].filter(t => t); // number[] is always truthy
 ```
 
+:::note
+
+Currently in TypeScript, function calls have no influence on type narrowing.
+Even if a function has side effects that modify the condition, it isn't taken into account.
+As a result, code like this violates the rule.
+
+```ts
+let condition = false;
+
+const modifyCondition = () => {
+  condition = true;
+};
+
+modifyCondition()[(1, 2, 3)].forEach(modifyCondition);
+
+// for TypeScript that's still false
+if (condition) {
+}
+```
+
+:::
+
 ### ✅ Correct
 
 ```ts
