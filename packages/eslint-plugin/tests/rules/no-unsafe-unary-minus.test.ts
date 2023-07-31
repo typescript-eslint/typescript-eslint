@@ -15,6 +15,7 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('no-unsafe-unary-minus', rule, {
   valid: [
+    '+42;',
     '-42;',
     '-42n;',
     '(a: number) => -a;',
