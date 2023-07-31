@@ -249,6 +249,33 @@ Please only submit bug reports when using the officially supported version.
 =============
 ```
 
+### `EXPERIMENTAL_useProjectService`
+
+An experimental alternative to `parserOptions.project`.
+This directs the parser to use a more seamless TypeScript API to generate type information for rules.
+It will automatically detect the TSConfig for each file (like `project: true`), and will also allow type information to be computed for JavaScript files without the `allowJs` compiler option (unlike `project: true`).
+
+```js
+module.exports = {
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    EXPERIMENTAL_useProjectService: true,
+  },
+};
+```
+
+This option should bring two main benefits:
+
+- Simpler configurations: most projects shouldn't need to explicitly configure `project` paths or create `tsconfig.eslint.json`s
+- Improved performance: this API is optimized on the TypeScript side for speed
+  - Initial versions of this option demonstrated performance changes in subsets of the typescript-eslint monorepo ranging from 11% slower to 70% faster
+
+We're hopeful this option will eventually become the standard way to enable typed linting.
+It switches the parser from manually creating TypeScript programs to instead calling the same "project services" API used by editors such as VS Code.
+However, because it's so new and untested, we're keeping it under the `EXPERIMENTAL_` prefix for at least all of the `6.X` versions.
+
+See [feat(typescript-estree): add EXPERIMENTAL_useProjectService option to use TypeScript project service](https://github.com/typescript-eslint/typescript-eslint/pull/6754) for more information.
+
 ## Utilities
 
 ### `createProgram(configFile, projectDirectory)`
