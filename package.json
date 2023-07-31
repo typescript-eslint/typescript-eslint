@@ -100,7 +100,7 @@
     "jest-diff": "^29.6.1",
     "jest-snapshot": "^29.6.1",
     "jest-specific-snapshot": "^8.0.0",
-    "jest": "29.6.1",
+    "jest": "29.6.2",
     "lerna": "7.1.4",
     "lint-staged": "^13.2.3",
     "make-dir": "^4.0.0",
@@ -144,5 +144,6 @@
     "pretty-format": "^29",
     "tsx": "^3.12.7",
     "typescript": "5.1.6"
-  }
+  },
+  "packageManager": "yarn@1.22.19"
 }

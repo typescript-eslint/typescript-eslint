@@ -2,6 +2,16 @@ import AxeBuilder from '@axe-core/playwright';
 import { expect, test } from '@playwright/test';
 
 test.describe('Website', () => {
+  test.beforeEach(async ({ context }) => {
+    // Sponsor logos are sometimes changed or removed between deploys
+    await context.route('https://images.opencollective.com/**/*.png', route =>
+      route.fulfill({
+        status: 200,
+        body: '',
+      }),
+    );
+  });
+
   test('Axe', async ({ page }) => {
     await page.goto('/');
     await new AxeBuilder({ page }).analyze();
@@ -21,7 +31,8 @@ test.describe('Website', () => {
       }
       errorMessages.push(`[${type}] ${text}`);
     });
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
+    await expect(page).toHaveTitle('typescript-eslint');
     expect(errorMessages).toStrictEqual([]);
   });
 });
