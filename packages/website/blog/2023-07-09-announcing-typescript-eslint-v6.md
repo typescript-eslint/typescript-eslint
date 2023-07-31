@@ -63,7 +63,7 @@ As a result, we've reworked the configurations provided by typescript-eslint int
 
 - Functional rule configurations, for best best practices and code correctness:
   - **`recommended`**: Recommended rules that you can drop in without additional configuration.
-  - **`recommended-type-checked`**: Additional recommended rules that require type information.
+  - **`recommended-type-checked`**: Additional recommended rules that require type information.
   - **`strict`**: Additional strict rules that can also catch bugs but are more opinionated than recommended rules _(without type information)_.
   - **`strict-type-checked`**: Additional strict rules that do require type information.
 - Stylistic rule configurations, for consistent and predictable syntax usage:
