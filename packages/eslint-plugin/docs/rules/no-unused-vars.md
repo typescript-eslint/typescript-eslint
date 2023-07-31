@@ -18,7 +18,7 @@ However:
 - These lint rules are more configurable than TypeScript's compiler options.
   - For example, the [`varsIgnorePattern` option](https://eslint.org/docs/latest/rules/no-unused-vars#varsignorepattern) can customize what names are always allowed to be exempted. TypeScript hardcodes its exemptions to names starting with `_`.
 - [ESLint can be configured](https://eslint.org/docs/latest/use/configure/rules) within lines, files, and folders. TypeScript compiler options are linked to their TSConfig file.
-- Many projects configure TypeScript's reported errors tend to block builds more aggressively than ESLint complaints. Blocking builds on unused variables can be inconvenient.
+- Many projects configure TypeScript's reported errors to block builds more aggressively than ESLint complaints. Blocking builds on unused variables can be inconvenient.
 
 We generally recommend using `@typescript-eslint/no-unused-vars` to flag unused locals and parameters instead of TypeScript.
 
