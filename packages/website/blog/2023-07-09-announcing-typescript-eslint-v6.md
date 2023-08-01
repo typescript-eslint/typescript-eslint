@@ -642,7 +642,7 @@ Developers must now import directly from the package names, e.g.:
 import { TSESLint } from '@typescript-eslint/utils';
 // The following would also work and be equivalent:
 // import * as TSESLint from '@typescript-eslint/utils/ts-eslint';
-// But explicit importing should be generally favored over start imports.
+// But explicit importing should be generally favored over star imports.
 
 // import { RuleModule } from '@typescript-eslint/utils/dist/ts-eslint';
 // -->
