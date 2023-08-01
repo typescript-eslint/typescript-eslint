@@ -192,7 +192,7 @@ class ClassVisitor extends Visitor {
     if (
       !withMethodDecorators &&
       methodNode.kind === 'constructor' &&
-      this.#classNode.decorators
+      this.#classNode.decorators.length
     ) {
       withMethodDecorators = true;
     }
