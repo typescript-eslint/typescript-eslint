@@ -51,6 +51,11 @@ function bar<T>(arg: string) {
 
 Currently in TypeScript, function calls have no influence on type narrowing.
 Even if a function has side effects that modify the condition, it isn't taken into account.
+
+Further reading:
+
+- [Trade-offs in Control Flow Analysis](https://github.com/microsoft/TypeScript/issues/9998)
+
 As a result, code like this violates the rule.
 
 ```ts
