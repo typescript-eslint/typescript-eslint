@@ -634,10 +634,16 @@ That presents a few issues for developers:
 - Consumers using deep import paths can be broken by internal refactors that rename files.
 
 As of [feat: add package.json exports for public packages](https://github.com/typescript-eslint/typescript-eslint/pull/6458), `@typescript-eslint/*` packages now use `exports` to prevent importing internal file paths.
-Developers must now mostly import directly from the package names, e.g.:
+Developers must now import directly from the package names, e.g.:
 
 ```ts
-import * as TSESLint from '@typescript-eslint/utils';
+// import * as TSESLint from '@typescript-eslint/utils/dist/ts-eslint';
+// -->
+import { TSESLint } from '@typescript-eslint/utils';
+
+// import { RuleModule } from '@typescript-eslint/utils/dist/ts-eslint';
+// -->
+import { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 ```
 
 See [RFC: Use package.json exports to "hide" the dist folder for packages and control our exported surface-area](https://github.com/typescript-eslint/typescript-eslint/discussions/6015) for more backing context.
