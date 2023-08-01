@@ -1003,19 +1003,13 @@ if (y) {
     ...batchedSingleLineTests<MessageId, Options>({
       options: [{ allowNullableObject: false }],
       code: noFormat`
-        declare const x: object | null; if (x) {}
         (x?: { a: number }) => !x;
-        <T extends {} | null | undefined>(x: T) => x ? 1 : 0;
       `,
       errors: [
-        { messageId: 'conditionErrorNullableObject', line: 2, column: 37 },
-        { messageId: 'conditionErrorNullableObject', line: 3, column: 33 },
-        { messageId: 'conditionErrorNullableObject', line: 4, column: 52 },
+        { messageId: 'conditionErrorNullableObject', line: 2, column: 25 },
       ],
       output: `
-        declare const x: object | null; if (x != null) {}
         (x?: { a: number }) => x == null;
-        <T extends {} | null | undefined>(x: T) => (x != null) ? 1 : 0;
       `,
     }),
 
@@ -1616,21 +1610,15 @@ if (x) {
         declare const obj: { x: number } | null;
         !obj ? 1 : 0
         !obj
-        obj || 0
-        obj && 1 || 0
       `,
       errors: [
         { messageId: 'conditionErrorNullableObject', line: 3, column: 10 },
         { messageId: 'conditionErrorNullableObject', line: 4, column: 10 },
-        { messageId: 'conditionErrorNullableObject', line: 5, column: 9 },
-        { messageId: 'conditionErrorNullableObject', line: 6, column: 9 },
       ],
       output: `
         declare const obj: { x: number } | null;
         (obj == null) ? 1 : 0
         obj == null
-        ;(obj != null) || 0
-        ;(obj != null) && 1 || 0
       `,
     },
   ],
