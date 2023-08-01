@@ -61,7 +61,7 @@ const modifyCondition = () => {
 };
 
 modifyCondition();
-[(1, 2, 3)].forEach(modifyCondition);
+[1, 2, 3].forEach(modifyCondition);
 
 // for TypeScript that's still false
 if (condition) {
