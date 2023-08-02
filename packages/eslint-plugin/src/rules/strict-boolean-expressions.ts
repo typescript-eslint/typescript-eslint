@@ -710,6 +710,12 @@ export default util.createRule<Options, MessageId>({
                 wrap: code => `${code} == null`,
               }),
             });
+          } else {
+            // if (nullableObject)
+            context.report({
+              node,
+              messageId: 'conditionErrorNullableObject',
+            });
           }
         }
         return;
