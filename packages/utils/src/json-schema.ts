@@ -25,7 +25,22 @@ export type JSONSchema4TypeName =
 /**
  * @see https://tools.ietf.org/html/draft-zyp-json-schema-04#section-3.5
  */
-export type JSONSchema4Type = boolean | number | string | null;
+export type JSONSchema4Type =
+  | boolean
+  | JSONSchema4Object
+  | JSONSchema4Array
+  | number
+  | string
+  | null;
+
+// Workaround for infinite type recursion
+export interface JSONSchema4Object {
+  [key: string]: JSONSchema4Type;
+}
+
+// Workaround for infinite type recursion
+// https://github.com/Microsoft/TypeScript/issues/3496#issuecomment-128553540
+export interface JSONSchema4Array extends Array<JSONSchema4Type> {}
 
 /**
  * Meta schema
