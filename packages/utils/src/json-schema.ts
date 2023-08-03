@@ -27,8 +27,8 @@ export type JSONSchema4TypeName =
  */
 export type JSONSchema4Type =
   | boolean
-  | JSONSchema4Object
   | JSONSchema4Array
+  | JSONSchema4Object
   | number
   | string
   | null;
@@ -66,7 +66,7 @@ export type JSONSchema4 =
   | JSONSchema4AnyOfSchema
   | JSONSchema4AnySchema
   | JSONSchema4ArraySchema
-  | JSONSchema4BoleanSchema
+  | JSONSchema4BooleanSchema
   | JSONSchema4MultiSchema
   | JSONSchema4NullSchema
   | JSONSchema4NumberSchema
@@ -210,7 +210,7 @@ export interface JSONSchema4MultiSchema
     Omit<JSONSchema4ArraySchema, 'enum' | 'type'>,
     Omit<JSONSchema4StringSchema, 'enum' | 'type'>,
     Omit<JSONSchema4NumberSchema, 'enum' | 'type'>,
-    Omit<JSONSchema4BoleanSchema, 'enum' | 'type'>,
+    Omit<JSONSchema4BooleanSchema, 'enum' | 'type'>,
     Omit<JSONSchema4NullSchema, 'enum' | 'type'>,
     Omit<JSONSchema4AnySchema, 'enum' | 'type'> {
   type: JSONSchema4TypeName[];
@@ -475,7 +475,7 @@ export interface JSONSchema4NumberSchema extends JSONSchema4Base {
 /**
  * @see https://json-schema.org/understanding-json-schema/reference/boolean.html
  */
-export interface JSONSchema4BoleanSchema extends JSONSchema4Base {
+export interface JSONSchema4BooleanSchema extends JSONSchema4Base {
   type: 'boolean';
 
   /**
