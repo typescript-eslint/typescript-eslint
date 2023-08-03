@@ -45,8 +45,8 @@ export class Test {
 ### ✅ Correct
 
 ```ts
-// Function is not exported
-function test() {
+// A function with no return value (void)
+export function test(): void {
   return;
 }
 
@@ -62,9 +62,9 @@ export var arrowFn = (): string => 'test';
 export var arrowFn = (arg: string): string => `test ${arg}`;
 export var arrowFn = (arg: unknown): string => `test ${arg}`;
 
-// Class is not exported
-class Test {
-  method() {
+// A class method with no return value (void)
+export class Test {
+  method(): void {
     return;
   }
 }
