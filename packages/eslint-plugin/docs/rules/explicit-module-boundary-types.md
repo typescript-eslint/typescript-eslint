@@ -12,6 +12,8 @@ It can also improve TypeScript type checking performance on larger codebases.
 
 ## Examples
 
+### 1. Exported members must have explicit signatures
+
 <!--tabs-->
 
 ### ❌ Incorrect
@@ -68,6 +70,42 @@ export class Test {
     return;
   }
 }
+```
+
+### 2. Non-exported members may or may not have explicit signatures
+
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+// Should indicate that no value is returned (void)
+export function test() {
+  return;
+}
+
+// All arguments should be typed
+export var arrowFn = (arg): string => `test ${arg}`;
+```
+
+### ✅ Correct
+
+```ts
+// Function is not exported
+function test() {
+  return;
+}
+
+// Function is not exported
+function test(): void {
+  return;
+}
+
+// arrowFn is not exported
+var arrowFn = (arg): string => `test ${arg}`;
+
+// arrowFn is not exported
+var arrowFn = (arg: string): string => `test ${arg}`;
 ```
 
 ## Options
