@@ -2818,6 +2818,8 @@ export class Converter {
       }
 
       case SyntaxKind.ModuleDeclaration: {
+        let isDeclare = hasModifier(SyntaxKind.DeclareKeyword, node);
+
         const result = this.createNode<TSESTree.TSModuleDeclaration>(node, {
           type: AST_NODE_TYPES.TSModuleDeclaration,
           ...((): TSESTree.OptionalRangeAndLoc<
@@ -2901,6 +2903,7 @@ export class Converter {
               node.body.name
             ) {
               node = node.body;
+              isDeclare ||= hasModifier(SyntaxKind.DeclareKeyword, node);
 
               const nextName = node.name as ts.Identifier;
 
@@ -2932,7 +2935,7 @@ export class Converter {
         });
 
         if (hasModifier(SyntaxKind.DeclareKeyword, node)) {
-          result.declare = true;
+          result.declare = isDeclare;
         }
 
         if (node.flags & ts.NodeFlags.GlobalAugmentation) {
