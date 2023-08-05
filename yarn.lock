@@ -7207,9 +7207,9 @@ eslint-utils@^3.0.0:
     eslint-visitor-keys "^2.0.0"
 
 eslint-visitor-keys@*, eslint-visitor-keys@^2.0.0, eslint-visitor-keys@^2.1.0, eslint-visitor-keys@^3.3.0, eslint-visitor-keys@^3.4.1:
-  version "3.4.1"
-  resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-3.4.1.tgz#c22c48f48942d08ca824cc526211ae400478a994"
-  integrity sha512-pZnmmLwYzf+kWaM/Qgrvpen51upAktaaiI01nsJD/Yr3lMOdNtq0cxkrrg16w64VtisN6okbs7Q8AfGqj4c9fA==
+  version "3.4.2"
+  resolved "https://registry.yarnpkg.com/eslint-visitor-keys/-/eslint-visitor-keys-3.4.2.tgz#8c2095440eca8c933bedcadf16fefa44dbe9ba5f"
+  integrity sha512-8drBzUEyZ2llkpCA67iYrgEssKDUu68V8ChqqOfFupIaG/LCVPUT+CoGJpT77zJprs4T/W7p07LP7zAIMuweVw==
 
 eslint@*, eslint@^8.44.0:
   version "8.45.0"
