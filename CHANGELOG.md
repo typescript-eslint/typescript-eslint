@@ -3,6 +3,21 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.2.1](https://github.com/typescript-eslint/typescript-eslint/compare/v6.2.0...v6.2.1) (2023-07-31)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [no-inferrable-types] apply also for parameter properties ([#7288](https://github.com/typescript-eslint/typescript-eslint/issues/7288)) ([67f93b1](https://github.com/typescript-eslint/typescript-eslint/commit/67f93b19f2e481a4e441635d72e81de9d5d7ad44))
+* **scope-manager:** correct decorators(.length) check in ClassVisitor for methods ([#7334](https://github.com/typescript-eslint/typescript-eslint/issues/7334)) ([abbb6c2](https://github.com/typescript-eslint/typescript-eslint/commit/abbb6c2c6d2bc1f8d4defd2060dbc473735b2cc7))
+* yarn version not specified in monorepo ([#7371](https://github.com/typescript-eslint/typescript-eslint/issues/7371)) ([18f8d74](https://github.com/typescript-eslint/typescript-eslint/commit/18f8d74cb9ba8b72fb55aa40872fe8bb18549f92))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [6.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.1.0...v6.2.0) (2023-07-24)
 
 
