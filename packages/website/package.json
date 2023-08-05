@@ -26,7 +26,7 @@
     "@mdx-js/react": "1.6.22",
     "@typescript-eslint/parser": "6.2.1",
     "@typescript-eslint/website-eslint": "6.2.1",
-    "clsx": "^1.2.1",
+    "clsx": "^2.0.0",
     "eslint": "*",
     "json-schema": "^0.4.0",
     "json5": "^2.2.3",
