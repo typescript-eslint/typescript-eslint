@@ -38,6 +38,7 @@
     "react-dom": "^18.2.0",
     "react-split-pane": "^0.1.92",
     "remark-docusaurus-tabs": "^0.2.0",
+    "semver": "^7.5.4",
     "ts-node": "*",
     "typescript": "*"
   },
