@@ -47,34 +47,6 @@ function bar<T>(arg: string) {
 ].filter(t => t); // number[] is always truthy
 ```
 
-:::note
-
-Currently in TypeScript, function calls have no influence on type narrowing.
-Even if a function has side effects that modify the condition, it isn't taken into account.
-
-Further reading:
-
-- [Trade-offs in Control Flow Analysis](https://github.com/microsoft/TypeScript/issues/9998)
-
-As a result, code like this violates the rule.
-
-```ts
-let condition = false;
-
-const modifyCondition = () => {
-  condition = true;
-};
-
-modifyCondition();
-[1, 2, 3].forEach(modifyCondition);
-
-// for TypeScript that's still false
-if (condition) {
-}
-```
-
-:::
-
 ### ✅ Correct
 
 ```ts
@@ -124,6 +96,11 @@ If for some reason you cannot turn on `strictNullChecks`, but still want to use 
 ## When Not To Use It
 
 The main downside to using this rule is the need for type information.
+
+This rule has a known edge case of triggering on conditions that were modified within function calls (as side effects).
+It is due to limitations of TypeScript's type narrowing.
+We recommend you use an [inline ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1).
+See [#9998](https://github.com/microsoft/TypeScript/issues/9998) for details.
 
 ## Related To
 
