@@ -165,6 +165,8 @@ const foo: string | undefined = 'bar';
 foo ?? 'a string';
 ```
 
+Also, if you would like to ignore all primitives types, you can set `ignorePrimitives: true`. It would be equivalent to `ignorePrimitives: { string: true, number: true, bigint: true, boolean: true }`.
+
 ## When Not To Use It
 
 If you are not using TypeScript 3.7 (or greater), then you will not be able to use this rule, as the operator is not supported.
