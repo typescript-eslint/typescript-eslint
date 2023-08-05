@@ -1,7 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import type { JSONSchema4 } from 'json-schema';
-import * as tsutils from 'tsutils';
+import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
+import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
 import type {
@@ -69,7 +69,6 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Require destructuring from arrays and/or objects',
-      recommended: false,
       extendsBaseRule: true,
       requiresTypeChecking: true,
     },
@@ -91,11 +90,11 @@ export default createRule<Options, MessageIds>({
     },
     {},
   ],
-  create(context, [enabledTypes, options1]) {
+  create(context, [enabledTypes, options1 = {}]) {
     const {
       enforceForRenamedProperties = false,
       enforceForDeclarationWithTypeAnnotation = false,
-    } = options1!;
+    } = options1;
     return {
       VariableDeclarator(node): void {
         performCheck(node.id, node.init, node);
@@ -169,7 +168,7 @@ export default createRule<Options, MessageIds>({
         return enabledTypes[destructuringType];
       }
       return enabledTypes[nodeType as keyof typeof enabledTypes][
-        destructuringType as keyof typeof enabledTypes[keyof typeof enabledTypes]
+        destructuringType as keyof (typeof enabledTypes)[keyof typeof enabledTypes]
       ];
     }
   },
