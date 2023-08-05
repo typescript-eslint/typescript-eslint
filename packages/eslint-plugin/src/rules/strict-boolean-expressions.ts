@@ -715,6 +715,16 @@ export default util.createRule<Options, MessageId>({
             context.report({
               node,
               messageId: 'conditionErrorNullableObject',
+              suggest: [
+                {
+                  messageId: 'conditionErrorNullableObject',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `${code} != null`,
+                  }),
+                },
+              ],
             });
           }
         }
