@@ -536,6 +536,18 @@ ruleTester.run('consistent-type-imports', rule, {
       parserOptions: withMetaConfigParserOptions,
     },
 
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7327
+    {
+      code: `
+        import type { ClassA } from './classA';
+
+        export class ClassB {
+          public constructor(node: ClassA) {}
+        }
+      `,
+      parserOptions: withMetaConfigParserOptions,
+    },
+
     // https://github.com/typescript-eslint/typescript-eslint/issues/2989
     `
 import type * as constants from './constants';
