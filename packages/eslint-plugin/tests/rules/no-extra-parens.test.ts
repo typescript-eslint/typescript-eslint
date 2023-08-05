@@ -515,6 +515,26 @@ f<(number | string)[]>(['a', 1])
         },
       },
     },
+    {
+      code: `
+f<(number)>(1)
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+f<(number) | string>(1)
+      `,
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
   ],
 
   invalid: [
@@ -605,6 +625,16 @@ f<(number | string)[]>(['a', 1])
         {
           messageId: 'unexpected',
           column: 8,
+        },
+      ],
+    },
+    {
+      code: 'a<(A) | number>((1));',
+      output: 'a<(A) | number>(1);',
+      errors: [
+        {
+          messageId: 'unexpected',
+          column: 17,
         },
       ],
     },

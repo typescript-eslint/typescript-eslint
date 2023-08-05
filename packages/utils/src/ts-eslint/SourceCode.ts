@@ -384,9 +384,7 @@ namespace SourceCode {
     visitorKeys: VisitorKeys | null;
   }
 
-  export interface VisitorKeys {
-    [nodeType: string]: string[];
-  }
+  export type VisitorKeys = Record<string, string[]>;
 
   export type FilterPredicate = (token: TSESTree.Token) => boolean;
   export type GetFilterPredicate<TFilter, TDefault> =
