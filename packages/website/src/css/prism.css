@@ -2,7 +2,7 @@
   --token-color: #393a34;
   --token-background: #f6f8fa;
   --token-border: var(--ifm-color-emphasis-300);
-  --token-color-comment: #998;
+  --token-color-comment: #008000;
   --token-color-doctype: #008000;
   --token-color-string: #a31515;
   --token-color-operator: #393a34;
@@ -20,7 +20,7 @@
   --token-color-boolean: #00f;
   --token-color-inserted: #247e81;
   --token-color-deleted: #d73a49;
-  --token-color-unchanged: #a7a9a8;
+  --token-color-unchanged: #727272;
   --token-color-highlight: rgb(193 222 241 / 20%);
 }
 

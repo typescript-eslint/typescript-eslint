@@ -10,12 +10,14 @@ export type Options = [
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
     ignoreConditionalTests?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
-    ignorePrimitives?: {
-      bigint?: boolean;
-      boolean?: boolean;
-      number?: boolean;
-      string?: boolean;
-    };
+    ignorePrimitives?:
+      | {
+          bigint?: boolean;
+          boolean?: boolean;
+          number?: boolean;
+          string?: boolean;
+        }
+      | true;
     ignoreTernaryTests?: boolean;
   },
 ];
@@ -60,13 +62,21 @@ export default util.createRule<Options, MessageIds>({
             type: 'boolean',
           },
           ignorePrimitives: {
-            type: 'object',
-            properties: {
-              bigint: { type: 'boolean' },
-              boolean: { type: 'boolean' },
-              number: { type: 'boolean' },
-              string: { type: 'boolean' },
-            },
+            oneOf: [
+              {
+                type: 'object',
+                properties: {
+                  bigint: { type: 'boolean' },
+                  boolean: { type: 'boolean' },
+                  number: { type: 'boolean' },
+                  string: { type: 'boolean' },
+                },
+              },
+              {
+                type: 'boolean',
+                enum: [true],
+              },
+            ],
           },
           ignoreTernaryTests: {
             type: 'boolean',
@@ -302,12 +312,16 @@ export default util.createRule<Options, MessageIds>({
         }
 
         const ignorableFlags = [
-          ignorePrimitives!.bigint && ts.TypeFlags.BigInt,
-          ignorePrimitives!.boolean && ts.TypeFlags.BooleanLiteral,
-          ignorePrimitives!.number && ts.TypeFlags.Number,
-          ignorePrimitives!.string && ts.TypeFlags.String,
+          (ignorePrimitives === true || ignorePrimitives!.bigint) &&
+            ts.TypeFlags.BigInt,
+          (ignorePrimitives === true || ignorePrimitives!.boolean) &&
+            ts.TypeFlags.BooleanLiteral,
+          (ignorePrimitives === true || ignorePrimitives!.number) &&
+            ts.TypeFlags.Number,
+          (ignorePrimitives === true || ignorePrimitives!.string) &&
+            ts.TypeFlags.String,
         ]
-          .filter((flag): flag is number => flag !== undefined)
+          .filter((flag): flag is number => typeof flag === 'number')
           .reduce((previous, flag) => previous | flag, 0);
         if (
           type.flags !== ts.TypeFlags.Null &&
