@@ -8,10 +8,10 @@ declare module 'eslint/lib/rules/arrow-parens' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    | 'unexpectedParens'
     | 'expectedParens'
-    | 'unexpectedParensInline'
-    | 'expectedParensBlock',
+    | 'expectedParensBlock'
+    | 'unexpectedParens'
+    | 'unexpectedParensInline',
     [
       'always' | 'as-needed',
       {
@@ -35,7 +35,7 @@ declare module 'eslint/lib/rules/camelcase' {
         allow?: string[];
         ignoreDestructuring?: boolean;
         properties?: 'always' | 'never';
-        genericType?: 'never' | 'always';
+        genericType?: 'always' | 'never';
       },
     ],
     {
@@ -52,7 +52,7 @@ declare module 'eslint/lib/rules/indent' {
   const rule: TSESLint.RuleModule<
     'wrongIndentation',
     [
-      ('tab' | number)?,
+      (number | 'tab')?,
       {
         SwitchCase?: number;
         VariableDeclarator?:
@@ -107,9 +107,9 @@ declare module 'eslint/lib/rules/indent' {
       'DoWhileStatement, WhileStatement, ForInStatement, ForOfStatement'(
         node:
           | TSESTree.DoWhileStatement
-          | TSESTree.WhileStatement
           | TSESTree.ForInStatement
-          | TSESTree.ForOfStatement,
+          | TSESTree.ForOfStatement
+          | TSESTree.WhileStatement,
       ): void;
       ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void;
       ForStatement(node: TSESTree.ForStatement): void;
@@ -120,8 +120,8 @@ declare module 'eslint/lib/rules/indent' {
       ImportDeclaration(node: TSESTree.ImportDeclaration): void;
       'MemberExpression, JSXMemberExpression, MetaProperty'(
         node:
-          | TSESTree.MemberExpression
           | TSESTree.JSXMemberExpression
+          | TSESTree.MemberExpression
           | TSESTree.MetaProperty,
       ): void;
       NewExpression(node: TSESTree.NewExpression): void;
@@ -143,39 +143,39 @@ declare module 'eslint/lib/rules/indent' {
 
 declare module 'eslint/lib/rules/key-spacing' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-  import type { RuleFunction } from '@typescript-eslint/utils/dist/ts-eslint';
+  import type { RuleFunction } from '@typescript-eslint/utils/ts-eslint';
 
   type Options = [
     {
       beforeColon?: boolean;
       afterColon?: boolean;
-      mode?: 'strict' | 'minimum';
+      mode?: 'minimum' | 'strict';
       align?:
-        | 'value'
         | 'colon'
+        | 'value'
         | {
-            on?: 'value' | 'colon';
+            on?: 'colon' | 'value';
             beforeColon?: boolean;
             afterColon?: boolean;
-            mode?: 'strict' | 'minimum';
+            mode?: 'minimum' | 'strict';
           };
       singleLine?: {
         beforeColon?: boolean;
         afterColon?: boolean;
-        mode?: 'strict' | 'minimum';
+        mode?: 'minimum' | 'strict';
       };
       multiLine?: {
         beforeColon?: boolean;
         afterColon?: boolean;
-        mode?: 'strict' | 'minimum';
+        mode?: 'minimum' | 'strict';
         align?:
-          | 'value'
           | 'colon'
+          | 'value'
           | {
-              on?: 'value' | 'colon';
+              on?: 'colon' | 'value';
               beforeColon?: boolean;
               afterColon?: boolean;
-              mode?: 'strict' | 'minimum';
+              mode?: 'minimum' | 'strict';
             };
       };
     },
@@ -195,7 +195,7 @@ declare module 'eslint/lib/rules/key-spacing' {
 
 declare module 'eslint/lib/rules/keyword-spacing' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-  import type { RuleFunction } from '@typescript-eslint/utils/dist/ts-eslint';
+  import type { RuleFunction } from '@typescript-eslint/utils/ts-eslint';
 
   type Options = [
     {
@@ -211,10 +211,10 @@ declare module 'eslint/lib/rules/keyword-spacing' {
     },
   ];
   type MessageIds =
-    | 'expectedBefore'
     | 'expectedAfter'
-    | 'unexpectedBefore'
-    | 'unexpectedAfter';
+    | 'expectedBefore'
+    | 'unexpectedAfter'
+    | 'unexpectedBefore';
 
   const rule: TSESLint.RuleModule<
     MessageIds,
@@ -329,10 +329,10 @@ declare module 'eslint/lib/rules/no-implicit-globals' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    | 'globalNonLexicalBinding'
-    | 'globalLexicalBinding'
-    | 'globalVariableLeak'
     | 'assignmentToReadonlyGlobal'
+    | 'globalLexicalBinding'
+    | 'globalNonLexicalBinding'
+    | 'globalVariableLeak'
     | 'redeclarationOfReadonlyGlobal',
     [],
     {
@@ -402,7 +402,7 @@ declare module 'eslint/lib/rules/no-restricted-globals' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    'defaultMessage' | 'customMessage',
+    'customMessage' | 'defaultMessage',
     (
       | string
       | {
@@ -465,7 +465,7 @@ declare module 'eslint/lib/rules/no-unused-vars' {
       | {
           vars?: 'all' | 'local';
           varsIgnorePattern?: string;
-          args?: 'all' | 'after-used' | 'none';
+          args?: 'after-used' | 'all' | 'none';
           ignoreRestSiblings?: boolean;
           argsIgnorePattern?: string;
           caughtErrors?: 'all' | 'none';
@@ -525,15 +525,15 @@ declare module 'eslint/lib/rules/strict' {
   const rule: TSESLint.RuleModule<
     | 'function'
     | 'global'
+    | 'implied'
+    | 'module'
     | 'multiple'
     | 'never'
-    | 'unnecessary'
-    | 'module'
-    | 'implied'
-    | 'unnecessaryInClasses'
     | 'nonSimpleParameterList'
+    | 'unnecessary'
+    | 'unnecessaryInClasses'
     | 'wrap',
-    ['never' | 'global' | 'function' | 'safe'],
+    ['function' | 'global' | 'never' | 'safe'],
     {
       ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
     }
@@ -565,7 +565,7 @@ declare module 'eslint/lib/rules/no-extra-parens' {
         conditionalAssign?: boolean;
         returnAssign?: boolean;
         nestedBinaryExpressions?: boolean;
-        ignoreJSX?: 'none' | 'all' | 'multi-line' | 'single-line';
+        ignoreJSX?: 'all' | 'multi-line' | 'none' | 'single-line';
         enforceForArrowConditionals?: boolean;
       }?,
     ],
@@ -615,7 +615,7 @@ declare module 'eslint/lib/rules/semi' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    'missingSemi' | 'extraSemi',
+    'extraSemi' | 'missingSemi',
     [
       'always' | 'never',
       {
@@ -647,7 +647,7 @@ declare module 'eslint/lib/rules/quotes' {
   const rule: TSESLint.RuleModule<
     'wrongQuotes',
     [
-      'single' | 'double' | 'backtick',
+      'backtick' | 'double' | 'single',
       {
         allowTemplateLiterals?: boolean;
         avoidEscape?: boolean;
@@ -665,7 +665,7 @@ declare module 'eslint/lib/rules/block-spacing' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    'missing' | 'extra',
+    'extra' | 'missing',
     ['always' | 'never'],
     {
       BlockStatement(node: TSESTree.BlockStatement): void;
@@ -680,14 +680,14 @@ declare module 'eslint/lib/rules/brace-style' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    | 'nextLineOpen'
-    | 'sameLineOpen'
     | 'blockSameLine'
     | 'nextLineClose'
-    | 'singleLineClose'
-    | 'sameLineClose',
+    | 'nextLineOpen'
+    | 'sameLineClose'
+    | 'sameLineOpen'
+    | 'singleLineClose',
     [
-      '1tbs' | 'stroustrup' | 'allman',
+      '1tbs' | 'allman' | 'stroustrup',
       {
         allowSingleLine?: boolean;
       }?,
@@ -839,7 +839,7 @@ declare module 'eslint/lib/rules/dot-notation' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    'useDot' | 'useBrackets',
+    'useBrackets' | 'useDot',
     [
       {
         allowKeywords?: boolean;
@@ -879,50 +879,24 @@ declare module 'eslint/lib/rules/comma-dangle' {
     | 'only-multiline';
   type Selectors =
     | 'arrays'
-    | 'objects'
-    | 'imports'
+    | 'enums'
     | 'exports'
     | 'functions'
-    | 'enums'
     | 'generics'
+    | 'imports'
+    | 'objects'
     | 'tuples';
   type ObjectOptions = Partial<Record<Selectors, StringOptions | 'ignore'>>;
 
   const rule: TSESLint.RuleModule<
-    'unexpected' | 'missing',
-    [StringOptions | ObjectOptions],
+    'missing' | 'unexpected',
+    [ObjectOptions | StringOptions],
     {
       TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void;
       TSTypeParameterDeclaration(
         node: TSESTree.TSTypeParameterDeclaration,
       ): void;
       TSTupleType(node: TSESTree.TSTupleType): void;
-    }
-  >;
-  export = rule;
-}
-
-declare module 'eslint/lib/rules/no-duplicate-imports' {
-  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
-
-  const rule: TSESLint.RuleModule<
-    | 'import'
-    | 'importAs'
-    | 'export'
-    | 'exportAs'
-    | 'importType'
-    | 'importTypeAs'
-    | 'exportType'
-    | 'exportTypeAs',
-    [
-      {
-        includeExports?: boolean;
-      },
-    ],
-    {
-      ImportDeclaration(node: TSESTree.ImportDeclaration): void;
-      ExportNamedDeclaration?(node: TSESTree.ExportNamedDeclaration): void;
-      ExportAllDeclaration?(node: TSESTree.ExportAllDeclaration): void;
     }
   >;
   export = rule;
@@ -980,7 +954,7 @@ declare module 'eslint/lib/rules/prefer-const' {
     'useConst',
     [
       {
-        destructuring?: 'any' | 'all';
+        destructuring?: 'all' | 'any';
         ignoreReadBeforeAssign?: boolean;
       },
     ],
@@ -1023,10 +997,10 @@ declare module 'eslint/lib/rules/object-curly-spacing' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
-    | 'requireSpaceBefore'
     | 'requireSpaceAfter'
-    | 'unexpectedSpaceBefore'
-    | 'unexpectedSpaceAfter',
+    | 'requireSpaceBefore'
+    | 'unexpectedSpaceAfter'
+    | 'unexpectedSpaceBefore',
     [
       'always' | 'never',
       {
@@ -1059,14 +1033,14 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
         }
     )[];
     export type ArrayOfStringOrObjectPatterns =
-      | string[]
       | {
           group: string[];
           message?: string;
           caseSensitive?: boolean;
           // extended
           allowTypeImports?: boolean;
-        }[];
+        }[]
+      | string[];
   }
 
   interface ObjectOfPathsAndPatterns {
@@ -1075,14 +1049,14 @@ declare module 'eslint/lib/rules/no-restricted-imports' {
   }
 
   const rule: TSESLint.RuleModule<
-    | 'path'
-    | 'pathWithCustomMessage'
-    | 'patterns'
-    | 'patternWithCustomMessage'
     | 'everything'
     | 'everythingWithCustomMessage'
     | 'importName'
-    | 'importNameWithCustomMessage',
+    | 'importNameWithCustomMessage'
+    | 'path'
+    | 'pathWithCustomMessage'
+    | 'patterns'
+    | 'patternWithCustomMessage',
     rule.ArrayOfStringOrObject | [ObjectOfPathsAndPatterns],
     {
       ImportDeclaration(node: TSESTree.ImportDeclaration): void;

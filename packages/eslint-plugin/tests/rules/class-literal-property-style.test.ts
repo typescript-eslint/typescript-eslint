@@ -1,5 +1,6 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/class-literal-property-style';
-import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -187,16 +188,21 @@ class Mx {
   }
 }
       `,
-      output: `
-class Mx {
-  readonly p1 = 'hello world';
-}
-      `,
       errors: [
         {
           messageId: 'preferFieldStyle',
           column: 7,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'preferFieldStyleSuggestion',
+              output: `
+class Mx {
+  readonly p1 = 'hello world';
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -208,16 +214,21 @@ class Mx {
   }
 }
       `,
-      output: `
-class Mx {
-  readonly p1 = \`hello world\`;
-}
-      `,
       errors: [
         {
           messageId: 'preferFieldStyle',
           column: 7,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'preferFieldStyleSuggestion',
+              output: `
+class Mx {
+  readonly p1 = \`hello world\`;
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -229,16 +240,21 @@ class Mx {
   }
 }
       `,
-      output: `
-class Mx {
-  static readonly p1 = 'hello world';
-}
-      `,
       errors: [
         {
           messageId: 'preferFieldStyle',
           column: 14,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'preferFieldStyleSuggestion',
+              output: `
+class Mx {
+  static readonly p1 = 'hello world';
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -250,16 +266,21 @@ class Mx {
   }
 }
       `,
-      output: `
-class Mx {
-  public static readonly foo = 1;
-}
-      `,
       errors: [
         {
           messageId: 'preferFieldStyle',
           column: 21,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'preferFieldStyleSuggestion',
+              output: `
+class Mx {
+  public static readonly foo = 1;
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -271,16 +292,21 @@ class Mx {
   }
 }
       `,
-      output: `
-class Mx {
-  public readonly [myValue] = 'a literal value';
-}
-      `,
       errors: [
         {
           messageId: 'preferFieldStyle',
           column: 15,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'preferFieldStyleSuggestion',
+              output: `
+class Mx {
+  public readonly [myValue] = 'a literal value';
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -292,16 +318,21 @@ class Mx {
   }
 }
       `,
-      output: `
-class Mx {
-  public readonly [myValue] = 12345n;
-}
-      `,
       errors: [
         {
           messageId: 'preferFieldStyle',
           column: 15,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'preferFieldStyleSuggestion',
+              output: `
+class Mx {
+  public readonly [myValue] = 12345n;
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -311,16 +342,21 @@ class Mx {
   public readonly [myValue] = 'a literal value';
 }
       `,
-      output: `
-class Mx {
-  public get [myValue]() { return 'a literal value'; }
-}
-      `,
       errors: [
         {
           messageId: 'preferGetterStyle',
           column: 20,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'preferGetterStyleSuggestion',
+              output: `
+class Mx {
+  public get [myValue]() { return 'a literal value'; }
+}
+      `,
+            },
+          ],
         },
       ],
       options: ['getters'],
@@ -331,16 +367,21 @@ class Mx {
   readonly p1 = 'hello world';
 }
       `,
-      output: `
-class Mx {
-  get p1() { return 'hello world'; }
-}
-      `,
       errors: [
         {
           messageId: 'preferGetterStyle',
           column: 12,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'preferGetterStyleSuggestion',
+              output: `
+class Mx {
+  get p1() { return 'hello world'; }
+}
+      `,
+            },
+          ],
         },
       ],
       options: ['getters'],
@@ -351,16 +392,21 @@ class Mx {
   readonly p1 = \`hello world\`;
 }
       `,
-      output: `
-class Mx {
-  get p1() { return \`hello world\`; }
-}
-      `,
       errors: [
         {
           messageId: 'preferGetterStyle',
           column: 12,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'preferGetterStyleSuggestion',
+              output: `
+class Mx {
+  get p1() { return \`hello world\`; }
+}
+      `,
+            },
+          ],
         },
       ],
       options: ['getters'],
@@ -371,16 +417,21 @@ class Mx {
   static readonly p1 = 'hello world';
 }
       `,
-      output: `
-class Mx {
-  static get p1() { return 'hello world'; }
-}
-      `,
       errors: [
         {
           messageId: 'preferGetterStyle',
           column: 19,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'preferGetterStyleSuggestion',
+              output: `
+class Mx {
+  static get p1() { return 'hello world'; }
+}
+      `,
+            },
+          ],
         },
       ],
       options: ['getters'],
@@ -393,16 +444,21 @@ class Mx {
   }
 }
       `,
-      output: `
-class Mx {
-  protected readonly p1 = 'hello world';
-}
-      `,
       errors: [
         {
           messageId: 'preferFieldStyle',
           column: 17,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'preferFieldStyleSuggestion',
+              output: `
+class Mx {
+  protected readonly p1 = 'hello world';
+}
+      `,
+            },
+          ],
         },
       ],
       options: ['fields'],
@@ -413,16 +469,21 @@ class Mx {
   protected readonly p1 = 'hello world';
 }
       `,
-      output: `
-class Mx {
-  protected get p1() { return 'hello world'; }
-}
-      `,
       errors: [
         {
           messageId: 'preferGetterStyle',
           column: 22,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'preferGetterStyleSuggestion',
+              output: `
+class Mx {
+  protected get p1() { return 'hello world'; }
+}
+      `,
+            },
+          ],
         },
       ],
       options: ['getters'],
@@ -435,16 +496,21 @@ class Mx {
   }
 }
       `,
-      output: `
-class Mx {
-  public static readonly p1 = 'hello world';
-}
-      `,
       errors: [
         {
           messageId: 'preferFieldStyle',
           column: 21,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'preferFieldStyleSuggestion',
+              output: `
+class Mx {
+  public static readonly p1 = 'hello world';
+}
+      `,
+            },
+          ],
         },
       ],
     },
@@ -454,16 +520,21 @@ class Mx {
   public static readonly p1 = 'hello world';
 }
       `,
-      output: `
-class Mx {
-  public static get p1() { return 'hello world'; }
-}
-      `,
       errors: [
         {
           messageId: 'preferGetterStyle',
           column: 26,
           line: 3,
+          suggestions: [
+            {
+              messageId: 'preferGetterStyleSuggestion',
+              output: `
+class Mx {
+  public static get p1() { return 'hello world'; }
+}
+      `,
+            },
+          ],
         },
       ],
       options: ['getters'],
@@ -483,7 +554,15 @@ class Mx {
   }
 }
       `,
-      output: `
+      errors: [
+        {
+          messageId: 'preferFieldStyle',
+          column: 14,
+          line: 3,
+          suggestions: [
+            {
+              messageId: 'preferFieldStyleSuggestion',
+              output: `
 class Mx {
   public readonly myValue = gql\`
       {
@@ -495,11 +574,8 @@ class Mx {
     \`;
 }
       `,
-      errors: [
-        {
-          messageId: 'preferFieldStyle',
-          column: 14,
-          line: 3,
+            },
+          ],
         },
       ],
     },
@@ -516,7 +592,15 @@ class Mx {
   \`;
 }
       `,
-      output: `
+      errors: [
+        {
+          messageId: 'preferGetterStyle',
+          column: 19,
+          line: 3,
+          suggestions: [
+            {
+              messageId: 'preferGetterStyleSuggestion',
+              output: `
 class Mx {
   public get myValue() { return gql\`
     {
@@ -528,11 +612,8 @@ class Mx {
   \`; }
 }
       `,
-      errors: [
-        {
-          messageId: 'preferGetterStyle',
-          column: 19,
-          line: 3,
+            },
+          ],
         },
       ],
       options: ['getters'],

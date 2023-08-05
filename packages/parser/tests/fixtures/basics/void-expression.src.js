@@ -1,2 +1,2 @@
 void 4;
-void(3);
+void 3;

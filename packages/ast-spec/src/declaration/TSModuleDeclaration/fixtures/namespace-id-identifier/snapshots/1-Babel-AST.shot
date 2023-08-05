@@ -1,0 +1,45 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSModuleDeclaration namespace-id-identifier Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: Array [
+    TSModuleDeclaration {
+      type: "TSModuleDeclaration",
+      body: TSModuleBlock {
+        type: "TSModuleBlock",
+        body: Array [],
+
+        range: [12, 14],
+        loc: {
+          start: { column: 12, line: 1 },
+          end: { column: 14, line: 1 },
+        },
+      },
+      id: Identifier {
+        type: "Identifier",
+        name: "F",
+
+        range: [10, 11],
+        loc: {
+          start: { column: 10, line: 1 },
+          end: { column: 11, line: 1 },
+        },
+      },
+
+      range: [0, 14],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 14, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 15],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

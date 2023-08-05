@@ -21,7 +21,7 @@ TS's AST is optimized for its use case of parsing incomplete code and typechecki
 ESTree is unoptimized and intended for "general purpose" use-cases of traversing the AST.
 
 :::tip
-You can select `@typescript-eslint/parser` on the [typescript-eslint playground](/play#showAST=es)'s left sidebar under _Options_ > _AST Explorer_ by selecting _ESTree_.
+You can select `@typescript-eslint/parser` on the [typescript-eslint playground](/play#showAST=es)'s right sidebar by selecting _ESTree_.
 :::
 
 ## Configuration
@@ -43,7 +43,6 @@ interface ParserOptions {
   jsxFragmentName?: string | null;
   jsxPragma?: string | null;
   lib?: string[];
-  moduleResolver?: string;
   program?: import('typescript').Program;
   project?: string | string[] | true;
   projectFolderIgnoreList?: string[];
@@ -150,31 +149,12 @@ Specifies the TypeScript `lib`s that are available. This is used by the scope an
 
 If you provide `parserOptions.project`, you do not need to set this, as it will automatically detected from the compiler.
 
-### `moduleResolver`
-
-> Default `undefined`.
-
-This option allows you to provide a custom module resolution. The value should point to a JS file that default exports (`export default`, or `module.exports =`, or `export =`) a file with the following interface:
-
-```ts
-interface ModuleResolver {
-  version: 1;
-  resolveModuleNames(
-    moduleNames: string[],
-    containingFile: string,
-    reusedNames: string[] | undefined,
-    redirectedReference: ts.ResolvedProjectReference | undefined,
-    options: ts.CompilerOptions,
-  ): (ts.ResolvedModule | undefined)[];
-}
-```
-
 ### `program`
 
 > Default `undefined`.
 
 This option allows you to programmatically provide an instance of a TypeScript Program object that will provide type information to rules.
-This will override any programs that would have been computed from `parserOptions.project` or `parserOptions.createDefaultProgram`.
+This will override any programs that would have been computed from `parserOptions.project`.
 All linted files must be part of the provided program(s).
 
 [Refer to the TypeScript Wiki for an example on how to write the `resolveModuleNames` function](https://github.com/Microsoft/TypeScript/wiki/Using-the-Compiler-API#customizing-module-resolution).
@@ -211,7 +191,7 @@ This option allows you to provide a path to your project's `tsconfig.json`. **Th
 
 - TypeScript will ignore files with duplicate filenames in the same folder (for example, `src/file.ts` and `src/file.js`). TypeScript purposely ignore all but one of the files, only keeping the one file with the highest priority extension (the extension priority order (from highest to lowest) is `.ts`, `.tsx`, `.d.ts`, `.js`, `.jsx`). For more info see #955.
 
-- Note that if this setting is specified and `createDefaultProgram` is not, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files. If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
+- Note that if this setting is specified, you must only lint files that are included in the projects as defined by the provided `tsconfig.json` files. If your existing configuration does not include all of the files you would like to lint, you can create a separate `tsconfig.eslint.json` as follows:
 
   ```jsonc
   {
@@ -251,7 +231,50 @@ Doing so ensures running ESLint from a directory other than the root will still 
 
 > Default `true`.
 
-This option allows you to toggle the warning that the parser will give you if you use a version of TypeScript which is not explicitly supported
+This option allows you to toggle the warning that the parser will give you if you use a version of TypeScript which is not explicitly supported. The warning message would look like this:
+
+```plaintext
+=============
+
+WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.
+
+You may find that it works just fine, or you may not.
+
+SUPPORTED TYPESCRIPT VERSIONS: >=3.3.1 <5.1.0
+
+YOUR TYPESCRIPT VERSION: 5.1.3
+
+Please only submit bug reports when using the officially supported version.
+
+=============
+```
+
+### `EXPERIMENTAL_useProjectService`
+
+An experimental alternative to `parserOptions.project`.
+This directs the parser to use a more seamless TypeScript API to generate type information for rules.
+It will automatically detect the TSConfig for each file (like `project: true`), and will also allow type information to be computed for JavaScript files without the `allowJs` compiler option (unlike `project: true`).
+
+```js
+module.exports = {
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    EXPERIMENTAL_useProjectService: true,
+  },
+};
+```
+
+This option should bring two main benefits:
+
+- Simpler configurations: most projects shouldn't need to explicitly configure `project` paths or create `tsconfig.eslint.json`s
+- Improved performance: this API is optimized on the TypeScript side for speed
+  - Initial versions of this option demonstrated performance changes in subsets of the typescript-eslint monorepo ranging from 11% slower to 70% faster
+
+We're hopeful this option will eventually become the standard way to enable typed linting.
+It switches the parser from manually creating TypeScript programs to instead calling the same "project services" API used by editors such as VS Code.
+However, because it's so new and untested, we're keeping it under the `EXPERIMENTAL_` prefix for at least all of the `6.X` versions.
+
+See [feat(typescript-estree): add EXPERIMENTAL_useProjectService option to use TypeScript project service](https://github.com/typescript-eslint/typescript-eslint/pull/6754) for more information.
 
 ## Utilities
 

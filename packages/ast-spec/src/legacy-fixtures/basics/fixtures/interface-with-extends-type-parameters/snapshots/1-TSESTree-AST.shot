@@ -16,12 +16,15 @@ Program {
           end: { column: 34, line: 3 },
         },
       },
+      declare: false,
       extends: [
         TSInterfaceHeritage {
           type: "TSInterfaceHeritage",
           expression: Identifier {
             type: "Identifier",
+            decorators: [],
             name: "Bar",
+            optional: false,
 
             range: [98, 101],
             loc: {
@@ -29,14 +32,16 @@ Program {
               end: { column: 28, line: 3 },
             },
           },
-          typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
             params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "J",
+                  optional: false,
 
                   range: [102, 103],
                   loc: {
@@ -69,7 +74,9 @@ Program {
       ],
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Foo",
+        optional: false,
 
         range: [83, 86],
         loc: {
@@ -86,7 +93,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [87, 88],
               loc: {

@@ -26,6 +26,7 @@
       "inputs": [
         "default",
         "{workspaceRoot}/.eslintrc.js",
+        "{workspaceRoot}/yarn.lock",
         "{workspaceRoot}/.eslintignore"
       ]
     }
@@ -42,6 +43,6 @@
       }
     ],
     "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"],
-    "production": ["default"]
+    "production": ["default", "!{projectRoot}/src/test-setup.[jt]s"]
   }
 }

@@ -4,7 +4,9 @@ exports[`typescript types template-literal-type-4.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 25,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "EnthusiasticGreeting",
+        "optional": false,
         "range": Array [
           5,
           25,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -183,6 +187,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 58,
@@ -194,11 +199,13 @@ Object {
                 },
               },
               "name": "Uppercase",
+              "optional": false,
               "range": Array [
                 49,
                 58,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": Object {
               "loc": Object {
@@ -229,6 +236,7 @@ Object {
                   ],
                   "type": "TSTypeReference",
                   "typeName": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 60,
@@ -240,11 +248,13 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       59,
                       60,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "typeParameters": undefined,
                 },
@@ -273,6 +283,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 76,
@@ -284,11 +295,13 @@ Object {
                 },
               },
               "name": "Lowercase",
+              "optional": false,
               "range": Array [
                 67,
                 76,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": Object {
               "loc": Object {
@@ -319,6 +332,7 @@ Object {
                   ],
                   "type": "TSTypeReference",
                   "typeName": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 78,
@@ -330,11 +344,13 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       77,
                       78,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "typeParameters": undefined,
                 },
@@ -363,6 +379,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 95,
@@ -374,11 +391,13 @@ Object {
                 },
               },
               "name": "Capitalize",
+              "optional": false,
               "range": Array [
                 85,
                 95,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": Object {
               "loc": Object {
@@ -409,6 +428,7 @@ Object {
                   ],
                   "type": "TSTypeReference",
                   "typeName": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 97,
@@ -420,11 +440,13 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       96,
                       97,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "typeParameters": undefined,
                 },
@@ -453,6 +475,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 116,
@@ -464,11 +487,13 @@ Object {
                 },
               },
               "name": "Uncapitalize",
+              "optional": false,
               "range": Array [
                 104,
                 116,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": Object {
               "loc": Object {
@@ -499,6 +524,7 @@ Object {
                   ],
                   "type": "TSTypeReference",
                   "typeName": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 118,
@@ -510,11 +536,13 @@ Object {
                       },
                     },
                     "name": "T",
+                    "optional": false,
                     "range": Array [
                       117,
                       118,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "typeParameters": undefined,
                 },
@@ -571,6 +599,7 @@ Object {
               },
             },
             "name": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 27,
@@ -582,11 +611,13 @@ Object {
                 },
               },
               "name": "T",
+              "optional": false,
               "range": Array [
                 26,
                 27,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "out": false,
             "range": Array [
@@ -604,7 +635,9 @@ Object {
       },
     },
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 10,
@@ -616,11 +649,13 @@ Object {
           },
         },
         "name": "HELLO",
+        "optional": false,
         "range": Array [
           128,
           133,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -654,6 +689,7 @@ Object {
         ],
         "type": "TSTypeReference",
         "typeName": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 33,
@@ -665,11 +701,13 @@ Object {
             },
           },
           "name": "EnthusiasticGreeting",
+          "optional": false,
           "range": Array [
             136,
             156,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "typeParameters": Object {
           "loc": Object {
@@ -727,6 +765,7 @@ Object {
           "type": "TSTypeParameterInstantiation",
         },
       },
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

@@ -11,7 +11,7 @@ type Options = [
     allowWithDecorator?: boolean;
   },
 ];
-type MessageIds = 'empty' | 'onlyStatic' | 'onlyConstructor';
+type MessageIds = 'empty' | 'onlyConstructor' | 'onlyStatic';
 
 export default util.createRule<Options, MessageIds>({
   name: 'no-extraneous-class',
@@ -72,9 +72,8 @@ export default util.createRule<Options, MessageIds>({
     ): boolean => {
       return !!(
         allowWithDecorator &&
-        node &&
-        node.decorators &&
-        node.decorators.length
+        node?.decorators &&
+        node.decorators.length !== 0
       );
     };
 
@@ -82,10 +81,9 @@ export default util.createRule<Options, MessageIds>({
       ClassBody(node): void {
         const parent = node.parent as
           | TSESTree.ClassDeclaration
-          | TSESTree.ClassExpression
-          | undefined;
+          | TSESTree.ClassExpression;
 
-        if (!parent || parent.superClass || isAllowWithDecorator(parent)) {
+        if (parent.superClass || isAllowWithDecorator(parent)) {
           return;
         }
 

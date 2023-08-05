@@ -21,9 +21,12 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                 declarations: Array [
                   VariableDeclarator {
                     type: 'VariableDeclarator',
+-                   definite: false,
                     id: Identifier {
                       type: 'Identifier',
+-                     decorators: Array [],
                       name: 'x',
+-                     optional: false,
 
                       range: [97, 98],
                       loc: {
@@ -50,6 +53,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                     },
                   },
                 ],
+-               declare: false,
                 kind: 'var',
 
                 range: [93, 115],
@@ -73,15 +77,19 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
               assertions: Array [],
               declaration: ClassDeclaration {
                 type: 'ClassDeclaration',
+-               abstract: false,
                 body: ClassBody {
                   type: 'ClassBody',
                   body: Array [
                     MethodDefinition {
                       type: 'MethodDefinition',
                       computed: false,
+-                     decorators: Array [],
                       key: Identifier {
                         type: 'Identifier',
+-                       decorators: Array [],
                         name: 'constructor',
+-                       optional: false,
 
                         range: [143, 154],
                         loc: {
@@ -90,6 +98,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                         },
                       },
                       kind: 'constructor',
+-                     optional: false,
 -                     override: false,
                       static: false,
                       value: FunctionExpression {
@@ -105,6 +114,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                             end: { column: 54, line: 6 },
                           },
                         },
+-                       declare: false,
                         expression: false,
                         generator: false,
                         id: null,
@@ -112,9 +122,13 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                           TSParameterProperty {
                             type: 'TSParameterProperty',
                             accessibility: 'public',
+-                           decorators: Array [],
+-                           override: false,
                             parameter: Identifier {
                               type: 'Identifier',
+-                             decorators: Array [],
                               name: 'x',
+-                             optional: false,
                               typeAnnotation: TSTypeAnnotation {
                                 type: 'TSTypeAnnotation',
                                 typeAnnotation: TSNumberKeyword {
@@ -140,6 +154,8 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                                 end: { column: 32, line: 6 },
                               },
                             },
+-                           readonly: false,
+-                           static: false,
 
                             range: [155, 171],
                             loc: {
@@ -150,9 +166,13 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                           TSParameterProperty {
                             type: 'TSParameterProperty',
                             accessibility: 'public',
+-                           decorators: Array [],
+-                           override: false,
                             parameter: Identifier {
                               type: 'Identifier',
+-                             decorators: Array [],
                               name: 'y',
+-                             optional: false,
                               typeAnnotation: TSTypeAnnotation {
                                 type: 'TSTypeAnnotation',
                                 typeAnnotation: TSNumberKeyword {
@@ -178,6 +198,8 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                                 end: { column: 50, line: 6 },
                               },
                             },
+-                           readonly: false,
+-                           static: false,
 
                             range: [173, 189],
                             loc: {
@@ -208,9 +230,13 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                     end: { column: 3, line: 7 },
                   },
                 },
+-               declare: false,
+-               decorators: Array [],
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'Point',
+-                 optional: false,
 
                   range: [131, 136],
                   loc: {
@@ -218,6 +244,7 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                     end: { column: 20, line: 5 },
                   },
                 },
+-               implements: Array [],
                 superClass: null,
 
                 range: [125, 197],
@@ -257,7 +284,9 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                               computed: false,
                               key: Identifier {
                                 type: 'Identifier',
+-                               decorators: Array [],
                                 name: 'name',
+-                               optional: false,
 
                                 range: [250, 254],
                                 loc: {
@@ -265,6 +294,9 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                                   end: { column: 10, line: 10 },
                                 },
                               },
+-                             optional: false,
+-                             readonly: false,
+-                             static: false,
                               typeAnnotation: TSTypeAnnotation {
                                 type: 'TSTypeAnnotation',
                                 typeAnnotation: TSStringKeyword {
@@ -298,9 +330,13 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                             end: { column: 5, line: 11 },
                           },
                         },
+-                       declare: false,
+-                       extends: Array [],
                         id: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'Id',
+-                         optional: false,
 
                           range: [239, 241],
                           loc: {
@@ -333,9 +369,13 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                     end: { column: 3, line: 12 },
                   },
                 },
+-               declare: false,
+-               global: false,
                 id: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'B',
+-                 optional: false,
 
                   range: [214, 215],
                   loc: {
@@ -369,9 +409,13 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
             end: { column: 1, line: 13 },
           },
         },
+-       declare: false,
+-       global: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'A',
+-         optional: false,
 
           range: [80, 81],
           loc: {

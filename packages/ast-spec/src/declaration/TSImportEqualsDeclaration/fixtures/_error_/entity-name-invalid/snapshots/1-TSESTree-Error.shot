@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration TSImportEqualsDeclaration _error_ entity-name-invalid TSESTree - Error 1`] = `[TSError: Identifier expected.]`;
+exports[`AST Fixtures declaration TSImportEqualsDeclaration _error_ entity-name-invalid TSESTree - Error 1`] = `
+"TSError
+> 1 | import F = 1;
+    |            ^ Identifier expected.
+  2 |"
+`;

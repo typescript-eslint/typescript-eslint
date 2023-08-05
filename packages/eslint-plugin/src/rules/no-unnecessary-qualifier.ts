@@ -1,6 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -10,7 +10,6 @@ export default util.createRule({
   meta: {
     docs: {
       description: 'Disallow unnecessary namespace qualifiers',
-      recommended: false,
       requiresTypeChecking: true,
     },
     fixable: 'code',
@@ -25,10 +24,9 @@ export default util.createRule({
   create(context) {
     const namespacesInScope: ts.Node[] = [];
     let currentFailedNamespaceExpression: TSESTree.Node | null = null;
-    const parserServices = util.getParserServices(context);
-    const esTreeNodeToTSNodeMap = parserServices.esTreeNodeToTSNodeMap;
-    const program = parserServices.program;
-    const checker = program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const esTreeNodeToTSNodeMap = services.esTreeNodeToTSNodeMap;
+    const checker = services.program.getTypeChecker();
     const sourceCode = context.getSourceCode();
 
     function tryGetAliasedSymbol(
@@ -61,7 +59,6 @@ export default util.createRule({
       flags: ts.SymbolFlags,
       name: string,
     ): ts.Symbol | undefined {
-      // TODO:PERF `getSymbolsInScope` gets a long list. Is there a better way?
       const scope = checker.getSymbolsInScope(node, flags);
 
       return scope.find(scopeSymbol => scopeSymbol.name === name);
@@ -75,10 +72,7 @@ export default util.createRule({
       qualifier: TSESTree.EntityName | TSESTree.MemberExpression,
       name: TSESTree.Identifier,
     ): boolean {
-      const tsQualifier = esTreeNodeToTSNodeMap.get(qualifier);
-      const tsName = esTreeNodeToTSNodeMap.get(name);
-
-      const namespaceSymbol = checker.getSymbolAtLocation(tsQualifier);
+      const namespaceSymbol = services.getSymbolAtLocation(qualifier);
 
       if (
         namespaceSymbol === undefined ||
@@ -87,13 +81,14 @@ export default util.createRule({
         return false;
       }
 
-      const accessedSymbol = checker.getSymbolAtLocation(tsName);
+      const accessedSymbol = services.getSymbolAtLocation(name);
 
       if (accessedSymbol === undefined) {
         return false;
       }
 
       // If the symbol in scope is different, the qualifier is necessary.
+      const tsQualifier = esTreeNodeToTSNodeMap.get(qualifier);
       const fromScope = getSymbolInScope(
         tsQualifier,
         accessedSymbol.flags,
@@ -131,9 +126,9 @@ export default util.createRule({
 
     function enterDeclaration(
       node:
-        | TSESTree.TSModuleDeclaration
+        | TSESTree.ExportNamedDeclaration
         | TSESTree.TSEnumDeclaration
-        | TSESTree.ExportNamedDeclaration,
+        | TSESTree.TSModuleDeclaration,
     ): void {
       namespacesInScope.push(esTreeNodeToTSNodeMap.get(node));
     }

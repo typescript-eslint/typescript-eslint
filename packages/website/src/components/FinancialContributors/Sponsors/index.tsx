@@ -20,7 +20,7 @@ export function Sponsors({
   title,
   tier,
   sponsors,
-}: SponsorsProps): JSX.Element {
+}: SponsorsProps): React.JSX.Element {
   return (
     <div className={clsx(styles.tierArea, className)}>
       <h3>{title}</h3>

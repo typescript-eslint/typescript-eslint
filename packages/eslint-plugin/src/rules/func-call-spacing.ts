@@ -3,15 +3,15 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import * as util from '../util';
 
 export type Options = [
-  'never' | 'always',
+  'always' | 'never',
   {
     allowNewlines?: boolean;
   }?,
 ];
 export type MessageIds =
-  | 'unexpectedWhitespace'
+  | 'missing'
   | 'unexpectedNewline'
-  | 'missing';
+  | 'unexpectedWhitespace';
 
 export default util.createRule<Options, MessageIds>({
   name: 'func-call-spacing',
@@ -20,7 +20,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Require or disallow spacing between function identifiers and their invocations',
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
@@ -30,6 +29,7 @@ export default util.createRule<Options, MessageIds>({
           type: 'array',
           items: [
             {
+              type: 'string',
               enum: ['never'],
             },
           ],
@@ -40,6 +40,7 @@ export default util.createRule<Options, MessageIds>({
           type: 'array',
           items: [
             {
+              type: 'string',
               enum: ['always'],
             },
             {
@@ -83,7 +84,7 @@ export default util.createRule<Options, MessageIds>({
 
       const closingParenToken = sourceCode.getLastToken(node)!;
       const lastCalleeTokenWithoutPossibleParens = sourceCode.getLastToken(
-        node.typeParameters ?? node.callee,
+        node.typeArguments ?? node.callee,
       )!;
       const openingParenToken = sourceCode.getFirstTokenBetween(
         lastCalleeTokenWithoutPossibleParens,

@@ -49,9 +49,8 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const parserServices = util.getParserServices(context);
-    const program = parserServices.program;
-    const checker = program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     function isErrorLike(type: ts.Type): boolean {
       if (type.isIntersection()) {
@@ -70,7 +69,7 @@ export default util.createRule<Options, MessageIds>({
         const declarations = symbol.getDeclarations() ?? [];
         for (const declaration of declarations) {
           const sourceFile = declaration.getSourceFile();
-          if (program.isSourceFileDefaultLibrary(sourceFile)) {
+          if (services.program.isSourceFileDefaultLibrary(sourceFile)) {
             return true;
           }
         }
@@ -95,8 +94,7 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const type = checker.getTypeAtLocation(tsNode);
+      const type = services.getTypeAtLocation(node);
 
       if (type.flags & ts.TypeFlags.Undefined) {
         context.report({ node, messageId: 'undef' });

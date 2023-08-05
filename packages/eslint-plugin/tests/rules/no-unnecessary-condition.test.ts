@@ -1,7 +1,8 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import type {
   InvalidTestCase,
   TestCaseError,
-} from '@typescript-eslint/utils/dist/ts-eslint';
+} from '@typescript-eslint/utils/ts-eslint';
 import * as path from 'path';
 
 import type {
@@ -9,7 +10,7 @@ import type {
   Options,
 } from '../../src/rules/no-unnecessary-condition';
 import rule from '../../src/rules/no-unnecessary-condition';
-import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -594,6 +595,7 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
 }
       `,
       parserOptions: {
+        EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
       },

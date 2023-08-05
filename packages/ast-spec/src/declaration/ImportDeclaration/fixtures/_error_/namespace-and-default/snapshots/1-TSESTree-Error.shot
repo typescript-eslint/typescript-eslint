@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration ImportDeclaration _error_ namespace-and-default TSESTree - Error 1`] = `[TSError: 'from' expected.]`;
+exports[`AST Fixtures declaration ImportDeclaration _error_ namespace-and-default TSESTree - Error 1`] = `
+"TSError
+> 1 | import * as b, a from 'mod';
+    |              ^ 'from' expected.
+  2 |"
+`;

@@ -68,6 +68,7 @@ module.exports = {
         'packages/eslint-plugin',
         'packages/eslint-plugin-tslint',
         'packages/parser',
+        'packages/rule-tester',
         'packages/scope-manager',
         'packages/typescript-estree',
         'packages/utils',
@@ -83,7 +84,16 @@ module.exports = {
       items: [
         'contributing/discussions',
         'contributing/issues',
-        'contributing/local-development',
+        {
+          collapsible: false,
+          items: ['contributing/local-development/local-linking'],
+          label: 'Local Development',
+          link: {
+            id: 'contributing/local-development',
+            type: 'doc',
+          },
+          type: 'category',
+        },
         'contributing/pull-requests',
       ],
       label: 'Contributing',

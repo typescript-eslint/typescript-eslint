@@ -10,6 +10,7 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
@@ -18,9 +19,13 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
               accessibility: 'public',
               computed: false,
 -             declare: false,
+-             decorators: Array [],
+-             definite: false,
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'a',
+-               optional: false,
 
                 range: [92, 93],
                 loc: {
@@ -28,7 +33,9 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                   end: { column: 10, line: 4 },
                 },
               },
+-             optional: false,
 -             override: false,
+-             readonly: false,
               static: false,
               typeAnnotation: TSTypeAnnotation {
                 type: 'TSTypeAnnotation',
@@ -60,9 +67,12 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
               type: 'MethodDefinition',
               accessibility: 'public',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'method',
+-               optional: false,
 
                 range: [113, 119],
                 loc: {
@@ -71,6 +81,7 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -96,7 +107,9 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                         optional: false,
                         property: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'a',
+-                         optional: false,
 
                           range: [158, 159],
                           loc: {
@@ -126,13 +139,16 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                     end: { column: 3, line: 8 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
                 params: Array [
                   Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'this',
+-                   optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: 'TSTypeAnnotation',
                       typeAnnotation: TSThisType {
@@ -195,9 +211,12 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
               type: 'MethodDefinition',
               accessibility: 'public',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'method2',
+-               optional: false,
 
                 range: [175, 182],
                 loc: {
@@ -206,6 +225,7 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -231,7 +251,9 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                         optional: false,
                         property: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'a',
+-                         optional: false,
 
                           range: [216, 217],
                           loc: {
@@ -261,20 +283,25 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                     end: { column: 3, line: 12 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
                 params: Array [
                   Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'this',
+-                   optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: 'TSTypeAnnotation',
                       typeAnnotation: TSTypeReference {
                         type: 'TSTypeReference',
                         typeName: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'A',
+-                         optional: false,
 
                           range: [189, 190],
                           loc: {
@@ -340,9 +367,12 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
               type: 'MethodDefinition',
               accessibility: 'public',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'method3',
+-               optional: false,
 
                 range: [233, 240],
                 loc: {
@@ -351,6 +381,7 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -364,9 +395,12 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                       declarations: Array [
                         VariableDeclarator {
                           type: 'VariableDeclarator',
+-                         definite: false,
                           id: Identifier {
                             type: 'Identifier',
+-                           decorators: Array [],
                             name: 'fn',
+-                           optional: false,
 
                             range: [271, 273],
                             loc: {
@@ -392,7 +426,9 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                               optional: false,
                               property: Identifier {
                                 type: 'Identifier',
+-                               decorators: Array [],
                                 name: 'a',
+-                               optional: false,
 
                                 range: [287, 288],
                                 loc: {
@@ -426,6 +462,7 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                           },
                         },
                       ],
+-                     declare: false,
                       kind: 'var',
 
                       range: [267, 289],
@@ -441,7 +478,9 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                         arguments: Array [],
                         callee: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'fn',
+-                         optional: false,
 
                           range: [301, 303],
                           loc: {
@@ -472,13 +511,16 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                     end: { column: 3, line: 17 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
                 params: Array [
                   Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'this',
+-                   optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: 'TSTypeAnnotation',
                       typeAnnotation: TSThisType {
@@ -541,9 +583,12 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
               type: 'MethodDefinition',
               accessibility: 'public',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'method4',
+-               optional: false,
 
                 range: [321, 328],
                 loc: {
@@ -552,6 +597,7 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -565,9 +611,12 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                       declarations: Array [
                         VariableDeclarator {
                           type: 'VariableDeclarator',
+-                         definite: false,
                           id: Identifier {
                             type: 'Identifier',
+-                           decorators: Array [],
                             name: 'fn',
+-                           optional: false,
 
                             range: [356, 358],
                             loc: {
@@ -593,7 +642,9 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                               optional: false,
                               property: Identifier {
                                 type: 'Identifier',
+-                               decorators: Array [],
                                 name: 'a',
+-                               optional: false,
 
                                 range: [372, 373],
                                 loc: {
@@ -627,6 +678,7 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                           },
                         },
                       ],
+-                     declare: false,
                       kind: 'var',
 
                       range: [352, 374],
@@ -642,7 +694,9 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                         arguments: Array [],
                         callee: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'fn',
+-                         optional: false,
 
                           range: [386, 388],
                           loc: {
@@ -673,20 +727,25 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                     end: { column: 3, line: 22 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
                 params: Array [
                   Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'this',
+-                   optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: 'TSTypeAnnotation',
                       typeAnnotation: TSTypeReference {
                         type: 'TSTypeReference',
                         typeName: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'A',
+-                         optional: false,
 
                           range: [335, 336],
                           loc: {
@@ -751,9 +810,12 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'staticMethod',
+-               optional: false,
 
                 range: [406, 418],
                 loc: {
@@ -762,6 +824,7 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: true,
               value: FunctionExpression {
@@ -787,7 +850,9 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                         optional: false,
                         property: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'a',
+-                         optional: false,
 
                           range: [454, 455],
                           loc: {
@@ -817,20 +882,25 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                     end: { column: 3, line: 26 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
                 params: Array [
                   Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'this',
+-                   optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: 'TSTypeAnnotation',
                       typeAnnotation: TSTypeReference {
                         type: 'TSTypeReference',
                         typeName: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'A',
+-                         optional: false,
 
                           range: [425, 426],
                           loc: {
@@ -895,9 +965,12 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'typeof',
+-               optional: false,
 
                 range: [471, 477],
                 loc: {
@@ -906,6 +979,7 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: true,
               value: FunctionExpression {
@@ -951,20 +1025,25 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
                     end: { column: 3, line: 30 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
                 params: Array [
                   Identifier {
                     type: 'Identifier',
+-                   decorators: Array [],
                     name: 'this',
+-                   optional: false,
                     typeAnnotation: TSTypeAnnotation {
                       type: 'TSTypeAnnotation',
                       typeAnnotation: TSTypeReference {
                         type: 'TSTypeReference',
                         typeName: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'A',
+-                         optional: false,
 
                           range: [484, 485],
                           loc: {
@@ -1034,9 +1113,13 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
             end: { column: 1, line: 31 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'A',
+-         optional: false,
 
           range: [79, 80],
           loc: {
@@ -1044,6 +1127,7 @@ exports[`AST Fixtures legacy-fixtures types this-type-expanded AST Alignment - A
             end: { column: 7, line: 3 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [73, 524],

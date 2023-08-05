@@ -53,7 +53,7 @@ const pluginContentDocsOptions: PluginContentDocsOptions = {
   breadcrumbs: false,
 };
 
-const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
+const themeConfig: AlgoliaThemeConfig & ThemeCommonConfig = {
   algolia: {
     appId: 'N1HUB2TU6A',
     apiKey: '74d42ed10d0f7b327d74d774570035c7',
@@ -91,7 +91,7 @@ const themeConfig: ThemeCommonConfig & AlgoliaThemeConfig = {
       },
       {
         position: 'right',
-        value: `v${version}`,
+        value: `<div class="menu__version-item">v${version}</div>`,
         type: 'html',
       },
       {

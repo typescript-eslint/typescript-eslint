@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 6,
@@ -18,11 +20,13 @@ Object {
               },
             },
             "name": "xx",
+            "optional": false,
             "range": Array [
               4,
               6,
             ],
             "type": "Identifier",
+            "typeAnnotation": undefined,
           },
           "init": Object {
             "expressions": Array [
@@ -48,6 +52,7 @@ Object {
                 },
                 "consequent": Object {
                   "argument": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 16,
@@ -59,11 +64,13 @@ Object {
                       },
                     },
                     "name": "x",
+                    "optional": false,
                     "range": Array [
                       15,
                       16,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "loc": Object {
                     "end": Object {
@@ -98,6 +105,7 @@ Object {
                   22,
                 ],
                 "test": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 12,
@@ -109,11 +117,13 @@ Object {
                     },
                   },
                   "name": "xx",
+                  "optional": false,
                   "range": Array [
                     10,
                     12,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "type": "ConditionalExpression",
               },
@@ -170,6 +180,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "var",
       "loc": Object {
         "end": Object {

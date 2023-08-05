@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 42,
@@ -18,6 +20,7 @@ Object {
               },
             },
             "name": "f",
+            "optional": false,
             "range": Array [
               4,
               42,
@@ -53,6 +56,7 @@ Object {
                 },
                 "params": Array [
                   Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 21,
@@ -64,6 +68,7 @@ Object {
                       },
                     },
                     "name": "a",
+                    "optional": false,
                     "range": Array [
                       12,
                       21,
@@ -105,6 +110,7 @@ Object {
                     },
                   },
                   Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 33,
@@ -197,6 +203,7 @@ Object {
                   },
                 },
                 "type": "TSConstructorType",
+                "typeParameters": undefined,
               },
             },
           },
@@ -218,6 +225,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {

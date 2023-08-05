@@ -1,5 +1,6 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/explicit-module-boundary-types';
-import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -197,7 +198,6 @@ export const x: Foo = {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/2864
     {
-      filename: 'test.ts',
       code: `
 export const x = {
   foo: { bar: () => {} },
@@ -206,7 +206,6 @@ export const x = {
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 export const x = <Foo>{
   foo: { bar: () => {} },
@@ -215,7 +214,6 @@ export const x = <Foo>{
       options: [{ allowTypedFunctionExpressions: true }],
     },
     {
-      filename: 'test.ts',
       code: `
 export const x: Foo = {
   foo: { bar: () => {} },
@@ -755,7 +753,7 @@ export function test(a: number, b: number) {
           line: 2,
           endLine: 2,
           column: 8,
-          endColumn: 43,
+          endColumn: 21,
         },
       ],
     },
@@ -771,7 +769,7 @@ export function test() {
           line: 2,
           endLine: 2,
           column: 8,
-          endColumn: 23,
+          endColumn: 21,
         },
       ],
     },
@@ -787,7 +785,7 @@ export var fn = function () {
           line: 2,
           endLine: 2,
           column: 17,
-          endColumn: 28,
+          endColumn: 26,
         },
       ],
     },
@@ -800,7 +798,7 @@ export var arrowFn = () => 'test';
           messageId: 'missingReturnType',
           line: 2,
           endLine: 2,
-          column: 22,
+          column: 25,
           endColumn: 27,
         },
       ],
@@ -827,15 +825,15 @@ export class Test {
         {
           messageId: 'missingReturnType',
           line: 4,
-          endLine: 4,
           column: 3,
-          endColumn: 13,
+          endLine: 4,
+          endColumn: 11,
         },
         {
           messageId: 'missingArgType',
           line: 7,
-          endLine: 7,
           column: 12,
+          endLine: 7,
           endColumn: 17,
           data: {
             name: 'value',
@@ -844,22 +842,22 @@ export class Test {
         {
           messageId: 'missingReturnType',
           line: 8,
-          endLine: 8,
           column: 3,
-          endColumn: 11,
+          endLine: 8,
+          endColumn: 9,
         },
         {
           messageId: 'missingReturnType',
           line: 11,
+          column: 3,
           endLine: 11,
-          column: 11,
-          endColumn: 17,
+          endColumn: 11,
         },
         {
           messageId: 'missingArgType',
           line: 11,
-          endLine: 11,
           column: 11,
+          endLine: 11,
           endColumn: 14,
           data: {
             name: 'arg',
@@ -899,37 +897,37 @@ export class Foo {
         {
           messageId: 'missingReturnType',
           line: 3,
+          column: 3,
           endLine: 3,
-          column: 14,
-          endColumn: 19,
+          endColumn: 14,
         },
         {
           messageId: 'missingReturnType',
           line: 4,
+          column: 3,
           endLine: 4,
-          column: 14,
-          endColumn: 25,
+          endColumn: 23,
         },
         {
           messageId: 'missingReturnType',
           line: 5,
+          column: 3,
           endLine: 5,
-          column: 14,
-          endColumn: 29,
+          endColumn: 27,
         },
         {
           messageId: 'missingReturnType',
           line: 7,
+          column: 3,
           endLine: 7,
-          column: 14,
-          endColumn: 19,
+          endColumn: 14,
         },
         {
           messageId: 'missingReturnType',
           line: 8,
+          column: 3,
           endLine: 8,
-          column: 14,
-          endColumn: 25,
+          endColumn: 23,
         },
       ],
     },
@@ -940,7 +938,7 @@ export class Foo {
           messageId: 'missingReturnType',
           line: 1,
           endLine: 1,
-          column: 16,
+          column: 19,
           endColumn: 21,
         },
       ],
@@ -953,7 +951,7 @@ export class Foo {
           messageId: 'missingReturnType',
           line: 1,
           endLine: 1,
-          column: 22,
+          column: 25,
           endColumn: 27,
         },
       ],
@@ -971,7 +969,7 @@ export var funcExpr = function () {
           line: 2,
           endLine: 2,
           column: 23,
-          endColumn: 34,
+          endColumn: 32,
         },
       ],
     },
@@ -988,8 +986,8 @@ export const x: Foo = {
           messageId: 'missingReturnType',
           line: 4,
           endLine: 4,
-          column: 8,
-          endColumn: 13,
+          column: 3,
+          endColumn: 8,
         },
       ],
     },
@@ -1001,7 +999,7 @@ export const x: Foo = {
           messageId: 'missingReturnType',
           line: 1,
           endLine: 1,
-          column: 22,
+          column: 25,
           endColumn: 27,
         },
       ],
@@ -1015,7 +1013,7 @@ export const x: Foo = {
           line: 1,
           endLine: 1,
           column: 22,
-          endColumn: 33,
+          endColumn: 31,
         },
       ],
     },
@@ -1031,7 +1029,7 @@ export default () => {
           messageId: 'missingReturnType',
           line: 3,
           endLine: 3,
-          column: 10,
+          column: 13,
           endColumn: 15,
         },
       ],
@@ -1049,7 +1047,7 @@ export default () => {
           line: 3,
           endLine: 3,
           column: 10,
-          endColumn: 21,
+          endColumn: 19,
         },
       ],
     },
@@ -1065,7 +1063,7 @@ export function fn() {
           messageId: 'missingReturnType',
           line: 3,
           endLine: 3,
-          column: 10,
+          column: 13,
           endColumn: 15,
         },
       ],
@@ -1083,7 +1081,7 @@ export function fn() {
           line: 3,
           endLine: 3,
           column: 10,
-          endColumn: 21,
+          endColumn: 19,
         },
       ],
     },
@@ -1109,7 +1107,7 @@ export function FunctionDeclaration() {
           messageId: 'missingReturnType',
           line: 9,
           endLine: 9,
-          column: 11,
+          column: 14,
           endColumn: 16,
         },
       ],
@@ -1128,7 +1126,7 @@ export default () => () => {
           messageId: 'missingReturnType',
           line: 3,
           endLine: 3,
-          column: 10,
+          column: 13,
           endColumn: 15,
         },
       ],
@@ -1148,14 +1146,14 @@ export const func2 = (value: number) => ({ type: 'X', value } as Action);
           messageId: 'missingReturnType',
           line: 2,
           endLine: 2,
-          column: 22,
+          column: 38,
           endColumn: 40,
         },
         {
           messageId: 'missingReturnType',
           line: 3,
           endLine: 3,
-          column: 22,
+          column: 38,
           endColumn: 40,
         },
       ],
@@ -1174,7 +1172,7 @@ export const func = (value: number) => ({ type: 'X', value } as const);
           messageId: 'missingReturnType',
           line: 2,
           endLine: 2,
-          column: 21,
+          column: 37,
           endColumn: 39,
         },
       ],
@@ -1205,14 +1203,14 @@ export class Test {
           line: 8,
           endLine: 8,
           column: 3,
-          endColumn: 11,
+          endColumn: 9,
         },
         {
           messageId: 'missingReturnType',
           line: 12,
           endLine: 12,
-          column: 9,
-          endColumn: 14,
+          column: 3,
+          endColumn: 9,
         },
       ],
     },
@@ -1256,7 +1254,7 @@ export const func2 = (value: number) => value;
           messageId: 'missingReturnType',
           line: 2,
           endLine: 2,
-          column: 22,
+          column: 38,
           endColumn: 40,
         },
       ],
@@ -1345,15 +1343,15 @@ export default foo;
       `,
       errors: [
         {
-          messageId: 'missingReturnType',
-          line: 2,
-        },
-        {
           messageId: 'missingArgType',
           line: 2,
           data: {
             name: 'arg',
           },
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 2,
         },
       ],
     },
@@ -1364,15 +1362,15 @@ export = foo;
       `,
       errors: [
         {
-          messageId: 'missingReturnType',
-          line: 2,
-        },
-        {
           messageId: 'missingArgType',
           line: 2,
           data: {
             name: 'arg',
           },
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 2,
         },
       ],
     },
@@ -1384,15 +1382,15 @@ export default foo;
       `,
       errors: [
         {
-          messageId: 'missingReturnType',
-          line: 3,
-        },
-        {
           messageId: 'missingArgType',
           line: 3,
           data: {
             name: 'arg',
           },
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 3,
         },
       ],
     },
@@ -1403,15 +1401,15 @@ export default [foo];
       `,
       errors: [
         {
-          messageId: 'missingReturnType',
-          line: 2,
-        },
-        {
           messageId: 'missingArgType',
           line: 2,
           data: {
             name: 'arg',
           },
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 2,
         },
       ],
     },
@@ -1422,15 +1420,15 @@ export default { foo };
       `,
       errors: [
         {
-          messageId: 'missingReturnType',
-          line: 2,
-        },
-        {
           messageId: 'missingArgType',
           line: 2,
           data: {
             name: 'arg',
           },
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 2,
         },
       ],
     },
@@ -1620,15 +1618,15 @@ export default test;
       `,
       errors: [
         {
-          messageId: 'missingReturnType',
-          line: 2,
-        },
-        {
           messageId: 'missingArgType',
           line: 2,
           data: {
             name: 'arg',
           },
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 2,
         },
       ],
     },
@@ -1642,15 +1640,15 @@ export { test };
       `,
       errors: [
         {
-          messageId: 'missingReturnType',
-          line: 2,
-        },
-        {
           messageId: 'missingArgType',
           line: 2,
           data: {
             name: 'arg',
           },
+        },
+        {
+          messageId: 'missingReturnType',
+          line: 2,
         },
       ],
     },
@@ -1669,7 +1667,7 @@ export const foo =
         {
           messageId: 'missingReturnType',
           line: 3,
-          column: 3,
+          column: 6,
         },
       ],
     },
@@ -1682,7 +1680,7 @@ export var arrowFn = () => () => {};
         {
           messageId: 'missingReturnType',
           line: 2,
-          column: 28,
+          column: 31,
         },
       ],
     },
@@ -1891,14 +1889,14 @@ export const foo = {
           line: 2,
           endLine: 2,
           column: 8,
-          endColumn: 24,
+          endColumn: 22,
         },
         {
           messageId: 'missingReturnType',
           line: 6,
           endLine: 6,
           column: 3,
-          endColumn: 10,
+          endColumn: 8,
         },
       ],
     },

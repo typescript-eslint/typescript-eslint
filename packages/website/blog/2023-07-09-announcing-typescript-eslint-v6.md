@@ -38,7 +38,7 @@ If you already use typescript-eslint, you'll need to first replace your package'
 npm i @typescript-eslint/eslint-plugin@latest @typescript-eslint/parser@latest --save-dev
 ```
 
-We highly recommend then basing your ESLint configuration on the reworked typescript-eslint [recommended configurations mentioned later in this post](#configuration-breaking-changes) — especially if it's been a while since you've reworked your linter config.
+We highly recommend then basing your ESLint configuration on the reworked typescript-eslint [recommended configurations mentioned later in this post](#reworked-configuration-names) — especially if it's been a while since you've reworked your linter config.
 
 ## User-Facing Breaking Changes
 
@@ -110,6 +110,7 @@ See [our _Configurations_ linting docs](/linting/configs) for the updated docume
 
 For more information on these changes, see:
 
+- [Our documentation on our configurations](https://typescript-eslint.io/linting/configs).
 - [Configs: Have recommended/strict configs include lesser configs, and simplify type checked names](https://github.com/typescript-eslint/typescript-eslint/discussions/6019) for the discussion leading up to these configuration changes.
 - [feat(eslint-plugin): rework configs: recommended, strict, stylistic; -type-checked](https://github.com/typescript-eslint/typescript-eslint/pull/5251) for the pull request implementing the changes.
 
@@ -158,7 +159,7 @@ Miscellaneous changes to all shared configurations include:
    'no-empty-function': '...',
    '@typescript-eslint/no-empty-function': '...',
    '@typescript-eslint/no-empty-interface': '...',
--  '@typescript-eslint/no-explicit-any': '...',
+   '@typescript-eslint/no-explicit-any': '...',
    '@typescript-eslint/no-extra-non-null-assertion': '...',
 -  'no-extra-semi': '...',
 -  '@typescript-eslint/no-extra-semi': '...',
@@ -179,8 +180,6 @@ Miscellaneous changes to all shared configurations include:
 +  '@typescript-eslint/prefer-for-of': '...',
 +  '@typescript-eslint/prefer-function-type': '...',
    '@typescript-eslint/prefer-namespace-keyword': '...',
-+  '@typescript-eslint/prefer-optional-chain': '...',
-+  '@typescript-eslint/sort-type-constituents': '...',
    '@typescript-eslint/triple-slash-reference': '...',
 }
 ```
@@ -209,13 +208,12 @@ Miscellaneous changes to all shared configurations include:
    '@typescript-eslint/no-array-constructor': '...',
 +  '@typescript-eslint/no-base-to-string': '...',
 +  '@typescript-eslint/no-confusing-non-null-assertion': '...',
-+  '@typescript-eslint/no-confusing-void-expression': '...',
 +  '@typescript-eslint/no-duplicate-enum-values': '...',
 +  '@typescript-eslint/no-duplicate-type-constituents': '...',
    'no-empty-function': '...',
    '@typescript-eslint/no-empty-function': '...',
    '@typescript-eslint/no-empty-interface': '...',
--  '@typescript-eslint/no-explicit-any': '...',
+   '@typescript-eslint/no-explicit-any': '...',
    '@typescript-eslint/no-extra-non-null-assertion': '...',
 -  'no-extra-semi': '...',
 -  '@typescript-eslint/no-extra-semi': '...',
@@ -257,7 +255,6 @@ Miscellaneous changes to all shared configurations include:
    '@typescript-eslint/require-await': '...',
    '@typescript-eslint/restrict-plus-operands': '...',
    '@typescript-eslint/restrict-template-expressions': '...',
-+  '@typescript-eslint/sort-type-constituents': '...',
    '@typescript-eslint/triple-slash-reference': '...',
    '@typescript-eslint/unbound-method': '...',
 }
@@ -319,6 +316,29 @@ const v5RecommendedRequiringTypeChecking = {
   '@typescript-eslint/unbound-method': 'error',
 };
 
+const v6Recommended = {
+  '@typescript-eslint/ban-ts-comment': 'error',
+  '@typescript-eslint/ban-types': 'error',
+  'no-array-constructor': 'off',
+  '@typescript-eslint/no-array-constructor': 'error',
+  '@typescript-eslint/no-duplicate-enum-values': 'error',
+  '@typescript-eslint/no-explicit-any': 'error',
+  '@typescript-eslint/no-extra-non-null-assertion': 'error',
+  'no-loss-of-precision': 'off',
+  '@typescript-eslint/no-loss-of-precision': 'error',
+  '@typescript-eslint/no-misused-new': 'error',
+  '@typescript-eslint/no-namespace': 'error',
+  '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
+  '@typescript-eslint/no-this-alias': 'error',
+  '@typescript-eslint/no-unnecessary-type-constraint': 'error',
+  '@typescript-eslint/no-unsafe-declaration-merging': 'error',
+  'no-unused-vars': 'off',
+  '@typescript-eslint/no-unused-vars': 'error',
+  '@typescript-eslint/no-var-requires': 'error',
+  '@typescript-eslint/prefer-as-const': 'error',
+  '@typescript-eslint/triple-slash-reference': 'error',
+};
+
 const v6RecommendedTypeChecked = {
   '@typescript-eslint/await-thenable': 'error',
   '@typescript-eslint/ban-ts-comment': 'error',
@@ -328,6 +348,7 @@ const v6RecommendedTypeChecked = {
   '@typescript-eslint/no-base-to-string': 'error',
   '@typescript-eslint/no-duplicate-enum-values': 'error',
   '@typescript-eslint/no-duplicate-type-constituents': 'error',
+  '@typescript-eslint/no-explicit-any': 'error',
   '@typescript-eslint/no-extra-non-null-assertion': 'error',
   '@typescript-eslint/no-floating-promises': 'error',
   '@typescript-eslint/no-for-in-array': 'error',
@@ -362,28 +383,6 @@ const v6RecommendedTypeChecked = {
   '@typescript-eslint/unbound-method': 'error',
 };
 
-const v6Recommended = {
-  '@typescript-eslint/ban-ts-comment': 'error',
-  '@typescript-eslint/ban-types': 'error',
-  'no-array-constructor': 'off',
-  '@typescript-eslint/no-array-constructor': 'error',
-  '@typescript-eslint/no-duplicate-enum-values': 'error',
-  '@typescript-eslint/no-extra-non-null-assertion': 'error',
-  'no-loss-of-precision': 'off',
-  '@typescript-eslint/no-loss-of-precision': 'error',
-  '@typescript-eslint/no-misused-new': 'error',
-  '@typescript-eslint/no-namespace': 'error',
-  '@typescript-eslint/no-non-null-asserted-optional-chain': 'error',
-  '@typescript-eslint/no-this-alias': 'error',
-  '@typescript-eslint/no-unnecessary-type-constraint': 'error',
-  '@typescript-eslint/no-unsafe-declaration-merging': 'error',
-  'no-unused-vars': 'off',
-  '@typescript-eslint/no-unused-vars': 'error',
-  '@typescript-eslint/no-var-requires': 'error',
-  '@typescript-eslint/prefer-as-const': 'error',
-  '@typescript-eslint/triple-slash-reference': 'error',
-};
-
 const v6Stylistic = {
   '@typescript-eslint/adjacent-overload-signatures': 'error',
   '@typescript-eslint/array-type': 'error',
@@ -401,8 +400,6 @@ const v6Stylistic = {
   '@typescript-eslint/prefer-for-of': 'error',
   '@typescript-eslint/prefer-function-type': 'error',
   '@typescript-eslint/prefer-namespace-keyword': 'error',
-  '@typescript-eslint/prefer-optional-chain': 'error',
-  '@typescript-eslint/sort-type-constituents': 'error',
 };
 
 const v6StylisticTypeChecked = {
@@ -417,7 +414,6 @@ const v6StylisticTypeChecked = {
   'dot-notation': 'off',
   '@typescript-eslint/dot-notation': 'error',
   '@typescript-eslint/no-confusing-non-null-assertion': 'error',
-  '@typescript-eslint/no-confusing-void-expression': 'error',
   'no-empty-function': 'off',
   '@typescript-eslint/no-empty-function': 'error',
   '@typescript-eslint/no-empty-interface': 'error',
@@ -429,7 +425,6 @@ const v6StylisticTypeChecked = {
   '@typescript-eslint/prefer-nullish-coalescing': 'error',
   '@typescript-eslint/prefer-optional-chain': 'error',
   '@typescript-eslint/prefer-string-starts-ends-with': 'error',
-  '@typescript-eslint/sort-type-constituents': 'error',
 };
 
 function createDiffPatch(v5, v6) {
@@ -566,7 +561,7 @@ Rules can still retrieve their full backing TypeScript type checker with `servic
 This can be necessary for TypeScript APIs not wrapped by the parser services.
 :::
 
-See [_Custom Rules_](https://typescript-eslint.io/custom-rules) for the updated documentation on creating custom rules with typescript-eslint.
+See [_Custom Rules_](https://typescript-eslint.io/developers/custom-rules) for the updated documentation on creating custom rules with typescript-eslint.
 
 ### AST Breaking Changes
 
@@ -642,7 +637,7 @@ As of [feat: add package.json exports for public packages](https://github.com/ty
 Developers must now mostly import directly from the package names, e.g.:
 
 ```ts
-import * as TSESLint from '@typescript-eslint';
+import * as TSESLint from '@typescript-eslint/utils/ts-eslint';
 ```
 
 See [RFC: Use package.json exports to "hide" the dist folder for packages and control our exported surface-area](https://github.com/typescript-eslint/typescript-eslint/discussions/6015) for more backing context.

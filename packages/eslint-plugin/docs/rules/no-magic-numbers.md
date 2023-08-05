@@ -6,8 +6,6 @@ description: 'Disallow magic numbers.'
 >
 > See **https://typescript-eslint.io/rules/no-magic-numbers** for documentation.
 
-## Examples
-
 This rule extends the base [`eslint/no-magic-numbers`](https://eslint.org/docs/rules/no-magic-numbers) rule.
 It adds support for:
 

@@ -6,14 +6,14 @@
   "targets": {
     "build": {
       "executor": "nx:run-commands",
-      "outputs": ["{projectRoot}/dist", "{projectRoot}/_ts3.4"],
+      "outputs": ["{projectRoot}/dist", "{projectRoot}/_ts4.3"],
       "options": {
         "parallel": false,
         "cwd": "packages/scope-manager",
         "commands": [
-          "rimraf _ts3.4",
+          "rimraf _ts4.3",
           "tsc -b tsconfig.build.json",
-          "downlevel-dts dist _ts3.4/dist"
+          "downlevel-dts dist _ts4.3/dist --to=4.3"
         ]
       }
     },
@@ -36,7 +36,7 @@
         "commands": [
           "tsc -b tsconfig.build.json --clean",
           "rimraf dist",
-          "rimraf _ts3.4",
+          "rimraf _ts4.3",
           "rimraf coverage"
         ]
       }
@@ -53,7 +53,8 @@
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/scope-manager/**/*.ts"]
+        "lintFilePatterns": ["packages/scope-manager/**/*.{mts,cts,ts,tsx}"],
+        "ignorePath": ".eslintignore"
       }
     },
     "test": {

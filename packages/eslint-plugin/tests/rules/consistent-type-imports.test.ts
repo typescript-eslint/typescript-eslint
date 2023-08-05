@@ -1,5 +1,7 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/consistent-type-imports';
-import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -14,6 +16,7 @@ const ruleTester = new RuleTester({
 });
 
 const withMetaParserOptions = {
+  EXPERIMENTAL_useProjectService: false,
   tsconfigRootDir: getFixturesRootDir(),
   project: './tsconfig-withmeta.json',
 };
@@ -533,6 +536,18 @@ ruleTester.run('consistent-type-imports', rule, {
       parserOptions: withMetaConfigParserOptions,
     },
 
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7327
+    {
+      code: `
+        import type { ClassA } from './classA';
+
+        export class ClassB {
+          public constructor(node: ClassA) {}
+        }
+      `,
+      parserOptions: withMetaConfigParserOptions,
+    },
+
     // https://github.com/typescript-eslint/typescript-eslint/issues/2989
     `
 import type * as constants from './constants';
@@ -681,11 +696,11 @@ export type Y = {
     {
       code: `
         import foo from 'foo';
-        type Baz = typeof foo.bar['Baz']; // TSQualifiedName & TSTypeQuery
+        type Baz = (typeof foo.bar)['Baz']; // TSQualifiedName & TSTypeQuery
       `,
       output: `
         import type foo from 'foo';
-        type Baz = typeof foo.bar['Baz']; // TSQualifiedName & TSTypeQuery
+        type Baz = (typeof foo.bar)['Baz']; // TSQualifiedName & TSTypeQuery
       `,
       errors: [
         {

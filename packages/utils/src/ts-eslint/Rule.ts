@@ -5,7 +5,7 @@ import type { Linter } from './Linter';
 import type { Scope } from './Scope';
 import type { SourceCode } from './SourceCode';
 
-export type RuleRecommendation = 'error' | 'strict' | 'warn' | false;
+export type RuleRecommendation = 'recommended' | 'strict' | 'stylistic';
 
 interface RuleMetaDataDocs {
   /**
@@ -15,17 +15,13 @@ interface RuleMetaDataDocs {
   /**
    * The recommendation level for the rule.
    * Used by the build tools to generate the recommended and strict configs.
-   * Set to false to not include it as a recommendation
+   * Exclude to not include it as a recommendation.
    */
-  recommended: 'error' | 'strict' | 'warn' | false;
+  recommended?: RuleRecommendation;
   /**
    * The URL of the rule's docs
    */
   url?: string;
-  /**
-   * Specifies whether the rule can return suggestions.
-   */
-  suggestion?: boolean;
   /**
    * Does the rule require us to create a full TypeScript Program in order for it
    * to type-check code. This is only used for documentation purposes.
@@ -67,7 +63,7 @@ interface RuleMetaData<TMessageIds extends string> {
    * - `"suggestion"` means the rule is identifying something that could be done in a better way but no errors will occur if the code isn’t changed.
    * - `"layout"` means the rule cares primarily about whitespace, semicolons, commas, and parentheses, all the parts of the program that determine how the code looks rather than how it executes. These rules work on parts of the code that aren’t specified in the AST.
    */
-  type: 'suggestion' | 'problem' | 'layout';
+  type: 'layout' | 'problem' | 'suggestion';
   /**
    * The name of the rule this rule was replaced by, if it was deprecated.
    */
@@ -117,15 +113,17 @@ interface SuggestionReportDescriptor<TMessageIds extends string>
 
 type ReportFixFunction = (
   fixer: RuleFixer,
-) => null | RuleFix | readonly RuleFix[] | IterableIterator<RuleFix>;
+) => IterableIterator<RuleFix> | RuleFix | readonly RuleFix[] | null;
 type ReportSuggestionArray<TMessageIds extends string> =
   SuggestionReportDescriptor<TMessageIds>[];
+
+type ReportDescriptorMessageData = Readonly<Record<string, unknown>>;
 
 interface ReportDescriptorBase<TMessageIds extends string> {
   /**
    * The parameters for the message string associated with `messageId`.
    */
-  readonly data?: Readonly<Record<string, unknown>>;
+  readonly data?: ReportDescriptorMessageData;
   /**
    * The fixer function.
    */
@@ -155,18 +153,18 @@ interface ReportDescriptorNodeOptionalLoc {
    * An override of the location of the report
    */
   readonly loc?:
-    | Readonly<TSESTree.SourceLocation>
-    | Readonly<TSESTree.Position>;
+    | Readonly<TSESTree.Position>
+    | Readonly<TSESTree.SourceLocation>;
 }
 interface ReportDescriptorLocOnly {
   /**
    * An override of the location of the report
    */
-  loc: Readonly<TSESTree.SourceLocation> | Readonly<TSESTree.Position>;
+  loc: Readonly<TSESTree.Position> | Readonly<TSESTree.SourceLocation>;
 }
 type ReportDescriptor<TMessageIds extends string> =
   ReportDescriptorWithSuggestion<TMessageIds> &
-    (ReportDescriptorNodeOptionalLoc | ReportDescriptorLocOnly);
+    (ReportDescriptorLocOnly | ReportDescriptorNodeOptionalLoc);
 
 /**
  * Plugins can add their settings using declaration
@@ -225,7 +223,7 @@ interface RuleContext<
    * It is a path to a directory that should be considered as the current working directory.
    * @since 6.6.0
    */
-  getCwd?(): string;
+  getCwd(): string;
 
   /**
    * Returns the filename associated with the source.
@@ -264,10 +262,11 @@ interface RuleContext<
 
 // This isn't the correct signature, but it makes it easier to do custom unions within reusable listeners
 // never will break someone's code unless they specifically type the function argument
-type RuleFunction<T extends TSESTree.BaseNode = never> = (node: T) => void;
+type RuleFunction<T extends TSESTree.NodeOrTokenData = never> = (
+  node: T,
+) => void;
 
-interface RuleListener {
-  [nodeSelector: string]: RuleFunction | undefined;
+interface RuleListenerBaseSelectors {
   ArrayExpression?: RuleFunction<TSESTree.ArrayExpression>;
   ArrayPattern?: RuleFunction<TSESTree.ArrayPattern>;
   ArrowFunctionExpression?: RuleFunction<TSESTree.ArrowFunctionExpression>;
@@ -426,6 +425,19 @@ interface RuleListener {
   WithStatement?: RuleFunction<TSESTree.WithStatement>;
   YieldExpression?: RuleFunction<TSESTree.YieldExpression>;
 }
+type RuleListenerExitSelectors = {
+  [K in keyof RuleListenerBaseSelectors as `${K}:exit`]: RuleListenerBaseSelectors[K];
+};
+interface RuleListenerCatchAllBaseCase {
+  [nodeSelector: string]: RuleFunction | undefined;
+}
+// Interface to merge into for anyone that wants to add more selectors
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+interface RuleListenerExtension {}
+
+type RuleListener = RuleListenerBaseSelectors &
+  RuleListenerCatchAllBaseCase &
+  RuleListenerExitSelectors;
 
 interface RuleModule<
   TMessageIds extends string,
@@ -449,16 +461,19 @@ interface RuleModule<
    */
   create(context: Readonly<RuleContext<TMessageIds, TOptions>>): TRuleListener;
 }
+type AnyRuleModule = RuleModule<string, readonly unknown[]>;
 
 type RuleCreateFunction<
   TMessageIds extends string = never,
   TOptions extends readonly unknown[] = unknown[],
-  // for extending base rules
-  TRuleListener extends RuleListener = RuleListener,
-> = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => TRuleListener;
+> = (context: Readonly<RuleContext<TMessageIds, TOptions>>) => RuleListener;
+type AnyRuleCreateFunction = RuleCreateFunction<string, readonly unknown[]>;
 
 export {
+  AnyRuleCreateFunction,
+  AnyRuleModule,
   ReportDescriptor,
+  ReportDescriptorMessageData,
   ReportFixFunction,
   ReportSuggestionArray,
   RuleContext,
@@ -467,6 +482,7 @@ export {
   RuleFixer,
   RuleFunction,
   RuleListener,
+  RuleListenerExtension,
   RuleMetaData,
   RuleMetaDataDocs,
   RuleModule,

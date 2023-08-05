@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration VariableDeclaration _error_ missing-id-with-value TSESTree - Error 1`] = `[TSError: Variable declaration expected.]`;
+exports[`AST Fixtures declaration VariableDeclaration _error_ missing-id-with-value TSESTree - Error 1`] = `
+"TSError
+> 1 | const = 1;
+    |       ^ Variable declaration expected.
+  2 |"
+`;

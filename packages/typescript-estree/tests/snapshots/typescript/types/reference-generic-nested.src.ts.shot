@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 27,
@@ -18,6 +20,7 @@ Object {
               },
             },
             "name": "x",
+            "optional": false,
             "range": Array [
               4,
               27,
@@ -56,6 +59,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 12,
@@ -67,11 +71,13 @@ Object {
                     },
                   },
                   "name": "Array",
+                  "optional": false,
                   "range": Array [
                     7,
                     12,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": Object {
                   "loc": Object {
@@ -102,6 +108,7 @@ Object {
                       ],
                       "type": "TSTypeReference",
                       "typeName": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 18,
@@ -113,11 +120,13 @@ Object {
                           },
                         },
                         "name": "Array",
+                        "optional": false,
                         "range": Array [
                           13,
                           18,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "typeParameters": Object {
                         "loc": Object {
@@ -184,6 +193,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {

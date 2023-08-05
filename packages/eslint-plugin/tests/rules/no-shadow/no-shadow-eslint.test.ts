@@ -2,12 +2,10 @@
 // Original Code: https://github.com/t-mangoe/eslint/blob/c4a70499720f48e27734068074fbeee4f48fb460/tests/lib/rules/no-shadow.js
 // License      : https://github.com/eslint/eslint/blob/c4a70499720f48e27734068074fbeee4f48fb460/LICENSE
 
-'use strict';
-
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../../src/rules/no-shadow';
-import { RuleTester } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

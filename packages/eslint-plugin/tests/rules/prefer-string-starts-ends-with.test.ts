@@ -1,7 +1,8 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESLint } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/prefer-string-starts-ends-with';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -1063,8 +1064,8 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
 });
 
 type Case<TMessageIds extends string, TOptions extends Readonly<unknown[]>> =
-  | TSESLint.ValidTestCase<TOptions>
-  | TSESLint.InvalidTestCase<TMessageIds, TOptions>;
+  | TSESLint.InvalidTestCase<TMessageIds, TOptions>
+  | TSESLint.ValidTestCase<TOptions>;
 function addOptional<TOptions extends Readonly<unknown[]>>(
   cases: (TSESLint.ValidTestCase<TOptions> | string)[],
 ): TSESLint.ValidTestCase<TOptions>[];

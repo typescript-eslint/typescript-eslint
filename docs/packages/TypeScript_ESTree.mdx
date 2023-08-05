@@ -32,9 +32,20 @@ Parses the given string of code with the options provided and returns an ESTree-
 ```ts
 interface ParseOptions {
   /**
+   * Prevents the parser from throwing an error if it receives an invalid AST from TypeScript.
+   * This case only usually occurs when attempting to lint invalid code.
+   */
+  allowInvalidAST?: boolean;
+
+  /**
    * create a top-level comments array containing all comments
    */
   comment?: boolean;
+
+  /**
+   * Whether deprecated AST properties should skip calling console.warn on accesses.
+   */
+  suppressDeprecatedPropertyWarnings?: boolean;
 
   /**
    * An array of modules to turn explicit debugging on for.
@@ -99,7 +110,6 @@ interface ParseOptions {
 
 const PARSE_DEFAULT_OPTIONS: ParseOptions = {
   comment: false,
-  errorOnUnknownASTType: false,
   filePath: 'estree.ts', // or 'estree.tsx', if you pass jsx: true
   jsx: false,
   loc: false,
@@ -140,12 +150,21 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
    *
+   * Whether to create a shared TypeScript server to power program creation.
+   *
+   * @see https://github.com/typescript-eslint/typescript-eslint/issues/6575
+   */
+  EXPERIMENTAL_useProjectService?: boolean;
+
+  /**
+   * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
+   *
    * Causes TS to use the source files for referenced projects instead of the compiled .d.ts files.
    * This feature is not yet optimized, and is likely to cause OOMs for medium to large projects.
    *
    * This flag REQUIRES at least TS v3.9, otherwise it does nothing.
    *
-   * See: https://github.com/typescript-eslint/typescript-eslint/issues/2094
+   * @see https://github.com/typescript-eslint/typescript-eslint/issues/2094
    */
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean;
 
@@ -202,15 +221,10 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   programs?: Program[];
 
   /**
-   ***************************************************************************************
-   * IT IS RECOMMENDED THAT YOU DO NOT USE THIS OPTION, AS IT CAUSES PERFORMANCE ISSUES. *
-   ***************************************************************************************
-   *
-   * When passed with `project`, this allows the parser to create a catch-all, default program.
-   * This means that if the parser encounters a file not included in any of the provided `project`s,
-   * it will not error, but will instead parse the file and its dependencies in a new program.
+   * @deprecated - this flag will be removed in the next major.
+   * Do not rely on the behavior provided by this flag.
    */
-  createDefaultProgram?: boolean;
+  DEPRECATED__createDefaultProgram?: boolean;
 
   /**
    * ESLint (and therefore typescript-eslint) is used in both "single run"/one-time contexts,
@@ -241,18 +255,12 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
      */
     glob?: number | 'Infinity';
   };
-
-  /**
-   * Path to a file exporting a custom `ModuleResolver`.
-   */
-  moduleResolver?: string;
 }
 
 interface ParserServices {
   program: ts.Program;
   esTreeNodeToTSNodeMap: WeakMap<TSESTree.Node, ts.Node | ts.Token>;
   tsNodeToESTreeNodeMap: WeakMap<ts.Node | ts.Token, TSESTree.Node>;
-  hasFullTypeInformation: boolean;
 }
 
 interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
@@ -288,56 +296,6 @@ const { ast, services } = parseAndGenerateServices(code, {
   project: './tsconfig.json',
   range: true,
 });
-```
-
-##### `ModuleResolver`
-
-The `moduleResolver` option allows you to specify the path to a module with a custom module resolver implementation. The module is expected to adhere to the following interface:
-
-```ts
-interface ModuleResolver {
-  version: 1;
-  resolveModuleNames(
-    moduleNames: string[],
-    containingFile: string,
-    reusedNames: string[] | undefined,
-    redirectedReference: ts.ResolvedProjectReference | undefined,
-    options: ts.CompilerOptions,
-  ): (ts.ResolvedModule | undefined)[];
-}
-```
-
-#### `parseWithNodeMaps(code, options)`
-
-Parses the given string of code with the options provided and returns both the ESTree-compatible AST as well as the node maps.
-This allows you to work with both ASTs without the overhead of types that may come with `parseAndGenerateServices`.
-
-```ts
-interface ParseWithNodeMapsResult<T extends TSESTreeOptions> {
-  ast: TSESTree.Program;
-  esTreeNodeToTSNodeMap: ParserServices['esTreeNodeToTSNodeMap'];
-  tsNodeToESTreeNodeMap: ParserServices['tsNodeToESTreeNodeMap'];
-}
-
-declare function parseWithNodeMaps(
-  code: string,
-  options: ParseOptions = PARSE_DEFAULT_OPTIONS,
-): ParseWithNodeMapsResult;
-```
-
-Example usage:
-
-```js
-import { parseWithNodeMaps } from '@typescript-eslint/typescript-estree';
-
-const code = `const hello: string = 'world';`;
-const { ast, esTreeNodeToTSNodeMap, tsNodeToESTreeNodeMap } = parseWithNodeMaps(
-  code,
-  {
-    loc: true,
-    range: true,
-  },
-);
 ```
 
 ### `TSESTree`, `AST_NODE_TYPES` and `AST_TOKEN_TYPES`

@@ -25,7 +25,7 @@ function createValidator(
   context: Context,
   allConfigs: NormalizedSelector[],
 ): (
-  node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
+  node: TSESTree.Identifier | TSESTree.Literal | TSESTree.PrivateIdentifier,
 ) => void {
   // make sure the "highest priority" configs are checked first
   const selectorType = Selectors[type];
@@ -71,7 +71,7 @@ function createValidator(
     });
 
   return (
-    node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
+    node: TSESTree.Identifier | TSESTree.Literal | TSESTree.PrivateIdentifier,
     modifiers: Set<Modifiers> = new Set<Modifiers>(),
   ): void => {
     const originalName =
@@ -155,7 +155,7 @@ function createValidator(
     formats?: PredefinedFormats[];
     originalName: string;
     processedName?: string;
-    position?: 'leading' | 'trailing' | 'prefix' | 'suffix';
+    position?: 'leading' | 'prefix' | 'suffix' | 'trailing';
     custom?: NonNullable<NormalizedSelector['custom']>;
     count?: 'one' | 'two';
   }): Record<string, unknown> {
@@ -184,7 +184,7 @@ function createValidator(
     position: 'leading' | 'trailing',
     config: NormalizedSelector,
     name: string,
-    node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
+    node: TSESTree.Identifier | TSESTree.Literal | TSESTree.PrivateIdentifier,
     originalName: string,
   ): string | null {
     const option =
@@ -305,7 +305,7 @@ function createValidator(
     position: 'prefix' | 'suffix',
     config: NormalizedSelector,
     name: string,
-    node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
+    node: TSESTree.Identifier | TSESTree.Literal | TSESTree.PrivateIdentifier,
     originalName: string,
   ): string | null {
     const affixes = config[position];
@@ -345,7 +345,7 @@ function createValidator(
   function validateCustom(
     config: NormalizedSelector,
     name: string,
-    node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
+    node: TSESTree.Identifier | TSESTree.Literal | TSESTree.PrivateIdentifier,
     originalName: string,
   ): boolean {
     const custom = config.custom;
@@ -378,7 +378,7 @@ function createValidator(
   function validatePredefinedFormat(
     config: NormalizedSelector,
     name: string,
-    node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
+    node: TSESTree.Identifier | TSESTree.Literal | TSESTree.PrivateIdentifier,
     originalName: string,
     modifiers: Set<Modifiers>,
   ): boolean {
@@ -435,11 +435,10 @@ function isCorrectType(
     return true;
   }
 
-  const { esTreeNodeToTSNodeMap, program } = util.getParserServices(context);
-  const checker = program.getTypeChecker();
-  const tsNode = esTreeNodeToTSNodeMap.get(node);
-  const type = checker
-    .getTypeAtLocation(tsNode)
+  const services = util.getParserServices(context);
+  const checker = services.program.getTypeChecker();
+  const type = services
+    .getTypeAtLocation(node)
     // remove null and undefined from the type, as we don't care about it here
     .getNonNullableType();
 

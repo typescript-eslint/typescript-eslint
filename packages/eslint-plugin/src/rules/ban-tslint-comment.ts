@@ -9,7 +9,7 @@ const ENABLE_DISABLE_REGEX =
 
 const toText = (
   text: string,
-  type: AST_TOKEN_TYPES.Line | AST_TOKEN_TYPES.Block,
+  type: AST_TOKEN_TYPES.Block | AST_TOKEN_TYPES.Line,
 ): string =>
   type === AST_TOKEN_TYPES.Line
     ? ['//', text.trim()].join(' ')
@@ -21,7 +21,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow `// tslint:<rule-flag>` comments',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
     messages: {
       commentDetected: 'tslint comment detected: "{{ text }}"',

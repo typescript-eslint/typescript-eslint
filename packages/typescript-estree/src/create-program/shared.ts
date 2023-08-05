@@ -2,13 +2,17 @@ import path from 'path';
 import type { Program } from 'typescript';
 import * as ts from 'typescript';
 
-import type { ModuleResolver } from '../parser-options';
 import type { ParseSettings } from '../parseSettings';
 
-interface ASTAndProgram {
+interface ASTAndNoProgram {
+  ast: ts.SourceFile;
+  program: null;
+}
+interface ASTAndDefiniteProgram {
   ast: ts.SourceFile;
   program: ts.Program;
 }
+type ASTAndProgram = ASTAndDefiniteProgram | ASTAndNoProgram;
 
 /**
  * Compiler options required to avoid critical functionality issues
@@ -93,35 +97,18 @@ function getExtension(fileName: string | undefined): string | null {
 
 function getAstFromProgram(
   currentProgram: Program,
-  parseSettings: ParseSettings,
-): ASTAndProgram | undefined {
-  const ast = currentProgram.getSourceFile(parseSettings.filePath);
+  filePath: string,
+): ASTAndDefiniteProgram | undefined {
+  const ast = currentProgram.getSourceFile(filePath);
 
   // working around https://github.com/typescript-eslint/typescript-eslint/issues/1573
-  const expectedExt = getExtension(parseSettings.filePath);
+  const expectedExt = getExtension(filePath);
   const returnedExt = getExtension(ast?.fileName);
   if (expectedExt !== returnedExt) {
     return undefined;
   }
 
   return ast && { ast, program: currentProgram };
-}
-
-function getModuleResolver(moduleResolverPath: string): ModuleResolver {
-  let moduleResolver: ModuleResolver;
-
-  try {
-    moduleResolver = require(moduleResolverPath) as ModuleResolver;
-  } catch (error) {
-    const errorLines = [
-      'Could not find the provided parserOptions.moduleResolver.',
-      'Hint: use an absolute path if you are not in control over where the ESLint instance runs.',
-    ];
-
-    throw new Error(errorLines.join('\n'));
-  }
-
-  return moduleResolver;
 }
 
 /**
@@ -138,6 +125,8 @@ function createHash(content: string): string {
 }
 
 export {
+  ASTAndDefiniteProgram,
+  ASTAndNoProgram,
   ASTAndProgram,
   CORE_COMPILER_OPTIONS,
   canonicalDirname,
@@ -147,5 +136,4 @@ export {
   ensureAbsolutePath,
   getCanonicalFileName,
   getAstFromProgram,
-  getModuleResolver,
 };

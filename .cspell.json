@@ -1,6 +1,14 @@
 {
-  "version": "0.1",
+  "version": "0.2",
   "language": "en",
+  "enableFiletypes": [
+    "markdown",
+    "mdx",
+    "typescript",
+    "typescriptreact",
+    "javascript",
+    "javascriptreact"
+  ],
   "ignorePaths": [
     ".cspell.json",
     ".github/workflows/**",
@@ -110,6 +118,7 @@
     "rulesets",
     "serializers",
     "Sourcegraph",
+    "stringification",
     "superset",
     "thenables",
     "transpiled",
@@ -119,7 +128,6 @@
     "trpc",
     "tsconfigs",
     "tseslint",
-    "tsutils",
     "tsvfs",
     "typedef",
     "typedefs",

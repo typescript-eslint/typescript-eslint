@@ -4,7 +4,9 @@ exports[`typescript basics call-signatures.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 8,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           5,
           8,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -62,6 +66,7 @@ Object {
             },
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 12,
@@ -73,6 +78,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   16,
                   25,
@@ -153,6 +159,7 @@ Object {
               },
             },
             "type": "TSCallSignatureDeclaration",
+            "typeParameters": undefined,
           },
           Object {
             "loc": Object {
@@ -167,6 +174,7 @@ Object {
             },
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 15,
@@ -178,6 +186,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   41,
                   50,
@@ -258,6 +267,7 @@ Object {
               },
             },
             "type": "TSConstructSignatureDeclaration",
+            "typeParameters": undefined,
           },
         ],
         "range": Array [
@@ -266,6 +276,7 @@ Object {
         ],
         "type": "TSTypeLiteral",
       },
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

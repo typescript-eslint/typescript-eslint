@@ -9,7 +9,7 @@ export default util.createRule({
     type: 'problem',
     docs: {
       description: 'Enforce valid definition of `new` and `constructor`',
-      recommended: 'error',
+      recommended: 'recommended',
     },
     schema: [],
     messages: {
@@ -25,9 +25,9 @@ export default util.createRule({
      */
     function getTypeReferenceName(
       node:
+        | TSESTree.EntityName
         | TSESTree.TSTypeAnnotation
         | TSESTree.TypeNode
-        | TSESTree.EntityName
         | undefined,
     ): string | null {
       if (node) {
@@ -50,7 +50,7 @@ export default util.createRule({
      * @param returnType type to be compared
      */
     function isMatchingParentType(
-      parent: undefined | TSESTree.Node,
+      parent: TSESTree.Node | undefined,
       returnType: TSESTree.TSTypeAnnotation | undefined,
     ): boolean {
       if (
@@ -70,7 +70,7 @@ export default util.createRule({
       ): void {
         if (
           isMatchingParentType(
-            node.parent!.parent as TSESTree.TSInterfaceDeclaration,
+            node.parent.parent as TSESTree.TSInterfaceDeclaration,
             node.returnType,
           )
         ) {
@@ -93,10 +93,7 @@ export default util.createRule({
         node: TSESTree.MethodDefinition,
       ): void {
         if (node.value.type === AST_NODE_TYPES.TSEmptyBodyFunctionExpression) {
-          if (
-            node.parent &&
-            isMatchingParentType(node.parent.parent, node.value.returnType)
-          ) {
+          if (isMatchingParentType(node.parent.parent, node.value.returnType)) {
             context.report({
               node,
               messageId: 'errorMessageClass',

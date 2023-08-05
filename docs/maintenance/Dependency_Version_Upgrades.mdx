@@ -81,7 +81,7 @@ We generally start the process of supporting a new TypeScript version just after
    - Change the `SUPPORTED_TYPESCRIPT_VERSIONS` constant's `<` version to the next version of TypeScript
    - Change the `SUPPORTED_PRERELEASE_RANGES` constant to equal `['X.Y.2-rc']`
    - Rename and update `patches/typescript*` to the new TypeScript version
-   - Run `yarn generate:lib` to update `scope-manager`
+   - Run `yarn generate-lib` to update `scope-manager`
 1. Once all PRs needed for the RC update PR are merged, merge the RC update PR
 1. Once TypeScript releases the stable X.Y version, create and merge a PR with a title like `chore: bump TypeScript from X.YRC to X.Y` and the following changes:
    - In the root `package.json`, remove `|| X.Y.2-rc2` from the `dependency` on `typescript`, and bump its `<` version to the next version of TypeScript
