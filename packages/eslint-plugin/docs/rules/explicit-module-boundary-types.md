@@ -16,7 +16,7 @@ It can also improve TypeScript type checking performance on larger codebases.
 
 <!--tabs-->
 
-### ❌ Incorrect
+#### ❌ Incorrect
 
 ```ts
 // Should indicate that no value is returned (void)
@@ -44,7 +44,7 @@ export class Test {
 }
 ```
 
-### ✅ Correct
+#### ✅ Correct
 
 ```ts
 // A function with no return value (void)
@@ -76,7 +76,7 @@ export class Test {
 
 <!--tabs-->
 
-### ❌ Incorrect
+#### ❌ Incorrect
 
 ```ts
 // Should indicate that no value is returned (void)
@@ -88,7 +88,7 @@ export function test() {
 export var arrowFn = (arg): string => `test ${arg}`;
 ```
 
-### ✅ Correct
+#### ✅ Correct
 
 ```ts
 // Function is not exported
