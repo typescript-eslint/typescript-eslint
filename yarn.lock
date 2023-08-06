@@ -3629,12 +3629,10 @@
     "@svgr/plugin-svgo" "^6.2.0"
 
 "@swc/core-android-arm-eabi@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-android-arm64@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-darwin-arm64@1.3.74":
   version "1.3.74"
@@ -3647,32 +3645,25 @@
   integrity sha512-KKEGE1wXneYXe15fWDRM8/oekd/Q4yAuccA0vWY/7i6nOSPqWYcSDR0nRtR030ltDxWt0rk/eCTmNkrOWrKs3A==
 
 "@swc/core-freebsd-x64@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-linux-arm-gnueabihf@1.3.74":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-linux-arm-gnueabihf@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-linux-arm64-gnu@1.3.74":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-linux-arm64-gnu@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-linux-arm64-musl@1.3.74":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-linux-arm64-musl@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-linux-x64-gnu@1.3.74":
   version "1.3.74"
@@ -3685,20 +3676,16 @@
   integrity sha512-sxsFctbFMZEFmDE7CmYljG0dMumH8XBTwwtGr8s6z0fYAzXBGNq2AFPcmEh2np9rPWkt7pE1m0ByESD+dMkbxQ==
 
 "@swc/core-win32-arm64-msvc@1.3.74":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-win32-arm64-msvc@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-win32-ia32-msvc@1.3.74":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-win32-ia32-msvc@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@swc/core-win32-x64-msvc@1.3.74":
   version "1.3.74"
@@ -3860,12 +3847,10 @@
     "@types/ms" "*"
 
 "@types/eslint-scope@^3.7.3":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@types/eslint-scope@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@types/eslint-visitor-keys@*":
   version "3.3.0"
@@ -3875,20 +3860,16 @@
     eslint-visitor-keys "*"
 
 "@types/eslint@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@types/estree@0.0.39":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@types/estree@^1.0.0":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@types/estree@link:./tools/dummypkg":
-  version "0.0.0"
-  uid ""
+  version "1.0.0"
 
 "@types/express-serve-static-core@*", "@types/express-serve-static-core@^4.17.18":
   version "4.17.28"
@@ -10915,10 +10896,10 @@ modify-values@^1.0.1:
   resolved "https://registry.yarnpkg.com/modify-values/-/modify-values-1.0.1.tgz#b3939fa605546474e3e3e3c63d64bd43b4ee6022"
   integrity sha512-xV2bxeN6F7oYjZWTe/YPAy6MN2M+sL4u/Rlm2AHCIVGfo2p1yGmBHQ6vHehl4bRTZBdHu3TSkWdYgkwpYzAGSw==
 
-monaco-editor@~0.40.0:
-  version "0.40.0"
-  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.40.0.tgz#d10834e15ad50a15ec61fd01892e508464ebe2fe"
-  integrity sha512-1wymccLEuFSMBvCk/jT1YDW/GuxMLYwnFwF9CDyYCxoTw2Pt379J3FUhwy9c43j51JdcxVPjwk0jm0EVDsBS2g==
+monaco-editor@~0.41.0:
+  version "0.41.0"
+  resolved "https://registry.yarnpkg.com/monaco-editor/-/monaco-editor-0.41.0.tgz#2ba31e5af7e3ae93ac5d7467ec2772ef9b3d967f"
+  integrity sha512-1o4olnZJsiLmv5pwLEAmzHTE/5geLKQ07BrGxlF4Ri/AXAc2yyDGZwHjiTqD8D/ROKUZmwMA28A+yEowLNOEcA==
 
 ms@2.0.0:
   version "2.0.0"
