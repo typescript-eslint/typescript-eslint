@@ -2934,9 +2934,7 @@ export class Converter {
           })(),
         });
 
-        if (hasModifier(SyntaxKind.DeclareKeyword, node)) {
-          result.declare = isDeclare;
-        }
+        result.declare = isDeclare;
 
         if (node.flags & ts.NodeFlags.GlobalAugmentation) {
           result.global = true;
