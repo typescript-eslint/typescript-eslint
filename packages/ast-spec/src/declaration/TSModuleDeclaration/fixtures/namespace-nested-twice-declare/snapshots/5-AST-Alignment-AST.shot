@@ -27,7 +27,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-dec
 -           end: { column: 32, line: 1 },
 -         },
 -       },
--       declare: false,
+-       declare: true,
 -       global: false,
 -       id: TSQualifiedName {
 -         type: 'TSQualifiedName',
