@@ -99,8 +99,19 @@ The main downside to using this rule is the need for type information.
 
 This rule has a known edge case of triggering on conditions that were modified within function calls (as side effects).
 It is due to limitations of TypeScript's type narrowing.
-We recommend you use an [inline ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1).
 See [#9998](https://github.com/microsoft/TypeScript/issues/9998) for details.
+
+We recommend to upcast the condition to `boolean` with a [Type Assertion](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions).
+
+```ts
+let condition = false;
+
+const f = () => (condition = true);
+f();
+
+if (condition as boolean) {
+}
+```
 
 ## Related To
 
