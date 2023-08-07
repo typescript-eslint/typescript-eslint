@@ -13,7 +13,7 @@ test.describe('Website', () => {
   });
 
   test('Axe', async ({ page }) => {
-    await page.goto('/');
+    await page.goto('/', { waitUntil: 'domcontentloaded' });
     await new AxeBuilder({ page }).analyze();
   });
 

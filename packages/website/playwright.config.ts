@@ -5,7 +5,7 @@ const config: PlaywrightTestConfig = {
   forbidOnly: !!process.env.CI,
   fullyParallel: true,
   reporter: 'html',
-  retries: 0,
+  retries: 1,
   testDir: './tests',
   use: {
     baseURL: process.env.PLAYWRIGHT_TEST_BASE_URL ?? 'http://localhost:3000',
