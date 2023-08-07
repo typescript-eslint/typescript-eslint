@@ -272,6 +272,12 @@ Rules can retrieve their full backing TypeScript type checker with `services.pro
 This can be necessary for TypeScript APIs not wrapped by the parser services.
 :::
 
+:::caution
+We recommend against changing rule logic on whether `services.program` exists.
+In our experience, users are generally surprised when rules behave differently with or without type information.
+Additionally, if they misconfigure their ESLint config, they may not realize why the rule started behaving differently.
+:::
+
 ## Testing
 
 `@typescript-eslint/rule-tester` exports a `RuleTester` with a similar API to the built-in ESLint `RuleTester`.
