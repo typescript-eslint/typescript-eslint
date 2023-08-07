@@ -1,3 +1,4 @@
+import type { TSESLint } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 
 import * as util from '../util';
@@ -10,8 +11,10 @@ export default util.createRule({
       recommended: 'recommended',
       requiresTypeChecking: true,
     },
+    hasSuggestions: true,
     messages: {
       await: 'Unexpected `await` of a non-Promise (non-"Thenable") value.',
+      removeAwait: 'Remove unnecessary `await`.',
     },
     schema: [],
     type: 'problem',
@@ -35,6 +38,17 @@ export default util.createRule({
           context.report({
             messageId: 'await',
             node,
+            suggest: [
+              {
+                messageId: 'removeAwait',
+                fix(fixer): TSESLint.RuleFix {
+                  return fixer.removeRange([
+                    node.range[0],
+                    node.range[0] + 'await'.length,
+                  ]);
+                },
+              },
+            ],
           });
         }
       },
