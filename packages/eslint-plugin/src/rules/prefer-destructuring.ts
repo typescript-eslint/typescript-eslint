@@ -14,12 +14,10 @@ import { getESLintCoreRule } from '../util/getESLintCoreRule';
 const baseRule = getESLintCoreRule('prefer-destructuring');
 
 type BaseOptions = InferOptionsTypeFromRule<typeof baseRule>;
-type FullBaseOptions = BaseOptions & [unknown, unknown];
-type Options0 = FullBaseOptions[0];
-type Options1 = FullBaseOptions[1] & {
+type EnforcementOptions = BaseOptions[1] & {
   enforceForDeclarationWithTypeAnnotation?: boolean;
 };
-type Options = [Options0, Options1?];
+type Options = [BaseOptions[0], EnforcementOptions?];
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
