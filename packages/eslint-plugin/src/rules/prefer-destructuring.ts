@@ -133,7 +133,7 @@ export default createRule<Options, MessageIds>({
       ) {
         const tsObj = esTreeNodeToTSNodeMap.get(rightNode.object);
         const objType = typeChecker.getTypeAtLocation(tsObj);
-        if (!isTypeIterableType(objType, typeChecker)) {
+        if (!isTypeAnyOrIterableType(objType, typeChecker)) {
           if (
             !enforceForRenamedProperties ||
             !getNormalizedEnabledType(reportNode.type, 'object')
@@ -199,7 +199,7 @@ function noFixContext(context: Context): Context {
   });
 }
 
-function isTypeIterableType(
+function isTypeAnyOrIterableType(
   type: ts.Type,
   typeChecker: ts.TypeChecker,
 ): boolean {
@@ -214,7 +214,7 @@ function isTypeIterableType(
     );
     return iterator !== undefined;
   }
-  return type.types.every(t => isTypeIterableType(t, typeChecker));
+  return type.types.every(t => isTypeAnyOrIterableType(t, typeChecker));
 }
 
 function isArrayLiteralIntegerIndexAccess(
