@@ -933,12 +933,52 @@ ruleTester.run('naming-convention', rule, {
       ],
     },
     {
-      code: `
-        import * as FooBar from 'foo_bar';
-        import fooBar from 'foo_bar';
-        import { default as fooBar } from 'foo_bar';
-        import { foo_bar } from 'foo_bar';
-      `,
+      code: "import * as FooBar from 'foo_bar';",
+      parserOptions,
+      options: [
+        {
+          selector: ['import'],
+          format: ['PascalCase'],
+        },
+        {
+          selector: ['import'],
+          modifiers: ['default'],
+          format: ['camelCase'],
+        },
+      ],
+    },
+    {
+      code: "import fooBar from 'foo_bar';",
+      parserOptions,
+      options: [
+        {
+          selector: ['import'],
+          format: ['PascalCase'],
+        },
+        {
+          selector: ['import'],
+          modifiers: ['default'],
+          format: ['camelCase'],
+        },
+      ],
+    },
+    {
+      code: "import { default as fooBar } from 'foo_bar';",
+      parserOptions,
+      options: [
+        {
+          selector: ['import'],
+          format: ['PascalCase'],
+        },
+        {
+          selector: ['import'],
+          modifiers: ['default'],
+          format: ['camelCase'],
+        },
+      ],
+    },
+    {
+      code: "import { foo_bar } from 'foo_bar';",
       parserOptions,
       options: [
         {
@@ -2142,15 +2182,7 @@ ruleTester.run('naming-convention', rule, {
       ],
     },
     {
-      code: `
-        // ❌ error
-        import * as fooBar from 'foo_bar';
-        // ❌ error
-        import FooBar from 'foo_bar';
-        // ❌ error
-        import { default as foo_bar } from 'foo_bar';
-        import { foo_bar } from 'foo_bar';
-      `,
+      code: "import * as fooBar from 'foo_bar';",
       parserOptions,
       options: [
         {
@@ -2172,6 +2204,23 @@ ruleTester.run('naming-convention', rule, {
             formats: 'PascalCase',
           },
         },
+      ],
+    },
+    {
+      code: "import FooBar from 'foo_bar';",
+      parserOptions,
+      options: [
+        {
+          selector: ['import'],
+          format: ['camelCase'],
+        },
+        {
+          selector: ['import'],
+          modifiers: ['namespace'],
+          format: ['PascalCase'],
+        },
+      ],
+      errors: [
         {
           messageId: 'doesNotMatchFormat',
           data: {
@@ -2180,6 +2229,23 @@ ruleTester.run('naming-convention', rule, {
             formats: 'camelCase',
           },
         },
+      ],
+    },
+    {
+      code: "import { default as foo_bar } from 'foo_bar';",
+      parserOptions,
+      options: [
+        {
+          selector: ['import'],
+          format: ['camelCase'],
+        },
+        {
+          selector: ['import'],
+          modifiers: ['namespace'],
+          format: ['PascalCase'],
+        },
+      ],
+      errors: [
         {
           messageId: 'doesNotMatchFormat',
           data: {
