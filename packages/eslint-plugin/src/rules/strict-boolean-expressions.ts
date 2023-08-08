@@ -717,7 +717,7 @@ export default util.createRule<Options, MessageId>({
               messageId: 'conditionErrorNullableObject',
               suggest: [
                 {
-                  messageId: 'conditionErrorNullableObject',
+                  messageId: 'conditionFixCompareNullish',
                   fix: util.getWrappingFixer({
                     sourceCode,
                     node,
