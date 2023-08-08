@@ -93,6 +93,11 @@ export default createRule<Options, MessageIds>({
       enforceForRenamedProperties = false,
       enforceForDeclarationWithTypeAnnotation = false,
     } = options1;
+    const { program, esTreeNodeToTSNodeMap } = getParserServices(context);
+    const typeChecker = program.getTypeChecker();
+    const baseRules = baseRule.create(context);
+    const baseRulesWithoutFix = baseRule.create(noFixContext(context));
+
     return {
       VariableDeclarator(node): void {
         performCheck(node.id, node.init, node);
@@ -110,14 +115,11 @@ export default createRule<Options, MessageIds>({
       rightNode: TSESTree.Expression | null,
       reportNode: TSESTree.VariableDeclarator | TSESTree.AssignmentExpression,
     ): void {
-      const { program, esTreeNodeToTSNodeMap } = getParserServices(context);
-      const typeChecker = program.getTypeChecker();
-      const baseRules = baseRule.create(context);
       const rules =
         leftNode.type === AST_NODE_TYPES.Identifier &&
         leftNode.typeAnnotation === undefined
           ? baseRules
-          : baseRule.create(noFixContext(context));
+          : baseRulesWithoutFix;
       if (
         'typeAnnotation' in leftNode &&
         leftNode.typeAnnotation !== undefined &&
