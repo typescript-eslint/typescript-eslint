@@ -15,7 +15,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('prefer-desctructuring', rule, {
+ruleTester.run('prefer-destructuring', rule, {
   valid: [
     // type annotated
     'var foo: string = object.foo;',
@@ -546,7 +546,7 @@ ruleTester.run('prefer-desctructuring', rule, {
  * ESLint is licensed under the MIT License.
  * Copyright (c) 2023 OpenJS Foundation and other contributors, <www.openjsf.org>.
  */
-ruleTester.run('prefer-desctructuring', rule, {
+ruleTester.run('prefer-destructuring', rule, {
   /* eslint-disable @typescript-eslint/internal/plugin-test-formatting */
   valid: [
     'var [foo] = array;',
