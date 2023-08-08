@@ -1019,7 +1019,17 @@ if (y) {
             },
           ],
         },
-        { messageId: 'conditionErrorNullableObject', line: 3, column: 33 },
+        {
+          messageId: 'conditionErrorNullableObject',
+          line: 3,
+          column: 33,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `        (x?: { a: number }) => x == null;`,
+            },
+          ],
+        },
         {
           messageId: 'conditionErrorNullableObject',
           line: 4,
@@ -1032,10 +1042,6 @@ if (y) {
           ],
         },
       ],
-      output: `
-        declare const x: object | null; if (x) {}
-        (x?: { a: number }) => x == null;
-        <T extends {} | null | undefined>(x: T) => x ? 1 : 0;      `,
     }),
 
     // nullable string in boolean context
@@ -1639,8 +1645,40 @@ if (x) {
         obj && 1 || 0
       `,
       errors: [
-        { messageId: 'conditionErrorNullableObject', line: 3, column: 10 },
-        { messageId: 'conditionErrorNullableObject', line: 4, column: 10 },
+        {
+          messageId: 'conditionErrorNullableObject',
+          line: 3,
+          column: 10,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+        declare const obj: { x: number } | null;
+        (obj == null) ? 1 : 0
+        !obj
+        obj || 0
+        obj && 1 || 0
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNullableObject',
+          line: 4,
+          column: 10,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+        declare const obj: { x: number } | null;
+        !obj ? 1 : 0
+        obj == null
+        obj || 0
+        obj && 1 || 0
+      `,
+            },
+          ],
+        },
         {
           messageId: 'conditionErrorNullableObject',
           line: 5,
@@ -1676,13 +1714,6 @@ if (x) {
           ],
         },
       ],
-      output: `
-        declare const obj: { x: number } | null;
-        (obj == null) ? 1 : 0
-        obj == null
-        obj || 0
-        obj && 1 || 0
-      `,
     },
   ],
 });
