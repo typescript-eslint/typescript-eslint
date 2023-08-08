@@ -96,7 +96,7 @@ export default createRule<Options, MessageIds>({
     const { program, esTreeNodeToTSNodeMap } = getParserServices(context);
     const typeChecker = program.getTypeChecker();
     const baseRules = baseRule.create(context);
-    const baseRulesWithoutFix = baseRule.create(noFixContext(context));
+    let baseRulesWithoutFixCache: typeof baseRules | null = null;
 
     return {
       VariableDeclarator(node): void {
@@ -119,7 +119,7 @@ export default createRule<Options, MessageIds>({
         leftNode.type === AST_NODE_TYPES.Identifier &&
         leftNode.typeAnnotation === undefined
           ? baseRules
-          : baseRulesWithoutFix;
+          : baseRulesWithoutFix();
       if (
         'typeAnnotation' in leftNode &&
         leftNode.typeAnnotation !== undefined &&
@@ -170,6 +170,13 @@ export default createRule<Options, MessageIds>({
       return enabledTypes[nodeType as keyof typeof enabledTypes][
         destructuringType as keyof (typeof enabledTypes)[keyof typeof enabledTypes]
       ];
+    }
+
+    function baseRulesWithoutFix() {
+      if (baseRulesWithoutFixCache === null) {
+        baseRulesWithoutFixCache = baseRule.create(noFixContext(context));
+      }
+      return baseRulesWithoutFixCache;
     }
   },
 });
