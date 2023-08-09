@@ -172,8 +172,8 @@ export default createRule<Options, MessageIds>({
       ];
     }
 
-    function baseRulesWithoutFix() {
-      if (baseRulesWithoutFixCache === null) {
+    function baseRulesWithoutFix(): ReturnType<typeof baseRule.create> {
+      if (baseRulesWithoutFixCache == null) {
         baseRulesWithoutFixCache = baseRule.create(noFixContext(context));
       }
       return baseRulesWithoutFixCache;
