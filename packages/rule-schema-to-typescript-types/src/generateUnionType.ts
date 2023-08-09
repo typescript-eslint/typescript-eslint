@@ -39,7 +39,7 @@ export function generateUnionType(
             if (Array.isArray(memberSchema)) {
               throw new NotSupportedError('array in an enum', memberSchema);
             }
-            return generateType(memberSchema as JSONSchema4, refMap);
+            return generateType(memberSchema, refMap);
         }
       })(),
     );
