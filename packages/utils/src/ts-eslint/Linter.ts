@@ -130,12 +130,8 @@ namespace Linter {
   export type GlobalVariableOptionBase = 'off' | 'readonly' | 'writable';
   export type GlobalVariableOption = GlobalVariableOptionBase | boolean;
 
-  export interface GlobalsConfig {
-    [name: string]: GlobalVariableOption;
-  }
-  export interface EnvironmentConfig {
-    [name: string]: boolean;
-  }
+  export type GlobalsConfig = Record<string, GlobalVariableOption>;
+  export type EnvironmentConfig = Record<string, boolean>;
 
   // https://github.com/eslint/eslint/blob/v6.8.0/conf/config-schema.js
   interface BaseConfig {

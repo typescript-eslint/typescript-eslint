@@ -1,7 +1,9 @@
 import { useColorMode } from '@docusaurus/theme-common';
 import type * as Monaco from 'monaco-editor';
 import { useEffect, useState } from 'react';
+import semverSatisfies from 'semver/functions/satisfies';
 
+import rootPackageJson from '../../../../../package.json';
 import type { createTypeScriptSandbox } from '../../vendor/sandbox';
 import { createCompilerOptions } from '../lib/createCompilerOptions';
 import { createFileSystem } from '../linter/bridge';
@@ -93,7 +95,9 @@ export const useSandboxServices = (
           Array.from(
             new Set([...sandboxInstance.supportedVersions, window.ts.version]),
           )
-            .filter(item => parseFloat(item) >= 4.3)
+            .filter(item =>
+              semverSatisfies(item, rootPackageJson.devDependencies.typescript),
+            )
             .sort((a, b) => b.localeCompare(a)),
         );
 

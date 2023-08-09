@@ -254,6 +254,36 @@ import type { foo } from 'import2/private/bar';
         },
       ],
     },
+    {
+      code: "import { type Bar } from 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              importNames: ['Bar'],
+              message: 'Please use Bar from /import-bar/baz/ instead.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "export { type Bar } from 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              importNames: ['Bar'],
+              message: 'Please use Bar from /import-bar/baz/ instead.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -583,6 +613,56 @@ import type { foo } from 'import2/private/bar';
         {
           messageId: 'patterns',
           type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+    {
+      code: "import { Bar, type Baz } from 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              importNames: ['Bar', 'Baz'],
+              message: 'Please use Bar and Baz from /import-bar/baz/ instead.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'importNameWithCustomMessage',
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+        {
+          messageId: 'importNameWithCustomMessage',
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+    {
+      code: "export { Bar, type Baz } from 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              importNames: ['Bar', 'Baz'],
+              message: 'Please use Bar and Baz from /import-bar/baz/ instead.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'importNameWithCustomMessage',
+          type: AST_NODE_TYPES.ExportNamedDeclaration,
+        },
+        {
+          messageId: 'importNameWithCustomMessage',
+          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
     },

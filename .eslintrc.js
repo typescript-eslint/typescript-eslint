@@ -54,7 +54,6 @@ module.exports = {
     'deprecation/deprecation': 'error',
 
     // TODO(#7138): Investigate enabling these soon ✨
-    '@typescript-eslint/consistent-indexed-object-style': 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
 
     // TODO(#7130): Investigate changing these in or removing these from presets

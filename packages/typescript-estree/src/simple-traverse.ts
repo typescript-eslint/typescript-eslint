@@ -27,12 +27,10 @@ type SimpleTraverseOptions = Readonly<
     }
   | {
       visitorKeys?: Readonly<VisitorKeys>;
-      visitors: {
-        [key: string]: (
-          node: TSESTree.Node,
-          parent: TSESTree.Node | undefined,
-        ) => void;
-      };
+      visitors: Record<
+        string,
+        (node: TSESTree.Node, parent: TSESTree.Node | undefined) => void
+      >;
     }
 >;
 

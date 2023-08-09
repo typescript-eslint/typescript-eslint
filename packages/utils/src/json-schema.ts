@@ -121,19 +121,11 @@ interface JSONSchema4Base {
   /**
    * Reusable definitions that can be referenced via `$ref`
    */
-  definitions?:
-    | {
-        [k: string]: JSONSchema4;
-      }
-    | undefined;
+  definitions?: Record<string, JSONSchema4> | undefined;
   /**
    * Reusable definitions that can be referenced via `$ref`
    */
-  $defs?:
-    | {
-        [k: string]: JSONSchema4;
-      }
-    | undefined;
+  $defs?: Record<string, JSONSchema4> | undefined;
 
   /**
    * The value of this property MUST be another schema which will provide
@@ -257,11 +249,7 @@ export interface JSONSchema4ObjectSchema extends JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.2
    */
-  properties?:
-    | {
-        [k: string]: JSONSchema4;
-      }
-    | undefined;
+  properties?: Record<string, JSONSchema4> | undefined;
 
   /**
    * This attribute is an object that defines the schema for a set of
@@ -274,22 +262,14 @@ export interface JSONSchema4ObjectSchema extends JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.3
    */
-  patternProperties?:
-    | {
-        [k: string]: JSONSchema4;
-      }
-    | undefined;
+  patternProperties?: Record<string, JSONSchema4> | undefined;
 
   /**
    * The `dependencies` keyword conditionally applies a sub-schema when a given
    * property is present. This schema is applied in the same way `allOf` applies
    * schemas. Nothing is merged or extended. Both schemas apply independently.
    */
-  dependencies?:
-    | {
-        [k: string]: JSONSchema4 | string[];
-      }
-    | undefined;
+  dependencies?: Record<string, JSONSchema4 | string[]> | undefined;
 
   /**
    * The maximum number of properties allowed for record-style schemas
