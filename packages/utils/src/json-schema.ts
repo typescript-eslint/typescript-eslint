@@ -25,23 +25,22 @@ export type JSONSchema4TypeName =
 /**
  * @see https://tools.ietf.org/html/draft-zyp-json-schema-04#section-3.5
  */
-export type JSONSchema4Type =
-  | boolean
+export type JSONSchema4Type = boolean | number | string | null;
+
+export type JSONSchema4TypeExtended =
+  | JSONSchema4Type
   | JSONSchema4Array
-  | JSONSchema4Object
-  | number
-  | string
-  | null;
+  | JSONSchema4Object;
 
 // Workaround for infinite type recursion
 export interface JSONSchema4Object {
-  [key: string]: JSONSchema4Type;
+  [key: string]: JSONSchema4TypeExtended;
 }
 
 // Workaround for infinite type recursion
 // https://github.com/Microsoft/TypeScript/issues/3496#issuecomment-128553540
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-export interface JSONSchema4Array extends Array<JSONSchema4Type> {}
+export interface JSONSchema4Array extends Array<JSONSchema4TypeExtended> {}
 
 /**
  * Meta schema
@@ -157,7 +156,7 @@ interface JSONSchema4Base {
   /**
    * The default value for the item if not present
    */
-  default?: JSONSchema4Type | undefined;
+  default?: JSONSchema4TypeExtended | undefined;
 
   /**
    * This attribute indicates if the instance must have a value, and not
