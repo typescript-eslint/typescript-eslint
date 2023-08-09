@@ -8,7 +8,7 @@ description: 'Disallow duplicate class members.'
 
 :::danger
 
-The code problem checked by this ESLint rule is automatically checked by the TypeScript compiler. Thus, it is not recommended to turn on this rule in new TypeScript projects. You only need to enable this rule if you prefer the ESLint error messages over the TypeScript compiler error messages. (When this rule was originally written, the TypeScript compiler checks did not exist.)
+The code problem checked by this ESLint rule is automatically checked by the TypeScript compiler. Thus, it is not recommended to turn on this rule in new TypeScript projects. You only need to enable this rule if you prefer the ESLint error messages over the TypeScript compiler error messages.
 
 :::
 
