@@ -6,8 +6,6 @@ description: 'Enforce default parameters to be last.'
 >
 > See **https://typescript-eslint.io/rules/default-param-last** for documentation.
 
-## Examples
-
 This rule extends the base [`eslint/default-param-last`](https://eslint.org/docs/rules/default-param-last) rule.
 It adds support for optional parameters.
 

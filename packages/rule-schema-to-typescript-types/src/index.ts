@@ -69,9 +69,7 @@ function compileSchema(
 
   const refMap = new Map<string, string>();
   // we only support defs at the top level for simplicity
-  const defs = (schema.$defs ?? schema.definitions) as
-    | Record<string, JSONSchema4>
-    | undefined;
+  const defs = schema.$defs ?? schema.definitions;
   if (defs) {
     for (const [defKey, defSchema] of Object.entries(defs)) {
       const typeName = toPascalCase(defKey);

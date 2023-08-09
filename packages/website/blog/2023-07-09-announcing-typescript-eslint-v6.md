@@ -110,6 +110,7 @@ See [our _Configurations_ linting docs](/linting/configs) for the updated docume
 
 For more information on these changes, see:
 
+- [Our documentation on our configurations](https://typescript-eslint.io/linting/configs).
 - [Configs: Have recommended/strict configs include lesser configs, and simplify type checked names](https://github.com/typescript-eslint/typescript-eslint/discussions/6019) for the discussion leading up to these configuration changes.
 - [feat(eslint-plugin): rework configs: recommended, strict, stylistic; -type-checked](https://github.com/typescript-eslint/typescript-eslint/pull/5251) for the pull request implementing the changes.
 
@@ -636,7 +637,7 @@ As of [feat: add package.json exports for public packages](https://github.com/ty
 Developers must now mostly import directly from the package names, e.g.:
 
 ```ts
-import * as TSESLint from '@typescript-eslint/ts-eslint';
+import * as TSESLint from '@typescript-eslint/utils/ts-eslint';
 ```
 
 See [RFC: Use package.json exports to "hide" the dist folder for packages and control our exported surface-area](https://github.com/typescript-eslint/typescript-eslint/discussions/6015) for more backing context.

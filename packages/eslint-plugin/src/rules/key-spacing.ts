@@ -143,12 +143,11 @@ export default util.createRule<Options, MessageIds>({
                 typeAnnotation.range[0] - difference,
                 typeAnnotation.range[0],
               ]);
-            } else {
-              return fixer.insertTextBefore(
-                typeAnnotation,
-                ' '.repeat(-difference),
-              );
             }
+            return fixer.insertTextBefore(
+              typeAnnotation,
+              ' '.repeat(-difference),
+            );
           },
           data: {
             computed: '',
@@ -177,12 +176,11 @@ export default util.createRule<Options, MessageIds>({
                 typeAnnotation.typeAnnotation.range[0] - difference,
                 typeAnnotation.typeAnnotation.range[0],
               ]);
-            } else {
-              return fixer.insertTextBefore(
-                typeAnnotation.typeAnnotation,
-                ' '.repeat(-difference),
-              );
             }
+            return fixer.insertTextBefore(
+              typeAnnotation.typeAnnotation,
+              ' '.repeat(-difference),
+            );
           },
           data: {
             computed: '',
@@ -314,9 +312,8 @@ export default util.createRule<Options, MessageIds>({
                   toCheck.range[0] - difference,
                   toCheck.range[0],
                 ]);
-              } else {
-                return fixer.insertTextBefore(toCheck, ' '.repeat(-difference));
               }
+              return fixer.insertTextBefore(toCheck, ' '.repeat(-difference));
             },
             data: {
               computed: '',

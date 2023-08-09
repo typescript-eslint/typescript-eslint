@@ -96,7 +96,7 @@ export default util.createRule<Options, MessageIds>({
     const fixStyle = option.fixStyle ?? 'separate-type-imports';
     const sourceCode = context.getSourceCode();
 
-    const sourceImportsMap: { [key: string]: SourceImports } = {};
+    const sourceImportsMap: Record<string, SourceImports> = {};
 
     return {
       ...(prefer === 'type-imports'
@@ -296,25 +296,22 @@ export default util.createRule<Options, MessageIds>({
                             messageId: 'aImportInDecoMeta',
                             data: { typeImports },
                           };
-                        } else {
-                          return {
-                            messageId: 'aImportIsOnlyTypes',
-                            data: { typeImports },
-                          };
                         }
-                      } else {
-                        if (isTypeImport) {
-                          return {
-                            messageId: 'someImportsInDecoMeta',
-                            data: { typeImports }, // typeImports are all the value specifiers that are in the type position
-                          };
-                        } else {
-                          return {
-                            messageId: 'someImportsAreOnlyTypes',
-                            data: { typeImports }, // typeImports are all the type specifiers in the value position
-                          };
-                        }
+                        return {
+                          messageId: 'aImportIsOnlyTypes',
+                          data: { typeImports },
+                        };
                       }
+                      if (isTypeImport) {
+                        return {
+                          messageId: 'someImportsInDecoMeta',
+                          data: { typeImports }, // typeImports are all the value specifiers that are in the type position
+                        };
+                      }
+                      return {
+                        messageId: 'someImportsAreOnlyTypes',
+                        data: { typeImports }, // typeImports are all the type specifiers in the value position
+                      };
                     })();
 
                     context.report({

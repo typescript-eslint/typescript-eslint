@@ -15,7 +15,7 @@ interface RuleMetaDataDocs {
   /**
    * The recommendation level for the rule.
    * Used by the build tools to generate the recommended and strict configs.
-   * Set to false to not include it as a recommendation
+   * Exclude to not include it as a recommendation.
    */
   recommended?: RuleRecommendation;
   /**
@@ -170,9 +170,7 @@ type ReportDescriptor<TMessageIds extends string> =
  * Plugins can add their settings using declaration
  * merging against this interface.
  */
-interface SharedConfigurationSettings {
-  [name: string]: unknown;
-}
+type SharedConfigurationSettings = Record<string, unknown>;
 
 interface RuleContext<
   TMessageIds extends string,
@@ -428,9 +426,7 @@ interface RuleListenerBaseSelectors {
 type RuleListenerExitSelectors = {
   [K in keyof RuleListenerBaseSelectors as `${K}:exit`]: RuleListenerBaseSelectors[K];
 };
-interface RuleListenerCatchAllBaseCase {
-  [nodeSelector: string]: RuleFunction | undefined;
-}
+type RuleListenerCatchAllBaseCase = Record<string, RuleFunction | undefined>;
 // Interface to merge into for anyone that wants to add more selectors
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface RuleListenerExtension {}
