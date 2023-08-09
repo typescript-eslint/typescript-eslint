@@ -187,6 +187,39 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
+        let x: Record<number, unknown>;
+        let i: number = 0;
+        y = x[i];
+      `,
+      options: [
+        { object: false, array: true },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        let x: Record<number, unknown>;
+        let i: 0 = 0;
+        y = x[i];
+      `,
+      options: [
+        { object: false, array: true },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
+        let x: Record<number, unknown>;
+        let i: 0 | 1 | 2 = 0;
+        y = x[i];
+      `,
+      options: [
+        { object: false, array: true },
+        { enforceForRenamedProperties: true },
+      ],
+    },
+    {
+      code: `
         let x: { 0: unknown };
         y += x[0];
       `,
@@ -500,6 +533,60 @@ ruleTester.run('prefer-destructuring', rule, {
           VariableDeclarator: { object: false, array: false },
           AssignmentExpression: { object: true, array: false },
         },
+        { enforceForRenamedProperties: true },
+      ],
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'object' },
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+    },
+    {
+      code: `
+        let x: Record<number, unknown>;
+        let i: number = 0;
+        y = x[i];
+      `,
+      options: [
+        { object: true, array: true },
+        { enforceForRenamedProperties: true },
+      ],
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'object' },
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+    },
+    {
+      code: `
+        let x: Record<number, unknown>;
+        let i: 0 = 0;
+        y = x[i];
+      `,
+      options: [
+        { object: true, array: true },
+        { enforceForRenamedProperties: true },
+      ],
+      errors: [
+        {
+          messageId: 'preferDestructuring',
+          data: { type: 'object' },
+          type: AST_NODE_TYPES.AssignmentExpression,
+        },
+      ],
+    },
+    {
+      code: `
+        let x: Record<number, unknown>;
+        let i: 0 | 1 | 2 = 0;
+        y = x[i];
+      `,
+      options: [
+        { object: true, array: true },
         { enforceForRenamedProperties: true },
       ],
       errors: [
