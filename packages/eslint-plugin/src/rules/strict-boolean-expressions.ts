@@ -703,23 +703,33 @@ export default util.createRule<Options, MessageId>({
             context.report({
               node,
               messageId: 'conditionErrorNullableObject',
-              fix: util.getWrappingFixer({
-                sourceCode,
-                node: node.parent,
-                innerNode: node,
-                wrap: code => `${code} == null`,
-              }),
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareNullish',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node: node.parent,
+                    innerNode: node,
+                    wrap: code => `${code} == null`,
+                  }),
+                },
+              ],
             });
           } else {
             // if (nullableObject)
             context.report({
               node,
               messageId: 'conditionErrorNullableObject',
-              fix: util.getWrappingFixer({
-                sourceCode,
-                node,
-                wrap: code => `${code} != null`,
-              }),
+              suggest: [
+                {
+                  messageId: 'conditionFixCompareNullish',
+                  fix: util.getWrappingFixer({
+                    sourceCode,
+                    node,
+                    wrap: code => `${code} != null`,
+                  }),
+                },
+              ],
             });
           }
         }
