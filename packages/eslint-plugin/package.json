@@ -65,7 +65,6 @@
     "graphemer": "^1.4.0",
     "ignore": "^5.2.4",
     "natural-compare": "^1.4.0",
-    "natural-compare-lite": "^1.4.0",
     "semver": "^7.5.4",
     "ts-api-utils": "^1.0.1"
   },
