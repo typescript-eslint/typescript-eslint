@@ -2,8 +2,9 @@
   "extends": "./tsconfig.json",
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
-    "module": "commonjs",
-    "types": ["jest", "node"]
+    "module": "Node16",
+    "types": ["jest", "node"],
+    "moduleResolution": "Node16"
   },
   "exclude": ["tests/fixtures"],
   "include": [
