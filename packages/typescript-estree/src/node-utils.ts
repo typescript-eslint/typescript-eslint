@@ -929,7 +929,7 @@ export function getNamespaceModifiers(
   node: ts.ModuleDeclaration,
 ): ts.Modifier[] | undefined {
   // For following nested namespaces, use modifiers given to the topmost namespace
-  //   export declae namespace foo.bar.baz {}
+  //   export declare namespace foo.bar.baz {}
   let modifiers = getModifiers(node);
   let moduleDeclaration = node;
   while (
