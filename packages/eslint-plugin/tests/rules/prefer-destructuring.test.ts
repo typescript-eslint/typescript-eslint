@@ -304,6 +304,77 @@ ruleTester.run('prefer-destructuring', rule, {
         { enforceForRenamedProperties: true },
       ],
     },
+
+    // already destructured
+    `
+      let xs: unknown[] = [1];
+      let [x] = xs;
+    `,
+    `
+      const obj: { x: unknown } = { x: 1 };
+      const { x } = obj;
+    `,
+    `
+      var obj: { x: unknown } = { x: 1 };
+      var { x: y } = obj;
+    `,
+    `
+      let obj: { x: unknown } = { x: 1 };
+      let key: 'x' = 'x';
+      let { [key]: foo } = obj;
+    `,
+    `
+      const obj: { x: unknown } = { x: 1 };
+      let x: unknown;
+      ({ x } = obj);
+    `,
+
+    // valid unless enforceForRenamedProperties is true
+    `
+      let obj: { x: unknown } = { x: 1 };
+      let y = obj.x;
+    `,
+    `
+      var obj: { x: unknown } = { x: 1 };
+      var y: unknown;
+      y = obj.x;
+    `,
+    `
+      const obj: { x: unknown } = { x: 1 };
+      const y = obj['x'];
+    `,
+    `
+      let obj: Record<string, unknown> = {};
+      let key = 'abc';
+      var y = obj[key];
+    `,
+
+    // shorthand operators shouldn't be reported;
+    `
+      let obj: { x: number } = { x: 1 };
+      let x = 10;
+      x += obj.x;
+    `,
+    `
+      let obj: { x: boolean } = { x: false };
+      let x = true;
+      x ||= obj.x;
+    `,
+    `
+      const xs: number[] = [1];
+      let x = 3;
+      x *= xs[0];
+    `,
+
+    // optional chaining shouldn't be reported
+    `
+      let xs: unknown[] | undefined;
+      let x = xs?.[0];
+    `,
+    `
+      let obj: Record<string, unknown> | undefined;
+      let x = obj?.x;
+    `,
   ],
   invalid: [
     // enforceForDeclarationWithTypeAnnotation: true
