@@ -4,14 +4,13 @@
 // npx nx generate-lib @typescript-eslint/scope-manager
 
 import type { ImplicitLibVariableOptions } from '../variable';
-import { es2023 } from './es2023';
-import { esnext_decorators } from './esnext.decorators';
-import { esnext_disposable } from './esnext.disposable';
-import { esnext_intl } from './esnext.intl';
+import { TYPE } from './base-config';
+import { decorators } from './decorators';
+import { es2015_symbol } from './es2015.symbol';
 
-export const esnext = {
-  ...es2023,
-  ...esnext_intl,
-  ...esnext_decorators,
-  ...esnext_disposable,
+export const esnext_decorators = {
+  ...es2015_symbol,
+  ...decorators,
+  SymbolConstructor: TYPE,
+  Function: TYPE,
 } as Record<string, ImplicitLibVariableOptions>;
