@@ -4,7 +4,7 @@ jobs:
     steps:
       - uses: actions-ecosystem/action-remove-labels@v1
         with:
-          labels: "awaiting response"
+          labels: 'awaiting response'
       - if: failure()
         run: |
           echo "Don't worry if the previous step failed."
