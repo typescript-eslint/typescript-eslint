@@ -90,31 +90,44 @@ describe('Validating rule docs', () => {
         });
       });
 
-      test(`headers must be title-cased`, () => {
-        // Get all H2 headers objects as the other levels are variable by design.
-        const headers = tokens.filter(tokenIsH2);
+      test(`headings must be title-cased`, () => {
+        // Get all H2 headings objects as the other levels are variable by design.
+        const headings = tokens.filter(tokenIsH2);
 
-        headers.forEach(header =>
-          expect(header.text).toBe(titleCase(header.text)),
+        headings.forEach(heading =>
+          expect(heading.text).toBe(titleCase(heading.text)),
         );
       });
 
+      const requiredHeadings = ['When Not To Use It'];
       const importantHeadings = new Set([
+        ...requiredHeadings,
         'How to Use',
         'Options',
         'Related To',
-        'When Not To Use It',
       ]);
 
       test('important headings must be h2s', () => {
-        const headers = tokens.filter(tokenIsHeading);
+        const headings = tokens.filter(tokenIsHeading);
 
-        for (const header of headers) {
-          if (importantHeadings.has(header.raw.replace(/#/g, '').trim())) {
-            expect(header.depth).toBe(2);
+        for (const heading of headings) {
+          if (importantHeadings.has(heading.raw.replace(/#/g, '').trim())) {
+            expect(heading.depth).toBe(2);
           }
         }
       });
+
+      if (!rules[ruleName as keyof typeof rules].meta.docs?.extendsBaseRule) {
+        test('must include required headings', () => {
+          const headingTexts = new Set(
+            tokens.filter(tokenIsH2).map(token => token.text),
+          );
+
+          for (const requiredHeading of requiredHeadings) {
+            expect(headingTexts).toContain(requiredHeading);
+          }
+        });
+      }
     });
   }
 });

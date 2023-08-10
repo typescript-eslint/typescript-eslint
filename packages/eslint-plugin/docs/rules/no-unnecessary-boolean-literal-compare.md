@@ -126,7 +126,7 @@ if (!(someNullCondition ?? true)) {
 | `!(nullableBooleanVar === false)` | `nullableBooleanVar ?? true`    | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 | `!(nullableBooleanVar !== false)` | `!(nullableBooleanVar ?? true)` | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 
-## Not To Use It
+## When Not To Use It
 
 Do not use this rule when `strictNullChecks` is disabled.
 ESLint is not able to distinguish between `false` and `undefined` or `null` values.

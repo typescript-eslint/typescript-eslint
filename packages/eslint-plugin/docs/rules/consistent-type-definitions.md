@@ -79,4 +79,4 @@ type T = { x: number };
 
 ## When Not To Use It
 
-If you specifically want to use an interface or type literal for stylistic reasons, you can disable this rule.
+If you specifically want to use an interface or type literal for stylistic reasons, you can avoid this rule.

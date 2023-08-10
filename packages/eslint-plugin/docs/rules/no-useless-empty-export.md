@@ -41,3 +41,7 @@ export const value = 'Hello, world!';
 ```ts
 import 'some-other-module';
 ```
+
+## When Not To Use It
+
+If you don't mind an empty `export {}` at the bottom of files, you likely don't need this rule.

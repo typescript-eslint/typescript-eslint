@@ -57,3 +57,7 @@ When set to true, duplicate checks on intersection type constituents are ignored
 ### `ignoreUnions`
 
 When set to true, duplicate checks on union type constituents are ignored.
+
+## When Not To Use It
+
+If you don't mind excess types taking up space in intersections or unions, you can avoid this rule.

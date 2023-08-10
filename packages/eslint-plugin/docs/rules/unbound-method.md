@@ -98,6 +98,6 @@ log();
 
 ## When Not To Use It
 
-If your code intentionally waits to bind methods after use, such as by passing a `scope: this` along with the method, you can disable this rule.
+If your code intentionally waits to bind methods after use, such as by passing a `scope: this` along with the method, you can avoid this rule.
 
 If you're wanting to use `toBeCalled` and similar matches in `jest` tests, you can disable this rule for your test files in favor of [`eslint-plugin-jest`'s version of this rule](https://github.com/jest-community/eslint-plugin-jest/blob/main/docs/rules/unbound-method.md).

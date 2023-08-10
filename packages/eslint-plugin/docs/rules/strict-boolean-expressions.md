@@ -178,6 +178,10 @@ This rule provides following fixes and suggestions for particular types in boole
 - `any` and `unknown` - Provides following suggestions:
   - Explicitly cast value to a boolean (`value` → `Boolean(value)`)
 
+## When Not To Use It
+
+If your project isn't likely to experience bugs from falsy non-boolean values being used in logical conditions, you can skip enabling this rule.
+
 ## Related To
 
 - [no-unnecessary-condition](./no-unnecessary-condition.md) - Similar rule which reports always-truthy and always-falsy values in conditions

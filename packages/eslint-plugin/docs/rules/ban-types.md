@@ -181,3 +181,7 @@ Example configuration:
   ]
 }
 ```
+
+## When Not To Use It
+
+If your project intentionally deals with the class equivalents of primitives, it might not be worthwhile to enable `ban-types`.

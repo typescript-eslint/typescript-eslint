@@ -49,6 +49,10 @@ namespace Qux {}
 function Qux() {}
 ```
 
+## When Not To Use It
+
+If your project intentionally defines classes and interfaces with unsafe declaration merging patterns, this rule might not be for you.
+
 ## Further Reading
 
 - [Declaration Merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html)

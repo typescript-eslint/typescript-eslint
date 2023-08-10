@@ -29,6 +29,11 @@ foo?.bar;
 foo?.bar();
 ```
 
+## When Not To Use It
+
+If your project's types don't always fully describe whether values may be nullable, this rule might create many false reports.
+You may want to disable it in those cases.
+
 ## Further Reading
 
 - [TypeScript 3.7 Release Notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html)

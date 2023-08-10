@@ -111,6 +111,10 @@ const arg = 'something';
 const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
 ```
 
+## When Not To Use It
+
+If you're not worried about incorrectly stringifying non-string values in template literals, then you likely don't need this rule.
+
 ## Related To
 
 - [`no-base-to-string`](./no-base-to-string.md)

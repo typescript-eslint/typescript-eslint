@@ -48,3 +48,9 @@ enum E {
   B = 'B',
 }
 ```
+
+## When Not To Use It
+
+It can sometimes be useful to include duplicate enum members.
+For example, when renaming an enum member, it can sometimes be useful to keep the old name until a scheduled major breaking change.
+If your project intentionally duplicates enum member values, you can avoid this rule.

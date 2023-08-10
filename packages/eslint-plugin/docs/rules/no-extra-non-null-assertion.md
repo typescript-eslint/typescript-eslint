@@ -50,3 +50,7 @@ function foo(bar?: { n: number }) {
   return bar?.n;
 }
 ```
+
+## When Not To Use It
+
+If you don't mind excess `!`s in your code, you can avoid this rule.

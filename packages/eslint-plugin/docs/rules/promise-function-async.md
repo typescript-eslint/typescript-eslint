@@ -57,3 +57,7 @@ async function functionReturnsUnionWithPromiseImplicitly(p: boolean) {
   return p ? 'value' : Promise.resolve('value');
 }
 ```
+
+## When Not To Use It
+
+If you don't mind the extra weight of functions being `async` despite not `await`ing, you can turn off this rule.

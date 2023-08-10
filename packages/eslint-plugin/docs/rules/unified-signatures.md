@@ -66,3 +66,8 @@ function f(a: string): void;
 function f(a: number): void;
 function f(b: string): void;
 ```
+
+## When Not To Use It
+
+This is purely a stylistic rule to help with readability of function signature overloads.
+You can turn it off if you don't want to consistently keep them next to each other and unified.

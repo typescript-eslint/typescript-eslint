@@ -96,5 +96,5 @@ export { Button, type ButtonProps } from 'some-library';
 
 ## When Not To Use It
 
-- If you specifically want to use both export kinds for stylistic reasons, you can disable this rule.
-- If you use `--isolatedModules` the compiler would error if a type is not re-exported using `export type`. If you also don't wish to enforce one style over the other, you can disable this rule.
+- If you specifically want to use both export kinds for stylistic reasons, you can avoid this rule.
+- If you use `--isolatedModules` the compiler would error if a type is not re-exported using `export type`. If you also don't wish to enforce one style over the other, you can avoid this rule.
