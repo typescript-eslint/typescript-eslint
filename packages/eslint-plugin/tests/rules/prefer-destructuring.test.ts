@@ -18,53 +18,20 @@ const ruleTester = new RuleTester({
 ruleTester.run('prefer-destructuring', rule, {
   valid: [
     // type annotated
-    'var foo: string = object.foo;',
-    'const bar: number = array[0];',
+    `
+      declare const object: { foo: string };
+      var foo: string = object.foo;
+    `,
+    `
+      declare const array: number[];
+      const bar: number = array[0];
+    `,
     // enforceForDeclarationWithTypeAnnotation: true
     {
-      code: 'var { foo } = object;',
-      options: [
-        { object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-    {
-      code: 'var { foo }: { foo: number } = object;',
-      options: [
-        { object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-    {
-      code: 'var [foo] = array;',
-      options: [
-        { array: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-    {
-      code: 'var [foo]: [foo: number] = array;',
-      options: [
-        { object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-    {
-      code: 'var foo: unknown = object.bar;',
-      options: [
-        { object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-    {
-      code: 'var { foo: bar } = object;',
-      options: [
-        { object: true },
-        { enforceForDeclarationWithTypeAnnotation: true },
-      ],
-    },
-    {
-      code: 'var { foo: bar }: { foo: boolean } = object;',
+      code: `
+        declare const object: { foo: string };
+        var { foo } = object;
+      `,
       options: [
         { object: true },
         { enforceForDeclarationWithTypeAnnotation: true },
@@ -72,6 +39,70 @@ ruleTester.run('prefer-destructuring', rule, {
     },
     {
       code: `
+        declare const object: { foo: string };
+        var { foo }: { foo: number } = object;
+      `,
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+    {
+      code: `
+        declare const array: number[];
+        var [foo] = array;
+      `,
+      options: [
+        { array: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+    {
+      code: `
+        declare const array: number[];
+        var [foo]: [foo: number] = array;
+      `,
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+    {
+      code: `
+        declare const object: { bar: string };
+        var foo: unknown = object.bar;
+      `,
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+    {
+      code: `
+        declare const object: { foo: string };
+        var { foo: bar } = object;
+      `,
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+    {
+      code: `
+        declare const object: { foo: boolean };
+        var { foo: bar }: { foo: boolean } = object;
+      `,
+      options: [
+        { object: true },
+        { enforceForDeclarationWithTypeAnnotation: true },
+      ],
+    },
+    {
+      code: `
+        declare class Foo {
+          foo: string;
+        }
+
         class Bar extends Foo {
           static foo() {
             var foo: any = super.foo;
