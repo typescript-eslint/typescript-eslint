@@ -3,8 +3,7 @@
   "compilerOptions": {
     "outDir": "../../dist/out-tsc",
     "module": "Node16",
-    "types": ["jest", "node"],
-    "moduleResolution": "Node16"
+    "types": ["jest", "node"]
   },
   "exclude": ["tests/fixtures"],
   "include": [
