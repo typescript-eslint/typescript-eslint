@@ -83,6 +83,11 @@ const result2 = foo() == null;
     necessaryConditionTest('null | object'),
     necessaryConditionTest('undefined | true'),
     necessaryConditionTest('void | true'),
+    // "branded" type
+    necessaryConditionTest('string & {}'),
+    necessaryConditionTest('string & { __brand: string }'),
+    necessaryConditionTest('number & {}'),
+    necessaryConditionTest('boolean & {}'),
 
     necessaryConditionTest('any'), // any
     necessaryConditionTest('unknown'), // unknown

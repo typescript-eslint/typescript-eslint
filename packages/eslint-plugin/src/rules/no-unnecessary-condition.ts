@@ -28,6 +28,9 @@ const isTruthyLiteral = (type: ts.Type): boolean =>
 const isPossiblyFalsy = (type: ts.Type): boolean =>
   tsutils
     .unionTypeParts(type)
+    // Intersections like `string & {}` can also be possibly falsy,
+    // requiring us to look into the intersection.
+    .flatMap(type => tsutils.intersectionTypeParts(type))
     // PossiblyFalsy flag includes literal values, so exclude ones that
     // are definitely truthy
     .filter(t => !isTruthyLiteral(t))
