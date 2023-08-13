@@ -101,7 +101,7 @@
     "jest-snapshot": "^29.6.1",
     "jest-specific-snapshot": "^8.0.0",
     "jest": "29.6.2",
-    "lerna": "7.1.4",
+    "lerna": "7.1.5",
     "lint-staged": "^13.2.3",
     "make-dir": "^4.0.0",
     "markdownlint-cli": "^0.35.0",
