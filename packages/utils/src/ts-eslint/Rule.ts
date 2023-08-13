@@ -220,7 +220,7 @@ interface RuleContext<
    * Returns the current working directory passed to Linter.
    * It is a path to a directory that should be considered as the current working directory.
    * @since 6.6.0
-   * @deprecated
+   * @deprecated Use {@link `cwd`} instead.
    */
   getCwd(): string;
 
