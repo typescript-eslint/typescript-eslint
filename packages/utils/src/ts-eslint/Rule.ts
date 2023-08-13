@@ -233,7 +233,7 @@ interface RuleContext<
 
   /**
    * Returns the filename associated with the source.
-   * @deprecated
+   * @deprecated Use {@link `filename`} instead.
    */
   getFilename(): string;
 
@@ -246,7 +246,7 @@ interface RuleContext<
   /**
    * Returns the full path of the file on disk without any code block information (unlike `getFilename()`).
    * @since 7.28.0
-   * @deprecated
+   * @deprecated Use {@link `physicalFilename`} instead.
    */
   getPhysicalFilename?(): string;
 
@@ -265,7 +265,7 @@ interface RuleContext<
   /**
    * Returns a SourceCode object that you can use to work with the source that
    * was passed to ESLint.
-   * @deprecated
+   * @deprecated Use {@link `sourceCode`} instead.
    */
   getSourceCode(): Readonly<SourceCode>;
 
