@@ -220,7 +220,6 @@ interface RuleContext<
    * Returns the current working directory passed to Linter.
    * It is a path to a directory that should be considered as the current working directory.
    * @since 6.6.0
-   * @deprecated Use {@link `cwd`} instead.
    */
   getCwd(): string;
 
@@ -233,7 +232,6 @@ interface RuleContext<
 
   /**
    * Returns the filename associated with the source.
-   * @deprecated Use {@link `filename`} instead.
    */
   getFilename(): string;
 
@@ -246,7 +244,6 @@ interface RuleContext<
   /**
    * Returns the full path of the file on disk without any code block information (unlike `getFilename()`).
    * @since 7.28.0
-   * @deprecated Use {@link `physicalFilename`} instead.
    */
   getPhysicalFilename?(): string;
 
@@ -265,7 +262,6 @@ interface RuleContext<
   /**
    * Returns a SourceCode object that you can use to work with the source that
    * was passed to ESLint.
-   * @deprecated Use {@link `sourceCode`} instead.
    */
   getSourceCode(): Readonly<SourceCode>;
 
