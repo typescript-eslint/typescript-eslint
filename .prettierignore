@@ -10,6 +10,12 @@ packages/eslint-plugin/tests/fixtures/indent/
 # prettier errors on this case because it's semantically valid
 packages/ast-spec/src/element/AccessorProperty/fixtures/modifier-abstract-with-value/fixture.ts
 
+# prettier doesn't yet support `using` declaration
+packages/ast-spec/src/declaration/VariableDeclaration/fixtures/await-using-multiple-declarations/fixture.ts
+packages/ast-spec/src/declaration/VariableDeclaration/fixtures/await-using-with-value/fixture.ts
+packages/ast-spec/src/declaration/VariableDeclaration/fixtures/using-multiple-declarations/fixture.ts
+packages/ast-spec/src/declaration/VariableDeclaration/fixtures/using-with-value/fixture.ts
+
 # prettier doesn't yet support `const` modifiers for type parameters
 packages/ast-spec/src/special/TSTypeParameter/fixtures
 
