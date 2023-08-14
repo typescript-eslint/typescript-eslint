@@ -346,6 +346,12 @@ export function getDeclarationKind(
     case ts.NodeFlags.AwaitUsing:
       return 'await using';
     default:
+      if (node.flags & ts.NodeFlags.Let) {
+        return 'let';
+      }
+      if (node.flags & ts.NodeFlags.Const) {
+        return 'const';
+      }
       return 'var';
   }
 }
