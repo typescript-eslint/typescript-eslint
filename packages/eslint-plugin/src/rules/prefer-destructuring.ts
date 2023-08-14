@@ -88,11 +88,11 @@ export default createRule<Options, MessageIds>({
     },
     {},
   ],
-  create(context, [enabledTypes, options1 = {}]) {
+  create(context, [enabledTypes, options = {}]) {
     const {
       enforceForRenamedProperties = false,
       enforceForDeclarationWithTypeAnnotation = false,
-    } = options1;
+    } = options;
     const { program, esTreeNodeToTSNodeMap } = getParserServices(context);
     const typeChecker = program.getTypeChecker();
     const baseRules = baseRule.create(context);
@@ -173,9 +173,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function baseRulesWithoutFix(): ReturnType<typeof baseRule.create> {
-      if (baseRulesWithoutFixCache == null) {
-        baseRulesWithoutFixCache = baseRule.create(noFixContext(context));
-      }
+      baseRulesWithoutFixCache ??= baseRule.create(noFixContext(context));
       return baseRulesWithoutFixCache;
     }
   },
