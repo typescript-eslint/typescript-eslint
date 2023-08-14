@@ -17,7 +17,7 @@ type BaseOptions = InferOptionsTypeFromRule<typeof baseRule>;
 type EnforcementOptions = BaseOptions[1] & {
   enforceForDeclarationWithTypeAnnotation?: boolean;
 };
-type Options = [BaseOptions[0], EnforcementOptions?];
+type Options = [BaseOptions[0], EnforcementOptions];
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
@@ -88,7 +88,7 @@ export default createRule<Options, MessageIds>({
     },
     {},
   ],
-  create(context, [enabledTypes, options = {}]) {
+  create(context, [enabledTypes, options]) {
     const {
       enforceForRenamedProperties = false,
       enforceForDeclarationWithTypeAnnotation = false,
