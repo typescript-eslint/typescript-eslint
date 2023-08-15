@@ -100,9 +100,7 @@ A boolean to specify if arrays from the rest operator are considered okay. `fals
 
 Examples of **incorrect** code for the `{ "ignoreRestArgs": false }` option:
 
-```ts
-/*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": false }]*/
-
+```ts option='{ "ignoreRestArgs": false }' showPlaygroundButton
 function foo1(...args: any[]): void {}
 function foo2(...args: readonly any[]): void {}
 function foo3(...args: Array<any>): void {}
@@ -129,9 +127,7 @@ interface Garply {
 
 Examples of **correct** code for the `{ "ignoreRestArgs": true }` option:
 
-```ts
-/*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": true }]*/
-
+```ts option='{ "ignoreRestArgs": true }' showPlaygroundButton
 function foo1(...args: any[]): void {}
 function foo2(...args: readonly any[]): void {}
 function foo3(...args: Array<any>): void {}

@@ -158,7 +158,7 @@ Examples of code for this rule with:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 interface ThisIsMutable {
   prop: string;
 }
@@ -177,7 +177,7 @@ function fn2(arg: Wrapper) {} // Incorrect because Wrapper.sub is not readonly
 function fn3(arg: WrapperWithOther) {} // Incorrect because WrapperWithOther.otherProp is not readonly and not in the allowlist
 ```
 
-```ts
+```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 import { Foo } from 'some-lib';
 import { Bar } from 'incorrect-lib';
 
@@ -192,7 +192,7 @@ function fn3(arg: Bar) {} // Incorrect because Bar is not from "bar-lib"
 
 #### ✅ Correct
 
-```ts
+```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 interface Foo {
   prop: string;
 }
@@ -206,7 +206,7 @@ function fn1(arg: Foo) {} // Works because Foo is allowed
 function fn2(arg: Wrapper) {} // Works even when Foo is nested somewhere in the type, with other properties still being checked
 ```
 
-```ts
+```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 import { Bar } from 'bar-lib';
 
 interface Foo {
@@ -218,7 +218,7 @@ function fn2(arg: HTMLElement) {} // Works because HTMLElement is from the defau
 function fn3(arg: Bar) {} // Works because Bar is from "bar-lib"
 ```
 
-```ts
+```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 import { Foo } from './foo';
 
 function fn(arg: Foo) {} // Works because Foo is still a local type - it has to be in the same package
@@ -235,7 +235,7 @@ Examples of code for this rule with `{checkParameterProperties: true}`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "checkParameterProperties": true }'
 class Foo {
   constructor(private paramProp: string[]) {}
 }
@@ -243,7 +243,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "checkParameterProperties": true }'
 class Foo {
   constructor(private paramProp: readonly string[]) {}
 }
@@ -253,7 +253,7 @@ class Foo {
 
 Examples of **correct** code for this rule with `{checkParameterProperties: false}`:
 
-```ts
+```ts option='{ "checkParameterProperties": false }' showPlaygroundButton
 class Foo {
   constructor(
     private paramProp1: string[],
@@ -272,7 +272,7 @@ Examples of code for this rule with `{ignoreInferredTypes: true}`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "ignoreInferredTypes": true }'
 import { acceptsCallback, CallbackOptions } from 'external-dependency';
 
 acceptsCallback((options: CallbackOptions) => {});
@@ -281,7 +281,7 @@ acceptsCallback((options: CallbackOptions) => {});
 <details>
 <summary>external-dependency.d.ts</summary>
 
-```ts
+```ts option='{ "ignoreInferredTypes": true }'
 export interface CallbackOptions {
   prop: string;
 }
@@ -295,7 +295,7 @@ export const acceptsCallback: AcceptsCallback;
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "ignoreInferredTypes": true }'
 import { acceptsCallback } from 'external-dependency';
 
 acceptsCallback(options => {});
@@ -304,7 +304,7 @@ acceptsCallback(options => {});
 <details>
 <summary>external-dependency.d.ts</summary>
 
-```ts
+```ts option='{ "ignoreInferredTypes": true }'
 export interface CallbackOptions {
   prop: string;
 }
@@ -326,7 +326,7 @@ Examples of code for this rule with `{treatMethodsAsReadonly: false}`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "treatMethodsAsReadonly": false }'
 type MyType = {
   readonly prop: string;
   method(): string; // note: this method is mutable
@@ -336,7 +336,7 @@ function foo(arg: MyType) {}
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "treatMethodsAsReadonly": false }'
 type MyType = Readonly<{
   prop: string;
   method(): string;
@@ -354,7 +354,7 @@ function bar(arg: MyOtherType) {}
 
 Examples of **correct** code for this rule with `{treatMethodsAsReadonly: true}`:
 
-```ts
+```ts option='{ "treatMethodsAsReadonly": true }' showPlaygroundButton
 type MyType = {
   readonly prop: string;
   method(): string; // note: this method is mutable

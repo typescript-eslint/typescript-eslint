@@ -70,7 +70,7 @@ Example of code for the `{ "onlyInlineLambdas": true }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "onlyInlineLambdas": true }'
 class Container {
   private onClick = () => {
     /* ... */
@@ -80,7 +80,7 @@ class Container {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "onlyInlineLambdas": true }'
 class Container {
   private neverModifiedPrivate = 'unchanged';
 }

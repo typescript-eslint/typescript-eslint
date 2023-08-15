@@ -40,7 +40,7 @@ Examples of code with the above config:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{"paths":[{"name":"import-foo","message":"Please use import-bar instead.","allowTypeImports":true},{"name":"import-baz","message":"Please use import-quux instead.","allowTypeImports":true}]}'
 import foo from 'import-foo';
 export { Foo } from 'import-foo';
 
@@ -50,7 +50,7 @@ export { Baz } from 'import-baz';
 
 #### ✅ Correct
 
-```ts
+```ts option='{"paths":[{"name":"import-foo","message":"Please use import-bar instead.","allowTypeImports":true},{"name":"import-baz","message":"Please use import-quux instead.","allowTypeImports":true}]}'
 import { foo } from 'other-module';
 
 import type foo from 'import-foo';
