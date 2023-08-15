@@ -334,8 +334,8 @@ new Accumulator().accumulate(() => 1);
     },
     {
       code: `
-export const func1 = (value: number) => ({ type: 'X', value } as const);
-export const func2 = (value: number) => ({ type: 'X', value } as const);
+export const func1 = (value: number) => ({ type: 'X', value }) as const;
+export const func2 = (value: number) => ({ type: 'X', value }) as const;
 export const func3 = (value: number) => x as const;
 export const func4 = (value: number) => x as const;
       `,
@@ -1133,8 +1133,8 @@ export default () => () => {
     },
     {
       code: `
-export const func1 = (value: number) => ({ type: 'X', value } as any);
-export const func2 = (value: number) => ({ type: 'X', value } as Action);
+export const func1 = (value: number) => ({ type: 'X', value }) as any;
+export const func2 = (value: number) => ({ type: 'X', value }) as Action;
       `,
       options: [
         {
@@ -1160,7 +1160,7 @@ export const func2 = (value: number) => ({ type: 'X', value } as Action);
     },
     {
       code: `
-export const func = (value: number) => ({ type: 'X', value } as const);
+export const func = (value: number) => ({ type: 'X', value }) as const;
       `,
       options: [
         {
@@ -1217,7 +1217,10 @@ export class Test {
     {
       code: `
 export class Test {
-  constructor(public foo, private ...bar) {}
+  constructor(
+    public foo,
+    private ...bar,
+  ) {}
 }
       `,
       errors: [

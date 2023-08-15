@@ -568,7 +568,10 @@ ruleTester.run('naming-convention', rule, {
     {
       code: `
         class Ignored {
-          constructor(private readonly some_name, IgnoredDueToModifiers) {}
+          constructor(
+            private readonly some_name,
+            IgnoredDueToModifiers,
+          ) {}
         }
       `,
       options: [
@@ -1528,7 +1531,10 @@ ruleTester.run('naming-convention', rule, {
     {
       code: `
         class Ignored {
-          constructor(private readonly some_name, IgnoredDueToModifiers) {}
+          constructor(
+            private readonly some_name,
+            IgnoredDueToModifiers,
+          ) {}
         }
       `,
       options: [

@@ -96,7 +96,10 @@ class Foo {
     {
       code: `
 class Foo {
-  constructor(readonly name: string, private age: number) {}
+  constructor(
+    readonly name: string,
+    private age: number,
+  ) {}
 }
       `,
       options: [{ allow: ['readonly', 'private'] }],
@@ -104,7 +107,10 @@ class Foo {
     {
       code: `
 class Foo {
-  constructor(public readonly name: string, private age: number) {}
+  constructor(
+    public readonly name: string,
+    private age: number,
+  ) {}
 }
       `,
       options: [{ allow: ['public readonly', 'private'] }],
@@ -148,7 +154,10 @@ class Foo {
     {
       code: `
 class Foo {
-  constructor(private age: string, ...name: string[]) {}
+  constructor(
+    private age: string,
+    ...name: string[]
+  ) {}
 }
       `,
       options: [{ prefer: 'parameter-property' }],
@@ -437,7 +446,10 @@ class Foo {
     {
       code: `
 class Foo {
-  constructor(public name: string, age: number) {}
+  constructor(
+    public name: string,
+    age: number,
+  ) {}
 }
       `,
       errors: [
@@ -454,7 +466,10 @@ class Foo {
     {
       code: `
 class Foo {
-  constructor(private name: string, private age: number) {}
+  constructor(
+    private name: string,
+    private age: number,
+  ) {}
 }
       `,
       errors: [
@@ -479,7 +494,10 @@ class Foo {
     {
       code: `
 class Foo {
-  constructor(protected name: string, protected age: number) {}
+  constructor(
+    protected name: string,
+    protected age: number,
+  ) {}
 }
       `,
       errors: [
@@ -504,7 +522,10 @@ class Foo {
     {
       code: `
 class Foo {
-  constructor(public name: string, public age: number) {}
+  constructor(
+    public name: string,
+    public age: number,
+  ) {}
 }
       `,
       errors: [
@@ -530,7 +551,10 @@ class Foo {
       code: `
 class Foo {
   constructor(name: string) {}
-  constructor(private name: string, age?: number) {}
+  constructor(
+    private name: string,
+    age?: number,
+  ) {}
 }
       `,
       errors: [
@@ -548,7 +572,10 @@ class Foo {
       code: `
 class Foo {
   constructor(private name: string) {}
-  constructor(private name: string, age?: number) {}
+  constructor(
+    private name: string,
+    age?: number,
+  ) {}
 }
       `,
       errors: [
@@ -574,7 +601,10 @@ class Foo {
       code: `
 class Foo {
   constructor(private name: string) {}
-  constructor(private name: string, private age?: number) {}
+  constructor(
+    private name: string,
+    private age?: number,
+  ) {}
 }
       `,
       errors: [
@@ -608,7 +638,10 @@ class Foo {
       code: `
 class Foo {
   constructor(name: string) {}
-  constructor(protected name: string, age?: number) {}
+  constructor(
+    protected name: string,
+    age?: number,
+  ) {}
 }
       `,
       errors: [
@@ -626,7 +659,10 @@ class Foo {
       code: `
 class Foo {
   constructor(protected name: string) {}
-  constructor(protected name: string, age?: number) {}
+  constructor(
+    protected name: string,
+    age?: number,
+  ) {}
 }
       `,
       errors: [
@@ -652,7 +688,10 @@ class Foo {
       code: `
 class Foo {
   constructor(protected name: string) {}
-  constructor(protected name: string, protected age?: number) {}
+  constructor(
+    protected name: string,
+    protected age?: number,
+  ) {}
 }
       `,
       errors: [
@@ -686,7 +725,10 @@ class Foo {
       code: `
 class Foo {
   constructor(name: string) {}
-  constructor(public name: string, age?: number) {}
+  constructor(
+    public name: string,
+    age?: number,
+  ) {}
 }
       `,
       errors: [
@@ -704,7 +746,10 @@ class Foo {
       code: `
 class Foo {
   constructor(public name: string) {}
-  constructor(public name: string, age?: number) {}
+  constructor(
+    public name: string,
+    age?: number,
+  ) {}
 }
       `,
       errors: [
@@ -730,7 +775,10 @@ class Foo {
       code: `
 class Foo {
   constructor(public name: string) {}
-  constructor(public name: string, public age?: number) {}
+  constructor(
+    public name: string,
+    public age?: number,
+  ) {}
 }
       `,
       errors: [
@@ -896,7 +944,10 @@ class Foo {
       code: `
 class Foo {
   constructor(private name: string) {}
-  constructor(private name: string, protected age?: number) {}
+  constructor(
+    private name: string,
+    protected age?: number,
+  ) {}
 }
       `,
       options: [{ allow: ['private'] }],
