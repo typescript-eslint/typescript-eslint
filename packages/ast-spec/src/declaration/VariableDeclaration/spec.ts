@@ -29,5 +29,5 @@ export interface VariableDeclaration extends BaseNode {
    * var z = 3;
    * ```
    */
-  kind: 'const' | 'let' | 'var' | 'using' | 'await using';
+  kind: 'await using' | 'const' | 'let' | 'using' | 'var';
 }
