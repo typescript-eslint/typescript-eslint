@@ -1,10 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import { isBinaryExpression } from 'tsutils';
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import * as ts from 'typescript';
 
 import * as util from '../../src/util';
 import { getWrappedCode } from '../../src/util/getWrappedCode';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -24,7 +24,6 @@ const removeFunctionRule = util.createRule({
     docs: {
       description:
         'Remove function with first arg remaining in random places for test purposes.',
-      recommended: false,
     },
     messages: {
       removeFunction: 'Please remove this function',
@@ -46,13 +45,13 @@ const removeFunctionRule = util.createRule({
 
           const nodePrecedence = util.getOperatorPrecedence(
             tsArgumentNode.kind,
-            isBinaryExpression(tsArgumentNode)
+            ts.isBinaryExpression(tsArgumentNode)
               ? tsArgumentNode.operatorToken.kind
               : ts.SyntaxKind.Unknown,
           );
           const parentPrecedence = util.getOperatorPrecedence(
             tsNode.parent.kind,
-            isBinaryExpression(tsNode.parent)
+            ts.isBinaryExpression(tsNode.parent)
               ? tsNode.parent.operatorToken.kind
               : ts.SyntaxKind.Unknown,
           );

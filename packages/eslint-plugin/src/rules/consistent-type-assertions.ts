@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import { isBinaryExpression, isNewExpression } from 'tsutils';
+// import { isBinaryExpression, isNewExpression } from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -158,10 +158,10 @@ export default util.createRule<Options, MessageIds>({
                 );
                 const parentPrecedence = util.getOperatorPrecedence(
                   tsNode.parent.kind,
-                  isBinaryExpression(tsNode.parent)
+                  ts.isBinaryExpression(tsNode.parent)
                     ? tsNode.parent.operatorToken.kind
                     : ts.SyntaxKind.Unknown,
-                  isNewExpression(tsNode.parent)
+                  ts.isNewExpression(tsNode.parent)
                     ? tsNode.parent.arguments != null &&
                         tsNode.parent.arguments.length > 0
                     : undefined,
