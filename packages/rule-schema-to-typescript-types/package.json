@@ -33,6 +33,7 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
+    "@prettier/sync": "*",
     "@typescript-eslint/type-utils": "6.2.1",
     "@typescript-eslint/utils": "6.2.1",
     "natural-compare": "^1.4.0",
