@@ -337,10 +337,6 @@ export function getDeclarationKind(
   node: ts.VariableDeclarationList,
 ): 'const' | 'let' | 'var' | 'using' | 'await using' {
   switch (node.flags) {
-    case ts.NodeFlags.Let:
-      return 'let';
-    case ts.NodeFlags.Const:
-      return 'const';
     case ts.NodeFlags.Using:
       return 'using';
     case ts.NodeFlags.AwaitUsing:
