@@ -4,10 +4,13 @@ exports[`javascript destructuring-and-spread destructured-array-literal.src 1`] 
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "left": Object {
+          "decorators": Array [],
           "elements": Array [
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 2,
@@ -19,16 +22,20 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 1,
                 2,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             Object {
               "argument": Object {
+                "decorators": Array [],
                 "elements": Array [
                   Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 9,
@@ -40,13 +47,16 @@ Object {
                       },
                     },
                     "name": "b",
+                    "optional": false,
                     "range": Array [
                       8,
                       9,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 12,
@@ -58,11 +68,13 @@ Object {
                       },
                     },
                     "name": "c",
+                    "optional": false,
                     "range": Array [
                       11,
                       12,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                 ],
                 "loc": Object {
@@ -75,12 +87,15 @@ Object {
                     "line": 1,
                   },
                 },
+                "optional": false,
                 "range": Array [
                   7,
                   13,
                 ],
                 "type": "ArrayPattern",
+                "typeAnnotation": undefined,
               },
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 13,
@@ -91,11 +106,14 @@ Object {
                   "line": 1,
                 },
               },
+              "optional": false,
               "range": Array [
                 4,
                 13,
               ],
               "type": "RestElement",
+              "typeAnnotation": undefined,
+              "value": undefined,
             },
           ],
           "loc": Object {
@@ -108,11 +126,13 @@ Object {
               "line": 1,
             },
           },
+          "optional": false,
           "range": Array [
             0,
             14,
           ],
           "type": "ArrayPattern",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -130,6 +150,7 @@ Object {
           18,
         ],
         "right": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 18,
@@ -141,11 +162,13 @@ Object {
             },
           },
           "name": "d",
+          "optional": false,
           "range": Array [
             17,
             18,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "AssignmentExpression",
       },

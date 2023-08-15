@@ -91,7 +91,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Enforce consistent indentation',
       // too opinionated to be recommended
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'whitespace',
@@ -131,12 +130,12 @@ export default util.createRule<Options, MessageIds>({
      */
     function TSPropertySignatureToProperty(
       node:
-        | TSESTree.TSPropertySignature
         | TSESTree.TSEnumMember
+        | TSESTree.TSPropertySignature
         | TSESTree.TypeElement,
       type:
-        | AST_NODE_TYPES.PropertyDefinition
-        | AST_NODE_TYPES.Property = AST_NODE_TYPES.Property,
+        | AST_NODE_TYPES.Property
+        | AST_NODE_TYPES.PropertyDefinition = AST_NODE_TYPES.Property,
     ): TSESTree.Node | null {
       const base = {
         // indent doesn't actually use these
@@ -160,15 +159,20 @@ export default util.createRule<Options, MessageIds>({
           type,
           ...base,
         } as TSESTree.Property;
-      } else {
-        return {
-          type,
-          static: false,
-          readonly: false,
-          declare: false,
-          ...base,
-        } as TSESTree.PropertyDefinition;
       }
+      return {
+        type,
+        accessibility: undefined,
+        declare: false,
+        decorators: [],
+        definite: false,
+        optional: false,
+        override: false,
+        readonly: false,
+        static: false,
+        typeAnnotation: undefined,
+        ...base,
+      } as TSESTree.PropertyDefinition;
     }
 
     return Object.assign({}, rules, {
@@ -193,7 +197,7 @@ export default util.createRule<Options, MessageIds>({
         // transform it to a BinaryExpression
         return rules['BinaryExpression, LogicalExpression']({
           type: AST_NODE_TYPES.BinaryExpression,
-          operator: 'as',
+          operator: 'as' as any,
           left: node.expression,
           // the first typeAnnotation includes the as token
           right: node.typeAnnotation as any,
@@ -210,8 +214,9 @@ export default util.createRule<Options, MessageIds>({
         return rules.ConditionalExpression({
           type: AST_NODE_TYPES.ConditionalExpression,
           test: {
+            parent: node,
             type: AST_NODE_TYPES.BinaryExpression,
-            operator: 'extends',
+            operator: 'extends' as any,
             left: node.checkType as any,
             right: node.extendsType as any,
 
@@ -297,6 +302,7 @@ export default util.createRule<Options, MessageIds>({
               },
             } as TSESTree.VariableDeclarator,
           ],
+          declare: false,
 
           // location data
           parent: node.parent,
@@ -351,7 +357,14 @@ export default util.createRule<Options, MessageIds>({
           body: node.body as any,
           id: null,
           // TODO: This is invalid, there can be more than one extends in interface
-          superClass: node.extends![0].expression as any,
+          superClass: node.extends[0].expression as any,
+          abstract: false,
+          declare: false,
+          decorators: [],
+          implements: [],
+          superTypeArguments: undefined,
+          superTypeParameters: undefined,
+          typeParameters: undefined,
 
           // location data
           parent: node.parent,
@@ -371,6 +384,7 @@ export default util.createRule<Options, MessageIds>({
           type: AST_NODE_TYPES.ObjectExpression,
           properties: [
             {
+              parent: node,
               type: AST_NODE_TYPES.Property,
               key: node.typeParameter as any,
               value: node.typeAnnotation as any,
@@ -391,6 +405,7 @@ export default util.createRule<Options, MessageIds>({
               kind: 'init' as const,
               computed: false,
               method: false,
+              optional: false,
               shorthand: false,
             },
           ],
@@ -457,6 +472,8 @@ export default util.createRule<Options, MessageIds>({
           selfClosing: false,
           name: name as any,
           attributes: attributes as any,
+          typeArguments: undefined,
+          typeParameters: undefined,
 
           // location data
           parent: node.parent,

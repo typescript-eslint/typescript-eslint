@@ -5,8 +5,7 @@ import * as ts from 'typescript';
 import { firstDefined } from '../node-utils';
 import type { ParseSettings } from '../parseSettings';
 import { describeFilePath } from './describeFilePath';
-import { getWatchProgramsForProjects } from './getWatchProgramsForProjects';
-import type { ASTAndProgram } from './shared';
+import type { ASTAndDefiniteProgram } from './shared';
 import { getAstFromProgram } from './shared';
 
 const log = debug('typescript-eslint:typescript-estree:createProjectProgram');
@@ -28,16 +27,17 @@ const DEFAULT_EXTRA_FILE_EXTENSIONS = [
  */
 function createProjectProgram(
   parseSettings: ParseSettings,
-): ASTAndProgram | undefined {
+  programsForProjects: readonly ts.Program[],
+): ASTAndDefiniteProgram | undefined {
   log('Creating project program for: %s', parseSettings.filePath);
 
-  const programsForProjects = getWatchProgramsForProjects(parseSettings);
   const astAndProgram = firstDefined(programsForProjects, currentProgram =>
-    getAstFromProgram(currentProgram, parseSettings),
+    getAstFromProgram(currentProgram, parseSettings.filePath),
   );
 
   // The file was either matched within the tsconfig, or we allow creating a default program
-  if (astAndProgram || parseSettings.createDefaultProgram) {
+  // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+  if (astAndProgram || parseSettings.DEPRECATED__createDefaultProgram) {
     return astAndProgram;
   }
 

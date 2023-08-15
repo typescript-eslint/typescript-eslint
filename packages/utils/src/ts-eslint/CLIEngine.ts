@@ -4,7 +4,7 @@
 import { CLIEngine as ESLintCLIEngine } from 'eslint';
 
 import type { Linter } from './Linter';
-import type { RuleListener, RuleMetaData, RuleModule } from './Rule';
+import type { RuleMetaData, RuleModule } from './Rule';
 
 declare class CLIEngineBase {
   /**
@@ -72,9 +72,7 @@ declare class CLIEngineBase {
   getRules<
     TMessageIds extends string = string,
     TOptions extends readonly unknown[] = unknown[],
-    // for extending base rules
-    TRuleListener extends RuleListener = RuleListener,
-  >(): Map<string, RuleModule<TMessageIds, TOptions, TRuleListener>>;
+  >(): Map<string, RuleModule<TMessageIds, TOptions>>;
 
   ////////////////////
   // static members //
@@ -108,7 +106,7 @@ declare class CLIEngineBase {
 namespace CLIEngine {
   export interface Options {
     allowInlineConfig?: boolean;
-    baseConfig?: false | { [name: string]: unknown };
+    baseConfig?: false | Record<string, unknown>;
     cache?: boolean;
     cacheFile?: string;
     cacheLocation?: string;
@@ -121,15 +119,13 @@ namespace CLIEngine {
     globals?: string[];
     ignore?: boolean;
     ignorePath?: string;
-    ignorePattern?: string | string[];
+    ignorePattern?: string[] | string;
     useEslintrc?: boolean;
     parser?: string;
     parserOptions?: Linter.ParserOptions;
     plugins?: string[];
     resolvePluginsRelativeTo?: string;
-    rules?: {
-      [name: string]: Linter.RuleLevel | Linter.RuleLevelAndOptions;
-    };
+    rules?: Record<string, Linter.RuleLevel | Linter.RuleLevelAndOptions>;
     rulePaths?: string[];
     reportUnusedDisableDirectives?: boolean;
   }
@@ -160,9 +156,7 @@ namespace CLIEngine {
   }
 
   export interface LintResultData<TMessageIds extends string> {
-    rulesMeta: {
-      [ruleId: string]: RuleMetaData<TMessageIds>;
-    };
+    rulesMeta: Record<string, RuleMetaData<TMessageIds>>;
   }
 
   export type Formatter = <TMessageIds extends string>(

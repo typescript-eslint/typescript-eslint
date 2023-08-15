@@ -1,0 +1,74 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes prefer-nullish-coalescing 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing": {
+        "type": "boolean"
+      },
+      "ignoreConditionalTests": {
+        "type": "boolean"
+      },
+      "ignoreMixedLogicalExpressions": {
+        "type": "boolean"
+      },
+      "ignorePrimitives": {
+        "oneOf": [
+          {
+            "properties": {
+              "bigint": {
+                "type": "boolean"
+              },
+              "boolean": {
+                "type": "boolean"
+              },
+              "number": {
+                "type": "boolean"
+              },
+              "string": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          {
+            "enum": [true],
+            "type": "boolean"
+          }
+        ]
+      },
+      "ignoreTernaryTests": {
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
+    ignoreConditionalTests?: boolean;
+    ignoreMixedLogicalExpressions?: boolean;
+    ignorePrimitives?:
+      | {
+          bigint?: boolean;
+          boolean?: boolean;
+          number?: boolean;
+          string?: boolean;
+          [k: string]: unknown;
+        }
+      | true;
+    ignoreTernaryTests?: boolean;
+  },
+];
+"
+`;

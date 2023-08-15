@@ -6,9 +6,12 @@ Program {
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "A",
+        optional: false,
 
         range: [78, 79],
         loc: {
@@ -16,15 +19,23 @@ Program {
           end: { column: 6, line: 3 },
         },
       },
-      typeAnnotation: TSImportType {
-        type: "TSImportType",
-        isTypeOf: true,
-        parameter: TSLiteralType {
-          type: "TSLiteralType",
-          literal: Literal {
-            type: "Literal",
-            raw: "'A'",
-            value: "A",
+      typeAnnotation: TSTypeQuery {
+        type: "TSTypeQuery",
+        exprName: TSImportType {
+          type: "TSImportType",
+          argument: TSLiteralType {
+            type: "TSLiteralType",
+            literal: Literal {
+              type: "Literal",
+              raw: "'A'",
+              value: "A",
+
+              range: [96, 99],
+              loc: {
+                start: { column: 23, line: 3 },
+                end: { column: 26, line: 3 },
+              },
+            },
 
             range: [96, 99],
             loc: {
@@ -32,15 +43,15 @@ Program {
               end: { column: 26, line: 3 },
             },
           },
+          qualifier: null,
+          typeArguments: null,
 
-          range: [96, 99],
+          range: [89, 100],
           loc: {
-            start: { column: 23, line: 3 },
-            end: { column: 26, line: 3 },
+            start: { column: 16, line: 3 },
+            end: { column: 27, line: 3 },
           },
         },
-        qualifier: null,
-        typeParameters: null,
 
         range: [82, 100],
         loc: {
@@ -57,9 +68,12 @@ Program {
     },
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "B",
+        optional: false,
 
         range: [107, 108],
         loc: {
@@ -69,8 +83,7 @@ Program {
       },
       typeAnnotation: TSImportType {
         type: "TSImportType",
-        isTypeOf: false,
-        parameter: TSLiteralType {
+        argument: TSLiteralType {
           type: "TSLiteralType",
           literal: Literal {
             type: "Literal",
@@ -92,7 +105,9 @@ Program {
         },
         qualifier: Identifier {
           type: "Identifier",
+          decorators: [],
           name: "X",
+          optional: false,
 
           range: [123, 124],
           loc: {
@@ -100,14 +115,16 @@ Program {
             end: { column: 22, line: 4 },
           },
         },
-        typeParameters: TSTypeParameterInstantiation {
+        typeArguments: TSTypeParameterInstantiation {
           type: "TSTypeParameterInstantiation",
           params: [
             TSTypeReference {
               type: "TSTypeReference",
               typeName: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "Y",
+                optional: false,
 
                 range: [125, 126],
                 loc: {

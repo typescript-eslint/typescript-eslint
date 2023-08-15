@@ -23,26 +23,9 @@ interface Config {
 type Options = [Config];
 
 type MessageIds =
-  | 'unwantedPublicAccessibility'
+  | 'addExplicitAccessibility'
   | 'missingAccessibility'
-  | 'addExplicitAccessibility';
-
-const accessibilityLevel = {
-  oneOf: [
-    {
-      const: 'explicit',
-      description: 'Always require an accessor.',
-    },
-    {
-      const: 'no-public',
-      description: 'Require an accessor except when public.',
-    },
-    {
-      const: 'off',
-      description: 'Never check whether there is an accessor.',
-    },
-  ],
-};
+  | 'unwantedPublicAccessibility';
 
 export default util.createRule<Options, MessageIds>({
   name: 'explicit-member-accessibility',
@@ -53,7 +36,6 @@ export default util.createRule<Options, MessageIds>({
       description:
         'Require explicit accessibility modifiers on class properties and methods',
       // too opinionated to be recommended
-      recommended: false,
     },
     fixable: 'code',
     messages: {
@@ -63,41 +45,56 @@ export default util.createRule<Options, MessageIds>({
         'Public accessibility modifier on {{type}} {{name}}.',
       addExplicitAccessibility: "Add '{{ type }}' accessibility modifier",
     },
-    schema: {
-      $defs: {
-        accessibilityLevel,
-      },
-      prefixItems: [
-        {
-          type: 'object',
-          properties: {
-            accessibility: { $ref: '#/$defs/accessibilityLevel' },
-            overrides: {
-              type: 'object',
-              properties: {
-                accessors: { $ref: '#/$defs/accessibilityLevel' },
-                constructors: { $ref: '#/$defs/accessibilityLevel' },
-                methods: { $ref: '#/$defs/accessibilityLevel' },
-                properties: { $ref: '#/$defs/accessibilityLevel' },
-                parameterProperties: {
-                  $ref: '#/$defs/accessibilityLevel',
-                },
-              },
-
-              additionalProperties: false,
-            },
-            ignoredMethodNames: {
-              type: 'array',
-              items: {
+    schema: [
+      {
+        $defs: {
+          accessibilityLevel: {
+            oneOf: [
+              {
                 type: 'string',
+                enum: ['explicit'],
+                description: 'Always require an accessor.',
               },
+              {
+                type: 'string',
+                enum: ['no-public'],
+                description: 'Require an accessor except when public.',
+              },
+              {
+                type: 'string',
+                enum: ['off'],
+                description: 'Never check whether there is an accessor.',
+              },
+            ],
+          },
+        },
+        type: 'object',
+        properties: {
+          accessibility: { $ref: '#/items/0/$defs/accessibilityLevel' },
+          overrides: {
+            type: 'object',
+            properties: {
+              accessors: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              constructors: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              methods: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              properties: { $ref: '#/items/0/$defs/accessibilityLevel' },
+              parameterProperties: {
+                $ref: '#/items/0/$defs/accessibilityLevel',
+              },
+            },
+
+            additionalProperties: false,
+          },
+          ignoredMethodNames: {
+            type: 'array',
+            items: {
+              type: 'string',
             },
           },
-          additionalProperties: false,
         },
-      ],
-      type: 'array',
-    },
+        additionalProperties: false,
+      },
+    ],
   },
   defaultOptions: [{ accessibility: 'explicit' }],
   create(context, [option]) {
@@ -230,7 +227,7 @@ export default util.createRule<Options, MessageIds>({
         accessibility: TSESTree.Accessibility,
         fixer: TSESLint.RuleFixer,
       ): TSESLint.RuleFix | null {
-        if (node?.decorators?.length) {
+        if (node?.decorators.length) {
           const lastDecorator = node.decorators[node.decorators.length - 1];
           const nextToken = sourceCode.getTokenAfter(lastDecorator)!;
           return fixer.insertTextBefore(nextToken, `${accessibility} `);

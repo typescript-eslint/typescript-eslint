@@ -8,6 +8,7 @@ Object {
       "consequent": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "loc": Object {
                 "end": Object {
@@ -102,6 +103,7 @@ Object {
             Object {
               "body": Array [
                 Object {
+                  "directive": undefined,
                   "expression": Object {
                     "loc": Object {
                       "end": Object {
@@ -195,6 +197,7 @@ Object {
             Object {
               "body": Array [
                 Object {
+                  "directive": undefined,
                   "expression": Object {
                     "loc": Object {
                       "end": Object {
@@ -305,6 +308,7 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "loc": Object {
                 "end": Object {

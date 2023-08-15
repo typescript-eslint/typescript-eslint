@@ -104,10 +104,10 @@ For information about how each selector is applied, see ["How does the rule eval
 The `format` option defines the allowed formats for the identifier. This option accepts an array of the following values, and the identifier can match any of them:
 
 - `camelCase` - standard camelCase format - no underscores are allowed between characters, and consecutive capitals are allowed (i.e. both `myID` and `myId` are valid).
-- `strictCamelCase` - same as `camelCase`, but consecutive capitals are not allowed (i.e. `myId` is valid, but `myID` is not).
 - `PascalCase` - same as `camelCase`, except the first character must be upper-case.
-- `StrictPascalCase` - same as `strictCamelCase`, except the first character must be upper-case.
 - `snake_case` - standard snake_case format - all characters must be lower-case, and underscores are allowed.
+- `strictCamelCase` - same as `camelCase`, but consecutive capitals are not allowed (i.e. `myId` is valid, but `myID` is not).
+- `StrictPascalCase` - same as `strictCamelCase`, except the first character must be upper-case.
 - `UPPER_CASE` - same as `snake_case`, except all characters must be upper-case.
 
 Instead of an array, you may also pass `null`. This signifies "this selector shall not have its format checked".
@@ -118,8 +118,8 @@ This can be useful if you want to enforce no particular format for a specific se
 The `custom` option defines a custom regex that the identifier must (or must not) match. This option allows you to have a bit more finer-grained control over identifiers, letting you ban (or force) certain patterns and substrings.
 Accepts an object with the following properties:
 
-- `regex` - a string that is then passed into RegExp to create a new regular expression: `new RegExp(regex)`
 - `match` - true if the identifier _must_ match the `regex`, false if the identifier _must not_ match the `regex`.
+- `regex` - a string that is then passed into RegExp to create a new regular expression: `new RegExp(regex)`
 
 #### `filter`
 
@@ -129,8 +129,8 @@ You can use this to include or exclude specific identifiers from specific config
 
 Accepts an object with the following properties:
 
-- `regex` - a string that is then passed into RegExp to create a new regular expression: `new RegExp(regex)`
 - `match` - true if the identifier _must_ match the `regex`, false if the identifier _must not_ match the `regex`.
+- `regex` - a string that is then passed into RegExp to create a new regular expression: `new RegExp(regex)`
 
 Alternatively, `filter` accepts a regular expression (anything accepted into `new RegExp(filter)`). In this case, it's treated as if you had passed an object with the regex and `match: true`.
 
@@ -138,12 +138,12 @@ Alternatively, `filter` accepts a regular expression (anything accepted into `ne
 
 The `leadingUnderscore` / `trailingUnderscore` options control whether leading/trailing underscores are considered valid. Accepts one of the following values:
 
-- `forbid` - a leading/trailing underscore is not allowed at all.
-- `require` - a single leading/trailing underscore must be included.
-- `requireDouble` - two leading/trailing underscores must be included.
 - `allow` - existence of a single leading/trailing underscore is not explicitly enforced.
 - `allowDouble` - existence of a double leading/trailing underscore is not explicitly enforced.
 - `allowSingleOrDouble` - existence of a single or a double leading/trailing underscore is not explicitly enforced.
+- `forbid` - a leading/trailing underscore is not allowed at all.
+- `require` - a single leading/trailing underscore must be included.
+- `requireDouble` - two leading/trailing underscores must be included.
 
 #### `prefix` / `suffix`
 
@@ -163,27 +163,27 @@ If these are provided, the identifier must start with one of the provided values
   - The name must match _all_ of the modifiers.
   - For example, if you provide `{ modifiers: ['private','readonly','static'] }`, then it will only match something that is `private static readonly`, and something that is just `private` will not match.
   - The following `modifiers` are allowed:
+    - `abstract`,`override`,`private`,`protected`,`readonly`,`static` - matches any member explicitly declared with the given modifier.
+    - `async` - matches any method, function, or function variable which is async via the `async` keyword (e.g. does not match functions that return promises without using `async` keyword)
     - `const` - matches a variable declared as being `const` (`const x = 1`).
     - `destructured` - matches a variable declared via an object destructuring pattern (`const {x, z = 2}`).
       - Note that this does not match renamed destructured properties (`const {x: y, a: b = 2}`).
-    - `global` - matches a variable/function declared in the top-level scope.
     - `exported` - matches anything that is exported from the module.
-    - `unused` - matches anything that is not used.
-    - `requiresQuotes` - matches any name that requires quotes as it is not a valid identifier (i.e. has a space, a dash, etc in it).
-    - `public` - matches any member that is either explicitly declared as `public`, or has no visibility modifier (i.e. implicitly public).
-    - `abstract`,`override`,`private`,`protected`,`readonly`,`static` - matches any member explicitly declared with the given modifier.
+    - `global` - matches a variable/function declared in the top-level scope.
     - `#private` - matches any member with a private identifier (an identifier that starts with `#`)
-    - `async` - matches any method, function, or function variable which is async via the `async` keyword (e.g. does not match functions that return promises without using `async` keyword)
+    - `public` - matches any member that is either explicitly declared as `public`, or has no visibility modifier (i.e. implicitly public).
+    - `requiresQuotes` - matches any name that requires quotes as it is not a valid identifier (i.e. has a space, a dash, etc in it).
+    - `unused` - matches anything that is not used.
 - `types` allows you to specify which types to match. This option supports simple, primitive types only (`array`,`boolean`,`function`,`number`,`string`).
   - The name must match _one_ of the types.
   - **_NOTE - Using this option will require that you lint with type information._**
   - For example, this lets you do things like enforce that `boolean` variables are prefixed with a verb.
   - The following `types` are allowed:
-    - `boolean` matches any type assignable to `boolean | null | undefined`
-    - `string` matches any type assignable to `string | null | undefined`
-    - `number` matches any type assignable to `number | null | undefined`
     - `array` matches any type assignable to `Array<unknown> | null | undefined`
+    - `boolean` matches any type assignable to `boolean | null | undefined`
     - `function` matches any type assignable to `Function | null | undefined`
+    - `number` matches any type assignable to `number | null | undefined`
+    - `string` matches any type assignable to `string | null | undefined`
 
 The ordering of selectors does not matter. The implementation will automatically sort the selectors to ensure they match from most-specific to least specific. It will keep checking selectors in that order until it finds one that matches the name. See ["How does the rule automatically order selectors?"](#how-does-the-rule-automatically-order-selectors)
 
@@ -195,57 +195,57 @@ There are two types of selectors, individual selectors, and grouped selectors.
 
 Individual Selectors match specific, well-defined sets. There is no overlap between each of the individual selectors.
 
-- `variable` - matches any `let` / `const` / `var` variable name.
-  - Allowed `modifiers`: `async`, `const`, `destructured`, `exported`, `global`, `unused`.
-  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
-- `function` - matches any named function declaration or named function expression.
-  - Allowed `modifiers`: `async`, `exported`, `global`, `unused`.
-  - Allowed `types`: none.
-- `parameter` - matches any function parameter. Does not match parameter properties.
-  - Allowed `modifiers`: `destructured`, `unused`.
-  - Allowed `types`: `boolean`, `string`, `number`, `function`, `array`.
-- `classProperty` - matches any class property. Does not match properties that have direct function expression or arrow function expression values.
-  - Allowed `modifiers`: `abstract`, `override`, `#private`, `private`, `protected`, `public`, `readonly`, `requiresQuotes`, `static`.
-  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
-- `objectLiteralProperty` - matches any object literal property. Does not match properties that have direct function expression or arrow function expression values.
-  - Allowed `modifiers`: `public`, `requiresQuotes`.
-  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
-- `typeProperty` - matches any object type property. Does not match properties that have direct function expression or arrow function expression values.
-  - Allowed `modifiers`: `public`, `readonly`, `requiresQuotes`.
-  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
-- `parameterProperty` - matches any parameter property.
-  - Allowed `modifiers`: `private`, `protected`, `public`, `readonly`.
-  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
-- `classMethod` - matches any class method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
-  - Allowed `modifiers`: `abstract`, `async`, `override`, `#private`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
-  - Allowed `types`: none.
-- `objectLiteralMethod` - matches any object literal method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
-  - Allowed `modifiers`: `async`, `public`, `requiresQuotes`.
-  - Allowed `types`: none.
-- `typeMethod` - matches any object type method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
-  - Allowed `modifiers`: `public`, `requiresQuotes`.
-  - Allowed `types`: none.
 - `accessor` - matches any accessor.
   - Allowed `modifiers`: `abstract`, `override`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
   - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
+- `class` - matches any class declaration.
+  - Allowed `modifiers`: `abstract`, `exported`, `unused`.
+  - Allowed `types`: none.
+- `classMethod` - matches any class method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
+  - Allowed `modifiers`: `abstract`, `async`, `override`, `#private`, `private`, `protected`, `public`, `requiresQuotes`, `static`.
+  - Allowed `types`: none.
+- `classProperty` - matches any class property. Does not match properties that have direct function expression or arrow function expression values.
+  - Allowed `modifiers`: `abstract`, `override`, `#private`, `private`, `protected`, `public`, `readonly`, `requiresQuotes`, `static`.
+  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
+- `enum` - matches any enum declaration.
+  - Allowed `modifiers`: `exported`, `unused`.
+  - Allowed `types`: none.
 - `enumMember` - matches any enum member.
   - Allowed `modifiers`: `requiresQuotes`.
   - Allowed `types`: none.
-- `class` - matches any class declaration.
-  - Allowed `modifiers`: `abstract`, `exported`, `unused`.
+- `function` - matches any named function declaration or named function expression.
+  - Allowed `modifiers`: `async`, `exported`, `global`, `unused`.
   - Allowed `types`: none.
 - `interface` - matches any interface declaration.
   - Allowed `modifiers`: `exported`, `unused`.
   - Allowed `types`: none.
+- `objectLiteralMethod` - matches any object literal method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
+  - Allowed `modifiers`: `async`, `public`, `requiresQuotes`.
+  - Allowed `types`: none.
+- `objectLiteralProperty` - matches any object literal property. Does not match properties that have direct function expression or arrow function expression values.
+  - Allowed `modifiers`: `public`, `requiresQuotes`.
+  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
+- `parameter` - matches any function parameter. Does not match parameter properties.
+  - Allowed `modifiers`: `destructured`, `unused`.
+  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
+- `parameterProperty` - matches any parameter property.
+  - Allowed `modifiers`: `private`, `protected`, `public`, `readonly`.
+  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
 - `typeAlias` - matches any type alias declaration.
   - Allowed `modifiers`: `exported`, `unused`.
   - Allowed `types`: none.
-- `enum` - matches any enum declaration.
-  - Allowed `modifiers`: `exported`, `unused`.
+- `typeMethod` - matches any object type method. Also matches properties that have direct function expression or arrow function expression values. Does not match accessors.
+  - Allowed `modifiers`: `public`, `requiresQuotes`.
   - Allowed `types`: none.
 - `typeParameter` - matches any generic type parameter declaration.
   - Allowed `modifiers`: `unused`.
   - Allowed `types`: none.
+- `typeProperty` - matches any object type property. Does not match properties that have direct function expression or arrow function expression values.
+  - Allowed `modifiers`: `public`, `readonly`, `requiresQuotes`.
+  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
+- `variable` - matches any `const` / `let` / `var` variable name.
+  - Allowed `modifiers`: `async`, `const`, `destructured`, `exported`, `global`, `unused`.
+  - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
 
 ##### Group Selectors
 
@@ -254,20 +254,20 @@ Group Selectors are provided for convenience, and essentially bundle up sets of 
 - `default` - matches everything.
   - Allowed `modifiers`: all modifiers.
   - Allowed `types`: none.
-- `variableLike` - matches the same as `function`, `parameter` and `variable`.
-  - Allowed `modifiers`: `async`, `unused`.
-  - Allowed `types`: none.
 - `memberLike` - matches the same as `accessor`, `enumMember`, `method`, `parameterProperty`, `property`.
   - Allowed `modifiers`: `abstract`, `async`, `override`, `#private`, `private`, `protected`, `public`, `readonly`, `requiresQuotes`, `static`.
   - Allowed `types`: none.
-- `typeLike` - matches the same as `class`, `enum`, `interface`, `typeAlias`, `typeParameter`.
-  - Allowed `modifiers`: `abstract`, `unused`.
+- `method` - matches the same as `classMethod`, `objectLiteralMethod`, `typeMethod`.
+  - Allowed `modifiers`: `abstract`, `async`, `override`, `#private`, `private`, `protected`, `public`, `readonly`, `requiresQuotes`, `static`.
   - Allowed `types`: none.
 - `property` - matches the same as `classProperty`, `objectLiteralProperty`, `typeProperty`.
   - Allowed `modifiers`: `abstract`, `async`, `override`, `#private`, `private`, `protected`, `public`, `readonly`, `requiresQuotes`, `static`.
   - Allowed `types`: `array`, `boolean`, `function`, `number`, `string`.
-- `method` - matches the same as `classMethod`, `objectLiteralMethod`, `typeMethod`.
-  - Allowed `modifiers`: `abstract`, `async`, `override`, `#private`, `private`, `protected`, `public`, `readonly`, `requiresQuotes`, `static`.
+- `typeLike` - matches the same as `class`, `enum`, `interface`, `typeAlias`, `typeParameter`.
+  - Allowed `modifiers`: `abstract`, `unused`.
+  - Allowed `types`: none.
+- `variableLike` - matches the same as `function`, `parameter` and `variable`.
+  - Allowed `modifiers`: `async`, `unused`.
   - Allowed `types`: none.
 
 ## FAQ
@@ -278,18 +278,18 @@ This is a big rule, and there's a lot of docs. Here are a few clarifications tha
 
 Each selector is checked in the following way:
 
-1. check the `selector`
-   1. if `selector` is one individual selector → the name's type must be of that type.
-   1. if `selector` is a group selector → the name's type must be one of the grouped types.
-   1. if `selector` is an array of selectors → apply the above for each selector in the array.
 1. check the `filter`
    1. if `filter` is omitted → skip this step.
-   1. if the name matches the `filter` → continue evaluating this selector.
-   1. if the name does not match the `filter` → skip this selector and continue to the next selector.
-1. check the `types`
+   2. if the name matches the `filter` → continue evaluating this selector.
+   3. if the name does not match the `filter` → skip this selector and continue to the next selector.
+2. check the `selector`
+   1. if `selector` is one individual selector → the name's type must be of that type.
+   2. if `selector` is a group selector → the name's type must be one of the grouped types.
+   3. if `selector` is an array of selectors → apply the above for each selector in the array.
+3. check the `types`
    1. if `types` is omitted → skip this step.
-   1. if the name has a type in `types` → continue evaluating this selector.
-   1. if the name does not have a type in `types` → skip this selector and continue to the next selector.
+   2. if the name has a type in `types` → continue evaluating this selector.
+   3. if the name does not have a type in `types` → skip this selector and continue to the next selector.
 
 A name is considered to pass the config if it:
 

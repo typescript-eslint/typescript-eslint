@@ -4,13 +4,17 @@ exports[`typescript types this-type-expanded.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
             "accessibility": "public",
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 10,
@@ -22,11 +26,13 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 19,
                 20,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -38,12 +44,13 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               12,
               29,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -85,7 +92,9 @@ Object {
           Object {
             "accessibility": "public",
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 15,
@@ -97,11 +106,13 @@ Object {
                 },
               },
               "name": "method",
+              "optional": false,
               "range": Array [
                 40,
                 46,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -114,6 +125,7 @@ Object {
                 "line": 4,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               33,
@@ -121,6 +133,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -157,6 +170,7 @@ Object {
                       },
                       "optional": false,
                       "property": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 17,
@@ -168,11 +182,13 @@ Object {
                           },
                         },
                         "name": "a",
+                        "optional": false,
                         "range": Array [
                           85,
                           86,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "range": Array [
                         80,
@@ -213,6 +229,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -228,6 +245,7 @@ Object {
               },
               "params": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 26,
@@ -239,6 +257,7 @@ Object {
                     },
                   },
                   "name": "this",
+                  "optional": false,
                   "range": Array [
                     47,
                     57,
@@ -319,12 +338,15 @@ Object {
                 },
               },
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
             "accessibility": "public",
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 16,
@@ -336,11 +358,13 @@ Object {
                 },
               },
               "name": "method2",
+              "optional": false,
               "range": Array [
                 102,
                 109,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -353,6 +377,7 @@ Object {
                 "line": 8,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               95,
@@ -360,6 +385,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -396,6 +422,7 @@ Object {
                       },
                       "optional": false,
                       "property": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 17,
@@ -407,11 +434,13 @@ Object {
                           },
                         },
                         "name": "a",
+                        "optional": false,
                         "range": Array [
                           143,
                           144,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "range": Array [
                         138,
@@ -452,6 +481,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -467,6 +497,7 @@ Object {
               },
               "params": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 24,
@@ -478,6 +509,7 @@ Object {
                     },
                   },
                   "name": "this",
+                  "optional": false,
                   "range": Array [
                     110,
                     117,
@@ -516,6 +548,7 @@ Object {
                       ],
                       "type": "TSTypeReference",
                       "typeName": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 24,
@@ -527,11 +560,13 @@ Object {
                           },
                         },
                         "name": "A",
+                        "optional": false,
                         "range": Array [
                           116,
                           117,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "typeParameters": undefined,
                     },
@@ -577,12 +612,15 @@ Object {
                 },
               },
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
             "accessibility": "public",
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 16,
@@ -594,11 +632,13 @@ Object {
                 },
               },
               "name": "method3",
+              "optional": false,
               "range": Array [
                 160,
                 167,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -611,6 +651,7 @@ Object {
                 "line": 12,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               153,
@@ -618,6 +659,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -625,7 +667,9 @@ Object {
                   Object {
                     "declarations": Array [
                       Object {
+                        "definite": false,
                         "id": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 10,
@@ -637,11 +681,13 @@ Object {
                             },
                           },
                           "name": "fn",
+                          "optional": false,
                           "range": Array [
                             198,
                             200,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "init": Object {
                           "async": false,
@@ -676,6 +722,7 @@ Object {
                             },
                             "optional": false,
                             "property": Object {
+                              "decorators": Array [],
                               "loc": Object {
                                 "end": Object {
                                   "column": 25,
@@ -687,11 +734,13 @@ Object {
                                 },
                               },
                               "name": "a",
+                              "optional": false,
                               "range": Array [
                                 214,
                                 215,
                               ],
                               "type": "Identifier",
+                              "typeAnnotation": undefined,
                             },
                             "range": Array [
                               209,
@@ -717,7 +766,9 @@ Object {
                             203,
                             215,
                           ],
+                          "returnType": undefined,
                           "type": "ArrowFunctionExpression",
+                          "typeParameters": undefined,
                         },
                         "loc": Object {
                           "end": Object {
@@ -736,6 +787,7 @@ Object {
                         "type": "VariableDeclarator",
                       },
                     ],
+                    "declare": false,
                     "kind": "var",
                     "loc": Object {
                       "end": Object {
@@ -757,6 +809,7 @@ Object {
                     "argument": Object {
                       "arguments": Array [],
                       "callee": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 13,
@@ -768,11 +821,13 @@ Object {
                           },
                         },
                         "name": "fn",
+                        "optional": false,
                         "range": Array [
                           228,
                           230,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "loc": Object {
                         "end": Object {
@@ -790,6 +845,7 @@ Object {
                         232,
                       ],
                       "type": "CallExpression",
+                      "typeParameters": undefined,
                     },
                     "loc": Object {
                       "end": Object {
@@ -824,6 +880,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -839,6 +896,7 @@ Object {
               },
               "params": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 27,
@@ -850,6 +908,7 @@ Object {
                     },
                   },
                   "name": "this",
+                  "optional": false,
                   "range": Array [
                     168,
                     178,
@@ -930,12 +989,15 @@ Object {
                 },
               },
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
             "accessibility": "public",
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 16,
@@ -947,11 +1009,13 @@ Object {
                 },
               },
               "name": "method4",
+              "optional": false,
               "range": Array [
                 248,
                 255,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -964,6 +1028,7 @@ Object {
                 "line": 17,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               241,
@@ -971,6 +1036,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -978,7 +1044,9 @@ Object {
                   Object {
                     "declarations": Array [
                       Object {
+                        "definite": false,
                         "id": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 10,
@@ -990,11 +1058,13 @@ Object {
                             },
                           },
                           "name": "fn",
+                          "optional": false,
                           "range": Array [
                             283,
                             285,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "init": Object {
                           "async": false,
@@ -1029,6 +1099,7 @@ Object {
                             },
                             "optional": false,
                             "property": Object {
+                              "decorators": Array [],
                               "loc": Object {
                                 "end": Object {
                                   "column": 25,
@@ -1040,11 +1111,13 @@ Object {
                                 },
                               },
                               "name": "a",
+                              "optional": false,
                               "range": Array [
                                 299,
                                 300,
                               ],
                               "type": "Identifier",
+                              "typeAnnotation": undefined,
                             },
                             "range": Array [
                               294,
@@ -1070,7 +1143,9 @@ Object {
                             288,
                             300,
                           ],
+                          "returnType": undefined,
                           "type": "ArrowFunctionExpression",
+                          "typeParameters": undefined,
                         },
                         "loc": Object {
                           "end": Object {
@@ -1089,6 +1164,7 @@ Object {
                         "type": "VariableDeclarator",
                       },
                     ],
+                    "declare": false,
                     "kind": "var",
                     "loc": Object {
                       "end": Object {
@@ -1110,6 +1186,7 @@ Object {
                     "argument": Object {
                       "arguments": Array [],
                       "callee": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 13,
@@ -1121,11 +1198,13 @@ Object {
                           },
                         },
                         "name": "fn",
+                        "optional": false,
                         "range": Array [
                           313,
                           315,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "loc": Object {
                         "end": Object {
@@ -1143,6 +1222,7 @@ Object {
                         317,
                       ],
                       "type": "CallExpression",
+                      "typeParameters": undefined,
                     },
                     "loc": Object {
                       "end": Object {
@@ -1177,6 +1257,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -1192,6 +1273,7 @@ Object {
               },
               "params": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 24,
@@ -1203,6 +1285,7 @@ Object {
                     },
                   },
                   "name": "this",
+                  "optional": false,
                   "range": Array [
                     256,
                     263,
@@ -1241,6 +1324,7 @@ Object {
                       ],
                       "type": "TSTypeReference",
                       "typeName": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 24,
@@ -1252,11 +1336,13 @@ Object {
                           },
                         },
                         "name": "A",
+                        "optional": false,
                         "range": Array [
                           262,
                           263,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "typeParameters": undefined,
                     },
@@ -1302,11 +1388,15 @@ Object {
                 },
               },
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 21,
@@ -1318,11 +1408,13 @@ Object {
                 },
               },
               "name": "staticMethod",
+              "optional": false,
               "range": Array [
                 333,
                 345,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -1335,6 +1427,7 @@ Object {
                 "line": 22,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               326,
@@ -1342,6 +1435,7 @@ Object {
             ],
             "static": true,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -1378,6 +1472,7 @@ Object {
                       },
                       "optional": false,
                       "property": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 17,
@@ -1389,11 +1484,13 @@ Object {
                           },
                         },
                         "name": "a",
+                        "optional": false,
                         "range": Array [
                           381,
                           382,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "range": Array [
                         376,
@@ -1434,6 +1531,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -1449,6 +1547,7 @@ Object {
               },
               "params": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 29,
@@ -1460,6 +1559,7 @@ Object {
                     },
                   },
                   "name": "this",
+                  "optional": false,
                   "range": Array [
                     346,
                     353,
@@ -1498,6 +1598,7 @@ Object {
                       ],
                       "type": "TSTypeReference",
                       "typeName": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 29,
@@ -1509,11 +1610,13 @@ Object {
                           },
                         },
                         "name": "A",
+                        "optional": false,
                         "range": Array [
                           352,
                           353,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "typeParameters": undefined,
                     },
@@ -1559,11 +1662,15 @@ Object {
                 },
               },
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 15,
@@ -1575,11 +1682,13 @@ Object {
                 },
               },
               "name": "typeof",
+              "optional": false,
               "range": Array [
                 398,
                 404,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -1592,6 +1701,7 @@ Object {
                 "line": 26,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               391,
@@ -1599,6 +1709,7 @@ Object {
             ],
             "static": true,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -1673,6 +1784,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -1688,6 +1800,7 @@ Object {
               },
               "params": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 23,
@@ -1699,6 +1812,7 @@ Object {
                     },
                   },
                   "name": "this",
+                  "optional": false,
                   "range": Array [
                     405,
                     412,
@@ -1737,6 +1851,7 @@ Object {
                       ],
                       "type": "TSTypeReference",
                       "typeName": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 23,
@@ -1748,11 +1863,13 @@ Object {
                           },
                         },
                         "name": "A",
+                        "optional": false,
                         "range": Array [
                           411,
                           412,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "typeParameters": undefined,
                     },
@@ -1798,6 +1915,7 @@ Object {
                 },
               },
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -1817,7 +1935,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 7,
@@ -1829,12 +1950,15 @@ Object {
           },
         },
         "name": "A",
+        "optional": false,
         "range": Array [
           6,
           7,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -1850,7 +1974,9 @@ Object {
         451,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

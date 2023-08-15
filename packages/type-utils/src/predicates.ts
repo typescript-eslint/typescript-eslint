@@ -1,5 +1,5 @@
 import debug from 'debug';
-import { unionTypeParts } from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import { getTypeArguments } from './getTypeArguments';
@@ -26,9 +26,8 @@ export function isNullableType(
 
   if (allowUndefined) {
     return (flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0;
-  } else {
-    return (flags & ts.TypeFlags.Null) !== 0;
   }
+  return (flags & ts.TypeFlags.Null) !== 0;
 }
 
 /**
@@ -39,7 +38,7 @@ export function isTypeArrayTypeOrUnionOfArrayTypes(
   type: ts.Type,
   checker: ts.TypeChecker,
 ): boolean {
-  for (const t of unionTypeParts(type)) {
+  for (const t of tsutils.unionTypeParts(type)) {
     if (!checker.isArrayType(t)) {
       return false;
     }

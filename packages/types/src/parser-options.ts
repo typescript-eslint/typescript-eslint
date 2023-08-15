@@ -2,7 +2,7 @@ import type { Program } from 'typescript';
 
 import type { Lib } from './lib';
 
-type DebugLevel = boolean | ('typescript-eslint' | 'eslint' | 'typescript')[];
+type DebugLevel = ('eslint' | 'typescript-eslint' | 'typescript')[] | boolean;
 type CacheDurationSeconds = number | 'Infinity';
 
 type EcmaVersion =
@@ -25,7 +25,7 @@ type EcmaVersion =
   | 2021
   | 2022;
 
-type SourceType = 'script' | 'module';
+type SourceType = 'module' | 'script';
 
 interface ParserOptions {
   ecmaFeatures?: {
@@ -47,19 +47,19 @@ interface ParserOptions {
   debugLevel?: DebugLevel;
   errorOnTypeScriptSyntacticAndSemanticIssues?: boolean;
   errorOnUnknownASTType?: boolean;
+  EXPERIMENTAL_useProjectService?: boolean; // purposely undocumented for now
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean; // purposely undocumented for now
   extraFileExtensions?: string[];
   filePath?: string;
   loc?: boolean;
-  program?: Program;
-  project?: string | string[] | true;
-  projectFolderIgnoreList?: (string | RegExp)[];
+  program?: Program | null;
+  project?: string[] | string | true | null;
+  projectFolderIgnoreList?: (RegExp | string)[];
   range?: boolean;
   sourceType?: SourceType;
   tokens?: boolean;
   tsconfigRootDir?: string;
   warnOnUnsupportedTypeScriptVersion?: boolean;
-  moduleResolver?: string;
   cacheLifetime?: {
     glob?: CacheDurationSeconds;
   };

@@ -1,5 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -42,7 +42,7 @@ export default util.createRule({
     type: 'suggestion',
     docs: {
       description: 'Disallow comparing an enum value with a non-enum value',
-      recommended: 'strict',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -63,7 +63,7 @@ export default util.createRule({
     }
 
     return {
-      'BinaryExpression[operator=/=|<|>/]'(
+      'BinaryExpression[operator=/^[<>!=]?={0,2}$/]'(
         node: TSESTree.BinaryExpression,
       ): void {
         const left = getTypeFromNode(node.left);

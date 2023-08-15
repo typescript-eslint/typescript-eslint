@@ -6,7 +6,10 @@ Object {
     Object {
       "assertions": Array [],
       "declaration": Object {
+        "const": false,
+        "declare": false,
         "id": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 15,
@@ -18,11 +21,13 @@ Object {
             },
           },
           "name": "Foo",
+          "optional": false,
           "range": Array [
             12,
             15,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "loc": Object {
           "end": Object {
@@ -36,7 +41,9 @@ Object {
         },
         "members": Array [
           Object {
+            "computed": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -48,11 +55,13 @@ Object {
                 },
               },
               "name": "foo",
+              "optional": false,
               "range": Array [
                 22,
                 25,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "initializer": Object {
               "loc": Object {
@@ -90,7 +99,9 @@ Object {
             "type": "TSEnumMember",
           },
           Object {
+            "computed": false,
             "id": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -102,12 +113,15 @@ Object {
                 },
               },
               "name": "bar",
+              "optional": false,
               "range": Array [
                 35,
                 38,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
+            "initializer": undefined,
             "loc": Object {
               "end": Object {
                 "column": 7,

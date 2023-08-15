@@ -19,7 +19,7 @@
   width: 100%;
   background: transparent;
   text-rendering: optimizelegibility;
-  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
   font: var(--ifm-font-size-base) / var(--ifm-line-height-base)
     var(--ifm-font-family-base);
   text-align: left;

@@ -1,4 +1,4 @@
-import { unionTypeParts } from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 const ANY_OR_UNKNOWN = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
@@ -9,7 +9,7 @@ const ANY_OR_UNKNOWN = ts.TypeFlags.Any | ts.TypeFlags.Unknown;
 export function getTypeFlags(type: ts.Type): ts.TypeFlags {
   // @ts-expect-error Since typescript 5.0, this is invalid, but uses 0 as the default value of TypeFlags.
   let flags: ts.TypeFlags = 0;
-  for (const t of unionTypeParts(type)) {
+  for (const t of tsutils.unionTypeParts(type)) {
     flags |= t.flags;
   }
   return flags;

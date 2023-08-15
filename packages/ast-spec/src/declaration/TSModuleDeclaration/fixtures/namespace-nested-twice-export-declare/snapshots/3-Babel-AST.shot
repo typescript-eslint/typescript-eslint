@@ -1,0 +1,97 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-export-declare Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: [],
+      declaration: TSModuleDeclaration {
+        type: "TSModuleDeclaration",
+        body: TSModuleDeclaration {
+          type: "TSModuleDeclaration",
+          body: TSModuleDeclaration {
+            type: "TSModuleDeclaration",
+            body: TSModuleBlock {
+              type: "TSModuleBlock",
+              body: [],
+
+              range: [37, 39],
+              loc: {
+                start: { column: 37, line: 1 },
+                end: { column: 39, line: 1 },
+              },
+            },
+            id: Identifier {
+              type: "Identifier",
+              name: "ghi",
+
+              range: [33, 36],
+              loc: {
+                start: { column: 33, line: 1 },
+                end: { column: 36, line: 1 },
+              },
+            },
+
+            range: [33, 39],
+            loc: {
+              start: { column: 33, line: 1 },
+              end: { column: 39, line: 1 },
+            },
+          },
+          id: Identifier {
+            type: "Identifier",
+            name: "def",
+
+            range: [29, 32],
+            loc: {
+              start: { column: 29, line: 1 },
+              end: { column: 32, line: 1 },
+            },
+          },
+
+          range: [29, 39],
+          loc: {
+            start: { column: 29, line: 1 },
+            end: { column: 39, line: 1 },
+          },
+        },
+        declare: true,
+        id: Identifier {
+          type: "Identifier",
+          name: "abc",
+
+          range: [25, 28],
+          loc: {
+            start: { column: 25, line: 1 },
+            end: { column: 28, line: 1 },
+          },
+        },
+
+        range: [7, 39],
+        loc: {
+          start: { column: 7, line: 1 },
+          end: { column: 39, line: 1 },
+        },
+      },
+      exportKind: "type",
+      source: null,
+      specifiers: [],
+
+      range: [0, 39],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 39, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 40],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

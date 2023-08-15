@@ -4,6 +4,7 @@ exports[`jsx invalid-namespace-value-with-dots.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "children": Array [],
         "closingElement": Object {

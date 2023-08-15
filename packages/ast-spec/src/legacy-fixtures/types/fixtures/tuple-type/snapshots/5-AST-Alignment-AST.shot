@@ -2,5 +2,79 @@
 
 exports[`AST Fixtures legacy-fixtures types tuple-type AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      TSTypeAliasDeclaration {
+        type: 'TSTypeAliasDeclaration',
+-       declare: false,
+        id: Identifier {
+          type: 'Identifier',
+-         decorators: Array [],
+          name: 'Foo',
+-         optional: false,
+
+          range: [78, 81],
+          loc: {
+            start: { column: 5, line: 3 },
+            end: { column: 8, line: 3 },
+          },
+        },
+        typeAnnotation: TSTupleType {
+          type: 'TSTupleType',
+          elementTypes: Array [
+            TSStringKeyword {
+              type: 'TSStringKeyword',
+
+              range: [85, 91],
+              loc: {
+                start: { column: 12, line: 3 },
+                end: { column: 18, line: 3 },
+              },
+            },
+            TSOptionalType {
+              type: 'TSOptionalType',
+              typeAnnotation: TSStringKeyword {
+                type: 'TSStringKeyword',
+
+                range: [93, 99],
+                loc: {
+                  start: { column: 20, line: 3 },
+                  end: { column: 26, line: 3 },
+                },
+              },
+
+              range: [93, 100],
+              loc: {
+                start: { column: 20, line: 3 },
+                end: { column: 27, line: 3 },
+              },
+            },
+          ],
+
+          range: [84, 101],
+          loc: {
+            start: { column: 11, line: 3 },
+            end: { column: 28, line: 3 },
+          },
+        },
+
+        range: [73, 102],
+        loc: {
+          start: { column: 0, line: 3 },
+          end: { column: 29, line: 3 },
+        },
+      },
+    ],
+    sourceType: 'script',
+
+    range: [73, 103],
+    loc: {
+      start: { column: 0, line: 3 },
+      end: { column: 0, line: 4 },
+    },
+  }"
 `;

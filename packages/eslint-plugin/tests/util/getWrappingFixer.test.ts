@@ -1,7 +1,8 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
 
 import { createRule, getWrappingFixer } from '../../src/util';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -20,7 +21,6 @@ const voidEverythingRule = createRule({
     fixable: 'code',
     docs: {
       description: 'Add void operator in random places for test purposes.',
-      recommended: false,
     },
     messages: {
       addVoid: 'Please void this',

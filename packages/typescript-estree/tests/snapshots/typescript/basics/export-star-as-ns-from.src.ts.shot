@@ -7,6 +7,7 @@ Object {
       "assertions": Array [],
       "exportKind": "value",
       "exported": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 15,
@@ -18,11 +19,13 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           12,
           15,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {

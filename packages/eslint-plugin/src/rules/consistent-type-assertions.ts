@@ -7,22 +7,22 @@ import * as util from '../util';
 import { getWrappedCode } from '../util/getWrappedCode';
 
 // intentionally mirroring the options
-type MessageIds =
-  | 'as'
+export type MessageIds =
   | 'angle-bracket'
+  | 'as'
   | 'never'
-  | 'unexpectedObjectTypeAssertion'
   | 'replaceObjectTypeAssertionWithAnnotation'
-  | 'replaceObjectTypeAssertionWithSatisfies';
+  | 'replaceObjectTypeAssertionWithSatisfies'
+  | 'unexpectedObjectTypeAssertion';
 type OptUnion =
   | {
-      assertionStyle: 'as' | 'angle-bracket';
-      objectLiteralTypeAssertions?: 'allow' | 'allow-as-parameter' | 'never';
+      assertionStyle: 'angle-bracket' | 'as';
+      objectLiteralTypeAssertions?: 'allow-as-parameter' | 'allow' | 'never';
     }
   | {
       assertionStyle: 'never';
     };
-type Options = [OptUnion];
+export type Options = readonly [OptUnion];
 
 export default util.createRule<Options, MessageIds>({
   name: 'consistent-type-assertions',
@@ -32,7 +32,7 @@ export default util.createRule<Options, MessageIds>({
     hasSuggestions: true,
     docs: {
       description: 'Enforce consistent usage of type assertions',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
     messages: {
       as: "Use 'as {{cast}}' instead of '<{{cast}}>'.",
@@ -51,6 +51,7 @@ export default util.createRule<Options, MessageIds>({
             type: 'object',
             properties: {
               assertionStyle: {
+                type: 'string',
                 enum: ['never'],
               },
             },
@@ -61,9 +62,11 @@ export default util.createRule<Options, MessageIds>({
             type: 'object',
             properties: {
               assertionStyle: {
+                type: 'string',
                 enum: ['as', 'angle-bracket'],
               },
               objectLiteralTypeAssertions: {
+                type: 'string',
                 enum: ['allow', 'allow-as-parameter', 'never'],
               },
             },
@@ -118,7 +121,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function reportIncorrectAssertionType(
-      node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): void {
       const messageId = options.assertionStyle;
 
@@ -195,7 +198,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     function checkExpression(
-      node: TSESTree.TSTypeAssertion | TSESTree.TSAsExpression,
+      node: TSESTree.TSAsExpression | TSESTree.TSTypeAssertion,
     ): void {
       if (
         options.assertionStyle === 'never' ||
@@ -207,7 +210,6 @@ export default util.createRule<Options, MessageIds>({
 
       if (
         options.objectLiteralTypeAssertions === 'allow-as-parameter' &&
-        node.parent &&
         (node.parent.type === AST_NODE_TYPES.NewExpression ||
           node.parent.type === AST_NODE_TYPES.CallExpression ||
           node.parent.type === AST_NODE_TYPES.ThrowStatement ||

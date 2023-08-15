@@ -10,9 +10,12 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
     body: Array [
       TSTypeAliasDeclaration {
         type: 'TSTypeAliasDeclaration',
+-       declare: false,
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'Unpacked',
+-         optional: false,
 
           range: [78, 86],
           loc: {
@@ -26,7 +29,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
             type: 'TSTypeReference',
             typeName: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'T',
+-             optional: false,
 
               range: [92, 93],
               loc: {
@@ -51,6 +56,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
 -               in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
+-                 decorators: Array [],
 +           elementType: TSParenthesizedType {
 +             type: 'TSParenthesizedType',
 +             typeAnnotation: TSInferType {
@@ -58,6 +64,7 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
 +               typeParameter: TSTypeParameter {
 +                 type: 'TSTypeParameter',
                   name: 'U',
+-                 optional: false,
 
                   range: [109, 110],
                   loc: {
@@ -98,7 +105,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'T',
+-               optional: false,
 
                 range: [124, 125],
                 loc: {
@@ -121,7 +130,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
 -               in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
+-                 decorators: Array [],
 -                 name: 'U',
+-                 optional: false,
 -
 -                 range: [140, 141],
 -                 loc: {
@@ -151,7 +162,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'T',
+-                 optional: false,
 
                   range: [152, 153],
                   loc: {
@@ -168,17 +181,18 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
               },
               extendsType: TSTypeReference {
                 type: 'TSTypeReference',
-                typeName: Identifier {
-                  type: 'Identifier',
-                  name: 'Promise',
-
-                  range: [162, 169],
-                  loc: {
-                    start: { column: 14, line: 7 },
-                    end: { column: 21, line: 7 },
-                  },
-                },
-                typeParameters: TSTypeParameterInstantiation {
+-               typeArguments: TSTypeParameterInstantiation {
++               typeName: Identifier {
++                 type: 'Identifier',
++                 name: 'Promise',
++
++                 range: [162, 169],
++                 loc: {
++                   start: { column: 14, line: 7 },
++                   end: { column: 21, line: 7 },
++                 },
++               },
++               typeParameters: TSTypeParameterInstantiation {
                   type: 'TSTypeParameterInstantiation',
                   params: Array [
                     TSInferType {
@@ -189,7 +203,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
 -                       in: false,
 -                       name: Identifier {
 -                         type: 'Identifier',
+-                         decorators: Array [],
 -                         name: 'U',
+-                         optional: false,
 -
 -                         range: [176, 177],
 -                         loc: {
@@ -221,7 +237,19 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
                     end: { column: 30, line: 7 },
                   },
                 },
+-               typeName: Identifier {
+-                 type: 'Identifier',
+-                 decorators: Array [],
+-                 name: 'Promise',
+-                 optional: false,
 
+-                 range: [162, 169],
+-                 loc: {
+-                   start: { column: 14, line: 7 },
+-                   end: { column: 21, line: 7 },
+-                 },
+-               },
+-
                 range: [162, 178],
                 loc: {
                   start: { column: 14, line: 7 },
@@ -232,7 +260,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'T',
+-                 optional: false,
 
                   range: [189, 190],
                   loc: {
@@ -251,7 +281,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
                 type: 'TSTypeReference',
                 typeName: Identifier {
                   type: 'Identifier',
+-                 decorators: Array [],
                   name: 'U',
+-                 optional: false,
 
                   range: [183, 184],
                   loc: {
@@ -277,7 +309,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
               type: 'TSTypeReference',
               typeName: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'U',
+-               optional: false,
 
                 range: [146, 147],
                 loc: {
@@ -303,7 +337,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
             type: 'TSTypeReference',
             typeName: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'U',
+-             optional: false,
 
               range: [118, 119],
               loc: {
@@ -334,7 +370,9 @@ exports[`AST Fixtures legacy-fixtures types conditional-infer-nested AST Alignme
 -             in: false,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [87, 88],
 -               loc: {

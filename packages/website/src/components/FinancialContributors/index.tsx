@@ -6,7 +6,7 @@ import React from 'react';
 import { Sponsors } from './Sponsors';
 import styles from './styles.module.css';
 
-export function FinancialContributors(): JSX.Element {
+export function FinancialContributors(): React.JSX.Element {
   return (
     <>
       <p>

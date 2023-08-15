@@ -1,5 +1,7 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/non-nullable-type-assertion-style';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -197,11 +199,54 @@ declare const x: T;
 const y = x!;
       `,
     },
+    {
+      code: `
+declare function nullablePromise(): Promise<string | null>;
+
+async function fn(): Promise<string> {
+  return (await nullablePromise()) as string;
+}
+      `,
+      errors: [
+        {
+          column: 10,
+          line: 5,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare function nullablePromise(): Promise<string | null>;
+
+async function fn(): Promise<string> {
+  return (await nullablePromise())!;
+}
+      `,
+    },
+    {
+      code: `
+declare const a: string | null;
+
+const b = (a || undefined) as string;
+      `,
+      errors: [
+        {
+          column: 11,
+          line: 4,
+          messageId: 'preferNonNullAssertion',
+        },
+      ],
+      output: `
+declare const a: string | null;
+
+const b = (a || undefined)!;
+      `,
+    },
   ],
 });
 
 const ruleTesterWithNoUncheckedIndexAccess = new RuleTester({
   parserOptions: {
+    EXPERIMENTAL_useProjectService: false,
     sourceType: 'module',
     tsconfigRootDir: getFixturesRootDir(),
     project: './tsconfig.noUncheckedIndexedAccess.json',

@@ -1,3 +1,4 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESLint } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-inferrable-types';
@@ -5,7 +6,6 @@ import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../../src/util';
-import { RuleTester } from '../RuleTester';
 
 type MessageIds = InferMessageIdsTypeFromRule<typeof rule>;
 type Options = InferOptionsTypeFromRule<typeof rule>;
@@ -153,6 +153,13 @@ class Foo {
 }
       `,
     },
+    {
+      code: `
+class Foo {
+  constructor(public a = true) {}
+}
+      `,
+    },
   ],
 
   invalid: [
@@ -286,6 +293,34 @@ class Foo {
           },
           line: 5,
           column: 3,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  constructor(public a: boolean = true) {}
+}
+      `,
+      output: `
+class Foo {
+  constructor(public a = true) {}
+}
+      `,
+      options: [
+        {
+          ignoreParameters: false,
+          ignoreProperties: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'noInferrableType',
+          data: {
+            type: 'boolean',
+          },
+          line: 3,
+          column: 22,
         },
       ],
     },

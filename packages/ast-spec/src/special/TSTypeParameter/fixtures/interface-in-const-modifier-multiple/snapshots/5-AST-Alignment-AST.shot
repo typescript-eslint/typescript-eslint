@@ -20,9 +20,13 @@ exports[`AST Fixtures special TSTypeParameter interface-in-const-modifier-multip
             end: { column: 26, line: 1 },
           },
         },
+-       declare: false,
+-       extends: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'L',
+-         optional: false,
 
           range: [10, 11],
           loc: {
@@ -39,7 +43,9 @@ exports[`AST Fixtures special TSTypeParameter interface-in-const-modifier-multip
               in: true,
 -             name: Identifier {
 -               type: 'Identifier',
+-               decorators: Array [],
 -               name: 'T',
+-               optional: false,
 -
 -               range: [21, 22],
 -               loc: {

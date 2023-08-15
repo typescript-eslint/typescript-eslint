@@ -4,13 +4,17 @@ exports[`typescript basics class-with-accessibility-modifiers.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "abstract": false,
       "body": Object {
         "body": Array [
           Object {
             "accessibility": "private",
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 13,
@@ -22,11 +26,13 @@ Object {
                 },
               },
               "name": "bar",
+              "optional": false,
               "range": Array [
                 22,
                 25,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -38,12 +44,13 @@ Object {
                 "line": 2,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               14,
               35,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": false,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -86,7 +93,10 @@ Object {
             "accessibility": "public",
             "computed": false,
             "declare": false,
+            "decorators": Array [],
+            "definite": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 19,
@@ -98,11 +108,13 @@ Object {
                 },
               },
               "name": "baz",
+              "optional": false,
               "range": Array [
                 52,
                 55,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -114,12 +126,13 @@ Object {
                 "line": 3,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               38,
               65,
             ],
-            "readonly": undefined,
+            "readonly": false,
             "static": true,
             "type": "PropertyDefinition",
             "typeAnnotation": Object {
@@ -161,7 +174,9 @@ Object {
           Object {
             "accessibility": "public",
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 15,
@@ -173,11 +188,13 @@ Object {
                 },
               },
               "name": "getBar",
+              "optional": false,
               "range": Array [
                 75,
                 81,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -190,6 +207,7 @@ Object {
                 "line": 4,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               68,
@@ -197,6 +215,7 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
@@ -233,6 +252,7 @@ Object {
                       },
                       "optional": false,
                       "property": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 19,
@@ -244,11 +264,13 @@ Object {
                           },
                         },
                         "name": "bar",
+                        "optional": false,
                         "range": Array [
                           103,
                           106,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "range": Array [
                         98,
@@ -289,6 +311,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -307,13 +330,17 @@ Object {
                 82,
                 111,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
           Object {
             "accessibility": "protected",
             "computed": false,
+            "decorators": Array [],
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 18,
@@ -325,11 +352,13 @@ Object {
                 },
               },
               "name": "setBar",
+              "optional": false,
               "range": Array [
                 124,
                 130,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -342,6 +371,7 @@ Object {
                 "line": 7,
               },
             },
+            "optional": false,
             "override": false,
             "range": Array [
               114,
@@ -349,11 +379,13 @@ Object {
             ],
             "static": false,
             "type": "MethodDefinition",
+            "typeParameters": undefined,
             "value": Object {
               "async": false,
               "body": Object {
                 "body": Array [
                   Object {
+                    "directive": undefined,
                     "expression": Object {
                       "left": Object {
                         "computed": false,
@@ -386,6 +418,7 @@ Object {
                         },
                         "optional": false,
                         "property": Object {
+                          "decorators": Array [],
                           "loc": Object {
                             "end": Object {
                               "column": 12,
@@ -397,11 +430,13 @@ Object {
                             },
                           },
                           "name": "bar",
+                          "optional": false,
                           "range": Array [
                             157,
                             160,
                           ],
                           "type": "Identifier",
+                          "typeAnnotation": undefined,
                         },
                         "range": Array [
                           152,
@@ -425,6 +460,7 @@ Object {
                         166,
                       ],
                       "right": Object {
+                        "decorators": Array [],
                         "loc": Object {
                           "end": Object {
                             "column": 18,
@@ -436,11 +472,13 @@ Object {
                           },
                         },
                         "name": "bar",
+                        "optional": false,
                         "range": Array [
                           163,
                           166,
                         ],
                         "type": "Identifier",
+                        "typeAnnotation": undefined,
                       },
                       "type": "AssignmentExpression",
                     },
@@ -477,6 +515,7 @@ Object {
                 ],
                 "type": "BlockStatement",
               },
+              "declare": false,
               "expression": false,
               "generator": false,
               "id": null,
@@ -492,6 +531,7 @@ Object {
               },
               "params": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 32,
@@ -503,6 +543,7 @@ Object {
                     },
                   },
                   "name": "bar",
+                  "optional": false,
                   "range": Array [
                     132,
                     144,
@@ -548,7 +589,9 @@ Object {
                 131,
                 171,
               ],
+              "returnType": undefined,
               "type": "FunctionExpression",
+              "typeParameters": undefined,
             },
           },
         ],
@@ -568,7 +611,10 @@ Object {
         ],
         "type": "ClassBody",
       },
+      "declare": false,
+      "decorators": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 9,
@@ -580,12 +626,15 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           6,
           9,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
+      "implements": Array [],
       "loc": Object {
         "end": Object {
           "column": 1,
@@ -601,7 +650,9 @@ Object {
         173,
       ],
       "superClass": null,
+      "superTypeParameters": undefined,
       "type": "ClassDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

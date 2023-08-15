@@ -16,17 +16,12 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description: 'Require or disallow semicolons instead of ASI',
       // too opinionated to be recommended
-      recommended: false,
       extendsBaseRule: true,
     },
     fixable: 'code',
     hasSuggestions: baseRule.meta.hasSuggestions,
     schema: baseRule.meta.schema,
-    // TODO: this rule has only had messages since v7.0 - remove this when we remove support for v6
-    messages: baseRule.meta.messages ?? {
-      missingSemi: 'Missing semicolon.',
-      extraSemi: 'Extra semicolon.',
-    },
+    messages: baseRule.meta.messages,
   },
   defaultOptions: [
     'always',

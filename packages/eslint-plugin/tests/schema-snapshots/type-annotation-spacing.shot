@@ -1,0 +1,83 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes type-annotation-spacing 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "$defs": {
+      "spacingConfig": {
+        "additionalProperties": false,
+        "properties": {
+          "after": {
+            "type": "boolean"
+          },
+          "before": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "additionalProperties": false,
+    "properties": {
+      "after": {
+        "type": "boolean"
+      },
+      "before": {
+        "type": "boolean"
+      },
+      "overrides": {
+        "additionalProperties": false,
+        "properties": {
+          "arrow": {
+            "$ref": "#/items/0/$defs/spacingConfig"
+          },
+          "colon": {
+            "$ref": "#/items/0/$defs/spacingConfig"
+          },
+          "parameter": {
+            "$ref": "#/items/0/$defs/spacingConfig"
+          },
+          "property": {
+            "$ref": "#/items/0/$defs/spacingConfig"
+          },
+          "returnType": {
+            "$ref": "#/items/0/$defs/spacingConfig"
+          },
+          "variable": {
+            "$ref": "#/items/0/$defs/spacingConfig"
+          }
+        },
+        "type": "object"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type SpacingConfig = {
+  after?: boolean;
+  before?: boolean;
+};
+
+type Options = [
+  {
+    after?: boolean;
+    before?: boolean;
+    overrides?: {
+      arrow?: SpacingConfig;
+      colon?: SpacingConfig;
+      parameter?: SpacingConfig;
+      property?: SpacingConfig;
+      returnType?: SpacingConfig;
+      variable?: SpacingConfig;
+    };
+  },
+];
+"
+`;

@@ -1,1 +1,1 @@
-import foo = require('bar')
+import foo = require('bar');

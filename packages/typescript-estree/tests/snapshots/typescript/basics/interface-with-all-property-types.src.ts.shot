@@ -7,10 +7,12 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "accessibility": undefined,
             "computed": false,
-            "export": undefined,
+            "export": false,
             "initializer": undefined,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -22,11 +24,13 @@ Object {
                 },
               },
               "name": "baa",
+              "optional": false,
               "range": Array [
                 20,
                 23,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -38,13 +42,13 @@ Object {
                 "line": 2,
               },
             },
-            "optional": undefined,
+            "optional": false,
             "range": Array [
               20,
               32,
             ],
-            "readonly": undefined,
-            "static": undefined,
+            "readonly": false,
+            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -82,10 +86,12 @@ Object {
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
-            "export": undefined,
+            "export": false,
             "initializer": undefined,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -97,11 +103,13 @@ Object {
                 },
               },
               "name": "bar",
+              "optional": false,
               "range": Array [
                 37,
                 40,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -118,8 +126,8 @@ Object {
               37,
               50,
             ],
-            "readonly": undefined,
-            "static": undefined,
+            "readonly": false,
+            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -157,10 +165,12 @@ Object {
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
-            "export": undefined,
+            "export": false,
             "initializer": undefined,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 8,
@@ -172,11 +182,13 @@ Object {
                 },
               },
               "name": "bax",
+              "optional": false,
               "range": Array [
                 56,
                 59,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -188,13 +200,13 @@ Object {
                 "line": 4,
               },
             },
-            "optional": undefined,
+            "optional": false,
             "range": Array [
               55,
               69,
             ],
-            "readonly": undefined,
-            "static": undefined,
+            "readonly": false,
+            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -232,10 +244,12 @@ Object {
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
-            "export": undefined,
+            "export": false,
             "initializer": undefined,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 8,
@@ -247,11 +261,13 @@ Object {
                 },
               },
               "name": "baz",
+              "optional": false,
               "range": Array [
                 75,
                 78,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -268,8 +284,8 @@ Object {
               74,
               89,
             ],
-            "readonly": undefined,
-            "static": undefined,
+            "readonly": false,
+            "static": false,
             "type": "TSPropertySignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -307,6 +323,8 @@ Object {
             },
           },
           Object {
+            "accessibility": undefined,
+            "export": false,
             "loc": Object {
               "end": Object {
                 "column": 26,
@@ -319,6 +337,7 @@ Object {
             },
             "parameters": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 16,
@@ -330,6 +349,7 @@ Object {
                   },
                 },
                 "name": "eee",
+                "optional": false,
                 "range": Array [
                   95,
                   106,
@@ -375,6 +395,8 @@ Object {
               94,
               116,
             ],
+            "readonly": false,
+            "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -412,8 +434,11 @@ Object {
             },
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "export": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -425,11 +450,13 @@ Object {
                 },
               },
               "name": "doo",
+              "optional": false,
               "range": Array [
                 121,
                 124,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -442,11 +469,13 @@ Object {
                 "line": 7,
               },
             },
+            "optional": false,
             "params": Array [],
             "range": Array [
               121,
               133,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -481,11 +510,16 @@ Object {
                 "type": "TSVoidKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
+            "typeParameters": undefined,
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "export": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -497,11 +531,13 @@ Object {
                 },
               },
               "name": "coo",
+              "optional": false,
               "range": Array [
                 138,
                 141,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -517,6 +553,7 @@ Object {
             "optional": true,
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 10,
@@ -528,13 +565,16 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   143,
                   144,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 13,
@@ -546,13 +586,16 @@ Object {
                   },
                 },
                 "name": "b",
+                "optional": false,
                 "range": Array [
                   146,
                   147,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 16,
@@ -564,17 +607,20 @@ Object {
                   },
                 },
                 "name": "c",
+                "optional": false,
                 "range": Array [
                   149,
                   150,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
             ],
             "range": Array [
               138,
               158,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -609,11 +655,16 @@ Object {
                 "type": "TSVoidKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
+            "typeParameters": undefined,
           },
           Object {
+            "accessibility": undefined,
             "computed": true,
+            "export": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 8,
@@ -625,11 +676,13 @@ Object {
                 },
               },
               "name": "loo",
+              "optional": false,
               "range": Array [
                 164,
                 167,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -645,6 +698,7 @@ Object {
             "optional": true,
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 12,
@@ -656,13 +710,16 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   170,
                   171,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 15,
@@ -674,13 +731,16 @@ Object {
                   },
                 },
                 "name": "b",
+                "optional": false,
                 "range": Array [
                   173,
                   174,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 18,
@@ -692,17 +752,20 @@ Object {
                   },
                 },
                 "name": "c",
+                "optional": false,
                 "range": Array [
                   176,
                   177,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
             ],
             "range": Array [
               163,
               185,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -737,11 +800,16 @@ Object {
                 "type": "TSVoidKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
+            "typeParameters": undefined,
           },
           Object {
+            "accessibility": undefined,
             "computed": false,
+            "export": false,
             "key": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 7,
@@ -753,11 +821,13 @@ Object {
                 },
               },
               "name": "boo",
+              "optional": false,
               "range": Array [
                 190,
                 193,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "kind": "method",
             "loc": Object {
@@ -770,8 +840,10 @@ Object {
                 "line": 10,
               },
             },
+            "optional": false,
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 12,
@@ -783,13 +855,16 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   197,
                   198,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 15,
@@ -801,13 +876,16 @@ Object {
                   },
                 },
                 "name": "b",
+                "optional": false,
                 "range": Array [
                   200,
                   201,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 18,
@@ -819,17 +897,20 @@ Object {
                   },
                 },
                 "name": "c",
+                "optional": false,
                 "range": Array [
                   203,
                   204,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
             ],
             "range": Array [
               190,
               212,
             ],
+            "readonly": false,
             "returnType": Object {
               "loc": Object {
                 "end": Object {
@@ -864,6 +945,7 @@ Object {
                 "type": "TSVoidKeyword",
               },
             },
+            "static": false,
             "type": "TSMethodSignature",
             "typeParameters": Object {
               "loc": Object {
@@ -892,6 +974,7 @@ Object {
                     },
                   },
                   "name": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 9,
@@ -903,11 +986,13 @@ Object {
                       },
                     },
                     "name": "J",
+                    "optional": false,
                     "range": Array [
                       194,
                       195,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "out": false,
                   "range": Array [
@@ -937,6 +1022,7 @@ Object {
             },
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 10,
@@ -948,13 +1034,16 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   222,
                   223,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 14,
@@ -972,6 +1061,7 @@ Object {
                   227,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
             ],
             "range": Array [
@@ -1013,6 +1103,7 @@ Object {
               },
             },
             "type": "TSConstructSignatureDeclaration",
+            "typeParameters": undefined,
           },
           Object {
             "loc": Object {
@@ -1027,6 +1118,7 @@ Object {
             },
             "params": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 13,
@@ -1038,13 +1130,16 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   250,
                   251,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 17,
@@ -1062,6 +1157,7 @@ Object {
                   255,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
             ],
             "range": Array [
@@ -1130,6 +1226,7 @@ Object {
                     },
                   },
                   "name": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 10,
@@ -1141,11 +1238,13 @@ Object {
                       },
                     },
                     "name": "F",
+                    "optional": false,
                     "range": Array [
                       247,
                       248,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "out": false,
                   "range": Array [
@@ -1179,7 +1278,10 @@ Object {
         ],
         "type": "TSInterfaceBody",
       },
+      "declare": false,
+      "extends": Array [],
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 13,
@@ -1191,11 +1293,13 @@ Object {
           },
         },
         "name": "Foo",
+        "optional": false,
         "range": Array [
           10,
           13,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -1212,6 +1316,7 @@ Object {
         267,
       ],
       "type": "TSInterfaceDeclaration",
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

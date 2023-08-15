@@ -6,9 +6,12 @@ Program {
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Provider",
+        optional: false,
 
         range: [78, 86],
         loc: {
@@ -25,7 +28,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [102, 103],
               loc: {
@@ -63,7 +68,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [91, 92],
               loc: {

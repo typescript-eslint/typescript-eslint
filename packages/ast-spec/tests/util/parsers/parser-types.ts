@@ -45,4 +45,4 @@ export interface ParserResponseError {
   readonly type: ParserResponseType.Error;
   readonly error: unknown;
 }
-export type ParserResponse = ParserResponseSuccess | ParserResponseError;
+export type ParserResponse = ParserResponseError | ParserResponseSuccess;

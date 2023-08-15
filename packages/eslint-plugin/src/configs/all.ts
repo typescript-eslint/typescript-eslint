@@ -1,6 +1,9 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
-// YOU CAN REGENERATE IT USING yarn generate:configs
+// SEE https://typescript-eslint.io/linting/configs
+//
+// For developers working in the typescript-eslint monorepo:
+// You can regenerate it using `yarn generate:configs`
 
 export = {
   extends: ['./configs/base', './configs/eslint-recommended'],
@@ -16,6 +19,8 @@ export = {
     'brace-style': 'off',
     '@typescript-eslint/brace-style': 'error',
     '@typescript-eslint/class-literal-property-style': 'error',
+    'class-methods-use-this': 'off',
+    '@typescript-eslint/class-methods-use-this': 'error',
     'comma-dangle': 'off',
     '@typescript-eslint/comma-dangle': 'error',
     'comma-spacing': 'off',
@@ -105,7 +110,6 @@ export = {
     '@typescript-eslint/no-this-alias': 'error',
     'no-throw-literal': 'off',
     '@typescript-eslint/no-throw-literal': 'error',
-    '@typescript-eslint/no-type-alias': 'error',
     '@typescript-eslint/no-unnecessary-boolean-literal-compare': 'error',
     '@typescript-eslint/no-unnecessary-condition': 'error',
     '@typescript-eslint/no-unnecessary-qualifier': 'error',

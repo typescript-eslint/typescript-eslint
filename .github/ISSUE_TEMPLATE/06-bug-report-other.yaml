@@ -36,6 +36,7 @@ body:
         - ast-spec
         - eslint-plugin-tslint
         - parser
+        - rule-tester
         - scope-manager
         - typescript-estree
         - utils
@@ -118,6 +119,7 @@ body:
         | -------------------------------------- | ------- |
         | `@typescript-eslint/eslint-plugin`     | `X.Y.Z` |
         | `@typescript-eslint/parser`            | `X.Y.Z` |
+        | `@typescript-eslint/rule-tester`       | `X.Y.Z` |
         | `@typescript-eslint/scope-manager`     | `X.Y.Z` |
         | `@typescript-eslint/typescript-estree` | `X.Y.Z` |
         | `@typescript-eslint/type-utils`        | `X.Y.Z` |

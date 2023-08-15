@@ -6,22 +6,10 @@ description: 'Require empty lines around comments.'
 >
 > See **https://typescript-eslint.io/rules/lines-around-comment** for documentation.
 
-## Rule Details
-
 This rule extends the base [`eslint/lines-around-comment`](https://eslint.org/docs/rules/lines-around-comment) rule.
 It adds support for TypeScript syntax.
 
-See the [ESLint documentation](https://eslint.org/docs/rules/lines-around-comment) for more details on the `comma-dangle` rule.
-
-## Rule Changes
-
-```jsonc
-{
-  // note you must disable the base rule as it can report incorrect errors
-  "lines-around-comment": "off",
-  "@typescript-eslint/lines-around-comment": ["error"]
-}
-```
+See the [ESLint documentation](https://eslint.org/docs/rules/lines-around-comment) for more details on the `lines-around-comment` rule.
 
 ## Options
 

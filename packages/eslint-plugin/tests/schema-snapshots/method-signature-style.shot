@@ -1,0 +1,19 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes method-signature-style 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "enum": ["method", "property"],
+    "type": "string"
+  }
+]
+
+
+# TYPES:
+
+type Options = ['method' | 'property'];
+"
+`;

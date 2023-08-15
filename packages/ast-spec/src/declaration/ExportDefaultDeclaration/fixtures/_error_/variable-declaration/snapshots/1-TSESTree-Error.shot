@@ -1,3 +1,8 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures declaration ExportDefaultDeclaration _error_ variable-declaration TSESTree - Error 1`] = `[TSError: Expression expected.]`;
+exports[`AST Fixtures declaration ExportDefaultDeclaration _error_ variable-declaration TSESTree - Error 1`] = `
+"TSError
+> 1 | export default const x = 1;
+    |                ^ Expression expected.
+  2 |"
+`;

@@ -6,9 +6,12 @@ Program {
   body: [
     TSTypeAliasDeclaration {
       type: "TSTypeAliasDeclaration",
+      declare: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "Result",
+        optional: false,
 
         range: [78, 84],
         loc: {
@@ -21,24 +24,16 @@ Program {
         types: [
           TSTypeReference {
             type: "TSTypeReference",
-            typeName: Identifier {
-              type: "Identifier",
-              name: "Success",
-
-              range: [101, 108],
-              loc: {
-                start: { column: 28, line: 3 },
-                end: { column: 35, line: 3 },
-              },
-            },
-            typeParameters: TSTypeParameterInstantiation {
+            typeArguments: TSTypeParameterInstantiation {
               type: "TSTypeParameterInstantiation",
               params: [
                 TSTypeReference {
                   type: "TSTypeReference",
                   typeName: Identifier {
                     type: "Identifier",
+                    decorators: [],
                     name: "T",
+                    optional: false,
 
                     range: [109, 110],
                     loc: {
@@ -61,6 +56,18 @@ Program {
                 end: { column: 38, line: 3 },
               },
             },
+            typeName: Identifier {
+              type: "Identifier",
+              decorators: [],
+              name: "Success",
+              optional: false,
+
+              range: [101, 108],
+              loc: {
+                start: { column: 28, line: 3 },
+                end: { column: 35, line: 3 },
+              },
+            },
 
             range: [101, 111],
             loc: {
@@ -72,7 +79,9 @@ Program {
             type: "TSTypeReference",
             typeName: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "Failure",
+              optional: false,
 
               range: [114, 121],
               loc: {
@@ -114,7 +123,9 @@ Program {
             in: false,
             name: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "T",
+              optional: false,
 
               range: [85, 86],
               loc: {

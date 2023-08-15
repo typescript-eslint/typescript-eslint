@@ -3,7 +3,7 @@ import * as React from 'react';
 
 import styles from './Loader.module.css';
 
-function Loader(): JSX.Element {
+function Loader(): React.JSX.Element {
   return (
     <span className={styles.loaderContainer}>
       <span className={clsx(styles.loader, styles.loader1)} />

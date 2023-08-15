@@ -9,6 +9,8 @@ import { TYPE } from './base-config';
 export const decorators = {
   ClassMemberDecoratorContext: TYPE,
   DecoratorContext: TYPE,
+  DecoratorMetadataObject: TYPE,
+  DecoratorMetadata: TYPE,
   ClassDecoratorContext: TYPE,
   ClassMethodDecoratorContext: TYPE,
   ClassGetterDecoratorContext: TYPE,

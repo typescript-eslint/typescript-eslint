@@ -1,4 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import type {
+  JSONSchema4AnyOfSchema,
+  JSONSchema4ArraySchema,
+  JSONSchema4ObjectSchema,
+} from '@typescript-eslint/utils/json-schema';
 import type {
   ArrayOfStringOrObject,
   ArrayOfStringOrObjectPatterns,
@@ -10,7 +16,7 @@ import type {
   InferMessageIdsTypeFromRule,
   InferOptionsTypeFromRule,
 } from '../util';
-import { createRule, deepMerge } from '../util';
+import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-restricted-imports');
@@ -18,48 +24,149 @@ const baseRule = getESLintCoreRule('no-restricted-imports');
 export type Options = InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const allowTypeImportsOptionSchema = {
+// In some versions of eslint, the base rule has a completely incompatible schema
+// This helper function is to safely try to get parts of the schema. If it's not
+// possible, we'll fallback to less strict checks.
+const tryAccess = <T>(getter: () => T, fallback: T): T => {
+  try {
+    return getter();
+  } catch {
+    return fallback;
+  }
+};
+
+const baseSchema = baseRule.meta.schema as {
+  anyOf: [
+    unknown,
+    {
+      type: 'array';
+      items: [
+        {
+          type: 'object';
+          properties: {
+            paths: {
+              type: 'array';
+              items: {
+                anyOf: [
+                  { type: 'string' },
+                  {
+                    type: 'object';
+                    properties: JSONSchema4ObjectSchema['properties'];
+                    required: string[];
+                  },
+                ];
+              };
+            };
+            patterns: {
+              anyOf: [
+                { type: 'array'; items: { type: 'string' } },
+                {
+                  type: 'array';
+                  items: {
+                    type: 'object';
+                    properties: JSONSchema4ObjectSchema['properties'];
+                    required: string[];
+                  };
+                },
+              ];
+            };
+          };
+        },
+      ];
+    },
+  ];
+};
+
+const allowTypeImportsOptionSchema: JSONSchema4ObjectSchema['properties'] = {
   allowTypeImports: {
     type: 'boolean',
-    default: false,
+    description: 'Disallow value imports, but allow type-only imports.',
   },
 };
-const schemaForMergeArrayOfStringsOrObjects = {
+
+const arrayOfStringsOrObjects: JSONSchema4ArraySchema = {
+  type: 'array',
   items: {
     anyOf: [
-      {},
+      { type: 'string' },
       {
-        properties: allowTypeImportsOptionSchema,
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          ...tryAccess(
+            () =>
+              baseSchema.anyOf[1].items[0].properties.paths.items.anyOf[1]
+                .properties,
+            undefined,
+          ),
+          ...allowTypeImportsOptionSchema,
+        },
+        required: tryAccess(
+          () =>
+            baseSchema.anyOf[1].items[0].properties.paths.items.anyOf[1]
+              .required,
+          undefined,
+        ),
       },
     ],
   },
+  uniqueItems: true,
 };
-const schemaForMergeArrayOfStringsOrObjectPatterns = {
+
+const arrayOfStringsOrObjectPatterns: JSONSchema4AnyOfSchema = {
   anyOf: [
-    {},
     {
+      type: 'array',
       items: {
-        properties: allowTypeImportsOptionSchema,
+        type: 'string',
       },
+      uniqueItems: true,
+    },
+    {
+      type: 'array',
+      items: {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          ...tryAccess(
+            () =>
+              baseSchema.anyOf[1].items[0].properties.patterns.anyOf[1].items
+                .properties,
+            undefined,
+          ),
+          ...allowTypeImportsOptionSchema,
+        },
+        required: tryAccess(
+          () =>
+            baseSchema.anyOf[1].items[0].properties.patterns.anyOf[1].items
+              .required,
+          [],
+        ),
+      },
+      uniqueItems: true,
     },
   ],
 };
-const schema = deepMerge(
-  { ...baseRule.meta.schema },
-  {
-    anyOf: [
-      schemaForMergeArrayOfStringsOrObjects,
-      {
-        items: {
+
+const schema: JSONSchema4AnyOfSchema = {
+  anyOf: [
+    arrayOfStringsOrObjects,
+    {
+      type: 'array',
+      items: [
+        {
+          type: 'object',
           properties: {
-            paths: schemaForMergeArrayOfStringsOrObjects,
-            patterns: schemaForMergeArrayOfStringsOrObjectPatterns,
+            paths: arrayOfStringsOrObjects,
+            patterns: arrayOfStringsOrObjectPatterns,
           },
+          additionalProperties: false,
         },
-      },
-    ],
-  },
-);
+      ],
+      additionalItems: false,
+    },
+  ],
+};
 
 function isObjectOfPaths(
   obj: unknown,
@@ -110,7 +217,6 @@ export default createRule<Options, MessageIds>({
     type: 'suggestion',
     docs: {
       description: 'Disallow specified modules when loaded by `import`',
-      recommended: false,
       extendsBaseRule: true,
     },
     messages: baseRule.meta.messages,
@@ -127,7 +233,7 @@ export default createRule<Options, MessageIds>({
     }
 
     const restrictedPaths = getRestrictedPaths(options);
-    const allowedTypeImportPathNameSet: Set<string> = new Set();
+    const allowedTypeImportPathNameSet = new Set<string>();
     for (const restrictedPath of restrictedPaths) {
       if (
         typeof restrictedPath === 'object' &&
@@ -164,8 +270,15 @@ export default createRule<Options, MessageIds>({
     }
 
     return {
-      ImportDeclaration(node): void {
-        if (node.importKind === 'type') {
+      ImportDeclaration(node: TSESTree.ImportDeclaration): void {
+        if (
+          node.importKind === 'type' ||
+          node.specifiers.every(
+            specifier =>
+              specifier.type === AST_NODE_TYPES.ImportSpecifier &&
+              specifier.importKind === 'type',
+          )
+        ) {
           const importSource = node.source.value.trim();
           if (
             !isAllowedTypeImportPath(importSource) &&
@@ -182,7 +295,10 @@ export default createRule<Options, MessageIds>({
           source: NonNullable<TSESTree.ExportNamedDeclaration['source']>;
         },
       ): void {
-        if (node.exportKind === 'type') {
+        if (
+          node.exportKind === 'type' ||
+          node.specifiers.every(specifier => specifier.exportKind === 'type')
+        ) {
           const importSource = node.source.value.trim();
           if (
             !isAllowedTypeImportPath(importSource) &&
