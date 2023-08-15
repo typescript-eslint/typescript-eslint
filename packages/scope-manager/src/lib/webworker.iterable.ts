@@ -7,6 +7,9 @@ import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE } from './base-config';
 
 export const webworker_iterable = {
+  CSSNumericArray: TYPE,
+  CSSTransformValue: TYPE,
+  CSSUnparsedValue: TYPE,
   Cache: TYPE,
   CanvasPath: TYPE,
   CanvasPathDrawingStyles: TYPE,
@@ -18,6 +21,7 @@ export const webworker_iterable = {
   IDBDatabase: TYPE,
   IDBObjectStore: TYPE,
   MessageEvent: TYPE,
+  StylePropertyMapReadOnly: TYPE,
   SubtleCrypto: TYPE,
   URLSearchParams: TYPE,
   WEBGL_draw_buffers: TYPE,
