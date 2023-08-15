@@ -14,9 +14,11 @@ import CopyButton from '@theme/CodeBlock/CopyButton';
 import Line from '@theme/CodeBlock/Line';
 import WordWrapButton from '@theme/CodeBlock/WordWrapButton';
 import clsx from 'clsx';
+import * as lz from 'lz-string';
 import Highlight, { defaultProps, type Language } from 'prism-react-renderer';
 import React from 'react';
 
+import { TryInPlayground } from '../../MDXComponents/TryInPlayground';
 import styles from './styles.module.css';
 
 export default function CodeBlockString({
@@ -52,6 +54,8 @@ export default function CodeBlockString({
     .split('\n')
     .filter((c, i) => !lineClassNames[i]?.includes('code-block-removed-line'))
     .join('\n');
+
+  const eslintrcHash = parseEslintrc(metastring);
 
   return (
     <Container
@@ -114,6 +118,23 @@ export default function CodeBlockString({
           <CopyButton className={styles.codeButton} code={copiedCode} />
         </div>
       </div>
+      {eslintrcHash && (
+        <div className={styles.playgroundButtonContainer}>
+          <TryInPlayground
+            className="button button--primary button--outline"
+            codeHash={lz.compressToEncodedURIComponent(copiedCode)}
+            eslintrcHash={eslintrcHash}
+          >
+            Open in Playground
+          </TryInPlayground>
+        </div>
+      )}
     </Container>
   );
+}
+
+const eslintrcHashRegex = /eslintrcHash=(?<quote>["'])(?<eslintrcHash>.*?)\1/;
+
+function parseEslintrc(metastring?: string): string {
+  return metastring?.match(eslintrcHashRegex)?.groups!.eslintrcHash ?? '';
 }
