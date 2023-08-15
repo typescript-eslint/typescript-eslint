@@ -4,99 +4,86 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-exp
 Program {
   type: "Program",
   body: [
-    ExportNamedDeclaration {
-      type: "ExportNamedDeclaration",
-      assertions: [],
-      declaration: TSModuleDeclaration {
-        type: "TSModuleDeclaration",
-        body: TSModuleBlock {
-          type: "TSModuleBlock",
-          body: [],
+    TSModuleDeclaration {
+      type: "TSModuleDeclaration",
+      body: TSModuleBlock {
+        type: "TSModuleBlock",
+        body: [],
 
-          range: [37, 39],
-          loc: {
-            start: { column: 37, line: 1 },
-            end: { column: 39, line: 1 },
-          },
+        range: [22, 24],
+        loc: {
+          start: { column: 22, line: 1 },
+          end: { column: 24, line: 1 },
         },
-        declare: true,
-        global: false,
-        id: TSQualifiedName {
+      },
+      declare: false,
+      global: false,
+      id: TSQualifiedName {
+        type: "TSQualifiedName",
+        left: TSQualifiedName {
           type: "TSQualifiedName",
-          left: TSQualifiedName {
-            type: "TSQualifiedName",
-            left: Identifier {
-              type: "Identifier",
-              decorators: [],
-              name: "abc",
-              optional: false,
+          left: Identifier {
+            type: "Identifier",
+            decorators: [],
+            name: "abc",
+            optional: false,
 
-              range: [25, 28],
-              loc: {
-                start: { column: 25, line: 1 },
-                end: { column: 28, line: 1 },
-              },
-            },
-            right: Identifier {
-              type: "Identifier",
-              decorators: [],
-              name: "def",
-              optional: false,
-
-              range: [29, 32],
-              loc: {
-                start: { column: 29, line: 1 },
-                end: { column: 32, line: 1 },
-              },
-            },
-
-            range: [25, 32],
+            range: [10, 13],
             loc: {
-              start: { column: 25, line: 1 },
-              end: { column: 32, line: 1 },
+              start: { column: 10, line: 1 },
+              end: { column: 13, line: 1 },
             },
           },
           right: Identifier {
             type: "Identifier",
             decorators: [],
-            name: "ghi",
+            name: "def",
             optional: false,
 
-            range: [33, 36],
+            range: [14, 17],
             loc: {
-              start: { column: 33, line: 1 },
-              end: { column: 36, line: 1 },
+              start: { column: 14, line: 1 },
+              end: { column: 17, line: 1 },
             },
           },
 
-          range: [25, 36],
+          range: [10, 17],
           loc: {
-            start: { column: 25, line: 1 },
-            end: { column: 36, line: 1 },
+            start: { column: 10, line: 1 },
+            end: { column: 17, line: 1 },
           },
         },
-        kind: "namespace",
+        right: Identifier {
+          type: "Identifier",
+          decorators: [],
+          name: "ghi",
+          optional: false,
 
-        range: [7, 39],
+          range: [18, 21],
+          loc: {
+            start: { column: 18, line: 1 },
+            end: { column: 21, line: 1 },
+          },
+        },
+
+        range: [10, 21],
         loc: {
-          start: { column: 7, line: 1 },
-          end: { column: 39, line: 1 },
+          start: { column: 10, line: 1 },
+          end: { column: 21, line: 1 },
         },
       },
-      exportKind: "type",
-      source: null,
-      specifiers: [],
+      kind: "namespace",
 
-      range: [0, 39],
+      range: [0, 24],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 39, line: 1 },
+        end: { column: 24, line: 1 },
       },
     },
   ],
-  sourceType: "module",
+  sourceType: "script",
 
-  range: [0, 40],
+  range: [0, 25],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 2 },

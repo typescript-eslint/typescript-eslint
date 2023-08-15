@@ -169,8 +169,11 @@ export default createRule<Options, MessageIds>({
           })
           .trimEnd(); // prettier will insert a new line at the end of the code
       } catch (ex) {
-        // adapted from https://github.com/prettier/eslint-plugin-prettier/blob/185b1064d3dd674538456fb2fad97fbfcde49e0d/eslint-plugin-prettier.js#L242-L257
-        if (!(ex instanceof SyntaxError)) {
+        // ex instanceof Error is false as of @prettier/sync@0.3.0, as is ex instanceof SyntaxError
+        if (
+          (ex as Partial<Error> | undefined)?.constructor?.name !==
+          'SyntaxError'
+        ) {
           throw ex;
         }
         const err = ex as Error & {

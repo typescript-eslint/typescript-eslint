@@ -14,68 +14,67 @@ Program {
             type: "TSModuleBlock",
             body: [],
 
-            range: [30, 32],
+            range: [22, 24],
             loc: {
-              start: { column: 30, line: 1 },
-              end: { column: 32, line: 1 },
+              start: { column: 22, line: 1 },
+              end: { column: 24, line: 1 },
             },
           },
           id: Identifier {
             type: "Identifier",
             name: "ghi",
 
-            range: [26, 29],
+            range: [18, 21],
             loc: {
-              start: { column: 26, line: 1 },
-              end: { column: 29, line: 1 },
+              start: { column: 18, line: 1 },
+              end: { column: 21, line: 1 },
             },
           },
 
-          range: [26, 32],
+          range: [18, 24],
           loc: {
-            start: { column: 26, line: 1 },
-            end: { column: 32, line: 1 },
+            start: { column: 18, line: 1 },
+            end: { column: 24, line: 1 },
           },
         },
         id: Identifier {
           type: "Identifier",
           name: "def",
 
-          range: [22, 25],
+          range: [14, 17],
           loc: {
-            start: { column: 22, line: 1 },
-            end: { column: 25, line: 1 },
+            start: { column: 14, line: 1 },
+            end: { column: 17, line: 1 },
           },
         },
 
-        range: [22, 32],
+        range: [14, 24],
         loc: {
-          start: { column: 22, line: 1 },
-          end: { column: 32, line: 1 },
+          start: { column: 14, line: 1 },
+          end: { column: 24, line: 1 },
         },
       },
-      declare: true,
       id: Identifier {
         type: "Identifier",
         name: "abc",
 
-        range: [18, 21],
+        range: [10, 13],
         loc: {
-          start: { column: 18, line: 1 },
-          end: { column: 21, line: 1 },
+          start: { column: 10, line: 1 },
+          end: { column: 13, line: 1 },
         },
       },
 
-      range: [0, 32],
+      range: [0, 24],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 32, line: 1 },
+        end: { column: 24, line: 1 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 33],
+  range: [0, 25],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 2 },

@@ -1729,7 +1729,7 @@ type Options = /** Multiple selectors in one config */
       filter?: MatchRegexConfig | string;
       format: FormatOptionsConfig;
       leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('requiresQuotes')[];
+      modifiers?: 'requiresQuotes'[];
       prefix?: PrefixSuffixConfig;
       selector: 'enumMember';
       suffix?: PrefixSuffixConfig;
@@ -1934,7 +1934,7 @@ type Options = /** Multiple selectors in one config */
       filter?: MatchRegexConfig | string;
       format: FormatOptionsConfig;
       leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('unused')[];
+      modifiers?: 'unused'[];
       prefix?: PrefixSuffixConfig;
       selector: 'typeParameter';
       suffix?: PrefixSuffixConfig;

@@ -4,72 +4,62 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once-decl
 [
   Identifier {
     type: "Identifier",
-    value: "declare",
-
-    range: [0, 7],
-    loc: {
-      start: { column: 0, line: 1 },
-      end: { column: 7, line: 1 },
-    },
-  },
-  Identifier {
-    type: "Identifier",
     value: "namespace",
 
-    range: [8, 17],
+    range: [0, 9],
     loc: {
-      start: { column: 8, line: 1 },
-      end: { column: 17, line: 1 },
+      start: { column: 0, line: 1 },
+      end: { column: 9, line: 1 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "abd",
 
-    range: [18, 21],
+    range: [10, 13],
     loc: {
-      start: { column: 18, line: 1 },
-      end: { column: 21, line: 1 },
+      start: { column: 10, line: 1 },
+      end: { column: 13, line: 1 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ".",
 
-    range: [21, 22],
+    range: [13, 14],
     loc: {
-      start: { column: 21, line: 1 },
-      end: { column: 22, line: 1 },
+      start: { column: 13, line: 1 },
+      end: { column: 14, line: 1 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "def",
 
-    range: [22, 25],
+    range: [14, 17],
     loc: {
-      start: { column: 22, line: 1 },
-      end: { column: 25, line: 1 },
+      start: { column: 14, line: 1 },
+      end: { column: 17, line: 1 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "{",
 
-    range: [26, 27],
+    range: [18, 19],
     loc: {
-      start: { column: 26, line: 1 },
-      end: { column: 27, line: 1 },
+      start: { column: 18, line: 1 },
+      end: { column: 19, line: 1 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [27, 28],
+    range: [19, 20],
     loc: {
-      start: { column: 27, line: 1 },
-      end: { column: 28, line: 1 },
+      start: { column: 19, line: 1 },
+      end: { column: 20, line: 1 },
     },
   },
 ]
