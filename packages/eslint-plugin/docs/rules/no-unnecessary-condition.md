@@ -97,6 +97,22 @@ If for some reason you cannot turn on `strictNullChecks`, but still want to use 
 
 The main downside to using this rule is the need for type information.
 
+This rule has a known edge case of triggering on conditions that were modified within function calls (as side effects).
+It is due to limitations of TypeScript's type narrowing.
+See [#9998](https://github.com/microsoft/TypeScript/issues/9998) for details.
+
+We recommend upcasting the variable with a [type assertion](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions).
+
+```ts
+let condition = false as boolean;
+
+const f = () => (condition = true);
+f();
+
+if (condition) {
+}
+```
+
 ## Related To
 
 - ESLint: [no-constant-condition](https://eslint.org/docs/rules/no-constant-condition) - `no-unnecessary-condition` is essentially a stronger version of `no-constant-condition`, but requires type information.

@@ -88,7 +88,7 @@ declare class ESLintBase {
    * @param results The LintResult objects to write.
    * @returns The promise that will be fulfilled after all files are written.
    */
-  static outputFixes(results: ESLint.LintResult): Promise<void>;
+  static outputFixes(results: ESLint.LintResult[]): Promise<void>;
   /**
    * The version text.
    */
@@ -164,7 +164,7 @@ namespace ESLint {
      * Configuration object, overrides all configurations used with this instance.
      * You can use this option to define the settings that will be used even if your configuration files configure it.
      */
-    overrideConfig?: Linter.ConfigOverride | null;
+    overrideConfig?: Linter.Config | null;
     /**
      * The path to a configuration file, overrides all configurations used with this instance.
      * The options.overrideConfig option is applied after this option is applied.
