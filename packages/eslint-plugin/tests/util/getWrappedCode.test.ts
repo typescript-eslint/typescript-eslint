@@ -1,5 +1,5 @@
-import type { TSESTree } from '@typescript-eslint/utils';
 import { RuleTester } from '@typescript-eslint/rule-tester';
+import type { TSESTree } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
 import * as util from '../../src/util';
