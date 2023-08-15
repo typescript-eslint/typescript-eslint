@@ -1,10 +1,11 @@
 import type * as ts from 'typescript';
+import type * as tsserverlibrary from 'typescript/lib/tsserverlibrary';
 
 import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTree } from '../ts-estree';
 import type { CacheLike } from './ExpiringCache';
 
-type DebugModule = 'typescript-eslint' | 'eslint' | 'typescript';
+type DebugModule = 'eslint' | 'typescript-eslint' | 'typescript';
 
 /**
  * Internal settings used by the parser to run on a file.
@@ -18,7 +19,7 @@ export interface MutableParseSettings {
   /**
    * Code of the file being parsed, or raw source file containing it.
    */
-  code: string | ts.SourceFile;
+  code: ts.SourceFile | string;
 
   /**
    * Full text of the file being parsed.
@@ -56,6 +57,13 @@ export interface MutableParseSettings {
    * Whether to error if an unknown AST node type is encountered.
    */
   errorOnUnknownASTType: boolean;
+
+  /**
+   * Experimental: TypeScript server to power program creation.
+   */
+  EXPERIMENTAL_projectService:
+    | tsserverlibrary.server.ProjectService
+    | undefined;
 
   /**
    * Whether TS should use the source files for referenced projects instead of the compiled .d.ts files.
@@ -101,7 +109,7 @@ export interface MutableParseSettings {
   /**
    * One or more instances of TypeScript Program objects to be used for type information.
    */
-  programs: null | Iterable<ts.Program>;
+  programs: Iterable<ts.Program> | null;
 
   /**
    * Normalized paths to provided project paths.
@@ -126,7 +134,7 @@ export interface MutableParseSettings {
   /**
    * If the `tokens` parse option is enabled, retrieved tokens.
    */
-  tokens: null | TSESTree.Token[];
+  tokens: TSESTree.Token[] | null;
 
   /**
    * Caches searches for TSConfigs from project directories.

@@ -11,7 +11,9 @@ import {
 } from '../../hooks/useHistorySelector';
 import styles from './styles.module.css';
 
-function interpolateCode(text: string): (JSX.Element | string)[] | string {
+function interpolateCode(
+  text: string,
+): (React.JSX.Element | string)[] | string {
   const fragments = text.split(/`(.*?)`/);
   if (fragments.length === 1) {
     return text;
@@ -19,7 +21,11 @@ function interpolateCode(text: string): (JSX.Element | string)[] | string {
   return fragments.map((v, i) => (i % 2 === 0 ? v : <code key={i}>{v}</code>));
 }
 
-function RuleRow({ rule }: { rule: RulesMeta[number] }): JSX.Element | null {
+function RuleRow({
+  rule,
+}: {
+  rule: RulesMeta[number];
+}): React.JSX.Element | null {
   if (!rule.docs?.url) {
     return null;
   }
@@ -86,7 +92,7 @@ function RuleFilterCheckBox({
   label: string;
   setMode: (mode: FilterMode) => void;
   mode: FilterMode;
-}): JSX.Element {
+}): React.JSX.Element {
   const toNextMode = (): void =>
     setMode(filterModes[(filterModes.indexOf(mode) + 1) % filterModes.length]);
   return (
@@ -130,7 +136,7 @@ export default function RulesTable({
   ruleset,
 }: {
   ruleset: 'extension-rules' | 'supported-rules';
-}): JSX.Element {
+}): React.JSX.Element {
   const [filters, changeFilter] = useRulesFilters(ruleset);
 
   const rules = useRulesMeta();
@@ -221,10 +227,10 @@ export default function RulesTable({
 }
 
 type FilterCategory =
+  | 'fixable'
   | 'recommended'
   | 'strict'
   | 'stylistic'
-  | 'fixable'
   | 'suggestions'
   | 'typeInformation';
 type FiltersState = Record<FilterCategory, FilterMode>;

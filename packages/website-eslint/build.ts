@@ -18,7 +18,7 @@ function requireMock(targetPath: string): Promise<string> {
   return fs.readFile(requireResolved(targetPath), 'utf8');
 }
 
-function makeFilter(filePath: string | string[]): { filter: RegExp } {
+function makeFilter(filePath: string[] | string): { filter: RegExp } {
   const paths = Array.isArray(filePath) ? filePath : [filePath];
   const norm = paths.map(item =>
     normalizePath(item).replace(/\//g, '[\\\\/]').replace(/\./g, '\\.'),

@@ -58,8 +58,8 @@ export function getFirstSemanticOrSyntacticError(
 }
 
 function allowlistSupportedDiagnostics(
-  diagnostics: readonly (DiagnosticWithLocation | Diagnostic)[],
-): readonly (DiagnosticWithLocation | Diagnostic)[] {
+  diagnostics: readonly (Diagnostic | DiagnosticWithLocation)[],
+): readonly (Diagnostic | DiagnosticWithLocation)[] {
   return diagnostics.filter(diagnostic => {
     switch (diagnostic.code) {
       case 1013: // "A rest parameter or binding pattern may not have a trailing comma."

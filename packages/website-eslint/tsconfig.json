@@ -4,7 +4,7 @@
     "allowJs": true,
     // opt-in files for checking
     "checkJs": false,
-    // build is done via rollup
+    // build is done via esbuild
     "noEmit": true,
     "skipLibCheck": true
   },

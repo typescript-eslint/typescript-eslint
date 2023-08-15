@@ -20,7 +20,7 @@ import ConditionalSplitPane from './SplitPane/ConditionalSplitPane';
 import { TypesDetails } from './typeDetails/TypesDetails';
 import type { ErrorGroup, RuleDetails, SelectedRange, TabType } from './types';
 
-function Playground(): JSX.Element {
+function Playground(): React.JSX.Element {
   const [state, setState] = useHashState(defaultConfig);
   const [astModel, setAstModel] = useState<UpdateModel>();
   const [markers, setMarkers] = useState<ErrorGroup[]>();

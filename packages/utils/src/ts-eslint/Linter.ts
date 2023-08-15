@@ -16,8 +16,8 @@ import type { SourceCode } from './SourceCode';
 export type MinimalRuleModule<
   TMessageIds extends string = string,
   TOptions extends readonly unknown[] = [],
-> = Pick<RuleModule<TMessageIds, TOptions>, 'create'> &
-  Partial<Omit<RuleModule<TMessageIds, TOptions>, 'create'>>;
+> = Partial<Omit<RuleModule<TMessageIds, TOptions>, 'create'>> &
+  Pick<RuleModule<TMessageIds, TOptions>, 'create'>;
 
 declare class LinterBase {
   /**
@@ -79,7 +79,7 @@ declare class LinterBase {
   verify(
     textOrSourceCode: SourceCode | string,
     config: Linter.Config,
-    filenameOrOptions?: string | Linter.VerifyOptions,
+    filenameOrOptions?: Linter.VerifyOptions | string,
   ): Linter.LintMessage[];
 
   /**
@@ -119,7 +119,7 @@ namespace Linter {
   }
 
   export type Severity = 0 | 1 | 2;
-  export type SeverityString = 'off' | 'warn' | 'error';
+  export type SeverityString = 'error' | 'off' | 'warn';
   export type RuleLevel = Severity | SeverityString;
 
   export type RuleLevelAndOptions = [RuleLevel, ...unknown[]];
@@ -127,15 +127,11 @@ namespace Linter {
   export type RuleEntry = RuleLevel | RuleLevelAndOptions;
   export type RulesRecord = Partial<Record<string, RuleEntry>>;
 
-  export type GlobalVariableOptionBase = 'readonly' | 'writable' | 'off';
+  export type GlobalVariableOptionBase = 'off' | 'readonly' | 'writable';
   export type GlobalVariableOption = GlobalVariableOptionBase | boolean;
 
-  export interface GlobalsConfig {
-    [name: string]: GlobalVariableOption;
-  }
-  export interface EnvironmentConfig {
-    [name: string]: boolean;
-  }
+  export type GlobalsConfig = Record<string, GlobalVariableOption>;
+  export type EnvironmentConfig = Record<string, boolean>;
 
   // https://github.com/eslint/eslint/blob/v6.8.0/conf/config-schema.js
   interface BaseConfig {
@@ -147,7 +143,7 @@ namespace Linter {
     /**
      * The path to other config files or the package name of shareable configs.
      */
-    extends?: string | string[];
+    extends?: string[] | string;
     /**
      * The global variable settings.
      */
@@ -191,15 +187,15 @@ namespace Linter {
   }
 
   export interface ConfigOverride extends BaseConfig {
-    excludedFiles?: string | string[];
-    files: string | string[];
+    excludedFiles?: string[] | string;
+    files: string[] | string;
   }
 
   export interface Config extends BaseConfig {
     /**
      * The glob patterns that ignore to lint.
      */
-    ignorePatterns?: string | string[];
+    ignorePatterns?: string[] | string;
     /**
      * The root flag.
      */
@@ -242,7 +238,7 @@ namespace Linter {
     /**
      * Adds reported errors for unused `eslint-disable` directives.
      */
-    reportUnusedDisableDirectives?: boolean | SeverityString;
+    reportUnusedDisableDirectives?: SeverityString | boolean;
   }
 
   export interface FixOptions extends VerifyOptions {

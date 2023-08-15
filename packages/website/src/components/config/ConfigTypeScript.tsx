@@ -13,7 +13,7 @@ interface ConfigTypeScriptProps {
   readonly className?: string;
 }
 
-function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
+function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
   const { config, onChange: onChangeProp, className } = props;
 
   const [configObject, updateConfigObject] = useState<Record<string, unknown>>(

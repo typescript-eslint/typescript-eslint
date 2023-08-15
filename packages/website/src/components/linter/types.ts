@@ -22,8 +22,10 @@ export interface WebLinterModule {
   configs: Record<string, TSESLint.Linter.Config>;
 }
 
-export type PlaygroundSystem = ts.System &
-  Required<Pick<ts.System, 'watchFile' | 'deleteFile'>> & {
+export type PlaygroundSystem = Required<
+  Pick<ts.System, 'deleteFile' | 'watchFile'>
+> &
+  ts.System & {
     removeFile: (fileName: string) => void;
   };
 

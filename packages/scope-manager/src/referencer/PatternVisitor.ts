@@ -7,7 +7,7 @@ import { VisitorBase } from './VisitorBase';
 type PatternVisitorCallback = (
   pattern: TSESTree.Identifier,
   info: {
-    assignments: (TSESTree.AssignmentPattern | TSESTree.AssignmentExpression)[];
+    assignments: (TSESTree.AssignmentExpression | TSESTree.AssignmentPattern)[];
     rest: boolean;
     topLevel: boolean;
   },
@@ -18,12 +18,12 @@ class PatternVisitor extends VisitorBase {
   public static isPattern(
     node: TSESTree.Node,
   ): node is
+    | TSESTree.ArrayPattern
+    | TSESTree.AssignmentPattern
     | TSESTree.Identifier
     | TSESTree.ObjectPattern
-    | TSESTree.ArrayPattern
-    | TSESTree.SpreadElement
     | TSESTree.RestElement
-    | TSESTree.AssignmentPattern {
+    | TSESTree.SpreadElement {
     const nodeType = node.type;
 
     return (
@@ -39,8 +39,8 @@ class PatternVisitor extends VisitorBase {
   readonly #rootPattern: TSESTree.Node;
   readonly #callback: PatternVisitorCallback;
   readonly #assignments: (
-    | TSESTree.AssignmentPattern
     | TSESTree.AssignmentExpression
+    | TSESTree.AssignmentPattern
   )[] = [];
   public readonly rightHandNodes: TSESTree.Node[] = [];
   readonly #restElements: TSESTree.RestElement[] = [];

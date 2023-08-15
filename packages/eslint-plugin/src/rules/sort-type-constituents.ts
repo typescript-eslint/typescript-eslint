@@ -112,7 +112,6 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Enforce constituents of a type union/intersection to be sorted alphabetically',
-      recommended: 'stylistic',
     },
     fixable: 'code',
     hasSuggestions: true,

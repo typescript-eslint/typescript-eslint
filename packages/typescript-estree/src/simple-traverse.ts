@@ -3,10 +3,13 @@ import { visitorKeys } from '@typescript-eslint/visitor-keys';
 
 import type { TSESTree } from './ts-estree';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-function isValidNode(x: any): x is TSESTree.Node {
-  // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-  return x != null && typeof x === 'object' && typeof x.type === 'string';
+function isValidNode(x: unknown): x is TSESTree.Node {
+  return (
+    typeof x === 'object' &&
+    x != null &&
+    'type' in x &&
+    typeof x.type === 'string'
+  );
 }
 
 function getVisitorKeysForNode(
@@ -24,12 +27,10 @@ type SimpleTraverseOptions = Readonly<
     }
   | {
       visitorKeys?: Readonly<VisitorKeys>;
-      visitors: {
-        [key: string]: (
-          node: TSESTree.Node,
-          parent: TSESTree.Node | undefined,
-        ) => void;
-      };
+      visitors: Record<
+        string,
+        (node: TSESTree.Node, parent: TSESTree.Node | undefined) => void
+      >;
     }
 >;
 

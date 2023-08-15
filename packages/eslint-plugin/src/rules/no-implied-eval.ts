@@ -77,6 +77,7 @@ export default util.createRule({
         return true;
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
       if (symbol && symbol.escapedName === FUNCTION_CONSTRUCTOR) {
         const declarations = symbol.getDeclarations() ?? [];
         for (const declaration of declarations) {
@@ -130,7 +131,7 @@ export default util.createRule({
     }
 
     function checkImpliedEval(
-      node: TSESTree.NewExpression | TSESTree.CallExpression,
+      node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
       const calleeName = getCalleeName(node.callee);
       if (calleeName == null) {

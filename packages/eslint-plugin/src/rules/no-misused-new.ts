@@ -25,9 +25,9 @@ export default util.createRule({
      */
     function getTypeReferenceName(
       node:
+        | TSESTree.EntityName
         | TSESTree.TSTypeAnnotation
         | TSESTree.TypeNode
-        | TSESTree.EntityName
         | undefined,
     ): string | null {
       if (node) {
@@ -50,7 +50,7 @@ export default util.createRule({
      * @param returnType type to be compared
      */
     function isMatchingParentType(
-      parent: undefined | TSESTree.Node,
+      parent: TSESTree.Node | undefined,
       returnType: TSESTree.TSTypeAnnotation | undefined,
     ): boolean {
       if (

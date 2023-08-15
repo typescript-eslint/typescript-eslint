@@ -13,7 +13,7 @@ export default function HiddenItem({
   value,
   level,
   isArray,
-}: HiddenItemProps): JSX.Element {
+}: HiddenItemProps): React.JSX.Element {
   const [isComplex, setIsComplex] = useState<boolean>(true);
   const [length, setLength] = useState<number>(0);
 

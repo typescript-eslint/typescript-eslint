@@ -19,6 +19,8 @@ export = {
     'brace-style': 'off',
     '@typescript-eslint/brace-style': 'error',
     '@typescript-eslint/class-literal-property-style': 'error',
+    'class-methods-use-this': 'off',
+    '@typescript-eslint/class-methods-use-this': 'error',
     'comma-dangle': 'off',
     '@typescript-eslint/comma-dangle': 'error',
     'comma-spacing': 'off',

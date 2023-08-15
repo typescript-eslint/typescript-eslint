@@ -5,7 +5,6 @@ import * as util from '../util';
 
 type Types = Record<
   string,
-  | null
   | boolean
   | string
   | {
@@ -13,6 +12,7 @@ type Types = Record<
       fixWith?: string;
       suggest?: readonly string[];
     }
+  | null
 >;
 
 export type Options = [
@@ -35,7 +35,7 @@ function stringifyNode(
 }
 
 function getCustomMessage(
-  bannedType: null | true | string | { message?: string; fixWith?: string },
+  bannedType: string | true | { message?: string; fixWith?: string } | null,
 ): string {
   if (bannedType == null || bannedType === true) {
     return '';
@@ -148,11 +148,13 @@ export default util.createRule<Options, MessageIds>({
                 description: 'Bans the type with the default message',
               },
               {
+                type: 'boolean',
                 enum: [false],
                 description:
                   'Un-bans the type (useful when paired with `extendDefaults`)',
               },
               {
+                type: 'boolean',
                 enum: [true],
                 description: 'Bans the type with the default message',
               },
@@ -288,6 +290,12 @@ export default util.createRule<Options, MessageIds>({
         if (node.typeArguments) {
           checkBannedTypes(node);
         }
+      },
+      TSInterfaceHeritage(node): void {
+        checkBannedTypes(node);
+      },
+      TSClassImplements(node): void {
+        checkBannedTypes(node);
       },
     };
   },

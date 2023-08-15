@@ -29,7 +29,7 @@ export default util.createRule<[], MessageIds>({
       TSNonNullExpression(node): void {
         const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
         function convertTokenToOptional(
-          replacement: '?' | '?.',
+          replacement: '?.' | '?',
         ): TSESLint.ReportFixFunction {
           return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null => {
             const operator = sourceCode.getTokenAfter(

@@ -17,7 +17,7 @@ export function ensurePositiveInt(
   value: number | undefined,
   defaultValue: number,
 ): number {
-  return Math.max(1, (value !== undefined ? value : defaultValue) | 0);
+  return Math.max(1, (value ?? defaultValue) | 0);
 }
 
 export function createURI(marker: Monaco.editor.IMarkerData): string {

@@ -84,7 +84,7 @@ export function deeplyCopy<T>(ast: T): T {
 
 type UnknownObject = Record<string, unknown>;
 
-function isObjectLike(value: unknown | null): value is UnknownObject {
+function isObjectLike(value: unknown): value is UnknownObject {
   return (
     typeof value === 'object' && !(value instanceof RegExp) && value != null
   );

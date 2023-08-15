@@ -1,6 +1,8 @@
 import debug from 'debug';
 import type * as ts from 'typescript';
 
+import type { TypeScriptProjectService } from '../create-program/createProjectService';
+import { createProjectService } from '../create-program/createProjectService';
 import { ensureAbsolutePath } from '../create-program/shared';
 import type { TSESTreeOptions } from '../parser-options';
 import { isSourceFile } from '../source-files';
@@ -19,9 +21,10 @@ const log = debug(
 );
 
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
+let TSSERVER_PROJECT_SERVICE: TypeScriptProjectService | null = null;
 
 export function createParseSettings(
-  code: string | ts.SourceFile,
+  code: ts.SourceFile | string,
   options: Partial<TSESTreeOptions> = {},
 ): MutableParseSettings {
   const codeFullText = enforceCodeString(code);
@@ -47,6 +50,13 @@ export function createParseSettings(
         : new Set(),
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: options.errorOnUnknownASTType === true,
+    EXPERIMENTAL_projectService:
+      (options.EXPERIMENTAL_useProjectService === true &&
+        process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'false') ||
+      (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true' &&
+        options.EXPERIMENTAL_useProjectService !== false)
+        ? (TSSERVER_PROJECT_SERVICE ??= createProjectService())
+        : undefined,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect:
       options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect === true,
     extraFileExtensions:
@@ -66,7 +76,7 @@ export function createParseSettings(
       typeof options.loggerFn === 'function'
         ? options.loggerFn
         : options.loggerFn === false
-        ? (): void => {}
+        ? (): void => {} // eslint-disable-line @typescript-eslint/no-empty-function
         : console.log, // eslint-disable-line no-console
     preserveNodeMaps: options.preserveNodeMaps !== false,
     programs: Array.isArray(options.programs) ? options.programs : null,
@@ -114,8 +124,8 @@ export function createParseSettings(
     );
   }
 
-  // Providing a program overrides project resolution
-  if (!parseSettings.programs) {
+  // Providing a program or project service overrides project resolution
+  if (!parseSettings.programs && !parseSettings.EXPERIMENTAL_projectService) {
     parseSettings.projects = resolveProjectList({
       cacheLifetime: options.cacheLifetime,
       project: getProjectConfigFiles(parseSettings, options.project),
@@ -132,6 +142,10 @@ export function createParseSettings(
 
 export function clearTSConfigMatchCache(): void {
   TSCONFIG_MATCH_CACHE?.clear();
+}
+
+export function clearTSServerProjectService(): void {
+  TSSERVER_PROJECT_SERVICE = null;
 }
 
 /**

@@ -125,7 +125,7 @@ const NOOP_RULE: RuleModule<'error', []> = {
       error: 'error',
     },
     type: 'problem',
-    schema: {},
+    schema: [],
   },
   defaultOptions: [],
   create() {
@@ -169,6 +169,7 @@ describe('RuleTester', () => {
           {
             code: 'type-aware parser options should override the constructor config',
             parserOptions: {
+              EXPERIMENTAL_useProjectService: false,
               project: 'tsconfig.test-specific.json',
               tsconfigRootDir: '/set/in/the/test/',
             },
@@ -209,6 +210,7 @@ describe('RuleTester', () => {
             "code": "type-aware parser options should override the constructor config",
             "filename": "/set/in/the/test/file.ts",
             "parserOptions": {
+              "EXPERIMENTAL_useProjectService": false,
               "project": "tsconfig.test-specific.json",
               "tsconfigRootDir": "/set/in/the/test/",
             },

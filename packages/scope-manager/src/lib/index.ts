@@ -24,6 +24,7 @@ import { es2016 } from './es2016';
 import { es2016_array_include } from './es2016.array.include';
 import { es2016_full } from './es2016.full';
 import { es2017 } from './es2017';
+import { es2017_date } from './es2017.date';
 import { es2017_full } from './es2017.full';
 import { es2017_intl } from './es2017.intl';
 import { es2017_object } from './es2017.object';
@@ -71,11 +72,15 @@ import { es2022_sharedmemory } from './es2022.sharedmemory';
 import { es2022_string } from './es2022.string';
 import { es2023 } from './es2023';
 import { es2023_array } from './es2023.array';
+import { es2023_collection } from './es2023.collection';
 import { es2023_full } from './es2023.full';
 import { esnext } from './esnext';
 import { esnext_array } from './esnext.array';
 import { esnext_asynciterable } from './esnext.asynciterable';
 import { esnext_bigint } from './esnext.bigint';
+import { esnext_collection } from './esnext.collection';
+import { esnext_decorators } from './esnext.decorators';
+import { esnext_disposable } from './esnext.disposable';
 import { esnext_full } from './esnext.full';
 import { esnext_intl } from './esnext.intl';
 import { esnext_promise } from './esnext.promise';
@@ -118,6 +123,7 @@ const lib = {
   'es2015.symbol': es2015_symbol,
   'es2015.symbol.wellknown': es2015_symbol_wellknown,
   'es2016.array.include': es2016_array_include,
+  'es2017.date': es2017_date,
   'es2017.object': es2017_object,
   'es2017.sharedmemory': es2017_sharedmemory,
   'es2017.string': es2017_string,
@@ -153,14 +159,18 @@ const lib = {
   'es2022.string': es2022_string,
   'es2022.regexp': es2022_regexp,
   'es2023.array': es2023_array,
+  'es2023.collection': es2023_collection,
   'esnext.array': esnext_array,
+  'esnext.collection': esnext_collection,
   'esnext.symbol': esnext_symbol,
   'esnext.asynciterable': esnext_asynciterable,
   'esnext.intl': esnext_intl,
+  'esnext.disposable': esnext_disposable,
   'esnext.bigint': esnext_bigint,
   'esnext.string': esnext_string,
   'esnext.promise': esnext_promise,
   'esnext.weakref': esnext_weakref,
+  'esnext.decorators': esnext_decorators,
   decorators,
   'decorators.legacy': decorators_legacy,
   'es2016.full': es2016_full,

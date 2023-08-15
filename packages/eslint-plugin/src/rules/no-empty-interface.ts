@@ -1,3 +1,4 @@
+import { ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
@@ -84,7 +85,7 @@ export default util.createRule<Options, MessageIds>({
 
             const isInAmbientDeclaration = !!(
               util.isDefinitionFile(filename) &&
-              scope.type === 'tsModule' &&
+              scope.type === ScopeType.tsModule &&
               scope.block.declare
             );
 

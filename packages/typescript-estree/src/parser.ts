@@ -10,6 +10,7 @@ import {
   createNoProgram,
   createSourceFile,
 } from './create-program/createSourceFile';
+import { getWatchProgramsForProjects } from './create-program/getWatchProgramsForProjects';
 import type { ASTAndProgram, CanonicalPath } from './create-program/shared';
 import {
   createProgramFromConfigFile,
@@ -25,6 +26,7 @@ import type { ParseSettings } from './parseSettings';
 import { createParseSettings } from './parseSettings/createParseSettings';
 import { getFirstSemanticOrSyntacticError } from './semantic-or-syntactic-errors';
 import type { TSESTree } from './ts-estree';
+import { useProgramFromProjectService } from './useProgramFromProjectService';
 
 const log = debug('typescript-eslint:typescript-estree:parser');
 
@@ -47,6 +49,16 @@ function getProgramAndAST(
   parseSettings: ParseSettings,
   hasFullTypeInformation: boolean,
 ): ASTAndProgram {
+  if (parseSettings.EXPERIMENTAL_projectService) {
+    const fromProjectService = useProgramFromProjectService(
+      parseSettings.EXPERIMENTAL_projectService,
+      parseSettings,
+    );
+    if (fromProjectService) {
+      return fromProjectService;
+    }
+  }
+
   if (parseSettings.programs) {
     const fromProvidedPrograms = useProvidedPrograms(
       parseSettings.programs,
@@ -57,33 +69,37 @@ function getProgramAndAST(
     }
   }
 
-  if (hasFullTypeInformation) {
-    const fromProjectProgram = createProjectProgram(parseSettings);
-    if (fromProjectProgram) {
-      return fromProjectProgram;
-    }
-
-    // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-    if (parseSettings.DEPRECATED__createDefaultProgram) {
-      // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
-      const fromDefaultProgram = createDefaultProgram(parseSettings);
-      if (fromDefaultProgram) {
-        return fromDefaultProgram;
-      }
-    }
-
-    return createIsolatedProgram(parseSettings);
-  }
-
   // no need to waste time creating a program as the caller didn't want parser services
   // so we can save time and just create a lonesome source file
-  return createNoProgram(parseSettings);
+  if (!hasFullTypeInformation) {
+    return createNoProgram(parseSettings);
+  }
+
+  const fromProjectProgram = createProjectProgram(
+    parseSettings,
+    getWatchProgramsForProjects(parseSettings),
+  );
+  if (fromProjectProgram) {
+    return fromProjectProgram;
+  }
+
+  // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+  if (parseSettings.DEPRECATED__createDefaultProgram) {
+    // eslint-disable-next-line deprecation/deprecation -- will be cleaned up with the next major
+    const fromDefaultProgram = createDefaultProgram(parseSettings);
+    if (fromDefaultProgram) {
+      return fromDefaultProgram;
+    }
+  }
+
+  return createIsolatedProgram(parseSettings);
 }
 
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface EmptyObject {}
 type AST<T extends TSESTreeOptions> = TSESTree.Program &
-  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : EmptyObject) &
-  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : EmptyObject);
+  (T['comment'] extends true ? { comments: TSESTree.Comment[] } : EmptyObject) &
+  (T['tokens'] extends true ? { tokens: TSESTree.Token[] } : EmptyObject);
 
 interface ParseAndGenerateServicesResult<T extends TSESTreeOptions> {
   ast: AST<T>;
@@ -103,7 +119,7 @@ function parse<T extends TSESTreeOptions = TSESTreeOptions>(
 }
 
 function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
-  code: string | ts.SourceFile,
+  code: ts.SourceFile | string,
   options: T | undefined,
   shouldPreserveNodeMaps: boolean,
 ): ParseWithNodeMapsResult<T> {
@@ -142,21 +158,14 @@ function parseWithNodeMapsInternal<T extends TSESTreeOptions = TSESTreeOptions>(
   };
 }
 
-function parseWithNodeMaps<T extends TSESTreeOptions = TSESTreeOptions>(
-  code: string,
-  options?: T,
-): ParseWithNodeMapsResult<T> {
-  return parseWithNodeMapsInternal(code, options, true);
-}
-
-let parseAndGenerateServicesCalls: { [fileName: string]: number } = {};
+let parseAndGenerateServicesCalls: Record<string, number> = {};
 // Privately exported utility intended for use in typescript-eslint unit tests only
 function clearParseAndGenerateServicesCalls(): void {
   parseAndGenerateServicesCalls = {};
 }
 
 function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
-  code: string | ts.SourceFile,
+  code: ts.SourceFile | string,
   options: T,
 ): ParseAndGenerateServicesResult<T> {
   /**
@@ -278,9 +287,7 @@ export {
   AST,
   parse,
   parseAndGenerateServices,
-  parseWithNodeMaps,
   ParseAndGenerateServicesResult,
-  ParseWithNodeMapsResult,
   clearProgramCache,
   clearParseAndGenerateServicesCalls,
 };
