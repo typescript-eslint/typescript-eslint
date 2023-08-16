@@ -336,20 +336,19 @@ export function isJSXToken(node: ts.Node): boolean {
 export function getDeclarationKind(
   node: ts.VariableDeclarationList,
 ): 'const' | 'let' | 'var' | 'using' | 'await using' {
-  switch (node.flags) {
-    case ts.NodeFlags.Using:
-      return 'using';
-    case ts.NodeFlags.AwaitUsing:
-      return 'await using';
-    default:
-      if (node.flags & ts.NodeFlags.Let) {
-        return 'let';
-      }
-      if (node.flags & ts.NodeFlags.Const) {
-        return 'const';
-      }
-      return 'var';
+  if (node.flags & ts.NodeFlags.Let) {
+    return 'let';
   }
+  if ((node.flags & ts.NodeFlags.AwaitUsing) === ts.NodeFlags.AwaitUsing) {
+    return 'await using';
+  }
+  if (node.flags & ts.NodeFlags.Const) {
+    return 'const';
+  }
+  if (node.flags & ts.NodeFlags.Using) {
+    return 'using';
+  }
+  return 'var';
 }
 
 /**
