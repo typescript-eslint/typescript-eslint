@@ -998,7 +998,7 @@ export class Converter {
         }
         if (result.kind === 'using' || result.kind === 'await using') {
           node.declarationList.declarations.forEach((declaration, i) => {
-            if (result.declarations[i].init === null) {
+            if (result.declarations[i].init == null) {
               this.#throwError(
                 declaration,
                 `'${result.kind}' declarations must be initialized.`,

@@ -339,6 +339,7 @@ export function getDeclarationKind(
   if (node.flags & ts.NodeFlags.Let) {
     return 'let';
   }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
   if ((node.flags & ts.NodeFlags.AwaitUsing) === ts.NodeFlags.AwaitUsing) {
     return 'await using';
   }
