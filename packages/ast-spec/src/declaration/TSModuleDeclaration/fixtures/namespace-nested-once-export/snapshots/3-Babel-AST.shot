@@ -4,58 +4,71 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once-expo
 Program {
   type: "Program",
   body: [
-    TSModuleDeclaration {
-      type: "TSModuleDeclaration",
-      body: TSModuleDeclaration {
+    ExportNamedDeclaration {
+      type: "ExportNamedDeclaration",
+      assertions: [],
+      declaration: TSModuleDeclaration {
         type: "TSModuleDeclaration",
-        body: TSModuleBlock {
-          type: "TSModuleBlock",
-          body: [],
+        body: TSModuleDeclaration {
+          type: "TSModuleDeclaration",
+          body: TSModuleBlock {
+            type: "TSModuleBlock",
+            body: [],
 
-          range: [18, 20],
+            range: [25, 27],
+            loc: {
+              start: { column: 25, line: 1 },
+              end: { column: 27, line: 1 },
+            },
+          },
+          id: Identifier {
+            type: "Identifier",
+            name: "def",
+
+            range: [21, 24],
+            loc: {
+              start: { column: 21, line: 1 },
+              end: { column: 24, line: 1 },
+            },
+          },
+
+          range: [21, 27],
           loc: {
-            start: { column: 18, line: 1 },
-            end: { column: 20, line: 1 },
+            start: { column: 21, line: 1 },
+            end: { column: 27, line: 1 },
           },
         },
         id: Identifier {
           type: "Identifier",
-          name: "def",
+          name: "abd",
 
-          range: [14, 17],
+          range: [17, 20],
           loc: {
-            start: { column: 14, line: 1 },
-            end: { column: 17, line: 1 },
+            start: { column: 17, line: 1 },
+            end: { column: 20, line: 1 },
           },
         },
 
-        range: [14, 20],
+        range: [7, 27],
         loc: {
-          start: { column: 14, line: 1 },
-          end: { column: 20, line: 1 },
+          start: { column: 7, line: 1 },
+          end: { column: 27, line: 1 },
         },
       },
-      id: Identifier {
-        type: "Identifier",
-        name: "abd",
+      exportKind: "value",
+      source: null,
+      specifiers: [],
 
-        range: [10, 13],
-        loc: {
-          start: { column: 10, line: 1 },
-          end: { column: 13, line: 1 },
-        },
-      },
-
-      range: [0, 20],
+      range: [0, 27],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 20, line: 1 },
+        end: { column: 27, line: 1 },
       },
     },
   ],
-  sourceType: "script",
+  sourceType: "module",
 
-  range: [0, 21],
+  range: [0, 28],
   loc: {
     start: { column: 0, line: 1 },
     end: { column: 0, line: 2 },

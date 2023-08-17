@@ -8,121 +8,134 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-exp
   Program {
     type: 'Program',
     body: Array [
-      TSModuleDeclaration {
-        type: 'TSModuleDeclaration',
--       body: TSModuleBlock {
--         type: 'TSModuleBlock',
--         body: Array [],
+      ExportNamedDeclaration {
+        type: 'ExportNamedDeclaration',
+        assertions: Array [],
+        declaration: TSModuleDeclaration {
+          type: 'TSModuleDeclaration',
+-         body: TSModuleBlock {
+-           type: 'TSModuleBlock',
+-           body: Array [],
 -
--         range: [22, 24],
--         loc: {
--           start: { column: 22, line: 1 },
--           end: { column: 24, line: 1 },
+-           range: [29, 31],
+-           loc: {
+-             start: { column: 29, line: 1 },
+-             end: { column: 31, line: 1 },
+-           },
 -         },
--       },
--       declare: false,
--       global: false,
--       id: TSQualifiedName {
--         type: 'TSQualifiedName',
--         left: TSQualifiedName {
+-         declare: false,
+-         global: false,
+-         id: TSQualifiedName {
 -           type: 'TSQualifiedName',
--           left: Identifier {
--             type: 'Identifier',
--             decorators: Array [],
--             name: 'abc',
--             optional: false,
-+       body: TSModuleDeclaration {
-+         type: 'TSModuleDeclaration',
+-           left: TSQualifiedName {
+-             type: 'TSQualifiedName',
+-             left: Identifier {
+-               type: 'Identifier',
+-               decorators: Array [],
+-               name: 'abc',
+-               optional: false,
 +         body: TSModuleDeclaration {
 +           type: 'TSModuleDeclaration',
-+           body: TSModuleBlock {
-+             type: 'TSModuleBlock',
-+             body: Array [],
++           body: TSModuleDeclaration {
++             type: 'TSModuleDeclaration',
++             body: TSModuleBlock {
++               type: 'TSModuleBlock',
++               body: Array [],
 
--             range: [10, 13],
-+             range: [22, 24],
+-               range: [17, 20],
++               range: [29, 31],
+                loc: {
+-                 start: { column: 17, line: 1 },
+-                 end: { column: 20, line: 1 },
++                 start: { column: 29, line: 1 },
++                 end: { column: 31, line: 1 },
+                },
+              },
+-             right: Identifier {
++             id: Identifier {
+                type: 'Identifier',
+-               decorators: Array [],
+-               name: 'def',
+-               optional: false,
++               name: 'ghi',
+
+-               range: [21, 24],
++               range: [25, 28],
+                loc: {
+-                 start: { column: 21, line: 1 },
+-                 end: { column: 24, line: 1 },
++                 start: { column: 25, line: 1 },
++                 end: { column: 28, line: 1 },
+                },
+              },
+
+-             range: [17, 24],
++             range: [25, 31],
               loc: {
--               start: { column: 10, line: 1 },
--               end: { column: 13, line: 1 },
-+               start: { column: 22, line: 1 },
-+               end: { column: 24, line: 1 },
+-               start: { column: 17, line: 1 },
+-               end: { column: 24, line: 1 },
++               start: { column: 25, line: 1 },
++               end: { column: 31, line: 1 },
               },
             },
 -           right: Identifier {
 +           id: Identifier {
               type: 'Identifier',
 -             decorators: Array [],
--             name: 'def',
+-             name: 'ghi',
 -             optional: false,
-+             name: 'ghi',
++             name: 'def',
 
--             range: [14, 17],
-+             range: [18, 21],
+-             range: [25, 28],
++             range: [21, 24],
               loc: {
--               start: { column: 14, line: 1 },
--               end: { column: 17, line: 1 },
-+               start: { column: 18, line: 1 },
-+               end: { column: 21, line: 1 },
+-               start: { column: 25, line: 1 },
+-               end: { column: 28, line: 1 },
++               start: { column: 21, line: 1 },
++               end: { column: 24, line: 1 },
               },
             },
 
--           range: [10, 17],
-+           range: [18, 24],
-            loc: {
--             start: { column: 10, line: 1 },
--             end: { column: 17, line: 1 },
-+             start: { column: 18, line: 1 },
-+             end: { column: 24, line: 1 },
-            },
-          },
--         right: Identifier {
-+         id: Identifier {
-            type: 'Identifier',
--           decorators: Array [],
--           name: 'ghi',
--           optional: false,
-+           name: 'def',
-
--           range: [18, 21],
-+           range: [14, 17],
-            loc: {
--             start: { column: 18, line: 1 },
--             end: { column: 21, line: 1 },
-+             start: { column: 14, line: 1 },
-+             end: { column: 17, line: 1 },
-            },
-          },
-
--         range: [10, 21],
-+         range: [14, 24],
-+         loc: {
-+           start: { column: 14, line: 1 },
-+           end: { column: 24, line: 1 },
+-           range: [17, 28],
++           range: [21, 31],
++           loc: {
++             start: { column: 21, line: 1 },
++             end: { column: 31, line: 1 },
++           },
 +         },
-+       },
-+       id: Identifier {
-+         type: 'Identifier',
-+         name: 'abc',
++         id: Identifier {
++           type: 'Identifier',
++           name: 'abc',
 +
-+         range: [10, 13],
++           range: [17, 20],
+            loc: {
+              start: { column: 17, line: 1 },
+-             end: { column: 28, line: 1 },
++             end: { column: 20, line: 1 },
+            },
+          },
+-         kind: 'namespace',
+
+          range: [7, 31],
           loc: {
-            start: { column: 10, line: 1 },
--           end: { column: 21, line: 1 },
-+           end: { column: 13, line: 1 },
+            start: { column: 7, line: 1 },
+            end: { column: 31, line: 1 },
           },
         },
--       kind: 'namespace',
+        exportKind: 'value',
+        source: null,
+        specifiers: Array [],
 
-        range: [0, 24],
+        range: [0, 31],
         loc: {
           start: { column: 0, line: 1 },
-          end: { column: 24, line: 1 },
+          end: { column: 31, line: 1 },
         },
       },
     ],
-    sourceType: 'script',
+    sourceType: 'module',
 
-    range: [0, 25],
+    range: [0, 32],
     loc: {
       start: { column: 0, line: 1 },
       end: { column: 0, line: 2 },

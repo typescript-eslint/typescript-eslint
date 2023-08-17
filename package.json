@@ -64,6 +64,7 @@
     "@nx/jest": "16.5.3",
     "@nx/linter": "16.5.3",
     "@nx/workspace": "16.5.3",
+    "@prettier/sync": "^0.3.0",
     "@swc/core": "^1.3.68",
     "@swc/jest": "^0.2.26",
     "@types/babel__code-frame": "^7.0.3",

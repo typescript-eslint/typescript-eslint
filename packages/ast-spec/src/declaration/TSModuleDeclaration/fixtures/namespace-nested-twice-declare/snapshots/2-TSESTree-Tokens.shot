@@ -4,57 +4,27 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-dec
 [
   Identifier {
     type: "Identifier",
-    value: "namespace",
+    value: "declare",
 
-    range: [0, 9],
+    range: [0, 7],
     loc: {
       start: { column: 0, line: 1 },
-      end: { column: 9, line: 1 },
+      end: { column: 7, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "namespace",
+
+    range: [8, 17],
+    loc: {
+      start: { column: 8, line: 1 },
+      end: { column: 17, line: 1 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "abc",
-
-    range: [10, 13],
-    loc: {
-      start: { column: 10, line: 1 },
-      end: { column: 13, line: 1 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: ".",
-
-    range: [13, 14],
-    loc: {
-      start: { column: 13, line: 1 },
-      end: { column: 14, line: 1 },
-    },
-  },
-  Identifier {
-    type: "Identifier",
-    value: "def",
-
-    range: [14, 17],
-    loc: {
-      start: { column: 14, line: 1 },
-      end: { column: 17, line: 1 },
-    },
-  },
-  Punctuator {
-    type: "Punctuator",
-    value: ".",
-
-    range: [17, 18],
-    loc: {
-      start: { column: 17, line: 1 },
-      end: { column: 18, line: 1 },
-    },
-  },
-  Identifier {
-    type: "Identifier",
-    value: "ghi",
 
     range: [18, 21],
     loc: {
@@ -64,22 +34,62 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-twice-dec
   },
   Punctuator {
     type: "Punctuator",
-    value: "{",
+    value: ".",
 
-    range: [22, 23],
+    range: [21, 22],
+    loc: {
+      start: { column: 21, line: 1 },
+      end: { column: 22, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "def",
+
+    range: [22, 25],
     loc: {
       start: { column: 22, line: 1 },
-      end: { column: 23, line: 1 },
+      end: { column: 25, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: ".",
+
+    range: [25, 26],
+    loc: {
+      start: { column: 25, line: 1 },
+      end: { column: 26, line: 1 },
+    },
+  },
+  Identifier {
+    type: "Identifier",
+    value: "ghi",
+
+    range: [26, 29],
+    loc: {
+      start: { column: 26, line: 1 },
+      end: { column: 29, line: 1 },
+    },
+  },
+  Punctuator {
+    type: "Punctuator",
+    value: "{",
+
+    range: [30, 31],
+    loc: {
+      start: { column: 30, line: 1 },
+      end: { column: 31, line: 1 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [23, 24],
+    range: [31, 32],
     loc: {
-      start: { column: 23, line: 1 },
-      end: { column: 24, line: 1 },
+      start: { column: 31, line: 1 },
+      end: { column: 32, line: 1 },
     },
   },
 ]

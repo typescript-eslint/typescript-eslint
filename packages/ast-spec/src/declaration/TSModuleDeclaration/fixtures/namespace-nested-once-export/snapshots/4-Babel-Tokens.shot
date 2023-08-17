@@ -2,64 +2,74 @@
 
 exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once-export Babel - Tokens 1`] = `
 [
+  Keyword {
+    type: "Keyword",
+    value: "export",
+
+    range: [0, 6],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 6, line: 1 },
+    },
+  },
   Identifier {
     type: "Identifier",
     value: "namespace",
 
-    range: [0, 9],
+    range: [7, 16],
     loc: {
-      start: { column: 0, line: 1 },
-      end: { column: 9, line: 1 },
+      start: { column: 7, line: 1 },
+      end: { column: 16, line: 1 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "abd",
 
-    range: [10, 13],
+    range: [17, 20],
     loc: {
-      start: { column: 10, line: 1 },
-      end: { column: 13, line: 1 },
+      start: { column: 17, line: 1 },
+      end: { column: 20, line: 1 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: ".",
 
-    range: [13, 14],
+    range: [20, 21],
     loc: {
-      start: { column: 13, line: 1 },
-      end: { column: 14, line: 1 },
+      start: { column: 20, line: 1 },
+      end: { column: 21, line: 1 },
     },
   },
   Identifier {
     type: "Identifier",
     value: "def",
 
-    range: [14, 17],
+    range: [21, 24],
     loc: {
-      start: { column: 14, line: 1 },
-      end: { column: 17, line: 1 },
+      start: { column: 21, line: 1 },
+      end: { column: 24, line: 1 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "{",
 
-    range: [18, 19],
+    range: [25, 26],
     loc: {
-      start: { column: 18, line: 1 },
-      end: { column: 19, line: 1 },
+      start: { column: 25, line: 1 },
+      end: { column: 26, line: 1 },
     },
   },
   Punctuator {
     type: "Punctuator",
     value: "}",
 
-    range: [19, 20],
+    range: [26, 27],
     loc: {
-      start: { column: 19, line: 1 },
-      end: { column: 20, line: 1 },
+      start: { column: 26, line: 1 },
+      end: { column: 27, line: 1 },
     },
   },
 ]
