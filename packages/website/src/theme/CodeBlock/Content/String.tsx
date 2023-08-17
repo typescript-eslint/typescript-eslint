@@ -136,5 +136,5 @@ export default function CodeBlockString({
 const eslintrcHashRegex = /eslintrcHash=(?<quote>["'])(?<eslintrcHash>.*?)\1/;
 
 function parseEslintrc(metastring?: string): string {
-  return metastring?.match(eslintrcHashRegex)?.groups!.eslintrcHash ?? '';
+  return metastring?.match(eslintrcHashRegex)?.groups?.eslintrcHash ?? '';
 }

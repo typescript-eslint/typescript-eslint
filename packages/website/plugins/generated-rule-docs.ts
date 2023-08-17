@@ -422,7 +422,7 @@ export const generatedRuleDocs: Plugin = () => {
         !node.meta?.includes('eslintrcHash=')
       ) {
         let playgroundEslintrc = eslintrc;
-        const option = node.meta?.match(optionRegex)?.groups!.option;
+        const option = node.meta?.match(optionRegex)?.groups?.option;
         if (option) {
           playgroundEslintrc = playgroundEslintrc.replace(
             '"error"',
