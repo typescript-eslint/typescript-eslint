@@ -5,7 +5,7 @@ import type {
   UsingDeclarator,
 } from '../../special/VariableDeclarator/spec';
 
-interface LetOrConstOrVarDeclaration extends BaseNode {
+export interface LetOrConstOrVarDeclaration extends BaseNode {
   type: AST_NODE_TYPES.VariableDeclaration;
   /**
    * The variables declared by this declaration.
@@ -35,7 +35,7 @@ interface LetOrConstOrVarDeclaration extends BaseNode {
   kind: 'const' | 'let' | 'var';
 }
 
-interface UsingDeclaration extends BaseNode {
+export interface UsingDeclaration extends BaseNode {
   type: AST_NODE_TYPES.VariableDeclaration;
   /**
    * The variables declared by this declaration.
