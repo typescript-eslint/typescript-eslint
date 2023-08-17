@@ -1226,16 +1226,16 @@ export class Test {
       errors: [
         {
           messageId: 'missingArgType',
-          line: 3,
-          column: 22,
+          line: 4,
+          column: 12,
           data: {
             name: 'foo',
           },
         },
         {
           messageId: 'missingArgType',
-          line: 3,
-          column: 27,
+          line: 5,
+          column: 5,
           data: {
             name: 'bar',
           },

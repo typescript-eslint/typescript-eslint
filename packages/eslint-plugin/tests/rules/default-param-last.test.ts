@@ -610,9 +610,9 @@ class Foo {
       errors: [
         {
           messageId: 'shouldBeLast',
-          line: 3,
-          column: 33,
-          endColumn: 53,
+          line: 5,
+          column: 5,
+          endColumn: 25,
         },
       ],
     },
@@ -629,9 +629,9 @@ class Foo {
       errors: [
         {
           messageId: 'shouldBeLast',
-          line: 3,
-          column: 33,
-          endColumn: 48,
+          line: 5,
+          column: 5,
+          endColumn: 20,
         },
       ],
     },
@@ -647,9 +647,9 @@ class Foo {
       errors: [
         {
           messageId: 'shouldBeLast',
-          line: 3,
-          column: 15,
-          endColumn: 32,
+          line: 4,
+          column: 5,
+          endColumn: 22,
         },
       ],
     },
@@ -665,9 +665,9 @@ class Foo {
       errors: [
         {
           messageId: 'shouldBeLast',
-          line: 3,
-          column: 15,
-          endColumn: 27,
+          line: 4,
+          column: 5,
+          endColumn: 17,
         },
       ],
     },
