@@ -21,6 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          persist-credentials: false
 
       - name: Check if prettier was changed as part of the latest commit on the PR
         id: prettier-package-check
