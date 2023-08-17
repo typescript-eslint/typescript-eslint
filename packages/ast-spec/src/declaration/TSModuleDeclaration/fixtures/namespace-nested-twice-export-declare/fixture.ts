@@ -1,1 +1,1 @@
-namespace abc.def.ghi {}
+export declare namespace abc.def.ghi {}

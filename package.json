@@ -110,7 +110,7 @@
     "nx-cloud": "16.1.1",
     "nx": "16.5.3",
     "patch-package": "^8.0.0",
-    "prettier": "^3.0.0",
+    "prettier": "^3.0.2",
     "pretty-format": "^29.6.1",
     "raw-loader": "^4.0.2",
     "rimraf": "^5.0.1",

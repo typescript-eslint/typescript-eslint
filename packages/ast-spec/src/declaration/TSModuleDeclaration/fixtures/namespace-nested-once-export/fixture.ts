@@ -1,1 +1,1 @@
-namespace abd.def {}
+export namespace abd.def {}

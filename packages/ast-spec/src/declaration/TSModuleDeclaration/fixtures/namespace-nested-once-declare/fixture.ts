@@ -1,1 +1,1 @@
-namespace abd.def {}
+declare namespace abd.def {}
