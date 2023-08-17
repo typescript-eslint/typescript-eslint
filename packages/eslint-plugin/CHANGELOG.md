@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.3.0...v6.4.0) (2023-08-14)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [non-nullable-type-assertion-style] consider operator precedence when fixing ([#7289](https://github.com/typescript-eslint/typescript-eslint/issues/7289)) ([bad37a2](https://github.com/typescript-eslint/typescript-eslint/commit/bad37a22025b718a10e70cc84b9847eb41f723d0))
+* **eslint-plugin:** [strict-boolean-expressions] replace dangerous fixer with suggestions ([#7394](https://github.com/typescript-eslint/typescript-eslint/issues/7394)) ([ad8401a](https://github.com/typescript-eslint/typescript-eslint/commit/ad8401a5970441258cc4440a01a3acf35d861171))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [6.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.2.1...v6.3.0) (2023-08-07)
 
 
