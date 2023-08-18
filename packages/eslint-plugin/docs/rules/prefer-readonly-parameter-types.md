@@ -172,9 +172,14 @@ interface WrapperWithOther {
   otherProp: string;
 }
 
-function fn1(arg: ThisIsMutable) {} // Incorrect because ThisIsMutable is not readonly
-function fn2(arg: Wrapper) {} // Incorrect because Wrapper.sub is not readonly
-function fn3(arg: WrapperWithOther) {} // Incorrect because WrapperWithOther.otherProp is not readonly and not in the allowlist
+// Incorrect because ThisIsMutable is not readonly
+function fn1(arg: ThisIsMutable) {}
+
+// Incorrect because Wrapper.sub is not readonly
+function fn2(arg: Wrapper) {}
+
+// Incorrect because WrapperWithOther.otherProp is not readonly and not in the allowlist
+function fn3(arg: WrapperWithOther) {}
 ```
 
 ```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
@@ -185,9 +190,14 @@ interface HTMLElement {
   prop: string;
 }
 
-function fn1(arg: Foo) {} // Incorrect because Foo is not a local type
-function fn2(arg: HTMLElement) {} // Incorrect because HTMLElement is not from the default library
-function fn3(arg: Bar) {} // Incorrect because Bar is not from "bar-lib"
+// Incorrect because Foo is not a local type
+function fn1(arg: Foo) {}
+
+// Incorrect because HTMLElement is not from the default library
+function fn2(arg: HTMLElement) {}
+
+// Incorrect because Bar is not from "bar-lib"
+function fn3(arg: Bar) {}
 ```
 
 #### ✅ Correct
@@ -202,8 +212,11 @@ interface Wrapper {
   readonly otherProp: string;
 }
 
-function fn1(arg: Foo) {} // Works because Foo is allowed
-function fn2(arg: Wrapper) {} // Works even when Foo is nested somewhere in the type, with other properties still being checked
+// Works because Foo is allowed
+function fn1(arg: Foo) {}
+
+// Works even when Foo is nested somewhere in the type, with other properties still being checked
+function fn2(arg: Wrapper) {}
 ```
 
 ```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
@@ -213,15 +226,21 @@ interface Foo {
   prop: string;
 }
 
-function fn1(arg: Foo) {} // Works because Foo is a local type
-function fn2(arg: HTMLElement) {} // Works because HTMLElement is from the default library
-function fn3(arg: Bar) {} // Works because Bar is from "bar-lib"
+// Works because Foo is a local type
+function fn1(arg: Foo) {}
+
+// Works because HTMLElement is from the default library
+function fn2(arg: HTMLElement) {}
+
+// Works because Bar is from "bar-lib"
+function fn3(arg: Bar) {}
 ```
 
 ```ts option='{"allow":["$",{"source":"file","name":"Foo"},{"source":"lib","name":"HTMLElement"},{"from":"package","name":"Bar","package":"bar-lib"}]}'
 import { Foo } from './foo';
 
-function fn(arg: Foo) {} // Works because Foo is still a local type - it has to be in the same package
+// Works because Foo is still a local type - it has to be in the same package
+function fn(arg: Foo) {}
 ```
 
 ### `checkParameterProperties`

@@ -6,6 +6,7 @@
   /* rtl:ignore */
   direction: ltr;
   border-radius: inherit;
+  min-height: 5.5rem;
 }
 
 .codeBlockTitle {
@@ -83,7 +84,21 @@
   opacity: 0.4;
 }
 
-.playgroundButtonContainer {
-  overflow: auto;
-  padding: 0.75rem 1rem;
+.playgroundButton {
+  position: absolute;
+  bottom: calc(var(--ifm-pre-padding) / 2);
+  right: calc(var(--ifm-pre-padding) / 2);
+}
+
+@media screen and (max-width: 768px),
+  screen and (min-width: 996px) and (max-width: 1200px) {
+  .codeBlockContent {
+    min-height: auto;
+    overflow: auto;
+  }
+
+  .playgroundButton {
+    position: static;
+    margin: calc(var(--ifm-pre-padding) / 2);
+  }
 }

@@ -107,6 +107,18 @@ export default function CodeBlockString({
             </pre>
           )}
         </Highlight>
+        {eslintrcHash && (
+          <TryInPlayground
+            className={clsx(
+              'button button--primary button--outline',
+              styles.playgroundButton,
+            )}
+            codeHash={lz.compressToEncodedURIComponent(copiedCode)}
+            eslintrcHash={eslintrcHash}
+          >
+            Open in Playground
+          </TryInPlayground>
+        )}
         <div className={styles.buttonGroup}>
           {(wordWrap.isEnabled || wordWrap.isCodeScrollable) && (
             <WordWrapButton
@@ -118,17 +130,6 @@ export default function CodeBlockString({
           <CopyButton className={styles.codeButton} code={copiedCode} />
         </div>
       </div>
-      {eslintrcHash && (
-        <div className={styles.playgroundButtonContainer}>
-          <TryInPlayground
-            className="button button--primary button--outline"
-            codeHash={lz.compressToEncodedURIComponent(copiedCode)}
-            eslintrcHash={eslintrcHash}
-          >
-            Open in Playground
-          </TryInPlayground>
-        </div>
-      )}
     </Container>
   );
 }
