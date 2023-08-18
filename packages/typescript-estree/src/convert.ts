@@ -1024,13 +1024,32 @@ export class Converter {
       }
 
       // mostly for for-of, for-in
-      case SyntaxKind.VariableDeclarationList:
-        return this.createNode<TSESTree.VariableDeclaration>(node, {
+      case SyntaxKind.VariableDeclarationList: {
+        const result = this.createNode<TSESTree.VariableDeclaration>(node, {
           type: AST_NODE_TYPES.VariableDeclaration,
           declarations: node.declarations.map(el => this.convertChild(el)),
           declare: false,
           kind: getDeclarationKind(node),
         });
+
+        if (result.kind === 'using' || result.kind === 'await using') {
+          node.declarations.forEach((declaration, i) => {
+            if (result.declarations[i].init != null) {
+              this.#throwError(
+                declaration,
+                `'${result.kind}' declarations may not be initialized in for statement.`,
+              );
+            }
+            if (result.declarations[i].id.type !== AST_NODE_TYPES.Identifier) {
+              this.#throwError(
+                declaration.name,
+                `'${result.kind}' declarations may not have binding patterns.`,
+              );
+            }
+          });
+        }
+        return result;
+      }
 
       // Expressions
 
