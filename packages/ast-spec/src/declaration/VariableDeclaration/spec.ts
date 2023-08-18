@@ -2,7 +2,8 @@ import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type { BaseNode } from '../../base/BaseNode';
 import type {
   LetOrConstOrVarDeclarator,
-  UsingDeclarator,
+  UsingInNomalConextDeclarator,
+  UsingInForOfDeclarator,
 } from '../../special/VariableDeclarator/spec';
 
 export interface LetOrConstOrVarDeclaration extends BaseNode {
@@ -35,7 +36,7 @@ export interface LetOrConstOrVarDeclaration extends BaseNode {
   kind: 'const' | 'let' | 'var';
 }
 
-export interface UsingDeclaration extends BaseNode {
+export interface UsingInNomalConextDeclaration extends BaseNode {
   type: AST_NODE_TYPES.VariableDeclaration;
   /**
    * The variables declared by this declaration.
@@ -46,7 +47,7 @@ export interface UsingDeclaration extends BaseNode {
    * ```
    */
   // TODO(#1852) - this should be guaranteed to have at least 1 element in it.
-  declarations: UsingDeclarator[];
+  declarations: UsingInNomalConextDeclarator[];
   /**
    * This value will always be `false`
    * because 'declare' modifier cannot appear on a 'using' declaration.
@@ -61,5 +62,35 @@ export interface UsingDeclaration extends BaseNode {
    */
   kind: 'await using' | 'using';
 }
+
+export interface UsingInForOfDeclaration extends BaseNode {
+  type: AST_NODE_TYPES.VariableDeclaration;
+  /**
+   * The variables declared by this declaration.
+   * Note that there may be 0 declarations (i.e. `const;`).
+   * ```
+   * for(using x of y){}
+   * ```
+   */
+  // TODO - this should be guaranteed to have 1 element in it.
+  declarations: UsingInForOfDeclarator[];
+  /**
+   * This value will always be `false`
+   * because 'declare' modifier cannot appear on a 'using' declaration.
+   */
+  declare: false;
+  /**
+   * The keyword used to declare the variable(s)
+   * ```
+   * for(using x of y){}
+   * for(await using x of y){}
+   * ```
+   */
+  kind: 'await using' | 'using';
+}
+
+export type UsingDeclaration =
+  | UsingInForOfDeclaration
+  | UsingInNomalConextDeclaration;
 
 export type VariableDeclaration = LetOrConstOrVarDeclaration | UsingDeclaration;

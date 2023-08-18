@@ -11,11 +11,22 @@ export interface LetOrConstOrVarDeclarator extends BaseNode {
   definite: boolean;
 }
 
-export interface UsingDeclarator extends BaseNode {
+export interface UsingInNomalConextDeclarator extends BaseNode {
   type: AST_NODE_TYPES.VariableDeclarator;
   id: Identifier;
-  init: Expression | null;
+  init: Expression;
   definite: boolean;
 }
+
+export interface UsingInForOfDeclarator extends BaseNode {
+  type: AST_NODE_TYPES.VariableDeclarator;
+  id: Identifier;
+  init: null;
+  definite: boolean;
+}
+
+export type UsingDeclarator =
+  | UsingInNomalConextDeclarator
+  | UsingInForOfDeclarator;
 
 export type VariableDeclarator = LetOrConstOrVarDeclarator | UsingDeclarator;
