@@ -78,6 +78,8 @@ const BINARY_OPERATORS: ReadonlySet<BinaryOperatorKind> = new Set([
   SyntaxKind.ExclamationEqualsToken,
 ]);
 
+type DeclarationKind = TSESTree.VariableDeclaration['kind'];
+
 /**
  * Returns true if the given ts.Token is the assignment operator
  * @param operator the operator token
@@ -335,7 +337,7 @@ export function isJSXToken(node: ts.Node): boolean {
  */
 export function getDeclarationKind(
   node: ts.VariableDeclarationList,
-): 'const' | 'let' | 'var' | 'using' | 'await using' {
+): DeclarationKind {
   if (node.flags & ts.NodeFlags.Let) {
     return 'let';
   }
