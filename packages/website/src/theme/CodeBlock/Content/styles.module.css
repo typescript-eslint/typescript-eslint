@@ -90,8 +90,7 @@
   right: calc(var(--ifm-pre-padding) / 2);
 }
 
-@media screen and (max-width: 768px),
-  screen and (min-width: 996px) and (max-width: 1200px) {
+@media screen and (width <= 768px), screen and (996px <= width <= 1200px) {
   .codeBlockContent {
     min-height: auto;
     overflow: auto;
