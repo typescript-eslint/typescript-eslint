@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures statement ForStatement using-decralation Babel - Tokens 1`] = `
+exports[`AST Fixtures statement ForOfStatement using-decralation TSESTree - Tokens 1`] = `
 [
   Keyword {
     type: "Keyword",

@@ -1,6 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`AST Fixtures statement ForStatement using-decralation TSESTree - AST 1`] = `
+exports[`AST Fixtures statement ForOfStatement using-decralation TSESTree - AST 1`] = `
 Program {
   type: "Program",
   body: [

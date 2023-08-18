@@ -15,7 +15,7 @@ packages/ast-spec/src/declaration/VariableDeclaration/fixtures/await-using-multi
 packages/ast-spec/src/declaration/VariableDeclaration/fixtures/await-using-with-value/fixture.ts
 packages/ast-spec/src/declaration/VariableDeclaration/fixtures/using-multiple-declarations/fixture.ts
 packages/ast-spec/src/declaration/VariableDeclaration/fixtures/using-with-value/fixture.ts
-packages/ast-spec/src/statement/ForStatement/fixtures/using-decralation/fixture.ts
+packages/ast-spec/src/statement/ForOfStatement/fixtures/using-decralation/fixture.ts
 
 # prettier doesn't yet support `const` modifiers for type parameters
 packages/ast-spec/src/special/TSTypeParameter/fixtures
