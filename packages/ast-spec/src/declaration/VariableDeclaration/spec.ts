@@ -2,8 +2,8 @@ import type { AST_NODE_TYPES } from '../../ast-node-types';
 import type { BaseNode } from '../../base/BaseNode';
 import type {
   LetOrConstOrVarDeclarator,
-  UsingInNomalConextDeclarator,
   UsingInForOfDeclarator,
+  UsingInNomalConextDeclarator,
 } from '../../special/VariableDeclarator/spec';
 
 export interface LetOrConstOrVarDeclaration extends BaseNode {

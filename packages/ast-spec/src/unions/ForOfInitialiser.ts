@@ -1,6 +1,6 @@
 import type {
-  UsingInForOfDeclaration,
   LetOrConstOrVarDeclaration,
+  UsingInForOfDeclaration,
 } from '../declaration/VariableDeclaration/spec';
 import type { Expression } from './Expression';
 

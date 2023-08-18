@@ -26,7 +26,7 @@ export interface UsingInForOfDeclarator extends BaseNode {
 }
 
 export type UsingDeclarator =
-  | UsingInNomalConextDeclarator
-  | UsingInForOfDeclarator;
+  | UsingInForOfDeclarator
+  | UsingInNomalConextDeclarator;
 
 export type VariableDeclarator = LetOrConstOrVarDeclarator | UsingDeclarator;
