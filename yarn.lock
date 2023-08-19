@@ -3330,7 +3330,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@jest/core@npm:^29.6.1, @jest/core@npm:^29.6.2":
+"@jest/core@npm:^29.6.2":
   version: 29.6.2
   resolution: "@jest/core@npm:29.6.2"
   dependencies:
@@ -5704,7 +5704,7 @@ __metadata:
     "@babel/parser": "*"
     "@microsoft/api-extractor": ^7.36.1
     glob: "*"
-    jest: 29.6.1
+    jest: 29.6.2
     jest-diff: ^29.6.1
     jest-snapshot: ^29.6.1
     jest-specific-snapshot: ^8.0.0
@@ -5725,7 +5725,7 @@ __metadata:
     "@typescript-eslint/scope-manager": 6.4.0
     "@typescript-eslint/type-utils": 6.4.0
     "@typescript-eslint/utils": 6.4.0
-    jest: 29.6.1
+    jest: 29.6.2
     prettier: ^2.8.4
     rimraf: "*"
   languageName: unknown
@@ -5738,7 +5738,7 @@ __metadata:
     "@types/lodash": "*"
     "@typescript-eslint/parser": 6.4.0
     "@typescript-eslint/utils": 6.4.0
-    jest: 29.6.1
+    jest: 29.6.2
     prettier: ^2.8.4
     rimraf: "*"
   peerDependencies:
@@ -5770,7 +5770,7 @@ __metadata:
     grapheme-splitter: ^1.0.4
     graphemer: ^1.4.0
     ignore: ^5.2.4
-    jest: 29.6.1
+    jest: 29.6.2
     jest-specific-snapshot: ^8.0.0
     json-schema: "*"
     markdown-table: ^3.0.3
@@ -5813,7 +5813,7 @@ __metadata:
     debug: ^4.3.4
     downlevel-dts: "*"
     glob: "*"
-    jest: 29.6.1
+    jest: 29.6.2
     prettier: ^2.8.4
     rimraf: "*"
     typescript: "*"
@@ -5907,7 +5907,7 @@ __metadata:
     ajv: ^6.10.0
     debug: ^4.3.4
     downlevel-dts: "*"
-    jest: 29.6.1
+    jest: 29.6.2
     prettier: ^2.8.4
     rimraf: "*"
     ts-api-utils: ^1.0.1
@@ -6023,7 +6023,7 @@ __metadata:
     glob: "*"
     globby: ^11.1.0
     is-glob: ^4.0.3
-    jest: 29.6.1
+    jest: 29.6.2
     jest-specific-snapshot: ^8.0.0
     make-dir: "*"
     prettier: ^2.8.4
@@ -6068,7 +6068,7 @@ __metadata:
     "@typescript-eslint/types": 6.4.0
     "@typescript-eslint/typescript-estree": 6.4.0
     downlevel-dts: "*"
-    jest: 29.6.1
+    jest: 29.6.2
     prettier: ^2.8.4
     rimraf: "*"
     semver: ^7.5.4
@@ -6104,7 +6104,7 @@ __metadata:
     "@typescript-eslint/types": 6.4.0
     downlevel-dts: "*"
     eslint-visitor-keys: ^3.4.1
-    jest: 29.6.1
+    jest: 29.6.2
     prettier: ^2.8.4
     rimraf: "*"
     typescript: "*"
@@ -12990,7 +12990,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-cli@npm:^29.6.1, jest-cli@npm:^29.6.2":
+"jest-cli@npm:^29.6.2":
   version: 29.6.2
   resolution: "jest-cli@npm:29.6.2"
   dependencies:
@@ -13402,25 +13402,6 @@ __metadata:
     merge-stream: ^2.0.0
     supports-color: ^8.0.0
   checksum: 11035564534bf181ead80b25be138c2d42372bd5626151a3e705200d47a74fd9da3ca79f8a7b15806cdc325ad73c3d21d23acceeed99d50941589ff02915ed38
-  languageName: node
-  linkType: hard
-
-"jest@npm:29.6.1":
-  version: 29.6.1
-  resolution: "jest@npm:29.6.1"
-  dependencies:
-    "@jest/core": ^29.6.1
-    "@jest/types": ^29.6.1
-    import-local: ^3.0.2
-    jest-cli: ^29.6.1
-  peerDependencies:
-    node-notifier: ^8.0.1 || ^9.0.0 || ^10.0.0
-  peerDependenciesMeta:
-    node-notifier:
-      optional: true
-  bin:
-    jest: bin/jest.js
-  checksum: 7b8c0ca72f483e00ec19dcf9549f9a9af8ae468ab62925b148d714b58eb52d5fea9a082625193bc833d2d9b64cf65a11f3d37857636c5551af05c10aec4ce71b
   languageName: node
   linkType: hard
 
