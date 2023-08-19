@@ -37,7 +37,14 @@ const isPossiblyFalsy = (type: ts.Type): boolean =>
     .some(type => isTypeFlagSet(type, ts.TypeFlags.PossiblyFalsy));
 
 const isPossiblyTruthy = (type: ts.Type): boolean =>
-  tsutils.unionTypeParts(type).some(type => !tsutils.isFalsyType(type));
+  tsutils
+    .unionTypeParts(type)
+    .map(type => tsutils.intersectionTypeParts(type))
+    .some(intersectionParts =>
+      // It is possible to define intersections that are always falsy,
+      // like `"" & { __brand: string }`.
+      intersectionParts.every(type => !tsutils.isFalsyType(type)),
+    );
 
 // Nullish utilities
 const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;
