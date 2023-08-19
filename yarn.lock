@@ -5705,8 +5705,8 @@ __metadata:
     "@microsoft/api-extractor": ^7.36.1
     glob: "*"
     jest: 29.6.2
-    jest-diff: ^29.6.1
-    jest-snapshot: ^29.6.1
+    jest-diff: ^29.6.2
+    jest-snapshot: ^29.6.2
     jest-specific-snapshot: ^8.0.0
     make-dir: "*"
     prettier: ^2.8.4
@@ -5987,8 +5987,8 @@ __metadata:
     glob: ^10.3.3
     husky: ^8.0.3
     jest: 29.6.2
-    jest-diff: ^29.6.1
-    jest-snapshot: ^29.6.1
+    jest-diff: ^29.6.2
+    jest-snapshot: ^29.6.2
     jest-specific-snapshot: ^8.0.0
     lerna: 7.1.5
     lint-staged: ^13.2.3
@@ -6000,7 +6000,7 @@ __metadata:
     nx-cloud: 16.1.1
     patch-package: ^8.0.0
     prettier: ^2.8.4
-    pretty-format: ^29.6.1
+    pretty-format: ^29.6.2
     raw-loader: ^4.0.2
     rimraf: ^5.0.1
     tmp: ^0.2.1
@@ -13055,7 +13055,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-diff@npm:>=29.4.3 < 30, jest-diff@npm:^29.6.1, jest-diff@npm:^29.6.2":
+"jest-diff@npm:>=29.4.3 < 30, jest-diff@npm:^29.6.2":
   version: 29.6.2
   resolution: "jest-diff@npm:29.6.2"
   dependencies:
@@ -13288,7 +13288,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jest-snapshot@npm:^29.0.0, jest-snapshot@npm:^29.6.1, jest-snapshot@npm:^29.6.2":
+"jest-snapshot@npm:^29.0.0, jest-snapshot@npm:^29.6.2":
   version: 29.6.2
   resolution: "jest-snapshot@npm:29.6.2"
   dependencies:
