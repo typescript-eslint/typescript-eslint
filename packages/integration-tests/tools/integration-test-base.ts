@@ -69,13 +69,20 @@ export function integrationTest(testFilename: string, filesGlob: string): void {
       );
       // console.log('package.json written.');
 
+      // Ensure yarn uses the node-modules linker and not PnP
+      await writeFile(
+        path.join(testFolder, '.yarnrc.yml'),
+        `nodeLinker: node-modules`,
+      );
+
       await new Promise<void>((resolve, reject) => {
         // we use the non-promise version so we can log everything on error
         childProcess.execFile(
           // we use yarn instead of npm as it will cache the remote packages and
-          // to make installs things faster
+          // make installing things faster
           'yarn',
-          ['install', '--no-lockfile', '--prefer-offline', '--no-progress'],
+          // We call explicitly with --no-immutable to prevent errors related to missing lock files in CI
+          ['install', '--no-immutable'],
           {
             cwd: testFolder,
           },

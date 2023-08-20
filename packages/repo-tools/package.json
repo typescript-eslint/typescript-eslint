@@ -13,9 +13,10 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "devDependencies": {
+    "@nx/devkit": "*",
     "cross-fetch": "*",
     "execa": "*",
-    "prettier": "*",
+    "prettier": "^2.8.4",
     "tmp": "*"
   }
 }
