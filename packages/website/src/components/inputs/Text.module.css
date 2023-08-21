@@ -1,28 +1,36 @@
 .textInput {
+  display: flex;
+  align-items: center;
   background-color: var(--ifm-color-emphasis-200);
   border: 1px solid var(--ifm-color-emphasis-100);
+  padding: 0 0.5rem;
+  cursor: text;
+  flex: 1;
+}
+
+.textInput:focus-within {
+  border-color: var(--ifm-color-primary);
+}
+
+.textInput input {
+  outline: none;
+  background-color: var(--ifm-color-emphasis-200);
+  border: transparent;
   color: var(--ifm-font-color-secondary);
   transition: border 0.3s ease;
   cursor: text;
   display: inline-block;
   height: 2rem;
-  padding: 0 0.5rem;
+  padding: 0;
   font-size: 0.9rem;
   border-radius: 0.2rem;
   flex: 1;
 }
 
-.textInput[type='search'] {
-  padding-left: 2.25rem;
-  background: var(--ifm-color-emphasis-200) var(--ifm-navbar-search-input-icon)
-    no-repeat 0.75rem center / 1rem 1rem;
-}
-
-.textInput::placeholder {
+.textInput input::placeholder {
   color: var(--ifm-color-emphasis-700);
 }
 
-.textInput:focus {
-  outline: none;
-  border-color: var(--ifm-color-primary);
+.textInput svg {
+  padding-right: 0.5rem;
 }
