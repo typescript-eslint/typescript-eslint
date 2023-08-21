@@ -58,7 +58,7 @@ returnsPromise().then(
 
 Promise.reject('value').catch(() => {});
 
-Promise.reject('value').finally(() => {});
+await Promise.reject('value').finally(() => {});
 ```
 
 ## Options
@@ -83,7 +83,7 @@ With this option set to `true`, and if you are using `no-void`, you should turn 
 
 ### `ignoreIIFE`
 
-This allows you to skip checking of async IIFEs (Immediately Invocated function Expressions).
+This allows you to skip checking of async IIFEs (Immediately Invoked function Expressions).
 
 Examples of **correct** code for this rule with `{ ignoreIIFE: true }`:
 

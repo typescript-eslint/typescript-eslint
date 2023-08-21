@@ -91,7 +91,7 @@ function saveWatchCallback(
  * Holds information about the file currently being linted
  */
 const currentLintOperationState: {
-  code: string | ts.SourceFile;
+  code: ts.SourceFile | string;
   filePath: CanonicalPath;
 } = {
   code: '',
@@ -180,8 +180,7 @@ function getWatchProgramsForProjects(
     if (fileList.has(filePath)) {
       log('Found existing program for file. %s', filePath);
 
-      updatedProgram =
-        updatedProgram ?? existingWatch.getProgram().getProgram();
+      updatedProgram ??= existingWatch.getProgram().getProgram();
       // sets parent pointers in source files
       updatedProgram.getTypeChecker();
 
@@ -264,6 +263,8 @@ function createWatchProgram(
     ts.sys,
     ts.createAbstractBuilder,
     diagnosticReporter,
+    // TODO: file issue on TypeScript to suggest making optional?
+    // eslint-disable-next-line @typescript-eslint/no-empty-function
     /*reportWatchStatus*/ () => {},
   ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
 

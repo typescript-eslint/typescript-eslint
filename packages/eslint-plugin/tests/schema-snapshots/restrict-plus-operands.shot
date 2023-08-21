@@ -12,8 +12,24 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "description": "Whether to allow \`any\` typed values.",
         "type": "boolean"
       },
-      "checkCompoundAssignments": {
-        "description": "Whether to check compound assignments such as \`+=\`.",
+      "allowBoolean": {
+        "description": "Whether to allow \`boolean\` typed values.",
+        "type": "boolean"
+      },
+      "allowNullish": {
+        "description": "Whether to allow potentially \`null\` or \`undefined\` typed values.",
+        "type": "boolean"
+      },
+      "allowNumberAndString": {
+        "description": "Whether to allow \`bigint\`/\`number\` typed values and \`string\` typed values to be added together.",
+        "type": "boolean"
+      },
+      "allowRegExp": {
+        "description": "Whether to allow \`regexp\` typed values.",
+        "type": "boolean"
+      },
+      "skipCompoundAssignments": {
+        "description": "Whether to skip compound assignments such as \`+=\`.",
         "type": "boolean"
       }
     },
@@ -28,8 +44,16 @@ type Options = [
   {
     /** Whether to allow \`any\` typed values. */
     allowAny?: boolean;
-    /** Whether to check compound assignments such as \`+=\`. */
-    checkCompoundAssignments?: boolean;
+    /** Whether to allow \`boolean\` typed values. */
+    allowBoolean?: boolean;
+    /** Whether to allow potentially \`null\` or \`undefined\` typed values. */
+    allowNullish?: boolean;
+    /** Whether to allow \`bigint\`/\`number\` typed values and \`string\` typed values to be added together. */
+    allowNumberAndString?: boolean;
+    /** Whether to allow \`regexp\` typed values. */
+    allowRegExp?: boolean;
+    /** Whether to skip compound assignments such as \`+=\`. */
+    skipCompoundAssignments?: boolean;
   },
 ];
 "

@@ -126,9 +126,9 @@ export default util.createRule({
 
     function enterDeclaration(
       node:
-        | TSESTree.TSModuleDeclaration
+        | TSESTree.ExportNamedDeclaration
         | TSESTree.TSEnumDeclaration
-        | TSESTree.ExportNamedDeclaration,
+        | TSESTree.TSModuleDeclaration,
     ): void {
       namespacesInScope.push(esTreeNodeToTSNodeMap.get(node));
     }

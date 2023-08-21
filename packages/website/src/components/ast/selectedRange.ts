@@ -17,7 +17,7 @@ function isIterable(key: string, value: unknown): boolean {
   return filterProperties(key, value, geNodeType(value));
 }
 
-function getRangeFromNode(value: object): null | [number, number] {
+function getRangeFromNode(value: object): [number, number] | null {
   if (isESNode(value)) {
     return value.range;
   } else if (isTSNode(value)) {
@@ -30,10 +30,10 @@ function findInObject(
   iter: object,
   cursorPosition: number,
   visited: Set<unknown>,
-): null | {
+): {
   key: string[];
   value: object;
-} {
+} | null {
   const children = Object.entries(iter);
   for (const [name, child] of children) {
     // we do not want to select parents in case if we do filter with esquery
@@ -73,7 +73,7 @@ export function findSelectionPath(
 ): { path: string[]; node: object | null } {
   const nodePath = ['ast'];
   const visited = new Set<unknown>();
-  let currentNode: null | object = node;
+  let currentNode: object | null = node;
   while (currentNode) {
     // infinite loop guard
     if (visited.has(currentNode)) {

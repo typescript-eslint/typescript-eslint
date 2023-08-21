@@ -9,13 +9,16 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "lib": {
-        "enum": ["always", "never"]
+        "enum": ["always", "never"],
+        "type": "string"
       },
       "path": {
-        "enum": ["always", "never"]
+        "enum": ["always", "never"],
+        "type": "string"
       },
       "types": {
-        "enum": ["always", "never", "prefer-import"]
+        "enum": ["always", "never", "prefer-import"],
+        "type": "string"
       }
     },
     "type": "object"

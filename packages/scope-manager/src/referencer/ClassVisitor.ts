@@ -154,10 +154,9 @@ class ClassVisitor extends Visitor {
      *   ) {}
      * }
      */
-    withMethodDecorators =
-      withMethodDecorators ||
-      (methodNode.kind !== 'set' &&
-        node.params.some(param => param.decorators.length));
+    withMethodDecorators ||=
+      methodNode.kind !== 'set' &&
+      node.params.some(param => param.decorators.length);
     if (!withMethodDecorators && methodNode.kind === 'set') {
       const keyName = getLiteralMethodKeyName(methodNode);
 
@@ -192,7 +191,7 @@ class ClassVisitor extends Visitor {
     if (
       !withMethodDecorators &&
       methodNode.kind === 'constructor' &&
-      this.#classNode.decorators
+      this.#classNode.decorators.length
     ) {
       withMethodDecorators = true;
     }
@@ -244,8 +243,8 @@ class ClassVisitor extends Visitor {
       | TSESTree.AccessorProperty
       | TSESTree.PropertyDefinition
       | TSESTree.TSAbstractAccessorProperty
-      | TSESTree.TSAbstractPropertyDefinition
-      | TSESTree.TSAbstractMethodDefinition,
+      | TSESTree.TSAbstractMethodDefinition
+      | TSESTree.TSAbstractPropertyDefinition,
   ): void {
     if (node.computed) {
       this.#referencer.visit(node.key);
@@ -417,7 +416,7 @@ class ClassVisitor extends Visitor {
  */
 function getLiteralMethodKeyName(
   node: TSESTree.MethodDefinition,
-): string | number | null {
+): number | string | null {
   if (node.computed && node.key.type === AST_NODE_TYPES.Literal) {
     if (
       typeof node.key.value === 'string' ||

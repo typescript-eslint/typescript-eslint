@@ -41,7 +41,7 @@ function ASTViewer({
   enableScrolling,
   hideCopyButton,
   showTokens,
-}: ASTViewerProps): JSX.Element {
+}: ASTViewerProps): React.JSX.Element {
   const model = useMemo(() => {
     if (filter) {
       return tryToApplyFilter(value, filter);

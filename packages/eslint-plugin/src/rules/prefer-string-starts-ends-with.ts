@@ -223,11 +223,13 @@ export default createRule({
     /**
      * Parse a given `RegExp` pattern to that string if it's a static string.
      * @param pattern The RegExp pattern text to parse.
-     * @param uFlag The Unicode flag of the RegExp.
+     * @param unicode Whether the RegExp is unicode.
      */
-    function parseRegExpText(pattern: string, uFlag: boolean): string | null {
+    function parseRegExpText(pattern: string, unicode: boolean): string | null {
       // Parse it.
-      const ast = regexpp.parsePattern(pattern, undefined, undefined, uFlag);
+      const ast = regexpp.parsePattern(pattern, undefined, undefined, {
+        unicode,
+      });
       if (ast.alternatives.length !== 1) {
         return null;
       }
@@ -315,7 +317,7 @@ export default createRule({
     function* fixWithRightOperand(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.BinaryExpression,
-      kind: 'start' | 'end',
+      kind: 'end' | 'start',
       isNegative: boolean,
       isOptional: boolean,
     ): IterableIterator<TSESLint.RuleFix> {
@@ -346,7 +348,7 @@ export default createRule({
       node: TSESTree.BinaryExpression,
       callNode: TSESTree.CallExpression,
       calleeNode: TSESTree.MemberExpression,
-      kind: 'start' | 'end',
+      kind: 'end' | 'start',
       negative: boolean,
       isOptional: boolean,
     ): IterableIterator<TSESLint.RuleFix> {

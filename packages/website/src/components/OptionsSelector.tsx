@@ -26,7 +26,7 @@ export interface OptionsSelectorParams {
 function OptionsSelectorContent({
   state,
   setState,
-}: OptionsSelectorParams): JSX.Element {
+}: OptionsSelectorParams): React.JSX.Element {
   const [copyLink, copyLinkToClipboard] = useClipboard(() =>
     document.location.toString(),
   );
@@ -34,7 +34,7 @@ function OptionsSelectorContent({
     createMarkdown(state),
   );
 
-  const openIssue = useCallback((): void => {
+  const openIssue = useCallback(() => {
     const params = createMarkdownParams(state);
 
     window
@@ -111,7 +111,7 @@ function OptionsSelectorContent({
   );
 }
 
-function OptionsSelector(props: OptionsSelectorParams): JSX.Element {
+function OptionsSelector(props: OptionsSelectorParams): React.JSX.Element {
   const windowSize = useWindowSize();
   if (windowSize === 'mobile') {
     return (

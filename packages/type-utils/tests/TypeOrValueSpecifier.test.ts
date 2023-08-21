@@ -177,42 +177,64 @@ describe('TypeOrValueSpecifier', () => {
       runTestNegative,
     );
 
-    it.each<[string, TypeOrValueSpecifier]>(
+    it.each<[string, TypeOrValueSpecifier]>([
       [
-        [
-          'interface Foo {prop: string}; type Test = Foo;',
-          'type Foo = {prop: string}; type Test = Foo;',
-        ].map((test): [string, TypeOrValueSpecifier] => [
-          test,
-          { from: 'file', name: 'Foo' },
-        ]),
-        [
-          'interface Foo {prop: string}; type Test = Foo;',
-          'type Foo = {prop: string}; type Test = Foo;',
-        ].map((test): [string, TypeOrValueSpecifier] => [
-          test,
-          { from: 'file', name: ['Foo', 'Bar'] },
-        ]),
-        [
-          'interface Foo {prop: string}; type Test = Foo;',
-          'type Foo = {prop: string}; type Test = Foo;',
-        ].map((test): [string, TypeOrValueSpecifier] => [
-          test,
-          { from: 'file', name: 'Foo', path: 'tests/fixtures/file.ts' },
-        ]),
-        [
-          'interface Foo {prop: string}; type Test = Foo;',
-          'type Foo = {prop: string}; type Test = Foo;',
-        ].map((test): [string, TypeOrValueSpecifier] => [
-          test,
-          {
-            from: 'file',
-            name: ['Foo', 'Bar'],
-            path: 'tests/fixtures/file.ts',
-          },
-        ]),
-      ].flat(),
-    )('matches a matching file specifier: %s', runTestPositive);
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'file', name: 'Foo' },
+      ],
+      [
+        'type Foo = {prop: string}; type Test = Foo;',
+        { from: 'file', name: 'Foo' },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'file', name: ['Foo', 'Bar'] },
+      ],
+      [
+        'type Foo = {prop: string}; type Test = Foo;',
+        { from: 'file', name: ['Foo', 'Bar'] },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        { from: 'file', name: 'Foo', path: 'tests/fixtures/file.ts' },
+      ],
+      [
+        'type Foo = {prop: string}; type Test = Foo;',
+        { from: 'file', name: 'Foo', path: 'tests/fixtures/file.ts' },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        {
+          from: 'file',
+          name: 'Foo',
+          path: 'tests/../tests/fixtures/////file.ts',
+        },
+      ],
+      [
+        'type Foo = {prop: string}; type Test = Foo;',
+        {
+          from: 'file',
+          name: 'Foo',
+          path: 'tests/../tests/fixtures/////file.ts',
+        },
+      ],
+      [
+        'interface Foo {prop: string}; type Test = Foo;',
+        {
+          from: 'file',
+          name: ['Foo', 'Bar'],
+          path: 'tests/fixtures/file.ts',
+        },
+      ],
+      [
+        'type Foo = {prop: string}; type Test = Foo;',
+        {
+          from: 'file',
+          name: ['Foo', 'Bar'],
+          path: 'tests/fixtures/file.ts',
+        },
+      ],
+    ])('matches a matching file specifier: %s', runTestPositive);
 
     it.each<[string, TypeOrValueSpecifier]>([
       [
@@ -246,6 +268,19 @@ describe('TypeOrValueSpecifier', () => {
       ['type Test = RegExp;', { from: 'lib', name: 'BigInt' }],
       ['type Test = RegExp;', { from: 'lib', name: ['BigInt', 'Date'] }],
     ])("doesn't match a mismatched lib specifier: %s", runTestNegative);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      ['type Test = string;', { from: 'lib', name: 'string' }],
+      ['type Test = string;', { from: 'lib', name: ['string', 'number'] }],
+    ])('matches a matching intrinsic type specifier: %s', runTestPositive);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      ['type Test = string;', { from: 'lib', name: 'number' }],
+      ['type Test = string;', { from: 'lib', name: ['number', 'boolean'] }],
+    ])(
+      "doesn't match a mismatched intrinsic type specifier: %s",
+      runTestNegative,
+    );
 
     it.each<[string, TypeOrValueSpecifier]>([
       [
@@ -383,5 +418,10 @@ describe('TypeOrValueSpecifier', () => {
         { from: 'package', name: ['RegExp', 'BigInt'], package: 'foo-package' },
       ],
     ])("doesn't match a mismatched specifier type: %s", runTestNegative);
+
+    it.each<[string, TypeOrValueSpecifier]>([
+      ['type Test = Foo;', { from: 'lib', name: 'Foo' }],
+      ['type Test = Foo;', { from: 'lib', name: ['Foo', 'number'] }],
+    ])("doesn't match an error type: %s", runTestNegative);
   });
 });

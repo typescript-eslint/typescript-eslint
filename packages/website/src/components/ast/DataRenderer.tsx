@@ -51,7 +51,7 @@ function RenderExpandableObject({
   onClickNode,
   selectedPath,
   showTokens,
-}: ExpandableRenderProps): JSX.Element {
+}: ExpandableRenderProps): React.JSX.Element {
   const [expanded, toggleExpanded, setExpanded] = useBool(
     () => level === 'ast' || !!selectedPath?.startsWith(level),
   );
@@ -145,7 +145,7 @@ function RenderExpandableObject({
 
 function JsonObject(
   props: JsonRenderProps<Record<string, unknown>>,
-): JSX.Element {
+): React.JSX.Element {
   const computed = useMemo(() => {
     const nodeType = getNodeType(props.value);
     return {
@@ -169,7 +169,7 @@ function JsonObject(
   );
 }
 
-function JsonArray(props: JsonRenderProps<unknown[]>): JSX.Element {
+function JsonArray(props: JsonRenderProps<unknown[]>): React.JSX.Element {
   return (
     <RenderExpandableObject
       {...props}
@@ -180,7 +180,9 @@ function JsonArray(props: JsonRenderProps<unknown[]>): JSX.Element {
   );
 }
 
-function JsonIterable(props: JsonRenderProps<Iterable<unknown>>): JSX.Element {
+function JsonIterable(
+  props: JsonRenderProps<Iterable<unknown>>,
+): React.JSX.Element {
   return (
     <RenderExpandableObject
       {...props}
@@ -196,7 +198,7 @@ function JsonPrimitiveValue({
   value,
   nodeType,
   lastElement,
-}: JsonRenderProps<unknown>): JSX.Element {
+}: JsonRenderProps<unknown>): React.JSX.Element {
   const tooltip = useMemo(() => {
     if (field && nodeType) {
       return getTooltipLabel(value, field, nodeType);
@@ -221,7 +223,7 @@ function JsonPrimitiveValue({
 
 export default function DataRender(
   props: JsonRenderProps<unknown>,
-): JSX.Element {
+): React.JSX.Element {
   const value = props.value;
 
   if (Array.isArray(value)) {

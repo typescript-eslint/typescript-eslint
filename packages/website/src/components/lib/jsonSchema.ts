@@ -37,24 +37,27 @@ export function getRuleJsonSchemaWithErrorLevel(
       additionalItems: false,
     };
   }
-  // example: explicit-member-accessibility
-  if (isArray(ruleSchema.items)) {
-    return {
-      ...ruleSchema,
-      items: [defaultRuleSchema, ...ruleSchema.items],
-      maxItems: ruleSchema.maxItems ? ruleSchema.maxItems + 1 : undefined,
-      minItems: ruleSchema.minItems ? ruleSchema.minItems + 1 : 1,
-      additionalItems: false,
-    };
+  if (ruleSchema.type === 'array') {
+    // example: explicit-member-accessibility
+    if (isArray(ruleSchema.items)) {
+      return {
+        ...ruleSchema,
+        items: [defaultRuleSchema, ...ruleSchema.items],
+        maxItems: ruleSchema.maxItems ? ruleSchema.maxItems + 1 : undefined,
+        minItems: ruleSchema.minItems ? ruleSchema.minItems + 1 : 1,
+        additionalItems: false,
+      };
+    }
+    // example: naming-convention rule
+    if (typeof ruleSchema.items === 'object' && ruleSchema.items) {
+      return {
+        ...ruleSchema,
+        items: [defaultRuleSchema],
+        additionalItems: ruleSchema.items,
+      };
+    }
   }
-  // example: naming-convention rule
-  if (typeof ruleSchema.items === 'object' && ruleSchema.items) {
-    return {
-      ...ruleSchema,
-      items: [defaultRuleSchema],
-      additionalItems: ruleSchema.items,
-    };
-  }
+
   // example eqeqeq
   if (isArray(ruleSchema.anyOf)) {
     return {

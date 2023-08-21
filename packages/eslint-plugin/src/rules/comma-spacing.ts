@@ -3,6 +3,8 @@ import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
+  isClosingBraceToken,
+  isClosingBracketToken,
   isClosingParenToken,
   isCommaToken,
   isTokenOnSameLine,
@@ -14,7 +16,7 @@ type Options = [
     after: boolean;
   },
 ];
-type MessageIds = 'unexpected' | 'missing';
+type MessageIds = 'missing' | 'unexpected';
 
 export default createRule<Options, MessageIds>({
   name: 'comma-spacing',
@@ -131,6 +133,14 @@ export default createRule<Options, MessageIds>({
       }
 
       if (nextToken && isClosingParenToken(nextToken)) {
+        return;
+      }
+
+      if (
+        spaceAfter &&
+        nextToken &&
+        (isClosingBraceToken(nextToken) || isClosingBracketToken(nextToken))
+      ) {
         return;
       }
 

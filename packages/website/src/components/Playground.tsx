@@ -20,7 +20,7 @@ import styles from './Playground.module.css';
 import { TypesDetails } from './typeDetails/TypesDetails';
 import type { ErrorGroup } from './types';
 
-function Playground(): JSX.Element {
+function Playground(): React.JSX.Element {
   const [state, setState] = useHashState(defaultConfig);
 
   const [system] = useState<PlaygroundSystem>(() => createFileSystem(state));

@@ -73,6 +73,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow duplicate constituents of union or intersection types',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     fixable: 'code',
@@ -107,7 +108,7 @@ export default util.createRule<Options, MessageIds>({
     function checkDuplicate(
       node: TSESTree.TSIntersectionType | TSESTree.TSUnionType,
     ): void {
-      const cachedTypeMap: Map<Type, TSESTree.TypeNode> = new Map();
+      const cachedTypeMap = new Map<Type, TSESTree.TypeNode>();
       node.types.reduce<TSESTree.TypeNode[]>(
         (uniqueConstituents, constituentNode) => {
           const duplicatedPreviousConstituentInAst = uniqueConstituents.find(

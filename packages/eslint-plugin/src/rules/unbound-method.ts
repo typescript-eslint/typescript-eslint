@@ -205,7 +205,7 @@ export default util.createRule<Options, MessageIds>({
         checkMethodAndReport(node, services.getSymbolAtLocation(node));
       },
       'VariableDeclarator, AssignmentExpression'(
-        node: TSESTree.VariableDeclarator | TSESTree.AssignmentExpression,
+        node: TSESTree.AssignmentExpression | TSESTree.VariableDeclarator,
       ): void {
         const [idNode, initNode] =
           node.type === AST_NODE_TYPES.VariableDeclarator
@@ -271,6 +271,7 @@ function checkMethod(
       const firstParam = decl.parameters[0];
       const firstParamIsThis =
         firstParam?.name.kind === ts.SyntaxKind.Identifier &&
+        // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
         firstParam?.name.escapedText === 'this';
       const thisArgIsVoid =
         firstParamIsThis &&

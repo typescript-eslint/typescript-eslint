@@ -5,6 +5,7 @@ export * from './collectUnusedVariables';
 export * from './createRule';
 export * from './getFunctionHeadLoc';
 export * from './getOperatorPrecedence';
+export * from './getStaticStringValue';
 export * from './getStringLength';
 export * from './getThisExpression';
 export * from './getWrappingFixer';

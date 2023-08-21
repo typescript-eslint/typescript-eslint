@@ -1,10 +1,10 @@
-import type { ParserPlugin } from '@babel/eslint-parser';
+import type { ParserOptions } from '@babel/core';
 import { parse } from '@babel/eslint-parser';
 
 import type { Fixture, ParserResponse } from './parser-types';
 import { ParserResponseType } from './parser-types';
 
-const PLUGINS: ParserPlugin[] = [
+const PLUGINS: NonNullable<ParserOptions['plugins']> = [
   'decoratorAutoAccessors',
   // TODO - enable classFeatures instead of classProperties when we support it
   // 'classFeatures',

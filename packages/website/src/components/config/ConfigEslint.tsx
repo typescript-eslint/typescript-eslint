@@ -8,12 +8,15 @@ import type { PlaygroundSystem } from '../linter/types';
 import ConfigEditor from './ConfigEditor';
 import { schemaToConfigOptions } from './utils';
 
-export interface ConfigProps {
+export interface ConfigEslintProps {
   readonly className?: string;
   readonly system: PlaygroundSystem;
 }
 
-function ConfigEslint({ className, system }: ConfigProps): JSX.Element {
+function ConfigEslint({
+  className,
+  system,
+}: ConfigEslintProps): React.JSX.Element {
   const [rawConfig, updateConfigObject] = useSystemFile(system, '/.eslintrc');
   const configObject = useMemo(
     () => ensureObject(rawConfig?.rules),

@@ -2,7 +2,7 @@ import * as ts from 'typescript';
 
 import { getModifiers } from './getModifiers';
 import { xhtmlEntities } from './jsx/xhtml-entities';
-import type { TSESTree } from './ts-estree';
+import type { TSESTree, TSNode } from './ts-estree';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from './ts-estree';
 import { typescriptVersionIsAtLeast } from './version-check';
 
@@ -10,36 +10,84 @@ const isAtLeast50 = typescriptVersionIsAtLeast['5.0'];
 
 const SyntaxKind = ts.SyntaxKind;
 
-const LOGICAL_OPERATORS: (
-  | ts.LogicalOperator
-  | ts.SyntaxKind.QuestionQuestionToken
-)[] = [
+type LogicalOperatorKind =
+  | ts.SyntaxKind.AmpersandAmpersandToken
+  | ts.SyntaxKind.BarBarToken
+  | ts.SyntaxKind.QuestionQuestionToken;
+const LOGICAL_OPERATORS: ReadonlySet<LogicalOperatorKind> = new Set([
   SyntaxKind.BarBarToken,
   SyntaxKind.AmpersandAmpersandToken,
   SyntaxKind.QuestionQuestionToken,
-];
+]);
 
-interface TokenToText extends TSESTree.PunctuatorTokenToText {
+interface TokenToText
+  extends TSESTree.PunctuatorTokenToText,
+    TSESTree.BinaryOperatorToText {
   [SyntaxKind.ImportKeyword]: 'import';
-  [SyntaxKind.InKeyword]: 'in';
-  [SyntaxKind.InstanceOfKeyword]: 'instanceof';
   [SyntaxKind.NewKeyword]: 'new';
   [SyntaxKind.KeyOfKeyword]: 'keyof';
   [SyntaxKind.ReadonlyKeyword]: 'readonly';
   [SyntaxKind.UniqueKeyword]: 'unique';
 }
 
+type AssignmentOperatorKind = keyof TSESTree.AssignmentOperatorToText;
+const ASSIGNMENT_OPERATORS: ReadonlySet<AssignmentOperatorKind> = new Set([
+  ts.SyntaxKind.EqualsToken,
+  ts.SyntaxKind.PlusEqualsToken,
+  ts.SyntaxKind.MinusEqualsToken,
+  ts.SyntaxKind.AsteriskEqualsToken,
+  ts.SyntaxKind.AsteriskAsteriskEqualsToken,
+  ts.SyntaxKind.SlashEqualsToken,
+  ts.SyntaxKind.PercentEqualsToken,
+  ts.SyntaxKind.LessThanLessThanEqualsToken,
+  ts.SyntaxKind.GreaterThanGreaterThanEqualsToken,
+  ts.SyntaxKind.GreaterThanGreaterThanGreaterThanEqualsToken,
+  ts.SyntaxKind.AmpersandEqualsToken,
+  ts.SyntaxKind.BarEqualsToken,
+  ts.SyntaxKind.BarBarEqualsToken,
+  ts.SyntaxKind.AmpersandAmpersandEqualsToken,
+  ts.SyntaxKind.QuestionQuestionEqualsToken,
+  ts.SyntaxKind.CaretEqualsToken,
+]);
+
+type BinaryOperatorKind = keyof TSESTree.BinaryOperatorToText;
+const BINARY_OPERATORS: ReadonlySet<BinaryOperatorKind> = new Set([
+  SyntaxKind.InstanceOfKeyword,
+  SyntaxKind.InKeyword,
+  SyntaxKind.AsteriskAsteriskToken,
+  SyntaxKind.AsteriskToken,
+  SyntaxKind.SlashToken,
+  SyntaxKind.PercentToken,
+  SyntaxKind.PlusToken,
+  SyntaxKind.MinusToken,
+  SyntaxKind.AmpersandToken,
+  SyntaxKind.BarToken,
+  SyntaxKind.CaretToken,
+  SyntaxKind.LessThanLessThanToken,
+  SyntaxKind.GreaterThanGreaterThanToken,
+  SyntaxKind.GreaterThanGreaterThanGreaterThanToken,
+  SyntaxKind.AmpersandAmpersandToken,
+  SyntaxKind.BarBarToken,
+  SyntaxKind.LessThanToken,
+  SyntaxKind.LessThanEqualsToken,
+  SyntaxKind.GreaterThanToken,
+  SyntaxKind.GreaterThanEqualsToken,
+  SyntaxKind.EqualsEqualsToken,
+  SyntaxKind.EqualsEqualsEqualsToken,
+  SyntaxKind.ExclamationEqualsEqualsToken,
+  SyntaxKind.ExclamationEqualsToken,
+]);
+
 /**
  * Returns true if the given ts.Token is the assignment operator
  * @param operator the operator token
  * @returns is assignment
  */
-export function isAssignmentOperator<T extends ts.SyntaxKind>(
-  operator: ts.Token<T>,
-): boolean {
-  return (
-    operator.kind >= SyntaxKind.FirstAssignment &&
-    operator.kind <= SyntaxKind.LastAssignment
+function isAssignmentOperator(
+  operator: ts.BinaryOperatorToken,
+): operator is ts.Token<AssignmentOperatorKind> {
+  return (ASSIGNMENT_OPERATORS as ReadonlySet<ts.SyntaxKind>).has(
+    operator.kind,
   );
 }
 
@@ -48,12 +96,21 @@ export function isAssignmentOperator<T extends ts.SyntaxKind>(
  * @param operator the operator token
  * @returns is a logical operator
  */
-export function isLogicalOperator<T extends ts.SyntaxKind>(
-  operator: ts.Token<T>,
-): boolean {
-  return (LOGICAL_OPERATORS as ts.SyntaxKind[]).includes(operator.kind);
+export function isLogicalOperator(
+  operator: ts.BinaryOperatorToken,
+): operator is ts.Token<LogicalOperatorKind> {
+  return (LOGICAL_OPERATORS as ReadonlySet<ts.SyntaxKind>).has(operator.kind);
 }
 
+export function isESTreeBinaryOperator(
+  operator: ts.BinaryOperatorToken,
+): operator is ts.Token<BinaryOperatorKind> {
+  return (BINARY_OPERATORS as ReadonlySet<ts.SyntaxKind>).has(operator.kind);
+}
+
+type TokenForTokenKind<T extends ts.SyntaxKind> = T extends keyof TokenToText
+  ? TokenToText[T]
+  : string | undefined;
 /**
  * Returns the string form of the given TSToken SyntaxKind
  * @param kind the token's SyntaxKind
@@ -61,7 +118,7 @@ export function isLogicalOperator<T extends ts.SyntaxKind>(
  */
 export function getTextForTokenKind<T extends ts.SyntaxKind>(
   kind: T,
-): T extends keyof TokenToText ? TokenToText[T] : string | undefined {
+): TokenForTokenKind<T> {
   return ts.tokenToString(kind) as T extends keyof TokenToText
     ? TokenToText[T]
     : string | undefined;
@@ -131,7 +188,7 @@ export function isComment(node: ts.Node): boolean {
  * @param node the TypeScript node
  * @returns is JSDoc comment
  */
-export function isJSDocComment(node: ts.Node): node is ts.JSDoc {
+function isJSDocComment(node: ts.Node): node is ts.JSDoc {
   return node.kind === SyntaxKind.JSDocComment;
 }
 
@@ -140,18 +197,39 @@ export function isJSDocComment(node: ts.Node): node is ts.JSDoc {
  * @param operator the operator token
  * @returns the binary expression type
  */
-export function getBinaryExpressionType<T extends ts.SyntaxKind>(
-  operator: ts.Token<T>,
-):
-  | AST_NODE_TYPES.AssignmentExpression
-  | AST_NODE_TYPES.LogicalExpression
-  | AST_NODE_TYPES.BinaryExpression {
+export function getBinaryExpressionType(operator: ts.BinaryOperatorToken):
+  | {
+      type: AST_NODE_TYPES.AssignmentExpression;
+      operator: TokenForTokenKind<AssignmentOperatorKind>;
+    }
+  | {
+      type: AST_NODE_TYPES.BinaryExpression;
+      operator: TokenForTokenKind<BinaryOperatorKind>;
+    }
+  | {
+      type: AST_NODE_TYPES.LogicalExpression;
+      operator: TokenForTokenKind<LogicalOperatorKind>;
+    } {
   if (isAssignmentOperator(operator)) {
-    return AST_NODE_TYPES.AssignmentExpression;
+    return {
+      type: AST_NODE_TYPES.AssignmentExpression,
+      operator: getTextForTokenKind(operator.kind),
+    };
   } else if (isLogicalOperator(operator)) {
-    return AST_NODE_TYPES.LogicalExpression;
+    return {
+      type: AST_NODE_TYPES.LogicalExpression,
+      operator: getTextForTokenKind(operator.kind),
+    };
+  } else if (isESTreeBinaryOperator(operator)) {
+    return {
+      type: AST_NODE_TYPES.BinaryExpression,
+      operator: getTextForTokenKind(operator.kind),
+    };
   }
-  return AST_NODE_TYPES.BinaryExpression;
+
+  throw new Error(
+    `Unexpected binary operator ${ts.tokenToString(operator.kind)}`,
+  );
 }
 
 /**
@@ -193,10 +271,10 @@ export function getLocFor(
  */
 export function canContainDirective(
   node:
-    | ts.SourceFile
     | ts.Block
+    | ts.ClassStaticBlockDeclaration
     | ts.ModuleBlock
-    | ts.ClassStaticBlockDeclaration,
+    | ts.SourceFile,
 ): boolean {
   if (node.kind === ts.SyntaxKind.Block) {
     switch (node.parent.kind) {
@@ -233,7 +311,7 @@ export function getRange(
  * @param node the ts.Node
  * @returns is a token
  */
-export function isToken(node: ts.Node): node is ts.Token<ts.TokenSyntaxKind> {
+function isToken(node: ts.Node): node is ts.Token<ts.TokenSyntaxKind> {
   return (
     node.kind >= SyntaxKind.FirstToken && node.kind <= SyntaxKind.LastToken
   );
@@ -257,7 +335,7 @@ export function isJSXToken(node: ts.Node): boolean {
  */
 export function getDeclarationKind(
   node: ts.VariableDeclarationList,
-): 'let' | 'const' | 'var' {
+): 'const' | 'let' | 'var' {
   if (node.flags & ts.NodeFlags.Let) {
     return 'let';
   }
@@ -274,7 +352,7 @@ export function getDeclarationKind(
  */
 export function getTSNodeAccessibility(
   node: ts.Node,
-): 'public' | 'protected' | 'private' | undefined {
+): 'private' | 'protected' | 'public' | undefined {
   const modifiers = getModifiers(node);
   if (modifiers == null) {
     return undefined;
@@ -414,10 +492,10 @@ export function isChainExpression(
  */
 export function isChildUnwrappableOptionalChain(
   node:
-    | ts.PropertyAccessExpression
-    | ts.ElementAccessExpression
     | ts.CallExpression
-    | ts.NonNullExpression,
+    | ts.ElementAccessExpression
+    | ts.NonNullExpression
+    | ts.PropertyAccessExpression,
   child: TSESTree.Node,
 ): boolean {
   return (
@@ -434,7 +512,7 @@ export function isChildUnwrappableOptionalChain(
  */
 export function getTokenType(
   token: ts.Identifier | ts.Token<ts.SyntaxKind>,
-): Exclude<AST_TOKEN_TYPES, AST_TOKEN_TYPES.Line | AST_TOKEN_TYPES.Block> {
+): Exclude<AST_TOKEN_TYPES, AST_TOKEN_TYPES.Block | AST_TOKEN_TYPES.Line> {
   let keywordKind: ts.SyntaxKind | undefined;
   if (isAtLeast50 && token.kind === SyntaxKind.Identifier) {
     keywordKind = ts.identifierToKeywordKind(token as ts.Identifier);
@@ -561,16 +639,15 @@ export function convertToken(
         flags: value.slice(value.lastIndexOf('/') + 1),
       },
     };
-  } else {
-    // @ts-expect-error TS is complaining about `value` not being the correct
-    // type but it is
-    return {
-      type: tokenType,
-      value,
-      range,
-      loc,
-    };
   }
+  // @ts-expect-error TS is complaining about `value` not being the correct
+  // type but it is
+  return {
+    type: tokenType,
+    value,
+    range,
+    loc,
+  };
 }
 
 /**
@@ -763,4 +840,108 @@ export function getContainingFunction(
   node: ts.Node,
 ): ts.SignatureDeclaration | undefined {
   return ts.findAncestor(node.parent, ts.isFunctionLike);
+}
+
+// `ts.hasAbstractModifier`
+function hasAbstractModifier(node: ts.Node): boolean {
+  return hasModifier(SyntaxKind.AbstractKeyword, node);
+}
+
+// `ts.getThisParameter`
+function getThisParameter(
+  signature: ts.SignatureDeclaration,
+): ts.ParameterDeclaration | null {
+  if (signature.parameters.length && !ts.isJSDocSignature(signature)) {
+    const thisParameter = signature.parameters[0];
+    if (parameterIsThisKeyword(thisParameter)) {
+      return thisParameter;
+    }
+  }
+
+  return null;
+}
+
+// `ts.parameterIsThisKeyword`
+function parameterIsThisKeyword(parameter: ts.ParameterDeclaration): boolean {
+  return isThisIdentifier(parameter.name);
+}
+
+// Rewrite version of `ts.nodeCanBeDecorated`
+// Returns `true` for both `useLegacyDecorators: true` and `useLegacyDecorators: false`
+export function nodeCanBeDecorated(node: TSNode): boolean {
+  switch (node.kind) {
+    case SyntaxKind.ClassDeclaration:
+      return true;
+    case SyntaxKind.ClassExpression:
+      // `ts.nodeCanBeDecorated` returns `false` if `useLegacyDecorators: true`
+      return true;
+    case SyntaxKind.PropertyDeclaration: {
+      const { parent } = node;
+
+      // `ts.nodeCanBeDecorated` uses this if `useLegacyDecorators: true`
+      if (ts.isClassDeclaration(parent)) {
+        return true;
+      }
+
+      // `ts.nodeCanBeDecorated` uses this if `useLegacyDecorators: false`
+      if (ts.isClassLike(parent) && !hasAbstractModifier(node)) {
+        return true;
+      }
+
+      return false;
+    }
+    case SyntaxKind.GetAccessor:
+    case SyntaxKind.SetAccessor:
+    case SyntaxKind.MethodDeclaration: {
+      const { parent } = node;
+      // In `ts.nodeCanBeDecorated`
+      // when `useLegacyDecorators: true` uses `ts.isClassDeclaration`
+      // when `useLegacyDecorators: true` uses `ts.isClassLike`
+      return (
+        Boolean(node.body) &&
+        (ts.isClassDeclaration(parent) || ts.isClassLike(parent))
+      );
+    }
+    case SyntaxKind.Parameter: {
+      // `ts.nodeCanBeDecorated` returns `false` if `useLegacyDecorators: false`
+
+      const { parent } = node;
+      const grandparent = parent.parent;
+
+      return (
+        Boolean(parent) &&
+        'body' in parent &&
+        Boolean(parent.body) &&
+        (parent.kind === SyntaxKind.Constructor ||
+          parent.kind === SyntaxKind.MethodDeclaration ||
+          parent.kind === SyntaxKind.SetAccessor) &&
+        getThisParameter(parent) !== node &&
+        Boolean(grandparent) &&
+        grandparent.kind === SyntaxKind.ClassDeclaration
+      );
+    }
+  }
+
+  return false;
+}
+
+export function getNamespaceModifiers(
+  node: ts.ModuleDeclaration,
+): ts.Modifier[] | undefined {
+  // For following nested namespaces, use modifiers given to the topmost namespace
+  //   export declare namespace foo.bar.baz {}
+  let modifiers = getModifiers(node);
+  let moduleDeclaration = node;
+  while (
+    (!modifiers || modifiers.length === 0) &&
+    ts.isModuleDeclaration(moduleDeclaration.parent) &&
+    moduleDeclaration.parent.name
+  ) {
+    const parentModifiers = getModifiers(moduleDeclaration.parent);
+    if (parentModifiers && parentModifiers?.length > 0) {
+      modifiers = parentModifiers;
+    }
+    moduleDeclaration = moduleDeclaration.parent;
+  }
+  return modifiers;
 }

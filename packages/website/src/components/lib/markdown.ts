@@ -4,7 +4,7 @@ import { parseESLintRC } from './parseConfig';
 function createSummary(
   value: string,
   title: string,
-  type: 'ts' | 'json',
+  type: 'json' | 'ts',
   length: number,
 ): string {
   const code = `### ${title}\n\n\`\`\`${type}\n${value}\n\`\`\``;

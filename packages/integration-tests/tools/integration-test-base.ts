@@ -69,13 +69,20 @@ export function integrationTest(testFilename: string, filesGlob: string): void {
       );
       // console.log('package.json written.');
 
+      // Ensure yarn uses the node-modules linker and not PnP
+      await writeFile(
+        path.join(testFolder, '.yarnrc.yml'),
+        `nodeLinker: node-modules`,
+      );
+
       await new Promise<void>((resolve, reject) => {
         // we use the non-promise version so we can log everything on error
         childProcess.execFile(
           // we use yarn instead of npm as it will cache the remote packages and
-          // to make installs things faster
+          // make installing things faster
           'yarn',
-          ['install', '--no-lockfile', '--prefer-offline', '--no-progress'],
+          // We call explicitly with --no-immutable to prevent errors related to missing lock files in CI
+          ['install', '--no-immutable'],
           {
             cwd: testFolder,
           },
@@ -98,6 +105,7 @@ export function integrationTest(testFilename: string, filesGlob: string): void {
 
       // lint, outputting to a JSON file
       const outFile = await tmpFile();
+      let stderr = '';
       try {
         await execFile(
           'yarn',
@@ -118,6 +126,11 @@ export function integrationTest(testFilename: string, filesGlob: string): void {
         );
       } catch (ex) {
         // we expect eslint will "fail" because we have intentional lint errors
+
+        // useful for debugging
+        if (typeof ex === 'object' && ex != null && 'stderr' in ex) {
+          stderr = String(ex.stderr);
+        }
       }
       // console.log('Lint complete.');
 
@@ -132,7 +145,9 @@ export function integrationTest(testFilename: string, filesGlob: string): void {
         const lintOutput = JSON.parse(lintOutputRAW);
         expect(lintOutput).toMatchSnapshot();
       } catch {
-        throw lintOutputRAW;
+        throw new Error(
+          `Lint output could not be parsed as JSON: \`${lintOutputRAW}\`. The error logs from eslint were: \`${stderr}\``,
+        );
       }
     });
 

@@ -68,7 +68,7 @@ interface ParseOptions {
    * When value is `false`, no logging will occur.
    * When value is not provided, `console.log()` will be used.
    */
-  loggerFn?: ((message: string) => void) | false;
+  loggerFn?: false | ((message: string) => void);
 
   /**
    * Controls whether the `range` property is included on AST nodes.
@@ -97,12 +97,21 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
    *
+   * Whether to create a shared TypeScript server to power program creation.
+   *
+   * @see https://github.com/typescript-eslint/typescript-eslint/issues/6575
+   */
+  EXPERIMENTAL_useProjectService?: boolean;
+
+  /**
+   * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
+   *
    * Causes TS to use the source files for referenced projects instead of the compiled .d.ts files.
    * This feature is not yet optimized, and is likely to cause OOMs for medium to large projects.
    *
    * This flag REQUIRES at least TS v3.9, otherwise it does nothing.
    *
-   * See: https://github.com/typescript-eslint/typescript-eslint/issues/2094
+   * @see https://github.com/typescript-eslint/typescript-eslint/issues/2094
    */
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean;
 
@@ -135,7 +144,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
    */
-  project?: string | string[] | true | null;
+  project?: string[] | string | true | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from
@@ -226,5 +235,5 @@ export interface ParserServicesWithoutTypeInformation
   program: null;
 }
 export type ParserServices =
-  | ParserServicesWithTypeInformation
-  | ParserServicesWithoutTypeInformation;
+  | ParserServicesWithoutTypeInformation
+  | ParserServicesWithTypeInformation;

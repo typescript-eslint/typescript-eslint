@@ -57,7 +57,7 @@ const userDefined: {
 
 str.includes(value);
 array.includes(value);
-readonlyArray.includes(value);
+!readonlyArray.includes(value);
 typedArray.includes(value);
 maybe?.includes('');
 userDefined.includes(value);

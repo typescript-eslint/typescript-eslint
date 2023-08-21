@@ -6,7 +6,5 @@ description: 'Enforce consistent spacing before and after commas.'
 >
 > See **https://typescript-eslint.io/rules/comma-spacing** for documentation.
 
-## Examples
-
 This rule extends the base [`eslint/comma-spacing`](https://eslint.org/docs/rules/comma-spacing) rule.
 It adds support for trailing comma in a types parameters list.

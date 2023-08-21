@@ -3,8 +3,8 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import * as util from '../util';
 
-type Prefer = 'type-imports' | 'no-type-imports';
-type FixStyle = 'separate-type-imports' | 'inline-type-imports';
+type Prefer = 'no-type-imports' | 'type-imports';
+type FixStyle = 'inline-type-imports' | 'separate-type-imports';
 
 type Options = [
   {
@@ -33,13 +33,13 @@ interface ReportValueImport {
 }
 
 type MessageIds =
-  | 'typeOverValue'
-  | 'someImportsAreOnlyTypes'
+  | 'aImportInDecoMeta'
   | 'aImportIsOnlyTypes'
-  | 'valueOverType'
   | 'noImportTypeAnnotations'
+  | 'someImportsAreOnlyTypes'
   | 'someImportsInDecoMeta'
-  | 'aImportInDecoMeta';
+  | 'typeOverValue'
+  | 'valueOverType';
 export default util.createRule<Options, MessageIds>({
   name: 'consistent-type-imports',
   meta: {
@@ -65,12 +65,14 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           prefer: {
+            type: 'string',
             enum: ['type-imports', 'no-type-imports'],
           },
           disallowTypeAnnotations: {
             type: 'boolean',
           },
           fixStyle: {
+            type: 'string',
             enum: ['separate-type-imports', 'inline-type-imports'],
           },
         },
@@ -94,7 +96,7 @@ export default util.createRule<Options, MessageIds>({
     const fixStyle = option.fixStyle ?? 'separate-type-imports';
     const sourceCode = context.getSourceCode();
 
-    const sourceImportsMap: { [key: string]: SourceImports } = {};
+    const sourceImportsMap: Record<string, SourceImports> = {};
 
     return {
       ...(prefer === 'type-imports'
@@ -103,15 +105,14 @@ export default util.createRule<Options, MessageIds>({
             ImportDeclaration(node): void {
               const source = node.source.value;
               // sourceImports is the object containing all the specifics for a particular import source, type or value
-              const sourceImports =
-                sourceImportsMap[source] ??
-                (sourceImportsMap[source] = {
-                  source,
-                  reportValueImports: [], // if there is a mismatch where type importKind but value specifiers
-                  typeOnlyNamedImport: null, // if only type imports
-                  valueOnlyNamedImport: null, // if only value imports with named specifiers
-                  valueImport: null, // if only value imports
-                });
+              sourceImportsMap[source] ??= {
+                source,
+                reportValueImports: [], // if there is a mismatch where type importKind but value specifiers
+                typeOnlyNamedImport: null, // if only type imports
+                valueOnlyNamedImport: null, // if only value imports with named specifiers
+                valueImport: null, // if only value imports
+              };
+              const sourceImports = sourceImportsMap[source];
               if (node.importKind === 'type') {
                 if (
                   !sourceImports.typeOnlyNamedImport &&
@@ -294,25 +295,22 @@ export default util.createRule<Options, MessageIds>({
                             messageId: 'aImportInDecoMeta',
                             data: { typeImports },
                           };
-                        } else {
-                          return {
-                            messageId: 'aImportIsOnlyTypes',
-                            data: { typeImports },
-                          };
                         }
-                      } else {
-                        if (isTypeImport) {
-                          return {
-                            messageId: 'someImportsInDecoMeta',
-                            data: { typeImports }, // typeImports are all the value specifiers that are in the type position
-                          };
-                        } else {
-                          return {
-                            messageId: 'someImportsAreOnlyTypes',
-                            data: { typeImports }, // typeImports are all the type specifiers in the value position
-                          };
-                        }
+                        return {
+                          messageId: 'aImportIsOnlyTypes',
+                          data: { typeImports },
+                        };
                       }
+                      if (isTypeImport) {
+                        return {
+                          messageId: 'someImportsInDecoMeta',
+                          data: { typeImports }, // typeImports are all the value specifiers that are in the type position
+                        };
+                      }
+                      return {
+                        messageId: 'someImportsAreOnlyTypes',
+                        data: { typeImports }, // typeImports are all the type specifiers in the value position
+                      };
                     })();
 
                     context.report({

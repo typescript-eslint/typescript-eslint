@@ -59,7 +59,7 @@ function getSimpleModel(data: unknown): SimpleModel {
   };
 }
 
-function PropertyValue({ value }: PropertyValueProps): JSX.Element {
+function PropertyValue({ value }: PropertyValueProps): React.JSX.Element {
   const [expand, setExpand] = useState(false);
 
   const model = useMemo(() => getSimpleModel(value), [value]);

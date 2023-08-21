@@ -12,12 +12,12 @@ import type {
 import { Modifiers, parseOptions, SCHEMA } from './naming-convention-utils';
 
 type MessageIds =
-  | 'unexpectedUnderscore'
-  | 'missingUnderscore'
-  | 'missingAffix'
-  | 'satisfyCustom'
   | 'doesNotMatchFormat'
-  | 'doesNotMatchFormatTrimmed';
+  | 'doesNotMatchFormatTrimmed'
+  | 'missingAffix'
+  | 'missingUnderscore'
+  | 'satisfyCustom'
+  | 'unexpectedUnderscore';
 
 // Note that this intentionally does not strictly type the modifiers/types properties.
 // This is because doing so creates a huge headache, as the rule's code doesn't need to care.
@@ -94,13 +94,13 @@ export default util.createRule<Options, MessageIds>({
     function handleMember(
       validator: ValidatorFunction,
       node:
-        | TSESTree.PropertyNonComputedName
-        | TSESTree.PropertyDefinitionNonComputedName
-        | TSESTree.TSAbstractPropertyDefinitionNonComputedName
-        | TSESTree.TSPropertySignatureNonComputedName
         | TSESTree.MethodDefinitionNonComputedName
+        | TSESTree.PropertyDefinitionNonComputedName
+        | TSESTree.PropertyNonComputedName
         | TSESTree.TSAbstractMethodDefinitionNonComputedName
-        | TSESTree.TSMethodSignatureNonComputedName,
+        | TSESTree.TSAbstractPropertyDefinitionNonComputedName
+        | TSESTree.TSMethodSignatureNonComputedName
+        | TSESTree.TSPropertySignatureNonComputedName,
       modifiers: Set<Modifiers>,
     ): void {
       if (!validator) {
@@ -117,10 +117,10 @@ export default util.createRule<Options, MessageIds>({
 
     function getMemberModifiers(
       node:
-        | TSESTree.PropertyDefinition
-        | TSESTree.TSAbstractPropertyDefinition
         | TSESTree.MethodDefinition
+        | TSESTree.PropertyDefinition
         | TSESTree.TSAbstractMethodDefinition
+        | TSESTree.TSAbstractPropertyDefinition
         | TSESTree.TSParameterProperty,
     ): Set<Modifiers> {
       const modifiers = new Set<Modifiers>();
@@ -186,12 +186,12 @@ export default util.createRule<Options, MessageIds>({
 
     function isAsyncMemberOrProperty(
       propertyOrMemberNode:
-        | TSESTree.PropertyNonComputedName
-        | TSESTree.TSMethodSignatureNonComputedName
-        | TSESTree.PropertyDefinitionNonComputedName
-        | TSESTree.TSAbstractPropertyDefinitionNonComputedName
         | TSESTree.MethodDefinitionNonComputedName
-        | TSESTree.TSAbstractMethodDefinitionNonComputedName,
+        | TSESTree.PropertyDefinitionNonComputedName
+        | TSESTree.PropertyNonComputedName
+        | TSESTree.TSAbstractMethodDefinitionNonComputedName
+        | TSESTree.TSAbstractPropertyDefinitionNonComputedName
+        | TSESTree.TSMethodSignatureNonComputedName,
     ): boolean {
       return Boolean(
         'value' in propertyOrMemberNode &&
@@ -273,8 +273,8 @@ export default util.createRule<Options, MessageIds>({
         handler: (
           node:
             | TSESTree.FunctionDeclaration
-            | TSESTree.TSDeclareFunction
-            | TSESTree.FunctionExpression,
+            | TSESTree.FunctionExpression
+            | TSESTree.TSDeclareFunction,
           validator,
         ): void => {
           if (node.id == null) {
@@ -313,11 +313,11 @@ export default util.createRule<Options, MessageIds>({
           validator: validators.parameter,
           handler: (
             node:
+              | TSESTree.ArrowFunctionExpression
               | TSESTree.FunctionDeclaration
-              | TSESTree.TSDeclareFunction
-              | TSESTree.TSEmptyBodyFunctionExpression
               | TSESTree.FunctionExpression
-              | TSESTree.ArrowFunctionExpression,
+              | TSESTree.TSDeclareFunction
+              | TSESTree.TSEmptyBodyFunctionExpression,
             validator,
           ): void => {
             node.params.forEach(param => {
@@ -442,10 +442,10 @@ export default util.createRule<Options, MessageIds>({
         validator: validators.classMethod,
         handler: (
           node:
-            | TSESTree.PropertyDefinitionNonComputedName
-            | TSESTree.TSAbstractPropertyDefinitionNonComputedName
             | TSESTree.MethodDefinitionNonComputedName
-            | TSESTree.TSAbstractMethodDefinitionNonComputedName,
+            | TSESTree.PropertyDefinitionNonComputedName
+            | TSESTree.TSAbstractMethodDefinitionNonComputedName
+            | TSESTree.TSAbstractPropertyDefinitionNonComputedName,
           validator,
         ): void => {
           const modifiers = getMemberModifiers(node);

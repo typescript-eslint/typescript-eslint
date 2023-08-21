@@ -8,12 +8,15 @@ import type { PlaygroundSystem } from '../linter/types';
 import ConfigEditor from './ConfigEditor';
 import { schemaToConfigOptions } from './utils';
 
-export interface ConfigProps {
+export interface ConfigTypeScriptProps {
   readonly className?: string;
   readonly system: PlaygroundSystem;
 }
 
-function ConfigTypeScript({ className, system }: ConfigProps): JSX.Element {
+function ConfigTypeScript({
+  className,
+  system,
+}: ConfigTypeScriptProps): React.JSX.Element {
   const [rawConfig, updateConfigObject] = useSystemFile(
     system,
     '/tsconfig.json',

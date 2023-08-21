@@ -12,7 +12,8 @@ module.exports = {
     ecmaFeatures: {
       jsx: false,
     },
-    project: '/usr/linked/tsconfig.json',
+    tsconfigRootDir: __dirname,
+    project: './tsconfig.json',
   },
   rules: {
     '@typescript-eslint/tslint/config': [

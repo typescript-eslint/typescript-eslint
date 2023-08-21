@@ -9,13 +9,15 @@ Thank you for your interest in developing on typescript-eslint! ❤️‍🔥
 
 ## Setup
 
-After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo) and [installing Yarn classic](https://classic.yarnpkg.com):
+After [forking the repo from GitHub](https://help.github.com/articles/fork-a-repo) and [installing Yarn](https://yarnpkg.com):
 
 ```shell
 git clone https://github.com/<your-name-here>/typescript-eslint
 cd typescript-eslint
 yarn
 ```
+
+You can see which version of `yarn` we use by checking the `packageManager` field in the root `package.json`.
 
 Postinstall scripts will then fully build your repository locally with (`yarn build`).
 At this point, you're ready to develop! 🚀
@@ -32,7 +34,7 @@ For example, if you make a change within `scope-manager` and want to use it in `
 The following checks are all run on pull requests automatically.
 You can also perform them locally.
 
-> See [Contributing > Pull Requests](../Contributing.mdx#raising-a-pr) for more information on pull requests.
+> See [Contributing > Pull Requests](./Pull_Requests.mdx) for more information on pull requests.
 
 ### Formatting
 
@@ -65,6 +67,16 @@ We aim for 100% code coverage in all PRs when possible, except in the `website/`
 Coverage reports are be generated locally whenever `yarn test` is run.
 
 The `codecov` bot should also comment on your PR with the percentage, as well as links to the line-by-line coverage of each file touched by your PR.
+
+#### Granular Unit Tests
+
+Most tests in most packages are set up as small, self-contained unit tests.
+We generally prefer that to keep tests and their failure reports granular.
+
+For rule tests we recommend, when reasonable:
+
+- Including both `valid` and `invalid` code changes in most PRs that affect rule behavior
+- Limiting to one error per `invalid` case
 
 ### Type Checking
 

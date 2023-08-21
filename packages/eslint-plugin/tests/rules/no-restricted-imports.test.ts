@@ -1,7 +1,7 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/no-restricted-imports';
-import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -248,6 +248,36 @@ import type { foo } from 'import2/private/bar';
             {
               group: ['import2/private/*'],
               message: 'usage of import2 private modules not allowed.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "import { type Bar } from 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              importNames: ['Bar'],
+              message: 'Please use Bar from /import-bar/baz/ instead.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "export { type Bar } from 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              importNames: ['Bar'],
+              message: 'Please use Bar from /import-bar/baz/ instead.',
               allowTypeImports: true,
             },
           ],
@@ -583,6 +613,56 @@ import type { foo } from 'import2/private/bar';
         {
           messageId: 'patterns',
           type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+    {
+      code: "import { Bar, type Baz } from 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              importNames: ['Bar', 'Baz'],
+              message: 'Please use Bar and Baz from /import-bar/baz/ instead.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'importNameWithCustomMessage',
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+        {
+          messageId: 'importNameWithCustomMessage',
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+    {
+      code: "export { Bar, type Baz } from 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              importNames: ['Bar', 'Baz'],
+              message: 'Please use Bar and Baz from /import-bar/baz/ instead.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'importNameWithCustomMessage',
+          type: AST_NODE_TYPES.ExportNamedDeclaration,
+        },
+        {
+          messageId: 'importNameWithCustomMessage',
+          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
     },

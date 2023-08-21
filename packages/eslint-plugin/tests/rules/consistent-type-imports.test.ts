@@ -1,5 +1,7 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/consistent-type-imports';
-import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -14,6 +16,7 @@ const ruleTester = new RuleTester({
 });
 
 const withMetaParserOptions = {
+  EXPERIMENTAL_useProjectService: false,
   tsconfigRootDir: getFixturesRootDir(),
   project: './tsconfig-withmeta.json',
 };
@@ -528,6 +531,18 @@ ruleTester.run('consistent-type-imports', rule, {
         @deco
         class A {
           constructor(foo: foo.Foo) {}
+        }
+      `,
+      parserOptions: withMetaConfigParserOptions,
+    },
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7327
+    {
+      code: `
+        import type { ClassA } from './classA';
+
+        export class ClassB {
+          public constructor(node: ClassA) {}
         }
       `,
       parserOptions: withMetaConfigParserOptions,

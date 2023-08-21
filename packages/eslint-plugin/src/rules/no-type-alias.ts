@@ -5,10 +5,10 @@ import * as util from '../util';
 
 type Values =
   | 'always'
-  | 'never'
-  | 'in-unions'
   | 'in-intersections'
-  | 'in-unions-and-intersections';
+  | 'in-unions-and-intersections'
+  | 'in-unions'
+  | 'never';
 
 type Options = [
   {
@@ -22,11 +22,11 @@ type Options = [
     allowGenerics?: 'always' | 'never';
   },
 ];
-type MessageIds = 'noTypeAlias' | 'noCompositionAlias';
+type MessageIds = 'noCompositionAlias' | 'noTypeAlias';
 
 type CompositionType =
-  | AST_NODE_TYPES.TSUnionType
-  | AST_NODE_TYPES.TSIntersectionType;
+  | AST_NODE_TYPES.TSIntersectionType
+  | AST_NODE_TYPES.TSUnionType;
 interface TypeWithLabel {
   node: TSESTree.Node;
   compositionType: CompositionType | null;
@@ -50,6 +50,7 @@ export default util.createRule<Options, MessageIds>({
       {
         $defs: {
           expandedOptions: {
+            type: 'string',
             enum: [
               'always',
               'never',
@@ -59,6 +60,7 @@ export default util.createRule<Options, MessageIds>({
             ] satisfies Values[],
           },
           simpleOptions: {
+            type: 'string',
             enum: ['always', 'never'],
           },
         },

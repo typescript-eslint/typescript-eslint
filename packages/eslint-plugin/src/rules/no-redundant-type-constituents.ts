@@ -87,6 +87,7 @@ function describeLiteralType(type: ts.Type): string {
   }
 
   if (type.isLiteral()) {
+    // eslint-disable-next-line @typescript-eslint/no-base-to-string
     return type.value.toString();
   }
 
@@ -182,6 +183,7 @@ export default util.createRule({
     docs: {
       description:
         'Disallow members of unions and intersections that do nothing or override type information',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {

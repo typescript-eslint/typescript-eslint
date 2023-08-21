@@ -1,5 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { extname } from 'path';
+import * as ts from 'typescript';
 
 import * as util from '../util';
 
@@ -38,7 +40,24 @@ export default util.createRule({
       [AST_NODE_TYPES.TSUnknownKeyword, 'unknown'],
     ]);
 
-    const inJsx = context.getFilename().toLowerCase().endsWith('tsx');
+    function checkRequiresGenericDeclarationDisambiguation(
+      filename: string,
+    ): boolean {
+      const pathExt = extname(filename).toLocaleLowerCase();
+      switch (pathExt) {
+        case ts.Extension.Cts:
+        case ts.Extension.Mts:
+        case ts.Extension.Tsx:
+          return true;
+
+        default:
+          return false;
+      }
+    }
+
+    const requiresGenericDeclarationDisambiguation =
+      checkRequiresGenericDeclarationDisambiguation(context.getFilename());
+
     const source = context.getSourceCode();
 
     const checkNode = (
@@ -47,7 +66,7 @@ export default util.createRule({
     ): void => {
       const constraint = unnecessaryConstraints.get(node.constraint.type);
       function shouldAddTrailingComma(): boolean {
-        if (!inArrowFunction || !inJsx) {
+        if (!inArrowFunction || !requiresGenericDeclarationDisambiguation) {
           return false;
         }
         // Only <T>() => {} would need trailing comma

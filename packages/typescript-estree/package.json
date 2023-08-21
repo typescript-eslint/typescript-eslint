@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "5.59.0",
+  "version": "6.4.1",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
@@ -21,7 +21,7 @@
     }
   },
   "engines": {
-    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
+    "node": "^16.0.0 || >=18.0.0"
   },
   "repository": {
     "type": "git",
@@ -48,30 +48,27 @@
     "postclean": "rimraf dist && rimraf _ts4.3 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "lint": "nx lint",
-    "test": "jest --coverage",
+    "test": "jest --coverage --runInBand --verbose",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "5.59.0",
-    "@typescript-eslint/visitor-keys": "5.59.0",
+    "@typescript-eslint/types": "6.4.1",
+    "@typescript-eslint/visitor-keys": "6.4.1",
     "debug": "^4.3.4",
     "globby": "^11.1.0",
     "is-glob": "^4.0.3",
-    "semver": "^7.3.7",
-    "ts-api-utils": "^0.0.46"
+    "semver": "^7.5.4",
+    "ts-api-utils": "^1.0.1"
   },
   "devDependencies": {
     "@babel/code-frame": "*",
     "@babel/parser": "*",
-    "@types/babel__code-frame": "*",
-    "@types/debug": "*",
-    "@types/glob": "*",
-    "@types/is-glob": "*",
-    "@types/semver": "*",
-    "@types/tmp": "*",
     "glob": "*",
-    "jest-specific-snapshot": "*",
+    "jest": "29.6.2",
+    "jest-specific-snapshot": "^8.0.0",
     "make-dir": "*",
+    "prettier": "^2.8.4",
+    "rimraf": "*",
     "tmp": "*",
     "typescript": "*"
   },

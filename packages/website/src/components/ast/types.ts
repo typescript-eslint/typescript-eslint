@@ -3,14 +3,14 @@ export type OnClickNodeFn = (node?: unknown) => void;
 
 export type ParentNodeType =
   | 'esNode'
-  | 'tsNode'
-  | 'tsType'
-  | 'tsSymbol'
-  | 'tsSignature'
-  | 'tsFlow'
   | 'scope'
-  | 'scopeManager'
-  | 'scopeVariable'
   | 'scopeDefinition'
+  | 'scopeManager'
   | 'scopeReference'
+  | 'scopeVariable'
+  | 'tsFlow'
+  | 'tsNode'
+  | 'tsSignature'
+  | 'tsSymbol'
+  | 'tsType'
   | undefined;

@@ -3,10 +3,10 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
+import { RuleTester } from '@typescript-eslint/rule-tester';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
 import rule from '../../src/rules/space-before-function-paren';
-import { RuleTester } from '../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',

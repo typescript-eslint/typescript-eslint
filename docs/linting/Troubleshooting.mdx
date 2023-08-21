@@ -7,7 +7,7 @@ title: Troubleshooting & FAQs
 
 This happens because TypeScript adds new features that ESLint doesn't know about.
 
-The first step is to [check our list of "extension" rules here](https://typescript-eslint.io/rules/#extension-rules).
+The first step is to [check our list of "extension" rules here](/rules/#extension-rules).
 An extension rule is a rule which extends the base ESLint rules to support TypeScript syntax.
 If you find it in there, give it a go to see if it works for you.
 You can configure it by disabling the base rule, and turning on the extension rule.
@@ -23,27 +23,73 @@ Here's an example with the `semi` rule:
 ```
 
 If you don't find an existing extension rule, or the extension rule doesn't work for your case, then you can go ahead and check our issues.
-[The contributing guide outlines the best way to raise an issue](https://github.com/typescript-eslint/typescript-eslint/blob/main/CONTRIBUTING.md#raising-issues).
+[The contributing guide outlines the best way to raise an issue](../contributing/Issues.mdx).
 
 > We release a new version our tooling every week.
-> _Please_ ensure that you [check our the latest list of "extension" rules](https://typescript-eslint.io/rules/#extension-rules) **_before_** filing an issue.
+> _Please_ ensure that you [check our the latest list of "extension" rules](/rules/#extension-rules) **_before_** filing an issue.
 
 ## I get errors telling me "ESLint was configured to run ... However, that TSConfig does not / none of those TSConfigs include this file"
 
+These errors are caused by an ESLint config requesting type information be generated for a file that isn't included in the TypeScript configuration.
+
 ### Fixing the Error
+
+<!-- prettier-ignore-start -->
 
 - If you **do not** want to lint the file:
   - Use [one of the options ESLint offers](https://eslint.org/docs/latest/user-guide/configuring/ignoring-code) to ignore files, namely a `.eslintignore` file, or `ignorePatterns` config.
 - If you **do** want to lint the file:
   - If you **do not** want to lint the file with [type-aware linting](./Typed_Linting.mdx):
-    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information.
-      - A popular setup is to omit the above additions from top-level configuration and only apply them to TypeScript files via an override.
-      - Alternatively, you can add `parserOptions: { project: null }` to an override for the files you wish to exclude. Note that `{ project: undefined }` will not work.
+    - Use [ESLint's `overrides` configuration](https://eslint.org/docs/latest/user-guide/configuring/configuration-files#configuration-based-on-glob-patterns) to configure the file to not be parsed with type information:
+      <details>
+        <summary>
+          A popular setup is to remove all rules requiring type information from the top-level configuration
+          and only apply them to TypeScript files via an override.
+        </summary>
+
+        ```js title=".eslintrc.cjs"
+        module.exports = {
+          // ... the rest of your config ...
+          overrides: [
+            {
+              extends: [
+                'plugin:@typescript-eslint/recommended-requiring-type-checking',
+              ],
+              files: ['./**/*.{ts,tsx}'],
+            },
+          ],
+        };
+        ```
+
+      </details>
+      <details>
+        <summary>
+          Alternatively, in our <a href="/blog/announcing-typescript-eslint-v6-beta">version v6</a>, you can use our{' '}
+          <a href="https://v6--typescript-eslint.netlify.app/linting/configs#disable-type-checked"><code>disable-type-checked</code> config</a> to disable type checking for just that type of file.
+        </summary>
+
+        ```js title=".eslintrc.cjs"
+        module.exports = {
+          // ... the rest of your config ...
+          overrides: [
+            {
+              extends: ['plugin:@typescript-eslint/disable-type-checked'],
+              files: ['./**/*.js'],
+            },
+          ],
+        };
+        ```
+        To disable type checking for files manually, set `parserOptions: { project: null }` to an override for the files you wish to exclude. Note that `{ project: undefined }` will not work, and you'll also need to disable any rules or rule options that require type checking.
+      </details>
+
   - If you **do** want to lint the file with [type-aware linting](./Typed_Linting.mdx):
-    - Check the `include` option of each of the tsconfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
+    - Check the `include` option of each of the TSConfigs that you provide to `parserOptions.project` - you must ensure that all files match an `include` glob, or else our tooling will not be able to find it.
+      - If the file is a `.cjs`, `.js`, or `.mjs` file, make sure [`allowJs`](https://www.typescriptlang.org/tsconfig#allowJs) is enabled.
     - If your file shouldn't be a part of one of your existing tsconfigs (for example, it is a script/tool local to the repo), then consider creating a new tsconfig (we advise calling it `tsconfig.eslint.json`) in your project root which lists this file in its `include`. For an example of this, you can check out the configuration we use in this repo:
       - [`tsconfig.eslint.json`](https://github.com/typescript-eslint/typescript-eslint/blob/main/tsconfig.eslint.json)
       - [`.eslintrc.js`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.eslintrc.js)
+
+<!-- prettier-ignore-end -->
 
 ### More Details
 
@@ -88,7 +134,7 @@ type RuleConfig =
   | Severity
   | [Severity]
   | [
-      Severiy,
+      Severity,
       // Options is the tuple type from the rule docs
       ...Options,
     ];
@@ -161,7 +207,7 @@ See [#2041](https://github.com/typescript-eslint/typescript-eslint/issues/2041) 
 ESLint core contains the rule [`no-restricted-syntax`](https://eslint.org/docs/rules/no-restricted-syntax).
 This generic rule allows you to specify a [selector](https://eslint.org/docs/developer-guide/selectors) for the code you want to ban, along with a custom error message.
 
-You can use an AST visualization tool such as [typescript-eslint playground](https://typescript-eslint.io/play#showAST=es) > _Options_ > _AST Explorer_ on its left sidebar by selecting _ESTree_ to help in figuring out the structure of the AST that you want to ban.
+You can use an AST visualization tool such as [typescript-eslint playground](/play#showAST=es) > _Options_ > _AST Explorer_ on its left sidebar by selecting _ESTree_ to help in figuring out the structure of the AST that you want to ban.
 
 For example, you can ban enums (or some variation of) using one of the following configs:
 
@@ -280,7 +326,7 @@ See [this issue comment](https://github.com/typescript-eslint/typescript-eslint/
 ### I get `no-unsafe-*` complaints for cross-file changes
 
 See [Changes to one file are not reflected in linting other files in my IDE](#changes-to-one-file-are-not-reflected-when-linting-other-files-in-my-ide).
-Rules such as [`no-unsafe-argument`](https://typescript-eslint.io/rules/no-unsafe-argument), [`no-unsafe-assignment`](https://typescript-eslint.io/rules/no-unsafe-assignment), and [`no-unsafe-call`](https://typescript-eslint.io/rules/no-unsafe-call) are often impacted.
+Rules such as [`no-unsafe-argument`](/rules/no-unsafe-argument), [`no-unsafe-assignment`](/rules/no-unsafe-assignment), and [`no-unsafe-call`](/rules/no-unsafe-call) are often impacted.
 
 ## "The '`<key>`' property is deprecated on '`<type>`' nodes. Use '`<key>`' instead." warnings
 
@@ -306,7 +352,7 @@ The [typescript-eslint v6 release post](https://deploy-preview-6515--typescript-
 
 ## My linting feels really slow
 
-If you think you're having issues with performance, see our [Performance Troubleshooting documentation](./troubleshooting/Performance.md).
+If you think you're having issues with performance, see our [Performance Troubleshooting documentation](./troubleshooting/Performance.mdx).
 
 ## Are TypeScript project references supported?
 

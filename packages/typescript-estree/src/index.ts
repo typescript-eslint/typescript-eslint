@@ -2,9 +2,7 @@ export {
   AST,
   parse,
   parseAndGenerateServices,
-  parseWithNodeMaps,
   ParseAndGenerateServicesResult,
-  ParseWithNodeMapsResult,
 } from './parser';
 export {
   ParserServices,
@@ -16,6 +14,7 @@ export { simpleTraverse } from './simple-traverse';
 export * from './ts-estree';
 export { createProgramFromConfigFile as createProgram } from './create-program/useProvidedPrograms';
 export * from './create-program/getScriptKind';
+export { getCanonicalFileName } from './create-program/shared';
 export { typescriptVersionIsAtLeast } from './version-check';
 export * from './getModifiers';
 export { TSError } from './node-utils';

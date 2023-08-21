@@ -26,9 +26,8 @@ export function isNullableType(
 
   if (allowUndefined) {
     return (flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0;
-  } else {
-    return (flags & ts.TypeFlags.Null) !== 0;
   }
+  return (flags & ts.TypeFlags.Null) !== 0;
 }
 
 /**

@@ -6,8 +6,6 @@ description: 'Require empty lines around comments.'
 >
 > See **https://typescript-eslint.io/rules/lines-around-comment** for documentation.
 
-## Rule Details
-
 This rule extends the base [`eslint/lines-around-comment`](https://eslint.org/docs/rules/lines-around-comment) rule.
 It adds support for TypeScript syntax.
 

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "5.59.0",
+  "version": "6.4.1",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
@@ -18,7 +18,7 @@
     "./package.json": "./package.json"
   },
   "engines": {
-    "node": "^14.18.0 || ^16.0.0 || >=18.0.0"
+    "node": "^16.0.0 || >=18.0.0"
   },
   "repository": {
     "type": "git",
@@ -73,6 +73,10 @@
     }
   },
   "devDependencies": {
+    "downlevel-dts": "*",
+    "prettier": "^2.8.4",
+    "rimraf": "*",
+    "tsx": "*",
     "typescript": "*"
   },
   "funding": {

@@ -1,6 +1,6 @@
 /*
 NOTE - this file intentionally uses deep `/use-at-your-own-risk` imports into our packages.
-This is so that rollup can properly tree-shake and only include the necessary code.
+This is so that esbuild can properly tree-shake and only include the necessary code.
 This saves us having to mock unnecessary things and reduces our bundle size.
 */
 // @ts-check
