@@ -53,7 +53,7 @@
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
-    "prettier": "*",
+    "prettier": "^2.8.4",
     "pretty-format": "*",
     "rimraf": "*",
     "typescript": "*"

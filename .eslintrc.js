@@ -121,6 +121,7 @@ module.exports = {
         null: 'never',
       },
     ],
+    'logical-assignment-operators': 'error',
     'no-else-return': 'error',
     'no-mixed-operators': 'error',
     'no-console': 'error',

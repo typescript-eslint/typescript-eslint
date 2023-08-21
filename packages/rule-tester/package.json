@@ -61,8 +61,8 @@
     "@types/lodash.merge": "4.6.7",
     "@typescript-eslint/parser": "6.4.0",
     "chai": "^4.3.7",
-    "mocha": "^8.3.2",
-    "sinon": "^11.0.0",
+    "mocha": "^10.0.0",
+    "sinon": "^15.0.0",
     "source-map-support": "^0.5.21"
   },
   "funding": {
