@@ -4,6 +4,7 @@ import {
 } from '@docusaurus/theme-common';
 import CopyIcon from '@theme/Icon/Copy';
 import IconExternalLink from '@theme/Icon/ExternalLink';
+import SuccessIcon from '@theme/Icon/Success';
 import React, { useCallback } from 'react';
 
 import { useClipboard } from '../hooks/useClipboard';
@@ -16,7 +17,6 @@ import InputLabel from './layout/InputLabel';
 import { createMarkdown, createMarkdownParams } from './lib/markdown';
 import { fileTypes } from './options';
 import type { ConfigModel } from './types';
-import CheckIcon from '@theme/Icon/Success';
 
 export interface OptionsSelectorParams {
   readonly state: ConfigModel;
@@ -99,7 +99,7 @@ function OptionsSelectorContent({
         <ActionLabel name="Copy link" onClick={copyLinkToClipboard}>
           <Tooltip open={copyLink} text="Copied">
             {copyLink ? (
-              <CheckIcon width="13.5" height="13.5" />
+              <SuccessIcon width="13.5" height="13.5" />
             ) : (
               <CopyIcon width="13.5" height="13.5" />
             )}
@@ -108,7 +108,7 @@ function OptionsSelectorContent({
         <ActionLabel name="Copy Markdown" onClick={copyMarkdownToClipboard}>
           <Tooltip open={copyMarkdown} text="Copied">
             {copyMarkdown ? (
-              <CheckIcon width="13.5" height="13.5" />
+              <SuccessIcon width="13.5" height="13.5" />
             ) : (
               <CopyIcon width="13.5" height="13.5" />
             )}
