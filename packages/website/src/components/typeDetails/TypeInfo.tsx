@@ -93,7 +93,7 @@ export function TypeInfo({
       if (contextualType) {
         info.contextualTypeString = typeChecker.typeToString(contextualType);
       }
-    } catch (_e: unknown) {
+    } catch {
       info.contextualType = undefined;
     }
     return info;
