@@ -50,12 +50,8 @@
   z-index: 1;
 }
 
-.tabCode,
-.playgroundInfoContainer {
+.tabCode {
   height: calc(100% - 41px);
-}
-
-.playgroundInfoContainer {
   overflow: auto;
 }
 

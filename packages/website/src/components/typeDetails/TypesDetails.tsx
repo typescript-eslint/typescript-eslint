@@ -40,7 +40,7 @@ export function TypesDetails({
       defaultSize="50%"
       pane2Style={{ overflow: 'hidden' }}
     >
-      <div className={styles.playgroundInfoContainer}>
+      <div className={styles.tabCode}>
         <SimplifiedTreeView
           onHoverNode={onHoverNode}
           selectedNode={selectedNode}
@@ -49,7 +49,7 @@ export function TypesDetails({
         />
       </div>
       {selectedNode && (
-        <div className={styles.playgroundInfoContainer}>
+        <div className={styles.tabCode}>
           <TypeInfo
             onHoverNode={onHoverNode}
             typeChecker={typeChecker}
