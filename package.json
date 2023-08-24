@@ -80,7 +80,7 @@
     "@types/tmp": "^0.2.3",
     "console-fail-test": "^0.2.3",
     "cross-fetch": "^4.0.0",
-    "cspell": "^6.31.1",
+    "cspell": "^7.0.0",
     "downlevel-dts": ">=0.11.0",
     "eslint": "^8.47.0",
     "eslint-plugin-deprecation": "^1.4.1",
