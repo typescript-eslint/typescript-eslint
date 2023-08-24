@@ -144,5 +144,5 @@
     "tsx": "^3.12.7",
     "typescript": "5.2.1-rc"
   },
-  "packageManager": "yarn@3.3.0"
+  "packageManager": "yarn@3.6.2"
 }
