@@ -6019,7 +6019,7 @@ __metadata:
     ts-node: 10.7.0
     tslint: ^6.1.3
     tsx: ^3.12.7
-    typescript: ">=4.3.5 <5.2.0 || 5.2.1-rc"
+    typescript: ">=4.3.5 <5.3.0"
   languageName: unknown
   linkType: soft
 
@@ -20017,23 +20017,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.2.1-rc":
-  version: 5.2.1-rc
-  resolution: "typescript@npm:5.2.1-rc"
+"typescript@npm:5.2.2":
+  version: 5.2.2
+  resolution: "typescript@npm:5.2.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 0bea857151b74d76d36af16e77ad348b1fbf9630b0002be4cda9713fee692e50e2faa5d1d63fccbc3e3a4999e0356c0b722d993344ab0d014ecfc4d500b178ca
+  checksum: 7912821dac4d962d315c36800fe387cdc0a6298dba7ec171b350b4a6e988b51d7b8f051317786db1094bd7431d526b648aba7da8236607febb26cf5b871d2d3c
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.2.1-rc#~builtin<compat/typescript>":
-  version: 5.2.1-rc
-  resolution: "typescript@patch:typescript@npm%3A5.2.1-rc#~builtin<compat/typescript>::version=5.2.1-rc&hash=f3b441"
+"typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>":
+  version: 5.2.2
+  resolution: "typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 3128667694c92cdafc4683aa3c75c6da4e9d38b95464cad6e9d76732d2a8c55b12fa7d20ccae59c46b2baabbecd04ed8e1ec2bad7fb1da01200b800dfacd2eb7
+  checksum: 0f4da2f15e6f1245e49db15801dbee52f2bbfb267e1c39225afdab5afee1a72839cd86000e65ee9d7e4dfaff12239d28beaf5ee431357fcced15fb08583d72ca
   languageName: node
   linkType: hard
 

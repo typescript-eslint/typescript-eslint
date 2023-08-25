@@ -3,9 +3,9 @@
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
 // npx nx generate-lib @typescript-eslint/scope-manager
 
-import type { ImplicitLibVariableOptions } from '../variable';
-import { TYPE } from './base-config';
+import { ImplicitLibVariableOptions } from '../variable';
 import { es2018_asynciterable } from './es2018.asynciterable';
+import { TYPE } from './base-config';
 
 export const es2018_asyncgenerator = {
   ...es2018_asynciterable,
