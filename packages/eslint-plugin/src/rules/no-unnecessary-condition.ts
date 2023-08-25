@@ -28,13 +28,23 @@ const isTruthyLiteral = (type: ts.Type): boolean =>
 const isPossiblyFalsy = (type: ts.Type): boolean =>
   tsutils
     .unionTypeParts(type)
+    // Intersections like `string & {}` can also be possibly falsy,
+    // requiring us to look into the intersection.
+    .flatMap(type => tsutils.intersectionTypeParts(type))
     // PossiblyFalsy flag includes literal values, so exclude ones that
     // are definitely truthy
     .filter(t => !isTruthyLiteral(t))
     .some(type => isTypeFlagSet(type, ts.TypeFlags.PossiblyFalsy));
 
 const isPossiblyTruthy = (type: ts.Type): boolean =>
-  tsutils.unionTypeParts(type).some(type => !tsutils.isFalsyType(type));
+  tsutils
+    .unionTypeParts(type)
+    .map(type => tsutils.intersectionTypeParts(type))
+    .some(intersectionParts =>
+      // It is possible to define intersections that are always falsy,
+      // like `"" & { __brand: string }`.
+      intersectionParts.every(type => !tsutils.isFalsyType(type)),
+    );
 
 // Nullish utilities
 const nullishFlag = ts.TypeFlags.Undefined | ts.TypeFlags.Null;

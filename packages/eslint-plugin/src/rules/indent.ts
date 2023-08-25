@@ -159,21 +159,20 @@ export default util.createRule<Options, MessageIds>({
           type,
           ...base,
         } as TSESTree.Property;
-      } else {
-        return {
-          type,
-          accessibility: undefined,
-          declare: false,
-          decorators: [],
-          definite: false,
-          optional: false,
-          override: false,
-          readonly: false,
-          static: false,
-          typeAnnotation: undefined,
-          ...base,
-        } as TSESTree.PropertyDefinition;
       }
+      return {
+        type,
+        accessibility: undefined,
+        declare: false,
+        decorators: [],
+        definite: false,
+        optional: false,
+        override: false,
+        readonly: false,
+        static: false,
+        typeAnnotation: undefined,
+        ...base,
+      } as TSESTree.PropertyDefinition;
     }
 
     return Object.assign({}, rules, {

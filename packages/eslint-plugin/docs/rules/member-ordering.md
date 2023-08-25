@@ -814,7 +814,7 @@ interface Foo {
 
 #### Sorting Alphabetically Case Insensitive Within Member Groups
 
-This config specifies that within each `memberTypes` group, members are in an alphabetic case-sensitive order.
+This config specifies that within each `memberTypes` group, members are in an alphabetic case-insensitive order.
 You can copy and paste the default order from [Default Configuration](#default-configuration).
 
 ```jsonc

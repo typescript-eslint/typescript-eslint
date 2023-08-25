@@ -144,13 +144,12 @@ export function gatherLogicalOperands(
               comparedValue: comparedValueRight,
               isYoda: false,
             };
-          } else {
-            return {
-              comparedExpression: operand.right,
-              comparedValue: getComparisonValueType(operand.left),
-              isYoda: true,
-            };
           }
+          return {
+            comparedExpression: operand.right,
+            comparedValue: getComparisonValueType(operand.left),
+            isYoda: true,
+          };
         })();
 
         if (comparedValue === ComparisonValueType.UndefinedStringLiteral) {

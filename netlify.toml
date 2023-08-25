@@ -5,7 +5,9 @@
   command = "NX_VERBOSE_LOGGING=true yarn patch-package && yarn nx build website"
 [build.environment]
   NETLIFY_USE_YARN = "true"
-  YARN_FLAGS = "--ignore-scripts"
+  # TODO: adjust these once https://github.com/netlify/build-image/issues/612 is resolved
+  YARN_ENABLE_GLOBAL_CACHE = "true"
+  YARN_GLOBAL_FOLDER = "/opt/buildhome/.yarn_cache"
 
 # https://docs.netlify.com/configure-builds/file-based-configuration/#redirects
 

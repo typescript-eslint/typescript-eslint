@@ -50,11 +50,8 @@ export default util.createRule({
           }
         }
         return false;
-      } else {
-        return (
-          (type.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0
-        );
       }
+      return (type.flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0;
     };
 
     const sameTypeWithoutNullish = (
@@ -117,11 +114,21 @@ export default util.createRule({
         }
 
         if (sameTypeWithoutNullish(assertedTypes, originalTypes)) {
+          const expressionSourceCode = sourceCode.getText(node.expression);
+
+          const higherPrecedenceThanUnary =
+            util.getOperatorPrecedence(
+              services.esTreeNodeToTSNodeMap.get(node.expression).kind,
+              ts.SyntaxKind.Unknown,
+            ) > util.OperatorPrecedence.Unary;
+
           context.report({
             fix(fixer) {
               return fixer.replaceText(
                 node,
-                `${sourceCode.getText(node.expression)}!`,
+                higherPrecedenceThanUnary
+                  ? `${expressionSourceCode}!`
+                  : `(${expressionSourceCode})!`,
               );
             },
             messageId: 'preferNonNullAssertion',

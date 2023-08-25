@@ -35,7 +35,7 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
       getTypescriptOptions().reduce<Record<string, ConfigOptionsType>>(
         (group, item) => {
           const category = item.category!.message;
-          group[category] = group[category] ?? {
+          group[category] ??= {
             heading: category,
             fields: [],
           };
