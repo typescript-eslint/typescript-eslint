@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "6.4.0",
+  "version": "6.4.1",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
@@ -73,6 +73,10 @@
     }
   },
   "devDependencies": {
+    "downlevel-dts": "*",
+    "prettier": "^2.8.4",
+    "rimraf": "*",
+    "tsx": "*",
     "typescript": "*"
   },
   "funding": {
