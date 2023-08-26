@@ -119,7 +119,7 @@ export default createRule({
         switchStatementMetadata;
 
       // We only trigger the rule if a `default` case does not exist, since that
-      // would disqualifies the switch statement from having cases that exactly
+      // would disqualify the switch statement from having cases that exactly
       // match the members of a union.
       if (missingBranchTypes.length > 0 && defaultCase === undefined) {
         context.report({
