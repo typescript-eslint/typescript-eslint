@@ -521,7 +521,7 @@ export default util.createRule<Options, MessageIds>({
       key?: string,
       containingNode?: ContainingNode,
     ): void {
-      key = key ?? getOverloadKey(signature);
+      key ??= getOverloadKey(signature);
       if (
         currentScope &&
         (containingNode || signature).parent === currentScope.parent

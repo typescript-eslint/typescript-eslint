@@ -5,6 +5,7 @@
 
 import type { ImplicitLibVariableOptions } from '../variable';
 import { es2016 } from './es2016';
+import { es2017_date } from './es2017.date';
 import { es2017_intl } from './es2017.intl';
 import { es2017_object } from './es2017.object';
 import { es2017_sharedmemory } from './es2017.sharedmemory';
@@ -18,4 +19,5 @@ export const es2017 = {
   ...es2017_string,
   ...es2017_intl,
   ...es2017_typedarrays,
+  ...es2017_date,
 } as Record<string, ImplicitLibVariableOptions>;

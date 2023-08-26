@@ -1,6 +1,4 @@
 import { $ as $_config } from 'execa';
-import path from 'path';
-import * as url from 'url';
 
 const $ = $_config({
   stdout: 'inherit',
@@ -9,9 +7,9 @@ const $ = $_config({
 });
 
 /**
- * In certain circumstances we want to skip the below the steps and it may not always
- * be possible to use --ignore-scripts (e.g. if another tool is what is invoking the
- * install command, such as when nx migrate runs). We therefore use and env var for this.
+ * In certain circumstances we might want to skip the below the steps when another
+ * tool is invoking the install command (such as when nx migrate runs).
+ * We therefore use an env var for this.
  */
 
 if (process.env.SKIP_POSTINSTALL) {
@@ -22,12 +20,12 @@ if (process.env.SKIP_POSTINSTALL) {
   process.exit(0);
 }
 
-const __dirname = url.fileURLToPath(new URL('.', import.meta.url));
-const REPO_ROOT = path.resolve(__dirname, '..', '..');
-
 void (async function (): Promise<void> {
-  // make sure we're running from the root
-  process.chdir(REPO_ROOT);
+  // make sure we're running from the workspace root
+  const {
+    default: { workspaceRoot },
+  } = await import('@nx/devkit');
+  process.chdir(workspaceRoot);
 
   // Apply patches to installed node_modules
   await $`yarn patch-package`;

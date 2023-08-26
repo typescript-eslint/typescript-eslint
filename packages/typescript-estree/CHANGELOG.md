@@ -3,6 +3,54 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.4.1](https://github.com/typescript-eslint/typescript-eslint/compare/v6.4.0...v6.4.1) (2023-08-21)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.4.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.3.0...v6.4.0) (2023-08-14)
+
+
+### Bug Fixes
+
+* **typescript-estree:** support `declare` and `export` modifiers for nested namespace declaration ([#7410](https://github.com/typescript-eslint/typescript-eslint/issues/7410)) ([49a53f0](https://github.com/typescript-eslint/typescript-eslint/commit/49a53f0ba985941a431269d3761030dc414916b1))
+
+
+### Features
+
+* update to lib types for TS 5.2 RC ([#7451](https://github.com/typescript-eslint/typescript-eslint/issues/7451)) ([479f9f6](https://github.com/typescript-eslint/typescript-eslint/commit/479f9f6c053874bd584220edf594ec56d6b0b71a))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.3.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.2.1...v6.3.0) (2023-08-07)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+## [6.2.1](https://github.com/typescript-eslint/typescript-eslint/compare/v6.2.0...v6.2.1) (2023-07-31)
+
+**Note:** Version bump only for package @typescript-eslint/typescript-estree
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [6.2.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.1.0...v6.2.0) (2023-07-24)
 
 
