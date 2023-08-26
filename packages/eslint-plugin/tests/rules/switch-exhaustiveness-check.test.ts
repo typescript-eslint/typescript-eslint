@@ -602,5 +602,29 @@ function test(arg: Enum): string {
         },
       ],
     },
+    {
+      // has dangerous default case
+      code: `
+type MyUnion = 'foo' | 'bar' | 'baz';
+
+declare const myUnion: MyUnion;
+
+switch (myUnion) {
+  case 'foo':
+  case 'bar':
+  case 'baz': {
+    break;
+  }
+  default: {
+    break;
+  }
+}
+      `,
+      errors: [
+        {
+          messageId: 'dangerousDefaultCase',
+        },
+      ],
+    },
   ],
 });

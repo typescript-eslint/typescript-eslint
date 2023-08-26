@@ -6,10 +6,11 @@ description: 'Require switch-case statements to be exhaustive with union type.'
 >
 > See **https://typescript-eslint.io/rules/switch-exhaustiveness-check** for documentation.
 
-When working with union types in TypeScript, it's common to want to write a `switch` statement intended to contain a `case` for each constituent (possible type in the union).
-However, if the union type changes, it's easy to forget to modify the cases to account for any new types.
+When working with union types in TypeScript, it's common to want to write a `switch` statement intended to contain a `case` for each constituent (possible type in the union). However, if the union type changes, it's easy to forget to modify the cases to account for any new types.
 
 This rule reports when a `switch` statement over a value typed as a union of literals is missing a case for any of those literal types and does not have a `default` clause.
+
+Additionally, this also reports when a `switch` statement has a case for everything in a union and _also_ contains a `default` case. `default` cases in this situation are obviously superfluous, as they would contain dead code. But beyond being superfluous, these kind of `default` cases are actively harmful: if a new value is added to the switch statement union, the `default` statement would prevent this rule from alerting you that you need to handle the new case.
 
 ## Examples
 

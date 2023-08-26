@@ -11,6 +11,22 @@ import {
   requiresQuoting,
 } from '../util';
 
+interface SwitchStatementMetadata {
+  /** The name of the union that is inside of the switch statement. */
+  symbolName: string | undefined;
+
+  /**
+   * If the length of this array is equal to 0, then the switch statement is
+   * exhaustive.
+   */
+  missingBranchTypes: ts.Type[];
+
+  /**
+   * The node representing the `default` case on the switch statement, if any.
+   */
+  defaultCase: TSESTree.SwitchCase | undefined;
+}
+
 export default createRule({
   name: 'switch-exhaustiveness-check',
   meta: {
@@ -25,6 +41,8 @@ export default createRule({
     messages: {
       switchIsNotExhaustive:
         'Switch is not exhaustive. Cases not matched: {{missingBranches}}',
+      dangerousDefaultCase:
+        'The switch statement is exhaustive, so the default case is superfluous and will obfucate future additions to the union.',
       addMissingCases: 'Add branches for missing cases.',
     },
   },
@@ -34,6 +52,104 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
+
+    /**
+     * @returns Metadata about whether the switch is exhaustive (or `undefined`
+     *          if the switch case is not a union).
+     */
+    function getSwitchStatementMetadata(
+      node: TSESTree.SwitchStatement,
+    ): SwitchStatementMetadata | undefined {
+      const discriminantType = getConstrainedTypeAtLocation(
+        services,
+        node.discriminant,
+      );
+      if (!discriminantType.isUnion()) {
+        return undefined;
+      }
+
+      const caseTypes = new Set<ts.Type>();
+      for (const switchCase of node.cases) {
+        // If the `test` property of the switch case is `null`, then we are on a
+        // `default` case.
+        if (switchCase.test == null) {
+          continue;
+        }
+
+        const caseType = getConstrainedTypeAtLocation(
+          services,
+          switchCase.test,
+        );
+        caseTypes.add(caseType);
+      }
+
+      const unionTypes = tsutils.unionTypeParts(discriminantType);
+      const missingBranchTypes = unionTypes.filter(
+        unionType => !caseTypes.has(unionType),
+      );
+
+      /**
+       * Convert `ts.__String | undefined` to `string | undefined` for
+       * simplicity.
+       */
+      const symbolName = discriminantType.getSymbol()?.escapedName as
+        | string
+        | undefined;
+
+      /**
+       * The `test` property of a `SwitchCase` node will usually be a `Literal`
+       * node. However, on a `default` case, it will be equal to `null`.
+       */
+      const defaultCase = node.cases.find(
+        switchCase => switchCase.test == null,
+      );
+
+      return {
+        missingBranchTypes,
+        symbolName,
+        defaultCase,
+      };
+    }
+
+    function checkSwitchExhaustive(
+      node: TSESTree.SwitchStatement,
+      switchStatementMetadata: SwitchStatementMetadata,
+    ): void {
+      const { missingBranchTypes, symbolName, defaultCase } =
+        switchStatementMetadata;
+
+      // We only trigger the rule if a `default` case does not exist, since that
+      // would disqualifies the switch statement from having cases that exactly
+      // match the members of a union.
+      if (missingBranchTypes.length > 0 && defaultCase === undefined) {
+        context.report({
+          node: node.discriminant,
+          messageId: 'switchIsNotExhaustive',
+          data: {
+            missingBranches: missingBranchTypes
+              .map(missingType =>
+                tsutils.isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
+                  ? `typeof ${missingType.getSymbol()?.escapedName as string}`
+                  : checker.typeToString(missingType),
+              )
+              .join(' | '),
+          },
+          suggest: [
+            {
+              messageId: 'addMissingCases',
+              fix(fixer): TSESLint.RuleFix | null {
+                return fixSwitch(
+                  fixer,
+                  node,
+                  missingBranchTypes,
+                  symbolName?.toString(),
+                );
+              },
+            },
+          ],
+        });
+      }
+    }
 
     function fixSwitch(
       fixer: TSESLint.RuleFixer,
@@ -107,67 +223,30 @@ export default createRule({
       );
     }
 
-    function checkSwitchExhaustive(node: TSESTree.SwitchStatement): void {
-      const discriminantType = getConstrainedTypeAtLocation(
-        services,
-        node.discriminant,
-      );
-      const symbolName = discriminantType.getSymbol()?.escapedName;
+    function checkSwitchDangerousDefaultCase(
+      node: TSESTree.SwitchStatement,
+      switchStatementMetadata: SwitchStatementMetadata,
+    ): void {
+      const { missingBranchTypes, defaultCase } = switchStatementMetadata;
 
-      if (discriminantType.isUnion()) {
-        const unionTypes = tsutils.unionTypeParts(discriminantType);
-        const caseTypes = new Set<ts.Type>();
-        for (const switchCase of node.cases) {
-          if (switchCase.test == null) {
-            // Switch has 'default' branch - do nothing.
-            return;
-          }
-
-          caseTypes.add(
-            getConstrainedTypeAtLocation(services, switchCase.test),
-          );
-        }
-
-        const missingBranchTypes = unionTypes.filter(
-          unionType => !caseTypes.has(unionType),
-        );
-
-        if (missingBranchTypes.length === 0) {
-          // All cases matched - do nothing.
-          return;
-        }
-
+      if (missingBranchTypes.length === 0 && defaultCase !== undefined) {
         context.report({
-          node: node.discriminant,
-          messageId: 'switchIsNotExhaustive',
-          data: {
-            missingBranches: missingBranchTypes
-              .map(missingType =>
-                tsutils.isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
-                  ? `typeof ${missingType.getSymbol()?.escapedName as string}`
-                  : checker.typeToString(missingType),
-              )
-              .join(' | '),
-          },
-          suggest: [
-            {
-              messageId: 'addMissingCases',
-              fix(fixer): TSESLint.RuleFix | null {
-                return fixSwitch(
-                  fixer,
-                  node,
-                  missingBranchTypes,
-                  symbolName?.toString(),
-                );
-              },
-            },
-          ],
+          node: defaultCase,
+          messageId: 'dangerousDefaultCase',
         });
       }
     }
 
     return {
-      SwitchStatement: checkSwitchExhaustive,
+      SwitchStatement(node): void {
+        const switchStatementMetadata = getSwitchStatementMetadata(node);
+        if (switchStatementMetadata === undefined) {
+          return;
+        }
+
+        checkSwitchExhaustive(node, switchStatementMetadata);
+        checkSwitchDangerousDefaultCase(node, switchStatementMetadata);
+      },
     };
   },
 });
