@@ -314,7 +314,6 @@ const removeFunctionRule = createRule({
     docs: {
       description:
         'Remove function with first arg remaining in random places for test purposes.',
-      recommended: false,
     },
     messages: {
       removeFunction: 'Please remove this function',
