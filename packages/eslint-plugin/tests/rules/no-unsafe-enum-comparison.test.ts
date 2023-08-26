@@ -306,6 +306,32 @@ ruleTester.run('strict-enums-comparison', rule, {
 
       const bitShift = 1 >> Fruit.Apple;
     `,
+    `
+      enum Fruit {
+        Apple,
+      }
+
+      declare const fruit: Fruit;
+
+      switch (fruit) {
+        case Fruit.Apple: {
+          break;
+        }
+      }
+    `,
+    `
+      enum Vegetable {
+        Asparagus = 'asparagus',
+      }
+
+      declare const vegetable: Vegetable;
+
+      switch (vegetable) {
+        case Vegetable.Asparagus: {
+          break;
+        }
+      }
+    `,
   ],
   invalid: [
     {
@@ -564,6 +590,78 @@ ruleTester.run('strict-enums-comparison', rule, {
         weirdString === 'someArbitraryValue';
       `,
       errors: [{ messageId: 'mismatched' }],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+
+        declare const fruit: Fruit;
+
+        switch (fruit) {
+          case 0: {
+            break;
+          }
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCase' }],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+          Banana,
+        }
+
+        declare const fruit: Fruit;
+
+        switch (fruit) {
+          case Fruit.Apple: {
+            break;
+          }
+          case 1: {
+            break;
+          }
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCase' }],
+    },
+    {
+      code: `
+        enum Vegetable {
+          Asparagus = 'asparagus',
+        }
+
+        declare const vegetable: Vegetable;
+
+        switch (vegetable) {
+          case 'asparagus': {
+            break;
+          }
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCase' }],
+    },
+    {
+      code: `
+        enum Vegetable {
+          Asparagus = 'asparagus',
+          Beet = 'beet',
+        }
+
+        declare const vegetable: Vegetable;
+
+        switch (vegetable) {
+          case Vegetable.Asparagus: {
+            break;
+          }
+          case 'beet': {
+            break;
+          }
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCase' }],
     },
   ],
 });
