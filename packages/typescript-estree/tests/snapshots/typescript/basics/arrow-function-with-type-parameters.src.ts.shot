@@ -4,12 +4,14 @@ exports[`typescript basics arrow-function-with-type-parameters.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "directive": undefined,
       "expression": Object {
         "async": false,
         "body": Object {
           "body": Array [
             Object {
               "argument": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 12,
@@ -21,11 +23,13 @@ Object {
                   },
                 },
                 "name": "b",
+                "optional": false,
                 "range": Array [
                   29,
                   30,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "loc": Object {
                 "end": Object {
@@ -75,6 +79,7 @@ Object {
         },
         "params": Array [
           Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 8,
@@ -86,6 +91,7 @@ Object {
               },
             },
             "name": "b",
+            "optional": false,
             "range": Array [
               4,
               8,
@@ -124,6 +130,7 @@ Object {
                 ],
                 "type": "TSTypeReference",
                 "typeName": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 8,
@@ -135,11 +142,13 @@ Object {
                     },
                   },
                   "name": "X",
+                  "optional": false,
                   "range": Array [
                     7,
                     8,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "typeParameters": undefined,
               },
@@ -183,6 +192,7 @@ Object {
             ],
             "type": "TSTypeReference",
             "typeName": Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -194,11 +204,13 @@ Object {
                 },
               },
               "name": "X",
+              "optional": false,
               "range": Array [
                 11,
                 12,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "typeParameters": undefined,
           },
@@ -231,6 +243,7 @@ Object {
                 },
               },
               "name": Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 2,
@@ -242,11 +255,13 @@ Object {
                   },
                 },
                 "name": "X",
+                "optional": false,
                 "range": Array [
                   1,
                   2,
                 ],
                 "type": "Identifier",
+                "typeAnnotation": undefined,
               },
               "out": false,
               "range": Array [

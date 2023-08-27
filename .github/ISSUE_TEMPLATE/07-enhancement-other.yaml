@@ -27,6 +27,7 @@ body:
         - eslint-plugin-tslint
         - parser
         - scope-manager
+        - type-utils
         - typescript-estree
         - utils
         - website

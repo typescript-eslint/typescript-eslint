@@ -1,5 +1,7 @@
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../src/rules/restrict-template-expressions';
-import { getFixturesRootDir, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -227,6 +229,50 @@ ruleTester.run('restrict-template-expressions', rule, {
         }
       `,
     },
+    // allowNever
+    {
+      options: [{ allowNever: true }],
+      code: `
+        declare const value: never;
+        const stringy = \`\${value}\`;
+      `,
+    },
+    {
+      options: [{ allowNever: true }],
+      code: `
+        const arg = 'hello';
+        const msg = typeof arg === 'string' ? arg : \`arg = \${arg}\`;
+      `,
+    },
+    {
+      options: [{ allowNever: true }],
+      code: `
+        function test(arg: 'one' | 'two') {
+          switch (arg) {
+            case 'one':
+              return 1;
+            case 'two':
+              return 2;
+            default:
+              throw new Error(\`Unrecognised arg: \${arg}\`);
+          }
+        }
+      `,
+    },
+    {
+      options: [{ allowNever: true }],
+      code: `
+        // more variants may be added to Foo in the future
+        type Foo = { type: 'a'; value: number };
+
+        function checkFoosAreMatching(foo1: Foo, foo2: Foo) {
+          if (foo1.type !== foo2.type) {
+            // since Foo currently only has one variant, this code is never run, and \`foo1.type\` has type \`never\`.
+            throw new Error(\`expected \${foo1.type}, found \${foo2.type}\`);
+          }
+        }
+      `,
+    },
     // allow ALL
     {
       options: [
@@ -235,15 +281,21 @@ ruleTester.run('restrict-template-expressions', rule, {
           allowBoolean: true,
           allowNullish: true,
           allowRegExp: true,
+          allowNever: true,
         },
       ],
       code: `
-        type All = string | number | boolean | null | undefined | RegExp;
+        type All = string | number | boolean | null | undefined | RegExp | never;
         function test<T extends All>(arg: T) {
           return \`arg = \${arg}\`;
         }
       `,
     },
+    'const msg = `arg = ${false}`;',
+    'const msg = `arg = ${null}`;',
+    'const msg = `arg = ${undefined}`;',
+    'const msg = `arg = ${123}`;',
+    "const msg = `arg = ${'abc'}`;",
   ],
 
   invalid: [
@@ -273,6 +325,7 @@ ruleTester.run('restrict-template-expressions', rule, {
           column: 30,
         },
       ],
+      options: [{ allowBoolean: false }],
     },
     {
       code: `
@@ -286,6 +339,7 @@ ruleTester.run('restrict-template-expressions', rule, {
           column: 30,
         },
       ],
+      options: [{ allowNullish: false }],
     },
     {
       code: `
@@ -313,6 +367,11 @@ ruleTester.run('restrict-template-expressions', rule, {
           data: { type: 'boolean' },
           line: 3,
           column: 30,
+        },
+      ],
+      options: [
+        {
+          allowBoolean: false,
         },
       ],
     },
@@ -352,7 +411,14 @@ ruleTester.run('restrict-template-expressions', rule, {
       ],
     },
     {
-      options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],
+      options: [
+        {
+          allowAny: false,
+          allowNumber: true,
+          allowBoolean: true,
+          allowNullish: true,
+        },
+      ],
       code: `
         function test<TWithNoConstraint>(arg: T) {
           return \`arg = \${arg}\`;
@@ -373,7 +439,14 @@ ruleTester.run('restrict-template-expressions', rule, {
       ],
     },
     {
-      options: [{ allowNumber: true, allowBoolean: true, allowNullish: true }],
+      options: [
+        {
+          allowAny: false,
+          allowNumber: true,
+          allowBoolean: true,
+          allowNullish: true,
+        },
+      ],
       code: `
         function test(arg: any) {
           return \`arg = \${arg}\`;
@@ -415,6 +488,21 @@ ruleTester.run('restrict-template-expressions', rule, {
           data: { type: 'RegExp' },
           line: 3,
           column: 30,
+        },
+      ],
+    },
+    {
+      options: [{ allowNever: false }],
+      code: `
+        declare const value: never;
+        const stringy = \`\${value}\`;
+      `,
+      errors: [
+        {
+          messageId: 'invalidType',
+          data: { type: 'never' },
+          line: 3,
+          column: 28,
         },
       ],
     },

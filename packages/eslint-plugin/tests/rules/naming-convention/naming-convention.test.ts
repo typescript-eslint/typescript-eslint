@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/internal/prefer-ast-types-enum */
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
+
 import rule from '../../../src/rules/naming-convention';
-import { getFixturesRootDir, noFormat, RuleTester } from '../../RuleTester';
+import { getFixturesRootDir } from '../../RuleTester';
 
 const ruleTester = new RuleTester({
   parser: '@typescript-eslint/parser',
@@ -311,6 +313,46 @@ ruleTester.run('naming-convention', rule, {
       options: [
         { selector: 'property', format: ['PascalCase'] },
         { selector: 'variable', format: ['camelCase'] },
+      ],
+    },
+    // treat properties with function expressions as typeMethod
+    {
+      code: `
+        interface SOME_INTERFACE {
+          SomeMethod: () => void;
+
+          some_property: string;
+        }
+      `,
+      options: [
+        {
+          selector: 'default',
+          format: ['UPPER_CASE'],
+        },
+        {
+          selector: 'typeMethod',
+          format: ['PascalCase'],
+        },
+        {
+          selector: 'typeProperty',
+          format: ['snake_case'],
+        },
+      ],
+    },
+    {
+      code: `
+        type Ignored = {
+          ignored_due_to_modifiers: string;
+          readonly FOO: string;
+        };
+      `,
+      parserOptions,
+      options: [
+        {
+          selector: 'typeProperty',
+          modifiers: ['readonly'],
+          format: ['UPPER_CASE'],
+        },
       ],
     },
     {

@@ -1,6 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
-import * as tsutils from 'tsutils';
+import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
@@ -8,7 +8,7 @@ import * as util from '../util';
 type Options = [
   {
     checksConditionals?: boolean;
-    checksVoidReturn?: boolean | ChecksVoidReturnOptions;
+    checksVoidReturn?: ChecksVoidReturnOptions | boolean;
     checksSpreads?: boolean;
   },
 ];
@@ -23,15 +23,15 @@ interface ChecksVoidReturnOptions {
 
 type MessageId =
   | 'conditional'
+  | 'spread'
   | 'voidReturnArgument'
-  | 'voidReturnVariable'
+  | 'voidReturnAttribute'
   | 'voidReturnProperty'
   | 'voidReturnReturnValue'
-  | 'voidReturnAttribute'
-  | 'spread';
+  | 'voidReturnVariable';
 
 function parseChecksVoidReturn(
-  checksVoidReturn: boolean | ChecksVoidReturnOptions | undefined,
+  checksVoidReturn: ChecksVoidReturnOptions | boolean | undefined,
 ): ChecksVoidReturnOptions | false {
   switch (checksVoidReturn) {
     case false:
@@ -63,7 +63,7 @@ export default util.createRule<Options, MessageId>({
   meta: {
     docs: {
       description: 'Disallow Promises in places not designed to handle them',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -83,6 +83,7 @@ export default util.createRule<Options, MessageId>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
           checksConditionals: {
             type: 'boolean',
@@ -120,8 +121,8 @@ export default util.createRule<Options, MessageId>({
   ],
 
   create(context, [{ checksConditionals, checksVoidReturn, checksSpreads }]) {
-    const parserServices = util.getParserServices(context);
-    const checker = parserServices.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     const checkedNodes = new Set<TSESTree.Node>();
 
@@ -200,7 +201,7 @@ export default util.createRule<Options, MessageId>({
         }
         return;
       }
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (isAlwaysThenable(checker, tsNode)) {
         context.report({
           messageId: 'conditional',
@@ -212,7 +213,7 @@ export default util.createRule<Options, MessageId>({
     function checkArguments(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       const voidArgs = voidFunctionArguments(checker, tsNode);
       if (voidArgs.size === 0) {
         return;
@@ -223,7 +224,7 @@ export default util.createRule<Options, MessageId>({
           continue;
         }
 
-        const tsNode = parserServices.esTreeNodeToTSNodeMap.get(argument);
+        const tsNode = services.esTreeNodeToTSNodeMap.get(argument);
         if (returnsThenable(checker, tsNode as ts.Expression)) {
           context.report({
             messageId: 'voidReturnArgument',
@@ -234,8 +235,8 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkAssignment(node: TSESTree.AssignmentExpression): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
-      const varType = checker.getTypeAtLocation(tsNode.left);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+      const varType = services.getTypeAtLocation(node.left);
       if (!isVoidReturningFunctionType(checker, tsNode.left, varType)) {
         return;
       }
@@ -249,11 +250,11 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkVariableDeclaration(node: TSESTree.VariableDeclarator): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (tsNode.initializer === undefined || node.init == null) {
         return;
       }
-      const varType = checker.getTypeAtLocation(tsNode.name);
+      const varType = services.getTypeAtLocation(node.id);
       if (!isVoidReturningFunctionType(checker, tsNode.initializer, varType)) {
         return;
       }
@@ -267,7 +268,7 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkProperty(node: TSESTree.Property): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (ts.isPropertyAssignment(tsNode)) {
         const contextualType = checker.getContextualType(tsNode.initializer);
         if (
@@ -343,7 +344,7 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkReturnStatement(node: TSESTree.ReturnStatement): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
       if (tsNode.expression === undefined || node.argument == null) {
         return;
       }
@@ -371,10 +372,10 @@ export default util.createRule<Options, MessageId>({
       ) {
         return;
       }
-      const expressionContainer = parserServices.esTreeNodeToTSNodeMap.get(
+      const expressionContainer = services.esTreeNodeToTSNodeMap.get(
         node.value,
       );
-      const expression = parserServices.esTreeNodeToTSNodeMap.get(
+      const expression = services.esTreeNodeToTSNodeMap.get(
         node.value.expression,
       );
       const contextualType = checker.getContextualType(expressionContainer);
@@ -395,7 +396,7 @@ export default util.createRule<Options, MessageId>({
     }
 
     function checkSpread(node: TSESTree.SpreadElement): void {
-      const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
 
       if (isSometimesThenable(checker, tsNode.expression)) {
         context.report({
@@ -555,7 +556,7 @@ function voidFunctionArguments(
             // Unwrap 'Array<MaybeVoidFunction>' to 'MaybeVoidFunction',
             // so that we'll handle it in the same way as a non-rest
             // 'param: MaybeVoidFunction'
-            type = checker.getTypeArguments(type)[0];
+            type = util.getTypeArguments(type, checker)[0];
             for (let i = index; i < node.arguments.length; i++) {
               checkThenableOrVoidArgument(
                 checker,
@@ -569,7 +570,7 @@ function voidFunctionArguments(
           } else if (checker.isTupleType(type)) {
             // Check each type in the tuple - for example, [boolean, () => void] would
             // add the index of the second tuple parameter to 'voidReturnIndices'
-            const typeArgs = checker.getTypeArguments(type);
+            const typeArgs = util.getTypeArguments(type, checker);
             for (
               let i = index;
               i < node.arguments.length && i - index < typeArgs.length;

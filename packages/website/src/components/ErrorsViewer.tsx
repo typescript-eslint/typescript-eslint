@@ -5,10 +5,12 @@ import type Monaco from 'monaco-editor';
 import React, { useEffect, useState } from 'react';
 
 import styles from './ErrorsViewer.module.css';
+import type { AlertBlockProps } from './layout/AlertBlock';
+import AlertBlock from './layout/AlertBlock';
 import type { ErrorGroup, ErrorItem } from './types';
 
 export interface ErrorsViewerProps {
-  readonly value?: ErrorGroup[] | Error;
+  readonly value?: ErrorGroup[];
 }
 
 export interface ErrorViewerProps {
@@ -17,13 +19,7 @@ export interface ErrorViewerProps {
   readonly type: AlertBlockProps['type'];
 }
 
-interface AlertBlockProps {
-  readonly type: 'danger' | 'warning' | 'note' | 'info' | 'success';
-  readonly children: React.ReactNode;
-  readonly fixer?: boolean;
-}
-
-interface ErrorBlockProps {
+export interface ErrorBlockProps {
   readonly item: ErrorItem;
   readonly setIsLocked: (value: boolean) => void;
   readonly isLocked: boolean;
@@ -49,7 +45,7 @@ function severityClass(
   return 'info';
 }
 
-function FixButton(props: FixButtonProps): JSX.Element {
+function FixButton(props: FixButtonProps): React.JSX.Element {
   return (
     <button
       className="button button--primary button--sm"
@@ -64,25 +60,17 @@ function FixButton(props: FixButtonProps): JSX.Element {
   );
 }
 
-function AlertBlock(props: AlertBlockProps): JSX.Element {
-  return (
-    <div className={`admonition alert alert--${props.type}`}>
-      <div className="admonition-content">{props.children}</div>
-    </div>
-  );
-}
-
 function ErrorBlock({
   item,
   setIsLocked,
   isLocked,
-}: ErrorBlockProps): JSX.Element {
+}: ErrorBlockProps): React.JSX.Element {
   return (
     <AlertBlock type={severityClass(item.severity)}>
       <div className={clsx(!!item.fixer && styles.fixerContainer)}>
-        <div>
+        <pre className={styles.errorPre}>
           {item.message} {item.location}
-        </div>
+        </pre>
         {item.fixer && (
           <FixButton
             disabled={isLocked}
@@ -112,21 +100,11 @@ function ErrorBlock({
   );
 }
 
-function SuccessBlock(): JSX.Element {
-  return (
-    <AlertBlock type="success">
-      <div className={styles.fixerContainer}>
-        <div>All is ok!</div>
-      </div>
-    </AlertBlock>
-  );
-}
-
 export function ErrorViewer({
   value,
   title,
   type,
-}: ErrorViewerProps): JSX.Element {
+}: ErrorViewerProps): React.JSX.Element {
   return (
     <div className={styles.list}>
       <div className="margin-top--md">
@@ -134,23 +112,21 @@ export function ErrorViewer({
           <div className={styles.fixerContainer}>
             <h4>{title}</h4>
           </div>
-          {type === 'danger' ? value.stack : value.message}
+          <pre className={styles.errorPre}>
+            {type === 'danger' ? value?.stack : value.message}
+          </pre>
         </AlertBlock>
       </div>
     </div>
   );
 }
 
-export function ErrorsViewer({ value }: ErrorsViewerProps): JSX.Element {
+export function ErrorsViewer({ value }: ErrorsViewerProps): React.JSX.Element {
   const [isLocked, setIsLocked] = useState(false);
 
   useEffect(() => {
     setIsLocked(false);
   }, [value]);
-
-  if (value && !Array.isArray(value)) {
-    return <ErrorViewer type="danger" title="Internal error" value={value} />;
-  }
 
   return (
     <div className={styles.list}>
@@ -170,19 +146,22 @@ export function ErrorsViewer({ value }: ErrorsViewerProps): JSX.Element {
                 )}
               </h4>
               {items.map((item, index) => (
-                <ErrorBlock
-                  isLocked={isLocked}
-                  setIsLocked={setIsLocked}
-                  item={item}
-                  key={index}
-                />
+                <div className="margin-bottom--sm" key={index}>
+                  <ErrorBlock
+                    isLocked={isLocked}
+                    setIsLocked={setIsLocked}
+                    item={item}
+                  />
+                </div>
               ))}
             </div>
           );
         })
       ) : (
         <div className="margin-top--md">
-          <SuccessBlock />
+          <AlertBlock type="success">
+            <div>All is ok!</div>
+          </AlertBlock>
         </div>
       )}
     </div>

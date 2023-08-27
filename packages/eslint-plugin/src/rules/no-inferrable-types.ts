@@ -19,7 +19,7 @@ export default util.createRule<Options, MessageIds>({
     docs: {
       description:
         'Disallow explicit type declarations for variables or parameters initialized to a number, string, or boolean',
-      recommended: 'error',
+      recommended: 'stylistic',
     },
     fixable: 'code',
     messages: {
@@ -90,12 +90,12 @@ export default util.createRule<Options, MessageIds>({
     type Keywords =
       | TSESTree.TSBigIntKeyword
       | TSESTree.TSBooleanKeyword
-      | TSESTree.TSNumberKeyword
       | TSESTree.TSNullKeyword
+      | TSESTree.TSNumberKeyword
       | TSESTree.TSStringKeyword
       | TSESTree.TSSymbolKeyword
-      | TSESTree.TSUndefinedKeyword
-      | TSESTree.TSTypeReference;
+      | TSESTree.TSTypeReference
+      | TSESTree.TSUndefinedKeyword;
     const keywordMap = {
       [AST_NODE_TYPES.TSBigIntKeyword]: 'bigint',
       [AST_NODE_TYPES.TSBooleanKeyword]: 'boolean',
@@ -193,9 +193,9 @@ export default util.createRule<Options, MessageIds>({
      */
     function reportInferrableType(
       node:
-        | TSESTree.VariableDeclarator
         | TSESTree.Parameter
-        | TSESTree.PropertyDefinition,
+        | TSESTree.PropertyDefinition
+        | TSESTree.VariableDeclarator,
       typeNode: TSESTree.TSTypeAnnotation | undefined,
       initNode: TSESTree.Expression | null | undefined,
     ): void {
@@ -243,22 +243,26 @@ export default util.createRule<Options, MessageIds>({
 
     function inferrableParameterVisitor(
       node:
-        | TSESTree.FunctionExpression
+        | TSESTree.ArrowFunctionExpression
         | TSESTree.FunctionDeclaration
-        | TSESTree.ArrowFunctionExpression,
+        | TSESTree.FunctionExpression,
     ): void {
       if (ignoreParameters || !node.params) {
         return;
       }
-      (
-        node.params.filter(
-          param =>
-            param.type === AST_NODE_TYPES.AssignmentPattern &&
-            param.left &&
-            param.right,
-        ) as TSESTree.AssignmentPattern[]
-      ).forEach(param => {
-        reportInferrableType(param, param.left.typeAnnotation, param.right);
+
+      node.params.forEach(param => {
+        if (param.type === AST_NODE_TYPES.TSParameterProperty) {
+          param = param.parameter;
+        }
+
+        if (
+          param.type === AST_NODE_TYPES.AssignmentPattern &&
+          param.left &&
+          param.right
+        ) {
+          reportInferrableType(param, param.left.typeAnnotation, param.right);
+        }
       });
     }
 

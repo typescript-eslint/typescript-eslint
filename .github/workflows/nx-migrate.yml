@@ -1,8 +1,8 @@
 # This workflow is used to augment the capabilities of the renovate GitHub app by running a full
-# `nx migrate` when renovate opens a PR to change the version of @nrwl/workspace.
+# `nx migrate` when renovate opens a PR to change the version of @nx/workspace.
 #
 # You will therefore also notice that in the renovate configuration, we ignore any packages which
-# Nx will manage for us as part of `nx migrate` such as the remaining @nrwl/* packages and jest.
+# Nx will manage for us as part of `nx migrate` such as the remaining @nx/* packages and jest.
 
 name: Nx Migrate
 
@@ -33,12 +33,12 @@ jobs:
       - name: Derive appropriate SHAs for base and head for `nx affected` commands
         uses: nrwl/nx-set-shas@v3
 
-      - name: Check if @nrwl/workspace was changed as part of the latest commit on the PR
+      - name: Check if @nx/workspace was changed as part of the latest commit on the PR
         id: nrwl-workspace-package-check
         run: |
-          git diff HEAD~1 -G"@nrwl/workspace" --exit-code package.json && echo "@nrwl/workspace unchanged" || echo "::set-output name=was-changed::true"
+          git diff HEAD~1 -G"@nx/workspace" --exit-code package.json && echo "@nx/workspace unchanged" || echo "::set-output name=was-changed::true"
 
-      - name: Run nx migrate if @nrwl/workspace changed and commit the results
+      - name: Run nx migrate if @nx/workspace changed and commit the results
         if: ${{ steps.nrwl-workspace-package-check.outputs.was-changed == 'true' }}
         env:
           # We cannot use secrets.GITHUB_TOKEN for this because it is not permitted to kick off subsequent actions worfklow runs, so we use a PAT instead
@@ -50,17 +50,17 @@ jobs:
           gh pr checkout ${{ github.event.pull_request.number }}
 
           # Get the version of Nx we are migrating to
-          NX_VERSION=$(node -e "console.log(require('./package.json').devDependencies['@nrwl/workspace'])")
+          NX_VERSION=$(node -e "console.log(require('./package.json').devDependencies['@nx/workspace'])")
 
           # Revert renovate's changes to package.json and yarn.lock so that it is a clean migrate from the status quo
           git checkout HEAD~1 -- package.json yarn.lock
 
-          yarn --ignore-scripts
+          yarn
 
-          npx nx migrate @nrwl/workspace@$NX_VERSION
+          npx nx migrate @nx/workspace@$NX_VERSION
 
           # Sometimes Nx can require config formatting changes after a migrate command
-          yarn --ignore-scripts
+          yarn
           npx nx format
 
           # migrations.json may or may not exist after running nx migrate
@@ -72,6 +72,9 @@ jobs:
             rm migrations.json
           fi
 
+          # Run the special nx repair command to ensure config matches latest and greatest
+          npx nx repair
+
           # Ensure all the changed files are formatted appropriately
           yarn format
 
@@ -81,5 +84,5 @@ jobs:
           git remote set-url origin https://x-access-token:$GITHUB_TOKEN@github.com/$GITHUB_REPOSITORY.git
 
           git add --all
-          git commit -m "chore: run nx migrate for @nrwl/workspace v$NX_VERSION"
+          git commit -m "chore: run nx migrate for @nx/workspace v$NX_VERSION"
           git push

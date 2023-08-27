@@ -5,12 +5,11 @@ createTestCases([
     code: [
       'class Ignored { private %() {} }',
       'class Ignored { private "%"() {} }',
-      'class Ignored { private readonly %() {} }',
+      'class Ignored { private async %() {} }',
       'class Ignored { private static %() {} }',
-      'class Ignored { private static readonly %() {} }',
+      'class Ignored { private static async %() {} }',
       'class Ignored { private % = () => {} }',
       'class Ignored { abstract %() }',
-      'class Ignored { declare %() }',
       'class Ignored { #%() }',
       'class Ignored { static #%() }',
     ],
@@ -32,8 +31,12 @@ createTestCases([
     code: [
       'interface Ignored { %(): string }',
       'interface Ignored { "%"(): string }',
+      'interface Ignored { %: () => string }',
+      'interface Ignored { "%": () => string }',
       'type Ignored = { %(): string }',
       'type Ignored = { "%"(): string }',
+      'type Ignored = { %: () => string }',
+      'type Ignored = { "%": () => string }',
     ],
     options: {
       selector: 'typeMethod',

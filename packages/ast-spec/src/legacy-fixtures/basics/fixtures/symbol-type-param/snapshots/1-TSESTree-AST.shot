@@ -17,11 +17,14 @@ Program {
           end: { column: 42, line: 3 },
         },
       },
+      declare: false,
       expression: false,
       generator: false,
       id: Identifier {
         type: "Identifier",
+        decorators: [],
         name: "test",
+        optional: false,
 
         range: [82, 86],
         loc: {
@@ -32,22 +35,14 @@ Program {
       params: [
         Identifier {
           type: "Identifier",
+          decorators: [],
           name: "abc",
+          optional: false,
           typeAnnotation: TSTypeAnnotation {
             type: "TSTypeAnnotation",
             typeAnnotation: TSTypeReference {
               type: "TSTypeReference",
-              typeName: Identifier {
-                type: "Identifier",
-                name: "Map",
-
-                range: [92, 95],
-                loc: {
-                  start: { column: 19, line: 3 },
-                  end: { column: 22, line: 3 },
-                },
-              },
-              typeParameters: TSTypeParameterInstantiation {
+              typeArguments: TSTypeParameterInstantiation {
                 type: "TSTypeParameterInstantiation",
                 params: [
                   TSSymbolKeyword {
@@ -74,6 +69,18 @@ Program {
                 loc: {
                   start: { column: 22, line: 3 },
                   end: { column: 38, line: 3 },
+                },
+              },
+              typeName: Identifier {
+                type: "Identifier",
+                decorators: [],
+                name: "Map",
+                optional: false,
+
+                range: [92, 95],
+                loc: {
+                  start: { column: 19, line: 3 },
+                  end: { column: 22, line: 3 },
                 },
               },
 

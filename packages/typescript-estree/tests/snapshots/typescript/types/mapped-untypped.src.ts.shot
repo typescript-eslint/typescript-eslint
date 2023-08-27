@@ -6,7 +6,9 @@ Object {
     Object {
       "declarations": Array [
         Object {
+          "definite": false,
           "id": Object {
+            "decorators": Array [],
             "loc": Object {
               "end": Object {
                 "column": 27,
@@ -18,6 +20,7 @@ Object {
               },
             },
             "name": "map",
+            "optional": false,
             "range": Array [
               4,
               27,
@@ -51,11 +54,14 @@ Object {
                   },
                 },
                 "nameType": null,
+                "optional": undefined,
                 "range": Array [
                   9,
                   27,
                 ],
+                "readonly": undefined,
                 "type": "TSMappedType",
+                "typeAnnotation": undefined,
                 "typeParameter": Object {
                   "constraint": Object {
                     "loc": Object {
@@ -87,6 +93,7 @@ Object {
                     },
                   },
                   "name": Object {
+                    "decorators": Array [],
                     "loc": Object {
                       "end": Object {
                         "column": 13,
@@ -98,11 +105,13 @@ Object {
                       },
                     },
                     "name": "P",
+                    "optional": false,
                     "range": Array [
                       12,
                       13,
                     ],
                     "type": "Identifier",
+                    "typeAnnotation": undefined,
                   },
                   "out": false,
                   "range": Array [
@@ -132,6 +141,7 @@ Object {
           "type": "VariableDeclarator",
         },
       ],
+      "declare": false,
       "kind": "let",
       "loc": Object {
         "end": Object {

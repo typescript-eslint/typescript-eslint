@@ -1,7 +1,8 @@
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import type {
   InvalidTestCase,
   TestCaseError,
-} from '@typescript-eslint/utils/dist/ts-eslint';
+} from '@typescript-eslint/utils/ts-eslint';
 import * as path from 'path';
 
 import type {
@@ -9,7 +10,7 @@ import type {
   Options,
 } from '../../src/rules/no-unnecessary-condition';
 import rule from '../../src/rules/no-unnecessary-condition';
-import { getFixturesRootDir, noFormat, RuleTester } from '../RuleTester';
+import { getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 
@@ -82,6 +83,34 @@ const result2 = foo() == null;
     necessaryConditionTest('null | object'),
     necessaryConditionTest('undefined | true'),
     necessaryConditionTest('void | true'),
+    // "branded" type
+    necessaryConditionTest('string & {}'),
+    necessaryConditionTest('string & { __brand: string }'),
+    necessaryConditionTest('number & { __brand: string }'),
+    necessaryConditionTest('boolean & { __brand: string }'),
+    necessaryConditionTest('bigint & { __brand: string }'),
+    necessaryConditionTest('string & {} & { __brand: string }'),
+    necessaryConditionTest(
+      'string & { __brandA: string } & { __brandB: string }',
+    ),
+    necessaryConditionTest('string & { __brand: string } | number'),
+    necessaryConditionTest('(string | number) & { __brand: string }'),
+    necessaryConditionTest('string & ({ __brand: string } | number)'),
+    necessaryConditionTest('("" | "foo") & { __brand: string }'),
+    necessaryConditionTest(
+      '(string & { __brandA: string }) | (number & { __brandB: string })',
+    ),
+    necessaryConditionTest(
+      '((string & { __brandA: string }) | (number & { __brandB: string }) & ("" | "foo"))',
+    ),
+    necessaryConditionTest(
+      '{ __brandA: string} & (({ __brandB: string } & string) | ({ __brandC: string } & number))',
+    ),
+    necessaryConditionTest(
+      '(string | number) & ("foo" | 123 | { __brandA: string })',
+    ),
+
+    necessaryConditionTest('string & string'),
 
     necessaryConditionTest('any'), // any
     necessaryConditionTest('unknown'), // unknown
@@ -279,6 +308,16 @@ function test(a: string | null | undefined) {
     `,
     `
 function test(a: unknown) {
+  return a ?? 'default';
+}
+    `,
+    `
+function test<T>(a: T) {
+  return a ?? 'default';
+}
+    `,
+    `
+function test<T extends string | null>(a: T) {
   return a ?? 'default';
 }
     `,
@@ -584,6 +623,7 @@ function getElem(dict: Record<string, { foo: string }>, key: string) {
 }
       `,
       parserOptions: {
+        EXPERIMENTAL_useProjectService: false,
         tsconfigRootDir: getFixturesRootDir(),
         project: './tsconfig.noUncheckedIndexedAccess.json',
       },
@@ -633,6 +673,7 @@ const t1 = b2 && b1 ? 'yes' : 'no';
     unnecessaryConditionTest('null', 'alwaysFalsy'),
     unnecessaryConditionTest('void', 'alwaysFalsy'),
     unnecessaryConditionTest('never', 'never'),
+    unnecessaryConditionTest('string & number', 'never'),
 
     // More complex logical expressions
     {
@@ -831,6 +872,14 @@ function test(a: string | false) {
       `,
       errors: [ruleError(3, 10, 'neverNullish')],
     },
+    {
+      code: `
+function test<T extends string>(a: T) {
+  return a ?? 'default';
+}
+      `,
+      errors: [ruleError(3, 10, 'neverNullish')],
+    },
     // nullish + array index without optional chaining
     {
       code: `
@@ -852,6 +901,14 @@ function test(a: null) {
       code: `
 function test(a: null[]) {
   return a[0] ?? 'default';
+}
+      `,
+      errors: [ruleError(3, 10, 'alwaysNullish')],
+    },
+    {
+      code: `
+function test<T extends null>(a: T) {
+  return a ?? 'default';
 }
       `,
       errors: [ruleError(3, 10, 'alwaysNullish')],
@@ -1793,5 +1850,37 @@ foo &&= null;
         },
       ],
     },
+
+    // "branded" types
+    unnecessaryConditionTest('"" & {}', 'alwaysFalsy'),
+    unnecessaryConditionTest('"" & { __brand: string }', 'alwaysFalsy'),
+    unnecessaryConditionTest(
+      '("" | false) & { __brand: string }',
+      'alwaysFalsy',
+    ),
+    unnecessaryConditionTest(
+      '((string & { __brandA: string }) | (number & { __brandB: string })) & ""',
+      'alwaysFalsy',
+    ),
+    unnecessaryConditionTest(
+      '("foo" | "bar") & { __brand: string }',
+      'alwaysTruthy',
+    ),
+    unnecessaryConditionTest(
+      '(123 | true) & { __brand: string }',
+      'alwaysTruthy',
+    ),
+    unnecessaryConditionTest(
+      '(string | number) & ("foo" | 123) & { __brand: string }',
+      'alwaysTruthy',
+    ),
+    unnecessaryConditionTest(
+      '((string & { __brandA: string }) | (number & { __brandB: string })) & "foo"',
+      'alwaysTruthy',
+    ),
+    unnecessaryConditionTest(
+      '((string & { __brandA: string }) | (number & { __brandB: string })) & ("foo" | 123)',
+      'alwaysTruthy',
+    ),
   ],
 });

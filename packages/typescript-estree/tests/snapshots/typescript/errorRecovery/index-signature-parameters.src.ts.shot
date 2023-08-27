@@ -4,7 +4,9 @@ exports[`typescript errorRecovery index-signature-parameters.src 1`] = `
 Object {
   "body": Array [
     Object {
+      "declare": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 8,
@@ -16,11 +18,13 @@ Object {
           },
         },
         "name": "foo",
+        "optional": false,
         "range": Array [
           5,
           8,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -50,6 +54,8 @@ Object {
         },
         "members": Array [
           Object {
+            "accessibility": undefined,
+            "export": false,
             "loc": Object {
               "end": Object {
                 "column": 33,
@@ -62,6 +68,7 @@ Object {
             },
             "parameters": Array [
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 12,
@@ -73,6 +80,7 @@ Object {
                   },
                 },
                 "name": "a",
+                "optional": false,
                 "range": Array [
                   16,
                   25,
@@ -114,6 +122,7 @@ Object {
                 },
               },
               Object {
+                "decorators": Array [],
                 "loc": Object {
                   "end": Object {
                     "column": 23,
@@ -125,6 +134,7 @@ Object {
                   },
                 },
                 "name": "b",
+                "optional": false,
                 "range": Array [
                   27,
                   36,
@@ -170,6 +180,8 @@ Object {
               15,
               46,
             ],
+            "readonly": false,
+            "static": false,
             "type": "TSIndexSignature",
             "typeAnnotation": Object {
               "loc": Object {
@@ -213,6 +225,7 @@ Object {
         ],
         "type": "TSTypeLiteral",
       },
+      "typeParameters": undefined,
     },
   ],
   "comments": Array [],

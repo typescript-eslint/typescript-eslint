@@ -12,7 +12,9 @@ exports[`AST Fixtures legacy-fixtures basics import-equal-type-declaration AST A
         type: 'TSImportEqualsDeclaration',
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: 'foo',
+-         optional: false,
 
           range: [85, 88],
           loc: {
@@ -21,7 +23,7 @@ exports[`AST Fixtures legacy-fixtures basics import-equal-type-declaration AST A
           },
         },
         importKind: 'type',
-        isExport: false,
++       isExport: false,
         moduleReference: TSExternalModuleReference {
           type: 'TSExternalModuleReference',
           expression: Literal {
@@ -50,8 +52,7 @@ exports[`AST Fixtures legacy-fixtures basics import-equal-type-declaration AST A
         },
       },
     ],
--   sourceType: 'module',
-+   sourceType: 'script',
+    sourceType: 'module',
 
     range: [73, 107],
     loc: {

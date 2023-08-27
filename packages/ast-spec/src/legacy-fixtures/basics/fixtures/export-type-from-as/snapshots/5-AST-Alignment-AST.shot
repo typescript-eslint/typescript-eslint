@@ -29,7 +29,9 @@ exports[`AST Fixtures legacy-fixtures basics export-type-from-as AST Alignment -
             type: 'ExportSpecifier',
             exported: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'C',
+-             optional: false,
 
               range: [92, 93],
               loc: {
@@ -40,7 +42,9 @@ exports[`AST Fixtures legacy-fixtures basics export-type-from-as AST Alignment -
             exportKind: 'value',
             local: Identifier {
               type: 'Identifier',
+-             decorators: Array [],
               name: 'B',
+-             optional: false,
 
               range: [87, 88],
               loc: {

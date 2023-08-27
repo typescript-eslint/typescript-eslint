@@ -1,3 +1,5 @@
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { SyntaxKind } from 'typescript';
 
 export enum OperatorPrecedence {
@@ -192,12 +194,115 @@ export enum OperatorPrecedence {
   Invalid = -1,
 }
 
+export function getOperatorPrecedenceForNode(
+  node: TSESTree.Node,
+): OperatorPrecedence {
+  switch (node.type) {
+    case AST_NODE_TYPES.SpreadElement:
+    case AST_NODE_TYPES.RestElement:
+      return OperatorPrecedence.Spread;
+
+    case AST_NODE_TYPES.YieldExpression:
+      return OperatorPrecedence.Yield;
+
+    case AST_NODE_TYPES.ConditionalExpression:
+      return OperatorPrecedence.Conditional;
+
+    case AST_NODE_TYPES.SequenceExpression:
+      return OperatorPrecedence.Comma;
+
+    case AST_NODE_TYPES.AssignmentExpression:
+    case AST_NODE_TYPES.BinaryExpression:
+    case AST_NODE_TYPES.LogicalExpression:
+      switch (node.operator) {
+        case '==':
+        case '+=':
+        case '-=':
+        case '**=':
+        case '*=':
+        case '/=':
+        case '%=':
+        case '<<=':
+        case '>>=':
+        case '>>>=':
+        case '&=':
+        case '^=':
+        case '|=':
+        case '||=':
+        case '&&=':
+        case '??=':
+          return OperatorPrecedence.Assignment;
+
+        default:
+          return getBinaryOperatorPrecedence(node.operator);
+      }
+
+    case AST_NODE_TYPES.TSTypeAssertion:
+    case AST_NODE_TYPES.TSNonNullExpression:
+    case AST_NODE_TYPES.UnaryExpression:
+    case AST_NODE_TYPES.AwaitExpression:
+      return OperatorPrecedence.Unary;
+
+    case AST_NODE_TYPES.UpdateExpression:
+      // TODO: Should prefix `++` and `--` be moved to the `Update` precedence?
+      if (node.prefix) {
+        return OperatorPrecedence.Unary;
+      }
+      return OperatorPrecedence.Update;
+
+    case AST_NODE_TYPES.ChainExpression:
+      return getOperatorPrecedenceForNode(node.expression);
+
+    case AST_NODE_TYPES.CallExpression:
+      return OperatorPrecedence.LeftHandSide;
+
+    case AST_NODE_TYPES.NewExpression:
+      return node.arguments.length > 0
+        ? OperatorPrecedence.Member
+        : OperatorPrecedence.LeftHandSide;
+
+    case AST_NODE_TYPES.TaggedTemplateExpression:
+    case AST_NODE_TYPES.MemberExpression:
+    case AST_NODE_TYPES.MetaProperty:
+      return OperatorPrecedence.Member;
+
+    case AST_NODE_TYPES.TSAsExpression:
+      return OperatorPrecedence.Relational;
+
+    case AST_NODE_TYPES.ThisExpression:
+    case AST_NODE_TYPES.Super:
+    case AST_NODE_TYPES.Identifier:
+    case AST_NODE_TYPES.PrivateIdentifier:
+    case AST_NODE_TYPES.Literal:
+    case AST_NODE_TYPES.ArrayExpression:
+    case AST_NODE_TYPES.ObjectExpression:
+    case AST_NODE_TYPES.FunctionExpression:
+    case AST_NODE_TYPES.ArrowFunctionExpression:
+    case AST_NODE_TYPES.ClassExpression:
+    case AST_NODE_TYPES.TemplateLiteral:
+    case AST_NODE_TYPES.JSXElement:
+    case AST_NODE_TYPES.JSXFragment:
+      // we don't have nodes for these cases
+      // case SyntaxKind.ParenthesizedExpression:
+      // case SyntaxKind.OmittedExpression:
+      return OperatorPrecedence.Primary;
+
+    default:
+      return OperatorPrecedence.Invalid;
+  }
+}
+
+type ValueOf<T> = T[keyof T];
+type TSESTreeOperatorKind =
+  | ValueOf<TSESTree.BinaryOperatorToText>
+  | ValueOf<TSESTree.PunctuatorTokenToText>;
 export function getOperatorPrecedence(
   nodeKind: SyntaxKind,
   operatorKind: SyntaxKind,
   hasArguments?: boolean,
 ): OperatorPrecedence {
   switch (nodeKind) {
+    // A list of comma-separated expressions. This node is only created by transformations.
     case SyntaxKind.CommaListExpression:
       return OperatorPrecedence.Comma;
 
@@ -265,6 +370,7 @@ export function getOperatorPrecedence(
       return OperatorPrecedence.Member;
 
     case SyntaxKind.AsExpression:
+    case SyntaxKind.SatisfiesExpression:
       return OperatorPrecedence.Relational;
 
     case SyntaxKind.ThisKeyword:
@@ -298,46 +404,83 @@ export function getOperatorPrecedence(
 }
 
 export function getBinaryOperatorPrecedence(
-  kind: SyntaxKind,
+  kind: SyntaxKind | TSESTreeOperatorKind,
 ): OperatorPrecedence {
   switch (kind) {
     case SyntaxKind.QuestionQuestionToken:
+    case '??':
       return OperatorPrecedence.Coalesce;
+
     case SyntaxKind.BarBarToken:
+    case '||':
       return OperatorPrecedence.LogicalOR;
+
     case SyntaxKind.AmpersandAmpersandToken:
+    case '&&':
       return OperatorPrecedence.LogicalAND;
+
     case SyntaxKind.BarToken:
+    case '|':
       return OperatorPrecedence.BitwiseOR;
+
     case SyntaxKind.CaretToken:
+    case '^':
       return OperatorPrecedence.BitwiseXOR;
+
     case SyntaxKind.AmpersandToken:
+    case '&':
       return OperatorPrecedence.BitwiseAND;
+
     case SyntaxKind.EqualsEqualsToken:
+    case '==':
     case SyntaxKind.ExclamationEqualsToken:
+    case '!=':
     case SyntaxKind.EqualsEqualsEqualsToken:
+    case '===':
     case SyntaxKind.ExclamationEqualsEqualsToken:
+    case '!==':
       return OperatorPrecedence.Equality;
+
     case SyntaxKind.LessThanToken:
+    case '<':
     case SyntaxKind.GreaterThanToken:
+    case '>':
     case SyntaxKind.LessThanEqualsToken:
+    case '<=':
     case SyntaxKind.GreaterThanEqualsToken:
+    case '>=':
     case SyntaxKind.InstanceOfKeyword:
+    case 'instanceof':
     case SyntaxKind.InKeyword:
+    case 'in':
     case SyntaxKind.AsKeyword:
+      // case 'as': -- we don't have a token for this
       return OperatorPrecedence.Relational;
+
     case SyntaxKind.LessThanLessThanToken:
+    case '<<':
     case SyntaxKind.GreaterThanGreaterThanToken:
+    case '>>':
     case SyntaxKind.GreaterThanGreaterThanGreaterThanToken:
+    case '>>>':
       return OperatorPrecedence.Shift;
+
     case SyntaxKind.PlusToken:
+    case '+':
     case SyntaxKind.MinusToken:
+    case '-':
       return OperatorPrecedence.Additive;
+
     case SyntaxKind.AsteriskToken:
+    case '*':
     case SyntaxKind.SlashToken:
+    case '/':
     case SyntaxKind.PercentToken:
+    case '%':
       return OperatorPrecedence.Multiplicative;
+
     case SyntaxKind.AsteriskAsteriskToken:
+    case '**':
       return OperatorPrecedence.Exponentiation;
   }
 

@@ -7,7 +7,8 @@ export {
   TSESTree,
 } from '@typescript-eslint/types';
 
-// NOTE - this uses hard links inside ts-estree to avoid initialization of entire package
-//        via its main file (which imports typescript at runtime).
-//        Not every eslint-plugin written in typescript requires typescript at runtime.
-export { ParserServices } from '@typescript-eslint/typescript-estree/dist/parser-options';
+export type {
+  ParserServices,
+  ParserServicesWithTypeInformation,
+  ParserServicesWithoutTypeInformation,
+} from '@typescript-eslint/typescript-estree';

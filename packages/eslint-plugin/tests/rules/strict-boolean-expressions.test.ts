@@ -1,3 +1,6 @@
+/* eslint-disable deprecation/deprecation -- TODO - migrate this test away from `batchedSingleLineTests` */
+
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import * as path from 'path';
 
 import type {
@@ -5,12 +8,7 @@ import type {
   Options,
 } from '../../src/rules/strict-boolean-expressions';
 import rule from '../../src/rules/strict-boolean-expressions';
-import {
-  batchedSingleLineTests,
-  getFixturesRootDir,
-  noFormat,
-  RuleTester,
-} from '../RuleTester';
+import { batchedSingleLineTests, getFixturesRootDir } from '../RuleTester';
 
 const rootPath = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -24,114 +22,200 @@ const ruleTester = new RuleTester({
 ruleTester.run('strict-boolean-expressions', rule, {
   valid: [
     // boolean in boolean context
-    ...batchedSingleLineTests<Options>({
-      code: noFormat`
-        true ? "a" : "b";
-        if (false) {}
-        while (true) {}
-        for (; false;) {}
-        !true;
-        false || 123;
-        true && "foo";
-        !(false || true);
-        true && false ? true : false;
-        false && true || false;
-        false && true || [];
-        (false && 1) || (true && 2);
-        declare const x: boolean; if (x) {}
-        (x: boolean) => !x;
-        <T extends boolean>(x: T) => x ? 1 : 0;
-        declare const x: never; if (x) {}
-      `,
-    }),
+    "true ? 'a' : 'b';",
+    `
+if (false) {
+}
+    `,
+    'while (true) {}',
+    'for (; false; ) {}',
+    '!true;',
+    'false || 123;',
+    "true && 'foo';",
+    '!(false || true);',
+    'true && false ? true : false;',
+    '(false && true) || false;',
+    '(false && true) || [];',
+    '(false && 1) || (true && 2);',
+    `
+declare const x: boolean;
+if (x) {
+}
+    `,
+    '(x: boolean) => !x;',
+    '<T extends boolean>(x: T) => (x ? 1 : 0);',
+    `
+declare const x: never;
+if (x) {
+}
+    `,
 
     // string in boolean context
-    ...batchedSingleLineTests<Options>({
-      code: noFormat`
-        if ("") {}
-        while ("x") {}
-        for (; "";) {}
-        "" && "1" || x;
-        declare const x: string; if (x) {}
-        (x: string) => !x;
-        <T extends string>(x: T) => x ? 1 : 0;
-      `,
-    }),
+    `
+if ('') {
+}
+    `,
+    "while ('x') {}",
+    "for (; ''; ) {}",
+    "('' && '1') || x;",
+    `
+declare const x: string;
+if (x) {
+}
+    `,
+    '(x: string) => !x;',
+    '<T extends string>(x: T) => (x ? 1 : 0);',
 
     // number in boolean context
-    ...batchedSingleLineTests<Options>({
-      code: noFormat`
-        if (0) {}
-        while (1n) {}
-        for (; Infinity;) {}
-        0 / 0 && 1 + 2 || x;
-        declare const x: number; if (x) {}
-        (x: bigint) => !x;
-        <T extends number>(x: T) => x ? 1 : 0;
-      `,
-    }),
+    `
+if (0) {
+}
+    `,
+    'while (1n) {}',
+    'for (; Infinity; ) {}',
+    '(0 / 0 && 1 + 2) || x;',
+    `
+declare const x: number;
+if (x) {
+}
+    `,
+    '(x: bigint) => !x;',
+    '<T extends number>(x: T) => (x ? 1 : 0);',
 
     // nullable object in boolean context
-    ...batchedSingleLineTests<Options>({
-      code: noFormat`
-        declare const x: null | object; if (x) {}
-        (x?: { a: any }) => !x;
-        <T extends {} | null | undefined>(x: T) => x ? 1 : 0;
-      `,
-    }),
+    `
+declare const x: null | object;
+if (x) {
+}
+    `,
+    '(x?: { a: any }) => !x;',
+    '<T extends {} | null | undefined>(x: T) => (x ? 1 : 0);',
 
     // nullable boolean in boolean context
-    ...batchedSingleLineTests<Options>({
+    {
       options: [{ allowNullableBoolean: true }],
-      code: noFormat`
-        declare const x: boolean | null; if (x) {}
-        (x?: boolean) => !x;
-        <T extends boolean | null | undefined>(x: T) => x ? 1 : 0;
+      code: `
+        declare const x: boolean | null;
+        if (x) {
+        }
       `,
-    }),
+    },
+    {
+      options: [{ allowNullableBoolean: true }],
+      code: `
+        (x?: boolean) => !x;
+      `,
+    },
+    {
+      options: [{ allowNullableBoolean: true }],
+      code: `
+        <T extends boolean | null | undefined>(x: T) => (x ? 1 : 0);
+      `,
+    },
 
     // nullable string in boolean context
-    ...batchedSingleLineTests<Options>({
+    {
       options: [{ allowNullableString: true }],
-      code: noFormat`
-        declare const x: string | null; if (x) {}
-        (x?: string) => !x;
-        <T extends string | null | undefined>(x: T) => x ? 1 : 0;
+      code: `
+        declare const x: string | null;
+        if (x) {
+        }
       `,
-    }),
+    },
+    {
+      options: [{ allowNullableString: true }],
+      code: `
+        (x?: string) => !x;
+      `,
+    },
+    {
+      options: [{ allowNullableString: true }],
+      code: `
+        <T extends string | null | undefined>(x: T) => (x ? 1 : 0);
+      `,
+    },
 
     // nullable number in boolean context
-    ...batchedSingleLineTests<Options>({
+    {
       options: [{ allowNullableNumber: true }],
-      code: noFormat`
-        declare const x: number | null; if (x) {}
-        (x?: number) => !x;
-        <T extends number | null | undefined>(x: T) => x ? 1 : 0;
+      code: `
+        declare const x: number | null;
+        if (x) {
+        }
       `,
-    }),
+    },
+    {
+      options: [{ allowNullableNumber: true }],
+      code: `
+        (x?: number) => !x;
+      `,
+    },
+    {
+      options: [{ allowNullableNumber: true }],
+      code: `
+        <T extends number | null | undefined>(x: T) => (x ? 1 : 0);
+      `,
+    },
 
     // any in boolean context
-    ...batchedSingleLineTests<Options>({
+    {
       options: [{ allowAny: true }],
-      code: noFormat`
-        declare const x: any; if (x) {}
-        (x) => !x;
-        <T extends any>(x: T) => x ? 1 : 0;
+      code: `
+        declare const x: any;
+        if (x) {
+        }
       `,
-    }),
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        x => !x;
+      `,
+    },
+    {
+      options: [{ allowAny: true }],
+      code: `
+        <T extends any>(x: T) => (x ? 1 : 0);
+      `,
+    },
 
     // logical operator
-    ...batchedSingleLineTests<Options>({
+    {
       options: [{ allowString: true, allowNumber: true }],
       code: `
         1 && true && 'x' && {};
+      `,
+    },
+    {
+      options: [{ allowString: true, allowNumber: true }],
+      code: `
         let x = 0 || false || '' || null;
+      `,
+    },
+    {
+      options: [{ allowString: true, allowNumber: true }],
+      code: `
         if (1 && true && 'x') void 0;
+      `,
+    },
+    {
+      options: [{ allowString: true, allowNumber: true }],
+      code: `
         if (0 || false || '') void 0;
+      `,
+    },
+    {
+      options: [{ allowString: true, allowNumber: true }],
+      code: `
         1 && true && 'x' ? {} : null;
+      `,
+    },
+    {
+      options: [{ allowString: true, allowNumber: true }],
+      code: `
         0 || false || '' ? null : {};
       `,
-    }),
+    },
 
     // nullable enum in boolean context
     {
@@ -198,6 +282,53 @@ ruleTester.run('strict-boolean-expressions', rule, {
       `,
       options: [{ allowNullableEnum: true }],
     },
+
+    // nullable mixed enum in boolean context
+    {
+      // falsy number and truthy string
+      code: `
+        enum ExampleEnum {
+          This = 0,
+          That = 'one',
+        }
+        (value?: ExampleEnum) => (value ? 1 : 0);
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+    {
+      // falsy string and truthy number
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 1,
+        }
+        (value?: ExampleEnum) => (!value ? 1 : 0);
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+    {
+      // truthy string and truthy number
+      code: `
+        enum ExampleEnum {
+          This = 'this',
+          That = 1,
+        }
+        (value?: ExampleEnum) => (!value ? 1 : 0);
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+    {
+      // falsy string and falsy number
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 0,
+        }
+        (value?: ExampleEnum) => (!value ? 1 : 0);
+      `,
+      options: [{ allowNullableEnum: true }],
+    },
+
     {
       code: `
 declare const x: string[] | null;
@@ -877,15 +1008,40 @@ if (y) {
         <T extends {} | null | undefined>(x: T) => x ? 1 : 0;
       `,
       errors: [
-        { messageId: 'conditionErrorNullableObject', line: 2, column: 37 },
-        { messageId: 'conditionErrorNullableObject', line: 3, column: 33 },
-        { messageId: 'conditionErrorNullableObject', line: 4, column: 52 },
+        {
+          messageId: 'conditionErrorNullableObject',
+          line: 2,
+          column: 37,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: 'declare const x: object | null; if (x != null) {}',
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNullableObject',
+          line: 3,
+          column: 33,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `        (x?: { a: number }) => x == null;`,
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNullableObject',
+          line: 4,
+          column: 52,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `        <T extends {} | null | undefined>(x: T) => (x != null) ? 1 : 0;`,
+            },
+          ],
+        },
       ],
-      output: `
-        declare const x: object | null; if (x != null) {}
-        (x?: { a: number }) => x == null;
-        <T extends {} | null | undefined>(x: T) => (x != null) ? 1 : 0;
-      `,
     }),
 
     // nullable string in boolean context
@@ -894,6 +1050,7 @@ if (y) {
         declare const x: string | null; if (x) {}
         (x?: string) => !x;
         <T extends string | null | undefined>(x: T) => x ? 1 : 0;
+        function foo(x: '' | 'bar' | null) { if (!x) {} }
       `,
       errors: [
         {
@@ -956,6 +1113,28 @@ if (y) {
             },
           ],
         },
+        {
+          messageId: 'conditionErrorNullableString',
+          line: 5,
+          column: 51,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output:
+                "        function foo(x: '' | 'bar' | null) { if (x == null) {} }",
+            },
+            {
+              messageId: 'conditionFixDefaultEmptyString',
+              output:
+                "        function foo(x: '' | 'bar' | null) { if (!(x ?? \"\")) {} }",
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output:
+                "        function foo(x: '' | 'bar' | null) { if (!Boolean(x)) {} }",
+            },
+          ],
+        },
       ],
     }),
 
@@ -965,6 +1144,7 @@ if (y) {
         declare const x: number | null; if (x) {}
         (x?: number) => !x;
         <T extends number | null | undefined>(x: T) => x ? 1 : 0;
+        function foo(x: 0 | 1 | null) { if (!x) {} }
       `,
       errors: [
         {
@@ -1024,6 +1204,28 @@ if (y) {
               messageId: 'conditionFixCastBoolean',
               output:
                 '        <T extends number | null | undefined>(x: T) => (Boolean(x)) ? 1 : 0;',
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNullableNumber',
+          line: 5,
+          column: 46,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output:
+                '        function foo(x: 0 | 1 | null) { if (x == null) {} }',
+            },
+            {
+              messageId: 'conditionFixDefaultZero',
+              output:
+                '        function foo(x: 0 | 1 | null) { if (!(x ?? 0)) {} }',
+            },
+            {
+              messageId: 'conditionFixCastBoolean',
+              output:
+                '        function foo(x: 0 | 1 | null) { if (!Boolean(x)) {} }',
             },
           ],
         },
@@ -1241,6 +1443,117 @@ if (y) {
         }
       `,
     },
+
+    // nullable mixed enum in boolean context
+    {
+      // falsy number and truthy string
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This = 0,
+          That = 'one',
+        }
+        (value?: ExampleEnum) => (value ? 1 : 0);
+      `,
+      errors: [
+        {
+          line: 6,
+          column: 35,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 6,
+          endColumn: 40,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This = 0,
+          That = 'one',
+        }
+        (value?: ExampleEnum) => ((value != null) ? 1 : 0);
+      `,
+    },
+    {
+      // falsy string and truthy number
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 1,
+        }
+        (value?: ExampleEnum) => (!value ? 1 : 0);
+      `,
+      errors: [
+        {
+          line: 6,
+          column: 36,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 6,
+          endColumn: 41,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This = '',
+          That = 1,
+        }
+        (value?: ExampleEnum) => ((value == null) ? 1 : 0);
+      `,
+    },
+    {
+      // truthy string and truthy number
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This = 'this',
+          That = 1,
+        }
+        (value?: ExampleEnum) => (!value ? 1 : 0);
+      `,
+      errors: [
+        {
+          line: 6,
+          column: 36,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 6,
+          endColumn: 41,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This = 'this',
+          That = 1,
+        }
+        (value?: ExampleEnum) => ((value == null) ? 1 : 0);
+      `,
+    },
+    {
+      // falsy string and falsy number
+      options: [{ allowNullableEnum: false }],
+      code: `
+        enum ExampleEnum {
+          This = '',
+          That = 0,
+        }
+        (value?: ExampleEnum) => (!value ? 1 : 0);
+      `,
+      errors: [
+        {
+          line: 6,
+          column: 36,
+          messageId: 'conditionErrorNullableEnum',
+          endLine: 6,
+          endColumn: 41,
+        },
+      ],
+      output: `
+        enum ExampleEnum {
+          This = '',
+          That = 0,
+        }
+        (value?: ExampleEnum) => ((value == null) ? 1 : 0);
+      `,
+    },
+
     // any in boolean context
     ...batchedSingleLineTests<MessageId, Options>({
       code: noFormat`
@@ -1332,18 +1645,75 @@ if (x) {
         obj && 1 || 0
       `,
       errors: [
-        { messageId: 'conditionErrorNullableObject', line: 3, column: 10 },
-        { messageId: 'conditionErrorNullableObject', line: 4, column: 10 },
-        { messageId: 'conditionErrorNullableObject', line: 5, column: 9 },
-        { messageId: 'conditionErrorNullableObject', line: 6, column: 9 },
-      ],
-      output: `
+        {
+          messageId: 'conditionErrorNullableObject',
+          line: 3,
+          column: 10,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
         declare const obj: { x: number } | null;
         (obj == null) ? 1 : 0
+        !obj
+        obj || 0
+        obj && 1 || 0
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNullableObject',
+          line: 4,
+          column: 10,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+        declare const obj: { x: number } | null;
+        !obj ? 1 : 0
         obj == null
+        obj || 0
+        obj && 1 || 0
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNullableObject',
+          line: 5,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+        declare const obj: { x: number } | null;
+        !obj ? 1 : 0
+        !obj
         ;(obj != null) || 0
+        obj && 1 || 0
+      `,
+            },
+          ],
+        },
+        {
+          messageId: 'conditionErrorNullableObject',
+          line: 6,
+          column: 9,
+          suggestions: [
+            {
+              messageId: 'conditionFixCompareNullish',
+              output: `
+        declare const obj: { x: number } | null;
+        !obj ? 1 : 0
+        !obj
+        obj || 0
         ;(obj != null) && 1 || 0
       `,
+            },
+          ],
+        },
+      ],
     },
   ],
 });

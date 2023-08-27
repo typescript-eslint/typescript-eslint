@@ -5,5 +5,5 @@ class Foo {
     return 1;
   }
   @decorator
-  set foo() {}
+  set bar(value) {}
 }

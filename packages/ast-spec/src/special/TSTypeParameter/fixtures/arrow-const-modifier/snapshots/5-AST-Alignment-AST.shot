@@ -36,7 +36,9 @@ exports[`AST Fixtures special TSTypeParameter arrow-const-modifier AST Alignment
 -               in: false,
 -               name: Identifier {
 -                 type: 'Identifier',
+-                 decorators: Array [],
 -                 name: 'T',
+-                 optional: false,
 -
 -                 range: [7, 8],
 -                 loc: {

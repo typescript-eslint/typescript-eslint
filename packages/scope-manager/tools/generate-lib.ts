@@ -1,9 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/types';
 import { AST_TOKEN_TYPES } from '@typescript-eslint/types';
+import { ESLint } from '@typescript-eslint/utils/ts-eslint';
 import * as fs from 'fs';
 import * as path from 'path';
 import { format, resolveConfig } from 'prettier';
-import rimraf from 'rimraf';
+import { rimraf } from 'rimraf';
 import * as ts from 'typescript';
 
 import type { ScopeManager, Variable } from '../src';
@@ -53,6 +54,7 @@ const TYPES_FILE = path.resolve(
   'src',
   'lib.ts',
 );
+const BARREL_PATH = path.join(OUTPUT_FOLDER, 'index.ts');
 
 const BASE_CONFIG_MODULE_NAME = 'base-config';
 const SHARED_CONFIG_MODULE = path.resolve(
@@ -110,7 +112,7 @@ function getReferences(
   return references;
 }
 
-function main(): void {
+async function main(): Promise<void> {
   try {
     rimraf.sync(OUTPUT_FOLDER);
   } catch {
@@ -121,6 +123,12 @@ function main(): void {
   } catch {
     // ignored
   }
+
+  const filesWritten: string[] = [
+    SHARED_CONFIG_MODULE,
+    TYPES_FILE,
+    BARREL_PATH,
+  ];
 
   // the shared
   fs.writeFileSync(
@@ -222,7 +230,9 @@ function main(): void {
     }
 
     const formattedCode = formatCode(code);
-    fs.writeFileSync(path.join(OUTPUT_FOLDER, `${libName}.ts`), formattedCode);
+    const writePath = path.join(OUTPUT_FOLDER, `${libName}.ts`);
+    fs.writeFileSync(writePath, formattedCode);
+    filesWritten.push(writePath);
 
     console.log(
       'Wrote',
@@ -254,7 +264,7 @@ function main(): void {
 
   const formattedBarrelCode = formatCode(barrelCode);
 
-  fs.writeFileSync(path.join(OUTPUT_FOLDER, 'index.ts'), formattedBarrelCode);
+  fs.writeFileSync(BARREL_PATH, formattedBarrelCode);
   console.log('Wrote barrel file');
 
   // generate a string union type for the lib names
@@ -270,6 +280,17 @@ function main(): void {
 
   fs.writeFileSync(TYPES_FILE, formattedLibUnionCode);
   console.log('Wrote Lib union type file');
+
+  const lint = new ESLint({
+    fix: true,
+  });
+  const results = await lint.lintFiles(filesWritten);
+  await ESLint.outputFixes(results);
+  console.log('Autofixed lint errors');
 }
 
-main();
+main().catch(e => {
+  console.error(e);
+  // eslint-disable-next-line no-process-exit
+  process.exit(1);
+});

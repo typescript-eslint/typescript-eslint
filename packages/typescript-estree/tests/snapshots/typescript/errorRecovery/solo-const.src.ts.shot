@@ -5,6 +5,7 @@ Object {
   "body": Array [
     Object {
       "declarations": Array [],
+      "declare": false,
       "kind": "const",
       "loc": Object {
         "end": Object {

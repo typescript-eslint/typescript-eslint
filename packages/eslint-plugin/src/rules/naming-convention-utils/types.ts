@@ -35,7 +35,7 @@ interface Selector {
     | IndividualAndMetaSelectorsString[];
   modifiers?: ModifiersString[];
   types?: TypeModifiersString[];
-  filter?: string | MatchRegex;
+  filter?: MatchRegex | string;
 }
 
 interface NormalizedMatchRegex {
@@ -52,7 +52,7 @@ interface NormalizedSelector {
   prefix: string[] | null;
   suffix: string[] | null;
   // selector options
-  selector: Selectors | MetaSelectors;
+  selector: MetaSelectors | Selectors;
   modifiers: Modifiers[] | null;
   types: TypeModifiers[] | null;
   filter: NormalizedMatchRegex | null;
@@ -61,7 +61,7 @@ interface NormalizedSelector {
 }
 
 type ValidatorFunction = (
-  node: TSESTree.Identifier | TSESTree.PrivateIdentifier | TSESTree.Literal,
+  node: TSESTree.Identifier | TSESTree.Literal | TSESTree.PrivateIdentifier,
   modifiers?: Set<Modifiers>,
 ) => void;
 type ParsedOptions = Record<SelectorsString, ValidatorFunction>;

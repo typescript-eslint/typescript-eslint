@@ -1,0 +1,3 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration ExportNamedDeclaration _error_ identifier-direct Error Alignment 1`] = `"Both errored"`;

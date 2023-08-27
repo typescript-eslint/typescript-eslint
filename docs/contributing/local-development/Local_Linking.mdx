@@ -1,0 +1,97 @@
+---
+id: local-linking
+title: Local Linking
+---
+
+It can sometimes be useful to try out your local `typescript-eslint` repository's changes in another local ("downstream") repository.
+The general strategy to do so is:
+
+1. [Global linking](#global-linking): Use your package manager's global link command to make `@typescript-eslint/*` packages available as global symlinks.
+2. [Repository linking](#repository-linking): Use your package manager's link command to reference those global symlinks in the local downstream repository.
+
+## Global Linking
+
+To make all `@typescript-eslint/*` packages available globally, run this command from your `typescript-eslint` repository root:
+
+```shell
+for package in ./packages/*; do
+    cd $package
+    # Insert your package manager's global link command here
+    cd ../..
+done
+```
+
+The command to put instead of that `#` comment, depends on the local downstream repository's package manager:
+
+- [npm](https://docs.npmjs.com/cli/v9/commands/npm-link 'npm link docs'): `npm link`
+- [pnpm](https://pnpm.io/cli/link 'pnpm link docs'): `pnpm link --global`
+- [Yarn v1 / classic](https://classic.yarnpkg.com/lang/en/docs/cli/link/ 'Yarn v1 / classic docs'): `yarn link`
+- [Yarn v2 / v3 / berry](https://yarnpkg.com/cli/link 'Yarn v2 / v3 / berry docs'): _skip this step altogether_
+
+## Repository Linking
+
+Now that the `@typescript-eslint/*` packages are available locally, you can link to them in the local downstream repository.
+Run that repository's package manager's link command for any `@typescript-eslint/*` packages that repository depends on:
+
+- npm: `npm link @typescript-eslint/eslint-plugin @typescript-eslint/parser`
+- pnpm: `pnpm link @typescript-eslint/eslint-plugin @typescript-eslint/parser --global`
+- Yarn v1 / classic: `yarn link @typescript-eslint/eslint-plugin @typescript-eslint/parser`
+- Yarn v2 / v3 / berry: `yarn link /path/to/your/typescript-eslint/packages/eslint-plugin /path/to/your/typescript-eslint/packages/parser`
+  - This will add a `resolutions` entry for each package in the local downstream repository's `package.json`
+
+Now, you should be able to run ESLint in the local downstream repository as you normally would, and have it reference the local typescript-eslint package.
+
+:::tip
+To check that the local package is being used, consider adding a `console.log("Hello, world!");` to a file such as `./packages/eslint-plugin/dist/index.js` and making sure that log appears when linting the local downstream repository.
+:::
+
+## Troubleshooting
+
+### Packages Not Found (`Cannot find module`)
+
+If a local `@typescript-eslint/*` package has a dependency not present in the published npm version, linting in the local downstream repository may see a different error:
+
+```plaintext
+Error: Failed to load parser '@typescript-eslint/parser' declared in '.eslintrc.js': Cannot find module 'ts-api-utils'
+Require stack:
+- /repos/typescript-eslint/packages/typescript-estree/dist/convert-comments.js
+```
+
+In this case, you can manually install any missing packages in the local downstream repository as dev dependencies (`--save-dev`).
+
+```shell
+yarn add ts-api-utils -D
+```
+
+### Yarn Link Failures (`Cannot link ... conflicts with parent dependency`)
+
+Yarn v2 / v3 / berry can be strict about conflicting dependencies.
+You may see errors about conflicting versions when running `yarn` to install in the local downstream repository:
+
+```plaintext
+$ yarn
+➤ YN0000: ┌ Resolution step
+➤ YN0000: └ Completed
+➤ YN0000: ┌ Fetch step
+➤ YN0000: └ Completed
+➤ YN0000: ┌ Link step
+➤ YN0071: │ Cannot link @typescript-eslint/parser into eslint-plugin-import@npm:2.27.5 [6d590] dependency debug@npm:4.3.4 [531b6] conflicts with parent dependency debug@npm:3.2.7 [65bed]
+➤ YN0071: │ Cannot link @typescript-eslint/parser into eslint-module-utils@npm:2.8.0 [0b7fa] dependency debug@npm:4.3.4 [531b6] conflicts with parent dependency debug@npm:3.2.7 [65bed]
+➤ YN0000: └ Completed in 0s 370ms
+➤ YN0000: Failed with errors in 0s 643ms
+```
+
+To resolve this, you can add a manual entry to the `resolutions` field in the local downstream repository's `package.json` for each failing package.
+Use the largest major version referenced in the Yarn errors.
+
+```json
+{
+  "resolutions": {
+    "@typescript-eslint/eslint-plugin": "portal:/path/to/your/typescript-eslint/packages/eslint-plugin",
+    "@typescript-eslint/parser": "portal:/path/to/your/typescript-eslint/packages/parser",
+    "debug": "4"
+  }
+}
+```
+
+Re-running `yarn` should succeed.

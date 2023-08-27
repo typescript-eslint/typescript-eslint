@@ -7,7 +7,7 @@ export interface FeatureProps {
   emoji: string;
 }
 
-export function Feature({ children, emoji }: FeatureProps): JSX.Element {
+export function Feature({ children, emoji }: FeatureProps): React.JSX.Element {
   return (
     <div className={styles.feature}>
       <div className={styles.emoji}>{emoji}</div>

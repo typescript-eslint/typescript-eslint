@@ -36,7 +36,7 @@ declare class ESLintBase {
    * @param patterns The lint target files. This can contain any of file paths, directory paths, and glob patterns.
    * @returns The promise that will be fulfilled with an array of LintResult objects.
    */
-  lintFiles(patterns: string | string[]): Promise<ESLint.LintResult[]>;
+  lintFiles(patterns: string[] | string): Promise<ESLint.LintResult[]>;
   /**
    * This method lints the given source code text and then returns the results.
    *
@@ -88,7 +88,7 @@ declare class ESLintBase {
    * @param results The LintResult objects to write.
    * @returns The promise that will be fulfilled after all files are written.
    */
-  static outputFixes(results: ESLint.LintResult): Promise<void>;
+  static outputFixes(results: ESLint.LintResult[]): Promise<void>;
   /**
    * The version text.
    */
@@ -145,7 +145,7 @@ namespace ESLint {
     /**
      * The types of the rules that the eslint.lintFiles() and eslint.lintText() methods use for autofix.
      */
-    fixTypes?: ('directive' | 'problem' | 'suggestion' | 'layout')[] | null;
+    fixTypes?: ('directive' | 'layout' | 'problem' | 'suggestion')[] | null;
     /**
      * If false is present, the eslint.lintFiles() method doesn't interpret glob patterns.
      */
@@ -164,7 +164,7 @@ namespace ESLint {
      * Configuration object, overrides all configurations used with this instance.
      * You can use this option to define the settings that will be used even if your configuration files configure it.
      */
-    overrideConfig?: Linter.ConfigOverride | null;
+    overrideConfig?: Linter.Config | null;
     /**
      * The path to a configuration file, overrides all configurations used with this instance.
      * The options.overrideConfig option is applied after this option is applied.
@@ -379,7 +379,7 @@ namespace ESLint {
      * The method to convert the LintResult objects to text.
      * Promise return supported since 8.4.0
      */
-    format(results: LintResult[]): string | Promise<string>;
+    format(results: LintResult[]): Promise<string> | string;
   }
 }
 

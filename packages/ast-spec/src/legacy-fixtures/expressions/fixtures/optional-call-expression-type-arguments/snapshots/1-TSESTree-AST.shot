@@ -16,7 +16,9 @@ Program {
             computed: false,
             object: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "foo",
+              optional: false,
 
               range: [73, 76],
               loc: {
@@ -27,7 +29,9 @@ Program {
             optional: true,
             property: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "bar",
+              optional: false,
 
               range: [78, 81],
               loc: {
@@ -43,14 +47,16 @@ Program {
             },
           },
           optional: false,
-          typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
             params: [
               TSTypeReference {
                 type: "TSTypeReference",
                 typeName: Identifier {
                   type: "Identifier",
+                  decorators: [],
                   name: "A",
+                  optional: false,
 
                   range: [82, 83],
                   loc: {
@@ -106,7 +112,9 @@ Program {
             computed: false,
             object: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "foo",
+              optional: false,
 
               range: [88, 91],
               loc: {
@@ -117,7 +125,9 @@ Program {
             optional: true,
             property: Identifier {
               type: "Identifier",
+              decorators: [],
               name: "bar",
+              optional: false,
 
               range: [93, 96],
               loc: {
@@ -133,7 +143,7 @@ Program {
             },
           },
           optional: false,
-          typeParameters: TSTypeParameterInstantiation {
+          typeArguments: TSTypeParameterInstantiation {
             type: "TSTypeParameterInstantiation",
             params: [
               TSNumberKeyword {

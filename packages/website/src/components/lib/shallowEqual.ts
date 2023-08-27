@@ -1,6 +1,9 @@
+/**
+ * Shallowly compare two objects.
+ */
 export function shallowEqual(
-  object1: object | undefined | null,
-  object2: object | undefined | null,
+  object1: object | null | undefined,
+  object2: object | null | undefined,
 ): boolean {
   if (object1 === object2) {
     return true;

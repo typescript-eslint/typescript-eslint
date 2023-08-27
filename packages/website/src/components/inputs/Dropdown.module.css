@@ -1,0 +1,20 @@
+.dropdown {
+  line-height: 1;
+  font-size: 0.8rem;
+  font-weight: 500;
+  border-radius: 6px;
+  font-family: inherit;
+  width: 50%;
+  box-shadow: none;
+  padding: 0.4rem 0.6rem;
+  appearance: none;
+  color: var(--ifm-font-color-secondary);
+  border: 1px solid var(--ifm-color-emphasis-100);
+  background: var(--ifm-color-emphasis-200);
+  transition: border 0.3s ease;
+}
+
+.dropdown:focus {
+  outline: none;
+  border-color: var(--ifm-color-primary);
+}

@@ -26,8 +26,11 @@ export function astConverter(
    * Recursively convert the TypeScript AST into an ESTree-compatible AST
    */
   const instance = new Converter(ast, {
-    errorOnUnknownASTType: parseSettings.errorOnUnknownASTType || false,
+    allowInvalidAST: parseSettings.allowInvalidAST,
+    errorOnUnknownASTType: parseSettings.errorOnUnknownASTType,
     shouldPreserveNodeMaps,
+    suppressDeprecatedPropertyWarnings:
+      parseSettings.suppressDeprecatedPropertyWarnings,
   });
 
   const estree = instance.convertProgram();
@@ -63,7 +66,7 @@ export function astConverter(
    * Optionally convert and include all comments in the AST
    */
   if (parseSettings.comment) {
-    estree.comments = convertComments(ast, parseSettings.code);
+    estree.comments = convertComments(ast, parseSettings.codeFullText);
   }
 
   const astMaps = instance.getASTMaps();

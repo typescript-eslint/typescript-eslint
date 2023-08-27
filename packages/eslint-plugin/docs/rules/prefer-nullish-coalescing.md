@@ -1,5 +1,5 @@
 ---
-description: 'Enforce using the nullish coalescing operator instead of logical chaining.'
+description: 'Enforce using the nullish coalescing operator instead of logical assignments or chaining.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -9,7 +9,10 @@ description: 'Enforce using the nullish coalescing operator instead of logical c
 The `??` nullish coalescing runtime operator allows providing a default value when dealing with `null` or `undefined`.
 Because the nullish coalescing operator _only_ coalesces when the original value is `null` or `undefined`, it is much safer than relying upon logical OR operator chaining `||`, which coalesces on any _falsy_ value.
 
-This rule reports when an `||` operator can be safely replaced with a `??`.
+This rule reports when you can safely replace:
+
+- An `||` operator with `??`
+- An `||=` operator with `??=`
 
 :::caution
 This rule will not work as expected if [`strictNullChecks`](https://www.typescriptlang.org/tsconfig#strictNullChecks) is not enabled.
@@ -19,7 +22,7 @@ This rule will not work as expected if [`strictNullChecks`](https://www.typescri
 
 ### `ignoreTernaryTests`
 
-Setting this option to `true` (the default) will cause the rule to ignore any ternary expressions that could be simplified by using the nullish coalescing operator.
+Setting this option to `true` will cause the rule to ignore any ternary expressions that could be simplified by using the nullish coalescing operator. This is set to `false` by default.
 
 Incorrect code for `ignoreTernaryTests: false`, and correct code for `ignoreTernaryTests: true`:
 
@@ -59,7 +62,7 @@ foo ?? 'a string';
 
 ### `ignoreConditionalTests`
 
-Setting this option to `true` (the default) will cause the rule to ignore any cases that are located within a conditional test.
+Setting this option to `true` will cause the rule to ignore any cases that are located within a conditional test. This is set to `false` by default.
 
 Generally expressions within conditional tests intentionally use the falsy fallthrough behavior of the logical or operator, meaning that fixing the operator to the nullish coalesce operator could cause bugs.
 
@@ -73,7 +76,10 @@ declare const b: string | null;
 
 if (a || b) {
 }
+if ((a ||= b)) {
+}
 while (a || b) {}
+while ((a ||= b)) {}
 do {} while (a || b);
 for (let i = 0; a || b; i += 1) {}
 a || b ? true : false;
@@ -87,7 +93,10 @@ declare const b: string | null;
 
 if (a ?? b) {
 }
+if ((a ??= b)) {
+}
 while (a ?? b) {}
+while ((a ??= b)) {}
 do {} while (a ?? b);
 for (let i = 0; a ?? b; i += 1) {}
 a ?? b ? true : false;
@@ -95,7 +104,7 @@ a ?? b ? true : false;
 
 ### `ignoreMixedLogicalExpressions`
 
-Setting this option to `true` (the default) will cause the rule to ignore any logical or expressions that are part of a mixed logical expression (with `&&`).
+Setting this option to `true` will cause the rule to ignore any logical or expressions that are part of a mixed logical expression (with `&&`). This is set to `false` by default.
 
 Generally expressions within mixed logical expressions intentionally use the falsy fallthrough behavior of the logical or operator, meaning that fixing the operator to the nullish coalesce operator could cause bugs.
 
@@ -110,6 +119,7 @@ declare const c: string | null;
 declare const d: string | null;
 
 a || (b && c);
+a ||= b && c;
 (a && b) || c || d;
 a || (b && c) || d;
 a || (b && c && d);
@@ -124,12 +134,38 @@ declare const c: string | null;
 declare const d: string | null;
 
 a ?? (b && c);
+a ??= b && c;
 (a && b) ?? c ?? d;
 a ?? (b && c) ?? d;
 a ?? (b && c && d);
 ```
 
 **_NOTE:_** Errors for this specific case will be presented as suggestions (see below), instead of fixes. This is because it is not always safe to automatically convert `||` to `??` within a mixed logical expression, as we cannot tell the intended precedence of the operator. Note that by design, `??` requires parentheses when used with `&&` or `||` in the same expression.
+
+### `ignorePrimitives`
+
+If you would like to ignore certain primitive types that can be falsy then you may pass an object containing a boolean value for each primitive:
+
+- `string: true`, ignores `null` or `undefined` unions with `string` (default: false).
+- `number: true`, ignores `null` or `undefined` unions with `number` (default: false).
+- `bigint: true`, ignores `null` or `undefined` unions with `bigint` (default: false).
+- `boolean: true`, ignores `null` or `undefined` unions with `boolean` (default: false).
+
+Incorrect code for `ignorePrimitives: { string: true }`, and correct code for `ignorePrimitives: { string: false }`:
+
+```ts
+const foo: string | undefined = 'bar';
+foo || 'a string';
+```
+
+Correct code for `ignorePrimitives: { string: true }`:
+
+```ts
+const foo: string | undefined = 'bar';
+foo ?? 'a string';
+```
+
+Also, if you would like to ignore all primitives types, you can set `ignorePrimitives: true`. It would be equivalent to `ignorePrimitives: { string: true, number: true, bigint: true, boolean: true }`.
 
 ## When Not To Use It
 

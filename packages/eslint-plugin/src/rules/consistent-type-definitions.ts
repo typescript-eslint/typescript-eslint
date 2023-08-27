@@ -10,7 +10,7 @@ export default util.createRule({
     docs: {
       description:
         'Enforce type definitions to consistently use either `interface` or `type`',
-      recommended: 'strict',
+      recommended: 'stylistic',
     },
     messages: {
       interfaceOverType: 'Use an `interface` instead of a `type`.',
@@ -18,6 +18,7 @@ export default util.createRule({
     },
     schema: [
       {
+        type: 'string',
         enum: ['interface', 'type'],
       },
     ],

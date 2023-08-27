@@ -10,15 +10,19 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
     body: Array [
       ClassDeclaration {
         type: 'ClassDeclaration',
+-       abstract: false,
         body: ClassBody {
           type: 'ClassBody',
           body: Array [
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'method',
+-               optional: false,
 
                 range: [12, 18],
                 loc: {
@@ -27,6 +31,7 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -42,6 +47,7 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
                     end: { column: 22, line: 2 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -55,8 +61,11 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
 -                     in: false,
 -                     name: Identifier {
 -                       type: 'Identifier',
+-                       decorators: Array [],
 -                       name: 'T',
--
+-                       optional: false,
++                     name: 'T',
+
 -                       range: [25, 26],
 -                       loc: {
 -                         start: { column: 15, line: 2 },
@@ -64,8 +73,7 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
 -                       },
 -                     },
 -                     out: false,
-+                     name: 'T',
-
+-
                       range: [19, 26],
                       loc: {
                         start: { column: 9, line: 2 },
@@ -99,9 +107,12 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'method',
+-               optional: false,
 
                 range: [35, 41],
                 loc: {
@@ -110,6 +121,7 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -125,6 +137,7 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
                     end: { column: 32, line: 3 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -139,7 +152,9 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
                         type: 'TSTypeReference',
                         typeName: Identifier {
                           type: 'Identifier',
+-                         decorators: Array [],
                           name: 'U',
+-                         optional: false,
 
                           range: [58, 59],
                           loc: {
@@ -157,7 +172,9 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
 -                     in: false,
 -                     name: Identifier {
 -                       type: 'Identifier',
+-                       decorators: Array [],
 -                       name: 'T',
+-                       optional: false,
 -
 -                       range: [48, 49],
 -                       loc: {
@@ -201,9 +218,12 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
             MethodDefinition {
               type: 'MethodDefinition',
               computed: false,
+-             decorators: Array [],
               key: Identifier {
                 type: 'Identifier',
+-               decorators: Array [],
                 name: 'method',
+-               optional: false,
 
                 range: [68, 74],
                 loc: {
@@ -212,6 +232,7 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
                 },
               },
               kind: 'method',
+-             optional: false,
 -             override: false,
               static: false,
               value: FunctionExpression {
@@ -227,6 +248,7 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
                     end: { column: 25, line: 4 },
                   },
                 },
+-               declare: false,
                 expression: false,
                 generator: false,
                 id: null,
@@ -240,8 +262,11 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
 -                     in: false,
 -                     name: Identifier {
 -                       type: 'Identifier',
+-                       decorators: Array [],
 -                       name: 'T',
--
+-                       optional: false,
++                     name: 'T',
+
 -                       range: [75, 76],
 -                       loc: {
 -                         start: { column: 9, line: 4 },
@@ -249,8 +274,7 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
 -                       },
 -                     },
 -                     out: false,
-+                     name: 'T',
-
+-
                       range: [75, 76],
                       loc: {
                         start: { column: 9, line: 4 },
@@ -263,7 +287,9 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
 -                     in: false,
 -                     name: Identifier {
 -                       type: 'Identifier',
+-                       decorators: Array [],
 -                       name: 'U',
+-                       optional: false,
 -
 -                       range: [84, 85],
 -                       loc: {
@@ -312,9 +338,13 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
             end: { column: 1, line: 5 },
           },
         },
+-       declare: false,
+-       decorators: Array [],
         id: Identifier {
           type: 'Identifier',
+-         decorators: Array [],
           name: '_',
+-         optional: false,
 
           range: [6, 7],
           loc: {
@@ -322,6 +352,7 @@ exports[`AST Fixtures special TSTypeParameter method-const-modifiers AST Alignme
             end: { column: 7, line: 1 },
           },
         },
+-       implements: Array [],
         superClass: null,
 
         range: [0, 93],

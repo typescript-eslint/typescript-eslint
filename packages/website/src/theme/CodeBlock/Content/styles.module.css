@@ -2,6 +2,7 @@
 
 .codeBlockContent {
   position: relative;
+
   /* rtl:ignore */
   direction: ltr;
   border-radius: inherit;
@@ -18,6 +19,7 @@
 
 .codeBlock {
   --ifm-pre-background: var(--prism-background-color);
+
   margin: 0;
   padding: 0;
 }
@@ -33,6 +35,7 @@
 
 .codeBlockLines {
   font: inherit;
+
   /* rtl:ignore */
   float: left;
   min-width: 100%;

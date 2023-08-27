@@ -32,7 +32,9 @@ Program {
               in: false,
               name: Identifier {
                 type: "Identifier",
+                decorators: [],
                 name: "T",
+                optional: false,
 
                 range: [7, 8],
                 loc: {

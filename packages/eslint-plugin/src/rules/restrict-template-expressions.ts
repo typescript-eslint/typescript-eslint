@@ -6,11 +6,12 @@ import * as util from '../util';
 
 type Options = [
   {
-    allowNumber?: boolean;
-    allowBoolean?: boolean;
     allowAny?: boolean;
+    allowBoolean?: boolean;
     allowNullish?: boolean;
+    allowNumber?: boolean;
     allowRegExp?: boolean;
+    allowNever?: boolean;
   },
 ];
 
@@ -23,7 +24,7 @@ export default util.createRule<Options, MessageId>({
     docs: {
       description:
         'Enforce template literal expressions to be of `string` type',
-      recommended: 'error',
+      recommended: 'recommended',
       requiresTypeChecking: true,
     },
     messages: {
@@ -32,10 +33,11 @@ export default util.createRule<Options, MessageId>({
     schema: [
       {
         type: 'object',
+        additionalProperties: false,
         properties: {
-          allowNumber: {
+          allowAny: {
             description:
-              'Whether to allow `number` typed values in template expressions.',
+              'Whether to allow `any` typed values in template expressions.',
             type: 'boolean',
           },
           allowBoolean: {
@@ -43,19 +45,24 @@ export default util.createRule<Options, MessageId>({
               'Whether to allow `boolean` typed values in template expressions.',
             type: 'boolean',
           },
-          allowAny: {
-            description:
-              'Whether to allow `any` typed values in template expressions.',
-            type: 'boolean',
-          },
           allowNullish: {
             description:
               'Whether to allow `nullish` typed values in template expressions.',
             type: 'boolean',
           },
+          allowNumber: {
+            description:
+              'Whether to allow `number` typed values in template expressions.',
+            type: 'boolean',
+          },
           allowRegExp: {
             description:
               'Whether to allow `regexp` typed values in template expressions.',
+            type: 'boolean',
+          },
+          allowNever: {
+            description:
+              'Whether to allow `never` typed values in template expressions.',
             type: 'boolean',
           },
         },
@@ -64,12 +71,16 @@ export default util.createRule<Options, MessageId>({
   },
   defaultOptions: [
     {
+      allowAny: true,
+      allowBoolean: true,
+      allowNullish: true,
       allowNumber: true,
+      allowRegExp: true,
     },
   ],
   create(context, [options]) {
-    const service = util.getParserServices(context);
-    const typeChecker = service.program.getTypeChecker();
+    const services = util.getParserServices(context);
+    const checker = services.program.getTypeChecker();
 
     function isUnderlyingTypePrimitive(type: ts.Type): boolean {
       if (util.isTypeFlagSet(type, ts.TypeFlags.StringLike)) {
@@ -97,10 +108,7 @@ export default util.createRule<Options, MessageId>({
         return true;
       }
 
-      if (
-        options.allowRegExp &&
-        util.getTypeName(typeChecker, type) === 'RegExp'
-      ) {
+      if (options.allowRegExp && util.getTypeName(checker, type) === 'RegExp') {
         return true;
       }
 
@@ -111,20 +119,24 @@ export default util.createRule<Options, MessageId>({
         return true;
       }
 
+      if (options.allowNever && util.isTypeNeverType(type)) {
+        return true;
+      }
+
       return false;
     }
 
     return {
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
         // don't check tagged template literals
-        if (node.parent!.type === AST_NODE_TYPES.TaggedTemplateExpression) {
+        if (node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression) {
           return;
         }
 
         for (const expression of node.expressions) {
           const expressionType = util.getConstrainedTypeAtLocation(
-            typeChecker,
-            service.esTreeNodeToTSNodeMap.get(expression),
+            services,
+            expression,
           );
 
           if (
@@ -136,7 +148,7 @@ export default util.createRule<Options, MessageId>({
             context.report({
               node: expression,
               messageId: 'invalidType',
-              data: { type: typeChecker.typeToString(expressionType) },
+              data: { type: checker.typeToString(expressionType) },
             });
           }
         }

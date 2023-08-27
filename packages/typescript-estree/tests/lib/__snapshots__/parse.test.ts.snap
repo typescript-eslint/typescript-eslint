@@ -1,87 +1,5 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is empty the extension does not match 1`] = `
-"ESLint was configured to run on \`<tsconfigRootDir>/other/unknownFileType.unknown\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
-The extension for the file (\`.unknown\`) is non-standard. You should add \`parserOptions.extraFileExtensions\` to your config."
-`;
-
-exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is non-empty invalid extension 1`] = `
-"ESLint was configured to run on \`<tsconfigRootDir>/other/unknownFileType.unknown\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
-Found unexpected extension \`unknown\` specified with the \`parserOptions.extraFileExtensions\` option. Did you mean \`.unknown\`?
-The extension for the file (\`.unknown\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`."
-`;
-
-exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is non-empty the extension does not match 1`] = `
-"ESLint was configured to run on \`<tsconfigRootDir>/other/unknownFileType.unknown\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
-The extension for the file (\`.unknown\`) is non-standard. It should be added to your existing \`parserOptions.extraFileExtensions\`."
-`;
-
-exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is non-empty the extension matches duplicate extension 1`] = `
-"ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded.ts\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
-You unnecessarily included the extension \`.ts\` with the \`parserOptions.extraFileExtensions\` option. This extension is already handled by the parser by default.
-However, that TSConfig does not include this file. Either:
-- Change ESLint's list of included files to not include this file
-- Change that TSConfig to include this file
-- Create a new TSConfig that includes this file and include it in your parserOptions.project
-See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
-`;
-
-exports[`parseAndGenerateServices invalid file error messages "parserOptions.extraFileExtensions" is non-empty the extension matches the file isn't included 1`] = `
-"ESLint was configured to run on \`<tsconfigRootDir>/other/notIncluded.vue\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
-However, that TSConfig does not include this file. Either:
-- Change ESLint's list of included files to not include this file
-- Change that TSConfig to include this file
-- Create a new TSConfig that includes this file and include it in your parserOptions.project
-See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
-`;
-
-exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 1`] = `
-"ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
-However, that TSConfig does not include this file. Either:
-- Change ESLint's list of included files to not include this file
-- Change that TSConfig to include this file
-- Create a new TSConfig that includes this file and include it in your parserOptions.project
-See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
-`;
-
-exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 2`] = `
-"ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded02.tsx\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
-However, that TSConfig does not include this file. Either:
-- Change ESLint's list of included files to not include this file
-- Change that TSConfig to include this file
-- Create a new TSConfig that includes this file and include it in your parserOptions.project
-See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
-`;
-
-exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 3`] = `
-"ESLint was configured to run on \`<tsconfigRootDir>/js/notIncluded01.js\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
-However, that TSConfig does not include this file. Either:
-- Change ESLint's list of included files to not include this file
-- Change that TSConfig to include this file
-- Create a new TSConfig that includes this file and include it in your parserOptions.project
-See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
-`;
-
-exports[`parseAndGenerateServices invalid file error messages project includes errors for not included files 4`] = `
-"ESLint was configured to run on \`<tsconfigRootDir>/js/notIncluded02.jsx\` using \`parserOptions.project\`: <tsconfigRootDir>/tsconfig.json
-However, that TSConfig does not include this file. Either:
-- Change ESLint's list of included files to not include this file
-- Change that TSConfig to include this file
-- Create a new TSConfig that includes this file and include it in your parserOptions.project
-See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
-`;
-
-exports[`parseAndGenerateServices invalid project error messages throws when non of multiple projects include the file 1`] = `
-"ESLint was configured to run on \`<tsconfigRootDir>/ts/notIncluded0j1.ts\` using \`parserOptions.project\`: 
-- <tsconfigRootDir>/tsconfig.json
-- <tsconfigRootDir>/tsconfig.extra.json
-However, none of those TSConfigs include this file. Either:
-- Change ESLint's list of included files to not include this file
-- Change one of those TSConfigs to include this file
-- Create a new TSConfig that includes this file and include it in your parserOptions.project
-See the typescript-eslint docs for more info: https://typescript-eslint.io/linting/troubleshooting#i-get-errors-telling-me-eslint-was-configured-to-run--however-that-tsconfig-does-not--none-of-those-tsconfigs-include-this-file"
-`;
-
 exports[`parseAndGenerateServices isolated parsing should parse .js file - with JSX content - parserOptions.jsx = false 1`] = `
 {
   "ast": {
@@ -89,7 +7,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -101,11 +21,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "children": [],
@@ -156,7 +78,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
                 ],
                 "selfClosing": true,
                 "type": "JSXOpeningElement",
-                "typeParameters": undefined,
+                "typeArguments": undefined,
               },
               "range": [
                 10,
@@ -181,6 +103,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -365,8 +288,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -379,7 +301,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -391,11 +315,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "children": [],
@@ -446,7 +372,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
                 ],
                 "selfClosing": true,
                 "type": "JSXOpeningElement",
-                "typeParameters": undefined,
+                "typeArguments": undefined,
               },
               "range": [
                 10,
@@ -471,6 +397,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -655,8 +582,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - with 
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -669,7 +595,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -681,11 +609,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -723,6 +653,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -835,8 +766,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -849,7 +779,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -861,11 +793,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -903,6 +837,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -1015,8 +950,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .js file - witho
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -1027,6 +961,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .json file - wit
   "ast": {
     "body": [
       {
+        "directive": undefined,
         "expression": {
           "loc": {
             "end": {
@@ -1072,6 +1007,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .json file - wit
                 },
               },
               "method": false,
+              "optional": false,
               "range": [
                 2,
                 8,
@@ -1234,8 +1170,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .json file - wit
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -1248,7 +1183,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -1260,11 +1197,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "children": [],
@@ -1315,7 +1254,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 ],
                 "selfClosing": true,
                 "type": "JSXOpeningElement",
-                "typeParameters": undefined,
+                "typeArguments": undefined,
               },
               "range": [
                 10,
@@ -1340,6 +1279,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -1524,8 +1464,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -1538,7 +1477,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -1550,11 +1491,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "children": [],
@@ -1605,7 +1548,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 ],
                 "selfClosing": true,
                 "type": "JSXOpeningElement",
-                "typeParameters": undefined,
+                "typeArguments": undefined,
               },
               "range": [
                 10,
@@ -1630,6 +1573,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -1814,8 +1758,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -1828,7 +1771,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -1840,11 +1785,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -1882,6 +1829,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -1994,8 +1942,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -2008,7 +1955,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -2020,11 +1969,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -2062,6 +2013,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -2174,8 +2126,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .jsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -2188,7 +2139,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -2200,11 +2153,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -2242,6 +2197,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -2354,8 +2310,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -2368,7 +2323,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -2380,11 +2337,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -2422,6 +2381,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -2534,8 +2494,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .ts file - witho
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -2548,7 +2507,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -2560,11 +2521,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "children": [],
@@ -2615,7 +2578,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 ],
                 "selfClosing": true,
                 "type": "JSXOpeningElement",
-                "typeParameters": undefined,
+                "typeArguments": undefined,
               },
               "range": [
                 10,
@@ -2640,6 +2603,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -2824,8 +2788,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -2838,7 +2801,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -2850,11 +2815,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "children": [],
@@ -2905,7 +2872,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 ],
                 "selfClosing": true,
                 "type": "JSXOpeningElement",
-                "typeParameters": undefined,
+                "typeArguments": undefined,
               },
               "range": [
                 10,
@@ -2930,6 +2897,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -3114,8 +3082,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -3128,7 +3095,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -3140,11 +3109,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -3182,6 +3153,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -3294,8 +3266,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -3308,7 +3279,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -3320,11 +3293,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -3362,6 +3337,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -3474,8 +3450,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .tsx file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -3488,7 +3463,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -3500,11 +3477,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "children": [],
@@ -3555,7 +3534,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
                 ],
                 "selfClosing": true,
                 "type": "JSXOpeningElement",
-                "typeParameters": undefined,
+                "typeArguments": undefined,
               },
               "range": [
                 10,
@@ -3580,6 +3559,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -3764,8 +3744,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -3778,7 +3757,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -3790,11 +3771,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -3832,6 +3815,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -3944,8 +3928,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
 }
@@ -3958,7 +3941,9 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
       {
         "declarations": [
           {
+            "definite": false,
             "id": {
+              "decorators": [],
               "loc": {
                 "end": {
                   "column": 7,
@@ -3970,11 +3955,13 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
                 },
               },
               "name": "x",
+              "optional": false,
               "range": [
                 6,
                 7,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             "init": {
               "loc": {
@@ -4012,6 +3999,7 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
             "type": "VariableDeclarator",
           },
         ],
+        "declare": false,
         "kind": "const",
         "loc": {
           "end": {
@@ -4124,480 +4112,8 @@ exports[`parseAndGenerateServices isolated parsing should parse .vue file - with
   },
   "services": {
     "esTreeNodeToTSNodeMap": WeakMap {},
-    "hasFullTypeInformation": false,
-    "program": {},
+    "program": "No Program",
     "tsNodeToESTreeNodeMap": WeakMap {},
   },
-}
-`;
-
-exports[`parseWithNodeMaps() general output should not contain loc 1`] = `
-{
-  "body": [
-    {
-      "declarations": [
-        {
-          "id": {
-            "name": "foo",
-            "range": [
-              4,
-              7,
-            ],
-            "type": "Identifier",
-          },
-          "init": {
-            "name": "bar",
-            "range": [
-              10,
-              13,
-            ],
-            "type": "Identifier",
-          },
-          "range": [
-            4,
-            13,
-          ],
-          "type": "VariableDeclarator",
-        },
-      ],
-      "kind": "let",
-      "range": [
-        0,
-        14,
-      ],
-      "type": "VariableDeclaration",
-    },
-  ],
-  "range": [
-    0,
-    14,
-  ],
-  "sourceType": "script",
-  "type": "Program",
-}
-`;
-
-exports[`parseWithNodeMaps() general output should not contain range 1`] = `
-{
-  "body": [
-    {
-      "declarations": [
-        {
-          "id": {
-            "loc": {
-              "end": {
-                "column": 7,
-                "line": 1,
-              },
-              "start": {
-                "column": 4,
-                "line": 1,
-              },
-            },
-            "name": "foo",
-            "type": "Identifier",
-          },
-          "init": {
-            "loc": {
-              "end": {
-                "column": 13,
-                "line": 1,
-              },
-              "start": {
-                "column": 10,
-                "line": 1,
-              },
-            },
-            "name": "bar",
-            "type": "Identifier",
-          },
-          "loc": {
-            "end": {
-              "column": 13,
-              "line": 1,
-            },
-            "start": {
-              "column": 4,
-              "line": 1,
-            },
-          },
-          "type": "VariableDeclarator",
-        },
-      ],
-      "kind": "let",
-      "loc": {
-        "end": {
-          "column": 14,
-          "line": 1,
-        },
-        "start": {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "type": "VariableDeclaration",
-    },
-  ],
-  "loc": {
-    "end": {
-      "column": 14,
-      "line": 1,
-    },
-    "start": {
-      "column": 0,
-      "line": 1,
-    },
-  },
-  "sourceType": "script",
-  "type": "Program",
-}
-`;
-
-exports[`parseWithNodeMaps() general output tokens, comments, locs, and ranges when called with those options 1`] = `
-{
-  "body": [
-    {
-      "declarations": [
-        {
-          "id": {
-            "loc": {
-              "end": {
-                "column": 7,
-                "line": 1,
-              },
-              "start": {
-                "column": 4,
-                "line": 1,
-              },
-            },
-            "name": "foo",
-            "range": [
-              4,
-              7,
-            ],
-            "type": "Identifier",
-          },
-          "init": {
-            "loc": {
-              "end": {
-                "column": 13,
-                "line": 1,
-              },
-              "start": {
-                "column": 10,
-                "line": 1,
-              },
-            },
-            "name": "bar",
-            "range": [
-              10,
-              13,
-            ],
-            "type": "Identifier",
-          },
-          "loc": {
-            "end": {
-              "column": 13,
-              "line": 1,
-            },
-            "start": {
-              "column": 4,
-              "line": 1,
-            },
-          },
-          "range": [
-            4,
-            13,
-          ],
-          "type": "VariableDeclarator",
-        },
-      ],
-      "kind": "let",
-      "loc": {
-        "end": {
-          "column": 14,
-          "line": 1,
-        },
-        "start": {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": [
-        0,
-        14,
-      ],
-      "type": "VariableDeclaration",
-    },
-  ],
-  "comments": [],
-  "loc": {
-    "end": {
-      "column": 14,
-      "line": 1,
-    },
-    "start": {
-      "column": 0,
-      "line": 1,
-    },
-  },
-  "range": [
-    0,
-    14,
-  ],
-  "sourceType": "script",
-  "tokens": [
-    {
-      "loc": {
-        "end": {
-          "column": 3,
-          "line": 1,
-        },
-        "start": {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": [
-        0,
-        3,
-      ],
-      "type": "Keyword",
-      "value": "let",
-    },
-    {
-      "loc": {
-        "end": {
-          "column": 7,
-          "line": 1,
-        },
-        "start": {
-          "column": 4,
-          "line": 1,
-        },
-      },
-      "range": [
-        4,
-        7,
-      ],
-      "type": "Identifier",
-      "value": "foo",
-    },
-    {
-      "loc": {
-        "end": {
-          "column": 9,
-          "line": 1,
-        },
-        "start": {
-          "column": 8,
-          "line": 1,
-        },
-      },
-      "range": [
-        8,
-        9,
-      ],
-      "type": "Punctuator",
-      "value": "=",
-    },
-    {
-      "loc": {
-        "end": {
-          "column": 13,
-          "line": 1,
-        },
-        "start": {
-          "column": 10,
-          "line": 1,
-        },
-      },
-      "range": [
-        10,
-        13,
-      ],
-      "type": "Identifier",
-      "value": "bar",
-    },
-    {
-      "loc": {
-        "end": {
-          "column": 14,
-          "line": 1,
-        },
-        "start": {
-          "column": 13,
-          "line": 1,
-        },
-      },
-      "range": [
-        13,
-        14,
-      ],
-      "type": "Punctuator",
-      "value": ";",
-    },
-  ],
-  "type": "Program",
-}
-`;
-
-exports[`parseWithNodeMaps() non string code should correctly convert code to a string for parse() 1`] = `
-{
-  "body": [
-    {
-      "expression": {
-        "loc": {
-          "end": {
-            "column": 5,
-            "line": 1,
-          },
-          "start": {
-            "column": 0,
-            "line": 1,
-          },
-        },
-        "range": [
-          0,
-          5,
-        ],
-        "raw": "12345",
-        "type": "Literal",
-        "value": 12345,
-      },
-      "loc": {
-        "end": {
-          "column": 5,
-          "line": 1,
-        },
-        "start": {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": [
-        0,
-        5,
-      ],
-      "type": "ExpressionStatement",
-    },
-  ],
-  "comments": [],
-  "loc": {
-    "end": {
-      "column": 5,
-      "line": 1,
-    },
-    "start": {
-      "column": 0,
-      "line": 1,
-    },
-  },
-  "range": [
-    0,
-    5,
-  ],
-  "sourceType": "script",
-  "tokens": [
-    {
-      "loc": {
-        "end": {
-          "column": 5,
-          "line": 1,
-        },
-        "start": {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": [
-        0,
-        5,
-      ],
-      "type": "Numeric",
-      "value": "12345",
-    },
-  ],
-  "type": "Program",
-}
-`;
-
-exports[`parseWithNodeMaps() non string code should correctly convert code to a string for parseAndGenerateServices() 1`] = `
-{
-  "body": [
-    {
-      "expression": {
-        "loc": {
-          "end": {
-            "column": 5,
-            "line": 1,
-          },
-          "start": {
-            "column": 0,
-            "line": 1,
-          },
-        },
-        "range": [
-          0,
-          5,
-        ],
-        "raw": "12345",
-        "type": "Literal",
-        "value": 12345,
-      },
-      "loc": {
-        "end": {
-          "column": 5,
-          "line": 1,
-        },
-        "start": {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": [
-        0,
-        5,
-      ],
-      "type": "ExpressionStatement",
-    },
-  ],
-  "comments": [],
-  "loc": {
-    "end": {
-      "column": 5,
-      "line": 1,
-    },
-    "start": {
-      "column": 0,
-      "line": 1,
-    },
-  },
-  "range": [
-    0,
-    5,
-  ],
-  "sourceType": "script",
-  "tokens": [
-    {
-      "loc": {
-        "end": {
-          "column": 5,
-          "line": 1,
-        },
-        "start": {
-          "column": 0,
-          "line": 1,
-        },
-      },
-      "range": [
-        0,
-        5,
-      ],
-      "type": "Numeric",
-      "value": "12345",
-    },
-  ],
-  "type": "Program",
 }
 `;

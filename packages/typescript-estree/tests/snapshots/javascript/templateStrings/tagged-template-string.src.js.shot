@@ -8,9 +8,11 @@ Object {
       "body": Object {
         "body": Array [
           Object {
+            "directive": undefined,
             "expression": Object {
               "arguments": Array [
                 Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 22,
@@ -22,11 +24,13 @@ Object {
                     },
                   },
                   "name": "arguments",
+                  "optional": false,
                   "range": Array [
                     30,
                     39,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
               ],
               "callee": Object {
@@ -42,6 +46,7 @@ Object {
                   },
                 },
                 "object": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 8,
@@ -53,14 +58,17 @@ Object {
                     },
                   },
                   "name": "console",
+                  "optional": false,
                   "range": Array [
                     18,
                     25,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "optional": false,
                 "property": Object {
+                  "decorators": Array [],
                   "loc": Object {
                     "end": Object {
                       "column": 12,
@@ -72,11 +80,13 @@ Object {
                     },
                   },
                   "name": "log",
+                  "optional": false,
                   "range": Array [
                     26,
                     29,
                   ],
                   "type": "Identifier",
+                  "typeAnnotation": undefined,
                 },
                 "range": Array [
                   18,
@@ -100,6 +110,7 @@ Object {
                 40,
               ],
               "type": "CallExpression",
+              "typeParameters": undefined,
             },
             "loc": Object {
               "end": Object {
@@ -134,9 +145,11 @@ Object {
         ],
         "type": "BlockStatement",
       },
+      "declare": false,
       "expression": false,
       "generator": false,
       "id": Object {
+        "decorators": Array [],
         "loc": Object {
           "end": Object {
             "column": 12,
@@ -148,11 +161,13 @@ Object {
           },
         },
         "name": "tag",
+        "optional": false,
         "range": Array [
           9,
           12,
         ],
         "type": "Identifier",
+        "typeAnnotation": undefined,
       },
       "loc": Object {
         "end": Object {
@@ -169,9 +184,12 @@ Object {
         0,
         43,
       ],
+      "returnType": undefined,
       "type": "FunctionDeclaration",
+      "typeParameters": undefined,
     },
     Object {
+      "directive": undefined,
       "expression": Object {
         "loc": Object {
           "end": Object {
@@ -186,6 +204,7 @@ Object {
         "quasi": Object {
           "expressions": Array [
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 12,
@@ -197,13 +216,16 @@ Object {
                 },
               },
               "name": "a",
+              "optional": false,
               "range": Array [
                 55,
                 56,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
             Object {
+              "decorators": Array [],
               "loc": Object {
                 "end": Object {
                   "column": 28,
@@ -215,11 +237,13 @@ Object {
                 },
               },
               "name": "b",
+              "optional": false,
               "range": Array [
                 71,
                 72,
               ],
               "type": "Identifier",
+              "typeAnnotation": undefined,
             },
           ],
           "loc": Object {
@@ -311,6 +335,7 @@ Object {
           75,
         ],
         "tag": Object {
+          "decorators": Array [],
           "loc": Object {
             "end": Object {
               "column": 3,
@@ -322,11 +347,13 @@ Object {
             },
           },
           "name": "tag",
+          "optional": false,
           "range": Array [
             44,
             47,
           ],
           "type": "Identifier",
+          "typeAnnotation": undefined,
         },
         "type": "TaggedTemplateExpression",
         "typeParameters": undefined,

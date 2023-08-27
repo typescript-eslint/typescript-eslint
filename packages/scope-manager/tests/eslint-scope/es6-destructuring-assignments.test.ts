@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/dot-notation -- ['implicit'] is private */
 import {
   expectToBeForScope,
   expectToBeFunctionScope,
