@@ -40,6 +40,51 @@ function isPropertyDefinitionWithTypeAnnotation(
 /**
  * Checks if a node belongs to:
  * ```
+ * foo(() => 1)
+ * ```
+ */
+function isFunctionArgument(
+  parent: TSESTree.Node,
+  callee?: FunctionExpression,
+): parent is TSESTree.CallExpression {
+  return (
+    parent.type === AST_NODE_TYPES.CallExpression &&
+    // make sure this isn't an IIFE
+    parent.callee !== callee
+  );
+}
+
+/**
+ * Checks if a node is an expression in a JSX attribute assignment
+ * ```
+ * <Comp x={...} />
+ * ```
+ */
+function isJSXAttribute(
+  node: TSESTree.Node,
+): node is TSESTree.JSXExpressionContainer | TSESTree.JSXSpreadAttribute {
+  return (
+    node.type === AST_NODE_TYPES.JSXExpressionContainer ||
+    node.type === AST_NODE_TYPES.JSXSpreadAttribute
+  );
+}
+
+function isTypedParent(
+  parent: TSESTree.Node,
+  callee?: FunctionExpression,
+): boolean {
+  return (
+    isTypeAssertion(parent) ||
+    isVariableDeclaratorWithTypeAnnotation(parent) ||
+    isPropertyDefinitionWithTypeAnnotation(parent) ||
+    isFunctionArgument(parent, callee) ||
+    isJSXAttribute(parent)
+  );
+}
+
+/**
+ * Checks if a node belongs to:
+ * ```
  * new Foo(() => {})
  *         ^^^^^^^^
  * ```
@@ -78,13 +123,7 @@ function isPropertyOfObjectWithType(
     return false;
   }
 
-  return (
-    isTypeAssertion(parent) ||
-    isPropertyDefinitionWithTypeAnnotation(parent) ||
-    isVariableDeclaratorWithTypeAnnotation(parent) ||
-    isFunctionArgument(parent) ||
-    isPropertyOfObjectWithType(parent)
-  );
+  return isTypedParent(parent) || isPropertyOfObjectWithType(parent);
 }
 
 /**
@@ -124,23 +163,6 @@ function doesImmediatelyReturnFunctionExpression({
   return (
     body.type === AST_NODE_TYPES.ArrowFunctionExpression ||
     body.type === AST_NODE_TYPES.FunctionExpression
-  );
-}
-
-/**
- * Checks if a node belongs to:
- * ```
- * foo(() => 1)
- * ```
- */
-function isFunctionArgument(
-  parent: TSESTree.Node,
-  callee?: FunctionExpression,
-): parent is TSESTree.CallExpression {
-  return (
-    parent.type === AST_NODE_TYPES.CallExpression &&
-    // make sure this isn't an IIFE
-    parent.callee !== callee
   );
 }
 
@@ -194,11 +216,8 @@ function isTypedFunctionExpression(
   }
 
   return (
-    isTypeAssertion(parent) ||
-    isVariableDeclaratorWithTypeAnnotation(parent) ||
-    isPropertyDefinitionWithTypeAnnotation(parent) ||
+    isTypedParent(parent, node) ||
     isPropertyOfObjectWithType(parent) ||
-    isFunctionArgument(parent, node) ||
     isConstructorArgument(parent)
   );
 }

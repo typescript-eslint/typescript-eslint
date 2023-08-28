@@ -180,6 +180,46 @@ class App {
       `,
       options: [{ allowTypedFunctionExpressions: true }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7552
+    {
+      code: `
+const Comp: FC = () => {
+  return <button onClick={() => {}} />;
+};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+const Comp: FC = () => {
+  return <Button on={{ click: () => {} }} />;
+};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: `
+const Comp: FC = () => {
+  return <button {...{ onClick: () => {} }} />;
+};
+      `,
+      options: [{ allowTypedFunctionExpressions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
     // https://github.com/typescript-eslint/typescript-eslint/issues/525
     {
       code: `
@@ -974,6 +1014,28 @@ const x: Foo = {
           endLine: 4,
           column: 3,
           endColumn: 8,
+        },
+      ],
+    },
+    {
+      code: `
+const Comp = (): JSX.Element => {
+  return <button onClick={() => {}} />;
+};
+      `,
+      options: [{ allowTypedFunctionExpressions: false }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 3,
+          endLine: 3,
+          column: 30,
+          endColumn: 32,
         },
       ],
     },
