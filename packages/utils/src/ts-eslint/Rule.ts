@@ -284,6 +284,61 @@ interface RuleContext<
   report(descriptor: ReportDescriptor<TMessageIds>): void;
 }
 
+/**
+ * Part of the code path analysis feature of ESLint:
+ * https://eslint.org/docs/latest/extend/code-path-analysis
+ *
+ * These are used in the `onCodePath*` methods. (Note that the `node` parameter
+ * of these methods is intentionally omitted.)
+ *
+ * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
+ */
+interface CodePath {
+  id: string;
+  initialSegment: CodePathSegment;
+  finalSegments: CodePathSegment[];
+  returnedSegments: CodePathSegment[];
+  thrownSegments: CodePathSegment[];
+  currentSegments: CodePathSegment[];
+  upper: CodePath | null;
+  childCodePaths: CodePath[];
+}
+
+/**
+ * Part of the code path analysis feature of ESLint:
+ * https://eslint.org/docs/latest/extend/code-path-analysis
+ *
+ * These are used in the `onCodePath*` methods. (Note that the `node` parameter
+ * of these methods is intentionally omitted.)
+ *
+ * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
+ */
+interface CodePathSegment {
+  id: string;
+  nextSegments: CodePathSegment[];
+  prevSegments: CodePathSegment[];
+  reachable: boolean;
+}
+
+/**
+ * Part of the code path analysis feature of ESLint:
+ * https://eslint.org/docs/latest/extend/code-path-analysis
+ *
+ * This type is unused in the `typescript-eslint` codebase since putting it on
+ * the `nodeSelector` for `RuleListener` would break the existing definition.
+ * However, it is exported here for the purposes of manual type-assertion.
+ *
+ * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
+ */
+type CodePathFunction =
+  | ((
+      fromSegment: CodePathSegment,
+      toSegment: CodePathSegment,
+      node: TSESTree.Node,
+    ) => void)
+  | ((codePath: CodePath, node: TSESTree.Node) => void)
+  | ((segment: CodePathSegment, node: TSESTree.Node) => void);
+
 // This isn't the correct signature, but it makes it easier to do custom unions within reusable listeners
 // never will break someone's code unless they specifically type the function argument
 type RuleFunction<T extends TSESTree.NodeOrTokenData = never> = (
@@ -494,6 +549,9 @@ type AnyRuleCreateFunction = RuleCreateFunction<string, readonly unknown[]>;
 export {
   AnyRuleCreateFunction,
   AnyRuleModule,
+  CodePath,
+  CodePathFunction,
+  CodePathSegment,
   ReportDescriptor,
   ReportDescriptorMessageData,
   ReportFixFunction,
