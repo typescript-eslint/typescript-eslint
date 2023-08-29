@@ -273,11 +273,12 @@ export default createRule<Options, MessageIds>({
       ImportDeclaration(node: TSESTree.ImportDeclaration): void {
         if (
           node.importKind === 'type' ||
-          node.specifiers.every(
-            specifier =>
-              specifier.type === AST_NODE_TYPES.ImportSpecifier &&
-              specifier.importKind === 'type',
-          )
+          (node.specifiers.length &&
+            node.specifiers.every(
+              specifier =>
+                specifier.type === AST_NODE_TYPES.ImportSpecifier &&
+                specifier.importKind === 'type',
+            ))
         ) {
           const importSource = node.source.value.trim();
           if (
@@ -297,7 +298,8 @@ export default createRule<Options, MessageIds>({
       ): void {
         if (
           node.exportKind === 'type' ||
-          node.specifiers.every(specifier => specifier.exportKind === 'type')
+          (node.specifiers.length &&
+            node.specifiers.every(specifier => specifier.exportKind === 'type'))
         ) {
           const importSource = node.source.value.trim();
           if (

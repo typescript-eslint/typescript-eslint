@@ -491,6 +491,43 @@ import type { foo } from 'import2/private/bar';
       ],
     },
     {
+      code: "import 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+            },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'path',
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+    {
+      code: "import 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'path',
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+    {
       code: "import foo from 'import-foo';",
       options: [
         {
