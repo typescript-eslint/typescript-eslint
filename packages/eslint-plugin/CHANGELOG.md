@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.5.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.4.1...v6.5.0) (2023-08-28)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [consistent-type-assertions] wrap object return value with parentheses ([#6885](https://github.com/typescript-eslint/typescript-eslint/issues/6885)) ([23ac499](https://github.com/typescript-eslint/typescript-eslint/commit/23ac49944e4f4067f89123fddd4a80c629270b4c))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 ## [6.4.1](https://github.com/typescript-eslint/typescript-eslint/compare/v6.4.0...v6.4.1) (2023-08-21)
 
 

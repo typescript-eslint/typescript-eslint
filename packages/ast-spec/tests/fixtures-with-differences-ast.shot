@@ -99,12 +99,16 @@ exports[`AST Fixtures List fixtures with AST differences 1`] = `
   "declaration/TSTypeAliasDeclaration/fixtures/type-param-many/fixture.ts",
   "declaration/TSTypeAliasDeclaration/fixtures/type-param-one/fixture.ts",
   "declaration/TSTypeAliasDeclaration/fixtures/valid/fixture.ts",
+  "declaration/VariableDeclaration/fixtures/await-using-multiple-declarations/fixture.ts",
+  "declaration/VariableDeclaration/fixtures/await-using-with-value/fixture.ts",
   "declaration/VariableDeclaration/fixtures/const-with-value/fixture.ts",
   "declaration/VariableDeclaration/fixtures/const-without-value/fixture.ts",
   "declaration/VariableDeclaration/fixtures/declare/fixture.ts",
   "declaration/VariableDeclaration/fixtures/let-with-value/fixture.ts",
   "declaration/VariableDeclaration/fixtures/let-without-value/fixture.ts",
   "declaration/VariableDeclaration/fixtures/multiple-declarations/fixture.ts",
+  "declaration/VariableDeclaration/fixtures/using-multiple-declarations/fixture.ts",
+  "declaration/VariableDeclaration/fixtures/using-with-value/fixture.ts",
   "declaration/VariableDeclaration/fixtures/var-with-value/fixture.ts",
   "declaration/VariableDeclaration/fixtures/var-without-value/fixture.ts",
   "element/AccessorProperty/fixtures/key-computed-complex/fixture.ts",
@@ -469,5 +473,6 @@ exports[`AST Fixtures List fixtures with AST differences 1`] = `
   "special/TSTypeParameter/fixtures/interface-const-modifier/fixture.ts",
   "special/TSTypeParameter/fixtures/interface-in-const-modifier-multiple/fixture.ts",
   "special/TSTypeParameter/fixtures/method-const-modifiers/fixture.ts",
+  "statement/ForOfStatement/fixtures/using-decralation/fixture.ts",
 ]
 `;

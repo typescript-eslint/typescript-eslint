@@ -10,6 +10,7 @@ const PLUGINS: NonNullable<ParserOptions['plugins']> = [
   // 'classFeatures',
   'classProperties',
   'decorators-legacy',
+  'explicitResourceManagement',
   'importAssertions',
   'typescript',
 ];
