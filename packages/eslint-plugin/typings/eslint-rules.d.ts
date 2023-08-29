@@ -806,6 +806,7 @@ declare module 'eslint/lib/rules/init-declarations' {
 }
 
 declare module 'eslint/lib/rules/no-invalid-this' {
+  import type { CodePath } from '@typescript-eslint/ast-spec';
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
@@ -825,9 +826,26 @@ declare module 'eslint/lib/rules/no-invalid-this' {
       'FunctionExpression:exit'?: (node: TSESTree.FunctionExpression) => void;
 
       // for ESLint >= v8.7.0
-      // We don't use it and we don't have the CodePath types, so comment out it.
-      // onCodePathStart?: (codePath: unknown, node: TSESTree.Node) => void
-      // onCodePathEnd?: (codePath: unknown, node: TSESTree.Node) => void
+      /**
+       * The second parameter of `node` is intentionally typed as `never` in
+       * order to prevent TypeScript errors:
+       * https://github.com/typescript-eslint/typescript-eslint/issues/6993
+       *
+       * If you want to use this method, you can either ignore the `node` or
+       * manually type assert it to something else, depending on what you want
+       * to do.
+       */
+      onCodePathStart?: (codePath: CodePath, node: never) => void;
+      /**
+       * The second parameter of `node` is intentionally typed as `never` in
+       * order to prevent TypeScript errors:
+       * https://github.com/typescript-eslint/typescript-eslint/issues/6993
+       *
+       * If you want to use this method, you can either ignore the `node` or
+       * manually type assert it to something else, depending on what you want
+       * to do.
+       */
+      onCodePathEnd?: (codePath: CodePath, node: never) => void;
 
       // Common
       ThisExpression(node: TSESTree.ThisExpression): void;
