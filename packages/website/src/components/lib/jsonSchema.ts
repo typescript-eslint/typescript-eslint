@@ -118,7 +118,7 @@ export function getEslintJsonSchema(
           { type: 'string' },
           {
             type: 'array',
-            items: { type: 'string', enum: Object.values(linter.configs) },
+            items: { type: 'string', enum: linter.configs },
             uniqueItems: true,
           },
         ],
