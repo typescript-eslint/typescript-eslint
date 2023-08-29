@@ -806,7 +806,6 @@ declare module 'eslint/lib/rules/init-declarations' {
 }
 
 declare module 'eslint/lib/rules/no-invalid-this' {
-  import type { CodePath } from '@typescript-eslint/ast-spec';
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
   const rule: TSESLint.RuleModule<
@@ -831,56 +830,76 @@ declare module 'eslint/lib/rules/no-invalid-this' {
       // for ESLint >= v8.7.0
 
       /**
-       * The second parameter of `node` is intentionally omitted in order to
-       * prevent TypeScript errors:
-       * https://github.com/typescript-eslint/typescript-eslint/issues/6993
+       * The second parameter of `node` (with a type of `TSESTree.Node`) is
+       * [intentionally omitted in order to prevent TypeScript
+       * errors](https://github.com/typescript-eslint/typescript-eslint/issues/6993).
        *
-       * If you want to use this method, you can either ignore the `node` or
-       * specify it with a type assertion, depending on what you want to do.
+       * If you want to use this method, you can either ignore the `node`
+       * parameter or specify it with a type assertion, depending on what you
+       * want to do.
        */
-      onCodePathStart?: (codePath: CodePath) => void;
+      onCodePathStart?: (
+        codePath: TSESLint.CodePath,
+        // node: TSESTree.Node,
+      ) => void;
 
       /**
-       * The second parameter of `node` is intentionally omitted in order to
-       * prevent TypeScript errors:
-       * https://github.com/typescript-eslint/typescript-eslint/issues/6993
+       * The second parameter of `node` (with a type of `TSESTree.Node`) is
+       * [intentionally omitted in order to prevent TypeScript
+       * errors](https://github.com/typescript-eslint/typescript-eslint/issues/6993).
        *
-       * If you want to use this method, you can either ignore the `node` or
-       * specify it with a type assertion, depending on what you want to do.
+       * If you want to use this method, you can either ignore the `node`
+       * parameter or specify it with a type assertion, depending on what you
+       * want to do.
        */
-      onCodePathEnd?: (codePath: CodePath) => void;
+      onCodePathEnd?: (
+        codePath: TSESLint.CodePath,
+        // node: TSESTree.Node,
+      ) => void;
 
       /**
-       * The second parameter of `node` is intentionally omitted in order to
-       * prevent TypeScript errors:
-       * https://github.com/typescript-eslint/typescript-eslint/issues/6993
+       * The second parameter of `node` (with a type of `TSESTree.Node`) is
+       * [intentionally omitted in order to prevent TypeScript
+       * errors](https://github.com/typescript-eslint/typescript-eslint/issues/6993).
        *
-       * If you want to use this method, you can either ignore the `node` or
-       * specify it with a type assertion, depending on what you want to do.
+       * If you want to use this method, you can either ignore the `node`
+       * parameter or specify it with a type assertion, depending on what you
+       * want to do.
        */
-      onCodePathSegmentStart?: (segment: CodePathSegment) => void;
+      onCodePathSegmentStart?: (
+        segment: TSESLint.CodePathSegment,
+        // node: TSESTree.Node,
+      ) => void;
 
       /**
-       * The second parameter of `node` is intentionally omitted in order to
-       * prevent TypeScript errors:
-       * https://github.com/typescript-eslint/typescript-eslint/issues/6993
+       * The second parameter of `node` (with a type of `TSESTree.Node`) is
+       * [intentionally omitted in order to prevent TypeScript
+       * errors](https://github.com/typescript-eslint/typescript-eslint/issues/6993).
        *
-       * If you want to use this method, you can either ignore the `node` or
-       * specify it with a type assertion, depending on what you want to do.
+       * If you want to use this method, you can either ignore the `node`
+       * parameter or specify it with a type assertion, depending on what you
+       * want to do.
        */
-      onCodePathSegmentEnd?: (segment: CodePathSegment) => void;
+      onCodePathSegmentEnd?: (
+        segment: TSESLint.CodePathSegment,
+        // node: TSESTree.Node,
+      ) => void;
 
       /**
-       * The third parameter of `node` is intentionally omitted in order to
-       * prevent TypeScript errors:
-       * https://github.com/typescript-eslint/typescript-eslint/issues/6993
+       * The second parameter of `toSegment` (with a type of
+       * `TSESLint.CodePathSegment`) and the third parameter of `node` (with a
+       * type of `TSESTree.Node`) is [intentionally omitted in order to prevent
+       * TypeScript
+       * errors](https://github.com/typescript-eslint/typescript-eslint/issues/6993).
        *
-       * If you want to use this method, you can either ignore the `node` or
-       * specify it with a type assertion, depending on what you want to do.
+       * If you want to use this method, you can either ignore those parameters
+       * or specify them with a type assertion, depending on what you want to
+       * do.
        */
       onCodePathSegmentLoop?: (
-        fromSegment: CodePathSegment,
-        toSegment: CodePathSegment,
+        fromSegment: TSESLint.CodePathSegment,
+        // toSegment: TSESLint.CodePathSegment,
+        // node: TSESTree.Node,
       ) => void;
 
       // Common
