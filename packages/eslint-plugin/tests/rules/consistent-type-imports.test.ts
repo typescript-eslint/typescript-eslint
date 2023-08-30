@@ -749,6 +749,29 @@ let bar: B;
       ],
     },
     {
+      // Since the source does not end with a semicolon, the fixer should not add a semicolon, as that would be the job of the formatter.
+      // Otherwise, this would conflict with the semi: false option of prettier.
+      // eslint-disable-next-line @typescript-eslint/internal/plugin-test-formatting
+      code: `
+import A, { B } from 'foo'
+let foo: A;
+let bar: B;
+      `,
+      output: `
+import type { B } from 'foo'
+import type A from 'foo'
+let foo: A;
+let bar: B;
+      `,
+      errors: [
+        {
+          messageId: 'typeOverValue',
+          line: 2,
+          column: 1,
+        },
+      ],
+    },
+    {
       code: noFormat`
         import A, {} from 'foo';
         let foo: A;

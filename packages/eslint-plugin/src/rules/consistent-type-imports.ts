@@ -680,7 +680,10 @@ export default util.createRule<Options, MessageIds>({
             afterFixes.push(insertTypeNamedSpecifiers);
           }
         } else {
-          // The import is both default and named.  Insert named on new line because can't mix default type import and named type imports
+          const sourceEndsWithSemicolon =
+            sourceCode.getTokenAfter(node.source)?.value === ';';
+
+          // The import is both default and named. Insert named on new line because can't mix default type import and named type imports
           if (fixStyle === 'inline-type-imports') {
             yield fixer.insertTextBefore(
               node,
@@ -689,14 +692,18 @@ export default util.createRule<Options, MessageIds>({
                   const insertText = sourceCode.text.slice(...spec.range);
                   return `type ${insertText}`;
                 })
-                .join(', ')}} from ${sourceCode.getText(node.source)};\n`,
+                .join(', ')}} from ${sourceCode.getText(node.source)}${
+                sourceEndsWithSemicolon ? ';' : ''
+              }\n`,
             );
           } else {
             yield fixer.insertTextBefore(
               node,
               `import type {${
                 fixesNamedSpecifiers.typeNamedSpecifiersText
-              }} from ${sourceCode.getText(node.source)};\n`,
+              }} from ${sourceCode.getText(node.source)}${
+                sourceEndsWithSemicolon ? ';' : ''
+              }\n`,
             );
           }
         }
@@ -721,13 +728,18 @@ export default util.createRule<Options, MessageIds>({
           fixer.removeRange([commaToken.range[0], namespaceSpecifier.range[1]]),
         );
 
+        const sourceEndsWithSemicolon =
+          sourceCode.getTokenAfter(node.source)?.value === ';';
+
         // import type * as Ns from 'foo'
         // ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^ insert
         yield fixer.insertTextBefore(
           node,
           `import type ${sourceCode.getText(
             namespaceSpecifier,
-          )} from ${sourceCode.getText(node.source)};\n`,
+          )} from ${sourceCode.getText(node.source)}${
+            sourceEndsWithSemicolon ? ';' : ''
+          }\n`,
         );
       }
       if (
@@ -752,11 +764,13 @@ export default util.createRule<Options, MessageIds>({
           const defaultText = sourceCode.text
             .slice(defaultSpecifier.range[0], commaToken.range[0])
             .trim();
+          const sourceEndsWithSemicolon =
+            sourceCode.getTokenAfter(node.source)?.value === ';';
           yield fixer.insertTextBefore(
             node,
             `import type ${defaultText} from ${sourceCode.getText(
               node.source,
-            )};\n`,
+            )}${sourceEndsWithSemicolon ? ';' : ''}\n`,
           );
           const afterToken = util.nullThrows(
             sourceCode.getTokenAfter(commaToken, { includeComments: true }),
@@ -823,11 +837,13 @@ export default util.createRule<Options, MessageIds>({
             closingBraceToken.range[1],
           );
           if (node.specifiers.length > 1) {
+            const sourceEndsWithSemicolon =
+              sourceCode.getTokenAfter(node.source)?.value === ';';
             yield fixer.insertTextAfter(
               node,
               `\nimport type${specifiersText} from ${sourceCode.getText(
                 node.source,
-              )};`,
+              )}${sourceEndsWithSemicolon ? ';' : ''}\n`,
             );
           }
         }
