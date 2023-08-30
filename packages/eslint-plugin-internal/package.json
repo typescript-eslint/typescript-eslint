@@ -21,7 +21,7 @@
     "prettier": "^2.8.4"
   },
   "devDependencies": {
-    "jest": "29.6.2",
+    "jest": "29.6.4",
     "rimraf": "*"
   }
 }
