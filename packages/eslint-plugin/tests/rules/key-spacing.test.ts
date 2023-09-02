@@ -613,6 +613,13 @@ class Foo {
 class Foo { a: (b) }
       `,
     },
+    {
+      code: `
+class Foo {
+  a?: (string | number)
+}
+      `,
+    },
   ],
   invalid: [
     // align: value
@@ -1431,6 +1438,19 @@ interface X { a : /** comment */ number; };
         },
       ],
       errors: [{ messageId: 'missingKey' }, { messageId: 'missingValue' }],
+    },
+    {
+      code: `
+class Foo {
+  a:    (string | number)
+}
+      `,
+      output: `
+class Foo {
+  a: (string | number)
+}
+      `,
+      errors: [{ messageId: 'extraValue' }],
     },
   ],
 });
