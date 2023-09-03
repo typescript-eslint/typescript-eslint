@@ -833,7 +833,18 @@ describe('RuleTester', () => {
           ],
         });
 
-        expect(mockedDescribe.mock.calls).toHaveLength(2);
+        expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
+          [
+            [
+              "my-rule",
+              [Function],
+            ],
+            [
+              "invalid",
+              [Function],
+            ],
+          ]
+        `);
       });
 
       it('does not call describe with invalid if no invalid tests are provided', () => {
@@ -848,7 +859,18 @@ describe('RuleTester', () => {
           invalid: [],
         });
 
-        expect(mockedDescribe.mock.calls).toHaveLength(2);
+        expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
+          [
+            [
+              "my-rule",
+              [Function],
+            ],
+            [
+              "valid",
+              [Function],
+            ],
+          ]
+        `);
       });
     });
   });
