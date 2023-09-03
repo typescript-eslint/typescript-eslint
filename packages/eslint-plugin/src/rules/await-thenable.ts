@@ -42,10 +42,16 @@ export default util.createRule({
               {
                 messageId: 'removeAwait',
                 fix(fixer): TSESLint.RuleFix {
-                  return fixer.removeRange([
-                    node.range[0],
-                    node.range[0] + 'await'.length,
-                  ]);
+                  const sourceCode = context.getSourceCode();
+                  const awaitKeyword = util.nullThrows(
+                    sourceCode.getFirstToken(node, util.isAwaitKeyword),
+                    util.NullThrowsReasons.MissingToken(
+                      'await',
+                      'await expression',
+                    ),
+                  );
+
+                  return fixer.remove(awaitKeyword);
                 },
               },
             ],
