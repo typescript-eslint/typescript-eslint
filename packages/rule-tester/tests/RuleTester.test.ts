@@ -819,6 +819,59 @@ describe('RuleTester', () => {
         expect(mockedDescribeSkip.mock.calls).toHaveLength(0);
         // expect(mockedIt.mock.lastCall).toMatchInlineSnapshot(`undefined`);
       });
+
+      it('does not call describe with valid if no valid tests are provided', () => {
+        const ruleTester = new RuleTester();
+
+        ruleTester.run('my-rule', NOOP_RULE, {
+          valid: [],
+          invalid: [
+            {
+              code: 'invalid',
+              errors: [{ messageId: 'error' }],
+            },
+          ],
+        });
+
+        expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
+          [
+            [
+              "my-rule",
+              [Function],
+            ],
+            [
+              "invalid",
+              [Function],
+            ],
+          ]
+        `);
+      });
+
+      it('does not call describe with invalid if no invalid tests are provided', () => {
+        const ruleTester = new RuleTester();
+
+        ruleTester.run('my-rule', NOOP_RULE, {
+          valid: [
+            {
+              code: 'valid',
+            },
+          ],
+          invalid: [],
+        });
+
+        expect(mockedDescribe.mock.calls).toMatchInlineSnapshot(`
+          [
+            [
+              "my-rule",
+              [Function],
+            ],
+            [
+              "valid",
+              [Function],
+            ],
+          ]
+        `);
+      });
     });
   });
 });
