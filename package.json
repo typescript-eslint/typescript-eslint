@@ -36,7 +36,7 @@
     "generate-contributors": "nx run repo-tools:generate-contributors",
     "generate-sponsors": "nx run repo-tools:generate-sponsors",
     "generate-website-dts": "nx run website:generate-website-dts",
-    "generate-lib": "nx run scope-manager:generate-lib",
+    "generate-lib": "nx run repo-tools:generate-lib",
     "lint-fix": "yarn lint --fix",
     "lint-markdown-fix": "yarn lint-markdown --fix",
     "lint-markdown": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",
