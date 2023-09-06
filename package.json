@@ -135,7 +135,6 @@
     "@types/estree": "link:./tools/dummypkg",
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.14",
-    "ajv@^6.12.6": "patch:ajv@npm%3A6.12.6#./.yarn/patches/ajv-npm-6.12.6-4b5105e2b2.patch",
     "eslint-visitor-keys": "^3.4.1",
     "jest-config": "^29",
     "jest-resolve": "^29",
