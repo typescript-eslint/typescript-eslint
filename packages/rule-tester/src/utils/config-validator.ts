@@ -76,7 +76,7 @@ function validateRuleSchema(
   const validateRule = ruleValidators.get(rule);
 
   if (validateRule) {
-    validateRule(localOptions);
+    void validateRule(localOptions);
     if (validateRule.errors) {
       throw new Error(
         validateRule.errors
