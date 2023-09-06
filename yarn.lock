@@ -5854,7 +5854,9 @@ __metadata:
     cross-fetch: "*"
     execa: "*"
     prettier: ^2.8.4
+    rimraf: "*"
     tmp: "*"
+    typescript: "*"
   languageName: unknown
   linkType: soft
 
@@ -5901,9 +5903,7 @@ __metadata:
     glob: "*"
     jest-specific-snapshot: "*"
     make-dir: "*"
-    prettier: ^2.8.4
     pretty-format: "*"
-    rimraf: "*"
     typescript: "*"
   languageName: unknown
   linkType: soft
