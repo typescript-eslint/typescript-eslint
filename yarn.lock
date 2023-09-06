@@ -6522,18 +6522,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@patch:ajv@npm%3A6.12.6#./.yarn/patches/ajv-npm-6.12.6-4b5105e2b2.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
-  version: 6.12.6
-  resolution: "ajv@patch:ajv@npm%3A6.12.6#./.yarn/patches/ajv-npm-6.12.6-4b5105e2b2.patch::version=6.12.6&hash=3d7604&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
-  dependencies:
-    fast-deep-equal: ^3.1.1
-    fast-json-stable-stringify: ^2.0.0
-    json-schema-traverse: ^0.4.1
-    uri-js: ^4.2.2
-  checksum: 89f87655eef3d74b782ccd96fbb957987a905189844f293754371f28b7795f21153786c39707002bee2eb24c23c8a6efd8a9a89365afcca7d6e50df573bf5047
-  languageName: node
-  linkType: hard
-
 "algoliasearch-helper@npm:^3.10.0":
   version: 3.10.0
   resolution: "algoliasearch-helper@npm:3.10.0"
