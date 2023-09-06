@@ -6019,7 +6019,6 @@ __metadata:
     netlify: ^13.1.9
     nx: 16.7.2
     nx-cloud: 16.4.0-beta.1
-    patch-package: ^8.0.0
     prettier: ^2.8.4
     pretty-format: ^29.6.2
     raw-loader: ^4.0.2
@@ -6499,7 +6498,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ajv@npm:^6.10.0, ajv@npm:^6.12.2, ajv@npm:^6.12.4, ajv@npm:^6.12.5, ajv@npm:^6.12.6, ajv@npm:~6.12.6":
+"ajv@npm:6.12.6, ajv@npm:^6.10.0, ajv@npm:^6.12.2, ajv@npm:^6.12.4, ajv@npm:^6.12.5, ajv@npm:~6.12.6":
   version: 6.12.6
   resolution: "ajv@npm:6.12.6"
   dependencies:
@@ -6520,6 +6519,18 @@ __metadata:
     require-from-string: ^2.0.2
     uri-js: ^4.2.2
   checksum: 4dc13714e316e67537c8b31bc063f99a1d9d9a497eb4bbd55191ac0dcd5e4985bbb71570352ad6f1e76684fb6d790928f96ba3b2d4fd6e10024be9612fe3f001
+  languageName: node
+  linkType: hard
+
+"ajv@patch:ajv@npm%3A6.12.6#./.yarn/patches/ajv-npm-6.12.6-4b5105e2b2.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+  version: 6.12.6
+  resolution: "ajv@patch:ajv@npm%3A6.12.6#./.yarn/patches/ajv-npm-6.12.6-4b5105e2b2.patch::version=6.12.6&hash=3d7604&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+  dependencies:
+    fast-deep-equal: ^3.1.1
+    fast-json-stable-stringify: ^2.0.0
+    json-schema-traverse: ^0.4.1
+    uri-js: ^4.2.2
+  checksum: 89f87655eef3d74b782ccd96fbb957987a905189844f293754371f28b7795f21153786c39707002bee2eb24c23c8a6efd8a9a89365afcca7d6e50df573bf5047
   languageName: node
   linkType: hard
 
@@ -7740,7 +7751,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"ci-info@npm:^3.2.0, ci-info@npm:^3.6.1, ci-info@npm:^3.7.0, ci-info@npm:^3.8.0":
+"ci-info@npm:^3.2.0, ci-info@npm:^3.6.1, ci-info@npm:^3.8.0":
   version: 3.8.0
   resolution: "ci-info@npm:3.8.0"
   checksum: d0a4d3160497cae54294974a7246202244fff031b0a6ea20dd57b10ec510aa17399c41a1b0982142c105f3255aff2173e5c0dd7302ee1b2f28ba3debda375098
@@ -10746,15 +10757,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"find-yarn-workspace-root@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "find-yarn-workspace-root@npm:2.0.0"
-  dependencies:
-    micromatch: ^4.0.2
-  checksum: fa5ca8f9d08fe7a54ce7c0a5931ff9b7e36f9ee7b9475fb13752bcea80ec6b5f180fa5102d60b376d5526ce924ea3fc6b19301262efa0a5d248dd710f3644242
-  languageName: node
-  linkType: hard
-
 "flat-cache@npm:^3.0.4":
   version: 3.0.4
   resolution: "flat-cache@npm:3.0.4"
@@ -12822,7 +12824,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"is-wsl@npm:^2.1.1, is-wsl@npm:^2.2.0":
+"is-wsl@npm:^2.2.0":
   version: 2.2.0
   resolution: "is-wsl@npm:2.2.0"
   dependencies:
@@ -13584,15 +13586,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"json-stable-stringify@npm:^1.0.2":
-  version: 1.0.2
-  resolution: "json-stable-stringify@npm:1.0.2"
-  dependencies:
-    jsonify: ^0.0.1
-  checksum: ec10863493fb728481ed7576551382768a173d5b884758db530def00523b862083a3fd70fee24b39e2f47f5f502e22f9a1489dd66da3535b63bf6241dbfca800
-  languageName: node
-  linkType: hard
-
 "json-stringify-safe@npm:^5.0.1":
   version: 5.0.1
   resolution: "json-stringify-safe@npm:5.0.1"
@@ -13652,13 +13645,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"jsonify@npm:^0.0.1":
-  version: 0.0.1
-  resolution: "jsonify@npm:0.0.1"
-  checksum: 027287e1c0294fce15f18c0ff990cfc2318e7f01fb76515f784d5cd0784abfec6fc5c2355c3a2f2cb0ad7f4aa2f5b74ebbfe4e80476c35b2d13cabdb572e1134
-  languageName: node
-  linkType: hard
-
 "jsonparse@npm:^1.2.0, jsonparse@npm:^1.3.1":
   version: 1.3.1
   resolution: "jsonparse@npm:1.3.1"
@@ -13705,15 +13691,6 @@ __metadata:
   version: 6.0.3
   resolution: "kind-of@npm:6.0.3"
   checksum: 3ab01e7b1d440b22fe4c31f23d8d38b4d9b91d9f291df683476576493d5dfd2e03848a8b05813dd0c3f0e835bc63f433007ddeceb71f05cb25c45ae1b19c6d3b
-  languageName: node
-  linkType: hard
-
-"klaw-sync@npm:^6.0.0":
-  version: 6.0.0
-  resolution: "klaw-sync@npm:6.0.0"
-  dependencies:
-    graceful-fs: ^4.1.11
-  checksum: 0da397f8961313c3ef8f79fb63af9002cde5a8fb2aeb1a37351feff0dd6006129c790400c3f5c3b4e757bedcabb13d21ec0a5eaef5a593d59515d4f2c291e475
   languageName: node
   linkType: hard
 
@@ -15742,16 +15719,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"open@npm:^7.4.2":
-  version: 7.4.2
-  resolution: "open@npm:7.4.2"
-  dependencies:
-    is-docker: ^2.0.0
-    is-wsl: ^2.1.1
-  checksum: 3333900ec0e420d64c23b831bc3467e57031461d843c801f569b2204a1acc3cd7b3ec3c7897afc9dde86491dfa289708eb92bba164093d8bd88fb2c231843c91
-  languageName: node
-  linkType: hard
-
 "open@npm:^8.0.9, open@npm:^8.4.0, open@npm:~8.4.0":
   version: 8.4.2
   resolution: "open@npm:8.4.2"
@@ -16172,31 +16139,6 @@ __metadata:
     no-case: ^3.0.4
     tslib: ^2.0.3
   checksum: ba98bfd595fc91ef3d30f4243b1aee2f6ec41c53b4546bfa3039487c367abaa182471dcfc830a1f9e1a0df00c14a370514fa2b3a1aacc68b15a460c31116873e
-  languageName: node
-  linkType: hard
-
-"patch-package@npm:^8.0.0":
-  version: 8.0.0
-  resolution: "patch-package@npm:8.0.0"
-  dependencies:
-    "@yarnpkg/lockfile": ^1.1.0
-    chalk: ^4.1.2
-    ci-info: ^3.7.0
-    cross-spawn: ^7.0.3
-    find-yarn-workspace-root: ^2.0.0
-    fs-extra: ^9.0.0
-    json-stable-stringify: ^1.0.2
-    klaw-sync: ^6.0.0
-    minimist: ^1.2.6
-    open: ^7.4.2
-    rimraf: ^2.6.3
-    semver: ^7.5.3
-    slash: ^2.0.0
-    tmp: ^0.0.33
-    yaml: ^2.2.2
-  bin:
-    patch-package: index.js
-  checksum: d23cddc4d1622e2d8c7ca31b145c6eddb24bd271f69905e766de5e1f199f0b9a5479a6a6939ea857288399d4ed249285639d539a2c00fbddb7daa39934b007a2
   languageName: node
   linkType: hard
 
@@ -17390,7 +17332,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"react-split-pane@npm:^0.1.92":
+"react-split-pane@npm:0.1.92":
   version: 0.1.92
   resolution: "react-split-pane@npm:0.1.92"
   dependencies:
@@ -17401,6 +17343,20 @@ __metadata:
     react: ^16.0.0-0
     react-dom: ^16.0.0-0
   checksum: 4890f172636baeb4bb197195e8d896297ef8eec3c9887331e4a3854da6cf66b2f7758132c3e05f4b38eed595710f678ae1399cb0ca82e9811db06ad95410eee6
+  languageName: node
+  linkType: hard
+
+"react-split-pane@patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+  version: 0.1.92
+  resolution: "react-split-pane@patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch::version=0.1.92&hash=9eba81&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+  dependencies:
+    prop-types: ^15.7.2
+    react-lifecycles-compat: ^3.0.4
+    react-style-proptype: ^3.2.2
+  peerDependencies:
+    react: ^16.0.0-0
+    react-dom: ^16.0.0-0
+  checksum: e05f6773bb687e6f3fffdb4bac48bc655b41b825ff8eb6ee8a39346d48fa8044be6f8d5832b1353700db65311712e561253cdeb822a074779afbd0754b3703ae
   languageName: node
   linkType: hard
 
@@ -18063,17 +18019,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"rimraf@npm:^2.6.3":
-  version: 2.7.1
-  resolution: "rimraf@npm:2.7.1"
-  dependencies:
-    glob: ^7.1.3
-  bin:
-    rimraf: ./bin.js
-  checksum: cdc7f6eacb17927f2a075117a823e1c5951792c6498ebcce81ca8203454a811d4cf8900314154d3259bb8f0b42ab17f67396a8694a54cae3283326e57ad250cd
-  languageName: node
-  linkType: hard
-
 "rimraf@npm:^3.0.0, rimraf@npm:^3.0.2":
   version: 3.0.2
   resolution: "rimraf@npm:3.0.2"
@@ -18624,13 +18569,6 @@ __metadata:
   version: 3.0.0
   resolution: "slash@npm:3.0.0"
   checksum: 94a93fff615f25a999ad4b83c9d5e257a7280c90a32a7cb8b4a87996e4babf322e469c42b7f649fd5796edd8687652f3fb452a86dc97a816f01113183393f11c
-  languageName: node
-  linkType: hard
-
-"slash@npm:^2.0.0":
-  version: 2.0.0
-  resolution: "slash@npm:2.0.0"
-  checksum: 512d4350735375bd11647233cb0e2f93beca6f53441015eea241fe784d8068281c3987fbaa93e7ef1c38df68d9c60013045c92837423c69115297d6169aa85e6
   languageName: node
   linkType: hard
 
@@ -20028,13 +19966,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>":
+"typescript@patch:typescript@npm%3A5.2.2#./.yarn/patches/typescript-npm-5.2.2-01717e9f84.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
   version: 5.2.2
-  resolution: "typescript@patch:typescript@npm%3A5.2.2#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"
+  resolution: "typescript@patch:typescript@npm%3A5.2.2#./.yarn/patches/typescript-npm-5.2.2-01717e9f84.patch::version=5.2.2&hash=c1c928&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 0f4da2f15e6f1245e49db15801dbee52f2bbfb267e1c39225afdab5afee1a72839cd86000e65ee9d7e4dfaff12239d28beaf5ee431357fcced15fb08583d72ca
+  checksum: 68f0d660e40a032ed507e2dea44a2729f522a2d1a9b0597aa5459cf7401e244245856241189313087453f705b6bdc11639fcb9266425ddb0c4404233f4669b5c
+  languageName: node
+  linkType: hard
+
+"typescript@patch:typescript@patch%3Atypescript@npm%253A5.2.2%23./.yarn/patches/typescript-npm-5.2.2-01717e9f84.patch%3A%3Alocator=%2540typescript-eslint%252Ftypescript-eslint%2540workspace%253A.#~builtin<compat/typescript>":
+  version: 5.2.2
+  resolution: "typescript@patch:typescript@patch%3Atypescript@npm%253A5.2.2%23./.yarn/patches/typescript-npm-5.2.2-01717e9f84.patch%3A%3Aversion=5.2.2&hash=c1c928&locator=%2540typescript-eslint%252Ftypescript-eslint%2540workspace%253A.#~builtin<compat/typescript>::version=5.2.2&hash=f3b441"
+  bin:
+    tsc: bin/tsc
+    tsserver: bin/tsserver
+  checksum: 44eead0a64bb01bc40b0a8ba44f56ae0caf7c7afe3d6ef723bcb2259a7b8aa98d24096e478ba0bcd4fe9295b686d9324e79d1636c16b08caedfec14e9dead065
   languageName: node
   linkType: hard
 
@@ -21403,7 +21351,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:2.3.1, yaml@npm:^2.2.2":
+"yaml@npm:2.3.1":
   version: 2.3.1
   resolution: "yaml@npm:2.3.1"
   checksum: 2c7bc9a7cd4c9f40d3b0b0a98e370781b68b8b7c4515720869aced2b00d92f5da1762b4ffa947f9e795d6cd6b19f410bd4d15fdd38aca7bd96df59bd9486fb54

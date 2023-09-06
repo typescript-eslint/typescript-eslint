@@ -108,7 +108,6 @@
     "netlify": "^13.1.9",
     "nx": "16.7.2",
     "nx-cloud": "16.4.0-beta.1",
-    "patch-package": "^8.0.0",
     "prettier": "^2.8.4",
     "pretty-format": "^29.6.2",
     "raw-loader": "^4.0.2",
@@ -136,13 +135,15 @@
     "@types/estree": "link:./tools/dummypkg",
     "@types/node": "^20.0.0",
     "@types/react": "^18.2.14",
+    "ajv@^6.12.6": "patch:ajv@npm%3A6.12.6#./.yarn/patches/ajv-npm-6.12.6-4b5105e2b2.patch",
     "eslint-visitor-keys": "^3.4.1",
     "jest-config": "^29",
     "jest-resolve": "^29",
     "jest-util": "^29",
     "pretty-format": "^29",
+    "react-split-pane@^0.1.92": "patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch",
     "tsx": "^3.12.7",
-    "typescript": "5.2.2"
+    "typescript": "patch:typescript@npm%3A5.2.2#./.yarn/patches/typescript-npm-5.2.2-01717e9f84.patch"
   },
   "packageManager": "yarn@3.6.3"
 }
