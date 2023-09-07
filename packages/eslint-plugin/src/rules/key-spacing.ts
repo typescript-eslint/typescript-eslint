@@ -163,9 +163,15 @@ export default util.createRule<Options, MessageIds>({
       mode: 'minimum' | 'strict',
     ): void {
       const { typeAnnotation } = node;
-      const colon = typeAnnotation.loc.start.column;
-      const typeStart = typeAnnotation.typeAnnotation.loc.start.column;
-      const difference = typeStart - colon - 1 - expectedWhitespaceAfterColon;
+      const colonToken = sourceCode.getFirstToken(typeAnnotation)!;
+      const typeStart = sourceCode.getTokenAfter(colonToken, {
+        includeComments: true,
+      })!.loc.start.column;
+      const difference =
+        typeStart -
+        colonToken.loc.start.column -
+        1 -
+        expectedWhitespaceAfterColon;
       if (mode === 'strict' ? difference : difference < 0) {
         context.report({
           node,
@@ -173,14 +179,11 @@ export default util.createRule<Options, MessageIds>({
           fix: fixer => {
             if (difference > 0) {
               return fixer.removeRange([
-                typeAnnotation.typeAnnotation.range[0] - difference,
-                typeAnnotation.typeAnnotation.range[0],
+                colonToken.range[1],
+                colonToken.range[1] + difference,
               ]);
             }
-            return fixer.insertTextBefore(
-              typeAnnotation.typeAnnotation,
-              ' '.repeat(-difference),
-            );
+            return fixer.insertTextAfter(colonToken, ' '.repeat(-difference));
           },
           data: {
             computed: '',

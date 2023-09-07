@@ -36,7 +36,7 @@
     "generate-contributors": "nx run repo-tools:generate-contributors",
     "generate-sponsors": "nx run repo-tools:generate-sponsors",
     "generate-website-dts": "nx run website:generate-website-dts",
-    "generate-lib": "nx run scope-manager:generate-lib",
+    "generate-lib": "nx run repo-tools:generate-lib",
     "lint-fix": "yarn lint --fix",
     "lint-markdown-fix": "yarn lint-markdown --fix",
     "lint-markdown": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",
@@ -103,12 +103,11 @@
     "lerna": "7.2.0",
     "lint-staged": "^14.0.0",
     "make-dir": "^4.0.0",
-    "markdownlint-cli": "^0.35.0",
+    "markdownlint-cli": "^0.36.0",
     "ncp": "^2.0.0",
     "netlify": "^13.1.9",
     "nx": "16.7.2",
     "nx-cloud": "16.4.0-beta.1",
-    "patch-package": "^8.0.0",
     "prettier": "^2.8.4",
     "pretty-format": "^29.6.2",
     "raw-loader": "^4.0.2",
@@ -141,8 +140,9 @@
     "jest-resolve": "^29",
     "jest-util": "^29",
     "pretty-format": "^29",
+    "react-split-pane@^0.1.92": "patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch",
     "tsx": "^3.12.7",
-    "typescript": "5.2.2"
+    "typescript": "patch:typescript@npm%3A5.2.2#./.yarn/patches/typescript-npm-5.2.2-01717e9f84.patch"
   },
   "packageManager": "yarn@3.6.3"
 }
