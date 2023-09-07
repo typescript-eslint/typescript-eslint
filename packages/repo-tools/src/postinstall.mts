@@ -27,9 +27,6 @@ void (async function (): Promise<void> {
   } = await import('@nx/devkit');
   process.chdir(workspaceRoot);
 
-  // Apply patches to installed node_modules
-  await $`yarn patch-package`;
-
   // Install git hooks
   await $`yarn husky install`;
 

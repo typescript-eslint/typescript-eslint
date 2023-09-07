@@ -53,9 +53,7 @@
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",
-    "prettier": "^2.8.4",
     "pretty-format": "*",
-    "rimraf": "*",
     "typescript": "*"
   },
   "funding": {
