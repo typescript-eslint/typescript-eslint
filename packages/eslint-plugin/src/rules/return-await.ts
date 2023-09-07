@@ -95,6 +95,7 @@ export default util.createRule({
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (
+          ancestor.parent &&
           ts.isTryStatement(ancestor.parent) &&
           ts.isBlock(ancestor) &&
           ancestor.parent.end === ancestor.end
