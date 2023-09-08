@@ -580,6 +580,46 @@ interface X { a:number; abc:string; };
         },
       ],
     },
+    {
+      code: `
+class Foo {
+  a: (b)
+}
+      `,
+    },
+    {
+      code: `
+interface Foo {
+  a: (b)
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  a: /** comment */ b
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
+  a: (     b)
+}
+      `,
+    },
+    {
+      code: `
+class Foo { a: (b) }
+      `,
+    },
+    {
+      code: `
+class Foo {
+  a?: (string | number)
+}
+      `,
+    },
   ],
   invalid: [
     // align: value
@@ -1316,6 +1356,101 @@ class Wacky {
         { messageId: 'missingValue' },
         { messageId: 'missingValue' },
       ],
+    },
+    {
+      code: `
+class Foo {
+  a:  (b)
+}
+      `,
+      output: `
+class Foo {
+  a: (b)
+}
+      `,
+      errors: [{ messageId: 'extraValue' }],
+    },
+    {
+      code: `
+interface Foo {
+  a:  (b)
+}
+      `,
+      output: `
+interface Foo {
+  a: (b)
+}
+      `,
+      errors: [{ messageId: 'extraValue' }],
+    },
+    {
+      code: `
+class Foo {
+  a:  /** comment */ b
+}
+      `,
+      output: `
+class Foo {
+  a: /** comment */ b
+}
+      `,
+      errors: [{ messageId: 'extraValue' }],
+    },
+    {
+      code: `
+class Foo {
+  a:    (     b)
+}
+      `,
+      output: `
+class Foo {
+  a: (     b)
+}
+      `,
+      errors: [{ messageId: 'extraValue' }],
+    },
+    {
+      code: `
+interface X { a:(number); };
+      `,
+      output: `
+interface X { a : (number); };
+      `,
+      options: [
+        {
+          singleLine: { beforeColon: true, afterColon: true, mode: 'strict' },
+          multiLine: { beforeColon: true, afterColon: true },
+        },
+      ],
+      errors: [{ messageId: 'missingKey' }, { messageId: 'missingValue' }],
+    },
+    {
+      code: `
+interface X { a:/** comment */ number; };
+      `,
+      output: `
+interface X { a : /** comment */ number; };
+      `,
+      options: [
+        {
+          singleLine: { beforeColon: true, afterColon: true, mode: 'strict' },
+          multiLine: { beforeColon: true, afterColon: true },
+        },
+      ],
+      errors: [{ messageId: 'missingKey' }, { messageId: 'missingValue' }],
+    },
+    {
+      code: `
+class Foo {
+  a:    (string | number)
+}
+      `,
+      output: `
+class Foo {
+  a: (string | number)
+}
+      `,
+      errors: [{ messageId: 'extraValue' }],
     },
   ],
 });
