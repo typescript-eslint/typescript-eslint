@@ -888,7 +888,7 @@ declare module 'eslint/lib/rules/no-invalid-this' {
       /**
        * The second parameter of `toSegment` (with a type of
        * `TSESLint.CodePathSegment`) and the third parameter of `node` (with a
-       * type of `TSESTree.Node`) is [intentionally omitted in order to prevent
+       * type of `TSESTree.Node`) are [intentionally omitted in order to prevent
        * TypeScript
        * errors](https://github.com/typescript-eslint/typescript-eslint/issues/6993).
        *
