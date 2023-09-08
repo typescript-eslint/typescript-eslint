@@ -53,10 +53,9 @@ However, we've seen a few issues arise from this approach:
 
 - Particularly large repos can end up with so many TSConfig globs, they become confusing to developers or even cause [performance issues from overly permissive globs](https://typescript-eslint.io/linting/troubleshooting/performance-troubleshooting#wide-includes-in-your-eslint-options)
 - Needing to change a template ESLint config every time it's used for a different repository structure is a pain
-- Using different TSConfigs than what your editor users can result in different lint reports in the editor verses on the command-line
+- Using a TSConfig that's different from what your editor uses can result in different lint reports between the editor and the command-line
 
-Although developers may sometimes need exact control over their `parserOptions.project`, most of the time we don't want to configure this.
-Most repositories we've seen just want to use the _nearest `tsconfig.json` to each linted file_.
+Although developers may sometimes need exact control over their `parserOptions.project`, most of the time we just want to use the _nearest `tsconfig.json` to each linted file_, which is the TSConfig used by the editor by default.
 
 In other words, many developers want our [issue #101: Feature request: support looking up tsconfig.json relative to linted file](https://github.com/typescript-eslint/typescript-eslint/issues/101).
 
@@ -79,29 +78,29 @@ Doing so indicates that each source file being linted should use type informatio
 For each file, `@typescript-eslint/parser` will check that file's directory, then the parent directory, and so on - until a `tsconfig.json` file is found.
 
 :::tip
-We recommend specifying [`tsconfigRootDir`](http://localhost:3000/packages/parser#tsconfigrootdir) in ESLint configs with a value set to the project's root directory (most commonly, `__dirname`).
+We recommend setting the [`tsconfigRootDir`](/packages/parser#tsconfigrootdir) ESLint config to the project's root directory (most commonly, `__dirname`).
 That way, if you accidentally delete or rename the root `tsconfig.json` file, `@typescript-eslint/parser` won't search parent directories for higher `tsconfig.json` files.
 :::
 
 ### Why Try `true`
 
 If your project uses typed linting and manually specifies `tsconfig.json` files, we'd highly recommend trying out `parserOptions.project: true`.
-We've seen it reduce lines of codes of ESLint configurations in many projects that have switched to it.
-It's even occasionally even reduced time spent on typed linting by helping projects use a simpler set of TSConfigs. 🚀
+We've seen it reduce lines of code in ESLint configurations in many early adopters.
+Sometimes, it even reduces time spent on typed linting by helping projects use a simpler set of TSConfigs. 🚀
 
 In the long term, we're hoping to further improve the configuration and performance for typed linting (see _[Project Services](#project-services)_ below).
 Simplifying your configuration now will make it easier to onboard to our new options when they're available.
 
 ### How It Works
 
-When `@typescript-eslint/parser` is configured to generate type information, it attaches a backing TypeScript "Program" for to file it parses.
+When `@typescript-eslint/parser` is configured to generate type information, it attaches a backing TypeScript "Program" for each file it parses.
 Those Programs provide type checking APIs used by lint rules.
-Each TSConfig file on disk is generally used to create exactly one Program, so files that refer to the same TSConfig file will reuse the same Program.
+Each TSConfig file on disk is generally used to create exactly one Program, and files included by the same TSConfig file will reuse the same Program.
 
 Depending on how the ESLint config's `parserOptions.project` was specified, determining _which_ TSConfig file to use for each file can be different:
 
-- For a single string (e.g. `"tsconfig.json"`), then only one Program will be created, and all linted files will reuse it.
-- For globs and/or arrays (e.g. `"./packages/*/tsconfig.json"`), then each linted file will reuse a Program based on the _first_ matched TSConfig file.
+- For a single path (e.g. `"tsconfig.json"`), only one Program will be created, and all linted files will reuse it.
+- For globs and/or arrays (e.g. `"./packages/*/tsconfig.json"`), each linted file will use the Program created by the _first_ matched TSConfig file.
 
 For `true`, each linted file will first try the `tsconfig.json` in its directory, then its parent directory, and so on until one is found on disk or the directory root (`parserOptions.tsconfigRootDir`) is reached.
 
@@ -141,13 +140,13 @@ Manual Program creation logic comes with a few issues:
 We're working on an option to instead call the same TypeScript "Project Service" APIs that editors such as VS Code use to create Programs for us instead.
 Project Services will automatically detect the TSConfig for each file (like `project: true`), and will also allow type information to be computed for JavaScript files without the `allowJs` compiler option (unlike `project: true`).
 
-We're hopeful this option will eventually become the standard way to enable typed linting.
+We hope this option will eventually become the standard way to enable typed linting.
 However, because it's so new and untested, we're keeping it under the `EXPERIMENTAL_` prefix for at least all of the `6.X` versions.
 
 See [Packages > Parser > `EXPERIMENTAL_useProjectService`](/packages/parser#EXPERIMENTAL_useProjectService) for more information.
 
 ## Supporting typescript-eslint
 
-If you enjoyed this blog post and/or or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
+If you enjoyed this blog post and/or use typescript-eslint, please consider [supporting us on Open Collective](https://opencollective.com/typescript-eslint).
 We're a small volunteer team and could use your support to make the ESLint experience on TypeScript great.
 Thanks! 💖
