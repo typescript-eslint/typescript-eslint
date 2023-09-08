@@ -10,6 +10,7 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-restricted-imports', rule, {
   valid: [
     "import foo from 'foo';",
+    "import 'foo';",
     {
       code: "import foo from 'foo';",
       options: ['import1', 'import2'],
@@ -25,6 +26,10 @@ ruleTester.run('no-restricted-imports', rule, {
     {
       code: "export { foo } from 'foo';",
       options: [{ paths: ['import1', 'import2'] }],
+    },
+    {
+      code: "import 'foo';",
+      options: ['import1', 'import2'],
     },
     {
       code: "import foo from 'foo';",
@@ -487,6 +492,43 @@ import type { foo } from 'import2/private/bar';
         {
           messageId: 'patternWithCustomMessage',
           type: AST_NODE_TYPES.ExportNamedDeclaration,
+        },
+      ],
+    },
+    {
+      code: "import 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+            },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'path',
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+    {
+      code: "import 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'path',
+          type: AST_NODE_TYPES.ImportDeclaration,
         },
       ],
     },
