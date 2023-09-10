@@ -85,6 +85,17 @@ export function createParser(
         typeChecker: checker,
       });
 
+      const compiledFiles =
+        compilerHost.languageService.getEmitOutput(filePath);
+
+      const fileSep = '// --------------------------';
+      compilerHost.createFile(
+        '/compiled',
+        compiledFiles.outputFiles
+          .map(file => `${fileSep}\n// ${file.name}\n${fileSep}\n` + file.text)
+          .join(`\n`),
+      );
+
       return {
         ast: converted.estree,
         services: {

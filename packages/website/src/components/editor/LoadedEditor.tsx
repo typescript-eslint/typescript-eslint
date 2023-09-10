@@ -69,10 +69,16 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         'json',
         monaco.Uri.file('/.eslintrc'),
       ),
+      compiled: monaco.editor.createModel(
+        '',
+        'typescript',
+        monaco.Uri.file('/compiled'),
+      ),
     };
     tabsDefault.code.updateOptions({ tabSize: 2, insertSpaces: true });
     tabsDefault.eslintrc.updateOptions({ tabSize: 2, insertSpaces: true });
     tabsDefault.tsconfig.updateOptions({ tabSize: 2, insertSpaces: true });
+    tabsDefault.compiled.updateOptions({ tabSize: 2, insertSpaces: true });
     return tabsDefault;
   });
 
@@ -119,6 +125,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   useEffect(() => {
     if (editor.getModel()?.uri.path !== tabs[activeTab].uri.path) {
       editor.setModel(tabs[activeTab]);
+      editor.updateOptions({ readOnly: activeTab === 'compiled' });
       updateMarkers();
     }
   }, [activeTab, editor, tabs, updateMarkers]);
@@ -139,7 +146,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   }, [webLinter, monaco, codeActions, updateMarkers]);
 
   useEffect(() => {
-    const disposable = webLinter.onParse((uri, model) => {
+    const disposable = webLinter.onParse((_uri, model) => {
       onEsASTChange(model.storedAST);
       onScopeChange(model.storedScope as Record<string, unknown> | undefined);
       onTsASTChange(model.storedTsAST);
@@ -249,6 +256,13 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
       closable.forEach(c => c.close());
     };
   }, [system, onChange]);
+
+  useEffect(() => {
+    const closable = system.watchFile('/compiled', filename => {
+      tabs.compiled.setValue(system.readFile(filename) ?? '');
+    });
+    return () => closable.close();
+  }, [system, tabs.compiled]);
 
   useEffect(() => {
     const disposable = editor.onDidChangeModelContent(() => {
