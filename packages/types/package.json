@@ -55,7 +55,7 @@
           }
         ],
         "outputs": [
-          "packages/types/src/generated"
+          "{projectRoot}/src/generated"
         ]
       },
       "build": {
