@@ -101,7 +101,9 @@ function Playground(): React.JSX.Element {
                 tabs={['code', 'tsconfig', 'eslintrc', 'compiled']}
                 active={activeTab}
                 change={setTab}
-                showVisualEditor={activeTab !== 'code'}
+                showVisualEditor={
+                  activeTab !== 'code' && activeTab !== 'compiled'
+                }
                 showModal={onVisualEditor}
               />
               {(activeVisualEditor === 'eslintrc' && (
