@@ -13,7 +13,7 @@ export interface RuleDetails {
   url?: string;
 }
 
-export type TabType = 'code' | 'eslintrc' | 'tsconfig';
+export type TabType = 'code' | 'eslintrc' | 'tsconfig' | 'compiled';
 
 export type ConfigFileType = `${ts.Extension}`;
 

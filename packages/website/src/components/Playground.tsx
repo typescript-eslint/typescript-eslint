@@ -98,10 +98,12 @@ function Playground(): React.JSX.Element {
             <div className={clsx(styles.sourceCode)}>
               {isLoading && <Loader />}
               <EditorTabs
-                tabs={['code', 'tsconfig', 'eslintrc']}
+                tabs={['code', 'tsconfig', 'eslintrc', 'compiled']}
                 active={activeTab}
                 change={setTab}
-                showVisualEditor={activeTab !== 'code'}
+                showVisualEditor={
+                  activeTab !== 'code' && activeTab !== 'compiled'
+                }
                 showModal={onVisualEditor}
               />
               {(activeVisualEditor === 'eslintrc' && (
