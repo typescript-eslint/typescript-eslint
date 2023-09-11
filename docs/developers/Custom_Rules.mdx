@@ -276,6 +276,7 @@ This can be necessary for TypeScript APIs not wrapped by the parser services.
 We recommend against changing rule logic based on whether `services.program` exists.
 In our experience, users are generally surprised when rules behave differently with or without type information.
 Additionally, if they misconfigure their ESLint config, they may not realize why the rule started behaving differently.
+Consider creating two versions of the rule instead, or only creating a type checked version.
 :::
 
 ## Testing
