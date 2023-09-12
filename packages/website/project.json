@@ -4,6 +4,14 @@
   "type": "library",
   "implicitDependencies": [],
   "targets": {
+    "start": {
+      "dependsOn": ["website-eslint:build"],
+      "executor": "nx:run-commands",
+      "options": {
+        "cwd": "packages/website",
+        "command": "docusaurus start"
+      }
+    },
     "lint": {
       "executor": "@nx/linter:eslint",
       "outputs": ["{options.outputFile}"],
