@@ -55,12 +55,14 @@ function isFunctionArgument(
 }
 
 /**
- * Checks if a node is an expression in a JSX attribute assignment
+ * Checks if a node is type-constrained in JSX
  * ```
- * <Comp x={...} />
+ * <Foo x={() => {}} />
+ * <Bar>{() => {}}</Bar>
+ * <Baz {...props} />
  * ```
  */
-function isJSXAttribute(
+function isTypedJSX(
   node: TSESTree.Node,
 ): node is TSESTree.JSXExpressionContainer | TSESTree.JSXSpreadAttribute {
   return (
@@ -78,7 +80,7 @@ function isTypedParent(
     isVariableDeclaratorWithTypeAnnotation(parent) ||
     isPropertyDefinitionWithTypeAnnotation(parent) ||
     isFunctionArgument(parent, callee) ||
-    isJSXAttribute(parent)
+    isTypedJSX(parent)
   );
 }
 

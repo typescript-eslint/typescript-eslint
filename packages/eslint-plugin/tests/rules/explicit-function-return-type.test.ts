@@ -182,11 +182,7 @@ class App {
     },
     // https://github.com/typescript-eslint/typescript-eslint/issues/7552
     {
-      code: `
-const Comp: FC = () => {
-  return <button onClick={() => {}} />;
-};
-      `,
+      code: 'const foo = <button onClick={() => {}} />;',
       options: [{ allowTypedFunctionExpressions: true }],
       parserOptions: {
         ecmaFeatures: {
@@ -195,11 +191,7 @@ const Comp: FC = () => {
       },
     },
     {
-      code: `
-const Comp: FC = () => {
-  return <Button on={{ click: () => {} }} />;
-};
-      `,
+      code: 'const foo = <button on={{ click: () => {} }} />;',
       options: [{ allowTypedFunctionExpressions: true }],
       parserOptions: {
         ecmaFeatures: {
@@ -208,11 +200,7 @@ const Comp: FC = () => {
       },
     },
     {
-      code: `
-const Comp: FC = () => {
-  return <button {...{ onClick: () => {} }} />;
-};
-      `,
+      code: 'const foo = <Bar>{() => {}}</Bar>;',
       options: [{ allowTypedFunctionExpressions: true }],
       parserOptions: {
         ecmaFeatures: {
@@ -220,6 +208,25 @@ const Comp: FC = () => {
         },
       },
     },
+    {
+      code: 'const foo = <Bar>{{ on: () => {} }}</Bar>;',
+      options: [{ allowTypedFunctionExpressions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: 'const foo = <button {...{ onClick: () => {} }} />;',
+      options: [{ allowTypedFunctionExpressions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+
     // https://github.com/typescript-eslint/typescript-eslint/issues/525
     {
       code: `
@@ -1018,11 +1025,7 @@ const x: Foo = {
       ],
     },
     {
-      code: `
-const Comp = (): JSX.Element => {
-  return <button onClick={() => {}} />;
-};
-      `,
+      code: 'const foo = <button onClick={() => {}} />;',
       options: [{ allowTypedFunctionExpressions: false }],
       parserOptions: {
         ecmaFeatures: {
@@ -1032,10 +1035,82 @@ const Comp = (): JSX.Element => {
       errors: [
         {
           messageId: 'missingReturnType',
-          line: 3,
-          endLine: 3,
-          column: 30,
-          endColumn: 32,
+          line: 1,
+          endLine: 1,
+          column: 33,
+          endColumn: 35,
+        },
+      ],
+    },
+    {
+      code: 'const foo = <button on={{ click: () => {} }} />;',
+      options: [{ allowTypedFunctionExpressions: false }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 27,
+          endColumn: 34,
+        },
+      ],
+    },
+    {
+      code: 'const foo = <Bar>{() => {}}</Bar>;',
+      options: [{ allowTypedFunctionExpressions: false }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 22,
+          endColumn: 24,
+        },
+      ],
+    },
+    {
+      code: 'const foo = <Bar>{{ on: () => {} }}</Bar>;',
+      options: [{ allowTypedFunctionExpressions: false }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 21,
+          endColumn: 25,
+        },
+      ],
+    },
+    {
+      code: 'const foo = <button {...{ onClick: () => {} }} />;',
+      options: [{ allowTypedFunctionExpressions: false }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 27,
+          endColumn: 36,
         },
       ],
     },
