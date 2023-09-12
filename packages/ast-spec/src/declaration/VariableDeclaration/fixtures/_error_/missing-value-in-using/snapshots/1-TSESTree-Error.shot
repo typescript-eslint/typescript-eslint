@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration VariableDeclaration _error_ missing-value-in-using TSESTree - Error 1`] = `
+"TSError
+> 1 | using a;
+    |       ^ 'using' declarations must be initialized.
+  2 |"
+`;

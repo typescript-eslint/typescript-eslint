@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "6.2.0",
+  "version": "6.7.0",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
@@ -55,7 +55,7 @@
           }
         ],
         "outputs": [
-          "packages/types/src/generated"
+          "{projectRoot}/src/generated"
         ]
       },
       "build": {
@@ -73,6 +73,10 @@
     }
   },
   "devDependencies": {
+    "downlevel-dts": "*",
+    "prettier": "^2.8.4",
+    "rimraf": "*",
+    "tsx": "*",
     "typescript": "*"
   },
   "funding": {

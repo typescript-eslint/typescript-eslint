@@ -180,8 +180,7 @@ function getWatchProgramsForProjects(
     if (fileList.has(filePath)) {
       log('Found existing program for file. %s', filePath);
 
-      updatedProgram =
-        updatedProgram ?? existingWatch.getProgram().getProgram();
+      updatedProgram ??= existingWatch.getProgram().getProgram();
       // sets parent pointers in source files
       updatedProgram.getTypeChecker();
 

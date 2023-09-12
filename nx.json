@@ -32,17 +32,19 @@
     }
   },
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals",
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [
+      "{workspaceRoot}/.github/workflows/ci.yml",
       {
         "runtime": "node -v"
       },
       {
         "runtime": "echo $NETLIFY"
+      },
+      {
+        "runtime": "yarn -v"
       }
     ],
-    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"],
     "production": ["default", "!{projectRoot}/src/test-setup.[jt]s"]
   }
 }

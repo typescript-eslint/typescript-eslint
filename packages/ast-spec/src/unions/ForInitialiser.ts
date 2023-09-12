@@ -1,4 +1,4 @@
-import type { VariableDeclaration } from '../declaration/VariableDeclaration/spec';
+import type { LetOrConstOrVarDeclaration } from '../declaration/VariableDeclaration/spec';
 import type { Expression } from './Expression';
 
-export type ForInitialiser = Expression | VariableDeclaration;
+export type ForInitialiser = Expression | LetOrConstOrVarDeclaration;

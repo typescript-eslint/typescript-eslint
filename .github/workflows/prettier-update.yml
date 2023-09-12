@@ -21,6 +21,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+        with:
+          ref: ${{ github.event.pull_request.head.ref }}
+          persist-credentials: false
 
       - name: Check if prettier was changed as part of the latest commit on the PR
         id: prettier-package-check
@@ -33,7 +36,7 @@ jobs:
           # We cannot use secrets.GITHUB_TOKEN for this because it is not permitted to kick off subsequent actions worfklow runs, so we use a PAT instead
           GITHUB_TOKEN: ${{ secrets.JAMES_HENRY_GITHUB_TOKEN }}
         run: |
-          yarn --ignore-scripts
+          yarn --mode skip-build
           yarn format
 
           # Commit all the changes to the PR (see note on not being able to use secrets.GITHUB_TOKEN for this)

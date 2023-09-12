@@ -37,8 +37,9 @@ This is likely not portable. A type annotation is necessary. ts(2742)
 
 import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 
-export interface TypeScriptESLintRules {
-  [ruleName: string]: RuleModule<string, unknown[]>;
-}
+export type TypeScriptESLintRules = Record<
+  string,
+  RuleModule<string, unknown[]>
+>;
 declare const rules: TypeScriptESLintRules;
 export default rules;

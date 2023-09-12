@@ -154,10 +154,9 @@ class ClassVisitor extends Visitor {
      *   ) {}
      * }
      */
-    withMethodDecorators =
-      withMethodDecorators ||
-      (methodNode.kind !== 'set' &&
-        node.params.some(param => param.decorators.length));
+    withMethodDecorators ||=
+      methodNode.kind !== 'set' &&
+      node.params.some(param => param.decorators.length);
     if (!withMethodDecorators && methodNode.kind === 'set') {
       const keyName = getLiteralMethodKeyName(methodNode);
 
@@ -192,7 +191,7 @@ class ClassVisitor extends Visitor {
     if (
       !withMethodDecorators &&
       methodNode.kind === 'constructor' &&
-      this.#classNode.decorators
+      this.#classNode.decorators.length
     ) {
       withMethodDecorators = true;
     }
