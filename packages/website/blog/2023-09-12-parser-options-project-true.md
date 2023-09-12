@@ -26,7 +26,7 @@ This post will explain what life was like before, what's changed, and what's com
 
 The `@typescript-eslint/parser` package is what enables ESLint to parse TypeScript source files.
 It converts raw TypeScript code into an ["AST" format](./2022-12-05-asts-and-typescript-eslint.md).
-When [`parserOptions.project`](https://typescript-eslint.io/packages/parser#project) is specified, it additionally sets up TypeScript programs that can be used by [typed rules](https://typescript-eslint.io/developers/custom-rules#typed-rules).
+When [`parserOptions.project`](/packages/parser#project) is specified, it additionally sets up TypeScript programs that can be used by [typed rules](/developers/custom-rules#typed-rules).
 
 Many projects today start with ESLint configs that look something like:
 
