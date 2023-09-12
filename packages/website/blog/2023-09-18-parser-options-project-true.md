@@ -61,7 +61,7 @@ In other words, many developers want our [issue #101: Feature request: support l
 
 ## Introducing `true`
 
-As of typescript-eslint@5.52.0, we now support providing `true` for `parserOptions.project`:
+As of typescript-eslint 5.52.0, we now support providing `true` for `parserOptions.project`:
 
 ```js
 module.exports = {
