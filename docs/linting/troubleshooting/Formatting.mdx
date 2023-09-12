@@ -55,6 +55,18 @@ module.exports = {
 
 Note that even if you use a formatter other than `prettier`, you can use `eslint-config-prettier` as it exclusively turns **off** all formatting rules.
 
+#### `eslint-plugin-prettier`
+
+`eslint-config-prettier` is not the same as [`eslint-plugin-prettier`](https://github.com/prettier/eslint-plugin-prettier).
+
+- The _config_ only disables rules from core and other plugins.
+- The _plugin_ loads and runs Prettier inside ESLint.
+
+We don't recommend using `eslint-plugin-prettier`:
+
+- Mixing formatting alongside lint rule reports is visually confusing, especially to developers who don't understand the tooling differences
+- Running Prettier inside ESLint can be slow: see [Performance Troubleshooting > `eslint-plugin-prettier`](./performance-troubleshooting#eslint-plugin-prettier)
+
 ## ESLint Core and Formatting
 
 Most lint rules fall into one of two to three categories:
