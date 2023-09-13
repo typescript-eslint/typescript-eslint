@@ -151,10 +151,10 @@ Program {
             type: "Identifier",
             name: "componentBasic",
 
-            range: [201, 215],
+            range: [111, 125],
             loc: {
-              start: { column: 6, line: 9 },
-              end: { column: 20, line: 9 },
+              start: { column: 6, line: 8 },
+              end: { column: 20, line: 8 },
             },
           },
           init: JSXElement {
@@ -168,41 +168,41 @@ Program {
                 type: "JSXIdentifier",
                 name: "foo",
 
-                range: [219, 222],
+                range: [129, 132],
                 loc: {
-                  start: { column: 24, line: 9 },
-                  end: { column: 27, line: 9 },
+                  start: { column: 24, line: 8 },
+                  end: { column: 27, line: 8 },
                 },
               },
               selfClosing: true,
 
-              range: [218, 225],
+              range: [128, 135],
               loc: {
-                start: { column: 23, line: 9 },
-                end: { column: 30, line: 9 },
+                start: { column: 23, line: 8 },
+                end: { column: 30, line: 8 },
               },
             },
 
-            range: [218, 225],
+            range: [128, 135],
             loc: {
-              start: { column: 23, line: 9 },
-              end: { column: 30, line: 9 },
+              start: { column: 23, line: 8 },
+              end: { column: 30, line: 8 },
             },
           },
 
-          range: [201, 225],
+          range: [111, 135],
           loc: {
-            start: { column: 6, line: 9 },
-            end: { column: 30, line: 9 },
+            start: { column: 6, line: 8 },
+            end: { column: 30, line: 8 },
           },
         },
       ],
       kind: "const",
 
-      range: [195, 226],
+      range: [105, 136],
       loc: {
-        start: { column: 0, line: 9 },
-        end: { column: 31, line: 9 },
+        start: { column: 0, line: 8 },
+        end: { column: 31, line: 8 },
       },
     },
     VariableDeclaration {
@@ -214,10 +214,10 @@ Program {
             type: "Identifier",
             name: "componentDashed",
 
-            range: [323, 338],
+            range: [143, 158],
             loc: {
-              start: { column: 6, line: 11 },
-              end: { column: 21, line: 11 },
+              start: { column: 6, line: 9 },
+              end: { column: 21, line: 9 },
             },
           },
           init: JSXElement {
@@ -233,67 +233,67 @@ Program {
                   type: "JSXIdentifier",
                   name: "baz-bam",
 
-                  range: [350, 357],
+                  range: [170, 177],
                   loc: {
-                    start: { column: 33, line: 11 },
-                    end: { column: 40, line: 11 },
+                    start: { column: 33, line: 9 },
+                    end: { column: 40, line: 9 },
                   },
                 },
                 namespace: JSXIdentifier {
                   type: "JSXIdentifier",
                   name: "foo-bar",
 
-                  range: [342, 349],
+                  range: [162, 169],
                   loc: {
-                    start: { column: 25, line: 11 },
-                    end: { column: 32, line: 11 },
+                    start: { column: 25, line: 9 },
+                    end: { column: 32, line: 9 },
                   },
                 },
 
-                range: [342, 357],
+                range: [162, 177],
                 loc: {
-                  start: { column: 25, line: 11 },
-                  end: { column: 40, line: 11 },
+                  start: { column: 25, line: 9 },
+                  end: { column: 40, line: 9 },
                 },
               },
               selfClosing: true,
 
-              range: [341, 360],
+              range: [161, 180],
               loc: {
-                start: { column: 24, line: 11 },
-                end: { column: 43, line: 11 },
+                start: { column: 24, line: 9 },
+                end: { column: 43, line: 9 },
               },
             },
 
-            range: [341, 360],
+            range: [161, 180],
             loc: {
-              start: { column: 24, line: 11 },
-              end: { column: 43, line: 11 },
+              start: { column: 24, line: 9 },
+              end: { column: 43, line: 9 },
             },
           },
 
-          range: [323, 360],
+          range: [143, 180],
           loc: {
-            start: { column: 6, line: 11 },
-            end: { column: 43, line: 11 },
+            start: { column: 6, line: 9 },
+            end: { column: 43, line: 9 },
           },
         },
       ],
       kind: "const",
 
-      range: [317, 361],
+      range: [137, 181],
       loc: {
-        start: { column: 0, line: 11 },
-        end: { column: 44, line: 11 },
+        start: { column: 0, line: 9 },
+        end: { column: 44, line: 9 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 362],
+  range: [0, 182],
   loc: {
     start: { column: 0, line: 1 },
-    end: { column: 0, line: 12 },
+    end: { column: 0, line: 10 },
   },
 }
 `;

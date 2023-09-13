@@ -96,7 +96,7 @@ export default util.createRule<Options, MessageIds>({
     const fixStyle = option.fixStyle ?? 'separate-type-imports';
     const sourceCode = context.getSourceCode();
 
-    const sourceImportsMap: { [key: string]: SourceImports } = {};
+    const sourceImportsMap: Record<string, SourceImports> = {};
 
     return {
       ...(prefer === 'type-imports'
@@ -105,15 +105,14 @@ export default util.createRule<Options, MessageIds>({
             ImportDeclaration(node): void {
               const source = node.source.value;
               // sourceImports is the object containing all the specifics for a particular import source, type or value
-              const sourceImports =
-                sourceImportsMap[source] ??
-                (sourceImportsMap[source] = {
-                  source,
-                  reportValueImports: [], // if there is a mismatch where type importKind but value specifiers
-                  typeOnlyNamedImport: null, // if only type imports
-                  valueOnlyNamedImport: null, // if only value imports with named specifiers
-                  valueImport: null, // if only value imports
-                });
+              sourceImportsMap[source] ??= {
+                source,
+                reportValueImports: [], // if there is a mismatch where type importKind but value specifiers
+                typeOnlyNamedImport: null, // if only type imports
+                valueOnlyNamedImport: null, // if only value imports with named specifiers
+                valueImport: null, // if only value imports
+              };
+              const sourceImports = sourceImportsMap[source];
               if (node.importKind === 'type') {
                 if (
                   !sourceImports.typeOnlyNamedImport &&

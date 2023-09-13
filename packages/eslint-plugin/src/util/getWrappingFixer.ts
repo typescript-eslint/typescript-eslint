@@ -35,10 +35,15 @@ export function getWrappingFixer(
     const innerCodes = innerNodes.map(innerNode => {
       let code = sourceCode.getText(innerNode);
 
-      // check the inner expression's precedence
-      if (!isStrongPrecedenceNode(innerNode)) {
-        // the code we are adding might have stronger precedence than our wrapped node
-        // let's wrap our node in parens in case it has a weaker precedence than the code we are wrapping it in
+      /**
+       * Wrap our node in parens to prevent the following cases:
+       * - It has a weaker precedence than the code we are wrapping it in
+       * - It's gotten mistaken as block statement instead of object expression
+       */
+      if (
+        !isStrongPrecedenceNode(innerNode) ||
+        isObjectExpressionInOneLineReturn(node, innerNode)
+      ) {
         code = `(${code})`;
       }
 
@@ -73,12 +78,15 @@ export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
   return (
     innerNode.type === AST_NODE_TYPES.Literal ||
     innerNode.type === AST_NODE_TYPES.Identifier ||
+    innerNode.type === AST_NODE_TYPES.TSTypeReference ||
+    innerNode.type === AST_NODE_TYPES.TSTypeOperator ||
     innerNode.type === AST_NODE_TYPES.ArrayExpression ||
     innerNode.type === AST_NODE_TYPES.ObjectExpression ||
     innerNode.type === AST_NODE_TYPES.MemberExpression ||
     innerNode.type === AST_NODE_TYPES.CallExpression ||
     innerNode.type === AST_NODE_TYPES.NewExpression ||
-    innerNode.type === AST_NODE_TYPES.TaggedTemplateExpression
+    innerNode.type === AST_NODE_TYPES.TaggedTemplateExpression ||
+    innerNode.type === AST_NODE_TYPES.TSInstantiationExpression
   );
 }
 
@@ -204,4 +212,18 @@ function isLeftHandSide(node: TSESTree.Node): boolean {
   }
 
   return false;
+}
+
+/**
+ * Checks if a node's parent is arrow function expression and a inner node is object expression
+ */
+function isObjectExpressionInOneLineReturn(
+  node: TSESTree.Node,
+  innerNode: TSESTree.Node,
+): boolean {
+  return (
+    node.parent?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+    node.parent.body === node &&
+    innerNode.type === AST_NODE_TYPES.ObjectExpression
+  );
 }
