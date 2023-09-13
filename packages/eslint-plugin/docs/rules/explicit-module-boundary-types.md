@@ -12,8 +12,6 @@ It can also improve TypeScript type checking performance on larger codebases.
 
 ## Examples
 
-### 1. Exported members must have explicit signatures
-
 <!--tabs-->
 
 #### ❌ Incorrect
@@ -22,11 +20,6 @@ It can also improve TypeScript type checking performance on larger codebases.
 // Should indicate that no value is returned (void)
 export function test() {
   return;
-}
-
-// Should indicate that a number is returned
-export default function () {
-  return 1;
 }
 
 // Should indicate that a string is returned
@@ -47,65 +40,39 @@ export class Test {
 #### ✅ Correct
 
 ```ts
-// A function with no return value (void)
+// case 1: A function with no return value (void)
 export function test(): void {
   return;
 }
-
-// A return value of type number
-export var fn = function (): number {
-  return 1;
-};
-
-// A return value of type string
-export var arrowFn = (): string => 'test';
-
-// All arguments should be typed
-export var arrowFn = (arg: string): string => `test ${arg}`;
-export var arrowFn = (arg: unknown): string => `test ${arg}`;
-
-// A class method with no return value (void)
-export class Test {
-  method(): void {
-    return;
-  }
-}
-```
-
-### 2. Non-exported members may or may not have explicit signatures
-
-<!--tabs-->
-
-#### ❌ Incorrect
-
-```ts
-// Should indicate that no value is returned (void)
-export function test() {
-  return;
-}
-
-// All arguments should be typed
-export var arrowFn = (arg): string => `test ${arg}`;
-```
-
-#### ✅ Correct
-
-```ts
-// Function is not exported
+// case 2: Function is not exported
 function test() {
   return;
 }
 
-// Function is not exported
-function test(): void {
-  return;
-}
-
-// arrowFn is not exported
+// case 1: A return value of type string
+export var arrowFn = (): string => 'test';
+// case 2: arrowFn is not exported
 var arrowFn = (arg): string => `test ${arg}`;
 
-// arrowFn is not exported
-var arrowFn = (arg: string): string => `test ${arg}`;
+// case 1: All arguments should be typed
+export var arrowFn = (arg: string): string => `test ${arg}`;
+export var arrowFn = (arg: unknown): string => `test ${arg}`;
+// case 2: arrowFn is not exported
+var arrowFn = (arg): string => `test ${arg}`;
+var arrowFn = (arg: any): string => `test ${arg}`;
+
+export class Test {
+  // case 1: A class method with no return value (void)
+  method(): void {
+    return;
+  }
+}
+// case 2: Class is not exported
+class Test {
+  method() {
+    return;
+  }
+}
 ```
 
 ## Options
