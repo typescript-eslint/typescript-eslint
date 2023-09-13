@@ -62,7 +62,7 @@ Note that even if you use a formatter other than `prettier`, you can use `eslint
 - The _config_ only disables rules from core and other plugins.
 - The _plugin_ loads and runs Prettier inside ESLint.
 
-Running Prettier inside ESLint can be slow: see [Performance Troubleshooting > `eslint-plugin-prettier`](./performance-troubleshooting#eslint-plugin-prettier)
+Running Prettier inside ESLint can be slow: see [Performance Troubleshooting > `eslint-plugin-prettier`](./performance-troubleshooting#eslint-plugin-prettier). However, because it doesn't re-implement Prettier's logic in ESLint, the caveats mentioned about using linters for formatting don't apply to `eslint-plugin-prettier` either.
 
 ## ESLint Core and Formatting
 
