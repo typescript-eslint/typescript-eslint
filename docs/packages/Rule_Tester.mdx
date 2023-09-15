@@ -193,6 +193,46 @@ ruleTester.run('my-rule', rule, {
 
 All dependencies provided in the `dependencyConstraints` object must match their given ranges in order for a test to not be skipped.
 
+### With Specific Frameworks
+
+ESLint's `RuleTester` relies on some global hooks for tests.
+If they aren't available globally, your tests will fail with an error like:
+
+> ```plaintext
+> Error: Missing definition for `afterAll` - you must set one using `RuleTester.afterAll` or there must be one defined globally as `afterAll`.
+> ```
+
+:::tip
+Be sure to set `RuleTester`'s static properties _before_ calling `new RuleTester(...)` for the first time.
+:::
+
+#### Mocha
+
+Consider setting up `RuleTester`'s static properties in a [`mochaGlobalSetup` fixture](https://mochajs.org/#global-setup-fixtures):
+
+```ts
+import * as mocha from 'mocha';
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
+RuleTester.afterAll = mocha.after;
+```
+
+#### Vitest
+
+Consider setting up `RuleTester`'s static properties in a [`globalSetup` script](https://vitest.dev/config/#globalsetup):
+
+```ts
+import * as vitest from 'vitest';
+import { RuleTester } from '@typescript-eslint/rule-tester';
+
+RuleTester.afterAll = vitest.afterAll;
+
+// If you are not using vitest with globals: true (https://vitest.dev/config/#globals):
+RuleTester.it = vitest.it;
+RuleTester.itOnly = vitest.it.only;
+RuleTester.describe = vitest.describe;
+```
+
 ## Options
 
 ### `RuleTester` constructor options

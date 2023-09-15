@@ -10,6 +10,7 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-restricted-imports', rule, {
   valid: [
     "import foo from 'foo';",
+    "import 'foo';",
     {
       code: "import foo from 'foo';",
       options: ['import1', 'import2'],
@@ -25,6 +26,10 @@ ruleTester.run('no-restricted-imports', rule, {
     {
       code: "export { foo } from 'foo';",
       options: [{ paths: ['import1', 'import2'] }],
+    },
+    {
+      code: "import 'foo';",
+      options: ['import1', 'import2'],
     },
     {
       code: "import foo from 'foo';",
@@ -254,6 +259,36 @@ import type { foo } from 'import2/private/bar';
         },
       ],
     },
+    {
+      code: "import { type Bar } from 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              importNames: ['Bar'],
+              message: 'Please use Bar from /import-bar/baz/ instead.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "export { type Bar } from 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              importNames: ['Bar'],
+              message: 'Please use Bar from /import-bar/baz/ instead.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -461,6 +496,43 @@ import type { foo } from 'import2/private/bar';
       ],
     },
     {
+      code: "import 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+            },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'path',
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+    {
+      code: "import 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'path',
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+    {
       code: "import foo from 'import-foo';",
       options: [
         {
@@ -583,6 +655,56 @@ import type { foo } from 'import2/private/bar';
         {
           messageId: 'patterns',
           type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+    {
+      code: "import { Bar, type Baz } from 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              importNames: ['Bar', 'Baz'],
+              message: 'Please use Bar and Baz from /import-bar/baz/ instead.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'importNameWithCustomMessage',
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+        {
+          messageId: 'importNameWithCustomMessage',
+          type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+    {
+      code: "export { Bar, type Baz } from 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              importNames: ['Bar', 'Baz'],
+              message: 'Please use Bar and Baz from /import-bar/baz/ instead.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'importNameWithCustomMessage',
+          type: AST_NODE_TYPES.ExportNamedDeclaration,
+        },
+        {
+          messageId: 'importNameWithCustomMessage',
+          type: AST_NODE_TYPES.ExportNamedDeclaration,
         },
       ],
     },

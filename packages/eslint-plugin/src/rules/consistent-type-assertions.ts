@@ -1,7 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as ts from 'typescript';
 
 import * as util from '../util';
+import { getWrappedCode } from '../util/getWrappedCode';
 
 // intentionally mirroring the options
 export type MessageIds =
@@ -82,6 +84,7 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
+    const parserServices = util.getParserServices(context, true);
 
     function isConst(node: TSESTree.TypeNode): boolean {
       if (node.type !== AST_NODE_TYPES.TSTypeReference) {
@@ -125,7 +128,6 @@ export default util.createRule<Options, MessageIds>({
       if (isConst(node.typeAnnotation) && messageId === 'never') {
         return;
       }
-
       context.report({
         node,
         messageId,
@@ -135,16 +137,43 @@ export default util.createRule<Options, MessageIds>({
             : {},
         fix:
           messageId === 'as'
-            ? (fixer): TSESLint.RuleFix[] => [
-                fixer.replaceText(
+            ? (fixer): TSESLint.RuleFix => {
+                const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
+                  node as TSESTree.TSTypeAssertion,
+                );
+
+                /**
+                 * AsExpression has lower precedence than TypeAssertionExpression,
+                 * so we don't need to wrap expression and typeAnnotation in parens.
+                 */
+                const expressionCode = sourceCode.getText(node.expression);
+                const typeAnnotationCode = sourceCode.getText(
+                  node.typeAnnotation,
+                );
+
+                const asPrecedence = util.getOperatorPrecedence(
+                  ts.SyntaxKind.AsExpression,
+                  ts.SyntaxKind.Unknown,
+                );
+                const parentPrecedence = util.getOperatorPrecedence(
+                  tsNode.parent.kind,
+                  ts.isBinaryExpression(tsNode.parent)
+                    ? tsNode.parent.operatorToken.kind
+                    : ts.SyntaxKind.Unknown,
+                  ts.isNewExpression(tsNode.parent)
+                    ? tsNode.parent.arguments != null &&
+                        tsNode.parent.arguments.length > 0
+                    : undefined,
+                );
+
+                const text = `${expressionCode} as ${typeAnnotationCode}`;
+                return fixer.replaceText(
                   node,
-                  getTextWithParentheses(node.expression),
-                ),
-                fixer.insertTextAfter(
-                  node,
-                  ` as ${getTextWithParentheses(node.typeAnnotation)}`,
-                ),
-              ]
+                  util.isParenthesized(node, sourceCode)
+                    ? text
+                    : getWrappedCode(text, asPrecedence, parentPrecedence),
+                );
+              }
             : undefined,
       });
     }

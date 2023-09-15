@@ -47,9 +47,7 @@ async function main(): Promise<void> {
 
   const prettierConfig = prettier.resolveConfig.sync(__dirname);
 
-  interface LinterConfigRules {
-    [name: string]: TSESLint.Linter.RuleLevel;
-  }
+  type LinterConfigRules = Record<string, TSESLint.Linter.RuleLevel>;
 
   interface LinterConfig extends TSESLint.Linter.Config {
     extends?: string[] | string;
