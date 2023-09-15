@@ -35,7 +35,7 @@ interface TypeGroupProps {
   readonly onHoverNode?: OnHoverNodeFn;
 }
 
-function SimpleField(props: SimpleFieldProps): JSX.Element {
+function SimpleField(props: SimpleFieldProps): React.JSX.Element {
   return (
     <div className={astStyles.list}>
       <span className={astStyles.propClass}>{props.label}</span>
@@ -45,18 +45,20 @@ function SimpleField(props: SimpleFieldProps): JSX.Element {
   );
 }
 
-function TypeGroup(props: TypeGroupProps): JSX.Element {
+function TypeGroup(props: TypeGroupProps): React.JSX.Element {
   return (
     <>
       <h4 className="padding--sm margin--none">{props.label}</h4>
-      {(props.type && (
+      {props.type ? (
         <>
           {props.string && (
             <SimpleField value={props.string} label="typeToString()" />
           )}
           <ASTViewer onHoverNode={props.onHoverNode} value={props.type} />
         </>
-      )) || <div className={astStyles.list}>None</div>}
+      ) : (
+        <div className={astStyles.list}>None</div>
+      )}
     </>
   );
 }
@@ -66,7 +68,7 @@ export function TypeInfo({
   typeChecker,
   onHoverNode,
   onSelect,
-}: TypeInfoProps): JSX.Element {
+}: TypeInfoProps): React.JSX.Element {
   const computed = useMemo(() => {
     if (!typeChecker || !value) {
       return undefined;
@@ -88,13 +90,13 @@ export function TypeInfo({
       info.type = e;
     }
     try {
-      // @ts-expect-error just fail if node type is not correct
+      // @ts-expect-error just fail if a node type is not correct
       const contextualType = typeChecker.getContextualType(value);
       info.contextualType = contextualType;
       if (contextualType) {
         info.contextualTypeString = typeChecker.typeToString(contextualType);
       }
-    } catch (_e: unknown) {
+    } catch {
       info.contextualType = undefined;
     }
     return info;

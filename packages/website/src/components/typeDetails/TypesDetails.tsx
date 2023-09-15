@@ -21,7 +21,7 @@ export function TypesDetails({
   value,
   typeChecker,
   onHoverNode,
-}: TypesDetailsProps): JSX.Element {
+}: TypesDetailsProps): React.JSX.Element {
   const [selectedNode, setSelectedNode] = useState<ts.Node>(value);
 
   useEffect(() => {

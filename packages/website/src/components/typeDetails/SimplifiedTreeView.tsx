@@ -20,7 +20,7 @@ function SimplifiedItem({
   onSelect,
   selectedNode,
   onHoverNode,
-}: SimplifiedTreeViewProps): JSX.Element {
+}: SimplifiedTreeViewProps): React.JSX.Element {
   const items = useMemo(() => {
     const result: ts.Node[] = [];
     value.forEachChild(child => {
@@ -68,7 +68,7 @@ function SimplifiedItem({
 
 export function SimplifiedTreeView(
   params: SimplifiedTreeViewProps,
-): JSX.Element {
+): React.JSX.Element {
   return (
     <div className={clsx(styles.list, 'padding-left--sm')}>
       <SimplifiedItem {...params} />
