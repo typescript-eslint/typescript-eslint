@@ -20,7 +20,7 @@ vegetable === 'asparagus'; // No error
 
 The above code snippet should instead be written as `vegetable === Vegetable.Asparagus`. Allowing literals in comparisons subverts the point of using enums in the first place. By enforcing comparisons with properly typed enums:
 
-- It makes a codebase more resilient to enum members swapping values.
+- It makes a codebase more resilient to enum members changing values.
 - It allows for code IDE's to use the "Rename Symbol" feature to quickly rename an enum throughout an entire codebase without anything breaking.
 - It makes enums more intuitive, similar to how they work in other strongly-typed languages like Rust.
 
