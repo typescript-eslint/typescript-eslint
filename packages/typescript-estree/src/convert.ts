@@ -909,6 +909,9 @@ export class Converter {
         });
 
       case SyntaxKind.ForStatement:
+        if (node.initializer) {
+          this.#checkForStatementDeclaration(node.initializer);
+        }
         return this.createNode<TSESTree.ForStatement>(node, {
           type: AST_NODE_TYPES.ForStatement,
           init: this.convertChild(node.initializer),
@@ -918,6 +921,7 @@ export class Converter {
         });
 
       case SyntaxKind.ForInStatement:
+        this.#checkForStatementDeclaration(node.initializer);
         return this.createNode<TSESTree.ForInStatement>(node, {
           type: AST_NODE_TYPES.ForInStatement,
           left: this.convertPattern(node.initializer),
@@ -926,6 +930,7 @@ export class Converter {
         });
 
       case SyntaxKind.ForOfStatement:
+        this.#checkForStatementDeclaration(node.initializer);
         return this.createNode<TSESTree.ForOfStatement>(node, {
           type: AST_NODE_TYPES.ForOfStatement,
           left: this.convertPattern(node.initializer),
@@ -3457,5 +3462,21 @@ export class Converter {
     }
 
     throw createError(message, this.ast, start, end);
+  }
+  #checkForStatementDeclaration(initializer: ts.ForInitializer): void {
+    if (ts.isVariableDeclarationList(initializer)) {
+      if (
+        !(
+          initializer.flags & ts.NodeFlags.Const ||
+          initializer.flags & ts.NodeFlags.Let ||
+          initializer.flags === ts.NodeFlags.None
+        )
+      ) {
+        this.#throwError(
+          initializer,
+          " The left-hand side of a 'for...in' statement cannot be a 'using' declaration.",
+        );
+      }
+    }
   }
 }
