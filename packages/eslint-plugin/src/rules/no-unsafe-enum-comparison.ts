@@ -46,7 +46,7 @@ export default util.createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      mismatched:
+      mismatchedCondition:
         'The two values in this comparison do not have a shared enum type.',
       mismatchedCase:
         'The case statement does not have a shared enum type with the switch predicate.',
@@ -119,7 +119,7 @@ export default util.createRule({
       ): void {
         if (isMismatchedComparison(node.left, node.right)) {
           context.report({
-            messageId: 'mismatched',
+            messageId: 'mismatchedCondition',
             node,
           });
         }
