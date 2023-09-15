@@ -21,7 +21,7 @@ For example, given `type A = string` and `type T = string | A`, this rule would 
 ```ts
 type T1 = 'A' | 'A';
 
-type T2 = A | A | B;
+type T2 = 'A' | 'A' | 'B';
 
 type T3 = { a: string } & { a: string };
 
@@ -37,7 +37,7 @@ type T5 = StringA | StringB;
 ```ts
 type T1 = 'A' | 'B';
 
-type T2 = A | B | C;
+type T2 = 'A' | 'B' | 'C';
 
 type T3 = { a: string } & { b: string };
 
