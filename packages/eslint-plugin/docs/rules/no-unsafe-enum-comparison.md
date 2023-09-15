@@ -22,7 +22,7 @@ The above code snippet should instead be written as `vegetable === Vegetable.Asp
 
 - It makes a codebase more resilient to enum members changing values.
 - It allows for code IDEs to use the "Rename Symbol" feature to quickly rename an enum.
-- It makes enums more intuitive, similar to how they work in other strongly-typed languages like Rust.
+- It aligns code to the proper enum semantics of referring to them by name and treating their values as implementation details.
 
 ## Examples
 
