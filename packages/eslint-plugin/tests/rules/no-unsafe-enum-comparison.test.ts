@@ -332,6 +332,19 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
       }
     `,
+    `
+      enum Vegetable {
+        Asparagus = 'asparagus',
+      }
+
+      declare const vegetable: Vegetable;
+
+      switch (vegetable) {
+        default: {
+          break;
+        }
+      }
+    `,
   ],
   invalid: [
     {
@@ -657,6 +670,29 @@ ruleTester.run('strict-enums-comparison', rule, {
             break;
           }
           case 'beet': {
+            break;
+          }
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCase' }],
+    },
+    {
+      code: `
+        enum Vegetable {
+          Asparagus = 'asparagus',
+          Beet = 'beet',
+        }
+
+        declare const vegetable: Vegetable;
+
+        switch (vegetable) {
+          case Vegetable.Asparagus: {
+            break;
+          }
+          case 'beet': {
+            break;
+          }
+          default: {
             break;
           }
         }
