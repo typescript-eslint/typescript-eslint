@@ -650,7 +650,7 @@ import { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 
 // import { AST_NODE_TYPES } from "@typescript-eslint/types/dist/generated/ast-spec";
 // -->
-import { AST_NODE_TYPES } from "@typescript-eslint/types";
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
 ```
 
 See [RFC: Use package.json exports to "hide" the dist folder for packages and control our exported surface-area](https://github.com/typescript-eslint/typescript-eslint/discussions/6015) for more backing context.
