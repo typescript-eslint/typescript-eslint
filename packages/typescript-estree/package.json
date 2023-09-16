@@ -64,7 +64,7 @@
     "@babel/code-frame": "*",
     "@babel/parser": "*",
     "glob": "*",
-    "jest": "29.6.4",
+    "jest": "29.7.0",
     "jest-specific-snapshot": "^8.0.0",
     "make-dir": "*",
     "prettier": "^2.8.4",
