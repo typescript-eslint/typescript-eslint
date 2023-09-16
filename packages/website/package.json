@@ -11,7 +11,7 @@
     "stylelint:fix": "stylelint \"src/**/*.css\" --fix",
     "lint": "nx lint",
     "serve": "docusaurus serve",
-    "start": "docusaurus start",
+    "start": "nx start",
     "swizzle": "docusaurus swizzle",
     "test": "playwright test",
     "typecheck": "tsc -b ./tsconfig.json"
