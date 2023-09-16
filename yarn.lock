@@ -13,12 +13,12 @@ __metadata:
   linkType: hard
 
 "@actions/core@npm:^1.10.0":
-  version: 1.10.0
-  resolution: "@actions/core@npm:1.10.0"
+  version: 1.10.1
+  resolution: "@actions/core@npm:1.10.1"
   dependencies:
     "@actions/http-client": ^2.0.1
     uuid: ^8.3.2
-  checksum: 0a75621e007ab20d887434cdd165f0b9036f14c22252a2faed33543d8b9d04ec95d823e69ca636a25245574e4585d73e1e9e47a845339553c664f9f2c9614669
+  checksum: 96524c2725e70e3c3176b4e4d93a1358a86f3c5ca777db9a2f65eadfa672f00877db359bf60fffc416c33838ffb4743db93bcc5bf53e76199dd28bf7f7ff8e80
   languageName: node
   linkType: hard
 
