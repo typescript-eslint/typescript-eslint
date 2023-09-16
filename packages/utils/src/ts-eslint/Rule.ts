@@ -315,7 +315,7 @@ interface CodePath {
    * Segments of the current traversal position.
    *
    * @deprecated
-  */
+   */
   currentSegments: CodePathSegment[];
 
   /** The code path of the upper function/global scope. */
