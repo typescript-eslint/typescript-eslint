@@ -294,13 +294,34 @@ interface RuleContext<
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
  */
 interface CodePath {
+  /**
+   * A unique string. Respective rules can use `id` to save additional
+   * information for each code path.
+   */
   id: string;
+
   initialSegment: CodePathSegment;
+
+  /** The final segments which includes both returned and thrown. */
   finalSegments: CodePathSegment[];
+
+  /** The final segments which includes only returned. */
   returnedSegments: CodePathSegment[];
+
+  /** The final segments which includes only thrown. */
   thrownSegments: CodePathSegment[];
+
+  /**
+   * Segments of the current traversal position.
+   *
+   * @deprecated
+  */
   currentSegments: CodePathSegment[];
+
+  /** The code path of the upper function/global scope. */
   upper: CodePath | null;
+
+  /** Code paths of functions this code path contains. */
   childCodePaths: CodePath[];
 }
 
@@ -314,9 +335,28 @@ interface CodePath {
  * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
  */
 interface CodePathSegment {
+  /**
+   * A unique string. Respective rules can use `id` to save additional
+   * information for each segment.
+   */
   id: string;
+
+  /**
+   * The next segments. If forking, there are two or more. If final, there is
+   * nothing.
+   */
   nextSegments: CodePathSegment[];
+
+  /**
+   * The previous segments. If merging, there are two or more. If initial, there
+   * is nothing.
+   */
   prevSegments: CodePathSegment[];
+
+  /**
+   * A flag which shows whether it is reachable. This becomes `false` when
+   * preceded by `return`, `throw`, `break`, or `continue`.
+   */
   reachable: boolean;
 }
 
