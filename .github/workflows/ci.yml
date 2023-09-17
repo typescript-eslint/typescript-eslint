@@ -10,7 +10,7 @@ on:
   merge_group:
 
 env:
-  PRIMARY_NODE_VERSION: 20
+  PRIMARY_NODE_VERSION: '>=20.6.1'
   # Only set the read-write token if we are on the main branch
   NX_CLOUD_ACCESS_TOKEN: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') && secrets.NX_CLOUD_ACCESS_TOKEN || '' }}
 
@@ -263,7 +263,7 @@ jobs:
 
       - name: Build website
         if: github.repository != 'typescript-eslint/typescript-eslint' || github.ref != 'refs/heads/main'
-        run: NX_VERBOSE_LOGGING=true yarn patch-package && yarn nx build website
+        run: NX_VERBOSE_LOGGING=true yarn nx build website
 
       - name: Install Playwright Browsers
         run: npx playwright install --with-deps chromium

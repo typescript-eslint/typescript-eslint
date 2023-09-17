@@ -56,18 +56,12 @@ export default util.createRule({
     const parserServices = util.getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
 
-    function getTypeFromNode(node: TSESTree.Node): ts.Type {
-      return typeChecker.getTypeAtLocation(
-        parserServices.esTreeNodeToTSNodeMap.get(node),
-      );
-    }
-
     return {
       'BinaryExpression[operator=/^[<>!=]?={0,2}$/]'(
         node: TSESTree.BinaryExpression,
       ): void {
-        const left = getTypeFromNode(node.left);
-        const right = getTypeFromNode(node.right);
+        const left = parserServices.getTypeAtLocation(node.left);
+        const right = parserServices.getTypeAtLocation(node.right);
 
         // Allow comparisons that don't have anything to do with enums:
         //
