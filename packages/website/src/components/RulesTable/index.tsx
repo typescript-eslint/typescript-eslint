@@ -10,8 +10,10 @@ import {
   useHistorySelector,
 } from '../../hooks/useHistorySelector';
 import {
+  DEPRECATED_RULE_EMOJI,
   EXTENSION_RULE_EMOJI,
   FIXABLE_EMOJI,
+  FORMATTING_RULE_EMOJI,
   RECOMMENDED_CONFIG_EMOJI,
   STRICT_CONFIG_EMOJI,
   STYLISTIC_CONFIG_EMOJI,
@@ -38,8 +40,9 @@ function RuleRow({
   if (!rule.docs?.url) {
     return null;
   }
-  const { fixable, hasSuggestions } = rule;
+  const { fixable, hasSuggestions, type, deprecated } = rule;
   const { recommended, requiresTypeChecking, extendsBaseRule } = rule.docs;
+  const formatting = type === "layout";
   return (
     <tr>
       <td>
@@ -59,8 +62,8 @@ function RuleRow({
             case 'stylistic':
               return STYLISTIC_CONFIG_EMOJI;
             default:
-              // for some reason the current version of babel loader won't elide this correctly
-              // recommended satisfies undefined;
+              // for some reason the current version of babel loader won't elide
+              // this correctly recommended satisfies undefined;
               return '';
           }
         })()}
@@ -91,6 +94,18 @@ function RuleRow({
         title={extendsBaseRule ? 'extends base rule' : undefined}
       >
         {extendsBaseRule ? EXTENSION_RULE_EMOJI : ''}
+      </td>
+      <td
+        className={styles.attrCol}
+        title={formatting ? 'formatting' : undefined}
+      >
+        {formatting ? FORMATTING_RULE_EMOJI : ''}
+      </td>
+      <td
+        className={styles.attrCol}
+        title={deprecated ? 'deprecated' : undefined}
+      >
+        {deprecated ? DEPRECATED_RULE_EMOJI : ''}
       </td>
     </tr>
   );
@@ -166,6 +181,8 @@ export default function RulesTable(): React.JSX.Element {
           match(filters.suggestions, !!r.hasSuggestions),
           match(filters.typeInformation, !!r.docs?.requiresTypeChecking),
           match(filters.extension, !!r.docs?.extendsBaseRule),
+          match(filters.formatting, r.type === 'layout'),
+          match(filters.deprecated, !!r.deprecated),
         ].filter((o): o is boolean => o !== undefined);
         return opinions.every(o => o);
       }),
@@ -219,16 +236,40 @@ export default function RulesTable(): React.JSX.Element {
             setMode={(newMode): void => changeFilter('extension', newMode)}
             label={`${EXTENSION_RULE_EMOJI} extension rule`}
           />
+          <RuleFilterCheckBox
+            mode={filters.formatting}
+            setMode={(newMode): void => changeFilter('formatting', newMode)}
+            label={`${FORMATTING_RULE_EMOJI} formatting rule`}
+          />
+          <RuleFilterCheckBox
+            mode={filters.deprecated}
+            setMode={(newMode): void => changeFilter('deprecated', newMode)}
+            label={`${DEPRECATED_RULE_EMOJI} deprecated rule`}
+          />
         </ul>
       </div>
       <table className={styles.rulesTable}>
         <thead>
           <tr>
             <th className={styles.ruleCol}>Rule</th>
-            <th className={styles.attrCol}>Config</th>
-            <th className={styles.attrCol}>Fixer</th>
-            <th className={styles.attrCol}>Typed</th>
-            <th className={styles.attrCol}>Extension</th>
+            <th className={styles.attrCol}>
+              <button title="The config group that the rule belongs to, if any.">C</button>
+            </th>
+            <th className={styles.attrCol}>
+              <button title="Whether the rule has an auto-fixer and/or has suggestions.">F</button>
+            </th>
+            <th className={styles.attrCol}>
+              <button title="Whether the rule requires type information from the TypeScript compiler.">T</button>
+            </th>
+            <th className={styles.attrCol}>
+              <button title="Whether the rule is an extension rule (i.e. based on a core ESLint rule).">E</button>
+            </th>
+            <th className={styles.attrCol}>
+              <button title="Whether the rule has to do with formatting.">F</button>
+            </th>
+            <th className={styles.attrCol}>
+              <button title="Whether the rule is deprecated.">D</button>
+            </th>
           </tr>
         </thead>
         <tbody>
@@ -248,7 +289,9 @@ type FilterCategory =
   | 'stylistic'
   | 'suggestions'
   | 'typeInformation'
-  | 'extension';
+  | 'extension'
+  | 'formatting'
+  | 'deprecated';
 type FiltersState = Record<FilterCategory, FilterMode>;
 const neutralFiltersState: FiltersState = {
   recommended: 'neutral',
@@ -258,6 +301,8 @@ const neutralFiltersState: FiltersState = {
   suggestions: 'neutral',
   typeInformation: 'neutral',
   extension: 'neutral',
+  formatting: 'neutral',
+  deprecated: 'neutral',
 };
 
 const selectSearch: HistorySelector<string> = history =>

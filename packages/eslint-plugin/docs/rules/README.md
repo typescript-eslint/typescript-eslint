@@ -22,6 +22,8 @@ The rules are listed in alphabetical order, but you can sort them based on a few
 - `💡 has suggestions` refers to whether the rule will offer a suggestion of how to fix the code. Sometimes, it is not safe to automatically fix the code with an auto-fixer. But in these cases, we often have a good guess of what the correct fix should be, and we can provide it as a suggestion to the developer.
 - `💭 requires type information` refers to whether the rule needs to leverage the power of the TypeScript compiler in order to work properly. Rules that require type information are usually much slower than rules that don't. Thus, if linting performance becomes an issue in a gigantic codebase, a good first step might be make rules that require type information run only in CI.
 - `🧱 extension rule` means that the rule was originally a [core ESLint rule](https://eslint.org/docs/latest/rules/). Some core ESLint rules do not support TypeScript syntax: either they crash, ignore the syntax, or falsely report against it. In these cases, we create an "extension rule": a rule within our plugin that has the same functionality, but also supports TypeScript.
+- `📐 formatting rule` means that the rule has to do with formatting. Formatting rules are mostly here for legacy purposes, because we [strongly recommend against using ESLint for formatting](/linting/troubleshooting/formatting).
+- `💀 deprecated rule` means that the rule should no longer be used and will be removed from the plugin in a future version.
 
 ## Rules
 

@@ -16,3 +16,15 @@ export const TYPE_INFORMATION_EMOJI = '💭';
  * "generate-breaking-changes.mts" script.
  */
 export const EXTENSION_RULE_EMOJI = '🧱';
+
+/**
+ * This must be kept in sync with the emoji in the
+ * "generate-breaking-changes.mts" script.
+ */
+export const FORMATTING_RULE_EMOJI = '📐';
+
+/**
+ * This must be kept in sync with the emoji in the
+ * "generate-breaking-changes.mts" script.
+ */
+export const DEPRECATED_RULE_EMOJI = '💀';
