@@ -42,7 +42,7 @@ function RuleRow({
   }
   const { fixable, hasSuggestions, type, deprecated } = rule;
   const { recommended, requiresTypeChecking, extendsBaseRule } = rule.docs;
-  const formatting = type === "layout";
+  const formatting = type === 'layout';
   return (
     <tr>
       <td>
@@ -253,19 +253,29 @@ export default function RulesTable(): React.JSX.Element {
           <tr>
             <th className={styles.ruleCol}>Rule</th>
             <th className={styles.attrCol}>
-              <button title="The config group that the rule belongs to, if any.">C</button>
+              <button title="The config group that the rule belongs to, if any.">
+                C
+              </button>
             </th>
             <th className={styles.attrCol}>
-              <button title="Whether the rule has an auto-fixer and/or has suggestions.">F</button>
+              <button title="Whether the rule has an auto-fixer and/or has suggestions.">
+                F
+              </button>
             </th>
             <th className={styles.attrCol}>
-              <button title="Whether the rule requires type information from the TypeScript compiler.">T</button>
+              <button title="Whether the rule requires type information from the TypeScript compiler.">
+                T
+              </button>
             </th>
             <th className={styles.attrCol}>
-              <button title="Whether the rule is an extension rule (i.e. based on a core ESLint rule).">E</button>
+              <button title="Whether the rule is an extension rule (i.e. based on a core ESLint rule).">
+                E
+              </button>
             </th>
             <th className={styles.attrCol}>
-              <button title="Whether the rule has to do with formatting.">F</button>
+              <button title="Whether the rule has to do with formatting.">
+                F
+              </button>
             </th>
             <th className={styles.attrCol}>
               <button title="Whether the rule is deprecated.">D</button>
