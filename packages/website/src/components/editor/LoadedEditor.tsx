@@ -39,9 +39,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   eslintrc,
   selectedRange,
   fileType,
-  onEsASTChange,
-  onScopeChange,
-  onTsASTChange,
+  onASTChange,
   onMarkersChange,
   onChange,
   onSelect,
@@ -140,12 +138,10 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
 
   useEffect(() => {
     const disposable = webLinter.onParse((uri, model) => {
-      onEsASTChange(model.storedAST);
-      onScopeChange(model.storedScope as Record<string, unknown> | undefined);
-      onTsASTChange(model.storedTsAST);
+      onASTChange(model);
     });
     return () => disposable();
-  }, [webLinter, onEsASTChange, onScopeChange, onTsASTChange]);
+  }, [webLinter, onASTChange]);
 
   useEffect(() => {
     const createRuleUri = (name: string): string =>

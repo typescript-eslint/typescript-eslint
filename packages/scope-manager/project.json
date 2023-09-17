@@ -69,8 +69,8 @@
       "executor": "nx:run-commands",
       "options": {
         "parallel": false,
-        "cwd": "packages/scope-manager",
-        "commands": ["yarn tsx tools/generate-lib.ts"]
+        "cwd": "packages/repo-tools",
+        "commands": ["yarn generate-lib"]
       }
     }
   },

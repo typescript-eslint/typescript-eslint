@@ -9,7 +9,7 @@ description: 'Enforce using the nullish coalescing operator instead of logical a
 The `??` nullish coalescing runtime operator allows providing a default value when dealing with `null` or `undefined`.
 Because the nullish coalescing operator _only_ coalesces when the original value is `null` or `undefined`, it is much safer than relying upon logical OR operator chaining `||`, which coalesces on any _falsy_ value.
 
-This rule reports when you can safely replace:
+This rule reports when you may consider replacing:
 
 - An `||` operator with `??`
 - An `||=` operator with `??=`
@@ -144,28 +144,28 @@ a ?? (b && c && d);
 
 ### `ignorePrimitives`
 
-If you would like to ignore certain primitive types that can be falsy then you may pass an object containing a boolean value for each primitive:
+If you would like to ignore expressions containing operands of certain primitive types that can be falsy then you may pass an object containing a boolean value for each primitive:
 
 - `string: true`, ignores `null` or `undefined` unions with `string` (default: false).
 - `number: true`, ignores `null` or `undefined` unions with `number` (default: false).
 - `bigint: true`, ignores `null` or `undefined` unions with `bigint` (default: false).
 - `boolean: true`, ignores `null` or `undefined` unions with `boolean` (default: false).
 
-Incorrect code for `ignorePrimitives: { string: true }`, and correct code for `ignorePrimitives: { string: false }`:
+Incorrect code for `ignorePrimitives: { string: false }`, and correct code for `ignorePrimitives: { string: true }`:
 
 ```ts
 const foo: string | undefined = 'bar';
 foo || 'a string';
 ```
 
-Correct code for `ignorePrimitives: { string: true }`:
+Correct code for both `ignorePrimitives: { string: false }` and `ignorePrimitives: { string: true }`:
 
 ```ts
 const foo: string | undefined = 'bar';
 foo ?? 'a string';
 ```
 
-Also, if you would like to ignore all primitives types, you can set `ignorePrimitives: true`. It would be equivalent to `ignorePrimitives: { string: true, number: true, bigint: true, boolean: true }`.
+Also, if you would like to ignore all primitives types, you can set `ignorePrimitives: true`. It is equivalent to `ignorePrimitives: { string: true, number: true, bigint: true, boolean: true }`.
 
 ## When Not To Use It
 

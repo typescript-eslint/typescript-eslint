@@ -62,8 +62,8 @@ export default util.createRule({
       leftNode: TSESTree.Node,
       rightNode: TSESTree.Node,
     ): boolean {
-      const left = getTypeFromNode(leftNode);
-      const right = getTypeFromNode(rightNode);
+      const left = parserServices.getTypeAtLocation(node.left);
+      const right = parserServices.getTypeAtLocation(node.right);
 
       // Allow comparisons that don't have anything to do with enums:
       //
@@ -104,12 +104,6 @@ export default util.createRule({
 
       return (
         typeViolates(leftTypeParts, right) || typeViolates(rightTypeParts, left)
-      );
-    }
-
-    function getTypeFromNode(node: TSESTree.Node): ts.Type {
-      return typeChecker.getTypeAtLocation(
-        parserServices.esTreeNodeToTSNodeMap.get(node),
       );
     }
 
