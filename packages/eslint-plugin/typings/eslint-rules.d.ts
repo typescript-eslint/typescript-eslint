@@ -832,6 +832,9 @@ declare module 'eslint/lib/rules/no-invalid-this' {
       // The code path functions below are intentionally commented out because
       // they cause unresolvable compiler errors:
       // https://github.com/typescript-eslint/typescript-eslint/issues/6993
+      // Note that plugin authors can copy-paste these functions into their own
+      // code as selectors and they will still work as long as the second argument
+      // is omitted.
 
       /*
       onCodePathStart?: (
