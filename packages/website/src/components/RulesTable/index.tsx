@@ -9,6 +9,15 @@ import {
   type HistorySelector,
   useHistorySelector,
 } from '../../hooks/useHistorySelector';
+import {
+  EXTENSION_RULE_EMOJI,
+  FIXABLE_EMOJI,
+  RECOMMENDED_CONFIG_EMOJI,
+  STRICT_CONFIG_EMOJI,
+  STYLISTIC_CONFIG_EMOJI,
+  SUGGESTIONS_EMOJI,
+  TYPE_INFORMATION_EMOJI,
+} from '../constants';
 import styles from './styles.module.css';
 
 function interpolateCode(
@@ -30,7 +39,7 @@ function RuleRow({
     return null;
   }
   const { fixable, hasSuggestions } = rule;
-  const { recommended, requiresTypeChecking } = rule.docs;
+  const { recommended, requiresTypeChecking, extendsBaseRule } = rule.docs;
   return (
     <tr>
       <td>
@@ -44,11 +53,11 @@ function RuleRow({
         {(() => {
           switch (recommended) {
             case 'recommended':
-              return '✅';
+              return RECOMMENDED_CONFIG_EMOJI;
             case 'strict':
-              return '🔒';
+              return STRICT_CONFIG_EMOJI;
             case 'stylistic':
-              return '🎨';
+              return STYLISTIC_CONFIG_EMOJI;
             default:
               // for some reason the current version of babel loader won't elide this correctly
               // recommended satisfies undefined;
@@ -68,14 +77,20 @@ function RuleRow({
             : undefined
         }
       >
-        {fixable ? '🔧\n' : '\n'}
-        {hasSuggestions ? '💡' : ''}
+        {fixable ? `${FIXABLE_EMOJI}\n` : '\n'}
+        {hasSuggestions ? SUGGESTIONS_EMOJI : ''}
       </td>
       <td
         className={styles.attrCol}
         title={requiresTypeChecking ? 'requires type information' : undefined}
       >
-        {requiresTypeChecking ? '💭' : ''}
+        {requiresTypeChecking ? TYPE_INFORMATION_EMOJI : ''}
+      </td>
+      <td
+        className={styles.attrCol}
+        title={extendsBaseRule ? 'extends base rule' : undefined}
+      >
+        {extendsBaseRule ? EXTENSION_RULE_EMOJI : ''}
       </td>
     </tr>
   );
@@ -132,35 +147,29 @@ function match(mode: FilterMode, value: boolean): boolean | undefined {
   return undefined;
 }
 
-export default function RulesTable({
-  ruleset,
-}: {
-  ruleset: 'extension-rules' | 'supported-rules';
-}): React.JSX.Element {
-  const [filters, changeFilter] = useRulesFilters(ruleset);
+export default function RulesTable(): React.JSX.Element {
+  const [filters, changeFilter] = useRulesFilters();
 
   const rules = useRulesMeta();
-  const extensionRules = ruleset === 'extension-rules';
   const relevantRules = useMemo(
     () =>
-      rules
-        .filter(r => !!extensionRules === !!r.docs?.extendsBaseRule)
-        .filter(r => {
-          const opinions = [
-            match(filters.recommended, r.docs?.recommended === 'recommended'),
-            match(
-              filters.strict,
-              r.docs?.recommended === 'recommended' ||
-                r.docs?.recommended === 'strict',
-            ),
-            match(filters.stylistic, r.docs?.recommended === 'stylistic'),
-            match(filters.fixable, !!r.fixable),
-            match(filters.suggestions, !!r.hasSuggestions),
-            match(filters.typeInformation, !!r.docs?.requiresTypeChecking),
-          ].filter((o): o is boolean => o !== undefined);
-          return opinions.every(o => o);
-        }),
-    [rules, extensionRules, filters],
+      rules.filter(r => {
+        const opinions = [
+          match(filters.recommended, r.docs?.recommended === 'recommended'),
+          match(
+            filters.strict,
+            r.docs?.recommended === 'recommended' ||
+              r.docs?.recommended === 'strict',
+          ),
+          match(filters.stylistic, r.docs?.recommended === 'stylistic'),
+          match(filters.fixable, !!r.fixable),
+          match(filters.suggestions, !!r.hasSuggestions),
+          match(filters.typeInformation, !!r.docs?.requiresTypeChecking),
+          match(filters.extension, !!r.docs?.extendsBaseRule),
+        ].filter((o): o is boolean => o !== undefined);
+        return opinions.every(o => o);
+      }),
+    [rules, filters],
   );
 
   return (
@@ -171,17 +180,17 @@ export default function RulesTable({
           <RuleFilterCheckBox
             mode={filters.recommended}
             setMode={(newMode): void => changeFilter('recommended', newMode)}
-            label="✅ recommended"
+            label={`${RECOMMENDED_CONFIG_EMOJI} recommended`}
           />
           <RuleFilterCheckBox
             mode={filters.strict}
             setMode={(newMode): void => changeFilter('strict', newMode)}
-            label="🔒 strict"
+            label={`${STRICT_CONFIG_EMOJI} strict`}
           />
           <RuleFilterCheckBox
             mode={filters.stylistic}
             setMode={(newMode): void => changeFilter('stylistic', newMode)}
-            label="🎨 stylistic"
+            label={`${STYLISTIC_CONFIG_EMOJI} stylistic`}
           />
         </ul>
       </div>
@@ -191,19 +200,24 @@ export default function RulesTable({
           <RuleFilterCheckBox
             mode={filters.fixable}
             setMode={(newMode): void => changeFilter('fixable', newMode)}
-            label="🔧 fixable"
+            label={`${FIXABLE_EMOJI} fixable`}
           />
           <RuleFilterCheckBox
             mode={filters.suggestions}
             setMode={(newMode): void => changeFilter('suggestions', newMode)}
-            label="💡 has suggestions"
+            label={`${SUGGESTIONS_EMOJI} has suggestions`}
           />
           <RuleFilterCheckBox
             mode={filters.typeInformation}
             setMode={(newMode): void =>
               changeFilter('typeInformation', newMode)
             }
-            label="💭 requires type information"
+            label={`${TYPE_INFORMATION_EMOJI} requires type information`}
+          />
+          <RuleFilterCheckBox
+            mode={filters.extension}
+            setMode={(newMode): void => changeFilter('extension', newMode)}
+            label={`${EXTENSION_RULE_EMOJI} extension rule`}
           />
         </ul>
       </div>
@@ -214,6 +228,7 @@ export default function RulesTable({
             <th className={styles.attrCol}>Config</th>
             <th className={styles.attrCol}>Fixer</th>
             <th className={styles.attrCol}>Typed</th>
+            <th className={styles.attrCol}>Extension</th>
           </tr>
         </thead>
         <tbody>
@@ -232,7 +247,8 @@ type FilterCategory =
   | 'strict'
   | 'stylistic'
   | 'suggestions'
-  | 'typeInformation';
+  | 'typeInformation'
+  | 'extension';
 type FiltersState = Record<FilterCategory, FilterMode>;
 const neutralFiltersState: FiltersState = {
   recommended: 'neutral',
@@ -241,14 +257,19 @@ const neutralFiltersState: FiltersState = {
   fixable: 'neutral',
   suggestions: 'neutral',
   typeInformation: 'neutral',
+  extension: 'neutral',
 };
 
 const selectSearch: HistorySelector<string> = history =>
   history.location.search;
 const getServerSnapshot = (): string => '';
 
+/**
+ * @param paramsKey Optional. Whether to include rules that match the particular
+ * search filter. Defaults to an empty string, which matches all rules.
+ */
 function useRulesFilters(
-  paramsKey: string,
+  paramsKey = '',
 ): [FiltersState, (category: FilterCategory, mode: FilterMode) => void] {
   const history = useHistory();
   const search = useHistorySelector(selectSearch, getServerSnapshot);
