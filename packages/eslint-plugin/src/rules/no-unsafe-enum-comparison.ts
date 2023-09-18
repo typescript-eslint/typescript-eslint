@@ -1,4 +1,4 @@
-import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -126,11 +126,13 @@ export default util.createRule({
         }
 
         const { parent } = node;
-        if (parent.type !== AST_NODE_TYPES.SwitchStatement) {
-          return;
-        }
 
-        if (isMismatchedComparison(parent.discriminant, node.test)) {
+        /**
+         * @see https://github.com/typescript-eslint/typescript-eslint/issues/6225
+         */
+        const switchStatement = parent as TSESTree.SwitchStatement;
+
+        if (isMismatchedComparison(switchStatement.discriminant, node.test)) {
           context.report({
             messageId: 'mismatchedCase',
             node,
