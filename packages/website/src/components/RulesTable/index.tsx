@@ -234,17 +234,17 @@ export default function RulesTable(): React.JSX.Element {
           <RuleFilterCheckBox
             mode={filters.extension}
             setMode={(newMode): void => changeFilter('extension', newMode)}
-            label={`${EXTENSION_RULE_EMOJI} extension rule`}
+            label={`${EXTENSION_RULE_EMOJI} extension`}
           />
           <RuleFilterCheckBox
             mode={filters.formatting}
             setMode={(newMode): void => changeFilter('formatting', newMode)}
-            label={`${FORMATTING_RULE_EMOJI} formatting rule`}
+            label={`${FORMATTING_RULE_EMOJI} formatting`}
           />
           <RuleFilterCheckBox
             mode={filters.deprecated}
             setMode={(newMode): void => changeFilter('deprecated', newMode)}
-            label={`${DEPRECATED_RULE_EMOJI} deprecated rule`}
+            label={`${DEPRECATED_RULE_EMOJI} deprecated`}
           />
         </ul>
       </div>
