@@ -2,7 +2,14 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getParserServices,
+  getTypeArguments,
+  isTypeAnyArrayType,
+  isTypeAnyType,
+  isUnsafeAssignment,
+} from '../util';
 
 type MessageIds =
   | 'unsafeArgument'
@@ -57,13 +64,13 @@ class FunctionSignature {
         // is a rest param
         if (checker.isArrayType(type)) {
           restType = {
-            type: util.getTypeArguments(type, checker)[0],
+            type: getTypeArguments(type, checker)[0],
             kind: RestTypeKind.Array,
             index: i,
           };
         } else if (checker.isTupleType(type)) {
           restType = {
-            typeArguments: util.getTypeArguments(type, checker),
+            typeArguments: getTypeArguments(type, checker),
             kind: RestTypeKind.Tuple,
             index: i,
           };
@@ -131,7 +138,7 @@ class FunctionSignature {
   }
 }
 
-export default util.createRule<[], MessageIds>({
+export default createRule<[], MessageIds>({
   name: 'no-unsafe-argument',
   meta: {
     type: 'problem',
@@ -152,7 +159,7 @@ export default util.createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     return {
@@ -164,7 +171,7 @@ export default util.createRule<[], MessageIds>({
         }
 
         // ignore any-typed calls as these are caught by no-unsafe-call
-        if (util.isTypeAnyType(services.getTypeAtLocation(node.callee))) {
+        if (isTypeAnyType(services.getTypeAtLocation(node.callee))) {
           return;
         }
 
@@ -182,13 +189,13 @@ export default util.createRule<[], MessageIds>({
                 argument.argument,
               );
 
-              if (util.isTypeAnyType(spreadArgType)) {
+              if (isTypeAnyType(spreadArgType)) {
                 // foo(...any)
                 context.report({
                   node: argument,
                   messageId: 'unsafeSpread',
                 });
-              } else if (util.isTypeAnyArrayType(spreadArgType, checker)) {
+              } else if (isTypeAnyArrayType(spreadArgType, checker)) {
                 // foo(...any[])
 
                 // TODO - we could break down the spread and compare the array type against each argument
@@ -198,7 +205,7 @@ export default util.createRule<[], MessageIds>({
                 });
               } else if (checker.isTupleType(spreadArgType)) {
                 // foo(...[tuple1, tuple2])
-                const spreadTypeArguments = util.getTypeArguments(
+                const spreadTypeArguments = getTypeArguments(
                   spreadArgType,
                   checker,
                 );
@@ -207,7 +214,7 @@ export default util.createRule<[], MessageIds>({
                   if (parameterType == null) {
                     continue;
                   }
-                  const result = util.isUnsafeAssignment(
+                  const result = isUnsafeAssignment(
                     tupleType,
                     parameterType,
                     checker,
@@ -246,7 +253,7 @@ export default util.createRule<[], MessageIds>({
               }
 
               const argumentType = services.getTypeAtLocation(argument);
-              const result = util.isUnsafeAssignment(
+              const result = isUnsafeAssignment(
                 argumentType,
                 parameterType,
                 checker,

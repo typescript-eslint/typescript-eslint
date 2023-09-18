@@ -2,7 +2,15 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { SymbolFlags } from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  formatWordList,
+  getParserServices,
+  isClosingBraceToken,
+  isOpeningBraceToken,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 type Options = [
   {
@@ -29,7 +37,7 @@ type MessageIds =
   | 'singleExportIsType'
   | 'typeOverValue';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'consistent-type-exports',
   meta: {
     type: 'suggestion',
@@ -68,7 +76,7 @@ export default util.createRule<Options, MessageIds>({
   create(context, [{ fixMixedExportsWithInlineTypeSpecifier }]) {
     const sourceCode = context.getSourceCode();
     const sourceExportsMap: Record<string, SourceExports> = {};
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
 
     /**
      * Helper for identifying if an export specifier resolves to a
@@ -194,7 +202,7 @@ export default util.createRule<Options, MessageIds>({
                 },
               });
             } else {
-              const exportNames = util.formatWordList(allExportNames);
+              const exportNames = formatWordList(allExportNames);
 
               context.report({
                 node: report.node,
@@ -229,20 +237,20 @@ function* fixExportInsertType(
   sourceCode: Readonly<TSESLint.SourceCode>,
   node: TSESTree.ExportNamedDeclaration,
 ): IterableIterator<TSESLint.RuleFix> {
-  const exportToken = util.nullThrows(
+  const exportToken = nullThrows(
     sourceCode.getFirstToken(node),
-    util.NullThrowsReasons.MissingToken('export', node.type),
+    NullThrowsReasons.MissingToken('export', node.type),
   );
 
   yield fixer.insertTextAfter(exportToken, ' type');
 
   for (const specifier of node.specifiers) {
     if (specifier.exportKind === 'type') {
-      const kindToken = util.nullThrows(
+      const kindToken = nullThrows(
         sourceCode.getFirstToken(specifier),
-        util.NullThrowsReasons.MissingToken('export', specifier.type),
+        NullThrowsReasons.MissingToken('export', specifier.type),
       );
-      const firstTokenAfter = util.nullThrows(
+      const firstTokenAfter = nullThrows(
         sourceCode.getTokenAfter(kindToken, {
           includeComments: true,
         }),
@@ -270,22 +278,22 @@ function* fixSeparateNamedExports(
   const source = getSourceFromExport(node);
   const specifierNames = typeSpecifiers.map(getSpecifierText).join(', ');
 
-  const exportToken = util.nullThrows(
+  const exportToken = nullThrows(
     sourceCode.getFirstToken(node),
-    util.NullThrowsReasons.MissingToken('export', node.type),
+    NullThrowsReasons.MissingToken('export', node.type),
   );
 
   // Filter the bad exports from the current line.
   const filteredSpecifierNames = valueSpecifiers
     .map(getSpecifierText)
     .join(', ');
-  const openToken = util.nullThrows(
-    sourceCode.getFirstToken(node, util.isOpeningBraceToken),
-    util.NullThrowsReasons.MissingToken('{', node.type),
+  const openToken = nullThrows(
+    sourceCode.getFirstToken(node, isOpeningBraceToken),
+    NullThrowsReasons.MissingToken('{', node.type),
   );
-  const closeToken = util.nullThrows(
-    sourceCode.getLastToken(node, util.isClosingBraceToken),
-    util.NullThrowsReasons.MissingToken('}', node.type),
+  const closeToken = nullThrows(
+    sourceCode.getLastToken(node, isClosingBraceToken),
+    NullThrowsReasons.MissingToken('}', node.type),
   );
 
   // Remove exports from the current line which we're going to re-insert.

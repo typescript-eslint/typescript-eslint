@@ -1,7 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import {
+  createRule,
+  getFunctionHeadLoc,
+  getFunctionNameWithKind,
+  getStaticStringValue,
+} from '../util';
 
 type Options = [
   {
@@ -13,7 +18,7 @@ type Options = [
 ];
 type MessageIds = 'missingThis';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'class-methods-use-this',
   meta: {
     type: 'suggestion',
@@ -164,7 +169,7 @@ export default util.createRule<Options, MessageIds>({
         node.key.type === AST_NODE_TYPES.PrivateIdentifier ? '#' : '';
       const name =
         node.key.type === AST_NODE_TYPES.Literal
-          ? util.getStaticStringValue(node.key)
+          ? getStaticStringValue(node.key)
           : node.key.name || '';
 
       return !exceptMethods.has(hashIfNeeded + (name ?? ''));
@@ -193,10 +198,10 @@ export default util.createRule<Options, MessageIds>({
       if (isIncludedInstanceMethod(stackContext.member)) {
         context.report({
           node,
-          loc: util.getFunctionHeadLoc(node, sourceCode),
+          loc: getFunctionHeadLoc(node, sourceCode),
           messageId: 'missingThis',
           data: {
-            name: util.getFunctionNameWithKind(node),
+            name: getFunctionNameWithKind(node),
           },
         });
       }

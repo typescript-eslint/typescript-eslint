@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 interface Options {
   allowInGenericTypeArguments?: string[] | boolean;
@@ -16,7 +16,7 @@ type MessageIds =
   | 'invalidVoidNotReturnOrThisParamOrGeneric'
   | 'invalidVoidUnionConstituent';
 
-export default util.createRule<[Options], MessageIds>({
+export default createRule<[Options], MessageIds>({
   name: 'no-invalid-void-type',
   meta: {
     type: 'problem',

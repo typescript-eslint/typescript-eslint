@@ -6,7 +6,7 @@ import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type MessageIds = 'noShadow' | 'noShadowGlobal';
 type Options = [
@@ -26,7 +26,7 @@ const allowedFunctionVariableDefTypes = new Set([
   AST_NODE_TYPES.TSMethodSignature,
 ]);
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-shadow',
   meta: {
     type: 'suggestion',
