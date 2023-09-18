@@ -103,7 +103,8 @@ export default util.createRule({
       }
 
       return (
-        typeViolates(leftTypeParts, rightType) || typeViolates(rightTypeParts, leftType)
+        typeViolates(leftTypeParts, rightType) ||
+        typeViolates(rightTypeParts, leftType)
       );
     }
 
