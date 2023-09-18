@@ -13,9 +13,15 @@ slug: /
 Instead of enabling rules one by one, we recommend using one of [our pre-defined configs](/linting/configs) to easily enable a large set of
 recommended rules.
 
-## Sorting
+## Rules
 
-The rules are listed in alphabetical order, but you can sort them based on a few categories:
+The rules are listed in alphabetical order. You can optionally sort them based on these categories:
+
+import RulesTable from "@site/src/components/RulesTable";
+
+<RulesTable />
+
+## Sorting
 
 - "Config Group" refers to the configuration preset. We offer [three different config groups](/linting/configs) that allow users to enable a large set of recommended rules all at once.
 - `🔧 fixable` refers to whether the rule contains an ESLint auto-fixer. If the rule has an auto-fixer, then some rule violations can be fixed by running `eslint` with the `--fix` flag. This will automatically change the code, which can save a lot of time! (It is a common pattern for developers to configure their IDE to automatically run `eslint --fix` when saving a TypeScript file.)
@@ -24,9 +30,3 @@ The rules are listed in alphabetical order, but you can sort them based on a few
 - `🧱 extension rule` means that the rule was originally a [core ESLint rule](https://eslint.org/docs/latest/rules/). Some core ESLint rules do not support TypeScript syntax: either they crash, ignore the syntax, or falsely report against it. In these cases, we create an "extension rule": a rule within our plugin that has the same functionality, but also supports TypeScript.
 - `📐 formatting rule` means that the rule has to do with formatting. Formatting rules are mostly here for legacy purposes, because we [strongly recommend against using ESLint for formatting](/linting/troubleshooting/formatting).
 - `💀 deprecated rule` means that the rule should no longer be used and will be removed from the plugin in a future version.
-
-## Rules
-
-import RulesTable from "@site/src/components/RulesTable";
-
-<RulesTable />
