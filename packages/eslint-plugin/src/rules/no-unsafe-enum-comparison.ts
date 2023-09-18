@@ -62,16 +62,16 @@ export default util.createRule({
       leftNode: TSESTree.Node,
       rightNode: TSESTree.Node,
     ): boolean {
-      const left = parserServices.getTypeAtLocation(node.left);
-      const right = parserServices.getTypeAtLocation(node.right);
+      const leftType = parserServices.getTypeAtLocation(leftNode);
+      const rightType = parserServices.getTypeAtLocation(rightNode);
 
       // Allow comparisons that don't have anything to do with enums:
       //
       // ```ts
       // 1 === 2;
       // ```
-      const leftEnumTypes = getEnumTypes(typeChecker, left);
-      const rightEnumTypes = new Set(getEnumTypes(typeChecker, right));
+      const leftEnumTypes = getEnumTypes(typeChecker, leftType);
+      const rightEnumTypes = new Set(getEnumTypes(typeChecker, rightType));
       if (leftEnumTypes.length === 0 && rightEnumTypes.size === 0) {
         return false;
       }
@@ -87,8 +87,8 @@ export default util.createRule({
         }
       }
 
-      const leftTypeParts = tsutils.unionTypeParts(left);
-      const rightTypeParts = tsutils.unionTypeParts(right);
+      const leftTypeParts = tsutils.unionTypeParts(leftType);
+      const rightTypeParts = tsutils.unionTypeParts(rightType);
 
       // If a type exists in both sides, we consider this comparison safe:
       //
@@ -103,7 +103,7 @@ export default util.createRule({
       }
 
       return (
-        typeViolates(leftTypeParts, right) || typeViolates(rightTypeParts, left)
+        typeViolates(leftTypeParts, rightType) || typeViolates(rightTypeParts, leftType)
       );
     }
 
