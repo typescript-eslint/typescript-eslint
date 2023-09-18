@@ -257,32 +257,34 @@ export default function RulesTable(): React.JSX.Element {
           <tr>
             <th className={styles.ruleCol}>Rule</th>
             <th className={styles.attrCol}>
-              <button title="The config group that the rule belongs to, if any.">
-                C
-              </button>
+              <div title="The config group that the rule belongs to, if any.">
+                ⚙️ {/* We use a gear to represent "Config". */}
+              </div>
             </th>
             <th className={styles.attrCol}>
-              <button title="Whether the rule has an auto-fixer and/or has suggestions.">
-                F
-              </button>
+              <div title="Whether the rule has an auto-fixer and/or has suggestions.">
+                {FIXABLE_EMOJI}
+              </div>
             </th>
             <th className={styles.attrCol}>
-              <button title="Whether the rule requires type information from the TypeScript compiler.">
-                T
-              </button>
+              <div title="Whether the rule requires type information from the TypeScript compiler.">
+                {TYPE_INFORMATION_EMOJI}
+              </div>
             </th>
             <th className={styles.attrCol}>
-              <button title="Whether the rule is an extension rule (i.e. based on a core ESLint rule).">
-                E
-              </button>
+              <div title="Whether the rule is an extension rule (i.e. based on a core ESLint rule).">
+                {EXTENSION_RULE_EMOJI}
+              </div>
             </th>
             <th className={styles.attrCol}>
-              <button title="Whether the rule has to do with formatting.">
-                F
-              </button>
+              <div title="Whether the rule has to do with formatting.">
+                {FORMATTING_RULE_EMOJI}
+              </div>
             </th>
             <th className={styles.attrCol}>
-              <button title="Whether the rule is deprecated.">D</button>
+              <div title="Whether the rule is deprecated.">
+                {DEPRECATED_RULE_EMOJI}
+              </div>
             </th>
           </tr>
         </thead>
