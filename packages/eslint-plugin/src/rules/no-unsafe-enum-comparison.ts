@@ -10,7 +10,6 @@ import { getEnumTypes } from './enum-utils/shared';
  */
 function typeViolates(leftTypeParts: ts.Type[], right: ts.Type): boolean {
   const leftValueKinds = new Set(leftTypeParts.map(getEnumValueType));
-
   return (
     (leftValueKinds.has(ts.TypeFlags.Number) &&
       tsutils.isTypeFlagSet(
@@ -85,8 +84,10 @@ export default util.createRule({
           }
         }
 
-        const leftTypeParts = tsutils.unionTypeParts(left);
-        const rightTypeParts = tsutils.unionTypeParts(right);
+        const leftTypeParts1 = tsutils.unionTypeParts(left);
+        const rightTypeParts1 = tsutils.unionTypeParts(right);
+        const leftTypeParts2 = tsutils.intersectionTypeParts(left);
+        const rightTypeParts2 = tsutils.intersectionTypeParts(right);
 
         // If a type exists in both sides, we consider this comparison safe:
         //
@@ -94,15 +95,17 @@ export default util.createRule({
         // declare const fruit: Fruit.Apple | 0;
         // fruit === 0;
         // ```
-        for (const leftTypePart of leftTypeParts) {
-          if (rightTypeParts.includes(leftTypePart)) {
+        for (const leftTypePart of leftTypeParts1) {
+          if (rightTypeParts2.includes(leftTypePart)) {
             return;
           }
         }
 
         if (
-          typeViolates(leftTypeParts, right) ||
-          typeViolates(rightTypeParts, left)
+          typeViolates(leftTypeParts1, right) ||
+          typeViolates(leftTypeParts2, right) ||
+          typeViolates(rightTypeParts1, right) ||
+          typeViolates(rightTypeParts2, left)
         ) {
           context.report({
             messageId: 'mismatched',
