@@ -127,6 +127,9 @@ export default createRule<Options, MessageId>({
             node,
             messageId: 'invalidVoidExprArrow',
             fix(fixer) {
+              if (!canFix(arrowFunction)) {
+                return null;
+              }
               const arrowBody = arrowFunction.body;
               const arrowBodyText = sourceCode.getText(arrowBody);
               const newArrowBodyText = `{ ${arrowBodyText}; }`;
@@ -169,6 +172,9 @@ export default createRule<Options, MessageId>({
               node,
               messageId: 'invalidVoidExprReturnLast',
               fix(fixer) {
+                if (!canFix(returnStmt)) {
+                  return null;
+                }
                 const returnValue = returnStmt.argument!;
                 const returnValueText = sourceCode.getText(returnValue);
                 let newReturnStmtText = `${returnValueText};`;
@@ -336,6 +342,20 @@ export default createRule<Options, MessageId>({
       );
 
       return ['(', '[', '`'].includes(startToken.value);
+    }
+
+    function canFix(
+      node: TSESTree.ReturnStatement | TSESTree.ArrowFunctionExpression,
+    ): boolean {
+      const services = util.getParserServices(context);
+
+      const targetNode =
+        node.type === AST_NODE_TYPES.ReturnStatement
+          ? node.argument!
+          : node.body;
+
+      const type = util.getConstrainedTypeAtLocation(services, targetNode);
+      return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
     }
   },
 });
