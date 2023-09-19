@@ -34,12 +34,13 @@ export function TypesDetails({
   }, [cursorPosition, value]);
 
   return (
-    <PanelGroup
-      className={styles.panelGroup}
-      autoSaveId="playground-types"
-      direction="horizontal"
-    >
-      <Panel id="simplifiedTree" defaultSize={35} collapsible={true}>
+    <PanelGroup autoSaveId="playground-types" direction="horizontal">
+      <Panel
+        id="simplifiedTree"
+        defaultSize={35}
+        collapsible={true}
+        className={styles.PanelColumn}
+      >
         <div className={styles.playgroundInfoContainer}>
           <SimplifiedTreeView
             onHoverNode={onHoverNode}
@@ -51,7 +52,7 @@ export function TypesDetails({
       </Panel>
       <PanelResizeHandle className={styles.PanelResizeHandle} />
       {selectedNode && (
-        <Panel id="typeInfo" collapsible={true}>
+        <Panel id="typeInfo" collapsible={true} className={styles.PanelColumn}>
           <div className={styles.playgroundInfoContainer}>
             <TypeInfo
               onHoverNode={onHoverNode}

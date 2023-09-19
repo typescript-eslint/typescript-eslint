@@ -21,6 +21,7 @@ import { TypesDetails } from './typeDetails/TypesDetails';
 import type { ErrorGroup } from './types';
 
 function Playground(): React.JSX.Element {
+  const windowSize = useWindowSize();
   const [state, setState] = useHashState(defaultConfig);
 
   const [system] = useState<PlaygroundSystem>(() => createFileSystem(state));
@@ -34,8 +35,6 @@ function Playground(): React.JSX.Element {
   const [selectedRange, setSelectedRange] = useState<[number, number]>();
   const [cursorPosition, onCursorChange] = useState<number>();
   const playgroundMenuRef = useRef<ImperativePanelHandle>(null);
-
-  const windowSize = useWindowSize();
 
   const activeVisualEditor =
     visualEslintRc && activeFile === '.eslintrc'

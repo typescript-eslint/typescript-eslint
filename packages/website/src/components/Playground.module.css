@@ -6,12 +6,12 @@
 .playgroundMenu {
   width: 100%;
   background: var(--playground-main-color);
+  overflow: auto;
 }
 
-.playgroundEditor {
-  width: 100%;
-  display: flex;
-  flex-direction: column;
+.tabCode {
+  flex: 1;
+  overflow: hidden;
 }
 
 .hidden {
@@ -26,13 +26,6 @@
   background: var(--code-editor-bg);
 }
 
-.playgroundInfoHeader {
-  position: sticky;
-  top: 0;
-  left: 0;
-  z-index: 1;
-}
-
 .playgroundInfo {
   word-wrap: normal;
   width: 100%;
@@ -42,16 +35,7 @@
 
 .panelGroup {
   height: calc(100vh - 60px) !important;
-}
-
-.panelGroup .panelGroup {
-  height: calc(100vh - 111px) !important;
-}
-
-@media (max-width: 996px) {
-  .panelGroup .panelGroup {
-    height: auto !important;
-  }
+  border-top: 1px solid var(--ifm-color-emphasis-200);
 }
 
 .Panel {
@@ -103,6 +87,11 @@
 
 @media (max-width: 500px) {
   .PanelResizeHandle {
-    flex: 0 0 10px;
+    flex: 0 0 21px;
+    border-width: 0 10px;
+  }
+
+  .PanelResizeHandle[data-panel-group-direction='vertical'] {
+    border-width: 10px 0;
   }
 }
