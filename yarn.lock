@@ -16961,7 +16961,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prop-types@npm:^15.5.4, prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
+"prop-types@npm:^15.6.2, prop-types@npm:^15.7.2, prop-types@npm:^15.8.1":
   version: 15.8.1
   resolution: "prop-types@npm:15.8.1"
   dependencies:
@@ -17295,6 +17295,16 @@ __metadata:
   languageName: node
   linkType: hard
 
+"react-resizable-panels@npm:^0.0.54":
+  version: 0.0.54
+  resolution: "react-resizable-panels@npm:0.0.54"
+  peerDependencies:
+    react: ^16.14.0 || ^17.0.0 || ^18.0.0
+    react-dom: ^16.14.0 || ^17.0.0 || ^18.0.0
+  checksum: 0b40e639521272af96d3597d48dcdb0fada72c9590014e8b21373fc9ba1f76365cd24d58d2261b8cfe4f3ba5101b7dfea84259945eebeef7a4b3b5849dbf6390
+  languageName: node
+  linkType: hard
+
 "react-router-config@npm:^5.1.1":
   version: 5.1.1
   resolution: "react-router-config@npm:5.1.1"
@@ -17341,43 +17351,6 @@ __metadata:
   peerDependencies:
     react: ">=15"
   checksum: 52a9f28fa97577fda18a8ed2922b658704eafe873e444fe07202640d55d9e81e67c03efd2b2a5b80e3a80e8be8352df826a227ce5f42b33b91bef853c74d4841
-  languageName: node
-  linkType: hard
-
-"react-split-pane@npm:0.1.92":
-  version: 0.1.92
-  resolution: "react-split-pane@npm:0.1.92"
-  dependencies:
-    prop-types: ^15.7.2
-    react-lifecycles-compat: ^3.0.4
-    react-style-proptype: ^3.2.2
-  peerDependencies:
-    react: ^16.0.0-0
-    react-dom: ^16.0.0-0
-  checksum: 4890f172636baeb4bb197195e8d896297ef8eec3c9887331e4a3854da6cf66b2f7758132c3e05f4b38eed595710f678ae1399cb0ca82e9811db06ad95410eee6
-  languageName: node
-  linkType: hard
-
-"react-split-pane@patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
-  version: 0.1.92
-  resolution: "react-split-pane@patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch::version=0.1.92&hash=9eba81&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
-  dependencies:
-    prop-types: ^15.7.2
-    react-lifecycles-compat: ^3.0.4
-    react-style-proptype: ^3.2.2
-  peerDependencies:
-    react: ^16.0.0-0
-    react-dom: ^16.0.0-0
-  checksum: e05f6773bb687e6f3fffdb4bac48bc655b41b825ff8eb6ee8a39346d48fa8044be6f8d5832b1353700db65311712e561253cdeb822a074779afbd0754b3703ae
-  languageName: node
-  linkType: hard
-
-"react-style-proptype@npm:^3.2.2":
-  version: 3.2.2
-  resolution: "react-style-proptype@npm:3.2.2"
-  dependencies:
-    prop-types: ^15.5.4
-  checksum: f0e646e1488a18849a2a0fcff459a3769869d62be5729ff578dc6d37d0c0617706075efe09a15ff9372ba35419e31af5b0df154bc9487d1381cdc80d3dab6d7c
   languageName: node
   linkType: hard
 
@@ -20807,7 +20780,7 @@ __metadata:
     raw-loader: ^4.0.2
     react: ^18.2.0
     react-dom: ^18.2.0
-    react-split-pane: ^0.1.92
+    react-resizable-panels: ^0.0.54
     remark-docusaurus-tabs: ^0.2.0
     rimraf: "*"
     semver: ^7.5.4
