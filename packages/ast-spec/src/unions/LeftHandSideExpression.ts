@@ -4,12 +4,13 @@ import type { CallExpression } from '../expression/CallExpression/spec';
 import type { ClassExpression } from '../expression/ClassExpression/spec';
 import type { FunctionExpression } from '../expression/FunctionExpression/spec';
 import type { Identifier } from '../expression/Identifier/spec';
+import type { ImportExpression } from '../expression/ImportExpression/spec';
 import type { JSXElement } from '../expression/JSXElement/spec';
 import type { JSXFragment } from '../expression/JSXFragment/spec';
 import type { MemberExpression } from '../expression/MemberExpression/spec';
 import type { MetaProperty } from '../expression/MetaProperty/spec';
 import type { ObjectExpression } from '../expression/ObjectExpression/spec';
-import type { SequenceExpression } from '../expression/spec';
+import type { SequenceExpression } from '../expression/SequenceExpression/spec';
 import type { Super } from '../expression/Super/spec';
 import type { TaggedTemplateExpression } from '../expression/TaggedTemplateExpression/spec';
 import type { ThisExpression } from '../expression/ThisExpression/spec';
@@ -28,6 +29,7 @@ export type LeftHandSideExpression =
   | ClassExpression
   | FunctionExpression
   | Identifier
+  | ImportExpression
   | JSXElement
   | JSXFragment
   | LiteralExpression

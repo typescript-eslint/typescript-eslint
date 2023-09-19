@@ -38,6 +38,7 @@ body:
         - parser
         - rule-tester
         - scope-manager
+        - swc-estree
         - typescript-estree
         - utils
         - website

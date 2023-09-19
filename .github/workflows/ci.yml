@@ -162,6 +162,7 @@ jobs:
             'repo-tools',
             'rule-schema-to-typescript-types',
             'scope-manager',
+            'swc-estree',
             'type-utils',
             'typescript-estree',
             'utils',

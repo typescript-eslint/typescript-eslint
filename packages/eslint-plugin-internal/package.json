@@ -18,7 +18,8 @@
     "@typescript-eslint/scope-manager": "6.7.0",
     "@typescript-eslint/type-utils": "6.7.0",
     "@typescript-eslint/utils": "6.7.0",
-    "prettier": "^2.8.4"
+    "prettier": "^2.8.4",
+    "typescript": "*"
   },
   "devDependencies": {
     "jest": "29.6.4",

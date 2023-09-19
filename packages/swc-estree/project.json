@@ -1,0 +1,16 @@
+{
+  "name": "swc-estree",
+  "$schema": "../../node_modules/nx/schemas/project-schema.json",
+  "type": "library",
+  "implicitDependencies": [],
+  "targets": {
+    "lint": {
+      "executor": "@nx/linter:eslint",
+      "outputs": ["{options.outputFile}"],
+      "options": {
+        "lintFilePatterns": ["packages/swc-estree/**/*.{mts,cts,ts,tsx}"],
+        "ignorePath": ".eslintignore"
+      }
+    }
+  }
+}

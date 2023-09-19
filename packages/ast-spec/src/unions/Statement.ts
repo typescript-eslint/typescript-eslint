@@ -12,6 +12,7 @@ import type { TSModuleDeclaration } from '../declaration/TSModuleDeclaration/spe
 import type { TSNamespaceExportDeclaration } from '../declaration/TSNamespaceExportDeclaration/spec';
 import type { TSTypeAliasDeclaration } from '../declaration/TSTypeAliasDeclaration/spec';
 import type { VariableDeclaration } from '../declaration/VariableDeclaration/spec';
+import type { EmptyStatement } from '../special/EmptyStatement/spec';
 import type { BlockStatement } from '../statement/BlockStatement/spec';
 import type { BreakStatement } from '../statement/BreakStatement/spec';
 import type { ContinueStatement } from '../statement/ContinueStatement/spec';
@@ -38,6 +39,7 @@ export type Statement =
   | ContinueStatement
   | DebuggerStatement
   | DoWhileStatement
+  | EmptyStatement
   | ExportAllDeclaration
   | ExportDefaultDeclaration
   | ExportNamedDeclaration

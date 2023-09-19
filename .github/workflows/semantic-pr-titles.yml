@@ -33,6 +33,7 @@ jobs:
             parser
             rule-tester
             scope-manager
+            swc-estree
             type-utils
             types
             typescript-estree
