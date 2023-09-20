@@ -86,13 +86,13 @@ function Playground(): React.JSX.Element {
     <div className={styles.codeContainer}>
       <PanelGroup
         className={styles.panelGroup}
-        autoSaveId="playground-resize"
+        autoSaveId="playground-size"
         direction={windowSize === 'mobile' ? 'vertical' : 'horizontal'}
       >
         <Panel
           id="playgroundMenu"
           className={styles.PanelColumn}
-          defaultSize={optionsSize}
+          defaultSize={windowSize === 'mobile' ? 0 : optionsSize}
           collapsible={true}
           ref={playgroundMenuRef}
         >
