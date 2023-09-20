@@ -85,7 +85,7 @@
   --resize-background-color: var(--ifm-color-emphasis-300);
 }
 
-@media (width <= 500px) {
+@media only screen and (width <= 996px) {
   .PanelResizeHandle {
     flex: 0 0 21px;
     border-width: 0 10px;
