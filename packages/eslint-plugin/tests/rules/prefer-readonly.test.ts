@@ -526,6 +526,18 @@ function ClassWithName<TBase extends new (...args: any[]) => {}>(Base: TBase) {
     {
       code: `
 class Foo {
+  private value: Record<string, number> = {};
+
+  bar(newValue: Record<string, number>) {
+    ({ ...this.value } = newValue);
+    return this.value;
+  }
+}
+      `,
+    },
+    {
+      code: `
+class Foo {
   #value: Record<string, number> = {};
 
   bar(newValue: Record<string, number>) {
