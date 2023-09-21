@@ -288,7 +288,10 @@ class ClassScope {
 
   public addDeclaredVariable(node: ParameterOrPropertyDeclaration): void {
     if (
-      !tsutils.isModifierFlagSet(node, ts.ModifierFlags.Private) ||
+      !(
+        tsutils.isModifierFlagSet(node, ts.ModifierFlags.Private) ||
+        node.name.kind === ts.SyntaxKind.PrivateIdentifier
+      ) ||
       tsutils.isModifierFlagSet(node, ts.ModifierFlags.Readonly) ||
       ts.isComputedPropertyName(node.name)
     ) {

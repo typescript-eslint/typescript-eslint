@@ -22,6 +22,7 @@ class Container {
   // These member variables could be marked as readonly
   private neverModifiedMember = true;
   private onlyModifiedInConstructor: number;
+  #neverModifiedPrivateField = 3;
 
   public constructor(
     onlyModifiedInConstructor: number,
@@ -43,11 +44,17 @@ class Container {
   // Protected members might be modified by child classes
   protected protectedMember: number;
 
-  // This is modified later on by the class
+  // These are modified later on by the class
   private modifiedLater = 'unchanged';
 
   public mutate() {
     this.modifiedLater = 'mutated';
+  }
+
+  #modifiedLaterPrivateField = 'unchanged';
+
+  public mutatePrivateField() {
+    this.#modifiedLaterPrivateField = 'mutated';
   }
 }
 ```
