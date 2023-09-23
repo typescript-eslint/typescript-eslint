@@ -15,19 +15,18 @@ import ActionLabel from './layout/ActionLabel';
 import Expander from './layout/Expander';
 import InputLabel from './layout/InputLabel';
 import { createMarkdown, createMarkdownParams } from './lib/markdown';
-import { fileTypes } from './options';
+import { fileTypes, tsVersions } from './options';
+import styles from './Playground.module.css';
 import type { ConfigModel } from './types';
 
 export interface OptionsSelectorParams {
   readonly state: ConfigModel;
   readonly setState: (cfg: Partial<ConfigModel>) => void;
-  readonly tsVersions: readonly string[];
 }
 
 function OptionsSelectorContent({
   state,
   setState,
-  tsVersions,
 }: OptionsSelectorParams): React.JSX.Element {
   const [copyLink, copyLinkToClipboard] = useClipboard(() =>
     document.location.toString(),
@@ -54,10 +53,9 @@ function OptionsSelectorContent({
           <Dropdown
             name="ts"
             className="text--right"
+            options={tsVersions}
             value={state.ts}
-            disabled={!tsVersions.length}
             onChange={(ts): void => setState({ ts })}
-            options={(tsVersions.length && tsVersions) || [state.ts]}
           />
         </InputLabel>
         <InputLabel name="Eslint">{process.env.ESLINT_VERSION}</InputLabel>
@@ -75,7 +73,7 @@ function OptionsSelectorContent({
         <InputLabel name="Source type">
           <Dropdown
             name="sourceType"
-            value={state.sourceType}
+            value={state.sourceType ?? 'module'}
             onChange={(sourceType): void => setState({ sourceType })}
             options={['script', 'module']}
           />
@@ -132,7 +130,12 @@ function OptionsSelector(props: OptionsSelectorParams): React.JSX.Element {
       />
     );
   }
-  return <OptionsSelectorContent {...props} />;
+
+  return (
+    <div className={styles.playgroundMenu}>
+      <OptionsSelectorContent {...props} />
+    </div>
+  );
 }
 
 export default OptionsSelector;

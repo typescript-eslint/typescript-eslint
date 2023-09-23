@@ -53,7 +53,7 @@ export function createMarkdown(state: ConfigModel): string {
  */
 export function createMarkdownParams(state: ConfigModel): string {
   const { rules } = parseESLintRC(state.eslintrc);
-  const ruleKeys = Object.keys(rules);
+  const ruleKeys = Object.keys(rules ?? {});
 
   const onlyRuleName =
     ruleKeys.length === 1

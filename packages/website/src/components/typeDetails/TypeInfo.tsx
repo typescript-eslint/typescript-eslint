@@ -1,14 +1,16 @@
-import React, { useMemo } from 'react';
+import React, { useCallback, useMemo } from 'react';
 import type * as ts from 'typescript';
 
 import ASTViewer from '../ast/ASTViewer';
 import astStyles from '../ast/ASTViewer.module.css';
 import type { OnHoverNodeFn } from '../ast/types';
+import { isRecord, isTSNode } from '../ast/utils';
 
 export interface TypeInfoProps {
   readonly value: ts.Node;
   readonly typeChecker?: ts.TypeChecker;
   readonly onHoverNode?: OnHoverNodeFn;
+  readonly onSelect: (value: ts.Node) => void;
 }
 
 interface InfoModel {
@@ -65,6 +67,7 @@ export function TypeInfo({
   value,
   typeChecker,
   onHoverNode,
+  onSelect,
 }: TypeInfoProps): React.JSX.Element {
   const computed = useMemo(() => {
     if (!typeChecker || !value) {
@@ -99,6 +102,16 @@ export function TypeInfo({
     return info;
   }, [value, typeChecker]);
 
+  const onSelectNode = useCallback(
+    (selection: unknown) => {
+      if (isRecord(selection) && isTSNode(selection) && value !== selection) {
+        onSelect(selection);
+        onHoverNode?.(undefined);
+      }
+    },
+    [onSelect, onHoverNode, value],
+  );
+
   if (!typeChecker || !computed) {
     return <div>TypeChecker not available</div>;
   }
@@ -107,7 +120,11 @@ export function TypeInfo({
     <div>
       <>
         <h4 className="padding--sm margin--none">Node</h4>
-        <ASTViewer onHoverNode={onHoverNode} value={value} />
+        <ASTViewer
+          onClickNode={onSelectNode}
+          onHoverNode={onHoverNode}
+          value={value}
+        />
         <TypeGroup
           label="Type"
           type={computed.type}

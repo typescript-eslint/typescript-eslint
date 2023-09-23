@@ -1,4 +1,3 @@
-import type * as tsvfs from '@site/src/vendor/typescript-vfs';
 import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
@@ -27,15 +26,14 @@ export interface CreateLinter {
   configs: string[];
   triggerFix(filename: string): TSESLint.Linter.FixReport | undefined;
   triggerLint(filename: string): void;
-  onLint(cb: LinterOnLint): () => void;
-  onParse(cb: LinterOnParse): () => void;
+  onLint(cb: LinterOnLint): { dispose(): void };
+  onParse(cb: LinterOnParse): { dispose(): void };
   updateParserOptions(sourceType?: TSESLint.SourceType): void;
 }
 
 export function createLinter(
   system: PlaygroundSystem,
   webLinterModule: WebLinterModule,
-  vfs: typeof tsvfs,
 ): CreateLinter {
   const rules: CreateLinter['rules'] = new Map();
   const configs = new Map(Object.entries(webLinterModule.configs));
@@ -54,7 +52,6 @@ export function createLinter(
       onParse.trigger(filename, model);
     },
     webLinterModule,
-    vfs,
   );
 
   linter.defineParser(PARSER_NAME, parser);

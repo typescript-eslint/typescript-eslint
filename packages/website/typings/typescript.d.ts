@@ -14,6 +14,7 @@ declare module 'typescript' {
     type?: unknown;
     category?: { message: string };
     description?: { message: string };
+    isCommandLineOnly?: boolean;
     element?: {
       type: unknown;
     };
