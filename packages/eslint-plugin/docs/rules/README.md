@@ -6,8 +6,6 @@ pagination_prev: null
 slug: /
 ---
 
-## Introduction
-
 `@typescript-eslint/eslint-plugin` includes over 100 rules that detect best practice violations, bugs, and/or stylistic issues specifically for TypeScript code. All of our rules are listed below.
 
 Instead of enabling rules one by one, we recommend using one of [our pre-defined configs](/linting/configs) to easily enable a large set of
