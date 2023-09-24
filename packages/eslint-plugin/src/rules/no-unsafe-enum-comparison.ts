@@ -25,6 +25,27 @@ function typeViolates(leftTypeParts: ts.Type[], right: ts.Type): boolean {
   );
 }
 
+function getEnumKeyForLiteral(
+  leftEnumTypes: ts.Type[],
+  rightNode: TSESTree.Node,
+): string | null {
+  const right = util.getStaticValue(rightNode);
+
+  if (right === null) {
+    return null;
+  }
+
+  for (const leftEnumType of leftEnumTypes) {
+    if (leftEnumType.value === right.value) {
+      const enumParentName = leftEnumType.symbol.parent.name;
+
+      return `${enumParentName}.${leftEnumType.symbol.name}`;
+    }
+  }
+
+  return null;
+}
+
 /**
  * @returns What type a type's enum value is (number or string), if either.
  */
@@ -48,6 +69,8 @@ export default util.createRule({
     messages: {
       mismatched:
         'The two values in this comparison do not have a shared enum type.',
+      mismatchedSimilar:
+        'The two values in this comparison do not have a shared enum type. Did you mean to compare to `{{replacement}}`?',
     },
     schema: [],
   },
@@ -100,11 +123,44 @@ export default util.createRule({
           }
         }
 
-        if (
-          typeViolates(leftTypeParts, right) ||
-          typeViolates(rightTypeParts, left)
-        ) {
-          context.report({
+        if (typeViolates(leftTypeParts, right)) {
+          const leftEnumKey = getEnumKeyForLiteral(leftEnumTypes, node.right);
+
+          if (leftEnumKey) {
+            // TODO: Add fixer.
+            return context.report({
+              messageId: 'mismatchedSimilar',
+              node,
+              data: {
+                replacement: leftEnumKey,
+              },
+            });
+          }
+
+          return context.report({
+            messageId: 'mismatched',
+            node,
+          });
+        }
+
+        if (typeViolates(rightTypeParts, left)) {
+          const rightEnumKey = getEnumKeyForLiteral(
+            [...rightEnumTypes.values()],
+            node.left,
+          );
+
+          if (rightEnumKey) {
+            // TODO: Add fixer.
+            return context.report({
+              messageId: 'mismatchedSimilar',
+              node,
+              data: {
+                replacement: rightEnumKey,
+              },
+            });
+          }
+
+          return context.report({
             messageId: 'mismatched',
             node,
           });

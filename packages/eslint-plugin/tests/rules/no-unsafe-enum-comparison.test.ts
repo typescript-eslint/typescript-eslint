@@ -545,10 +545,22 @@ ruleTester.run('strict-enums-comparison', rule, {
         mixed === 1;
       `,
       errors: [
-        { messageId: 'mismatched' },
-        { messageId: 'mismatched' },
-        { messageId: 'mismatched' },
-        { messageId: 'mismatched' },
+        {
+          message:
+            'The two values in this comparison do not have a shared enum type. Did you mean to compare to `Str.A`?',
+        },
+        {
+          message:
+            'The two values in this comparison do not have a shared enum type. Did you mean to compare to `Num.B`?',
+        },
+        {
+          message:
+            'The two values in this comparison do not have a shared enum type. Did you mean to compare to `Mixed.A`?',
+        },
+        {
+          message:
+            'The two values in this comparison do not have a shared enum type. Did you mean to compare to `Mixed.B`?',
+        },
       ],
     },
     {
