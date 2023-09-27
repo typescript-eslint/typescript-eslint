@@ -16,27 +16,25 @@ const baseRule = getESLintCoreRule('max-params');
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const schema = Object.values(
-  util.deepMerge(
-    { ...baseRule.meta.schema },
-    {
-      0: {
-        oneOf: [
-          baseRule.meta.schema[0].oneOf[0],
-          {
-            ...baseRule.meta.schema[0].oneOf[1],
-            properties: {
-              ...baseRule.meta.schema[0].oneOf[1].properties,
-              countVoidThis: {
-                type: 'boolean',
-              },
-            },
-          },
-        ],
+const schema = [
+  {
+    type: 'object',
+    properties: {
+      maximum: {
+        type: 'integer',
+        minimum: 0,
+      },
+      max: {
+        type: 'integer',
+        minimum: 0,
+      },
+      countVoidThis: {
+        type: 'boolean',
       },
     },
-  ),
-) as JSONSchema4[];
+    additionalProperties: false,
+  },
+] as JSONSchema4[];
 
 export default util.createRule<Options, MessageIds>({
   name: 'max-params',
