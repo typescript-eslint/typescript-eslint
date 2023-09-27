@@ -545,22 +545,10 @@ ruleTester.run('strict-enums-comparison', rule, {
         mixed === 1;
       `,
       errors: [
-        {
-          message:
-            'The two values in this comparison do not have a shared enum type. Did you mean to compare to `Str.A`?',
-        },
-        {
-          message:
-            'The two values in this comparison do not have a shared enum type. Did you mean to compare to `Num.B`?',
-        },
-        {
-          message:
-            'The two values in this comparison do not have a shared enum type. Did you mean to compare to `Mixed.A`?',
-        },
-        {
-          message:
-            'The two values in this comparison do not have a shared enum type. Did you mean to compare to `Mixed.B`?',
-        },
+        { messageId: 'mismatched' },
+        { messageId: 'mismatched' },
+        { messageId: 'mismatched' },
+        { messageId: 'mismatched' },
       ],
     },
     {
@@ -576,6 +564,64 @@ ruleTester.run('strict-enums-comparison', rule, {
         weirdString === 'someArbitraryValue';
       `,
       errors: [{ messageId: 'mismatched' }],
+    },
+    {
+      code:
+        `enum Str {A = 'a', B = 'b'} ` +
+        `declare const str: Str; ` +
+        `str === 'b';`,
+      errors: [
+        {
+          messageId: 'mismatched',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `enum Str {A = 'a', B = 'b'} declare const str: Str; str === Str.B;`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code:
+        `enum Num {A = 1, B = 2} ` + `declare const num: Num; ` + `num === 1;`,
+      errors: [
+        {
+          messageId: 'mismatched',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `enum Num {A = 1, B = 2} declare const num: Num; num === Num.A;`,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code:
+        `enum Mixed {A = 1, B = 'b'} ` +
+        `declare const mixed: Mixed; ` +
+        `mixed === 1 || mixed === 'b';`,
+      errors: [
+        {
+          messageId: 'mismatched',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `enum Mixed {A = 1, B = 'b'} declare const mixed: Mixed; mixed === Mixed.A || mixed === 'b';`,
+            },
+          ],
+        },
+        {
+          messageId: 'mismatched',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `enum Mixed {A = 1, B = 'b'} declare const mixed: Mixed; mixed === 1 || mixed === Mixed.B;`,
+            },
+          ],
+        },
+      ],
     },
   ],
 });

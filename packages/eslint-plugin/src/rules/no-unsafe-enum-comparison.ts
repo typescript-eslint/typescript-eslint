@@ -1,9 +1,13 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import * as util from '../util';
-import { getEnumTypes } from './enum-utils/shared';
+import {
+  getEnumKeyForLiteral,
+  getEnumLiterals,
+  getEnumTypes,
+} from './enum-utils/shared';
 
 /**
  * @returns Whether the right type is an unsafe comparison against any left type.
@@ -25,27 +29,6 @@ function typeViolates(leftTypeParts: ts.Type[], right: ts.Type): boolean {
   );
 }
 
-function getEnumKeyForLiteral(
-  leftEnumTypes: ts.Type[],
-  rightNode: TSESTree.Node,
-): string | null {
-  const right = util.getStaticValue(rightNode);
-
-  if (right === null) {
-    return null;
-  }
-
-  for (const leftEnumType of leftEnumTypes) {
-    if (leftEnumType.value === right.value) {
-      const enumParentName = leftEnumType.symbol.parent.name;
-
-      return `${enumParentName}.${leftEnumType.symbol.name}`;
-    }
-  }
-
-  return null;
-}
-
 /**
  * @returns What type a type's enum value is (number or string), if either.
  */
@@ -60,6 +43,7 @@ function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
 export default util.createRule({
   name: 'no-unsafe-enum-comparison',
   meta: {
+    hasSuggestions: true,
     type: 'suggestion',
     docs: {
       description: 'Disallow comparing an enum value with a non-enum value',
@@ -69,8 +53,7 @@ export default util.createRule({
     messages: {
       mismatched:
         'The two values in this comparison do not have a shared enum type.',
-      mismatchedSimilar:
-        'The two values in this comparison do not have a shared enum type. Did you mean to compare to `{{replacement}}`?',
+      replaceValueWithEnum: 'Replace with an enum value comparison.',
     },
     schema: [],
   },
@@ -123,46 +106,64 @@ export default util.createRule({
           }
         }
 
-        if (typeViolates(leftTypeParts, right)) {
-          const leftEnumKey = getEnumKeyForLiteral(leftEnumTypes, node.right);
-
-          if (leftEnumKey) {
-            // TODO: Add fixer.
-            return context.report({
-              messageId: 'mismatchedSimilar',
-              node,
-              data: {
-                replacement: leftEnumKey,
-              },
-            });
-          }
-
-          return context.report({
+        if (
+          typeViolates(leftTypeParts, right) ||
+          typeViolates(rightTypeParts, left)
+        ) {
+          context.report({
             messageId: 'mismatched',
             node,
-          });
-        }
+            suggest: [
+              {
+                messageId: 'replaceValueWithEnum',
+                fix(fixer): TSESLint.RuleFix {
+                  const sourceCode = context.getSourceCode();
+                  const leftExpression = sourceCode.getText(node.left);
+                  const rightExpression = sourceCode.getText(node.right);
 
-        if (typeViolates(rightTypeParts, left)) {
-          const rightEnumKey = getEnumKeyForLiteral(
-            [...rightEnumTypes.values()],
-            node.left,
-          );
+                  // Replace the right side with an enum key if possible:
+                  //
+                  // ```ts
+                  // Fruit.Apple === 'apple'; // Fruit.Apple === Fruit.Apple
+                  // ```
+                  const leftEnumKey = getEnumKeyForLiteral(
+                    getEnumLiterals(left),
+                    util.getStaticValue(node.right)?.value,
+                  );
 
-          if (rightEnumKey) {
-            // TODO: Add fixer.
-            return context.report({
-              messageId: 'mismatchedSimilar',
-              node,
-              data: {
-                replacement: rightEnumKey,
+                  if (leftEnumKey != null) {
+                    return fixer.replaceText(
+                      node,
+                      `${leftExpression} ${node.operator} ${leftEnumKey}`,
+                    );
+                  }
+
+                  // Replace the left side with an enum key if possible:
+                  //
+                  // ```ts
+                  // declare const fruit: Fruit;
+                  // 'apple' === Fruit.Apple; // Fruit.Apple === Fruit.Apple
+                  // ```
+                  const rightEnumKey = getEnumKeyForLiteral(
+                    getEnumLiterals(right),
+                    util.getStaticValue(node.left)?.value,
+                  );
+
+                  if (rightEnumKey != null) {
+                    return fixer.replaceText(
+                      node,
+                      `${rightEnumKey} ${node.operator} ${rightExpression}`,
+                    );
+                  }
+
+                  // TODO: Should it have a "void fix" here? Is there any other way to handle this?
+                  return fixer.replaceText(
+                    node,
+                    `${leftExpression} ${node.operator} ${rightExpression}`,
+                  );
+                },
               },
-            });
-          }
-
-          return context.report({
-            messageId: 'mismatched',
-            node,
+            ],
           });
         }
       },
