@@ -116,7 +116,7 @@ export default util.createRule({
             suggest: [
               {
                 messageId: 'replaceValueWithEnum',
-                fix(fixer): TSESLint.RuleFix {
+                fix(fixer): TSESLint.RuleFix | null {
                   const sourceCode = context.getSourceCode();
                   const leftExpression = sourceCode.getText(node.left);
                   const rightExpression = sourceCode.getText(node.right);
@@ -156,11 +156,7 @@ export default util.createRule({
                     );
                   }
 
-                  // TODO: Should it have a "void fix" here? Is there any other way to handle this?
-                  return fixer.replaceText(
-                    node,
-                    `${leftExpression} ${node.operator} ${rightExpression}`,
-                  );
+                  return null;
                 },
               },
             ],
