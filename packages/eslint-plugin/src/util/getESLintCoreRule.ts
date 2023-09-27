@@ -17,6 +17,7 @@ interface RuleMap {
   'keyword-spacing': typeof import('eslint/lib/rules/keyword-spacing');
   'lines-around-comment': typeof import('eslint/lib/rules/lines-around-comment');
   'lines-between-class-members': typeof import('eslint/lib/rules/lines-between-class-members');
+  'max-params': typeof import('eslint/lib/rules/max-params');
   'no-dupe-args': typeof import('eslint/lib/rules/no-dupe-args');
   'no-dupe-class-members': typeof import('eslint/lib/rules/no-dupe-class-members');
   'no-empty-function': typeof import('eslint/lib/rules/no-empty-function');

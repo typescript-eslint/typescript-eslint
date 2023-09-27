@@ -272,6 +272,24 @@ declare module 'eslint/lib/rules/keyword-spacing' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/max-params' {
+  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+  const rule: TSESLint.RuleModule<
+    'exceed',
+    (
+      | { max: number; countVoidThis?: boolean }
+      | { maximum: number; countVoidThis?: boolean }
+    )[],
+    {
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/no-dupe-class-members' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
