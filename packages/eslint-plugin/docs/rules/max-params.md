@@ -1,5 +1,5 @@
 ---
-description: 'Enforce a maximum number of parameters in function definitions'
+description: 'Enforce a maximum number of parameters in function definitions.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
