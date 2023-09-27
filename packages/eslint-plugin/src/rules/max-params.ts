@@ -1,5 +1,4 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
-import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import * as util from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
@@ -16,26 +15,6 @@ const baseRule = getESLintCoreRule('max-params');
 export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
 export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
 
-const schema = [
-  {
-    type: 'object',
-    properties: {
-      maximum: {
-        type: 'integer',
-        minimum: 0,
-      },
-      max: {
-        type: 'integer',
-        minimum: 0,
-      },
-      countVoidThis: {
-        type: 'boolean',
-      },
-    },
-    additionalProperties: false,
-  },
-] as JSONSchema4[];
-
 export default util.createRule<Options, MessageIds>({
   name: 'max-params',
   meta: {
@@ -45,7 +24,25 @@ export default util.createRule<Options, MessageIds>({
         'Enforce a maximum number of parameters in function definitions',
       extendsBaseRule: true,
     },
-    schema,
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          maximum: {
+            type: 'integer',
+            minimum: 0,
+          },
+          max: {
+            type: 'integer',
+            minimum: 0,
+          },
+          countVoidThis: {
+            type: 'boolean',
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
     messages: baseRule.meta.messages,
   },
   defaultOptions: [{ max: 3, countVoidThis: false }],
