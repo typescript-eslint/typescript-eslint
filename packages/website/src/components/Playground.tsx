@@ -80,7 +80,7 @@ function Playground(): React.JSX.Element {
     } else if (windowSize === 'desktop') {
       playgroundMenuRef.current?.expand();
     }
-  }, [windowSize, playgroundMenuRef]);
+  }, [windowSize]);
 
   return (
     <div className={styles.codeContainer}>
