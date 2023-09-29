@@ -18,6 +18,22 @@ class Foo implements Bar {
     },
     {
       code: `
+class Foo implements Bar {
+  get getter() {}
+}
+      `,
+      options: [{ ignoreClassesThatImplementAnInterface: true }],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  set setter() {}
+}
+      `,
+      options: [{ ignoreClassesThatImplementAnInterface: true }],
+    },
+    {
+      code: `
 class Foo {
   override method() {}
 }
@@ -26,8 +42,50 @@ class Foo {
     },
     {
       code: `
+class Foo {
+  override get getter(): number {}
+}
+      `,
+      options: [{ ignoreOverrideMethods: true }],
+    },
+    {
+      code: `
+class Foo {
+  override set setter(v: number) {}
+}
+      `,
+      options: [{ ignoreOverrideMethods: true }],
+    },
+    {
+      code: `
 class Foo implements Bar {
   override method() {}
+}
+      `,
+      options: [
+        {
+          ignoreClassesThatImplementAnInterface: true,
+          ignoreOverrideMethods: true,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  override get getter(): number {}
+}
+      `,
+      options: [
+        {
+          ignoreClassesThatImplementAnInterface: true,
+          ignoreOverrideMethods: true,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  override set setter(v: number) {}
 }
       `,
       options: [
@@ -96,8 +154,73 @@ class Foo {
   invalid: [
     {
       code: `
+class Foo {
+  method() {}
+}
+      `,
+      options: [{}],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  get getter(): number {}
+}
+      `,
+      options: [{}],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  set setter(b: number) {}
+}
+      `,
+      options: [{}],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
 class Foo implements Bar {
   method() {}
+}
+      `,
+      options: [{ ignoreClassesThatImplementAnInterface: false }],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  get getter(): number {}
+}
+      `,
+      options: [{ ignoreClassesThatImplementAnInterface: false }],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  set setter(v: number) {}
 }
       `,
       options: [{ ignoreClassesThatImplementAnInterface: false }],
@@ -122,8 +245,70 @@ class Foo {
     },
     {
       code: `
+class Foo {
+  override get getter(): number {}
+}
+      `,
+      options: [{ ignoreOverrideMethods: false }],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  override set setter(v: number) {}
+}
+      `,
+      options: [{ ignoreOverrideMethods: false }],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
 class Foo implements Bar {
   override method() {}
+}
+      `,
+      options: [
+        {
+          ignoreClassesThatImplementAnInterface: false,
+          ignoreOverrideMethods: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  override get getter(): number {}
+}
+      `,
+      options: [
+        {
+          ignoreClassesThatImplementAnInterface: false,
+          ignoreOverrideMethods: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  override set setter(v: number) {}
 }
       `,
       options: [
