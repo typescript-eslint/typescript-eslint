@@ -4,16 +4,20 @@ import * as ts from 'typescript';
 
 import * as util from '../util';
 
-type Options = [
-  {
-    allowAny?: boolean;
-    allowBoolean?: boolean;
-    allowNullish?: boolean;
-    allowNumber?: boolean;
-    allowRegExp?: boolean;
-    allowNever?: boolean;
-  },
-];
+const optionEntries = (
+  ['Any', 'Array', 'Boolean', 'Nullish', 'Number', 'RegExp', 'Never'] as const
+).map(
+  type =>
+    [
+      `allow${type}`,
+      {
+        description: `Whether to allow \`${type.toLowerCase()}\` typed values in template expressions.`,
+        type: 'boolean',
+      },
+    ] as const,
+);
+
+type Options = [{ [Type in (typeof optionEntries)[number][0]]?: boolean }];
 
 type MessageId = 'invalidType';
 
@@ -34,38 +38,7 @@ export default util.createRule<Options, MessageId>({
       {
         type: 'object',
         additionalProperties: false,
-        properties: {
-          allowAny: {
-            description:
-              'Whether to allow `any` typed values in template expressions.',
-            type: 'boolean',
-          },
-          allowBoolean: {
-            description:
-              'Whether to allow `boolean` typed values in template expressions.',
-            type: 'boolean',
-          },
-          allowNullish: {
-            description:
-              'Whether to allow `nullish` typed values in template expressions.',
-            type: 'boolean',
-          },
-          allowNumber: {
-            description:
-              'Whether to allow `number` typed values in template expressions.',
-            type: 'boolean',
-          },
-          allowRegExp: {
-            description:
-              'Whether to allow `regexp` typed values in template expressions.',
-            type: 'boolean',
-          },
-          allowNever: {
-            description:
-              'Whether to allow `never` typed values in template expressions.',
-            type: 'boolean',
-          },
-        },
+        properties: Object.fromEntries(optionEntries),
       },
     ],
   },
@@ -118,6 +91,8 @@ export default util.createRule<Options, MessageId>({
       ) {
         return true;
       }
+
+      /*if (options.allowArray)*/ console.log(type);
 
       if (options.allowNever && util.isTypeNeverType(type)) {
         return true;
