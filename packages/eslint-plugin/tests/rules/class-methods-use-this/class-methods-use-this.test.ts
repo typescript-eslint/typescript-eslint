@@ -168,6 +168,19 @@ class Foo {
     {
       code: `
 class Foo {
+  #method() {}
+}
+      `,
+      options: [{}],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
   get getter(): number {}
 }
       `,
@@ -181,7 +194,33 @@ class Foo {
     {
       code: `
 class Foo {
+  get #getter(): number {}
+}
+      `,
+      options: [{}],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
   set setter(b: number) {}
+}
+      `,
+      options: [{}],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  set #setter(b: number) {}
 }
       `,
       options: [{}],
@@ -207,6 +246,19 @@ class Foo implements Bar {
     {
       code: `
 class Foo implements Bar {
+  #method() {}
+}
+      `,
+      options: [{ ignoreClassesThatImplementAnInterface: false }],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
   get getter(): number {}
 }
       `,
@@ -220,7 +272,33 @@ class Foo implements Bar {
     {
       code: `
 class Foo implements Bar {
+  get #getter(): number {}
+}
+      `,
+      options: [{ ignoreClassesThatImplementAnInterface: false }],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
   set setter(v: number) {}
+}
+      `,
+      options: [{ ignoreClassesThatImplementAnInterface: false }],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  set #setter(v: number) {}
 }
       `,
       options: [{ ignoreClassesThatImplementAnInterface: false }],
@@ -327,6 +405,19 @@ class Foo implements Bar {
       code: `
 class Foo implements Bar {
   property = () => {};
+}
+      `,
+      options: [{ ignoreClassesThatImplementAnInterface: false }],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  #property = () => {};
 }
       `,
       options: [{ ignoreClassesThatImplementAnInterface: false }],
