@@ -43,6 +43,22 @@ class Foo {
     {
       code: `
 class Foo {
+  private override method() {}
+}
+      `,
+      options: [{ ignoreOverrideMethods: true }],
+    },
+    {
+      code: `
+class Foo {
+  protected override method() {}
+}
+      `,
+      options: [{ ignoreOverrideMethods: true }],
+    },
+    {
+      code: `
+class Foo {
   override get getter(): number {}
 }
       `,
@@ -51,7 +67,39 @@ class Foo {
     {
       code: `
 class Foo {
+  private override get getter(): number {}
+}
+      `,
+      options: [{ ignoreOverrideMethods: true }],
+    },
+    {
+      code: `
+class Foo {
+  protected override get getter(): number {}
+}
+      `,
+      options: [{ ignoreOverrideMethods: true }],
+    },
+    {
+      code: `
+class Foo {
   override set setter(v: number) {}
+}
+      `,
+      options: [{ ignoreOverrideMethods: true }],
+    },
+    {
+      code: `
+class Foo {
+  private override set setter(v: number) {}
+}
+      `,
+      options: [{ ignoreOverrideMethods: true }],
+    },
+    {
+      code: `
+class Foo {
+  protected override set setter(v: number) {}
 }
       `,
       options: [{ ignoreOverrideMethods: true }],
@@ -72,12 +120,76 @@ class Foo implements Bar {
     {
       code: `
 class Foo implements Bar {
+  private override method() {}
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should ignore only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+          // But overridden properties should be ignored.
+          ignoreOverrideMethods: true,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  protected override method() {}
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should ignore only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+          // But overridden properties should be ignored.
+          ignoreOverrideMethods: true,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
   override get getter(): number {}
 }
       `,
       options: [
         {
           ignoreClassesThatImplementAnInterface: true,
+          ignoreOverrideMethods: true,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  private override get getter(): number {}
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should ignore only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+          // But overridden properties should be ignored.
+          ignoreOverrideMethods: true,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  protected override get getter(): number {}
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should ignore only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+          // But overridden properties should be ignored.
           ignoreOverrideMethods: true,
         },
       ],
@@ -98,6 +210,38 @@ class Foo implements Bar {
     {
       code: `
 class Foo implements Bar {
+  private override set setter(v: number) {}
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should ignore only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+          // But overridden properties should be ignored.
+          ignoreOverrideMethods: true,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  protected override set setter(v: number) {}
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should ignore only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+          // But overridden properties should be ignored.
+          ignoreOverrideMethods: true,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
   property = () => {};
 }
       `,
@@ -107,6 +251,22 @@ class Foo implements Bar {
       code: `
 class Foo {
   override property = () => {};
+}
+      `,
+      options: [{ ignoreOverrideMethods: true }],
+    },
+    {
+      code: `
+class Foo {
+  private override property = () => {};
+}
+      `,
+      options: [{ ignoreOverrideMethods: true }],
+    },
+    {
+      code: `
+class Foo {
+  protected override property = () => {};
 }
       `,
       options: [{ ignoreOverrideMethods: true }],
@@ -150,12 +310,70 @@ class Foo {
         },
       ],
     },
+    {
+      code: `
+class Foo implements Bar {
+  private override property = () => {};
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should check only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+          // But overridden properties should be ignored.
+          ignoreOverrideMethods: true,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  protected override property = () => {};
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should check only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+          // But overridden properties should be ignored.
+          ignoreOverrideMethods: true,
+        },
+      ],
+    },
   ],
   invalid: [
     {
       code: `
 class Foo {
   method() {}
+}
+      `,
+      options: [{}],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private method() {}
+}
+      `,
+      options: [{}],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  protected method() {}
 }
       `,
       options: [{}],
@@ -194,6 +412,32 @@ class Foo {
     {
       code: `
 class Foo {
+  private get getter(): number {}
+}
+      `,
+      options: [{}],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  protected get getter(): number {}
+}
+      `,
+      options: [{}],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
   get #getter(): number {}
 }
       `,
@@ -208,6 +452,37 @@ class Foo {
       code: `
 class Foo {
   set setter(b: number) {}
+}
+      `,
+      options: [
+        {
+          ignoreClassesThatImplementAnInterface: false,
+          ignoreOverrideMethods: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  private set setter(b: number) {}
+}
+      `,
+      options: [{}],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo {
+  protected set setter(b: number) {}
 }
       `,
       options: [{}],
@@ -259,6 +534,44 @@ class Foo implements Bar {
     {
       code: `
 class Foo implements Bar {
+  private method() {}
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should ignore only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  protected method() {}
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should ignore only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
   get getter(): number {}
 }
       `,
@@ -285,6 +598,44 @@ class Foo implements Bar {
     {
       code: `
 class Foo implements Bar {
+  private get getter(): number {}
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should ignore only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  protected get getter(): number {}
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should ignore only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
   set setter(v: number) {}
 }
       `,
@@ -302,6 +653,46 @@ class Foo implements Bar {
 }
       `,
       options: [{ ignoreClassesThatImplementAnInterface: false }],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  private set setter(v: number) {}
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should ignore only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+          ignoreOverrideMethods: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  protected set setter(v: number) {}
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should ignore only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+          ignoreOverrideMethods: false,
+        },
+      ],
       errors: [
         {
           messageId: 'missingThis',
@@ -450,6 +841,44 @@ class Foo implements Bar {
         {
           ignoreClassesThatImplementAnInterface: false,
           ignoreOverrideMethods: false,
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  private property = () => {};
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should ignore only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
+        },
+      ],
+      errors: [
+        {
+          messageId: 'missingThis',
+        },
+      ],
+    },
+    {
+      code: `
+class Foo implements Bar {
+  protected property = () => {};
+}
+      `,
+      options: [
+        {
+          // _interface_ cannot have `private`/`protected` modifier on members.
+          // We should ignore only public members.
+          ignoreClassesThatImplementAnInterface: 'public-fields',
         },
       ],
       errors: [

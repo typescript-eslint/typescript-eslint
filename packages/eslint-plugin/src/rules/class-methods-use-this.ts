@@ -14,7 +14,7 @@ type Options = [
     exceptMethods?: string[];
     enforceForClassFields?: boolean;
     ignoreOverrideMethods?: boolean;
-    ignoreClassesThatImplementAnInterface?: boolean;
+    ignoreClassesThatImplementAnInterface?: boolean | 'public-fields';
   },
 ];
 type MessageIds = 'missingThis';
@@ -53,7 +53,18 @@ export default createRule<Options, MessageIds>({
             description: 'Ingore members marked with the `override` modifier',
           },
           ignoreClassesThatImplementAnInterface: {
-            type: 'boolean',
+            oneOf: [
+              {
+                type: 'boolean',
+                description: 'Ignore all classes that implement an interface',
+              },
+              {
+                type: 'string',
+                enum: ['public-fields'],
+                description:
+                  'Ignore only the public fields of classes that implement an interface',
+              },
+            ],
             description:
               'Ignore classes that specifically implement some interface',
           },
@@ -146,6 +157,16 @@ export default createRule<Options, MessageIds>({
       return oldStack;
     }
 
+    function isPublicField(
+      accessibility: TSESTree.Accessibility | undefined,
+    ): boolean {
+      if (!accessibility || accessibility === 'public') {
+        return true;
+      }
+
+      return false;
+    }
+
     /**
      * Check if the node is an instance method not excluded by config
      */
@@ -189,8 +210,11 @@ export default createRule<Options, MessageIds>({
         stackContext?.member == null ||
         stackContext.usesThis ||
         (ignoreOverrideMethods && stackContext.member.override) ||
-        (ignoreClassesThatImplementAnInterface &&
-          stackContext.class.implements.length)
+        (ignoreClassesThatImplementAnInterface === true &&
+          stackContext.class.implements.length > 0) ||
+        (ignoreClassesThatImplementAnInterface === 'public-fields' &&
+          stackContext.class.implements.length > 0 &&
+          isPublicField(stackContext.member.accessibility))
       ) {
         return;
       }
