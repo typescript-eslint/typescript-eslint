@@ -534,12 +534,9 @@ export default createRule<Options, MessageId>({
         }
       }
       const typeName = getTypeName(checker, propertyType);
-      return !!(
-        (typeName === 'string' &&
-          checker.getIndexInfoOfType(objType, ts.IndexKind.String)) ||
-        (typeName === 'number' &&
-          checker.getIndexInfoOfType(objType, ts.IndexKind.Number))
-      );
+      return !!checker
+        .getIndexInfosOfType(objType)
+        .find(info => getTypeName(checker, info.keyType) === typeName);
     }
 
     // Checks whether a member expression is nullable or not regardless of it's previous node.

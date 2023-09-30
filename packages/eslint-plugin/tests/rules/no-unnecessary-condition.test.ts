@@ -509,6 +509,53 @@ declare const key: Key;
 
 foo?.[key]?.trim();
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7700
+    `
+type BrandedKey = string & { __brand: string };
+type Foo = { [key: BrandedKey]: string } | null;
+declare const foo: Foo;
+const key = '1' as BrandedKey;
+foo?.[key]?.trim();
+    `,
+    `
+type BrandedKey<S extends string> = S & { __brand: string };
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = BrandedKey<'bar'> | BrandedKey<'foo'>;
+declare const foo: Foo;
+declare const key: Key;
+foo?.[key].trim();
+    `,
+    `
+type BrandedKey = string & { __brand: string };
+interface Outer {
+  inner?: {
+    [key: BrandedKey]: string | undefined;
+  };
+}
+function Foo(outer: Outer, key: BrandedKey): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+    `,
+    `
+interface Outer {
+  inner?: {
+    [key: string & { __brand: string }]: string | undefined;
+    bar: 'bar';
+  };
+}
+type Foo = 'foo' & { __brand: string };
+function Foo(outer: Outer, key: Foo): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+    `,
+    `
+type BrandedKey<S extends string> = S & { __brand: string };
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = BrandedKey<'bar'> | BrandedKey<'foo'> | BrandedKey<'baz'>;
+declare const foo: Foo;
+declare const key: Key;
+foo?.[key]?.trim();
+    `,
     `
 let latencies: number[][] = [];
 
