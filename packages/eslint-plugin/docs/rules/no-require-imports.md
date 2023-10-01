@@ -28,6 +28,28 @@ import { lib2 } from 'lib2';
 import * as lib3 from 'lib3';
 ```
 
+## Options
+
+### `allowPackageJson`
+
+When this is set to `true`, the rule will allow `require` imports that import `package.json` files. This is because `package.json` commonly lives outside of the TS root directory, so statically importing it would lead to root directory conflicts, especially with `resolveJsonModule` enabled.
+
+With `{allowPackageJson: true}`:
+
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+console.log(require('../data.json').version);
+```
+
+### ✅ Correct
+
+```ts
+console.log(require('../package.json').version);
+```
+
 ## When Not To Use It
 
 If you don't care about using newer module syntax, then you will not need this rule.

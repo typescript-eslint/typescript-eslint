@@ -16,6 +16,18 @@ import { createRequire } from 'module';
 const require = createRequire('foo');
 const json = require('./some.json');
     `,
+    {
+      code: "const pkg = require('./package.json');",
+      options: [{ allowPackageJson: true }],
+    },
+    {
+      code: "const pkg = require('../package.json');",
+      options: [{ allowPackageJson: true }],
+    },
+    {
+      code: "const pkg = require('../packages/package.json');",
+      options: [{ allowPackageJson: true }],
+    },
   ],
   invalid: [
     {
@@ -154,6 +166,27 @@ configValidator.addSchema(require('./a.json'));
           messageId: 'noVarReqs',
           line: 3,
           column: 27,
+        },
+      ],
+    },
+    {
+      code: "const pkg = require('./package.json');",
+      errors: [
+        {
+          line: 1,
+          column: 13,
+          messageId: 'noVarReqs',
+        },
+      ],
+    },
+    {
+      code: "const pkg = require('./package.jsonc');",
+      options: [{ allowPackageJson: true }],
+      errors: [
+        {
+          line: 1,
+          column: 13,
+          messageId: 'noVarReqs',
         },
       ],
     },

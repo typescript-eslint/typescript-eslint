@@ -28,6 +28,28 @@ require('foo');
 import foo from 'foo';
 ```
 
+## Options
+
+### `allowPackageJson`
+
+When this is set to `true`, the rule will allow `require` variables that import `package.json` files. This is because `package.json` commonly lives outside of the TS root directory, so statically importing it would lead to root directory conflicts, especially with `resolveJsonModule` enabled.
+
+With `{allowPackageJson: true}`:
+
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+const foo = require('../data.json');
+```
+
+### ✅ Correct
+
+```ts
+const foo = require('../package.json');
+```
+
 ## When Not To Use It
 
 If you don't care about using newer module syntax, then you will not need this rule.
