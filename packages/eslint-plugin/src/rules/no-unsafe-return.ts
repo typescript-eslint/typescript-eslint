@@ -96,7 +96,13 @@ export default util.createRule({
       // function return type, we shouldn't complain (it's intentional, even if unsafe)
       if (functionTSNode.type) {
         for (const signature of functionType.getCallSignatures()) {
-          if (returnNodeType === signature.getReturnType()) {
+          if (
+            returnNodeType === signature.getReturnType() ||
+            util.isTypeFlagSet(
+              signature.getReturnType(),
+              ts.TypeFlags.Any | ts.TypeFlags.Unknown,
+            )
+          ) {
             return;
           }
         }

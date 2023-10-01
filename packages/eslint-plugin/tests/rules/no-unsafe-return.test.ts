@@ -108,6 +108,12 @@ function foo(): Set<number> {
         return new Map();
       }
     `,
+    // https://github.com/typescript-eslint/typescript-eslint/issues/3549
+    `
+      function foo(): any {
+        return [] as any[];
+      }
+    `,
   ],
   invalid: [
     {
