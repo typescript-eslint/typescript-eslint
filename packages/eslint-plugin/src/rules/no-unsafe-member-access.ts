@@ -84,7 +84,7 @@ export default util.createRule({
         }
 
         context.report({
-          node,
+          node: node.property,
           messageId,
           data: {
             property: node.computed ? `[${propertyName}]` : `.${propertyName}`,
