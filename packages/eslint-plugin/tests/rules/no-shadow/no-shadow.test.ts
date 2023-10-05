@@ -223,15 +223,15 @@ export class Wrapper<Wrapped> {
 }
     `,
     `
-    function makeA() {
-      return class A<T> {
-        constructor(public value: T) { }
+function makeA() {
+  return class A<T> {
+    constructor(public value: T) { }
 
-        static make<T>(value: T) {
-          return new A<T>(value);
-        }
-      }
+    static make<T>(value: T) {
+      return new A<T>(value);
     }
+  }
+}
     `,
     {
       // https://github.com/typescript-eslint/typescript-eslint/issues/3862
