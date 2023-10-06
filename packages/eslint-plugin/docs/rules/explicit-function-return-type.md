@@ -293,6 +293,8 @@ You may pass function/method names you would like this rule to ignore, like so:
 
 Examples of code for this rule with `{ allowIIFEs: true }`:
 
+<!--tabs-->
+
 #### ❌ Incorrect
 
 ```ts
