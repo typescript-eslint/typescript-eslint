@@ -114,6 +114,11 @@ function foo(): Set<number> {
         return [] as any[];
       }
     `,
+    `
+      function foo(): unknown {
+        return [] as any[];
+      }
+    `,
   ],
   invalid: [
     {
