@@ -242,6 +242,21 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
         x.endsWith('foo') && x.slice(0, -4) === 'bar'
       }
     `,
+    `
+      function f(s: string) {
+        s.slice(0, length) === needle // the 'length' can be different to 'needle.length'
+      }
+    `,
+    `
+      function f(s: string) {
+        s.slice(-length) === needle // 'length' can be different
+      }
+    `,
+    `
+      function f(s: string) {
+        s.slice(0, 3) === needle
+      }
+    `,
   ]),
   invalid: addOptional([
     // String indexing.
@@ -820,15 +835,6 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
     {
       code: `
         function f(s: string) {
-          s.slice(0, length) === needle // the 'length' can be different to 'needle.length'
-        }
-      `,
-      output: null,
-      errors: [{ messageId: 'preferStartsWith' }],
-    },
-    {
-      code: `
-        function f(s: string) {
           s.slice(0, needle.length) == needle // hating implicit type conversion
         }
       `,
@@ -885,15 +891,6 @@ ruleTester.run('prefer-string-starts-ends-with', rule, {
           s.endsWith(needle)
         }
       `,
-      errors: [{ messageId: 'preferEndsWith' }],
-    },
-    {
-      code: `
-        function f(s: string) {
-          s.slice(-length) === needle // 'length' can be different
-        }
-      `,
-      output: null,
       errors: [{ messageId: 'preferEndsWith' }],
     },
     {
