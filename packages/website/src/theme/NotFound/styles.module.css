@@ -1,0 +1,28 @@
+.title {
+  font-family: monospace;
+  font-size: 3rem;
+  margin-bottom: 2rem;
+}
+
+.title::before {
+  content: '$ npx eslint .';
+  display: block;
+  font-size: 1.5rem;
+}
+
+.word {
+  position: relative;
+}
+
+.word::after {
+  content: '';
+  display: block;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  height: 13px;
+  background: url('/img/squiggle.svg') repeat-x;
+  background-size: contain;
+  image-rendering: smooth;
+}
