@@ -17,6 +17,7 @@
     "@nx/devkit": "*",
     "cross-fetch": "*",
     "execa": "*",
+    "nx": "*",
     "prettier": "^2.8.4",
     "rimraf": "*",
     "tmp": "*",
