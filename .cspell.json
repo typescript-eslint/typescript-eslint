@@ -125,6 +125,7 @@
     "transpiling",
     "triaging",
     "trpc",
+    "tsconfigrootdir",
     "tsconfigs",
     "tseslint",
     "tsvfs",
