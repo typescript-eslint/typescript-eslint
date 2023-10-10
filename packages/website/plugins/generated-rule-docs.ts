@@ -92,8 +92,7 @@ export const generatedRuleDocs: Plugin = () => {
       const warningNode = {
         value: `
 <admonition type="warning">
-  We strongly recommend you do not use this rule or any other formatting linter rules.
-  Use a separate dedicated formatter instead.
+  This rule will soon be moved to <a href="https://eslint.style">eslint-stylistic</a>.
   See <a href="/linting/troubleshooting/formatting">What About Formatting?</a> for more information.
 </admonition>
 `,
