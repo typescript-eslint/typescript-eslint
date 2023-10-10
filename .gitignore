@@ -97,3 +97,6 @@ packages/types/src/generated/**/*.ts
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+# Nx cache
+.nx/cache
