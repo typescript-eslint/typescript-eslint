@@ -10,6 +10,7 @@ import {
   getDeclaration,
   getParserServices,
   isNullableType,
+  isTypeFlagSet,
 } from '../util';
 
 type Options = [
@@ -189,20 +190,17 @@ export default createRule<Options, MessageIds>({
           if (contextualType) {
             // in strict mode you can't assign null to undefined, so we have to make sure that
             // the two types share a nullable type
-            const typeIncludesUndefined = tsutils.isTypeFlagSet(
+            const typeIncludesUndefined = isTypeFlagSet(
               type,
               ts.TypeFlags.Undefined,
             );
-            const typeIncludesNull = tsutils.isTypeFlagSet(
-              type,
-              ts.TypeFlags.Null,
-            );
+            const typeIncludesNull = isTypeFlagSet(type, ts.TypeFlags.Null);
 
-            const contextualTypeIncludesUndefined = tsutils.isTypeFlagSet(
+            const contextualTypeIncludesUndefined = isTypeFlagSet(
               contextualType,
               ts.TypeFlags.Undefined,
             );
-            const contextualTypeIncludesNull = tsutils.isTypeFlagSet(
+            const contextualTypeIncludesNull = isTypeFlagSet(
               contextualType,
               ts.TypeFlags.Null,
             );
@@ -246,7 +244,7 @@ export default createRule<Options, MessageIds>({
         const castType = services.getTypeAtLocation(node);
 
         if (
-          tsutils.isTypeFlagSet(castType, ts.TypeFlags.Literal) ||
+          isTypeFlagSet(castType, ts.TypeFlags.Literal) ||
           (tsutils.isObjectType(castType) &&
             (tsutils.isObjectFlagSet(castType, ts.ObjectFlags.Tuple) ||
               couldBeTupleType(castType)))
