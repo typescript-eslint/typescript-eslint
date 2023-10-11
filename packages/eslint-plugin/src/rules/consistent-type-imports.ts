@@ -271,17 +271,25 @@ export default createRule<Options, MessageIds>({
                     report.unusedSpecifiers.length === 0 &&
                     report.node.importKind !== 'type'
                   ) {
-                    context.report({
-                      node: report.node,
-                      messageId: 'typeOverValue',
-                      *fix(fixer) {
-                        yield* fixToTypeImportDeclaration(
-                          fixer,
-                          report,
-                          sourceImports,
-                        );
-                      },
-                    });
+                    /** checks if import has type assertions
+                     * ```
+                     * import * as type from 'mod' assert { type: 'json' };
+                     * ```
+                     * https://github.com/typescript-eslint/typescript-eslint/issues/7527
+                     */
+                    if (report.node.assertions.length === 0) {
+                      context.report({
+                        node: report.node,
+                        messageId: 'typeOverValue',
+                        *fix(fixer) {
+                          yield* fixToTypeImportDeclaration(
+                            fixer,
+                            report,
+                            sourceImports,
+                          );
+                        },
+                      });
+                    }
                   } else {
                     const isTypeImport = report.node.importKind === 'type';
 
@@ -622,7 +630,11 @@ export default createRule<Options, MessageIds>({
 
       if (namespaceSpecifier && !defaultSpecifier) {
         // import * as types from 'foo'
-        yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);
+
+        // checks for presence of import assertions
+        if (node.assertions.length === 0) {
+          yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);
+        }
         return;
       } else if (defaultSpecifier) {
         if (
