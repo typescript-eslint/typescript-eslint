@@ -8,6 +8,7 @@ import {
   getParserServices,
   getTypeName,
   isTypeAnyType,
+  isTypeFlagSet,
 } from '../util';
 
 type Options = [
@@ -156,10 +157,7 @@ export default createRule<Options, MessageIds>({
           (!allowBoolean &&
             isTypeFlagSetInUnion(baseType, ts.TypeFlags.BooleanLike)) ||
           (!allowNullish &&
-            tsutils.isTypeFlagSet(
-              baseType,
-              ts.TypeFlags.Null | ts.TypeFlags.Undefined,
-            ))
+            isTypeFlagSet(baseType, ts.TypeFlags.Null | ts.TypeFlags.Undefined))
         ) {
           context.report({
             data: {
