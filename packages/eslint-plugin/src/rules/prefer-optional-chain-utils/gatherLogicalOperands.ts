@@ -8,12 +8,11 @@ import {
   isBooleanLiteralType,
   isNumberLiteralType,
   isStringLiteralType,
-  isTypeFlagSet,
   unionTypeParts,
 } from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import {} from '../../util';
+import { isTypeFlagSet } from '../../util';
 import type { PreferOptionalChainOptions } from './PreferOptionalChainOptions';
 
 const enum ComparisonValueType {

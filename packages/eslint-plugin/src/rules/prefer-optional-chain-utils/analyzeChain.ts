@@ -9,12 +9,13 @@ import type {
   RuleContext,
   SourceCode,
 } from '@typescript-eslint/utils/ts-eslint';
-import { isTypeFlagSet, unionTypeParts } from 'ts-api-utils';
+import { unionTypeParts } from 'ts-api-utils';
 import * as ts from 'typescript';
 
 import {
   getOperatorPrecedenceForNode,
   isOpeningParenToken,
+  isTypeFlagSet,
   nullThrows,
   NullThrowsReasons,
   OperatorPrecedence,
