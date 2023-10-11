@@ -13,7 +13,6 @@
     "serve": "docusaurus serve",
     "start": "nx start",
     "swizzle": "docusaurus swizzle",
-    "test": "playwright test",
     "typecheck": "tsc -b ./tsconfig.json"
   },
   "dependencies": {
@@ -46,9 +45,7 @@
     "react": "^18.2.0"
   },
   "devDependencies": {
-    "@axe-core/playwright": "^4.7.3",
     "@docusaurus/module-type-aliases": "~2.4.1",
-    "@playwright/test": "^1.36.0",
     "@types/react": "*",
     "@types/react-helmet": "^6.1.6",
     "@types/react-router-dom": "^5.3.3",
