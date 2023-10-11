@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type Options = [
   {
@@ -11,7 +11,7 @@ type Options = [
 ];
 type MessageIds = 'thisAssignment' | 'thisDestructure';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-this-alias',
   meta: {
     type: 'suggestion',

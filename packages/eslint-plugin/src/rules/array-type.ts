@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, isParenthesized } from '../util';
 
 /**
  * Check whatever node can be considered as simple
@@ -85,7 +85,7 @@ type MessageIds =
   | 'errorStringGeneric'
   | 'errorStringGenericSimple';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'array-type',
   meta: {
     type: 'suggestion',
@@ -254,7 +254,7 @@ export default util.createRule<Options, MessageIds>({
         const parentParens =
           readonlyPrefix &&
           node.parent?.type === AST_NODE_TYPES.TSArrayType &&
-          !util.isParenthesized(node.parent.elementType, sourceCode);
+          !isParenthesized(node.parent.elementType, sourceCode);
 
         const start = `${parentParens ? '(' : ''}${readonlyPrefix}${
           typeParens ? '(' : ''

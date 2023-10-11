@@ -1,8 +1,13 @@
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getParserServices,
+  isTypeArrayTypeOrUnionOfArrayTypes,
+} from '../util';
 
-export default util.createRule({
+export default createRule({
   name: 'no-for-in-array',
   meta: {
     docs: {
@@ -21,13 +26,13 @@ export default util.createRule({
   create(context) {
     return {
       ForInStatement(node): void {
-        const services = util.getParserServices(context);
+        const services = getParserServices(context);
         const checker = services.program.getTypeChecker();
 
-        const type = util.getConstrainedTypeAtLocation(services, node.right);
+        const type = getConstrainedTypeAtLocation(services, node.right);
 
         if (
-          util.isTypeArrayTypeOrUnionOfArrayTypes(type, checker) ||
+          isTypeArrayTypeOrUnionOfArrayTypes(type, checker) ||
           (type.flags & ts.TypeFlags.StringLike) !== 0
         ) {
           context.report({

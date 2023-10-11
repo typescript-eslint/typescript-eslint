@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { Type } from 'typescript';
 
-import * as util from '../util';
+import { createRule, getParserServices } from '../util';
 
 export type Options = [
   {
@@ -66,7 +66,7 @@ const isSameAstNode = (actualNode: unknown, expectedNode: unknown): boolean => {
   return false;
 };
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-duplicate-type-constituents',
   meta: {
     type: 'suggestion',
@@ -102,7 +102,7 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ ignoreIntersections, ignoreUnions }]) {
-    const parserServices = util.getParserServices(context);
+    const parserServices = getParserServices(context);
     const checker = parserServices.program.getTypeChecker();
 
     function checkDuplicate(
