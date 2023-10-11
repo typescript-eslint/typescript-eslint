@@ -40,6 +40,12 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
+    // In a definition file, export {} is necessary to make the module properly
+    // encapsulated, even when there are other exports
+    // https://github.com/typescript-eslint/typescript-eslint/issues/4975
+    if (util.isDefinitionFile(context.getFilename())) {
+      return {};
+    }
     function checkNode(
       node: TSESTree.Program | TSESTree.TSModuleDeclaration,
     ): void {
@@ -47,27 +53,25 @@ export default createRule({
         return;
       }
 
-      let emptyExport: TSESTree.ExportNamedDeclaration | undefined;
+      const emptyExports: TSESTree.ExportNamedDeclaration[] = [];
       let foundOtherExport = false;
 
       for (const statement of node.body) {
         if (isEmptyExport(statement)) {
-          emptyExport = statement;
-
-          if (foundOtherExport) {
-            break;
-          }
+          emptyExports.push(statement);
         } else if (exportOrImportNodeTypes.has(statement.type)) {
           foundOtherExport = true;
         }
       }
 
-      if (emptyExport && foundOtherExport) {
-        context.report({
-          fix: fixer => fixer.remove(emptyExport!),
-          messageId: 'uselessExport',
-          node: emptyExport,
-        });
+      if (foundOtherExport) {
+        for (const emptyExport of emptyExports) {
+          context.report({
+            fix: fixer => fixer.remove(emptyExport),
+            messageId: 'uselessExport',
+            node: emptyExport,
+          });
+        }
       }
     }
 
