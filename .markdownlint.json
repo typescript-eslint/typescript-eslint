@@ -73,7 +73,8 @@
       "summary",
       "sup",
       "TabItem",
-      "Tabs"
+      "Tabs",
+      "TypeScriptOverlap"
     ]
   },
   // MD034/no-bare-urls - Bare URL used

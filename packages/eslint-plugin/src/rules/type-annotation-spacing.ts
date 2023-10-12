@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import * as util from '../util';
 import {
+  createRule,
   isClassOrTypeElement,
   isFunction,
   isFunctionOrFunctionType,
@@ -98,7 +98,7 @@ function getRules(
   return rules.colon;
 }
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'type-annotation-spacing',
   meta: {
     type: 'layout',

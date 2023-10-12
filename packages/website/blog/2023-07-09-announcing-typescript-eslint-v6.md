@@ -620,7 +620,7 @@ For more information, see:
 
 ### Package Exports
 
-The v5 `@typescript-eslint/` packages don't use [Node.js package.json exports](https://nodejs.org/api/packages.html#package-entry-points), so anyone can import any file in any package by directly referencing a path within the dist folder.
+The v5 `@typescript-eslint/*` packages don't use [Node.js package.json exports](https://nodejs.org/api/packages.html#package-entry-points), which allows importing any file in any package by directly referencing a path within the package's `dist/` directory.
 For example:
 
 ```ts
@@ -629,18 +629,35 @@ import * as TSESLint from '@typescript-eslint/utils/dist/ts-eslint';
 
 That presents a few issues for developers:
 
-- It can be unclear which of many potential import paths to use
-- TypeScript sometimes suggests importing types or values meant to be private
-- Consumers using deep import paths can be broken by internal refactors that rename files
+- It can be unclear which of many potential import paths to use.
+- TypeScript sometimes suggests importing types or values meant to be private.
+- Consumers using deep import paths can be broken by internal refactors that rename files.
 
 As of [feat: add package.json exports for public packages](https://github.com/typescript-eslint/typescript-eslint/pull/6458), `@typescript-eslint/*` packages now use `exports` to prevent importing internal file paths.
-Developers must now mostly import directly from the package names, e.g.:
+Developers must now import directly from the package names, e.g.:
 
 ```ts
-import * as TSESLint from '@typescript-eslint/utils/ts-eslint';
+// import * as TSESLint from '@typescript-eslint/utils/dist/ts-eslint';
+// -->
+import { TSESLint } from '@typescript-eslint/utils';
+// The following would also work and be equivalent:
+// import * as TSESLint from '@typescript-eslint/utils/ts-eslint';
+// But explicit importing should be generally favored over star imports.
+
+// import { RuleModule } from '@typescript-eslint/utils/dist/ts-eslint';
+// -->
+import { RuleModule } from '@typescript-eslint/utils/ts-eslint';
+
+// import { AST_NODE_TYPES } from "@typescript-eslint/types/dist/generated/ast-spec";
+// -->
+import { AST_NODE_TYPES } from '@typescript-eslint/types';
 ```
 
 See [RFC: Use package.json exports to "hide" the dist folder for packages and control our exported surface-area](https://github.com/typescript-eslint/typescript-eslint/discussions/6015) for more backing context.
+
+:::note
+If you update your imports and you still get an error from TypeScript saying _`"Cannot find module '@typescript-eslint/...' or its corresponding type declarations"`_, then you might need to change the value of `moduleResolution` in your TypeScript config. See [this tracking issue for `package.json` exports types](https://github.com/typescript-eslint/typescript-eslint/issues/7284).
+:::
 
 ### Other Developer-Facing Breaking Changes
 

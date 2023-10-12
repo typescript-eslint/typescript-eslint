@@ -3,8 +3,12 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
-import { OperatorPrecedence } from '../util';
+import {
+  createRule,
+  getOperatorPrecedence,
+  getParserServices,
+  OperatorPrecedence,
+} from '../util';
 
 type Options = [
   {
@@ -31,7 +35,7 @@ const messageBaseVoid =
 const messageRejectionHandler =
   'A rejection handler that is not a function will be ignored.';
 
-export default util.createRule<Options, MessageId>({
+export default createRule<Options, MessageId>({
   name: 'no-floating-promises',
   meta: {
     docs: {
@@ -78,7 +82,7 @@ export default util.createRule<Options, MessageId>({
   ],
 
   create(context, [options]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     return {
@@ -171,7 +175,7 @@ export default util.createRule<Options, MessageId>({
       const operator = ts.isBinaryExpression(node)
         ? node.operatorToken.kind
         : ts.SyntaxKind.Unknown;
-      const nodePrecedence = util.getOperatorPrecedence(node.kind, operator);
+      const nodePrecedence = getOperatorPrecedence(node.kind, operator);
       return nodePrecedence > OperatorPrecedence.Unary;
     }
 
