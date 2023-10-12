@@ -37,7 +37,18 @@ export default createRule({
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          allowDefaultCase: {
+            type: 'boolean',
+            default: true,
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
     messages: {
       switchIsNotExhaustive:
         'Switch is not exhaustive. Cases not matched: {{missingBranches}}',
@@ -46,8 +57,8 @@ export default createRule({
       addMissingCases: 'Add branches for missing cases.',
     },
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{ allowDefaultCase: true }],
+  create(context, [{ allowDefaultCase }]) {
     const sourceCode = context.getSourceCode();
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -161,20 +172,22 @@ export default createRule({
         node.cases.length > 0 ? node.cases[node.cases.length - 1] : null;
       const caseIndent = lastCase
         ? ' '.repeat(lastCase.loc.start.column)
-        : // if there are no cases, use indentation of the switch statement
-          // and leave it to user to format it correctly
+        : // If there are no cases, use indentation of the switch statement and
+          // leave it to the user to format it correctly.
           ' '.repeat(node.loc.start.column);
 
       const missingCases = [];
       for (const missingBranchType of missingBranchTypes) {
-        // While running this rule on checker.ts of TypeScript project
-        // the fix introduced a compiler error due to:
+        // While running this rule on the "checker.ts" file of TypeScript, the
+        // fix introduced a compiler error due to:
         //
+        // ```ts
         // type __String = (string & {
-        //         __escapedIdentifier: void;
-        //     }) | (void & {
-        //         __escapedIdentifier: void;
-        //     }) | InternalSymbolName;
+        //   __escapedIdentifier: void;
+        // }) | (void & {
+        //   __escapedIdentifier: void;
+        // }) | InternalSymbolName;
+        // ```
         //
         // The following check fixes it.
         if (missingBranchType.isIntersection()) {
@@ -207,7 +220,7 @@ export default createRule({
         return fixer.insertTextAfter(lastCase, `\n${fixString}`);
       }
 
-      // there were no existing cases
+      // There were no existing cases.
       const openingBrace = sourceCode.getTokenAfter(
         node.discriminant,
         isOpeningBraceToken,
@@ -224,9 +237,13 @@ export default createRule({
     }
 
     function checkSwitchDangerousDefaultCase(
-      node: TSESTree.SwitchStatement,
       switchStatementMetadata: SwitchStatementMetadata,
     ): void {
+      // This feature of the rule is gated behind an option.
+      if (allowDefaultCase) {
+        return;
+      }
+
       const { missingBranchTypes, defaultCase } = switchStatementMetadata;
 
       if (missingBranchTypes.length === 0 && defaultCase !== undefined) {
@@ -245,7 +262,7 @@ export default createRule({
         }
 
         checkSwitchExhaustive(node, switchStatementMetadata);
-        checkSwitchDangerousDefaultCase(node, switchStatementMetadata);
+        checkSwitchDangerousDefaultCase(switchStatementMetadata);
       },
     };
   },
