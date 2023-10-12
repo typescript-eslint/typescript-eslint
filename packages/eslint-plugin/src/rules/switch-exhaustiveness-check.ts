@@ -27,7 +27,18 @@ interface SwitchStatementMetadata {
   defaultCase: TSESTree.SwitchCase | undefined;
 }
 
-export default createRule({
+type Options = [
+  {
+    allowDefaultCase: boolean;
+  }
+]
+
+type MessageIds =
+  | 'switchIsNotExhaustive'
+  | 'dangerousDefaultCase'
+  | 'addMissingCases';
+
+export default createRule<Options, MessageIds>({
   name: 'switch-exhaustiveness-check',
   meta: {
     type: 'suggestion',
