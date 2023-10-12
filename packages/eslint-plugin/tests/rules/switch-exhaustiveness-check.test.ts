@@ -604,6 +604,7 @@ function test(arg: Enum): string {
     },
     {
       // has dangerous default case
+      options: [{ allowDefaultCase: false }],
       code: `
 type MyUnion = 'foo' | 'bar' | 'baz';
 
