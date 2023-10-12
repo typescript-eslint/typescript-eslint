@@ -30,8 +30,8 @@ interface SwitchStatementMetadata {
 type Options = [
   {
     allowDefaultCase: boolean;
-  }
-]
+  },
+];
 
 type MessageIds =
   | 'switchIsNotExhaustive'
