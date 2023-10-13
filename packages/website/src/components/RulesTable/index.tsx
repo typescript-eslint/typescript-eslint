@@ -250,7 +250,7 @@ export default function RulesTable(): React.JSX.Element {
       </div>
       <p>
         (These categories are explained in{' '}
-        <a href="#sorting">more detail below</a>.)
+        <a href="#filtering">more detail below</a>.)
       </p>
       <table className={styles.rulesTable}>
         <thead>
