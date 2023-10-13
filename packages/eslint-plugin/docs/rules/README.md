@@ -12,13 +12,13 @@ Instead of enabling rules one by one, we recommend using one of [our pre-defined
 
 ## Rules
 
-The rules are listed in alphabetical order. You can optionally sort them based on these categories:
+The rules are listed in alphabetical order. You can optionally filter them based on these categories:
 
 import RulesTable from "@site/src/components/RulesTable";
 
 <RulesTable />
 
-## Sorting
+## Filtering
 
 - "Config Group" refers to the configuration preset. We offer [three different config groups](/linting/configs) that allow users to enable a large set of recommended rules all at once.
 - `🔧 fixable` refers to whether the rule contains an ESLint auto-fixer. If the rule has an auto-fixer, then some rule violations can be fixed by running `eslint` with the `--fix` flag. This will automatically change the code, which can save a lot of time! (It is a common pattern for developers to configure their IDE to automatically run `eslint --fix` when saving a TypeScript file.)
