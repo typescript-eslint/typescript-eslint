@@ -46,7 +46,6 @@
     "start": "nx run website:start",
     "test": "nx run-many --target=test --parallel --exclude integration-tests --exclude website --exclude website-eslint",
     "test-integration": "nx run integration-tests:test",
-    "test-website": "nx run-many --target=test --projects=website,website-eslint",
     "typecheck": "nx run-many --target=typecheck --parallel"
   },
   "engines": {
@@ -69,7 +68,7 @@
     "@types/babel__core": "^7.20.1",
     "@types/debug": "^4.1.8",
     "@types/is-glob": "^4.0.2",
-    "@types/jest": "29.5.4",
+    "@types/jest": "29.5.5",
     "@types/jest-specific-snapshot": "^0.5.6",
     "@types/marked": "^5.0.0",
     "@types/natural-compare": "^1.4.1",

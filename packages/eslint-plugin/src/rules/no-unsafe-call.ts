@@ -1,8 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 
-import * as util from '../util';
-import { getThisExpression } from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getParserServices,
+  getThisExpression,
+  isTypeAnyType,
+} from '../util';
 
 type MessageIds =
   | 'unsafeCall'
@@ -10,7 +15,7 @@ type MessageIds =
   | 'unsafeNew'
   | 'unsafeTemplateTag';
 
-export default util.createRule<[], MessageIds>({
+export default createRule<[], MessageIds>({
   name: 'no-unsafe-call',
   meta: {
     type: 'problem',
@@ -32,7 +37,7 @@ export default util.createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const compilerOptions = services.program.getCompilerOptions();
     const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
@@ -44,16 +49,16 @@ export default util.createRule<[], MessageIds>({
       reportingNode: TSESTree.Node,
       messageId: MessageIds,
     ): void {
-      const type = util.getConstrainedTypeAtLocation(services, node);
+      const type = getConstrainedTypeAtLocation(services, node);
 
-      if (util.isTypeAnyType(type)) {
+      if (isTypeAnyType(type)) {
         if (!isNoImplicitThis) {
           // `this()` or `this.foo()` or `this.foo[bar]()`
           const thisExpression = getThisExpression(node);
           if (
             thisExpression &&
-            util.isTypeAnyType(
-              util.getConstrainedTypeAtLocation(services, thisExpression),
+            isTypeAnyType(
+              getConstrainedTypeAtLocation(services, thisExpression),
             )
           ) {
             messageId = 'unsafeCallThis';

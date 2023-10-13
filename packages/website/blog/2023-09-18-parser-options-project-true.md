@@ -143,7 +143,7 @@ Project Services will automatically detect the TSConfig for each file (like `pro
 We hope this option will eventually become the standard way to enable typed linting.
 However, because it's so new and untested, we're keeping it under the `EXPERIMENTAL_` prefix for at least all of the `6.X` versions.
 
-See [Packages > Parser > `EXPERIMENTAL_useProjectService`](/packages/parser#EXPERIMENTAL_useProjectService) for more information.
+See [Packages > Parser > `EXPERIMENTAL_useProjectService`](/packages/parser#experimental_useprojectservice) for more information.
 
 ## Supporting typescript-eslint
 

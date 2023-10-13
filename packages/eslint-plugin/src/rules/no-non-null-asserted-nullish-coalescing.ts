@@ -3,7 +3,7 @@ import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESLint } from '@typescript-eslint/utils';
 import { ASTUtils, TSESTree } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
 function hasAssignmentBeforeNode(
   variable: TSESLint.Scope.Variable,
@@ -31,7 +31,7 @@ function isDefinitionWithAssignment(definition: Definition): boolean {
   );
 }
 
-export default util.createRule({
+export default createRule({
   name: 'no-non-null-asserted-nullish-coalescing',
   meta: {
     type: 'problem',
@@ -85,15 +85,12 @@ export default util.createRule({
             {
               messageId: 'suggestRemovingNonNull',
               fix(fixer): TSESLint.RuleFix {
-                const exclamationMark = util.nullThrows(
+                const exclamationMark = nullThrows(
                   sourceCode.getLastToken(
                     node,
                     ASTUtils.isNonNullAssertionPunctuator,
                   ),
-                  util.NullThrowsReasons.MissingToken(
-                    '!',
-                    'Non-null Assertion',
-                  ),
+                  NullThrowsReasons.MissingToken('!', 'Non-null Assertion'),
                 );
                 return fixer.remove(exclamationMark);
               },
