@@ -80,7 +80,7 @@ function RuleRow({
             : undefined
         }
       >
-        {fixable ? `${FIXABLE_EMOJI}\n` : '\n'}
+        {fixable ? FIXABLE_EMOJI : ''}<br />
         {hasSuggestions ? SUGGESTIONS_EMOJI : ''}
       </td>
       <td
