@@ -8,7 +8,9 @@ slug: /
 
 `@typescript-eslint/eslint-plugin` includes over 100 rules that detect best practice violations, bugs, and/or stylistic issues specifically for TypeScript code. All of our rules are listed below.
 
+:::tip
 Instead of enabling rules one by one, we recommend using one of [our pre-defined configs](/linting/configs) to enable a large set of recommended rules.
+:::
 
 ## Rules
 
