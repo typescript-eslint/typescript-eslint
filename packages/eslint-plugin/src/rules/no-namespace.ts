@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, isDefinitionFile } from '../util';
 
 type Options = [
   {
@@ -11,7 +11,7 @@ type Options = [
 ];
 type MessageIds = 'moduleSyntaxIsPreferred';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-namespace',
   meta: {
     type: 'suggestion',
@@ -68,7 +68,7 @@ export default util.createRule<Options, MessageIds>({
       ): void {
         if (
           node.parent.type === AST_NODE_TYPES.TSModuleDeclaration ||
-          (allowDefinitionFiles && util.isDefinitionFile(filename)) ||
+          (allowDefinitionFiles && isDefinitionFile(filename)) ||
           (allowDeclarations && isDeclaration(node))
         ) {
           return;

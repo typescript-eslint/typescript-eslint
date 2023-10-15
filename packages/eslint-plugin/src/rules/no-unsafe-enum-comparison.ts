@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import { createRule, getParserServices } from '../util';
 import { getEnumTypes } from './enum-utils/shared';
 
 /**
@@ -29,14 +29,14 @@ function typeViolates(leftTypeParts: ts.Type[], right: ts.Type): boolean {
  * @returns What type a type's enum value is (number or string), if either.
  */
 function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
-  return util.isTypeFlagSet(type, ts.TypeFlags.EnumLike)
-    ? util.isTypeFlagSet(type, ts.TypeFlags.NumberLiteral)
+  return tsutils.isTypeFlagSet(type, ts.TypeFlags.EnumLike)
+    ? tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLiteral)
       ? ts.TypeFlags.Number
       : ts.TypeFlags.String
     : undefined;
 }
 
-export default util.createRule({
+export default createRule({
   name: 'no-unsafe-enum-comparison',
   meta: {
     type: 'suggestion',
@@ -53,7 +53,7 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const parserServices = util.getParserServices(context);
+    const parserServices = getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
 
     return {

@@ -3,6 +3,19 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.7.5](https://github.com/typescript-eslint/typescript-eslint/compare/v6.7.4...v6.7.5) (2023-10-09)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [prefer-string-starts-ends-with] only report slice/substring with correct range ([#7712](https://github.com/typescript-eslint/typescript-eslint/issues/7712)) ([db40a0a](https://github.com/typescript-eslint/typescript-eslint/commit/db40a0a83abf14237a7a9b3f75d869da26512292))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 ## [6.7.4](https://github.com/typescript-eslint/typescript-eslint/compare/v6.7.3...v6.7.4) (2023-10-02)
 
 **Note:** Version bump only for package @typescript-eslint/typescript-eslint

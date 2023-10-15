@@ -3,7 +3,16 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getParserServices,
+  isClosingParenToken,
+  isOpeningParenToken,
+  isParenthesized,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 export type Options = [
   {
@@ -22,7 +31,7 @@ export type MessageId =
   | 'invalidVoidExprWrapVoid'
   | 'voidExprWrapVoid';
 
-export default util.createRule<Options, MessageId>({
+export default createRule<Options, MessageId>({
   name: 'no-confusing-void-expression',
   meta: {
     docs: {
@@ -80,8 +89,8 @@ export default util.createRule<Options, MessageId>({
           | TSESTree.CallExpression
           | TSESTree.TaggedTemplateExpression,
       ): void {
-        const services = util.getParserServices(context);
-        const type = util.getConstrainedTypeAtLocation(services, node);
+        const services = getParserServices(context);
+        const type = getConstrainedTypeAtLocation(services, node);
         if (!tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike)) {
           // not a void expression
           return;
@@ -121,14 +130,14 @@ export default util.createRule<Options, MessageId>({
               const arrowBody = arrowFunction.body;
               const arrowBodyText = sourceCode.getText(arrowBody);
               const newArrowBodyText = `{ ${arrowBodyText}; }`;
-              if (util.isParenthesized(arrowBody, sourceCode)) {
+              if (isParenthesized(arrowBody, sourceCode)) {
                 const bodyOpeningParen = sourceCode.getTokenBefore(
                   arrowBody,
-                  util.isOpeningParenToken,
+                  isOpeningParenToken,
                 )!;
                 const bodyClosingParen = sourceCode.getTokenAfter(
                   arrowBody,
-                  util.isClosingParenToken,
+                  isClosingParenToken,
                 )!;
                 return fixer.replaceTextRange(
                   [bodyOpeningParen.range[0], bodyClosingParen.range[1]],
@@ -220,10 +229,7 @@ export default util.createRule<Options, MessageId>({
      * @returns Invalid ancestor node if it was found. `null` otherwise.
      */
     function findInvalidAncestor(node: TSESTree.Node): TSESTree.Node | null {
-      const parent = util.nullThrows(
-        node.parent,
-        util.NullThrowsReasons.MissingParent,
-      );
+      const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
       if (parent.type === AST_NODE_TYPES.SequenceExpression) {
         if (node !== parent.expressions[parent.expressions.length - 1]) {
           return null;
@@ -282,19 +288,16 @@ export default util.createRule<Options, MessageId>({
     /** Checks whether the return statement is the last statement in a function body. */
     function isFinalReturn(node: TSESTree.ReturnStatement): boolean {
       // the parent must be a block
-      const block = util.nullThrows(
-        node.parent,
-        util.NullThrowsReasons.MissingParent,
-      );
+      const block = nullThrows(node.parent, NullThrowsReasons.MissingParent);
       if (block.type !== AST_NODE_TYPES.BlockStatement) {
         // e.g. `if (cond) return;` (not in a block)
         return false;
       }
 
       // the block's parent must be a function
-      const blockParent = util.nullThrows(
+      const blockParent = nullThrows(
         block.parent,
-        util.NullThrowsReasons.MissingParent,
+        NullThrowsReasons.MissingParent,
       );
       if (
         ![
@@ -327,9 +330,9 @@ export default util.createRule<Options, MessageId>({
       node: TSESTree.Expression,
       sourceCode: Readonly<TSESLint.SourceCode>,
     ): boolean {
-      const startToken = util.nullThrows(
+      const startToken = nullThrows(
         sourceCode.getFirstToken(node),
-        util.NullThrowsReasons.MissingToken('first token', node.type),
+        NullThrowsReasons.MissingToken('first token', node.type),
       );
 
       return ['(', '[', '`'].includes(startToken.value);
