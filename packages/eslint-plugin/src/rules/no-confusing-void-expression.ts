@@ -347,14 +347,14 @@ export default createRule<Options, MessageId>({
     function canFix(
       node: TSESTree.ReturnStatement | TSESTree.ArrowFunctionExpression,
     ): boolean {
-      const services = util.getParserServices(context);
+      const services = getParserServices(context);
 
       const targetNode =
         node.type === AST_NODE_TYPES.ReturnStatement
           ? node.argument!
           : node.body;
 
-      const type = util.getConstrainedTypeAtLocation(services, targetNode);
+      const type = getConstrainedTypeAtLocation(services, targetNode);
       return tsutils.isTypeFlagSet(type, ts.TypeFlags.VoidLike);
     }
   },
