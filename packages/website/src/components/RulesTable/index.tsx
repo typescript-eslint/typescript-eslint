@@ -10,6 +10,7 @@ import {
   useHistorySelector,
 } from '../../hooks/useHistorySelector';
 import {
+  CONFIG_EMOJI,
   DEPRECATED_RULE_EMOJI,
   EXTENSION_RULE_EMOJI,
   FIXABLE_EMOJI,
@@ -192,7 +193,7 @@ export default function RulesTable(): React.JSX.Element {
   return (
     <>
       <div className={styles.checkboxListArea}>
-        <em>Config Group</em>
+        <em>Config Group ({CONFIG_EMOJI})</em>
         <ul className={clsx('clean-list', styles.checkboxList)}>
           <RuleFilterCheckBox
             mode={filters.recommended}
@@ -258,7 +259,7 @@ export default function RulesTable(): React.JSX.Element {
             <th className={styles.ruleCol}>Rule</th>
             <th className={styles.attrCol}>
               <div title="The config group that the rule belongs to, if any.">
-                ⚙️ {/* We use a gear to represent "Config". */}
+                {CONFIG_EMOJI}
               </div>
             </th>
             <th className={styles.attrCol}>

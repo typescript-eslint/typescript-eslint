@@ -1,3 +1,5 @@
+export const CONFIG_EMOJI = '⚙️';
+
 export const RECOMMENDED_CONFIG_EMOJI = '✅';
 export const STRICT_CONFIG_EMOJI = '🔒';
 export const STYLISTIC_CONFIG_EMOJI = '🎨';
