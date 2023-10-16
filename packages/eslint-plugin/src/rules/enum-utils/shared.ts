@@ -1,7 +1,7 @@
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../../util';
+import { isTypeFlagSet } from '../../util';
 
 /*
  * If passed an enum member, returns the type of the parent. Otherwise,
@@ -35,6 +35,6 @@ export function getEnumTypes(
 ): ts.Type[] {
   return tsutils
     .unionTypeParts(type)
-    .filter(subType => util.isTypeFlagSet(subType, ts.TypeFlags.EnumLiteral))
+    .filter(subType => isTypeFlagSet(subType, ts.TypeFlags.EnumLiteral))
     .map(type => getBaseEnumType(typeChecker, type));
 }

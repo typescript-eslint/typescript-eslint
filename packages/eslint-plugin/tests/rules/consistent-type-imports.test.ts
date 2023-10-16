@@ -125,6 +125,16 @@ ruleTester.run('consistent-type-imports', rule, {
       `,
       options: [{ prefer: 'no-type-imports' }],
     },
+    {
+      code: `
+        import * as Type from 'foo' assert { type: 'json' };
+        const a: typeof Type = Type;
+      `,
+      options: [{ prefer: 'no-type-imports' }],
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
+    },
     `
       import { type A } from 'foo';
       type T = A;

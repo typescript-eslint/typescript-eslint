@@ -984,6 +984,33 @@ declare module 'eslint/lib/rules/prefer-const' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/prefer-destructuring' {
+  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+  interface DestructuringTypeConfig {
+    object?: boolean;
+    array?: boolean;
+  }
+  type Option0 =
+    | DestructuringTypeConfig
+    | {
+        VariableDeclarator?: DestructuringTypeConfig;
+        AssignmentExpression?: DestructuringTypeConfig;
+      };
+  interface Option1 {
+    enforceForRenamedProperties?: boolean;
+  }
+  const rule: TSESLint.RuleModule<
+    'preferDestructuring',
+    [Option0, Option1?],
+    {
+      VariableDeclarator(node: TSESTree.VariableDeclarator): void;
+      AssignmentExpression(node: TSESTree.AssignmentExpression): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/object-curly-spacing' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 

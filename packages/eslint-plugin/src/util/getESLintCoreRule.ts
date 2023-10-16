@@ -35,6 +35,7 @@ interface RuleMap {
   'no-restricted-globals': typeof import('eslint/lib/rules/no-restricted-globals');
   'object-curly-spacing': typeof import('eslint/lib/rules/object-curly-spacing');
   'prefer-const': typeof import('eslint/lib/rules/prefer-const');
+  'prefer-destructuring': typeof import('eslint/lib/rules/prefer-destructuring');
   quotes: typeof import('eslint/lib/rules/quotes');
   semi: typeof import('eslint/lib/rules/semi');
   'space-before-blocks': typeof import('eslint/lib/rules/space-before-blocks');
