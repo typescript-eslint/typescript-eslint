@@ -59,17 +59,14 @@ export default util.createRule<Options, MessageIds>({
         return node;
       }
 
-      const params = [...node.params];
-
-      if (
-        params[0] &&
-        params[0].type === AST_NODE_TYPES.Identifier &&
-        params[0].name === 'this' &&
-        params[0].typeAnnotation?.typeAnnotation.type ===
+      const params =
+        node.params[0] &&
+        node.params[0].type === AST_NODE_TYPES.Identifier &&
+        node.params[0].name === 'this' &&
+        node.params[0].typeAnnotation?.typeAnnotation.type ===
           AST_NODE_TYPES.TSVoidKeyword
-      ) {
-        params.shift();
-      }
+          ? node.params.slice(1)
+          : node.params;
 
       return {
         ...node,
