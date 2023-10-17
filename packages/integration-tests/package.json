@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/integration-tests",
-  "version": "6.7.5",
+  "version": "6.8.0",
   "private": true,
   "scripts": {
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",

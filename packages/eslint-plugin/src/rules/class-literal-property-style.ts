@@ -1,7 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type Options = ['fields' | 'getters'];
 type MessageIds =
@@ -40,7 +40,7 @@ const isSupportedLiteral = (
   return false;
 };
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'class-literal-property-style',
   meta: {
     type: 'problem',

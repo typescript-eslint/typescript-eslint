@@ -1,6 +1,6 @@
 import type { JSONSchema } from '@typescript-eslint/utils';
 
-import * as util from '../../util';
+import { getEnumNames } from '../../util';
 import type {
   IndividualAndMetaSelectorsString,
   ModifiersString,
@@ -18,15 +18,15 @@ const $DEFS: Record<string, JSONSchema.JSONSchema4> = {
   // enums
   underscoreOptions: {
     type: 'string',
-    enum: util.getEnumNames(UnderscoreOptions),
+    enum: getEnumNames(UnderscoreOptions),
   },
   predefinedFormats: {
     type: 'string',
-    enum: util.getEnumNames(PredefinedFormats),
+    enum: getEnumNames(PredefinedFormats),
   },
   typeModifiers: {
     type: 'string',
-    enum: util.getEnumNames(TypeModifiers),
+    enum: getEnumNames(TypeModifiers),
   },
 
   // repeated types
@@ -160,10 +160,7 @@ function selectorsSchema(): JSONSchema.JSONSchema4 {
           type: 'array',
           items: {
             type: 'string',
-            enum: [
-              ...util.getEnumNames(MetaSelectors),
-              ...util.getEnumNames(Selectors),
-            ],
+            enum: [...getEnumNames(MetaSelectors), ...getEnumNames(Selectors)],
           },
           additionalItems: false,
         },
@@ -171,7 +168,7 @@ function selectorsSchema(): JSONSchema.JSONSchema4 {
           type: 'array',
           items: {
             type: 'string',
-            enum: util.getEnumNames(Modifiers),
+            enum: getEnumNames(Modifiers),
           },
           additionalItems: false,
         },
@@ -195,7 +192,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
   items: {
     oneOf: [
       selectorsSchema(),
-      ...selectorSchema('default', false, util.getEnumNames(Modifiers)),
+      ...selectorSchema('default', false, getEnumNames(Modifiers)),
 
       ...selectorSchema('variableLike', false, ['unused', 'async']),
       ...selectorSchema('variable', true, [
@@ -310,6 +307,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       ...selectorSchema('typeAlias', false, ['exported', 'unused']),
       ...selectorSchema('enum', false, ['exported', 'unused']),
       ...selectorSchema('typeParameter', false, ['unused']),
+      ...selectorSchema('import', false, ['default', 'namespace']),
     ],
   },
   additionalItems: false,

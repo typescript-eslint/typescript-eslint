@@ -2,7 +2,7 @@ import { ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, isDefinitionFile } from '../util';
 
 type Options = [
   {
@@ -11,7 +11,7 @@ type Options = [
 ];
 type MessageIds = 'noEmpty' | 'noEmptyWithSuper';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-empty-interface',
   meta: {
     type: 'suggestion',
@@ -84,7 +84,7 @@ export default util.createRule<Options, MessageIds>({
               );
 
             const isInAmbientDeclaration = !!(
-              util.isDefinitionFile(filename) &&
+              isDefinitionFile(filename) &&
               scope.type === ScopeType.tsModule &&
               scope.block.declare
             );
