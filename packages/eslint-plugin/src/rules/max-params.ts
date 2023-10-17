@@ -1,6 +1,10 @@
 import { AST_NODE_TYPES, type TSESTree } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 type FunctionLike =
@@ -12,10 +16,10 @@ type FunctionRuleListener<T extends FunctionLike> = (node: T) => void;
 
 const baseRule = getESLintCoreRule('max-params');
 
-export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'max-params',
   meta: {
     type: 'suggestion',
@@ -55,21 +59,19 @@ export default util.createRule<Options, MessageIds>({
     }
 
     const removeVoidThisParam = <T extends FunctionLike>(node: T): T => {
-      if (node.params.length === 0) {
+      if (
+        node.params.length === 0 ||
+        node.params[0].type !== AST_NODE_TYPES.Identifier ||
+        node.params[0].name !== 'this' ||
+        node.params[0].typeAnnotation?.typeAnnotation.type !==
+          AST_NODE_TYPES.TSVoidKeyword
+      ) {
         return node;
       }
 
-      const params =
-        node.params[0].type === AST_NODE_TYPES.Identifier &&
-        node.params[0].name === 'this' &&
-        node.params[0].typeAnnotation?.typeAnnotation.type ===
-          AST_NODE_TYPES.TSVoidKeyword
-          ? node.params.slice(1)
-          : node.params;
-
       return {
         ...node,
-        params,
+        params: node.params.slice(1),
       };
     };
 
