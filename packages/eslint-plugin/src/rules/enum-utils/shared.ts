@@ -78,10 +78,22 @@ export function getEnumKeyForLiteral(
       const memberDeclaration = symbol.valueDeclaration as ts.EnumMember;
       const enumDeclaration = memberDeclaration.parent;
 
-      const enumName = enumDeclaration.name.getText();
-      const memberName = memberDeclaration.name.getText();
+      const memberNameIdentifier = memberDeclaration.name;
+      const enumName = enumDeclaration.name.text;
 
-      return `${enumName}.${memberName}`;
+      switch (memberNameIdentifier.kind) {
+        case ts.SyntaxKind.Identifier:
+          return `${enumName}.${memberNameIdentifier.text}`;
+
+        case ts.SyntaxKind.StringLiteral:
+          return `${enumName}['${memberNameIdentifier.text}']`;
+
+        case ts.SyntaxKind.ComputedPropertyName:
+          return `${enumName}[${memberNameIdentifier.expression.getText()}]`;
+
+        default:
+          break;
+      }
     }
   }
 

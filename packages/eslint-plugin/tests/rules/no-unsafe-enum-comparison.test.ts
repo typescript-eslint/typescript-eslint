@@ -680,7 +680,7 @@ ruleTester.run('strict-enums-comparison', rule, {
     {
       code: `
         enum StringKey {
-          'a' = 1,
+          'test-key' /* with comment */ = 1,
         }
         declare const stringKey: StringKey;
         stringKey === 1;
@@ -693,10 +693,36 @@ ruleTester.run('strict-enums-comparison', rule, {
               messageId: 'replaceValueWithEnum',
               output: `
         enum StringKey {
-          'a' = 1,
+          'test-key' /* with comment */ = 1,
         }
         declare const stringKey: StringKey;
-        stringKey === StringKey['a'];
+        stringKey === StringKey['test-key'];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum ComputedKey {
+          ['test-key' /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatched',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum ComputedKey {
+          ['test-key' /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === ComputedKey['test-key'];
       `,
             },
           ],
