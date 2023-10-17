@@ -677,5 +677,31 @@ ruleTester.run('strict-enums-comparison', rule, {
         },
       ],
     },
+    {
+      code: `
+        enum StringKey {
+          'a' = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatched',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum StringKey {
+          'a' = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === StringKey['a'];
+      `,
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
