@@ -37,7 +37,7 @@
     "@typescript-eslint/type-utils": "6.8.0",
     "@typescript-eslint/utils": "6.8.0",
     "natural-compare": "^1.4.0",
-    "prettier": "^2.8.4"
+    "prettier": "^3.0.3"
   },
   "funding": {
     "type": "opencollective",

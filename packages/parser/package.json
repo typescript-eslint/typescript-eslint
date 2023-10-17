@@ -62,7 +62,7 @@
     "downlevel-dts": "*",
     "glob": "*",
     "jest": "29.7.0",
-    "prettier": "^2.8.4",
+    "prettier": "^3.0.3",
     "rimraf": "*",
     "typescript": "*"
   },
