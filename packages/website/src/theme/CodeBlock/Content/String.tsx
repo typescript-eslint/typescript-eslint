@@ -26,7 +26,7 @@ export default function CodeBlockString({
   title: titleProp,
   showLineNumbers: showLineNumbersProp,
   language: languageProp,
-}: Props): JSX.Element {
+}: Props): React.JSX.Element {
   const {
     prism: { defaultLanguage, magicComments },
   } = useThemeConfig();
@@ -76,7 +76,7 @@ export default function CodeBlockString({
             tokens,
             getLineProps,
             getTokenProps,
-          }): JSX.Element => (
+          }): React.JSX.Element => (
             <pre
               // eslint-disable-next-line jsx-a11y/no-noninteractive-tabindex
               tabIndex={0}

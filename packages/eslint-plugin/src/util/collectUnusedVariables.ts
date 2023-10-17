@@ -426,9 +426,7 @@ function isMergableExported(variable: TSESLint.Scope.Variable): boolean {
  * @returns True if the variable is exported, false if not.
  */
 function isExported(variable: TSESLint.Scope.Variable): boolean {
-  const definition = variable.defs[0];
-
-  if (definition) {
+  return variable.defs.some(definition => {
     let node = definition.node;
 
     if (node.type === AST_NODE_TYPES.VariableDeclarator) {
@@ -438,8 +436,7 @@ function isExported(variable: TSESLint.Scope.Variable): boolean {
     }
 
     return node.parent!.type.indexOf('Export') === 0;
-  }
-  return false;
+  });
 }
 
 /**

@@ -161,23 +161,22 @@ export default createRule({
     }
 
     /**
-     * Check if a given node is a negative index expression
-     *
-     * E.g. `s.slice(- <expr>)`, `s.substring(s.length - <expr>)`
-     *
-     * @param node The node to check.
-     * @param expectedIndexedNode The node which is expected as the receiver of index expression.
+     * Returns true if `node` is `-substring.length` or
+     * `parentString.length - substring.length`
      */
-    function isNegativeIndexExpression(
+    function isLengthAheadOfEnd(
       node: TSESTree.Node,
-      expectedIndexedNode: TSESTree.Node,
+      substring: TSESTree.Node,
+      parentString: TSESTree.Node,
     ): boolean {
       return (
         (node.type === AST_NODE_TYPES.UnaryExpression &&
-          node.operator === '-') ||
+          node.operator === '-' &&
+          isLengthExpression(node.argument, substring)) ||
         (node.type === AST_NODE_TYPES.BinaryExpression &&
           node.operator === '-' &&
-          isLengthExpression(node.left, expectedIndexedNode))
+          isLengthExpression(node.left, parentString) &&
+          isLengthExpression(node.right, substring))
       );
     }
 
@@ -223,11 +222,13 @@ export default createRule({
     /**
      * Parse a given `RegExp` pattern to that string if it's a static string.
      * @param pattern The RegExp pattern text to parse.
-     * @param uFlag The Unicode flag of the RegExp.
+     * @param unicode Whether the RegExp is unicode.
      */
-    function parseRegExpText(pattern: string, uFlag: boolean): string | null {
+    function parseRegExpText(pattern: string, unicode: boolean): string | null {
       // Parse it.
-      const ast = regexpp.parsePattern(pattern, undefined, undefined, uFlag);
+      const ast = regexpp.parsePattern(pattern, undefined, undefined, {
+        unicode,
+      });
       if (ast.alternatives.length !== 1) {
         return null;
       }
@@ -565,16 +566,44 @@ export default createRule({
           return;
         }
 
-        const isEndsWith =
-          (callNode.arguments.length === 1 ||
-            (callNode.arguments.length === 2 &&
-              isLengthExpression(callNode.arguments[1], node.object))) &&
-          isNegativeIndexExpression(callNode.arguments[0], node.object);
-        const isStartsWith =
-          !isEndsWith &&
-          callNode.arguments.length === 2 &&
-          isNumber(callNode.arguments[0], 0) &&
-          !isNegativeIndexExpression(callNode.arguments[1], node.object);
+        let isEndsWith = false;
+        let isStartsWith = false;
+        if (callNode.arguments.length === 1) {
+          if (
+            // foo.slice(-bar.length) === bar
+            // foo.slice(foo.length - bar.length) === bar
+            isLengthAheadOfEnd(
+              callNode.arguments[0],
+              parentNode.right,
+              node.object,
+            )
+          ) {
+            isEndsWith = true;
+          }
+        } else if (callNode.arguments.length === 2) {
+          if (
+            // foo.slice(0, bar.length) === bar
+            isNumber(callNode.arguments[0], 0) &&
+            isLengthExpression(callNode.arguments[1], parentNode.right)
+          ) {
+            isStartsWith = true;
+          } else if (
+            // foo.slice(foo.length - bar.length, foo.length) === bar
+            // foo.slice(foo.length - bar.length, 0) === bar
+            // foo.slice(-bar.length, foo.length) === bar
+            // foo.slice(-bar.length, 0) === bar
+            (isLengthExpression(callNode.arguments[1], node.object) ||
+              isNumber(callNode.arguments[1], 0)) &&
+            isLengthAheadOfEnd(
+              callNode.arguments[0],
+              parentNode.right,
+              node.object,
+            )
+          ) {
+            isEndsWith = true;
+          }
+        }
+
         if (!isStartsWith && !isEndsWith) {
           return;
         }

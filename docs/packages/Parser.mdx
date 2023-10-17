@@ -21,7 +21,7 @@ TS's AST is optimized for its use case of parsing incomplete code and typechecki
 ESTree is unoptimized and intended for "general purpose" use-cases of traversing the AST.
 
 :::tip
-You can select `@typescript-eslint/parser` on the [typescript-eslint playground](/play#showAST=es)'s left sidebar under _Options_ > _AST Explorer_ by selecting _ESTree_.
+You can select `@typescript-eslint/parser` on the [typescript-eslint playground](/play#showAST=es)'s right sidebar by selecting _ESTree_.
 :::
 
 ## Configuration
@@ -231,7 +231,50 @@ Doing so ensures running ESLint from a directory other than the root will still 
 
 > Default `true`.
 
-This option allows you to toggle the warning that the parser will give you if you use a version of TypeScript which is not explicitly supported
+This option allows you to toggle the warning that the parser will give you if you use a version of TypeScript which is not explicitly supported. The warning message would look like this:
+
+```plaintext
+=============
+
+WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.
+
+You may find that it works just fine, or you may not.
+
+SUPPORTED TYPESCRIPT VERSIONS: >=3.3.1 <5.1.0
+
+YOUR TYPESCRIPT VERSION: 5.1.3
+
+Please only submit bug reports when using the officially supported version.
+
+=============
+```
+
+### `EXPERIMENTAL_useProjectService`
+
+An experimental alternative to `parserOptions.project`.
+This directs the parser to use a more seamless TypeScript API to generate type information for rules.
+It will automatically detect the TSConfig for each file (like `project: true`), and will also allow type information to be computed for JavaScript files without the `allowJs` compiler option (unlike `project: true`).
+
+```js
+module.exports = {
+  parser: '@typescript-eslint/parser',
+  parserOptions: {
+    EXPERIMENTAL_useProjectService: true,
+  },
+};
+```
+
+This option should bring two main benefits:
+
+- Simpler configurations: most projects shouldn't need to explicitly configure `project` paths or create `tsconfig.eslint.json`s
+- Improved performance: this API is optimized on the TypeScript side for speed
+  - Initial versions of this option demonstrated performance changes in subsets of the typescript-eslint monorepo ranging from 11% slower to 70% faster
+
+We're hopeful this option will eventually become the standard way to enable typed linting.
+It switches the parser from manually creating TypeScript programs to instead calling the same "project services" API used by editors such as VS Code.
+However, because it's so new and untested, we're keeping it under the `EXPERIMENTAL_` prefix for at least all of the `6.X` versions.
+
+See [feat(typescript-estree): add EXPERIMENTAL_useProjectService option to use TypeScript project service](https://github.com/typescript-eslint/typescript-eslint/pull/6754) for more information.
 
 ## Utilities
 

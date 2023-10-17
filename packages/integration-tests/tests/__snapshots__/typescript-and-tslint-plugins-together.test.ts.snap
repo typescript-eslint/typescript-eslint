@@ -4,20 +4,25 @@ exports[`typescript-and-tslint-plugins-together should lint successfully 1`] = `
 [
   {
     "errorCount": 1,
-    "fatalErrorCount": 1,
+    "fatalErrorCount": 0,
     "filePath": "<root>/index.ts",
     "fixableErrorCount": 0,
     "fixableWarningCount": 0,
     "messages": [
       {
-        "fatal": true,
-        "message": "Parsing error: Cannot read file '/usr/linked/tsconfig.json'.",
-        "ruleId": null,
+        "column": 7,
+        "endColumn": 13,
+        "endLine": 2,
+        "line": 2,
+        "message": "'noSemi' is assigned a value but never used.",
+        "messageId": "unusedVar",
+        "nodeType": "Identifier",
+        "ruleId": "@typescript-eslint/no-unused-vars",
         "severity": 2,
       },
     ],
-    "source": "// prettier-ignore
-const noSemi = true
+    "output": "// prettier-ignore
+const noSemi = true;
 ",
     "suppressedMessages": [],
     "usedDeprecatedRules": [],

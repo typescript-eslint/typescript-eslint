@@ -17,6 +17,31 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
       "ignoreMixedLogicalExpressions": {
         "type": "boolean"
       },
+      "ignorePrimitives": {
+        "oneOf": [
+          {
+            "properties": {
+              "bigint": {
+                "type": "boolean"
+              },
+              "boolean": {
+                "type": "boolean"
+              },
+              "number": {
+                "type": "boolean"
+              },
+              "string": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          {
+            "enum": [true],
+            "type": "boolean"
+          }
+        ]
+      },
       "ignoreTernaryTests": {
         "type": "boolean"
       }
@@ -33,6 +58,15 @@ type Options = [
     allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing?: boolean;
     ignoreConditionalTests?: boolean;
     ignoreMixedLogicalExpressions?: boolean;
+    ignorePrimitives?:
+      | {
+          bigint?: boolean;
+          boolean?: boolean;
+          number?: boolean;
+          string?: boolean;
+          [k: string]: unknown;
+        }
+      | true;
     ignoreTernaryTests?: boolean;
   },
 ];

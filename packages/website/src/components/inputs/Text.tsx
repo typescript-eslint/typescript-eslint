@@ -1,4 +1,4 @@
-import clsx from 'clsx';
+import SearchIcon from '@site/src/icons/search.svg';
 import React from 'react';
 
 import styles from './Text.module.css';
@@ -14,18 +14,23 @@ export interface DropdownProps {
 
 // eslint-disable-next-line react/display-name
 const Text = React.forwardRef<HTMLInputElement, DropdownProps>(
-  (props, ref): JSX.Element => {
+  (props, ref): React.JSX.Element => {
     return (
-      <input
-        value={props.value}
-        onChange={(e): void => props.onChange(e.target.value)}
-        name={props.name}
-        className={clsx(styles.textInput, props.className)}
-        type={props.type ?? 'text'}
-        autoComplete="off"
-        placeholder={props.placeholder}
-        ref={ref}
-      />
+      <>
+        <label className={styles.textInput}>
+          {props.type === 'search' && <SearchIcon />}
+          <input
+            value={props.value}
+            onChange={(e): void => props.onChange(e.target.value)}
+            name={props.name}
+            className={props.className}
+            type={props.type ?? 'text'}
+            autoComplete="off"
+            placeholder={props.placeholder}
+            ref={ref}
+          />
+        </label>
+      </>
     );
   },
 );

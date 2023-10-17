@@ -36,4 +36,5 @@ module.exports = {
       },
     ],
   },
+  workerIdleMemoryLimit: '300MB',
 };

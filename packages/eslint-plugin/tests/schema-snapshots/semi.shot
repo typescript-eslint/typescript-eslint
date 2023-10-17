@@ -35,6 +35,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "properties": {
             "omitLastInOneLineBlock": {
               "type": "boolean"
+            },
+            "omitLastInOneLineClassBody": {
+              "type": "boolean"
             }
           },
           "type": "object"
@@ -58,6 +61,7 @@ type Options =
       'always',
       {
         omitLastInOneLineBlock?: boolean;
+        omitLastInOneLineClassBody?: boolean;
       },
     ]
   | [

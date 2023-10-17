@@ -12,6 +12,7 @@ exports[`vue-sfc should lint successfully 1`] = `
       {
         "fatal": true,
         "message": "Parsing error: Cannot read file '/usr/linked/tsconfig.json'.",
+        "nodeType": null,
         "ruleId": null,
         "severity": 2,
       },
@@ -70,6 +71,7 @@ export default Vue.extend({
       {
         "fatal": true,
         "message": "Parsing error: Cannot read file '/usr/linked/tsconfig.json'.",
+        "nodeType": null,
         "ruleId": null,
         "severity": 2,
       },
@@ -104,6 +106,7 @@ export default class Utility {
       {
         "fatal": true,
         "message": "Parsing error: Cannot read file '/usr/linked/tsconfig.json'.",
+        "nodeType": null,
         "ruleId": null,
         "severity": 2,
       },

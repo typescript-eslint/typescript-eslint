@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/typescript-estree",
-  "version": "5.61.0",
+  "version": "6.8.0",
   "description": "A parser that converts TypeScript source code into an ESTree compatible form",
   "files": [
     "dist",
@@ -52,20 +52,23 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "5.61.0",
-    "@typescript-eslint/visitor-keys": "5.61.0",
+    "@typescript-eslint/types": "6.8.0",
+    "@typescript-eslint/visitor-keys": "6.8.0",
     "debug": "^4.3.4",
     "globby": "^11.1.0",
     "is-glob": "^4.0.3",
-    "semver": "^7.5.0",
+    "semver": "^7.5.4",
     "ts-api-utils": "^1.0.1"
   },
   "devDependencies": {
     "@babel/code-frame": "*",
     "@babel/parser": "*",
     "glob": "*",
-    "jest-specific-snapshot": "*",
+    "jest": "29.7.0",
+    "jest-specific-snapshot": "^8.0.0",
     "make-dir": "*",
+    "prettier": "^2.8.4",
+    "rimraf": "*",
     "tmp": "*",
     "typescript": "*"
   },

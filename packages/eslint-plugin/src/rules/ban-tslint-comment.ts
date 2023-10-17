@@ -1,6 +1,6 @@
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 // tslint regex
 // https://github.com/palantir/tslint/blob/95d9d958833fd9dc0002d18cbe34db20d0fbf437/src/enableDisableRules.ts#L32
@@ -15,7 +15,7 @@ const toText = (
     ? ['//', text.trim()].join(' ')
     : ['/*', text.trim(), '*/'].join(' ');
 
-export default util.createRule({
+export default createRule({
   name: 'ban-tslint-comment',
   meta: {
     type: 'suggestion',

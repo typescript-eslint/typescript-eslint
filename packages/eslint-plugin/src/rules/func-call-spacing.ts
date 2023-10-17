@@ -1,6 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import {
+  createRule,
+  isNotOptionalChainPunctuator,
+  isOpeningParenToken,
+  isOptionalCallExpression,
+  LINEBREAK_MATCHER,
+} from '../util';
 
 export type Options = [
   'always' | 'never',
@@ -13,7 +19,7 @@ export type MessageIds =
   | 'unexpectedNewline'
   | 'unexpectedWhitespace';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'func-call-spacing',
   meta: {
     type: 'layout',
@@ -80,7 +86,7 @@ export default util.createRule<Options, MessageIds>({
     function checkSpacing(
       node: TSESTree.CallExpression | TSESTree.NewExpression,
     ): void {
-      const isOptionalCall = util.isOptionalCallExpression(node);
+      const isOptionalCall = isOptionalCallExpression(node);
 
       const closingParenToken = sourceCode.getLastToken(node)!;
       const lastCalleeTokenWithoutPossibleParens = sourceCode.getLastToken(
@@ -89,7 +95,7 @@ export default util.createRule<Options, MessageIds>({
       const openingParenToken = sourceCode.getFirstTokenBetween(
         lastCalleeTokenWithoutPossibleParens,
         closingParenToken,
-        util.isOpeningParenToken,
+        isOpeningParenToken,
       );
       if (!openingParenToken || openingParenToken.range[1] >= node.range[1]) {
         // new expression with no parens...
@@ -97,7 +103,7 @@ export default util.createRule<Options, MessageIds>({
       }
       const lastCalleeToken = sourceCode.getTokenBefore(
         openingParenToken,
-        util.isNotOptionalChainPunctuator,
+        isNotOptionalChainPunctuator,
       )!;
 
       const textBetweenTokens = text
@@ -105,7 +111,7 @@ export default util.createRule<Options, MessageIds>({
         .replace(/\/\*.*?\*\//gu, '');
       const hasWhitespace = /\s/u.test(textBetweenTokens);
       const hasNewline =
-        hasWhitespace && util.LINEBREAK_MATCHER.test(textBetweenTokens);
+        hasWhitespace && LINEBREAK_MATCHER.test(textBetweenTokens);
 
       if (option === 'never') {
         if (hasWhitespace) {

@@ -14,6 +14,7 @@ const ruleTester = new RuleTester({
 });
 
 const withMetaParserOptions = {
+  EXPERIMENTAL_useProjectService: false,
   tsconfigRootDir: getFixturesRootDir(),
   project: './tsconfig-withmeta.json',
 };
@@ -1079,6 +1080,18 @@ export class Foo {
         typescript: '4.4',
       },
     },
+    `
+interface Foo {
+  bar: string;
+}
+export const Foo = 'bar';
+    `,
+    `
+export const Foo = 'bar';
+interface Foo {
+  bar: string;
+}
+    `,
   ],
 
   invalid: [
@@ -1798,6 +1811,26 @@ x = foo(x);
           column: 1,
           data: {
             varName: 'x',
+            action: 'assigned a value',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+interface Foo {
+  bar: string;
+}
+const Foo = 'bar';
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 5,
+          column: 7,
+          data: {
+            varName: 'Foo',
             action: 'assigned a value',
             additional: '',
           },

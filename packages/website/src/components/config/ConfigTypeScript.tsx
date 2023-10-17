@@ -13,7 +13,7 @@ interface ConfigTypeScriptProps {
   readonly className?: string;
 }
 
-function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
+function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
   const { config, onChange: onChangeProp, className } = props;
 
   const [configObject, updateConfigObject] = useState<Record<string, unknown>>(
@@ -35,7 +35,7 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): JSX.Element {
       getTypescriptOptions().reduce<Record<string, ConfigOptionsType>>(
         (group, item) => {
           const category = item.category!.message;
-          group[category] = group[category] ?? {
+          group[category] ??= {
             heading: category,
             fields: [],
           };

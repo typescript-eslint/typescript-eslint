@@ -2,7 +2,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type Options = [
   {
@@ -12,7 +12,7 @@ type Options = [
 ];
 type MessageIds = 'noInferrableType';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-inferrable-types',
   meta: {
     type: 'suggestion',
@@ -250,15 +250,19 @@ export default util.createRule<Options, MessageIds>({
       if (ignoreParameters || !node.params) {
         return;
       }
-      (
-        node.params.filter(
-          param =>
-            param.type === AST_NODE_TYPES.AssignmentPattern &&
-            param.left &&
-            param.right,
-        ) as TSESTree.AssignmentPattern[]
-      ).forEach(param => {
-        reportInferrableType(param, param.left.typeAnnotation, param.right);
+
+      node.params.forEach(param => {
+        if (param.type === AST_NODE_TYPES.TSParameterProperty) {
+          param = param.parameter;
+        }
+
+        if (
+          param.type === AST_NODE_TYPES.AssignmentPattern &&
+          param.left &&
+          param.right
+        ) {
+          reportInferrableType(param, param.left.typeAnnotation, param.right);
+        }
       });
     }
 

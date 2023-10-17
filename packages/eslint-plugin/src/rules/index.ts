@@ -7,6 +7,7 @@ import banTypes from './ban-types';
 import blockSpacing from './block-spacing';
 import braceStyle from './brace-style';
 import classLiteralPropertyStyle from './class-literal-property-style';
+import classMethodsUseThis from './class-methods-use-this';
 import commaDangle from './comma-dangle';
 import commaSpacing from './comma-spacing';
 import consistentGenericConstructors from './consistent-generic-constructors';
@@ -27,6 +28,7 @@ import keySpacing from './key-spacing';
 import keywordSpacing from './keyword-spacing';
 import linesAroundComment from './lines-around-comment';
 import linesBetweenClassMembers from './lines-between-class-members';
+import maxParams from './max-params';
 import memberDelimiterStyle from './member-delimiter-style';
 import memberOrdering from './member-ordering';
 import methodSignatureStyle from './method-signature-style';
@@ -96,6 +98,7 @@ import objectCurlySpacing from './object-curly-spacing';
 import paddingLineBetweenStatements from './padding-line-between-statements';
 import parameterProperties from './parameter-properties';
 import preferAsConst from './prefer-as-const';
+import preferDestructuring from './prefer-destructuring';
 import preferEnumInitializers from './prefer-enum-initializers';
 import preferForOf from './prefer-for-of';
 import preferFunctionType from './prefer-function-type';
@@ -141,6 +144,7 @@ export default {
   'block-spacing': blockSpacing,
   'brace-style': braceStyle,
   'class-literal-property-style': classLiteralPropertyStyle,
+  'class-methods-use-this': classMethodsUseThis,
   'comma-dangle': commaDangle,
   'comma-spacing': commaSpacing,
   'consistent-generic-constructors': consistentGenericConstructors,
@@ -161,6 +165,7 @@ export default {
   'keyword-spacing': keywordSpacing,
   'lines-around-comment': linesAroundComment,
   'lines-between-class-members': linesBetweenClassMembers,
+  'max-params': maxParams,
   'member-delimiter-style': memberDelimiterStyle,
   'member-ordering': memberOrdering,
   'method-signature-style': methodSignatureStyle,
@@ -230,6 +235,7 @@ export default {
   'padding-line-between-statements': paddingLineBetweenStatements,
   'parameter-properties': parameterProperties,
   'prefer-as-const': preferAsConst,
+  'prefer-destructuring': preferDestructuring,
   'prefer-enum-initializers': preferEnumInitializers,
   'prefer-for-of': preferForOf,
   'prefer-function-type': preferFunctionType,

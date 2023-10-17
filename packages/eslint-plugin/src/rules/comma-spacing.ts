@@ -3,6 +3,8 @@ import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
 import {
   createRule,
+  isClosingBraceToken,
+  isClosingBracketToken,
   isClosingParenToken,
   isCommaToken,
   isTokenOnSameLine,
@@ -131,6 +133,14 @@ export default createRule<Options, MessageIds>({
       }
 
       if (nextToken && isClosingParenToken(nextToken)) {
+        return;
+      }
+
+      if (
+        spaceAfter &&
+        nextToken &&
+        (isClosingBraceToken(nextToken) || isClosingBracketToken(nextToken))
+      ) {
         return;
       }
 

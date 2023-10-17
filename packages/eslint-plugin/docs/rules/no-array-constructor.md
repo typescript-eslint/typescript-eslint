@@ -6,8 +6,6 @@ description: 'Disallow generic `Array` constructors.'
 >
 > See **https://typescript-eslint.io/rules/no-array-constructor** for documentation.
 
-## Examples
-
 This rule extends the base [`eslint/no-array-constructor`](https://eslint.org/docs/rules/no-array-constructor) rule.
 It adds support for the generically typed `Array` constructor (`new Array<Foo>()`).
 

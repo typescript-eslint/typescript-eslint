@@ -18,7 +18,7 @@ function EditorTabs<T extends boolean | string>({
   showVisualEditor,
   change,
   showModal,
-}: EditorTabsProps<T>): JSX.Element {
+}: EditorTabsProps<T>): React.JSX.Element {
   const tabsWithLabels = tabs.map(tab =>
     typeof tab !== 'object' ? { value: tab, label: String(tab) } : tab,
   );

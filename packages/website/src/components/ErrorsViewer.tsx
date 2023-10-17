@@ -45,7 +45,7 @@ function severityClass(
   return 'info';
 }
 
-function FixButton(props: FixButtonProps): JSX.Element {
+function FixButton(props: FixButtonProps): React.JSX.Element {
   return (
     <button
       className="button button--primary button--sm"
@@ -64,7 +64,7 @@ function ErrorBlock({
   item,
   setIsLocked,
   isLocked,
-}: ErrorBlockProps): JSX.Element {
+}: ErrorBlockProps): React.JSX.Element {
   return (
     <AlertBlock type={severityClass(item.severity)}>
       <div className={clsx(!!item.fixer && styles.fixerContainer)}>
@@ -104,7 +104,7 @@ export function ErrorViewer({
   value,
   title,
   type,
-}: ErrorViewerProps): JSX.Element {
+}: ErrorViewerProps): React.JSX.Element {
   return (
     <div className={styles.list}>
       <div className="margin-top--md">
@@ -121,7 +121,7 @@ export function ErrorViewer({
   );
 }
 
-export function ErrorsViewer({ value }: ErrorsViewerProps): JSX.Element {
+export function ErrorsViewer({ value }: ErrorsViewerProps): React.JSX.Element {
   const [isLocked, setIsLocked] = useState(false);
 
   useEffect(() => {

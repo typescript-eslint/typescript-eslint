@@ -9,13 +9,13 @@
  **********************************************/
 
 import type * as ts from 'typescript';
-declare type System = ts.System;
-declare type CompilerOptions = ts.CompilerOptions;
-declare type CustomTransformers = ts.CustomTransformers;
-declare type LanguageServiceHost = ts.LanguageServiceHost;
-declare type CompilerHost = ts.CompilerHost;
-declare type SourceFile = ts.SourceFile;
-declare type TS = typeof ts;
+type System = ts.System;
+type CompilerOptions = ts.CompilerOptions;
+type CustomTransformers = ts.CustomTransformers;
+type LanguageServiceHost = ts.LanguageServiceHost;
+type CompilerHost = ts.CompilerHost;
+type SourceFile = ts.SourceFile;
+type TS = typeof ts;
 export interface VirtualTypeScriptEnvironment {
   sys: System;
   languageService: ts.LanguageService;
@@ -46,7 +46,8 @@ export declare function createVirtualTypeScriptEnvironment(
 ): VirtualTypeScriptEnvironment;
 /**
  * Grab the list of lib files for a particular target, will return a bit more than necessary (by including
- * the dom) but that's OK
+ * the dom) but that's OK, we're really working with the constraint that you can't get a list of files
+ * when running in a browser.
  *
  * @param target The compiler settings target baseline
  * @param ts A copy of the TypeScript module
@@ -58,10 +59,13 @@ export declare const knownLibFilesForCompilerOptions: (
 /**
  * Sets up a Map with lib contents by grabbing the necessary files from
  * the local copy of typescript via the file system.
+ *
+ * The first two args are un-used, but kept around so as to not cause a
+ * semver major bump for no gain to module users.
  */
 export declare const createDefaultMapFromNodeModules: (
-  compilerOptions: CompilerOptions,
-  ts?: typeof ts,
+  _compilerOptions: CompilerOptions,
+  _ts?: typeof ts,
   tsLibDirectory?: string,
 ) => Map<string, string>;
 /**

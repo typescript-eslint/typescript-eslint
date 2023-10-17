@@ -16,6 +16,7 @@ const ruleTester = new RuleTester({
 });
 
 const withMetaParserOptions = {
+  EXPERIMENTAL_useProjectService: false,
   tsconfigRootDir: getFixturesRootDir(),
   project: './tsconfig-withmeta.json',
 };
@@ -123,6 +124,16 @@ ruleTester.run('consistent-type-imports', rule, {
         type T = typeof Type.foo;
       `,
       options: [{ prefer: 'no-type-imports' }],
+    },
+    {
+      code: `
+        import * as Type from 'foo' assert { type: 'json' };
+        const a: typeof Type = Type;
+      `,
+      options: [{ prefer: 'no-type-imports' }],
+      dependencyConstraints: {
+        typescript: '4.5',
+      },
     },
     `
       import { type A } from 'foo';
@@ -530,6 +541,18 @@ ruleTester.run('consistent-type-imports', rule, {
         @deco
         class A {
           constructor(foo: foo.Foo) {}
+        }
+      `,
+      parserOptions: withMetaConfigParserOptions,
+    },
+
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7327
+    {
+      code: `
+        import type { ClassA } from './classA';
+
+        export class ClassB {
+          public constructor(node: ClassA) {}
         }
       `,
       parserOptions: withMetaConfigParserOptions,

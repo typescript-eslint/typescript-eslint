@@ -9,7 +9,7 @@ description: 'Enforce using the nullish coalescing operator instead of logical a
 The `??` nullish coalescing runtime operator allows providing a default value when dealing with `null` or `undefined`.
 Because the nullish coalescing operator _only_ coalesces when the original value is `null` or `undefined`, it is much safer than relying upon logical OR operator chaining `||`, which coalesces on any _falsy_ value.
 
-This rule reports when you can safely replace:
+This rule reports when you may consider replacing:
 
 - An `||` operator with `??`
 - An `||=` operator with `??=`
@@ -22,7 +22,7 @@ This rule will not work as expected if [`strictNullChecks`](https://www.typescri
 
 ### `ignoreTernaryTests`
 
-Setting this option to `true` (the default) will cause the rule to ignore any ternary expressions that could be simplified by using the nullish coalescing operator.
+Setting this option to `true` will cause the rule to ignore any ternary expressions that could be simplified by using the nullish coalescing operator. This is set to `false` by default.
 
 Incorrect code for `ignoreTernaryTests: false`, and correct code for `ignoreTernaryTests: true`:
 
@@ -62,7 +62,7 @@ foo ?? 'a string';
 
 ### `ignoreConditionalTests`
 
-Setting this option to `true` (the default) will cause the rule to ignore any cases that are located within a conditional test.
+Setting this option to `true` will cause the rule to ignore any cases that are located within a conditional test. This is set to `false` by default.
 
 Generally expressions within conditional tests intentionally use the falsy fallthrough behavior of the logical or operator, meaning that fixing the operator to the nullish coalesce operator could cause bugs.
 
@@ -104,7 +104,7 @@ a ?? b ? true : false;
 
 ### `ignoreMixedLogicalExpressions`
 
-Setting this option to `true` (the default) will cause the rule to ignore any logical or expressions that are part of a mixed logical expression (with `&&`).
+Setting this option to `true` will cause the rule to ignore any logical or expressions that are part of a mixed logical expression (with `&&`). This is set to `false` by default.
 
 Generally expressions within mixed logical expressions intentionally use the falsy fallthrough behavior of the logical or operator, meaning that fixing the operator to the nullish coalesce operator could cause bugs.
 
@@ -141,6 +141,31 @@ a ?? (b && c && d);
 ```
 
 **_NOTE:_** Errors for this specific case will be presented as suggestions (see below), instead of fixes. This is because it is not always safe to automatically convert `||` to `??` within a mixed logical expression, as we cannot tell the intended precedence of the operator. Note that by design, `??` requires parentheses when used with `&&` or `||` in the same expression.
+
+### `ignorePrimitives`
+
+If you would like to ignore expressions containing operands of certain primitive types that can be falsy then you may pass an object containing a boolean value for each primitive:
+
+- `string: true`, ignores `null` or `undefined` unions with `string` (default: false).
+- `number: true`, ignores `null` or `undefined` unions with `number` (default: false).
+- `bigint: true`, ignores `null` or `undefined` unions with `bigint` (default: false).
+- `boolean: true`, ignores `null` or `undefined` unions with `boolean` (default: false).
+
+Incorrect code for `ignorePrimitives: { string: false }`, and correct code for `ignorePrimitives: { string: true }`:
+
+```ts
+const foo: string | undefined = 'bar';
+foo || 'a string';
+```
+
+Correct code for both `ignorePrimitives: { string: false }` and `ignorePrimitives: { string: true }`:
+
+```ts
+const foo: string | undefined = 'bar';
+foo ?? 'a string';
+```
+
+Also, if you would like to ignore all primitives types, you can set `ignorePrimitives: true`. It is equivalent to `ignorePrimitives: { string: true, number: true, bigint: true, boolean: true }`.
 
 ## When Not To Use It
 

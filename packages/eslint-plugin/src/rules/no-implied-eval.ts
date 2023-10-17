@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import { createRule, getParserServices } from '../util';
 
 const FUNCTION_CONSTRUCTOR = 'Function';
 const GLOBAL_CANDIDATES = new Set(['global', 'window', 'globalThis']);
@@ -14,7 +14,7 @@ const EVAL_LIKE_METHODS = new Set([
   'execScript',
 ]);
 
-export default util.createRule({
+export default createRule({
   name: 'no-implied-eval',
   meta: {
     docs: {
@@ -33,7 +33,7 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     function getCalleeName(

@@ -4,14 +4,13 @@ on:
   push:
     branches:
       - main
-      - v6
   pull_request:
     branches:
       - '**'
   merge_group:
 
 env:
-  PRIMARY_NODE_VERSION: 20
+  PRIMARY_NODE_VERSION: '>=20.6.1'
   # Only set the read-write token if we are on the main branch
   NX_CLOUD_ACCESS_TOKEN: ${{ (github.event_name == 'push' && github.ref == 'refs/heads/main') && secrets.NX_CLOUD_ACCESS_TOKEN || '' }}
 
@@ -55,6 +54,22 @@ jobs:
           node-version: ${{ env.PRIMARY_NODE_VERSION }}
       - name: Build
         uses: ./.github/actions/prepare-build
+
+  generate_configs:
+    name: Lint
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Install
+        uses: ./.github/actions/prepare-install
+        with:
+          node-version: ${{ env.PRIMARY_NODE_VERSION }}
+      - run: yarn generate-configs
+      - run: git status --porcelain
+      - if: failure()
+        run: echo "Outdated result detected from yarn generate-configs. Please check in any file changes."
 
   lint_without_build:
     name: Lint
@@ -193,49 +208,37 @@ jobs:
           # Sadly 1 day is the minimum
           retention-days: 1
 
-  website_tests:
-    # The NETLIFY_TOKEN secret will not be available on forks
-    if: github.repository_owner == 'typescript-eslint'
-    permissions:
-      contents: read # to fetch code (actions/checkout)
-
-    name: Website tests
-    # We technically do not need to wait for build within the pipeline any more because the build we care about is happening within Netlify, however,
-    # it is highly likely that if the CI one fails, the Netlify one will as well, so in order to not waste unncessary Github Actions minutes/resources,
-    # we do still keep this requirement here.
+  unit_tests_tsserver:
+    name: Run Unit Tests with Experimental TSServer
     needs: [build]
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package:
+          [
+            'eslint-plugin',
+            'eslint-plugin-internal',
+            'eslint-plugin-tslint',
+            'typescript-estree',
+          ]
+    env:
+      COLLECT_COVERAGE: false
     steps:
       - name: Checkout
         uses: actions/checkout@v3
         with:
           fetch-depth: 2
-
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-
-      - name: Wait for Netlify deployment
-        uses: ./.github/actions/wait-for-netlify
-        id: waitForDeployment
-        with:
-          netlify_token: ${{ secrets.NETLIFY_TOKEN }}
-
-      - name: Run Playwright tests against the Netlify deployment
-        run: yarn playwright test --reporter=list
-        working-directory: packages/website
+          node-version: 18
+      - name: Build
+        uses: ./.github/actions/prepare-build
+      - name: Run unit tests for ${{ matrix.package }}
+        run: npx nx test ${{ matrix.package }} --coverage=false
         env:
-          PLAYWRIGHT_TEST_BASE_URL: ${{ steps.waitForDeployment.outputs.url }}
-
-      - if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: playwright-report
-          path: packages/website/playwright-report
+          CI: true
+          TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER: true
 
   upload_coverage:
     name: Upload Codecov Coverage
@@ -282,32 +285,5 @@ jobs:
 
       - name: Publish all packages to npm
         run: npx lerna publish --loglevel=verbose --canary --exact --force-publish --yes
-        env:
-          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-
-  publish_canary_version_v6:
-    name: Publish the next major version code as a canary version
-    runs-on: ubuntu-latest
-    permissions:
-      id-token: write
-    needs: [integration_tests, lint_with_build, lint_without_build, unit_tests]
-    if: github.ref == 'refs/heads/v6'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-      - name: Install
-        uses: ./.github/actions/prepare-install
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-          registry-url: 'https://registry.npmjs.org'
-      - name: Build
-        uses: ./.github/actions/prepare-build
-
-      # Fetch all history for all tags and branches in this job because lerna needs it
-      - run: |
-          git fetch --prune --unshallow
-
-      - name: Publish all packages to npm
-        run: npx lerna publish premajor --loglevel=verbose --canary --exact --force-publish --yes --dist-tag rc-v6
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

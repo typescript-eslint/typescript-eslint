@@ -2,12 +2,13 @@ import {
   NavbarSecondaryMenuFiller,
   useWindowSize,
 } from '@docusaurus/theme-common';
-import Checkbox from '@site/src/components/inputs/Checkbox';
-import CopyIcon from '@site/src/icons/copy.svg';
+import CopyIcon from '@theme/Icon/Copy';
 import IconExternalLink from '@theme/Icon/ExternalLink';
+import SuccessIcon from '@theme/Icon/Success';
 import React, { useCallback } from 'react';
 
 import { useClipboard } from '../hooks/useClipboard';
+import Checkbox from './inputs/Checkbox';
 import Dropdown from './inputs/Dropdown';
 import Tooltip from './inputs/Tooltip';
 import ActionLabel from './layout/ActionLabel';
@@ -27,7 +28,7 @@ function OptionsSelectorContent({
   state,
   setState,
   tsVersions,
-}: OptionsSelectorParams): JSX.Element {
+}: OptionsSelectorParams): React.JSX.Element {
   const [copyLink, copyLinkToClipboard] = useClipboard(() =>
     document.location.toString(),
   );
@@ -97,12 +98,20 @@ function OptionsSelectorContent({
       <Expander label="Actions">
         <ActionLabel name="Copy link" onClick={copyLinkToClipboard}>
           <Tooltip open={copyLink} text="Copied">
-            <CopyIcon width="13.5" height="13.5" />
+            {copyLink ? (
+              <SuccessIcon width="13.5" height="13.5" />
+            ) : (
+              <CopyIcon width="13.5" height="13.5" />
+            )}
           </Tooltip>
         </ActionLabel>
         <ActionLabel name="Copy Markdown" onClick={copyMarkdownToClipboard}>
           <Tooltip open={copyMarkdown} text="Copied">
-            <CopyIcon width="13.5" height="13.5" />
+            {copyMarkdown ? (
+              <SuccessIcon width="13.5" height="13.5" />
+            ) : (
+              <CopyIcon width="13.5" height="13.5" />
+            )}
           </Tooltip>
         </ActionLabel>
         <ActionLabel name="Report as Issue" onClick={openIssue}>
@@ -113,7 +122,7 @@ function OptionsSelectorContent({
   );
 }
 
-function OptionsSelector(props: OptionsSelectorParams): JSX.Element {
+function OptionsSelector(props: OptionsSelectorParams): React.JSX.Element {
   const windowSize = useWindowSize();
   if (windowSize === 'mobile') {
     return (

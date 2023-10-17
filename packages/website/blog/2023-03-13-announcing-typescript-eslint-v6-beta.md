@@ -50,7 +50,7 @@ If you already use typescript-eslint, you'll need to first replace your package'
 npm i @typescript-eslint/eslint-plugin@rc-v6 @typescript-eslint/parser@rc-v6 --save-dev
 ```
 
-We highly recommend then basing your ESLint configuration on the reworked typescript-eslint [recommended configurations mentioned later in this post](#configuration-breaking-changes) — especially if it's been a while since you've reworked your linter config.
+We highly recommend then basing your ESLint configuration on the reworked typescript-eslint [recommended configurations mentioned later in this post](#reworked-configuration-names) — especially if it's been a while since you've reworked your linter config.
 
 ## User-Facing Breaking Changes
 
@@ -242,7 +242,7 @@ Rules can still retrieve their full backing TypeScript type checker with `servic
 This can be necessary for TypeScript APIs not wrapped by the parser services.
 :::
 
-See [_Custom Rules_ on the v6 docs site preview](https://v6--typescript-eslint.netlify.app/custom-rules) for the updated documentation on creating custom rules with typescript-eslint.
+See [_Custom Rules_ on the v6 docs site preview](https://v6--typescript-eslint.netlify.app/developers/custom-rules) for the updated documentation on creating custom rules with typescript-eslint.
 
 ### AST Breaking Changes
 

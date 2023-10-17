@@ -1,5 +1,5 @@
-import CheckIcon from '@site/src/icons/check.svg';
-import CopyIcon from '@site/src/icons/copy.svg';
+import CopyIcon from '@theme/Icon/Copy';
+import CheckIcon from '@theme/Icon/Success';
 import clsx from 'clsx';
 import React from 'react';
 
@@ -29,7 +29,7 @@ function jsonStringifyRecursive(obj: unknown): string {
   );
 }
 
-function CopyButton({ value, className }: CopyButtonProps): JSX.Element {
+function CopyButton({ value, className }: CopyButtonProps): React.JSX.Element {
   const [on, onCopy] = useClipboard(() => jsonStringifyRecursive(value));
 
   return (
@@ -41,8 +41,8 @@ function CopyButton({ value, className }: CopyButtonProps): JSX.Element {
           aria-label={!on ? 'Copy code to clipboard' : 'Copied'}
           className={clsx(styles.copyButton, className, 'button')}
         >
-          <CopyIcon className={styles.copyIcon} />
-          <CheckIcon className={styles.checkIcon} />
+          <CopyIcon width="18" height="18" className={styles.copyIcon} />
+          <CheckIcon width="18" height="18" className={styles.checkIcon} />
         </button>
       </Tooltip>
     </div>
