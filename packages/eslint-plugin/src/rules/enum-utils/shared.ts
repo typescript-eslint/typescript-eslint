@@ -74,7 +74,6 @@ export function getEnumKeyForLiteral(
   for (const enumLiteral of enumLiterals) {
     if (enumLiteral.value === literal) {
       const memberSymbol = enumLiteral.symbol;
-
       const enumSymbol = (memberSymbol.valueDeclaration as ts.EnumMember)
         .parent;
 
