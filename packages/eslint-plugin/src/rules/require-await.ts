@@ -3,7 +3,16 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getFunctionNameWithKind,
+  getParserServices,
+  isArrowToken,
+  isOpeningParenToken,
+  nullThrows,
+  NullThrowsReasons,
+  upperCaseFirst,
+} from '../util';
 
 interface ScopeInfo {
   upper: ScopeInfo | null;
@@ -17,7 +26,7 @@ type FunctionNode =
   | TSESTree.FunctionDeclaration
   | TSESTree.FunctionExpression;
 
-export default util.createRule({
+export default createRule({
   name: 'require-await',
   meta: {
     type: 'suggestion',
@@ -34,7 +43,7 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     const sourceCode = context.getSourceCode();
@@ -74,7 +83,7 @@ export default util.createRule({
           loc: getFunctionHeadLoc(node, sourceCode),
           messageId: 'missingAwait',
           data: {
-            name: util.upperCaseFirst(util.getFunctionNameWithKind(node)),
+            name: upperCaseFirst(getFunctionNameWithKind(node)),
           },
         });
       }
@@ -186,11 +195,11 @@ function getOpeningParenOfParams(
   node: FunctionNode,
   sourceCode: TSESLint.SourceCode,
 ): TSESTree.Token {
-  return util.nullThrows(
+  return nullThrows(
     node.id
-      ? sourceCode.getTokenAfter(node.id, util.isOpeningParenToken)
-      : sourceCode.getFirstToken(node, util.isOpeningParenToken),
-    util.NullThrowsReasons.MissingToken('(', node.type),
+      ? sourceCode.getTokenAfter(node.id, isOpeningParenToken)
+      : sourceCode.getFirstToken(node, isOpeningParenToken),
+    NullThrowsReasons.MissingToken('(', node.type),
   );
 }
 
@@ -202,17 +211,14 @@ function getFunctionHeadLoc(
   node: FunctionNode,
   sourceCode: TSESLint.SourceCode,
 ): TSESTree.SourceLocation {
-  const parent = util.nullThrows(
-    node.parent,
-    util.NullThrowsReasons.MissingParent,
-  );
+  const parent = nullThrows(node.parent, NullThrowsReasons.MissingParent);
   let start = null;
   let end = null;
 
   if (node.type === AST_NODE_TYPES.ArrowFunctionExpression) {
-    const arrowToken = util.nullThrows(
-      sourceCode.getTokenBefore(node.body, util.isArrowToken),
-      util.NullThrowsReasons.MissingToken('=>', node.type),
+    const arrowToken = nullThrows(
+      sourceCode.getTokenBefore(node.body, isArrowToken),
+      NullThrowsReasons.MissingToken('=>', node.type),
     );
 
     start = arrowToken.loc.start;

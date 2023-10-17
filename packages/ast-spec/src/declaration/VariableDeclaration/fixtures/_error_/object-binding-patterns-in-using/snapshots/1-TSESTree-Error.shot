@@ -1,0 +1,8 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration VariableDeclaration _error_ object-binding-patterns-in-using TSESTree - Error 1`] = `
+"TSError
+> 1 | using {a} = {a: 1};
+    |       ^^^ 'using' declarations may not have binding patterns.
+  2 |"
+`;

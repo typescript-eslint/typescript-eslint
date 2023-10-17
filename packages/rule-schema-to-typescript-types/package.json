@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
-  "version": "6.4.0",
+  "version": "6.8.0",
   "private": true,
   "type": "commonjs",
   "exports": {
@@ -34,10 +34,10 @@
   },
   "dependencies": {
     "@prettier/sync": "*",
-    "@typescript-eslint/type-utils": "6.4.0",
-    "@typescript-eslint/utils": "6.4.0",
+    "@typescript-eslint/type-utils": "6.8.0",
+    "@typescript-eslint/utils": "6.8.0",
     "natural-compare": "^1.4.0",
-    "prettier": "*"
+    "prettier": "^2.8.4"
   },
   "funding": {
     "type": "opencollective",

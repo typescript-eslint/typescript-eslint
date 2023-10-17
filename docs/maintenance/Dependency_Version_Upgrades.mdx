@@ -3,6 +3,16 @@ id: dependency-version-upgrades
 title: Dependency Version Upgrades
 ---
 
+## Babel
+
+Our published packages only depend on `@babel/*` packages as devDependencies.
+You can generally upgrade those dependencies with:
+
+1. `yarn add -DW @babel/code-frame @babel/core @babel/eslint-parser @babel/parser @babel/types`
+2. `npx nx run ast-spec:test -u`
+
+The fixtures under `packages/ast-spec/` describe how the files are parsed under both Babel and our (TSESTree) parser.
+
 ## ESLint
 
 The typescript-eslint repository contains four kinds of version ranges for the `eslint` package:

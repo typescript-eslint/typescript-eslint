@@ -3,8 +3,12 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
-import { getModifiers } from '../util';
+import {
+  createRule,
+  getModifiers,
+  getParserServices,
+  isIdentifier,
+} from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -124,7 +128,7 @@ const getMemberFullName = (node: TSESTree.MemberExpression): string =>
 const BASE_MESSAGE =
   'Avoid referencing unbound methods which may cause unintentional scoping of `this`.';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'unbound-method',
   meta: {
     docs: {
@@ -161,7 +165,7 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ ignoreStatic }]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const currentSourceFile = services.program.getSourceFile(
       context.getFilename(),
     );
@@ -226,7 +230,7 @@ export default util.createRule<Options, MessageIds>({
             ) {
               if (
                 notImported &&
-                util.isIdentifier(initNode) &&
+                isIdentifier(initNode) &&
                 nativelyBoundMembers.includes(
                   `${initNode.name}.${property.key.name}`,
                 )

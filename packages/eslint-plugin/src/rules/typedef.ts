@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 const enum OptionKeys {
   ArrayDestructuring = 'arrayDestructuring',
@@ -18,7 +18,7 @@ type Options = { [k in OptionKeys]?: boolean };
 
 type MessageIds = 'expectedTypedef' | 'expectedTypedefNamed';
 
-export default util.createRule<[Options], MessageIds>({
+export default createRule<[Options], MessageIds>({
   name: 'typedef',
   meta: {
     docs: {

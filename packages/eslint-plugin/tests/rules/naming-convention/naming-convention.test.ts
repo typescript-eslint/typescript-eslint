@@ -935,6 +935,66 @@ ruleTester.run('naming-convention', rule, {
         },
       ],
     },
+    {
+      code: "import * as FooBar from 'foo_bar';",
+      parserOptions,
+      options: [
+        {
+          selector: ['import'],
+          format: ['PascalCase'],
+        },
+        {
+          selector: ['import'],
+          modifiers: ['default'],
+          format: ['camelCase'],
+        },
+      ],
+    },
+    {
+      code: "import fooBar from 'foo_bar';",
+      parserOptions,
+      options: [
+        {
+          selector: ['import'],
+          format: ['PascalCase'],
+        },
+        {
+          selector: ['import'],
+          modifiers: ['default'],
+          format: ['camelCase'],
+        },
+      ],
+    },
+    {
+      code: "import { default as fooBar } from 'foo_bar';",
+      parserOptions,
+      options: [
+        {
+          selector: ['import'],
+          format: ['PascalCase'],
+        },
+        {
+          selector: ['import'],
+          modifiers: ['default'],
+          format: ['camelCase'],
+        },
+      ],
+    },
+    {
+      code: "import { foo_bar } from 'foo_bar';",
+      parserOptions,
+      options: [
+        {
+          selector: ['import'],
+          format: ['PascalCase'],
+        },
+        {
+          selector: ['import'],
+          modifiers: ['default'],
+          format: ['camelCase'],
+        },
+      ],
+    },
   ],
   invalid: [
     {
@@ -2123,6 +2183,81 @@ ruleTester.run('naming-convention', rule, {
             type: 'Class Method',
             name: 'secondPrivateMethod',
             formats: 'snake_case',
+          },
+        },
+      ],
+    },
+    {
+      code: "import * as fooBar from 'foo_bar';",
+      parserOptions,
+      options: [
+        {
+          selector: ['import'],
+          format: ['camelCase'],
+        },
+        {
+          selector: ['import'],
+          modifiers: ['namespace'],
+          format: ['PascalCase'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Import',
+            name: 'fooBar',
+            formats: 'PascalCase',
+          },
+        },
+      ],
+    },
+    {
+      code: "import FooBar from 'foo_bar';",
+      parserOptions,
+      options: [
+        {
+          selector: ['import'],
+          format: ['camelCase'],
+        },
+        {
+          selector: ['import'],
+          modifiers: ['namespace'],
+          format: ['PascalCase'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Import',
+            name: 'FooBar',
+            formats: 'camelCase',
+          },
+        },
+      ],
+    },
+    {
+      code: "import { default as foo_bar } from 'foo_bar';",
+      parserOptions,
+      options: [
+        {
+          selector: ['import'],
+          format: ['camelCase'],
+        },
+        {
+          selector: ['import'],
+          modifiers: ['namespace'],
+          format: ['PascalCase'],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'doesNotMatchFormat',
+          data: {
+            type: 'Import',
+            name: 'foo_bar',
+            formats: 'camelCase',
           },
         },
       ],

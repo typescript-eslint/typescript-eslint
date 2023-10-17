@@ -2,7 +2,15 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getParserServices,
+  getTypeName,
+  isTypeAnyType,
+  isTypeFlagSet,
+  isTypeNeverType,
+} from '../util';
 
 type Options = [
   {
@@ -17,7 +25,7 @@ type Options = [
 
 type MessageId = 'invalidType';
 
-export default util.createRule<Options, MessageId>({
+export default createRule<Options, MessageId>({
   name: 'restrict-template-expressions',
   meta: {
     type: 'problem',
@@ -79,47 +87,44 @@ export default util.createRule<Options, MessageId>({
     },
   ],
   create(context, [options]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     function isUnderlyingTypePrimitive(type: ts.Type): boolean {
-      if (util.isTypeFlagSet(type, ts.TypeFlags.StringLike)) {
+      if (isTypeFlagSet(type, ts.TypeFlags.StringLike)) {
         return true;
       }
 
       if (
         options.allowNumber &&
-        util.isTypeFlagSet(
-          type,
-          ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike,
-        )
+        isTypeFlagSet(type, ts.TypeFlags.NumberLike | ts.TypeFlags.BigIntLike)
       ) {
         return true;
       }
 
       if (
         options.allowBoolean &&
-        util.isTypeFlagSet(type, ts.TypeFlags.BooleanLike)
+        isTypeFlagSet(type, ts.TypeFlags.BooleanLike)
       ) {
         return true;
       }
 
-      if (options.allowAny && util.isTypeAnyType(type)) {
+      if (options.allowAny && isTypeAnyType(type)) {
         return true;
       }
 
-      if (options.allowRegExp && util.getTypeName(checker, type) === 'RegExp') {
+      if (options.allowRegExp && getTypeName(checker, type) === 'RegExp') {
         return true;
       }
 
       if (
         options.allowNullish &&
-        util.isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)
+        isTypeFlagSet(type, ts.TypeFlags.Null | ts.TypeFlags.Undefined)
       ) {
         return true;
       }
 
-      if (options.allowNever && util.isTypeNeverType(type)) {
+      if (options.allowNever && isTypeNeverType(type)) {
         return true;
       }
 
@@ -134,7 +139,7 @@ export default util.createRule<Options, MessageId>({
         }
 
         for (const expression of node.expressions) {
-          const expressionType = util.getConstrainedTypeAtLocation(
+          const expressionType = getConstrainedTypeAtLocation(
             services,
             expression,
           );

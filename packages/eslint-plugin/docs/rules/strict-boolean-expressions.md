@@ -46,7 +46,7 @@ function foo(bool?: boolean) {
 }
 
 // `any`, unconstrained generics and unions of more than one primitive type are disallowed
-const foo = <T,>(arg: T) => (arg ? 1 : 0);
+const foo = <T>(arg: T) => (arg ? 1 : 0);
 
 // always-truthy and always-falsy types are disallowed
 let obj = {};

@@ -1,0 +1,12 @@
+diff --git a/index.d.ts b/index.d.ts
+index d116f54d6da12d24b48e24ff3636c9066059aa58..20a132e2a8a2bf0b023af87699d6b0703c9b1a1a 100644
+--- a/index.d.ts
++++ b/index.d.ts
+@@ -6,6 +6,7 @@ export type Split = 'vertical' | 'horizontal';
+ 
+ export type SplitPaneProps = {
+   allowResize?: boolean;
++  children?: React.ReactNode;
+   className?: string;
+   primary?: 'first' | 'second';
+   minSize?: Size;

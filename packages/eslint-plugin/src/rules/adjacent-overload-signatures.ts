@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, getNameFromMember, MemberNameType } from '../util';
 
 type RuleNode =
   | TSESTree.BlockStatement
@@ -15,7 +15,7 @@ type Member =
   | TSESTree.ProgramStatement
   | TSESTree.TypeElement;
 
-export default util.createRule({
+export default createRule({
   name: 'adjacent-overload-signatures',
   meta: {
     type: 'suggestion',
@@ -36,7 +36,7 @@ export default util.createRule({
       name: string;
       static: boolean;
       callSignature: boolean;
-      type: util.MemberNameType;
+      type: MemberNameType;
     }
 
     /**
@@ -72,12 +72,12 @@ export default util.createRule({
             name,
             static: isStatic,
             callSignature: false,
-            type: util.MemberNameType.Normal,
+            type: MemberNameType.Normal,
           };
         }
         case AST_NODE_TYPES.TSMethodSignature:
           return {
-            ...util.getNameFromMember(member, sourceCode),
+            ...getNameFromMember(member, sourceCode),
             static: isStatic,
             callSignature: false,
           };
@@ -86,18 +86,18 @@ export default util.createRule({
             name: 'call',
             static: isStatic,
             callSignature: true,
-            type: util.MemberNameType.Normal,
+            type: MemberNameType.Normal,
           };
         case AST_NODE_TYPES.TSConstructSignatureDeclaration:
           return {
             name: 'new',
             static: isStatic,
             callSignature: false,
-            type: util.MemberNameType.Normal,
+            type: MemberNameType.Normal,
           };
         case AST_NODE_TYPES.MethodDefinition:
           return {
-            ...util.getNameFromMember(member, sourceCode),
+            ...getNameFromMember(member, sourceCode),
             static: isStatic,
             callSignature: false,
           };
