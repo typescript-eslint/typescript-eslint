@@ -60,7 +60,6 @@ export default util.createRule<Options, MessageIds>({
       }
 
       const params =
-        node.params[0] &&
         node.params[0].type === AST_NODE_TYPES.Identifier &&
         node.params[0].name === 'this' &&
         node.params[0].typeAnnotation?.typeAnnotation.type ===
