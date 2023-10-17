@@ -2,7 +2,7 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
-import * as util from '../util';
+import { createRule, deepMerge } from '../util';
 
 type Delimiter = 'comma' | 'none' | 'semi';
 // need type's implicit index sig for deepMerge
@@ -132,7 +132,7 @@ const BASE_SCHEMA: JSONSchema4 = {
   additionalProperties: false,
 };
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'member-delimiter-style',
   meta: {
     type: 'layout',
@@ -205,11 +205,11 @@ export default util.createRule<Options, MessageIds>({
     // use the base options as the defaults for the cases
     const baseOptions = options;
     const overrides = baseOptions.overrides ?? {};
-    const interfaceOptions: BaseOptions = util.deepMerge(
+    const interfaceOptions: BaseOptions = deepMerge(
       baseOptions,
       overrides.interface,
     );
-    const typeLiteralOptions: BaseOptions = util.deepMerge(
+    const typeLiteralOptions: BaseOptions = deepMerge(
       baseOptions,
       overrides.typeLiteral,
     );

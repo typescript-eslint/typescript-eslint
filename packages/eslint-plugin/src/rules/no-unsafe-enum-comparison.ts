@@ -2,12 +2,7 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import {
-  createRule,
-  getParserServices,
-  getStaticValue,
-  isTypeFlagSet,
-} from '../util';
+import { createRule, getParserServices, getStaticValue } from '../util';
 import {
   getEnumKeyForLiteral,
   getEnumLiterals,
@@ -38,8 +33,8 @@ function typeViolates(leftTypeParts: ts.Type[], right: ts.Type): boolean {
  * @returns What type a type's enum value is (number or string), if either.
  */
 function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
-  return isTypeFlagSet(type, ts.TypeFlags.EnumLike)
-    ? isTypeFlagSet(type, ts.TypeFlags.NumberLiteral)
+  return tsutils.isTypeFlagSet(type, ts.TypeFlags.EnumLike)
+    ? tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLiteral)
       ? ts.TypeFlags.Number
       : ts.TypeFlags.String
     : undefined;
