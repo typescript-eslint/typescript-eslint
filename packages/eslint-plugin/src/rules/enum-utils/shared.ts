@@ -29,10 +29,12 @@ function getBaseEnumType(typeChecker: ts.TypeChecker, type: ts.Type): ts.Type {
  * - Fruit.Apple | Vegetable.Lettuce | 123 --> [Fruit.Apple, Vegetable.Lettuce]
  * - T extends Fruit --> [Fruit]
  */
-export function getEnumLiterals(type: ts.Type): ts.Type[] {
+export function getEnumLiterals(type: ts.Type): ts.LiteralType[] {
   return tsutils
     .unionTypeParts(type)
-    .filter(subType => util.isTypeFlagSet(subType, ts.TypeFlags.EnumLiteral));
+    .filter((subType): subType is ts.LiteralType =>
+      util.isTypeFlagSet(subType, ts.TypeFlags.EnumLiteral),
+    );
 }
 
 /**
@@ -62,20 +64,24 @@ export function getEnumTypes(
  *
  * getEnumKeyForLiteral([Fruit.Apple, Fruit.Banana], 'apple') --> 'Fruit.Apple'
  * getEnumKeyForLiteral([Fruit.Apple, Fruit.Banana], 'banana') --> 'Fruit.Banana'
- * getEnumKeyForLiteral([Fruit.Apple, Fruit.Banana], 'orange') --> null
+ * getEnumKeyForLiteral([Fruit.Apple, Fruit.Banana], 'cherry') --> null
  * ```
  */
 export function getEnumKeyForLiteral(
-  enumLiterals: ts.Type[],
+  enumLiterals: ts.LiteralType[],
   literal: unknown,
 ): string | null {
   for (const enumLiteral of enumLiterals) {
-    // @ts-expect-error Not sure why `value` is not on `enumLiteral`.
     if (enumLiteral.value === literal) {
-      const { symbol } = enumLiteral;
+      const memberSymbol = enumLiteral.symbol;
 
-      // @ts-expect-error Not sure why `parent` is not on `symbol`.
-      return `${symbol.parent.name}.${symbol.name}`;
+      const enumSymbol = (memberSymbol.valueDeclaration as ts.EnumMember)
+        .parent;
+
+      const enumName = enumSymbol.name.getText();
+      const memberName = memberSymbol.name;
+
+      return `${enumName}.${memberName}`;
     }
   }
 

@@ -2,7 +2,12 @@ import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getParserServices,
+  getStaticValue,
+  isTypeFlagSet,
+} from '../util';
 import {
   getEnumKeyForLiteral,
   getEnumLiterals,
@@ -33,14 +38,14 @@ function typeViolates(leftTypeParts: ts.Type[], right: ts.Type): boolean {
  * @returns What type a type's enum value is (number or string), if either.
  */
 function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
-  return util.isTypeFlagSet(type, ts.TypeFlags.EnumLike)
-    ? util.isTypeFlagSet(type, ts.TypeFlags.NumberLiteral)
+  return isTypeFlagSet(type, ts.TypeFlags.EnumLike)
+    ? isTypeFlagSet(type, ts.TypeFlags.NumberLiteral)
       ? ts.TypeFlags.Number
       : ts.TypeFlags.String
     : undefined;
 }
 
-export default util.createRule({
+export default createRule({
   name: 'no-unsafe-enum-comparison',
   meta: {
     hasSuggestions: true,
@@ -59,7 +64,7 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const parserServices = util.getParserServices(context);
+    const parserServices = getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
 
     return {
@@ -117,10 +122,6 @@ export default util.createRule({
               {
                 messageId: 'replaceValueWithEnum',
                 fix(fixer): TSESLint.RuleFix | null {
-                  const sourceCode = context.getSourceCode();
-                  const leftExpression = sourceCode.getText(node.left);
-                  const rightExpression = sourceCode.getText(node.right);
-
                   // Replace the right side with an enum key if possible:
                   //
                   // ```ts
@@ -128,14 +129,11 @@ export default util.createRule({
                   // ```
                   const leftEnumKey = getEnumKeyForLiteral(
                     getEnumLiterals(left),
-                    util.getStaticValue(node.right)?.value,
+                    getStaticValue(node.right)?.value,
                   );
 
-                  if (leftEnumKey != null) {
-                    return fixer.replaceText(
-                      node,
-                      `${leftExpression} ${node.operator} ${leftEnumKey}`,
-                    );
+                  if (leftEnumKey) {
+                    return fixer.replaceText(node.right, leftEnumKey);
                   }
 
                   // Replace the left side with an enum key if possible:
@@ -146,14 +144,11 @@ export default util.createRule({
                   // ```
                   const rightEnumKey = getEnumKeyForLiteral(
                     getEnumLiterals(right),
-                    util.getStaticValue(node.left)?.value,
+                    getStaticValue(node.left)?.value,
                   );
 
-                  if (rightEnumKey != null) {
-                    return fixer.replaceText(
-                      node,
-                      `${rightEnumKey} ${node.operator} ${rightExpression}`,
-                    );
+                  if (rightEnumKey) {
+                    return fixer.replaceText(node.left, rightEnumKey);
                   }
 
                   return null;
