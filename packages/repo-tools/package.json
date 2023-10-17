@@ -15,6 +15,7 @@
   },
   "devDependencies": {
     "@nx/devkit": "*",
+    "@prettier/sync": "*",
     "cross-fetch": "*",
     "execa": "*",
     "prettier": "^3.0.3",

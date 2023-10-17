@@ -5825,6 +5825,7 @@ __metadata:
   resolution: "@typescript-eslint/repo-tools@workspace:packages/repo-tools"
   dependencies:
     "@nx/devkit": "*"
+    "@prettier/sync": "*"
     cross-fetch: "*"
     execa: "*"
     prettier: ^3.0.3
