@@ -4522,6 +4522,15 @@ __metadata:
   languageName: node
   linkType: hard
 
+"@prettier/sync@npm:*, @prettier/sync@npm:^0.3.0":
+  version: 0.3.0
+  resolution: "@prettier/sync@npm:0.3.0"
+  peerDependencies:
+    prettier: ^3.0.0
+  checksum: a663ceca292629c66c2c983662293b047b48435942c25b7ea76f0eab899e434f2bc17ae3dce56ee66b29929f7853118073f716fd4c7dabc3cccf78458a168dd4
+  languageName: node
+  linkType: hard
+
 "@rollup/plugin-babel@npm:^5.2.0":
   version: 5.3.1
   resolution: "@rollup/plugin-babel@npm:5.3.1"
@@ -5478,13 +5487,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@types/prettier@npm:*, @types/prettier@npm:^2.7.2":
-  version: 2.7.3
-  resolution: "@types/prettier@npm:2.7.3"
-  checksum: 705384209cea6d1433ff6c187c80dcc0b95d99d5c5ce21a46a9a58060c527973506822e428789d842761e0280d25e3359300f017fbe77b9755bc772ab3dc2f83
-  languageName: node
-  linkType: hard
-
 "@types/prop-types@npm:*":
   version: 15.7.5
   resolution: "@types/prop-types@npm:15.7.5"
@@ -5702,7 +5704,7 @@ __metadata:
     jest-snapshot: ^29.6.2
     jest-specific-snapshot: ^8.0.0
     make-dir: "*"
-    prettier: ^2.8.4
+    prettier: ^3.0.3
     pretty-format: "*"
     rimraf: "*"
     typescript: "*"
@@ -5713,13 +5715,13 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/eslint-plugin-internal@workspace:packages/eslint-plugin-internal"
   dependencies:
-    "@types/prettier": "*"
+    "@prettier/sync": "*"
     "@typescript-eslint/rule-tester": 6.8.0
     "@typescript-eslint/scope-manager": 6.8.0
     "@typescript-eslint/type-utils": 6.8.0
     "@typescript-eslint/utils": 6.8.0
     jest: 29.7.0
-    prettier: ^2.8.4
+    prettier: ^3.0.3
     rimraf: "*"
   languageName: unknown
   linkType: soft
@@ -5732,7 +5734,7 @@ __metadata:
     "@typescript-eslint/parser": 6.8.0
     "@typescript-eslint/utils": 6.8.0
     jest: 29.7.0
-    prettier: ^2.8.4
+    prettier: ^3.0.3
     rimraf: "*"
   peerDependencies:
     eslint: ^7.0.0 || ^8.0.0
@@ -5746,10 +5748,10 @@ __metadata:
   resolution: "@typescript-eslint/eslint-plugin@workspace:packages/eslint-plugin"
   dependencies:
     "@eslint-community/regexpp": ^4.5.1
+    "@prettier/sync": "*"
     "@types/debug": "*"
     "@types/marked": "*"
     "@types/natural-compare": "*"
-    "@types/prettier": "*"
     "@typescript-eslint/rule-schema-to-typescript-types": 6.8.0
     "@typescript-eslint/rule-tester": 6.8.0
     "@typescript-eslint/scope-manager": 6.8.0
@@ -5769,7 +5771,7 @@ __metadata:
     markdown-table: ^3.0.3
     marked: ^5.1.1
     natural-compare: ^1.4.0
-    prettier: ^2.8.4
+    prettier: ^3.0.3
     rimraf: "*"
     semver: ^7.5.4
     title-case: ^3.0.3
@@ -5807,7 +5809,7 @@ __metadata:
     downlevel-dts: "*"
     glob: "*"
     jest: 29.7.0
-    prettier: ^2.8.4
+    prettier: ^3.0.3
     rimraf: "*"
     typescript: "*"
   peerDependencies:
@@ -5823,9 +5825,10 @@ __metadata:
   resolution: "@typescript-eslint/repo-tools@workspace:packages/repo-tools"
   dependencies:
     "@nx/devkit": "*"
+    "@prettier/sync": "*"
     cross-fetch: "*"
     execa: "*"
-    prettier: ^2.8.4
+    prettier: ^3.0.3
     rimraf: "*"
     tmp: "*"
     typescript: "*"
@@ -5836,10 +5839,11 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/rule-schema-to-typescript-types@workspace:packages/rule-schema-to-typescript-types"
   dependencies:
+    "@prettier/sync": "*"
     "@typescript-eslint/type-utils": 6.8.0
     "@typescript-eslint/utils": 6.8.0
     natural-compare: ^1.4.0
-    prettier: ^2.8.4
+    prettier: ^3.0.3
   languageName: unknown
   linkType: soft
 
@@ -5868,6 +5872,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/scope-manager@workspace:packages/scope-manager"
   dependencies:
+    "@prettier/sync": "*"
     "@types/glob": "*"
     "@typescript-eslint/types": 6.8.0
     "@typescript-eslint/typescript-estree": 6.8.0
@@ -5901,7 +5906,7 @@ __metadata:
     debug: ^4.3.4
     downlevel-dts: "*"
     jest: 29.7.0
-    prettier: ^2.8.4
+    prettier: ^3.0.3
     rimraf: "*"
     ts-api-utils: ^1.0.1
     typescript: "*"
@@ -5918,7 +5923,7 @@ __metadata:
   resolution: "@typescript-eslint/types@workspace:packages/types"
   dependencies:
     downlevel-dts: "*"
-    prettier: ^2.8.4
+    prettier: ^3.0.3
     rimraf: "*"
     tsx: "*"
     typescript: "*"
@@ -5946,6 +5951,7 @@ __metadata:
     "@nx/jest": 16.8.1
     "@nx/linter": 16.8.1
     "@nx/workspace": 16.8.1
+    "@prettier/sync": ^0.3.0
     "@swc/core": ^1.3.68
     "@swc/jest": ^0.2.26
     "@types/babel__code-frame": ^7.0.3
@@ -5958,7 +5964,6 @@ __metadata:
     "@types/natural-compare": ^1.4.1
     "@types/ncp": ^2.0.5
     "@types/node": ^20.0.0
-    "@types/prettier": ^2.7.2
     "@types/semver": ^7.5.0
     "@types/tmp": ^0.2.3
     console-fail-test: ^0.2.3
@@ -5991,7 +5996,7 @@ __metadata:
     netlify: ^13.1.9
     nx: 16.8.1
     nx-cloud: 16.4.0
-    prettier: ^2.8.4
+    prettier: 3.0.3
     pretty-format: ^29.6.2
     raw-loader: ^4.0.2
     rimraf: ^5.0.1
@@ -6018,7 +6023,7 @@ __metadata:
     jest: 29.7.0
     jest-specific-snapshot: ^8.0.0
     make-dir: "*"
-    prettier: ^2.8.4
+    prettier: ^3.0.3
     rimraf: "*"
     semver: ^7.5.4
     tmp: "*"
@@ -6061,7 +6066,7 @@ __metadata:
     "@typescript-eslint/typescript-estree": 6.8.0
     downlevel-dts: "*"
     jest: 29.7.0
-    prettier: ^2.8.4
+    prettier: ^3.0.3
     rimraf: "*"
     semver: ^7.5.4
     typescript: "*"
@@ -6097,7 +6102,7 @@ __metadata:
     downlevel-dts: "*"
     eslint-visitor-keys: ^3.4.1
     jest: 29.7.0
-    prettier: ^2.8.4
+    prettier: ^3.0.3
     rimraf: "*"
     typescript: "*"
   languageName: unknown
@@ -6128,7 +6133,7 @@ __metadata:
     esbuild: ~0.19.0
     eslint: "*"
     esquery: "*"
-    prettier: ^2.8.4
+    prettier: ^3.0.3
     rollup: ^2.75.4
     rollup-plugin-terser: ^7.0.2
     semver: ^7.5.4
@@ -16806,12 +16811,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"prettier@npm:^2.8.4":
-  version: 2.8.8
-  resolution: "prettier@npm:2.8.8"
+"prettier@npm:3.0.3, prettier@npm:^3.0.3":
+  version: 3.0.3
+  resolution: "prettier@npm:3.0.3"
   bin:
-    prettier: bin-prettier.js
-  checksum: b49e409431bf129dd89238d64299ba80717b57ff5a6d1c1a8b1a28b590d998a34e083fa13573bc732bb8d2305becb4c9a4407f8486c81fa7d55100eb08263cf8
+    prettier: bin/prettier.cjs
+  checksum: e10b9af02b281f6c617362ebd2571b1d7fc9fb8a3bd17e371754428cda992e5e8d8b7a046e8f7d3e2da1dcd21aa001e2e3c797402ebb6111b5cd19609dd228e0
   languageName: node
   linkType: hard
 
@@ -20745,6 +20750,7 @@ __metadata:
     "@docusaurus/remark-plugin-npm2yarn": ~2.4.1
     "@docusaurus/theme-common": ~2.4.1
     "@mdx-js/react": 1.6.22
+    "@prettier/sync": "*"
     "@types/react": "*"
     "@types/react-helmet": ^6.1.6
     "@types/react-router-dom": ^5.3.3
@@ -20764,7 +20770,7 @@ __metadata:
     lz-string: ^1.5.0
     make-dir: "*"
     monaco-editor: ~0.43.0
-    prettier: ^2.8.4
+    prettier: ^3.0.3
     prism-react-renderer: ^1.3.3
     raw-loader: ^4.0.2
     react: ^18.2.0
