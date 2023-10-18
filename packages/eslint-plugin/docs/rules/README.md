@@ -51,8 +51,8 @@ module.exports = {
   extends: ['eslint:recommended'],
   rules: {
     // Note: you must disable the base rule as it can report incorrect errors
-    'class-methods-use-this': 'off',
-    '@typescript-eslint/class-methods-use-this': 'error',
+    'dot-notation': 'off',
+    '@typescript-eslint/dot-notation': 'error',
   },
 };
 ```
