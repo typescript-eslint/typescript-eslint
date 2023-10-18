@@ -81,7 +81,8 @@ function RuleRow({
             : undefined
         }
       >
-        {fixable ? FIXABLE_EMOJI : ''}<br />
+        {fixable ? FIXABLE_EMOJI : ''}
+        <br />
         {hasSuggestions ? SUGGESTIONS_EMOJI : ''}
       </td>
       <td
