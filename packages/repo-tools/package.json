@@ -15,9 +15,10 @@
   },
   "devDependencies": {
     "@nx/devkit": "*",
+    "@prettier/sync": "*",
     "cross-fetch": "*",
     "execa": "*",
-    "prettier": "^2.8.4",
+    "prettier": "^3.0.3",
     "rimraf": "*",
     "tmp": "*",
     "typescript": "*"
