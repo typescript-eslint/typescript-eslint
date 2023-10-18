@@ -595,6 +595,34 @@ ruleTester.run('strict-enums-comparison', rule, {
     },
     {
       code: `
+        enum Str {
+          A = 'a',
+          AB = 'ab',
+        }
+        declare const str: Str;
+        str === 'a' + 'b';
+      `,
+      errors: [
+        {
+          messageId: 'mismatched',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Str {
+          A = 'a',
+          AB = 'ab',
+        }
+        declare const str: Str;
+        str === Str.AB;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
         enum Num {
           A = 1,
           B = 2,
@@ -615,6 +643,62 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         declare const num: Num;
         Num.A === num;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum Num {
+          A = 1,
+          B = 2,
+        }
+        declare const num: Num;
+        1 /* with */ === /* comment */ num;
+      `,
+      errors: [
+        {
+          messageId: 'mismatched',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Num {
+          A = 1,
+          B = 2,
+        }
+        declare const num: Num;
+        Num.A /* with */ === /* comment */ num;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum Num {
+          A = 1,
+          B = 2,
+        }
+        declare const num: Num;
+        1 + 1 === num;
+      `,
+      errors: [
+        {
+          messageId: 'mismatched',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Num {
+          A = 1,
+          B = 2,
+        }
+        declare const num: Num;
+        Num.B === num;
       `,
             },
           ],
@@ -723,6 +807,61 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         declare const computedKey: ComputedKey;
         computedKey === ComputedKey['test-key'];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum ComputedKey {
+          [\`test-key\` /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatched',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum ComputedKey {
+          [\`test-key\` /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === ComputedKey[\`test-key\`];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum ComputedKey {
+          [\`test-
+          key\` /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatched',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum ComputedKey {
+          [\`test-
+          key\` /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === ComputedKey[\`test-
+          key\`];
       `,
             },
           ],
