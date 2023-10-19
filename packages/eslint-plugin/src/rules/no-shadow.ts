@@ -284,7 +284,7 @@ export default createRule<Options, MessageIds>({
      * @returns Whether or not the variable name is allowed.
      */
     function isAllowed(variable: TSESLint.Scope.Variable): boolean {
-      return options.allow!.indexOf(variable.name) !== -1;
+      return options.allow!.includes(variable.name);
     }
 
     /**

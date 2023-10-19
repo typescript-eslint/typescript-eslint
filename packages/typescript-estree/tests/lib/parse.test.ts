@@ -362,7 +362,7 @@ describe('parseAndGenerateServices', () => {
               filePath: join(PROJECT_DIR, filePath),
             });
           } catch (error) {
-            throw alignErrorPath(error as Error);
+            alignErrorPath(error as Error);
           }
         };
 
@@ -499,7 +499,7 @@ describe('parseAndGenerateServices', () => {
                 filePath: join(PROJECT_DIR, filePath),
               });
             } catch (error) {
-              throw alignErrorPath(error as Error);
+              alignErrorPath(error as Error);
             }
           };
 

@@ -42,7 +42,7 @@ const eslintPluginDirectory = path.resolve(
 
 const optionRegex = /option='(?<option>.*?)'/;
 
-function nodeIsParent(node: unist.Node<unist.Data>): node is unist.Parent {
+function nodeIsParent(node: unist.Node): node is unist.Parent {
   return 'children' in node;
 }
 
@@ -488,7 +488,7 @@ function nodeIsHeading(node: unist.Node): node is mdast.Heading {
   return node.type === 'heading';
 }
 
-function nodeIsCode(node: unist.Node<unist.Data>): node is mdast.Code {
+function nodeIsCode(node: unist.Node): node is mdast.Code {
   return node.type === 'code';
 }
 
