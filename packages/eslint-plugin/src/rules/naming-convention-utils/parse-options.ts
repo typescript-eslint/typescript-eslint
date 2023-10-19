@@ -1,4 +1,4 @@
-import * as util from '../../util';
+import { getEnumNames } from '../../util';
 import {
   MetaSelectors,
   Modifiers,
@@ -84,7 +84,7 @@ function parseOptions(context: Context): ParsedOptions {
     .map(opt => normalizeOption(opt))
     .reduce((acc, val) => acc.concat(val), []);
 
-  const result = util.getEnumNames(Selectors).reduce((acc, k) => {
+  const result = getEnumNames(Selectors).reduce((acc, k) => {
     acc[k] = createValidator(k, context, normalizedOptions);
     return acc;
   }, {} as ParsedOptions);

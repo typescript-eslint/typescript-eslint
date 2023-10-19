@@ -10,9 +10,14 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-restricted-imports', rule, {
   valid: [
     "import foo from 'foo';",
+    "import foo = require('foo');",
     "import 'foo';",
     {
       code: "import foo from 'foo';",
+      options: ['import1', 'import2'],
+    },
+    {
+      code: "import foo = require('foo');",
       options: ['import1', 'import2'],
     },
     {
@@ -148,7 +153,35 @@ ruleTester.run('no-restricted-imports', rule, {
       ],
     },
     {
+      code: "import foo = require('foo');",
+      options: [
+        {
+          paths: [
+            {
+              name: 'foo',
+              importNames: ['foo'],
+              message: 'Please use Bar from /import-bar/baz/ instead.',
+            },
+          ],
+        },
+      ],
+    },
+    {
       code: "import type foo from 'import-foo';",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              message: 'Please use import-bar instead.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: "import type _ = require('import-foo');",
       options: [
         {
           paths: [
@@ -298,6 +331,15 @@ import type { foo } from 'import2/private/bar';
         {
           messageId: 'path',
           type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+    {
+      code: "import foo = require('import1');",
+      options: ['import1', 'import2'],
+      errors: [
+        {
+          messageId: 'path',
         },
       ],
     },
@@ -549,6 +591,25 @@ import type { foo } from 'import2/private/bar';
         {
           messageId: 'pathWithCustomMessage',
           type: AST_NODE_TYPES.ImportDeclaration,
+        },
+      ],
+    },
+    {
+      code: "import foo = require('import-foo');",
+      options: [
+        {
+          paths: [
+            {
+              name: 'import-foo',
+              message: 'Please use import-bar instead.',
+              allowTypeImports: true,
+            },
+          ],
+        },
+      ],
+      errors: [
+        {
+          messageId: 'pathWithCustomMessage',
         },
       ],
     },

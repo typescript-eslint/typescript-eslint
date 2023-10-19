@@ -155,16 +155,20 @@ function typeDeclaredInFile(
 function typeDeclaredInPackage(
   packageName: string,
   declarationFiles: ts.SourceFile[],
+  program: ts.Program,
 ): boolean {
   // Handle scoped packages - if the name starts with @, remove it and replace / with __
-  const typesPackageName =
-    '@types/' + packageName.replace(/^@([^/]+)\//, '$1__');
-  const matcher = new RegExp(
-    `node_modules/(?:${packageName}|${typesPackageName})/`,
-  );
-  return declarationFiles.some(declaration =>
-    matcher.test(declaration.fileName),
-  );
+  const typesPackageName = packageName.replace(/^@([^/]+)\//, '$1__');
+
+  const matcher = new RegExp(`${packageName}|${typesPackageName}`);
+  return declarationFiles.some(declaration => {
+    const packageIdName = program.sourceFileToPackageName.get(declaration.path);
+    return (
+      packageIdName !== undefined &&
+      matcher.test(packageIdName) &&
+      program.isSourceFileFromExternalLibrary(declaration)
+    );
+  });
 }
 
 function typeDeclaredInLib(
@@ -207,6 +211,10 @@ export function typeMatchesSpecifier(
     case 'lib':
       return typeDeclaredInLib(declarationFiles, program);
     case 'package':
-      return typeDeclaredInPackage(specifier.package, declarationFiles);
+      return typeDeclaredInPackage(
+        specifier.package,
+        declarationFiles,
+        program,
+      );
   }
 }

@@ -209,14 +209,14 @@ Examples of code for this rule with `{ allowDirectConstAssertionInArrowFunctions
 #### ❌ Incorrect
 
 ```ts
-const func = (value: number) => ({ type: 'X', value } as any);
-const func = (value: number) => ({ type: 'X', value } as Action);
+const func = (value: number) => ({ type: 'X', value }) as any;
+const func = (value: number) => ({ type: 'X', value }) as Action;
 ```
 
 #### ✅ Correct
 
 ```ts
-const func = (value: number) => ({ foo: 'bar', value } as const);
+const func = (value: number) => ({ foo: 'bar', value }) as const;
 const func = () => x as const;
 ```
 
@@ -289,9 +289,11 @@ You may pass function/method names you would like this rule to ignore, like so:
 }
 ```
 
-### `allowIIFE`
+### `allowIIFEs`
 
-Examples of code for this rule with `{ allowIIFE: true }`:
+Examples of code for this rule with `{ allowIIFEs: true }`:
+
+<!--tabs-->
 
 #### ❌ Incorrect
 

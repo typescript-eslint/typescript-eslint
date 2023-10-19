@@ -35,7 +35,7 @@ async function getFileAndStoreLocally(
 
   let contents = await response.text();
   contents = [...banner, '', editFunc(contents)].join('\n');
-  contents = prettier.format(contents, {
+  contents = await prettier.format(contents, {
     parser: 'typescript',
     ...config,
   });
