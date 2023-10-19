@@ -102,7 +102,7 @@
     "lerna": "7.3.1",
     "lint-staged": "^14.0.0",
     "make-dir": "^4.0.0",
-    "markdownlint-cli": "^0.36.0",
+    "markdownlint-cli": "^0.37.0",
     "ncp": "^2.0.0",
     "netlify": "^13.1.9",
     "nx": "16.8.1",
