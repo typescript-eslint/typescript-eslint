@@ -1,13 +1,17 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule, isCommaToken } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('comma-dangle');
 
-export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 type Option = Options[0];
 type NormalizedOptions = Required<
@@ -38,7 +42,7 @@ function normalizeOptions(options: Option): NormalizedOptions {
   };
 }
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'comma-dangle',
   meta: {
     type: 'layout',
@@ -135,7 +139,7 @@ export default util.createRule<Options, MessageIds>({
     function forbidComma(node: TSESTree.Node): void {
       const last = getLastItem(node);
       const trailing = getTrailingToken(node);
-      if (last && trailing && util.isCommaToken(trailing)) {
+      if (last && trailing && isCommaToken(trailing)) {
         context.report({
           node,
           messageId: 'unexpected',
@@ -149,7 +153,7 @@ export default util.createRule<Options, MessageIds>({
     function forceComma(node: TSESTree.Node): void {
       const last = getLastItem(node);
       const trailing = getTrailingToken(node);
-      if (last && trailing && !util.isCommaToken(trailing)) {
+      if (last && trailing && !isCommaToken(trailing)) {
         context.report({
           node,
           messageId: 'missing',

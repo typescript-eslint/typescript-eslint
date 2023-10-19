@@ -1,13 +1,22 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import {
+  createRule,
+  getStringLength,
+  isClosingBracketToken,
+  isColonToken,
+} from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('key-spacing');
 
-export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
 const baseSchema = Array.isArray(baseRule.meta.schema)
@@ -24,7 +33,7 @@ function at<T>(arr: T[], position: number): T | undefined {
   return arr[position];
 }
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'key-spacing',
   meta: {
     type: 'layout',
@@ -49,7 +58,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function adjustedColumn(position: TSESTree.Position): number {
       const line = position.line - 1; // position.line is 1-indexed
-      return util.getStringLength(
+      return getStringLength(
         at(sourceCode.lines, line)!.slice(0, position.column),
       );
     }
@@ -59,7 +68,7 @@ export default util.createRule<Options, MessageIds>({
      * until it finds the last token before a colon punctuator and returns it.
      */
     function getLastTokenBeforeColon(node: TSESTree.Node): TSESTree.Token {
-      const colonToken = sourceCode.getTokenAfter(node, util.isColonToken)!;
+      const colonToken = sourceCode.getTokenAfter(node, isColonToken)!;
 
       return sourceCode.getTokenBefore(colonToken)!;
     }
@@ -106,7 +115,7 @@ export default util.createRule<Options, MessageIds>({
         0,
         sourceCode.getTokenAfter(
           at(node.parameters, -1)!,
-          util.isClosingBracketToken,
+          isClosingBracketToken,
         )!.range[1] - node.range[0],
       );
     }
