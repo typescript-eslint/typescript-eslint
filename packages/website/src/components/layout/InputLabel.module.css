@@ -7,7 +7,8 @@
   font-size: 0.75rem;
   margin: 0;
   padding: 0.4rem 0.8rem;
-  transition: background-color var(--ifm-transition-fast)
+  transition:
+    background-color var(--ifm-transition-fast)
       var(--ifm-transition-timing-default),
     color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
   color: var(--ifm-font-color-secondary);

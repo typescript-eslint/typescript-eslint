@@ -1,7 +1,7 @@
-import * as util from '../src/util';
+import { createRule } from '../src/util';
 import { areOptionsValid } from './areOptionsValid';
 
-const exampleRule = util.createRule<['value-a' | 'value-b'], never>({
+const exampleRule = createRule<['value-a' | 'value-b'], never>({
   name: 'my-example-rule',
   meta: {
     type: 'layout',

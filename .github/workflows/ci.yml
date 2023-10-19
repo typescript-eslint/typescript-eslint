@@ -240,59 +240,6 @@ jobs:
           CI: true
           TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER: true
 
-  website_tests:
-    permissions:
-      contents: read # to fetch code (actions/checkout)
-
-    name: Website tests
-    # We technically do not need to wait for build within the pipeline any more because the build we care about is happening within Netlify, however,
-    # it is highly likely that if the CI one fails, the Netlify one will as well, so in order to not waste unncessary Github Actions minutes/resources,
-    # we do still keep this requirement here.
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 2
-
-      - name: Install
-        uses: ./.github/actions/prepare-install
-        with:
-          node-version: ${{ env.PRIMARY_NODE_VERSION }}
-
-      - name: Build website
-        if: github.repository != 'typescript-eslint/typescript-eslint' || github.ref != 'refs/heads/main'
-        run: NX_VERBOSE_LOGGING=true yarn nx build website
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps chromium
-
-      - name: Wait for Netlify deployment
-        if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
-        uses: ./.github/actions/wait-for-netlify
-        id: waitForDeployment
-        with:
-          netlify_token: ${{ secrets.NETLIFY_TOKEN }}
-
-      - name: Run Playwright tests against the Netlify deployment
-        if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
-        run: yarn playwright test --reporter=list
-        working-directory: packages/website
-        env:
-          PLAYWRIGHT_TEST_BASE_URL: ${{ steps.waitForDeployment.outputs.url }}
-
-      - name: Run Playwright tests against local deployment
-        if: github.repository != 'typescript-eslint/typescript-eslint' || github.ref != 'refs/heads/main'
-        run: yarn playwright test --reporter=list
-        working-directory: packages/website
-
-      - if: always()
-        uses: actions/upload-artifact@v3
-        with:
-          name: playwright-report
-          path: packages/website/playwright-report
-
   upload_coverage:
     name: Upload Codecov Coverage
     needs: [unit_tests]

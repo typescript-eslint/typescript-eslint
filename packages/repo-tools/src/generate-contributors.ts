@@ -131,7 +131,7 @@ function writeTable(contributors: User[], perLine = 5): void {
   lines.push('');
 
   fs.writeFileSync(
-    path.join(__dirname, '../CONTRIBUTORS.md'),
+    path.join(__dirname, '../../../CONTRIBUTORS.md'),
     lines.join('\n'),
   );
 }

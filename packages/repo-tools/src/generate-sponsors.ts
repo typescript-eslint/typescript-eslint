@@ -1,7 +1,7 @@
 import fetch from 'cross-fetch';
 import * as fs from 'fs';
 import * as path from 'path';
-import * as prettier from 'prettier';
+import prettier from 'prettier';
 
 const graphqlEndpoint = 'https://api.opencollective.com/graphql/v2';
 
@@ -184,7 +184,7 @@ async function stringifyObject(
     2,
   );
 
-  return prettier.format(text, {
+  return await prettier.format(text, {
     ...config,
     parser: 'json',
   });

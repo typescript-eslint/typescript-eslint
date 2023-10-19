@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type Options = [
   {
@@ -12,7 +12,7 @@ type Options = [
 ];
 type MessageIds = 'tripleSlashReference';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'triple-slash-reference',
   meta: {
     type: 'suggestion',

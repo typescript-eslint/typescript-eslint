@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type * as ts from 'typescript';
 
-import * as util from '../../util';
+import { getParserServices } from '../../util';
 import type { SelectorsString } from './enums';
 import {
   MetaSelectors,
@@ -435,7 +435,7 @@ function isCorrectType(
     return true;
   }
 
-  const services = util.getParserServices(context);
+  const services = getParserServices(context);
   const checker = services.program.getTypeChecker();
   const type = services
     .getTypeAtLocation(node)
