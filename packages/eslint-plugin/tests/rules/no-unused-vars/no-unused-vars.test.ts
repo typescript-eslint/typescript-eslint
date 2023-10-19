@@ -147,12 +147,12 @@ bar<Foo>();
     `,
     `
 import { Foo } from 'foo';
-const bar = <T>(): T => {};
+const bar = <T,>(): T => {};
 bar<Foo>();
     `,
     `
 import { Foo } from 'foo';
-<Foo>(<T>(): T => {})();
+<Foo>(<T,>(): T => {})();
     `,
     `
 import { Nullable } from 'nullable';
@@ -469,7 +469,10 @@ export class App {
     `,
     `
 export class App {
-  constructor(baz: string, private logger: Logger) {
+  constructor(
+    baz: string,
+    private logger: Logger,
+  ) {
     console.log(baz);
     console.log(this.logger);
   }
@@ -477,7 +480,11 @@ export class App {
     `,
     `
 export class App {
-  constructor(baz: string, private logger: Logger, private bar: () => void) {
+  constructor(
+    baz: string,
+    private logger: Logger,
+    private bar: () => void,
+  ) {
     console.log(this.logger);
     this.bar();
   }
@@ -699,7 +706,7 @@ export namespace Foo {
 }
     `,
     `
-export namespace foo.bar {
+namespace foo.bar {
   export interface User {
     name: string;
   }

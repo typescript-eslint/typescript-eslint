@@ -12,7 +12,14 @@ import type {
 import { unionTypeParts } from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../../util';
+import {
+  getOperatorPrecedenceForNode,
+  isOpeningParenToken,
+  isTypeFlagSet,
+  nullThrows,
+  NullThrowsReasons,
+  OperatorPrecedence,
+} from '../../util';
 import { compareNodes, NodeComparisonResult } from './compareNodes';
 import type { ValidOperand } from './gatherLogicalOperands';
 import { NullishComparisonType } from './gatherLogicalOperands';
@@ -29,7 +36,7 @@ function includesType(
   const typeFlag = typeFlagIn | ts.TypeFlags.Any | ts.TypeFlags.Unknown;
   const types = unionTypeParts(parserServices.getTypeAtLocation(node));
   for (const type of types) {
-    if (util.isTypeFlagSet(type, typeFlag)) {
+    if (isTypeFlagSet(type, typeFlag)) {
       return true;
     }
   }
@@ -306,8 +313,8 @@ function getFixer(
         }
       }
       if (
-        part.precedence !== util.OperatorPrecedence.Invalid &&
-        part.precedence < util.OperatorPrecedence.Member
+        part.precedence !== OperatorPrecedence.Invalid &&
+        part.precedence < OperatorPrecedence.Member
       ) {
         str += `(${part.text})`;
       } else {
@@ -362,7 +369,7 @@ function getFixer(
   interface FlattenedChain {
     nonNull: boolean;
     optional: boolean;
-    precedence: util.OperatorPrecedence;
+    precedence: OperatorPrecedence;
     requiresDot: boolean;
     text: string;
   }
@@ -376,23 +383,17 @@ function getFixer(
 
       case AST_NODE_TYPES.CallExpression: {
         const argumentsText = (() => {
-          const closingParenToken = util.nullThrows(
+          const closingParenToken = nullThrows(
             sourceCode.getLastToken(node),
-            util.NullThrowsReasons.MissingToken(
-              'closing parenthesis',
-              node.type,
-            ),
+            NullThrowsReasons.MissingToken('closing parenthesis', node.type),
           );
-          const openingParenToken = util.nullThrows(
+          const openingParenToken = nullThrows(
             sourceCode.getFirstTokenBetween(
               node.typeArguments ?? node.callee,
               closingParenToken,
-              util.isOpeningParenToken,
+              isOpeningParenToken,
             ),
-            util.NullThrowsReasons.MissingToken(
-              'opening parenthesis',
-              node.type,
-            ),
+            NullThrowsReasons.MissingToken('opening parenthesis', node.type),
           );
           return sourceCode.text.substring(
             openingParenToken.range[0],
@@ -414,7 +415,7 @@ function getFixer(
             nonNull: false,
             optional: node.optional,
             // no precedence for this
-            precedence: util.OperatorPrecedence.Invalid,
+            precedence: OperatorPrecedence.Invalid,
             requiresDot: false,
             text: typeArgumentsText + argumentsText,
           },
@@ -430,8 +431,8 @@ function getFixer(
             optional: node.optional,
             precedence: node.computed
               ? // computed is already wrapped in [] so no need to wrap in () as well
-                util.OperatorPrecedence.Invalid
-              : util.getOperatorPrecedenceForNode(node.property),
+                OperatorPrecedence.Invalid
+              : getOperatorPrecedenceForNode(node.property),
             requiresDot: !node.computed,
             text: node.computed ? `[${propertyText}]` : propertyText,
           },
@@ -446,7 +447,7 @@ function getFixer(
           {
             nonNull: false,
             optional: false,
-            precedence: util.getOperatorPrecedenceForNode(node),
+            precedence: getOperatorPrecedenceForNode(node),
             requiresDot: false,
             text: sourceCode.getText(node),
           },

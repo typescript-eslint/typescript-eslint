@@ -2,7 +2,7 @@ import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, isFunction } from '../util';
 import type {
   FunctionExpression,
   FunctionNode,
@@ -31,7 +31,7 @@ type MessageIds =
   | 'missingArgTypeUnnamed'
   | 'missingReturnType';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'explicit-module-boundary-types',
   meta: {
     type: 'problem',
@@ -277,7 +277,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         if (
-          !util.isFunction(current) ||
+          !isFunction(current) ||
           !doesImmediatelyReturnFunctionExpression(current)
         ) {
           return false;

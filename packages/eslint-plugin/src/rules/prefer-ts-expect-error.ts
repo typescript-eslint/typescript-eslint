@@ -2,11 +2,11 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 import type { RuleFix, RuleFixer } from '@typescript-eslint/utils/ts-eslint';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type MessageIds = 'preferExpectErrorComment';
 
-export default util.createRule<[], MessageIds>({
+export default createRule<[], MessageIds>({
   name: 'prefer-ts-expect-error',
   meta: {
     type: 'problem',
