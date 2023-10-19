@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, isOpeningParenToken } from '../util';
 
 type Option = 'always' | 'never';
 type FuncOption = Option | 'ignore';
@@ -16,7 +16,7 @@ export type Options = [
 ];
 export type MessageIds = 'missing' | 'unexpected';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'space-before-function-paren',
   meta: {
     type: 'layout',
@@ -109,7 +109,7 @@ export default util.createRule<Options, MessageIds>({
         // Always ignore non-async functions and arrow functions without parens, e.g. async foo => bar
         if (
           node.async &&
-          util.isOpeningParenToken(sourceCode.getFirstToken(node, { skip: 1 })!)
+          isOpeningParenToken(sourceCode.getFirstToken(node, { skip: 1 })!)
         ) {
           return overrideConfig.asyncArrow ?? baseConfig;
         }
@@ -149,9 +149,10 @@ export default util.createRule<Options, MessageIds>({
         leftToken = sourceCode.getLastToken(node.typeParameters)!;
         rightToken = sourceCode.getTokenAfter(leftToken)!;
       } else {
-        rightToken = sourceCode.getFirstToken(node, util.isOpeningParenToken)!;
+        rightToken = sourceCode.getFirstToken(node, isOpeningParenToken)!;
         leftToken = sourceCode.getTokenBefore(rightToken)!;
       }
+
       // eslint-disable-next-line deprecation/deprecation -- TODO - switch once our min ESLint version is 6.7.0
       const hasSpacing = sourceCode.isSpaceBetweenTokens(leftToken, rightToken);
 

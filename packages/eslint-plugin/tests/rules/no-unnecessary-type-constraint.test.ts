@@ -22,7 +22,7 @@ type TODO = any;
 function data<T extends TODO>() {}
     `,
     'const data = () => {};',
-    'const data = <T>() => {};',
+    'const data = <T,>() => {};',
     'const data = <T, U>() => {};',
     'const data = <T extends number>() => {};',
     'const data = <T extends number | string>() => {};',

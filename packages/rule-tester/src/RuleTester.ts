@@ -91,7 +91,7 @@ export class RuleTester extends TestFramework {
       // as of eslint 6 you have to provide an absolute path to the parser
       // but that's not as clean to type, this saves us trying to manually enforce
       // that contributors require.resolve everything
-      parser: require.resolve((testerConfig ?? defaultConfig).parser),
+      parser: require.resolve(testerConfig?.parser ?? defaultConfig.parser),
     });
 
     // make sure that the parser doesn't hold onto file handles between tests
@@ -395,33 +395,37 @@ export class RuleTester extends TestFramework {
      * one of the templates above.
      */
     constructor.describe(ruleName, () => {
-      constructor.describe('valid', () => {
-        normalizedTests.valid.forEach(valid => {
-          const testName = ((): string => {
-            if (valid.name == null || valid.name.length === 0) {
-              return valid.code;
-            }
-            return valid.name;
-          })();
-          constructor[getTestMethod(valid)](sanitize(testName), () => {
-            this.#testValidTemplate(ruleName, rule, valid);
+      if (normalizedTests.valid.length) {
+        constructor.describe('valid', () => {
+          normalizedTests.valid.forEach(valid => {
+            const testName = ((): string => {
+              if (valid.name == null || valid.name.length === 0) {
+                return valid.code;
+              }
+              return valid.name;
+            })();
+            constructor[getTestMethod(valid)](sanitize(testName), () => {
+              this.#testValidTemplate(ruleName, rule, valid);
+            });
           });
         });
-      });
+      }
 
-      constructor.describe('invalid', () => {
-        normalizedTests.invalid.forEach(invalid => {
-          const name = ((): string => {
-            if (invalid.name == null || invalid.name.length === 0) {
-              return invalid.code;
-            }
-            return invalid.name;
-          })();
-          constructor[getTestMethod(invalid)](sanitize(name), () => {
-            this.#testInvalidTemplate(ruleName, rule, invalid);
+      if (normalizedTests.invalid.length) {
+        constructor.describe('invalid', () => {
+          normalizedTests.invalid.forEach(invalid => {
+            const name = ((): string => {
+              if (invalid.name == null || invalid.name.length === 0) {
+                return invalid.code;
+              }
+              return invalid.name;
+            })();
+            constructor[getTestMethod(invalid)](sanitize(name), () => {
+              this.#testInvalidTemplate(ruleName, rule, invalid);
+            });
           });
         });
-      });
+      }
     });
   }
 

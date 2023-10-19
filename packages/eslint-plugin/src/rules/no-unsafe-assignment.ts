@@ -3,8 +3,20 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
-import * as util from '../util';
-import { getThisExpression } from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getContextualType,
+  getParserServices,
+  getThisExpression,
+  getTypeArguments,
+  isTypeAnyArrayType,
+  isTypeAnyType,
+  isTypeUnknownType,
+  isUnsafeAssignment,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 const enum ComparisonType {
   /** Do no assignment comparison */
@@ -15,7 +27,7 @@ const enum ComparisonType {
   Contextual,
 }
 
-export default util.createRule({
+export default createRule({
   name: 'no-unsafe-assignment',
   meta: {
     type: 'problem',
@@ -42,7 +54,7 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
     const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
@@ -73,7 +85,7 @@ export default util.createRule({
     ): boolean {
       // any array
       // const [x] = ([] as any[]);
-      if (util.isTypeAnyArrayType(senderType, checker)) {
+      if (isTypeAnyArrayType(senderType, checker)) {
         context.report({
           node: receiverNode,
           messageId: 'unsafeArrayPattern',
@@ -85,7 +97,7 @@ export default util.createRule({
         return true;
       }
 
-      const tupleElements = util.getTypeArguments(senderType, checker);
+      const tupleElements = getTypeArguments(senderType, checker);
 
       // tuple with any
       // const [x] = [1 as any];
@@ -111,7 +123,7 @@ export default util.createRule({
         }
 
         // check for the any type first so we can handle [[[x]]] = [any]
-        if (util.isTypeAnyType(senderType)) {
+        if (isTypeAnyType(senderType)) {
           context.report({
             node: receiverElement,
             messageId: 'unsafeArrayPatternFromTuple',
@@ -197,7 +209,7 @@ export default util.createRule({
         }
 
         // check for the any type first so we can handle {x: {y: z}} = {x: any}
-        if (util.isTypeAnyType(senderType)) {
+        if (isTypeAnyType(senderType)) {
           context.report({
             node: receiverProperty.value,
             messageId: 'unsafeArrayPatternFromTuple',
@@ -235,14 +247,14 @@ export default util.createRule({
       const receiverTsNode = services.esTreeNodeToTSNodeMap.get(receiverNode);
       const receiverType =
         comparisonType === ComparisonType.Contextual
-          ? util.getContextualType(checker, receiverTsNode as ts.Expression) ??
+          ? getContextualType(checker, receiverTsNode as ts.Expression) ??
             services.getTypeAtLocation(receiverNode)
           : services.getTypeAtLocation(receiverNode);
       const senderType = services.getTypeAtLocation(senderNode);
 
-      if (util.isTypeAnyType(senderType)) {
+      if (isTypeAnyType(senderType)) {
         // handle cases when we assign any ==> unknown.
-        if (util.isTypeUnknownType(receiverType)) {
+        if (isTypeUnknownType(receiverType)) {
           return false;
         }
 
@@ -253,8 +265,8 @@ export default util.createRule({
           const thisExpression = getThisExpression(senderNode);
           if (
             thisExpression &&
-            util.isTypeAnyType(
-              util.getConstrainedTypeAtLocation(services, thisExpression),
+            isTypeAnyType(
+              getConstrainedTypeAtLocation(services, thisExpression),
             )
           ) {
             messageId = 'anyAssignmentThis';
@@ -272,7 +284,7 @@ export default util.createRule({
         return false;
       }
 
-      const result = util.isUnsafeAssignment(
+      const result = isUnsafeAssignment(
         senderType,
         receiverType,
         checker,
@@ -308,9 +320,9 @@ export default util.createRule({
       'VariableDeclarator[init != null]'(
         node: TSESTree.VariableDeclarator,
       ): void {
-        const init = util.nullThrows(
+        const init = nullThrows(
           node.init,
-          util.NullThrowsReasons.MissingToken(node.type, 'init'),
+          NullThrowsReasons.MissingToken(node.type, 'init'),
         );
         let didReport = checkAssignment(
           node.id,
@@ -368,10 +380,7 @@ export default util.createRule({
       },
       'ArrayExpression > SpreadElement'(node: TSESTree.SpreadElement): void {
         const restType = services.getTypeAtLocation(node.argument);
-        if (
-          util.isTypeAnyType(restType) ||
-          util.isTypeAnyArrayType(restType, checker)
-        ) {
+        if (isTypeAnyType(restType) || isTypeAnyArrayType(restType, checker)) {
           context.report({
             node: node,
             messageId: 'unsafeArraySpread',
@@ -379,9 +388,9 @@ export default util.createRule({
         }
       },
       'JSXAttribute[value != null]'(node: TSESTree.JSXAttribute): void {
-        const value = util.nullThrows(
+        const value = nullThrows(
           node.value,
-          util.NullThrowsReasons.MissingToken(node.type, 'value'),
+          NullThrowsReasons.MissingToken(node.type, 'value'),
         );
         if (
           value.type !== AST_NODE_TYPES.JSXExpressionContainer ||

@@ -8,7 +8,7 @@ export type { ParseSettings } from '@typescript-eslint/typescript-estree/use-at-
 
 export interface UpdateModel {
   storedAST?: TSESTree.Program;
-  storedTsAST?: ts.SourceFile;
+  storedTsAST?: ts.Node;
   storedScope?: ScopeManager;
   typeChecker?: ts.TypeChecker;
 }

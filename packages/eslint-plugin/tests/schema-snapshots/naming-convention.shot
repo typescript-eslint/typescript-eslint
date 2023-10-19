@@ -106,9 +106,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                 "abstract",
                 "async",
                 "const",
+                "default",
                 "destructured",
                 "exported",
                 "global",
+                "namespace",
                 "override",
                 "private",
                 "protected",
@@ -137,6 +139,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                 "enum",
                 "enumMember",
                 "function",
+                "import",
                 "interface",
                 "memberLike",
                 "method",
@@ -209,9 +212,11 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
                 "abstract",
                 "async",
                 "const",
+                "default",
                 "destructured",
                 "exported",
                 "global",
+                "namespace",
                 "override",
                 "private",
                 "protected",
@@ -1508,6 +1513,58 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         },
         "required": ["selector", "format"],
         "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "description": "Selector 'import'",
+        "properties": {
+          "custom": {
+            "$ref": "#/$defs/matchRegexConfig"
+          },
+          "failureMessage": {
+            "type": "string"
+          },
+          "filter": {
+            "oneOf": [
+              {
+                "minLength": 1,
+                "type": "string"
+              },
+              {
+                "$ref": "#/$defs/matchRegexConfig"
+              }
+            ]
+          },
+          "format": {
+            "$ref": "#/$defs/formatOptionsConfig"
+          },
+          "leadingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          },
+          "modifiers": {
+            "additionalItems": false,
+            "items": {
+              "enum": ["default", "namespace"],
+              "type": "string"
+            },
+            "type": "array"
+          },
+          "prefix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "selector": {
+            "enum": ["import"],
+            "type": "string"
+          },
+          "suffix": {
+            "$ref": "#/$defs/prefixSuffixConfig"
+          },
+          "trailingUnderscore": {
+            "$ref": "#/$defs/underscoreOptions"
+          }
+        },
+        "required": ["selector", "format"],
+        "type": "object"
       }
     ]
   },
@@ -1556,9 +1613,11 @@ type Options = /** Multiple selectors in one config */
         | 'abstract'
         | 'async'
         | 'const'
+        | 'default'
         | 'destructured'
         | 'exported'
         | 'global'
+        | 'namespace'
         | 'override'
         | 'private'
         | 'protected'
@@ -1578,6 +1637,7 @@ type Options = /** Multiple selectors in one config */
         | 'enum'
         | 'enumMember'
         | 'function'
+        | 'import'
         | 'interface'
         | 'memberLike'
         | 'method'
@@ -1692,9 +1752,11 @@ type Options = /** Multiple selectors in one config */
         | 'abstract'
         | 'async'
         | 'const'
+        | 'default'
         | 'destructured'
         | 'exported'
         | 'global'
+        | 'namespace'
         | 'override'
         | 'private'
         | 'protected'
@@ -1729,7 +1791,7 @@ type Options = /** Multiple selectors in one config */
       filter?: MatchRegexConfig | string;
       format: FormatOptionsConfig;
       leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('requiresQuotes')[];
+      modifiers?: 'requiresQuotes'[];
       prefix?: PrefixSuffixConfig;
       selector: 'enumMember';
       suffix?: PrefixSuffixConfig;
@@ -1745,6 +1807,19 @@ type Options = /** Multiple selectors in one config */
       modifiers?: ('async' | 'exported' | 'global' | 'unused')[];
       prefix?: PrefixSuffixConfig;
       selector: 'function';
+      suffix?: PrefixSuffixConfig;
+      trailingUnderscore?: UnderscoreOptions;
+    }
+  /** Selector 'import' */
+  | {
+      custom?: MatchRegexConfig;
+      failureMessage?: string;
+      filter?: MatchRegexConfig | string;
+      format: FormatOptionsConfig;
+      leadingUnderscore?: UnderscoreOptions;
+      modifiers?: ('default' | 'namespace')[];
+      prefix?: PrefixSuffixConfig;
+      selector: 'import';
       suffix?: PrefixSuffixConfig;
       trailingUnderscore?: UnderscoreOptions;
     }
@@ -1934,7 +2009,7 @@ type Options = /** Multiple selectors in one config */
       filter?: MatchRegexConfig | string;
       format: FormatOptionsConfig;
       leadingUnderscore?: UnderscoreOptions;
-      modifiers?: ('unused')[];
+      modifiers?: 'unused'[];
       prefix?: PrefixSuffixConfig;
       selector: 'typeParameter';
       suffix?: PrefixSuffixConfig;

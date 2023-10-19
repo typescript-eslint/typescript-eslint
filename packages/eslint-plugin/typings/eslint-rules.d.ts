@@ -272,6 +272,24 @@ declare module 'eslint/lib/rules/keyword-spacing' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/max-params' {
+  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+  const rule: TSESLint.RuleModule<
+    'exceed',
+    (
+      | { max: number; countVoidThis?: boolean }
+      | { maximum: number; countVoidThis?: boolean }
+    )[],
+    {
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/no-dupe-class-members' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
@@ -961,6 +979,33 @@ declare module 'eslint/lib/rules/prefer-const' {
     {
       'Program:exit'(node: TSESTree.Program): void;
       VariableDeclaration(node: TSESTree.VariableDeclaration): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/prefer-destructuring' {
+  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+  interface DestructuringTypeConfig {
+    object?: boolean;
+    array?: boolean;
+  }
+  type Option0 =
+    | DestructuringTypeConfig
+    | {
+        VariableDeclarator?: DestructuringTypeConfig;
+        AssignmentExpression?: DestructuringTypeConfig;
+      };
+  interface Option1 {
+    enforceForRenamedProperties?: boolean;
+  }
+  const rule: TSESLint.RuleModule<
+    'preferDestructuring',
+    [Option0, Option1?],
+    {
+      VariableDeclarator(node: TSESTree.VariableDeclarator): void;
+      AssignmentExpression(node: TSESTree.AssignmentExpression): void;
     }
   >;
   export = rule;

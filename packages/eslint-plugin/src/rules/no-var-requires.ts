@@ -1,12 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type Options = [];
 type MessageIds = 'noVarReqs';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-var-requires',
   meta: {
     type: 'problem',

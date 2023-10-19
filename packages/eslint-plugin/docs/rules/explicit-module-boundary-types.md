@@ -120,7 +120,7 @@ Examples of code for this rule with `{ allowDirectConstAssertionInArrowFunctions
 
 #### ❌ Incorrect
 
-```ts option='{ "allowDirectConstAssertionInArrowFunctions": false }'
+```ts option='{ "allowArgumentsExplicitlyTypedAsAny": false }'
 export const func = (value: number) => ({ type: 'X', value });
 export const foo = () => ({
   bar: true,
@@ -130,12 +130,12 @@ export const bar = () => 1;
 
 #### ✅ Correct
 
-```ts option='{ "allowDirectConstAssertionInArrowFunctions": false }'
-export const func = (value: number) => ({ type: 'X', value } as const);
+```ts option='{ "allowArgumentsExplicitlyTypedAsAny": false }'
+export const func = (value: number) => ({ type: 'X', value }) as const;
 export const foo = () =>
   ({
     bar: true,
-  } as const);
+  }) as const;
 export const bar = () => 1 as const;
 ```
 
