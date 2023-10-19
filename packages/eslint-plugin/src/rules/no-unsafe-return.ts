@@ -12,6 +12,7 @@ import {
   getThisExpression,
   isAnyOrAnyArrayTypeDiscriminated,
   isTypeAnyType,
+  isTypeFlagSet,
   isTypeUnknownArrayType,
   isTypeUnknownType,
   isUnsafeAssignment,
@@ -106,7 +107,7 @@ export default createRule({
         for (const signature of functionType.getCallSignatures()) {
           if (
             returnNodeType === signature.getReturnType() ||
-            util.isTypeFlagSet(
+            isTypeFlagSet(
               signature.getReturnType(),
               ts.TypeFlags.Any | ts.TypeFlags.Unknown,
             )
