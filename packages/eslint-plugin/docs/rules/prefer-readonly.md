@@ -6,7 +6,7 @@ description: "Require private members to be marked as `readonly` if they're neve
 >
 > See **https://typescript-eslint.io/rules/prefer-readonly** for documentation.
 
-Member variables with the privacy `private` are never permitted to be modified outside of their declaring class.
+Private member variables (whether using the `private` modifier, or private fields) are never permitted to be modified outside of their declaring class.
 If that class never modifies their value, they may safely be marked as `readonly`.
 
 This rule reports on private members are marked as `readonly` if they're never modified outside of the constructor.
