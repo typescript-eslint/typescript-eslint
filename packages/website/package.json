@@ -57,7 +57,7 @@
     "cross-fetch": "*",
     "globby": "^11.1.0",
     "make-dir": "*",
-    "monaco-editor": "~0.43.0",
+    "monaco-editor": "~0.44.0",
     "raw-loader": "^4.0.2",
     "rimraf": "*",
     "stylelint": "^15.10.1",
