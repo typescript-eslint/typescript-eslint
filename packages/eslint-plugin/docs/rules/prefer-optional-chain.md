@@ -76,7 +76,7 @@ declare function acceptsBoolean(arg: boolean): void;
 acceptsBoolean(foo != null && foo.bar);
 
 // ❌ typechecks UNSUCCESSFULLY as the expression returns `boolean | undefined`
-acceptsBoolean(foo != null && foo.bar);
+acceptsBoolean(foo?.bar);
 ```
 
 This style of code isn't super common - which means having this option set to `true` _should_ be safe in most codebases. However we default it to `false` due to its unsafe nature. We have provided this option for convenience because it increases the autofix cases covered by the rule. If you set option to `true` the onus is entirely on you and your team to ensure that each fix is correct and safe and that it does not break the build.

@@ -125,6 +125,7 @@
     "transpiling",
     "triaging",
     "trpc",
+    "tsconfigrootdir",
     "tsconfigs",
     "tseslint",
     "tsvfs",
@@ -133,6 +134,7 @@
     "unfixable",
     "unoptimized",
     "unprefixed",
+    "upcasting",
     "upsert",
     "warnonunsupportedtypescriptversion",
     "Zacher"

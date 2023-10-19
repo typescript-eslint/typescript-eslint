@@ -49,10 +49,9 @@ export class ExpiringCache<TKey, TValue> implements CacheLike<TKey, TValue> {
       if (ageSeconds < this.#cacheDurationSeconds) {
         // cache hit woo!
         return entry.value;
-      } else {
-        // key has expired - clean it up to free up memory
-        this.#map.delete(key);
       }
+      // key has expired - clean it up to free up memory
+      this.#map.delete(key);
     }
     // no hit :'(
     return undefined;

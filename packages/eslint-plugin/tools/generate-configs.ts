@@ -1,7 +1,7 @@
+import prettier from '@prettier/sync';
 import type { TSESLint } from '@typescript-eslint/utils';
 import * as fs from 'fs';
 import * as path from 'path';
-import prettier from 'prettier';
 import * as url from 'url';
 
 import type RulesFile from '../src/rules';
@@ -45,11 +45,9 @@ async function main(): Promise<void> {
     ].join('\n');
   }
 
-  const prettierConfig = prettier.resolveConfig.sync(__dirname);
+  const prettierConfig = prettier.resolveConfig(__dirname);
 
-  interface LinterConfigRules {
-    [name: string]: TSESLint.Linter.RuleLevel;
-  }
+  type LinterConfigRules = Record<string, TSESLint.Linter.RuleLevel>;
 
   interface LinterConfig extends TSESLint.Linter.Config {
     extends?: string[] | string;

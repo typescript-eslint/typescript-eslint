@@ -3,8 +3,12 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
-import { OperatorPrecedence } from '../util';
+import {
+  createRule,
+  getOperatorPrecedence,
+  getParserServices,
+  OperatorPrecedence,
+} from '../util';
 
 type Options = [
   {
@@ -31,7 +35,7 @@ const messageBaseVoid =
 const messageRejectionHandler =
   'A rejection handler that is not a function will be ignored.';
 
-export default util.createRule<Options, MessageId>({
+export default createRule<Options, MessageId>({
   name: 'no-floating-promises',
   meta: {
     docs: {
@@ -78,7 +82,7 @@ export default util.createRule<Options, MessageId>({
   ],
 
   create(context, [options]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     return {
@@ -114,15 +118,14 @@ export default util.createRule<Options, MessageId>({
                     );
                     if (isHigherPrecedenceThanUnary(tsNode)) {
                       return fixer.insertTextBefore(node, 'void ');
-                    } else {
-                      return [
-                        fixer.insertTextBefore(node, 'void ('),
-                        fixer.insertTextAfterRange(
-                          [expression.range[1], expression.range[1]],
-                          ')',
-                        ),
-                      ];
                     }
+                    return [
+                      fixer.insertTextBefore(node, 'void ('),
+                      fixer.insertTextAfterRange(
+                        [expression.range[1], expression.range[1]],
+                        ')',
+                      ),
+                    ];
                   },
                 },
               ],
@@ -151,15 +154,14 @@ export default util.createRule<Options, MessageId>({
                     );
                     if (isHigherPrecedenceThanUnary(tsNode)) {
                       return fixer.insertTextBefore(node, 'await ');
-                    } else {
-                      return [
-                        fixer.insertTextBefore(node, 'await ('),
-                        fixer.insertTextAfterRange(
-                          [expression.range[1], expression.range[1]],
-                          ')',
-                        ),
-                      ];
                     }
+                    return [
+                      fixer.insertTextBefore(node, 'await ('),
+                      fixer.insertTextAfterRange(
+                        [expression.range[1], expression.range[1]],
+                        ')',
+                      ),
+                    ];
                   },
                 },
               ],
@@ -173,7 +175,7 @@ export default util.createRule<Options, MessageId>({
       const operator = ts.isBinaryExpression(node)
         ? node.operatorToken.kind
         : ts.SyntaxKind.Unknown;
-      const nodePrecedence = util.getOperatorPrecedence(node.kind, operator);
+      const nodePrecedence = getOperatorPrecedence(node.kind, operator);
       return nodePrecedence > OperatorPrecedence.Unary;
     }
 
@@ -240,18 +242,16 @@ export default util.createRule<Options, MessageId>({
         if (catchRejectionHandler) {
           if (isValidRejectionHandler(catchRejectionHandler)) {
             return { isUnhandled: false };
-          } else {
-            return { isUnhandled: true, nonFunctionHandler: true };
           }
+          return { isUnhandled: true, nonFunctionHandler: true };
         }
 
         const thenRejectionHandler = getRejectionHandlerFromThenCall(node);
         if (thenRejectionHandler) {
           if (isValidRejectionHandler(thenRejectionHandler)) {
             return { isUnhandled: false };
-          } else {
-            return { isUnhandled: true, nonFunctionHandler: true };
           }
+          return { isUnhandled: true, nonFunctionHandler: true };
         }
 
         // `x.finally()` is transparent to resolution of the promise, so check `x`.
@@ -269,9 +269,8 @@ export default util.createRule<Options, MessageId>({
         const alternateResult = isUnhandledPromise(checker, node.alternate);
         if (alternateResult.isUnhandled) {
           return alternateResult;
-        } else {
-          return isUnhandledPromise(checker, node.consequent);
         }
+        return isUnhandledPromise(checker, node.consequent);
       } else if (
         node.type === AST_NODE_TYPES.MemberExpression ||
         node.type === AST_NODE_TYPES.Identifier ||
@@ -285,9 +284,8 @@ export default util.createRule<Options, MessageId>({
         const leftResult = isUnhandledPromise(checker, node.left);
         if (leftResult.isUnhandled) {
           return leftResult;
-        } else {
-          return isUnhandledPromise(checker, node.right);
         }
+        return isUnhandledPromise(checker, node.right);
       }
 
       // We conservatively return false for all other types of expressions because
@@ -365,9 +363,8 @@ function getRejectionHandlerFromCatchCall(
     expression.arguments.length >= 1
   ) {
     return expression.arguments[0];
-  } else {
-    return undefined;
   }
+  return undefined;
 }
 
 function getRejectionHandlerFromThenCall(
@@ -380,9 +377,8 @@ function getRejectionHandlerFromThenCall(
     expression.arguments.length >= 2
   ) {
     return expression.arguments[1];
-  } else {
-    return undefined;
   }
+  return undefined;
 }
 
 function getObjectFromFinallyCall(

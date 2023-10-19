@@ -10,8 +10,6 @@ TypeScript supports types ("constituents") within union and intersection types b
 However, developers typically expect each constituent to be unique within its intersection or union.
 Duplicate values make the code overly verbose and generally reduce readability.
 
-## Rule Details
-
 This rule disallows duplicate union or intersection constituents.
 We consider types to be duplicate if they evaluate to the same result in the type system.
 For example, given `type A = string` and `type T = string | A`, this rule would flag that `A` is the same type as `string`.

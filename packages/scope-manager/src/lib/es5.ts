@@ -1,7 +1,7 @@
 // THIS CODE WAS AUTOMATICALLY GENERATED
 // DO NOT EDIT THIS CODE BY HAND
 // RUN THE FOLLOWING COMMAND FROM THE WORKSPACE ROOT TO REGENERATE:
-// npx nx generate-lib @typescript-eslint/scope-manager
+// npx nx generate-lib @typescript-eslint/repo-tools
 
 import type { ImplicitLibVariableOptions } from '../variable';
 import { TYPE, TYPE_VALUE } from './base-config';
@@ -84,6 +84,8 @@ export const es5 = {
   Capitalize: TYPE,
   Uncapitalize: TYPE,
   ThisType: TYPE,
+  WeakKeyTypes: TYPE,
+  WeakKey: TYPE,
   ArrayBuffer: TYPE_VALUE,
   ArrayBufferTypes: TYPE,
   ArrayBufferLike: TYPE,

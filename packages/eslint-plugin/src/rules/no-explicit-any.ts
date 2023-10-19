@@ -1,7 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 export type Options = [
   {
@@ -11,7 +11,7 @@ export type Options = [
 ];
 export type MessageIds = 'suggestNever' | 'suggestUnknown' | 'unexpectedAny';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-explicit-any',
   meta: {
     type: 'suggestion',

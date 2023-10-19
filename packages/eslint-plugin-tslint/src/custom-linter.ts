@@ -4,7 +4,10 @@ import type { Program, SourceFile } from 'typescript';
 
 // @ts-expect-error - We need to access the program, but Linter has private program already
 export class CustomLinter extends Linter {
-  constructor(options: ILinterOptions, private readonly program: Program) {
+  constructor(
+    options: ILinterOptions,
+    private readonly program: Program,
+  ) {
     super(options, program);
   }
 
