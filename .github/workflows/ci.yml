@@ -35,7 +35,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -47,7 +47,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -61,7 +61,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -80,7 +80,7 @@ jobs:
         lint-task: ['check-spelling', 'check-format', 'lint-markdown']
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -99,7 +99,7 @@ jobs:
         lint-task: ['lint', 'typecheck']
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -116,7 +116,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -131,7 +131,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
@@ -173,7 +173,7 @@ jobs:
       COLLECT_COVERAGE: false
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - name: Install
@@ -225,7 +225,7 @@ jobs:
       COLLECT_COVERAGE: false
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
         with:
           fetch-depth: 2
       - name: Install
@@ -246,7 +246,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Download coverage reports
         uses: actions/download-artifact@v3
@@ -270,7 +270,7 @@ jobs:
     if: github.repository == 'typescript-eslint/typescript-eslint' && github.ref == 'refs/heads/main'
     steps:
       - name: Checkout
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
       - name: Install
         uses: ./.github/actions/prepare-install
         with:
