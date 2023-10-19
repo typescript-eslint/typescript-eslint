@@ -5782,7 +5782,7 @@ __metadata:
     prettier: ^3.0.3
     rimraf: "*"
     semver: ^7.5.4
-    title-case: ^3.0.3
+    title-case: ^4.0.0
     ts-api-utils: ^1.0.1
     tsx: "*"
     typescript: "*"
@@ -19501,12 +19501,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"title-case@npm:^3.0.3":
-  version: 3.0.3
-  resolution: "title-case@npm:3.0.3"
-  dependencies:
-    tslib: ^2.0.3
-  checksum: e8b7ea006b53cf3208d278455d9f1e22c409459d7f9878da324fa3b18cc0aef8560924c19c744e870394a5d9cddfdbe029ebae9875909ee7f4fc562e7cbfc53e
+"title-case@npm:^4.0.0":
+  version: 4.1.1
+  resolution: "title-case@npm:4.1.1"
+  checksum: 31d0370c81312cf999258ec6e84d153855dbe477dba1697153c7b741e8e255a5c8be9a1142e9a0bcf144c47df83eed2683e876f357b53a13b5b92ac2cd788e1b
   languageName: node
   linkType: hard
 

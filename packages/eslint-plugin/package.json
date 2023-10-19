@@ -86,7 +86,7 @@
     "marked": "^5.1.1",
     "prettier": "^3.0.3",
     "rimraf": "*",
-    "title-case": "^3.0.3",
+    "title-case": "^4.0.0",
     "tsx": "*",
     "typescript": "*"
   },
