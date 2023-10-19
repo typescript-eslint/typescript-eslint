@@ -7,6 +7,7 @@ import type {
 const ERROR_MESSAGE =
   'You have used a rule which requires parserServices to be generated. You must therefore provide a value for the "parserOptions.project" property for @typescript-eslint/parser.';
 
+/* eslint-disable @typescript-eslint/unified-signatures */
 /**
  * Try to retrieve type-aware parser service from context.
  * This **_will_** throw if it is not available.
@@ -83,5 +84,6 @@ function getParserServices(
 
   return context.parserServices;
 }
+/* eslint-enable @typescript-eslint/unified-signatures */
 
 export { getParserServices };

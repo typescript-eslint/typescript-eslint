@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "6.7.0",
+  "version": "6.8.0",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -54,7 +54,7 @@
     "jest-snapshot": "^29.6.2",
     "jest-specific-snapshot": "^8.0.0",
     "make-dir": "*",
-    "prettier": "^2.8.4",
+    "prettier": "^3.0.3",
     "pretty-format": "*",
     "rimraf": "*",
     "typescript": "*"

@@ -1,3 +1,4 @@
+import prettier from '@prettier/sync';
 import pluginRules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import * as fs from 'fs';
@@ -5,7 +6,6 @@ import * as lz from 'lz-string';
 import type * as mdast from 'mdast';
 import { EOL } from 'os';
 import * as path from 'path';
-import { format, resolveConfig } from 'prettier';
 import type { Plugin } from 'unified';
 import type * as unist from 'unist';
 
@@ -29,7 +29,7 @@ const SPECIAL_CASE_DEFAULTS = new Map([
 ]);
 
 const prettierConfig = {
-  ...(resolveConfig.sync(__filename) ?? {}),
+  ...(prettier.resolveConfig(__filename) ?? {}),
   filepath: path.join(__dirname, 'defaults.ts'),
 };
 
@@ -40,7 +40,7 @@ const eslintPluginDirectory = path.resolve(
   path.join(__dirname, '../../eslint-plugin'),
 );
 
-function nodeIsParent(node: unist.Node<unist.Data>): node is unist.Parent {
+function nodeIsParent(node: unist.Node): node is unist.Parent {
   return 'children' in node;
 }
 
@@ -92,8 +92,7 @@ export const generatedRuleDocs: Plugin = () => {
       const warningNode = {
         value: `
 <admonition type="warning">
-  We strongly recommend you do not use this rule or any other formatting linter rules.
-  Use a separate dedicated formatter instead.
+  This rule will soon be moved to <a href="https://eslint.style">eslint-stylistic</a>.
   See <a href="/linting/troubleshooting/formatting">What About Formatting?</a> for more information.
 </admonition>
 `,
@@ -287,7 +286,7 @@ export const generatedRuleDocs: Plugin = () => {
             type: 'code',
             value: [
               compile(rule.meta.schema),
-              format(
+              prettier.format(
                 `const defaultOptions: Options = ${defaults};`,
                 prettierConfig,
               ),
@@ -297,6 +296,33 @@ export const generatedRuleDocs: Plugin = () => {
           } as mdast.Code,
         );
       }
+    }
+
+    // Insert default rule options for ban-types
+    if (file.stem === 'ban-types') {
+      const placeToInsert = children.findIndex(
+        (node: unist.Node) =>
+          node.type === 'comment' &&
+          (node as unist.Literal<string>).value.trim() ===
+            'Inject default options',
+      );
+      if (placeToInsert === -1) {
+        throw new Error('Could not find default injection site in ban-types');
+      }
+      const defaultOptions = fs
+        .readFileSync(
+          path.join(eslintPluginDirectory, 'src/rules/ban-types.ts'),
+          'utf8',
+        )
+        .match(/^const defaultTypes.+?^\};$/msu)?.[0];
+      if (!defaultOptions) {
+        throw new Error('Could not find default options for ban-types');
+      }
+      children.splice(placeToInsert, 1, {
+        lang: 'ts',
+        type: 'code',
+        value: defaultOptions,
+      } as mdast.Code);
     }
 
     // 5. Add a link to view the rule's source and test code

@@ -1,9 +1,13 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
-import { getEnumTypes } from './enum-utils/shared';
+import { createRule, getParserServices, getStaticValue } from '../util';
+import {
+  getEnumKeyForLiteral,
+  getEnumLiterals,
+  getEnumTypes,
+} from './enum-utils/shared';
 
 /**
  * @returns Whether the right type is an unsafe comparison against any left type.
@@ -29,16 +33,17 @@ function typeViolates(leftTypeParts: ts.Type[], right: ts.Type): boolean {
  * @returns What type a type's enum value is (number or string), if either.
  */
 function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
-  return util.isTypeFlagSet(type, ts.TypeFlags.EnumLike)
-    ? util.isTypeFlagSet(type, ts.TypeFlags.NumberLiteral)
+  return tsutils.isTypeFlagSet(type, ts.TypeFlags.EnumLike)
+    ? tsutils.isTypeFlagSet(type, ts.TypeFlags.NumberLiteral)
       ? ts.TypeFlags.Number
       : ts.TypeFlags.String
     : undefined;
 }
 
-export default util.createRule({
+export default createRule({
   name: 'no-unsafe-enum-comparison',
   meta: {
+    hasSuggestions: true,
     type: 'suggestion',
     docs: {
       description: 'Disallow comparing an enum value with a non-enum value',
@@ -46,25 +51,23 @@ export default util.createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      mismatchedCondition:
-        'The two values in this comparison do not have a shared enum type.',
       mismatchedCase:
         'The case statement does not have a shared enum type with the switch predicate.',
+      mismatchedCondition:
+        'The two values in this comparison do not have a shared enum type.',
+      replaceValueWithEnum: 'Replace with an enum value comparison.',
     },
     schema: [],
   },
   defaultOptions: [],
   create(context) {
-    const parserServices = util.getParserServices(context);
+    const parserServices = getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
 
     function isMismatchedComparison(
-      leftNode: TSESTree.Node,
-      rightNode: TSESTree.Node,
+      leftType: ts.Type,
+      rightType: ts.Type,
     ): boolean {
-      const leftType = parserServices.getTypeAtLocation(leftNode);
-      const rightType = parserServices.getTypeAtLocation(rightNode);
-
       // Allow comparisons that don't have anything to do with enums:
       //
       // ```ts
@@ -112,10 +115,50 @@ export default util.createRule({
       'BinaryExpression[operator=/^[<>!=]?={0,2}$/]'(
         node: TSESTree.BinaryExpression,
       ): void {
-        if (isMismatchedComparison(node.left, node.right)) {
+        const leftType = parserServices.getTypeAtLocation(node.left);
+        const rightType = parserServices.getTypeAtLocation(node.right);
+
+        if (isMismatchedComparison(leftType, rightType)) {
           context.report({
             messageId: 'mismatchedCondition',
             node,
+            suggest: [
+              {
+                messageId: 'replaceValueWithEnum',
+                fix(fixer): TSESLint.RuleFix | null {
+                  // Replace the right side with an enum key if possible:
+                  //
+                  // ```ts
+                  // Fruit.Apple === 'apple'; // Fruit.Apple === Fruit.Apple
+                  // ```
+                  const leftEnumKey = getEnumKeyForLiteral(
+                    getEnumLiterals(leftType),
+                    getStaticValue(node.right)?.value,
+                  );
+
+                  if (leftEnumKey) {
+                    return fixer.replaceText(node.right, leftEnumKey);
+                  }
+
+                  // Replace the left side with an enum key if possible:
+                  //
+                  // ```ts
+                  // declare const fruit: Fruit;
+                  // 'apple' === Fruit.Apple; // Fruit.Apple === Fruit.Apple
+                  // ```
+                  const rightEnumKey = getEnumKeyForLiteral(
+                    getEnumLiterals(rightType),
+                    getStaticValue(node.left)?.value,
+                  );
+
+                  if (rightEnumKey) {
+                    return fixer.replaceText(node.left, rightEnumKey);
+                  }
+
+                  return null;
+                },
+              },
+            ],
           });
         }
       },
@@ -133,7 +176,12 @@ export default util.createRule({
          */
         const switchStatement = parent as TSESTree.SwitchStatement;
 
-        if (isMismatchedComparison(switchStatement.discriminant, node.test)) {
+        const leftType = parserServices.getTypeAtLocation(
+          switchStatement.discriminant,
+        );
+        const rightType = parserServices.getTypeAtLocation(node.test);
+
+        if (isMismatchedComparison(leftType, rightType)) {
           context.report({
             messageId: 'mismatchedCase',
             node,

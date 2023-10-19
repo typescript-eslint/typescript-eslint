@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 import {
   ancestorHasReturnType,
   checkFunctionReturnType,
@@ -22,7 +22,7 @@ type Options = [
 ];
 type MessageIds = 'missingReturnType';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'explicit-function-return-type',
   meta: {
     type: 'problem',
@@ -138,7 +138,7 @@ export default util.createRule<Options, MessageIds>({
             case AST_NODE_TYPES.Property: {
               if (
                 parent.key.type === AST_NODE_TYPES.Identifier &&
-                parent.computed === false
+                !parent.computed
               ) {
                 funcName = parent.key.name;
               }
