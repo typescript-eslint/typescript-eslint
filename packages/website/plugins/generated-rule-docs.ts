@@ -40,7 +40,7 @@ const eslintPluginDirectory = path.resolve(
   path.join(__dirname, '../../eslint-plugin'),
 );
 
-function nodeIsParent(node: unist.Node<unist.Data>): node is unist.Parent {
+function nodeIsParent(node: unist.Node): node is unist.Parent {
   return 'children' in node;
 }
 

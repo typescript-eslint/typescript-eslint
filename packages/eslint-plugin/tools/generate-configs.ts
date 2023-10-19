@@ -74,10 +74,8 @@ async function main(): Promise<void> {
   );
   const EXTENDS = ['./configs/base', './configs/eslint-recommended'];
 
-  type RuleEntry = [
-    string,
-    TSESLint.RuleModule<string, readonly unknown[], TSESLint.RuleListener>,
-  ];
+  // TODO: migrate to import { RuleModule } from '@typescript-eslint/utils/ts-eslint'
+  type RuleEntry = [string, TSESLint.RuleModule<string, readonly unknown[]>];
 
   const allRuleEntries: RuleEntry[] = Object.entries(rules).sort((a, b) =>
     a[0].localeCompare(b[0]),
