@@ -3,10 +3,21 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
-import { getThisExpression } from '../util';
+import {
+  AnyType,
+  createRule,
+  getConstrainedTypeAtLocation,
+  getContextualType,
+  getParserServices,
+  getThisExpression,
+  isAnyOrAnyArrayTypeDiscriminated,
+  isTypeAnyType,
+  isTypeUnknownArrayType,
+  isTypeUnknownType,
+  isUnsafeAssignment,
+} from '../util';
 
-export default util.createRule({
+export default createRule({
   name: 'no-unsafe-return',
   meta: {
     type: 'problem',
@@ -28,7 +39,7 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
     const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
@@ -66,17 +77,14 @@ export default util.createRule({
       reportingNode: TSESTree.Node = returnNode,
     ): void {
       const tsNode = services.esTreeNodeToTSNodeMap.get(returnNode);
-      const anyType = util.isAnyOrAnyArrayTypeDiscriminated(tsNode, checker);
+      const anyType = isAnyOrAnyArrayTypeDiscriminated(tsNode, checker);
       const functionNode = getParentFunctionNode(returnNode);
       /* istanbul ignore if */ if (!functionNode) {
         return;
       }
 
       // function has an explicit return type, so ensure it's a safe return
-      const returnNodeType = util.getConstrainedTypeAtLocation(
-        services,
-        returnNode,
-      );
+      const returnNodeType = getConstrainedTypeAtLocation(services, returnNode);
       const functionTSNode = services.esTreeNodeToTSNodeMap.get(functionNode);
 
       // function expressions will not have their return type modified based on receiver typing
@@ -86,7 +94,7 @@ export default util.createRule({
       let functionType =
         ts.isFunctionExpression(functionTSNode) ||
         ts.isArrowFunction(functionTSNode)
-          ? util.getContextualType(checker, functionTSNode)
+          ? getContextualType(checker, functionTSNode)
           : services.getTypeAtLocation(functionNode);
       if (!functionType) {
         functionType = services.getTypeAtLocation(functionNode);
@@ -96,26 +104,32 @@ export default util.createRule({
       // function return type, we shouldn't complain (it's intentional, even if unsafe)
       if (functionTSNode.type) {
         for (const signature of functionType.getCallSignatures()) {
-          if (returnNodeType === signature.getReturnType()) {
+          if (
+            returnNodeType === signature.getReturnType() ||
+            util.isTypeFlagSet(
+              signature.getReturnType(),
+              ts.TypeFlags.Any | ts.TypeFlags.Unknown,
+            )
+          ) {
             return;
           }
         }
       }
 
-      if (anyType !== util.AnyType.Safe) {
+      if (anyType !== AnyType.Safe) {
         // Allow cases when the declared return type of the function is either unknown or unknown[]
         // and the function is returning any or any[].
         for (const signature of functionType.getCallSignatures()) {
           const functionReturnType = signature.getReturnType();
           if (
-            anyType === util.AnyType.Any &&
-            util.isTypeUnknownType(functionReturnType)
+            anyType === AnyType.Any &&
+            isTypeUnknownType(functionReturnType)
           ) {
             return;
           }
           if (
-            anyType === util.AnyType.AnyArray &&
-            util.isTypeUnknownArrayType(functionReturnType, checker)
+            anyType === AnyType.AnyArray &&
+            isTypeUnknownArrayType(functionReturnType, checker)
           ) {
             return;
           }
@@ -128,8 +142,8 @@ export default util.createRule({
           const thisExpression = getThisExpression(returnNode);
           if (
             thisExpression &&
-            util.isTypeAnyType(
-              util.getConstrainedTypeAtLocation(services, thisExpression),
+            isTypeAnyType(
+              getConstrainedTypeAtLocation(services, thisExpression),
             )
           ) {
             messageId = 'unsafeReturnThis';
@@ -141,14 +155,14 @@ export default util.createRule({
           node: reportingNode,
           messageId,
           data: {
-            type: anyType === util.AnyType.Any ? 'any' : 'any[]',
+            type: anyType === AnyType.Any ? 'any' : 'any[]',
           },
         });
       }
 
       for (const signature of functionType.getCallSignatures()) {
         const functionReturnType = signature.getReturnType();
-        const result = util.isUnsafeAssignment(
+        const result = isUnsafeAssignment(
           returnNodeType,
           functionReturnType,
           checker,

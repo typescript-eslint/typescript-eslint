@@ -6,3 +6,9 @@ contact_links:
   - name: Getting Started Guide
     about: If you're looking for help setting up check out our getting started guide
     url: https://typescript-eslint.io
+  - name: Ask a question on Discord
+    about: If you just want to ask a question, consider asking it on Discord!
+    url: https://discord.gg/FSxKq8Tdyg
+  - name: Ask a question on StackOverflow
+    about: If you just want to ask a question, consider asking it on StackOverflow!
+    url: https://stackoverflow.com/questions/tagged/typescript-eslint

@@ -1,0 +1,38 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes max-params 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "additionalProperties": false,
+    "properties": {
+      "countVoidThis": {
+        "type": "boolean"
+      },
+      "max": {
+        "minimum": 0,
+        "type": "integer"
+      },
+      "maximum": {
+        "minimum": 0,
+        "type": "integer"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  {
+    countVoidThis?: boolean;
+    max?: number;
+    maximum?: number;
+  },
+];
+"
+`;

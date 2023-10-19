@@ -6,7 +6,9 @@
   font-size: 13px;
   line-height: 18px;
   letter-spacing: 0;
-  font-feature-settings: 'liga' 0, 'calt' 0;
+  font-feature-settings:
+    'liga' 0,
+    'calt' 0;
   position: relative;
   min-width: 100%;
 }

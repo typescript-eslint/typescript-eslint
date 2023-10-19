@@ -1,12 +1,19 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import {
+  createRule,
+  isClosingParenToken,
+  isCommaToken,
+  isOpeningParenToken,
+  isSemicolonToken,
+  nullThrows,
+} from '../util';
 
 export type Options = [('method' | 'property')?];
 export type MessageIds = 'errorMethod' | 'errorProperty';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'method-signature-style',
   meta: {
     type: 'suggestion',
@@ -53,14 +60,14 @@ export default util.createRule<Options, MessageIds>({
     ): string {
       let params = '()';
       if (node.params.length > 0) {
-        const openingParen = util.nullThrows(
-          sourceCode.getTokenBefore(node.params[0], util.isOpeningParenToken),
+        const openingParen = nullThrows(
+          sourceCode.getTokenBefore(node.params[0], isOpeningParenToken),
           'Missing opening paren before first parameter',
         );
-        const closingParen = util.nullThrows(
+        const closingParen = nullThrows(
           sourceCode.getTokenAfter(
             node.params[node.params.length - 1],
-            util.isClosingParenToken,
+            isClosingParenToken,
           ),
           'Missing closing paren after last parameter',
         );
@@ -91,7 +98,7 @@ export default util.createRule<Options, MessageIds>({
       const lastToken = sourceCode.getLastToken(node);
       if (
         lastToken &&
-        (util.isSemicolonToken(lastToken) || util.isCommaToken(lastToken))
+        (isSemicolonToken(lastToken) || isCommaToken(lastToken))
       ) {
         return lastToken.value;
       }

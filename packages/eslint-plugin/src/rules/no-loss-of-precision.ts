@@ -1,16 +1,18 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule } from '../util';
 import { maybeGetESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = maybeGetESLintCoreRule('no-loss-of-precision');
 
-type Options = util.InferOptionsTypeFromRule<NonNullable<typeof baseRule>>;
-type MessageIds = util.InferMessageIdsTypeFromRule<
-  NonNullable<typeof baseRule>
->;
+type Options = InferOptionsTypeFromRule<NonNullable<typeof baseRule>>;
+type MessageIds = InferMessageIdsTypeFromRule<NonNullable<typeof baseRule>>;
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-loss-of-precision',
   meta: {
     type: 'problem',

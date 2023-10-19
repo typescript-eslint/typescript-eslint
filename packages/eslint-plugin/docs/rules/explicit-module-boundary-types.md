@@ -131,11 +131,11 @@ export const bar = () => 1;
 #### ✅ Correct
 
 ```ts
-export const func = (value: number) => ({ type: 'X', value } as const);
+export const func = (value: number) => ({ type: 'X', value }) as const;
 export const foo = () =>
   ({
     bar: true,
-  } as const);
+  }) as const;
 export const bar = () => 1 as const;
 ```
 

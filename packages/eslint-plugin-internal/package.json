@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin-internal",
-  "version": "6.7.3",
+  "version": "6.8.0",
   "private": true,
   "main": "dist/index.js",
   "scripts": {
@@ -13,12 +13,12 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@types/prettier": "*",
-    "@typescript-eslint/rule-tester": "6.7.3",
-    "@typescript-eslint/scope-manager": "6.7.3",
-    "@typescript-eslint/type-utils": "6.7.3",
-    "@typescript-eslint/utils": "6.7.3",
-    "prettier": "^2.8.4"
+    "@prettier/sync": "*",
+    "@typescript-eslint/rule-tester": "6.8.0",
+    "@typescript-eslint/scope-manager": "6.8.0",
+    "@typescript-eslint/type-utils": "6.8.0",
+    "@typescript-eslint/utils": "6.8.0",
+    "prettier": "^3.0.3"
   },
   "devDependencies": {
     "jest": "29.7.0",
