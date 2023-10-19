@@ -1,12 +1,18 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import {
+  createRule,
+  isImportKeyword,
+  isTypeKeyword,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 type Options = [];
 type MessageIds = 'useTopLevelQualifier';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-import-type-side-effects',
   meta: {
     type: 'problem',
@@ -49,9 +55,9 @@ export default util.createRule<Options, MessageIds>({
           fix(fixer) {
             const fixes: TSESLint.RuleFix[] = [];
             for (const specifier of specifiers) {
-              const qualifier = util.nullThrows(
-                sourceCode.getFirstToken(specifier, util.isTypeKeyword),
-                util.NullThrowsReasons.MissingToken(
+              const qualifier = nullThrows(
+                sourceCode.getFirstToken(specifier, isTypeKeyword),
+                NullThrowsReasons.MissingToken(
                   'type keyword',
                   'import specifier',
                 ),
@@ -64,9 +70,9 @@ export default util.createRule<Options, MessageIds>({
               );
             }
 
-            const importKeyword = util.nullThrows(
-              sourceCode.getFirstToken(node, util.isImportKeyword),
-              util.NullThrowsReasons.MissingToken('import keyword', 'import'),
+            const importKeyword = nullThrows(
+              sourceCode.getFirstToken(node, isImportKeyword),
+              NullThrowsReasons.MissingToken('import keyword', 'import'),
             );
             fixes.push(fixer.insertTextAfter(importKeyword, ' type'));
 

@@ -1,3 +1,4 @@
+import prettier from '@prettier/sync';
 import pluginRules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import * as fs from 'fs';
@@ -5,7 +6,6 @@ import * as lz from 'lz-string';
 import type * as mdast from 'mdast';
 import { EOL } from 'os';
 import * as path from 'path';
-import { format, resolveConfig } from 'prettier';
 import type { Plugin } from 'unified';
 import type * as unist from 'unist';
 
@@ -29,7 +29,7 @@ const SPECIAL_CASE_DEFAULTS = new Map([
 ]);
 
 const prettierConfig = {
-  ...(resolveConfig.sync(__filename) ?? {}),
+  ...(prettier.resolveConfig(__filename) ?? {}),
   filepath: path.join(__dirname, 'defaults.ts'),
 };
 
@@ -92,8 +92,7 @@ export const generatedRuleDocs: Plugin = () => {
       const warningNode = {
         value: `
 <admonition type="warning">
-  We strongly recommend you do not use this rule or any other formatting linter rules.
-  Use a separate dedicated formatter instead.
+  This rule will soon be moved to <a href="https://eslint.style">eslint-stylistic</a>.
   See <a href="/linting/troubleshooting/formatting">What About Formatting?</a> for more information.
 </admonition>
 `,
@@ -287,7 +286,7 @@ export const generatedRuleDocs: Plugin = () => {
             type: 'code',
             value: [
               compile(rule.meta.schema),
-              format(
+              prettier.format(
                 `const defaultOptions: Options = ${defaults};`,
                 prettierConfig,
               ),

@@ -216,6 +216,9 @@ Individual Selectors match specific, well-defined sets. There is no overlap betw
 - `function` - matches any named function declaration or named function expression.
   - Allowed `modifiers`: `async`, `exported`, `global`, `unused`.
   - Allowed `types`: none.
+- `import` - matches namespace imports and default imports (i.e. does not match named imports).
+  - Allowed `modifiers`: `default`, `namespace`.
+  - Allowed `types`: none.
 - `interface` - matches any interface declaration.
   - Allowed `modifiers`: `exported`, `unused`.
   - Allowed `types`: none.

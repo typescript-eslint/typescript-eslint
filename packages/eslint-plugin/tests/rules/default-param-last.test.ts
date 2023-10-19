@@ -60,32 +60,56 @@ class Foo {
     `,
     `
 class Foo {
-  constructor(public a: number, protected b: number, private c: number) {}
+  constructor(
+    public a: number,
+    protected b: number,
+    private c: number,
+  ) {}
 }
     `,
     `
 class Foo {
-  constructor(public a: number, protected b?: number, private c = 10) {}
+  constructor(
+    public a: number,
+    protected b?: number,
+    private c = 10,
+  ) {}
 }
     `,
     `
 class Foo {
-  constructor(public a: number, protected b = 10, private c?: number) {}
+  constructor(
+    public a: number,
+    protected b = 10,
+    private c?: number,
+  ) {}
 }
     `,
     `
 class Foo {
-  constructor(a: number, protected b?: number, private c = 0) {}
+  constructor(
+    a: number,
+    protected b?: number,
+    private c = 0,
+  ) {}
 }
     `,
     `
 class Foo {
-  constructor(a: number, b?: number, private c = 0) {}
+  constructor(
+    a: number,
+    b?: number,
+    private c = 0,
+  ) {}
 }
     `,
     `
 class Foo {
-  constructor(a: number, private b?: number, c = 0) {}
+  constructor(
+    a: number,
+    private b?: number,
+    c = 0,
+  ) {}
 }
     `,
   ],
@@ -576,60 +600,74 @@ class Foo {
     {
       code: `
 class Foo {
-  constructor(public a: number, protected b?: number, private c: number) {}
+  constructor(
+    public a: number,
+    protected b?: number,
+    private c: number,
+  ) {}
 }
       `,
       errors: [
         {
           messageId: 'shouldBeLast',
-          line: 3,
-          column: 33,
-          endColumn: 53,
+          line: 5,
+          column: 5,
+          endColumn: 25,
         },
       ],
     },
     {
       code: `
 class Foo {
-  constructor(public a: number, protected b = 0, private c: number) {}
+  constructor(
+    public a: number,
+    protected b = 0,
+    private c: number,
+  ) {}
 }
       `,
       errors: [
         {
           messageId: 'shouldBeLast',
-          line: 3,
-          column: 33,
-          endColumn: 48,
+          line: 5,
+          column: 5,
+          endColumn: 20,
         },
       ],
     },
     {
       code: `
 class Foo {
-  constructor(public a?: number, private b: number) {}
+  constructor(
+    public a?: number,
+    private b: number,
+  ) {}
 }
       `,
       errors: [
         {
           messageId: 'shouldBeLast',
-          line: 3,
-          column: 15,
-          endColumn: 32,
+          line: 4,
+          column: 5,
+          endColumn: 22,
         },
       ],
     },
     {
       code: `
 class Foo {
-  constructor(public a = 0, private b: number) {}
+  constructor(
+    public a = 0,
+    private b: number,
+  ) {}
 }
       `,
       errors: [
         {
           messageId: 'shouldBeLast',
-          line: 3,
-          column: 15,
-          endColumn: 27,
+          line: 4,
+          column: 5,
+          endColumn: 17,
         },
       ],
     },

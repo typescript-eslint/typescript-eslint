@@ -3,7 +3,15 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getContextualType,
+  getDeclaration,
+  getParserServices,
+  isNullableType,
+  isTypeFlagSet,
+} from '../util';
 
 type Options = [
   {
@@ -12,7 +20,7 @@ type Options = [
 ];
 type MessageIds = 'contextuallyUnnecessary' | 'unnecessaryAssertion';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-type-assertion',
   meta: {
     docs: {
@@ -48,7 +56,7 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: [{}],
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
 
@@ -87,7 +95,7 @@ export default util.createRule<Options, MessageIds>({
      * Returns true if there's a chance the variable has been used before a value has been assigned to it
      */
     function isPossiblyUsedBeforeAssigned(node: TSESTree.Expression): boolean {
-      const declaration = util.getDeclaration(services, node);
+      const declaration = getDeclaration(services, node);
       if (!declaration) {
         // don't know what the declaration is for some reason, so just assume the worst
         return true;
@@ -109,7 +117,7 @@ export default util.createRule<Options, MessageIds>({
       ) {
         // check if the defined variable type has changed since assignment
         const declarationType = checker.getTypeFromTypeNode(declaration.type);
-        const type = util.getConstrainedTypeAtLocation(services, node);
+        const type = getConstrainedTypeAtLocation(services, node);
         if (declarationType === type) {
           // possibly used before assigned, so just skip it
           // better to false negative and skip it, than false positive and fix to compile erroring code
@@ -157,12 +165,9 @@ export default util.createRule<Options, MessageIds>({
 
         const originalNode = services.esTreeNodeToTSNodeMap.get(node);
 
-        const type = util.getConstrainedTypeAtLocation(
-          services,
-          node.expression,
-        );
+        const type = getConstrainedTypeAtLocation(services, node.expression);
 
-        if (!util.isNullableType(type)) {
+        if (!isNullableType(type)) {
           if (isPossiblyUsedBeforeAssigned(node.expression)) {
             return;
           }
@@ -181,24 +186,21 @@ export default util.createRule<Options, MessageIds>({
           // we know it's a nullable type
           // so figure out if the variable is used in a place that accepts nullable types
 
-          const contextualType = util.getContextualType(checker, originalNode);
+          const contextualType = getContextualType(checker, originalNode);
           if (contextualType) {
             // in strict mode you can't assign null to undefined, so we have to make sure that
             // the two types share a nullable type
-            const typeIncludesUndefined = util.isTypeFlagSet(
+            const typeIncludesUndefined = isTypeFlagSet(
               type,
               ts.TypeFlags.Undefined,
             );
-            const typeIncludesNull = util.isTypeFlagSet(
-              type,
-              ts.TypeFlags.Null,
-            );
+            const typeIncludesNull = isTypeFlagSet(type, ts.TypeFlags.Null);
 
-            const contextualTypeIncludesUndefined = util.isTypeFlagSet(
+            const contextualTypeIncludesUndefined = isTypeFlagSet(
               contextualType,
               ts.TypeFlags.Undefined,
             );
-            const contextualTypeIncludesNull = util.isTypeFlagSet(
+            const contextualTypeIncludesNull = isTypeFlagSet(
               contextualType,
               ts.TypeFlags.Null,
             );
@@ -242,7 +244,7 @@ export default util.createRule<Options, MessageIds>({
         const castType = services.getTypeAtLocation(node);
 
         if (
-          tsutils.isTypeFlagSet(castType, ts.TypeFlags.Literal) ||
+          isTypeFlagSet(castType, ts.TypeFlags.Literal) ||
           (tsutils.isObjectType(castType) &&
             (tsutils.isObjectFlagSet(castType, ts.ObjectFlags.Tuple) ||
               couldBeTupleType(castType)))
