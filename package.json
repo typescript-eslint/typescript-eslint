@@ -143,5 +143,5 @@
     "tsx": "^3.12.7",
     "typescript": "patch:typescript@npm%3A5.2.2#./.yarn/patches/typescript-npm-5.2.2-01717e9f84.patch"
   },
-  "packageManager": "yarn@3.6.3"
+  "packageManager": "yarn@3.6.4"
 }
