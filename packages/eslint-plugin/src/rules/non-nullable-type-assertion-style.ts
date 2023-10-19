@@ -3,9 +3,14 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getOperatorPrecedence,
+  getParserServices,
+  OperatorPrecedence,
+} from '../util';
 
-export default util.createRule({
+export default createRule({
   name: 'non-nullable-type-assertion-style',
   meta: {
     docs: {
@@ -24,7 +29,7 @@ export default util.createRule({
   defaultOptions: [],
 
   create(context) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const sourceCode = context.getSourceCode();
 
     const getTypesIfNotLoose = (node: TSESTree.Node): ts.Type[] | undefined => {
@@ -117,10 +122,10 @@ export default util.createRule({
           const expressionSourceCode = sourceCode.getText(node.expression);
 
           const higherPrecedenceThanUnary =
-            util.getOperatorPrecedence(
+            getOperatorPrecedence(
               services.esTreeNodeToTSNodeMap.get(node.expression).kind,
               ts.SyntaxKind.Unknown,
-            ) > util.OperatorPrecedence.Unary;
+            ) > OperatorPrecedence.Unary;
 
           context.report({
             fix(fixer) {

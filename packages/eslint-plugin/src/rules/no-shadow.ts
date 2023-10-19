@@ -6,7 +6,7 @@ import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type MessageIds = 'noShadow' | 'noShadowGlobal';
 type Options = [
@@ -26,7 +26,7 @@ const allowedFunctionVariableDefTypes = new Set([
   AST_NODE_TYPES.TSMethodSignature,
 ]);
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-shadow',
   meta: {
     type: 'suggestion',
@@ -199,7 +199,7 @@ export default util.createRule<Options, MessageIds>({
       return methodDefinition.static;
     }
 
-    function isGenericOfClassDecl(variable: TSESLint.Scope.Variable): boolean {
+    function isGenericOfClass(variable: TSESLint.Scope.Variable): boolean {
       if (!('isTypeVariable' in variable)) {
         // this shouldn't happen...
         return false;
@@ -224,16 +224,17 @@ export default util.createRule<Options, MessageIds>({
         return false;
       }
       const classDecl = typeParameterDecl.parent;
-      return classDecl?.type === AST_NODE_TYPES.ClassDeclaration;
+      return (
+        classDecl?.type === AST_NODE_TYPES.ClassDeclaration ||
+        classDecl?.type === AST_NODE_TYPES.ClassExpression
+      );
     }
 
     function isGenericOfAStaticMethodShadow(
       variable: TSESLint.Scope.Variable,
       shadowed: TSESLint.Scope.Variable,
     ): boolean {
-      return (
-        isGenericOfStaticMethod(variable) && isGenericOfClassDecl(shadowed)
-      );
+      return isGenericOfStaticMethod(variable) && isGenericOfClass(shadowed);
     }
 
     function isImportDeclaration(

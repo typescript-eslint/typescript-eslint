@@ -3,7 +3,7 @@ import { ESLintUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type Options = [
   {
@@ -11,10 +11,7 @@ type Options = [
   },
 ];
 
-export default util.createRule<
-  Options,
-  'meaninglessVoidOperator' | 'removeVoid'
->({
+export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
   name: 'no-meaningless-void-operator',
   meta: {
     type: 'suggestion',

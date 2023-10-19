@@ -2,6 +2,7 @@
   "extends": "./tsconfig.build.json",
   "compilerOptions": {
     "composite": false,
+    "target": "ES2022",
     "rootDir": "."
   },
   "include": ["src", "typings", "tests"],

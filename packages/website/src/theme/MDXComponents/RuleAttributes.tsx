@@ -3,14 +3,21 @@ import type { RuleMetaDataDocs } from '@site/../utils/dist/ts-eslint/Rule';
 import { useRulesMeta } from '@site/src/hooks/useRulesMeta';
 import React from 'react';
 
+import {
+  FIXABLE_EMOJI,
+  RECOMMENDED_CONFIG_EMOJI,
+  STRICT_CONFIG_EMOJI,
+  STYLISTIC_CONFIG_EMOJI,
+  SUGGESTIONS_EMOJI,
+} from '../../components/constants';
 import type { FeatureProps } from './Feature';
 import { Feature } from './Feature';
 import styles from './RuleAttributes.module.css';
 
 const recommendations = {
-  recommended: ['✅', 'recommended'],
-  strict: ['🔒', 'strict'],
-  stylistic: ['🎨', 'stylistic'],
+  recommended: [RECOMMENDED_CONFIG_EMOJI, 'recommended'],
+  strict: [STRICT_CONFIG_EMOJI, 'strict'],
+  stylistic: [STYLISTIC_CONFIG_EMOJI, 'stylistic'],
 };
 
 const getRecommendation = (docs: RuleMetaDataDocs): string[] => {
@@ -63,7 +70,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
           .
         </>
       ),
-      emoji: '🔧',
+      emoji: FIXABLE_EMOJI,
     });
   }
 
@@ -78,7 +85,7 @@ export function RuleAttributes({ name }: { name: string }): React.ReactNode {
           .
         </>
       ),
-      emoji: '💡',
+      emoji: SUGGESTIONS_EMOJI,
     });
   }
 

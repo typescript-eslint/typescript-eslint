@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type Values =
   | 'always'
@@ -32,7 +32,7 @@ interface TypeWithLabel {
   compositionType: CompositionType | null;
 }
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-type-alias',
   meta: {
     deprecated: true,

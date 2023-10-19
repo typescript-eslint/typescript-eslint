@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import { createRule, getParserServices, getTypeArguments } from '../util';
 
 type Options = [
   {
@@ -58,7 +58,7 @@ function parseChecksVoidReturn(
   }
 }
 
-export default util.createRule<Options, MessageId>({
+export default createRule<Options, MessageId>({
   name: 'no-misused-promises',
   meta: {
     docs: {
@@ -121,7 +121,7 @@ export default util.createRule<Options, MessageId>({
   ],
 
   create(context, [{ checksConditionals, checksVoidReturn, checksSpreads }]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     const checkedNodes = new Set<TSESTree.Node>();
@@ -556,7 +556,7 @@ function voidFunctionArguments(
             // Unwrap 'Array<MaybeVoidFunction>' to 'MaybeVoidFunction',
             // so that we'll handle it in the same way as a non-rest
             // 'param: MaybeVoidFunction'
-            type = util.getTypeArguments(type, checker)[0];
+            type = getTypeArguments(type, checker)[0];
             for (let i = index; i < node.arguments.length; i++) {
               checkThenableOrVoidArgument(
                 checker,
@@ -570,7 +570,7 @@ function voidFunctionArguments(
           } else if (checker.isTupleType(type)) {
             // Check each type in the tuple - for example, [boolean, () => void] would
             // add the index of the second tuple parameter to 'voidReturnIndices'
-            const typeArgs = util.getTypeArguments(type, checker);
+            const typeArgs = getTypeArguments(type, checker);
             for (
               let i = index;
               i < node.arguments.length && i - index < typeArgs.length;

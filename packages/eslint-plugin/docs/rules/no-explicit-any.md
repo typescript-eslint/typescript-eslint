@@ -98,39 +98,10 @@ function greet(param: Array<string>): Array<string> {}
 
 A boolean to specify if arrays from the rest operator are considered okay. `false` by default.
 
-Examples of **incorrect** code for the `{ "ignoreRestArgs": false }` option:
+The examples below are **incorrect** when `{ignoreRestArgs: false}`, but **correct** when `{ignoreRestArgs: true}`.
 
 ```ts
 /*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": false }]*/
-
-function foo1(...args: any[]): void {}
-function foo2(...args: readonly any[]): void {}
-function foo3(...args: Array<any>): void {}
-function foo4(...args: ReadonlyArray<any>): void {}
-
-declare function bar(...args: any[]): void;
-
-const baz = (...args: any[]) => {};
-const qux = function (...args: any[]) {};
-
-type Quux = (...args: any[]) => void;
-type Quuz = new (...args: any[]) => void;
-
-interface Grault {
-  (...args: any[]): void;
-}
-interface Corge {
-  new (...args: any[]): void;
-}
-interface Garply {
-  f(...args: any[]): void;
-}
-```
-
-Examples of **correct** code for the `{ "ignoreRestArgs": true }` option:
-
-```ts
-/*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": true }]*/
 
 function foo1(...args: any[]): void {}
 function foo2(...args: readonly any[]): void {}
