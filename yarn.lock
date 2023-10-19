@@ -2900,36 +2900,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@esbuild-kit/cjs-loader@npm:^2.4.2":
-  version: 2.4.2
-  resolution: "@esbuild-kit/cjs-loader@npm:2.4.2"
-  dependencies:
-    "@esbuild-kit/core-utils": ^3.0.0
-    get-tsconfig: ^4.4.0
-  checksum: e346e339bfc7eff5c52c270fd0ec06a7f2341b624adfb69f84b7d83f119c35070420906f2761a0b4604e0a0ec90e35eaf12544585476c428ed6d6ee3b250c0fe
-  languageName: node
-  linkType: hard
-
-"@esbuild-kit/core-utils@npm:^3.0.0, @esbuild-kit/core-utils@npm:^3.3.0":
-  version: 3.3.1
-  resolution: "@esbuild-kit/core-utils@npm:3.3.1"
-  dependencies:
-    esbuild: ~0.18.20
-    source-map-support: ^0.5.21
-  checksum: a176d226af59cdd4e034d6dd8c264d75a0056b9b47e4ccd5035684e348d25ad6bf345f87ce84f4a972dd318900c060806dc4d0bfeaf700f70f65d235dd93b610
-  languageName: node
-  linkType: hard
-
-"@esbuild-kit/esm-loader@npm:^2.6.3":
-  version: 2.6.4
-  resolution: "@esbuild-kit/esm-loader@npm:2.6.4"
-  dependencies:
-    "@esbuild-kit/core-utils": ^3.3.0
-    get-tsconfig: ^4.7.0
-  checksum: 0f522f2eee04485a3a97317c7dc72f4fc42e1eb3c7c1933d4c062ecdf9b454f8652a43949a8246dc4d85df61ff66daf08f4cfc4a98ff529fc500d06691a0c475
-  languageName: node
-  linkType: hard
-
 "@esbuild/android-arm64@npm:0.18.20":
   version: 0.18.20
   resolution: "@esbuild/android-arm64@npm:0.18.20"
@@ -10994,19 +10964,19 @@ __metadata:
   languageName: node
   linkType: hard
 
-"fsevents@npm:^2.3.2, fsevents@npm:~2.3.2":
-  version: 2.3.2
-  resolution: "fsevents@npm:2.3.2"
+"fsevents@npm:^2.3.2, fsevents@npm:~2.3.2, fsevents@npm:~2.3.3":
+  version: 2.3.3
+  resolution: "fsevents@npm:2.3.3"
   dependencies:
     node-gyp: latest
-  checksum: 97ade64e75091afee5265e6956cb72ba34db7819b4c3e94c431d4be2b19b8bb7a2d4116da417950c3425f17c8fe693d25e20212cac583ac1521ad066b77ae31f
+  checksum: 11e6ea6fea15e42461fc55b4b0e4a0a3c654faa567f1877dbd353f39156f69def97a69936d1746619d656c4b93de2238bf731f6085a03a50cabf287c9d024317
   conditions: os=darwin
   languageName: node
   linkType: hard
 
-"fsevents@patch:fsevents@^2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>":
-  version: 2.3.2
-  resolution: "fsevents@patch:fsevents@npm%3A2.3.2#~builtin<compat/fsevents>::version=2.3.2&hash=df0bf1"
+"fsevents@patch:fsevents@^2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.2#~builtin<compat/fsevents>, fsevents@patch:fsevents@~2.3.3#~builtin<compat/fsevents>":
+  version: 2.3.3
+  resolution: "fsevents@patch:fsevents@npm%3A2.3.3#~builtin<compat/fsevents>::version=2.3.3&hash=df0bf1"
   dependencies:
     node-gyp: latest
   conditions: os=darwin
@@ -11179,12 +11149,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"get-tsconfig@npm:^4.4.0, get-tsconfig@npm:^4.7.0":
-  version: 4.7.0
-  resolution: "get-tsconfig@npm:4.7.0"
+"get-tsconfig@npm:^4.7.2":
+  version: 4.7.2
+  resolution: "get-tsconfig@npm:4.7.2"
   dependencies:
     resolve-pkg-maps: ^1.0.0
-  checksum: 44536925720acc2f133d26301d5626405d8fe33066625484ff309bb6fb7f3310dc0bb202f862805f21a791e38a9870c6dddb013d1443dd5d745d91ad1946254a
+  checksum: 172358903250eff0103943f816e8a4e51d29b8e5449058bdf7266714a908a48239f6884308bd3a6ff28b09f692b9533dbebfd183ab63e4e14f073cda91f1bca9
   languageName: node
   linkType: hard
 
@@ -19800,19 +19770,19 @@ __metadata:
   linkType: hard
 
 "tsx@npm:^3.12.7":
-  version: 3.12.10
-  resolution: "tsx@npm:3.12.10"
+  version: 3.14.0
+  resolution: "tsx@npm:3.14.0"
   dependencies:
-    "@esbuild-kit/cjs-loader": ^2.4.2
-    "@esbuild-kit/core-utils": ^3.3.0
-    "@esbuild-kit/esm-loader": ^2.6.3
-    fsevents: ~2.3.2
+    esbuild: ~0.18.20
+    fsevents: ~2.3.3
+    get-tsconfig: ^4.7.2
+    source-map-support: ^0.5.21
   dependenciesMeta:
     fsevents:
       optional: true
   bin:
-    tsx: dist/cli.js
-  checksum: 84fbbdbb90a05ecc764aee92fbe234b45939ccba34a08298fcec2bb9cb2ecb7676b21e676dd12681279490a7ac55bb81897ce503775cbcce0f76703eb282bb37
+    tsx: dist/cli.mjs
+  checksum: afcef5d9b90b5800cf1ffb749e943f63042d78a4c0d9eef6e13e43f4ecab465d45e2c9812a2c515cbdc2ee913ff1cd01bf5c606a48013dd3ce2214a631b45557
   languageName: node
   linkType: hard
 
