@@ -789,6 +789,84 @@ ruleTester.run('strict-enums-comparison', rule, {
     },
     {
       code: `
+        enum StringKey {
+          "key-'with-single'-quotes" = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatched',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum StringKey {
+          "key-'with-single'-quotes" = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === StringKey['key-\\'with-single\\'-quotes'];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum StringKey {
+          'key-"with-double"-quotes' = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatched',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum StringKey {
+          'key-"with-double"-quotes' = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === StringKey['key-"with-double"-quotes'];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum StringKey {
+          'key-\`with-backticks\`-quotes' = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatched',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum StringKey {
+          'key-\`with-backticks\`-quotes' = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === StringKey['key-\`with-backticks\`-quotes'];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
         enum ComputedKey {
           ['test-key' /* with comment */] = 1,
         }

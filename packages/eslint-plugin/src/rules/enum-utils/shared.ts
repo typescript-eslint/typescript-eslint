@@ -85,8 +85,11 @@ export function getEnumKeyForLiteral(
         case ts.SyntaxKind.Identifier:
           return `${enumName}.${memberNameIdentifier.text}`;
 
-        case ts.SyntaxKind.StringLiteral:
-          return `${enumName}['${memberNameIdentifier.text}']`;
+        case ts.SyntaxKind.StringLiteral: {
+          const memberName = memberNameIdentifier.text.replace(/'/g, "\\'");
+
+          return `${enumName}['${memberName}']`;
+        }
 
         case ts.SyntaxKind.ComputedPropertyName:
           return `${enumName}[${memberNameIdentifier.expression.getText()}]`;
