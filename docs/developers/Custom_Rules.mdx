@@ -121,6 +121,58 @@ export const rule = ESLintUtils.RuleCreator.withoutDocs({
 We recommend any custom ESLint rule include a descriptive error message and link to informative documentation.
 :::
 
+## Handling rule options
+
+ESLint rules can take options. When handling options, you will need to add information in at most three places:
+
+- The `Options` generic type argument to `RuleCreator`, where you declare the type of the options
+- The `meta.schema` property, where you add a JSON schema describing the options shape
+- The `defaultOptions` property, where you add the default options value
+
+```ts
+type MessageIds = 'lowercase' | 'uppercase';
+
+type Options = [
+  {
+    preferredCase: 'lower' | 'upper';
+  },
+];
+
+export const rule = createRule<Options, MessageIds>({
+  meta: {
+    // ...
+    schema: [
+      {
+        type: 'object',
+        properties: {
+          preferredCase: {
+            type: 'string',
+            enum: ['lower', 'upper'],
+          },
+        },
+        additionalProperties: false,
+      },
+    ],
+  },
+  defaultOptions: [
+    {
+      preferredCase: 'lower',
+    },
+  ],
+  create(context, options) {
+    if (options[0].preferredCase === 'lower') {
+      // ...
+    }
+  },
+});
+```
+
+:::warning
+
+When reading the options, use the second parameter of the `create` function, not `context.options` from the first parameter. The first is created by ESLint and does not have the default options applied.
+
+:::
+
 ## AST Extensions
 
 `@typescript-eslint/estree` creates AST nodes for TypeScript syntax with names that begin with `TS`, such as `TSInterfaceDeclaration` and `TSTypeAnnotation`.

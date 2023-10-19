@@ -2,7 +2,15 @@ import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import {
+  collectUnusedVariables as _collectUnusedVariables,
+  createRule,
+  getNameLocationInGlobalDirectiveComment,
+  isDefinitionFile,
+  isFunction,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
 export type MessageIds = 'unusedVar';
 export type Options = [
@@ -31,7 +39,7 @@ interface TranslatedOptions {
   destructuredArrayIgnorePattern?: RegExp;
 }
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-unused-vars',
   meta: {
     type: 'problem',
@@ -197,7 +205,7 @@ export default util.createRule<Options, MessageIds>({
         );
       }
 
-      const unusedVariablesOriginal = util.collectUnusedVariables(context);
+      const unusedVariablesOriginal = _collectUnusedVariables(context);
       const unusedVariablesReturn: TSESLint.Scope.Variable[] = [];
       for (const variable of unusedVariablesOriginal) {
         // explicit global variables don't have definitions.
@@ -258,7 +266,7 @@ export default util.createRule<Options, MessageIds>({
           // if "args" option is "after-used", skip used variables
           if (
             options.args === 'after-used' &&
-            util.isFunction(def.name.parent) &&
+            isFunction(def.name.parent) &&
             !isAfterLastUsedArg(variable)
           ) {
             continue;
@@ -294,7 +302,7 @@ export default util.createRule<Options, MessageIds>({
       [ambientDeclarationSelector(AST_NODE_TYPES.Program, true)](
         node: DeclarationSelectorNode,
       ): void {
-        if (!util.isDefinitionFile(filename)) {
+        if (!isDefinitionFile(filename)) {
           return;
         }
         markDeclarationChildAsUsed(node);
@@ -330,9 +338,9 @@ export default util.createRule<Options, MessageIds>({
         'TSModuleDeclaration[declare = true] > TSModuleBlock',
         false,
       )](node: DeclarationSelectorNode): void {
-        const moduleDecl = util.nullThrows(
+        const moduleDecl = nullThrows(
           node.parent?.parent,
-          util.NullThrowsReasons.MissingParent,
+          NullThrowsReasons.MissingParent,
         ) as TSESTree.TSModuleDeclaration;
 
         // declared ambient modules with an `export =` statement will only export that one thing
@@ -451,7 +459,7 @@ export default util.createRule<Options, MessageIds>({
 
             context.report({
               node: programNode,
-              loc: util.getNameLocationInGlobalDirectiveComment(
+              loc: getNameLocationInGlobalDirectiveComment(
                 sourceCode,
                 directiveComment,
                 unusedVar.name,

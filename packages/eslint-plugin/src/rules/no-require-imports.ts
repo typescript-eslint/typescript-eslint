@@ -1,9 +1,9 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { ASTUtils } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
-export default util.createRule({
+export default createRule({
   name: 'no-require-imports',
   meta: {
     type: 'problem',

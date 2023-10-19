@@ -1,6 +1,6 @@
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, getStringLength } from '../util';
 
 type DirectiveConfig =
   | boolean
@@ -22,7 +22,7 @@ type MessageIds =
   | 'tsDirectiveCommentDescriptionNotMatchPattern'
   | 'tsDirectiveCommentRequiresDescription';
 
-export default util.createRule<[Options], MessageIds>({
+export default createRule<[Options], MessageIds>({
   name: 'ban-ts-comment',
   meta: {
     type: 'problem',
@@ -146,8 +146,7 @@ export default util.createRule<[Options], MessageIds>({
             } = options;
             const format = descriptionFormats.get(fullDirective);
             if (
-              util.getStringLength(description.trim()) <
-              minimumDescriptionLength
+              getStringLength(description.trim()) < minimumDescriptionLength
             ) {
               context.report({
                 data: { directive, minimumDescriptionLength },
