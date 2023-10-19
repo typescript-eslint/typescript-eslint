@@ -298,6 +298,33 @@ export const generatedRuleDocs: Plugin = () => {
       }
     }
 
+    // Insert default rule options for ban-types
+    if (file.stem === 'ban-types') {
+      const placeToInsert = children.findIndex(
+        (node: unist.Node) =>
+          node.type === 'comment' &&
+          (node as unist.Literal<string>).value.trim() ===
+            'Inject default options',
+      );
+      if (placeToInsert === -1) {
+        throw new Error('Could not find default injection site in ban-types');
+      }
+      const defaultOptions = fs
+        .readFileSync(
+          path.join(eslintPluginDirectory, 'src/rules/ban-types.ts'),
+          'utf8',
+        )
+        .match(/^const defaultTypes.+?^\};$/msu)?.[0];
+      if (!defaultOptions) {
+        throw new Error('Could not find default options for ban-types');
+      }
+      children.splice(placeToInsert, 1, {
+        lang: 'ts',
+        type: 'code',
+        value: defaultOptions,
+      } as mdast.Code);
+    }
+
     // 5. Add a link to view the rule's source and test code
     children.push(
       {
