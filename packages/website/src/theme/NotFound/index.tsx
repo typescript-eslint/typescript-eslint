@@ -1,3 +1,4 @@
+import { useLocation } from '@docusaurus/router';
 import { PageMetadata } from '@docusaurus/theme-common';
 import Layout from '@theme/Layout';
 import React from 'react';
@@ -5,6 +6,8 @@ import React from 'react';
 import styles from './styles.module.css';
 
 export default function NotFound(): React.JSX.Element {
+  const location = useLocation();
+
   return (
     <>
       <PageMetadata title="Page Not Found" />
