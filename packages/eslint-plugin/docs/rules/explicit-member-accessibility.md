@@ -90,7 +90,10 @@ The following patterns are considered correct with the default options `{ access
 
 ```ts
 class Animal {
-  public constructor(public breed, name) {
+  public constructor(
+    public breed,
+    name,
+  ) {
     // Parameter property and constructor
     this.animalName = name;
   }
@@ -113,7 +116,10 @@ The following patterns are considered incorrect with the accessibility set to **
 
 ```ts
 class Animal {
-  public constructor(public breed, name) {
+  public constructor(
+    public breed,
+    name,
+  ) {
     // Parameter property and constructor
     this.animalName = name;
   }
@@ -136,7 +142,10 @@ The following patterns are considered correct with the accessibility set to **no
 
 ```ts
 class Animal {
-  constructor(protected breed, name) {
+  constructor(
+    protected breed,
+    name,
+  ) {
     // Parameter property and constructor
     this.name = name;
   }

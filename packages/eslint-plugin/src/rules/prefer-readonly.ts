@@ -3,8 +3,7 @@ import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
-import { typeIsOrHasBaseType } from '../util';
+import { createRule, getParserServices, typeIsOrHasBaseType } from '../util';
 
 type MessageIds = 'preferReadonly';
 type Options = [
@@ -20,7 +19,7 @@ const functionScopeBoundaries = [
   AST_NODE_TYPES.MethodDefinition,
 ].join(', ');
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'prefer-readonly',
   meta: {
     docs: {
@@ -48,7 +47,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{ onlyInlineLambdas: false }],
   create(context, [{ onlyInlineLambdas }]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const classScopeStack: ClassScope[] = [];
 

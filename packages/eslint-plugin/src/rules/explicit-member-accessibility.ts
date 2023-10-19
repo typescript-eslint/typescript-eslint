@@ -1,7 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, getNameFromMember } from '../util';
 
 type AccessibilityLevel =
   | 'explicit' // require an accessor (including public)
@@ -27,7 +27,7 @@ type MessageIds =
   | 'missingAccessibility'
   | 'unwantedPublicAccessibility';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'explicit-member-accessibility',
   meta: {
     hasSuggestions: true,
@@ -135,7 +135,7 @@ export default util.createRule<Options, MessageIds>({
           break;
       }
 
-      const { name: methodName } = util.getNameFromMember(
+      const { name: methodName } = getNameFromMember(
         methodDefinition,
         sourceCode,
       );
@@ -269,7 +269,7 @@ export default util.createRule<Options, MessageIds>({
 
       const nodeType = 'class property';
 
-      const { name: propertyName } = util.getNameFromMember(
+      const { name: propertyName } = getNameFromMember(
         propertyDefinition,
         sourceCode,
       );

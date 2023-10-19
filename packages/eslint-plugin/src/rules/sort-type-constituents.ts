@@ -1,8 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
-import { getEnumNames, typeNodeRequiresParentheses } from '../util';
+import { createRule, getEnumNames, typeNodeRequiresParentheses } from '../util';
 
 enum Group {
   conditional = 'conditional',
@@ -105,7 +104,7 @@ export type Options = [
 ];
 export type MessageIds = 'notSorted' | 'notSortedNamed' | 'suggestFix';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'sort-type-constituents',
   meta: {
     type: 'suggestion',

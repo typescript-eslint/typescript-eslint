@@ -91,7 +91,7 @@ export class RuleTester extends TestFramework {
       // as of eslint 6 you have to provide an absolute path to the parser
       // but that's not as clean to type, this saves us trying to manually enforce
       // that contributors require.resolve everything
-      parser: require.resolve((testerConfig ?? defaultConfig).parser),
+      parser: require.resolve(testerConfig?.parser ?? defaultConfig.parser),
     });
 
     // make sure that the parser doesn't hold onto file handles between tests
