@@ -40,7 +40,7 @@ Examples of code for this rule with `checksConditionals: true`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "checksConditionals": true }'
 const promise = Promise.resolve('value');
 
 if (promise) {
@@ -56,7 +56,7 @@ while (promise) {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "checksConditionals": true }'
 const promise = Promise.resolve('value');
 
 // Always `await` the Promise in a conditional
@@ -120,7 +120,7 @@ Examples of code for this rule with `checksVoidReturn: true`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "checksVoidReturn": true }'
 [1, 2, 3].forEach(async value => {
   await doSomething(value);
 });
@@ -140,7 +140,7 @@ eventEmitter.on('some-event', async () => {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "checksVoidReturn": true }'
 // for-of puts `await` in outer context
 for (const value of [1, 2, 3]) {
   await doSomething(value);
@@ -203,7 +203,7 @@ Examples of code for this rule with `checksSpreads: true`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "checksSpreads": true }'
 const getData = () => someAsyncOperation({ myArg: 'foo' });
 
 return { foo: 42, ...getData() };
@@ -217,7 +217,7 @@ return { foo: 42, ...getData2() };
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "checksSpreads": true }'
 const getData = () => someAsyncOperation({ myArg: 'foo' });
 
 return { foo: 42, ...(await getData()) };
