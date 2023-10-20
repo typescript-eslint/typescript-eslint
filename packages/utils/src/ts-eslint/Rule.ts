@@ -195,6 +195,8 @@ interface RuleContext<
   parserOptions: Linter.ParserOptions;
   /**
    * An object containing parser-provided services for rules
+   *
+   * @deprecated in favor of `SourceCode#parserServices`
    */
   parserServices?: ParserServices;
   /**
