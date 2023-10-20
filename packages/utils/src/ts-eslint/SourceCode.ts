@@ -300,6 +300,12 @@ declare class SourceCodeBase extends TokenStore {
    */
   isSpaceBetweenTokens(first: TSESTree.Token, second: TSESTree.Token): boolean;
   /**
+   * Returns the scope of the given node.
+   * This information can be used track references to variables.
+   * @since 8.37.0
+   */
+  getScope(node: TSESTree.Node): Scope.Scope;
+  /**
    * The source code split into lines according to ECMA-262 specification.
    * This is done to avoid each rule needing to do so separately.
    */
