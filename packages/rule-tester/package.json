@@ -62,7 +62,7 @@
     "@typescript-eslint/parser": "6.8.0",
     "chai": "^4.3.7",
     "mocha": "^10.0.0",
-    "sinon": "^15.0.0",
+    "sinon": "^16.0.0",
     "source-map-support": "^0.5.21"
   },
   "funding": {
