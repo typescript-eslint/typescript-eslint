@@ -1,15 +1,15 @@
 ---
-description: 'Require switch-case statements to be exhaustive with union type.'
+description: 'Require switch-case statements to be exhaustive with union type or enum.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
 > See **https://typescript-eslint.io/rules/switch-exhaustiveness-check** for documentation.
 
-When working with union types in TypeScript, it's common to want to write a `switch` statement intended to contain a `case` for each constituent (possible type in the union).
-However, if the union type changes, it's easy to forget to modify the cases to account for any new types.
+When working with union types or enums in TypeScript, it's common to want to write a `switch` statement intended to contain a `case` for each constituent (possible type in the union or the enum).
+However, if the union type or the enum changes, it's easy to forget to modify the cases to account for any new types.
 
-This rule reports when a `switch` statement over a value typed as a union of literals is missing a case for any of those literal types and does not have a `default` clause.
+This rule reports when a `switch` statement over a value typed as a union of literals or as an enum is missing a case for any of those literal types and does not have a `default` clause.
 
 ## Examples
 
@@ -101,6 +101,74 @@ switch (day) {
 }
 ```
 
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+enum Fruit {
+  Apple,
+  Banana,
+  Cherry,
+}
+
+const fruit = Fruit.Cherry as Fruit;
+
+switch (fruit) {
+  case Fruit.Apple:
+    console.log('an apple');
+    break;
+}
+```
+
+### ✅ Correct
+
+```ts
+enum Fruit {
+  Apple,
+  Banana,
+  Cherry,
+}
+
+const fruit = Fruit.Cherry as Fruit;
+
+switch (fruit) {
+  case Fruit.Apple:
+    console.log('an apple');
+    break;
+
+  case Fruit.Banana:
+    console.log('a banana');
+    break;
+
+  case Fruit.Cherry:
+    console.log('a cherry');
+    break;
+}
+```
+
+### ✅ Correct
+
+```ts
+enum Fruit {
+  Apple,
+  Banana,
+  Cherry,
+}
+
+const fruit = Fruit.Cherry as Fruit;
+
+switch (fruit) {
+  case Fruit.Apple:
+    console.log('an apple');
+    break;
+
+  default:
+    console.log('a fruit');
+    break;
+}
+```
+
 ## When Not To Use It
 
-If you don't frequently `switch` over union types with many parts, or intentionally wish to leave out some parts.
+If you don't frequently `switch` over union types or enums with many parts, or intentionally wish to leave out some parts.

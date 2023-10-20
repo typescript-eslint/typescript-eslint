@@ -17,7 +17,7 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Require switch-case statements to be exhaustive with union type',
+        'Require switch-case statements to be exhaustive with union type or enum',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
@@ -66,6 +66,7 @@ export default createRule({
         }
 
         const missingBranchName = missingBranchType.getSymbol()?.escapedName;
+        const requiresBackticks = missingBranchName?.match(/[\r\n]/g);
         let caseTest = checker.typeToString(missingBranchType);
 
         if (
@@ -73,10 +74,18 @@ export default createRule({
           (missingBranchName || missingBranchName === '') &&
           requiresQuoting(missingBranchName.toString(), compilerOptions.target)
         ) {
-          caseTest = `${symbolName}['${missingBranchName}']`;
+          caseTest = requiresBackticks
+            ? `${symbolName}[\`${missingBranchName}\`]`
+            : `${symbolName}['${missingBranchName}']`;
         }
 
-        const errorMessage = `Not implemented yet: ${caseTest} case`;
+        // escape single quotes and newlines, so that the error message is a readable and valid code.
+        const escapedCaseTest = caseTest
+          .replace(/'/g, "\\'")
+          .replace(/\n/g, '\\n')
+          .replace(/\r/g, '\\r');
+
+        const errorMessage = `Not implemented yet: ${escapedCaseTest} case`;
 
         missingCases.push(
           `case ${caseTest}: { throw new Error('${errorMessage}') }`,
