@@ -100,9 +100,7 @@ A boolean to specify if arrays from the rest operator are considered okay. `fals
 
 The examples below are **incorrect** when `{ignoreRestArgs: false}`, but **correct** when `{ignoreRestArgs: true}`.
 
-```ts
-/*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": false }]*/
-
+```ts option='{ "ignoreRestArgs": false }' showPlaygroundButton
 function foo1(...args: any[]): void {}
 function foo2(...args: readonly any[]): void {}
 function foo3(...args: Array<any>): void {}

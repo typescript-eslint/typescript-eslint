@@ -22,7 +22,7 @@ This option defines the expected import kind for type-only imports. Valid values
 
 Examples of **correct** code with `{prefer: 'type-imports'}`, and **incorrect** code with `{prefer: 'no-type-imports'}`.
 
-```ts
+```ts option='{ "prefer": "type-imports" }' showPlaygroundButton
 import type { Foo } from 'Foo';
 import type Bar from 'Bar';
 type T = Foo;
@@ -31,7 +31,7 @@ const x: Bar = 1;
 
 Examples of **incorrect** code with `{prefer: 'type-imports'}`, and **correct** code with `{prefer: 'no-type-imports'}`.
 
-```ts
+```ts option='{ "prefer": "type-imports" }' showPlaygroundButton
 import { Foo } from 'Foo';
 import Bar from 'Bar';
 type T = Foo;
@@ -58,7 +58,7 @@ const x: Bar = 1;
 
 #### ✅ With `separate-type-imports`
 
-```ts
+```ts option='{ "fixStyle": "separate-type-imports" }'
 import type { Foo } from 'Foo';
 import type Bar from 'Bar';
 type T = Foo;
@@ -67,7 +67,7 @@ const x: Bar = 1;
 
 #### ✅ With `inline-type-imports`
 
-```ts
+```ts option='{ "fixStyle": "inline-type-imports" }'
 import { type Foo } from 'Foo';
 import type Bar from 'Bar';
 type T = Foo;
@@ -83,7 +83,7 @@ Default is `true`.
 
 Examples of **incorrect** code with `{disallowTypeAnnotations: true}`:
 
-```ts
+```ts option='{ "disallowTypeAnnotations": true }' showPlaygroundButton
 type T = import('Foo').Foo;
 const x: import('Bar') = 1;
 ```
