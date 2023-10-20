@@ -66,7 +66,6 @@ export default createRule({
         }
 
         const missingBranchName = missingBranchType.getSymbol()?.escapedName;
-        const requiresBackticks = missingBranchName?.match(/[\r\n]/g);
         let caseTest = checker.typeToString(missingBranchType);
 
         if (
