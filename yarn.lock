@@ -8663,10 +8663,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"css-functions-list@npm:^3.2.0":
-  version: 3.2.0
-  resolution: "css-functions-list@npm:3.2.0"
-  checksum: fe912ea852fad500aef9a4f04db9a0371c7b0eb1ac1a45fbd8df0156ae0538cee7492ebd620b9bb502fe5bf2b5ed3bf3c16b6659cf67c7144eff0b597bcc3891
+"css-functions-list@npm:^3.2.1":
+  version: 3.2.1
+  resolution: "css-functions-list@npm:3.2.1"
+  checksum: 57d7deb3b05e84d95b88ba9b3244cf60d33b40652b3357f084c805b24a9febda5987ade44ef25a56be41e73249a7dcc157abd704d8a0e998b2c1c2e2d5de6461
   languageName: node
   linkType: hard
 
@@ -10650,7 +10650,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"file-entry-cache@npm:^7.0.1":
+"file-entry-cache@npm:^7.0.0, file-entry-cache@npm:^7.0.1":
   version: 7.0.1
   resolution: "file-entry-cache@npm:7.0.1"
   dependencies:
@@ -13753,10 +13753,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"known-css-properties@npm:^0.28.0":
-  version: 0.28.0
-  resolution: "known-css-properties@npm:0.28.0"
-  checksum: c9e0d6948e31386e872d348eb955e9db80edd58f9d7f7fc9b072180bfb26708a629d5942d4478f66fc766fb913c4552a220950730cef85f8c3bc9830e33b00c8
+"known-css-properties@npm:^0.29.0":
+  version: 0.29.0
+  resolution: "known-css-properties@npm:0.29.0"
+  checksum: daa6562e907f856cbfd58a00c42f532c9bba283388984da6a3bffb494e56612e5f23c52f30b0d9885f0ea07ad5d88bfa0470ee65017a6ce6c565289a1afd78af
   languageName: node
   linkType: hard
 
@@ -16836,14 +16836,14 @@ __metadata:
   languageName: node
   linkType: hard
 
-"postcss@npm:^8.3.11, postcss@npm:^8.4.13, postcss@npm:^8.4.14, postcss@npm:^8.4.21, postcss@npm:^8.4.27, postcss@npm:^8.4.7":
-  version: 8.4.28
-  resolution: "postcss@npm:8.4.28"
+"postcss@npm:^8.3.11, postcss@npm:^8.4.13, postcss@npm:^8.4.14, postcss@npm:^8.4.21, postcss@npm:^8.4.28, postcss@npm:^8.4.7":
+  version: 8.4.31
+  resolution: "postcss@npm:8.4.31"
   dependencies:
     nanoid: ^3.3.6
     picocolors: ^1.0.0
     source-map-js: ^1.0.2
-  checksum: f605c24a36f7e400bad379735fbfc893ccb8d293ad6d419bb824db77cdcb69f43d614ef35f9f7091f32ca588d130ec60dbcf53b366e6bf88a8a64bbeb3c05f6d
+  checksum: 1d8611341b073143ad90486fcdfeab49edd243377b1f51834dc4f6d028e82ce5190e4f11bb2633276864503654fb7cab28e67abdc0fbf9d1f88cad4a0ff0beea
   languageName: node
   linkType: hard
 
@@ -19207,8 +19207,8 @@ __metadata:
   linkType: hard
 
 "stylelint@npm:^15.10.1":
-  version: 15.10.3
-  resolution: "stylelint@npm:15.10.3"
+  version: 15.11.0
+  resolution: "stylelint@npm:15.11.0"
   dependencies:
     "@csstools/css-parser-algorithms": ^2.3.1
     "@csstools/css-tokenizer": ^2.2.0
@@ -19217,12 +19217,12 @@ __metadata:
     balanced-match: ^2.0.0
     colord: ^2.9.3
     cosmiconfig: ^8.2.0
-    css-functions-list: ^3.2.0
+    css-functions-list: ^3.2.1
     css-tree: ^2.3.1
     debug: ^4.3.4
     fast-glob: ^3.3.1
     fastest-levenshtein: ^1.0.16
-    file-entry-cache: ^6.0.1
+    file-entry-cache: ^7.0.0
     global-modules: ^2.0.0
     globby: ^11.1.0
     globjoin: ^0.1.4
@@ -19231,13 +19231,13 @@ __metadata:
     import-lazy: ^4.0.0
     imurmurhash: ^0.1.4
     is-plain-object: ^5.0.0
-    known-css-properties: ^0.28.0
+    known-css-properties: ^0.29.0
     mathml-tag-names: ^2.1.3
     meow: ^10.1.5
     micromatch: ^4.0.5
     normalize-path: ^3.0.0
     picocolors: ^1.0.0
-    postcss: ^8.4.27
+    postcss: ^8.4.28
     postcss-resolve-nested-selector: ^0.1.1
     postcss-safe-parser: ^6.0.0
     postcss-selector-parser: ^6.0.13
@@ -19252,7 +19252,7 @@ __metadata:
     write-file-atomic: ^5.0.1
   bin:
     stylelint: bin/stylelint.mjs
-  checksum: eb70dd0e4d500141f4868ddb7403ad7eb8732b02a3f2fe3907d0859369cedd395b60b0075da758b5be07de771c586b1bf64de4eead8159d46b0d16beff827e67
+  checksum: 9835f8a3e3976a3b81a35569d08f5f4a9c3b5cff415f1345a505870afc0c3231acff27f119d937c5bb11fdbc98d554af564c2a648a52604280a59a11974fcbfc
   languageName: node
   linkType: hard
 
