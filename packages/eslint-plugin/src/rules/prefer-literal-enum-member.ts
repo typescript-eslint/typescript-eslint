@@ -59,16 +59,44 @@ export default createRule({
           return;
         }
 
+        // Allow bitwise operators when both operands are literals or refer to another member on this enum
         if (
           allowBitwiseExpressions &&
           node.initializer.type === AST_NODE_TYPES.BinaryExpression &&
           ['|', '&', '^', '<<', '>>', '>>>'].includes(
             node.initializer.operator,
           ) &&
-          node.initializer.left.type === AST_NODE_TYPES.Literal &&
-          node.initializer.right.type === AST_NODE_TYPES.Literal
+          node.parent.type === AST_NODE_TYPES.TSEnumDeclaration
         ) {
-          return;
+          const leftIsLiteral =
+            node.initializer.left.type === AST_NODE_TYPES.Literal;
+          const rightIsLiteral =
+            node.initializer.right.type === AST_NODE_TYPES.Literal;
+
+          // early branch, so gathering member identifiers only happens when needed
+          if (leftIsLiteral && rightIsLiteral) {
+            return;
+          }
+
+          const members = node.parent.members.reduce((names, member) => {
+            if ('name' in member.id) names.push(member.id.name);
+            return names;
+          }, new Array<string>());
+
+          const leftIsValidIdentifier =
+            node.initializer.left.type === AST_NODE_TYPES.Identifier &&
+            members.includes(node.initializer.left.name);
+
+          const rightIsValidIdentifier =
+            node.initializer.right.type === AST_NODE_TYPES.Identifier &&
+            members.includes(node.initializer.right.name);
+
+          if (
+            (leftIsLiteral || leftIsValidIdentifier) &&
+            (rightIsLiteral || rightIsValidIdentifier)
+          ) {
+            return;
+          }
         }
 
         context.report({

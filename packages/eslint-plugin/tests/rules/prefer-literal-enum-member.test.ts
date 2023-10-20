@@ -73,6 +73,8 @@ enum Foo {
   E = 1 & 0,
   F = 1 ^ 0,
   G = ~1,
+  E = G | 1,
+  F = G | E,
 }
       `,
       options: [{ allowBitwiseExpressions: true }],
@@ -280,6 +282,8 @@ enum Foo {
   E = 1 & 0,
   F = 1 ^ 0,
   G = ~1,
+  E = G | 1,
+  F = G | E,
 }
       `,
       options: [{ allowBitwiseExpressions: false }],
@@ -317,6 +321,16 @@ enum Foo {
         {
           messageId: 'notLiteral',
           line: 9,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 10,
+          column: 3,
+        },
+        {
+          messageId: 'notLiteral',
+          line: 11,
           column: 3,
         },
       ],
