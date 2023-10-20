@@ -5652,9 +5652,9 @@ __metadata:
   linkType: hard
 
 "@types/tmp@npm:^0.2.3":
-  version: 0.2.4
-  resolution: "@types/tmp@npm:0.2.4"
-  checksum: bff8b07835fa686056ff03e5e3533d6890c07d0c5b9bd691d3142727176b8fae4494e4944f827ba43ed54690ed837c0e1afb2fb19da7c7d8abc78f1b2d57ee41
+  version: 0.2.5
+  resolution: "@types/tmp@npm:0.2.5"
+  checksum: eb6a45814ebe039d47448c1e6adf24ba738ce771d14e39a2d2aa4c4d54a3744b184c9f04d65bdf9c5221a2d7d6fcb27ee5414299f85f737285f07402b58b6803
   languageName: node
   linkType: hard
 
