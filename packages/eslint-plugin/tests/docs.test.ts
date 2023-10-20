@@ -1,7 +1,6 @@
 import fs from 'fs';
 import { marked } from 'marked';
 import path from 'path';
-import { titleCase } from 'title-case';
 
 import rules from '../src/rules';
 
@@ -38,7 +37,9 @@ function tokenIsH2(
   );
 }
 
-describe('Validating rule docs', () => {
+describe('Validating rule docs', async () => {
+  const { titleCase } = await import('title-case');
+
   const ignoredFiles = new Set([
     'README.md',
     'TEMPLATE.md',
