@@ -79,7 +79,9 @@ export default createRule({
           }
 
           const members = node.parent.members.reduce((names, member) => {
-            if ('name' in member.id) names.push(member.id.name);
+            if ('name' in member.id) {
+              names.push(member.id.name);
+            }
             return names;
           }, new Array<string>());
 
