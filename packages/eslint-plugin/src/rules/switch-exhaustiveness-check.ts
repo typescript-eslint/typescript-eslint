@@ -70,10 +70,11 @@ export default createRule({
         let caseTest = checker.typeToString(missingBranchType);
 
         if (
-          symbolName &&
           (missingBranchName || missingBranchName === '') &&
           requiresQuoting(missingBranchName.toString(), compilerOptions.target)
         ) {
+          const requiresBackticks = missingBranchName?.match(/[\r\n]/g);
+
           caseTest = requiresBackticks
             ? `${symbolName}[\`${missingBranchName}\`]`
             : `${symbolName}['${missingBranchName}']`;
