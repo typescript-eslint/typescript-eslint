@@ -311,7 +311,7 @@ declare class SourceCodeBase extends TokenStore {
    * This array does not include the currently-traversed node itself.
    * @since 8.38.0
    */
-  getScope(node: TSESTree.Node): TSESTree.Node[];
+  getAncestors(node: TSESTree.Node): TSESTree.Node[];
   /**
    * Returns a list of variables declared by the given node.
    * This information can be used to track references to variables.
