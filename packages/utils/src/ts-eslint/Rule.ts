@@ -256,6 +256,7 @@ interface RuleContext<
   /**
    * Returns the scope of the currently-traversed node.
    * This information can be used track references to variables.
+   * @deprecated in favor of `context.getSourceCode().getScope(node)`
    */
   getScope(): Scope.Scope;
 
