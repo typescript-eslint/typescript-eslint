@@ -37,9 +37,7 @@ function tokenIsH2(
   );
 }
 
-describe('Validating rule docs', async () => {
-  const { titleCase } = await import('title-case');
-
+describe('Validating rule docs', () => {
   const ignoredFiles = new Set([
     'README.md',
     'TEMPLATE.md',
@@ -92,7 +90,9 @@ describe('Validating rule docs', async () => {
         });
       });
 
-      test(`headers must be title-cased`, () => {
+      test(`headers must be title-cased`, async () => {
+        const { titleCase } = await import('title-case');
+
         // Get all H2 headers objects as the other levels are variable by design.
         const headers = tokens.filter(tokenIsH2);
 
