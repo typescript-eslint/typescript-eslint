@@ -5333,21 +5333,21 @@ __metadata:
   linkType: hard
 
 "@types/jest-specific-snapshot@npm:^0.5.6":
-  version: 0.5.7
-  resolution: "@types/jest-specific-snapshot@npm:0.5.7"
+  version: 0.5.8
+  resolution: "@types/jest-specific-snapshot@npm:0.5.8"
   dependencies:
     "@types/jest": "*"
-  checksum: 0b540abd40b142168e8829c8c3819def2eeb3a8cae0e68f94cc4afe48dc70bdbc60ceca330c2e32e847981c2b4fdedfaecebcfbac38a32ffd1c65454b08d0e97
+  checksum: 5f707d32655a2fae5b6c7b2396a66a41367adbe17cddf30a2e67bf9a9940e60ccb893e1da1f506df490befd9e54097af2ea88ef804f4c3f52c03a7c93a7f68fb
   languageName: node
   linkType: hard
 
-"@types/jest@npm:*, @types/jest@npm:29.5.5":
-  version: 29.5.5
-  resolution: "@types/jest@npm:29.5.5"
+"@types/jest@npm:*, @types/jest@npm:29.5.6":
+  version: 29.5.6
+  resolution: "@types/jest@npm:29.5.6"
   dependencies:
     expect: ^29.0.0
     pretty-format: ^29.0.0
-  checksum: 56e55cde9949bcc0ee2fa34ce5b7c32c2bfb20e53424aa4ff3a210859eeaaa3fdf6f42f81a3f655238039cdaaaf108b054b7a8602f394e6c52b903659338d8c6
+  checksum: fa13a27bd1c8efd0381a419478769d0d6d3a8e93e1952d7ac3a16274e8440af6f73ed6f96ac1ff00761198badf2ee226b5ab5583a5d87a78d609ea78da5c5a24
   languageName: node
   linkType: hard
 
@@ -5956,7 +5956,7 @@ __metadata:
     "@types/babel__core": ^7.20.1
     "@types/debug": ^4.1.8
     "@types/is-glob": ^4.0.2
-    "@types/jest": 29.5.5
+    "@types/jest": 29.5.6
     "@types/jest-specific-snapshot": ^0.5.6
     "@types/marked": ^5.0.0
     "@types/natural-compare": ^1.4.1
