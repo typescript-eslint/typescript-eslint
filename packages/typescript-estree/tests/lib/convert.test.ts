@@ -369,19 +369,5 @@ describe('convert', () => {
 
       expect(() => instance.convertProgram()).toThrow();
     });
-    it('using should be forbidden in for of statement ', () => {
-      const ast = convertCode('for(using foo of {});');
-
-      const instance = new Converter(ast);
-
-      expect(() => instance.convertProgram()).toThrow();
-    });
-    it('using should be forbidden in for statement ', () => {
-      const ast = convertCode('for(using i; i <= 0 ; ++i);');
-
-      const instance = new Converter(ast);
-
-      expect(() => instance.convertProgram()).toThrow();
-    });
   });
 });

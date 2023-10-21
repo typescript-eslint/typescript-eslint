@@ -909,9 +909,6 @@ export class Converter {
         });
 
       case SyntaxKind.ForStatement:
-        if (node.initializer) {
-          this.#checkForStatementDeclaration(node.initializer);
-        }
         return this.createNode<TSESTree.ForStatement>(node, {
           type: AST_NODE_TYPES.ForStatement,
           init: this.convertChild(node.initializer),
@@ -930,7 +927,6 @@ export class Converter {
         });
 
       case SyntaxKind.ForOfStatement:
-        this.#checkForStatementDeclaration(node.initializer);
         return this.createNode<TSESTree.ForOfStatement>(node, {
           type: AST_NODE_TYPES.ForOfStatement,
           left: this.convertPattern(node.initializer),
