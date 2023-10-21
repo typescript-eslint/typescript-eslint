@@ -32,3 +32,5 @@ packages/website/build
 
 # see the file header in eslint-base.test.js for more info
 packages/rule-tester/tests/eslint-base
+
+/.nx/cache
