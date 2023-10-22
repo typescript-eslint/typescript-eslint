@@ -16,6 +16,7 @@ export default function NotFound(): React.JSX.Element {
           <div className="row">
             <div className="col col--8 col--offset-2">
               <h1 className={styles.title}>
+                <div className={styles.code}>$ npx eslint .</div>
                 <strong>
                   {`'${location.pathname}'`.split('').map((letter, i) => (
                     <span className={styles.word} key={i}>

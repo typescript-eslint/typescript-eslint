@@ -4,8 +4,7 @@
   margin-bottom: 2rem;
 }
 
-.title::before {
-  content: '$ npx eslint .';
+.code {
   display: block;
   font-size: 1.5rem;
 }
