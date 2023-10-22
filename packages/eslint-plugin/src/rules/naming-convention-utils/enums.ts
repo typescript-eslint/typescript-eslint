@@ -50,6 +50,7 @@ enum Selectors {
 type SelectorsString = keyof typeof Selectors;
 
 enum MetaSelectors {
+  /* eslint-disable @typescript-eslint/prefer-literal-enum-member */
   default = -1,
   variableLike = 0 |
     Selectors.variable |
@@ -79,6 +80,7 @@ enum MetaSelectors {
     Selectors.classProperty |
     Selectors.objectLiteralProperty |
     Selectors.typeProperty,
+  /* eslint-enable @typescript-eslint/prefer-literal-enum-member */
 }
 type MetaSelectorsString = keyof typeof MetaSelectors;
 type IndividualAndMetaSelectorsString = MetaSelectorsString | SelectorsString;

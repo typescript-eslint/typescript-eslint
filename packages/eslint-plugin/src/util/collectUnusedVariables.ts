@@ -323,7 +323,7 @@ class UnusedVarsVisitor<
 
   protected TSModuleDeclaration(node: TSESTree.TSModuleDeclaration): void {
     // -- global augmentation can be in any file, and they do not need exports
-    if (node.global === true) {
+    if (node.global) {
       this.markVariableAsUsed('global', node.parent);
     }
   }

@@ -52,10 +52,7 @@ export default createRule<Options, MessageIds>({
     const filename = context.getFilename();
 
     function isDeclaration(node: TSESTree.Node): boolean {
-      if (
-        node.type === AST_NODE_TYPES.TSModuleDeclaration &&
-        node.declare === true
-      ) {
+      if (node.type === AST_NODE_TYPES.TSModuleDeclaration && node.declare) {
         return true;
       }
 

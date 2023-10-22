@@ -237,7 +237,7 @@ export class RuleTester extends TestFramework {
 
     // convenience iterator to make it easy to loop all tests without a concat
     const allTestsIterator = {
-      *[Symbol.iterator](): Generator<ValidTestCase<TOptions>, void, unknown> {
+      *[Symbol.iterator](): Generator<ValidTestCase<TOptions>, void> {
         for (const testCase of normalizedTests.valid) {
           yield testCase;
         }
