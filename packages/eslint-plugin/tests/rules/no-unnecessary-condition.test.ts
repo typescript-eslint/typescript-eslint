@@ -556,6 +556,102 @@ declare const foo: Foo;
 declare const key: Key;
 foo?.[key]?.trim();
     `,
+    {
+      code: `
+type BrandedKey = string & { __brand: string };
+type Foo = { [key: BrandedKey]: string } | null;
+declare const foo: Foo;
+const key = '1' as BrandedKey;
+foo?.[key]?.trim();
+      `,
+      parserOptions: {
+        EXPERIMENTAL_useProjectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
+        project: './tsconfig.noUncheckedIndexedAccess.json',
+      },
+      dependencyConstraints: {
+        typescript: '4.1',
+      },
+    },
+    {
+      code: `
+type BrandedKey<S extends string> = S & { __brand: string };
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = BrandedKey<'bar'> | BrandedKey<'foo'>;
+declare const foo: Foo;
+declare const key: Key;
+foo?.[key].trim();
+      `,
+      parserOptions: {
+        EXPERIMENTAL_useProjectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
+        project: './tsconfig.noUncheckedIndexedAccess.json',
+      },
+      dependencyConstraints: {
+        typescript: '4.1',
+      },
+    },
+    {
+      code: `
+type BrandedKey = string & { __brand: string };
+interface Outer {
+  inner?: {
+    [key: BrandedKey]: string | undefined;
+  };
+}
+function Foo(outer: Outer, key: BrandedKey): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+      `,
+      parserOptions: {
+        EXPERIMENTAL_useProjectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
+        project: './tsconfig.noUncheckedIndexedAccess.json',
+      },
+      dependencyConstraints: {
+        typescript: '4.1',
+      },
+    },
+    {
+      code: `
+interface Outer {
+  inner?: {
+    [key: string & { __brand: string }]: string | undefined;
+    bar: 'bar';
+  };
+}
+type Foo = 'foo' & { __brand: string };
+function Foo(outer: Outer, key: Foo): number | undefined {
+  return outer.inner?.[key]?.charCodeAt(0);
+}
+      `,
+      parserOptions: {
+        EXPERIMENTAL_useProjectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
+        project: './tsconfig.noUncheckedIndexedAccess.json',
+      },
+      dependencyConstraints: {
+        typescript: '4.1',
+      },
+    },
+    {
+      code: `
+type BrandedKey<S extends string> = S & { __brand: string };
+type Foo = { [key: string]: string; foo: 'foo'; bar: 'bar' } | null;
+type Key = BrandedKey<'bar'> | BrandedKey<'foo'> | BrandedKey<'baz'>;
+declare const foo: Foo;
+declare const key: Key;
+foo?.[key]?.trim();
+      `,
+      parserOptions: {
+        EXPERIMENTAL_useProjectService: false,
+        tsconfigRootDir: getFixturesRootDir(),
+        project: './tsconfig.noUncheckedIndexedAccess.json',
+      },
+      dependencyConstraints: {
+        typescript: '4.1',
+      },
+    },
     `
 let latencies: number[][] = [];
 
