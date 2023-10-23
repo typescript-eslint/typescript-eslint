@@ -9,6 +9,10 @@ on:
       - '**'
   merge_group:
 
+concurrency:
+  group: '${{ github.workflow }} - ${{ github.head_ref || github.ref }}'
+  cancel-in-progress: true
+
 env:
   PRIMARY_NODE_VERSION: '>=20.6.1'
   # Only set the read-write token if we are on the main branch
