@@ -36,7 +36,7 @@ export interface LetOrConstOrVarDeclaration extends BaseNode {
   kind: 'const' | 'let' | 'var';
 }
 
-export interface UsingInNomalConextDeclaration extends BaseNode {
+export interface UsingInNomalContextDeclaration extends BaseNode {
   type: AST_NODE_TYPES.VariableDeclaration;
   /**
    * The variables declared by this declaration.
@@ -91,6 +91,6 @@ export interface UsingInForOfDeclaration extends BaseNode {
 
 export type UsingDeclaration =
   | UsingInForOfDeclaration
-  | UsingInNomalConextDeclaration;
+  | UsingInNomalContextDeclaration;
 
 export type VariableDeclaration = LetOrConstOrVarDeclaration | UsingDeclaration;

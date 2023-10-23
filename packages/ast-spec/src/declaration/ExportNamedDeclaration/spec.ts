@@ -14,8 +14,17 @@ interface ExportNamedDeclarationBase extends BaseNode {
    * export { foo } from 'mod' assert { type: 'json' };
    * ```
    * This will be an empty array if `source` is `null`
+   * @deprecated Replaced with {@link `attributes`}.
    */
   assertions: ImportAttribute[];
+  /**
+   * The attributes declared for the export.
+   * ```
+   * export { foo } from 'mod' assert { type: 'json' };
+   * ```
+   * This will be an empty array if `source` is `null`
+   */
+  attributes: ImportAttribute[];
   /**
    * The exported declaration.
    * ```
@@ -44,8 +53,15 @@ interface ExportNamedDeclarationBase extends BaseNode {
 
 export interface ExportNamedDeclarationWithoutSourceWithMultiple
   extends ExportNamedDeclarationBase {
-  // this will always be empty array
+  /**
+   * This will always be an empty array.
+   * @deprecated Replaced with {@link `attributes`}.
+   */
   assertions: ImportAttribute[];
+  /**
+   * This will always be an empty array.
+   */
+  attributes: ImportAttribute[];
   declaration: null;
   source: null;
   specifiers: ExportSpecifier[];
@@ -53,17 +69,32 @@ export interface ExportNamedDeclarationWithoutSourceWithMultiple
 
 export interface ExportNamedDeclarationWithoutSourceWithSingle
   extends ExportNamedDeclarationBase {
-  // this will always be empty array
+  /**
+   * This will always be an empty array.
+   * @deprecated Replaced with {@link `attributes`}.
+   */
   assertions: ImportAttribute[];
+  /**
+   * This will always be an empty array.
+   */
+  attributes: ImportAttribute[];
   declaration: NamedExportDeclarations;
   source: null;
-  // this will always be empty array
+  //Tthis will always be an empty array.
   specifiers: ExportSpecifier[];
 }
 
 export interface ExportNamedDeclarationWithSource
   extends ExportNamedDeclarationBase {
+  /**
+   * This will always be an empty array.
+   * @deprecated Replaced with {@link `attributes`}.
+   */
   assertions: ImportAttribute[];
+  /**
+   * This will always be an empty array.
+   */
+  attributes: ImportAttribute[];
   declaration: null;
   source: StringLiteral;
   specifiers: ExportSpecifier[];

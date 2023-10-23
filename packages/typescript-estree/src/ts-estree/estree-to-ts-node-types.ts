@@ -77,7 +77,7 @@ export interface EstreeToTsNodeTypes {
     | ts.Token<ts.SyntaxKind.ImportKeyword | ts.SyntaxKind.NewKeyword>;
   [AST_NODE_TYPES.PrivateIdentifier]: ts.PrivateIdentifier;
   [AST_NODE_TYPES.IfStatement]: ts.IfStatement;
-  [AST_NODE_TYPES.ImportAttribute]: ts.AssertEntry;
+  [AST_NODE_TYPES.ImportAttribute]: ts.ImportAttribute;
   [AST_NODE_TYPES.ImportDeclaration]: ts.ImportDeclaration;
   [AST_NODE_TYPES.ImportDefaultSpecifier]: ts.ImportClause;
   [AST_NODE_TYPES.ImportExpression]: ts.CallExpression;

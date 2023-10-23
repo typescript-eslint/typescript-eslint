@@ -65,6 +65,9 @@ function createIsolatedProgram(
   const program = ts.createProgram(
     [parseSettings.filePath],
     {
+      ...(ts.JSDocParsingMode && {
+        jsDocParsingMode: ts.JSDocParsingMode.ParseForTypeInfo,
+      }),
       noResolve: true,
       target: ts.ScriptTarget.Latest,
       jsx: parseSettings.jsx ? ts.JsxEmit.Preserve : undefined,
