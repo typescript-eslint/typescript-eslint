@@ -31,25 +31,22 @@ export function warnAboutTSVersion(
     return;
   }
 
-  const border = '=============';
-  const versionWarning = [
-    border,
-    'WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.',
-    'You may find that it works just fine, or you may not.',
-    `SUPPORTED TYPESCRIPT VERSIONS: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
-    `YOUR TYPESCRIPT VERSION: ${ACTIVE_TYPESCRIPT_VERSION}`,
-    'Please only submit bug reports when using the officially supported version.',
-    border,
-  ].join('\n\n');
+  if (
+    passedLoggerFn ||
+    (typeof process === 'undefined' ? false : process.stdout?.isTTY)
+  ) {
+    const border = '=============';
+    const versionWarning = [
+      border,
+      'WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.',
+      'You may find that it works just fine, or you may not.',
+      `SUPPORTED TYPESCRIPT VERSIONS: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
+      `YOUR TYPESCRIPT VERSION: ${ACTIVE_TYPESCRIPT_VERSION}`,
+      'Please only submit bug reports when using the officially supported version.',
+      border,
+    ].join('\n\n');
 
-  if (passedLoggerFn) {
     parseSettings.log(versionWarning);
-  } else {
-    const isTTY =
-      typeof process === 'undefined' ? false : process.stdout?.isTTY;
-    if (isTTY) {
-      parseSettings.log(versionWarning);
-    }
   }
 
   warnedAboutTSVersion = true;
