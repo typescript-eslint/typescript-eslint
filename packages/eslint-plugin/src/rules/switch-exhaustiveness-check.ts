@@ -69,6 +69,7 @@ export default createRule({
         let caseTest = checker.typeToString(missingBranchType);
 
         if (
+          symbolName &&
           (missingBranchName || missingBranchName === '') &&
           requiresQuoting(missingBranchName.toString(), compilerOptions.target)
         ) {
