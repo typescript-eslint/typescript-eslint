@@ -72,23 +72,19 @@ export default createRule({
           (missingBranchName || missingBranchName === '') &&
           requiresQuoting(missingBranchName.toString(), compilerOptions.target)
         ) {
-          const requiresBackticks = missingBranchName?.match(/[\r\n]/g);
+          const escapedBranchName = missingBranchName
+            .replace(/'/g, "\\'")
+            .replace(/\n/g, '\\n')
+            .replace(/\r/g, '\\r');
 
-          caseTest = requiresBackticks
-            ? `${symbolName}[\`${missingBranchName}\`]`
-            : `${symbolName}['${missingBranchName}']`;
+          caseTest = `${symbolName}['${escapedBranchName}']`;
         }
 
-        // escape single quotes and newlines, so that the error message is readable and valid code.
-        const escapedCaseTest = caseTest
-          .replace(/'/g, "\\'")
-          .replace(/\n/g, '\\n')
-          .replace(/\r/g, '\\r');
-
-        const errorMessage = `Not implemented yet: ${escapedCaseTest} case`;
+        const errorMessage = `Not implemented yet: ${caseTest} case`;
+        const escapedErrorMessage = errorMessage.replace(/'/g, "\\'");
 
         missingCases.push(
-          `case ${caseTest}: { throw new Error('${errorMessage}') }`,
+          `case ${caseTest}: { throw new Error('${escapedErrorMessage}') }`,
         );
       }
 

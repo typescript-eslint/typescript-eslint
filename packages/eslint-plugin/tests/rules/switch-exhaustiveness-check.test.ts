@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import path from 'path';
 
 import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-check';
@@ -634,9 +634,42 @@ function test(arg: Enum): string {
 
         switch (a) {
         case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
-        case Enum[\`key-with
+        case Enum['key-with\\n\\n          new-line']: { throw new Error('Not implemented yet: Enum[\\'key-with\\n\\n          new-line\\'] case') }
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+        enum Enum {
+          'a' = 1,
+          "'a' \`b\` \\"c\\"" = 2,
+        }
 
-          new-line\`]: { throw new Error('Not implemented yet: Enum[\`key-with\\n\\n          new-line\`] case') }
+        declare const a: Enum;
+
+        switch (a) {}
+      `,
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+        enum Enum {
+          'a' = 1,
+          "'a' \`b\` \\"c\\"" = 2,
+        }
+
+        declare const a: Enum;
+
+        switch (a) {
+        case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
+        case Enum['\\'a\\' \`b\` "c"']: { throw new Error('Not implemented yet: Enum[\\'\\\\'a\\\\' \`b\` "c"\\'] case') }
         }
       `,
             },
