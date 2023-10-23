@@ -1,5 +1,5 @@
 ---
-description: 'Require switch-case statements to be exhaustive with union type or enum.'
+description: 'Require switch-case statements to be exhaustive with union types and enums.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -12,6 +12,10 @@ However, if the union type or the enum changes, it's easy to forget to modify th
 This rule reports when a `switch` statement over a value typed as a union of literals or as an enum is missing a case for any of those literal types and does not have a `default` clause.
 
 ## Examples
+
+When the switch doesn't have exhaustive cases, either filling them all out or adding a default will correct the rule's complaint.
+
+Here are some examples of code working with a union of literals:
 
 <!--tabs-->
 
@@ -27,7 +31,7 @@ type Day =
   | 'Saturday'
   | 'Sunday';
 
-const day = 'Monday' as Day;
+declare const day: Day;
 let result = 0;
 
 switch (day) {
@@ -49,7 +53,7 @@ type Day =
   | 'Saturday'
   | 'Sunday';
 
-const day = 'Monday' as Day;
+declare const day: Day;
 let result = 0;
 
 switch (day) {
@@ -89,7 +93,7 @@ type Day =
   | 'Saturday'
   | 'Sunday';
 
-const day = 'Monday' as Day;
+declare const day: Day;
 let result = 0;
 
 switch (day) {
@@ -100,6 +104,10 @@ switch (day) {
     result = 42;
 }
 ```
+
+<!--/tabs-->
+
+Likewise, here are some examples of code working with an enum:
 
 <!--tabs-->
 
@@ -112,7 +120,7 @@ enum Fruit {
   Cherry,
 }
 
-const fruit = Fruit.Cherry as Fruit;
+declare const fruit: Fruit;
 
 switch (fruit) {
   case Fruit.Apple:
@@ -130,7 +138,7 @@ enum Fruit {
   Cherry,
 }
 
-const fruit = Fruit.Cherry as Fruit;
+declare const fruit: Fruit;
 
 switch (fruit) {
   case Fruit.Apple:
@@ -156,7 +164,7 @@ enum Fruit {
   Cherry,
 }
 
-const fruit = Fruit.Cherry as Fruit;
+declare const fruit: Fruit;
 
 switch (fruit) {
   case Fruit.Apple:
@@ -168,6 +176,8 @@ switch (fruit) {
     break;
 }
 ```
+
+<!--/tabs-->
 
 ## When Not To Use It
 

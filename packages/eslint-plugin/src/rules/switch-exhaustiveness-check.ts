@@ -17,7 +17,7 @@ export default createRule({
     type: 'suggestion',
     docs: {
       description:
-        'Require switch-case statements to be exhaustive with union type or enum',
+        'Require switch-case statements to be exhaustive with union types and enums',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
@@ -79,7 +79,7 @@ export default createRule({
             : `${symbolName}['${missingBranchName}']`;
         }
 
-        // escape single quotes and newlines, so that the error message is a readable and valid code.
+        // escape single quotes and newlines, so that the error message is readable and valid code.
         const escapedCaseTest = caseTest
           .replace(/'/g, "\\'")
           .replace(/\n/g, '\\n')
