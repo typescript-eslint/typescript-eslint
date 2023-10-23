@@ -1,12 +1,17 @@
-import { ESLintUtils, TSESLint, TSESTree } from '@typescript-eslint/utils';
-import { createRule, isFunction } from '../util';
+import {
+  ESLintUtils,
+  type TSESLint,
+  type TSESTree,
+} from '@typescript-eslint/utils';
+
+import { createRule } from '../util';
 
 export default createRule({
   defaultOptions: [],
   name: 'no-spread-function',
   meta: {
     docs: {
-      description: 'Disallow spread operator on function.',
+      description: 'Disallow spread operator on function',
       recommended: 'stylistic',
       requiresTypeChecking: true,
     },

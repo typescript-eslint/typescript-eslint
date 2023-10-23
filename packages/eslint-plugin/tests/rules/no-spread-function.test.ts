@@ -18,16 +18,16 @@ ruleTester.run('no-spread-function', rule, {
 const a = () => ({ value: 33 });
 const b = {
   ...a(),
-  name: 'name'
+  name: 'name',
 };
-`,
+    `,
     `
 const a = (x: number) => ({ value: x });
 const b = {
   ...a(42),
-  name: 'name'
+  name: 'name',
 };
-`,
+    `,
     `
 interface FuncWithProps {
   property?: string;
@@ -35,47 +35,47 @@ interface FuncWithProps {
 }
 const funcWithProps: FuncWithProps = () => 1;
 funcWithProps.property = 'foo';
-const spreadFuncWithProps = {...funcWithProps};
-`,
+const spreadFuncWithProps = { ...funcWithProps };
+    `,
     `
 type FuncWithProps = {
   property?: string;
   (): number;
-}
+};
 const funcWithProps: FuncWithProps = () => 1;
 funcWithProps.property = 'foo';
-const spreadFuncWithProps = {...funcWithProps};
-`,
+const spreadFuncWithProps = { ...funcWithProps };
+    `,
     `
 const a = { value: 33 };
 const b = {
   ...a,
-  name: 'name'
+  name: 'name',
 };
-`,
+    `,
     `
 const a = {};
 const b = {
   ...a,
-  name: 'name'
+  name: 'name',
 };
-`,
+    `,
     `
 const a = () => ({ value: 33 });
-const b = ({value: number}) => ({value: value})
-b({...a()})
-`,
+const b = ({ value: number }) => ({ value: value });
+b({ ...a() });
+    `,
     `
 const a = () => ({ value: 33 });
-const b = ({value: number}) => ({value: value})
-`,
+const b = ({ value: number }) => ({ value: value });
+    `,
     `
 const a = [33];
 const b = {
   ...a,
-  name: 'name'
+  name: 'name',
 };
-`,
+    `,
   ],
   invalid: [
     {
@@ -83,7 +83,7 @@ const b = {
 const a = () => ({ value: 33 });
 const b = {
   ...a,
-  name: 'name'
+  name: 'name',
 };
       `,
       errors: [{ line: 4, column: 3, messageId: 'forbidden' }],
@@ -93,7 +93,7 @@ const b = {
 const a = (x: number) => ({ value: x });
 const b = {
   ...a,
-  name: 'name'
+  name: 'name',
 };
       `,
       errors: [{ line: 4, column: 3, messageId: 'forbidden' }],
@@ -101,10 +101,10 @@ const b = {
     {
       code: `
 const a = () => ({ value: 33 });
-const b = ({value: number}) => ({value: value})
-b({...a})
+const b = ({ value: number }) => ({ value: value });
+b({ ...a });
       `,
-      errors: [{ line: 4, column: 4, messageId: 'forbidden' }],
+      errors: [{ line: 4, column: 5, messageId: 'forbidden' }],
     },
   ],
 });

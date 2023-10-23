@@ -71,6 +71,7 @@ import noRedundantTypeConstituents from './no-redundant-type-constituents';
 import noRequireImports from './no-require-imports';
 import noRestrictedImports from './no-restricted-imports';
 import noShadow from './no-shadow';
+import noSpreadFunction from './no-spread-function';
 import noThisAlias from './no-this-alias';
 import noThrowLiteral from './no-throw-literal';
 import noTypeAlias from './no-type-alias';
@@ -208,6 +209,7 @@ export default {
   'no-require-imports': noRequireImports,
   'no-restricted-imports': noRestrictedImports,
   'no-shadow': noShadow,
+  'no-spread-function': noSpreadFunction,
   'no-this-alias': noThisAlias,
   'no-throw-literal': noThrowLiteral,
   'no-type-alias': noTypeAlias,
