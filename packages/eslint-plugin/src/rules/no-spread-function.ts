@@ -1,0 +1,42 @@
+import { ESLintUtils, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { createRule, isFunction } from '../util';
+
+export default createRule({
+  defaultOptions: [],
+  name: 'no-spread-function',
+  meta: {
+    docs: {
+      description: 'Disallow spread operator on function.',
+      recommended: 'stylistic',
+      requiresTypeChecking: true,
+    },
+    messages: {
+      forbidden:
+        'Spreading a function is almost always a mistake. Did you forgot to call the function?',
+    },
+    schema: [],
+    type: 'suggestion',
+  },
+  create: (context): TSESLint.RuleListener => {
+    const listener = (node: TSESTree.SpreadElement): void => {
+      const svc = ESLintUtils.getParserServices(context);
+      const tc = svc.program.getTypeChecker();
+
+      const tsNode = svc.esTreeNodeToTSNodeMap.get(node.argument);
+      const type = tc.getTypeAtLocation(tsNode);
+
+      if (
+        type.getProperties().length === 0 &&
+        type.getCallSignatures().length > 0
+      ) {
+        context.report({
+          node,
+          messageId: 'forbidden',
+        });
+      }
+    };
+    return {
+      SpreadElement: listener,
+    };
+  },
+});
