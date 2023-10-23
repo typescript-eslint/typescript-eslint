@@ -108,6 +108,7 @@ export = {
     'no-restricted-imports': 'off',
     '@typescript-eslint/no-restricted-imports': 'error',
     'no-shadow': 'off',
+    '@typescript-eslint/no-spread-function': 'error',
     '@typescript-eslint/no-shadow': 'error',
     '@typescript-eslint/no-this-alias': 'error',
     'no-throw-literal': 'off',

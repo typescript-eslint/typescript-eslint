@@ -22,6 +22,7 @@ export = {
     'no-empty-function': 'off',
     '@typescript-eslint/no-empty-function': 'error',
     '@typescript-eslint/no-empty-interface': 'error',
+    '@typescript-eslint/no-spread-function': 'error',
     '@typescript-eslint/no-inferrable-types': 'error',
     '@typescript-eslint/non-nullable-type-assertion-style': 'error',
     '@typescript-eslint/prefer-for-of': 'error',
