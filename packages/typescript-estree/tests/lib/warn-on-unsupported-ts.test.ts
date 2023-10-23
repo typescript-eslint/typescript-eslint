@@ -11,7 +11,7 @@ describe('Warn on unsupported TypeScript version', () => {
 
   beforeEach(async () => {
     // @ts-expect-error -- We don't support ESM imports of local code yet.
-    parser = await import('../../src/parser.ts');
+    parser = await import('../../src/parser');
   });
   afterEach(() => {
     jest.resetModules();
