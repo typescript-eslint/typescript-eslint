@@ -607,7 +607,7 @@ export default createRule<Options, MessageIds>({
         const { namedSpecifiers: valueImportNamedSpecifiers } =
           classifySpecifier(sourceImports.valueImport);
         if (
-          sourceImports.valueOnlyNamedImport ||
+          sourceImports.valueOnlyNamedImport ??
           valueImportNamedSpecifiers.length
         ) {
           yield* fixInsertTypeKeywordInNamedSpecifierList(

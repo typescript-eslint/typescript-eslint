@@ -56,7 +56,6 @@ module.exports = {
     '@typescript-eslint/consistent-indexed-object-style': 'off',
     '@typescript-eslint/no-unnecessary-condition': 'off',
     '@typescript-eslint/no-dynamic-delete': 'off',
-    '@typescript-eslint/prefer-nullish-coalescing': 'off',
 
     // TODO(#7130): Investigate changing these in or removing these from presets
     '@typescript-eslint/no-confusing-void-expression': 'off',
@@ -107,6 +106,12 @@ module.exports = {
     '@typescript-eslint/no-unused-vars': [
       'error',
       { varsIgnorePattern: '^_', argsIgnorePattern: '^_' },
+    ],
+    '@typescript-eslint/prefer-nullish-coalescing': [
+      'error',
+      {
+        ignorePrimitives: true,
+      },
     ],
 
     //

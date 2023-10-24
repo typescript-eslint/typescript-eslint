@@ -393,7 +393,7 @@ export default createRule<Options, MessageIds>({
       let alignGroups: TSESTree.Node[][] = [];
       let unalignedElements: TSESTree.Node[] = [];
 
-      if (options.align || options.multiLine?.align) {
+      if (options.align ?? options.multiLine?.align) {
         let currentAlignGroup: TSESTree.Node[] = [];
         alignGroups.push(currentAlignGroup);
 

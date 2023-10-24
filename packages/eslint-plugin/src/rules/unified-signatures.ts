@@ -525,7 +525,7 @@ export default createRule<Options, MessageIds>({
       key ??= getOverloadKey(signature);
       if (
         currentScope &&
-        (containingNode || signature).parent === currentScope.parent
+        (containingNode ?? signature).parent === currentScope.parent
       ) {
         const overloads = currentScope.overloads.get(key);
         if (overloads !== undefined) {

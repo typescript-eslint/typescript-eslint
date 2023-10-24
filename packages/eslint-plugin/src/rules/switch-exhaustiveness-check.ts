@@ -70,6 +70,7 @@ export default createRule({
 
         if (
           symbolName &&
+          // eslint-disable-next-line @typescript-eslint/prefer-nullish-coalescing
           (missingBranchName || missingBranchName === '') &&
           requiresQuoting(missingBranchName.toString(), compilerOptions.target)
         ) {
