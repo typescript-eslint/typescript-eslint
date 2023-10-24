@@ -4,7 +4,7 @@ description: 'Disallow spread operator on function.'
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
 >
-> See **https://typescript-eslint.io/rules/no-spread-function** for documentation.
+> See **https://typescript-eslint.io/rules/no-misused-spread** for documentation.
 
 Spreading a function is almost always a mistake. Most of the time you forgot to call the function.
 

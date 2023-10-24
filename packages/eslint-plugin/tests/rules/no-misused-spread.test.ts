@@ -1,6 +1,6 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-import rule from '../../src/rules/no-spread-function';
+import rule from '../../src/rules/no-misused-spread';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
@@ -12,7 +12,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-ruleTester.run('no-spread-function', rule, {
+ruleTester.run('no-misused-spread', rule, {
   valid: [
     `
 const a = () => ({ value: 33 });

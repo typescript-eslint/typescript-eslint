@@ -8,7 +8,7 @@ import { createRule } from '../util';
 
 export default createRule({
   defaultOptions: [],
-  name: 'no-spread-function',
+  name: 'no-misused-spread',
   meta: {
     docs: {
       description: 'Disallow spread operator on function',
