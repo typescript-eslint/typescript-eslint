@@ -73,7 +73,6 @@ export default createRule({
           const rightIsLiteral =
             node.initializer.right.type === AST_NODE_TYPES.Literal;
 
-          // early branch, so gathering member identifiers only happens when needed
           if (leftIsLiteral && rightIsLiteral) {
             return;
           }
