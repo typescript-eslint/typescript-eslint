@@ -4,7 +4,6 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 export function getThisExpression(
   node: TSESTree.Node,
 ): TSESTree.ThisExpression | undefined {
-  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   while (node) {
     if (node.type === AST_NODE_TYPES.CallExpression) {
       node = node.callee;

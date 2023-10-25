@@ -414,7 +414,6 @@ export default createRule<Options, MessageIds>({
       let node: TSESTree.Node | undefined = outerDef.name;
       const location = callExpression.range[1];
 
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       while (node) {
         if (node.type === AST_NODE_TYPES.VariableDeclarator) {
           if (isInRange(node.init, location)) {

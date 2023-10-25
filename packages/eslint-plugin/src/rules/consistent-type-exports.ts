@@ -108,7 +108,6 @@ export default createRule<Options, MessageIds>({
       ExportNamedDeclaration(node: TSESTree.ExportNamedDeclaration): void {
         // Coerce the source into a string for use as a lookup entry.
         const source = getSourceFromExport(node) ?? 'undefined';
-        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
         const sourceExports = (sourceExportsMap[source] ||= {
           source,
           reportValueExports: [],

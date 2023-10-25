@@ -171,9 +171,7 @@ export default createRule<Options, MessageIds>({
       const isTypeParameter = getIsTypeParameter(typeParameters);
       for (const overloads of signatures) {
         forEachPair(overloads, (a, b) => {
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           const signature0 = (a as MethodDefinition).value ?? a;
-          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           const signature1 = (b as MethodDefinition).value ?? b;
 
           const unify = compareSignatures(
