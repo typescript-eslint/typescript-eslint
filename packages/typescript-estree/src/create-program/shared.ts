@@ -53,8 +53,9 @@ function createDefaultCompilerOptionsFromExtra(
 // This narrows the type so we can be sure we're passing canonical names in the correct places
 type CanonicalPath = string & { __brand: unknown };
 
-// typescript doesn't provide a ts.sys implementation for browser environments
 const useCaseSensitiveFileNames =
+  // typescript doesn't provide a ts.sys implementation for browser environments
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   ts.sys !== undefined ? ts.sys.useCaseSensitiveFileNames : true;
 const correctPathCasing = useCaseSensitiveFileNames
   ? (filePath: string): string => filePath
@@ -118,6 +119,7 @@ function getAstFromProgram(
  */
 function createHash(content: string): string {
   // No ts.sys in browser environments.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (ts.sys?.createHash) {
     return ts.sys.createHash(content);
   }

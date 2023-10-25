@@ -23,7 +23,7 @@ function createDefaultProgram(
     parseSettings.filePath || 'unnamed file',
   );
 
-  if (parseSettings.projects?.length !== 1) {
+  if (parseSettings.projects.length !== 1) {
     return undefined;
   }
 
