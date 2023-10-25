@@ -21,7 +21,6 @@ export interface ASTViewerProps {
 
 function tryToApplyFilter<T>(value: T, filter?: ESQuery.Selector): T | T[] {
   try {
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (window.esquery && filter) {
       // @ts-expect-error - esquery requires js ast types
       return window.esquery.match(value, filter);

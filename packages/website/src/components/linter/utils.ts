@@ -92,7 +92,6 @@ export function parseMarkers(
         ? 'TypeScript'
         : marker.owner;
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (!result[group]) {
       result[group] = {
         group: group,
