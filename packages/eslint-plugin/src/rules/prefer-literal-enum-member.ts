@@ -78,12 +78,15 @@ export default createRule({
             return;
           }
 
-          const members = node.parent.members.reduce((names, member) => {
-            if ('name' in member.id) {
-              names.push(member.id.name);
-            }
-            return names;
-          }, new Array<string>());
+          const members = node.parent.members.reduce<string[]>(
+            (names, member) => {
+              if ('name' in member.id) {
+                names.push(member.id.name);
+              }
+              return names;
+            },
+            [],
+          );
 
           const leftIsValidIdentifier =
             node.initializer.left.type === AST_NODE_TYPES.Identifier &&
