@@ -53,7 +53,6 @@ class TypeVisitor extends Visitor {
       });
 
       // there are a few special cases where the type annotation is owned by the parameter, not the pattern
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (!didVisitAnnotation && 'typeAnnotation' in param) {
         this.visit(param.typeAnnotation);
       }

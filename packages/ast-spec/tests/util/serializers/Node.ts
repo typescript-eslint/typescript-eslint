@@ -56,8 +56,6 @@ const serializer: NewPlugin = {
 
     for (const key of keys) {
       const value = node[key];
-      // Filter out undefined values, as they're not in our known accepted shapes
-      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       if (value === undefined) {
         continue;
       }

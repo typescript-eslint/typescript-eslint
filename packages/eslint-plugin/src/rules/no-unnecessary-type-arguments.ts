@@ -6,7 +6,6 @@ import {
   createRule,
   findFirstResult,
   getParserServices,
-  getTypeArguments,
   isTypeReferenceType,
 } from '../util';
 
@@ -51,7 +50,7 @@ export default createRule<[], MessageIds>({
       if (isTypeReferenceType(type)) {
         return {
           type: type.target,
-          typeArguments: getTypeArguments(type, checker),
+          typeArguments: checker.getTypeArguments(type),
         };
       }
       return {
