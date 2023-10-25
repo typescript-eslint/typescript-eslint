@@ -1,7 +1,5 @@
 // There's lots of funny stuff due to the typing of ts.Node
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
-// TODO: deeply check which no-unnecessary-condition reports are valid
-/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import * as ts from 'typescript';
 
 import { getDecorators, getModifiers } from './getModifiers';
@@ -259,7 +257,7 @@ export class Converter {
     result.range ??= getRange(node, this.ast);
     result.loc ??= getLocFor(result.range, this.ast);
 
-    if (this.options.shouldPreserveNodeMaps) {
+    if (result && this.options.shouldPreserveNodeMaps) {
       this.esTreeNodeToTSNodeMap.set(result, node);
     }
     return result as T;
@@ -730,7 +728,7 @@ export class Converter {
 
     if (
       node.moduleSpecifier &&
-      node.moduleSpecifier.kind !== SyntaxKind.StringLiteral
+      node.moduleSpecifier?.kind !== SyntaxKind.StringLiteral
     ) {
       this.#throwUnlessAllowInvalidAST(
         node.moduleSpecifier,
