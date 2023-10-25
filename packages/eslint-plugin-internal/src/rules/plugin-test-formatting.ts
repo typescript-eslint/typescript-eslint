@@ -171,6 +171,7 @@ export default createRule<Options, MessageIds>({
       } catch (ex) {
         // ex instanceof Error is false as of @prettier/sync@0.3.0, as is ex instanceof SyntaxError
         if (
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           (ex as Partial<Error> | undefined)?.constructor?.name !==
           'SyntaxError'
         ) {

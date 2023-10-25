@@ -68,6 +68,7 @@ function getParserServices(
   // error message explaining the problem.
   if (
     context.parserServices?.esTreeNodeToTSNodeMap == null ||
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     context.parserServices.tsNodeToESTreeNodeMap == null
   ) {
     throw new Error(ERROR_MESSAGE);

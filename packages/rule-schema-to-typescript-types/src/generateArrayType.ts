@@ -24,11 +24,7 @@ export function generateArrayType(
     // but that's obviously dumb and loose so let's not even bother with it
     throw new UnexpectedError('Unexpected missing items', schema);
   }
-  if (
-    schema.items &&
-    !TSUtils.isArray(schema.items) &&
-    schema.additionalItems
-  ) {
+  if (!TSUtils.isArray(schema.items) && schema.additionalItems) {
     throw new NotSupportedError(
       'singlely-typed array with additionalItems',
       schema,
