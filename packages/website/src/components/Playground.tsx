@@ -93,21 +93,20 @@ function Playground(): React.JSX.Element {
                 showVisualEditor={activeTab !== 'code'}
                 showModal={onVisualEditor}
               />
-              {(activeVisualEditor === 'eslintrc' && (
+              {activeVisualEditor === 'eslintrc' ? (
                 <ConfigEslint
                   className={styles.tabCode}
                   ruleOptions={ruleNames}
                   config={state.eslintrc}
                   onChange={setState}
                 />
-              )) ||
-                (activeVisualEditor === 'tsconfig' && (
-                  <ConfigTypeScript
-                    className={styles.tabCode}
-                    config={state.tsconfig}
-                    onChange={setState}
-                  />
-                ))}
+              ) : activeVisualEditor === 'tsconfig' ? (
+                <ConfigTypeScript
+                  className={styles.tabCode}
+                  config={state.tsconfig}
+                  onChange={setState}
+                />
+              ) : null}
               <div
                 key="monacoEditor"
                 className={clsx(
@@ -149,40 +148,40 @@ function Playground(): React.JSX.Element {
                 )}
               </div>
 
-              {(state.showAST === 'es' && esQueryError && (
+              {state.showAST === 'es' && esQueryError ? (
                 <ErrorViewer
                   type="warning"
                   title="Invalid Selector"
                   value={esQueryError}
                 />
-              )) ||
-                (state.showAST === 'types' && astModel?.storedTsAST && (
-                  <TypesDetails
-                    typeChecker={astModel.typeChecker}
-                    value={astModel.storedTsAST}
-                    onHoverNode={setSelectedRange}
-                    cursorPosition={position}
-                  />
-                )) ||
-                (state.showAST && astModel && (
-                  <ASTViewer
-                    key={String(state.showAST)}
-                    filter={state.showAST === 'es' ? esQueryFilter : undefined}
-                    value={
-                      state.showAST === 'ts'
-                        ? astModel.storedTsAST
-                        : state.showAST === 'scope'
-                        ? astModel.storedScope
-                        : state.showAST === 'es'
-                        ? astModel.storedAST
-                        : undefined
-                    }
-                    showTokens={state.showTokens}
-                    enableScrolling={state.scroll}
-                    cursorPosition={position}
-                    onHoverNode={setSelectedRange}
-                  />
-                )) || <ErrorsViewer value={markers} />}
+              ) : state.showAST === 'types' && astModel?.storedTsAST ? (
+                <TypesDetails
+                  typeChecker={astModel.typeChecker}
+                  value={astModel.storedTsAST}
+                  onHoverNode={setSelectedRange}
+                  cursorPosition={position}
+                />
+              ) : state.showAST && astModel ? (
+                <ASTViewer
+                  key={String(state.showAST)}
+                  filter={state.showAST === 'es' ? esQueryFilter : undefined}
+                  value={
+                    state.showAST === 'ts'
+                      ? astModel.storedTsAST
+                      : state.showAST === 'scope'
+                      ? astModel.storedScope
+                      : state.showAST === 'es'
+                      ? astModel.storedAST
+                      : undefined
+                  }
+                  showTokens={state.showTokens}
+                  enableScrolling={state.scroll}
+                  cursorPosition={position}
+                  onHoverNode={setSelectedRange}
+                />
+              ) : (
+                <ErrorsViewer value={markers} />
+              )}
             </div>
           </ConditionalSplitPane>
         </ConditionalSplitPane>

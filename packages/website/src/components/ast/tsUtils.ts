@@ -65,7 +65,7 @@ export function tsEnumToString(
   type: keyof TsParsedEnums,
   value: number,
 ): string | undefined {
-  return getTsEnum(type)?.[value];
+  return getTsEnum(type)[value];
 }
 
 /**
@@ -75,12 +75,8 @@ export function tsEnumFlagToString(
   type: keyof TsParsedEnums,
   value: number,
 ): string | undefined {
-  const allFlags = getTsEnum(type);
-  if (allFlags) {
-    return Object.entries(allFlags)
-      .filter(([f]) => (Number(f) & value) !== 0)
-      .map(([, name]) => `${type}.${name}`)
-      .join('\n');
-  }
-  return '';
+  return Object.entries(getTsEnum(type))
+    .filter(([f]) => (Number(f) & value) !== 0)
+    .map(([, name]) => `${type}.${name}`)
+    .join('\n');
 }

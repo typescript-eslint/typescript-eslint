@@ -22,7 +22,7 @@ export function TypesDetails({
   typeChecker,
   onHoverNode,
 }: TypesDetailsProps): React.JSX.Element {
-  const [selectedNode, setSelectedNode] = useState<ts.Node>(value);
+  const [selectedNode, setSelectedNode] = useState(value);
 
   useEffect(() => {
     if (cursorPosition) {
@@ -48,15 +48,13 @@ export function TypesDetails({
           value={value}
         />
       </div>
-      {selectedNode && (
-        <div className={styles.tabCode}>
-          <TypeInfo
-            onHoverNode={onHoverNode}
-            typeChecker={typeChecker}
-            value={selectedNode}
-          />
-        </div>
-      )}
+      <div className={styles.tabCode}>
+        <TypeInfo
+          onHoverNode={onHoverNode}
+          typeChecker={typeChecker}
+          value={selectedNode}
+        />
+      </div>
     </ConditionalSplitPane>
   );
 }

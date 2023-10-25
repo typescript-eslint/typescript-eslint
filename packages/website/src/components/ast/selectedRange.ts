@@ -74,6 +74,7 @@ export function findSelectionPath(
   const nodePath = ['ast'];
   const visited = new Set<unknown>();
   let currentNode: object | null = node;
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   while (currentNode) {
     // infinite loop guard
     if (visited.has(currentNode)) {
