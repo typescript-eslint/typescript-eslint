@@ -99,17 +99,15 @@ export default createRule({
                   );
                 }
 
-                if (node.extends) {
-                  node.extends.forEach(heritage => {
-                    const typeIdentifier = sourceCode.getText(heritage);
-                    fixes.push(
-                      fixer.insertTextAfter(node.body, ` & ${typeIdentifier}`),
-                    );
-                  });
-                }
+                node.extends.forEach(heritage => {
+                  const typeIdentifier = sourceCode.getText(heritage);
+                  fixes.push(
+                    fixer.insertTextAfter(node.body, ` & ${typeIdentifier}`),
+                  );
+                });
 
                 if (
-                  node.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration
+                  node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration
                 ) {
                   fixes.push(
                     fixer.removeRange([node.parent.range[0], node.range[0]]),

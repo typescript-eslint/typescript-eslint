@@ -81,7 +81,7 @@ export default createRule<Options, MessageIds>({
         const typeToken = sourceCode.getFirstToken(node, { skip: 1 })!;
         const punctuatorToken = sourceCode.getTokenAfter(typeToken)!;
         if (
-          node.specifiers?.[0]?.type === AST_NODE_TYPES.ImportDefaultSpecifier
+          node.specifiers[0]?.type === AST_NODE_TYPES.ImportDefaultSpecifier
         ) {
           return;
         }

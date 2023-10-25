@@ -81,7 +81,6 @@ export default createRule<Options, MessageIds>({
   defaultOptions: defaultCamelCaseAllTheThingsConfig,
   create(contextWithoutDefaults) {
     const context =
-      contextWithoutDefaults.options &&
       contextWithoutDefaults.options.length > 0
         ? contextWithoutDefaults
         : // only apply the defaults when the user provides no config
@@ -108,10 +107,6 @@ export default createRule<Options, MessageIds>({
         | TSESTree.TSPropertySignatureNonComputedName,
       modifiers: Set<Modifiers>,
     ): void {
-      if (!validator) {
-        return;
-      }
-
       const key = node.key;
       if (requiresQuoting(key, compilerOptions.target)) {
         modifiers.add(Modifiers.requiresQuotes);
@@ -180,11 +175,11 @@ export default createRule<Options, MessageIds>({
       return (
         // `const { x }`
         // does not match `const { x: y }`
-        (id.parent?.type === AST_NODE_TYPES.Property && id.parent.shorthand) ||
+        (id.parent.type === AST_NODE_TYPES.Property && id.parent.shorthand) ||
         // `const { x = 2 }`
         // does not match const `{ x: y = 2 }`
-        (id.parent?.type === AST_NODE_TYPES.AssignmentPattern &&
-          id.parent.parent?.type === AST_NODE_TYPES.Property &&
+        (id.parent.type === AST_NODE_TYPES.AssignmentPattern &&
+          id.parent.parent.type === AST_NODE_TYPES.Property &&
           id.parent.parent.shorthand)
       );
     }
@@ -208,12 +203,11 @@ export default createRule<Options, MessageIds>({
 
     function isAsyncVariableIdentifier(id: TSESTree.Identifier): boolean {
       return Boolean(
-        id.parent &&
-          (('async' in id.parent && id.parent.async) ||
-            ('init' in id.parent &&
-              id.parent.init &&
-              'async' in id.parent.init &&
-              id.parent.init.async)),
+        ('async' in id.parent && id.parent.async) ||
+          ('init' in id.parent &&
+            id.parent.init &&
+            'async' in id.parent.init &&
+            id.parent.init.async),
       );
     }
 
@@ -270,7 +264,7 @@ export default createRule<Options, MessageIds>({
 
           const baseModifiers = new Set<Modifiers>();
           const parent = node.parent;
-          if (parent?.type === AST_NODE_TYPES.VariableDeclaration) {
+          if (parent.type === AST_NODE_TYPES.VariableDeclaration) {
             if (parent.kind === 'const') {
               baseModifiers.add(Modifiers.const);
             }
@@ -684,16 +678,14 @@ export default createRule<Options, MessageIds>({
     };
 
     return Object.fromEntries(
-      Object.entries(selectors)
-        .map(([selector, { validator, handler }]) => {
-          return [
-            selector,
-            (node: Parameters<typeof handler>[0]): void => {
-              handler(node, validator);
-            },
-          ] as const;
-        })
-        .filter((s): s is NonNullable<typeof s> => s != null),
+      Object.entries(selectors).map(([selector, { validator, handler }]) => {
+        return [
+          selector,
+          (node: Parameters<typeof handler>[0]): void => {
+            handler(node, validator);
+          },
+        ] as const;
+      }),
     );
   },
 });
@@ -728,8 +720,8 @@ function isExported(
     for (const ref of variable.references) {
       const refParent = ref.identifier.parent;
       if (
-        refParent?.type === AST_NODE_TYPES.ExportDefaultDeclaration ||
-        refParent?.type === AST_NODE_TYPES.ExportSpecifier
+        refParent.type === AST_NODE_TYPES.ExportDefaultDeclaration ||
+        refParent.type === AST_NODE_TYPES.ExportSpecifier
       ) {
         return true;
       }

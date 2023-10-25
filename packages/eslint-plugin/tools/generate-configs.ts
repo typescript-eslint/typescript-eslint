@@ -67,7 +67,7 @@ async function main(): Promise<void> {
           [
             ruleName,
             typeof rule.meta.docs?.extendsBaseRule === 'string'
-              ? rule.meta.docs?.extendsBaseRule
+              ? rule.meta.docs.extendsBaseRule
               : ruleName,
           ] as const,
       ),

@@ -80,10 +80,9 @@ export default createRule({
         node.type === AST_NODE_TYPES.CallExpression ||
         node.type === AST_NODE_TYPES.NewExpression
       ) {
-        const [, flags] = node.arguments;
-        return (
-          flags &&
-          flags.type === AST_NODE_TYPES.Literal &&
+        const flags = node.arguments.at(1);
+        return !!(
+          flags?.type === AST_NODE_TYPES.Literal &&
           typeof flags.value === 'string' &&
           flags.value.includes('g')
         );

@@ -59,7 +59,7 @@ export default createRule({
       }
 
       while (scope) {
-        scope.set.get(name)?.defs?.forEach(definition => {
+        scope.set.get(name)?.defs.forEach(definition => {
           if (definition.type === DefinitionType.ImportBinding) {
             found.imports.push(definition.node);
           }
@@ -207,10 +207,7 @@ export default createRule({
             desiredType ??= currentType;
           }
 
-          if (
-            currentType !== desiredType &&
-            (currentType !== undefined || desiredType === AllowedType.String)
-          ) {
+          if (currentType !== desiredType) {
             context.report({
               messageId: 'mixed',
               node: member.initializer ?? member,

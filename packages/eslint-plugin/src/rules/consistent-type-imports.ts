@@ -115,6 +115,7 @@ export default createRule<Options, MessageIds>({
             ImportDeclaration(node): void {
               const source = node.source.value;
               // sourceImports is the object containing all the specifics for a particular import source, type or value
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               sourceImportsMap[source] ??= {
                 source,
                 reportValueImports: [], // if there is a mismatch where type importKind but value specifiers
@@ -180,9 +181,9 @@ export default createRule<Options, MessageIds>({
                        * export default Type;
                        */
                       if (
-                        ref.identifier.parent?.type ===
+                        ref.identifier.parent.type ===
                           AST_NODE_TYPES.ExportSpecifier ||
-                        ref.identifier.parent?.type ===
+                        ref.identifier.parent.type ===
                           AST_NODE_TYPES.ExportDefaultDeclaration
                       ) {
                         if (ref.isValueReference && ref.isTypeReference) {
@@ -193,6 +194,7 @@ export default createRule<Options, MessageIds>({
                         let parent: TSESTree.Node | undefined =
                           ref.identifier.parent;
                         let child: TSESTree.Node = ref.identifier;
+                        // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
                         while (parent) {
                           switch (parent.type) {
                             // CASE 1:

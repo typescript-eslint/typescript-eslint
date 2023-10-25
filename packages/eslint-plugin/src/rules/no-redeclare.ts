@@ -74,7 +74,7 @@ export default createRule<Options, MessageIds>({
       void
     > {
       if (
-        options?.builtinGlobals &&
+        options.builtinGlobals &&
         'eslintImplicitGlobalSetting' in variable &&
         (variable.eslintImplicitGlobalSetting === 'readonly' ||
           variable.eslintImplicitGlobalSetting === 'writable')

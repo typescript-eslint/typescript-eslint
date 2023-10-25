@@ -211,7 +211,7 @@ function isSafe(
 
     return (
       !upperRef.isWrite() ||
-      (variable?.scope?.variableScope === upperRef.from.variableScope &&
+      (variable?.scope.variableScope === upperRef.from.variableScope &&
         id.range[0] < border)
     );
   }

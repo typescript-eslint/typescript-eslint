@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices, getTypeArguments } from '../util';
+import { createRule, getParserServices } from '../util';
 
 type Options = [
   {
@@ -556,7 +556,7 @@ function voidFunctionArguments(
             // Unwrap 'Array<MaybeVoidFunction>' to 'MaybeVoidFunction',
             // so that we'll handle it in the same way as a non-rest
             // 'param: MaybeVoidFunction'
-            type = getTypeArguments(type, checker)[0];
+            type = checker.getTypeArguments(type)[0];
             for (let i = index; i < node.arguments.length; i++) {
               checkThenableOrVoidArgument(
                 checker,
@@ -570,7 +570,7 @@ function voidFunctionArguments(
           } else if (checker.isTupleType(type)) {
             // Check each type in the tuple - for example, [boolean, () => void] would
             // add the index of the second tuple parameter to 'voidReturnIndices'
-            const typeArgs = getTypeArguments(type, checker);
+            const typeArgs = checker.getTypeArguments(type);
             for (
               let i = index;
               i < node.arguments.length && i - index < typeArgs.length;

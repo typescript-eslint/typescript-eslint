@@ -384,7 +384,7 @@ export default createRule({
         let parentNode = getParent(node);
 
         let indexNode: TSESTree.Node | null = null;
-        if (parentNode?.type === AST_NODE_TYPES.CallExpression) {
+        if (parentNode.type === AST_NODE_TYPES.CallExpression) {
           if (parentNode.arguments.length === 1) {
             indexNode = parentNode.arguments[0];
           }

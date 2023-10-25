@@ -25,7 +25,7 @@ export default createRule({
     return {
       TSModuleDeclaration(node): void {
         // Do nothing if the name is a string.
-        if (!node.id || node.id.type === AST_NODE_TYPES.Literal) {
+        if (node.id.type === AST_NODE_TYPES.Literal) {
           return;
         }
         // Get tokens of the declaration header.

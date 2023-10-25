@@ -106,6 +106,7 @@ export default createRule<Options, MessageIds>({
     ): boolean {
       let current: ts.Node = node.parent;
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       while (current) {
         const parent = current.parent;
 

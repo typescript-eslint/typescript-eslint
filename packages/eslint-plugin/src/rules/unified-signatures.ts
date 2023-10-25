@@ -171,7 +171,9 @@ export default createRule<Options, MessageIds>({
       const isTypeParameter = getIsTypeParameter(typeParameters);
       for (const overloads of signatures) {
         forEachPair(overloads, (a, b) => {
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           const signature0 = (a as MethodDefinition).value ?? a;
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           const signature1 = (b as MethodDefinition).value ?? b;
 
           const unify = compareSignatures(
@@ -368,7 +370,7 @@ export default createRule<Options, MessageIds>({
         }
 
         return typeContainsTypeParameter(
-          (type as TSESTree.TSTypeAnnotation).typeAnnotation ||
+          (type as Partial<TSESTree.TSTypeAnnotation>).typeAnnotation ||
             (type as TSESTree.TSArrayType).elementType,
         );
       }
@@ -377,10 +379,7 @@ export default createRule<Options, MessageIds>({
     function isTSParameterProperty(
       node: TSESTree.Node,
     ): node is TSESTree.TSParameterProperty {
-      return (
-        (node as TSESTree.TSParameterProperty).type ===
-        AST_NODE_TYPES.TSParameterProperty
-      );
+      return node.type === AST_NODE_TYPES.TSParameterProperty;
     }
 
     function parametersAreEqual(
@@ -492,7 +491,7 @@ export default createRule<Options, MessageIds>({
     }
 
     const scopes: Scope[] = [];
-    let currentScope: Scope = {
+    let currentScope: Scope | undefined = {
       overloads: new Map<string, OverloadNode[]>(),
     };
 
@@ -510,11 +509,11 @@ export default createRule<Options, MessageIds>({
 
     function checkScope(): void {
       const failures = checkOverloads(
-        Array.from(currentScope.overloads.values()),
-        currentScope.typeParameters,
+        Array.from(currentScope!.overloads.values()),
+        currentScope!.typeParameters,
       );
       addFailures(failures);
-      currentScope = scopes.pop()!;
+      currentScope = scopes.pop();
     }
 
     function addOverload(

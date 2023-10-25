@@ -93,8 +93,8 @@ export default createRule<[Options], MessageIds>({
       // extra check for precaution
       /* istanbul ignore next */
       if (
-        node.parent?.type !== AST_NODE_TYPES.TSTypeParameterInstantiation ||
-        node.parent.parent?.type !== AST_NODE_TYPES.TSTypeReference
+        node.parent.type !== AST_NODE_TYPES.TSTypeParameterInstantiation ||
+        node.parent.parent.type !== AST_NODE_TYPES.TSTypeReference
       ) {
         return;
       }
@@ -158,7 +158,7 @@ export default createRule<[Options], MessageIds>({
           (member.type === AST_NODE_TYPES.TSTypeReference &&
             member.typeArguments?.type ===
               AST_NODE_TYPES.TSTypeParameterInstantiation &&
-            member.typeArguments?.params
+            member.typeArguments.params
               .map(param => param.type)
               .includes(AST_NODE_TYPES.TSVoidKeyword)),
       );

@@ -35,7 +35,7 @@ export default createRule({
      * @param node The node being checked
      */
     function hasOneSupertype(node: TSESTree.TSInterfaceDeclaration): boolean {
-      if (!node.extends || node.extends.length === 0) {
+      if (node.extends.length === 0) {
         return false;
       }
       if (node.extends.length !== 1) {

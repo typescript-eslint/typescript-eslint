@@ -72,6 +72,7 @@ export default createRule({
     function inTry(node: ts.Node): boolean {
       let ancestor = node.parent;
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (ts.isTryStatement(ancestor)) {
           return true;
@@ -86,6 +87,7 @@ export default createRule({
     function inCatch(node: ts.Node): boolean {
       let ancestor = node.parent;
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (ts.isCatchClause(ancestor)) {
           return true;
@@ -100,6 +102,7 @@ export default createRule({
     function isReturnPromiseInFinally(node: ts.Node): boolean {
       let ancestor = node.parent;
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (
           ts.isTryStatement(ancestor.parent) &&
@@ -117,6 +120,7 @@ export default createRule({
     function hasFinallyBlock(node: ts.Node): boolean {
       let ancestor = node.parent;
 
+      // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (ts.isTryStatement(ancestor)) {
           return !!ancestor.finallyBlock;
@@ -310,7 +314,7 @@ export default createRule({
         }
       },
       ReturnStatement(node): void {
-        const scopeInfo = scopeInfoStack[scopeInfoStack.length - 1];
+        const scopeInfo = scopeInfoStack.at(-1);
         if (!scopeInfo?.hasAsync || !node.argument) {
           return;
         }

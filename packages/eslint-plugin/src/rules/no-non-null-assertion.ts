@@ -58,7 +58,7 @@ export default createRule<[], MessageIds>({
         }
 
         if (
-          node.parent?.type === AST_NODE_TYPES.MemberExpression &&
+          node.parent.type === AST_NODE_TYPES.MemberExpression &&
           node.parent.object === node
         ) {
           if (!node.parent.optional) {
@@ -91,7 +91,7 @@ export default createRule<[], MessageIds>({
             }
           }
         } else if (
-          node.parent?.type === AST_NODE_TYPES.CallExpression &&
+          node.parent.type === AST_NODE_TYPES.CallExpression &&
           node.parent.callee === node
         ) {
           if (!node.parent.optional) {

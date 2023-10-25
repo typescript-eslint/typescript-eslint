@@ -186,11 +186,10 @@ export default createRule<Options, MessageIds>({
       const stackContext = popContext();
       if (
         stackContext?.member == null ||
-        stackContext.class == null ||
         stackContext.usesThis ||
         (ignoreOverrideMethods && stackContext.member.override) ||
         (ignoreClassesThatImplementAnInterface &&
-          stackContext.class.implements != null)
+          stackContext.class.implements.length)
       ) {
         return;
       }
