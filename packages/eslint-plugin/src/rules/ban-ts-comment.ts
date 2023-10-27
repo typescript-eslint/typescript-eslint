@@ -1,4 +1,4 @@
-import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { AST_TOKEN_TYPES, type TSESLint } from '@typescript-eslint/utils';
 
 import { createRule, getStringLength } from '../util';
 
@@ -19,8 +19,10 @@ export const defaultMinimumDescriptionLength = 3;
 
 type MessageIds =
   | 'tsDirectiveComment'
+  | 'tsIgnoreInsteadOfExpectError'
   | 'tsDirectiveCommentDescriptionNotMatchPattern'
-  | 'tsDirectiveCommentRequiresDescription';
+  | 'tsDirectiveCommentRequiresDescription'
+  | 'replaceTsIgnoreWithTsExpectError';
 
 export default createRule<[Options], MessageIds>({
   name: 'ban-ts-comment',
@@ -34,11 +36,16 @@ export default createRule<[Options], MessageIds>({
     messages: {
       tsDirectiveComment:
         'Do not use "@ts-{{directive}}" because it alters compilation errors.',
+      tsIgnoreInsteadOfExpectError:
+        'Use "@ts-expect-error" instead of "@ts-ignore", as "@ts-ignore" will do nothing if the following line is error-free.',
       tsDirectiveCommentRequiresDescription:
         'Include a description after the "@ts-{{directive}}" directive to explain why the @ts-{{directive}} is necessary. The description must be {{minimumDescriptionLength}} characters or longer.',
       tsDirectiveCommentDescriptionNotMatchPattern:
         'The description for the "@ts-{{directive}}" directive must match the {{format}} format.',
+      replaceTsIgnoreWithTsExpectError:
+        'Replace "@ts-ignore" with "@ts-expect-error".',
     },
+    hasSuggestions: true,
     schema: [
       {
         $defs: {
@@ -130,11 +137,37 @@ export default createRule<[Options], MessageIds>({
 
           const option = options[fullDirective];
           if (option === true) {
-            context.report({
-              data: { directive },
-              node: comment,
-              messageId: 'tsDirectiveComment',
-            });
+            if (directive === 'ignore' && options['ts-expect-error'] !== true) {
+              // Special case to suggest @ts-expect-error instead of @ts-ignore,
+              // as long as @ts-expect-error is banned outright.
+              context.report({
+                node: comment,
+                messageId: 'tsIgnoreInsteadOfExpectError',
+                suggest: [
+                  {
+                    messageId: 'replaceTsIgnoreWithTsExpectError',
+                    fix(fixer): TSESLint.RuleFix {
+                      const commentText = comment.value.replace(
+                        /@ts-ignore/,
+                        '@ts-expect-error',
+                      );
+                      return fixer.replaceText(
+                        comment,
+                        comment.type === AST_TOKEN_TYPES.Line
+                          ? `//${commentText}`
+                          : `/*${commentText}*/`,
+                      );
+                    },
+                  },
+                ],
+              });
+            } else {
+              context.report({
+                data: { directive },
+                node: comment,
+                messageId: 'tsDirectiveComment',
+              });
+            }
           }
 
           if (
