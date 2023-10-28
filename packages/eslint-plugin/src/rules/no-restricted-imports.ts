@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type {
   JSONSchema4AnyOfSchema,
   JSONSchema4ArraySchema,
@@ -268,26 +269,65 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    return {
-      ImportDeclaration(node): void {
-        if (node.importKind === 'type') {
-          const importSource = node.source.value.trim();
-          if (
-            !isAllowedTypeImportPath(importSource) &&
-            !isAllowedTypeImportPattern(importSource)
-          ) {
-            return rules.ImportDeclaration(node);
-          }
-        } else {
+    function checkImportNode(node: TSESTree.ImportDeclaration): void {
+      if (
+        node.importKind === 'type' ||
+        (node.specifiers.length > 0 &&
+          node.specifiers.every(
+            specifier =>
+              specifier.type === AST_NODE_TYPES.ImportSpecifier &&
+              specifier.importKind === 'type',
+          ))
+      ) {
+        const importSource = node.source.value.trim();
+        if (
+          !isAllowedTypeImportPath(importSource) &&
+          !isAllowedTypeImportPattern(importSource)
+        ) {
           return rules.ImportDeclaration(node);
         }
+      } else {
+        return rules.ImportDeclaration(node);
+      }
+    }
+
+    return {
+      TSImportEqualsDeclaration(
+        node: TSESTree.TSImportEqualsDeclaration,
+      ): void {
+        if (
+          node.moduleReference.type ===
+            AST_NODE_TYPES.TSExternalModuleReference &&
+          node.moduleReference.expression.type === AST_NODE_TYPES.Literal &&
+          typeof node.moduleReference.expression.value === 'string'
+        ) {
+          const synthesizedImport = {
+            ...node,
+            type: AST_NODE_TYPES.ImportDeclaration,
+            source: node.moduleReference.expression,
+            assertions: [],
+            specifiers: [
+              {
+                ...node.id,
+                type: AST_NODE_TYPES.ImportDefaultSpecifier,
+                local: node.id,
+              },
+            ],
+          } satisfies TSESTree.ImportDeclaration;
+          return checkImportNode(synthesizedImport);
+        }
       },
+      ImportDeclaration: checkImportNode,
       'ExportNamedDeclaration[source]'(
         node: TSESTree.ExportNamedDeclaration & {
           source: NonNullable<TSESTree.ExportNamedDeclaration['source']>;
         },
       ): void {
-        if (node.exportKind === 'type') {
+        if (
+          node.exportKind === 'type' ||
+          (node.specifiers.length > 0 &&
+            node.specifiers.every(specifier => specifier.exportKind === 'type'))
+        ) {
           const importSource = node.source.value.trim();
           if (
             !isAllowedTypeImportPath(importSource) &&

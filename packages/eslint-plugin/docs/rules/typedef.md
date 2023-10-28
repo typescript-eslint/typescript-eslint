@@ -67,14 +67,14 @@ Examples of code with `{ "arrayDestructuring": true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "arrayDestructuring": true }'
 const [a] = [1];
 const [b, c] = [1, 2];
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "arrayDestructuring": true }'
 const [a]: number[] = [1];
 const [b]: [number] = [2];
 const [c, d]: [boolean, string] = [true, 'text'];
@@ -93,7 +93,7 @@ Examples of code with `{ "arrowParameter": true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "arrowParameter": true }'
 const logsSize = size => console.log(size);
 
 ['hello', 'world'].map(text => text.length);
@@ -105,7 +105,7 @@ const mapper = {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "arrowParameter": true }'
 const logsSize = (size: number) => console.log(size);
 
 ['hello', 'world'].map((text: string) => text.length);
@@ -125,7 +125,7 @@ Examples of code with `{ "memberVariableDeclaration": true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "memberVariableDeclaration": true }'
 class ContainsText {
   delayedText;
   immediateTextImplicit = 'text';
@@ -134,7 +134,7 @@ class ContainsText {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "memberVariableDeclaration": true }'
 class ContainsText {
   delayedText: string;
   immediateTextImplicit: string = 'text';
@@ -151,14 +151,14 @@ Examples of code with `{ "objectDestructuring": true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "objectDestructuring": true }'
 const { length } = 'text';
 const [b, c] = Math.random() ? [1, 2] : [3, 4];
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "objectDestructuring": true }'
 const { length }: { length: number } = 'text';
 const [b, c]: [number, number] = Math.random() ? [1, 2] : [3, 4];
 
@@ -176,7 +176,7 @@ Examples of code with `{ "parameter": true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "parameter": true }'
 function logsSize(size): void {
   console.log(size);
 }
@@ -204,7 +204,7 @@ class Logger {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "parameter": true }'
 function logsSize(size: number): void {
   console.log(size);
 }
@@ -240,7 +240,7 @@ Examples of code with `{ "propertyDeclaration": true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "propertyDeclaration": true }'
 type Members = {
   member;
   otherMember;
@@ -249,7 +249,7 @@ type Members = {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "propertyDeclaration": true }'
 type Members = {
   member: boolean;
   otherMember: string;
@@ -266,7 +266,7 @@ Examples of code with `{ "variableDeclaration": true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "variableDeclaration": true }'
 const text = 'text';
 let initialText = 'text';
 let delayedText;
@@ -274,7 +274,7 @@ let delayedText;
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "variableDeclaration": true }'
 const text: string = 'text';
 let initialText: string = 'text';
 let delayedText: string;
@@ -290,13 +290,13 @@ Examples of code with `{ "variableDeclaration": true, "variableDeclarationIgnore
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }'
 const text = 'text';
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "variableDeclaration": true, "variableDeclarationIgnoreFunction": true }'
 const a = (): void => {};
 const b = function (): void => {};
 const c: () => void = (): void => {};

@@ -1,4 +1,4 @@
-import * as util from '../src/util';
+import { isDefinitionFile, upperCaseFirst } from '../src/util';
 
 describe('isDefinitionFile', () => {
   describe('returns false for non-definition files', () => {
@@ -22,7 +22,7 @@ describe('isDefinitionFile', () => {
 
     invalid.forEach(f => {
       it(f, () => {
-        expect(util.isDefinitionFile(f)).toBe(false);
+        expect(isDefinitionFile(f)).toBe(false);
       });
     });
   });
@@ -32,7 +32,7 @@ describe('isDefinitionFile', () => {
 
     valid.forEach(f => {
       it(f, () => {
-        expect(util.isDefinitionFile(f)).toBe(true);
+        expect(isDefinitionFile(f)).toBe(true);
       });
     });
   });
@@ -40,6 +40,6 @@ describe('isDefinitionFile', () => {
 
 describe('upperCaseFirst', () => {
   it('upper cases first', () => {
-    expect(util.upperCaseFirst('hello')).toBe('Hello');
+    expect(upperCaseFirst('hello')).toBe('Hello');
   });
 });

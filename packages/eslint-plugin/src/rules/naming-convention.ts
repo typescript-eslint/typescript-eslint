@@ -3,7 +3,12 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 import type { ScriptTarget } from 'typescript';
 
-import * as util from '../util';
+import {
+  collectUnusedVariables,
+  createRule,
+  getParserServices,
+  requiresQuoting as _requiresQuoting,
+} from '../util';
 import type {
   Context,
   Selector,
@@ -35,6 +40,11 @@ const defaultCamelCaseAllTheThingsConfig: Options = [
   },
 
   {
+    selector: 'import',
+    format: ['camelCase', 'PascalCase'],
+  },
+
+  {
     selector: 'variable',
     format: ['camelCase', 'UPPER_CASE'],
     leadingUnderscore: 'allow',
@@ -47,7 +57,7 @@ const defaultCamelCaseAllTheThingsConfig: Options = [
   },
 ];
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'naming-convention',
   meta: {
     docs: {
@@ -90,7 +100,7 @@ export default util.createRule<Options, MessageIds>({
     const validators = parseOptions(context);
 
     const compilerOptions =
-      util.getParserServices(context, true).program?.getCompilerOptions() ?? {};
+      getParserServices(context, true).program?.getCompilerOptions() ?? {};
     function handleMember(
       validator: ValidatorFunction,
       node:
@@ -150,7 +160,7 @@ export default util.createRule<Options, MessageIds>({
       return modifiers;
     }
 
-    const unusedVariables = util.collectUnusedVariables(context);
+    const unusedVariables = collectUnusedVariables(context);
     function isUnused(
       name: string,
       initialScope: TSESLint.Scope.Scope | null = context.getScope(),
@@ -221,6 +231,41 @@ export default util.createRule<Options, MessageIds>({
         ) => void;
       }>;
     } = {
+      // #region import
+
+      'ImportDefaultSpecifier, ImportNamespaceSpecifier, ImportSpecifier': {
+        validator: validators.import,
+        handler: (
+          node:
+            | TSESTree.ImportDefaultSpecifier
+            | TSESTree.ImportNamespaceSpecifier
+            | TSESTree.ImportSpecifier,
+          validator,
+        ): void => {
+          const modifiers = new Set<Modifiers>();
+
+          switch (node.type) {
+            case AST_NODE_TYPES.ImportDefaultSpecifier:
+              modifiers.add(Modifiers.default);
+              break;
+            case AST_NODE_TYPES.ImportNamespaceSpecifier:
+              modifiers.add(Modifiers.namespace);
+              break;
+            case AST_NODE_TYPES.ImportSpecifier:
+              // Handle `import { default as Foo }`
+              if (node.imported.name !== 'default') {
+                return;
+              }
+              modifiers.add(Modifiers.default);
+              break;
+          }
+
+          validator(node.local, modifiers);
+        },
+      },
+
+      // #endregion
+
       // #region variable
 
       VariableDeclarator: {
@@ -719,7 +764,7 @@ function requiresQuoting(
     node.type === AST_NODE_TYPES.PrivateIdentifier
       ? node.name
       : `${node.value}`;
-  return util.requiresQuoting(name, target);
+  return _requiresQuoting(name, target);
 }
 
 export { MessageIds, Options };

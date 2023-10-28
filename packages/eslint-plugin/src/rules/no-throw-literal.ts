@@ -2,7 +2,12 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getParserServices,
+  isTypeAnyType,
+  isTypeUnknownType,
+} from '../util';
 
 type MessageIds = 'object' | 'undef';
 
@@ -13,7 +18,7 @@ type Options = [
   },
 ];
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-throw-literal',
   meta: {
     type: 'problem',
@@ -49,7 +54,7 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     function isErrorLike(type: ts.Type): boolean {
@@ -101,11 +106,11 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      if (options.allowThrowingAny && util.isTypeAnyType(type)) {
+      if (options.allowThrowingAny && isTypeAnyType(type)) {
         return;
       }
 
-      if (options.allowThrowingUnknown && util.isTypeUnknownType(type)) {
+      if (options.allowThrowingUnknown && isTypeUnknownType(type)) {
         return;
       }
 

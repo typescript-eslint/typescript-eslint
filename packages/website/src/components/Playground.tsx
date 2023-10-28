@@ -1,8 +1,6 @@
-import type { TSESTree } from '@typescript-eslint/utils';
 import clsx from 'clsx';
 import type * as ESQuery from 'esquery';
 import React, { useCallback, useState } from 'react';
-import type { SourceFile } from 'typescript';
 
 import ASTViewer from './ast/ASTViewer';
 import ConfigEslint from './config/ConfigEslint';
@@ -14,17 +12,17 @@ import { ESQueryFilter } from './ESQueryFilter';
 import useHashState from './hooks/useHashState';
 import EditorTabs from './layout/EditorTabs';
 import Loader from './layout/Loader';
+import type { UpdateModel } from './linter/types';
 import { defaultConfig, detailTabs } from './options';
 import OptionsSelector from './OptionsSelector';
 import styles from './Playground.module.css';
 import ConditionalSplitPane from './SplitPane/ConditionalSplitPane';
+import { TypesDetails } from './typeDetails/TypesDetails';
 import type { ErrorGroup, RuleDetails, SelectedRange, TabType } from './types';
 
 function Playground(): React.JSX.Element {
   const [state, setState] = useHashState(defaultConfig);
-  const [esAst, setEsAst] = useState<TSESTree.Program | null>();
-  const [tsAst, setTsAST] = useState<SourceFile | null>();
-  const [scope, setScope] = useState<Record<string, unknown> | null>();
+  const [astModel, setAstModel] = useState<UpdateModel>();
   const [markers, setMarkers] = useState<ErrorGroup[]>();
   const [ruleNames, setRuleNames] = useState<RuleDetails[]>([]);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -61,15 +59,6 @@ function Playground(): React.JSX.Element {
       setVisualEslintRc(val => !val);
     }
   }, []);
-
-  const astToShow =
-    state.showAST === 'ts'
-      ? tsAst
-      : state.showAST === 'scope'
-      ? scope
-      : state.showAST === 'es'
-      ? esAst
-      : undefined;
 
   return (
     <div className={styles.codeContainer}>
@@ -137,9 +126,7 @@ function Playground(): React.JSX.Element {
                 eslintrc={state.eslintrc}
                 sourceType={state.sourceType}
                 showAST={state.showAST}
-                onEsASTChange={setEsAst}
-                onTsASTChange={setTsAST}
-                onScopeChange={setScope}
+                onASTChange={setAstModel}
                 onMarkersChange={setMarkers}
                 selectedRange={selectedRange}
                 onChange={setState}
@@ -169,11 +156,27 @@ function Playground(): React.JSX.Element {
                   value={esQueryError}
                 />
               )) ||
-                (state.showAST && astToShow && (
+                (state.showAST === 'types' && astModel?.storedTsAST && (
+                  <TypesDetails
+                    typeChecker={astModel.typeChecker}
+                    value={astModel.storedTsAST}
+                    onHoverNode={setSelectedRange}
+                    cursorPosition={position}
+                  />
+                )) ||
+                (state.showAST && astModel && (
                   <ASTViewer
                     key={String(state.showAST)}
                     filter={state.showAST === 'es' ? esQueryFilter : undefined}
-                    value={astToShow}
+                    value={
+                      state.showAST === 'ts'
+                        ? astModel.storedTsAST
+                        : state.showAST === 'scope'
+                        ? astModel.storedScope
+                        : state.showAST === 'es'
+                        ? astModel.storedAST
+                        : undefined
+                    }
                     showTokens={state.showTokens}
                     enableScrolling={state.scroll}
                     cursorPosition={position}

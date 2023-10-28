@@ -98,7 +98,7 @@ type Foo = () => {};
 #### ❌ Incorrect
 
 <!-- prettier-ignore -->
-```ts
+```ts option='{ "before": false, "after": true }'
 let foo:string = "bar";
 let foo :string = "bar";
 let foo : string = "bar";
@@ -127,7 +127,7 @@ type Foo = () => {};
 #### ✅ Correct
 
 <!-- prettier-ignore -->
-```ts
+```ts option='{ "before": false, "after": true }'
 let foo: string = "bar";
 
 function foo(): string {}
@@ -150,7 +150,7 @@ type Foo = ()=> {};
 #### ❌ Incorrect
 
 <!-- prettier-ignore -->
-```ts
+```ts option='{ "before": true, "after": true }'
 let foo: string = "bar";
 let foo:string = "bar";
 let foo :string = "bar";
@@ -179,7 +179,7 @@ type Foo = ()=> {};
 #### ✅ Correct
 
 <!-- prettier-ignore -->
-```ts
+```ts option='{ "before": true, "after": true }'
 let foo : string = "bar";
 
 function foo() : string {}
@@ -206,7 +206,7 @@ type Foo = () => {};
 #### ❌ Incorrect
 
 <!-- prettier-ignore -->
-```ts
+```ts option='{"before":false,"after":false,"overrides":{"colon":{"before":true,"after":true}}}'
 let foo: string = "bar";
 let foo:string = "bar";
 let foo :string = "bar";
@@ -235,7 +235,7 @@ type Foo = () => {};
 #### ✅ Correct
 
 <!-- prettier-ignore -->
-```ts
+```ts option='{"before":false,"after":false,"overrides":{"colon":{"before":true,"after":true}}}'
 let foo : string = "bar";
 
 function foo() : string {}
@@ -266,7 +266,7 @@ type Foo = ()=>{};
 #### ❌ Incorrect
 
 <!-- prettier-ignore -->
-```ts
+```ts option='{"before":false,"after":false,"overrides":{"arrow":{"before":true,"after":true}}}'
 let foo: string = "bar";
 let foo : string = "bar";
 let foo :string = "bar";
@@ -295,7 +295,7 @@ type Foo = ()=> {};
 #### ✅ Correct
 
 <!-- prettier-ignore -->
-```ts
+```ts option='{"before":false,"after":false,"overrides":{"arrow":{"before":true,"after":true}}}'
 let foo:string = "bar";
 
 function foo():string {}

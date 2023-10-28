@@ -76,7 +76,7 @@ function validateRuleSchema(
   const validateRule = ruleValidators.get(rule);
 
   if (validateRule) {
-    validateRule(localOptions);
+    void validateRule(localOptions);
     if (validateRule.errors) {
       throw new Error(
         validateRule.errors
@@ -248,7 +248,7 @@ function validateConfigSchema(
   config: TesterConfigWithDefaults,
   source: string,
 ): void {
-  validateSchema = validateSchema || ajv.compile(configSchema);
+  validateSchema ||= ajv.compile(configSchema);
 
   if (!validateSchema(config)) {
     throw new Error(

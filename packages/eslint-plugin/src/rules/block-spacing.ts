@@ -1,15 +1,19 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule, isTokenOnSameLine } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('block-spacing');
 
-export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'block-spacing',
   meta: {
     type: 'layout',
@@ -58,7 +62,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function isValid(left: TSESTree.Token, right: TSESTree.Token): boolean {
       return (
-        !util.isTokenOnSameLine(left, right) ||
+        !isTokenOnSameLine(left, right) ||
         sourceCode.isSpaceBetween!(left, right) === always
       );
     }

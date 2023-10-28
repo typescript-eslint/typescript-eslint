@@ -14,6 +14,7 @@ import {
   getLastModifier,
   getLineAndCharacterFor,
   getLocFor,
+  getNamespaceModifiers,
   getRange,
   getTextForTokenKind,
   getTSNodeAccessibility,
@@ -157,7 +158,14 @@ export class Converter {
       | ts.VariableStatement,
     result: T,
   ): T | TSESTree.ExportDefaultDeclaration | TSESTree.ExportNamedDeclaration {
-    const modifiers = getModifiers(node);
+    const isNamespaceNode =
+      ts.isModuleDeclaration(node) &&
+      Boolean(node.flags & ts.NodeFlags.Namespace);
+
+    const modifiers = isNamespaceNode
+      ? getNamespaceModifiers(node)
+      : getModifiers(node);
+
     if (modifiers?.[0].kind === SyntaxKind.ExportKeyword) {
       /**
        * Make sure that original node is registered instead of export
@@ -190,7 +198,7 @@ export class Converter {
       const isType =
         result.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
         result.type === AST_NODE_TYPES.TSTypeAliasDeclaration;
-      const isDeclare = 'declare' in result && result.declare === true;
+      const isDeclare = 'declare' in result && result.declare;
       return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
         type: AST_NODE_TYPES.ExportNamedDeclaration,
         // @ts-expect-error - TODO, narrow the types here
@@ -988,6 +996,22 @@ export class Converter {
             'A variable declaration list must have at least one variable declarator.',
           );
         }
+        if (result.kind === 'using' || result.kind === 'await using') {
+          node.declarationList.declarations.forEach((declaration, i) => {
+            if (result.declarations[i].init == null) {
+              this.#throwError(
+                declaration,
+                `'${result.kind}' declarations must be initialized.`,
+              );
+            }
+            if (result.declarations[i].id.type !== AST_NODE_TYPES.Identifier) {
+              this.#throwError(
+                declaration.name,
+                `'${result.kind}' declarations may not have binding patterns.`,
+              );
+            }
+          });
+        }
 
         /**
          * Semantically, decorators are not allowed on variable declarations,
@@ -1000,13 +1024,32 @@ export class Converter {
       }
 
       // mostly for for-of, for-in
-      case SyntaxKind.VariableDeclarationList:
-        return this.createNode<TSESTree.VariableDeclaration>(node, {
+      case SyntaxKind.VariableDeclarationList: {
+        const result = this.createNode<TSESTree.VariableDeclaration>(node, {
           type: AST_NODE_TYPES.VariableDeclaration,
           declarations: node.declarations.map(el => this.convertChild(el)),
           declare: false,
           kind: getDeclarationKind(node),
         });
+
+        if (result.kind === 'using' || result.kind === 'await using') {
+          node.declarations.forEach((declaration, i) => {
+            if (result.declarations[i].init != null) {
+              this.#throwError(
+                declaration,
+                `'${result.kind}' declarations may not be initialized in for statement.`,
+              );
+            }
+            if (result.declarations[i].id.type !== AST_NODE_TYPES.Identifier) {
+              this.#throwError(
+                declaration.name,
+                `'${result.kind}' declarations may not have binding patterns.`,
+              );
+            }
+          });
+        }
+        return result;
+      }
 
       // Expressions
 
@@ -2818,6 +2861,8 @@ export class Converter {
       }
 
       case SyntaxKind.ModuleDeclaration: {
+        let isDeclare = hasModifier(SyntaxKind.DeclareKeyword, node);
+
         const result = this.createNode<TSESTree.TSModuleDeclaration>(node, {
           type: AST_NODE_TYPES.TSModuleDeclaration,
           ...((): TSESTree.OptionalRangeAndLoc<
@@ -2901,6 +2946,7 @@ export class Converter {
               node.body.name
             ) {
               node = node.body;
+              isDeclare ||= hasModifier(SyntaxKind.DeclareKeyword, node);
 
               const nextName = node.name as ts.Identifier;
 
@@ -2931,9 +2977,7 @@ export class Converter {
           })(),
         });
 
-        if (hasModifier(SyntaxKind.DeclareKeyword, node)) {
-          result.declare = true;
-        }
+        result.declare = isDeclare;
 
         if (node.flags & ts.NodeFlags.GlobalAugmentation) {
           result.global = true;
@@ -3238,6 +3282,19 @@ export class Converter {
             modifier.kind,
           )}' modifier cannot appear on class elements of this kind.`,
         );
+      }
+
+      if (
+        modifier.kind === SyntaxKind.DeclareKeyword &&
+        ts.isVariableStatement(node)
+      ) {
+        const declarationKind = getDeclarationKind(node.declarationList);
+        if (declarationKind === 'using' || declarationKind === 'await using') {
+          this.#throwError(
+            modifier,
+            `'declare' modifier cannot appear on a '${declarationKind}' declaration.`,
+          );
+        }
       }
 
       if (

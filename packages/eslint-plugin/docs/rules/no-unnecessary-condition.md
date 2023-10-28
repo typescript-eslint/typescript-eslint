@@ -77,7 +77,7 @@ function bar(arg?: string | null) {
 
 Example of correct code for `{ allowConstantLoopConditions: true }`:
 
-```ts
+```ts option='{ "allowConstantLoopConditions": true }' showPlaygroundButton
 while (true) {}
 for (; true; ) {}
 do {} while (true);
@@ -96,6 +96,22 @@ If for some reason you cannot turn on `strictNullChecks`, but still want to use 
 ## When Not To Use It
 
 The main downside to using this rule is the need for type information.
+
+This rule has a known edge case of triggering on conditions that were modified within function calls (as side effects).
+It is due to limitations of TypeScript's type narrowing.
+See [#9998](https://github.com/microsoft/TypeScript/issues/9998) for details.
+
+We recommend upcasting the variable with a [type assertion](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions).
+
+```ts
+let condition = false as boolean;
+
+const f = () => (condition = true);
+f();
+
+if (condition) {
+}
+```
 
 ## Related To
 
