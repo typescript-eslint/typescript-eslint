@@ -27,7 +27,10 @@ export default util.createRule<Options, MessageIds>({
           return;
         }
         const services = util.getParserServices(context);
-        const argType = services.getTypeAtLocation(node.argument);
+        const argType = util.getConstrainedTypeAtLocation(
+          services,
+          node.argument,
+        );
         const checker = services.program.getTypeChecker();
         if (
           tsutils
@@ -36,7 +39,10 @@ export default util.createRule<Options, MessageIds>({
               type =>
                 !tsutils.isTypeFlagSet(
                   type,
-                  ts.TypeFlags.BigIntLike | ts.TypeFlags.NumberLike,
+                  ts.TypeFlags.Any |
+                    ts.TypeFlags.Never |
+                    ts.TypeFlags.BigIntLike |
+                    ts.TypeFlags.NumberLike,
                 ),
             )
         ) {
