@@ -1,12 +1,7 @@
-import type * as ts from 'typescript';
+import * as tsutils from 'ts-api-utils';
+import * as ts from 'typescript';
 
 import * as util from '../util';
-
-interface TypeChecker extends ts.TypeChecker {
-  // https://github.com/microsoft/TypeScript/issues/9879
-  isTypeAssignableTo(source: ts.Type, target: ts.Type): boolean;
-  getUnionType(types: ts.Type[]): ts.Type;
-}
 
 type Options = [];
 type MessageIds = 'unaryMinus';
@@ -33,15 +28,17 @@ export default util.createRule<Options, MessageIds>({
         }
         const services = util.getParserServices(context);
         const argType = services.getTypeAtLocation(node.argument);
-        const checker = services.program.getTypeChecker() as TypeChecker;
+        const checker = services.program.getTypeChecker();
         if (
-          !checker.isTypeAssignableTo(
-            argType,
-            checker.getUnionType([
-              checker.getNumberType(), // first exposed in TypeScript v5.1
-              checker.getBigIntType(), // first added in TypeScript v5.1
-            ]),
-          )
+          tsutils
+            .unionTypeParts(argType)
+            .some(
+              type =>
+                !tsutils.isTypeFlagSet(
+                  type,
+                  ts.TypeFlags.BigIntLike | ts.TypeFlags.NumberLike,
+                ),
+            )
         ) {
           context.report({
             messageId: 'unaryMinus',

@@ -25,7 +25,7 @@ ruleTester.run('no-unsafe-unary-minus', rule, {
     '(a: 1 | 2) => -a;',
     '(a: string) => +a;',
     '(a: number[]) => -a[0];',
-    '<T>(t: T & number) => -t;',
+    '<T,>(t: T & number) => -t;',
     '(a: { x: number }) => -a.x;',
     '(a: never) => -a;',
     '<T extends number>(t: T) => -t;',
@@ -42,6 +42,6 @@ ruleTester.run('no-unsafe-unary-minus', rule, {
     },
     { code: '(a: unknown) => -a;', errors: [{ messageId: 'unaryMinus' }] },
     { code: '(a: void) => -a;', errors: [{ messageId: 'unaryMinus' }] },
-    { code: '<T>(t: T) => -t;', errors: [{ messageId: 'unaryMinus' }] },
+    { code: '<T,>(t: T) => -t;', errors: [{ messageId: 'unaryMinus' }] },
   ],
 });
