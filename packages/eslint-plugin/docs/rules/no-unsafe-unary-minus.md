@@ -20,18 +20,31 @@ This rule restricts the unary `-` operator to `number | bigint`.
 ### ❌ Incorrect
 
 ```ts
-const f = (a: string) => -a;
-const g = (a: {}) => -a;
+declare const a: string;
+-a;
+
+declare const b: {};
+-b;
 ```
 
 ### ✅ Correct
 
 ```ts
-const a = -42;
-const b = -42n;
-const f1 = (a: number) => -a;
-const f2 = (a: bigint) => -a;
-const f3 = (a: number | bigint) => -a;
-const f4 = (a: any) => -a;
-const f5 = (a: 1 | 2) => -a;
+-42;
+-42n;
+
+declare const a: number;
+-a;
+
+declare const b: number;
+-b;
+
+declare const c: number | bigint;
+-c;
+
+declare const d: any;
+-d;
+
+declare const e: 1 | 2;
+-e;
 ```
