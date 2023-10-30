@@ -137,9 +137,8 @@ export default createRule<[Options], MessageIds>({
 
           const option = options[fullDirective];
           if (option === true) {
-            if (directive === 'ignore' && options['ts-expect-error'] !== true) {
-              // Special case to suggest @ts-expect-error instead of @ts-ignore,
-              // as long as @ts-expect-error is banned outright.
+            if (directive === 'ignore') {
+              // Special case to suggest @ts-expect-error instead of @ts-ignore
               context.report({
                 node: comment,
                 messageId: 'tsIgnoreInsteadOfExpectError',

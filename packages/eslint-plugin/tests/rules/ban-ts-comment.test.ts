@@ -306,10 +306,15 @@ ruleTester.run('ts-ignore', rule, {
       options: [{ 'ts-ignore': true, 'ts-expect-error': true }],
       errors: [
         {
-          data: { directive: 'ignore' },
-          messageId: 'tsDirectiveComment',
+          messageId: 'tsIgnoreInsteadOfExpectError',
           line: 1,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: '// @ts-expect-error',
+            },
+          ],
         },
       ],
     },
@@ -339,24 +344,18 @@ ruleTester.run('ts-ignore', rule, {
           messageId: 'tsIgnoreInsteadOfExpectError',
           line: 1,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: '// @ts-expect-error',
+            },
+          ],
         },
       ],
     },
     {
       code: '/* @ts-ignore */',
-      options: [{ 'ts-ignore': true, 'ts-expect-error': true }],
-      errors: [
-        {
-          data: { directive: 'ignore' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
-          column: 1,
-        },
-      ],
-    },
-    {
-      code: '/* @ts-ignore */',
-      options: [{ 'ts-ignore': true, 'ts-expect-error': false }],
+      options: [{ 'ts-ignore': true }],
       errors: [
         {
           messageId: 'tsIgnoreInsteadOfExpectError',
@@ -368,22 +367,6 @@ ruleTester.run('ts-ignore', rule, {
               output: '/* @ts-expect-error */',
             },
           ],
-        },
-      ],
-    },
-    {
-      code: `
-/*
- @ts-ignore
-*/
-      `,
-      options: [{ 'ts-ignore': true, 'ts-expect-error': true }],
-      errors: [
-        {
-          data: { directive: 'ignore' },
-          messageId: 'tsDirectiveComment',
-          line: 2,
-          column: 1,
         },
       ],
     },
@@ -414,13 +397,18 @@ ruleTester.run('ts-ignore', rule, {
     },
     {
       code: '/** @ts-ignore */',
-      options: [{ 'ts-ignore': true, 'ts-expect-error': true }],
+      options: [{ 'ts-ignore': true, 'ts-expect-error': false }],
       errors: [
         {
-          data: { directive: 'ignore' },
-          messageId: 'tsDirectiveComment',
+          messageId: 'tsIgnoreInsteadOfExpectError',
           line: 1,
           column: 1,
+          suggestions: [
+            {
+              messageId: 'replaceTsIgnoreWithTsExpectError',
+              output: '/** @ts-expect-error */',
+            },
+          ],
         },
       ],
     },
@@ -437,18 +425,6 @@ ruleTester.run('ts-ignore', rule, {
               output: '// @ts-expect-error: Suppress next line',
             },
           ],
-        },
-      ],
-    },
-    {
-      code: '// @ts-ignore: Suppress next line',
-      options: [{ 'ts-ignore': true, 'ts-expect-error': true }],
-      errors: [
-        {
-          data: { directive: 'ignore' },
-          messageId: 'tsDirectiveComment',
-          line: 1,
-          column: 1,
         },
       ],
     },
