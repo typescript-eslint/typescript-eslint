@@ -40,6 +40,11 @@ const defaultCamelCaseAllTheThingsConfig: Options = [
   },
 
   {
+    selector: 'import',
+    format: ['camelCase', 'PascalCase'],
+  },
+
+  {
     selector: 'variable',
     format: ['camelCase', 'UPPER_CASE'],
     leadingUnderscore: 'allow',
