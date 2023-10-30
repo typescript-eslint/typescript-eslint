@@ -3239,10 +3239,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/js@npm:8.51.0":
-  version: 8.51.0
-  resolution: "@eslint/js@npm:8.51.0"
-  checksum: 0228bf1e1e0414843e56d9ff362a2a72d579c078f93174666f29315690e9e30a8633ad72c923297f7fd7182381b5a476805ff04dac8debe638953eb1ded3ac73
+"@eslint/js@npm:8.52.0":
+  version: 8.52.0
+  resolution: "@eslint/js@npm:8.52.0"
+  checksum: 490893b8091a66415f4ac98b963d23eb287264ea3bd6af7ec788f0570705cf64fd6ab84b717785980f55e39d08ff5c7fde6d8e4391ccb507169370ce3a6d091a
   languageName: node
   linkType: hard
 
@@ -3947,15 +3947,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/devkit@npm:17.0.1":
-  version: 17.0.1
-  resolution: "@nrwl/devkit@npm:17.0.1"
-  dependencies:
-    "@nx/devkit": 17.0.1
-  checksum: 0dab673aa1ce8099fd7feb0f6a76aefa8214a5f78e807f18e4612b62a801f373a5a072fb956a29c5713ed31eb0a5c9b05969e3d092d1d1de923f4e465c25b7d2
-  languageName: node
-  linkType: hard
-
 "@nrwl/devkit@npm:17.0.2":
   version: 17.0.2
   resolution: "@nrwl/devkit@npm:17.0.2"
@@ -4016,11 +4007,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/devkit@npm:*, @nx/devkit@npm:17.0.1":
-  version: 17.0.1
-  resolution: "@nx/devkit@npm:17.0.1"
+"@nx/devkit@npm:*, @nx/devkit@npm:17.0.2":
+  version: 17.0.2
+  resolution: "@nx/devkit@npm:17.0.2"
   dependencies:
-    "@nrwl/devkit": 17.0.1
+    "@nrwl/devkit": 17.0.2
     ejs: ^3.1.7
     enquirer: ~2.3.6
     ignore: ^5.0.4
@@ -4029,7 +4020,7 @@ __metadata:
     tslib: ^2.3.0
   peerDependencies:
     nx: ">= 16 <= 18"
-  checksum: db2bf90a2570c8874e08fa47b979a6985456e5c3c66815f0b2b829157bb170e1786f80e123ab8038e6a1b822c98e4496e41ae6677fef3ef43b9ca76b8345b804
+  checksum: b15a8c028c455d863d3c1d6de220e009bc7c6b7123cabababbb9c84de23af71ed246706b57a43802cbaa162eedf252707f837f7fc7e42bfe4bddca4fea7f57fc
   languageName: node
   linkType: hard
 
@@ -4047,23 +4038,6 @@ __metadata:
   peerDependencies:
     nx: ">= 15 <= 17"
   checksum: 92579ccc3f3cc7bdc0f23a26c2a1f358cadb4a06e7c166c6cca569f63e0715f74748e3657c40c252fded89786f870d88127211fc4c1158a58e5c528d39214d30
-  languageName: node
-  linkType: hard
-
-"@nx/devkit@npm:17.0.2":
-  version: 17.0.2
-  resolution: "@nx/devkit@npm:17.0.2"
-  dependencies:
-    "@nrwl/devkit": 17.0.2
-    ejs: ^3.1.7
-    enquirer: ~2.3.6
-    ignore: ^5.0.4
-    semver: 7.5.3
-    tmp: ~0.2.1
-    tslib: ^2.3.0
-  peerDependencies:
-    nx: ">= 16 <= 18"
-  checksum: b15a8c028c455d863d3c1d6de220e009bc7c6b7123cabababbb9c84de23af71ed246706b57a43802cbaa162eedf252707f837f7fc7e42bfe4bddca4fea7f57fc
   languageName: node
   linkType: hard
 
@@ -6231,7 +6205,7 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/website-eslint@workspace:packages/website-eslint"
   dependencies:
-    "@eslint/js": 8.51.0
+    "@eslint/js": 8.52.0
     "@typescript-eslint/eslint-plugin": 6.9.1
     "@typescript-eslint/parser": 6.9.1
     "@typescript-eslint/scope-manager": 6.9.1
