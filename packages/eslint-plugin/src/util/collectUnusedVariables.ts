@@ -442,15 +442,6 @@ function isExported(variable: TSESLint.Scope.Variable): boolean {
 const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['&&=', '||=', '??=']);
 
 /**
- * Checks whether the given operator is a logical assignment operator or not.
- * @param operator The operator
- * @returns True if the operator is a logical assignment operator.
- */
-function isLogicalAssignmentOperator(operator: string): boolean {
-  return LOGICAL_ASSIGNMENT_OPERATORS.has(operator);
-}
-
-/**
  * Determines if the variable is used.
  * @param variable The variable to check.
  * @returns True if the variable is used
@@ -712,7 +703,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
       ref.isRead() && // in RHS of an assignment for itself. e.g. `a = a + 1`
       // self update. e.g. `a += 1`, `a++`
       ((parent.type === AST_NODE_TYPES.AssignmentExpression &&
-        !isLogicalAssignmentOperator(parent.operator) &&
+        !LOGICAL_ASSIGNMENT_OPERATORS.has(parent.operator) &&
         grandparent.type === AST_NODE_TYPES.ExpressionStatement &&
         parent.left === id) ||
         (parent.type === AST_NODE_TYPES.UpdateExpression &&
