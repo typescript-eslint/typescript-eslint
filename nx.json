@@ -19,7 +19,7 @@
     "lint": {
       "inputs": [
         "default",
-        "{workspaceRoot}/.eslintrc.js",
+        "{workspaceRoot}/eslint.config.js",
         "{workspaceRoot}/yarn.lock",
         "{workspaceRoot}/.eslintignore"
       ],
@@ -46,6 +46,10 @@
         "runtime": "yarn -v"
       }
     ],
-    "production": ["default", "!{projectRoot}/src/test-setup.[jt]s"]
+    "production": [
+      "default",
+      "!{projectRoot}/src/test-setup.[jt]s",
+      "!{projectRoot}/eslint.config.js"
+    ]
   }
 }

@@ -11,8 +11,7 @@
         "lintFilePatterns": [
           "packages/website-eslint/**/*.{mts,cts,ts,tsx}",
           "packages/website-eslint/**/*.{mjs,cjs,js,jsx}"
-        ],
-        "ignorePath": ".eslintignore"
+        ]
       }
     }
   }

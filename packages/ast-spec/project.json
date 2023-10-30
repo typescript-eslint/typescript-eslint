@@ -16,8 +16,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/ast-spec/**/*.{mts,cts,ts,tsx}"],
-        "ignorePath": ".eslintignore"
+        "lintFilePatterns": ["packages/ast-spec/**/*.{mts,cts,ts,tsx}"]
       }
     }
   }

@@ -59,6 +59,8 @@
     "@babel/eslint-parser": "^7.22.7",
     "@babel/parser": "^7.22.7",
     "@babel/types": "^7.22.5",
+    "@eslint/eslintrc": "^2.1.1",
+    "@eslint/js": "~8.46.0",
     "@nx/eslint": "17.0.2",
     "@nx/jest": "17.0.2",
     "@nx/workspace": "17.0.2",

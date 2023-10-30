@@ -10,8 +10,7 @@
       "options": {
         "lintFilePatterns": [
           "packages/rule-schema-to-typescript-types/**/*.{mts,cts,ts,tsx}"
-        ],
-        "ignorePath": ".eslintignore"
+        ]
       }
     }
   }

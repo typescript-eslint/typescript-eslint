@@ -53,8 +53,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": ["packages/scope-manager/**/*.{mts,cts,ts,tsx}"],
-        "ignorePath": ".eslintignore"
+        "lintFilePatterns": ["packages/scope-manager/**/*.{mts,cts,ts,tsx}"]
       }
     },
     "test": {

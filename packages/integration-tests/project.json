@@ -8,10 +8,7 @@
       "executor": "@nx/eslint:lint",
       "outputs": ["{options.outputFile}"],
       "options": {
-        "lintFilePatterns": [
-          "packages/integration-tests/**/*.{mts,cts,ts,tsx}"
-        ],
-        "ignorePath": ".eslintignore"
+        "lintFilePatterns": ["packages/integration-tests/**/*.{mts,cts,ts,tsx}"]
       }
     }
   }

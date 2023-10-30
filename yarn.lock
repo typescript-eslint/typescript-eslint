@@ -3215,7 +3215,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@eslint/eslintrc@npm:^2.1.2":
+"@eslint/eslintrc@npm:^2.1.1, @eslint/eslintrc@npm:^2.1.2":
   version: 2.1.2
   resolution: "@eslint/eslintrc@npm:2.1.2"
   dependencies:
@@ -3243,6 +3243,13 @@ __metadata:
   version: 8.51.0
   resolution: "@eslint/js@npm:8.51.0"
   checksum: 0228bf1e1e0414843e56d9ff362a2a72d579c078f93174666f29315690e9e30a8633ad72c923297f7fd7182381b5a476805ff04dac8debe638953eb1ded3ac73
+  languageName: node
+  linkType: hard
+
+"@eslint/js@npm:~8.46.0":
+  version: 8.46.0
+  resolution: "@eslint/js@npm:8.46.0"
+  checksum: 7aed479832302882faf5bec37e9d068f270f84c19b3fb529646a7c1b031e73a312f730569c78806492bc09cfce3d7651dfab4ce09a56cbb06bc6469449e56377
   languageName: node
   linkType: hard
 
@@ -6058,6 +6065,8 @@ __metadata:
     "@babel/eslint-parser": ^7.22.7
     "@babel/parser": ^7.22.7
     "@babel/types": ^7.22.5
+    "@eslint/eslintrc": ^2.1.1
+    "@eslint/js": ~8.46.0
     "@nx/eslint": 17.0.2
     "@nx/jest": 17.0.2
     "@nx/workspace": 17.0.2
