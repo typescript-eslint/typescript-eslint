@@ -33,6 +33,8 @@ export type JSONSchema4TypeExtended =
   | JSONSchema4Object;
 
 // Workaround for infinite type recursion
+// Also, https://github.com/typescript-eslint/typescript-eslint/issues/7863
+// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
 export interface JSONSchema4Object {
   [key: string]: JSONSchema4TypeExtended;
 }
