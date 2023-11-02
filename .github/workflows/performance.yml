@@ -1,0 +1,17 @@
+name: 'Performance Testing'
+
+on: workflow_dispatch
+
+jobs:
+  performance:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/prepare-install
+      - run: brew install hyperfine
+      - run: PERFORMANCE_FILE_COUNT=${{ matrix.file-count }} yarn workspace @typescript-eslint/performance run generate
+      - run: hyperfine yarn workspace @typescript-eslint/performance run test:${{ matrix.test}}
+    strategy:
+      matrix:
+        file-count: [50, 100, 150, 200]
+        test: ['project', 'service']

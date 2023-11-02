@@ -6,6 +6,7 @@ coverage
 __snapshots__
 .docusaurus
 build
+packages/performance/generated
 
 # Files copied as part of the build
 packages/types/src/generated/**/*.ts

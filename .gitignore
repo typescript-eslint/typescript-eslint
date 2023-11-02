@@ -5,6 +5,9 @@ npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 
+# Performance testing
+packages/performance/generated
+
 # Website
 packages/website/.docusaurus
 packages/website/.cache-loader

@@ -5904,6 +5904,17 @@ __metadata:
   languageName: unknown
   linkType: soft
 
+"@typescript-eslint/performance@workspace:packages/performance":
+  version: 0.0.0-use.local
+  resolution: "@typescript-eslint/performance@workspace:packages/performance"
+  dependencies:
+    "@typescript-eslint/eslint-plugin": 6.9.1
+    "@typescript-eslint/parser": 6.9.1
+    eslint: "*"
+    tsx: "*"
+  languageName: unknown
+  linkType: soft
+
 "@typescript-eslint/repo-tools@workspace:packages/repo-tools":
   version: 0.0.0-use.local
   resolution: "@typescript-eslint/repo-tools@workspace:packages/repo-tools"
