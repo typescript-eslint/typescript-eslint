@@ -5911,6 +5911,7 @@ __metadata:
     "@typescript-eslint/eslint-plugin": 6.9.1
     "@typescript-eslint/parser": 6.9.1
     eslint: "*"
+    execa: "*"
     tsx: "*"
   languageName: unknown
   linkType: soft

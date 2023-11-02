@@ -11,8 +11,9 @@
   "scripts": {
     "generate": "tsx ./generate.ts",
     "generate:watch": "tsx --watch ./generate.ts",
-    "test:project": "time eslint --config ./generated/.eslintrc.project.cjs ./generated",
-    "test:service": "time eslint --config ./generated/.eslintrc.service.cjs ./generated"
+    "test:project": "time eslint --config ./generated/.eslintrc.project.cjs ./generated || true",
+    "test:service": "time eslint --config ./generated/.eslintrc.service.cjs ./generated || true",
+    "test:summary": "tsx ./test-summary.ts"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "6.9.1",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "eslint": "*",
+    "execa": "*",
     "tsx": "*"
   }
 }

@@ -9,7 +9,7 @@ import {
 } from './generating.js';
 import { directory, writeFile } from './writing.js';
 
-const fileCount = Number(process.env.PERFORMANCE_FILE_COUNT ?? 100);
+const fileCount = Number(process.env.PERFORMANCE_FILE_COUNT);
 
 await fs.rm(directory, { force: true, recursive: true });
 await fs.mkdir(path.join(directory, 'src'), { recursive: true });
