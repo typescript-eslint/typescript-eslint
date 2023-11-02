@@ -494,6 +494,42 @@ const x = {
     },
     {
       code: `
+function pattern() {
+  return { a: 123 } as const;
+}
+
+function foo(): number {
+  return 123;
+}
+
+const foo = function patttttern() {
+  return;
+};
+      `,
+      options: [
+        {
+          allowedNames: ['.*pa(t)+ern$'],
+        },
+      ],
+    },
+    {
+      code: `
+function pattern() {
+  return;
+}
+
+const foo = function stringFuncName() {
+  return;
+};
+      `,
+      options: [
+        {
+          allowedNames: ['.*pa(t)+ern$', 'stringFuncName'],
+        },
+      ],
+    },
+    {
+      code: `
 type HigherOrderType = () => (arg1: string) => (arg2: number) => string;
 const x: HigherOrderType = () => arg1 => arg2 => 'foo';
       `,
@@ -1509,6 +1545,26 @@ class Foo {
           endLine: 4,
           column: 3,
           endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+function pattern() {
+  return 2;
+}
+function patttern() {
+  return 3;
+}
+      `,
+      options: [{ allowedNames: ['.*pa(t){3,5}ern$'] }],
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 2,
+          endLine: 2,
+          column: 1,
+          endColumn: 17,
         },
       ],
     },

@@ -17,7 +17,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
         "type": "boolean"
       },
       "allowedNames": {
-        "description": "An array of function/method names that will not have their arguments or return values checked.",
+        "description": "An array of function/method names and/or name patterns that will not have their arguments or return values checked.",
         "items": {
           "type": "string"
         },
@@ -67,7 +67,7 @@ type Options = [
     allowIIFEs?: boolean;
     /** Whether to ignore type annotations on the variable of function expressions. */
     allowTypedFunctionExpressions?: boolean;
-    /** An array of function/method names that will not have their arguments or return values checked. */
+    /** An array of function/method names and/or name patterns that will not have their arguments or return values checked. */
     allowedNames?: string[];
   },
 ];

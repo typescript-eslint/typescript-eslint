@@ -69,7 +69,7 @@ export default createRule<Options, MessageIds>({
           },
           allowedNames: {
             description:
-              'An array of function/method names that will not have their arguments or return values checked.',
+              'An array of function/method names and/or name patterns that will not have their arguments or return values checked.',
             items: {
               type: 'string',
             },
@@ -117,6 +117,13 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
+      const allowedNames = options.allowedNames.map(
+        allowedName => new RegExp(allowedName, 'u'),
+      );
+      function doesMatchAnyAllowedName(funcName: string): boolean {
+        return allowedNames.some(allowedName => allowedName.test(funcName));
+      }
+
       if (
         node.type === AST_NODE_TYPES.ArrowFunctionExpression ||
         node.type === AST_NODE_TYPES.FunctionExpression
@@ -146,7 +153,7 @@ export default createRule<Options, MessageIds>({
             }
           }
         }
-        if (!!funcName && !!options.allowedNames.includes(funcName)) {
+        if (!!funcName && !!doesMatchAnyAllowedName(funcName)) {
           return true;
         }
       }
@@ -154,7 +161,7 @@ export default createRule<Options, MessageIds>({
         node.type === AST_NODE_TYPES.FunctionDeclaration &&
         node.id &&
         node.id.type === AST_NODE_TYPES.Identifier &&
-        !!options.allowedNames.includes(node.id.name)
+        !!doesMatchAnyAllowedName(node.id.name)
       ) {
         return true;
       }

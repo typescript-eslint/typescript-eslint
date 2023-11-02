@@ -276,14 +276,18 @@ const allowedArrow = (x: string) => x;
 
 ### `allowedNames`
 
-You may pass function/method names you would like this rule to ignore, like so:
+You may pass function/method names and/or regular expressions you would like this rule to ignore, like so:
 
 ```json
 {
   "@typescript-eslint/explicit-function-return-type": [
     "error",
     {
-      "allowedNames": ["ignoredFunctionName", "ignoredMethodName"]
+      "allowedNames": [
+        "ignoredFunctionName",
+        "ignoredMethodName",
+        ".*endsWithSuffix$"
+      ]
     }
   ]
 }
