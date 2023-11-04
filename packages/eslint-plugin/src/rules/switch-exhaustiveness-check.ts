@@ -11,25 +11,47 @@ import {
   requiresQuoting,
 } from '../util';
 
-export default createRule({
+type MessageIds = 'switchIsNotExhaustive' | 'addMissingCases';
+type Options = [
+  {
+    /**
+     * If `true`, require a `default` clause for switches on non-union types.
+     *
+     * @default false
+     */
+    requireDefaultForNonUnion?: boolean;
+  },
+];
+
+export default createRule<Options, MessageIds>({
   name: 'switch-exhaustiveness-check',
   meta: {
     type: 'suggestion',
     docs: {
-      description:
-        'Require switch-case statements to be exhaustive with union type',
+      description: 'Require switch-case statements to be exhaustive',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
-    schema: [],
+    schema: [
+      {
+        type: 'object',
+        additionalProperties: false,
+        properties: {
+          requireDefaultForNonUnion: {
+            description: `If 'true', require a 'default' clause for switches on non-union types.`,
+            type: 'boolean',
+          },
+        },
+      },
+    ],
     messages: {
       switchIsNotExhaustive:
         'Switch is not exhaustive. Cases not matched: {{missingBranches}}',
       addMissingCases: 'Add branches for missing cases.',
     },
   },
-  defaultOptions: [],
-  create(context) {
+  defaultOptions: [{ requireDefaultForNonUnion: false }],
+  create(context, [{ requireDefaultForNonUnion }]) {
     const sourceCode = context.getSourceCode();
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -38,7 +60,7 @@ export default createRule({
     function fixSwitch(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.SwitchStatement,
-      missingBranchTypes: ts.Type[],
+      missingBranchTypes: (ts.Type | null)[], // null means default branch
       symbolName?: string,
     ): TSESLint.RuleFix | null {
       const lastCase =
@@ -51,6 +73,10 @@ export default createRule({
 
       const missingCases = [];
       for (const missingBranchType of missingBranchTypes) {
+        if (missingBranchType == null) {
+          missingCases.push(`default: { throw new Error('default case') }`);
+          continue;
+        }
         // While running this rule on checker.ts of TypeScript project
         // the fix introduced a compiler error due to:
         //
@@ -163,6 +189,28 @@ export default createRule({
             },
           ],
         });
+      } else if (requireDefaultForNonUnion) {
+        const hasDefault = node.cases.some(
+          switchCase => switchCase.test == null,
+        );
+
+        if (!hasDefault) {
+          context.report({
+            node: node.discriminant,
+            messageId: 'switchIsNotExhaustive',
+            data: {
+              missingBranches: 'default',
+            },
+            suggest: [
+              {
+                messageId: 'addMissingCases',
+                fix(fixer): TSESLint.RuleFix | null {
+                  return fixSwitch(fixer, node, [null]);
+                },
+              },
+            ],
+          });
+        }
       }
     }
 
