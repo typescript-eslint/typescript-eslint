@@ -32,7 +32,7 @@ Makes the rule to ignores any class member explicitly marked with `override`.
 
 Example of a correct code when `ignoreOverrideMethods` is set to `true`:
 
-```ts
+```ts option='{ "ignoreOverrideMethods": true }' showPlaygroundButton
 class X {
   override method() {}
   override property = () => {};
@@ -47,7 +47,7 @@ It's important to note that this option does not only apply to members defined i
 
 Example of a correct code when `ignoreClassesThatImplementAnInterface` is set to `true`:
 
-```ts
+```ts option='{ "ignoreClassesThatImplementAnInterface": true }' showPlaygroundButton
 class X implements Y {
   method() {}
   property = () => {};

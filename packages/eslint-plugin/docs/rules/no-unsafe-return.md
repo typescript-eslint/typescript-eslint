@@ -88,7 +88,7 @@ There are cases where the rule allows to return `any` to `unknown`.
 
 Examples of `any` to `unknown` return that are allowed:
 
-```ts
+```ts showPlaygroundButton
 function foo1(): unknown {
   return JSON.parse(singleObjString); // Return type for JSON.parse is any.
 }

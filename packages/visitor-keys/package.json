@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/visitor-keys",
-  "version": "6.7.5",
+  "version": "6.9.1",
   "description": "Visitor keys used to help traverse the TypeScript-ESTree AST",
   "files": [
     "dist",
@@ -45,14 +45,14 @@
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
-    "@typescript-eslint/types": "6.7.5",
+    "@typescript-eslint/types": "6.9.1",
     "eslint-visitor-keys": "^3.4.1"
   },
   "devDependencies": {
     "@types/eslint-visitor-keys": "*",
     "downlevel-dts": "*",
     "jest": "29.7.0",
-    "prettier": "^2.8.4",
+    "prettier": "^3.0.3",
     "rimraf": "*",
     "typescript": "*"
   },

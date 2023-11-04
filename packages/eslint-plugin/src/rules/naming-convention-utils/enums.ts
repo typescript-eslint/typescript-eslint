@@ -43,10 +43,14 @@ enum Selectors {
   typeAlias = 1 << 14,
   enum = 1 << 15,
   typeParameter = 1 << 17,
+
+  // other
+  import = 1 << 18,
 }
 type SelectorsString = keyof typeof Selectors;
 
 enum MetaSelectors {
+  /* eslint-disable @typescript-eslint/prefer-literal-enum-member */
   default = -1,
   variableLike = 0 |
     Selectors.variable |
@@ -76,6 +80,7 @@ enum MetaSelectors {
     Selectors.classProperty |
     Selectors.objectLiteralProperty |
     Selectors.typeProperty,
+  /* eslint-enable @typescript-eslint/prefer-literal-enum-member */
 }
 type MetaSelectorsString = keyof typeof MetaSelectors;
 type IndividualAndMetaSelectorsString = MetaSelectorsString | SelectorsString;
@@ -107,17 +112,21 @@ enum Modifiers {
   override = 1 << 13,
   // class methods, object function properties, or functions that are async via the `async` keyword
   async = 1 << 14,
+  // default imports
+  default = 1 << 15,
+  // namespace imports
+  namespace = 1 << 16,
 
   // make sure TypeModifiers starts at Modifiers + 1 or else sorting won't work
 }
 type ModifiersString = keyof typeof Modifiers;
 
 enum TypeModifiers {
-  boolean = 1 << 15,
-  string = 1 << 16,
-  number = 1 << 17,
-  function = 1 << 18,
-  array = 1 << 19,
+  boolean = 1 << 17,
+  string = 1 << 18,
+  number = 1 << 19,
+  function = 1 << 20,
+  array = 1 << 21,
 }
 type TypeModifiersString = keyof typeof TypeModifiers;
 

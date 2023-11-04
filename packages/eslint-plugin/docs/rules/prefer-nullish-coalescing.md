@@ -26,7 +26,7 @@ Setting this option to `true` will cause the rule to ignore any ternary expressi
 
 Incorrect code for `ignoreTernaryTests: false`, and correct code for `ignoreTernaryTests: true`:
 
-```ts
+```ts option='{ "ignoreTernaryTests": false }' showPlaygroundButton
 const foo: any = 'bar';
 foo !== undefined && foo !== null ? foo : 'a string';
 foo === undefined || foo === null ? 'a string' : foo;
@@ -44,7 +44,7 @@ foo === null ? 'a string' : foo;
 
 Correct code for `ignoreTernaryTests: false`:
 
-```ts
+```ts option='{ "ignoreTernaryTests": false }' showPlaygroundButton
 const foo: any = 'bar';
 foo ?? 'a string';
 foo ?? 'a string';
@@ -70,7 +70,7 @@ If you're looking to enforce stricter conditional tests, you should consider usi
 
 Incorrect code for `ignoreConditionalTests: false`, and correct code for `ignoreConditionalTests: true`:
 
-```ts
+```ts option='{ "ignoreConditionalTests": false }' showPlaygroundButton
 declare const a: string | null;
 declare const b: string | null;
 
@@ -87,7 +87,7 @@ a || b ? true : false;
 
 Correct code for `ignoreConditionalTests: false`:
 
-```ts
+```ts option='{ "ignoreConditionalTests": false }' showPlaygroundButton
 declare const a: string | null;
 declare const b: string | null;
 
@@ -112,7 +112,7 @@ If you're looking to enforce stricter conditional tests, you should consider usi
 
 Incorrect code for `ignoreMixedLogicalExpressions: false`, and correct code for `ignoreMixedLogicalExpressions: true`:
 
-```ts
+```ts option='{ "ignoreMixedLogicalExpressions": false }' showPlaygroundButton
 declare const a: string | null;
 declare const b: string | null;
 declare const c: string | null;
@@ -127,7 +127,7 @@ a || (b && c && d);
 
 Correct code for `ignoreMixedLogicalExpressions: false`:
 
-```ts
+```ts option='{ "ignoreMixedLogicalExpressions": false }' showPlaygroundButton
 declare const a: string | null;
 declare const b: string | null;
 declare const c: string | null;
@@ -153,14 +153,14 @@ If you would like to ignore expressions containing operands of certain primitive
 
 Incorrect code for `ignorePrimitives: { string: false }`, and correct code for `ignorePrimitives: { string: true }`:
 
-```ts
+```ts option='{ "ignorePrimitives": { "string": true } }' showPlaygroundButton
 const foo: string | undefined = 'bar';
 foo || 'a string';
 ```
 
 Correct code for both `ignorePrimitives: { string: false }` and `ignorePrimitives: { string: true }`:
 
-```ts
+```ts option='{ "ignorePrimitives": { "string": true } }' showPlaygroundButton
 const foo: string | undefined = 'bar';
 foo ?? 'a string';
 ```
