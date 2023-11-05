@@ -23,10 +23,16 @@ const log = debug(
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
 let TSSERVER_PROJECT_SERVICE: TypeScriptProjectService | null = null;
 
+console.log('Instantiating module createParseSettings');
+
 export function createParseSettings(
   code: ts.SourceFile | string,
   options: Partial<TSESTreeOptions> = {},
 ): MutableParseSettings {
+  console.log(
+    '\nCalling createParseSettings',
+    (code as ts.SourceFile).fileName || code,
+  );
   const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(options);
   const tsconfigRootDir =
@@ -55,7 +61,9 @@ export function createParseSettings(
         process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER !== 'false') ||
       (process.env.TYPESCRIPT_ESLINT_EXPERIMENTAL_TSSERVER === 'true' &&
         options.EXPERIMENTAL_useProjectService !== false)
-        ? (TSSERVER_PROJECT_SERVICE ??= createProjectService())
+        ? (TSSERVER_PROJECT_SERVICE ??= createProjectService(
+            options.allowDefaultProjectFallbackFilesGlobs,
+          ))
         : undefined,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect:
       options.EXPERIMENTAL_useSourceOfProjectReferenceRedirect === true,

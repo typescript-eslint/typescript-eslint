@@ -1,4 +1,6 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
+import * as fs from 'fs';
+import { sync as globSync } from 'globby';
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
 const doNothing = (): void => {};
@@ -9,7 +11,9 @@ const createStubFileWatcher = (): ts.FileWatcher => ({
 
 export type TypeScriptProjectService = ts.server.ProjectService;
 
-export function createProjectService(): TypeScriptProjectService {
+export function createProjectService(
+  allowDefaultProjectFallbackFilesGlobs: string[] = [],
+): TypeScriptProjectService {
   // We import this lazily to avoid its cost for users who don't use the service
   const tsserver = require('typescript/lib/tsserverlibrary') as typeof ts;
 
@@ -27,7 +31,7 @@ export function createProjectService(): TypeScriptProjectService {
     watchFile: createStubFileWatcher,
   };
 
-  return new tsserver.server.ProjectService({
+  const service = new tsserver.server.ProjectService({
     host: system,
     cancellationToken: { isCancellationRequested: (): boolean => false },
     useSingleInferredProject: false,
@@ -45,5 +49,13 @@ export function createProjectService(): TypeScriptProjectService {
     },
     session: undefined,
   });
+
+  for (const filesGlob of allowDefaultProjectFallbackFilesGlobs) {
+    for (const fileName of globSync(filesGlob, { ignore: ['node_modules/'] })) {
+      service.openClientFile(fileName, fs.readFileSync(fileName).toString());
+    }
+  }
+
+  return service;
 }
 /* eslint-enable @typescript-eslint/no-empty-function */

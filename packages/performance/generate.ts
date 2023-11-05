@@ -10,6 +10,11 @@ import {
 import { directory, writeFile } from './writing.js';
 
 const fileCount = Number(process.env.PERFORMANCE_FILE_COUNT);
+if (!fileCount) {
+  throw new Error(
+    `Invalid process.env.PERFORMANCE_FILE_COUNT: ${process.env.PERFORMANCE_FILE_COUNT}`,
+  );
+}
 
 await fs.rm(directory, { force: true, recursive: true });
 await fs.mkdir(path.join(directory, 'src'), { recursive: true });
@@ -24,6 +29,10 @@ await writeFile(`tsconfig.project.json`, generateTSConfig(true));
 for (const [alias, parserOptions] of [
   ['project', `project: "./tsconfig.project.json"`],
   ['service', `EXPERIMENTAL_useProjectService: true`],
+  [
+    'service.seeded',
+    `allowDefaultProjectFallbackFilesGlobs: ["./src/*.js"],\n    EXPERIMENTAL_useProjectService: true`,
+  ],
 ] as const) {
   await writeFile(
     `.eslintrc.${alias}.cjs`,

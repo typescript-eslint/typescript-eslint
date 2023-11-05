@@ -13,7 +13,8 @@
     "generate:watch": "tsx --watch ./generate.ts",
     "test:project": "time eslint --config ./generated/.eslintrc.project.cjs ./generated || true",
     "test:service": "time eslint --config ./generated/.eslintrc.service.cjs ./generated || true",
-    "test:summary": "tsx ./test-summary.ts"
+    "test:service:seeded": "time eslint --config ./generated/.eslintrc.service.seeded.cjs ./generated || true",
+    "test:summary": "tsx ./summary.ts"
   },
   "dependencies": {
     "@typescript-eslint/eslint-plugin": "6.9.1",

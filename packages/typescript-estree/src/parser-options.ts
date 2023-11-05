@@ -106,6 +106,16 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
   /**
    * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
    *
+   * If `EXPERIMENTAL_useProjectService` is true, which files to load into the service immediately.
+   * Intentionally an annoyingly long name for now. We'll think of a better one if we need.
+   *
+   * @see https://github.com/typescript-eslint/typescript-eslint/pull/7870
+   */
+  allowDefaultProjectFallbackFilesGlobs?: string[];
+
+  /**
+   * ***EXPERIMENTAL FLAG*** - Use this at your own risk.
+   *
    * Causes TS to use the source files for referenced projects instead of the compiled .d.ts files.
    * This feature is not yet optimized, and is likely to cause OOMs for medium to large projects.
    *
