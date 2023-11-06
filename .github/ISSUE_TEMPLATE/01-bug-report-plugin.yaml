@@ -1,4 +1,4 @@
-name: '🐛 Report a Bug With a Rule'
+name: '🐛 Rule Bug'
 description: 'Report a bug you encountered with a lint rule'
 title: 'Bug: [rule name here] <short description of the issue>'
 labels:
