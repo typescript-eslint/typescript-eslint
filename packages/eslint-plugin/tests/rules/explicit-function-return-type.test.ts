@@ -385,8 +385,8 @@ foo({
     },
     {
       code: `
-const func = (value: number) => ({ type: 'X', value } as const);
-const func = (value: number) => ({ type: 'X', value } as const);
+const func = (value: number) => ({ type: 'X', value }) as const;
+const func = (value: number) => ({ type: 'X', value }) as const;
 const func = (value: number) => x as const;
 const func = (value: number) => x as const;
       `,
@@ -416,7 +416,7 @@ new Foo(1, () => {});
       options: [{ allowFunctionsWithoutTypeParameters: true }],
     },
     {
-      code: 'const log = <A>(a: A): A => a;',
+      code: 'const log = <A,>(a: A): A => a;',
       options: [{ allowFunctionsWithoutTypeParameters: true }],
     },
     {
@@ -1457,8 +1457,8 @@ const x: HigherOrderType = () => arg1 => arg2 => 'foo';
     },
     {
       code: `
-const func = (value: number) => ({ type: 'X', value } as any);
-const func = (value: number) => ({ type: 'X', value } as Action);
+const func = (value: number) => ({ type: 'X', value }) as any;
+const func = (value: number) => ({ type: 'X', value }) as Action;
       `,
       options: [
         {
@@ -1484,7 +1484,7 @@ const func = (value: number) => ({ type: 'X', value } as Action);
     },
     {
       code: `
-const func = (value: number) => ({ type: 'X', value } as const);
+const func = (value: number) => ({ type: 'X', value }) as const;
       `,
       options: [
         {
@@ -1534,7 +1534,7 @@ const func = (value: number) => ({ type: 'X', value } as const);
       ],
     },
     {
-      code: 'const log = <A>(a: A) => a;',
+      code: 'const log = <A,>(a: A) => a;',
       errors: [{ messageId: 'missingReturnType' }],
       options: [{ allowFunctionsWithoutTypeParameters: true }],
     },

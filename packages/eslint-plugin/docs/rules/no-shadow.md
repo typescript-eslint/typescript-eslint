@@ -34,7 +34,7 @@ TypeScript allows types and variables to shadow one-another. This is generally s
 
 Examples of **correct** code with `{ ignoreTypeValueShadow: true }`:
 
-```ts
+```ts option='{ "ignoreTypeValueShadow": true }' showPlaygroundButton
 type Foo = number;
 const Foo = 1;
 
@@ -72,7 +72,7 @@ If you do not use the `typeof` operator in a function type return type position,
 
 Examples of **correct** code with `{ ignoreFunctionTypeParameterNameValueShadow: true }`:
 
-```ts
+```ts option='{ "ignoreFunctionTypeParameterNameValueShadow": true }' showPlaygroundButton
 const test = 1;
 type Func = (test: string) => typeof test;
 ```

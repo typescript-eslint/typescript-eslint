@@ -307,6 +307,7 @@ const SCHEMA: JSONSchema.JSONSchema4 = {
       ...selectorSchema('typeAlias', false, ['exported', 'unused']),
       ...selectorSchema('enum', false, ['exported', 'unused']),
       ...selectorSchema('typeParameter', false, ['unused']),
+      ...selectorSchema('import', false, ['default', 'namespace']),
     ],
   },
   additionalItems: false,

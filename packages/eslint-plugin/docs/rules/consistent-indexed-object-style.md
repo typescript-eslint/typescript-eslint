@@ -33,9 +33,7 @@ Keeping to one declaration form consistently improve code readability.
 
 #### ❌ Incorrect
 
-```ts
-/* eslint @typescript-eslint/consistent-indexed-object-style: ["error", "record"] */
-
+```ts option='"record"'
 interface Foo {
   [key: string]: unknown;
 }
@@ -47,9 +45,7 @@ type Foo = {
 
 #### ✅ Correct
 
-```ts
-/* eslint @typescript-eslint/consistent-indexed-object-style: ["error", "record"] */
-
+```ts option='"record"'
 type Foo = Record<string, unknown>;
 ```
 
@@ -59,17 +55,13 @@ type Foo = Record<string, unknown>;
 
 #### ❌ Incorrect
 
-```ts
-/* eslint @typescript-eslint/consistent-indexed-object-style: ["error", "index-signature"] */
-
+```ts option='"index-signature"'
 type Foo = Record<string, unknown>;
 ```
 
 #### ✅ Correct
 
-```ts
-/* eslint @typescript-eslint/consistent-indexed-object-style: ["error", "index-signature"] */
-
+```ts option='"index-signature"'
 interface Foo {
   [key: string]: unknown;
 }

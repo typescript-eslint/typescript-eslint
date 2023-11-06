@@ -12,7 +12,8 @@
 
 .searchResult {
   margin: 0;
-  transition: background-color var(--ifm-transition-fast)
+  transition:
+    background-color var(--ifm-transition-fast)
       var(--ifm-transition-timing-default),
     color var(--ifm-transition-fast) var(--ifm-transition-timing-default);
 }

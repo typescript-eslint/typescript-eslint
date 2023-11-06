@@ -77,7 +77,7 @@ function bar(arg?: string | null) {
 
 Example of correct code for `{ allowConstantLoopConditions: true }`:
 
-```ts
+```ts option='{ "allowConstantLoopConditions": true }' showPlaygroundButton
 while (true) {}
 for (; true; ) {}
 do {} while (true);

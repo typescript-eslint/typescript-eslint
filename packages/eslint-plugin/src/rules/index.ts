@@ -28,6 +28,7 @@ import keySpacing from './key-spacing';
 import keywordSpacing from './keyword-spacing';
 import linesAroundComment from './lines-around-comment';
 import linesBetweenClassMembers from './lines-between-class-members';
+import maxParams from './max-params';
 import memberDelimiterStyle from './member-delimiter-style';
 import memberOrdering from './member-ordering';
 import methodSignatureStyle from './method-signature-style';
@@ -164,6 +165,7 @@ export default {
   'keyword-spacing': keywordSpacing,
   'lines-around-comment': linesAroundComment,
   'lines-between-class-members': linesBetweenClassMembers,
+  'max-params': maxParams,
   'member-delimiter-style': memberDelimiterStyle,
   'member-ordering': memberOrdering,
   'method-signature-style': methodSignatureStyle,

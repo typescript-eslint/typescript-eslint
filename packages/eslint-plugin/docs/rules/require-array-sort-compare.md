@@ -57,7 +57,7 @@ Examples of code for this rule with `{ ignoreStringArrays: true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "ignoreStringArrays": true }'
 const one = 1;
 const two = 2;
 const three = 3;
@@ -66,7 +66,7 @@ const three = 3;
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "ignoreStringArrays": true }'
 const one = '1';
 const two = '2';
 const three = '3';
