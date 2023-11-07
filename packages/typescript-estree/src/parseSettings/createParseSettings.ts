@@ -23,16 +23,10 @@ const log = debug(
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
 let TSSERVER_PROJECT_SERVICE: TypeScriptProjectService | null = null;
 
-console.log('Instantiating module createParseSettings');
-
 export function createParseSettings(
   code: ts.SourceFile | string,
   options: Partial<TSESTreeOptions> = {},
 ): MutableParseSettings {
-  console.log(
-    '\nCalling createParseSettings',
-    (code as ts.SourceFile).fileName || code,
-  );
   const codeFullText = enforceCodeString(code);
   const singleRun = inferSingleRun(options);
   const tsconfigRootDir =
