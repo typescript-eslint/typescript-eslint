@@ -1,5 +1,9 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
+import globby from 'globby';
+import * as path from 'path';
 import type * as ts from 'typescript/lib/tsserverlibrary';
+
+import type { ProjectServiceOptions } from '../parser-options';
 
 const doNothing = (): void => {};
 
@@ -9,7 +13,15 @@ const createStubFileWatcher = (): ts.FileWatcher => ({
 
 export type TypeScriptProjectService = ts.server.ProjectService;
 
-export function createProjectService(): TypeScriptProjectService {
+export interface ProjectServiceSettings {
+  allowDefaultProjectForFiles: ReadonlySet<string>;
+  service: TypeScriptProjectService;
+}
+
+export function createProjectService(
+  options: boolean | ProjectServiceOptions | undefined,
+  tsconfigRootDir: string,
+): ProjectServiceSettings {
   // We import this lazily to avoid its cost for users who don't use the service
   const tsserver = require('typescript/lib/tsserverlibrary') as typeof ts;
 
@@ -27,7 +39,7 @@ export function createProjectService(): TypeScriptProjectService {
     watchFile: createStubFileWatcher,
   };
 
-  return new tsserver.server.ProjectService({
+  const service = new tsserver.server.ProjectService({
     host: system,
     cancellationToken: { isCancellationRequested: (): boolean => false },
     useSingleInferredProject: false,
@@ -45,5 +57,16 @@ export function createProjectService(): TypeScriptProjectService {
     },
     session: undefined,
   });
+
+  return {
+    allowDefaultProjectForFiles: new Set(
+      typeof options === 'object'
+        ? options.allowDefaultProjectForFiles
+            ?.flatMap(pattern => globby.sync(pattern))
+            .map(filePath => path.join(tsconfigRootDir, filePath))
+        : undefined,
+    ),
+    service,
+  };
 }
 /* eslint-enable @typescript-eslint/no-empty-function */

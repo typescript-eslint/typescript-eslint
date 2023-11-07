@@ -1,6 +1,6 @@
 import type * as ts from 'typescript';
-import type * as tsserverlibrary from 'typescript/lib/tsserverlibrary';
 
+import type { ProjectServiceSettings } from '../create-program/createProjectService';
 import type { CanonicalPath } from '../create-program/shared';
 import type { TSESTree } from '../ts-estree';
 import type { CacheLike } from './ExpiringCache';
@@ -61,9 +61,7 @@ export interface MutableParseSettings {
   /**
    * Experimental: TypeScript server to power program creation.
    */
-  EXPERIMENTAL_projectService:
-    | tsserverlibrary.server.ProjectService
-    | undefined;
+  EXPERIMENTAL_projectService: ProjectServiceSettings | undefined;
 
   /**
    * Whether TS should use the source files for referenced projects instead of the compiled .d.ts files.
