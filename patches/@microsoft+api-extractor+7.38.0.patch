@@ -34,7 +34,7 @@ index ff13db7..3ec41ff 100644
 -        // https://github.com/microsoft/TypeScript/blob/v4.7.2/src/compiler/utilities.ts#L161
 -        return ts.getResolvedModule(sourceFile, moduleNameText, mode);
 +        // https://github.com/microsoft/TypeScript/blob/v5.3-beta/src/compiler/types.ts#L4678
-+        const result = program.getResolvedModule(sourceFile, moduleNameText, mode);
++        const result = program.getResolvedModule?.(sourceFile, moduleNameText, mode);
 +        return result?.resolvedModule;
      }
      /**
