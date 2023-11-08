@@ -80,7 +80,7 @@ export interface ExportNamedDeclarationWithoutSourceWithSingle
   attributes: ImportAttribute[];
   declaration: NamedExportDeclarations;
   source: null;
-  //Tthis will always be an empty array.
+  // This will always be an empty array.
   specifiers: ExportSpecifier[];
 }
 
