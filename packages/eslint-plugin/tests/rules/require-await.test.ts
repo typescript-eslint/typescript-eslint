@@ -232,6 +232,11 @@ async function* foo(): Promise<string> {
         yield* x;
       }
     `,
+    `
+      const fn = async () => {
+        await using foo = new Bar();
+      };
+    `,
   ],
 
   invalid: [
@@ -406,6 +411,21 @@ async function* asyncGenerator() {
           messageId: 'missingAwait',
           data: {
             name: "Async generator function 'asyncGenerator'",
+          },
+        },
+      ],
+    },
+    {
+      code: `
+        const fn = async () => {
+          using foo = new Bar();
+        };
+      `,
+      errors: [
+        {
+          messageId: 'missingAwait',
+          data: {
+            name: "Async arrow function 'fn'",
           },
         },
       ],
