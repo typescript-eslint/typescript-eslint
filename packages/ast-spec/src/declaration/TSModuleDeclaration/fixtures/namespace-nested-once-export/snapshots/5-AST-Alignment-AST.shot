@@ -10,13 +10,19 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once-expo
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         declaration: TSModuleDeclaration {
           type: 'TSModuleDeclaration',
 -         body: TSModuleBlock {
 -           type: 'TSModuleBlock',
 -           body: Array [],
--
++         body: TSModuleDeclaration {
++           type: 'TSModuleDeclaration',
++           body: TSModuleBlock {
++             type: 'TSModuleBlock',
++             body: Array [],
+
 -           range: [25, 27],
 -           loc: {
 -             start: { column: 25, line: 1 },
@@ -32,12 +38,7 @@ exports[`AST Fixtures declaration TSModuleDeclaration namespace-nested-once-expo
 -             decorators: Array [],
 -             name: 'abd',
 -             optional: false,
-+         body: TSModuleDeclaration {
-+           type: 'TSModuleDeclaration',
-+           body: TSModuleBlock {
-+             type: 'TSModuleBlock',
-+             body: Array [],
-
+-
 -             range: [17, 20],
 +             range: [25, 27],
               loc: {

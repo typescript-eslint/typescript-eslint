@@ -10,7 +10,8 @@ exports[`AST Fixtures legacy-fixtures basics type-only-import-specifiers AST Ali
     body: Array [
       ImportDeclaration {
         type: 'ImportDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         importKind: 'value',
         source: Literal {
           type: 'Literal',
