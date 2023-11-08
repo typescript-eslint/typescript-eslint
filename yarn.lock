@@ -3781,7 +3781,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@microsoft/api-extractor@npm:^7.38.0":
+"@microsoft/api-extractor@npm:7.38.0":
   version: 7.38.0
   resolution: "@microsoft/api-extractor@npm:7.38.0"
   dependencies:
@@ -3800,6 +3800,28 @@ __metadata:
   bin:
     api-extractor: bin/api-extractor
   checksum: 493b12db4d57ac760c5ecd0e8ceed5741334e574ab74415904a7612bcc93e157bd26fdb05c18db1bc9571cd214c553222972d135b079f8b86eb78ad07a1068b0
+  languageName: node
+  linkType: hard
+
+"@microsoft/api-extractor@patch:@microsoft/api-extractor@npm%3A7.38.0#./.yarn/patches/@microsoft-api-extractor-npm-7.38.0-955f1e0725.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+  version: 7.38.0
+  resolution: "@microsoft/api-extractor@patch:@microsoft/api-extractor@npm%3A7.38.0#./.yarn/patches/@microsoft-api-extractor-npm-7.38.0-955f1e0725.patch::version=7.38.0&hash=ad5a63&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+  dependencies:
+    "@microsoft/api-extractor-model": 7.28.2
+    "@microsoft/tsdoc": 0.14.2
+    "@microsoft/tsdoc-config": ~0.16.1
+    "@rushstack/node-core-library": 3.61.0
+    "@rushstack/rig-package": 0.5.1
+    "@rushstack/ts-command-line": 4.16.1
+    colors: ~1.2.1
+    lodash: ~4.17.15
+    resolve: ~1.22.1
+    semver: ~7.5.4
+    source-map: ~0.6.1
+    typescript: ~5.0.4
+  bin:
+    api-extractor: bin/api-extractor
+  checksum: 731407252d63ff0046e7a60f8fd73aa162cf6f3a2808dd786d608b17ba528365a55f4c119c8f16901d73fa3f0c12b82284e4066cb0372c47bfe544c17f64ecff
   languageName: node
   linkType: hard
 

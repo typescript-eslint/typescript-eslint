@@ -120,6 +120,7 @@
     "@jest/create-cache-key-function": "^29",
     "@jest/reporters": "^29",
     "@jest/test-result": "^29",
+    "@microsoft/api-extractor@^7.38.0": "patch:@microsoft/api-extractor@npm%3A7.38.0#./.yarn/patches/@microsoft-api-extractor-npm-7.38.0-955f1e0725.patch",
     "@swc/core-android-arm-eabi": "link:./tools/dummypkg",
     "@swc/core-android-arm64": "link:./tools/dummypkg",
     "@swc/core-freebsd-x64": "link:./tools/dummypkg",

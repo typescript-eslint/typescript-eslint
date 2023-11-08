@@ -1,7 +1,7 @@
-diff --git a/node_modules/@microsoft/api-extractor/lib/analyzer/ExportAnalyzer.js b/node_modules/@microsoft/api-extractor/lib/analyzer/ExportAnalyzer.js
-index 51f31b4..aa6e7fc 100644
---- a/node_modules/@microsoft/api-extractor/lib/analyzer/ExportAnalyzer.js
-+++ b/node_modules/@microsoft/api-extractor/lib/analyzer/ExportAnalyzer.js
+diff --git a/lib/analyzer/ExportAnalyzer.js b/lib/analyzer/ExportAnalyzer.js
+index 51f31b4f2f253d82adc9594faa58d8dc031957e0..1fddac54b08665f5a5a717fef740613ae921cb7a 100644
+--- a/lib/analyzer/ExportAnalyzer.js
++++ b/lib/analyzer/ExportAnalyzer.js
 @@ -193,7 +193,7 @@ class ExportAnalyzer {
          const mode = specifier && ts.isStringLiteralLike(specifier)
              ? TypeScriptInternals_1.TypeScriptInternals.getModeForUsageLocation(importOrExportDeclaration.getSourceFile(), specifier)
@@ -20,11 +20,11 @@ index 51f31b4..aa6e7fc 100644
          if (resolvedModule === undefined) {
              // Encountered in https://github.com/microsoft/rushstack/issues/1914.
              //
-diff --git a/node_modules/@microsoft/api-extractor/lib/analyzer/TypeScriptInternals.js b/node_modules/@microsoft/api-extractor/lib/analyzer/TypeScriptInternals.js
-index ff13db7..3ec41ff 100644
---- a/node_modules/@microsoft/api-extractor/lib/analyzer/TypeScriptInternals.js
-+++ b/node_modules/@microsoft/api-extractor/lib/analyzer/TypeScriptInternals.js
-@@ -84,10 +84,11 @@ class TypeScriptInternals {
+diff --git a/lib/analyzer/TypeScriptInternals.js b/lib/analyzer/TypeScriptInternals.js
+index ff13db7709ccf502fe202337869d4024431636c9..217c36b0303c3bf9871edabcd48fbf6e09f18561 100644
+--- a/lib/analyzer/TypeScriptInternals.js
++++ b/lib/analyzer/TypeScriptInternals.js
+@@ -84,10 +84,16 @@ class TypeScriptInternals {
       * Retrieves the (cached) module resolution information for a module name that was exported from a SourceFile.
       * The compiler populates this cache as part of analyzing the source file.
       */
@@ -34,8 +34,13 @@ index ff13db7..3ec41ff 100644
 -        // https://github.com/microsoft/TypeScript/blob/v4.7.2/src/compiler/utilities.ts#L161
 -        return ts.getResolvedModule(sourceFile, moduleNameText, mode);
 +        // https://github.com/microsoft/TypeScript/blob/v5.3-beta/src/compiler/types.ts#L4678
-+        const result = program.getResolvedModule?.(sourceFile, moduleNameText, mode);
++        const result = program.getResolvedModule(
++            sourceFile,
++            moduleNameText,
++            mode
++        );
 +        return result?.resolvedModule;
++  
      }
      /**
       * Gets the mode required for module resolution required with the addition of Node16/nodenext
