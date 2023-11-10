@@ -304,26 +304,26 @@ declare class SourceCodeBase extends TokenStore {
    * This information can be used track references to variables.
    * @since 8.37.0
    */
-  getScope(node: TSESTree.Node): Scope.Scope;
+  getScope?(node: TSESTree.Node): Scope.Scope;
   /**
    * Returns an array of the ancestors of the given node, starting at
    * the root of the AST and continuing through the direct parent of the current node.
    * This array does not include the currently-traversed node itself.
    * @since 8.38.0
    */
-  getAncestors(node: TSESTree.Node): TSESTree.Node[];
+  getAncestors?(node: TSESTree.Node): TSESTree.Node[];
   /**
    * Returns a list of variables declared by the given node.
    * This information can be used to track references to variables.
    * @since 8.38.0
    */
-  getDeclaredVariables(node: TSESTree.Node): readonly Scope.Variable[];
+  getDeclaredVariables?(node: TSESTree.Node): readonly Scope.Variable[];
   /**
    * Marks a variable with the given name in the current scope as used.
    * This affects the no-unused-vars rule.
    * @since 8.39.0
    */
-  markVariableAsUsed(name: string, node: TSESTree.Node): boolean;
+  markVariableAsUsed?(name: string, node: TSESTree.Node): boolean;
   /**
    * The source code split into lines according to ECMA-262 specification.
    * This is done to avoid each rule needing to do so separately.
