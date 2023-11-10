@@ -24,7 +24,7 @@ export default createRule({
      * @private
      */
     function isOptionalParam(node: TSESTree.Parameter): boolean {
-      return 'optional' in node && node.optional === true;
+      return 'optional' in node && node.optional;
     }
 
     /**

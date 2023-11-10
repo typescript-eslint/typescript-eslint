@@ -1,9 +1,13 @@
-import type { TSESTree } from '@typescript-eslint/utils';
+import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { createRule, getParserServices } from '../util';
-import { getEnumTypes } from './enum-utils/shared';
+import { createRule, getParserServices, getStaticValue } from '../util';
+import {
+  getEnumKeyForLiteral,
+  getEnumLiterals,
+  getEnumTypes,
+} from './enum-utils/shared';
 
 /**
  * @returns Whether the right type is an unsafe comparison against any left type.
@@ -39,6 +43,7 @@ function getEnumValueType(type: ts.Type): ts.TypeFlags | undefined {
 export default createRule({
   name: 'no-unsafe-enum-comparison',
   meta: {
+    hasSuggestions: true,
     type: 'suggestion',
     docs: {
       description: 'Disallow comparing an enum value with a non-enum value',
@@ -48,6 +53,7 @@ export default createRule({
     messages: {
       mismatched:
         'The two values in this comparison do not have a shared enum type.',
+      replaceValueWithEnum: 'Replace with an enum value comparison.',
     },
     schema: [],
   },
@@ -107,6 +113,43 @@ export default createRule({
           context.report({
             messageId: 'mismatched',
             node,
+            suggest: [
+              {
+                messageId: 'replaceValueWithEnum',
+                fix(fixer): TSESLint.RuleFix | null {
+                  // Replace the right side with an enum key if possible:
+                  //
+                  // ```ts
+                  // Fruit.Apple === 'apple'; // Fruit.Apple === Fruit.Apple
+                  // ```
+                  const leftEnumKey = getEnumKeyForLiteral(
+                    getEnumLiterals(left),
+                    getStaticValue(node.right)?.value,
+                  );
+
+                  if (leftEnumKey) {
+                    return fixer.replaceText(node.right, leftEnumKey);
+                  }
+
+                  // Replace the left side with an enum key if possible:
+                  //
+                  // ```ts
+                  // declare const fruit: Fruit;
+                  // 'apple' === Fruit.Apple; // Fruit.Apple === Fruit.Apple
+                  // ```
+                  const rightEnumKey = getEnumKeyForLiteral(
+                    getEnumLiterals(right),
+                    getStaticValue(node.left)?.value,
+                  );
+
+                  if (rightEnumKey) {
+                    return fixer.replaceText(node.left, rightEnumKey);
+                  }
+
+                  return null;
+                },
+              },
+            ],
           });
         }
       },

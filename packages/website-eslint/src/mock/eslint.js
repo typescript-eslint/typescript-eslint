@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-extraneous-class */
 class RuleTester {}
 class SourceCode {}
 

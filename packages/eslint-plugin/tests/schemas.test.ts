@@ -3,8 +3,8 @@ import 'jest-specific-snapshot';
 import fs from 'node:fs';
 import path from 'node:path';
 
+import prettier from '@prettier/sync';
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
-import { format, resolveConfig } from 'prettier';
 
 import rules from '../src/rules/index';
 import { areOptionsValid } from './areOptionsValid';
@@ -17,7 +17,7 @@ try {
 }
 
 const prettierConfigJson = {
-  ...(resolveConfig.sync(__filename) ?? {}),
+  ...(prettier.resolveConfig(__filename) ?? {}),
   filepath: path.join(__dirname, 'schema.json'),
 };
 
@@ -34,7 +34,7 @@ describe('Rule schemas should be convertible to TS types for documentation purpo
     }
 
     (ruleName === ONLY ? it.only : it)(ruleName, () => {
-      const schemaString = format(
+      const schemaString = prettier.format(
         JSON.stringify(
           ruleDef.meta.schema,
           (k, v: unknown) => {

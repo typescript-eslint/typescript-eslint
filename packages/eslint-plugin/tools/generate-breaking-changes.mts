@@ -141,7 +141,7 @@ async function main(): Promise<void> {
           recommended === 'recommended' ? '🟩' : '',
           recommended === 'strict' ? '🔵' : '',
           recommended === 'stylistic' ? '🔸' : '',
-          meta.type === 'layout' ? 'layout 💩' : '(todo)',
+          meta.type === 'layout' ? 'layout 📐' : '(todo)',
         ];
       }),
     ]),
