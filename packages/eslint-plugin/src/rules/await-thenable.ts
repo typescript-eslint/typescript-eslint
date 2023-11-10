@@ -1,9 +1,17 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 
-import * as util from '../util';
+import {
+  createRule,
+  getParserServices,
+  isAwaitKeyword,
+  isTypeAnyType,
+  isTypeUnknownType,
+  nullThrows,
+  NullThrowsReasons,
+} from '../util';
 
-export default util.createRule({
+export default createRule({
   name: 'await-thenable',
   meta: {
     docs: {
@@ -22,13 +30,13 @@ export default util.createRule({
   defaultOptions: [],
 
   create(context) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     return {
       AwaitExpression(node): void {
         const type = services.getTypeAtLocation(node.argument);
-        if (util.isTypeAnyType(type) || util.isTypeUnknownType(type)) {
+        if (isTypeAnyType(type) || isTypeUnknownType(type)) {
           return;
         }
 
@@ -43,12 +51,9 @@ export default util.createRule({
                 messageId: 'removeAwait',
                 fix(fixer): TSESLint.RuleFix {
                   const sourceCode = context.getSourceCode();
-                  const awaitKeyword = util.nullThrows(
-                    sourceCode.getFirstToken(node, util.isAwaitKeyword),
-                    util.NullThrowsReasons.MissingToken(
-                      'await',
-                      'await expression',
-                    ),
+                  const awaitKeyword = nullThrows(
+                    sourceCode.getFirstToken(node, isAwaitKeyword),
+                    NullThrowsReasons.MissingToken('await', 'await expression'),
                   );
 
                   return fixer.remove(awaitKeyword);

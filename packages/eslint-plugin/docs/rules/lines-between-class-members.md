@@ -24,9 +24,7 @@ In addition to the options supported by the `lines-between-class-members` rule i
 
 Examples of **correct** code for the `{ "exceptAfterOverload": true }` option:
 
-```ts
-/*eslint @typescript-eslint/lines-between-class-members: ["error", "always", { "exceptAfterOverload": true }]*/
-
+```ts option='"always", { "exceptAfterOverload": true }' showPlaygroundButton
 class foo {
   bar(a: string): void;
   bar(a: string, b: string): void;
@@ -42,9 +40,7 @@ class foo {
 
 Examples of **correct** code for the `{ "exceptAfterOverload": false }` option:
 
-```ts
-/*eslint @typescript-eslint/lines-between-class-members: ["error", "always", { "exceptAfterOverload": false }]*/
-
+```ts option='"always", { "exceptAfterOverload": false }' showPlaygroundButton
 class foo {
   bar(a: string): void;
 

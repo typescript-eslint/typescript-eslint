@@ -70,7 +70,7 @@ This can be a good way to explicitly mark a promise as intentionally not awaited
 
 Examples of **correct** code for this rule with `{ ignoreVoid: true }`:
 
-```ts
+```ts option='{ "ignoreVoid": true }' showPlaygroundButton
 async function returnsPromise() {
   return 'value';
 }
@@ -87,7 +87,7 @@ This allows you to skip checking of async IIFEs (Immediately Invoked function Ex
 
 Examples of **correct** code for this rule with `{ ignoreIIFE: true }`:
 
-```ts
+```ts option='{ "ignoreIIFE": true }' showPlaygroundButton
 await(async function () {
   await res(1);
 })();

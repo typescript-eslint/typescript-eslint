@@ -102,13 +102,13 @@ Examples of code for this rule with `{ allowArgumentsExplicitlyTypedAsAny: false
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowArgumentsExplicitlyTypedAsAny": false }'
 export const func = (value: any): number => value + 1;
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowArgumentsExplicitlyTypedAsAny": false }'
 export const func = (value: number): number => value + 1;
 ```
 
@@ -120,7 +120,7 @@ Examples of code for this rule with `{ allowDirectConstAssertionInArrowFunctions
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowArgumentsExplicitlyTypedAsAny": false }'
 export const func = (value: number) => ({ type: 'X', value });
 export const foo = () => ({
   bar: true,
@@ -130,12 +130,12 @@ export const bar = () => 1;
 
 #### ✅ Correct
 
-```ts
-export const func = (value: number) => ({ type: 'X', value } as const);
+```ts option='{ "allowArgumentsExplicitlyTypedAsAny": false }'
+export const func = (value: number) => ({ type: 'X', value }) as const;
 export const foo = () =>
   ({
     bar: true,
-  } as const);
+  }) as const;
 export const bar = () => 1 as const;
 ```
 
@@ -162,7 +162,7 @@ Examples of code for this rule with `{ allowHigherOrderFunctions: false }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowHigherOrderFunctions": false }'
 export const arrowFn = () => () => {};
 
 export function fn() {
@@ -176,7 +176,7 @@ export function foo(outer: string) {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowHigherOrderFunctions": false }'
 export const arrowFn = () => (): void => {};
 
 export function fn() {
@@ -196,7 +196,7 @@ Examples of code for this rule with `{ allowTypedFunctionExpressions: false }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowTypedFunctionExpressions": false }'
 export let arrowFn = () => 'test';
 
 export let funcExpr = function () {
@@ -212,7 +212,7 @@ export const foo = bar => {};
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowTypedFunctionExpressions": false }'
 type FuncType = () => string;
 
 export let arrowFn: FuncType = () => 'test';

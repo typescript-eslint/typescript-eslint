@@ -65,7 +65,7 @@ There are some types missing `toString()` in old version TypeScript, like `RegEx
 
 The following patterns are considered correct with the default options `{ ignoredTypeNames: ["RegExp"] }`:
 
-```ts
+```ts option='{ "ignoredTypeNames": ["RegExp"] }' showPlaygroundButton
 `${/regex/}`;
 '' + /regex/;
 /regex/.toString();
