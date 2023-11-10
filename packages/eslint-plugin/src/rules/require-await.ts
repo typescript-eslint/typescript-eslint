@@ -149,6 +149,7 @@ export default createRule({
       'ArrowFunctionExpression:exit': exitFunction,
 
       AwaitExpression: markAsHasAwait,
+      'VariableDeclaration[kind = "await using"]': markAsHasAwait,
       'ForOfStatement[await = true]': markAsHasAwait,
       'YieldExpression[delegate = true]': markAsHasDelegateGen,
 
