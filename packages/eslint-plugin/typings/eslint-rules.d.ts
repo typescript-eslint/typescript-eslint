@@ -827,51 +827,6 @@ declare module 'eslint/lib/rules/no-invalid-this' {
       FunctionExpression?: (node: TSESTree.FunctionExpression) => void;
       'FunctionExpression:exit'?: (node: TSESTree.FunctionExpression) => void;
 
-      // for ESLint >= v8.7.0
-
-      // The code path functions below are intentionally commented out because
-      // they cause unresolvable compiler errors:
-      // https://github.com/typescript-eslint/typescript-eslint/issues/6993
-      // Note that plugin authors can copy-paste these functions into their own
-      // code as selectors and they will still work as long as the second argument
-      // is omitted.
-
-      /*
-      onCodePathStart?: (
-        codePath: TSESLint.CodePath,
-        node: TSESTree.Node,
-      ) => void;
-      */
-
-      /*
-      onCodePathEnd?: (
-        codePath: TSESLint.CodePath,
-        node: TSESTree.Node,
-      ) => void;
-      */
-
-      /*
-      onCodePathSegmentStart?: (
-        segment: TSESLint.CodePathSegment,
-        node: TSESTree.Node,
-      ) => void;
-      */
-
-      /*
-      onCodePathSegmentEnd?: (
-        segment: TSESLint.CodePathSegment,
-        node: TSESTree.Node,
-      ) => void;
-      */
-
-      /*
-      onCodePathSegmentLoop?: (
-        fromSegment: TSESLint.CodePathSegment,
-        toSegment: TSESLint.CodePathSegment,
-        node: TSESTree.Node,
-      ) => void;
-      */
-
       // Common
       ThisExpression(node: TSESTree.ThisExpression): void;
     }
