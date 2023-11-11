@@ -33,7 +33,7 @@ export namespace Parser {
          */
         meta?: ParserMeta;
         /**
-         * Parses the given text into an AST with optional
+         * Parses the given text into an AST
          */
         parseForESLint(text: string, options?: ParserOptions): ParseResult;
       };
