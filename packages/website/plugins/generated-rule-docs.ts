@@ -40,6 +40,8 @@ const eslintPluginDirectory = path.resolve(
   path.join(__dirname, '../../eslint-plugin'),
 );
 
+const optionRegex = /option='(?<option>.*?)'/;
+
 function nodeIsParent(node: unist.Node): node is unist.Parent {
   return 'children' in node;
 }
@@ -154,6 +156,8 @@ export const generatedRuleDocs: Plugin = () => {
       return [headingIndices[0], headingIndices[1]];
     })();
 
+    let eslintrc: string;
+
     if (meta.docs.extendsBaseRule) {
       const extendsBaseRuleName =
         typeof meta.docs.extendsBaseRule === 'string'
@@ -204,6 +208,7 @@ export const generatedRuleDocs: Plugin = () => {
   }
 }`;
       };
+      eslintrc = getEslintrcString(false);
 
       children.splice(
         howToUseH2Index + 1,
@@ -216,8 +221,8 @@ export const generatedRuleDocs: Plugin = () => {
         } as mdast.Code,
         {
           value: `<try-in-playground eslintrcHash="${convertToPlaygroundHash(
-            getEslintrcString(false),
-          )}" />`,
+            eslintrc,
+          )}">Try this rule in the playground ↗</try-in-playground>`,
           type: 'jsx',
         } as unist.Node,
       );
@@ -228,7 +233,7 @@ export const generatedRuleDocs: Plugin = () => {
         child => nodeIsHeading(child) && child.depth === 2,
       );
 
-      const getEslintrcString = `{
+      eslintrc = `{
   "rules": {
     "@typescript-eslint/${file.stem}": "error"
   }
@@ -240,12 +245,12 @@ export const generatedRuleDocs: Plugin = () => {
           lang: 'js',
           type: 'code',
           meta: 'title=".eslintrc.cjs"',
-          value: `module.exports = ${getEslintrcString};`,
+          value: `module.exports = ${eslintrc};`,
         } as mdast.Code,
         {
           value: `<try-in-playground eslintrcHash="${convertToPlaygroundHash(
-            getEslintrcString,
-          )}" />`,
+            eslintrc,
+          )}">Try this rule in the playground ↗</try-in-playground>`,
           type: 'jsx',
         } as unist.Node,
       );
@@ -419,6 +424,59 @@ export const generatedRuleDocs: Plugin = () => {
         type: 'paragraph',
       } as mdast.Paragraph);
     }
+
+    // 7. Add `eslintrcHash` to the meta string of each correct/incorrect code sample
+    let insideTab = false;
+
+    for (const node of children) {
+      if (
+        node.type === 'jsx' &&
+        'value' in node &&
+        typeof node.value === 'string'
+      ) {
+        if (node.value.startsWith('<TabItem')) {
+          insideTab = true;
+        } else if (node.value === '</TabItem>') {
+          insideTab = false;
+        }
+        continue;
+      }
+
+      if (
+        nodeIsCode(node) &&
+        (insideTab || node.meta?.includes('showPlaygroundButton')) &&
+        !node.meta?.includes('eslintrcHash=')
+      ) {
+        let playgroundEslintrc = eslintrc;
+        const option = node.meta?.match(optionRegex)?.groups?.option;
+        if (option) {
+          playgroundEslintrc = playgroundEslintrc.replace(
+            '"error"',
+            `["error", ${option}]`,
+          );
+          try {
+            playgroundEslintrc = JSON.stringify(
+              JSON.parse(playgroundEslintrc),
+              null,
+              2,
+            );
+          } catch (err) {
+            // eslint-disable-next-line no-console
+            console.error(
+              `Invalid JSON detected in ${file.basename}. Check the \`option\` in the meta strings of code blocks.`,
+            );
+            throw err;
+          }
+        }
+
+        node.meta = [
+          node.meta,
+          `eslintrcHash="${convertToPlaygroundHash(playgroundEslintrc)}"`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+      }
+    }
   };
 };
 
@@ -428,6 +486,10 @@ function convertToPlaygroundHash(eslintrc: string): string {
 
 function nodeIsHeading(node: unist.Node): node is mdast.Heading {
   return node.type === 'heading';
+}
+
+function nodeIsCode(node: unist.Node): node is mdast.Code {
+  return node.type === 'code';
 }
 
 function getUrlForRuleTest(ruleName: string): string {

@@ -100,9 +100,7 @@ A boolean to specify if arrays from the rest operator are considered okay. `fals
 
 The examples below are **incorrect** when `{ignoreRestArgs: false}`, but **correct** when `{ignoreRestArgs: true}`.
 
-```ts
-/*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": false }]*/
-
+```ts option='{ "ignoreRestArgs": false }' showPlaygroundButton
 function foo1(...args: any[]): void {}
 function foo2(...args: readonly any[]): void {}
 function foo3(...args: Array<any>): void {}
@@ -129,8 +127,16 @@ interface Garply {
 
 ## When Not To Use It
 
-If an unknown type or a library without typings is used
-and you want to be able to specify `any`.
+`any` is always a dangerous escape hatch.
+Whenever possible, it is always safer to avoid it.
+TypeScript's `unknown` is almost always preferable to `any`.
+
+However, there are occasional situations where it can be necessary to use `any`.
+Most commonly:
+
+- If your project isn't fully onboarded to TypeScript yet, `any` can be temporarily used in places where types aren't yet known or representable
+- If an external package doesn't yet have typings and you want to use `any` pending adding a `.d.ts` for it
+- You're working with particularly complex or nuanced code that can't yet be represented in the TypeScript type system
 
 ## Related To
 
@@ -142,4 +148,5 @@ and you want to be able to specify `any`.
 
 ## Further Reading
 
-- TypeScript [any type](https://www.typescriptlang.org/docs/handbook/basic-types.html#any)
+- TypeScript [`any` type documentation](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any)
+- TypeScript [`unknown` type release notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type)

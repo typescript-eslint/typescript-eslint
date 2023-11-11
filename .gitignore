@@ -89,8 +89,11 @@ packages/types/src/generated/**/*.ts
 # Yarn 3
 .pnp.*
 .yarn/*
+packages/**/.yarn
 !.yarn/patches
 !.yarn/plugins
 !.yarn/releases
 !.yarn/sdks
 !.yarn/versions
+
+.nx/cache
