@@ -327,11 +327,6 @@ export default createRule<Options, MessageId>({
 
 function isPromiseArray(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
-
-  // NOTE - I've chosen isArrayType rather than isArrayLikeType because the
-  // main real use case here is to catch the result of `.map(f)`,
-  // which should always be a native array type.
-  // PR QUESTION - should we be using isArrayLikeType instead?
   if (checker.isArrayType(type)) {
     const arrayType = checker.getTypeArguments(type)[0];
     if (isPromiseLikeType(checker, arrayType)) {
