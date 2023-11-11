@@ -4,10 +4,10 @@
   "workspaces": {
     "packages": [
       "packages/*"
-    ],
-    "nohoist": [
-      "**/html-minifier-terser"
     ]
+  },
+  "installConfig": {
+    "hoistingLimits": "workspaces"
   },
   "contributors": [
     "James Henry <typescript-eslint@jameshenry.blog>",
