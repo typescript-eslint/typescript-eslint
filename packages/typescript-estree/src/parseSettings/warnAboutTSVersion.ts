@@ -25,7 +25,8 @@ let warnedAboutTSVersion = false;
 
 export function warnAboutTSVersion(parseSettings: ParseSettings): void {
   if (!isRunningSupportedTypeScriptVersion && !warnedAboutTSVersion) {
-    const isTTY = typeof process === 'undefined' ? false : process.stdout.isTTY;
+    const isTTY =
+      typeof process === 'undefined' ? false : process.stdout?.isTTY;
     if (isTTY) {
       const border = '=============';
       const versionWarning = [
