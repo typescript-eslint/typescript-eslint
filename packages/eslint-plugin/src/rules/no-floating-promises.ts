@@ -23,7 +23,9 @@ type MessageId =
   | 'floatingUselessRejectionHandler'
   | 'floatingUselessRejectionHandlerVoid'
   | 'floatingFixAwait'
-  | 'floatingFixVoid';
+  | 'floatingFixVoid'
+  | 'floatingPromiseArray'
+  | 'floatingPromiseArrayVoid';
 
 const messageBase =
   'Promises must be awaited, end with a call to .catch, or end with a call to .then with a rejection handler.';
@@ -34,6 +36,13 @@ const messageBaseVoid =
 
 const messageRejectionHandler =
   'A rejection handler that is not a function will be ignored.';
+
+const messagePromiseArray =
+  "An array of Promises may be unintentional. Consider handling the promises' fulfillment or rejection with Promise.all or similar.";
+
+const messagePromiseArrayVoid =
+  "An array of Promises may be unintentional. Consider handling the promises' fulfillment or rejection with Promise.all or similar," +
+  ' or explicitly marking the expression as ignored with the `void` operator.';
 
 export default createRule<Options, MessageId>({
   name: 'no-floating-promises',
@@ -54,6 +63,9 @@ export default createRule<Options, MessageId>({
         messageBase + ' ' + messageRejectionHandler,
       floatingUselessRejectionHandlerVoid:
         messageBaseVoid + ' ' + messageRejectionHandler,
+
+      floatingPromiseArray: messagePromiseArray,
+      floatingPromiseArrayVoid: messagePromiseArrayVoid,
     },
     schema: [
       {
@@ -97,74 +109,81 @@ export default createRule<Options, MessageId>({
           expression = expression.expression;
         }
 
-        const { isUnhandled, nonFunctionHandler } = isUnhandledPromise(
-          checker,
-          expression,
-        );
+        const { isUnhandled, nonFunctionHandler, promiseArray } =
+          isUnhandledPromise(checker, expression);
 
         if (isUnhandled) {
-          if (options.ignoreVoid) {
-            context.report({
-              node,
-              messageId: nonFunctionHandler
-                ? 'floatingUselessRejectionHandlerVoid'
-                : 'floatingVoid',
-              suggest: [
-                {
-                  messageId: 'floatingFixVoid',
-                  fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
-                    const tsNode = services.esTreeNodeToTSNodeMap.get(
-                      node.expression,
-                    );
-                    if (isHigherPrecedenceThanUnary(tsNode)) {
-                      return fixer.insertTextBefore(node, 'void ');
-                    }
-                    return [
-                      fixer.insertTextBefore(node, 'void ('),
-                      fixer.insertTextAfterRange(
-                        [expression.range[1], expression.range[1]],
-                        ')',
-                      ),
-                    ];
+          if (!promiseArray) {
+            if (options.ignoreVoid) {
+              context.report({
+                node,
+                messageId: nonFunctionHandler
+                  ? 'floatingUselessRejectionHandlerVoid'
+                  : 'floatingVoid',
+                suggest: [
+                  {
+                    messageId: 'floatingFixVoid',
+                    fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
+                      const tsNode = services.esTreeNodeToTSNodeMap.get(
+                        node.expression,
+                      );
+                      if (isHigherPrecedenceThanUnary(tsNode)) {
+                        return fixer.insertTextBefore(node, 'void ');
+                      }
+                      return [
+                        fixer.insertTextBefore(node, 'void ('),
+                        fixer.insertTextAfterRange(
+                          [expression.range[1], expression.range[1]],
+                          ')',
+                        ),
+                      ];
+                    },
                   },
-                },
-              ],
-            });
+                ],
+              });
+            } else {
+              context.report({
+                node,
+                messageId: nonFunctionHandler
+                  ? 'floatingUselessRejectionHandler'
+                  : 'floating',
+                suggest: [
+                  {
+                    messageId: 'floatingFixAwait',
+                    fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
+                      if (
+                        expression.type === AST_NODE_TYPES.UnaryExpression &&
+                        expression.operator === 'void'
+                      ) {
+                        return fixer.replaceTextRange(
+                          [expression.range[0], expression.range[0] + 4],
+                          'await',
+                        );
+                      }
+                      const tsNode = services.esTreeNodeToTSNodeMap.get(
+                        node.expression,
+                      );
+                      if (isHigherPrecedenceThanUnary(tsNode)) {
+                        return fixer.insertTextBefore(node, 'await ');
+                      }
+                      return [
+                        fixer.insertTextBefore(node, 'await ('),
+                        fixer.insertTextAfterRange(
+                          [expression.range[1], expression.range[1]],
+                          ')',
+                        ),
+                      ];
+                    },
+                  },
+                ],
+              });
+            }
           } else {
             context.report({
               node,
-              messageId: nonFunctionHandler
-                ? 'floatingUselessRejectionHandler'
-                : 'floating',
-              suggest: [
-                {
-                  messageId: 'floatingFixAwait',
-                  fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
-                    if (
-                      expression.type === AST_NODE_TYPES.UnaryExpression &&
-                      expression.operator === 'void'
-                    ) {
-                      return fixer.replaceTextRange(
-                        [expression.range[0], expression.range[0] + 4],
-                        'await',
-                      );
-                    }
-                    const tsNode = services.esTreeNodeToTSNodeMap.get(
-                      node.expression,
-                    );
-                    if (isHigherPrecedenceThanUnary(tsNode)) {
-                      return fixer.insertTextBefore(node, 'await ');
-                    }
-                    return [
-                      fixer.insertTextBefore(node, 'await ('),
-                      fixer.insertTextAfterRange(
-                        [expression.range[1], expression.range[1]],
-                        ')',
-                      ),
-                    ];
-                  },
-                },
-              ],
+              messageId: options.ignoreVoid
+                ? 'floatingPromiseArrayVoid'
+                : 'floatingPromiseArray',
             });
           }
         }
@@ -206,7 +225,11 @@ export default createRule<Options, MessageId>({
     function isUnhandledPromise(
       checker: ts.TypeChecker,
       node: TSESTree.Node,
-    ): { isUnhandled: boolean; nonFunctionHandler?: boolean } {
+    ): {
+      isUnhandled: boolean;
+      nonFunctionHandler?: boolean;
+      promiseArray?: boolean;
+    } {
       // First, check expressions whose resulting types may not be promise-like
       if (node.type === AST_NODE_TYPES.SequenceExpression) {
         // Any child in a comma expression could return a potentially unhandled
@@ -229,8 +252,14 @@ export default createRule<Options, MessageId>({
         return isUnhandledPromise(checker, node.argument);
       }
 
+      if (isPromiseArray(checker, services.esTreeNodeToTSNodeMap.get(node))) {
+        return { isUnhandled: true, promiseArray: true };
+      }
+
       // Check the type. At this point it can't be unhandled if it isn't a promise
-      if (!isPromiseLike(checker, services.esTreeNodeToTSNodeMap.get(node))) {
+      if (
+        !isPromiseLikeNode(checker, services.esTreeNodeToTSNodeMap.get(node))
+      ) {
         return { isUnhandled: false };
       }
 
@@ -296,11 +325,75 @@ export default createRule<Options, MessageId>({
   },
 });
 
+function isPromiseArray(checker: ts.TypeChecker, node: ts.Node): boolean {
+  const type = checker.getTypeAtLocation(node);
+
+  // NOTE - I've chosen isArrayType rather than isArrayLikeType because the
+  // main real use case here is to catch the result of `.map(f)`,
+  // which should always be a native array type.
+  // PR QUESTION - should we be using isArrayLikeType instead?
+  if (checker.isArrayType(type)) {
+    const arrayType = checker.getTypeArguments(type)[0];
+    if (isPromiseLikeType(checker, arrayType)) {
+      return true;
+    }
+  }
+
+  return false;
+}
+
+function isPromiseLikeType(checker: ts.TypeChecker, type: ts.Type): boolean {
+  // Get the apparent type, which considers type aliases.
+  const apparentType = checker.getApparentType(type);
+
+  // is any possible union type Promise-like?
+  return tsutils.unionTypeParts(apparentType).some(typeUnionComponent => {
+    // Must have 'then' property to be Promise-like.
+    const thenProperty = typeUnionComponent.getProperty('then');
+    if (!thenProperty) {
+      return false;
+    }
+
+    // Does the 'then' property have any fitting call signature?
+    const hasFittingCallSignature = checker
+      .getTypeOfSymbol(thenProperty)
+      .getCallSignatures()
+      .some(signature => {
+        // Call signature must have onFulfilled and onRejected parameters.
+        if (!(signature.parameters.length >= 2)) {
+          return false;
+        }
+
+        const [onFulFilled, onRejected] = signature.parameters;
+
+        // Can each handler parameter accept a callable?
+        const bothParametersAreCallable = [onFulFilled, onRejected].every(
+          handler => {
+            const handlerType = checker.getTypeOfSymbol(handler);
+
+            const acceptsCallable = tsutils
+              .unionTypeParts(handlerType)
+              .some(
+                handlerTypeUnionComponent =>
+                  handlerTypeUnionComponent.getCallSignatures().length !== 0,
+              );
+
+            return acceptsCallable;
+          },
+        );
+
+        return bothParametersAreCallable;
+      });
+
+    return hasFittingCallSignature;
+  });
+}
+
 // Modified from tsutils.isThenable() to only consider thenables which can be
 // rejected/caught via a second parameter. Original source (MIT licensed):
 //
 //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
-function isPromiseLike(checker: ts.TypeChecker, node: ts.Node): boolean {
+function isPromiseLikeNode(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
   for (const ty of tsutils.unionTypeParts(checker.getApparentType(type))) {
     const then = ty.getProperty('then');
