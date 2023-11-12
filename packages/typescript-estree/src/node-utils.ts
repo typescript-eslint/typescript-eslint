@@ -424,11 +424,12 @@ export function findFirstMatchingAncestor(
   node: ts.Node,
   predicate: (node: ts.Node) => boolean,
 ): ts.Node | undefined {
-  while (node) {
-    if (predicate(node)) {
-      return node;
+  let current: ts.Node | undefined = node;
+  while (current) {
+    if (predicate(current)) {
+      return current;
     }
-    node = node.parent;
+    current = current.parent;
   }
   return undefined;
 }
@@ -482,9 +483,7 @@ export function isComputedProperty(
 export function isOptional(node: {
   questionToken?: ts.QuestionToken;
 }): boolean {
-  return node.questionToken
-    ? node.questionToken.kind === SyntaxKind.QuestionToken
-    : false;
+  return !!node.questionToken;
 }
 
 /**
@@ -677,11 +676,7 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
     }
 
     if (isToken(node) && node.kind !== SyntaxKind.EndOfFileToken) {
-      const converted = convertToken(node, ast);
-
-      if (converted) {
-        result.push(converted);
-      }
+      result.push(convertToken(node, ast));
     } else {
       node.getChildren(ast).forEach(walk);
     }
@@ -943,11 +938,10 @@ export function getNamespaceModifiers(
   let moduleDeclaration = node;
   while (
     (!modifiers || modifiers.length === 0) &&
-    ts.isModuleDeclaration(moduleDeclaration.parent) &&
-    moduleDeclaration.parent.name
+    ts.isModuleDeclaration(moduleDeclaration.parent)
   ) {
     const parentModifiers = getModifiers(moduleDeclaration.parent);
-    if (parentModifiers && parentModifiers?.length > 0) {
+    if (parentModifiers?.length) {
       modifiers = parentModifiers;
     }
     moduleDeclaration = moduleDeclaration.parent;

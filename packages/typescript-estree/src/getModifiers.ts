@@ -25,7 +25,7 @@ export function getModifiers(
 
   return (
     // @ts-expect-error intentional fallback for older TS versions
-    (node.modifiers as ts.Modifier[])?.filter(
+    (node.modifiers as ts.Modifier[] | undefined)?.filter(
       (m): m is ts.Modifier => !ts.isDecorator(m),
     )
   );
@@ -52,6 +52,6 @@ export function getDecorators(
 
   return (
     // @ts-expect-error intentional fallback for older TS versions
-    (node.decorators as ts.Node[])?.filter(ts.isDecorator)
+    (node.decorators as ts.Node[] | undefined)?.filter(ts.isDecorator)
   );
 }

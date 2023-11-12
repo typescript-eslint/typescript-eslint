@@ -135,7 +135,7 @@ describe('parseAndGenerateServices', () => {
         });
 
         expect(
-          parseResult.services.esTreeNodeToTSNodeMap?.has(
+          parseResult.services.esTreeNodeToTSNodeMap.has(
             parseResult.ast.body[0],
           ),
         ).toBe(setting);
