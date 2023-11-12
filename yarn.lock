@@ -3947,15 +3947,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/devkit@npm:17.0.2":
-  version: 17.0.2
-  resolution: "@nrwl/devkit@npm:17.0.2"
-  dependencies:
-    "@nx/devkit": 17.0.2
-  checksum: f9c9766bce8c5de5fee2429468a1cf41907126bf5238896a6aa8026634356fb95e9c9ab50724229853b9b2166b8ee8ac86e74fbc951961693eb935c350f7c900
-  languageName: node
-  linkType: hard
-
 "@nrwl/devkit@npm:17.1.1":
   version: 17.1.1
   resolution: "@nrwl/devkit@npm:17.1.1"
@@ -4016,11 +4007,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/devkit@npm:*, @nx/devkit@npm:17.0.2":
-  version: 17.0.2
-  resolution: "@nx/devkit@npm:17.0.2"
+"@nx/devkit@npm:*, @nx/devkit@npm:17.1.1":
+  version: 17.1.1
+  resolution: "@nx/devkit@npm:17.1.1"
   dependencies:
-    "@nrwl/devkit": 17.0.2
+    "@nrwl/devkit": 17.1.1
     ejs: ^3.1.7
     enquirer: ~2.3.6
     ignore: ^5.0.4
@@ -4029,7 +4020,7 @@ __metadata:
     tslib: ^2.3.0
   peerDependencies:
     nx: ">= 16 <= 18"
-  checksum: b15a8c028c455d863d3c1d6de220e009bc7c6b7123cabababbb9c84de23af71ed246706b57a43802cbaa162eedf252707f837f7fc7e42bfe4bddca4fea7f57fc
+  checksum: d96715dc1e7f76ed9c45076230a66f4be2161f1b653a42d998cd8c3947ce05fc261cd6ceefa923b0d5ce693ada5459f949dd7f8a2a9720cdb48f2012dd257e9a
   languageName: node
   linkType: hard
 
@@ -4047,23 +4038,6 @@ __metadata:
   peerDependencies:
     nx: ">= 15 <= 17"
   checksum: 92579ccc3f3cc7bdc0f23a26c2a1f358cadb4a06e7c166c6cca569f63e0715f74748e3657c40c252fded89786f870d88127211fc4c1158a58e5c528d39214d30
-  languageName: node
-  linkType: hard
-
-"@nx/devkit@npm:17.1.1":
-  version: 17.1.1
-  resolution: "@nx/devkit@npm:17.1.1"
-  dependencies:
-    "@nrwl/devkit": 17.1.1
-    ejs: ^3.1.7
-    enquirer: ~2.3.6
-    ignore: ^5.0.4
-    semver: 7.5.3
-    tmp: ~0.2.1
-    tslib: ^2.3.0
-  peerDependencies:
-    nx: ">= 16 <= 18"
-  checksum: d96715dc1e7f76ed9c45076230a66f4be2161f1b653a42d998cd8c3947ce05fc261cd6ceefa923b0d5ce693ada5459f949dd7f8a2a9720cdb48f2012dd257e9a
   languageName: node
   linkType: hard
 
@@ -5224,9 +5198,9 @@ __metadata:
   linkType: hard
 
 "@types/babel__code-frame@npm:^7.0.3":
-  version: 7.0.5
-  resolution: "@types/babel__code-frame@npm:7.0.5"
-  checksum: e44acedbff7e49e98c937f5a7b331455cc406c38387581842484006f5ec6a7874e91e537f8bbff1acb4b8f32a0b5e1a2a339737b0fdf4dc0c4daabbb2a7b401e
+  version: 7.0.6
+  resolution: "@types/babel__code-frame@npm:7.0.6"
+  checksum: 5325ab85d95e58fe84279757788ddb0de68bfd6814bc636e868f9ff7b5229915873f28847c4baf48fd3a4a460a73b4ea87bc9e1d78a3a5a60cfc7ca627a722c5
   languageName: node
   linkType: hard
 
