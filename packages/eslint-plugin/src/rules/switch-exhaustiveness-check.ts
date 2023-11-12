@@ -62,7 +62,7 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.SwitchStatement,
       missingBranchTypes: (ts.Type | null)[], // null means default branch
       symbolName?: string,
-    ): TSESLint.RuleFix | null {
+    ): TSESLint.RuleFix {
       const lastCase =
         node.cases.length > 0 ? node.cases[node.cases.length - 1] : null;
       const caseIndent = lastCase
@@ -178,7 +178,7 @@ export default createRule<Options, MessageIds>({
           suggest: [
             {
               messageId: 'addMissingCases',
-              fix(fixer): TSESLint.RuleFix | null {
+              fix(fixer): TSESLint.RuleFix {
                 return fixSwitch(
                   fixer,
                   node,
