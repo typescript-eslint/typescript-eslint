@@ -424,11 +424,12 @@ export function findFirstMatchingAncestor(
   node: ts.Node,
   predicate: (node: ts.Node) => boolean,
 ): ts.Node | undefined {
-  while (node as ts.Node | undefined) {
-    if (predicate(node)) {
-      return node;
+  let current: ts.Node | undefined = node;
+  while (current) {
+    if (predicate(current)) {
+      return current;
     }
-    node = node.parent;
+    current = current.parent;
   }
   return undefined;
 }
