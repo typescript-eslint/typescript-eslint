@@ -120,7 +120,7 @@ switch (value) {
 }
 ```
 
-Since `value` is a non-union type it requires the switch case to have a default clause.
+Since `value` is a non-union type it requires the switch case to have a default clause only with `requireDefaultForNonUnion` enabled.
 
 ## When Not To Use It
 

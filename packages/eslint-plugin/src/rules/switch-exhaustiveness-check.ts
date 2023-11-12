@@ -204,7 +204,7 @@ export default createRule<Options, MessageIds>({
             suggest: [
               {
                 messageId: 'addMissingCases',
-                fix(fixer): TSESLint.RuleFix | null {
+                fix(fixer): TSESLint.RuleFix {
                   return fixSwitch(fixer, node, [null]);
                 },
               },

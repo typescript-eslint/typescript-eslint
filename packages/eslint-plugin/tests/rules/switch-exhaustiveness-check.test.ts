@@ -212,7 +212,7 @@ function test(value: ObjectUnion): number {
     // switch with default clause on non-union type
     {
       code: `
-const value: number = Math.floor(Math.random() * 3);
+declare const value: number;
 
 switch (value) {
   case 0:
