@@ -66,7 +66,7 @@ This option is `true` by default.
 
 The following patterns are considered warnings with `{ allowInGenericTypeArguments: false }`:
 
-```ts
+```ts option='{ "allowInGenericTypeArguments": false }' showPlaygroundButton
 logAndReturn<void>(undefined);
 
 let voidPromise: Promise<void> = new Promise<void>(() => {});
@@ -75,7 +75,7 @@ let voidMap: Map<string, void> = new Map<string, void>();
 
 The following patterns are considered warnings with `{ allowInGenericTypeArguments: ['Ex.Mx.Tx'] }`:
 
-```ts
+```ts option='{ "allowInGenericTypeArguments": ["Ex.Mx.Tx"] }' showPlaygroundButton
 logAndReturn<void>(undefined);
 
 type NotAllowedVoid1 = Mx.Tx<void>;
@@ -85,7 +85,7 @@ type NotAllowedVoid3 = Promise<void>;
 
 The following patterns are not considered warnings with `{ allowInGenericTypeArguments: ['Ex.Mx.Tx'] }`:
 
-```ts
+```ts option='{ "allowInGenericTypeArguments": ["Ex.Mx.Tx"] }' showPlaygroundButton
 type AllowedVoid = Ex.Mx.Tx<void>;
 type AllowedVoidUnion = void | Ex.Mx.Tx<void>;
 ```
@@ -99,7 +99,7 @@ This option is `false` by default.
 
 The following patterns are considered warnings with `{ allowAsThisParameter: false }` but valid with `{ allowAsThisParameter: true }`:
 
-```ts
+```ts option='{ "allowAsThisParameter": false }' showPlaygroundButton
 function doThing(this: void) {}
 class Example {
   static helper(this: void) {}

@@ -120,7 +120,7 @@ ruleTester.run('allowInGenericTypeArguments: true', rule, {
     'type Generic<T> = [T];',
     'type voidPromiseUnion = void | Promise<void>;',
     'type promiseNeverUnion = Promise<void> | never;',
-    'const arrowGeneric1 = <T = void>(arg: T) => {};',
+    'const arrowGeneric1 = <T = void,>(arg: T) => {};',
     'declare function functionDeclaration1<T = void>(arg: T): void;',
   ],
   invalid: [

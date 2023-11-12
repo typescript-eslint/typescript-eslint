@@ -22,14 +22,14 @@ Always use `T[]` or `readonly T[]` for all array types.
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "default": "array" }'
 const x: Array<string> = ['a', 'b'];
 const y: ReadonlyArray<string> = ['a', 'b'];
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "default": "array" }'
 const x: string[] = ['a', 'b'];
 const y: readonly string[] = ['a', 'b'];
 ```
@@ -42,14 +42,14 @@ Always use `Array<T>` or `ReadonlyArray<T>` for all array types.
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "default": "generic" }'
 const x: string[] = ['a', 'b'];
 const y: readonly string[] = ['a', 'b'];
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "default": "generic" }'
 const x: Array<string> = ['a', 'b'];
 const y: ReadonlyArray<string> = ['a', 'b'];
 ```
@@ -63,7 +63,7 @@ Use `Array<T>` or `ReadonlyArray<T>` for all other types (union types, intersect
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "default": "array-simple" }'
 const a: (string | number)[] = ['a', 'b'];
 const b: { prop: string }[] = [{ prop: 'a' }];
 const c: (() => void)[] = [() => {}];
@@ -74,7 +74,7 @@ const f: ReadonlyArray<string> = ['a', 'b'];
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "default": "array-simple" }'
 const a: Array<string | number> = ['a', 'b'];
 const b: Array<{ prop: string }> = [{ prop: 'a' }];
 const c: Array<() => void> = [() => {}];

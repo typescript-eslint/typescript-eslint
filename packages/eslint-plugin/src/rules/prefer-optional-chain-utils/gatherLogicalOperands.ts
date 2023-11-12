@@ -12,7 +12,7 @@ import {
 } from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../../util';
+import { isTypeFlagSet } from '../../util';
 import type { PreferOptionalChainOptions } from './PreferOptionalChainOptions';
 
 const enum ComparisonValueType {
@@ -94,7 +94,7 @@ function isValidFalseBooleanCheckType(
   }
 
   if (options.requireNullish === true) {
-    return types.some(t => util.isTypeFlagSet(t, NULLISH_FLAGS));
+    return types.some(t => isTypeFlagSet(t, NULLISH_FLAGS));
   }
 
   let allowedFlags = NULLISH_FLAGS | ts.TypeFlags.Object;
@@ -116,7 +116,7 @@ function isValidFalseBooleanCheckType(
   if (options.checkBigInt === true) {
     allowedFlags |= ts.TypeFlags.BigIntLike;
   }
-  return types.every(t => util.isTypeFlagSet(t, allowedFlags));
+  return types.every(t => isTypeFlagSet(t, allowedFlags));
 }
 
 export function gatherLogicalOperands(
@@ -144,13 +144,12 @@ export function gatherLogicalOperands(
               comparedValue: comparedValueRight,
               isYoda: false,
             };
-          } else {
-            return {
-              comparedExpression: operand.right,
-              comparedValue: getComparisonValueType(operand.left),
-              isYoda: true,
-            };
           }
+          return {
+            comparedExpression: operand.right,
+            comparedValue: getComparisonValueType(operand.left),
+            isYoda: true,
+          };
         })();
 
         if (comparedValue === ComparisonValueType.UndefinedStringLiteral) {

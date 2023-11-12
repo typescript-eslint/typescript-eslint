@@ -182,7 +182,87 @@ exports[`AST Fixtures jsx JSXNamespacedName component-dashed AST Alignment - Tok
       type: 'Keyword',
       value: 'const',
 
-      range: [195, 200],
+      range: [105, 110],
+      loc: {
+        start: { column: 0, line: 8 },
+        end: { column: 5, line: 8 },
+      },
+    },
+    Identifier {
+      type: 'Identifier',
+      value: 'componentBasic',
+
+      range: [111, 125],
+      loc: {
+        start: { column: 6, line: 8 },
+        end: { column: 20, line: 8 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '=',
+
+      range: [126, 127],
+      loc: {
+        start: { column: 21, line: 8 },
+        end: { column: 22, line: 8 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '<',
+
+      range: [128, 129],
+      loc: {
+        start: { column: 23, line: 8 },
+        end: { column: 24, line: 8 },
+      },
+    },
+    JSXIdentifier {
+      type: 'JSXIdentifier',
+      value: 'foo',
+
+      range: [129, 132],
+      loc: {
+        start: { column: 24, line: 8 },
+        end: { column: 27, line: 8 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '/',
+
+      range: [133, 134],
+      loc: {
+        start: { column: 28, line: 8 },
+        end: { column: 29, line: 8 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: '>',
+
+      range: [134, 135],
+      loc: {
+        start: { column: 29, line: 8 },
+        end: { column: 30, line: 8 },
+      },
+    },
+    Punctuator {
+      type: 'Punctuator',
+      value: ';',
+
+      range: [135, 136],
+      loc: {
+        start: { column: 30, line: 8 },
+        end: { column: 31, line: 8 },
+      },
+    },
+    Keyword {
+      type: 'Keyword',
+      value: 'const',
+
+      range: [137, 142],
       loc: {
         start: { column: 0, line: 9 },
         end: { column: 5, line: 9 },
@@ -190,112 +270,32 @@ exports[`AST Fixtures jsx JSXNamespacedName component-dashed AST Alignment - Tok
     },
     Identifier {
       type: 'Identifier',
-      value: 'componentBasic',
-
-      range: [201, 215],
-      loc: {
-        start: { column: 6, line: 9 },
-        end: { column: 20, line: 9 },
-      },
-    },
-    Punctuator {
-      type: 'Punctuator',
-      value: '=',
-
-      range: [216, 217],
-      loc: {
-        start: { column: 21, line: 9 },
-        end: { column: 22, line: 9 },
-      },
-    },
-    Punctuator {
-      type: 'Punctuator',
-      value: '<',
-
-      range: [218, 219],
-      loc: {
-        start: { column: 23, line: 9 },
-        end: { column: 24, line: 9 },
-      },
-    },
-    JSXIdentifier {
-      type: 'JSXIdentifier',
-      value: 'foo',
-
-      range: [219, 222],
-      loc: {
-        start: { column: 24, line: 9 },
-        end: { column: 27, line: 9 },
-      },
-    },
-    Punctuator {
-      type: 'Punctuator',
-      value: '/',
-
-      range: [223, 224],
-      loc: {
-        start: { column: 28, line: 9 },
-        end: { column: 29, line: 9 },
-      },
-    },
-    Punctuator {
-      type: 'Punctuator',
-      value: '>',
-
-      range: [224, 225],
-      loc: {
-        start: { column: 29, line: 9 },
-        end: { column: 30, line: 9 },
-      },
-    },
-    Punctuator {
-      type: 'Punctuator',
-      value: ';',
-
-      range: [225, 226],
-      loc: {
-        start: { column: 30, line: 9 },
-        end: { column: 31, line: 9 },
-      },
-    },
-    Keyword {
-      type: 'Keyword',
-      value: 'const',
-
-      range: [317, 322],
-      loc: {
-        start: { column: 0, line: 11 },
-        end: { column: 5, line: 11 },
-      },
-    },
-    Identifier {
-      type: 'Identifier',
       value: 'componentDashed',
 
-      range: [323, 338],
+      range: [143, 158],
       loc: {
-        start: { column: 6, line: 11 },
-        end: { column: 21, line: 11 },
+        start: { column: 6, line: 9 },
+        end: { column: 21, line: 9 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '=',
 
-      range: [339, 340],
+      range: [159, 160],
       loc: {
-        start: { column: 22, line: 11 },
-        end: { column: 23, line: 11 },
+        start: { column: 22, line: 9 },
+        end: { column: 23, line: 9 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '<',
 
-      range: [341, 342],
+      range: [161, 162],
       loc: {
-        start: { column: 24, line: 11 },
-        end: { column: 25, line: 11 },
+        start: { column: 24, line: 9 },
+        end: { column: 25, line: 9 },
       },
     },
 -   Identifier {
@@ -304,20 +304,20 @@ exports[`AST Fixtures jsx JSXNamespacedName component-dashed AST Alignment - Tok
 +     type: 'JSXIdentifier',
       value: 'foo-bar',
 
-      range: [342, 349],
+      range: [162, 169],
       loc: {
-        start: { column: 25, line: 11 },
-        end: { column: 32, line: 11 },
+        start: { column: 25, line: 9 },
+        end: { column: 32, line: 9 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: ':',
 
-      range: [349, 350],
+      range: [169, 170],
       loc: {
-        start: { column: 32, line: 11 },
-        end: { column: 33, line: 11 },
+        start: { column: 32, line: 9 },
+        end: { column: 33, line: 9 },
       },
     },
 -   Identifier {
@@ -326,40 +326,40 @@ exports[`AST Fixtures jsx JSXNamespacedName component-dashed AST Alignment - Tok
 +     type: 'JSXIdentifier',
       value: 'baz-bam',
 
-      range: [350, 357],
+      range: [170, 177],
       loc: {
-        start: { column: 33, line: 11 },
-        end: { column: 40, line: 11 },
+        start: { column: 33, line: 9 },
+        end: { column: 40, line: 9 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '/',
 
-      range: [358, 359],
+      range: [178, 179],
       loc: {
-        start: { column: 41, line: 11 },
-        end: { column: 42, line: 11 },
+        start: { column: 41, line: 9 },
+        end: { column: 42, line: 9 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: '>',
 
-      range: [359, 360],
+      range: [179, 180],
       loc: {
-        start: { column: 42, line: 11 },
-        end: { column: 43, line: 11 },
+        start: { column: 42, line: 9 },
+        end: { column: 43, line: 9 },
       },
     },
     Punctuator {
       type: 'Punctuator',
       value: ';',
 
-      range: [360, 361],
+      range: [180, 181],
       loc: {
-        start: { column: 43, line: 11 },
-        end: { column: 44, line: 11 },
+        start: { column: 43, line: 9 },
+        end: { column: 44, line: 9 },
       },
     },
   ]"

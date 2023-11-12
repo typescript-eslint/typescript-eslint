@@ -6,8 +6,6 @@ description: 'Disallow the use of variables before they are defined.'
 >
 > See **https://typescript-eslint.io/rules/no-use-before-define** for documentation.
 
-## Examples
-
 This rule extends the base [`eslint/no-use-before-define`](https://eslint.org/docs/rules/no-use-before-define) rule.
 It adds support for `type`, `interface` and `enum` declarations.
 
@@ -41,9 +39,7 @@ Examples of code for the `{ "enums": true }` option:
 
 #### ❌ Incorrect
 
-```ts
-/*eslint no-use-before-define: ["error", { "enums": true }]*/
-
+```ts option='{ "enums": true }'
 const x = Foo.FOO;
 
 enum Foo {
@@ -53,9 +49,7 @@ enum Foo {
 
 #### ✅ Correct
 
-```ts
-/*eslint no-use-before-define: ["error", { "enums": false }]*/
-
+```ts option='{ "enums": false }'
 function foo() {
   return Foo.FOO;
 }
@@ -72,9 +66,7 @@ If this is `false`, this rule will ignore references to types.
 
 Examples of **correct** code for the `{ "typedefs": false }` option:
 
-```ts
-/*eslint no-use-before-define: ["error", { "typedefs": false }]*/
-
+```ts option='{ "typedefs": false }' showPlaygroundButton
 let myVar: StringOrNumber;
 type StringOrNumber = string | number;
 ```
@@ -86,9 +78,7 @@ If this is `false`, this will will check all type references.
 
 Examples of **correct** code for the `{ "ignoreTypeReferences": true }` option:
 
-```ts
-/*eslint no-use-before-define: ["error", { "ignoreTypeReferences": true }]*/
-
+```ts option='{ "ignoreTypeReferences": true }' showPlaygroundButton
 let var1: StringOrNumber;
 type StringOrNumber = string | number;
 

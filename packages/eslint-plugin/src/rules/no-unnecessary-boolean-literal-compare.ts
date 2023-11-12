@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import { createRule, getParserServices, isStrongPrecedenceNode } from '../util';
 
 type MessageIds =
   | 'comparingNullableToFalse'
@@ -29,7 +29,7 @@ interface BooleanComparisonWithTypeInformation extends BooleanComparison {
   expressionIsNullableBoolean: boolean;
 }
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-unnecessary-boolean-literal-compare',
   meta: {
     docs: {
@@ -78,7 +78,7 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const sourceCode = context.getSourceCode();
 
     function getBooleanComparison(
@@ -240,7 +240,7 @@ export default util.createRule<Options, MessageIds>({
               yield fixer.insertTextBefore(mutatedNode, '!');
 
               // if the expression `exp` is not a strong precedence node, wrap it in parentheses
-              if (!util.isStrongPrecedenceNode(comparison.expression)) {
+              if (!isStrongPrecedenceNode(comparison.expression)) {
                 yield fixer.insertTextBefore(mutatedNode, '(');
                 yield fixer.insertTextAfter(mutatedNode, ')');
               }

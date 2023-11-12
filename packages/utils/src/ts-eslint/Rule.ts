@@ -15,7 +15,7 @@ interface RuleMetaDataDocs {
   /**
    * The recommendation level for the rule.
    * Used by the build tools to generate the recommended and strict configs.
-   * Set to false to not include it as a recommendation
+   * Exclude to not include it as a recommendation.
    */
   recommended?: RuleRecommendation;
   /**
@@ -170,9 +170,7 @@ type ReportDescriptor<TMessageIds extends string> =
  * Plugins can add their settings using declaration
  * merging against this interface.
  */
-interface SharedConfigurationSettings {
-  [name: string]: unknown;
-}
+type SharedConfigurationSettings = Record<string, unknown>;
 
 interface RuleContext<
   TMessageIds extends string,
@@ -226,15 +224,34 @@ interface RuleContext<
   getCwd(): string;
 
   /**
+   * The current working directory passed to Linter.
+   * It is a path to a directory that should be considered as the current working directory.
+   * @since 8.40.0
+   */
+  cwd: string;
+
+  /**
    * Returns the filename associated with the source.
    */
   getFilename(): string;
+
+  /**
+   * The filename associated with the source.
+   * @since 8.40.0
+   */
+  filename: string;
 
   /**
    * Returns the full path of the file on disk without any code block information (unlike `getFilename()`).
    * @since 7.28.0
    */
   getPhysicalFilename?(): string;
+
+  /**
+   * The full path of the file on disk without any code block information (unlike `filename`).
+   * @since 8.40.0
+   */
+  physicalFilename?: string;
 
   /**
    * Returns the scope of the currently-traversed node.
@@ -247,6 +264,13 @@ interface RuleContext<
    * was passed to ESLint.
    */
   getSourceCode(): Readonly<SourceCode>;
+
+  /**
+   * A SourceCode object that you can use to work with the source that
+   * was passed to ESLint.
+   * @since 8.40.0
+   */
+  sourceCode: Readonly<SourceCode>;
 
   /**
    * Marks a variable with the given name in the current scope as used.
@@ -428,9 +452,7 @@ interface RuleListenerBaseSelectors {
 type RuleListenerExitSelectors = {
   [K in keyof RuleListenerBaseSelectors as `${K}:exit`]: RuleListenerBaseSelectors[K];
 };
-interface RuleListenerCatchAllBaseCase {
-  [nodeSelector: string]: RuleFunction | undefined;
-}
+type RuleListenerCatchAllBaseCase = Record<string, RuleFunction | undefined>;
 // Interface to merge into for anyone that wants to add more selectors
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
 interface RuleListenerExtension {}

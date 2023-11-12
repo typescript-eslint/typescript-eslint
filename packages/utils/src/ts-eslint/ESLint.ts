@@ -89,7 +89,7 @@ declare class ESLintBase {
    * @param results The LintResult objects to write.
    * @returns The promise that will be fulfilled after all files are written.
    */
-  static outputFixes(results: ESLint.LintResult): Promise<void>;
+  static outputFixes(results: ESLint.LintResult[]): Promise<void>;
   /**
    * The version text.
    */

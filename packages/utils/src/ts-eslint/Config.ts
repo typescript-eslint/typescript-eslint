@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-namespace */
+/* eslint-disable  @typescript-eslint/consistent-indexed-object-style,  @typescript-eslint/no-namespace */
 
 import type { Parser as ParserType } from './Parser';
 import type * as ParserOptionsTypes from './ParserOptions';

@@ -27,6 +27,23 @@ export type JSONSchema4TypeName =
  */
 export type JSONSchema4Type = boolean | number | string | null;
 
+export type JSONSchema4TypeExtended =
+  | JSONSchema4Type
+  | JSONSchema4Array
+  | JSONSchema4Object;
+
+// Workaround for infinite type recursion
+// Also, https://github.com/typescript-eslint/typescript-eslint/issues/7863
+// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
+export interface JSONSchema4Object {
+  [key: string]: JSONSchema4TypeExtended;
+}
+
+// Workaround for infinite type recursion
+// https://github.com/Microsoft/TypeScript/issues/3496#issuecomment-128553540
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface JSONSchema4Array extends Array<JSONSchema4TypeExtended> {}
+
 /**
  * Meta schema
  *
@@ -51,7 +68,7 @@ export type JSONSchema4 =
   | JSONSchema4AnyOfSchema
   | JSONSchema4AnySchema
   | JSONSchema4ArraySchema
-  | JSONSchema4BoleanSchema
+  | JSONSchema4BooleanSchema
   | JSONSchema4MultiSchema
   | JSONSchema4NullSchema
   | JSONSchema4NumberSchema
@@ -106,19 +123,11 @@ interface JSONSchema4Base {
   /**
    * Reusable definitions that can be referenced via `$ref`
    */
-  definitions?:
-    | {
-        [k: string]: JSONSchema4;
-      }
-    | undefined;
+  definitions?: Record<string, JSONSchema4> | undefined;
   /**
    * Reusable definitions that can be referenced via `$ref`
    */
-  $defs?:
-    | {
-        [k: string]: JSONSchema4;
-      }
-    | undefined;
+  $defs?: Record<string, JSONSchema4> | undefined;
 
   /**
    * The value of this property MUST be another schema which will provide
@@ -141,7 +150,7 @@ interface JSONSchema4Base {
   /**
    * The default value for the item if not present
    */
-  default?: JSONSchema4Type | undefined;
+  default?: JSONSchema4TypeExtended | undefined;
 
   /**
    * This attribute indicates if the instance must have a value, and not
@@ -195,7 +204,7 @@ export interface JSONSchema4MultiSchema
     Omit<JSONSchema4ArraySchema, 'enum' | 'type'>,
     Omit<JSONSchema4StringSchema, 'enum' | 'type'>,
     Omit<JSONSchema4NumberSchema, 'enum' | 'type'>,
-    Omit<JSONSchema4BoleanSchema, 'enum' | 'type'>,
+    Omit<JSONSchema4BooleanSchema, 'enum' | 'type'>,
     Omit<JSONSchema4NullSchema, 'enum' | 'type'>,
     Omit<JSONSchema4AnySchema, 'enum' | 'type'> {
   type: JSONSchema4TypeName[];
@@ -242,11 +251,7 @@ export interface JSONSchema4ObjectSchema extends JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.2
    */
-  properties?:
-    | {
-        [k: string]: JSONSchema4;
-      }
-    | undefined;
+  properties?: Record<string, JSONSchema4> | undefined;
 
   /**
    * This attribute is an object that defines the schema for a set of
@@ -259,22 +264,14 @@ export interface JSONSchema4ObjectSchema extends JSONSchema4Base {
    *
    * @see https://tools.ietf.org/html/draft-zyp-json-schema-03#section-5.3
    */
-  patternProperties?:
-    | {
-        [k: string]: JSONSchema4;
-      }
-    | undefined;
+  patternProperties?: Record<string, JSONSchema4> | undefined;
 
   /**
    * The `dependencies` keyword conditionally applies a sub-schema when a given
    * property is present. This schema is applied in the same way `allOf` applies
    * schemas. Nothing is merged or extended. Both schemas apply independently.
    */
-  dependencies?:
-    | {
-        [k: string]: JSONSchema4 | string[];
-      }
-    | undefined;
+  dependencies?: Record<string, JSONSchema4 | string[]> | undefined;
 
   /**
    * The maximum number of properties allowed for record-style schemas
@@ -460,7 +457,7 @@ export interface JSONSchema4NumberSchema extends JSONSchema4Base {
 /**
  * @see https://json-schema.org/understanding-json-schema/reference/boolean.html
  */
-export interface JSONSchema4BoleanSchema extends JSONSchema4Base {
+export interface JSONSchema4BooleanSchema extends JSONSchema4Base {
   type: 'boolean';
 
   /**

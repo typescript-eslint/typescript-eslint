@@ -4,7 +4,7 @@ export const DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS = 30;
 const ZERO_HR_TIME: [number, number] = [0, 0];
 
 export interface CacheLike<Key, Value> {
-  get(key: Key): Value | void;
+  get(key: Key): Value | undefined;
   set(key: Key, value: Value): this;
 }
 
@@ -49,10 +49,9 @@ export class ExpiringCache<TKey, TValue> implements CacheLike<TKey, TValue> {
       if (ageSeconds < this.#cacheDurationSeconds) {
         // cache hit woo!
         return entry.value;
-      } else {
-        // key has expired - clean it up to free up memory
-        this.#map.delete(key);
       }
+      // key has expired - clean it up to free up memory
+      this.#map.delete(key);
     }
     // no hit :'(
     return undefined;

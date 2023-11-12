@@ -1,0 +1,17 @@
+<svg
+	fill="none"
+	height="45"
+	viewBox="0 0 50 45"
+	width="50"
+	xmlns="http://www.w3.org/2000/svg"
+>
+	<line x1="-5" y1="5" x2="30" y2="40" stroke="#ff3333" stroke-width="14" />
+	<line
+		stroke-width="14"
+		stroke="#ff3333"
+		transform="matrix(0.7 -0.7 -0.7 -0.7 15 35)"
+		x2="50"
+		y1="-7"
+		y2="-7"
+	/>
+</svg>

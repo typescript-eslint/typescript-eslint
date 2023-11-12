@@ -6,8 +6,6 @@ description: 'Enforce dot notation whenever possible.'
 >
 > See **https://typescript-eslint.io/rules/dot-notation** for documentation.
 
-## Examples
-
 This rule extends the base [`eslint/dot-notation`](https://eslint.org/docs/rules/dot-notation) rule.
 It adds:
 
@@ -39,7 +37,7 @@ If the TypeScript compiler option `noPropertyAccessFromIndexSignature` is set to
 
 Example of a correct code when `allowPrivateClassPropertyAccess` is set to `true`:
 
-```ts
+```ts option='{ "allowPrivateClassPropertyAccess": true }' showPlaygroundButton
 class X {
   private priv_prop = 123;
 }
@@ -52,7 +50,7 @@ x['priv_prop'] = 123;
 
 Example of a correct code when `allowProtectedClassPropertyAccess` is set to `true`:
 
-```ts
+```ts option='{ "allowProtectedClassPropertyAccess": true }' showPlaygroundButton
 class X {
   protected protected_prop = 123;
 }
@@ -65,7 +63,7 @@ x['protected_prop'] = 123;
 
 Example of correct code when `allowIndexSignaturePropertyAccess` is set to `true`:
 
-```ts
+```ts option='{ "allowIndexSignaturePropertyAccess": true }' showPlaygroundButton
 class X {
   [key: string]: number;
 }

@@ -57,17 +57,19 @@ See our [documentation on formatting](./Formatting.mdx) for more information.
 
 ## `eslint-plugin-prettier`
 
-This plugin surfaces prettier formatting problems at lint time, helping to ensure your code is always formatted.
-However this comes at a quite a large cost - in order to figure out if there is a difference, it has to do a prettier format on every file being linted.
+This plugin surfaces Prettier formatting problems at lint time, helping to ensure your code is always formatted.
+However this comes at a quite a large cost - in order to figure out if there is a difference, it has to do a Prettier format on every file being linted.
 This means that each file will be parsed twice - once by ESLint, and once by Prettier.
 This can add up for large codebases.
 
-Instead of using this plugin, we recommend using prettier's `--list-different` flag to detect if a file has not been correctly formatted.
+Instead of using this plugin, we recommend using Prettier's `--check` flag to detect if a file has not been correctly formatted.
 For example, our CI is setup to run the following command automatically, which blocks PRs that have not been formatted:
 
 ```bash npm2yarn
-npm run prettier --list-different \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\"
+npm run prettier --check .
 ```
+
+See [Prettier's `--check` docs](https://prettier.io/docs/en/cli#--check) for more details.
 
 ## `eslint-plugin-import`
 

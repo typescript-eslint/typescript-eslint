@@ -108,10 +108,10 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                           type: 'BlockStatement',
                           body: Array [],
 
-                          range: [191, 193],
+                          range: [210, 212],
                           loc: {
-                            start: { column: 52, line: 6 },
-                            end: { column: 54, line: 6 },
+                            start: { column: 6, line: 9 },
+                            end: { column: 8, line: 9 },
                           },
                         },
 -                       declare: false,
@@ -134,33 +134,33 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                                 typeAnnotation: TSNumberKeyword {
                                   type: 'TSNumberKeyword',
 
-                                  range: [165, 171],
+                                  range: [172, 178],
                                   loc: {
-                                    start: { column: 26, line: 6 },
-                                    end: { column: 32, line: 6 },
+                                    start: { column: 16, line: 7 },
+                                    end: { column: 22, line: 7 },
                                   },
                                 },
 
-                                range: [163, 171],
+                                range: [170, 178],
                                 loc: {
-                                  start: { column: 24, line: 6 },
-                                  end: { column: 32, line: 6 },
+                                  start: { column: 14, line: 7 },
+                                  end: { column: 22, line: 7 },
                                 },
                               },
 
-                              range: [162, 171],
+                              range: [169, 178],
                               loc: {
-                                start: { column: 23, line: 6 },
-                                end: { column: 32, line: 6 },
+                                start: { column: 13, line: 7 },
+                                end: { column: 22, line: 7 },
                               },
                             },
 -                           readonly: false,
 -                           static: false,
 
-                            range: [155, 171],
+                            range: [162, 178],
                             loc: {
-                              start: { column: 16, line: 6 },
-                              end: { column: 32, line: 6 },
+                              start: { column: 6, line: 7 },
+                              end: { column: 22, line: 7 },
                             },
                           },
                           TSParameterProperty {
@@ -178,56 +178,56 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                                 typeAnnotation: TSNumberKeyword {
                                   type: 'TSNumberKeyword',
 
-                                  range: [183, 189],
+                                  range: [196, 202],
                                   loc: {
-                                    start: { column: 44, line: 6 },
-                                    end: { column: 50, line: 6 },
+                                    start: { column: 16, line: 8 },
+                                    end: { column: 22, line: 8 },
                                   },
                                 },
 
-                                range: [181, 189],
+                                range: [194, 202],
                                 loc: {
-                                  start: { column: 42, line: 6 },
-                                  end: { column: 50, line: 6 },
+                                  start: { column: 14, line: 8 },
+                                  end: { column: 22, line: 8 },
                                 },
                               },
 
-                              range: [180, 189],
+                              range: [193, 202],
                               loc: {
-                                start: { column: 41, line: 6 },
-                                end: { column: 50, line: 6 },
+                                start: { column: 13, line: 8 },
+                                end: { column: 22, line: 8 },
                               },
                             },
 -                           readonly: false,
 -                           static: false,
 
-                            range: [173, 189],
+                            range: [186, 202],
                             loc: {
-                              start: { column: 34, line: 6 },
-                              end: { column: 50, line: 6 },
+                              start: { column: 6, line: 8 },
+                              end: { column: 22, line: 8 },
                             },
                           },
                         ],
 
-                        range: [154, 193],
+                        range: [154, 212],
                         loc: {
                           start: { column: 15, line: 6 },
-                          end: { column: 54, line: 6 },
+                          end: { column: 8, line: 9 },
                         },
                       },
 
-                      range: [143, 193],
+                      range: [143, 212],
                       loc: {
                         start: { column: 4, line: 6 },
-                        end: { column: 54, line: 6 },
+                        end: { column: 8, line: 9 },
                       },
                     },
                   ],
 
-                  range: [137, 197],
+                  range: [137, 216],
                   loc: {
                     start: { column: 21, line: 5 },
-                    end: { column: 3, line: 7 },
+                    end: { column: 3, line: 10 },
                   },
                 },
 -               declare: false,
@@ -247,20 +247,20 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
 -               implements: Array [],
                 superClass: null,
 
-                range: [125, 197],
+                range: [125, 216],
                 loc: {
                   start: { column: 9, line: 5 },
-                  end: { column: 3, line: 7 },
+                  end: { column: 3, line: 10 },
                 },
               },
               exportKind: 'value',
               source: null,
               specifiers: Array [],
 
-              range: [118, 197],
+              range: [118, 216],
               loc: {
                 start: { column: 2, line: 5 },
-                end: { column: 3, line: 7 },
+                end: { column: 3, line: 10 },
               },
             },
             ExportNamedDeclaration {
@@ -288,10 +288,10 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                                 name: 'name',
 -                               optional: false,
 
-                                range: [250, 254],
+                                range: [269, 273],
                                 loc: {
-                                  start: { column: 6, line: 10 },
-                                  end: { column: 10, line: 10 },
+                                  start: { column: 6, line: 13 },
+                                  end: { column: 10, line: 13 },
                                 },
                               },
 -                             optional: false,
@@ -302,32 +302,32 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                                 typeAnnotation: TSStringKeyword {
                                   type: 'TSStringKeyword',
 
-                                  range: [256, 262],
+                                  range: [275, 281],
                                   loc: {
-                                    start: { column: 12, line: 10 },
-                                    end: { column: 18, line: 10 },
+                                    start: { column: 12, line: 13 },
+                                    end: { column: 18, line: 13 },
                                   },
                                 },
 
-                                range: [254, 262],
+                                range: [273, 281],
                                 loc: {
-                                  start: { column: 10, line: 10 },
-                                  end: { column: 18, line: 10 },
+                                  start: { column: 10, line: 13 },
+                                  end: { column: 18, line: 13 },
                                 },
                               },
 
-                              range: [250, 263],
+                              range: [269, 282],
                               loc: {
-                                start: { column: 6, line: 10 },
-                                end: { column: 19, line: 10 },
+                                start: { column: 6, line: 13 },
+                                end: { column: 19, line: 13 },
                               },
                             },
                           ],
 
-                          range: [242, 269],
+                          range: [261, 288],
                           loc: {
-                            start: { column: 24, line: 9 },
-                            end: { column: 5, line: 11 },
+                            start: { column: 24, line: 12 },
+                            end: { column: 5, line: 14 },
                           },
                         },
 -                       declare: false,
@@ -338,35 +338,35 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                           name: 'Id',
 -                         optional: false,
 
-                          range: [239, 241],
+                          range: [258, 260],
                           loc: {
-                            start: { column: 21, line: 9 },
-                            end: { column: 23, line: 9 },
+                            start: { column: 21, line: 12 },
+                            end: { column: 23, line: 12 },
                           },
                         },
 
-                        range: [229, 269],
+                        range: [248, 288],
                         loc: {
-                          start: { column: 11, line: 9 },
-                          end: { column: 5, line: 11 },
+                          start: { column: 11, line: 12 },
+                          end: { column: 5, line: 14 },
                         },
                       },
                       exportKind: 'type',
                       source: null,
                       specifiers: Array [],
 
-                      range: [222, 269],
+                      range: [241, 288],
                       loc: {
-                        start: { column: 4, line: 9 },
-                        end: { column: 5, line: 11 },
+                        start: { column: 4, line: 12 },
+                        end: { column: 5, line: 14 },
                       },
                     },
                   ],
 
-                  range: [216, 273],
+                  range: [235, 292],
                   loc: {
-                    start: { column: 18, line: 8 },
-                    end: { column: 3, line: 12 },
+                    start: { column: 18, line: 11 },
+                    end: { column: 3, line: 15 },
                   },
                 },
 -               declare: false,
@@ -377,36 +377,36 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                   name: 'B',
 -                 optional: false,
 
-                  range: [214, 215],
+                  range: [233, 234],
                   loc: {
-                    start: { column: 16, line: 8 },
-                    end: { column: 17, line: 8 },
+                    start: { column: 16, line: 11 },
+                    end: { column: 17, line: 11 },
                   },
                 },
 -               kind: 'module',
 
-                range: [207, 273],
+                range: [226, 292],
                 loc: {
-                  start: { column: 9, line: 8 },
-                  end: { column: 3, line: 12 },
+                  start: { column: 9, line: 11 },
+                  end: { column: 3, line: 15 },
                 },
               },
               exportKind: 'value',
               source: null,
               specifiers: Array [],
 
-              range: [200, 273],
+              range: [219, 292],
               loc: {
-                start: { column: 2, line: 8 },
-                end: { column: 3, line: 12 },
+                start: { column: 2, line: 11 },
+                end: { column: 3, line: 15 },
               },
             },
           ],
 
-          range: [82, 275],
+          range: [82, 294],
           loc: {
             start: { column: 9, line: 3 },
-            end: { column: 1, line: 13 },
+            end: { column: 1, line: 16 },
           },
         },
 -       declare: false,
@@ -425,20 +425,20 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
         },
 -       kind: 'module',
 
-        range: [73, 275],
+        range: [73, 294],
         loc: {
           start: { column: 0, line: 3 },
-          end: { column: 1, line: 13 },
+          end: { column: 1, line: 16 },
         },
       },
     ],
 -   sourceType: 'script',
 +   sourceType: 'module',
 
-    range: [73, 276],
+    range: [73, 295],
     loc: {
       start: { column: 0, line: 3 },
-      end: { column: 0, line: 14 },
+      end: { column: 0, line: 17 },
     },
   }"
 `;

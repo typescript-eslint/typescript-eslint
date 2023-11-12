@@ -6,7 +6,9 @@ description: 'Disallow variable redeclaration.'
 >
 > See **https://typescript-eslint.io/rules/no-redeclare** for documentation.
 
-## Examples
+import TypeScriptOverlap from "@site/src/components/TypeScriptOverlap";
+
+<TypeScriptOverlap />
 
 This rule extends the base [`eslint/no-redeclare`](https://eslint.org/docs/rules/no-redeclare) rule.
 It adds support for TypeScript function overloads, and declaration merging.
@@ -40,7 +42,7 @@ When set to `true`, the rule will ignore declaration merges between the followin
 
 Examples of **correct** code with `{ ignoreDeclarationMerge: true }`:
 
-```ts
+```ts option='{ "ignoreDeclarationMerge": true }' showPlaygroundButton
 interface A {
   prop1: 1;
 }
@@ -66,7 +68,7 @@ namespace Baz {}
 Declaring a variable and a type and a variable the same is usually an accident, and it can lead to hard-to-understand code.
 If you have a rare case where you're intentionally naming a type the same name as a variable, use a disable comment. For example:
 
-```ts
+```ts option='{ "ignoreDeclarationMerge": true }' showPlaygroundButton
 type something = string;
 // eslint-disable-next-line @typescript-eslint/no-redeclare -- intentionally naming the variable the same as the type
 const something = 2;

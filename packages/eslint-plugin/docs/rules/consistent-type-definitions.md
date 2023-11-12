@@ -36,17 +36,13 @@ Using the same type declaration style consistently helps with code readability.
 
 #### ❌ Incorrect
 
-```ts
-/* eslint @typescript-eslint/consistent-type-definitions: ["error", "interface"] */
-
+```ts option='"interface"'
 type T = { x: number };
 ```
 
 #### ✅ Correct
 
-```ts
-/* eslint @typescript-eslint/consistent-type-definitions: ["error", "interface"] */
-
+```ts option='"interface"'
 type T = string;
 type Foo = string | {};
 
@@ -61,9 +57,7 @@ interface T {
 
 #### ❌ Incorrect
 
-```ts
-/* eslint @typescript-eslint/consistent-type-definitions: ["error", "type"] */
-
+```ts option='"type"'
 interface T {
   x: number;
 }
@@ -71,9 +65,7 @@ interface T {
 
 #### ✅ Correct
 
-```ts
-/* eslint @typescript-eslint/consistent-type-definitions: ["error", "type"] */
-
+```ts option='"type"'
 type T = { x: number };
 ```
 
