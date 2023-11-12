@@ -1,5 +1,5 @@
 diff --git a/lib/typescript.d.ts b/lib/typescript.d.ts
-index d785077fd9e4eb5959c0badb857358fad09d4d3f..54f71344b098e8d46acd8dd77638c60d505bb996 100644
+index 5ee1d5258cb019bddb259c7d31b1ae0156a98f0c..fc5f4d2a757a9fef92b2135148c22bb0cc81b2c1 100644
 --- a/lib/typescript.d.ts
 +++ b/lib/typescript.d.ts
 @@ -4491,8 +4491,8 @@ declare namespace ts {
@@ -54,7 +54,7 @@ index d785077fd9e4eb5959c0badb857358fad09d4d3f..54f71344b098e8d46acd8dd77638c60d
      }
      interface ConstructorTypeNode extends FunctionOrConstructorTypeNodeBase, LocalsContainer {
          readonly kind: SyntaxKind.ConstructorType;
-@@ -8978,7 +8992,13 @@ declare namespace ts {
+@@ -8991,7 +9005,13 @@ declare namespace ts {
      function symbolName(symbol: Symbol): string;
      function getNameOfJSDocTypedef(declaration: JSDocTypedefTag): Identifier | PrivateIdentifier | undefined;
      function getNameOfDeclaration(declaration: Declaration | Expression | undefined): DeclarationName | undefined;
@@ -68,7 +68,7 @@ index d785077fd9e4eb5959c0badb857358fad09d4d3f..54f71344b098e8d46acd8dd77638c60d
      function getModifiers(node: HasModifiers): readonly Modifier[] | undefined;
      /**
       * Gets the JSDoc parameter tags for the node if present.
-@@ -9508,7 +9528,13 @@ declare namespace ts {
+@@ -9521,7 +9541,13 @@ declare namespace ts {
      function isModuleName(node: Node): node is ModuleName;
      function isBinaryOperatorToken(node: Node): node is BinaryOperatorToken;
      function setTextRange<T extends TextRange>(range: T, location: TextRange | undefined): T;

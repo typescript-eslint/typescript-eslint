@@ -12,6 +12,9 @@ declare module 'typescript' {
   export interface SatisfiesExpression extends ts.Node {}
   // added in TS 5.1
   export interface JsxNamespacedName extends ts.Node {}
+  // added in TS 5.3
+  export interface ImportAttribute extends ts.Node {}
+  export interface ImportAttributes extends ts.Node {}
 }
 /* eslint-enable @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error, @typescript-eslint/no-empty-interface */
 
