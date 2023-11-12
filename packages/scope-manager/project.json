@@ -58,12 +58,7 @@
       }
     },
     "test": {
-      "executor": "@nx/jest:jest",
-      "outputs": ["{projectRoot}/coverage"],
-      "options": {
-        "jestConfig": "packages/scope-manager/jest.config.js",
-        "passWithNoTests": true
-      }
+      "executor": "@nx/jest:jest"
     },
     "generate-lib": {
       "executor": "nx:run-commands",

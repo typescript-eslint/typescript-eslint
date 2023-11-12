@@ -58,7 +58,12 @@ export default Vue.extend({
 </script>
 ",
     "suppressedMessages": [],
-    "usedDeprecatedRules": [],
+    "usedDeprecatedRules": [
+      {
+        "replacedBy": [],
+        "ruleId": "semi-spacing",
+      },
+    ],
     "warningCount": 0,
   },
   {
@@ -93,7 +98,12 @@ export default class Utility {
 </script>
 ",
     "suppressedMessages": [],
-    "usedDeprecatedRules": [],
+    "usedDeprecatedRules": [
+      {
+        "replacedBy": [],
+        "ruleId": "semi-spacing",
+      },
+    ],
     "warningCount": 0,
   },
   {
@@ -145,7 +155,12 @@ export default Vue.extend({
 </script>
 ",
     "suppressedMessages": [],
-    "usedDeprecatedRules": [],
+    "usedDeprecatedRules": [
+      {
+        "replacedBy": [],
+        "ruleId": "semi-spacing",
+      },
+    ],
     "warningCount": 0,
   },
 ]
