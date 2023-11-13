@@ -113,7 +113,14 @@ export default createRule<Options, MessageId>({
           isUnhandledPromise(checker, expression);
 
         if (isUnhandled) {
-          if (!promiseArray) {
+          if (promiseArray) {
+            context.report({
+              node,
+              messageId: options.ignoreVoid
+                ? 'floatingPromiseArrayVoid'
+                : 'floatingPromiseArray',
+            });
+          } else {
             if (options.ignoreVoid) {
               context.report({
                 node,
@@ -178,13 +185,6 @@ export default createRule<Options, MessageId>({
                 ],
               });
             }
-          } else {
-            context.report({
-              node,
-              messageId: options.ignoreVoid
-                ? 'floatingPromiseArrayVoid'
-                : 'floatingPromiseArray',
-            });
           }
         }
       },
