@@ -27,7 +27,7 @@
     "@typescript-eslint/utils": "6.11.0"
   },
   "devDependencies": {
-    "@eslint/js": "8.52.0",
+    "@eslint/js": "8.53.0",
     "@typescript-eslint/eslint-plugin": "6.11.0",
     "@typescript-eslint/parser": "6.11.0",
     "@typescript-eslint/scope-manager": "6.11.0",
