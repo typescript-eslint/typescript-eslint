@@ -232,7 +232,7 @@ abstract class ScopeBase<
     block: TBlock,
     isMethodDefinition: boolean,
   ) {
-    const upperScopeAsScopeBase = upperScope!;
+    const upperScopeAsScopeBase = upperScope;
 
     this.type = type;
     this.#dynamic =
@@ -240,7 +240,7 @@ abstract class ScopeBase<
     this.block = block;
     this.variableScope = this.isVariableScope()
       ? this
-      : upperScopeAsScopeBase.variableScope;
+      : upperScopeAsScopeBase!.variableScope;
     this.upper = upperScope;
 
     /**
@@ -249,10 +249,8 @@ abstract class ScopeBase<
      */
     this.isStrict = isStrictScope(this as Scope, block, isMethodDefinition);
 
-    if (upperScopeAsScopeBase) {
-      // this is guaranteed to be correct at runtime
-      upperScopeAsScopeBase.childScopes.push(this as Scope);
-    }
+    // this is guaranteed to be correct at runtime
+    upperScopeAsScopeBase?.childScopes.push(this as Scope);
 
     this.#declaredVariables = scopeManager.declaredVariables;
 
@@ -293,11 +291,7 @@ abstract class ScopeBase<
     return (
       defs.length > 0 &&
       defs.every(def => {
-        if (
-          def.type === DefinitionType.Variable &&
-          def.parent?.type === AST_NODE_TYPES.VariableDeclaration &&
-          def.parent.kind === 'var'
-        ) {
+        if (def.type === DefinitionType.Variable && def.parent.kind === 'var') {
           return false;
         }
         return true;
@@ -386,10 +380,7 @@ abstract class ScopeBase<
   }
 
   protected delegateToUpperScope(ref: Reference): void {
-    const upper = this.upper! as AnyScope;
-    if (upper?.leftToResolve) {
-      upper.leftToResolve.push(ref);
-    }
+    (this.upper as AnyScope | undefined)?.leftToResolve?.push(ref);
     this.through.push(ref);
   }
 

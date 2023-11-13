@@ -55,7 +55,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ lib, path, types }]) {
-    let programNode: TSESTree.Node;
+    let programNode: TSESTree.Node | undefined;
     const sourceCode = getSourceCode(context);
     const references: {
       comment: TSESTree.Comment;

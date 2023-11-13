@@ -142,7 +142,7 @@ export default createRule<Options, MessageIds>({
     return {
       TSNonNullExpression(node): void {
         if (
-          node.parent?.type === AST_NODE_TYPES.AssignmentExpression &&
+          node.parent.type === AST_NODE_TYPES.AssignmentExpression &&
           node.parent.operator === '='
         ) {
           if (node.parent.left === node) {

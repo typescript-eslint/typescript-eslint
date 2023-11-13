@@ -253,7 +253,7 @@ export default createRule<Options, MessageIds>({
         .pop();
 
       const sourceCodeLines = sourceCode.getLines();
-      const lastTokenLine = sourceCodeLines[lastToken?.loc.start.line - 1];
+      const lastTokenLine = sourceCodeLines[lastToken.loc.start.line - 1];
 
       const optsSemi = getOption('semi');
       const optsComma = getOption('comma');
@@ -341,7 +341,7 @@ export default createRule<Options, MessageIds>({
         : { ...typeOpts.multiline, type: 'multi-line' };
 
       members.forEach((member, index) => {
-        checkLastToken(member, opts ?? {}, index === members.length - 1);
+        checkLastToken(member, opts, index === members.length - 1);
       });
     }
 

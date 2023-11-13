@@ -6,7 +6,6 @@ import {
   createRule,
   findFirstResult,
   getParserServices,
-  getTypeArguments,
   isTypeReferenceType,
 } from '../util';
 
@@ -51,7 +50,7 @@ export default createRule<[], MessageIds>({
       if (isTypeReferenceType(type)) {
         return {
           type: type.target,
-          typeArguments: getTypeArguments(type, checker),
+          typeArguments: checker.getTypeArguments(type),
         };
       }
       return {
@@ -67,7 +66,7 @@ export default createRule<[], MessageIds>({
       // Just check the last one. Must specify previous type parameters if the last one is specified.
       const i = esParameters.params.length - 1;
       const arg = esParameters.params[i];
-      const param = typeParameters[i];
+      const param = typeParameters.at(i);
       if (!param?.default) {
         return;
       }

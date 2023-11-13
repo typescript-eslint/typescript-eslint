@@ -358,7 +358,7 @@ export default createRule<Options, MessageIds>({
         function* fix(
           fixer: TSESLint.RuleFixer,
         ): IterableIterator<TSESLint.RuleFix> {
-          if (node.parent && isLogicalOrOperator(node.parent)) {
+          if (isLogicalOrOperator(node.parent)) {
             // '&&' and '??' operations cannot be mixed without parentheses (e.g. a && b ?? c)
             if (
               node.left.type === AST_NODE_TYPES.LogicalExpression &&
@@ -434,7 +434,7 @@ function isMixedLogicalExpression(node: TSESTree.LogicalExpression): boolean {
     }
     seen.add(current);
 
-    if (current && current.type === AST_NODE_TYPES.LogicalExpression) {
+    if (current.type === AST_NODE_TYPES.LogicalExpression) {
       if (current.operator === '&&') {
         return true;
       } else if (current.operator === '||') {

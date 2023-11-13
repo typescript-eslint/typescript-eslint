@@ -51,7 +51,7 @@ export default createRule({
           const tokenAfterLeft = sourceCode.getTokenAfter(node.left);
           if (
             leftHandFinalToken?.type === AST_TOKEN_TYPES.Punctuator &&
-            leftHandFinalToken?.value === '!' &&
+            leftHandFinalToken.value === '!' &&
             tokenAfterLeft?.value !== ')'
           ) {
             if (isLeftHandPrimaryExpression(node.left)) {

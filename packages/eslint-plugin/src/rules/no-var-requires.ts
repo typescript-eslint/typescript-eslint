@@ -27,12 +27,11 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.CallExpression,
       ): void {
         const parent =
-          node.parent?.type === AST_NODE_TYPES.ChainExpression
+          node.parent.type === AST_NODE_TYPES.ChainExpression
             ? node.parent.parent
             : node.parent;
 
         if (
-          parent &&
           [
             AST_NODE_TYPES.CallExpression,
             AST_NODE_TYPES.MemberExpression,

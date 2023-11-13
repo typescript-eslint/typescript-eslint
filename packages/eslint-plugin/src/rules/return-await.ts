@@ -311,7 +311,7 @@ export default createRule({
         }
       },
       ReturnStatement(node): void {
-        const scopeInfo = scopeInfoStack[scopeInfoStack.length - 1];
+        const scopeInfo = scopeInfoStack.at(-1);
         if (!scopeInfo?.hasAsync || !node.argument) {
           return;
         }

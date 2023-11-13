@@ -84,7 +84,6 @@ export default createRule<Options, MessageIds>({
 
       // Skip if the node is invalid or empty.
       if (
-        openBrace.type !== AST_TOKEN_TYPES.Punctuator ||
         openBrace.value !== '{' ||
         closeBrace.type !== AST_TOKEN_TYPES.Punctuator ||
         closeBrace.value !== '}' ||

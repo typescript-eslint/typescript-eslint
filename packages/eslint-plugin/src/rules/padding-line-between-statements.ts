@@ -128,9 +128,7 @@ function newNodeTypeTester(type: AST_NODE_TYPES): NodeTestObject {
  * @private
  */
 function skipChainExpression(node: TSESTree.Node): TSESTree.Node {
-  return node && node.type === AST_NODE_TYPES.ChainExpression
-    ? node.expression
-    : node;
+  return node.type === AST_NODE_TYPES.ChainExpression ? node.expression : node;
 }
 
 /**
@@ -164,9 +162,9 @@ function isIIFEStatement(node: TSESTree.Node): boolean {
  */
 function isCJSRequire(node: TSESTree.Node): boolean {
   if (node.type === AST_NODE_TYPES.VariableDeclaration) {
-    const declaration = node.declarations[0];
+    const declaration = node.declarations.at(0);
     if (declaration?.init) {
-      let call = declaration?.init;
+      let call = declaration.init;
       while (call.type === AST_NODE_TYPES.MemberExpression) {
         call = call.object;
       }
@@ -235,8 +233,8 @@ function isDirective(
 ): boolean {
   return (
     node.type === AST_NODE_TYPES.ExpressionStatement &&
-    (node.parent?.type === AST_NODE_TYPES.Program ||
-      (node.parent?.type === AST_NODE_TYPES.BlockStatement &&
+    (node.parent.type === AST_NODE_TYPES.Program ||
+      (node.parent.type === AST_NODE_TYPES.BlockStatement &&
         isFunction(node.parent.parent))) &&
     node.expression.type === AST_NODE_TYPES.Literal &&
     typeof node.expression.value === 'string' &&
@@ -478,7 +476,7 @@ function verifyForAlways(
             }
             return true;
           },
-        })! || nextNode;
+        }) || nextNode;
       const insertText = isTokenOnSameLine(prevToken, nextToken)
         ? '\n\n'
         : '\n';
@@ -647,7 +645,7 @@ export default createRule<Options, MessageIds>({
   create(context) {
     const sourceCode = getSourceCode(context);
     // eslint-disable-next-line no-restricted-syntax -- We need all raw options.
-    const configureList = context.options || [];
+    const configureList = context.options;
 
     type Scope = {
       upper: Scope;

@@ -60,7 +60,7 @@ export default createRule<Options, MessageIds>({
         }
 
         const extend = node.extends;
-        if (!extend || extend.length === 0) {
+        if (extend.length === 0) {
           context.report({
             node: node.id,
             messageId: 'noEmpty',
@@ -84,7 +84,7 @@ export default createRule<Options, MessageIds>({
 
             const mergedWithClassDeclaration = scope.set
               .get(node.id.name)
-              ?.defs?.some(
+              ?.defs.some(
                 def => def.node.type === AST_NODE_TYPES.ClassDeclaration,
               );
 

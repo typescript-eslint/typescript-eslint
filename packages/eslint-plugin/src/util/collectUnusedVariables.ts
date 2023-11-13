@@ -247,7 +247,7 @@ class UnusedVarsVisitor<
 
     let idOrVariable;
     if (node.left.type === AST_NODE_TYPES.VariableDeclaration) {
-      const variable = this.#scopeManager.getDeclaredVariables(node.left)[0];
+      const variable = this.#scopeManager.getDeclaredVariables(node.left).at(0);
       if (!variable) {
         return;
       }

@@ -273,14 +273,13 @@ function checkMethod(
       const decl = valueDeclaration as
         | ts.MethodDeclaration
         | ts.MethodSignature;
-      const firstParam = decl.parameters[0];
+      const firstParam = decl.parameters.at(0);
       const firstParamIsThis =
         firstParam?.name.kind === ts.SyntaxKind.Identifier &&
         // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-        firstParam?.name.escapedText === 'this';
+        firstParam.name.escapedText === 'this';
       const thisArgIsVoid =
-        firstParamIsThis &&
-        firstParam?.type?.kind === ts.SyntaxKind.VoidKeyword;
+        firstParamIsThis && firstParam.type?.kind === ts.SyntaxKind.VoidKeyword;
 
       return {
         dangerous:

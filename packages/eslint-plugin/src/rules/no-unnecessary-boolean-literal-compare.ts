@@ -223,8 +223,7 @@ export default createRule<Options, MessageIds>({
             // 2. literalBooleanInComparison - is compared to literal boolean
             // 3. negated - is expression negated
 
-            const isUnaryNegation =
-              node.parent != null && nodeIsUnaryNegation(node.parent);
+            const isUnaryNegation = nodeIsUnaryNegation(node.parent);
 
             const shouldNegate =
               comparison.negated !== comparison.literalBooleanInComparison;

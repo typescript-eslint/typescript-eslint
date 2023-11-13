@@ -442,13 +442,11 @@ export default createRule<Options, MessageIds>({
                 before: options.beforeLineComment,
               });
             }
-          } else if (token.type === AST_TOKEN_TYPES.Block) {
-            if (options.beforeBlockComment || options.afterBlockComment) {
-              checkForEmptyLine(token, {
-                after: options.afterBlockComment,
-                before: options.beforeBlockComment,
-              });
-            }
+          } else if (options.beforeBlockComment || options.afterBlockComment) {
+            checkForEmptyLine(token, {
+              after: options.afterBlockComment,
+              before: options.beforeBlockComment,
+            });
           }
         });
       },

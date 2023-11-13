@@ -47,7 +47,7 @@ export default createRule({
     function checkRequiresGenericDeclarationDisambiguation(
       filename: string,
     ): boolean {
-      const pathExt = extname(filename).toLocaleLowerCase();
+      const pathExt = extname(filename).toLocaleLowerCase() as ts.Extension;
       switch (pathExt) {
         case ts.Extension.Cts:
         case ts.Extension.Mts:

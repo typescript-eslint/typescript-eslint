@@ -46,10 +46,6 @@ export default createRule({
      * @returns the name and attribute of the member or null if it's a member not relevant to the rule.
      */
     function getMemberMethod(member: TSESTree.Node): Method | null {
-      if (!member) {
-        return null;
-      }
-
       const isStatic = 'static' in member && !!member.static;
 
       switch (member.type) {
@@ -138,35 +134,33 @@ export default createRule({
     function checkBodyForOverloadMethods(node: RuleNode): void {
       const members = getMembers(node);
 
-      if (members) {
-        let lastMethod: Method | null = null;
-        const seenMethods: Method[] = [];
+      let lastMethod: Method | null = null;
+      const seenMethods: Method[] = [];
 
-        members.forEach(member => {
-          const method = getMemberMethod(member);
-          if (method == null) {
-            lastMethod = null;
-            return;
-          }
+      members.forEach(member => {
+        const method = getMemberMethod(member);
+        if (method == null) {
+          lastMethod = null;
+          return;
+        }
 
-          const index = seenMethods.findIndex(seenMethod =>
-            isSameMethod(method, seenMethod),
-          );
-          if (index > -1 && !isSameMethod(method, lastMethod)) {
-            context.report({
-              node: member,
-              messageId: 'adjacentSignature',
-              data: {
-                name: `${method.static ? 'static ' : ''}${method.name}`,
-              },
-            });
-          } else if (index === -1) {
-            seenMethods.push(method);
-          }
+        const index = seenMethods.findIndex(seenMethod =>
+          isSameMethod(method, seenMethod),
+        );
+        if (index > -1 && !isSameMethod(method, lastMethod)) {
+          context.report({
+            node: member,
+            messageId: 'adjacentSignature',
+            data: {
+              name: `${method.static ? 'static ' : ''}${method.name}`,
+            },
+          });
+        } else if (index === -1) {
+          seenMethods.push(method);
+        }
 
-          lastMethod = method;
-        });
-      }
+        lastMethod = method;
+      });
     }
 
     return {
