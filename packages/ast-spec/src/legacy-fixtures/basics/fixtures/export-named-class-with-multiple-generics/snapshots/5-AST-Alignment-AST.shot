@@ -10,7 +10,8 @@ exports[`AST Fixtures legacy-fixtures basics export-named-class-with-multiple-ge
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         declaration: ClassDeclaration {
           type: 'ClassDeclaration',
 -         abstract: false,

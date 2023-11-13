@@ -10,7 +10,8 @@ exports[`AST Fixtures legacy-fixtures basics type-alias-declaration-export AST A
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         declaration: TSTypeAliasDeclaration {
           type: 'TSTypeAliasDeclaration',
 -         declare: false,

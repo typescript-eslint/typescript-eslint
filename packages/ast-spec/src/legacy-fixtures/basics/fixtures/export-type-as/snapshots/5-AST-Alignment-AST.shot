@@ -10,7 +10,8 @@ exports[`AST Fixtures legacy-fixtures basics export-type-as AST Alignment - AST 
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         declaration: null,
         exportKind: 'type',
         source: null,

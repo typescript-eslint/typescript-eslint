@@ -277,7 +277,7 @@ export default createRule<Options, MessageIds>({
                      * ```
                      * https://github.com/typescript-eslint/typescript-eslint/issues/7527
                      */
-                    if (report.node.assertions.length === 0) {
+                    if (report.node.attributes.length === 0) {
                       context.report({
                         node: report.node,
                         messageId: 'typeOverValue',
@@ -632,7 +632,7 @@ export default createRule<Options, MessageIds>({
         // import * as types from 'foo'
 
         // checks for presence of import assertions
-        if (node.assertions.length === 0) {
+        if (node.attributes.length === 0) {
           yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);
         }
         return;
