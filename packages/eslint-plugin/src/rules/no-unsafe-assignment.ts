@@ -9,7 +9,6 @@ import {
   getContextualType,
   getParserServices,
   getThisExpression,
-  getTypeArguments,
   isTypeAnyArrayType,
   isTypeAnyType,
   isTypeUnknownType,
@@ -97,7 +96,7 @@ export default createRule({
         return true;
       }
 
-      const tupleElements = getTypeArguments(senderType, checker);
+      const tupleElements = checker.getTypeArguments(senderType);
 
       // tuple with any
       // const [x] = [1 as any];
