@@ -76,7 +76,7 @@ let text = `${value}`;
 
 ## When Not To Use It
 
-If you don't mind `"[object Object]"` in your strings, then you will not need this rule.
+If you don't mind a risk of `"[object Object]"` or incorrect type coercions in your values, then you will not need this rule.
 
 ## Related To
 

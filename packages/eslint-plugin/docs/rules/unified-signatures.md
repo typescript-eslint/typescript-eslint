@@ -71,3 +71,7 @@ function f(b: string): void;
 
 This is purely a stylistic rule to help with readability of function signature overloads.
 You can turn it off if you don't want to consistently keep them next to each other and unified.
+
+## Related To
+
+- [`adjacent-overload-signatures`](./adjacent-overload-signatures.md)

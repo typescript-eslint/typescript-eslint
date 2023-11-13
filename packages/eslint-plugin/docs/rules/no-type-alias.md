@@ -606,10 +606,7 @@ type Foo = Partial<Bar>;
 type Foo = Omit<Bar, 'a' | 'b'>;
 ```
 
-## When Not To Use It
-
-When you can't express some shape with an interface or you need to use a union, tuple type,
-callback, etc. that would cause the code to be unreadable or impractical.
+<!-- Intentionally Omitted: When Not To Use It -->
 
 ## Further Reading
 

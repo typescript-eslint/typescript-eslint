@@ -103,4 +103,4 @@ switch (day) {
 
 ## When Not To Use It
 
-If you don't frequently `switch` over union types with many parts, or intentionally wish to leave out some parts.
+If you don't frequently `switch` over union types with many parts, or intentionally wish to leave out some parts, this rule may not be for you.

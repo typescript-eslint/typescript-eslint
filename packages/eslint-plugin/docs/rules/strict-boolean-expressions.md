@@ -182,6 +182,9 @@ This rule provides following fixes and suggestions for particular types in boole
 
 If your project isn't likely to experience bugs from falsy non-boolean values being used in logical conditions, you can skip enabling this rule.
 
+Otherwise, this rule can be quite strict around requiring exact comparisons in logical checks.
+If you prefer more succinct checks over more precise boolean logic, this rule might not be for you.
+
 ## Related To
 
 - [no-unnecessary-condition](./no-unnecessary-condition.md) - Similar rule which reports always-truthy and always-falsy values in conditions

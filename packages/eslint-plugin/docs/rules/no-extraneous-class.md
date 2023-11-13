@@ -291,4 +291,5 @@ class Constants {
 
 ## When Not To Use It
 
-You can disable this rule if you are unable -or unwilling- to switch off using classes as namespaces.
+If your project was set up before modern class and namespace practices, and you don't have the time to switch over, you might not be practically able to use this rule.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.

@@ -99,7 +99,9 @@ await(async function () {
 
 ## When Not To Use It
 
-If you do not use Promise-like values in your codebase, or want to allow them to remain unhandled.
+This rule can be difficult to enable on large existing projects that set up many floating Promises.
+Alternately, if you're not worried about crashes from floating or misused Promises -such as if you have global unhandled Promise handlers registered- then in some cases it may be safe to not use this rule.
+You might consider using `void`s and/or [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Related To
 

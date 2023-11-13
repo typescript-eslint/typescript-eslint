@@ -75,4 +75,4 @@ const three = '3';
 
 ## When Not To Use It
 
-If you understand the language specification enough, and/or only ever sort arrays in a string-like manner, you can turn this rule off safely.
+If you intentionally want your arrays to be always sorted in a string-like manner, you can turn this rule off safely.

@@ -120,7 +120,9 @@ declare module 'foo' {}
 
 ## When Not To Use It
 
-If you are using the ES2015 module syntax, then you will not need this rule.
+If your project was architected before modern modules and namespaces, it may be difficult to migrate off of namespaces.
+In that case you may not be able to use this rule for parts of your project.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Further Reading
 

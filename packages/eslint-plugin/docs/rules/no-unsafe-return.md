@@ -101,7 +101,8 @@ function foo2(): unknown[] {
 ## When Not To Use It
 
 If your codebase has many existing `any`s, it may be difficult to enable this rule.
-It may be easier to disable the `no-unsafe-*` rules around `any` safety pending increasing strictness in your types.
+It may be easier to skip the `no-unsafe-*` rules pending increasing type safety in unsafe areas of your project.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Related To
 

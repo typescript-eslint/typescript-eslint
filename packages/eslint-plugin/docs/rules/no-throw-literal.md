@@ -109,3 +109,5 @@ const defaultOptions: Options = {
   allowThrowingUnknown: false,
 };
 ```
+
+<!-- Intentionally omitted: When Not To Use It -->

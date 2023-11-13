@@ -158,8 +158,12 @@ interface Garply {
 
 ## When Not To Use It
 
-If an unknown type or a library without typings is used
-and you want to be able to specify `any`.
+If your project is not fully type-safe, such as if it's in the process of being converted to TypeScript, it may be difficult to enable this rule.
+This can also be the case if it depends on many external dependencies whose types are fully described without `any`s.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+
+Keep in mind that `unknown` is generally a safer type to use than `any`.
+Consider trying to replace `any`s with `unknown`s whenever possible.
 
 ## Related To
 
@@ -171,4 +175,5 @@ and you want to be able to specify `any`.
 
 ## Further Reading
 
-- TypeScript [any type](https://www.typescriptlang.org/docs/handbook/basic-types.html#any)
+- TypeScript [`any` type](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any)
+- TypeScript's [`unknown` type](https://www.typescriptlang.org/docs/handbook/2/functions.html#unknown)

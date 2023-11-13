@@ -50,9 +50,12 @@ import * as foo from 'foo';
 import foo = require('foo');
 ```
 
-## When To Use It
+## When Not To Use It
 
-If you want to ban use of one or all of the triple slash reference directives, or any time you might use triple-slash type reference directives and ES6 import declarations in the same file.
+Most modern TypeScript projects generally use `import` statements to bring in types.
+It's rare to need a `///` triple-slash reference outside of auto-generated code.
+If your project is a rare one with one of those use cases, this rule might not be for you.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## When Not To Use It
 

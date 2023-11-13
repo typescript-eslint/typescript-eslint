@@ -60,4 +60,5 @@ async function functionReturnsUnionWithPromiseImplicitly(p: boolean) {
 
 ## When Not To Use It
 
-If you don't mind the extra weight of functions being `async` despite not `await`ing, you can turn off this rule.
+This rule can be difficult to enable on projects that use APIs which require functions to always be `async`.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) along with filing issues on your dependencies for those specific situations instead of completely disabling this rule.

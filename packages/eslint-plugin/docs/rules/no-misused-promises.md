@@ -233,8 +233,9 @@ return { foo: 42, ...(await getData2()) };
 
 ## When Not To Use It
 
-If you do not use Promises in your codebase or are not concerned with possible
-misuses of them outside of what the TypeScript compiler will check.
+This rule can be difficult to enable on large existing projects that set up many misused Promises.
+Alternately, if you're not worried about crashes from floating or misused Promises -such as if you have global unhandled Promise handlers registered- then in some cases it may be safe to not use this rule.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Further Reading
 

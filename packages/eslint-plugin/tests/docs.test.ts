@@ -8,13 +8,20 @@ import rules from '../src/rules';
 const docsRoot = path.resolve(__dirname, '../docs/rules');
 const rulesData = Object.entries(rules);
 
-function parseMarkdownFile(filePath: string): marked.TokensList {
-  const file = fs.readFileSync(filePath, 'utf-8');
+interface ParsedMarkdownFile {
+  fullText: string;
+  tokens: marked.TokensList;
+}
 
-  return marked.lexer(file, {
+function parseMarkdownFile(filePath: string): ParsedMarkdownFile {
+  const fullText = fs.readFileSync(filePath, 'utf-8');
+
+  const tokens = marked.lexer(fullText, {
     gfm: true,
     silent: false,
   });
+
+  return { fullText, tokens };
 }
 
 type TokenType = marked.Token['type'];
@@ -62,7 +69,7 @@ describe('Validating rule docs', () => {
 
     describe(`${ruleName}.md`, () => {
       const filePath = path.join(docsRoot, `${ruleName}.md`);
-      const tokens = parseMarkdownFile(filePath);
+      const { fullText, tokens } = parseMarkdownFile(filePath);
 
       test(`${ruleName}.md must start with frontmatter description`, () => {
         expect(tokens[0]).toMatchObject({
@@ -124,7 +131,16 @@ describe('Validating rule docs', () => {
           );
 
           for (const requiredHeading of requiredHeadings) {
-            expect(headingTexts).toContain(requiredHeading);
+            const omissionComment = `<!-- Intentionally Omitted: ${requiredHeading}`;
+
+            if (
+              !headingTexts.has(requiredHeading) &&
+              !fullText.includes(omissionComment)
+            ) {
+              throw new Error(
+                `Expected a '${requiredHeading}' heading or comment like ${omissionComment}.`,
+              );
+            }
           }
         });
       }

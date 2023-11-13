@@ -109,5 +109,4 @@ class Example {
 
 ## When Not To Use It
 
-If you don't care about if `void` is used with other types,
-or in invalid places, then you don't need this rule.
+If you don't care about if `void` is used with other types, or in invalid places, then you don't need this rule.
