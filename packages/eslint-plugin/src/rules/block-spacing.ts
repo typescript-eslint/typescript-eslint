@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -30,7 +31,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: ['always'],
 
   create(context, [whenToApplyOption]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const baseRules = baseRule.create(context);
     const always = whenToApplyOption !== 'never';
     const messageId = always ? 'missing' : 'extra';

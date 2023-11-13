@@ -1,5 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import {
+  getDeclaredVariables,
+  getSourceCode,
+} from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -161,7 +165,7 @@ export default createRule({
       indexVar: TSESLint.Scope.Variable,
       arrayExpression: TSESTree.Expression,
     ): boolean {
-      const sourceCode = context.getSourceCode();
+      const sourceCode = getSourceCode(context);
       const arrayText = sourceCode.getText(arrayExpression);
       return indexVar.references.every(reference => {
         const id = reference.identifier;
@@ -203,7 +207,7 @@ export default createRule({
           return;
         }
 
-        const [indexVar] = context.getDeclaredVariables(node.init);
+        const [indexVar] = getDeclaredVariables(context, node.init);
         if (
           isIncrement(node.update, indexName) &&
           isIndexOnlyUsedWithArray(node.body, indexVar, arrayExpression)

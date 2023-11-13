@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -154,7 +155,7 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const punctuators = [':', '=>'];
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     const ruleSet = createRules(options);
 
