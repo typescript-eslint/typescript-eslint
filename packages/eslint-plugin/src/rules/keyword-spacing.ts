@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
 import type {
@@ -49,7 +50,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: [{}],
 
   create(context, [{ after, overrides }]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const baseRules = baseRule.create(context);
     return {
       ...baseRules,

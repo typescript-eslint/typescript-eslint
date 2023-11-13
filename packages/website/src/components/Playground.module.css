@@ -66,7 +66,9 @@
   justify-content: stretch;
   align-items: stretch;
   outline: none;
-  transition: border-color 0.2s linear, background-color 0.2s linear;
+  transition:
+    border-color 0.2s linear,
+    background-color 0.2s linear;
   background-color: var(--resize-background-color);
   border-color: var(--resize-border-color);
   border-style: solid;

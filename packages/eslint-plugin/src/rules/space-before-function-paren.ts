@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, isOpeningParenToken } from '../util';
 
@@ -61,7 +62,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: ['always'],
 
   create(context, [firstOption]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const baseConfig = typeof firstOption === 'string' ? firstOption : 'always';
     const overrideConfig = typeof firstOption === 'object' ? firstOption : {};
 

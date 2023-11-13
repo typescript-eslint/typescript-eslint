@@ -5,6 +5,7 @@ import type {
 import { DefinitionType, ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+import { getScope } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -646,7 +647,7 @@ export default createRule<Options, MessageIds>({
 
     return {
       'Program:exit'(): void {
-        const globalScope = context.getScope();
+        const globalScope = getScope(context);
         const stack = globalScope.childScopes.slice();
 
         while (stack.length) {

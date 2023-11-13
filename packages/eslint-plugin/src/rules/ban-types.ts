@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, objectReduceKey } from '../util';
 
@@ -218,7 +219,7 @@ export default createRule<Options, MessageIds>({
 
     function checkBannedTypes(
       typeNode: TSESTree.Node,
-      name = stringifyNode(typeNode, context.getSourceCode()),
+      name = stringifyNode(typeNode, getSourceCode(context)),
     ): void {
       const bannedType = bannedTypes.get(name);
 
