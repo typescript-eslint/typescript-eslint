@@ -18,6 +18,7 @@ type ReadonlyType = 'readonly-field' | 'readonly-signature';
 
 type MemberKind =
   | ReadonlyType
+  | 'accessor'
   | 'call-signature'
   | 'constructor'
   | 'field'
@@ -29,6 +30,7 @@ type MemberKind =
 
 type DecoratedMemberKind =
   | Exclude<ReadonlyType, 'readonly-signature'>
+  | 'accessor'
   | 'field'
   | 'get'
   | 'method'
@@ -169,6 +171,37 @@ export const defaultOrder: MemberType[] = [
 
   'constructor',
 
+  // Accessors
+  'public-static-accessor',
+  'protected-static-accessor',
+  'private-static-accessor',
+  '#private-static-accessor',
+
+  'public-decorated-accessor',
+  'protected-decorated-accessor',
+  'private-decorated-accessor',
+
+  'public-instance-accessor',
+  'protected-instance-accessor',
+  'private-instance-accessor',
+  '#private-instance-accessor',
+
+  'public-abstract-accessor',
+  'protected-abstract-accessor',
+
+  'public-accessor',
+  'protected-accessor',
+  'private-accessor',
+  '#private-accessor',
+
+  'static-accessor',
+  'instance-accessor',
+  'abstract-accessor',
+
+  'decorated-accessor',
+
+  'accessor',
+
   // Getters
   'public-static-get',
   'protected-static-get',
@@ -273,6 +306,7 @@ const allMemberTypes = Array.from(
       'method',
       'call-signature',
       'constructor',
+      'accessor',
       'get',
       'set',
       'static-initialization',
@@ -292,12 +326,13 @@ const allMemberTypes = Array.from(
           all.add(`${accessibility}-${type}`); // e.g. `public-field`
         }
 
-        // Only class instance fields, methods, get and set can have decorators attached to them
+        // Only class instance fields, methods, accessors, get and set can have decorators attached to them
         if (
           accessibility !== '#private' &&
           (type === 'readonly-field' ||
             type === 'field' ||
             type === 'method' ||
+            type === 'accessor' ||
             type === 'get' ||
             type === 'set')
         ) {
@@ -354,6 +389,8 @@ function getNodeType(node: Member): MemberKind | null {
       return 'constructor';
     case AST_NODE_TYPES.TSAbstractPropertyDefinition:
       return node.readonly ? 'readonly-field' : 'field';
+    case AST_NODE_TYPES.AccessorProperty:
+      return 'accessor';
     case AST_NODE_TYPES.PropertyDefinition:
       return node.value && functionExpressions.includes(node.value.type)
         ? 'method'
@@ -727,7 +764,7 @@ export default createRule<Options, MessageIds>({
       // Find first member which isn't correctly sorted
       members.forEach(member => {
         const rank = getRank(member, groupOrder, supportsModifiers);
-        const name = getMemberName(member, context.getSourceCode());
+        const name = getMemberName(member, context.sourceCode);
         const rankLastMember = previousRanks[previousRanks.length - 1];
 
         if (rank === -1) {
@@ -776,7 +813,7 @@ export default createRule<Options, MessageIds>({
 
       // Find first member which isn't correctly sorted
       members.forEach(member => {
-        const name = getMemberName(member, context.getSourceCode());
+        const name = getMemberName(member, context.sourceCode);
 
         // Note: Not all members have names
         if (name) {
@@ -846,7 +883,7 @@ export default createRule<Options, MessageIds>({
           messageId: 'incorrectRequiredMembersOrder',
           loc: member.loc,
           data: {
-            member: getMemberName(member, context.getSourceCode()),
+            member: getMemberName(member, context.sourceCode),
             optionalOrRequired:
               optionalityOrder === 'required-first' ? 'required' : 'optional',
           },
