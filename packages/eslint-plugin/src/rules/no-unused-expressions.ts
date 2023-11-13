@@ -1,5 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -55,6 +54,17 @@ export default createRule<Options, MessageIds>({
     return {
       ExpressionStatement(node): void {
         if (node.directive || isValidExpression(node.expression)) {
+          return;
+        }
+
+        if (
+          node.expression.type ===
+          TSESTree.AST_NODE_TYPES.TSInstantiationExpression
+        ) {
+          rules.ExpressionStatement({
+            ...node,
+            expression: node.expression.expression,
+          });
           return;
         }
 

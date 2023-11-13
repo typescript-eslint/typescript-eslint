@@ -33,7 +33,7 @@ A value of `true` for a particular directive means that this rule will report if
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "ts-ignore": true }'
 if (false) {
   // @ts-ignore: Unreachable code error
   console.log('hello');
@@ -48,7 +48,7 @@ if (false) {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "ts-ignore": true }'
 if (false) {
   // Compiler warns about unreachable code error
   console.log('hello');
@@ -65,7 +65,7 @@ For example, with `{ 'ts-expect-error': 'allow-with-description' }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "ts-expect-error": "allow-with-description" }'
 if (false) {
   // @ts-expect-error
   console.log('hello');
@@ -78,7 +78,7 @@ if (false) {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "ts-expect-error": "allow-with-description" }'
 if (false) {
   // @ts-expect-error: Unreachable code error
   console.log('hello');
@@ -101,14 +101,16 @@ For example, with `{ 'ts-expect-error': { descriptionFormat: '^: TS\\d+ because 
 
 #### ❌ Incorrect
 
-```ts
+<!-- prettier-ignore -->
+```ts option='{ "ts-expect-error": { "descriptionFormat": "^: TS\\\\d+ because .+$" } }'
 // @ts-expect-error: the library definition is wrong
 const a = doSomething('hello');
 ```
 
 #### ✅ Correct
 
-```ts
+<!-- prettier-ignore -->
+```ts option='{ "ts-expect-error": { "descriptionFormat": "^: TS\\\\d+ because .+$" } }'
 // @ts-expect-error: TS1234 because the library definition is wrong
 const a = doSomething('hello');
 ```
@@ -123,7 +125,7 @@ For example, with `{ 'ts-expect-error': 'allow-with-description', minimumDescrip
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "ts-expect-error": "allow-with-description", "minimumDescriptionLength": 10 }'
 if (false) {
   // @ts-expect-error: TODO
   console.log('hello');
@@ -132,7 +134,7 @@ if (false) {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "ts-expect-error": "allow-with-description", "minimumDescriptionLength": 10 }'
 if (false) {
   // @ts-expect-error The rationale for this override is described in issue #1337 on GitLab
   console.log('hello');

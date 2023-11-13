@@ -4,14 +4,10 @@ import { simpleTraverse } from '@typescript-eslint/typescript-estree';
 function getSpecificNode<
   TSelector extends AST_NODE_TYPES,
   TNode extends Extract<TSESTree.Node, { type: TSelector }>,
->(ast: TSESTree.Node, selector: TSelector): TNode;
-function getSpecificNode<
-  TSelector extends AST_NODE_TYPES,
-  TNode extends Extract<TSESTree.Node, { type: TSelector }>,
 >(
   ast: TSESTree.Node,
   selector: TSelector,
-  cb: (node: TNode) => boolean | null | undefined,
+  cb?: (node: TNode) => boolean | null | undefined,
 ): TNode;
 function getSpecificNode<
   TSelector extends AST_NODE_TYPES,

@@ -51,6 +51,7 @@ let OVERRIDE_IT_SKIP: Maybe<RuleTesterTestFrameworkFunctionBase> = null;
  * allows the user to manually supply functions in case they want to roll their
  * own tooling
  */
+// eslint-disable-next-line @typescript-eslint/no-extraneous-class
 export abstract class TestFramework {
   /**
    * Runs a function after all the tests in this file have completed.

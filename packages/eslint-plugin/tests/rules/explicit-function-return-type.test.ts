@@ -180,6 +180,53 @@ class App {
       `,
       options: [{ allowTypedFunctionExpressions: true }],
     },
+    // https://github.com/typescript-eslint/typescript-eslint/issues/7552
+    {
+      code: 'const foo = <button onClick={() => {}} />;',
+      options: [{ allowTypedFunctionExpressions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: 'const foo = <button on={{ click: () => {} }} />;',
+      options: [{ allowTypedFunctionExpressions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: 'const foo = <Bar>{() => {}}</Bar>;',
+      options: [{ allowTypedFunctionExpressions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: 'const foo = <Bar>{{ on: () => {} }}</Bar>;',
+      options: [{ allowTypedFunctionExpressions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+    {
+      code: 'const foo = <button {...{ onClick: () => {} }} />;',
+      options: [{ allowTypedFunctionExpressions: true }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+    },
+
     // https://github.com/typescript-eslint/typescript-eslint/issues/525
     {
       code: `
@@ -338,8 +385,8 @@ foo({
     },
     {
       code: `
-const func = (value: number) => ({ type: 'X', value } as const);
-const func = (value: number) => ({ type: 'X', value } as const);
+const func = (value: number) => ({ type: 'X', value }) as const;
+const func = (value: number) => ({ type: 'X', value }) as const;
 const func = (value: number) => x as const;
 const func = (value: number) => x as const;
       `,
@@ -369,7 +416,7 @@ new Foo(1, () => {});
       options: [{ allowFunctionsWithoutTypeParameters: true }],
     },
     {
-      code: 'const log = <A>(a: A): A => a;',
+      code: 'const log = <A,>(a: A): A => a;',
       options: [{ allowFunctionsWithoutTypeParameters: true }],
     },
     {
@@ -978,6 +1025,96 @@ const x: Foo = {
       ],
     },
     {
+      code: 'const foo = <button onClick={() => {}} />;',
+      options: [{ allowTypedFunctionExpressions: false }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 33,
+          endColumn: 35,
+        },
+      ],
+    },
+    {
+      code: 'const foo = <button on={{ click: () => {} }} />;',
+      options: [{ allowTypedFunctionExpressions: false }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 27,
+          endColumn: 34,
+        },
+      ],
+    },
+    {
+      code: 'const foo = <Bar>{() => {}}</Bar>;',
+      options: [{ allowTypedFunctionExpressions: false }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 22,
+          endColumn: 24,
+        },
+      ],
+    },
+    {
+      code: 'const foo = <Bar>{{ on: () => {} }}</Bar>;',
+      options: [{ allowTypedFunctionExpressions: false }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 21,
+          endColumn: 25,
+        },
+      ],
+    },
+    {
+      code: 'const foo = <button {...{ onClick: () => {} }} />;',
+      options: [{ allowTypedFunctionExpressions: false }],
+      parserOptions: {
+        ecmaFeatures: {
+          jsx: true,
+        },
+      },
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 1,
+          endLine: 1,
+          column: 27,
+          endColumn: 36,
+        },
+      ],
+    },
+    {
       code: '() => () => {};',
       options: [{ allowHigherOrderFunctions: true }],
       errors: [
@@ -1320,8 +1457,8 @@ const x: HigherOrderType = () => arg1 => arg2 => 'foo';
     },
     {
       code: `
-const func = (value: number) => ({ type: 'X', value } as any);
-const func = (value: number) => ({ type: 'X', value } as Action);
+const func = (value: number) => ({ type: 'X', value }) as any;
+const func = (value: number) => ({ type: 'X', value }) as Action;
       `,
       options: [
         {
@@ -1347,7 +1484,7 @@ const func = (value: number) => ({ type: 'X', value } as Action);
     },
     {
       code: `
-const func = (value: number) => ({ type: 'X', value } as const);
+const func = (value: number) => ({ type: 'X', value }) as const;
       `,
       options: [
         {
@@ -1397,7 +1534,7 @@ const func = (value: number) => ({ type: 'X', value } as const);
       ],
     },
     {
-      code: 'const log = <A>(a: A) => a;',
+      code: 'const log = <A,>(a: A) => a;',
       errors: [{ messageId: 'missingReturnType' }],
       options: [{ allowFunctionsWithoutTypeParameters: true }],
     },

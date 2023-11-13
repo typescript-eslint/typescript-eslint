@@ -33,6 +33,7 @@ export function createParseSettings(
     typeof options.tsconfigRootDir === 'string'
       ? options.tsconfigRootDir
       : process.cwd();
+  const passedLoggerFn = typeof options.loggerFn === 'function';
   const parseSettings: MutableParseSettings = {
     allowInvalidAST: options.allowInvalidAST === true,
     code,
@@ -138,7 +139,7 @@ export function createParseSettings(
     });
   }
 
-  warnAboutTSVersion(parseSettings);
+  warnAboutTSVersion(parseSettings, passedLoggerFn);
 
   return parseSettings;
 }

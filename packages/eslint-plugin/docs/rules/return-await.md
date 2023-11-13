@@ -37,7 +37,7 @@ Examples of code with `in-try-catch`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='"in-try-catch"'
 async function invalidInTryCatch1() {
   try {
     return Promise.resolve('try');
@@ -83,7 +83,7 @@ async function invalidInTryCatch6() {
 
 #### ✅ Correct
 
-```ts
+```ts option='"in-try-catch"'
 async function validInTryCatch1() {
   try {
     return await Promise.resolve('try');
@@ -137,7 +137,7 @@ Examples of code with `always`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='"always"'
 async function invalidAlways1() {
   try {
     return Promise.resolve('try');
@@ -155,7 +155,7 @@ async function invalidAlways3() {
 
 #### ✅ Correct
 
-```ts
+```ts option='"always"'
 async function validAlways1() {
   try {
     return await Promise.resolve('try');
@@ -181,7 +181,7 @@ Examples of code with `never`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='"never"'
 async function invalidNever1() {
   try {
     return await Promise.resolve('try');
@@ -199,7 +199,7 @@ async function invalidNever3() {
 
 #### ✅ Correct
 
-```ts
+```ts option='"never"'
 async function validNever1() {
   try {
     return Promise.resolve('try');

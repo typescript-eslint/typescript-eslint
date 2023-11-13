@@ -52,6 +52,8 @@ export = {
     '@typescript-eslint/lines-around-comment': 'error',
     'lines-between-class-members': 'off',
     '@typescript-eslint/lines-between-class-members': 'error',
+    'max-params': 'off',
+    '@typescript-eslint/max-params': 'error',
     '@typescript-eslint/member-delimiter-style': 'error',
     '@typescript-eslint/member-ordering': 'error',
     '@typescript-eslint/method-signature-style': 'error',

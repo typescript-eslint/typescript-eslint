@@ -54,7 +54,7 @@ properlyTyped.prop[key];
 
 const arr = [1, 2, 3];
 arr[1];
-const idx = 1;
+let idx = 1;
 arr[idx];
 arr[idx++];
 ```
