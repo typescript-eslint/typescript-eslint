@@ -1773,11 +1773,5 @@ function f<T extends Array<Promise<number>>>(a: T | undefined): void {
       `,
       errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
     },
-    {
-      code: `
-[Promise.reject()] as const;
-      `,
-      errors: [{ line: 2, messageId: 'floatingPromiseArrayVoid' }],
-    },
   ],
 });

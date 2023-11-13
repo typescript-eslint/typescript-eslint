@@ -332,7 +332,7 @@ function isPromiseArray(checker: ts.TypeChecker, node: ts.Node): boolean {
   for (const ty of tsutils
     .unionTypeParts(type)
     .map(t => checker.getApparentType(t))) {
-    if (checker.isArrayLikeType(ty)) {
+    if (checker.isArrayType(ty)) {
       const arrayType = checker.getTypeArguments(ty)[0];
       if (isPromiseLike(checker, node, arrayType)) {
         return true;
