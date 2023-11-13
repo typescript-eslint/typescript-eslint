@@ -1099,6 +1099,18 @@ interface Foo {
   bar: string;
 }
     `,
+    `
+let foo = 1;
+foo ??= 2;
+    `,
+    `
+let foo = 1;
+foo &&= 2;
+    `,
+    `
+let foo = 1;
+foo ||= 2;
+    `,
   ],
 
   invalid: [
@@ -1838,6 +1850,24 @@ const Foo = 'bar';
           column: 7,
           data: {
             varName: 'Foo',
+            action: 'assigned a value',
+            additional: '',
+          },
+        },
+      ],
+    },
+    {
+      code: `
+let foo = 1;
+foo += 1;
+      `,
+      errors: [
+        {
+          messageId: 'unusedVar',
+          line: 3,
+          column: 1,
+          data: {
+            varName: 'foo',
             action: 'assigned a value',
             additional: '',
           },
