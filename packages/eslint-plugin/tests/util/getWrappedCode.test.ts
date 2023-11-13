@@ -1,5 +1,6 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as ts from 'typescript';
 
 import {
@@ -36,7 +37,7 @@ const removeFunctionRule = createRule({
   },
 
   create(context) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const parserServices = getParserServices(context, true);
 
     const report = (node: TSESTree.CallExpression): void => {

@@ -1,6 +1,12 @@
 import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
+import {
+  getDeclaredVariables,
+  getFilename,
+  getScope,
+  getSourceCode,
+} from '@typescript-eslint/utils/eslint-utils';
 
 import {
   collectUnusedVariables as _collectUnusedVariables,
@@ -97,8 +103,8 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   create(context, [firstOption]) {
-    const filename = context.getFilename();
-    const sourceCode = context.getSourceCode();
+    const filename = getFilename(context);
+    const sourceCode = getSourceCode(context);
     const MODULE_DECL_CACHE = new Map<TSESTree.TSModuleDeclaration, boolean>();
 
     const options = ((): TranslatedOptions => {
@@ -196,7 +202,7 @@ export default createRule<Options, MessageIds>({
        */
       function isAfterLastUsedArg(variable: TSESLint.Scope.Variable): boolean {
         const def = variable.defs[0];
-        const params = context.getDeclaredVariables(def.node);
+        const params = getDeclaredVariables(context, def.node);
         const posteriorParams = params.slice(params.indexOf(variable) + 1);
 
         // If any used parameters occur after this parameter, do not report.
@@ -314,7 +320,7 @@ export default createRule<Options, MessageIds>({
         node: TSESTree.TSModuleDeclaration,
       ): void {
         if (node.id.type === AST_NODE_TYPES.Identifier) {
-          let scope = context.getScope();
+          let scope = getScope(context);
           if (scope.upper) {
             scope = scope.upper;
           }
@@ -546,7 +552,7 @@ export default createRule<Options, MessageIds>({
           break;
       }
 
-      let scope = context.getScope();
+      let scope = getScope(context);
       const shouldUseUpperScope = [
         AST_NODE_TYPES.TSModuleDeclaration,
         AST_NODE_TYPES.TSDeclareFunction,

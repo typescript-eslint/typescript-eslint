@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -148,7 +149,7 @@ export default createRule<Options, MessageIds>({
     const defaultIgnoreRegExp = COMMENTS_IGNORE_PATTERN;
     const customIgnoreRegExp = new RegExp(options.ignorePattern ?? '', 'u');
 
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const comments = sourceCode.getAllComments();
 
     const lines = sourceCode.lines;

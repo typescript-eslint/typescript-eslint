@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { ESLintUtils } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -46,7 +47,7 @@ export default createRule<Options, 'meaninglessVoidOperator' | 'removeVoid'>({
   create(context, [{ checkNever }]) {
     const services = ESLintUtils.getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     return {
       'UnaryExpression[operator="void"]'(node: TSESTree.UnaryExpression): void {

@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -28,7 +29,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['record'],
   create(context, [mode]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     function checkMembers(
       members: TSESTree.TypeElement[],
@@ -67,7 +68,7 @@ export default createRule<Options, MessageIds>({
       }
 
       if (parentId) {
-        const scope = context.getScope();
+        const scope = getScope(context);
         const superVar = ASTUtils.findVariable(scope, parentId.name);
         if (superVar) {
           const isCircular = superVar.references.some(

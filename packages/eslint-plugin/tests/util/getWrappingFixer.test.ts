@@ -1,5 +1,6 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, getWrappingFixer } from '../../src/util';
 import { getFixturesRootDir } from '../RuleTester';
@@ -29,7 +30,7 @@ const voidEverythingRule = createRule({
   },
 
   create(context) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     const report = (node: TSESTree.Node): void => {
       context.report({
@@ -322,7 +323,7 @@ const removeFunctionRule = createRule({
   },
 
   create(context) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     const report = (node: TSESTree.CallExpression): void => {
       context.report({

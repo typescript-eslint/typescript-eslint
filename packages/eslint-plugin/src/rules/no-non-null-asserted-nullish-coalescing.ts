@@ -2,6 +2,7 @@ import type { Definition } from '@typescript-eslint/scope-manager';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESLint } from '@typescript-eslint/utils';
 import { ASTUtils, TSESTree } from '@typescript-eslint/utils';
+import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
@@ -53,7 +54,7 @@ export default createRule({
         node: TSESTree.TSNonNullExpression,
       ): void {
         if (node.expression.type === TSESTree.AST_NODE_TYPES.Identifier) {
-          const scope = context.getScope();
+          const scope = getScope(context);
           const identifier = node.expression;
           const variable = ASTUtils.findVariable(scope, identifier.name);
           if (variable && !hasAssignmentBeforeNode(variable, node)) {
@@ -61,7 +62,7 @@ export default createRule({
           }
         }
 
-        const sourceCode = context.getSourceCode();
+        const sourceCode = getSourceCode(context);
 
         context.report({
           node,

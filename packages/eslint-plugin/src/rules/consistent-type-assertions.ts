@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as ts from 'typescript';
 
 import {
@@ -90,7 +91,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const parserServices = getParserServices(context, true);
 
     function isConst(node: TSESTree.TypeNode): boolean {
@@ -254,9 +255,9 @@ export default createRule<Options, MessageIds>({
             fixer.replaceText(node, getTextWithParentheses(node.expression)),
             fixer.insertTextAfter(
               node,
-              ` satisfies ${context
-                .getSourceCode()
-                .getText(node.typeAnnotation)}`,
+              ` satisfies ${getSourceCode(context).getText(
+                node.typeAnnotation,
+              )}`,
             ),
           ],
         });

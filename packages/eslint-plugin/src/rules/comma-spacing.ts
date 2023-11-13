@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -55,7 +56,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ before: spaceBefore, after: spaceAfter }]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const tokensAndComments = sourceCode.tokensAndComments;
     const ignoredTokens = new Set<TSESTree.PunctuatorToken>();
 

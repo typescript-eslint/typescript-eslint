@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, getNameFromMember } from '../util';
 
@@ -98,7 +99,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{ accessibility: 'explicit' }],
   create(context, [option]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const baseCheck: AccessibilityLevel = option.accessibility ?? 'explicit';
     const overrides = option.overrides ?? {};
     const ctorCheck = overrides.constructors ?? baseCheck;

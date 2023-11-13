@@ -1,5 +1,6 @@
 import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import naturalCompare from 'natural-compare';
 
 import {
@@ -727,7 +728,7 @@ export default createRule<Options, MessageIds>({
       // Find first member which isn't correctly sorted
       members.forEach(member => {
         const rank = getRank(member, groupOrder, supportsModifiers);
-        const name = getMemberName(member, context.getSourceCode());
+        const name = getMemberName(member, getSourceCode(context));
         const rankLastMember = previousRanks[previousRanks.length - 1];
 
         if (rank === -1) {
@@ -776,7 +777,7 @@ export default createRule<Options, MessageIds>({
 
       // Find first member which isn't correctly sorted
       members.forEach(member => {
-        const name = getMemberName(member, context.getSourceCode());
+        const name = getMemberName(member, getSourceCode(context));
 
         // Note: Not all members have names
         if (name) {
@@ -846,7 +847,7 @@ export default createRule<Options, MessageIds>({
           messageId: 'incorrectRequiredMembersOrder',
           loc: member.loc,
           data: {
-            member: getMemberName(member, context.getSourceCode()),
+            member: getMemberName(member, getSourceCode(context)),
             optionalOrRequired:
               optionalityOrder === 'required-first' ? 'required' : 'optional',
           },
