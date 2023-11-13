@@ -300,6 +300,101 @@ interface RuleContext<
   report(descriptor: ReportDescriptor<TMessageIds>): void;
 }
 
+/**
+ * Part of the code path analysis feature of ESLint:
+ * https://eslint.org/docs/latest/extend/code-path-analysis
+ *
+ * These are used in the `onCodePath*` methods. (Note that the `node` parameter
+ * of these methods is intentionally omitted.)
+ *
+ * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
+ */
+interface CodePath {
+  /**
+   * A unique string. Respective rules can use `id` to save additional
+   * information for each code path.
+   */
+  id: string;
+
+  initialSegment: CodePathSegment;
+
+  /** The final segments which includes both returned and thrown. */
+  finalSegments: CodePathSegment[];
+
+  /** The final segments which includes only returned. */
+  returnedSegments: CodePathSegment[];
+
+  /** The final segments which includes only thrown. */
+  thrownSegments: CodePathSegment[];
+
+  /**
+   * Segments of the current traversal position.
+   *
+   * @deprecated
+   */
+  currentSegments: CodePathSegment[];
+
+  /** The code path of the upper function/global scope. */
+  upper: CodePath | null;
+
+  /** Code paths of functions this code path contains. */
+  childCodePaths: CodePath[];
+}
+
+/**
+ * Part of the code path analysis feature of ESLint:
+ * https://eslint.org/docs/latest/extend/code-path-analysis
+ *
+ * These are used in the `onCodePath*` methods. (Note that the `node` parameter
+ * of these methods is intentionally omitted.)
+ *
+ * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
+ */
+interface CodePathSegment {
+  /**
+   * A unique string. Respective rules can use `id` to save additional
+   * information for each segment.
+   */
+  id: string;
+
+  /**
+   * The next segments. If forking, there are two or more. If final, there is
+   * nothing.
+   */
+  nextSegments: CodePathSegment[];
+
+  /**
+   * The previous segments. If merging, there are two or more. If initial, there
+   * is nothing.
+   */
+  prevSegments: CodePathSegment[];
+
+  /**
+   * A flag which shows whether it is reachable. This becomes `false` when
+   * preceded by `return`, `throw`, `break`, or `continue`.
+   */
+  reachable: boolean;
+}
+
+/**
+ * Part of the code path analysis feature of ESLint:
+ * https://eslint.org/docs/latest/extend/code-path-analysis
+ *
+ * This type is unused in the `typescript-eslint` codebase since putting it on
+ * the `nodeSelector` for `RuleListener` would break the existing definition.
+ * However, it is exported here for the purposes of manual type-assertion.
+ *
+ * @see https://github.com/typescript-eslint/typescript-eslint/issues/6993
+ */
+type CodePathFunction =
+  | ((
+      fromSegment: CodePathSegment,
+      toSegment: CodePathSegment,
+      node: TSESTree.Node,
+    ) => void)
+  | ((codePath: CodePath, node: TSESTree.Node) => void)
+  | ((segment: CodePathSegment, node: TSESTree.Node) => void);
+
 // This isn't the correct signature, but it makes it easier to do custom unions within reusable listeners
 // never will break someone's code unless they specifically type the function argument
 type RuleFunction<T extends TSESTree.NodeOrTokenData = never> = (
@@ -471,7 +566,46 @@ type RuleListenerExitSelectors = {
 type RuleListenerCatchAllBaseCase = Record<string, RuleFunction | undefined>;
 // Interface to merge into for anyone that wants to add more selectors
 // eslint-disable-next-line @typescript-eslint/no-empty-interface
-interface RuleListenerExtension {}
+interface RuleListenerExtension {
+  // The code path functions below were introduced in ESLint v8.7.0 but are
+  // intentionally commented out because they cause unresolvable compiler
+  // errors:
+  // https://github.com/typescript-eslint/typescript-eslint/issues/6993
+  // Note that plugin authors can copy-paste these functions into their own code
+  // as selectors and they will still work as long as the second argument is
+  // omitted.
+  /*
+  onCodePathStart?: (
+    codePath: TSESLint.CodePath,
+    node: TSESTree.Node,
+  ) => void;
+  */
+  /*
+  onCodePathEnd?: (
+    codePath: TSESLint.CodePath,
+    node: TSESTree.Node,
+  ) => void;
+  */
+  /*
+  onCodePathSegmentStart?: (
+    segment: TSESLint.CodePathSegment,
+    node: TSESTree.Node,
+  ) => void;
+  */
+  /*
+  onCodePathSegmentEnd?: (
+    segment: TSESLint.CodePathSegment,
+    node: TSESTree.Node,
+  ) => void;
+  */
+  /*
+  onCodePathSegmentLoop?: (
+    fromSegment: TSESLint.CodePathSegment,
+    toSegment: TSESLint.CodePathSegment,
+    node: TSESTree.Node,
+  ) => void;
+  */
+}
 
 type RuleListener = RuleListenerBaseSelectors &
   RuleListenerCatchAllBaseCase &
@@ -510,6 +644,9 @@ type AnyRuleCreateFunction = RuleCreateFunction<string, readonly unknown[]>;
 export {
   AnyRuleCreateFunction,
   AnyRuleModule,
+  CodePath,
+  CodePathFunction,
+  CodePathSegment,
   ReportDescriptor,
   ReportDescriptorMessageData,
   ReportFixFunction,
