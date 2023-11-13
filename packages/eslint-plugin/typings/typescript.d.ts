@@ -15,6 +15,10 @@ declare module 'typescript' {
      */
     isArrayType(type: Type): type is TypeReference;
     /**
+     * True if this type is assignable to `ReadonlyArray<any>`.
+     */
+    isArrayLikeType(type: Type): type is TypeReference;
+    /**
      * @returns `true` if the given type is a tuple type:
      * - `[foo]`
      * - `readonly [foo]`
