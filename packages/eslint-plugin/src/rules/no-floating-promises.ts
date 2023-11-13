@@ -252,14 +252,16 @@ export default createRule<Options, MessageId>({
         return isUnhandledPromise(checker, node.argument);
       }
 
-      if (isPromiseArray(checker, services.esTreeNodeToTSNodeMap.get(node))) {
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node);
+
+      // Check the type. At this point it can't be unhandled if it isn't a promise
+      // or array thereof.
+
+      if (isPromiseArray(checker, tsNode)) {
         return { isUnhandled: true, promiseArray: true };
       }
 
-      // Check the type. At this point it can't be unhandled if it isn't a promise
-      if (
-        !isPromiseLikeNode(checker, services.esTreeNodeToTSNodeMap.get(node))
-      ) {
+      if (!isPromiseLike(checker, tsNode)) {
         return { isUnhandled: false };
       }
 
@@ -327,69 +329,29 @@ export default createRule<Options, MessageId>({
 
 function isPromiseArray(checker: ts.TypeChecker, node: ts.Node): boolean {
   const type = checker.getTypeAtLocation(node);
-  if (checker.isArrayType(type)) {
-    const arrayType = checker.getTypeArguments(type)[0];
-    if (isPromiseLikeType(checker, arrayType)) {
-      return true;
+  for (const ty of tsutils
+    .unionTypeParts(type)
+    .map(t => checker.getApparentType(t))) {
+    if (checker.isArrayType(ty)) {
+      const arrayType = checker.getTypeArguments(ty)[0];
+      if (isPromiseLike(checker, node, arrayType)) {
+        return true;
+      }
     }
   }
-
   return false;
-}
-
-function isPromiseLikeType(checker: ts.TypeChecker, type: ts.Type): boolean {
-  // Get the apparent type, which considers type aliases.
-  const apparentType = checker.getApparentType(type);
-
-  // is any possible union type Promise-like?
-  return tsutils.unionTypeParts(apparentType).some(typeUnionComponent => {
-    // Must have 'then' property to be Promise-like.
-    const thenProperty = typeUnionComponent.getProperty('then');
-    if (!thenProperty) {
-      return false;
-    }
-
-    // Does the 'then' property have any fitting call signature?
-    const hasFittingCallSignature = checker
-      .getTypeOfSymbol(thenProperty)
-      .getCallSignatures()
-      .some(signature => {
-        // Call signature must have onFulfilled and onRejected parameters.
-        if (!(signature.parameters.length >= 2)) {
-          return false;
-        }
-
-        const [onFulFilled, onRejected] = signature.parameters;
-
-        // Can each handler parameter accept a callable?
-        const bothParametersAreCallable = [onFulFilled, onRejected].every(
-          handler => {
-            const handlerType = checker.getTypeOfSymbol(handler);
-
-            const acceptsCallable = tsutils
-              .unionTypeParts(handlerType)
-              .some(
-                handlerTypeUnionComponent =>
-                  handlerTypeUnionComponent.getCallSignatures().length !== 0,
-              );
-
-            return acceptsCallable;
-          },
-        );
-
-        return bothParametersAreCallable;
-      });
-
-    return hasFittingCallSignature;
-  });
 }
 
 // Modified from tsutils.isThenable() to only consider thenables which can be
 // rejected/caught via a second parameter. Original source (MIT licensed):
 //
 //   https://github.com/ajafff/tsutils/blob/49d0d31050b44b81e918eae4fbaf1dfe7b7286af/util/type.ts#L95-L125
-function isPromiseLikeNode(checker: ts.TypeChecker, node: ts.Node): boolean {
-  const type = checker.getTypeAtLocation(node);
+function isPromiseLike(
+  checker: ts.TypeChecker,
+  node: ts.Node,
+  type?: ts.Type,
+): boolean {
+  type ??= checker.getTypeAtLocation(node);
   for (const ty of tsutils.unionTypeParts(checker.getApparentType(type))) {
     const then = ty.getProperty('then');
     if (then === undefined) {

@@ -1682,6 +1682,16 @@ Promise.reject(new Error('message')).finally(() => {});
     },
     {
       code: `
+function _<T extends Array<Promise<number>>>(
+  maybePromiseArray: T | undefined,
+): void {
+  maybePromiseArray?.[0];
+}
+      `,
+      errors: [{ line: 5, messageId: 'floatingVoid' }],
+    },
+    {
+      code: `
 [1, 2, 3].map(() => Promise.reject());
       `,
       errors: [{ line: 2, messageId: 'floatingPromiseArrayVoid' }],
@@ -1719,6 +1729,29 @@ const data = ['test'];
 data.map(async () => {
   await new Promise((_res, rej) => setTimeout(rej, 1000));
 });
+      `,
+      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+function f<T extends Array<Promise<number>>>(a: T): void {
+  a;
+}
+      `,
+      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+declare const a: Array<Promise<number>> | undefined;
+a;
+      `,
+      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+function f<T extends Array<Promise<number>>>(a: T | undefined): void {
+  a;
+}
       `,
       errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
     },
