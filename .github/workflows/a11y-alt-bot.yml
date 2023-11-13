@@ -18,7 +18,7 @@ permissions:
 
 jobs:
   accessibility_alt_text_bot:
-    name: Check alt text is set on issue or pull requests
+    name: Check alt text is set on images
     runs-on: ubuntu-latest
     steps:
       - name: Get action 'github/accessibility-alt-text-bot'
