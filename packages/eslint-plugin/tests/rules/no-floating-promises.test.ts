@@ -500,9 +500,12 @@ void promiseArray;
       `,
     },
     {
+      // Expressions aren't checked by this rule, so this just becomes an array
+      // of number | undefined, which is fine regardless of the ignoreVoid setting.
       code: `
 [1, 2, void Promise.reject(), 3];
       `,
+      options: [{ ignoreVoid: false }],
     },
     {
       code: `
