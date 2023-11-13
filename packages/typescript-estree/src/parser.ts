@@ -53,6 +53,7 @@ function getProgramAndAST(
     const fromProjectService = useProgramFromProjectService(
       parseSettings.EXPERIMENTAL_projectService,
       parseSettings,
+      hasFullTypeInformation,
     );
     if (fromProjectService) {
       return fromProjectService;

@@ -9,6 +9,7 @@ import type { MutableParseSettings } from './parseSettings';
 export function useProgramFromProjectService(
   { allowDefaultProjectForFiles, service }: ProjectServiceSettings,
   parseSettings: Readonly<MutableParseSettings>,
+  hasFullTypeInformation: boolean,
 ): ASTAndDefiniteProgram | undefined {
   const opened = service.openClientFile(
     absolutify(parseSettings.filePath),
@@ -17,16 +18,18 @@ export function useProgramFromProjectService(
     parseSettings.tsconfigRootDir,
   );
 
-  if (opened.configFileName) {
-    if (allowDefaultProjectForFiles.has(parseSettings.filePath)) {
+  if (hasFullTypeInformation) {
+    if (opened.configFileName) {
+      if (allowDefaultProjectForFiles.has(parseSettings.filePath)) {
+        throw new Error(
+          `${parseSettings.filePath} was included by allowDefaultProjectForFiles but also was found in the project service. Consider removing it from allowDefaultProjectForFiles.`,
+        );
+      }
+    } else if (!allowDefaultProjectForFiles.has(parseSettings.filePath)) {
       throw new Error(
-        `${parseSettings.filePath} was included by allowDefaultProjectForFiles but also was found in the project service. Consider removing it from allowDefaultProjectForFiles.`,
+        `${parseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`,
       );
     }
-  } else if (!allowDefaultProjectForFiles.has(parseSettings.filePath)) {
-    throw new Error(
-      `${parseSettings.filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`,
-    );
   }
 
   const scriptInfo = service.getScriptInfo(parseSettings.filePath);
