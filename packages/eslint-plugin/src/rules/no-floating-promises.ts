@@ -338,6 +338,14 @@ function isPromiseArray(checker: ts.TypeChecker, node: ts.Node): boolean {
         return true;
       }
     }
+
+    if (checker.isTupleType(ty)) {
+      for (const tupleElementType of checker.getTypeArguments(ty)) {
+        if (isPromiseLike(checker, node, tupleElementType)) {
+          return true;
+        }
+      }
+    }
   }
   return false;
 }
