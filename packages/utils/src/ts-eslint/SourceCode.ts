@@ -3,6 +3,7 @@
 import { SourceCode as ESLintSourceCode } from 'eslint';
 
 import type { ParserServices, TSESTree } from '../ts-estree';
+import type { Parser } from './Parser';
 import type { Scope } from './Scope';
 
 declare class TokenStore {
@@ -397,7 +398,7 @@ namespace SourceCode {
     visitorKeys: VisitorKeys | null;
   }
 
-  export type VisitorKeys = Record<string, string[]>;
+  export type VisitorKeys = Parser.VisitorKeys;
 
   export type FilterPredicate = (token: TSESTree.Token) => boolean;
   export type GetFilterPredicate<TFilter, TDefault> =
