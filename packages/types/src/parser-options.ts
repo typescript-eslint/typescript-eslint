@@ -16,6 +16,8 @@ type EcmaVersion =
   | 11
   | 12
   | 13
+  | 14
+  | 15
   | 2015
   | 2016
   | 2017
@@ -23,14 +25,18 @@ type EcmaVersion =
   | 2019
   | 2020
   | 2021
-  | 2022;
+  | 2022
+  | 2023
+  | 2024;
 
-type SourceType = 'module' | 'script';
+type SourceTypeClassic = 'module' | 'script';
+type SourceType = SourceTypeClassic | 'commonjs';
 
 interface ParserOptions {
   ecmaFeatures?: {
     globalReturn?: boolean;
     jsx?: boolean;
+    [key: string]: unknown;
   };
   ecmaVersion?: EcmaVersion | 'latest';
 

@@ -25,11 +25,24 @@
       ],
       "cache": true
     },
-    "package": {
-      "cache": true
-    },
-    "prebuild": {
-      "cache": true
+    "@nx/jest:jest": {
+      "inputs": [
+        "default",
+        "{workspaceRoot}/jest.config.js",
+        "{workspaceRoot}/jest.config.base.js"
+      ],
+      "outputs": ["{projectRoot}/coverage"],
+      "cache": true,
+      "options": {
+        "jestConfig": "{projectRoot}/jest.config.js",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
     }
   },
   "namedInputs": {
