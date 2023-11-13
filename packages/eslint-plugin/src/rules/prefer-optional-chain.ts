@@ -120,7 +120,6 @@ export default createRule<
           rightNode.properties.length === 0;
         if (
           !isRightNodeAnEmptyObjectLiteral ||
-          !parentNode ||
           parentNode.type !== AST_NODE_TYPES.MemberExpression ||
           parentNode.optional
         ) {

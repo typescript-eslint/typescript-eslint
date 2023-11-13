@@ -199,7 +199,7 @@ export default createRule<Options, MessageIds>({
       typeNode: TSESTree.TSTypeAnnotation | undefined,
       initNode: TSESTree.Expression | null | undefined,
     ): void {
-      if (!typeNode || !initNode || !typeNode.typeAnnotation) {
+      if (!typeNode || !initNode) {
         return;
       }
 
@@ -235,9 +235,6 @@ export default createRule<Options, MessageIds>({
     function inferrableVariableVisitor(
       node: TSESTree.VariableDeclarator,
     ): void {
-      if (!node.id) {
-        return;
-      }
       reportInferrableType(node, node.id.typeAnnotation, node.init);
     }
 
@@ -247,7 +244,7 @@ export default createRule<Options, MessageIds>({
         | TSESTree.FunctionDeclaration
         | TSESTree.FunctionExpression,
     ): void {
-      if (ignoreParameters || !node.params) {
+      if (ignoreParameters) {
         return;
       }
 
@@ -256,11 +253,7 @@ export default createRule<Options, MessageIds>({
           param = param.parameter;
         }
 
-        if (
-          param.type === AST_NODE_TYPES.AssignmentPattern &&
-          param.left &&
-          param.right
-        ) {
+        if (param.type === AST_NODE_TYPES.AssignmentPattern) {
           reportInferrableType(param, param.left.typeAnnotation, param.right);
         }
       });

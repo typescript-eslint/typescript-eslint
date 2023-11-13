@@ -126,7 +126,7 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      const [firstDefinition] = shadowed.defs;
+      const firstDefinition = shadowed.defs.at(0);
       const isShadowedValue =
         !('isValueVariable' in shadowed) ||
         !firstDefinition ||
@@ -175,25 +175,24 @@ export default createRule<Options, MessageIds>({
       }
 
       const typeParameter = variable.identifiers[0].parent;
-      if (typeParameter?.type !== AST_NODE_TYPES.TSTypeParameter) {
+      if (typeParameter.type !== AST_NODE_TYPES.TSTypeParameter) {
         return false;
       }
       const typeParameterDecl = typeParameter.parent;
       if (
-        typeParameterDecl?.type !== AST_NODE_TYPES.TSTypeParameterDeclaration
+        typeParameterDecl.type !== AST_NODE_TYPES.TSTypeParameterDeclaration
       ) {
         return false;
       }
       const functionExpr = typeParameterDecl.parent;
       if (
-        !functionExpr ||
-        (functionExpr.type !== AST_NODE_TYPES.FunctionExpression &&
-          functionExpr.type !== AST_NODE_TYPES.TSEmptyBodyFunctionExpression)
+        functionExpr.type !== AST_NODE_TYPES.FunctionExpression &&
+        functionExpr.type !== AST_NODE_TYPES.TSEmptyBodyFunctionExpression
       ) {
         return false;
       }
       const methodDefinition = functionExpr.parent;
-      if (methodDefinition?.type !== AST_NODE_TYPES.MethodDefinition) {
+      if (methodDefinition.type !== AST_NODE_TYPES.MethodDefinition) {
         return false;
       }
       return methodDefinition.static;
@@ -214,19 +213,19 @@ export default createRule<Options, MessageIds>({
       }
 
       const typeParameter = variable.identifiers[0].parent;
-      if (typeParameter?.type !== AST_NODE_TYPES.TSTypeParameter) {
+      if (typeParameter.type !== AST_NODE_TYPES.TSTypeParameter) {
         return false;
       }
       const typeParameterDecl = typeParameter.parent;
       if (
-        typeParameterDecl?.type !== AST_NODE_TYPES.TSTypeParameterDeclaration
+        typeParameterDecl.type !== AST_NODE_TYPES.TSTypeParameterDeclaration
       ) {
         return false;
       }
       const classDecl = typeParameterDecl.parent;
       return (
-        classDecl?.type === AST_NODE_TYPES.ClassDeclaration ||
-        classDecl?.type === AST_NODE_TYPES.ClassExpression
+        classDecl.type === AST_NODE_TYPES.ClassDeclaration ||
+        classDecl.type === AST_NODE_TYPES.ClassExpression
       );
     }
 
@@ -251,7 +250,6 @@ export default createRule<Options, MessageIds>({
     ): boolean {
       return (
         scope.type === ScopeType.tsModule &&
-        scope.block.type === AST_NODE_TYPES.TSModuleDeclaration &&
         scope.block.id.type === AST_NODE_TYPES.Literal &&
         scope.block.id.value === name
       );
@@ -273,7 +271,7 @@ export default createRule<Options, MessageIds>({
           firstDefinition.parent.source.value,
         ) &&
         secondDefinition.node.type === AST_NODE_TYPES.TSInterfaceDeclaration &&
-        secondDefinition.node.parent?.type ===
+        secondDefinition.node.parent.type ===
           AST_NODE_TYPES.ExportNamedDeclaration
       );
     }
@@ -382,7 +380,7 @@ export default createRule<Options, MessageIds>({
       variable: TSESLint.Scope.Variable,
       shadowedVariable: TSESLint.Scope.Variable,
     ): boolean {
-      const outerDef = shadowedVariable.defs[0];
+      const outerDef = shadowedVariable.defs.at(0);
 
       if (!outerDef) {
         return false;
@@ -422,8 +420,8 @@ export default createRule<Options, MessageIds>({
             return true;
           }
           if (
-            (node.parent?.parent?.type === AST_NODE_TYPES.ForInStatement ||
-              node.parent?.parent?.type === AST_NODE_TYPES.ForOfStatement) &&
+            (node.parent.parent?.type === AST_NODE_TYPES.ForInStatement ||
+              node.parent.parent?.type === AST_NODE_TYPES.ForOfStatement) &&
             isInRange(node.parent.parent.right, location)
           ) {
             return true;
@@ -468,10 +466,10 @@ export default createRule<Options, MessageIds>({
       scopeVar: TSESLint.Scope.Variable,
     ): boolean {
       const outerScope = scopeVar.scope;
-      const outerDef = scopeVar.defs[0];
+      const outerDef = scopeVar.defs.at(0);
       const outer = outerDef?.parent?.range;
       const innerScope = variable.scope;
-      const innerDef = variable.defs[0];
+      const innerDef = variable.defs.at(0);
       const inner = innerDef?.name.range;
 
       return !!(
@@ -494,7 +492,7 @@ export default createRule<Options, MessageIds>({
     function getNameRange(
       variable: TSESLint.Scope.Variable,
     ): TSESTree.Range | undefined {
-      const def = variable.defs[0];
+      const def = variable.defs.at(0);
       return def?.name.range;
     }
 
@@ -508,7 +506,7 @@ export default createRule<Options, MessageIds>({
       variable: TSESLint.Scope.Variable,
       scopeVar: TSESLint.Scope.Variable,
     ): boolean {
-      const outerDef = scopeVar.defs[0];
+      const outerDef = scopeVar.defs.at(0);
       const inner = getNameRange(variable);
       const outer = getNameRange(scopeVar);
 
@@ -531,7 +529,7 @@ export default createRule<Options, MessageIds>({
     function getDeclaredLocation(
       variable: TSESLint.Scope.Variable,
     ): { global: false; line: number; column: number } | { global: true } {
-      const identifier = variable.identifiers[0];
+      const identifier = variable.identifiers.at(0);
       if (identifier) {
         return {
           global: false,

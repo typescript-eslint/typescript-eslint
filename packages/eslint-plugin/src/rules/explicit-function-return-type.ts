@@ -125,7 +125,7 @@ export default createRule<Options, MessageIds>({
         let funcName;
         if (node.id?.name) {
           funcName = node.id.name;
-        } else if (parent) {
+        } else {
           switch (parent.type) {
             case AST_NODE_TYPES.VariableDeclarator: {
               if (parent.id.type === AST_NODE_TYPES.Identifier) {
@@ -153,7 +153,6 @@ export default createRule<Options, MessageIds>({
       if (
         node.type === AST_NODE_TYPES.FunctionDeclaration &&
         node.id &&
-        node.id.type === AST_NODE_TYPES.Identifier &&
         !!options.allowedNames.includes(node.id.name)
       ) {
         return true;

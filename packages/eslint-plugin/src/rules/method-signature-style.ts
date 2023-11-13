@@ -130,9 +130,9 @@ export default createRule<Options, MessageIds>({
 
           const parent = methodNode.parent;
           const members =
-            parent?.type === AST_NODE_TYPES.TSInterfaceBody
+            parent.type === AST_NODE_TYPES.TSInterfaceBody
               ? parent.body
-              : parent?.type === AST_NODE_TYPES.TSTypeLiteral
+              : parent.type === AST_NODE_TYPES.TSTypeLiteral
               ? parent.members
               : [];
 

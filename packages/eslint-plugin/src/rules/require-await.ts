@@ -162,7 +162,7 @@ export default createRule({
         >,
       ): void {
         const expression = services.esTreeNodeToTSNodeMap.get(node);
-        if (expression && isThenableType(expression)) {
+        if (isThenableType(expression)) {
           markAsHasAwait();
         }
       },
@@ -183,7 +183,7 @@ export default createRule({
 
 function isEmptyFunction(node: FunctionNode): boolean {
   return (
-    node.body?.type === AST_NODE_TYPES.BlockStatement &&
+    node.body.type === AST_NODE_TYPES.BlockStatement &&
     node.body.body.length === 0
   );
 }

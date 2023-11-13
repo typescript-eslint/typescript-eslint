@@ -66,7 +66,7 @@ export default createRule<[], MessageIds>({
       // Just check the last one. Must specify previous type parameters if the last one is specified.
       const i = esParameters.params.length - 1;
       const arg = esParameters.params[i];
-      const param = typeParameters[i];
+      const param = typeParameters.at(i);
       if (!param?.default) {
         return;
       }

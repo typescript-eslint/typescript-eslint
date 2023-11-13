@@ -438,9 +438,8 @@ export default createRule<Options, MessageId>({
         const callback = node.arguments[0]!;
         // Inline defined functions
         if (
-          (callback.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-            callback.type === AST_NODE_TYPES.FunctionExpression) &&
-          callback.body
+          callback.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          callback.type === AST_NODE_TYPES.FunctionExpression
         ) {
           // Two special cases, where we can directly check the node that's returned:
           // () => something

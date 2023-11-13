@@ -180,9 +180,9 @@ export default createRule<Options, MessageIds>({
                        * export default Type;
                        */
                       if (
-                        ref.identifier.parent?.type ===
+                        ref.identifier.parent.type ===
                           AST_NODE_TYPES.ExportSpecifier ||
-                        ref.identifier.parent?.type ===
+                        ref.identifier.parent.type ===
                           AST_NODE_TYPES.ExportDefaultDeclaration
                       ) {
                         if (ref.isValueReference && ref.isTypeReference) {
