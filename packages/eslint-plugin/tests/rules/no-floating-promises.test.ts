@@ -504,6 +504,11 @@ void promiseArray;
 [1, 2, void Promise.reject(), 3];
       `,
     },
+    {
+      code: `
+['I', 'am', 'just', 'an', 'array'];
+      `,
+    },
   ],
 
   invalid: [
@@ -1682,8 +1687,8 @@ Promise.reject(new Error('message')).finally(() => {});
     },
     {
       code: `
-function _<T extends Array<Promise<number>>>(
-  maybePromiseArray: T | undefined,
+function _<T, S extends Array<T | Promise<T>>>(
+  maybePromiseArray: S | undefined,
 ): void {
   maybePromiseArray?.[0];
 }
@@ -1731,6 +1736,16 @@ data.map(async () => {
 });
       `,
       errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+function _<T, S extends Array<T | Array<T | Promise<T>>>>(
+  maybePromiseArrayArray: S | undefined,
+): void {
+  maybePromiseArrayArray?.[0];
+}
+      `,
+      errors: [{ line: 5, messageId: 'floatingPromiseArrayVoid' }],
     },
     {
       code: `
