@@ -51,6 +51,8 @@ enum E {
 
 ## When Not To Use It
 
-It can sometimes be useful to include duplicate enum members.
+It can sometimes be useful to include duplicate enum members for very specific use cases.
 For example, when renaming an enum member, it can sometimes be useful to keep the old name until a scheduled major breaking change.
-If your project intentionally duplicates enum member values, you can avoid this rule.
+You might consider using an [ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations.
+
+In general, if your project intentionally duplicates enum member values, you can avoid this rule.

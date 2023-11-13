@@ -51,6 +51,4 @@ function foo(bar?: { n: number }) {
 }
 ```
 
-## When Not To Use It
-
-If you don't mind excess `!`s in your code, you can avoid this rule.
+<!-- Intentionally Omitted: When Not To Use It -->
