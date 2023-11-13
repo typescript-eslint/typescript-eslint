@@ -5558,11 +5558,11 @@ __metadata:
   linkType: hard
 
 "@types/ncp@npm:^2.0.5":
-  version: 2.0.7
-  resolution: "@types/ncp@npm:2.0.7"
+  version: 2.0.8
+  resolution: "@types/ncp@npm:2.0.8"
   dependencies:
     "@types/node": "*"
-  checksum: 3051298b2c49f777e4e08990caa0ecd367bb34d3715a6f00f2a9a611dbb65c8f494171911f11f2ca6d19c7d869296c1a1461f288962ec59a83b6b94cba7dea13
+  checksum: 33ab7fb6f6777b9b77114acb159acb565c24fed7d78ab19553b9621f1da38c8bf5976b8cb8d0c66864b5c1d08db6ca155978ba07b93bbc2e661fc3e535e2677f
   languageName: node
   linkType: hard
 
