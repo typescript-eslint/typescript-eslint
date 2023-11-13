@@ -1,5 +1,10 @@
 import type * as tsvfs from '@site/src/vendor/typescript-vfs';
-import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
+import type { JSONSchema, TSESTree } from '@typescript-eslint/utils';
+import type {
+  ClassicConfig,
+  Linter,
+  SourceType,
+} from '@typescript-eslint/utils/ts-eslint';
 import type * as ts from 'typescript';
 
 import { createCompilerOptions } from '../lib/createCompilerOptions';
@@ -25,11 +30,11 @@ export interface CreateLinter {
     }
   >;
   configs: string[];
-  triggerFix(filename: string): TSESLint.Linter.FixReport | undefined;
+  triggerFix(filename: string): Linter.FixReport | undefined;
   triggerLint(filename: string): void;
   onLint(cb: LinterOnLint): () => void;
   onParse(cb: LinterOnParse): () => void;
-  updateParserOptions(sourceType?: TSESLint.SourceType): void;
+  updateParserOptions(sourceType?: SourceType): void;
 }
 
 export function createLinter(
@@ -40,7 +45,7 @@ export function createLinter(
   const rules: CreateLinter['rules'] = new Map();
   const configs = new Map(Object.entries(webLinterModule.configs));
   let compilerOptions: ts.CompilerOptions = {};
-  const eslintConfig: TSESLint.Linter.Config = { ...defaultEslintConfig };
+  const eslintConfig: ClassicConfig.Config = { ...defaultEslintConfig };
 
   const onLint = createEventsBinder<LinterOnLint>();
   const onParse = createEventsBinder<LinterOnParse>();
@@ -76,7 +81,7 @@ export function createLinter(
         const messages = linter.verify(code, eslintConfig, filename);
         onLint.trigger(filename, messages);
       } catch (e) {
-        const lintMessage: TSESLint.Linter.LintMessage = {
+        const lintMessage: Linter.LintMessage = {
           source: 'eslint',
           ruleId: '',
           severity: 2,
@@ -97,9 +102,7 @@ export function createLinter(
     }
   };
 
-  const triggerFix = (
-    filename: string,
-  ): TSESLint.Linter.FixReport | undefined => {
+  const triggerFix = (filename: string): Linter.FixReport | undefined => {
     const code = system.readFile(filename);
     if (code) {
       return linter.verifyAndFix(code, eslintConfig, {
@@ -110,14 +113,14 @@ export function createLinter(
     return undefined;
   };
 
-  const updateParserOptions = (sourceType?: TSESLint.SourceType): void => {
+  const updateParserOptions = (sourceType?: SourceType): void => {
     eslintConfig.parserOptions ??= {};
     eslintConfig.parserOptions.sourceType = sourceType ?? 'module';
   };
 
   const resolveEslintConfig = (
-    cfg: Partial<TSESLint.Linter.Config>,
-  ): TSESLint.Linter.Config => {
+    cfg: Partial<ClassicConfig.Config>,
+  ): ClassicConfig.Config => {
     const config = { rules: {} };
     if (cfg.extends) {
       const cfgExtends = Array.isArray(cfg.extends)
