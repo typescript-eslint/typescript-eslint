@@ -1,4 +1,4 @@
-import type { Lib, TSESTree } from '@typescript-eslint/types';
+import type { Lib, SourceType, TSESTree } from '@typescript-eslint/types';
 import { visitorKeys } from '@typescript-eslint/visitor-keys';
 
 import type { ReferencerOptions } from './referencer';
@@ -55,7 +55,7 @@ interface AnalyzeOptions {
   /**
    * The source type of the script.
    */
-  sourceType?: 'module' | 'script';
+  sourceType?: SourceType;
 
   /**
    * Emit design-type metadata for decorated declarations in source.
