@@ -3,7 +3,12 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 import type { ScriptTarget } from 'typescript';
 
-import * as util from '../util';
+import {
+  collectUnusedVariables,
+  createRule,
+  getParserServices,
+  requiresQuoting as _requiresQuoting,
+} from '../util';
 import type {
   Context,
   Selector,
@@ -35,6 +40,11 @@ const defaultCamelCaseAllTheThingsConfig: Options = [
   },
 
   {
+    selector: 'import',
+    format: ['camelCase', 'PascalCase'],
+  },
+
+  {
     selector: 'variable',
     format: ['camelCase', 'UPPER_CASE'],
     leadingUnderscore: 'allow',
@@ -47,7 +57,7 @@ const defaultCamelCaseAllTheThingsConfig: Options = [
   },
 ];
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'naming-convention',
   meta: {
     docs: {
@@ -76,7 +86,6 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: defaultCamelCaseAllTheThingsConfig,
   create(contextWithoutDefaults) {
     const context =
-      contextWithoutDefaults.options &&
       contextWithoutDefaults.options.length > 0
         ? contextWithoutDefaults
         : // only apply the defaults when the user provides no config
@@ -90,7 +99,7 @@ export default util.createRule<Options, MessageIds>({
     const validators = parseOptions(context);
 
     const compilerOptions =
-      util.getParserServices(context, true).program?.getCompilerOptions() ?? {};
+      getParserServices(context, true).program?.getCompilerOptions() ?? {};
     function handleMember(
       validator: ValidatorFunction,
       node:
@@ -103,10 +112,6 @@ export default util.createRule<Options, MessageIds>({
         | TSESTree.TSPropertySignatureNonComputedName,
       modifiers: Set<Modifiers>,
     ): void {
-      if (!validator) {
-        return;
-      }
-
       const key = node.key;
       if (requiresQuoting(key, compilerOptions.target)) {
         modifiers.add(Modifiers.requiresQuotes);
@@ -150,7 +155,7 @@ export default util.createRule<Options, MessageIds>({
       return modifiers;
     }
 
-    const unusedVariables = util.collectUnusedVariables(context);
+    const unusedVariables = collectUnusedVariables(context);
     function isUnused(
       name: string,
       initialScope: TSESLint.Scope.Scope | null = context.getScope(),
@@ -175,11 +180,11 @@ export default util.createRule<Options, MessageIds>({
       return (
         // `const { x }`
         // does not match `const { x: y }`
-        (id.parent?.type === AST_NODE_TYPES.Property && id.parent.shorthand) ||
+        (id.parent.type === AST_NODE_TYPES.Property && id.parent.shorthand) ||
         // `const { x = 2 }`
         // does not match const `{ x: y = 2 }`
-        (id.parent?.type === AST_NODE_TYPES.AssignmentPattern &&
-          id.parent.parent?.type === AST_NODE_TYPES.Property &&
+        (id.parent.type === AST_NODE_TYPES.AssignmentPattern &&
+          id.parent.parent.type === AST_NODE_TYPES.Property &&
           id.parent.parent.shorthand)
       );
     }
@@ -203,12 +208,11 @@ export default util.createRule<Options, MessageIds>({
 
     function isAsyncVariableIdentifier(id: TSESTree.Identifier): boolean {
       return Boolean(
-        id.parent &&
-          (('async' in id.parent && id.parent.async) ||
-            ('init' in id.parent &&
-              id.parent.init &&
-              'async' in id.parent.init &&
-              id.parent.init.async)),
+        ('async' in id.parent && id.parent.async) ||
+          ('init' in id.parent &&
+            id.parent.init &&
+            'async' in id.parent.init &&
+            id.parent.init.async),
       );
     }
 
@@ -221,6 +225,41 @@ export default util.createRule<Options, MessageIds>({
         ) => void;
       }>;
     } = {
+      // #region import
+
+      'ImportDefaultSpecifier, ImportNamespaceSpecifier, ImportSpecifier': {
+        validator: validators.import,
+        handler: (
+          node:
+            | TSESTree.ImportDefaultSpecifier
+            | TSESTree.ImportNamespaceSpecifier
+            | TSESTree.ImportSpecifier,
+          validator,
+        ): void => {
+          const modifiers = new Set<Modifiers>();
+
+          switch (node.type) {
+            case AST_NODE_TYPES.ImportDefaultSpecifier:
+              modifiers.add(Modifiers.default);
+              break;
+            case AST_NODE_TYPES.ImportNamespaceSpecifier:
+              modifiers.add(Modifiers.namespace);
+              break;
+            case AST_NODE_TYPES.ImportSpecifier:
+              // Handle `import { default as Foo }`
+              if (node.imported.name !== 'default') {
+                return;
+              }
+              modifiers.add(Modifiers.default);
+              break;
+          }
+
+          validator(node.local, modifiers);
+        },
+      },
+
+      // #endregion
+
       // #region variable
 
       VariableDeclarator: {
@@ -230,7 +269,7 @@ export default util.createRule<Options, MessageIds>({
 
           const baseModifiers = new Set<Modifiers>();
           const parent = node.parent;
-          if (parent?.type === AST_NODE_TYPES.VariableDeclaration) {
+          if (parent.type === AST_NODE_TYPES.VariableDeclaration) {
             if (parent.kind === 'const') {
               baseModifiers.add(Modifiers.const);
             }
@@ -644,16 +683,14 @@ export default util.createRule<Options, MessageIds>({
     };
 
     return Object.fromEntries(
-      Object.entries(selectors)
-        .map(([selector, { validator, handler }]) => {
-          return [
-            selector,
-            (node: Parameters<typeof handler>[0]): void => {
-              handler(node, validator);
-            },
-          ] as const;
-        })
-        .filter((s): s is NonNullable<typeof s> => s != null),
+      Object.entries(selectors).map(([selector, { validator, handler }]) => {
+        return [
+          selector,
+          (node: Parameters<typeof handler>[0]): void => {
+            handler(node, validator);
+          },
+        ] as const;
+      }),
     );
   },
 });
@@ -688,8 +725,8 @@ function isExported(
     for (const ref of variable.references) {
       const refParent = ref.identifier.parent;
       if (
-        refParent?.type === AST_NODE_TYPES.ExportDefaultDeclaration ||
-        refParent?.type === AST_NODE_TYPES.ExportSpecifier
+        refParent.type === AST_NODE_TYPES.ExportDefaultDeclaration ||
+        refParent.type === AST_NODE_TYPES.ExportSpecifier
       ) {
         return true;
       }
@@ -719,7 +756,7 @@ function requiresQuoting(
     node.type === AST_NODE_TYPES.PrivateIdentifier
       ? node.name
       : `${node.value}`;
-  return util.requiresQuoting(name, target);
+  return _requiresQuoting(name, target);
 }
 
 export { MessageIds, Options };

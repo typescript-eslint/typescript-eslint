@@ -65,7 +65,7 @@ Note the above is an example of a possible configuration you could use - it is n
 
 The following patterns are considered incorrect code if no options are provided:
 
-```ts
+```ts showPlaygroundButton
 class Animal {
   constructor(name) {
     // No accessibility modifier
@@ -88,7 +88,7 @@ class Animal {
 
 The following patterns are considered correct with the default options `{ accessibility: 'explicit' }`:
 
-```ts
+```ts option='{ "accessibility": "explicit" }' showPlaygroundButton
 class Animal {
   public constructor(
     public breed,
@@ -114,7 +114,7 @@ class Animal {
 
 The following patterns are considered incorrect with the accessibility set to **no-public** `[{ accessibility: 'no-public' }]`:
 
-```ts
+```ts option='{ "accessibility": "no-public" }' showPlaygroundButton
 class Animal {
   public constructor(
     public breed,
@@ -140,7 +140,7 @@ class Animal {
 
 The following patterns are considered correct with the accessibility set to **no-public** `[{ accessibility: 'no-public' }]`:
 
-```ts
+```ts option='{ "accessibility": "no-public" }' showPlaygroundButton
 class Animal {
   constructor(
     protected breed,
@@ -178,7 +178,7 @@ e.g. `[ { overrides: { constructors: 'no-public' } } ]`
 
 The following patterns are considered incorrect with the example override
 
-```ts
+```ts option='{ "overrides": { "constructors": "no-public" } }' showPlaygroundButton
 class Animal {
   public constructor(protected animalName) {}
   public get name() {
@@ -189,7 +189,7 @@ class Animal {
 
 The following patterns are considered correct with the example override
 
-```ts
+```ts option='{ "overrides": { "constructors": "no-public" } }' showPlaygroundButton
 class Animal {
   constructor(protected animalName) {}
   public get name() {
@@ -204,7 +204,7 @@ e.g. `[ { accessibility: 'no-public', overrides: { properties: 'explicit' } } ]`
 
 The following patterns are considered incorrect with the example override
 
-```ts
+```ts option='{ "accessibility": "no-public", "overrides": { "properties": "explicit" } }' showPlaygroundButton
 class Animal {
   constructor(protected animalName) {}
   get name() {
@@ -220,7 +220,7 @@ class Animal {
 
 The following patterns are considered correct with the example override
 
-```ts
+```ts option='{ "accessibility": "no-public", "overrides": { "properties": "explicit" } }' showPlaygroundButton
 class Animal {
   constructor(protected animalName) {}
   get name() {
@@ -238,7 +238,7 @@ e.g. `[ { accessibility: 'off', overrides: { parameterProperties: 'explicit' } }
 
 The following code is considered incorrect with the example override
 
-```ts
+```ts option='{ "accessibility": "off", "overrides": { "parameterProperties": "explicit" } }' showPlaygroundButton
 class Animal {
   constructor(readonly animalName: string) {}
 }
@@ -246,7 +246,7 @@ class Animal {
 
 The following code patterns are considered correct with the example override
 
-```ts
+```ts option='{ "accessibility": "off", "overrides": { "parameterProperties": "explicit" } }' showPlaygroundButton
 class Animal {
   constructor(public readonly animalName: string) {}
 }
@@ -264,7 +264,7 @@ e.g. `[ { accessibility: 'off', overrides: { parameterProperties: 'no-public' } 
 
 The following code is considered incorrect with the example override
 
-```ts
+```ts option='{ "accessibility": "off", "overrides": { "parameterProperties": "no-public" } }' showPlaygroundButton
 class Animal {
   constructor(public readonly animalName: string) {}
 }
@@ -272,7 +272,7 @@ class Animal {
 
 The following code is considered correct with the example override
 
-```ts
+```ts option='{ "accessibility": "off", "overrides": { "parameterProperties": "no-public" } }' showPlaygroundButton
 class Animal {
   constructor(public animalName: string) {}
 }
@@ -286,7 +286,7 @@ As no checks on the overridden member type are performed all permutations of vis
 
 The follow pattern is considered incorrect for the given configuration
 
-```ts
+```ts option='{ "overrides": { "accessors" : "off" } }' showPlaygroundButton
 class Animal {
   constructor(protected animalName) {}
   public get name() {
@@ -300,7 +300,7 @@ class Animal {
 
 The following patterns are considered correct with the example override
 
-```ts
+```ts option='{ "overrides": { "accessors" : "off" } }' showPlaygroundButton
 class Animal {
   public constructor(protected animalName) {}
   public get name() {
@@ -317,7 +317,7 @@ class Animal {
 If you want to ignore some specific methods, you can do it by specifying method names. Note that this option does not care for the context, and will ignore every method with these names, which could lead to it missing some cases. You should use this sparingly.
 e.g. `[ { ignoredMethodNames: ['specificMethod', 'whateverMethod'] } ]`
 
-```ts
+```ts option='{ "ignoredMethodNames": ["specificMethod", "whateverMethod"] }' showPlaygroundButton
 class Animal {
   get specificMethod() {
     console.log('No error because you specified this method on option');

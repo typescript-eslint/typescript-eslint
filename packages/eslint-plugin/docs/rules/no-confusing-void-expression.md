@@ -76,7 +76,7 @@ Especially when using Prettier formatter, which spreads such code across 3 lines
 
 Examples of additional **correct** code with this option enabled:
 
-```ts
+```ts option='{ "ignoreArrowShorthand": true }' showPlaygroundButton
 promise.then(value => window.postMessage(value));
 ```
 
@@ -92,7 +92,7 @@ It also enables a suggestion fix to wrap the void expression with `void` operato
 
 Examples of additional **correct** code with this option enabled:
 
-```ts
+```ts option='{ "ignoreVoidOperator": true }' showPlaygroundButton
 // now it's obvious that we don't expect any response
 promise.then(value => void window.postMessage(value));
 

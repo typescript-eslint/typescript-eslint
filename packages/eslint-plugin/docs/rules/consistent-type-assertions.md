@@ -53,7 +53,7 @@ Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'neve
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "assertionStyle": "as", "objectLiteralTypeAssertions": "never" }'
 const x = { ... } as T;
 
 function foo() {
@@ -63,7 +63,7 @@ function foo() {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "assertionStyle": "as", "objectLiteralTypeAssertions": "never" }'
 const x: T = { ... };
 const y = { ... } as any;
 const z = { ... } as unknown;
@@ -81,7 +81,7 @@ Examples of code for `{ assertionStyle: 'as', objectLiteralTypeAssertions: 'allo
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "assertionStyle": "as", "objectLiteralTypeAssertions": "allow-as-parameter" }'
 const x = { ... } as T;
 
 function foo() {
@@ -91,7 +91,7 @@ function foo() {
 
 #### ✅ Correct
 
-```tsx
+```tsx option='{ "assertionStyle": "as", "objectLiteralTypeAssertions": "allow-as-parameter" }'
 const x: T = { ... };
 const y = { ... } as any;
 const z = { ... } as unknown;

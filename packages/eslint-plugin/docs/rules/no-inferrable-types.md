@@ -78,7 +78,7 @@ function fn(a = 5, b = true) {}
 
 When set to true, the following pattern is considered valid:
 
-```ts
+```ts option='{ "ignoreParameters": true }' showPlaygroundButton
 function foo(a: number = 5, b: boolean = true) {
   // ...
 }
@@ -88,7 +88,7 @@ function foo(a: number = 5, b: boolean = true) {
 
 When set to true, the following pattern is considered valid:
 
-```ts
+```ts option='{ "ignoreProperties": true }' showPlaygroundButton
 class Foo {
   prop: number = 5;
 }

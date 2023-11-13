@@ -8,8 +8,13 @@
         "name": "rule-schema-to-typescript-types",
         "targets": {
           "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "build"
@@ -45,7 +50,9 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nrwl/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
               "lintFilePatterns": [
                 "packages/rule-schema-to-typescript-types/**/*.{mts,cts,ts,tsx}"
@@ -67,7 +74,9 @@
               "{workspaceRoot}/jest.config.js",
               "{workspaceRoot}/jest.config.base.js"
             ],
-            "outputs": ["{projectRoot}/coverage"],
+            "outputs": [
+              "{projectRoot}/coverage"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "test"
@@ -82,7 +91,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -104,8 +115,13 @@
         "name": "eslint-plugin-internal",
         "targets": {
           "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "build"
@@ -141,7 +157,9 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nx/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
               "lintFilePatterns": [
                 "packages/eslint-plugin-internal/**/*.{mts,cts,ts,tsx}"
@@ -156,7 +174,9 @@
               "{workspaceRoot}/jest.config.js",
               "{workspaceRoot}/jest.config.base.js"
             ],
-            "outputs": ["{projectRoot}/coverage"],
+            "outputs": [
+              "{projectRoot}/coverage"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "test"
@@ -171,7 +191,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -193,8 +215,13 @@
         "name": "eslint-plugin-tslint",
         "targets": {
           "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "build"
@@ -230,7 +257,9 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nx/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
               "lintFilePatterns": [
                 "packages/eslint-plugin-tslint/**/*.{mts,cts,ts,tsx}"
@@ -245,7 +274,9 @@
               "{workspaceRoot}/jest.config.js",
               "{workspaceRoot}/jest.config.base.js"
             ],
-            "outputs": ["{projectRoot}/coverage"],
+            "outputs": [
+              "{projectRoot}/coverage"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "test"
@@ -260,7 +291,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -296,7 +329,9 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nrwl/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
               "lintFilePatterns": [
                 "packages/integration-tests/**/*.{mts,cts,ts,tsx}"
@@ -311,7 +346,9 @@
               "{workspaceRoot}/jest.config.js",
               "{workspaceRoot}/jest.config.base.js"
             ],
-            "outputs": ["{projectRoot}/coverage"],
+            "outputs": [
+              "{projectRoot}/coverage"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "test"
@@ -326,7 +363,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -348,8 +387,13 @@
         "name": "typescript-estree",
         "targets": {
           "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "build"
@@ -392,7 +436,9 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nx/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
               "lintFilePatterns": [
                 "packages/typescript-estree/**/*.{mts,cts,ts,tsx}"
@@ -407,7 +453,9 @@
               "{workspaceRoot}/jest.config.js",
               "{workspaceRoot}/jest.config.base.js"
             ],
-            "outputs": ["{projectRoot}/coverage"],
+            "outputs": [
+              "{projectRoot}/coverage"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "test"
@@ -422,7 +470,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -432,7 +482,9 @@
         "projectType": "library",
         "$schema": "../../node_modules/nx/schemas/project-schema.json",
         "type": "library",
-        "implicitDependencies": ["types"],
+        "implicitDependencies": [
+          "types"
+        ],
         "tags": []
       }
     },
@@ -444,8 +496,13 @@
         "name": "website-eslint",
         "targets": {
           "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "build"
@@ -467,7 +524,9 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nrwl/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
               "lintFilePatterns": [
                 "packages/website-eslint/**/*.{mts,cts,ts,tsx}",
@@ -485,7 +544,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -507,8 +568,13 @@
         "name": "eslint-plugin",
         "targets": {
           "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "build"
@@ -572,7 +638,9 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nx/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
               "lintFilePatterns": [
                 "packages/eslint-plugin/**/*.{mts,cts,ts,tsx}"
@@ -587,7 +655,9 @@
               "{workspaceRoot}/jest.config.js",
               "{workspaceRoot}/jest.config.base.js"
             ],
-            "outputs": ["{projectRoot}/coverage"],
+            "outputs": [
+              "{projectRoot}/coverage"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "test"
@@ -609,7 +679,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -631,10 +703,18 @@
         "name": "scope-manager",
         "targets": {
           "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-commands",
-            "outputs": ["{projectRoot}/dist", "{projectRoot}/_ts4.3"],
+            "outputs": [
+              "{projectRoot}/dist",
+              "{projectRoot}/_ts4.3"
+            ],
             "options": {
               "parallel": false,
               "cwd": "packages/scope-manager",
@@ -665,7 +745,9 @@
             "options": {
               "parallel": false,
               "cwd": "packages/scope-manager",
-              "commands": ["rimraf -g \"./src/**/fixtures/**/snapshots\""]
+              "commands": [
+                "rimraf -g \"./src/**/fixtures/**/snapshots\""
+              ]
             },
             "configurations": {}
           },
@@ -681,7 +763,9 @@
             "options": {
               "parallel": false,
               "cwd": "packages/scope-manager",
-              "commands": ["yarn tsx tools/generate-lib.ts"]
+              "commands": [
+                "yarn tsx tools/generate-lib.ts"
+              ]
             },
             "configurations": {}
           },
@@ -693,7 +777,9 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nx/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
               "lintFilePatterns": [
                 "packages/scope-manager/**/*.{mts,cts,ts,tsx}"
@@ -708,7 +794,9 @@
               "{workspaceRoot}/jest.config.js",
               "{workspaceRoot}/jest.config.base.js"
             ],
-            "outputs": ["{projectRoot}/coverage"],
+            "outputs": [
+              "{projectRoot}/coverage"
+            ],
             "executor": "@nx/jest:jest",
             "options": {
               "jestConfig": "packages/scope-manager/jest.config.js",
@@ -729,7 +817,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -750,8 +840,13 @@
         "name": "visitor-keys",
         "targets": {
           "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "build"
@@ -794,7 +889,9 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nx/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
               "lintFilePatterns": [
                 "packages/visitor-keys/**/*.{mts,cts,ts,tsx}"
@@ -809,7 +906,9 @@
               "{workspaceRoot}/jest.config.js",
               "{workspaceRoot}/jest.config.base.js"
             ],
-            "outputs": ["{projectRoot}/coverage"],
+            "outputs": [
+              "{projectRoot}/coverage"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "test"
@@ -824,7 +923,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -846,8 +947,13 @@
         "name": "rule-tester",
         "targets": {
           "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "build"
@@ -890,9 +996,13 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nx/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
-              "lintFilePatterns": ["packages/rule-tester/**/*.ts"]
+              "lintFilePatterns": [
+                "packages/rule-tester/**/*.ts"
+              ]
             },
             "configurations": {}
           },
@@ -916,7 +1026,9 @@
               "{workspaceRoot}/jest.config.js",
               "{workspaceRoot}/jest.config.base.js"
             ],
-            "outputs": ["{projectRoot}/coverage"],
+            "outputs": [
+              "{projectRoot}/coverage"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "test"
@@ -931,7 +1043,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -953,8 +1067,13 @@
         "name": "repo-tools",
         "targets": {
           "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "build"
@@ -990,9 +1109,13 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nrwl/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
-              "lintFilePatterns": ["packages/repo-tools/**/*.{mts,cts,ts,tsx}"],
+              "lintFilePatterns": [
+                "packages/repo-tools/**/*.{mts,cts,ts,tsx}"
+              ],
               "ignorePath": ".eslintignore"
             },
             "configurations": {}
@@ -1010,7 +1133,9 @@
               "{workspaceRoot}/jest.config.js",
               "{workspaceRoot}/jest.config.base.js"
             ],
-            "outputs": ["{projectRoot}/coverage"],
+            "outputs": [
+              "{projectRoot}/coverage"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "test"
@@ -1025,7 +1150,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -1047,8 +1174,13 @@
         "name": "type-utils",
         "targets": {
           "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "build"
@@ -1091,9 +1223,13 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nx/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
-              "lintFilePatterns": ["packages/type-utils/**/*.{mts,cts,ts,tsx}"],
+              "lintFilePatterns": [
+                "packages/type-utils/**/*.{mts,cts,ts,tsx}"
+              ],
               "ignorePath": ".eslintignore"
             },
             "configurations": {}
@@ -1104,7 +1240,9 @@
               "{workspaceRoot}/jest.config.js",
               "{workspaceRoot}/jest.config.base.js"
             ],
-            "outputs": ["{projectRoot}/coverage"],
+            "outputs": [
+              "{projectRoot}/coverage"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "test"
@@ -1119,7 +1257,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -1141,14 +1281,23 @@
         "name": "ast-spec",
         "targets": {
           "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-commands",
             "options": {
               "cwd": "packages/ast-spec",
-              "commands": ["yarn build"]
+              "commands": [
+                "yarn build"
+              ]
             },
-            "outputs": ["{projectRoot}/dist/**/*.ts"],
+            "outputs": [
+              "{projectRoot}/dist/**/*.ts"
+            ],
             "configurations": {}
           },
           "clean": {
@@ -1187,9 +1336,13 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nx/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
-              "lintFilePatterns": ["packages/ast-spec/**/*.{mts,cts,ts,tsx}"],
+              "lintFilePatterns": [
+                "packages/ast-spec/**/*.{mts,cts,ts,tsx}"
+              ],
               "ignorePath": ".eslintignore"
             },
             "configurations": {}
@@ -1200,7 +1353,9 @@
               "{workspaceRoot}/jest.config.js",
               "{workspaceRoot}/jest.config.base.js"
             ],
-            "outputs": ["{projectRoot}/coverage"],
+            "outputs": [
+              "{projectRoot}/coverage"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "test"
@@ -1215,7 +1370,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -1237,8 +1394,13 @@
         "name": "website",
         "targets": {
           "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "build"
@@ -1288,7 +1450,9 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nx/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
               "lintFilePatterns": [
                 "packages/website/**/*.{mts,cts,ts,tsx}",
@@ -1325,7 +1489,9 @@
               "{workspaceRoot}/jest.config.js",
               "{workspaceRoot}/jest.config.base.js"
             ],
-            "outputs": ["{projectRoot}/coverage"],
+            "outputs": [
+              "{projectRoot}/coverage"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "test"
@@ -1340,7 +1506,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -1362,8 +1530,13 @@
         "name": "parser",
         "targets": {
           "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "build"
@@ -1406,9 +1579,13 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nx/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
-              "lintFilePatterns": ["packages/parser/**/*.{mts,cts,ts,tsx}"],
+              "lintFilePatterns": [
+                "packages/parser/**/*.{mts,cts,ts,tsx}"
+              ],
               "ignorePath": ".eslintignore"
             },
             "configurations": {}
@@ -1419,7 +1596,9 @@
               "{workspaceRoot}/jest.config.js",
               "{workspaceRoot}/jest.config.base.js"
             ],
-            "outputs": ["{projectRoot}/coverage"],
+            "outputs": [
+              "{projectRoot}/coverage"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "test"
@@ -1434,7 +1613,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -1461,7 +1642,9 @@
                 "projects": "dependencies"
               }
             ],
-            "outputs": ["packages/types/src/generated"],
+            "outputs": [
+              "packages/types/src/generated"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "copy-ast-spec"
@@ -1479,7 +1662,10 @@
                 "projects": "self"
               }
             ],
-            "inputs": ["production", "^production"],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "build"
@@ -1529,9 +1715,13 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nx/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
-              "lintFilePatterns": ["packages/types/**/*.{mts,cts,ts,tsx}"],
+              "lintFilePatterns": [
+                "packages/types/**/*.{mts,cts,ts,tsx}"
+              ],
               "ignorePath": ".eslintignore"
             },
             "configurations": {}
@@ -1544,7 +1734,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}
@@ -1555,7 +1747,9 @@
         "projectType": "library",
         "$schema": "../../node_modules/nx/schemas/project-schema.json",
         "type": "library",
-        "implicitDependencies": ["ast-spec"],
+        "implicitDependencies": [
+          "ast-spec"
+        ],
         "tags": []
       }
     },
@@ -1567,8 +1761,13 @@
         "name": "utils",
         "targets": {
           "build": {
-            "dependsOn": ["^build"],
-            "inputs": ["production", "^production"],
+            "dependsOn": [
+              "^build"
+            ],
+            "inputs": [
+              "production",
+              "^production"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "build"
@@ -1611,9 +1810,13 @@
               "{workspaceRoot}/.eslintignore"
             ],
             "executor": "@nx/linter:eslint",
-            "outputs": ["{options.outputFile}"],
+            "outputs": [
+              "{options.outputFile}"
+            ],
             "options": {
-              "lintFilePatterns": ["packages/utils/**/*.{mts,cts,ts,tsx}"],
+              "lintFilePatterns": [
+                "packages/utils/**/*.{mts,cts,ts,tsx}"
+              ],
               "ignorePath": ".eslintignore"
             },
             "configurations": {}
@@ -1624,7 +1827,9 @@
               "{workspaceRoot}/jest.config.js",
               "{workspaceRoot}/jest.config.base.js"
             ],
-            "outputs": ["{projectRoot}/coverage"],
+            "outputs": [
+              "{projectRoot}/coverage"
+            ],
             "executor": "nx:run-script",
             "options": {
               "script": "test"
@@ -1639,7 +1844,9 @@
             "configurations": {}
           },
           "nx-release-publish": {
-            "dependsOn": ["^nx-release-publish"],
+            "dependsOn": [
+              "^nx-release-publish"
+            ],
             "executor": "@nx/js:release-publish",
             "options": {},
             "configurations": {}

@@ -2,7 +2,14 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getParserServices,
+  getTypeName,
+  isTypeAnyType,
+  isTypeFlagSet,
+} from '../util';
 
 type Options = [
   {
@@ -17,7 +24,7 @@ type Options = [
 
 type MessageIds = 'bigintAndNumber' | 'invalid' | 'mismatched';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'restrict-plus-operands',
   meta: {
     type: 'problem',
@@ -93,7 +100,7 @@ export default util.createRule<Options, MessageIds>({
       },
     ],
   ) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const typeChecker = services.program.getTypeChecker();
 
     const stringLikes = [
@@ -111,7 +118,7 @@ export default util.createRule<Options, MessageIds>({
 
     function getTypeConstrained(node: TSESTree.Node): ts.Type {
       return typeChecker.getBaseTypeOfLiteralType(
-        util.getConstrainedTypeAtLocation(services, node),
+        getConstrainedTypeAtLocation(services, node),
       );
     }
 
@@ -150,10 +157,7 @@ export default util.createRule<Options, MessageIds>({
           (!allowBoolean &&
             isTypeFlagSetInUnion(baseType, ts.TypeFlags.BooleanLike)) ||
           (!allowNullish &&
-            util.isTypeFlagSet(
-              baseType,
-              ts.TypeFlags.Null | ts.TypeFlags.Undefined,
-            ))
+            isTypeFlagSet(baseType, ts.TypeFlags.Null | ts.TypeFlags.Undefined))
         ) {
           context.report({
             data: {
@@ -169,12 +173,12 @@ export default util.createRule<Options, MessageIds>({
 
         // RegExps also contain ts.TypeFlags.Any & ts.TypeFlags.Object
         for (const subBaseType of tsutils.unionTypeParts(baseType)) {
-          const typeName = util.getTypeName(typeChecker, subBaseType);
+          const typeName = getTypeName(typeChecker, subBaseType);
           if (
             typeName === 'RegExp'
               ? !allowRegExp ||
                 tsutils.isTypeFlagSet(otherType, ts.TypeFlags.NumberLike)
-              : (!allowAny && util.isTypeAnyType(subBaseType)) ||
+              : (!allowAny && isTypeAnyType(subBaseType)) ||
                 isDeeplyObjectType(subBaseType)
           ) {
             context.report({

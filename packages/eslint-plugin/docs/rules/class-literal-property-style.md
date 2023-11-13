@@ -31,9 +31,7 @@ Examples of code with the `fields` style:
 
 #### ❌ Incorrect
 
-```ts
-/* eslint @typescript-eslint/class-literal-property-style: ["error", "fields"] */
-
+```ts option='"fields"'
 class Mx {
   public static get myField1() {
     return 1;
@@ -47,9 +45,7 @@ class Mx {
 
 #### ✅ Correct
 
-```ts
-/* eslint @typescript-eslint/class-literal-property-style: ["error", "fields"] */
-
+```ts option='"fields"'
 class Mx {
   public readonly myField1 = 1;
 
@@ -76,9 +72,7 @@ Examples of code with the `getters` style:
 
 #### ❌ Incorrect
 
-```ts
-/* eslint @typescript-eslint/class-literal-property-style: ["error", "getters"] */
-
+```ts option='"getters"'
 class Mx {
   readonly myField1 = 1;
   readonly myField2 = `hello world`;
@@ -88,9 +82,7 @@ class Mx {
 
 #### ✅ Correct
 
-```ts
-/* eslint @typescript-eslint/class-literal-property-style: ["error", "getters"] */
-
+```ts option='"getters"'
 class Mx {
   // no readonly modifier
   public myField1 = 'hello';

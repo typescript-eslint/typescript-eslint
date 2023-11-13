@@ -1,9 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
-export default util.createRule({
+export default createRule({
   name: 'prefer-for-of',
   meta: {
     type: 'suggestion',
@@ -147,7 +147,7 @@ export default util.createRule({
       if (
         parent.type === AST_NODE_TYPES.Property &&
         parent.value === node &&
-        parent.parent?.type === AST_NODE_TYPES.ObjectExpression &&
+        parent.parent.type === AST_NODE_TYPES.ObjectExpression &&
         isAssignee(parent.parent)
       ) {
         return true;
@@ -168,8 +168,7 @@ export default util.createRule({
         const node = id.parent;
         return (
           !contains(body, id) ||
-          (node !== undefined &&
-            node.type === AST_NODE_TYPES.MemberExpression &&
+          (node.type === AST_NODE_TYPES.MemberExpression &&
             node.object.type !== AST_NODE_TYPES.ThisExpression &&
             node.property === id &&
             sourceCode.getText(node.object) === arrayText &&

@@ -2,7 +2,7 @@ import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule, isFunction } from '../util';
 import type {
   FunctionExpression,
   FunctionNode,
@@ -31,7 +31,7 @@ type MessageIds =
   | 'missingArgTypeUnnamed'
   | 'missingReturnType';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'explicit-module-boundary-types',
   meta: {
     type: 'problem',
@@ -272,12 +272,12 @@ export default util.createRule<Options, MessageIds>({
       while (current) {
         if (current.type === AST_NODE_TYPES.ReturnStatement) {
           // the parent of a return will always be a block statement, so we can skip over it
-          current = current.parent?.parent;
+          current = current.parent.parent;
           continue;
         }
 
         if (
-          !util.isFunction(current) ||
+          !isFunction(current) ||
           !doesImmediatelyReturnFunctionExpression(current)
         ) {
           return false;
@@ -405,11 +405,11 @@ export default util.createRule<Options, MessageIds>({
       node: TSESTree.TSEmptyBodyFunctionExpression,
     ): void {
       const isConstructor =
-        node.parent?.type === AST_NODE_TYPES.MethodDefinition &&
+        node.parent.type === AST_NODE_TYPES.MethodDefinition &&
         node.parent.kind === 'constructor';
       const isSetAccessor =
-        (node.parent?.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
-          node.parent?.type === AST_NODE_TYPES.MethodDefinition) &&
+        (node.parent.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
+          node.parent.type === AST_NODE_TYPES.MethodDefinition) &&
         node.parent.kind === 'set';
       if (!isConstructor && !isSetAccessor && !node.returnType) {
         context.report({

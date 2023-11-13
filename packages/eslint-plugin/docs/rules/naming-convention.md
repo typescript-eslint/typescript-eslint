@@ -81,6 +81,11 @@ const defaultOptions: Options = [
   },
 
   {
+    selector: 'import',
+    format: ['camelCase', 'PascalCase'],
+  },
+
+  {
     selector: 'variable',
     format: ['camelCase', 'UPPER_CASE'],
     leadingUnderscore: 'allow',
@@ -215,6 +220,9 @@ Individual Selectors match specific, well-defined sets. There is no overlap betw
   - Allowed `types`: none.
 - `function` - matches any named function declaration or named function expression.
   - Allowed `modifiers`: `async`, `exported`, `global`, `unused`.
+  - Allowed `types`: none.
+- `import` - matches namespace imports and default imports (i.e. does not match named imports).
+  - Allowed `modifiers`: `default`, `namespace`.
   - Allowed `types`: none.
 - `interface` - matches any interface declaration.
   - Allowed `modifiers`: `exported`, `unused`.

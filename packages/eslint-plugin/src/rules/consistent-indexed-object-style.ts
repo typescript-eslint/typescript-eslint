@@ -47,15 +47,11 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const [parameter] = member.parameters;
-
-      if (!parameter) {
+      const parameter = member.parameters.at(0);
+      if (parameter?.type !== AST_NODE_TYPES.Identifier) {
         return;
       }
 
-      if (parameter.type !== AST_NODE_TYPES.Identifier) {
-        return;
-      }
       const keyType = parameter.typeAnnotation;
       if (!keyType) {
         return;
@@ -133,7 +129,7 @@ export default createRule<Options, MessageIds>({
         TSInterfaceDeclaration(node): void {
           let genericTypes = '';
 
-          if (node.typeParameters?.params?.length) {
+          if (node.typeParameters?.params.length) {
             genericTypes = `<${node.typeParameters.params
               .map(p => sourceCode.getText(p))
               .join(', ')}>`;
@@ -145,7 +141,7 @@ export default createRule<Options, MessageIds>({
             node.id,
             `type ${node.id.name}${genericTypes} = `,
             ';',
-            !node.extends?.length,
+            !node.extends.length,
           );
         },
       }),

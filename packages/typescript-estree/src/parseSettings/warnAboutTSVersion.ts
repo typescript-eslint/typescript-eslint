@@ -6,7 +6,7 @@ import type { ParseSettings } from './index';
  * This needs to be kept in sync with /docs/users/Versioning.mdx
  * in the typescript-eslint monorepo
  */
-const SUPPORTED_TYPESCRIPT_VERSIONS = '>=4.3.5 <5.2.0';
+const SUPPORTED_TYPESCRIPT_VERSIONS = '>=4.3.5 <5.3.0';
 
 /*
  * The semver package will ignore prerelease ranges, and we don't want to explicitly document every one
@@ -23,23 +23,31 @@ const isRunningSupportedTypeScriptVersion = semver.satisfies(
 
 let warnedAboutTSVersion = false;
 
-export function warnAboutTSVersion(parseSettings: ParseSettings): void {
-  if (!isRunningSupportedTypeScriptVersion && !warnedAboutTSVersion) {
-    const isTTY =
-      typeof process === 'undefined' ? false : process.stdout?.isTTY;
-    if (isTTY) {
-      const border = '=============';
-      const versionWarning = [
-        border,
-        'WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.',
-        'You may find that it works just fine, or you may not.',
-        `SUPPORTED TYPESCRIPT VERSIONS: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
-        `YOUR TYPESCRIPT VERSION: ${ACTIVE_TYPESCRIPT_VERSION}`,
-        'Please only submit bug reports when using the officially supported version.',
-        border,
-      ];
-      parseSettings.log(versionWarning.join('\n\n'));
-    }
-    warnedAboutTSVersion = true;
+export function warnAboutTSVersion(
+  parseSettings: ParseSettings,
+  passedLoggerFn: boolean,
+): void {
+  if (isRunningSupportedTypeScriptVersion || warnedAboutTSVersion) {
+    return;
   }
+
+  if (
+    passedLoggerFn ||
+    (typeof process === 'undefined' ? false : process.stdout?.isTTY)
+  ) {
+    const border = '=============';
+    const versionWarning = [
+      border,
+      'WARNING: You are currently running a version of TypeScript which is not officially supported by @typescript-eslint/typescript-estree.',
+      'You may find that it works just fine, or you may not.',
+      `SUPPORTED TYPESCRIPT VERSIONS: ${SUPPORTED_TYPESCRIPT_VERSIONS}`,
+      `YOUR TYPESCRIPT VERSION: ${ACTIVE_TYPESCRIPT_VERSION}`,
+      'Please only submit bug reports when using the officially supported version.',
+      border,
+    ].join('\n\n');
+
+    parseSettings.log(versionWarning);
+  }
+
+  warnedAboutTSVersion = true;
 }

@@ -24,12 +24,7 @@ const rule = createRule({
 
     return {
       LogicalExpression: (node: TSESTree.LogicalExpression): void => {
-        if (
-          (node.operator === '??' ||
-            node.operator === '||' ||
-            node.operator === '&&') &&
-          isNodeEqual(node.left, node.right)
-        ) {
+        if (isNodeEqual(node.left, node.right)) {
           context.report({
             node,
             messageId: 'removeExpression',

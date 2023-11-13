@@ -78,6 +78,8 @@ const BINARY_OPERATORS: ReadonlySet<BinaryOperatorKind> = new Set([
   SyntaxKind.ExclamationEqualsToken,
 ]);
 
+type DeclarationKind = TSESTree.VariableDeclaration['kind'];
+
 /**
  * Returns true if the given ts.Token is the assignment operator
  * @param operator the operator token
@@ -335,12 +337,19 @@ export function isJSXToken(node: ts.Node): boolean {
  */
 export function getDeclarationKind(
   node: ts.VariableDeclarationList,
-): 'const' | 'let' | 'var' {
+): DeclarationKind {
   if (node.flags & ts.NodeFlags.Let) {
     return 'let';
   }
+  // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
+  if ((node.flags & ts.NodeFlags.AwaitUsing) === ts.NodeFlags.AwaitUsing) {
+    return 'await using';
+  }
   if (node.flags & ts.NodeFlags.Const) {
     return 'const';
+  }
+  if (node.flags & ts.NodeFlags.Using) {
+    return 'using';
   }
   return 'var';
 }
@@ -415,11 +424,12 @@ export function findFirstMatchingAncestor(
   node: ts.Node,
   predicate: (node: ts.Node) => boolean,
 ): ts.Node | undefined {
-  while (node) {
-    if (predicate(node)) {
-      return node;
+  let current: ts.Node | undefined = node;
+  while (current) {
+    if (predicate(current)) {
+      return current;
     }
-    node = node.parent;
+    current = current.parent;
   }
   return undefined;
 }
@@ -473,9 +483,7 @@ export function isComputedProperty(
 export function isOptional(node: {
   questionToken?: ts.QuestionToken;
 }): boolean {
-  return node.questionToken
-    ? node.questionToken.kind === SyntaxKind.QuestionToken
-    : false;
+  return !!node.questionToken;
 }
 
 /**
@@ -668,11 +676,7 @@ export function convertTokens(ast: ts.SourceFile): TSESTree.Token[] {
     }
 
     if (isToken(node) && node.kind !== SyntaxKind.EndOfFileToken) {
-      const converted = convertToken(node, ast);
-
-      if (converted) {
-        result.push(converted);
-      }
+      result.push(convertToken(node, ast));
     } else {
       node.getChildren(ast).forEach(walk);
     }
@@ -923,4 +927,24 @@ export function nodeCanBeDecorated(node: TSNode): boolean {
   }
 
   return false;
+}
+
+export function getNamespaceModifiers(
+  node: ts.ModuleDeclaration,
+): ts.Modifier[] | undefined {
+  // For following nested namespaces, use modifiers given to the topmost namespace
+  //   export declare namespace foo.bar.baz {}
+  let modifiers = getModifiers(node);
+  let moduleDeclaration = node;
+  while (
+    (!modifiers || modifiers.length === 0) &&
+    ts.isModuleDeclaration(moduleDeclaration.parent)
+  ) {
+    const parentModifiers = getModifiers(moduleDeclaration.parent);
+    if (parentModifiers?.length) {
+      modifiers = parentModifiers;
+    }
+    moduleDeclaration = moduleDeclaration.parent;
+  }
+  return modifiers;
 }

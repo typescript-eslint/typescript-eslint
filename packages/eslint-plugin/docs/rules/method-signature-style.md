@@ -46,7 +46,7 @@ Examples of code with `property` option.
 
 #### ❌ Incorrect
 
-```ts
+```ts option='"property"'
 interface T1 {
   func(arg: string): number;
 }
@@ -62,7 +62,7 @@ interface T3 {
 
 #### ✅ Correct
 
-```ts
+```ts option='"property"'
 interface T1 {
   func: (arg: string) => number;
 }
@@ -85,7 +85,7 @@ Examples of code with `method` option.
 
 #### ❌ Incorrect
 
-```ts
+```ts option='"method"'
 interface T1 {
   func: (arg: string) => number;
 }
@@ -96,7 +96,7 @@ type T2 = {
 
 #### ✅ Correct
 
-```ts
+```ts option='"method"'
 interface T1 {
   func(arg: string): number;
 }

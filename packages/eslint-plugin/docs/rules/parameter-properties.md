@@ -109,7 +109,7 @@ Examples of code for the `{ "allow": ["readonly"] }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allow": ["readonly"] }'
 class Foo {
   constructor(private name: string) {}
 }
@@ -137,7 +137,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allow": ["readonly"] }'
 class Foo {
   constructor(name: string) {}
 }
@@ -155,7 +155,7 @@ Examples of code for the `{ "allow": ["private"] }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allow": ["private"] }'
 class Foo {
   constructor(readonly name: string) {}
 }
@@ -183,7 +183,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allow": ["private"] }'
 class Foo {
   constructor(name: string) {}
 }
@@ -201,7 +201,7 @@ Examples of code for the `{ "allow": ["protected"] }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allow": ["protected"] }'
 class Foo {
   constructor(readonly name: string) {}
 }
@@ -229,7 +229,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allow": ["protected"] }'
 class Foo {
   constructor(name: string) {}
 }
@@ -247,7 +247,7 @@ Examples of code for the `{ "allow": ["public"] }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allow": ["public"] }'
 class Foo {
   constructor(readonly name: string) {}
 }
@@ -275,7 +275,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allow": ["public"] }'
 class Foo {
   constructor(name: string) {}
 }
@@ -293,7 +293,7 @@ Examples of code for the `{ "allow": ["private readonly"] }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allow": ["private readonly"] }'
 class Foo {
   constructor(readonly name: string) {}
 }
@@ -321,7 +321,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allow": ["private readonly"] }'
 class Foo {
   constructor(name: string) {}
 }
@@ -339,7 +339,7 @@ Examples of code for the `{ "allow": ["protected readonly"] }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allow": ["protected readonly"] }'
 class Foo {
   constructor(readonly name: string) {}
 }
@@ -367,7 +367,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allow": ["protected readonly"] }'
 class Foo {
   constructor(name: string) {}
 }
@@ -385,7 +385,7 @@ Examples of code for the `{ "allow": ["public readonly"] }` options:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allow": ["public readonly"] }'
 class Foo {
   constructor(readonly name: string) {}
 }
@@ -413,7 +413,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allow": ["public readonly"] }'
 class Foo {
   constructor(name: string) {}
 }
@@ -431,7 +431,7 @@ Examples of code for the `{ "prefer": "parameter-property" }` option:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "prefer": "parameter-property" }'
 class Foo {
   private name: string;
   constructor(name: string) {
@@ -456,7 +456,7 @@ class Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "prefer": "parameter-property" }'
 class Foo {
   private differentName: string;
   constructor(name: string) {

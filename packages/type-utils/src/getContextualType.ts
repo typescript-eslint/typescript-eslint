@@ -10,9 +10,6 @@ export function getContextualType(
   node: ts.Expression,
 ): ts.Type | undefined {
   const parent = node.parent;
-  if (!parent) {
-    return;
-  }
 
   if (ts.isCallExpression(parent) || ts.isNewExpression(parent)) {
     if (node === parent.expression) {

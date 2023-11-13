@@ -306,6 +306,45 @@ ruleTester.run('strict-enums-comparison', rule, {
 
       const bitShift = 1 >> Fruit.Apple;
     `,
+    `
+      enum Fruit {
+        Apple,
+      }
+
+      declare const fruit: Fruit;
+
+      switch (fruit) {
+        case Fruit.Apple: {
+          break;
+        }
+      }
+    `,
+    `
+      enum Vegetable {
+        Asparagus = 'asparagus',
+      }
+
+      declare const vegetable: Vegetable;
+
+      switch (vegetable) {
+        case Vegetable.Asparagus: {
+          break;
+        }
+      }
+    `,
+    `
+      enum Vegetable {
+        Asparagus = 'asparagus',
+      }
+
+      declare const vegetable: Vegetable;
+
+      switch (vegetable) {
+        default: {
+          break;
+        }
+      }
+    `,
   ],
   invalid: [
     {
@@ -315,7 +354,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple < 1;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -324,7 +363,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple > 1;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -333,7 +372,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple == 1;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -342,7 +381,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple === 1;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -351,7 +390,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple != 1;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -360,7 +399,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple !== 1;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -370,7 +409,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple === 0;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -380,7 +419,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Banana === '';
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -391,7 +430,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Vegetable.Asparagus === 'beet';
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -402,7 +441,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         1 === Fruit.Apple;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -413,7 +452,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         'beet' === Vegetable.Asparagus;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -425,7 +464,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         const fruit = Fruit.Apple;
         fruit === 1;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -437,7 +476,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         const vegetable = Vegetable.Asparagus;
         vegetable === 'beet';
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -449,7 +488,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         const fruit = Fruit.Apple;
         1 === fruit;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -461,7 +500,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         const vegetable = Vegetable.Asparagus;
         'beet' === vegetable;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code:
@@ -473,7 +512,7 @@ ruleTester.run('strict-enums-comparison', rule, {
 }
       Fruit.Apple === Fruit2.Apple2;
         `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -489,7 +528,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Vegetable.Asparagus === Vegetable2.Asparagus2;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code:
@@ -502,7 +541,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       const fruit = Fruit.Apple;
       fruit === Fruit2.Apple2;
         `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -519,7 +558,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         const vegetable = Vegetable.Asparagus;
         vegetable === Vegetable2.Asparagus2;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -545,10 +584,10 @@ ruleTester.run('strict-enums-comparison', rule, {
         mixed === 1;
       `,
       errors: [
-        { messageId: 'mismatched' },
-        { messageId: 'mismatched' },
-        { messageId: 'mismatched' },
-        { messageId: 'mismatched' },
+        { messageId: 'mismatchedCondition' },
+        { messageId: 'mismatchedCondition' },
+        { messageId: 'mismatchedCondition' },
+        { messageId: 'mismatchedCondition' },
       ],
     },
     {
@@ -563,7 +602,483 @@ ruleTester.run('strict-enums-comparison', rule, {
         declare const weirdString: __String;
         weirdString === 'someArbitraryValue';
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+
+        declare const fruit: Fruit;
+
+        switch (fruit) {
+          case 0: {
+            break;
+          }
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCase' }],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+          Banana,
+        }
+
+        declare const fruit: Fruit;
+
+        switch (fruit) {
+          case Fruit.Apple: {
+            break;
+          }
+          case 1: {
+            break;
+          }
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCase' }],
+    },
+    {
+      code: `
+        enum Vegetable {
+          Asparagus = 'asparagus',
+        }
+
+        declare const vegetable: Vegetable;
+
+        switch (vegetable) {
+          case 'asparagus': {
+            break;
+          }
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCase' }],
+    },
+    {
+      code: `
+        enum Vegetable {
+          Asparagus = 'asparagus',
+          Beet = 'beet',
+        }
+
+        declare const vegetable: Vegetable;
+
+        switch (vegetable) {
+          case Vegetable.Asparagus: {
+            break;
+          }
+          case 'beet': {
+            break;
+          }
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCase' }],
+    },
+    {
+      code: `
+        enum Vegetable {
+          Asparagus = 'asparagus',
+          Beet = 'beet',
+        }
+
+        declare const vegetable: Vegetable;
+
+        switch (vegetable) {
+          case Vegetable.Asparagus: {
+            break;
+          }
+          case 'beet': {
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCase' }],
+    },
+    {
+      code: `
+        enum Str {
+          A = 'a',
+          B = 'b',
+        }
+        declare const str: Str;
+        str === 'b';
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Str {
+          A = 'a',
+          B = 'b',
+        }
+        declare const str: Str;
+        str === Str.B;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum Str {
+          A = 'a',
+          AB = 'ab',
+        }
+        declare const str: Str;
+        str === 'a' + 'b';
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Str {
+          A = 'a',
+          AB = 'ab',
+        }
+        declare const str: Str;
+        str === Str.AB;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum Num {
+          A = 1,
+          B = 2,
+        }
+        declare const num: Num;
+        1 === num;
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Num {
+          A = 1,
+          B = 2,
+        }
+        declare const num: Num;
+        Num.A === num;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum Num {
+          A = 1,
+          B = 2,
+        }
+        declare const num: Num;
+        1 /* with */ === /* comment */ num;
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Num {
+          A = 1,
+          B = 2,
+        }
+        declare const num: Num;
+        Num.A /* with */ === /* comment */ num;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum Num {
+          A = 1,
+          B = 2,
+        }
+        declare const num: Num;
+        1 + 1 === num;
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Num {
+          A = 1,
+          B = 2,
+        }
+        declare const num: Num;
+        Num.B === num;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum Mixed {
+          A = 1,
+          B = 'b',
+        }
+        declare const mixed: Mixed;
+        mixed === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Mixed {
+          A = 1,
+          B = 'b',
+        }
+        declare const mixed: Mixed;
+        mixed === Mixed.A;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum Mixed {
+          A = 1,
+          B = 'b',
+        }
+        declare const mixed: Mixed;
+        mixed === 'b';
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum Mixed {
+          A = 1,
+          B = 'b',
+        }
+        declare const mixed: Mixed;
+        mixed === Mixed.B;
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum StringKey {
+          'test-key' /* with comment */ = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum StringKey {
+          'test-key' /* with comment */ = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === StringKey['test-key'];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum StringKey {
+          "key-'with-single'-quotes" = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum StringKey {
+          "key-'with-single'-quotes" = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === StringKey['key-\\'with-single\\'-quotes'];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum StringKey {
+          'key-"with-double"-quotes' = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum StringKey {
+          'key-"with-double"-quotes' = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === StringKey['key-"with-double"-quotes'];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum StringKey {
+          'key-\`with-backticks\`-quotes' = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum StringKey {
+          'key-\`with-backticks\`-quotes' = 1,
+        }
+        declare const stringKey: StringKey;
+        stringKey === StringKey['key-\`with-backticks\`-quotes'];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum ComputedKey {
+          ['test-key' /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum ComputedKey {
+          ['test-key' /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === ComputedKey['test-key'];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum ComputedKey {
+          [\`test-key\` /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum ComputedKey {
+          [\`test-key\` /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === ComputedKey[\`test-key\`];
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum ComputedKey {
+          [\`test-
+          key\` /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === 1;
+      `,
+      errors: [
+        {
+          messageId: 'mismatchedCondition',
+          suggestions: [
+            {
+              messageId: 'replaceValueWithEnum',
+              output: `
+        enum ComputedKey {
+          [\`test-
+          key\` /* with comment */] = 1,
+        }
+        declare const computedKey: ComputedKey;
+        computedKey === ComputedKey[\`test-
+          key\`];
+      `,
+            },
+          ],
+        },
+      ],
     },
   ],
 });

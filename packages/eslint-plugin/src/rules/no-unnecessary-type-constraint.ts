@@ -3,7 +3,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { extname } from 'path';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type MakeRequired<Base, Key extends keyof Base> = Omit<Base, Key> & {
   [K in Key]-?: NonNullable<Base[Key]>;
@@ -13,7 +13,7 @@ type TypeParameterWithConstraint = MakeRequired<
   'constraint'
 >;
 
-export default util.createRule({
+export default createRule({
   name: 'no-unnecessary-type-constraint',
   meta: {
     docs: {
@@ -43,7 +43,7 @@ export default util.createRule({
     function checkRequiresGenericDeclarationDisambiguation(
       filename: string,
     ): boolean {
-      const pathExt = extname(filename).toLocaleLowerCase();
+      const pathExt = extname(filename).toLocaleLowerCase() as ts.Extension;
       switch (pathExt) {
         case ts.Extension.Cts:
         case ts.Extension.Mts:

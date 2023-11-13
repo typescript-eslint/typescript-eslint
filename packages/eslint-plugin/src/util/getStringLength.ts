@@ -1,6 +1,6 @@
 import Graphemer from 'graphemer';
 
-let splitter: Graphemer;
+let splitter: Graphemer | undefined;
 
 function isASCII(value: string): boolean {
   return /^[\u0020-\u007f]*$/u.test(value);

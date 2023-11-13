@@ -75,7 +75,7 @@ There are cases where the rule allows assignment of `any` to `unknown`.
 
 Example of `any` to `unknown` assignment that are allowed:
 
-```ts
+```ts showPlaygroundButton
 const x: unknown = y as any;
 const x: unknown[] = y as any[];
 const x: Set<unknown> = y as Set<any>;

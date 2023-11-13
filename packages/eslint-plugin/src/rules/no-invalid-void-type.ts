@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 interface Options {
   allowInGenericTypeArguments?: string[] | boolean;
@@ -16,7 +16,7 @@ type MessageIds =
   | 'invalidVoidNotReturnOrThisParamOrGeneric'
   | 'invalidVoidUnionConstituent';
 
-export default util.createRule<[Options], MessageIds>({
+export default createRule<[Options], MessageIds>({
   name: 'no-invalid-void-type',
   meta: {
     type: 'problem',
@@ -93,8 +93,8 @@ export default util.createRule<[Options], MessageIds>({
       // extra check for precaution
       /* istanbul ignore next */
       if (
-        node.parent?.type !== AST_NODE_TYPES.TSTypeParameterInstantiation ||
-        node.parent.parent?.type !== AST_NODE_TYPES.TSTypeReference
+        node.parent.type !== AST_NODE_TYPES.TSTypeParameterInstantiation ||
+        node.parent.parent.type !== AST_NODE_TYPES.TSTypeReference
       ) {
         return;
       }
@@ -158,7 +158,7 @@ export default util.createRule<[Options], MessageIds>({
           (member.type === AST_NODE_TYPES.TSTypeReference &&
             member.typeArguments?.type ===
               AST_NODE_TYPES.TSTypeParameterInstantiation &&
-            member.typeArguments?.params
+            member.typeArguments.params
               .map(param => param.type)
               .includes(AST_NODE_TYPES.TSVoidKeyword)),
       );

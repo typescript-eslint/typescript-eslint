@@ -55,14 +55,14 @@ Examples of code for this rule with `ignoreDifferentlyNamedParameters`:
 
 ### ❌ Incorrect
 
-```ts
+```ts option='{ "ignoreDifferentlyNamedParameters": true }'
 function f(a: number): void;
 function f(a: string): void;
 ```
 
 ### ✅ Correct
 
-```ts
+```ts option='{ "ignoreDifferentlyNamedParameters": true }'
 function f(a: number): void;
 function f(b: string): void;
 ```

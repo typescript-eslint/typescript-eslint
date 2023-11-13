@@ -14,7 +14,7 @@ This rule reports on the use of `/// <reference path="..." />`, `/// <reference 
 
 With `{ "path": "never", "types": "never", "lib": "never" }` options set, the following will all be **incorrect** usage:
 
-```ts
+```ts option='{ "path": "never", "types": "never", "lib": "never" }' showPlaygroundButton
 /// <reference path="foo" />
 /// <reference types="bar" />
 /// <reference lib="baz" />
@@ -22,19 +22,19 @@ With `{ "path": "never", "types": "never", "lib": "never" }` options set, the fo
 
 Examples of **incorrect** code for the `{ "types": "prefer-import" }` option. Note that these are only errors when **both** styles are used for the **same** module:
 
-```ts
+```ts option='{ "types": "prefer-import" }' showPlaygroundButton
 /// <reference types="foo" />
 import * as foo from 'foo';
 ```
 
-```ts
+```ts option='{ "types": "prefer-import" }' showPlaygroundButton
 /// <reference types="foo" />
 import foo = require('foo');
 ```
 
 With `{ "path": "always", "types": "always", "lib": "always" }` options set, the following will all be **correct** usage:
 
-```ts
+```ts option='{ "path": "always", "types": "always", "lib": "always" }' showPlaygroundButton
 /// <reference path="foo" />
 /// <reference types="bar" />
 /// <reference lib="baz" />
@@ -42,11 +42,11 @@ With `{ "path": "always", "types": "always", "lib": "always" }` options set, the
 
 Examples of **correct** code for the `{ "types": "prefer-import" }` option:
 
-```ts
+```ts option='{ "types": "prefer-import" }' showPlaygroundButton
 import * as foo from 'foo';
 ```
 
-```ts
+```ts option='{ "types": "prefer-import" }' showPlaygroundButton
 import foo = require('foo');
 ```
 

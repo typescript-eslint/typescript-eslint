@@ -2,6 +2,7 @@
 
 import { ESLint as ESLintESLint } from 'eslint';
 
+import type { ClassicConfig } from './Config';
 import type { Linter } from './Linter';
 
 declare class ESLintBase {
@@ -23,7 +24,7 @@ declare class ESLintBase {
    *                 because ESLint cannot handle the overrides setting.
    * @returns The promise that will be fulfilled with a configuration object.
    */
-  calculateConfigForFile(filePath: string): Promise<Linter.Config>;
+  calculateConfigForFile(filePath: string): Promise<Linter.ConfigType>;
   /**
    * This method checks if a given file is ignored by your configuration.
    * @param filePath The path to the file you want to check.
@@ -88,7 +89,7 @@ declare class ESLintBase {
    * @param results The LintResult objects to write.
    * @returns The promise that will be fulfilled after all files are written.
    */
-  static outputFixes(results: ESLint.LintResult): Promise<void>;
+  static outputFixes(results: ESLint.LintResult[]): Promise<void>;
   /**
    * The version text.
    */
@@ -107,7 +108,7 @@ namespace ESLint {
      * You can use this option to define the default settings that will be used if your configuration files don't
      * configure it.
      */
-    baseConfig?: Linter.Config | null;
+    baseConfig?: Linter.ConfigType | null;
     /**
      * If true is present, the eslint.lintFiles() method caches lint results and uses it if each target file is not
      * changed. Please mind that ESLint doesn't clear the cache when you upgrade ESLint plugins. In that case, you have
@@ -164,7 +165,7 @@ namespace ESLint {
      * Configuration object, overrides all configurations used with this instance.
      * You can use this option to define the settings that will be used even if your configuration files configure it.
      */
-    overrideConfig?: Linter.ConfigOverride | null;
+    overrideConfig?: ClassicConfig.ConfigOverride | null;
     /**
      * The path to a configuration file, overrides all configurations used with this instance.
      * The options.overrideConfig option is applied after this option is applied.

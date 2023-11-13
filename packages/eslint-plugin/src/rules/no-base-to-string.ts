@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import { createRule, getParserServices, getTypeName } from '../util';
 
 enum Usefulness {
   Always = 'always',
@@ -17,7 +17,7 @@ type Options = [
 ];
 type MessageIds = 'baseToString';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-base-to-string',
   meta: {
     docs: {
@@ -52,7 +52,7 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [option]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const ignoredTypeNames = option.ignoredTypeNames ?? [];
 
@@ -93,7 +93,7 @@ export default util.createRule<Options, MessageIds>({
         return Usefulness.Always;
       }
 
-      if (ignoredTypeNames.includes(util.getTypeName(checker, type))) {
+      if (ignoredTypeNames.includes(getTypeName(checker, type))) {
         return Usefulness.Always;
       }
 
@@ -155,10 +155,10 @@ export default util.createRule<Options, MessageIds>({
         const leftType = services.getTypeAtLocation(node.left);
         const rightType = services.getTypeAtLocation(node.right);
 
-        if (util.getTypeName(checker, leftType) === 'string') {
+        if (getTypeName(checker, leftType) === 'string') {
           checkExpression(node.right, rightType);
         } else if (
-          util.getTypeName(checker, rightType) === 'string' &&
+          getTypeName(checker, rightType) === 'string' &&
           node.left.type !== AST_NODE_TYPES.PrivateIdentifier
         ) {
           checkExpression(node.left, leftType);

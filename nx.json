@@ -1,18 +1,11 @@
 {
   "$schema": "./node_modules/nx/schemas/nx-schema.json",
-  "tasksRunnerOptions": {
-    "default": {
-      "runner": "nx-cloud",
-      "options": {
-        "cacheableOperations": ["build", "lint", "package", "prebuild", "test"],
-        "accessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ="
-      }
-    }
-  },
+  "nxCloudAccessToken": "YjIzMmMxMWItMjhiMS00NWY2LTk1NWYtYWU3YWQ0YjE4YjBlfHJlYWQ=",
   "targetDefaults": {
     "build": {
       "dependsOn": ["^build"],
-      "inputs": ["production", "^production"]
+      "inputs": ["production", "^production"],
+      "cache": true
     },
     "test": {
       "inputs": [
@@ -20,7 +13,8 @@
         "{workspaceRoot}/jest.config.js",
         "{workspaceRoot}/jest.config.base.js"
       ],
-      "outputs": ["{projectRoot}/coverage"]
+      "outputs": ["{projectRoot}/coverage"],
+      "cache": true
     },
     "lint": {
       "inputs": [
@@ -28,21 +22,43 @@
         "{workspaceRoot}/.eslintrc.js",
         "{workspaceRoot}/yarn.lock",
         "{workspaceRoot}/.eslintignore"
-      ]
+      ],
+      "cache": true
+    },
+    "@nx/jest:jest": {
+      "inputs": [
+        "default",
+        "{workspaceRoot}/jest.config.js",
+        "{workspaceRoot}/jest.config.base.js"
+      ],
+      "outputs": ["{projectRoot}/coverage"],
+      "cache": true,
+      "options": {
+        "jestConfig": "{projectRoot}/jest.config.js",
+        "passWithNoTests": true
+      },
+      "configurations": {
+        "ci": {
+          "ci": true,
+          "codeCoverage": true
+        }
+      }
     }
   },
   "namedInputs": {
-    "default": [
-      "{projectRoot}/**/*",
-      "sharedGlobals",
+    "default": ["{projectRoot}/**/*", "sharedGlobals"],
+    "sharedGlobals": [
+      "{workspaceRoot}/.github/workflows/ci.yml",
       {
         "runtime": "node -v"
       },
       {
         "runtime": "echo $NETLIFY"
+      },
+      {
+        "runtime": "yarn -v"
       }
     ],
-    "sharedGlobals": ["{workspaceRoot}/.github/workflows/ci.yml"],
     "production": ["default", "!{projectRoot}/src/test-setup.[jt]s"]
   }
 }

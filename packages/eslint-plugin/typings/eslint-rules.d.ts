@@ -272,6 +272,24 @@ declare module 'eslint/lib/rules/keyword-spacing' {
   export = rule;
 }
 
+declare module 'eslint/lib/rules/max-params' {
+  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+  const rule: TSESLint.RuleModule<
+    'exceed',
+    (
+      | { max: number; countVoidThis?: boolean }
+      | { maximum: number; countVoidThis?: boolean }
+    )[],
+    {
+      FunctionDeclaration(node: TSESTree.FunctionDeclaration): void;
+      FunctionExpression(node: TSESTree.FunctionExpression): void;
+      ArrowFunctionExpression(node: TSESTree.ArrowFunctionExpression): void;
+    }
+  >;
+  export = rule;
+}
+
 declare module 'eslint/lib/rules/no-dupe-class-members' {
   import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 
@@ -817,17 +835,15 @@ declare module 'eslint/lib/rules/no-invalid-this' {
     ],
     {
       // for ESLint < v8.7.0
+
       Program?: (node: TSESTree.Program) => void;
       'Program:exit'?: (node: TSESTree.Program) => void;
+
       FunctionDeclaration?: (node: TSESTree.FunctionDeclaration) => void;
       'FunctionDeclaration:exit'?: (node: TSESTree.FunctionDeclaration) => void;
+
       FunctionExpression?: (node: TSESTree.FunctionExpression) => void;
       'FunctionExpression:exit'?: (node: TSESTree.FunctionExpression) => void;
-
-      // for ESLint >= v8.7.0
-      // We don't use it and we don't have the CodePath types, so comment out it.
-      // onCodePathStart?: (codePath: unknown, node: TSESTree.Node) => void
-      // onCodePathEnd?: (codePath: unknown, node: TSESTree.Node) => void
 
       // Common
       ThisExpression(node: TSESTree.ThisExpression): void;
@@ -961,6 +977,33 @@ declare module 'eslint/lib/rules/prefer-const' {
     {
       'Program:exit'(node: TSESTree.Program): void;
       VariableDeclaration(node: TSESTree.VariableDeclaration): void;
+    }
+  >;
+  export = rule;
+}
+
+declare module 'eslint/lib/rules/prefer-destructuring' {
+  import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+
+  interface DestructuringTypeConfig {
+    object?: boolean;
+    array?: boolean;
+  }
+  type Option0 =
+    | DestructuringTypeConfig
+    | {
+        VariableDeclarator?: DestructuringTypeConfig;
+        AssignmentExpression?: DestructuringTypeConfig;
+      };
+  interface Option1 {
+    enforceForRenamedProperties?: boolean;
+  }
+  const rule: TSESLint.RuleModule<
+    'preferDestructuring',
+    [Option0, Option1?],
+    {
+      VariableDeclarator(node: TSESTree.VariableDeclarator): void;
+      AssignmentExpression(node: TSESTree.AssignmentExpression): void;
     }
   >;
   export = rule;

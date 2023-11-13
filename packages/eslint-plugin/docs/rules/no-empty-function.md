@@ -39,7 +39,7 @@ const defaultOptions: Options = {
 
 Examples of correct code for the `{ "allow": ["private-constructors"] }` option:
 
-```ts
+```ts option='{ "allow": ["private-constructors"] }' showPlaygroundButton
 class Foo {
   private constructor() {}
 }
@@ -49,7 +49,7 @@ class Foo {
 
 Examples of correct code for the `{ "allow": ["protected-constructors"] }` option:
 
-```ts
+```ts option='{ "allow": ["protected-constructors"] }' showPlaygroundButton
 class Foo {
   protected constructor() {}
 }
@@ -59,7 +59,7 @@ class Foo {
 
 Examples of correct code for the `{ "allow": ["decoratedFunctions"] }` option:
 
-```ts
+```ts option='{ "allow": ["decoratedFunctions"] }' showPlaygroundButton
 @decorator()
 function foo() {}
 
@@ -73,7 +73,7 @@ class Foo {
 
 Examples of correct code for the `{ "allow": ["overrideMethods"] }` option:
 
-```ts
+```ts option='{ "allow": ["overrideMethods"] }' showPlaygroundButton
 abstract class Base {
   protected greet(): void {
     console.log('Hello!');

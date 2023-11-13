@@ -256,7 +256,7 @@ It also ignores accessibility and scope.
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 interface Foo {
   B: string; // -> field
 
@@ -268,7 +268,7 @@ interface Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 type Foo = {
   B: string; // -> field
 
@@ -280,7 +280,7 @@ type Foo = {
 };
 ```
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 class Foo {
   private C: string; // -> field
   public D: string; // -> field
@@ -295,7 +295,7 @@ class Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 const Foo = class {
   private C: string; // -> field
   public D: string; // -> field
@@ -313,7 +313,7 @@ const Foo = class {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 interface Foo {
   [Z: string]: any; // -> signature
 
@@ -325,7 +325,7 @@ interface Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 type Foo = {
   // no signature
 
@@ -337,7 +337,7 @@ type Foo = {
 };
 ```
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 class Foo {
   [Z: string]: any; // -> signature
 
@@ -352,7 +352,7 @@ class Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["signature", "method", "constructor", "field"] }'
 const Foo = class {
   [Z: string]: any; // -> signature
 
@@ -391,7 +391,7 @@ It doesn't apply to interfaces or type literals as accessibility and scope are n
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{ "default": ["public-instance-method", "public-static-field"] }'
 class Foo {
   private C: string; // (irrelevant)
 
@@ -409,7 +409,7 @@ class Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["public-instance-method", "public-static-field"] }'
 const Foo = class {
   private C: string; // (irrelevant)
 
@@ -429,7 +429,7 @@ const Foo = class {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{ "default": ["public-instance-method", "public-static-field"] }'
 class Foo {
   public B(): void {} // -> public instance method
 
@@ -447,7 +447,7 @@ class Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["public-instance-method", "public-static-field"] }'
 const Foo = class {
   public B(): void {} // -> public instance method
 
@@ -485,7 +485,7 @@ It doesn't apply to interfaces or type literals as accessibility and scope are n
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{ "default": ["public-static-field", "static-field", "instance-field"] }'
 class Foo {
   private E: string; // -> instance field
 
@@ -499,7 +499,7 @@ class Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["public-static-field", "static-field", "instance-field"] }'
 const foo = class {
   public T(): void {} // method (irrelevant)
 
@@ -520,7 +520,7 @@ const foo = class {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{ "default": ["public-static-field", "static-field", "instance-field"] }'
 class Foo {
   public static A: string; // -> public static field
 
@@ -534,7 +534,7 @@ class Foo {
 }
 ```
 
-```ts
+```ts option='{ "default": ["public-static-field", "static-field", "instance-field"] }'
 const foo = class {
   [Z: string]: any; // -> signature (irrelevant)
 
@@ -574,7 +574,7 @@ Default settings will be used for class declarations and all other syntax constr
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{ "classes": ["method", "constructor", "field"] }'
 class Foo {
   private C: string; // -> field
   public D: string; // -> field
@@ -589,7 +589,7 @@ class Foo {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{ "classes": ["method", "constructor", "field"] }'
 class Foo {
   public static A(): void {} // -> method
   public B(): void {} // -> method
@@ -624,7 +624,7 @@ Default settings will be used for class declarations and all other syntax constr
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{ "classExpressions": ["method", "constructor", "field"] }'
 const foo = class {
   private C: string; // -> field
   public D: string; // -> field
@@ -639,7 +639,7 @@ const foo = class {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{ "classExpressions": ["method", "constructor", "field"] }'
 const foo = class {
   public static A(): void {} // -> method
   public B(): void {} // -> method
@@ -678,7 +678,7 @@ These member types are the only ones allowed for `interfaces`.
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "interfaces": ["signature", "method", "constructor", "field"] }'
 interface Foo {
   B: string; // -> field
 
@@ -692,7 +692,7 @@ interface Foo {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "interfaces": ["signature", "method", "constructor", "field"] }'
 interface Foo {
   [Z: string]: any; // -> signature
 
@@ -730,7 +730,7 @@ These member types are the only ones allowed for `typeLiterals`.
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "typeLiterals": ["signature", "method", "constructor", "field"] }'
 type Foo = {
   B: string; // -> field
 
@@ -744,7 +744,7 @@ type Foo = {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "typeLiterals": ["signature", "method", "constructor", "field"] }'
 type Foo = {
   [Z: string]: any; // -> signature
 
@@ -786,7 +786,7 @@ You can copy and paste the default order from [Default Configuration](#default-c
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{"default":{"memberTypes":["signature","call-signature","public-static-field","protected-static-field","private-static-field","#private-static-field","public-decorated-field","protected-decorated-field","private-decorated-field","public-instance-field","protected-instance-field","private-instance-field","#private-instance-field","public-abstract-field","protected-abstract-field","public-field","protected-field","private-field","#private-field","static-field","instance-field","abstract-field","decorated-field","field","static-initialization","public-constructor","protected-constructor","private-constructor","constructor","public-static-get","protected-static-get","private-static-get","#private-static-get","public-decorated-get","protected-decorated-get","private-decorated-get","public-instance-get","protected-instance-get","private-instance-get","#private-instance-get","public-abstract-get","protected-abstract-get","public-get","protected-get","private-get","#private-get","static-get","instance-get","abstract-get","decorated-get","get","public-static-set","protected-static-set","private-static-set","#private-static-set","public-decorated-set","protected-decorated-set","private-decorated-set","public-instance-set","protected-instance-set","private-instance-set","#private-instance-set","public-abstract-set","protected-abstract-set","public-set","protected-set","private-set","#private-set","static-set","instance-set","abstract-set","decorated-set","set","public-static-method","protected-static-method","private-static-method","#private-static-method","public-decorated-method","protected-decorated-method","private-decorated-method","public-instance-method","protected-instance-method","private-instance-method","#private-instance-method","public-abstract-method","protected-abstract-method","public-method","protected-method","private-method","#private-method","static-method","instance-method","abstract-method","decorated-method","method"],"order":"alphabetically"}}'
 interface Foo {
   a: x;
   B: x;
@@ -800,7 +800,7 @@ interface Foo {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{"default":{"memberTypes":["signature","call-signature","public-static-field","protected-static-field","private-static-field","#private-static-field","public-decorated-field","protected-decorated-field","private-decorated-field","public-instance-field","protected-instance-field","private-instance-field","#private-instance-field","public-abstract-field","protected-abstract-field","public-field","protected-field","private-field","#private-field","static-field","instance-field","abstract-field","decorated-field","field","static-initialization","public-constructor","protected-constructor","private-constructor","constructor","public-static-get","protected-static-get","private-static-get","#private-static-get","public-decorated-get","protected-decorated-get","private-decorated-get","public-instance-get","protected-instance-get","private-instance-get","#private-instance-get","public-abstract-get","protected-abstract-get","public-get","protected-get","private-get","#private-get","static-get","instance-get","abstract-get","decorated-get","get","public-static-set","protected-static-set","private-static-set","#private-static-set","public-decorated-set","protected-decorated-set","private-decorated-set","public-instance-set","protected-instance-set","private-instance-set","#private-instance-set","public-abstract-set","protected-abstract-set","public-set","protected-set","private-set","#private-set","static-set","instance-set","abstract-set","decorated-set","set","public-static-method","protected-static-method","private-static-method","#private-static-method","public-decorated-method","protected-decorated-method","private-decorated-method","public-instance-method","protected-instance-method","private-instance-method","#private-instance-method","public-abstract-method","protected-abstract-method","public-method","protected-method","private-method","#private-method","static-method","instance-method","abstract-method","decorated-method","method"],"order":"alphabetically"}}'
 interface Foo {
   B: x;
   a: x;
@@ -814,7 +814,7 @@ interface Foo {
 
 #### Sorting Alphabetically Case Insensitive Within Member Groups
 
-This config specifies that within each `memberTypes` group, members are in an alphabetic case-sensitive order.
+This config specifies that within each `memberTypes` group, members are in an alphabetic case-insensitive order.
 You can copy and paste the default order from [Default Configuration](#default-configuration).
 
 ```jsonc
@@ -840,7 +840,7 @@ You can copy and paste the default order from [Default Configuration](#default-c
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{"default":{"memberTypes":["signature","call-signature","public-static-field","protected-static-field","private-static-field","#private-static-field","public-decorated-field","protected-decorated-field","private-decorated-field","public-instance-field","protected-instance-field","private-instance-field","#private-instance-field","public-abstract-field","protected-abstract-field","public-field","protected-field","private-field","#private-field","static-field","instance-field","abstract-field","decorated-field","field","static-initialization","public-constructor","protected-constructor","private-constructor","constructor","public-static-get","protected-static-get","private-static-get","#private-static-get","public-decorated-get","protected-decorated-get","private-decorated-get","public-instance-get","protected-instance-get","private-instance-get","#private-instance-get","public-abstract-get","protected-abstract-get","public-get","protected-get","private-get","#private-get","static-get","instance-get","abstract-get","decorated-get","get","public-static-set","protected-static-set","private-static-set","#private-static-set","public-decorated-set","protected-decorated-set","private-decorated-set","public-instance-set","protected-instance-set","private-instance-set","#private-instance-set","public-abstract-set","protected-abstract-set","public-set","protected-set","private-set","#private-set","static-set","instance-set","abstract-set","decorated-set","set","public-static-method","protected-static-method","private-static-method","#private-static-method","public-decorated-method","protected-decorated-method","private-decorated-method","public-instance-method","protected-instance-method","private-instance-method","#private-instance-method","public-abstract-method","protected-abstract-method","public-method","protected-method","private-method","#private-method","static-method","instance-method","abstract-method","decorated-method","method"],"order":"alphabetically-case-insensitive"}}'
 interface Foo {
   B: x;
   a: x;
@@ -854,7 +854,7 @@ interface Foo {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{"default":{"memberTypes":["signature","call-signature","public-static-field","protected-static-field","private-static-field","#private-static-field","public-decorated-field","protected-decorated-field","private-decorated-field","public-instance-field","protected-instance-field","private-instance-field","#private-instance-field","public-abstract-field","protected-abstract-field","public-field","protected-field","private-field","#private-field","static-field","instance-field","abstract-field","decorated-field","field","static-initialization","public-constructor","protected-constructor","private-constructor","constructor","public-static-get","protected-static-get","private-static-get","#private-static-get","public-decorated-get","protected-decorated-get","private-decorated-get","public-instance-get","protected-instance-get","private-instance-get","#private-instance-get","public-abstract-get","protected-abstract-get","public-get","protected-get","private-get","#private-get","static-get","instance-get","abstract-get","decorated-get","get","public-static-set","protected-static-set","private-static-set","#private-static-set","public-decorated-set","protected-decorated-set","private-decorated-set","public-instance-set","protected-instance-set","private-instance-set","#private-instance-set","public-abstract-set","protected-abstract-set","public-set","protected-set","private-set","#private-set","static-set","instance-set","abstract-set","decorated-set","set","public-static-method","protected-static-method","private-static-method","#private-static-method","public-decorated-method","protected-decorated-method","private-decorated-method","public-instance-method","protected-instance-method","private-instance-method","#private-instance-method","public-abstract-method","protected-abstract-method","public-method","protected-method","private-method","#private-method","static-method","instance-method","abstract-method","decorated-method","method"],"order":"alphabetically-case-insensitive"}}'
 interface Foo {
   a: x;
   B: x;
@@ -887,7 +887,7 @@ It ignores any member group types completely by specifying `"never"` for `member
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{ "default": { "memberTypes": "never", "order": "alphabetically" } }'
 interface Foo {
   static c = 0;
   b(): void;
@@ -901,7 +901,7 @@ interface Foo {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{ "default": { "memberTypes": "never", "order": "alphabetically" } }'
 interface Foo {
   a: boolean;
   b(): void;
@@ -940,7 +940,7 @@ This config places all optional members before all required members:
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{ "default": { "optionalityOrder": "optional-first", "order": "alphabetically" } }'
 interface Foo {
   a: boolean;
   b?: number;
@@ -950,7 +950,7 @@ interface Foo {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{ "default": { "optionalityOrder": "optional-first", "order": "alphabetically" } }'
 interface Foo {
   b?: number;
   a: boolean;
@@ -983,7 +983,7 @@ This config places all required members before all optional members:
 
 ##### ❌ Incorrect
 
-```ts
+```ts option='{ "default": { "optionalityOrder": "required-first", "order": "alphabetically" } }'
 interface Foo {
   a: boolean;
   b?: number;
@@ -993,7 +993,7 @@ interface Foo {
 
 ##### ✅ Correct
 
-```ts
+```ts option='{ "default": { "optionalityOrder": "required-first", "order": "alphabetically" } }'
 interface Foo {
   a: boolean;
   c: string;

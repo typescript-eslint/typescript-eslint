@@ -98,40 +98,9 @@ function greet(param: Array<string>): Array<string> {}
 
 A boolean to specify if arrays from the rest operator are considered okay. `false` by default.
 
-Examples of **incorrect** code for the `{ "ignoreRestArgs": false }` option:
+The examples below are **incorrect** when `{ignoreRestArgs: false}`, but **correct** when `{ignoreRestArgs: true}`.
 
-```ts
-/*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": false }]*/
-
-function foo1(...args: any[]): void {}
-function foo2(...args: readonly any[]): void {}
-function foo3(...args: Array<any>): void {}
-function foo4(...args: ReadonlyArray<any>): void {}
-
-declare function bar(...args: any[]): void;
-
-const baz = (...args: any[]) => {};
-const qux = function (...args: any[]) {};
-
-type Quux = (...args: any[]) => void;
-type Quuz = new (...args: any[]) => void;
-
-interface Grault {
-  (...args: any[]): void;
-}
-interface Corge {
-  new (...args: any[]): void;
-}
-interface Garply {
-  f(...args: any[]): void;
-}
-```
-
-Examples of **correct** code for the `{ "ignoreRestArgs": true }` option:
-
-```ts
-/*eslint @typescript-eslint/no-explicit-any: ["error", { "ignoreRestArgs": true }]*/
-
+```ts option='{ "ignoreRestArgs": false }' showPlaygroundButton
 function foo1(...args: any[]): void {}
 function foo2(...args: readonly any[]): void {}
 function foo3(...args: Array<any>): void {}
@@ -158,12 +127,18 @@ interface Garply {
 
 ## When Not To Use It
 
-If your project is not fully type-safe, such as if it's in the process of being converted to TypeScript, it may be difficult to enable this rule.
-This can also be the case if it depends on many external dependencies whose types are fully described without `any`s.
-You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+`any` is always a dangerous escape hatch.
+Whenever possible, it is always safer to avoid it.
+TypeScript's `unknown` is almost always preferable to `any`.
 
-Keep in mind that `unknown` is generally a safer type to use than `any`.
-Consider trying to replace `any`s with `unknown`s whenever possible.
+However, there are occasional situations where it can be necessary to use `any`.
+Most commonly:
+
+- If your project isn't fully onboarded to TypeScript yet, `any` can be temporarily used in places where types aren't yet known or representable
+- If an external package doesn't yet have typings and you want to use `any` pending adding a `.d.ts` for it
+- You're working with particularly complex or nuanced code that can't yet be represented in the TypeScript type system
+
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Related To
 
@@ -177,3 +152,5 @@ Consider trying to replace `any`s with `unknown`s whenever possible.
 
 - TypeScript [`any` type](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any)
 - TypeScript's [`unknown` type](https://www.typescriptlang.org/docs/handbook/2/functions.html#unknown)
+- TypeScript [`any` type documentation](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any)
+- TypeScript [`unknown` type release notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type)

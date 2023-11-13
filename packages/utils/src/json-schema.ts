@@ -27,6 +27,23 @@ export type JSONSchema4TypeName =
  */
 export type JSONSchema4Type = boolean | number | string | null;
 
+export type JSONSchema4TypeExtended =
+  | JSONSchema4Type
+  | JSONSchema4Array
+  | JSONSchema4Object;
+
+// Workaround for infinite type recursion
+// Also, https://github.com/typescript-eslint/typescript-eslint/issues/7863
+// eslint-disable-next-line @typescript-eslint/consistent-indexed-object-style
+export interface JSONSchema4Object {
+  [key: string]: JSONSchema4TypeExtended;
+}
+
+// Workaround for infinite type recursion
+// https://github.com/Microsoft/TypeScript/issues/3496#issuecomment-128553540
+// eslint-disable-next-line @typescript-eslint/no-empty-interface
+export interface JSONSchema4Array extends Array<JSONSchema4TypeExtended> {}
+
 /**
  * Meta schema
  *
@@ -51,7 +68,7 @@ export type JSONSchema4 =
   | JSONSchema4AnyOfSchema
   | JSONSchema4AnySchema
   | JSONSchema4ArraySchema
-  | JSONSchema4BoleanSchema
+  | JSONSchema4BooleanSchema
   | JSONSchema4MultiSchema
   | JSONSchema4NullSchema
   | JSONSchema4NumberSchema
@@ -133,7 +150,7 @@ interface JSONSchema4Base {
   /**
    * The default value for the item if not present
    */
-  default?: JSONSchema4Type | undefined;
+  default?: JSONSchema4TypeExtended | undefined;
 
   /**
    * This attribute indicates if the instance must have a value, and not
@@ -187,7 +204,7 @@ export interface JSONSchema4MultiSchema
     Omit<JSONSchema4ArraySchema, 'enum' | 'type'>,
     Omit<JSONSchema4StringSchema, 'enum' | 'type'>,
     Omit<JSONSchema4NumberSchema, 'enum' | 'type'>,
-    Omit<JSONSchema4BoleanSchema, 'enum' | 'type'>,
+    Omit<JSONSchema4BooleanSchema, 'enum' | 'type'>,
     Omit<JSONSchema4NullSchema, 'enum' | 'type'>,
     Omit<JSONSchema4AnySchema, 'enum' | 'type'> {
   type: JSONSchema4TypeName[];
@@ -440,7 +457,7 @@ export interface JSONSchema4NumberSchema extends JSONSchema4Base {
 /**
  * @see https://json-schema.org/understanding-json-schema/reference/boolean.html
  */
-export interface JSONSchema4BoleanSchema extends JSONSchema4Base {
+export interface JSONSchema4BooleanSchema extends JSONSchema4Base {
   type: 'boolean';
 
   /**

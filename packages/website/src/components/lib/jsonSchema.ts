@@ -37,11 +37,12 @@ export function getRuleJsonSchemaWithErrorLevel(
       additionalItems: false,
     };
   }
-  if (ruleSchema.type === 'array') {
+  if ('items' in ruleSchema) {
     // example: explicit-member-accessibility
     if (isArray(ruleSchema.items)) {
       return {
         ...ruleSchema,
+        type: 'array',
         items: [defaultRuleSchema, ...ruleSchema.items],
         maxItems: ruleSchema.maxItems ? ruleSchema.maxItems + 1 : undefined,
         minItems: ruleSchema.minItems ? ruleSchema.minItems + 1 : 1,
@@ -52,7 +53,10 @@ export function getRuleJsonSchemaWithErrorLevel(
     if (typeof ruleSchema.items === 'object' && ruleSchema.items) {
       return {
         ...ruleSchema,
+        type: 'array',
         items: [defaultRuleSchema],
+        maxItems: ruleSchema.maxItems ? ruleSchema.maxItems + 1 : undefined,
+        minItems: ruleSchema.minItems ? ruleSchema.minItems + 1 : 1,
         additionalItems: ruleSchema.items,
       };
     }
@@ -114,7 +118,7 @@ export function getEslintJsonSchema(
           { type: 'string' },
           {
             type: 'array',
-            items: { type: 'string', enum: Object.keys(linter.configs) },
+            items: { type: 'string', enum: linter.configs },
             uniqueItems: true,
           },
         ],

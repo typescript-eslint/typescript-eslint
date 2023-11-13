@@ -2,7 +2,12 @@ import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import naturalCompare from 'natural-compare';
 
-import * as util from '../util';
+import {
+  createRule,
+  getNameFromIndexSignature,
+  getNameFromMember,
+  MemberNameType,
+} from '../util';
 
 export type MessageIds =
   | 'incorrectGroupOrder'
@@ -380,12 +385,12 @@ function getMemberRawName(
     | TSESTree.TSPropertySignature,
   sourceCode: TSESLint.SourceCode,
 ): string {
-  const { name, type } = util.getNameFromMember(member, sourceCode);
+  const { name, type } = getNameFromMember(member, sourceCode);
 
-  if (type === util.MemberNameType.Quoted) {
+  if (type === MemberNameType.Quoted) {
     return name.slice(1, -1);
   }
-  if (type === util.MemberNameType.Private) {
+  if (type === MemberNameType.Private) {
     return name.slice(1);
   }
   return name;
@@ -417,7 +422,7 @@ function getMemberName(
     case AST_NODE_TYPES.TSCallSignatureDeclaration:
       return 'call';
     case AST_NODE_TYPES.TSIndexSignature:
-      return util.getNameFromIndexSignature(node);
+      return getNameFromIndexSignature(node);
     case AST_NODE_TYPES.StaticBlock:
       return 'static block';
     default:
@@ -480,7 +485,7 @@ function getAccessibility(node: Member): Accessibility {
   if ('accessibility' in node && node.accessibility) {
     return node.accessibility;
   }
-  if ('key' in node && node.key?.type === AST_NODE_TYPES.PrivateIdentifier) {
+  if ('key' in node && node.key.type === AST_NODE_TYPES.PrivateIdentifier) {
     return '#private';
   }
   return 'public';
@@ -611,7 +616,7 @@ function getLowestRank(
   return lowestRanks.map(rank => rank.replace(/-/g, ' ')).join(', ');
 }
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'member-ordering',
   meta: {
     type: 'suggestion',
@@ -720,13 +725,13 @@ export default util.createRule<Options, MessageIds>({
       let isCorrectlySorted = true;
 
       // Find first member which isn't correctly sorted
-      members.forEach(member => {
+      for (const member of members) {
         const rank = getRank(member, groupOrder, supportsModifiers);
         const name = getMemberName(member, context.getSourceCode());
         const rankLastMember = previousRanks[previousRanks.length - 1];
 
         if (rank === -1) {
-          return;
+          continue;
         }
 
         // Works for 1st item because x < undefined === false for any x (typeof string)
@@ -749,7 +754,7 @@ export default util.createRule<Options, MessageIds>({
           previousRanks.push(rank);
           memberGroups.push([member]);
         }
-      });
+      }
 
       return isCorrectlySorted ? memberGroups : null;
     }

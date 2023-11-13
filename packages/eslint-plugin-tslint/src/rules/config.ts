@@ -146,7 +146,7 @@ export default createRule<Options, MessageIds>({
     /**
      * Format the TSLint results for ESLint
      */
-    if (result.failures?.length) {
+    if (result.failures.length) {
       result.failures.forEach(failure => {
         const start = failure.getStartPosition().getLineAndCharacter();
         const end = failure.getEndPosition().getLineAndCharacter();

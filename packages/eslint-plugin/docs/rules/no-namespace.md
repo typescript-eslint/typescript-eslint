@@ -48,14 +48,14 @@ Examples of code with the `{ "allowDeclarations": true }` option:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowDeclarations": true }'
 module foo {}
 namespace foo {}
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowDeclarations": true }'
 declare module 'foo' {}
 declare module foo {}
 declare namespace foo {}
@@ -77,7 +77,7 @@ Examples of code for the `{ "allowDeclarations": false }` option:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowDeclarations": false }'
 module foo {}
 namespace foo {}
 declare module foo {}
@@ -86,7 +86,7 @@ declare namespace foo {}
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowDeclarations": false }'
 declare module 'foo' {}
 ```
 
@@ -98,7 +98,7 @@ Examples of code for the `{ "allowDefinitionFiles": true }` option:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowDefinitionFiles": true }'
 // if outside a d.ts file
 module foo {}
 namespace foo {}
@@ -112,7 +112,7 @@ declare namespace foo {}
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowDefinitionFiles": true }'
 declare module 'foo' {}
 
 // anything inside a d.ts file

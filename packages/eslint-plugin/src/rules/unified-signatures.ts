@@ -1,7 +1,8 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import type { Equal } from '../util';
+import { arraysAreEqual, createRule } from '../util';
 
 interface Failure {
   unify: Unify;
@@ -61,7 +62,7 @@ type Options = [
   },
 ];
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'unified-signatures',
   meta: {
     docs: {
@@ -229,7 +230,7 @@ export default util.createRule<Options, MessageIds>({
         typesAreEqual(a.returnType, b.returnType) &&
         // Must take the same type parameters.
         // If one uses a type parameter (from outside) and the other doesn't, they shouldn't be joined.
-        util.arraysAreEqual(aTypeParams, bTypeParams, typeParametersAreEqual) &&
+        arraysAreEqual(aTypeParams, bTypeParams, typeParametersAreEqual) &&
         signatureUsesTypeParameter(a, isTypeParameter) ===
           signatureUsesTypeParameter(b, isTypeParameter)
       );
@@ -251,7 +252,7 @@ export default util.createRule<Options, MessageIds>({
 
       // If remaining arrays are equal, the signatures differ by just one parameter type
       if (
-        !util.arraysAreEqual(
+        !arraysAreEqual(
           types1.slice(index + 1),
           types2.slice(index + 1),
           parametersAreEqual,
@@ -367,7 +368,7 @@ export default util.createRule<Options, MessageIds>({
         }
 
         return typeContainsTypeParameter(
-          (type as TSESTree.TSTypeAnnotation).typeAnnotation ||
+          (type as Partial<TSESTree.TSTypeAnnotation>).typeAnnotation ||
             (type as TSESTree.TSArrayType).elementType,
         );
       }
@@ -376,10 +377,7 @@ export default util.createRule<Options, MessageIds>({
     function isTSParameterProperty(
       node: TSESTree.Node,
     ): node is TSESTree.TSParameterProperty {
-      return (
-        (node as TSESTree.TSParameterProperty).type ===
-        AST_NODE_TYPES.TSParameterProperty
-      );
+      return node.type === AST_NODE_TYPES.TSParameterProperty;
     }
 
     function parametersAreEqual(
@@ -462,7 +460,7 @@ export default util.createRule<Options, MessageIds>({
     function getIndexOfFirstDifference<T>(
       a: readonly T[],
       b: readonly T[],
-      equal: util.Equal<T>,
+      equal: Equal<T>,
     ): number | undefined {
       for (let i = 0; i < a.length && i < b.length; i++) {
         if (!equal(a[i], b[i])) {
@@ -491,7 +489,7 @@ export default util.createRule<Options, MessageIds>({
     }
 
     const scopes: Scope[] = [];
-    let currentScope: Scope = {
+    let currentScope: Scope | undefined = {
       overloads: new Map<string, OverloadNode[]>(),
     };
 
@@ -509,11 +507,11 @@ export default util.createRule<Options, MessageIds>({
 
     function checkScope(): void {
       const failures = checkOverloads(
-        Array.from(currentScope.overloads.values()),
-        currentScope.typeParameters,
+        Array.from(currentScope!.overloads.values()),
+        currentScope!.typeParameters,
       );
       addFailures(failures);
-      currentScope = scopes.pop()!;
+      currentScope = scopes.pop();
     }
 
     function addOverload(
@@ -521,7 +519,7 @@ export default util.createRule<Options, MessageIds>({
       key?: string,
       containingNode?: ContainingNode,
     ): void {
-      key = key ?? getOverloadKey(signature);
+      key ??= getOverloadKey(signature);
       if (
         currentScope &&
         (containingNode || signature).parent === currentScope.parent

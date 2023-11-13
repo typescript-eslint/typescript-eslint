@@ -83,14 +83,14 @@ export { x };
 
 ### ❌ Incorrect
 
-```ts
+```ts option='{ "fixMixedExportsWithInlineTypeSpecifier": true }'
 export { Button } from 'some-library';
 export type { ButtonProps } from 'some-library';
 ```
 
 ### ✅ Correct
 
-```ts
+```ts option='{ "fixMixedExportsWithInlineTypeSpecifier": true }'
 export { Button, type ButtonProps } from 'some-library';
 ```
 

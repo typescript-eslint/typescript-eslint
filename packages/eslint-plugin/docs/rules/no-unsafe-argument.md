@@ -73,8 +73,8 @@ There are cases where the rule allows passing an argument of `any` to `unknown`.
 
 Example of `any` to `unknown` assignment that are allowed:
 
-```ts
-declare function foo(arg1: unknown, arg2: Set<unkown>, arg3: unknown[]): void;
+```ts showPlaygroundButton
+declare function foo(arg1: unknown, arg2: Set<unknown>, arg3: unknown[]): void;
 foo(1 as any, new Set<any>(), [] as any[]);
 ```
 

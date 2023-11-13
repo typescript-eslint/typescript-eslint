@@ -2,7 +2,7 @@ import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 const SENTINEL_TYPE =
   /^(?:(?:Function|Class)(?:Declaration|Expression)|ArrowFunctionExpression|CatchClause|ImportDeclaration|ExportNamedDeclaration)$/;
@@ -101,7 +101,7 @@ function isOuterVariable(
 function isNamedExports(reference: TSESLint.Scope.Reference): boolean {
   const { identifier } = reference;
   return (
-    identifier.parent?.type === AST_NODE_TYPES.ExportSpecifier &&
+    identifier.parent.type === AST_NODE_TYPES.ExportSpecifier &&
     identifier.parent.local === identifier
   );
 }
@@ -152,12 +152,8 @@ function isClassRefInClassDecorator(
   variable: TSESLint.Scope.Variable,
   reference: TSESLint.Scope.Reference,
 ): boolean {
-  if (variable.defs[0].type !== DefinitionType.ClassName) {
-    return false;
-  }
-
   if (
-    !variable.defs[0].node.decorators ||
+    variable.defs[0].type !== DefinitionType.ClassName ||
     variable.defs[0].node.decorators.length === 0
   ) {
     return false;
@@ -202,9 +198,8 @@ function isInInitializer(
         return true;
       }
       if (
-        node.parent?.parent &&
-        (node.parent.parent.type === AST_NODE_TYPES.ForInStatement ||
-          node.parent.parent.type === AST_NODE_TYPES.ForOfStatement) &&
+        (node.parent.parent?.type === AST_NODE_TYPES.ForInStatement ||
+          node.parent.parent?.type === AST_NODE_TYPES.ForOfStatement) &&
         isInRange(node.parent.parent.right, location)
       ) {
         return true;
@@ -236,7 +231,7 @@ interface Config {
 type Options = [Config | 'nofunc'];
 type MessageIds = 'noUseBeforeDefine';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-use-before-define',
   meta: {
     type: 'problem',

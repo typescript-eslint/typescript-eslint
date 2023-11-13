@@ -1,15 +1,18 @@
-import type { TSESTree } from '@typescript-eslint/utils';
-import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-unused-expressions');
 
-type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
-type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
+type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
+type Options = InferOptionsTypeFromRule<typeof baseRule>;
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-unused-expressions',
   meta: {
     type: 'suggestion',
@@ -51,6 +54,17 @@ export default util.createRule<Options, MessageIds>({
     return {
       ExpressionStatement(node): void {
         if (node.directive || isValidExpression(node.expression)) {
+          return;
+        }
+
+        if (
+          node.expression.type ===
+          TSESTree.AST_NODE_TYPES.TSInstantiationExpression
+        ) {
+          rules.ExpressionStatement({
+            ...node,
+            expression: node.expression.expression,
+          });
           return;
         }
 

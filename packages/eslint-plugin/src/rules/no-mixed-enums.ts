@@ -5,7 +5,7 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import { createRule, getParserServices } from '../util';
 
 enum AllowedType {
   Number,
@@ -13,7 +13,7 @@ enum AllowedType {
   Unknown,
 }
 
-export default util.createRule({
+export default createRule({
   name: 'no-mixed-enums',
   meta: {
     docs: {
@@ -29,7 +29,7 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const parserServices = util.getParserServices(context);
+    const parserServices = getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
 
     interface CollectedDefinitions {
@@ -59,7 +59,7 @@ export default util.createRule({
       }
 
       while (scope) {
-        scope.set.get(name)?.defs?.forEach(definition => {
+        scope.set.get(name)?.defs.forEach(definition => {
           if (definition.type === DefinitionType.ImportBinding) {
             found.imports.push(definition.node);
           }
@@ -207,10 +207,7 @@ export default util.createRule({
             desiredType ??= currentType;
           }
 
-          if (
-            currentType !== desiredType &&
-            (currentType !== undefined || desiredType === AllowedType.String)
-          ) {
+          if (currentType !== desiredType) {
             context.report({
               messageId: 'mixed',
               node: member.initializer ?? member,

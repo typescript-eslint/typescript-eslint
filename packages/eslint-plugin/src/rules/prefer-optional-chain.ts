@@ -3,7 +3,12 @@ import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { RuleFix } from '@typescript-eslint/utils/ts-eslint';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getOperatorPrecedence,
+  getParserServices,
+  OperatorPrecedence,
+} from '../util';
 import { analyzeChain } from './prefer-optional-chain-utils/analyzeChain';
 import type { ValidOperand } from './prefer-optional-chain-utils/gatherLogicalOperands';
 import {
@@ -15,7 +20,7 @@ import type {
   PreferOptionalChainOptions,
 } from './prefer-optional-chain-utils/PreferOptionalChainOptions';
 
-export default util.createRule<
+export default createRule<
   [PreferOptionalChainOptions],
   PreferOptionalChainMessageIds
 >({
@@ -98,7 +103,7 @@ export default util.createRule<
   ],
   create(context, [options]) {
     const sourceCode = context.getSourceCode();
-    const parserServices = util.getParserServices(context);
+    const parserServices = getParserServices(context);
 
     const seenLogicals = new Set<TSESTree.LogicalExpression>();
 
@@ -115,7 +120,6 @@ export default util.createRule<
           rightNode.properties.length === 0;
         if (
           !isRightNodeAnEmptyObjectLiteral ||
-          !parentNode ||
           parentNode.type !== AST_NODE_TYPES.MemberExpression ||
           parentNode.optional
         ) {
@@ -131,12 +135,12 @@ export default util.createRule<
           const operator = ts.isBinaryExpression(logicalTsNode)
             ? logicalTsNode.operatorToken.kind
             : ts.SyntaxKind.Unknown;
-          const leftPrecedence = util.getOperatorPrecedence(
+          const leftPrecedence = getOperatorPrecedence(
             leftTsNode.kind,
             operator,
           );
 
-          return leftPrecedence < util.OperatorPrecedence.LeftHandSide;
+          return leftPrecedence < OperatorPrecedence.LeftHandSide;
         }
         context.report({
           node: parentNode,

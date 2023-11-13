@@ -83,7 +83,7 @@ const { double } = arith;
 
 Examples of **correct** code for this rule with `{ ignoreStatic: true }`:
 
-```ts
+```ts option='{ "ignoreStatic": true }' showPlaygroundButton
 class OtherClass {
   static log() {
     console.log(OtherClass);

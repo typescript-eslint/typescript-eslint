@@ -1,0 +1,58 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`AST Fixtures declaration VariableDeclaration await-using-with-value Babel - AST 1`] = `
+Program {
+  type: "Program",
+  body: [
+    VariableDeclaration {
+      type: "VariableDeclaration",
+      declarations: [
+        VariableDeclarator {
+          type: "VariableDeclarator",
+          id: Identifier {
+            type: "Identifier",
+            name: "a",
+
+            range: [12, 13],
+            loc: {
+              start: { column: 12, line: 1 },
+              end: { column: 13, line: 1 },
+            },
+          },
+          init: Literal {
+            type: "Literal",
+            raw: "1",
+            value: 1,
+
+            range: [16, 17],
+            loc: {
+              start: { column: 16, line: 1 },
+              end: { column: 17, line: 1 },
+            },
+          },
+
+          range: [12, 17],
+          loc: {
+            start: { column: 12, line: 1 },
+            end: { column: 17, line: 1 },
+          },
+        },
+      ],
+      kind: "await using",
+
+      range: [0, 18],
+      loc: {
+        start: { column: 0, line: 1 },
+        end: { column: 18, line: 1 },
+      },
+    },
+  ],
+  sourceType: "script",
+
+  range: [0, 19],
+  loc: {
+    start: { column: 0, line: 1 },
+    end: { column: 0, line: 2 },
+  },
+}
+`;

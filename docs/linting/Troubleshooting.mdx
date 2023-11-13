@@ -333,7 +333,11 @@ Rules such as [`no-unsafe-argument`](/rules/no-unsafe-argument), [`no-unsafe-ass
 If you're seeing this warning, it's likely you're using an ESLint plugin (or other tooling) that hasn't been updated for typescript-eslint v6.
 Make sure you're using the latest versions of each of your ESLint plugins (and other tooling).
 
-If you've using many ESLint plugins, have updated each to their latest version, and you're not sure which one this complaint is coming from, try disabling half of them at a time to narrow down which plugin it is.
+If you've using many ESLint plugins, have updated each to their latest version, and you're not sure which one this complaint is coming from, try either or both of:
+
+- Running with [`--trace-deprecation`](https://nodejs.org/api/cli.html#--trace-deprecation) (e.g. `npx crossenv NODE_OPTIONS=--trace-deprecation npm lint`)
+- Disabling half of them at a time to narrow down which plugin it is
+
 Then make sure each of those plugins has a GitHub issue asking that they release a version supporting typescript-eslint v6.
 
 :::tip

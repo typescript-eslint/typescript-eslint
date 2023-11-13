@@ -183,7 +183,7 @@ export default createRule<Options, MessageIds>({
           }
 
           const prevToken = tokensAndComments[i - 1];
-          const nextToken = tokensAndComments[i + 1];
+          const nextToken = tokensAndComments.at(i + 1);
 
           validateCommaSpacing(
             token,
@@ -192,7 +192,7 @@ export default createRule<Options, MessageIds>({
               : prevToken,
             (nextToken && isCommaToken(nextToken)) || ignoredTokens.has(token)
               ? null
-              : nextToken,
+              : nextToken ?? null,
           );
         });
       },
