@@ -1,8 +1,11 @@
-import type { Linter, ParserOptions } from '@typescript-eslint/utils/ts-eslint';
+import type {
+  ClassicConfig,
+  ParserOptions,
+} from '@typescript-eslint/utils/ts-eslint';
 
 import type { DependencyConstraint } from './DependencyConstraint';
 
-export interface RuleTesterConfig extends Linter.Config {
+export interface RuleTesterConfig extends ClassicConfig.Config {
   /**
    * The default parser to use for tests.
    * @default '@typescript-eslint/parser'

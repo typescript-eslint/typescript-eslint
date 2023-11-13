@@ -94,7 +94,6 @@ export default createRule({
         accessedSymbol.flags,
         sourceCode.getText(name),
       );
-
       return (
         fromScope === undefined || symbolsAreEqual(accessedSymbol, fromScope)
       );
@@ -160,7 +159,11 @@ export default createRule({
     }
 
     return {
-      TSModuleDeclaration: enterDeclaration,
+      'TSModuleDeclaration > TSModuleBlock'(
+        node: TSESTree.TSModuleBlock,
+      ): void {
+        enterDeclaration(node.parent as TSESTree.TSModuleDeclaration);
+      },
       TSEnumDeclaration: enterDeclaration,
       'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]':
         enterDeclaration,

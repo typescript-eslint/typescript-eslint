@@ -65,9 +65,9 @@ function foo(x: number | undefined): number {
 
 ### `typesToIgnore`
 
-With `@typescript-eslint/no-unnecessary-type-assertion: ["error", { typesToIgnore: ['Foo'] }]`, the following is **correct** code":
+With `@typescript-eslint/no-unnecessary-type-assertion: ["error", { typesToIgnore: ['Foo'] }]`, the following is **correct** code:
 
-```ts
+```ts option='{ "typesToIgnore": ["Foo"] }' showPlaygroundButton
 type Foo = 3;
 const foo: Foo = 3;
 ```

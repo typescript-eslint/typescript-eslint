@@ -10,7 +10,8 @@ exports[`AST Fixtures declaration ExportNamedDeclaration variable-declaration AS
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         declaration: VariableDeclaration {
           type: 'VariableDeclaration',
           declarations: Array [

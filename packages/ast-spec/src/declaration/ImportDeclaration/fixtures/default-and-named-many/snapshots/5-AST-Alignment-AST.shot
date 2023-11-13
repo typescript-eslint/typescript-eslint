@@ -10,7 +10,8 @@ exports[`AST Fixtures declaration ImportDeclaration default-and-named-many AST A
     body: Array [
       ImportDeclaration {
         type: 'ImportDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         importKind: 'value',
         source: Literal {
           type: 'Literal',

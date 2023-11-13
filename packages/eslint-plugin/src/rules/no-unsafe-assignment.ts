@@ -186,7 +186,7 @@ export default createRule({
         }
 
         let key: string;
-        if (receiverProperty.computed === false) {
+        if (!receiverProperty.computed) {
           key =
             receiverProperty.key.type === AST_NODE_TYPES.Identifier
               ? receiverProperty.key.name

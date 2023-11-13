@@ -24,7 +24,16 @@ exports[`recommended-does-not-require-program should lint successfully 1`] = `
     "output": "const foo: unknown = true;
 ",
     "suppressedMessages": [],
-    "usedDeprecatedRules": [],
+    "usedDeprecatedRules": [
+      {
+        "replacedBy": [],
+        "ruleId": "no-extra-semi",
+      },
+      {
+        "replacedBy": [],
+        "ruleId": "no-mixed-spaces-and-tabs",
+      },
+    ],
     "warningCount": 0,
   },
 ]

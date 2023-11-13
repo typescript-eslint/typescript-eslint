@@ -256,7 +256,7 @@ export const rule = createRule({
 ## Typed Rules
 
 :::tip
-Read TypeScript's [Compiler APIs > Using the Type Checker](https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API#using-the-type-checker) section for how to use a program's type checker.
+Read TypeScript's [Compiler APIs > Type Checker APIs](https://github.com/microsoft/TypeScript/wiki/Using-the-Compiler-API#type-checker-apis) for how to use a program's type checker.
 :::
 
 The biggest addition typescript-eslint brings to ESLint rules is the ability to use TypeScript's type checker APIs.
@@ -322,6 +322,13 @@ export const rule = createRule({
 :::note
 Rules can retrieve their full backing TypeScript type checker with `services.program.getTypeChecker()`.
 This can be necessary for TypeScript APIs not wrapped by the parser services.
+:::
+
+:::caution
+We recommend against changing rule logic based solely on whether `services.program` exists.
+In our experience, users are generally surprised when rules behave differently with or without type information.
+Additionally, if they misconfigure their ESLint config, they may not realize why the rule started behaving differently.
+Consider either gating type checking behind an explicit option for the rule or creating two versions of the rule instead.
 :::
 
 ## Testing

@@ -155,7 +155,7 @@ export default createRule<Options, MessageIds>({
         isAllowedOverrideMethods &&
         isBodyEmpty(node) &&
         node.parent?.type === AST_NODE_TYPES.MethodDefinition &&
-        node.parent.override === true
+        node.parent.override
       );
     }
 

@@ -10,6 +10,7 @@ import { deepMerge } from '@typescript-eslint/utils/eslint-utils';
 import type {
   AnyRuleCreateFunction,
   AnyRuleModule,
+  Parser,
   ParserOptions,
   RuleContext,
   RuleModule,
@@ -91,7 +92,7 @@ export class RuleTester extends TestFramework {
       // as of eslint 6 you have to provide an absolute path to the parser
       // but that's not as clean to type, this saves us trying to manually enforce
       // that contributors require.resolve everything
-      parser: require.resolve((testerConfig ?? defaultConfig).parser),
+      parser: require.resolve(testerConfig?.parser ?? defaultConfig.parser),
     });
 
     // make sure that the parser doesn't hold onto file handles between tests
@@ -237,7 +238,7 @@ export class RuleTester extends TestFramework {
 
     // convenience iterator to make it easy to loop all tests without a concat
     const allTestsIterator = {
-      *[Symbol.iterator](): Generator<ValidTestCase<TOptions>, void, unknown> {
+      *[Symbol.iterator](): Generator<ValidTestCase<TOptions>, void> {
         for (const testCase of normalizedTests.valid) {
           yield testCase;
         }
@@ -525,7 +526,7 @@ export class RuleTester extends TestFramework {
 
     this.#linter.defineParser(
       config.parser,
-      wrapParser(require(config.parser) as Linter.ParserModule),
+      wrapParser(require(config.parser) as Parser.ParserModule),
     );
 
     if (schema) {
