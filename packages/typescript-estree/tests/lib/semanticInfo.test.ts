@@ -228,11 +228,11 @@ describe('semanticInfo', () => {
     expect(boundName.name).toBe('x');
 
     const tsBoundName =
-      parseResult.services.esTreeNodeToTSNodeMap?.get(boundName);
+      parseResult.services.esTreeNodeToTSNodeMap.get(boundName);
     expectToBeDefined(tsBoundName);
     expect(tsBoundName).toBeDefined();
 
-    expect(parseResult.services.tsNodeToESTreeNodeMap?.get(tsBoundName)).toBe(
+    expect(parseResult.services.tsNodeToESTreeNodeMap.get(tsBoundName)).toBe(
       boundName,
     );
   });

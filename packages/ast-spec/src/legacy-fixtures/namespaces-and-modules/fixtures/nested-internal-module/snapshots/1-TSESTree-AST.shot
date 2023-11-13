@@ -11,7 +11,7 @@ Program {
         body: [
           ExportNamedDeclaration {
             type: "ExportNamedDeclaration",
-            assertions: [],
+            attributes: [],
             declaration: VariableDeclaration {
               type: "VariableDeclaration",
               declarations: [
@@ -70,7 +70,7 @@ Program {
           },
           ExportNamedDeclaration {
             type: "ExportNamedDeclaration",
-            assertions: [],
+            attributes: [],
             declaration: ClassDeclaration {
               type: "ClassDeclaration",
               abstract: false,
@@ -261,7 +261,7 @@ Program {
           },
           ExportNamedDeclaration {
             type: "ExportNamedDeclaration",
-            assertions: [],
+            attributes: [],
             declaration: TSModuleDeclaration {
               type: "TSModuleDeclaration",
               body: TSModuleBlock {
@@ -269,7 +269,7 @@ Program {
                 body: [
                   ExportNamedDeclaration {
                     type: "ExportNamedDeclaration",
-                    assertions: [],
+                    attributes: [],
                     declaration: TSInterfaceDeclaration {
                       type: "TSInterfaceDeclaration",
                       body: TSInterfaceBody {

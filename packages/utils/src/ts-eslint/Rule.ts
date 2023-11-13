@@ -195,6 +195,8 @@ interface RuleContext<
   parserOptions: Linter.ParserOptions;
   /**
    * An object containing parser-provided services for rules
+   *
+   * @deprecated in favor of `SourceCode#parserServices`
    */
   parserServices?: ParserServices;
   /**
@@ -207,12 +209,16 @@ interface RuleContext<
    * Returns an array of the ancestors of the currently-traversed node, starting at
    * the root of the AST and continuing through the direct parent of the current node.
    * This array does not include the currently-traversed node itself.
+   *
+   * @deprecated in favor of `SourceCode#getAncestors`
    */
   getAncestors(): TSESTree.Node[];
 
   /**
    * Returns a list of variables declared by the given node.
    * This information can be used to track references to variables.
+   *
+   * @deprecated in favor of `SourceCode#getDeclaredVariables`
    */
   getDeclaredVariables(node: TSESTree.Node): readonly Scope.Variable[];
 
@@ -220,6 +226,7 @@ interface RuleContext<
    * Returns the current working directory passed to Linter.
    * It is a path to a directory that should be considered as the current working directory.
    * @since 6.6.0
+   * @deprecated in favor of `RuleContext#cwd`
    */
   getCwd(): string;
 
@@ -232,6 +239,8 @@ interface RuleContext<
 
   /**
    * Returns the filename associated with the source.
+   *
+   * @deprecated in favor of `RuleContext#filename`
    */
   getFilename(): string;
 
@@ -244,6 +253,7 @@ interface RuleContext<
   /**
    * Returns the full path of the file on disk without any code block information (unlike `getFilename()`).
    * @since 7.28.0
+   * @deprecated in favor of `RuleContext#physicalFilename`
    */
   getPhysicalFilename?(): string;
 
@@ -256,12 +266,16 @@ interface RuleContext<
   /**
    * Returns the scope of the currently-traversed node.
    * This information can be used track references to variables.
+   *
+   * @deprecated in favor of `SourceCode#getScope`
    */
   getScope(): Scope.Scope;
 
   /**
    * Returns a SourceCode object that you can use to work with the source that
    * was passed to ESLint.
+   *
+   * @deprecated in favor of `RuleContext#sourceCode`
    */
   getSourceCode(): Readonly<SourceCode>;
 
@@ -275,6 +289,8 @@ interface RuleContext<
   /**
    * Marks a variable with the given name in the current scope as used.
    * This affects the no-unused-vars rule.
+   *
+   * @deprecated in favor of `SourceCode#markVariableAsUsed`
    */
   markVariableAsUsed(name: string): boolean;
 

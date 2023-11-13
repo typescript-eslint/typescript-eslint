@@ -1447,7 +1447,8 @@ exports[`AST Fixtures legacy-fixtures basics keyword-variables AST Alignment - A
       },
       ImportDeclaration {
         type: 'ImportDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         importKind: 'value',
         source: Literal {
           type: 'Literal',

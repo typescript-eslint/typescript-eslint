@@ -58,7 +58,7 @@ function createProjectProgram(
   ];
   let hasMatchedAnError = false;
 
-  const extraFileExtensions = parseSettings.extraFileExtensions || [];
+  const { extraFileExtensions } = parseSettings;
 
   extraFileExtensions.forEach(extraExtension => {
     if (!extraExtension.startsWith('.')) {
