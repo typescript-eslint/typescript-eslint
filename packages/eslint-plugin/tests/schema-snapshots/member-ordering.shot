@@ -9,8 +9,10 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "$defs": {
       "allItems": {
         "enum": [
+          "#private-accessor",
           "#private-field",
           "#private-get",
+          "#private-instance-accessor",
           "#private-instance-field",
           "#private-instance-get",
           "#private-instance-method",
@@ -20,20 +22,24 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "#private-method",
           "#private-readonly-field",
           "#private-set",
+          "#private-static-accessor",
           "#private-static-field",
           "#private-static-get",
           "#private-static-method",
           "#private-static-readonly-field",
           "#private-static-set",
           "#private-static-static-initialization",
+          "abstract-accessor",
           "abstract-field",
           "abstract-get",
           "abstract-method",
           "abstract-readonly-field",
           "abstract-set",
           "abstract-static-initialization",
+          "accessor",
           "call-signature",
           "constructor",
+          "decorated-accessor",
           "decorated-field",
           "decorated-get",
           "decorated-method",
@@ -41,6 +47,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "decorated-set",
           "field",
           "get",
+          "instance-accessor",
           "instance-field",
           "instance-get",
           "instance-method",
@@ -48,7 +55,9 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "instance-set",
           "instance-static-initialization",
           "method",
+          "private-accessor",
           "private-constructor",
+          "private-decorated-accessor",
           "private-decorated-field",
           "private-decorated-get",
           "private-decorated-method",
@@ -56,6 +65,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "private-decorated-set",
           "private-field",
           "private-get",
+          "private-instance-accessor",
           "private-instance-field",
           "private-instance-get",
           "private-instance-method",
@@ -65,19 +75,23 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "private-method",
           "private-readonly-field",
           "private-set",
+          "private-static-accessor",
           "private-static-field",
           "private-static-get",
           "private-static-method",
           "private-static-readonly-field",
           "private-static-set",
           "private-static-static-initialization",
+          "protected-abstract-accessor",
           "protected-abstract-field",
           "protected-abstract-get",
           "protected-abstract-method",
           "protected-abstract-readonly-field",
           "protected-abstract-set",
           "protected-abstract-static-initialization",
+          "protected-accessor",
           "protected-constructor",
+          "protected-decorated-accessor",
           "protected-decorated-field",
           "protected-decorated-get",
           "protected-decorated-method",
@@ -85,6 +99,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "protected-decorated-set",
           "protected-field",
           "protected-get",
+          "protected-instance-accessor",
           "protected-instance-field",
           "protected-instance-get",
           "protected-instance-method",
@@ -94,19 +109,23 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "protected-method",
           "protected-readonly-field",
           "protected-set",
+          "protected-static-accessor",
           "protected-static-field",
           "protected-static-get",
           "protected-static-method",
           "protected-static-readonly-field",
           "protected-static-set",
           "protected-static-static-initialization",
+          "public-abstract-accessor",
           "public-abstract-field",
           "public-abstract-get",
           "public-abstract-method",
           "public-abstract-readonly-field",
           "public-abstract-set",
           "public-abstract-static-initialization",
+          "public-accessor",
           "public-constructor",
+          "public-decorated-accessor",
           "public-decorated-field",
           "public-decorated-get",
           "public-decorated-method",
@@ -114,6 +133,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "public-decorated-set",
           "public-field",
           "public-get",
+          "public-instance-accessor",
           "public-instance-field",
           "public-instance-get",
           "public-instance-method",
@@ -123,6 +143,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "public-method",
           "public-readonly-field",
           "public-set",
+          "public-static-accessor",
           "public-static-field",
           "public-static-get",
           "public-static-method",
@@ -133,6 +154,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
           "readonly-signature",
           "set",
           "signature",
+          "static-accessor",
           "static-field",
           "static-get",
           "static-initialization",
@@ -324,8 +346,10 @@ type OrderOptions =
 type OptionalityOrderOptions = 'optional-first' | 'required-first';
 
 type AllItems =
+  | '#private-accessor'
   | '#private-field'
   | '#private-get'
+  | '#private-instance-accessor'
   | '#private-instance-field'
   | '#private-instance-get'
   | '#private-instance-method'
@@ -335,20 +359,24 @@ type AllItems =
   | '#private-method'
   | '#private-readonly-field'
   | '#private-set'
+  | '#private-static-accessor'
   | '#private-static-field'
   | '#private-static-get'
   | '#private-static-method'
   | '#private-static-readonly-field'
   | '#private-static-set'
   | '#private-static-static-initialization'
+  | 'abstract-accessor'
   | 'abstract-field'
   | 'abstract-get'
   | 'abstract-method'
   | 'abstract-readonly-field'
   | 'abstract-set'
   | 'abstract-static-initialization'
+  | 'accessor'
   | 'call-signature'
   | 'constructor'
+  | 'decorated-accessor'
   | 'decorated-field'
   | 'decorated-get'
   | 'decorated-method'
@@ -356,6 +384,7 @@ type AllItems =
   | 'decorated-set'
   | 'field'
   | 'get'
+  | 'instance-accessor'
   | 'instance-field'
   | 'instance-get'
   | 'instance-method'
@@ -363,7 +392,9 @@ type AllItems =
   | 'instance-set'
   | 'instance-static-initialization'
   | 'method'
+  | 'private-accessor'
   | 'private-constructor'
+  | 'private-decorated-accessor'
   | 'private-decorated-field'
   | 'private-decorated-get'
   | 'private-decorated-method'
@@ -371,6 +402,7 @@ type AllItems =
   | 'private-decorated-set'
   | 'private-field'
   | 'private-get'
+  | 'private-instance-accessor'
   | 'private-instance-field'
   | 'private-instance-get'
   | 'private-instance-method'
@@ -380,19 +412,23 @@ type AllItems =
   | 'private-method'
   | 'private-readonly-field'
   | 'private-set'
+  | 'private-static-accessor'
   | 'private-static-field'
   | 'private-static-get'
   | 'private-static-method'
   | 'private-static-readonly-field'
   | 'private-static-set'
   | 'private-static-static-initialization'
+  | 'protected-abstract-accessor'
   | 'protected-abstract-field'
   | 'protected-abstract-get'
   | 'protected-abstract-method'
   | 'protected-abstract-readonly-field'
   | 'protected-abstract-set'
   | 'protected-abstract-static-initialization'
+  | 'protected-accessor'
   | 'protected-constructor'
+  | 'protected-decorated-accessor'
   | 'protected-decorated-field'
   | 'protected-decorated-get'
   | 'protected-decorated-method'
@@ -400,6 +436,7 @@ type AllItems =
   | 'protected-decorated-set'
   | 'protected-field'
   | 'protected-get'
+  | 'protected-instance-accessor'
   | 'protected-instance-field'
   | 'protected-instance-get'
   | 'protected-instance-method'
@@ -409,19 +446,23 @@ type AllItems =
   | 'protected-method'
   | 'protected-readonly-field'
   | 'protected-set'
+  | 'protected-static-accessor'
   | 'protected-static-field'
   | 'protected-static-get'
   | 'protected-static-method'
   | 'protected-static-readonly-field'
   | 'protected-static-set'
   | 'protected-static-static-initialization'
+  | 'public-abstract-accessor'
   | 'public-abstract-field'
   | 'public-abstract-get'
   | 'public-abstract-method'
   | 'public-abstract-readonly-field'
   | 'public-abstract-set'
   | 'public-abstract-static-initialization'
+  | 'public-accessor'
   | 'public-constructor'
+  | 'public-decorated-accessor'
   | 'public-decorated-field'
   | 'public-decorated-get'
   | 'public-decorated-method'
@@ -429,6 +470,7 @@ type AllItems =
   | 'public-decorated-set'
   | 'public-field'
   | 'public-get'
+  | 'public-instance-accessor'
   | 'public-instance-field'
   | 'public-instance-get'
   | 'public-instance-method'
@@ -438,6 +480,7 @@ type AllItems =
   | 'public-method'
   | 'public-readonly-field'
   | 'public-set'
+  | 'public-static-accessor'
   | 'public-static-field'
   | 'public-static-get'
   | 'public-static-method'
@@ -448,6 +491,7 @@ type AllItems =
   | 'readonly-signature'
   | 'set'
   | 'signature'
+  | 'static-accessor'
   | 'static-field'
   | 'static-get'
   | 'static-initialization'
