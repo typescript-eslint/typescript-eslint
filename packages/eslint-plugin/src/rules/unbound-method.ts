@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getFilename } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -167,7 +168,7 @@ export default createRule<Options, MessageIds>({
   create(context, [{ ignoreStatic }]) {
     const services = getParserServices(context);
     const currentSourceFile = services.program.getSourceFile(
-      context.getFilename(),
+      getFilename(context),
     );
 
     function checkMethodAndReport(
@@ -272,14 +273,13 @@ function checkMethod(
       const decl = valueDeclaration as
         | ts.MethodDeclaration
         | ts.MethodSignature;
-      const firstParam = decl.parameters[0];
+      const firstParam = decl.parameters.at(0);
       const firstParamIsThis =
         firstParam?.name.kind === ts.SyntaxKind.Identifier &&
         // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-        firstParam?.name.escapedText === 'this';
+        firstParam.name.escapedText === 'this';
       const thisArgIsVoid =
-        firstParamIsThis &&
-        firstParam?.type?.kind === ts.SyntaxKind.VoidKeyword;
+        firstParamIsThis && firstParam.type?.kind === ts.SyntaxKind.VoidKeyword;
 
       return {
         dangerous:

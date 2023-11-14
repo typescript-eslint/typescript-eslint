@@ -2,25 +2,29 @@ import type * as ts from 'typescript';
 
 // Workaround to support new TS version features for consumers on old TS versions
 // Eg: https://github.com/typescript-eslint/typescript-eslint/issues/2388, https://github.com/typescript-eslint/typescript-eslint/issues/2784
-/* eslint-disable @typescript-eslint/no-empty-interface */
+/* eslint-disable @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error, @typescript-eslint/no-empty-interface */
 declare module 'typescript' {
-  // added in TS 4.5
+  // @ts-ignore - added in TS 4.5
   export interface AssertClause extends ts.Node {}
+  // @ts-ignore - added in TS 4.5
   export interface AssertEntry extends ts.Node {}
   // added in TS 4.9
   export interface SatisfiesExpression extends ts.Node {}
   // added in TS 5.1
   export interface JsxNamespacedName extends ts.Node {}
+  // added in TS 5.3
+  export interface ImportAttribute extends ts.Node {}
+  export interface ImportAttributes extends ts.Node {}
 }
-/* eslint-enable @typescript-eslint/no-empty-interface */
+/* eslint-enable @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error, @typescript-eslint/no-empty-interface */
 
 export type TSToken = ts.Token<ts.SyntaxKind>;
 
 export type TSNode =
-  | ts.AssertClause
-  | ts.AssertEntry
   | ts.Modifier
   | ts.Identifier
+  | ts.ImportAttribute
+  | ts.ImportAttributes
   | ts.PrivateIdentifier
   | ts.QualifiedName
   | ts.ComputedPropertyName
@@ -178,9 +182,9 @@ export type TSNode =
   | ts.ExportAssignment
   | ts.SourceFile
   | ts.Bundle
-  // eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions
+  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
   | ts.InputFiles
-  // eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions
+  /* eslint-disable-next-line deprecation/deprecation -- intentional for old TS versions */
   | ts.UnparsedSource
   | ts.JsonMinusNumericLiteral
   | ts.TemplateLiteralTypeNode

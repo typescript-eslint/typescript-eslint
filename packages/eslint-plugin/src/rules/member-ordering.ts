@@ -1,5 +1,6 @@
 import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import naturalCompare from 'natural-compare';
 
 import {
@@ -485,7 +486,7 @@ function getAccessibility(node: Member): Accessibility {
   if ('accessibility' in node && node.accessibility) {
     return node.accessibility;
   }
-  if ('key' in node && node.key?.type === AST_NODE_TYPES.PrivateIdentifier) {
+  if ('key' in node && node.key.type === AST_NODE_TYPES.PrivateIdentifier) {
     return '#private';
   }
   return 'public';
@@ -725,13 +726,13 @@ export default createRule<Options, MessageIds>({
       let isCorrectlySorted = true;
 
       // Find first member which isn't correctly sorted
-      members.forEach(member => {
+      for (const member of members) {
         const rank = getRank(member, groupOrder, supportsModifiers);
-        const name = getMemberName(member, context.getSourceCode());
+        const name = getMemberName(member, getSourceCode(context));
         const rankLastMember = previousRanks[previousRanks.length - 1];
 
         if (rank === -1) {
-          return;
+          continue;
         }
 
         // Works for 1st item because x < undefined === false for any x (typeof string)
@@ -754,7 +755,7 @@ export default createRule<Options, MessageIds>({
           previousRanks.push(rank);
           memberGroups.push([member]);
         }
-      });
+      }
 
       return isCorrectlySorted ? memberGroups : null;
     }
@@ -776,7 +777,7 @@ export default createRule<Options, MessageIds>({
 
       // Find first member which isn't correctly sorted
       members.forEach(member => {
-        const name = getMemberName(member, context.getSourceCode());
+        const name = getMemberName(member, getSourceCode(context));
 
         // Note: Not all members have names
         if (name) {
@@ -846,7 +847,7 @@ export default createRule<Options, MessageIds>({
           messageId: 'incorrectRequiredMembersOrder',
           loc: member.loc,
           data: {
-            member: getMemberName(member, context.getSourceCode()),
+            member: getMemberName(member, getSourceCode(context)),
             optionalOrRequired:
               optionalityOrder === 'required-first' ? 'required' : 'optional',
           },

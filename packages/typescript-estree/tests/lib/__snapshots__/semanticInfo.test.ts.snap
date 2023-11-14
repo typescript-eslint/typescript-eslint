@@ -304,7 +304,7 @@ exports[`semanticInfo fixtures/import-file.src 1`] = `
 {
   "body": [
     {
-      "assertions": [],
+      "attributes": [],
       "importKind": "value",
       "loc": {
         "end": {

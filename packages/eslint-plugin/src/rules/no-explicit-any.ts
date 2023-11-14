@@ -109,7 +109,6 @@ export default createRule<Options, MessageIds>({
     function isNodeValidArrayTSTypeReference(node: TSESTree.Node): boolean {
       return (
         node.type === AST_NODE_TYPES.TSTypeReference &&
-        node.typeName !== undefined &&
         node.typeName.type === AST_NODE_TYPES.Identifier &&
         ['Array', 'ReadonlyArray'].includes(node.typeName.name)
       );
@@ -136,7 +135,7 @@ export default createRule<Options, MessageIds>({
      */
     function isGreatGrandparentRestElement(node: TSESTree.Node): boolean {
       return (
-        node?.parent?.parent?.parent != null &&
+        node.parent?.parent?.parent != null &&
         isNodeRestElementInFunction(node.parent.parent.parent)
       );
     }

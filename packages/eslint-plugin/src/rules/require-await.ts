@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
@@ -46,7 +47,7 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     let scopeInfo: ScopeInfo | null = null;
 
     /**
@@ -162,7 +163,7 @@ export default createRule({
         >,
       ): void {
         const expression = services.esTreeNodeToTSNodeMap.get(node);
-        if (expression && isThenableType(expression)) {
+        if (isThenableType(expression)) {
           markAsHasAwait();
         }
       },
@@ -183,7 +184,7 @@ export default createRule({
 
 function isEmptyFunction(node: FunctionNode): boolean {
   return (
-    node.body?.type === AST_NODE_TYPES.BlockStatement &&
+    node.body.type === AST_NODE_TYPES.BlockStatement &&
     node.body.body.length === 0
   );
 }

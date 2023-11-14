@@ -3,6 +3,29 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.11.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.10.0...v6.11.0) (2023-11-13)
+
+
+### Bug Fixes
+
+* **eslint-plugin:** [explicit-function-return-type] support JSX attributes in `allowTypedFunctionExpressions` ([#7553](https://github.com/typescript-eslint/typescript-eslint/issues/7553)) ([be2777c](https://github.com/typescript-eslint/typescript-eslint/commit/be2777c5338669836d786f9a7806f499fd566dcd))
+* **eslint-plugin:** [no-unnecessary-qualifier] handle nested namespace id ([#7883](https://github.com/typescript-eslint/typescript-eslint/issues/7883)) ([a668f5b](https://github.com/typescript-eslint/typescript-eslint/commit/a668f5b10e7b1570c732312ad9ccab3431459c1b))
+
+
+### Features
+
+* add `no-unsafe-unary-minus` rule ([#7390](https://github.com/typescript-eslint/typescript-eslint/issues/7390)) ([c4709c2](https://github.com/typescript-eslint/typescript-eslint/commit/c4709c2861f8ea4e18c289218a75224d6bb76193))
+* add types for flat config files ([#7273](https://github.com/typescript-eslint/typescript-eslint/issues/7273)) ([66cd0c0](https://github.com/typescript-eslint/typescript-eslint/commit/66cd0c0535e5de1b46ba337919a9a92748d2b0a6))
+* allow typescript@5.3.0-RC as devDependency ([#7821](https://github.com/typescript-eslint/typescript-eslint/issues/7821)) ([b6c40b4](https://github.com/typescript-eslint/typescript-eslint/commit/b6c40b42b68d5567c7468030ee45b9b84bec4c4d))
+* **eslint-plugin:** no-unsafe-enum-comparison handles switch cases ([#7898](https://github.com/typescript-eslint/typescript-eslint/issues/7898)) ([72cb9e4](https://github.com/typescript-eslint/typescript-eslint/commit/72cb9e4ed397d35a8d8838d27dedbace6122179c))
+* **utils:** add ESLint `CodePath` selector types ([#7551](https://github.com/typescript-eslint/typescript-eslint/issues/7551)) ([99a026f](https://github.com/typescript-eslint/typescript-eslint/commit/99a026fe41b4b169914352fe66e7d5d687b300bf))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [6.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.9.1...v6.10.0) (2023-11-06)
 
 

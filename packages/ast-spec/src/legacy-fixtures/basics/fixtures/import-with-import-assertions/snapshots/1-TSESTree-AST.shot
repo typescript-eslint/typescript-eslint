@@ -6,7 +6,7 @@ Program {
   body: [
     ImportDeclaration {
       type: "ImportDeclaration",
-      assertions: [
+      attributes: [
         ImportAttribute {
           type: "ImportAttribute",
           key: Identifier {

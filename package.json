@@ -69,7 +69,7 @@
     "@types/babel__core": "^7.20.1",
     "@types/debug": "^4.1.8",
     "@types/is-glob": "^4.0.2",
-    "@types/jest": "29.5.6",
+    "@types/jest": "29.5.8",
     "@types/jest-specific-snapshot": "^0.5.6",
     "@types/marked": "^5.0.0",
     "@types/natural-compare": "^1.4.1",
@@ -99,7 +99,7 @@
     "jest-diff": "^29.6.2",
     "jest-snapshot": "^29.6.2",
     "jest-specific-snapshot": "^8.0.0",
-    "lerna": "7.4.1",
+    "lerna": "7.4.2",
     "lint-staged": "^15.0.0",
     "make-dir": "^4.0.0",
     "markdownlint-cli": "^0.37.0",
@@ -114,12 +114,13 @@
     "ts-node": "10.7.0",
     "tslint": "^6.1.3",
     "tsx": "^3.12.7",
-    "typescript": ">=4.3.5 <5.3.0"
+    "typescript": ">=4.3.5 <5.4.0"
   },
   "resolutions": {
     "@jest/create-cache-key-function": "^29",
     "@jest/reporters": "^29",
     "@jest/test-result": "^29",
+    "@microsoft/api-extractor@^7.38.0": "patch:@microsoft/api-extractor@npm%3A7.38.0#./.yarn/patches/@microsoft-api-extractor-npm-7.38.0-955f1e0725.patch",
     "@swc/core-android-arm-eabi": "link:./tools/dummypkg",
     "@swc/core-android-arm64": "link:./tools/dummypkg",
     "@swc/core-freebsd-x64": "link:./tools/dummypkg",
@@ -140,7 +141,7 @@
     "pretty-format": "^29",
     "react-split-pane@^0.1.92": "patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch",
     "tsx": "^3.12.7",
-    "typescript": "patch:typescript@npm%3A5.2.2#./.yarn/patches/typescript-npm-5.2.2-01717e9f84.patch"
+    "typescript": "patch:typescript@npm%3A5.3.0-beta#./.yarn/patches/typescript-npm-5.3.0-beta-33b1e90865.patch"
   },
   "packageManager": "yarn@3.6.4"
 }

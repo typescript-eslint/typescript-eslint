@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import { SymbolFlags } from 'typescript';
 
 import {
@@ -74,7 +75,7 @@ export default createRule<Options, MessageIds>({
   ],
 
   create(context, [{ fixMixedExportsWithInlineTypeSpecifier }]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const sourceExportsMap: Record<string, SourceExports> = {};
     const services = getParserServices(context);
 
@@ -90,10 +91,14 @@ export default createRule<Options, MessageIds>({
     ): boolean | undefined {
       const checker = services.program.getTypeChecker();
       const symbol = services.getSymbolAtLocation(specifier.exported);
-      const aliasedSymbol = checker.getAliasedSymbol(symbol!);
+      if (!symbol) {
+        return undefined;
+      }
+
+      const aliasedSymbol = checker.getAliasedSymbol(symbol);
 
       // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-      if (!aliasedSymbol || aliasedSymbol.escapedName === 'unknown') {
+      if (aliasedSymbol.escapedName === 'unknown') {
         return undefined;
       }
 

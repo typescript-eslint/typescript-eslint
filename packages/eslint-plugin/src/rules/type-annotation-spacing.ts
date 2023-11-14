@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -48,21 +49,21 @@ function createRules(options?: Config): WhitespaceRules {
   const colon = {
     ...{ before: false, after: true },
     ...globals,
-    ...override?.colon,
+    ...override.colon,
   };
   const arrow = {
     ...{ before: true, after: true },
     ...globals,
-    ...override?.arrow,
+    ...override.arrow,
   };
 
   return {
     colon: colon,
     arrow: arrow,
-    variable: { ...colon, ...override?.variable },
-    property: { ...colon, ...override?.property },
-    parameter: { ...colon, ...override?.parameter },
-    returnType: { ...colon, ...override?.returnType },
+    variable: { ...colon, ...override.variable },
+    property: { ...colon, ...override.property },
+    parameter: { ...colon, ...override.parameter },
+    returnType: { ...colon, ...override.returnType },
   };
 }
 
@@ -84,7 +85,7 @@ function getRules(
   rules: WhitespaceRules,
   node: TSESTree.TypeNode,
 ): WhitespaceRule {
-  const scope = node?.parent?.parent;
+  const scope = node.parent.parent;
 
   if (isTSFunctionType(scope) || isTSConstructorType(scope)) {
     return rules.arrow;
@@ -154,7 +155,7 @@ export default createRule<Options, MessageIds>({
   ],
   create(context, [options]) {
     const punctuators = [':', '=>'];
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     const ruleSet = createRules(options);
 

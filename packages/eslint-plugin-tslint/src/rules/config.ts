@@ -1,4 +1,9 @@
 import { ESLintUtils } from '@typescript-eslint/utils';
+import {
+  getCwd,
+  getFilename,
+  getSourceCode,
+} from '@typescript-eslint/utils/eslint-utils';
 import path from 'path';
 import type { RuleSeverity } from 'tslint';
 import { Configuration } from 'tslint';
@@ -119,8 +124,8 @@ export default createRule<Options, MessageIds>({
     context,
     [{ rules: tslintRules, rulesDirectory: tslintRulesDirectory, lintFile }],
   ) {
-    const fileName = path.resolve(context.getCwd(), context.getFilename());
-    const sourceCode = context.getSourceCode().text;
+    const fileName = path.resolve(getCwd(context), getFilename(context));
+    const sourceCode = getSourceCode(context).text;
     const services = ESLintUtils.getParserServices(context);
     const program = services.program;
 
@@ -146,7 +151,7 @@ export default createRule<Options, MessageIds>({
     /**
      * Format the TSLint results for ESLint
      */
-    if (result.failures?.length) {
+    if (result.failures.length) {
       result.failures.forEach(failure => {
         const start = failure.getStartPosition().getLineAndCharacter();
         const end = failure.getEndPosition().getLineAndCharacter();
