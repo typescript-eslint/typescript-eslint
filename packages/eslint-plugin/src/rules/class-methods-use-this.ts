@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -99,7 +100,7 @@ export default createRule<Options, MessageIds>({
         };
     let stack: Stack | undefined;
 
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     function pushContext(
       member?: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
@@ -186,11 +187,10 @@ export default createRule<Options, MessageIds>({
       const stackContext = popContext();
       if (
         stackContext?.member == null ||
-        stackContext.class == null ||
         stackContext.usesThis ||
         (ignoreOverrideMethods && stackContext.member.override) ||
         (ignoreClassesThatImplementAnInterface &&
-          stackContext.class.implements != null)
+          stackContext.class.implements.length)
       ) {
         return;
       }

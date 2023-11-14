@@ -60,11 +60,9 @@ export default createRule({
     }
 
     function isThisSpecifiedInParameters(originalFunc: FunctionLike): boolean {
-      const firstArg = originalFunc.params[0];
-      return (
-        firstArg &&
-        firstArg.type === AST_NODE_TYPES.Identifier &&
-        firstArg.name === 'this'
+      const firstArg = originalFunc.params.at(0);
+      return !!(
+        firstArg?.type === AST_NODE_TYPES.Identifier && firstArg.name === 'this'
       );
     }
 
@@ -92,7 +90,7 @@ export default createRule({
       }
 
       let hasReturnThis = false;
-      let hasReturnClassType = false;
+      let hasReturnClassType = false as boolean;
 
       forEachReturnStatement(func.body as ts.Block, stmt => {
         const expr = stmt.expression;

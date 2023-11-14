@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getScope } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -122,9 +123,9 @@ export default createRule({
     }
 
     function isReferenceToGlobalFunction(calleeName: string): boolean {
-      const ref = context
-        .getScope()
-        .references.find(ref => ref.identifier.name === calleeName);
+      const ref = getScope(context).references.find(
+        ref => ref.identifier.name === calleeName,
+      );
 
       // ensure it's the "global" version
       return !ref?.resolved || ref.resolved.defs.length === 0;

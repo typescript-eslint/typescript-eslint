@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -92,9 +93,9 @@ export default createRule({
                 fixes.push(
                   fixer.insertTextAfter(
                     callee,
-                    `<${context
-                      .getSourceCode()
-                      .getText(secondArg.typeAnnotation)}>`,
+                    `<${getSourceCode(context).getText(
+                      secondArg.typeAnnotation,
+                    )}>`,
                   ),
                 );
               }

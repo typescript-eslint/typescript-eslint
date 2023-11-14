@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as ts from 'typescript';
 
 import {
@@ -90,7 +91,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const parserServices = getParserServices(context, true);
 
     function isConst(node: TSESTree.TypeNode): boolean {
@@ -225,13 +226,10 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      if (
-        checkType(node.typeAnnotation) &&
-        node.expression.type === AST_NODE_TYPES.ObjectExpression
-      ) {
+      if (checkType(node.typeAnnotation)) {
         const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
         if (
-          node.parent?.type === AST_NODE_TYPES.VariableDeclarator &&
+          node.parent.type === AST_NODE_TYPES.VariableDeclarator &&
           !node.parent.id.typeAnnotation
         ) {
           const { parent } = node;
@@ -254,9 +252,9 @@ export default createRule<Options, MessageIds>({
             fixer.replaceText(node, getTextWithParentheses(node.expression)),
             fixer.insertTextAfter(
               node,
-              ` satisfies ${context
-                .getSourceCode()
-                .getText(node.typeAnnotation)}`,
+              ` satisfies ${getSourceCode(context).getText(
+                node.typeAnnotation,
+              )}`,
             ),
           ],
         });

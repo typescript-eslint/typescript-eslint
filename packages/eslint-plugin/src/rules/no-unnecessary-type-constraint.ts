@@ -1,5 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import {
+  getFilename,
+  getSourceCode,
+} from '@typescript-eslint/utils/eslint-utils';
 import { extname } from 'path';
 import * as ts from 'typescript';
 
@@ -43,7 +47,7 @@ export default createRule({
     function checkRequiresGenericDeclarationDisambiguation(
       filename: string,
     ): boolean {
-      const pathExt = extname(filename).toLocaleLowerCase();
+      const pathExt = extname(filename).toLocaleLowerCase() as ts.Extension;
       switch (pathExt) {
         case ts.Extension.Cts:
         case ts.Extension.Mts:
@@ -56,9 +60,9 @@ export default createRule({
     }
 
     const requiresGenericDeclarationDisambiguation =
-      checkRequiresGenericDeclarationDisambiguation(context.getFilename());
+      checkRequiresGenericDeclarationDisambiguation(getFilename(context));
 
-    const source = context.getSourceCode();
+    const source = getSourceCode(context);
 
     const checkNode = (
       node: TypeParameterWithConstraint,

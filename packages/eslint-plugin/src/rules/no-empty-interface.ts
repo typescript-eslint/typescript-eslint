@@ -1,6 +1,11 @@
 import { ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import {
+  getFilename,
+  getScope,
+  getSourceCode,
+} from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, isDefinitionFile } from '../util';
 
@@ -46,8 +51,8 @@ export default createRule<Options, MessageIds>({
   create(context, [{ allowSingleExtends }]) {
     return {
       TSInterfaceDeclaration(node): void {
-        const sourceCode = context.getSourceCode();
-        const filename = context.getFilename();
+        const sourceCode = getSourceCode(context);
+        const filename = getFilename(context);
 
         if (node.body.body.length !== 0) {
           // interface contains members --> Nothing to report
@@ -55,7 +60,7 @@ export default createRule<Options, MessageIds>({
         }
 
         const extend = node.extends;
-        if (!extend || extend.length === 0) {
+        if (extend.length === 0) {
           context.report({
             node: node.id,
             messageId: 'noEmpty',
@@ -75,11 +80,11 @@ export default createRule<Options, MessageIds>({
                 )}${typeParam} = ${sourceCode.getText(extend[0])}`,
               );
             };
-            const scope = context.getScope();
+            const scope = getScope(context);
 
             const mergedWithClassDeclaration = scope.set
               .get(node.id.name)
-              ?.defs?.some(
+              ?.defs.some(
                 def => def.node.type === AST_NODE_TYPES.ClassDeclaration,
               );
 

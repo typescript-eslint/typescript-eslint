@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -55,7 +56,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{}],
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
@@ -141,7 +142,7 @@ export default createRule<Options, MessageIds>({
     return {
       TSNonNullExpression(node): void {
         if (
-          node.parent?.type === AST_NODE_TYPES.AssignmentExpression &&
+          node.parent.type === AST_NODE_TYPES.AssignmentExpression &&
           node.parent.operator === '='
         ) {
           if (node.parent.left === node) {

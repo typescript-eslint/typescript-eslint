@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -153,7 +154,7 @@ export default createRule<Options, MessageId>({
   ) {
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const compilerOptions = services.program.getCompilerOptions();
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
@@ -438,9 +439,8 @@ export default createRule<Options, MessageId>({
         const callback = node.arguments[0]!;
         // Inline defined functions
         if (
-          (callback.type === AST_NODE_TYPES.ArrowFunctionExpression ||
-            callback.type === AST_NODE_TYPES.FunctionExpression) &&
-          callback.body
+          callback.type === AST_NODE_TYPES.ArrowFunctionExpression ||
+          callback.type === AST_NODE_TYPES.FunctionExpression
         ) {
           // Two special cases, where we can directly check the node that's returned:
           // () => something

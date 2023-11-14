@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -102,7 +103,7 @@ export default createRule<Options, MessageId>({
           return;
         }
 
-        const sourceCode = context.getSourceCode();
+        const sourceCode = getSourceCode(context);
         const wrapVoidFix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix => {
           const nodeText = sourceCode.getText(node);
           const newNodeText = `void ${nodeText}`;

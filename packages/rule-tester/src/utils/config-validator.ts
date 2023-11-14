@@ -24,7 +24,7 @@ const { ConfigOps, environments: BuiltInEnvironments } = Legacy;
 const ajv = ajvBuilder();
 const ruleValidators = new WeakMap<AnyRuleModule, ValidateFunction>();
 
-let validateSchema: ValidateFunction;
+let validateSchema: ValidateFunction | undefined;
 const severityMap = {
   error: 2,
   warn: 1,
@@ -40,8 +40,10 @@ function validateRuleSeverity(options: Linter.RuleEntry): number | string {
   const severity = Array.isArray(options) ? options[0] : options;
   const normSeverity =
     typeof severity === 'string'
-      ? severityMap[severity.toLowerCase() as Linter.SeverityString]
-      : severity;
+      ? (severityMap[severity.toLowerCase() as Linter.SeverityString] as
+          | number
+          | undefined)
+      : (severity as number);
 
   if (normSeverity === 0 || normSeverity === 1 || normSeverity === 2) {
     return normSeverity;

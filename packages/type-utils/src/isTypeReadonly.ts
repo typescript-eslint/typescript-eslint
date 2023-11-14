@@ -3,7 +3,6 @@ import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { getTypeArguments } from './getTypeArguments';
 import { getTypeOfPropertyOfType } from './propertyTypes';
 import type { TypeOrValueSpecifier } from './TypeOrValueSpecifier';
 import {
@@ -56,9 +55,7 @@ function isTypeReadonlyArrayOrTuple(
 ): Readonlyness {
   const checker = program.getTypeChecker();
   function checkTypeArguments(arrayType: ts.TypeReference): Readonlyness {
-    const typeArguments =
-      // getTypeArguments was only added in TS3.7
-      getTypeArguments(arrayType, checker);
+    const typeArguments = checker.getTypeArguments(arrayType);
 
     // this shouldn't happen in reality as:
     // - tuples require at least 1 type argument

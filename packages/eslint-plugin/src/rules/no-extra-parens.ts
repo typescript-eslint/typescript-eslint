@@ -3,6 +3,7 @@
 
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -31,7 +32,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['all'],
   create(context) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const rules = baseRule.create(context);
 
     function binaryExp(

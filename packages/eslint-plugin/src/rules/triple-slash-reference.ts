@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -54,8 +55,8 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ lib, path, types }]) {
-    let programNode: TSESTree.Node;
-    const sourceCode = context.getSourceCode();
+    let programNode: TSESTree.Node | undefined;
+    const sourceCode = getSourceCode(context);
     const references: {
       comment: TSESTree.Comment;
       importName: string;
