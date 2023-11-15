@@ -167,7 +167,7 @@ interface ParseAndGenerateServicesOptions extends ParseOptions {
    * or `true` to find the nearest tsconfig.json to the file.
    * If this is provided, type information will be returned.
    */
-  project?: string[] | string | true | null;
+  project?: string[] | string | boolean | null;
 
   /**
    * If you provide a glob (or globs) to the project option, you can use this option to ignore certain folders from

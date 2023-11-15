@@ -119,7 +119,7 @@ export namespace ClassicConfig {
 export namespace FlatConfig {
   export type EcmaVersion = ParserOptionsTypes.EcmaVersion;
   export type GlobalsConfig = SharedConfig.GlobalsConfig;
-  export type Parser = ParserType.ParserModule;
+  export type Parser = ParserType.LooseParserModule;
   export type ParserOptions = SharedConfig.ParserOptions;
   export type Processor = ProcessorType.ProcessorModule;
   export type RuleEntry = SharedConfig.RuleEntry;
@@ -131,6 +131,9 @@ export namespace FlatConfig {
   export type SeverityString = SharedConfig.SeverityString;
   export type SourceType = ParserOptionsTypes.SourceType | 'commonjs';
 
+  export interface SharedConfigs {
+    [key: string]: Config;
+  }
   export interface PluginMeta {
     /**
      * The meta.name property should match the npm package name for your plugin.
@@ -146,7 +149,7 @@ export namespace FlatConfig {
      * Shared configurations bundled with the plugin.
      * Users will reference these directly in their config (i.e. `plugin.configs.recommended`).
      */
-    configs?: Record<string, Config>;
+    configs?: SharedConfigs;
     /**
      * Metadata about your plugin for easier debugging and more effective caching of plugins.
      */
@@ -165,7 +168,13 @@ export namespace FlatConfig {
     rules?: Record<string, RuleCreateFunction | AnyRuleModule>;
   }
   export interface Plugins {
-    [pluginAlias: string]: Plugin;
+    /**
+     * We intentionally omit the `configs` key from this object because it avoids
+     * type conflicts with old plugins that haven't updated their configs to flat configs yet.
+     * It's valid to reference these old plugins because ESLint won't access the
+     * `.config` property of a plugin when evaluating a flat config.
+     */
+    [pluginAlias: string]: Omit<Plugin, 'configs'>;
   }
 
   export interface LinterOptions {
@@ -262,5 +271,6 @@ export namespace FlatConfig {
     settings?: Settings;
   }
   export type ConfigArray = Config[];
-  export type ConfigFile = ConfigArray | (() => Promise<ConfigArray>);
+  export type ConfigPromise = Promise<ConfigArray>;
+  export type ConfigFile = ConfigArray | ConfigPromise;
 }

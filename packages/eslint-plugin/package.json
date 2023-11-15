@@ -21,6 +21,10 @@
     "./use-at-your-own-risk/rules": {
       "types": "./rules.d.ts",
       "default": "./dist/rules/index.js"
+    },
+    "./use-at-your-own-risk/eslint-recommended-raw": {
+      "types": "./eslint-recommended-raw.d.ts",
+      "default": "./dist/configs/eslint-recommended-raw.js"
     }
   },
   "engines": {

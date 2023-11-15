@@ -38,11 +38,15 @@
       "cache": true
     },
     "lint": {
-      "dependsOn": ["eslint-plugin:build"],
+      "dependsOn": [
+        "eslint-plugin:build",
+        "parser:build",
+        "typescript-eslint:build"
+      ],
       "inputs": [
         "default",
-        "{workspaceRoot}/.eslintrc.js",
         "{workspaceRoot}/package.json",
+        "{workspaceRoot}/eslint.config.js",
         "{workspaceRoot}/yarn.lock",
         "{workspaceRoot}/.eslintignore",
         {

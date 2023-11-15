@@ -10,6 +10,12 @@ import stylistic from './configs/stylistic';
 import stylisticTypeChecked from './configs/stylistic-type-checked';
 import rules from './rules';
 
+// note - cannot migrate this to an import statement because it will make TSC copy the package.json to the dist folder
+const { name, version } = require('../package.json') as {
+  name: string;
+  version: string;
+};
+
 export = {
   configs: {
     all,
@@ -24,6 +30,10 @@ export = {
     'strict-type-checked': strictTypeChecked,
     stylistic,
     'stylistic-type-checked': stylisticTypeChecked,
+  },
+  meta: {
+    name,
+    version,
   },
   rules,
 };
