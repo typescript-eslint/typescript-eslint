@@ -20146,33 +20146,33 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.3.0-beta":
-  version: 5.3.0-beta
-  resolution: "typescript@npm:5.3.0-beta"
+"typescript@npm:5.3.1-rc":
+  version: 5.3.1-rc
+  resolution: "typescript@npm:5.3.1-rc"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 12c5b05df8be536c3f5789323ca2e2f21ab6b7571bd21407b152c080be1dc8628c3cd9fb5fa342a304a266f5ad22827f3a27b7961da1600d27890be93f3e2d73
+  checksum: a144fdc3edea2230f947716f9983d5d1c4d0d2a3a4007121d69b70e92b28aef65f7974fe11a10ad91b836e9c6522888e204952904b804cd85af6bf5689f36705
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.3.0-beta#./.yarn/patches/typescript-npm-5.3.0-beta-33b1e90865.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
-  version: 5.3.0-beta
-  resolution: "typescript@patch:typescript@npm%3A5.3.0-beta#./.yarn/patches/typescript-npm-5.3.0-beta-33b1e90865.patch::version=5.3.0-beta&hash=aba397&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+"typescript@patch:typescript@npm%3A5.3.1-rc#./.yarn/patches/typescript-npm-5.3.1-rc-6c4278ffd3.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+  version: 5.3.1-rc
+  resolution: "typescript@patch:typescript@npm%3A5.3.1-rc#./.yarn/patches/typescript-npm-5.3.1-rc-6c4278ffd3.patch::version=5.3.1-rc&hash=7df256&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: 85a8cc0ce7b9d4243db899dbf77632d63cf32818cfc076f27e929f1b89c062c2a94f5fa2f0a72e9fc315164532aac1580c9cad5b453f4a4aed464557593c8168
+  checksum: 2ed8bccd7f16441a04e25d252315b0280b4ba4de8ad7b2a9a8f0c8ad0eb01c4238628ba27e1f83f927b8ee56c447fc80286f9e5c30395c5ba5708ffb069f1f2f
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@patch%3Atypescript@npm%253A5.3.0-beta%23./.yarn/patches/typescript-npm-5.3.0-beta-33b1e90865.patch%3A%3Alocator=%2540typescript-eslint%252Ftypescript-eslint%2540workspace%253A.#~builtin<compat/typescript>":
-  version: 5.3.0-beta
-  resolution: "typescript@patch:typescript@patch%3Atypescript@npm%253A5.3.0-beta%23./.yarn/patches/typescript-npm-5.3.0-beta-33b1e90865.patch%3A%3Aversion=5.3.0-beta&hash=aba397&locator=%2540typescript-eslint%252Ftypescript-eslint%2540workspace%253A.#~builtin<compat/typescript>::version=5.3.0-beta&hash=29ae49"
+"typescript@patch:typescript@patch%3Atypescript@npm%253A5.3.1-rc%23./.yarn/patches/typescript-npm-5.3.1-rc-6c4278ffd3.patch%3A%3Alocator=%2540typescript-eslint%252Ftypescript-eslint%2540workspace%253A.#~builtin<compat/typescript>":
+  version: 5.3.1-rc
+  resolution: "typescript@patch:typescript@patch%3Atypescript@npm%253A5.3.1-rc%23./.yarn/patches/typescript-npm-5.3.1-rc-6c4278ffd3.patch%3A%3Aversion=5.3.1-rc&hash=7df256&locator=%2540typescript-eslint%252Ftypescript-eslint%2540workspace%253A.#~builtin<compat/typescript>::version=5.3.1-rc&hash=29ae49"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: d1ed47d2a7f35e4692c439bca41f0622be732f33927e59afe4af9c6640219a2f1cc7c4622852787a96c5300f2b88fb06bb46b5125ae8db2c080b0fad2f12ae98
+  checksum: 2ed8bccd7f16441a04e25d252315b0280b4ba4de8ad7b2a9a8f0c8ad0eb01c4238628ba27e1f83f927b8ee56c447fc80286f9e5c30395c5ba5708ffb069f1f2f
   languageName: node
   linkType: hard
 
