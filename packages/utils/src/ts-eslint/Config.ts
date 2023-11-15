@@ -250,7 +250,7 @@ export namespace FlatConfig {
      * a string indicating the name of a processor inside of a plugin
      * (i.e., `"pluginName/processorName"`).
      */
-    processor?: Processor;
+    processor?: string | Processor;
     /**
      * An object containing the configured rules.
      * When `files` or `ignores` are specified, these rule configurations are only available to the matching files.
