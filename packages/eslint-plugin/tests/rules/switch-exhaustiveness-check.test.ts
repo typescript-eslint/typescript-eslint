@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import path from 'path';
 
 import switchExhaustivenessCheck from '../../src/rules/switch-exhaustiveness-check';
@@ -518,7 +518,7 @@ export enum Enum {
 
 function test(arg: Enum): string {
   switch (arg) {
-  case Enum['test-test']: { throw new Error('Not implemented yet: Enum['test-test'] case') }
+  case Enum['test-test']: { throw new Error('Not implemented yet: Enum[\\'test-test\\'] case') }
   case Enum.test: { throw new Error('Not implemented yet: Enum.test case') }
   }
 }
@@ -555,7 +555,7 @@ export enum Enum {
 
 function test(arg: Enum): string {
   switch (arg) {
-  case Enum['']: { throw new Error('Not implemented yet: Enum[''] case') }
+  case Enum['']: { throw new Error('Not implemented yet: Enum[\\'\\'] case') }
   case Enum.test: { throw new Error('Not implemented yet: Enum.test case') }
   }
 }
@@ -592,10 +592,85 @@ export enum Enum {
 
 function test(arg: Enum): string {
   switch (arg) {
-  case Enum['9test']: { throw new Error('Not implemented yet: Enum['9test'] case') }
+  case Enum['9test']: { throw new Error('Not implemented yet: Enum[\\'9test\\'] case') }
   case Enum.test: { throw new Error('Not implemented yet: Enum.test case') }
   }
 }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+        enum Enum {
+          'a' = 1,
+          [\`key-with
+
+          new-line\`] = 2,
+        }
+
+        declare const a: Enum;
+
+        switch (a) {
+        }
+      `,
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+        enum Enum {
+          'a' = 1,
+          [\`key-with
+
+          new-line\`] = 2,
+        }
+
+        declare const a: Enum;
+
+        switch (a) {
+        case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
+        case Enum['key-with\\n\\n          new-line']: { throw new Error('Not implemented yet: Enum[\\'key-with\\n\\n          new-line\\'] case') }
+        }
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: noFormat`
+        enum Enum {
+          'a' = 1,
+          "'a' \`b\` \\"c\\"" = 2,
+        }
+
+        declare const a: Enum;
+
+        switch (a) {}
+      `,
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+        enum Enum {
+          'a' = 1,
+          "'a' \`b\` \\"c\\"" = 2,
+        }
+
+        declare const a: Enum;
+
+        switch (a) {
+        case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
+        case Enum['\\'a\\' \`b\` "c"']: { throw new Error('Not implemented yet: Enum[\\'\\\\'a\\\\' \`b\` "c"\\'] case') }
+        }
       `,
             },
           ],
