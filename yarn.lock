@@ -3859,10 +3859,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@netlify/open-api@npm:^2.19.1":
-  version: 2.19.1
-  resolution: "@netlify/open-api@npm:2.19.1"
-  checksum: 2f5e5f25f5d6c8cac2a38a665dfa86b27f60f00c3fac4ead5b077300a089974d1d211a310e13e014d589d1c127c2837009c6d060e9351fb443e3190be676a01f
+"@netlify/open-api@npm:^2.26.0":
+  version: 2.26.0
+  resolution: "@netlify/open-api@npm:2.26.0"
+  checksum: 05246cbb9b8e0ed11195de067d6a55f5c5d23292f67b732a6fbd464716ac2c5f34a38ee0add90487ef1197c5a7873e7b63c0a69e3084d142e254242c82295e43
   languageName: node
   linkType: hard
 
@@ -3977,15 +3977,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nrwl/devkit@npm:17.1.1":
-  version: 17.1.1
-  resolution: "@nrwl/devkit@npm:17.1.1"
-  dependencies:
-    "@nx/devkit": 17.1.1
-  checksum: 318bc2d0f08c81ddef7e5b080a1c6a65d437058e44431685dca0f67236e82ad7f6c118292ed9db32912856818de392cbc8b390ecade7d10ea68e90351f4f81ee
-  languageName: node
-  linkType: hard
-
 "@nrwl/devkit@npm:17.1.2":
   version: 17.1.2
   resolution: "@nrwl/devkit@npm:17.1.2"
@@ -4046,11 +4037,11 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nx/devkit@npm:*, @nx/devkit@npm:17.1.1":
-  version: 17.1.1
-  resolution: "@nx/devkit@npm:17.1.1"
+"@nx/devkit@npm:*, @nx/devkit@npm:17.1.2":
+  version: 17.1.2
+  resolution: "@nx/devkit@npm:17.1.2"
   dependencies:
-    "@nrwl/devkit": 17.1.1
+    "@nrwl/devkit": 17.1.2
     ejs: ^3.1.7
     enquirer: ~2.3.6
     ignore: ^5.0.4
@@ -4059,7 +4050,7 @@ __metadata:
     tslib: ^2.3.0
   peerDependencies:
     nx: ">= 16 <= 18"
-  checksum: d96715dc1e7f76ed9c45076230a66f4be2161f1b653a42d998cd8c3947ce05fc261cd6ceefa923b0d5ce693ada5459f949dd7f8a2a9720cdb48f2012dd257e9a
+  checksum: 6cd436aca770061bcbaf963100d99a7acee5bfeccfafcdeb9670e6c467450b6715f2feec57130ca13853ca3b2eb0e53ec94374fcd6976ba14111c1e9aede937f
   languageName: node
   linkType: hard
 
@@ -4077,23 +4068,6 @@ __metadata:
   peerDependencies:
     nx: ">= 15 <= 17"
   checksum: 92579ccc3f3cc7bdc0f23a26c2a1f358cadb4a06e7c166c6cca569f63e0715f74748e3657c40c252fded89786f870d88127211fc4c1158a58e5c528d39214d30
-  languageName: node
-  linkType: hard
-
-"@nx/devkit@npm:17.1.2":
-  version: 17.1.2
-  resolution: "@nx/devkit@npm:17.1.2"
-  dependencies:
-    "@nrwl/devkit": 17.1.2
-    ejs: ^3.1.7
-    enquirer: ~2.3.6
-    ignore: ^5.0.4
-    semver: 7.5.3
-    tmp: ~0.2.1
-    tslib: ^2.3.0
-  peerDependencies:
-    nx: ">= 16 <= 18"
-  checksum: 6cd436aca770061bcbaf963100d99a7acee5bfeccfafcdeb9670e6c467450b6715f2feec57130ca13853ca3b2eb0e53ec94374fcd6976ba14111c1e9aede937f
   languageName: node
   linkType: hard
 
@@ -15212,17 +15186,17 @@ __metadata:
   linkType: hard
 
 "netlify@npm:^13.1.9":
-  version: 13.1.10
-  resolution: "netlify@npm:13.1.10"
+  version: 13.1.11
+  resolution: "netlify@npm:13.1.11"
   dependencies:
-    "@netlify/open-api": ^2.19.1
+    "@netlify/open-api": ^2.26.0
     lodash-es: ^4.17.21
     micro-api-client: ^3.3.0
     node-fetch: ^3.0.0
     omit.js: ^2.0.2
     p-wait-for: ^4.0.0
     qs: ^6.9.6
-  checksum: 72be8f16a5a0010cec40cf3ea3abd19db636e081e8e90dde8638b5b1517a59016d037fe145fdef7219d633ea26782ee0a3b2d5cd4bf20b5f8900bb595a8f3258
+  checksum: d54e5326d89cf83b98ef7808c8943312555a01e1aa33be0451fc5caadd7ca00ec89b6ae2b5248485224e71718e29f5e96b8451fd7b7a08a9b1221875db3883db
   languageName: node
   linkType: hard
 
