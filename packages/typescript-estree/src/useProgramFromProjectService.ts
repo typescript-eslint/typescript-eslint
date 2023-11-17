@@ -1,5 +1,4 @@
 import path from 'path';
-import type * as ts from 'typescript';
 
 import { createProjectProgram } from './create-program/createProjectProgram';
 import type { ProjectServiceSettings } from './create-program/createProjectService';
@@ -42,7 +41,7 @@ export function useProgramFromProjectService(
     return undefined;
   }
 
-  return createProjectProgram(parseSettings, [program as ts.Program]);
+  return createProjectProgram(parseSettings, [program]);
 
   function absolutify(filePath: string): string {
     return path.isAbsolute(filePath)
