@@ -5559,9 +5559,9 @@ __metadata:
   linkType: hard
 
 "@types/natural-compare@npm:*, @types/natural-compare@npm:^1.4.1":
-  version: 1.4.2
-  resolution: "@types/natural-compare@npm:1.4.2"
-  checksum: ad8da2e779de36cf27ecaad2dda939cb047e4f1bba2b6a5edeafc643e28bae40055f79321e21869d5b253fb0e62a878cc069a1b7f09e05560f9b4b0bf4a21448
+  version: 1.4.3
+  resolution: "@types/natural-compare@npm:1.4.3"
+  checksum: 885a382af08a50b320f06a5be6d9be93e9728f704a8c73523c6d9337cf33dc9cf0ff662b894b1bbf8ba3568f9e246668c1968d171d24dfcce608de752c4c87f7
   languageName: node
   linkType: hard
 
