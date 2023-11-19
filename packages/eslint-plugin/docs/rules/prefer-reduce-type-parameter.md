@@ -52,7 +52,3 @@ It will suggest instead pass the asserted type to `Array#reduce` as a generic ty
   {},
 );
 ```
-
-## When Not To Use It
-
-If you don't want to use typechecking in your linting, you can't use this rule.

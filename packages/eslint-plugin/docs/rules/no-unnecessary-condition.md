@@ -95,8 +95,6 @@ If for some reason you cannot turn on `strictNullChecks`, but still want to use 
 
 ## When Not To Use It
 
-The main downside to using this rule is the need for type information.
-
 This rule has a known edge case of triggering on conditions that were modified within function calls (as side effects).
 It is due to limitations of TypeScript's type narrowing.
 See [#9998](https://github.com/microsoft/TypeScript/issues/9998) for details.
