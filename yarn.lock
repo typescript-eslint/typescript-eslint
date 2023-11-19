@@ -20185,11 +20185,11 @@ __metadata:
 
 "typescript@patch:typescript@patch%3Atypescript@npm%253A5.4.0-dev.20231117%23./.yarn/patches/typescript-npm-5.4.0-dev.20231117-78a04a34c5.patch%3A%3Alocator=%2540typescript-eslint%252Ftypescript-eslint%2540workspace%253A.#~builtin<compat/typescript>":
   version: 5.4.0-dev.20231117
-  resolution: "typescript@patch:typescript@patch%3Atypescript@npm%253A5.4.0-dev.20231117%23./.yarn/patches/typescript-npm-5.4.0-dev.20231117-78a04a34c5.patch%3A%3Aversion=5.4.0-dev.20231117&hash=f57760&locator=%2540typescript-eslint%252Ftypescript-eslint%2540workspace%253A.#~builtin<compat/typescript>::version=5.4.0-dev.20231117&hash=29ae49"
+  resolution: "typescript@patch:typescript@patch%3Atypescript@npm%253A5.4.0-dev.20231117%23./.yarn/patches/typescript-npm-5.4.0-dev.20231117-78a04a34c5.patch%3A%3Aversion=5.4.0-dev.20231117&hash=f57760&locator=%2540typescript-eslint%252Ftypescript-eslint%2540workspace%253A.#~builtin<compat/typescript>::version=5.4.0-dev.20231117&hash=e012d7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: eb20effe30527f1a08981f985cd002519d52a5314cd4feca5e145987bea8ac09e023b95c5d82fddb12bedc8401255209ec6e076a48aab6519dbcafce60f5f219
+  checksum: 923f407da16df26c7810244c3455cc88e1d9db20067fbac7f988f484fea6239f89da9d41ae5ebbf7e0b86e096c4d809cb4b0732c6d40a634cb0fdbefd210bc18
   languageName: node
   linkType: hard
 
