@@ -120,71 +120,69 @@ export default createRule<Options, MessageId>({
                 ? 'floatingPromiseArrayVoid'
                 : 'floatingPromiseArray',
             });
+          } else if (options.ignoreVoid) {
+            context.report({
+              node,
+              messageId: nonFunctionHandler
+                ? 'floatingUselessRejectionHandlerVoid'
+                : 'floatingVoid',
+              suggest: [
+                {
+                  messageId: 'floatingFixVoid',
+                  fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
+                    const tsNode = services.esTreeNodeToTSNodeMap.get(
+                      node.expression,
+                    );
+                    if (isHigherPrecedenceThanUnary(tsNode)) {
+                      return fixer.insertTextBefore(node, 'void ');
+                    }
+                    return [
+                      fixer.insertTextBefore(node, 'void ('),
+                      fixer.insertTextAfterRange(
+                        [expression.range[1], expression.range[1]],
+                        ')',
+                      ),
+                    ];
+                  },
+                },
+              ],
+            });
           } else {
-            if (options.ignoreVoid) {
-              context.report({
-                node,
-                messageId: nonFunctionHandler
-                  ? 'floatingUselessRejectionHandlerVoid'
-                  : 'floatingVoid',
-                suggest: [
-                  {
-                    messageId: 'floatingFixVoid',
-                    fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
-                      const tsNode = services.esTreeNodeToTSNodeMap.get(
-                        node.expression,
+            context.report({
+              node,
+              messageId: nonFunctionHandler
+                ? 'floatingUselessRejectionHandler'
+                : 'floating',
+              suggest: [
+                {
+                  messageId: 'floatingFixAwait',
+                  fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
+                    if (
+                      expression.type === AST_NODE_TYPES.UnaryExpression &&
+                      expression.operator === 'void'
+                    ) {
+                      return fixer.replaceTextRange(
+                        [expression.range[0], expression.range[0] + 4],
+                        'await',
                       );
-                      if (isHigherPrecedenceThanUnary(tsNode)) {
-                        return fixer.insertTextBefore(node, 'void ');
-                      }
-                      return [
-                        fixer.insertTextBefore(node, 'void ('),
-                        fixer.insertTextAfterRange(
-                          [expression.range[1], expression.range[1]],
-                          ')',
-                        ),
-                      ];
-                    },
+                    }
+                    const tsNode = services.esTreeNodeToTSNodeMap.get(
+                      node.expression,
+                    );
+                    if (isHigherPrecedenceThanUnary(tsNode)) {
+                      return fixer.insertTextBefore(node, 'await ');
+                    }
+                    return [
+                      fixer.insertTextBefore(node, 'await ('),
+                      fixer.insertTextAfterRange(
+                        [expression.range[1], expression.range[1]],
+                        ')',
+                      ),
+                    ];
                   },
-                ],
-              });
-            } else {
-              context.report({
-                node,
-                messageId: nonFunctionHandler
-                  ? 'floatingUselessRejectionHandler'
-                  : 'floating',
-                suggest: [
-                  {
-                    messageId: 'floatingFixAwait',
-                    fix(fixer): TSESLint.RuleFix | TSESLint.RuleFix[] {
-                      if (
-                        expression.type === AST_NODE_TYPES.UnaryExpression &&
-                        expression.operator === 'void'
-                      ) {
-                        return fixer.replaceTextRange(
-                          [expression.range[0], expression.range[0] + 4],
-                          'await',
-                        );
-                      }
-                      const tsNode = services.esTreeNodeToTSNodeMap.get(
-                        node.expression,
-                      );
-                      if (isHigherPrecedenceThanUnary(tsNode)) {
-                        return fixer.insertTextBefore(node, 'await ');
-                      }
-                      return [
-                        fixer.insertTextBefore(node, 'await ('),
-                        fixer.insertTextAfterRange(
-                          [expression.range[1], expression.range[1]],
-                          ')',
-                        ),
-                      ];
-                    },
-                  },
-                ],
-              });
-            }
+                },
+              ],
+            });
           }
         }
       },
