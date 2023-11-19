@@ -3859,10 +3859,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@netlify/open-api@npm:^2.19.1":
-  version: 2.19.1
-  resolution: "@netlify/open-api@npm:2.19.1"
-  checksum: 2f5e5f25f5d6c8cac2a38a665dfa86b27f60f00c3fac4ead5b077300a089974d1d211a310e13e014d589d1c127c2837009c6d060e9351fb443e3190be676a01f
+"@netlify/open-api@npm:^2.26.0":
+  version: 2.26.0
+  resolution: "@netlify/open-api@npm:2.26.0"
+  checksum: 05246cbb9b8e0ed11195de067d6a55f5c5d23292f67b732a6fbd464716ac2c5f34a38ee0add90487ef1197c5a7873e7b63c0a69e3084d142e254242c82295e43
   languageName: node
   linkType: hard
 
@@ -5559,18 +5559,18 @@ __metadata:
   linkType: hard
 
 "@types/natural-compare@npm:*, @types/natural-compare@npm:^1.4.1":
-  version: 1.4.2
-  resolution: "@types/natural-compare@npm:1.4.2"
-  checksum: ad8da2e779de36cf27ecaad2dda939cb047e4f1bba2b6a5edeafc643e28bae40055f79321e21869d5b253fb0e62a878cc069a1b7f09e05560f9b4b0bf4a21448
+  version: 1.4.3
+  resolution: "@types/natural-compare@npm:1.4.3"
+  checksum: 885a382af08a50b320f06a5be6d9be93e9728f704a8c73523c6d9337cf33dc9cf0ff662b894b1bbf8ba3568f9e246668c1968d171d24dfcce608de752c4c87f7
   languageName: node
   linkType: hard
 
 "@types/ncp@npm:^2.0.5":
-  version: 2.0.7
-  resolution: "@types/ncp@npm:2.0.7"
+  version: 2.0.8
+  resolution: "@types/ncp@npm:2.0.8"
   dependencies:
     "@types/node": "*"
-  checksum: 3051298b2c49f777e4e08990caa0ecd367bb34d3715a6f00f2a9a611dbb65c8f494171911f11f2ca6d19c7d869296c1a1461f288962ec59a83b6b94cba7dea13
+  checksum: 33ab7fb6f6777b9b77114acb159acb565c24fed7d78ab19553b9621f1da38c8bf5976b8cb8d0c66864b5c1d08db6ca155978ba07b93bbc2e661fc3e535e2677f
   languageName: node
   linkType: hard
 
@@ -14051,8 +14051,8 @@ __metadata:
   linkType: hard
 
 "lint-staged@npm:^15.0.0":
-  version: 15.0.2
-  resolution: "lint-staged@npm:15.0.2"
+  version: 15.1.0
+  resolution: "lint-staged@npm:15.1.0"
   dependencies:
     chalk: 5.3.0
     commander: 11.1.0
@@ -14063,10 +14063,10 @@ __metadata:
     micromatch: 4.0.5
     pidtree: 0.6.0
     string-argv: 0.3.2
-    yaml: 2.3.3
+    yaml: 2.3.4
   bin:
     lint-staged: bin/lint-staged.js
-  checksum: 437bc006a103eda779584b0beccef03732d1e79fe3c5d66004fee0ba641b2defe81ed8f7b4909fd1b4c59a7b7e2587d811dcc3a2e171f95573976af4294da9fc
+  checksum: e99bdedb32d20fa22c0d0798ecf014fd00ac9cce1158373d7caf47855c0b9b4c20d228417677a05ea81f6941f957ae9347dccb3846a48bc1fdd0cdeed2ccf0ef
   languageName: node
   linkType: hard
 
@@ -15186,17 +15186,17 @@ __metadata:
   linkType: hard
 
 "netlify@npm:^13.1.9":
-  version: 13.1.10
-  resolution: "netlify@npm:13.1.10"
+  version: 13.1.11
+  resolution: "netlify@npm:13.1.11"
   dependencies:
-    "@netlify/open-api": ^2.19.1
+    "@netlify/open-api": ^2.26.0
     lodash-es: ^4.17.21
     micro-api-client: ^3.3.0
     node-fetch: ^3.0.0
     omit.js: ^2.0.2
     p-wait-for: ^4.0.0
     qs: ^6.9.6
-  checksum: 72be8f16a5a0010cec40cf3ea3abd19db636e081e8e90dde8638b5b1517a59016d037fe145fdef7219d633ea26782ee0a3b2d5cd4bf20b5f8900bb595a8f3258
+  checksum: d54e5326d89cf83b98ef7808c8943312555a01e1aa33be0451fc5caadd7ca00ec89b6ae2b5248485224e71718e29f5e96b8451fd7b7a08a9b1221875db3883db
   languageName: node
   linkType: hard
 
@@ -21573,10 +21573,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"yaml@npm:2.3.3":
-  version: 2.3.3
-  resolution: "yaml@npm:2.3.3"
-  checksum: cdfd132e7e0259f948929efe8835923df05c013c273c02bb7a2de9b46ac3af53c2778a35b32c7c0f877cc355dc9340ed564018c0242bfbb1278c2a3e53a0e99e
+"yaml@npm:2.3.4":
+  version: 2.3.4
+  resolution: "yaml@npm:2.3.4"
+  checksum: e6d1dae1c6383bcc8ba11796eef3b8c02d5082911c6723efeeb5ba50fc8e881df18d645e64de68e421b577296000bea9c75d6d9097c2f6699da3ae0406c030d8
   languageName: node
   linkType: hard
 
