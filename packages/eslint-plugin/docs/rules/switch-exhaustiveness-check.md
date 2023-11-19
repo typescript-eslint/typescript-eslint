@@ -107,29 +107,6 @@ switch (day) {
 }
 ```
 
-<<<<<<< HEAD
-
-## Options
-
-### `requireDefaultForNonUnion`
-
-Examples of additional **incorrect** code for this rule with `{ requireDefaultForNonUnion: true }`:
-
-```ts option='{ "requireDefaultForNonUnion": true }' showPlaygroundButton
-const value: number = Math.floor(Math.random() * 3);
-
-switch (value) {
-  case 0:
-    return 0;
-  case 1:
-    return 1;
-}
-```
-
-# Since `value` is a non-union type it requires the switch case to have a default clause only with `requireDefaultForNonUnion` enabled.
-
-<!--/tabs-->
-
 Likewise, here are some examples of code working with an enum:
 
 <!--tabs-->
@@ -202,7 +179,26 @@ switch (fruit) {
 
 <!--/tabs-->
 
-> > > > > > > main
+## Options
+
+### `requireDefaultForNonUnion`
+
+Examples of additional **incorrect** code for this rule with `{ requireDefaultForNonUnion: true }`:
+
+```ts option='{ "requireDefaultForNonUnion": true }' showPlaygroundButton
+const value: number = Math.floor(Math.random() * 3);
+
+switch (value) {
+  case 0:
+    return 0;
+  case 1:
+    return 1;
+}
+```
+
+Since `value` is a non-union type it requires the switch case to have a default clause only with `requireDefaultForNonUnion` enabled.
+
+<!--/tabs-->
 
 ## When Not To Use It
 
