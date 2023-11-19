@@ -17,35 +17,35 @@
     "id": "ESLint",
     "image": "https://images.opencollective.com/eslint/96b09dc/logo.png",
     "name": "ESLint",
-    "totalDonations": 380000,
+    "totalDonations": 395000,
     "website": "https://eslint.org/"
   },
   {
     "id": "Hugging Face",
     "image": "https://images.opencollective.com/huggingface/5c934ee/logo.png",
     "name": "Hugging Face",
-    "totalDonations": 360000,
+    "totalDonations": 380000,
     "website": "https://huggingface.co"
   },
   {
     "id": "Codecademy",
     "image": "https://images.opencollective.com/codecademy/d56a48d/logo.png",
     "name": "Codecademy",
-    "totalDonations": 210000,
+    "totalDonations": 220000,
     "website": "https://codecademy.com"
   },
   {
     "id": "Airbnb",
     "image": "https://images.opencollective.com/airbnb/d327d66/logo.png",
     "name": "Airbnb",
-    "totalDonations": 195800,
+    "totalDonations": 200800,
     "website": "https://www.airbnb.com/"
   },
   {
     "id": "Sourcegraph",
     "image": "https://images.opencollective.com/sourcegraph/67e40ff/logo.png",
     "name": "Sourcegraph",
-    "totalDonations": 160000,
+    "totalDonations": 170000,
     "website": "https://about.sourcegraph.com"
   },
   {
@@ -77,6 +77,13 @@
     "website": "https://sentry.io/welcome/"
   },
   {
+    "id": "Cybozu",
+    "image": "https://images.opencollective.com/cybozu/933e46d/logo.png",
+    "name": "Cybozu",
+    "totalDonations": 105000,
+    "website": "https://cybozu.co.jp/"
+  },
+  {
     "id": "EY Doberman",
     "image": "https://images.opencollective.com/ey-doberman/b269462/logo.png",
     "name": "EY Doberman",
@@ -89,13 +96,6 @@
     "name": "Codiga",
     "totalDonations": 70000,
     "website": "https://www.codiga.io"
-  },
-  {
-    "id": "Cybozu",
-    "image": "https://images.opencollective.com/cybozu/933e46d/logo.png",
-    "name": "Cybozu",
-    "totalDonations": 70000,
-    "website": "https://cybozu.co.jp/"
   },
   {
     "id": "DeepSource",
@@ -115,7 +115,7 @@
     "id": "STORIS",
     "image": "https://images.opencollective.com/storis/dfb0e13/logo.png",
     "name": "STORIS",
-    "totalDonations": 48500,
+    "totalDonations": 51000,
     "website": "https://www.storis.com/"
   },
   {
@@ -178,14 +178,14 @@
     "id": "Evil Martians",
     "image": "https://images.opencollective.com/evilmartians/707ab4d/logo.png",
     "name": "Evil Martians",
-    "totalDonations": 15500,
+    "totalDonations": 16000,
     "website": "https://evilmartians.com/"
   },
   {
     "id": "Balsa",
     "image": "https://images.opencollective.com/balsa/77de498/logo.png",
     "name": "Balsa",
-    "totalDonations": 15500,
+    "totalDonations": 16000,
     "website": "https://balsa.com/"
   },
   {
@@ -213,8 +213,22 @@
     "id": "Corellium",
     "image": "https://images.opencollective.com/corellium/aa8c228/logo.png",
     "name": "Corellium",
-    "totalDonations": 13800,
+    "totalDonations": 14400,
     "website": "https://www.corellium.com"
+  },
+  {
+    "id": "CryptoNewsZ",
+    "image": "https://images.opencollective.com/cryptonewsz/f50c823/logo.png",
+    "name": "CryptoNewsZ",
+    "totalDonations": 12500,
+    "website": "https://www.cryptonewsz.com/"
+  },
+  {
+    "id": "0+X",
+    "image": "https://images.opencollective.com/0-x/7239aff/logo.png",
+    "name": "0+X",
+    "totalDonations": 11000,
+    "website": "https://www.0x.se"
   },
   {
     "id": "Gianfranco Palumbo",
@@ -238,17 +252,17 @@
     "website": "https://laserhub.com/"
   },
   {
-    "id": "0+X",
-    "image": "https://images.opencollective.com/0-x/7239aff/logo.png",
-    "name": "0+X",
+    "id": "Quicko",
+    "image": "https://images.opencollective.com/quicko/7bd1dc9/logo.png",
+    "name": "Quicko",
     "totalDonations": 10000,
-    "website": "https://www.0x.se"
+    "website": "https://quicko.com"
   },
   {
-    "id": "CryptoNewsZ",
-    "image": "https://images.opencollective.com/cryptonewsz/f50c823/logo.png",
-    "name": "CryptoNewsZ",
+    "id": "Trevor Burnham",
+    "image": "https://images.opencollective.com/trevorburnham/016f6da/avatar.png",
+    "name": "Trevor Burnham",
     "totalDonations": 10000,
-    "website": "https://www.cryptonewsz.com/"
+    "website": "https://trevorburnham.com"
   }
 ]

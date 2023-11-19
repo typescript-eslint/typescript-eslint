@@ -119,6 +119,7 @@
     "serializers",
     "Sourcegraph",
     "stringification",
+    "stringly",
     "superset",
     "thenables",
     "transpiled",
