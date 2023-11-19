@@ -217,10 +217,10 @@ export default createRule<[Options], MessageIds>({
             allowInGenericTypeArguments && allowAsThisParameter
               ? 'invalidVoidNotReturnOrThisParamOrGeneric'
               : allowInGenericTypeArguments
-              ? getNotReturnOrGenericMessageId(node)
-              : allowAsThisParameter
-              ? 'invalidVoidNotReturnOrThisParam'
-              : 'invalidVoidNotReturn',
+                ? getNotReturnOrGenericMessageId(node)
+                : allowAsThisParameter
+                  ? 'invalidVoidNotReturnOrThisParam'
+                  : 'invalidVoidNotReturn',
           node,
         });
       },
