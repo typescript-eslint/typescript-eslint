@@ -107,6 +107,8 @@ switch (day) {
 }
 ```
 
+<!--/tabs-->
+
 Likewise, here are some examples of code working with an enum:
 
 <!--tabs-->
