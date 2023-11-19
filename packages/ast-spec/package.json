@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "6.10.0",
+  "version": "6.11.0",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -47,7 +47,7 @@
     "@babel/core": "*",
     "@babel/eslint-parser": "*",
     "@babel/parser": "*",
-    "@microsoft/api-extractor": "^7.36.1",
+    "@microsoft/api-extractor": "^7.38.0",
     "glob": "*",
     "jest": "29.7.0",
     "jest-diff": "^29.6.2",

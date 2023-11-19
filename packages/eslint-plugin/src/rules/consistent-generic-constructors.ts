@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -31,7 +32,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['constructor'],
   create(context, [mode]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     return {
       'VariableDeclarator,PropertyDefinition,:matches(FunctionDeclaration,FunctionExpression) > AssignmentPattern'(
         node:
@@ -108,37 +109,35 @@ export default createRule<Options, MessageIds>({
           }
           return;
         }
-        if (mode === 'constructor') {
-          if (lhs?.typeArguments && !rhs.typeArguments) {
-            const hasParens =
-              sourceCode.getTokenAfter(rhs.callee)?.value === '(';
-            const extraComments = new Set(
-              sourceCode.getCommentsInside(lhs.parent),
-            );
-            sourceCode
-              .getCommentsInside(lhs.typeArguments)
-              .forEach(c => extraComments.delete(c));
-            context.report({
-              node,
-              messageId: 'preferConstructor',
-              *fix(fixer) {
-                yield fixer.remove(lhs.parent);
-                for (const comment of extraComments) {
-                  yield fixer.insertTextAfter(
-                    rhs.callee,
-                    sourceCode.getText(comment),
-                  );
-                }
+
+        if (lhs?.typeArguments && !rhs.typeArguments) {
+          const hasParens = sourceCode.getTokenAfter(rhs.callee)?.value === '(';
+          const extraComments = new Set(
+            sourceCode.getCommentsInside(lhs.parent),
+          );
+          sourceCode
+            .getCommentsInside(lhs.typeArguments)
+            .forEach(c => extraComments.delete(c));
+          context.report({
+            node,
+            messageId: 'preferConstructor',
+            *fix(fixer) {
+              yield fixer.remove(lhs.parent);
+              for (const comment of extraComments) {
                 yield fixer.insertTextAfter(
                   rhs.callee,
-                  sourceCode.getText(lhs.typeArguments),
+                  sourceCode.getText(comment),
                 );
-                if (!hasParens) {
-                  yield fixer.insertTextAfter(rhs.callee, '()');
-                }
-              },
-            });
-          }
+              }
+              yield fixer.insertTextAfter(
+                rhs.callee,
+                sourceCode.getText(lhs.typeArguments),
+              );
+              if (!hasParens) {
+                yield fixer.insertTextAfter(rhs.callee, '()');
+              }
+            },
+          });
         }
       },
     };

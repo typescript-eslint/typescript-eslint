@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -52,7 +53,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: [{ requireDefaultForNonUnion: false }],
   create(context, [{ requireDefaultForNonUnion }]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
@@ -99,13 +100,19 @@ export default createRule<Options, MessageIds>({
           (missingBranchName || missingBranchName === '') &&
           requiresQuoting(missingBranchName.toString(), compilerOptions.target)
         ) {
-          caseTest = `${symbolName}['${missingBranchName}']`;
+          const escapedBranchName = missingBranchName
+            .replace(/'/g, "\\'")
+            .replace(/\n/g, '\\n')
+            .replace(/\r/g, '\\r');
+
+          caseTest = `${symbolName}['${escapedBranchName}']`;
         }
 
         const errorMessage = `Not implemented yet: ${caseTest} case`;
+        const escapedErrorMessage = errorMessage.replace(/'/g, "\\'");
 
         missingCases.push(
-          `case ${caseTest}: { throw new Error('${errorMessage}') }`,
+          `case ${caseTest}: { throw new Error('${escapedErrorMessage}') }`,
         );
       }
 

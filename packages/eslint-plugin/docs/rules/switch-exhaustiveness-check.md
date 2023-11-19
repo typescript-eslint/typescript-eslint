@@ -6,14 +6,18 @@ description: 'Require switch-case statements to be exhaustive.'
 >
 > See **https://typescript-eslint.io/rules/switch-exhaustiveness-check** for documentation.
 
-When working with union types in TypeScript, it's common to want to write a `switch` statement intended to contain a `case` for each constituent (possible type in the union).
-However, if the union type changes, it's easy to forget to modify the cases to account for any new types.
+When working with union types or enums in TypeScript, it's common to want to write a `switch` statement intended to contain a `case` for each constituent (possible type in the union or the enum).
+However, if the union type or the enum changes, it's easy to forget to modify the cases to account for any new types.
 
-This rule reports when a `switch` statement over a value typed as a union of literals is missing a case for any of those literal types and does not have a `default` clause.
+This rule reports when a `switch` statement over a value typed as a union of literals or as an enum is missing a case for any of those literal types and does not have a `default` clause.
 
 There is also an option to check the exhaustiveness of switches on non-union types by requiring a default clause.
 
 ## Examples
+
+When the switch doesn't have exhaustive cases, either filling them all out or adding a default will correct the rule's complaint.
+
+Here are some examples of code working with a union of literals:
 
 <!--tabs-->
 
@@ -29,7 +33,7 @@ type Day =
   | 'Saturday'
   | 'Sunday';
 
-const day = 'Monday' as Day;
+declare const day: Day;
 let result = 0;
 
 switch (day) {
@@ -51,7 +55,7 @@ type Day =
   | 'Saturday'
   | 'Sunday';
 
-const day = 'Monday' as Day;
+declare const day: Day;
 let result = 0;
 
 switch (day) {
@@ -91,7 +95,7 @@ type Day =
   | 'Saturday'
   | 'Sunday';
 
-const day = 'Monday' as Day;
+declare const day: Day;
 let result = 0;
 
 switch (day) {
@@ -102,6 +106,8 @@ switch (day) {
     result = 42;
 }
 ```
+
+<<<<<<< HEAD
 
 ## Options
 
@@ -120,8 +126,84 @@ switch (value) {
 }
 ```
 
-Since `value` is a non-union type it requires the switch case to have a default clause only with `requireDefaultForNonUnion` enabled.
+# Since `value` is a non-union type it requires the switch case to have a default clause only with `requireDefaultForNonUnion` enabled.
+
+<!--/tabs-->
+
+Likewise, here are some examples of code working with an enum:
+
+<!--tabs-->
+
+### ❌ Incorrect
+
+```ts
+enum Fruit {
+  Apple,
+  Banana,
+  Cherry,
+}
+
+declare const fruit: Fruit;
+
+switch (fruit) {
+  case Fruit.Apple:
+    console.log('an apple');
+    break;
+}
+```
+
+### ✅ Correct
+
+```ts
+enum Fruit {
+  Apple,
+  Banana,
+  Cherry,
+}
+
+declare const fruit: Fruit;
+
+switch (fruit) {
+  case Fruit.Apple:
+    console.log('an apple');
+    break;
+
+  case Fruit.Banana:
+    console.log('a banana');
+    break;
+
+  case Fruit.Cherry:
+    console.log('a cherry');
+    break;
+}
+```
+
+### ✅ Correct
+
+```ts
+enum Fruit {
+  Apple,
+  Banana,
+  Cherry,
+}
+
+declare const fruit: Fruit;
+
+switch (fruit) {
+  case Fruit.Apple:
+    console.log('an apple');
+    break;
+
+  default:
+    console.log('a fruit');
+    break;
+}
+```
+
+<!--/tabs-->
+
+> > > > > > > main
 
 ## When Not To Use It
 
-If you don't frequently `switch` over union types with many parts, or intentionally wish to leave out some parts.
+If you don't frequently `switch` over union types or enums with many parts, or intentionally wish to leave out some parts.

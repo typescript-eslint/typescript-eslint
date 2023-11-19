@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, isParenthesized } from '../util';
 
@@ -28,7 +29,6 @@ function isSimpleType(node: TSESTree.Node): boolean {
       return true;
     case AST_NODE_TYPES.TSTypeReference:
       if (
-        node.typeName &&
         node.typeName.type === AST_NODE_TYPES.Identifier &&
         node.typeName.name === 'Array'
       ) {
@@ -135,7 +135,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     const defaultOption = options.default;
     const readonlyOption = options.readonly ?? defaultOption;
@@ -144,7 +144,7 @@ export default createRule<Options, MessageIds>({
      * @param node the node to be evaluated.
      */
     function getMessageType(node: TSESTree.Node): string {
-      if (node && isSimpleType(node)) {
+      if (isSimpleType(node)) {
         return sourceCode.getText(node);
       }
       return 'T';
@@ -253,7 +253,7 @@ export default createRule<Options, MessageIds>({
         const typeParens = typeNeedsParentheses(type);
         const parentParens =
           readonlyPrefix &&
-          node.parent?.type === AST_NODE_TYPES.TSArrayType &&
+          node.parent.type === AST_NODE_TYPES.TSArrayType &&
           !isParenthesized(node.parent.elementType, sourceCode);
 
         const start = `${parentParens ? '(' : ''}${readonlyPrefix}${

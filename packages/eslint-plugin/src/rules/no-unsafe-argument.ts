@@ -5,7 +5,6 @@ import * as ts from 'typescript';
 import {
   createRule,
   getParserServices,
-  getTypeArguments,
   isTypeAnyArrayType,
   isTypeAnyType,
   isUnsafeAssignment,
@@ -64,13 +63,13 @@ class FunctionSignature {
         // is a rest param
         if (checker.isArrayType(type)) {
           restType = {
-            type: getTypeArguments(type, checker)[0],
+            type: checker.getTypeArguments(type)[0],
             kind: RestTypeKind.Array,
             index: i,
           };
         } else if (checker.isTupleType(type)) {
           restType = {
-            typeArguments: getTypeArguments(type, checker),
+            typeArguments: checker.getTypeArguments(type),
             kind: RestTypeKind.Tuple,
             index: i,
           };
@@ -205,10 +204,8 @@ export default createRule<[], MessageIds>({
                 });
               } else if (checker.isTupleType(spreadArgType)) {
                 // foo(...[tuple1, tuple2])
-                const spreadTypeArguments = getTypeArguments(
-                  spreadArgType,
-                  checker,
-                );
+                const spreadTypeArguments =
+                  checker.getTypeArguments(spreadArgType);
                 for (const tupleType of spreadTypeArguments) {
                   const parameterType = signature.getNextParameterType();
                   if (parameterType == null) {

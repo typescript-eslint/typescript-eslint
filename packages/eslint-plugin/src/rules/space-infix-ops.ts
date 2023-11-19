@@ -1,4 +1,5 @@
 import { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -38,7 +39,7 @@ export default createRule<Options, MessageIds>({
   ],
   create(context) {
     const rules = baseRule.create(context);
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     function report(operator: TSESTree.Token): void {
       context.report({

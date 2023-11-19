@@ -151,9 +151,13 @@ jobs:
   unit_tests:
     name: Run Unit Tests
     needs: [build]
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.os }}
     strategy:
       matrix:
+        exclude:
+          - os: windows-latest
+            node-version: 16
+        os: [ubuntu-latest, windows-latest]
         # just run on the oldest and latest supported versions and assume the intermediate versions are good
         node-version: [16, 20]
         package:

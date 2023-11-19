@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 import {
@@ -98,7 +99,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     function isAllowedFunction(
       node:
         | TSESTree.ArrowFunctionExpression
@@ -125,7 +126,7 @@ export default createRule<Options, MessageIds>({
         let funcName;
         if (node.id?.name) {
           funcName = node.id.name;
-        } else if (parent) {
+        } else {
           switch (parent.type) {
             case AST_NODE_TYPES.VariableDeclarator: {
               if (parent.id.type === AST_NODE_TYPES.Identifier) {
@@ -153,7 +154,6 @@ export default createRule<Options, MessageIds>({
       if (
         node.type === AST_NODE_TYPES.FunctionDeclaration &&
         node.id &&
-        node.id.type === AST_NODE_TYPES.Identifier &&
         !!options.allowedNames.includes(node.id.name)
       ) {
         return true;

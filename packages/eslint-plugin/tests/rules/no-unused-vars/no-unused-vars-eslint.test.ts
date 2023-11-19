@@ -22,6 +22,7 @@ ruleTester.defineRule('use-every-a', context => {
    * Mark a variable as used
    */
   function useA(): void {
+    // eslint-disable-next-line deprecation/deprecation
     context.markVariableAsUsed('a');
   }
   return {

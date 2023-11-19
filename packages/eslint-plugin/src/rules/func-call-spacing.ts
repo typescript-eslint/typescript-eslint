@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -74,7 +75,7 @@ export default createRule<Options, MessageIds>({
   },
   defaultOptions: ['never', {}],
   create(context, [option, config]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const text = sourceCode.getText();
 
     /**

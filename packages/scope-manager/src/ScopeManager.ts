@@ -1,4 +1,4 @@
-import type { TSESTree } from '@typescript-eslint/types';
+import type { SourceType, TSESTree } from '@typescript-eslint/types';
 
 import { assert } from './assert';
 import type { Scope } from './scope';
@@ -27,7 +27,7 @@ import type { Variable } from './variable';
 
 interface ScopeManagerOptions {
   globalReturn?: boolean;
-  sourceType?: 'module' | 'script';
+  sourceType?: SourceType;
   impliedStrict?: boolean;
 }
 

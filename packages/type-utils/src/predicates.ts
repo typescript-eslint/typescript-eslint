@@ -2,7 +2,6 @@ import debug from 'debug';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { getTypeArguments } from './getTypeArguments';
 import { getTypeFlags, isTypeFlagSet } from './typeFlagUtils';
 
 const log = debug('typescript-eslint:eslint-plugin:utils:types');
@@ -101,10 +100,7 @@ export function isTypeAnyArrayType(
 ): boolean {
   return (
     checker.isArrayType(type) &&
-    isTypeAnyType(
-      // getTypeArguments was only added in TS3.7
-      getTypeArguments(type, checker)[0],
-    )
+    isTypeAnyType(checker.getTypeArguments(type)[0])
   );
 }
 
@@ -117,10 +113,7 @@ export function isTypeUnknownArrayType(
 ): boolean {
   return (
     checker.isArrayType(type) &&
-    isTypeUnknownType(
-      // getTypeArguments was only added in TS3.7
-      getTypeArguments(type, checker)[0],
-    )
+    isTypeUnknownType(checker.getTypeArguments(type)[0])
   );
 }
 
