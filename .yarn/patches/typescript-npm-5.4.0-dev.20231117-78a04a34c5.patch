@@ -1,8 +1,8 @@
 diff --git a/lib/typescript.d.ts b/lib/typescript.d.ts
-index d785077fd9e4eb5959c0badb857358fad09d4d3f..54f71344b098e8d46acd8dd77638c60d505bb996 100644
+index 7135bb786332478763097e4fa2274ac0222ecbb2..446baab7b0d29f1e88842f97f58d343b816c8df0 100644
 --- a/lib/typescript.d.ts
 +++ b/lib/typescript.d.ts
-@@ -4491,8 +4491,8 @@ declare namespace ts {
+@@ -4493,8 +4493,8 @@ declare namespace ts {
          JSDocFunctionType = 324,
          JSDocVariadicType = 325,
          JSDocNamepathType = 326,
@@ -12,7 +12,7 @@ index d785077fd9e4eb5959c0badb857358fad09d4d3f..54f71344b098e8d46acd8dd77638c60d
          JSDocComment = 327,
          JSDocText = 328,
          JSDocTypeLiteral = 329,
-@@ -5066,6 +5066,8 @@ declare namespace ts {
+@@ -5068,6 +5068,8 @@ declare namespace ts {
          readonly name: PropertyName;
          readonly questionToken?: QuestionToken;
          readonly type?: TypeNode;
@@ -21,7 +21,7 @@ index d785077fd9e4eb5959c0badb857358fad09d4d3f..54f71344b098e8d46acd8dd77638c60d
      }
      interface PropertyDeclaration extends ClassElement, JSDocContainer {
          readonly kind: SyntaxKind.PropertyDeclaration;
-@@ -5091,6 +5093,10 @@ declare namespace ts {
+@@ -5093,6 +5095,10 @@ declare namespace ts {
          readonly parent: ObjectLiteralExpression;
          readonly name: PropertyName;
          readonly initializer: Expression;
@@ -32,7 +32,7 @@ index d785077fd9e4eb5959c0badb857358fad09d4d3f..54f71344b098e8d46acd8dd77638c60d
      }
      interface ShorthandPropertyAssignment extends ObjectLiteralElement, JSDocContainer {
          readonly kind: SyntaxKind.ShorthandPropertyAssignment;
-@@ -5098,6 +5104,12 @@ declare namespace ts {
+@@ -5100,6 +5106,12 @@ declare namespace ts {
          readonly name: Identifier;
          readonly equalsToken?: EqualsToken;
          readonly objectAssignmentInitializer?: Expression;
@@ -45,7 +45,7 @@ index d785077fd9e4eb5959c0badb857358fad09d4d3f..54f71344b098e8d46acd8dd77638c60d
      }
      interface SpreadAssignment extends ObjectLiteralElement, JSDocContainer {
          readonly kind: SyntaxKind.SpreadAssignment;
-@@ -5222,6 +5234,8 @@ declare namespace ts {
+@@ -5224,6 +5236,8 @@ declare namespace ts {
      }
      interface FunctionTypeNode extends FunctionOrConstructorTypeNodeBase, LocalsContainer {
          readonly kind: SyntaxKind.FunctionType;
@@ -54,7 +54,7 @@ index d785077fd9e4eb5959c0badb857358fad09d4d3f..54f71344b098e8d46acd8dd77638c60d
      }
      interface ConstructorTypeNode extends FunctionOrConstructorTypeNodeBase, LocalsContainer {
          readonly kind: SyntaxKind.ConstructorType;
-@@ -8978,7 +8992,13 @@ declare namespace ts {
+@@ -8995,7 +9009,13 @@ declare namespace ts {
      function symbolName(symbol: Symbol): string;
      function getNameOfJSDocTypedef(declaration: JSDocTypedefTag): Identifier | PrivateIdentifier | undefined;
      function getNameOfDeclaration(declaration: Declaration | Expression | undefined): DeclarationName | undefined;
@@ -68,7 +68,7 @@ index d785077fd9e4eb5959c0badb857358fad09d4d3f..54f71344b098e8d46acd8dd77638c60d
      function getModifiers(node: HasModifiers): readonly Modifier[] | undefined;
      /**
       * Gets the JSDoc parameter tags for the node if present.
-@@ -9508,7 +9528,13 @@ declare namespace ts {
+@@ -9525,7 +9545,13 @@ declare namespace ts {
      function isModuleName(node: Node): node is ModuleName;
      function isBinaryOperatorToken(node: Node): node is BinaryOperatorToken;
      function setTextRange<T extends TextRange>(range: T, location: TextRange | undefined): T;
