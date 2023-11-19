@@ -92,7 +92,7 @@ function Playground(): React.JSX.Element {
         <Panel
           id="playgroundMenu"
           className={styles.PanelColumn}
-          defaultSize={windowSize === 'mobile' ? 0 : optionsSize}
+          defaultSizePercentage={windowSize === 'mobile' ? 0 : optionsSize}
           collapsible={true}
           ref={playgroundMenuRef}
         >
