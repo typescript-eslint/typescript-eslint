@@ -44,7 +44,7 @@ export function spliceWhenNotToUseIt(
         {
           type: 'link',
           title: null,
-          url: `/troubleshooting/performance-troubleshooting`,
+          url: `/linting/troubleshooting/performance-troubleshooting`,
           children: [
             {
               type: 'text',
