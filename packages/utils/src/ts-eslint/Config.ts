@@ -131,14 +131,36 @@ export namespace FlatConfig {
   export type SeverityString = SharedConfig.SeverityString;
   export type SourceType = ParserOptionsTypes.SourceType | 'commonjs';
 
+  export interface PluginMeta {
+    /**
+     * The meta.name property should match the npm package name for your plugin.
+     */
+    name: string;
+    /**
+     * The meta.version property should match the npm package version for your plugin.
+     */
+    version: string;
+  }
   export interface Plugin {
     /**
+     * Shared configurations bundled with the plugin.
+     * Users will reference these directly in their config (i.e. `plugin.configs.recommended`).
+     */
+    configs?: Record<string, Config>;
+    /**
+     * Metadata about your plugin for easier debugging and more effective caching of plugins.
+     */
+    meta?: PluginMeta;
+    /**
      * The definition of plugin processors.
-     * Can be referenced by string in the config (i.e., `"pluginName/processorName"`).
+     * Users can stringly reference the processor using the key in their config (i.e., `"pluginName/processorName"`).
      */
     processors?: Record<string, Processor>;
     /**
      * The definition of plugin rules.
+     * The key must be the name of the rule that users will use
+     * Users can stringly reference the rule using the key they registered the plugin under combined with the rule name.
+     * i.e. for the user config `plugins: { foo: pluginReference }` - the reference would be `"foo/ruleName"`.
      */
     rules?: Record<string, RuleCreateFunction | AnyRuleModule>;
   }
@@ -228,7 +250,7 @@ export namespace FlatConfig {
      * a string indicating the name of a processor inside of a plugin
      * (i.e., `"pluginName/processorName"`).
      */
-    processor?: Processor;
+    processor?: string | Processor;
     /**
      * An object containing the configured rules.
      * When `files` or `ignores` are specified, these rule configurations are only available to the matching files.

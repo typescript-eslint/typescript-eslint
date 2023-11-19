@@ -1,4 +1,4 @@
-name: '✨ Propose a New Rule Option or Additional Checks'
+name: '✨ New Rule Option or Additional Check'
 description: 'Propose a new lint rule option or propose that a lint rule checks more cases'
 title: 'Enhancement: [rule-name] <a short description of my proposal>'
 labels:
