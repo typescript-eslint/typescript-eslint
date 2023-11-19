@@ -209,6 +209,21 @@ function test(value: ObjectUnion): number {
   }
 }
     `,
+    // switch with default clause on non-union type
+    {
+      code: `
+declare const value: number;
+switch (value) {
+  case 0:
+    return 0;
+  case 1:
+    return 1;
+  default:
+    return -1;
+}
+      `,
+      options: [{ requireDefaultForNonUnion: true }],
+    },
   ],
   invalid: [
     {
@@ -595,6 +610,38 @@ function test(arg: Enum): string {
   case Enum['9test']: { throw new Error('Not implemented yet: Enum[\\'9test\\'] case') }
   case Enum.test: { throw new Error('Not implemented yet: Enum.test case') }
   }
+}
+      `,
+            },
+          ],
+        },
+      ],
+    },
+    {
+      code: `
+const value: number = Math.floor(Math.random() * 3);
+switch (value) {
+  case 0:
+    return 0;
+  case 1:
+    return 1;
+}
+      `,
+      options: [{ requireDefaultForNonUnion: true }],
+      errors: [
+        {
+          messageId: 'switchIsNotExhaustive',
+          suggestions: [
+            {
+              messageId: 'addMissingCases',
+              output: `
+const value: number = Math.floor(Math.random() * 3);
+switch (value) {
+  case 0:
+    return 0;
+  case 1:
+    return 1;
+  default: { throw new Error('default case') }
 }
       `,
             },

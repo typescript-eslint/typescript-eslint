@@ -86,15 +86,14 @@ We generally start the process of supporting a new TypeScript version just after
 1. Once the TypeScript RC version is released, start merging PRs
    - Whenever a PR is merged, change the respective heading's emoji from 🏗 to ✅
 1. Create a PR with a title like `feat: update TypeScript to X.Y-rc` and the following changes:
-   - In the root `package.json`, add `|| X.Y.2-rc2` to the `dependency` on `typescript`
-   - In the root `package.json`, change the `devDependency` on `typescript` to `~X.Y.2-rc2`
+   - In the root `package.json`, add `|| X.Y.1-rc2` to the `devDependency` on `typescript`
    - Change the `SUPPORTED_TYPESCRIPT_VERSIONS` constant's `<` version to the next version of TypeScript
-   - Change the `SUPPORTED_PRERELEASE_RANGES` constant to equal `['X.Y.2-rc']`
+   - Change the `SUPPORTED_PRERELEASE_RANGES` constant to equal `['X.Y.1-rc']`
    - Rename and update `patches/typescript*` to the new TypeScript version
    - Run `yarn generate-lib` to update `scope-manager`
 1. Once all PRs needed for the RC update PR are merged, merge the RC update PR
 1. Once TypeScript releases the stable X.Y version, create and merge a PR with a title like `chore: bump TypeScript from X.YRC to X.Y` and the following changes:
-   - In the root `package.json`, remove `|| X.Y.2-rc2` from the `dependency` on `typescript`, and bump its `<` version to the next version of TypeScript
+   - In the root `package.json`, remove `|| X.Y.1-rc2` from the `dependency` on `typescript`, and bump its `<` version to the next version of TypeScript
    - In the root `package.json`, change the `devDependency` on `typescript` to `~X.Y.3`
    - Rename and update `patches/typescript*` to the new TypeScript version
    - Any other changes made necessary due to changes in TypeScript between the RC version and stable version

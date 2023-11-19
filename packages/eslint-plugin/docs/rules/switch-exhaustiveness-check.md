@@ -1,5 +1,5 @@
 ---
-description: 'Require switch-case statements to be exhaustive with union types and enums.'
+description: 'Require switch-case statements to be exhaustive.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
@@ -10,6 +10,8 @@ When working with union types or enums in TypeScript, it's common to want to wri
 However, if the union type or the enum changes, it's easy to forget to modify the cases to account for any new types.
 
 This rule reports when a `switch` statement over a value typed as a union of literals or as an enum is missing a case for any of those literal types and does not have a `default` clause.
+
+There is also an option to check the exhaustiveness of switches on non-union types by requiring a default clause.
 
 ## Examples
 
@@ -176,6 +178,27 @@ switch (fruit) {
     break;
 }
 ```
+
+<!--/tabs-->
+
+## Options
+
+### `requireDefaultForNonUnion`
+
+Examples of additional **incorrect** code for this rule with `{ requireDefaultForNonUnion: true }`:
+
+```ts option='{ "requireDefaultForNonUnion": true }' showPlaygroundButton
+const value: number = Math.floor(Math.random() * 3);
+
+switch (value) {
+  case 0:
+    return 0;
+  case 1:
+    return 1;
+}
+```
+
+Since `value` is a non-union type it requires the switch case to have a default clause only with `requireDefaultForNonUnion` enabled.
 
 <!--/tabs-->
 
