@@ -187,8 +187,8 @@ describe('parseAndGenerateServices', () => {
         ext === '.json'
           ? '{ "x": 1 }'
           : jsxContent
-          ? 'const x = <div />;'
-          : 'const x = 1';
+            ? 'const x = <div />;'
+            : 'const x = 1';
       it(`should parse ${ext} file - ${
         jsxContent ? 'with' : 'without'
       } JSX content - parserOptions.jsx = ${jsxSetting}`, () => {

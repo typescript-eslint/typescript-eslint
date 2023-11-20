@@ -2724,8 +2724,8 @@ export class Converter {
           node.kind === SyntaxKind.ConstructSignature
             ? AST_NODE_TYPES.TSConstructSignatureDeclaration
             : node.kind === SyntaxKind.CallSignature
-            ? AST_NODE_TYPES.TSCallSignatureDeclaration
-            : AST_NODE_TYPES.TSFunctionType;
+              ? AST_NODE_TYPES.TSCallSignatureDeclaration
+              : AST_NODE_TYPES.TSFunctionType;
 
         return this.createNode<
           | TSESTree.TSCallSignatureDeclaration
@@ -2749,8 +2749,8 @@ export class Converter {
           parentKind === SyntaxKind.InterfaceDeclaration
             ? AST_NODE_TYPES.TSInterfaceHeritage
             : parentKind === SyntaxKind.HeritageClause
-            ? AST_NODE_TYPES.TSClassImplements
-            : AST_NODE_TYPES.TSInstantiationExpression;
+              ? AST_NODE_TYPES.TSClassImplements
+              : AST_NODE_TYPES.TSInstantiationExpression;
 
         return this.createNode<
           | TSESTree.TSClassImplements

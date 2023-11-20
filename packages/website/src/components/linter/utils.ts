@@ -89,8 +89,8 @@ export function parseMarkers(
       marker.owner === 'eslint'
         ? code.value
         : marker.owner === 'typescript'
-        ? 'TypeScript'
-        : marker.owner;
+          ? 'TypeScript'
+          : marker.owner;
 
     if (!result[group]) {
       result[group] = {
