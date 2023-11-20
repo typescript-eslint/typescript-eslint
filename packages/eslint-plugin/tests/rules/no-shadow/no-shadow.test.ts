@@ -36,8 +36,8 @@ function foo<T extends (Args: any) => void>(arg: T) {}
 export type ArrayInput<Func> = Func extends (arg0: Array<infer T>) => any
   ? T[]
   : Func extends (...args: infer T) => any
-  ? T
-  : never;
+   ? T
+   : never;
     `,
     `
 function foo() {
