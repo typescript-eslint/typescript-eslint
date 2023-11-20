@@ -47,8 +47,8 @@ export function createParseSettings(
       options.debugLevel === true
         ? new Set(['typescript-eslint'])
         : Array.isArray(options.debugLevel)
-        ? new Set(options.debugLevel)
-        : new Set(),
+          ? new Set(options.debugLevel)
+          : new Set(),
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: options.errorOnUnknownASTType === true,
     EXPERIMENTAL_projectService:
@@ -77,8 +77,8 @@ export function createParseSettings(
       typeof options.loggerFn === 'function'
         ? options.loggerFn
         : options.loggerFn === false
-        ? (): void => {} // eslint-disable-line @typescript-eslint/no-empty-function
-        : console.log, // eslint-disable-line no-console
+          ? (): void => {} // eslint-disable-line @typescript-eslint/no-empty-function
+          : console.log, // eslint-disable-line no-console
     preserveNodeMaps: options.preserveNodeMaps !== false,
     programs: Array.isArray(options.programs) ? options.programs : null,
     projects: [],
@@ -156,8 +156,8 @@ function enforceCodeString(code: unknown): string {
   return isSourceFile(code)
     ? code.getFullText(code)
     : typeof code === 'string'
-    ? code
-    : String(code);
+      ? code
+      : String(code);
 }
 
 /**
