@@ -3,6 +3,20 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.12.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.11.0...v6.12.0) (2023-11-20)
+
+
+### Bug Fixes
+
+* **utils:** add missing fields to flat config types ([#7933](https://github.com/typescript-eslint/typescript-eslint/issues/7933)) ([533861a](https://github.com/typescript-eslint/typescript-eslint/commit/533861aeadd5b4bfcbe7167de7af71e4223cc9de))
+* **utils:** allow string processor in flat config ([024ed9e](https://github.com/typescript-eslint/typescript-eslint/commit/024ed9ed1222280d8010393d2abf810faea283b9))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [6.11.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.10.0...v6.11.0) (2023-11-13)
 
 
