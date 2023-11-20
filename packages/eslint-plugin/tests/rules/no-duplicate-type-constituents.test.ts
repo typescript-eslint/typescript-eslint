@@ -154,7 +154,7 @@ type T = Record<string, A | B>;
   invalid: [
     {
       code: 'type T = 1 | 1;',
-      output: `type T = 1  ;`,
+      output: 'type T = 1  ;',
       errors: [
         {
           messageId: 'duplicate',
@@ -167,7 +167,7 @@ type T = Record<string, A | B>;
     },
     {
       code: 'type T = true & true;',
-      output: `type T = true  ;`,
+      output: 'type T = true  ;',
       errors: [
         {
           messageId: 'duplicate',
@@ -180,7 +180,7 @@ type T = Record<string, A | B>;
     },
     {
       code: 'type T = null | null;',
-      output: `type T = null  ;`,
+      output: 'type T = null  ;',
       errors: [
         {
           messageId: 'duplicate',
@@ -193,7 +193,7 @@ type T = Record<string, A | B>;
     },
     {
       code: 'type T = any | any;',
-      output: `type T = any  ;`,
+      output: 'type T = any  ;',
       errors: [
         {
           messageId: 'duplicate',
@@ -206,7 +206,7 @@ type T = Record<string, A | B>;
     },
     {
       code: 'type T = { a: string | string };',
-      output: `type T = { a: string   };`,
+      output: 'type T = { a: string   };',
       errors: [
         {
           messageId: 'duplicate',
@@ -219,7 +219,7 @@ type T = Record<string, A | B>;
     },
     {
       code: 'type T = { a: string } | { a: string };',
-      output: `type T = { a: string }  ;`,
+      output: 'type T = { a: string }  ;',
       errors: [
         {
           messageId: 'duplicate',
@@ -232,7 +232,7 @@ type T = Record<string, A | B>;
     },
     {
       code: 'type T = { a: string; b: number } | { a: string; b: number };',
-      output: `type T = { a: string; b: number }  ;`,
+      output: 'type T = { a: string; b: number }  ;',
       errors: [
         {
           messageId: 'duplicate',
@@ -245,7 +245,7 @@ type T = Record<string, A | B>;
     },
     {
       code: 'type T = Set<string> | Set<string>;',
-      output: `type T = Set<string>  ;`,
+      output: 'type T = Set<string>  ;',
       errors: [
         {
           messageId: 'duplicate',
@@ -277,7 +277,7 @@ type ActuallyDuplicated = IsArray<number>  ;
     },
     {
       code: 'type T = Class<string> | Class<string>;',
-      output: `type T = Class<string>  ;`,
+      output: 'type T = Class<string>  ;',
       errors: [
         {
           messageId: 'duplicate',
@@ -290,7 +290,7 @@ type ActuallyDuplicated = IsArray<number>  ;
     },
     {
       code: 'type T = string[] | string[];',
-      output: `type T = string[]  ;`,
+      output: 'type T = string[]  ;',
       errors: [
         {
           messageId: 'duplicate',
@@ -303,7 +303,7 @@ type ActuallyDuplicated = IsArray<number>  ;
     },
     {
       code: 'type T = string[][] | string[][];',
-      output: `type T = string[][]  ;`,
+      output: 'type T = string[][]  ;',
       errors: [
         {
           messageId: 'duplicate',
@@ -316,7 +316,7 @@ type ActuallyDuplicated = IsArray<number>  ;
     },
     {
       code: 'type T = [1, 2, 3] | [1, 2, 3];',
-      output: `type T = [1, 2, 3]  ;`,
+      output: 'type T = [1, 2, 3]  ;',
       errors: [
         {
           messageId: 'duplicate',
@@ -329,7 +329,7 @@ type ActuallyDuplicated = IsArray<number>  ;
     },
     {
       code: 'type T = () => string | string;',
-      output: `type T = () => string  ;`,
+      output: 'type T = () => string  ;',
       errors: [
         {
           messageId: 'duplicate',
@@ -342,7 +342,7 @@ type ActuallyDuplicated = IsArray<number>  ;
     },
     {
       code: 'type T = () => null | null;',
-      output: `type T = () => null  ;`,
+      output: 'type T = () => null  ;',
       errors: [
         {
           messageId: 'duplicate',
@@ -355,7 +355,7 @@ type ActuallyDuplicated = IsArray<number>  ;
     },
     {
       code: 'type T = (arg: string | string) => void;',
-      output: `type T = (arg: string  ) => void;`,
+      output: 'type T = (arg: string  ) => void;',
       errors: [
         {
           messageId: 'duplicate',
@@ -601,7 +601,7 @@ type T = A  ;
           messageId: 'duplicate',
           data: {
             type: 'Union',
-            previous: `A`,
+            previous: 'A',
           },
         },
         {

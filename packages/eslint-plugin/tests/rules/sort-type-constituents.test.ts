@@ -366,7 +366,7 @@ type T = 1 | string | {} | A;
     ...invalid('&'),
     {
       code: 'type T = (B | C) & A;',
-      output: `type T = A & (B | C);`,
+      output: 'type T = A & (B | C);',
       errors: [
         {
           messageId: 'notSortedNamed',

@@ -229,7 +229,7 @@ class PanCamera extends FreeCamera {
     `,
       // https://github.com/typescript-eslint/typescript-eslint/issues/123
       'export default interface test {}',
-      `declare function declareFn(): string;`,
+      'declare function declareFn(): string;',
       // ESLint
       'var x = 5;',
       'var x =5, y;',
@@ -739,7 +739,7 @@ class PanCamera extends FreeCamera {
 
     ...[
       {
-        code: `declare function declareFn(): string;`,
+        code: 'declare function declareFn(): string;',
         errors: [
           {
             line: 1,

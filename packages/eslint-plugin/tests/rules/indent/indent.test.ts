@@ -20,7 +20,7 @@ type Options = InferOptionsTypeFromRule<typeof rule>;
  * Marks a test case as a plain javascript case which should be indented the same
  */
 function nonTsTestCase(example: TemplateStringsArray): string {
-  return [`// Non-TS Test Case`, example].join('\n');
+  return ['// Non-TS Test Case', example].join('\n');
 }
 
 const individualNodeTests = [

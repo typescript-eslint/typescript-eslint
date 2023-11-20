@@ -23,7 +23,7 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      mixed: `Mixing number and string enums can be confusing.`,
+      mixed: 'Mixing number and string enums can be confusing.',
     },
     schema: [],
     type: 'problem',

@@ -396,8 +396,8 @@ function getNodeType(node: Member): MemberKind | null {
       return node.value && functionExpressions.includes(node.value.type)
         ? 'method'
         : node.readonly
-          ? 'readonly-field'
-          : 'field';
+        ? 'readonly-field'
+        : 'field';
     case AST_NODE_TYPES.TSPropertySignature:
       return node.readonly ? 'readonly-field' : 'field';
     case AST_NODE_TYPES.TSIndexSignature:
@@ -555,8 +555,8 @@ function getRank(
     'static' in node && node.static
       ? 'static'
       : abstract
-        ? 'abstract'
-        : 'instance';
+      ? 'abstract'
+      : 'instance';
   const accessibility = getAccessibility(node);
 
   // Collect all existing member groups that apply to this node...
@@ -578,7 +578,7 @@ function getRank(
 
       if (type === 'readonly-field') {
         memberGroups.push(`${accessibility}-decorated-field`);
-        memberGroups.push(`decorated-field`);
+        memberGroups.push('decorated-field');
       }
     }
 
@@ -666,7 +666,8 @@ export default createRule<Options, MessageIds>({
         'Member {{member}} should be declared before member {{beforeMember}}.',
       incorrectGroupOrder:
         'Member {{name}} should be declared before all {{rank}} definitions.',
-      incorrectRequiredMembersOrder: `Member {{member}} should be declared after all {{optionalOrRequired}} members.`,
+      incorrectRequiredMembersOrder:
+        'Member {{member}} should be declared after all {{optionalOrRequired}} members.',
     },
     schema: [
       {

@@ -82,16 +82,16 @@ describe('Validating rule docs', () => {
       test(`${ruleName}.md must next have a blockquote directing to website`, () => {
         expect(tokens[2]).toMatchObject({
           text: [
-            `🛑 This file is source code, not the primary documentation location! 🛑`,
-            ``,
+            '🛑 This file is source code, not the primary documentation location! 🛑',
+            '',
             `See **https://typescript-eslint.io/rules/${ruleName}** for documentation.`,
-            ``,
+            '',
           ].join('\n'),
           type: 'blockquote',
         });
       });
 
-      test(`headers must be title-cased`, () => {
+      test('headers must be title-cased', () => {
         // Get all H2 headers objects as the other levels are variable by design.
         const headers = tokens.filter(tokenIsH2);
 
@@ -130,7 +130,7 @@ describe('Validating rule metadata', () => {
   }
 
   for (const [ruleName, rule] of rulesData) {
-    describe(`${ruleName}`, () => {
+    describe(ruleName, () => {
       it('`name` field in rule must match the filename', () => {
         // validate if rule name is same as url
         // there is no way to access this field but its used only in generation of docs url

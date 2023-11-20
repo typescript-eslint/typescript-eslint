@@ -439,7 +439,7 @@ ruleTester.run('comma-spacing', rule, {
           data: { loc: 'before' },
         },
         {
-          messageId: `missing`,
+          messageId: 'missing',
           column: 16,
           line: 1,
           data: { loc: 'after' },

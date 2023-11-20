@@ -12,7 +12,8 @@ export default createRule({
       requiresTypeChecking: false,
     },
     messages: {
-      notLiteral: `Explicit enum value must only be a literal value (string, number, boolean, etc).`,
+      notLiteral:
+        'Explicit enum value must only be a literal value (string, number, boolean, etc).',
     },
     schema: [
       {

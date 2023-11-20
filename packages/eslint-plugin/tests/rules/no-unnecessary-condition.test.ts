@@ -812,7 +812,7 @@ const t1 = b2 && b1 ? 'yes' : 'no';
     unnecessaryConditionTest('object | true', 'alwaysTruthy'),
     unnecessaryConditionTest('"" | false', 'alwaysFalsy'), // Two falsy literals
     unnecessaryConditionTest('"always truthy"', 'alwaysTruthy'),
-    unnecessaryConditionTest(`undefined`, 'alwaysFalsy'),
+    unnecessaryConditionTest('undefined', 'alwaysFalsy'),
     unnecessaryConditionTest('null', 'alwaysFalsy'),
     unnecessaryConditionTest('void', 'alwaysFalsy'),
     unnecessaryConditionTest('never', 'never'),

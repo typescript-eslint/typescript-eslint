@@ -688,7 +688,7 @@ abstract class Foo {
     {
       code: '<div blah={"blah"} />',
       output: "<div blah={'blah'} />",
-      options: [`single`],
+      options: ['single'],
       parserOptions: {
         ecmaFeatures: {
           jsx: true,
