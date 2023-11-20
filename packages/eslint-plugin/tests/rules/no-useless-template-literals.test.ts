@@ -17,7 +17,6 @@ ruleTester.run('no-useless-template-literals', rule, {
   valid: [
     "const string = 'a';",
 
-    // allow variables & literals concatenation
     `
       const string = 'a';
       const concatenated = \`\${string}b\`;
@@ -34,7 +33,7 @@ ruleTester.run('no-useless-template-literals', rule, {
     `,
 
     `
-      const nullish = nullish;
+      const nullish = null;
       const concatenated = \`\${nullish}-undefined\`;
     `,
 
@@ -57,7 +56,6 @@ ruleTester.run('no-useless-template-literals', rule, {
       const concatenated = \`\${left}\${center}\${right}\`;
     `,
 
-    // allow expressions
     `
       const concatenated = \`1 + 1 = \${1 + 1}\`;
     `,
@@ -66,12 +64,10 @@ ruleTester.run('no-useless-template-literals', rule, {
       const concatenated = \`true && false = \${true && false}\`;
     `,
 
-    // allow tagged template literals
     `
       tag\`\${'a'}\${'b'}\`;
     `,
 
-    // allow wrapping numbers and booleans since it converts them to strings
     `
       const number = 1;
       const wrapped = \`\${number}\`;
@@ -87,15 +83,34 @@ ruleTester.run('no-useless-template-literals', rule, {
       const wrapped = \`\${nullish}\`;
     `,
 
-    // allow union types that include string
     `
       declare const union: string | number;
       const wrapped = \`\${union}\`;
     `,
+
+    `
+      declare const unknown: unknown;
+      const wrapped = \`\${unknown}\`;
+    `,
+
+    `
+      declare const never: never;
+      const wrapped = \`\${never}\`;
+    `,
+
+    `
+      declare const any: any;
+      const wrapped = \`\${any}\`;
+    `,
+
+    `
+      function func<T extends number>(arg: T) {
+        const wrapped = \`\${arg}\`;
+      }
+    `,
   ],
 
   invalid: [
-    // don't allow concatenating only literals in a template literal
     {
       code: `
         const concatenated = \`\${'a'}\${'b'}\`;
@@ -161,7 +176,6 @@ ruleTester.run('no-useless-template-literals', rule, {
       ],
     },
 
-    // don't allow a single string variable in a template literal
     {
       code: `
         const string = 'a';
@@ -176,7 +190,6 @@ ruleTester.run('no-useless-template-literals', rule, {
       ],
     },
 
-    // don't allow intersection types that include string
     {
       code: `
         declare const intersection: string & { _brand: 'test-brand' };
@@ -187,6 +200,21 @@ ruleTester.run('no-useless-template-literals', rule, {
           messageId: 'noUselessTemplateLiteral',
           line: 3,
           column: 25,
+        },
+      ],
+    },
+
+    {
+      code: `
+        function func<T extends string>(arg: T) {
+          const wrapped = \`\${arg}\`;
+        }
+      `,
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 3,
+          column: 27,
         },
       ],
     },

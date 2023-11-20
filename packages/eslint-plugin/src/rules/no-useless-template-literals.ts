@@ -50,12 +50,10 @@ export default createRule<[], MessageId>({
 
     return {
       TemplateLiteral(node: TSESTree.TemplateLiteral): void {
-        // don't check tagged template literals
         if (node.parent.type === AST_NODE_TYPES.TaggedTemplateExpression) {
           return;
         }
 
-        // don't allow a single variable in a template literal
         const hasSingleStringVariable =
           node.quasis.length === 2 &&
           node.quasis[0].value.raw === '' &&
@@ -73,7 +71,6 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        // don't allow concatenating only literals in a template literal
         const allAreLiterals = node.expressions.every(expression => {
           return expression.type === AST_NODE_TYPES.Literal;
         });

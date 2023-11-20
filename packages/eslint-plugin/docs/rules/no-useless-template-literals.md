@@ -32,29 +32,18 @@ const wrappedIntersection = `${intersectionWithString}`;
 ### ✅ Correct
 
 ```ts
+const ab1 = 'ab';
+const ab2 = 'ab';
+
+const stringWithNumber = '1 + 1 = 2';
+
+const stringWithBoolean = 'true is true';
+
 const string = 'a';
-const concatenatedString = `${string}-b`;
+const wrappedString = string;
 
-const number = 1;
-const concatenatedNumber = `${number}-2`;
-
-const boolean = true;
-const concatenatedBoolean = `${boolean}-false`;
-
-const nullish = null;
-const concatenatedNullish = `${nullish}-undefined`;
-
-const left = 'left';
-const right = 'right';
-const concatenatedVariables = `${left}-${right}`;
-
-const concatenatedExpressions = `${1 + 2}-${3 + 4}`;
-
-const taggedTemplate = tag`${'a'}-${'b'}`;
-
-const wrappedNumber = `${number}`;
-const wrappedBoolean = `${boolean}`;
-const wrappedNull = `${nullish}`;
+declare const intersectionWithString: string & { _brand: 'test-brand' };
+const wrappedIntersection = intersectionWithString;
 ```
 
 <!--/tabs-->
