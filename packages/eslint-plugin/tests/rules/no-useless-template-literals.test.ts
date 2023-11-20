@@ -1,4 +1,4 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-useless-template-literals';
 import { getFixturesRootDir } from '../RuleTester';
@@ -107,6 +107,24 @@ ruleTester.run('no-useless-template-literals', rule, {
       function func<T extends number>(arg: T) {
         const wrapped = \`\${arg}\`;
       }
+    `,
+
+    `
+      const wrapped = \`with
+
+      new line\`;
+    `,
+
+    `
+      const a = 'a';
+
+      const wrapped = \`\${a} with
+
+      new line\`;
+    `,
+
+    noFormat`
+      const wrapped = \`with windows \r new line\`;
     `,
   ],
 

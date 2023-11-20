@@ -71,6 +71,14 @@ export default createRule<[], MessageId>({
           return;
         }
 
+        const hasStringWithNewLine = node.quasis.some(quasi => {
+          return /(\r|\n)/.test(quasi.value.raw);
+        });
+
+        if (hasStringWithNewLine) {
+          return;
+        }
+
         const allAreLiterals = node.expressions.every(expression => {
           return expression.type === AST_NODE_TYPES.Literal;
         });
