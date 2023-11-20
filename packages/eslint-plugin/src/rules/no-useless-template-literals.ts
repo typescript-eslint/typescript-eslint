@@ -71,11 +71,13 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        const hasStringWithNewLine = node.quasis.some(quasi => {
-          return /(\r|\n)/.test(quasi.value.raw);
+        const allowedChars = ['\r', '\n', "'", '"'];
+
+        const hasStringWithAllowedChars = node.quasis.some(quasi => {
+          return new RegExp(`[${allowedChars.join('')}]`).test(quasi.value.raw);
         });
 
-        if (hasStringWithNewLine) {
+        if (hasStringWithAllowedChars) {
           return;
         }
 
