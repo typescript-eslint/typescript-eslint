@@ -37,7 +37,7 @@ export function TypesDetails({
     <PanelGroup autoSaveId="playground-types" direction="horizontal">
       <Panel
         id="simplifiedTree"
-        defaultSizePercentage={35}
+        defaultSize={35}
         collapsible={true}
         className={styles.PanelColumn}
       >
