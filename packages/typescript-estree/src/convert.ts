@@ -3180,6 +3180,8 @@ export class Converter {
         });
       }
 
+      // eslint-disable-next-line deprecation/deprecation -- required for backwards-compatibility
+      case SyntaxKind.AssertEntry:
       case SyntaxKind.ImportAttribute: {
         return this.createNode<TSESTree.ImportAttribute>(node, {
           type: AST_NODE_TYPES.ImportAttribute,
