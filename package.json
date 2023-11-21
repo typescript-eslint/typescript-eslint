@@ -114,7 +114,7 @@
     "ts-node": "10.7.0",
     "tslint": "^6.1.3",
     "tsx": "^3.12.7",
-    "typescript": ">=4.3.5 <5.4.0 || 5.3.0-beta || 5.3.1-rc || 5.4.0-dev.20231117"
+    "typescript": ">=4.3.5 <5.4.0"
   },
   "resolutions": {
     "@jest/create-cache-key-function": "^29",
@@ -141,7 +141,7 @@
     "pretty-format": "^29",
     "react-split-pane@^0.1.92": "patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch",
     "tsx": "^3.12.7",
-    "typescript": "patch:typescript@npm%3A5.4.0-dev.20231117#./.yarn/patches/typescript-npm-5.4.0-dev.20231117-78a04a34c5.patch"
+    "typescript": "5.3.2"
   },
   "packageManager": "yarn@3.7.0"
 }

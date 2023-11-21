@@ -51,7 +51,7 @@ See [chore: drop support for ESLint v6](https://github.com/typescript-eslint/typ
 The typescript-eslint repository contains three kinds of version ranges for Node:
 
 - [`.github/workflows/ci.yml`](https://github.com/typescript-eslint/typescript-eslint/blob/main/.github/workflows/ci.yml)'s `PRIMARY_NODE_VERSION`: Set to the highest Node version we support
-- `node-version`: Set to a tuple of our [lowest, highest] supported versions for our unit tests in CI
+- `node-version`: Set to a tuple of our `[lowest, highest]` supported versions for our unit tests in CI
 - `engines` field in all `package.json`s: explicitly lists all supported Node ranges
 
 Change those numbers accordingly when adding support for a new Node version or removing support for an old Node version.
@@ -97,8 +97,6 @@ We generally start the process of supporting a new TypeScript version just after
    - In the root `package.json`, change the `devDependency` on `typescript` to `~X.Y.3`
    - Rename and update `patches/typescript*` to the new TypeScript version
    - Any other changes made necessary due to changes in TypeScript between the RC version and stable version
-   - Update the supported version range in [Users > Dependency Versions](../users/Dependency_Versions.mdx)
-1. Update [Users > Dependency Versions > TypeScript](../users/Dependency_Versions.mdx#typescript)
 1. Send a PR that updates this documentation page to point to your newer issues and PRs
    - Also update any of these steps if you go with a different process
 
