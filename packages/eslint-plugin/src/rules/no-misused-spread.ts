@@ -2,7 +2,7 @@ import { type TSESLint, type TSESTree } from '@typescript-eslint/utils';
 
 import { createRule, getParserServices } from '../util';
 
-type MessageIds = 'forbidden';
+type MessageIds = 'forbiddenFunctionSpread';
 
 export default createRule<[], MessageIds>({
   defaultOptions: [],
@@ -15,7 +15,7 @@ export default createRule<[], MessageIds>({
       requiresTypeChecking: true,
     },
     messages: {
-      forbidden:
+      forbiddenFunctionSpread:
         'Spreading a function is almost always a mistake. Did you forget to call the function?',
     },
     schema: [],
@@ -35,7 +35,7 @@ export default createRule<[], MessageIds>({
       ) {
         context.report({
           node,
-          messageId: 'forbidden',
+          messageId: 'forbiddenFunctionSpread',
         });
       }
     };

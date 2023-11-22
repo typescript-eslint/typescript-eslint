@@ -82,7 +82,7 @@ const b = {
   name: 'name',
 };
       `,
-      errors: [{ line: 4, column: 3, messageId: 'forbidden' }],
+      errors: [{ line: 4, column: 3, messageId: 'forbiddenFunctionSpread' }],
     },
     {
       code: `
@@ -92,7 +92,7 @@ const b = {
   name: 'name',
 };
       `,
-      errors: [{ line: 4, column: 3, messageId: 'forbidden' }],
+      errors: [{ line: 4, column: 3, messageId: 'forbiddenFunctionSpread' }],
     },
     {
       code: `
@@ -100,7 +100,7 @@ const a = () => ({ value: 33 });
 const b = ({ value: number }) => ({ value: value });
 b({ ...a });
       `,
-      errors: [{ line: 4, column: 5, messageId: 'forbidden' }],
+      errors: [{ line: 4, column: 5, messageId: 'forbiddenFunctionSpread' }],
     },
   ],
 });
