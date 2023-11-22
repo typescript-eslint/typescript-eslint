@@ -66,10 +66,6 @@ const b = ({ value: number }) => ({ value: value });
 b({ ...a() });
     `,
     `
-const a = () => ({ value: 33 });
-const b = ({ value: number }) => ({ value: value });
-    `,
-    `
 const a = [33];
 const b = {
   ...a,
