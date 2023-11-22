@@ -17,7 +17,7 @@ export default createRule({
     },
     messages: {
       forbidden:
-        'Spreading a function is almost always a mistake. Did you forgot to call the function?',
+        'Spreading a function is almost always a mistake. Did you forget to call the function?',
     },
     schema: [],
     type: 'suggestion',
