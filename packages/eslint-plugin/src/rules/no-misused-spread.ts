@@ -25,7 +25,7 @@ export default createRule({
   create: (context): TSESLint.RuleListener => {
     const listener = (node: TSESTree.SpreadElement): void => {
       const services = getParserServices(context);
-      const tc = svc.program.getTypeChecker();
+      const checker = services.program.getTypeChecker();
 
       const tsNode = svc.esTreeNodeToTSNodeMap.get(node.argument);
       const type = tc.getTypeAtLocation(tsNode);
