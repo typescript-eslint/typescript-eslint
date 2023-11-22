@@ -6,7 +6,9 @@ import {
 
 import { createRule } from '../util';
 
-export default createRule({
+type MessageIds = 'forbidden';
+
+export default createRule<[], MessageIds>({
   defaultOptions: [],
   name: 'no-misused-spread',
   meta: {
