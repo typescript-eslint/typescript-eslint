@@ -1,10 +1,6 @@
-import {
-  ESLintUtils,
-  type TSESLint,
-  type TSESTree,
-} from '@typescript-eslint/utils';
+import { type TSESLint, type TSESTree } from '@typescript-eslint/utils';
 
-import { createRule } from '../util';
+import { createRule, getParserServices } from '../util';
 
 type MessageIds = 'forbidden';
 
@@ -29,8 +25,8 @@ export default createRule<[], MessageIds>({
       const services = getParserServices(context);
       const checker = services.program.getTypeChecker();
 
-      const tsNode = svc.esTreeNodeToTSNodeMap.get(node.argument);
-      const type = tc.getTypeAtLocation(tsNode);
+      const tsNode = services.esTreeNodeToTSNodeMap.get(node.argument);
+      const type = checker.getTypeAtLocation(tsNode);
 
       if (
         type.getProperties().length === 0 &&
