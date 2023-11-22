@@ -9,7 +9,8 @@ export default createRule<[], MessageIds>({
   name: 'no-misused-spread',
   meta: {
     docs: {
-      description: 'Disallow spread operator on function',
+      description:
+        "Disallow spread operator that shouldn't be spread most of the time",
       recommended: 'stylistic',
       requiresTypeChecking: true,
     },

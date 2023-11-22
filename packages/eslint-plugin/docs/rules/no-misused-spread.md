@@ -1,5 +1,5 @@
 ---
-description: 'Disallow spread operator on function.'
+description: 'Disallow spread operator that shouldn\'t be spread most of the time.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
