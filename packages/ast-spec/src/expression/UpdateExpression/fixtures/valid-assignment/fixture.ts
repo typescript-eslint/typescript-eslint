@@ -6,6 +6,10 @@ class F {
     this.m().a++;
     this[1] = 1;
     F++;
-    this.#a++;
+    // prettier-ignore
+    (this.#a)++;
+    (<number>this.#a)++;
+    (this.#a satisfies number)++;
+    (this.#a as number)++;
   }
 }

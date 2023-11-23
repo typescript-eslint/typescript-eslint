@@ -307,10 +307,10 @@ exports[`AST Fixtures expression UpdateExpression valid-assignment AST Alignment
                           object: ThisExpression {
                             type: 'ThisExpression',
 
-                            range: [88, 92],
+                            range: [112, 116],
                             loc: {
-                              start: { column: 4, line: 9 },
-                              end: { column: 8, line: 9 },
+                              start: { column: 5, line: 10 },
+                              end: { column: 9, line: 10 },
                             },
                           },
                           optional: false,
@@ -318,41 +318,245 @@ exports[`AST Fixtures expression UpdateExpression valid-assignment AST Alignment
                             type: 'PrivateIdentifier',
                             name: 'a',
 
-                            range: [93, 95],
+                            range: [117, 119],
                             loc: {
-                              start: { column: 9, line: 9 },
-                              end: { column: 11, line: 9 },
+                              start: { column: 10, line: 10 },
+                              end: { column: 12, line: 10 },
                             },
                           },
 
-                          range: [88, 95],
+                          range: [112, 119],
                           loc: {
-                            start: { column: 4, line: 9 },
-                            end: { column: 11, line: 9 },
+                            start: { column: 5, line: 10 },
+                            end: { column: 12, line: 10 },
                           },
                         },
                         operator: '++',
                         prefix: false,
 
-                        range: [88, 97],
+                        range: [111, 122],
                         loc: {
-                          start: { column: 4, line: 9 },
-                          end: { column: 13, line: 9 },
+                          start: { column: 4, line: 10 },
+                          end: { column: 15, line: 10 },
                         },
                       },
 
-                      range: [88, 98],
+                      range: [111, 123],
                       loc: {
-                        start: { column: 4, line: 9 },
-                        end: { column: 14, line: 9 },
+                        start: { column: 4, line: 10 },
+                        end: { column: 16, line: 10 },
+                      },
+                    },
+                    ExpressionStatement {
+                      type: 'ExpressionStatement',
+                      expression: UpdateExpression {
+                        type: 'UpdateExpression',
+                        argument: TSTypeAssertion {
+                          type: 'TSTypeAssertion',
+                          expression: MemberExpression {
+                            type: 'MemberExpression',
+                            computed: false,
+                            object: ThisExpression {
+                              type: 'ThisExpression',
+
+                              range: [137, 141],
+                              loc: {
+                                start: { column: 13, line: 11 },
+                                end: { column: 17, line: 11 },
+                              },
+                            },
+                            optional: false,
+                            property: PrivateIdentifier {
+                              type: 'PrivateIdentifier',
+                              name: 'a',
+
+                              range: [142, 144],
+                              loc: {
+                                start: { column: 18, line: 11 },
+                                end: { column: 20, line: 11 },
+                              },
+                            },
+
+                            range: [137, 144],
+                            loc: {
+                              start: { column: 13, line: 11 },
+                              end: { column: 20, line: 11 },
+                            },
+                          },
+                          typeAnnotation: TSNumberKeyword {
+                            type: 'TSNumberKeyword',
+
+                            range: [130, 136],
+                            loc: {
+                              start: { column: 6, line: 11 },
+                              end: { column: 12, line: 11 },
+                            },
+                          },
+
+                          range: [129, 144],
+                          loc: {
+                            start: { column: 5, line: 11 },
+                            end: { column: 20, line: 11 },
+                          },
+                        },
+                        operator: '++',
+                        prefix: false,
+
+                        range: [128, 147],
+                        loc: {
+                          start: { column: 4, line: 11 },
+                          end: { column: 23, line: 11 },
+                        },
+                      },
+
+                      range: [128, 148],
+                      loc: {
+                        start: { column: 4, line: 11 },
+                        end: { column: 24, line: 11 },
+                      },
+                    },
+                    ExpressionStatement {
+                      type: 'ExpressionStatement',
+                      expression: UpdateExpression {
+                        type: 'UpdateExpression',
+                        argument: TSSatisfiesExpression {
+                          type: 'TSSatisfiesExpression',
+                          expression: MemberExpression {
+                            type: 'MemberExpression',
+                            computed: false,
+                            object: ThisExpression {
+                              type: 'ThisExpression',
+
+                              range: [154, 158],
+                              loc: {
+                                start: { column: 5, line: 12 },
+                                end: { column: 9, line: 12 },
+                              },
+                            },
+                            optional: false,
+                            property: PrivateIdentifier {
+                              type: 'PrivateIdentifier',
+                              name: 'a',
+
+                              range: [159, 161],
+                              loc: {
+                                start: { column: 10, line: 12 },
+                                end: { column: 12, line: 12 },
+                              },
+                            },
+
+                            range: [154, 161],
+                            loc: {
+                              start: { column: 5, line: 12 },
+                              end: { column: 12, line: 12 },
+                            },
+                          },
+                          typeAnnotation: TSNumberKeyword {
+                            type: 'TSNumberKeyword',
+
+                            range: [172, 178],
+                            loc: {
+                              start: { column: 23, line: 12 },
+                              end: { column: 29, line: 12 },
+                            },
+                          },
+
+                          range: [154, 178],
+                          loc: {
+                            start: { column: 5, line: 12 },
+                            end: { column: 29, line: 12 },
+                          },
+                        },
+                        operator: '++',
+                        prefix: false,
+
+                        range: [153, 181],
+                        loc: {
+                          start: { column: 4, line: 12 },
+                          end: { column: 32, line: 12 },
+                        },
+                      },
+
+                      range: [153, 182],
+                      loc: {
+                        start: { column: 4, line: 12 },
+                        end: { column: 33, line: 12 },
+                      },
+                    },
+                    ExpressionStatement {
+                      type: 'ExpressionStatement',
+                      expression: UpdateExpression {
+                        type: 'UpdateExpression',
+                        argument: TSAsExpression {
+                          type: 'TSAsExpression',
+                          expression: MemberExpression {
+                            type: 'MemberExpression',
+                            computed: false,
+                            object: ThisExpression {
+                              type: 'ThisExpression',
+
+                              range: [188, 192],
+                              loc: {
+                                start: { column: 5, line: 13 },
+                                end: { column: 9, line: 13 },
+                              },
+                            },
+                            optional: false,
+                            property: PrivateIdentifier {
+                              type: 'PrivateIdentifier',
+                              name: 'a',
+
+                              range: [193, 195],
+                              loc: {
+                                start: { column: 10, line: 13 },
+                                end: { column: 12, line: 13 },
+                              },
+                            },
+
+                            range: [188, 195],
+                            loc: {
+                              start: { column: 5, line: 13 },
+                              end: { column: 12, line: 13 },
+                            },
+                          },
+                          typeAnnotation: TSNumberKeyword {
+                            type: 'TSNumberKeyword',
+
+                            range: [199, 205],
+                            loc: {
+                              start: { column: 16, line: 13 },
+                              end: { column: 22, line: 13 },
+                            },
+                          },
+
+                          range: [188, 205],
+                          loc: {
+                            start: { column: 5, line: 13 },
+                            end: { column: 22, line: 13 },
+                          },
+                        },
+                        operator: '++',
+                        prefix: false,
+
+                        range: [187, 208],
+                        loc: {
+                          start: { column: 4, line: 13 },
+                          end: { column: 25, line: 13 },
+                        },
+                      },
+
+                      range: [187, 209],
+                      loc: {
+                        start: { column: 4, line: 13 },
+                        end: { column: 26, line: 13 },
                       },
                     },
                   ],
 
-                  range: [23, 102],
+                  range: [23, 213],
                   loc: {
                     start: { column: 6, line: 4 },
-                    end: { column: 3, line: 10 },
+                    end: { column: 3, line: 14 },
                   },
                 },
 -               declare: false,
@@ -361,25 +565,25 @@ exports[`AST Fixtures expression UpdateExpression valid-assignment AST Alignment
                 id: null,
                 params: Array [],
 
-                range: [20, 102],
+                range: [20, 213],
                 loc: {
                   start: { column: 3, line: 4 },
-                  end: { column: 3, line: 10 },
+                  end: { column: 3, line: 14 },
                 },
               },
 
-              range: [19, 102],
+              range: [19, 213],
               loc: {
                 start: { column: 2, line: 4 },
-                end: { column: 3, line: 10 },
+                end: { column: 3, line: 14 },
               },
             },
           ],
 
-          range: [8, 104],
+          range: [8, 215],
           loc: {
             start: { column: 8, line: 1 },
-            end: { column: 1, line: 11 },
+            end: { column: 1, line: 15 },
           },
         },
 -       declare: false,
@@ -399,19 +603,19 @@ exports[`AST Fixtures expression UpdateExpression valid-assignment AST Alignment
 -       implements: Array [],
         superClass: null,
 
-        range: [0, 104],
+        range: [0, 215],
         loc: {
           start: { column: 0, line: 1 },
-          end: { column: 1, line: 11 },
+          end: { column: 1, line: 15 },
         },
       },
     ],
     sourceType: 'script',
 
-    range: [0, 105],
+    range: [0, 216],
     loc: {
       start: { column: 0, line: 1 },
-      end: { column: 0, line: 12 },
+      end: { column: 0, line: 16 },
     },
   }"
 `;

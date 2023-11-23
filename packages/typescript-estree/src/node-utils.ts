@@ -941,8 +941,15 @@ export function isValidAssignmentTarget(node: ts.Node): boolean {
       return true;
     case SyntaxKind.ParenthesizedExpression:
     case SyntaxKind.TypeAssertionExpression:
+    case SyntaxKind.AsExpression:
+    case SyntaxKind.SatisfiesExpression:
       return isValidAssignmentTarget(
-        (node as ts.ParenthesizedExpression | ts.TypeAssertion).expression,
+        (
+          node as
+            | ts.ParenthesizedExpression
+            | ts.AssertionExpression
+            | ts.SatisfiesExpression
+        ).expression,
       );
     default:
       return false;

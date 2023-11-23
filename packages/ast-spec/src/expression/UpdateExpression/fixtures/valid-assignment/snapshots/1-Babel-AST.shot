@@ -329,74 +329,6 @@ Program {
                     type: "ExpressionStatement",
                     expression: UpdateExpression {
                       type: "UpdateExpression",
-                      argument: TSTypeAssertion {
-                        type: "TSTypeAssertion",
-                        expression: MemberExpression {
-                          type: "MemberExpression",
-                          computed: false,
-                          object: ThisExpression {
-                            type: "ThisExpression",
-
-                            range: [137, 141],
-                            loc: {
-                              start: { column: 13, line: 11 },
-                              end: { column: 17, line: 11 },
-                            },
-                          },
-                          optional: false,
-                          property: PrivateIdentifier {
-                            type: "PrivateIdentifier",
-                            name: "a",
-
-                            range: [142, 144],
-                            loc: {
-                              start: { column: 18, line: 11 },
-                              end: { column: 20, line: 11 },
-                            },
-                          },
-
-                          range: [137, 144],
-                          loc: {
-                            start: { column: 13, line: 11 },
-                            end: { column: 20, line: 11 },
-                          },
-                        },
-                        typeAnnotation: TSNumberKeyword {
-                          type: "TSNumberKeyword",
-
-                          range: [130, 136],
-                          loc: {
-                            start: { column: 6, line: 11 },
-                            end: { column: 12, line: 11 },
-                          },
-                        },
-
-                        range: [129, 144],
-                        loc: {
-                          start: { column: 5, line: 11 },
-                          end: { column: 20, line: 11 },
-                        },
-                      },
-                      operator: "++",
-                      prefix: false,
-
-                      range: [128, 147],
-                      loc: {
-                        start: { column: 4, line: 11 },
-                        end: { column: 23, line: 11 },
-                      },
-                    },
-
-                    range: [128, 148],
-                    loc: {
-                      start: { column: 4, line: 11 },
-                      end: { column: 24, line: 11 },
-                    },
-                  },
-                  ExpressionStatement {
-                    type: "ExpressionStatement",
-                    expression: UpdateExpression {
-                      type: "UpdateExpression",
                       argument: TSSatisfiesExpression {
                         type: "TSSatisfiesExpression",
                         expression: MemberExpression {
@@ -405,10 +337,10 @@ Program {
                           object: ThisExpression {
                             type: "ThisExpression",
 
-                            range: [154, 158],
+                            range: [129, 133],
                             loc: {
-                              start: { column: 5, line: 12 },
-                              end: { column: 9, line: 12 },
+                              start: { column: 5, line: 11 },
+                              end: { column: 9, line: 11 },
                             },
                           },
                           optional: false,
@@ -416,49 +348,49 @@ Program {
                             type: "PrivateIdentifier",
                             name: "a",
 
-                            range: [159, 161],
+                            range: [134, 136],
                             loc: {
-                              start: { column: 10, line: 12 },
-                              end: { column: 12, line: 12 },
+                              start: { column: 10, line: 11 },
+                              end: { column: 12, line: 11 },
                             },
                           },
 
-                          range: [154, 161],
+                          range: [129, 136],
                           loc: {
-                            start: { column: 5, line: 12 },
-                            end: { column: 12, line: 12 },
+                            start: { column: 5, line: 11 },
+                            end: { column: 12, line: 11 },
                           },
                         },
                         typeAnnotation: TSNumberKeyword {
                           type: "TSNumberKeyword",
 
-                          range: [172, 178],
+                          range: [147, 153],
                           loc: {
-                            start: { column: 23, line: 12 },
-                            end: { column: 29, line: 12 },
+                            start: { column: 23, line: 11 },
+                            end: { column: 29, line: 11 },
                           },
                         },
 
-                        range: [154, 178],
+                        range: [129, 153],
                         loc: {
-                          start: { column: 5, line: 12 },
-                          end: { column: 29, line: 12 },
+                          start: { column: 5, line: 11 },
+                          end: { column: 29, line: 11 },
                         },
                       },
                       operator: "++",
                       prefix: false,
 
-                      range: [153, 181],
+                      range: [128, 156],
                       loc: {
-                        start: { column: 4, line: 12 },
-                        end: { column: 32, line: 12 },
+                        start: { column: 4, line: 11 },
+                        end: { column: 32, line: 11 },
                       },
                     },
 
-                    range: [153, 182],
+                    range: [128, 157],
                     loc: {
-                      start: { column: 4, line: 12 },
-                      end: { column: 33, line: 12 },
+                      start: { column: 4, line: 11 },
+                      end: { column: 33, line: 11 },
                     },
                   },
                   ExpressionStatement {
@@ -473,10 +405,10 @@ Program {
                           object: ThisExpression {
                             type: "ThisExpression",
 
-                            range: [188, 192],
+                            range: [163, 167],
                             loc: {
-                              start: { column: 5, line: 13 },
-                              end: { column: 9, line: 13 },
+                              start: { column: 5, line: 12 },
+                              end: { column: 9, line: 12 },
                             },
                           },
                           optional: false,
@@ -484,57 +416,57 @@ Program {
                             type: "PrivateIdentifier",
                             name: "a",
 
-                            range: [193, 195],
+                            range: [168, 170],
                             loc: {
-                              start: { column: 10, line: 13 },
-                              end: { column: 12, line: 13 },
+                              start: { column: 10, line: 12 },
+                              end: { column: 12, line: 12 },
                             },
                           },
 
-                          range: [188, 195],
+                          range: [163, 170],
                           loc: {
-                            start: { column: 5, line: 13 },
-                            end: { column: 12, line: 13 },
+                            start: { column: 5, line: 12 },
+                            end: { column: 12, line: 12 },
                           },
                         },
                         typeAnnotation: TSNumberKeyword {
                           type: "TSNumberKeyword",
 
-                          range: [199, 205],
+                          range: [174, 180],
                           loc: {
-                            start: { column: 16, line: 13 },
-                            end: { column: 22, line: 13 },
+                            start: { column: 16, line: 12 },
+                            end: { column: 22, line: 12 },
                           },
                         },
 
-                        range: [188, 205],
+                        range: [163, 180],
                         loc: {
-                          start: { column: 5, line: 13 },
-                          end: { column: 22, line: 13 },
+                          start: { column: 5, line: 12 },
+                          end: { column: 22, line: 12 },
                         },
                       },
                       operator: "++",
                       prefix: false,
 
-                      range: [187, 208],
+                      range: [162, 183],
                       loc: {
-                        start: { column: 4, line: 13 },
-                        end: { column: 25, line: 13 },
+                        start: { column: 4, line: 12 },
+                        end: { column: 25, line: 12 },
                       },
                     },
 
-                    range: [187, 209],
+                    range: [162, 184],
                     loc: {
-                      start: { column: 4, line: 13 },
-                      end: { column: 26, line: 13 },
+                      start: { column: 4, line: 12 },
+                      end: { column: 26, line: 12 },
                     },
                   },
                 ],
 
-                range: [23, 213],
+                range: [23, 188],
                 loc: {
                   start: { column: 6, line: 4 },
-                  end: { column: 3, line: 14 },
+                  end: { column: 3, line: 13 },
                 },
               },
               expression: false,
@@ -542,25 +474,25 @@ Program {
               id: null,
               params: [],
 
-              range: [20, 213],
+              range: [20, 188],
               loc: {
                 start: { column: 3, line: 4 },
-                end: { column: 3, line: 14 },
+                end: { column: 3, line: 13 },
               },
             },
 
-            range: [19, 213],
+            range: [19, 188],
             loc: {
               start: { column: 2, line: 4 },
-              end: { column: 3, line: 14 },
+              end: { column: 3, line: 13 },
             },
           },
         ],
 
-        range: [8, 215],
+        range: [8, 190],
         loc: {
           start: { column: 8, line: 1 },
-          end: { column: 1, line: 15 },
+          end: { column: 1, line: 14 },
         },
       },
       id: Identifier {
@@ -575,19 +507,19 @@ Program {
       },
       superClass: null,
 
-      range: [0, 215],
+      range: [0, 190],
       loc: {
         start: { column: 0, line: 1 },
-        end: { column: 1, line: 15 },
+        end: { column: 1, line: 14 },
       },
     },
   ],
   sourceType: "script",
 
-  range: [0, 216],
+  range: [0, 191],
   loc: {
     start: { column: 0, line: 1 },
-    end: { column: 0, line: 16 },
+    end: { column: 0, line: 15 },
   },
 }
 `;
