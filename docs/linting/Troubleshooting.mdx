@@ -335,7 +335,7 @@ Make sure you're using the latest versions of each of your ESLint plugins (and o
 
 If you've using many ESLint plugins, have updated each to their latest version, and you're not sure which one this complaint is coming from, try either or both of:
 
-- Running with [`--trace-deprecation`](https://nodejs.org/api/cli.html#--trace-deprecation) (e.g. `npx crossenv NODE_OPTIONS=--trace-deprecation npm lint`)
+- Running with [`--trace-deprecation`](https://nodejs.org/api/cli.html#--trace-deprecation) (e.g. `npx cross-env NODE_OPTIONS=--trace-deprecation npm run lint`)
 - Disabling half of them at a time to narrow down which plugin it is
 
 Then make sure each of those plugins has a GitHub issue asking that they release a version supporting typescript-eslint v6.
