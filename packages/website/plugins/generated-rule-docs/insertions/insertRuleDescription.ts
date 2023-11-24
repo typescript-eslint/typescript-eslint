@@ -2,9 +2,9 @@ import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 import type vfile from 'vfile';
 
-import type { RuleMetaDataWithDocs } from './types';
+import type { RuleMetaDataWithDocs } from '../types';
 
-export function unshiftRuleDescription(
+export function insertRuleDescription(
   children: unist.Node[],
   file: vfile.VFile,
   meta: RuleMetaDataWithDocs,

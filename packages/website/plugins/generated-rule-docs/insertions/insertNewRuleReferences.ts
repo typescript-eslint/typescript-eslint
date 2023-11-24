@@ -6,11 +6,11 @@ import { EOL } from 'os';
 import * as path from 'path';
 import type * as unist from 'unist';
 
-import { nodeIsHeading } from './nodes';
-import type { RequiredHeadingIndices } from './requiredHeadings';
-import { spliceChildrenAndAdjustHeadings } from './splicing';
-import { convertToPlaygroundHash } from './strings';
-import type { RuleMetaDataWithDocs, VFileWithStem } from './types';
+import { nodeIsHeading } from '../nodes';
+import type { RequiredHeadingIndices } from '../requiredHeadings';
+import { spliceChildrenAndAdjustHeadings } from '../spliceChildrenAndAdjustHeadings';
+import { convertToPlaygroundHash } from '../strings';
+import type { RuleMetaDataWithDocs, VFileWithStem } from '../types';
 
 /**
  * Rules whose options schema generate annoyingly complex schemas.
@@ -36,7 +36,7 @@ const prettierConfig = {
   filepath: path.join(__dirname, '../defaults.ts'),
 };
 
-export function spliceNewRuleReferences(
+export function insertNewRuleReferences(
   children: unist.Node[],
   file: VFileWithStem,
   meta: RuleMetaDataWithDocs,

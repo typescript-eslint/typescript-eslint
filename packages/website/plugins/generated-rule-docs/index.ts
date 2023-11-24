@@ -2,17 +2,17 @@ import pluginRules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/r
 import type { Plugin } from 'unified';
 
 import { addESLintHashToCodeBlocksMeta } from './addESLintHashToCodeBlocksMeta';
+import { insertBaseRuleReferences } from './insertions/insertBaseRuleReferences';
+import { insertFormattingNotice } from './insertions/insertFormattingNotice';
+import { insertNewRuleReferences } from './insertions/insertNewRuleReferences';
+import { insertResources } from './insertions/insertResources';
+import { insertRuleDescription } from './insertions/insertRuleDescription';
+import { insertSpecialCaseOptions } from './insertions/insertSpecialCaseOptions';
+import { insertWhenNotToUseIt } from './insertions/insertWhenNotToUseIt';
 import { nodeIsParent } from './nodes';
-import { pushResources } from './pushResources';
 import { removeSourceCodeNotice } from './removeSourceCodeNotice';
 import { ensureRequiredHeadings } from './requiredHeadings';
-import { spliceBaseRuleReferences } from './spliceBaseRuleReferences';
-import { spliceNewRuleReferences } from './spliceNewRuleReferences';
-import { spliceSpecialCaseOptions } from './spliceSpecialCaseOptions';
-import { spliceWhenNotToUseIt } from './spliceWhenNotToUseIt';
 import { isRuleMetaDataDocs, isVFileWithStem } from './types';
-import { unshiftFormattingNotice } from './unshiftFormattingNotice';
-import { unshiftRuleDescription } from './unshiftRuleDescription';
 
 export const generatedRuleDocs: Plugin = () => {
   return (root, file) => {
@@ -29,17 +29,17 @@ export const generatedRuleDocs: Plugin = () => {
     const { children } = root;
 
     removeSourceCodeNotice(children);
-    unshiftRuleDescription(children, file, meta);
-    unshiftFormattingNotice(children, meta);
+    insertRuleDescription(children, file, meta);
+    insertFormattingNotice(children, meta);
 
     const headingIndices = ensureRequiredHeadings(children, meta);
     const eslintrc = meta.docs.extendsBaseRule
-      ? spliceBaseRuleReferences(children, file, meta, headingIndices)
-      : spliceNewRuleReferences(children, file, meta, headingIndices, rule);
+      ? insertBaseRuleReferences(children, file, meta, headingIndices)
+      : insertNewRuleReferences(children, file, meta, headingIndices, rule);
 
-    spliceSpecialCaseOptions(children, file, headingIndices);
-    spliceWhenNotToUseIt(children, headingIndices, meta);
-    pushResources(children, file, meta);
+    insertSpecialCaseOptions(children, file, headingIndices);
+    insertWhenNotToUseIt(children, headingIndices, meta);
+    insertResources(children, file, meta);
     addESLintHashToCodeBlocksMeta(children, eslintrc, file);
   };
 };

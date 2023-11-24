@@ -1,11 +1,11 @@
 import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 
-import type { RequiredHeadingIndices } from './requiredHeadings';
-import { spliceChildrenAndAdjustHeadings } from './splicing';
-import type { RuleMetaDataWithDocs } from './types';
+import type { RequiredHeadingIndices } from '../requiredHeadings';
+import { spliceChildrenAndAdjustHeadings } from '../spliceChildrenAndAdjustHeadings';
+import type { RuleMetaDataWithDocs } from '../types';
 
-export function spliceWhenNotToUseIt(
+export function insertWhenNotToUseIt(
   children: unist.Node[],
   headingIndices: RequiredHeadingIndices,
   meta: RuleMetaDataWithDocs,

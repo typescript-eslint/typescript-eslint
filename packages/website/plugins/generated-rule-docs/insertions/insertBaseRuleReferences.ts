@@ -1,12 +1,12 @@
 import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 
-import type { RequiredHeadingIndices } from './requiredHeadings';
-import { spliceChildrenAndAdjustHeadings } from './splicing';
-import { convertToPlaygroundHash, getEslintrcString } from './strings';
-import type { RuleMetaDataWithDocs, VFileWithStem } from './types';
+import { spliceChildrenAndAdjustHeadings } from '../spliceChildrenAndAdjustHeadings';
+import type { RequiredHeadingIndices } from '../requiredHeadings';
+import { convertToPlaygroundHash, getEslintrcString } from '../strings';
+import type { RuleMetaDataWithDocs, VFileWithStem } from '../types';
 
-export function spliceBaseRuleReferences(
+export function insertBaseRuleReferences(
   children: unist.Node[],
   file: VFileWithStem,
   meta: RuleMetaDataWithDocs,

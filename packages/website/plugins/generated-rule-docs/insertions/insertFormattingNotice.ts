@@ -1,8 +1,8 @@
 import type * as unist from 'unist';
 
-import type { RuleMetaDataWithDocs } from './types';
+import type { RuleMetaDataWithDocs } from '../types';
 
-export function unshiftFormattingNotice(
+export function insertFormattingNotice(
   children: unist.Node[],
   meta: RuleMetaDataWithDocs,
 ): void {

@@ -3,12 +3,12 @@ import type * as mdast from 'mdast';
 import * as path from 'path';
 import type * as unist from 'unist';
 
-import type { RequiredHeadingIndices } from './requiredHeadings';
-import { spliceChildrenAndAdjustHeadings } from './splicing';
-import { eslintPluginDirectory } from './strings';
-import type { VFileWithStem } from './types';
+import { spliceChildrenAndAdjustHeadings } from '../spliceChildrenAndAdjustHeadings';
+import type { RequiredHeadingIndices } from '../requiredHeadings';
+import { eslintPluginDirectory } from '../strings';
+import type { VFileWithStem } from '../types';
 
-export function spliceSpecialCaseOptions(
+export function insertSpecialCaseOptions(
   children: unist.Node[],
   file: VFileWithStem,
   headingIndices: RequiredHeadingIndices,

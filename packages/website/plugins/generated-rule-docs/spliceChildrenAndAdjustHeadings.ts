@@ -1,5 +1,4 @@
 import type * as unist from 'unist';
-
 import type { RequiredHeadingIndices } from './requiredHeadings';
 
 export function spliceChildrenAndAdjustHeadings(
