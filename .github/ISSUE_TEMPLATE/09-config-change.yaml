@@ -7,7 +7,7 @@ labels:
   - triage
 body:
   - type: checkboxes
-    id: sanity-checks
+    id: preliminary-checks
     attributes:
       label: Before You File a Proposal Please Confirm You Have Done The Following...
       description: If any of these required steps are not taken, we may not be able to review your issue. Help us to help you!
