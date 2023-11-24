@@ -119,6 +119,13 @@
     "website": "https://www.storis.com/"
   },
   {
+    "id": "Skunk Team",
+    "image": "https://images.opencollective.com/skunk-team/3ddba2f/logo.png",
+    "name": "Skunk Team",
+    "totalDonations": 50000,
+    "website": "https://skunk.team"
+  },
+  {
     "id": "Joe Alden",
     "image": "https://images.opencollective.com/joealden/44a6738/avatar.png",
     "name": "Joe Alden",
