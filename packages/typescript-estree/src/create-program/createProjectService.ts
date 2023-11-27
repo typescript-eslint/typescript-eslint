@@ -1,6 +1,6 @@
-/* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
+// eslint-disable-next-line @typescript-eslint/no-empty-function
 const doNothing = (): void => {};
 
 const createStubFileWatcher = (): ts.FileWatcher => ({
@@ -45,6 +45,6 @@ export function createProjectService(): TypeScriptProjectService {
       startGroup: doNothing,
     },
     session: undefined,
+    jsDocParsingMode: tsserver.JSDocParsingMode?.ParseForTypeInfo,
   });
 }
-/* eslint-enable @typescript-eslint/no-empty-function */
