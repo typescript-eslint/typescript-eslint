@@ -3,6 +3,25 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.13.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.12.0...v6.13.0) (2023-11-27)
+
+
+### Bug Fixes
+
+* **typescript-estree:** ensure backwards compat with pre-5.3 import attributes ([#7967](https://github.com/typescript-eslint/typescript-eslint/issues/7967)) ([810fc8c](https://github.com/typescript-eslint/typescript-eslint/commit/810fc8c9a18cb55af144d8945fdf38d841c9d486))
+
+
+### Features
+
+* support TS 5.3 ([#7968](https://github.com/typescript-eslint/typescript-eslint/issues/7968)) ([fb50638](https://github.com/typescript-eslint/typescript-eslint/commit/fb50638650d35fbd39f2b19446fa54c864bfc2ef))
+* **typescript-estree:** pass jsDocParsingMode everywhere ([#7997](https://github.com/typescript-eslint/typescript-eslint/issues/7997)) ([3d2a344](https://github.com/typescript-eslint/typescript-eslint/commit/3d2a3446518c4da303a569830bb83bf166742535))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [6.12.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.11.0...v6.12.0) (2023-11-20)
 
 
