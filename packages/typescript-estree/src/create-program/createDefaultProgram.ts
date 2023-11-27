@@ -57,7 +57,10 @@ function createDefaultProgram(
 
   const program = ts.createProgram(
     [parseSettings.filePath],
-    commandLine.options,
+    {
+      ...commandLine.options,
+      jsDocParsingMode: ts.JSDocParsingMode?.ParseForTypeInfo,
+    },
     compilerHost,
   );
   const ast = program.getSourceFile(parseSettings.filePath);
