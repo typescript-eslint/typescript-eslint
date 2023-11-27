@@ -6111,7 +6111,7 @@ __metadata:
     ts-node: 10.7.0
     tslint: ^6.1.3
     tsx: ^3.12.7
-    typescript: ">=4.3.5 <5.4.0 || 5.3.0-beta || 5.3.1-rc || 5.4.0-dev.20231117"
+    typescript: ">=4.3.5 <5.4.0"
   languageName: unknown
   linkType: soft
 
@@ -20152,33 +20152,23 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:5.4.0-dev.20231117":
-  version: 5.4.0-dev.20231117
-  resolution: "typescript@npm:5.4.0-dev.20231117"
+"typescript@npm:5.3.2":
+  version: 5.3.2
+  resolution: "typescript@npm:5.3.2"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: c538a15c3c528275591f40a0d3db191be6410d0da91fa24bd78376b0b674721382ae80f30f1625f565d41c755fab4659e8c6af5072a695401ff6cfb849b3e06e
+  checksum: d92534dda639eb825db013203404c1fabca8ac630564283c9e7dc9e64fd9c9346c2de95ecebdf3e6e8c1c32941bca1cfe0da37877611feb9daf8feeaea58d230
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@npm%3A5.4.0-dev.20231117#./.yarn/patches/typescript-npm-5.4.0-dev.20231117-78a04a34c5.patch::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
-  version: 5.4.0-dev.20231117
-  resolution: "typescript@patch:typescript@npm%3A5.4.0-dev.20231117#./.yarn/patches/typescript-npm-5.4.0-dev.20231117-78a04a34c5.patch::version=5.4.0-dev.20231117&hash=f57760&locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+"typescript@patch:typescript@npm%3A5.3.2#~builtin<compat/typescript>":
+  version: 5.3.2
+  resolution: "typescript@patch:typescript@npm%3A5.3.2#~builtin<compat/typescript>::version=5.3.2&hash=e012d7"
   bin:
     tsc: bin/tsc
     tsserver: bin/tsserver
-  checksum: eb20effe30527f1a08981f985cd002519d52a5314cd4feca5e145987bea8ac09e023b95c5d82fddb12bedc8401255209ec6e076a48aab6519dbcafce60f5f219
-  languageName: node
-  linkType: hard
-
-"typescript@patch:typescript@patch%3Atypescript@npm%253A5.4.0-dev.20231117%23./.yarn/patches/typescript-npm-5.4.0-dev.20231117-78a04a34c5.patch%3A%3Alocator=%2540typescript-eslint%252Ftypescript-eslint%2540workspace%253A.#~builtin<compat/typescript>":
-  version: 5.4.0-dev.20231117
-  resolution: "typescript@patch:typescript@patch%3Atypescript@npm%253A5.4.0-dev.20231117%23./.yarn/patches/typescript-npm-5.4.0-dev.20231117-78a04a34c5.patch%3A%3Aversion=5.4.0-dev.20231117&hash=f57760&locator=%2540typescript-eslint%252Ftypescript-eslint%2540workspace%253A.#~builtin<compat/typescript>::version=5.4.0-dev.20231117&hash=e012d7"
-  bin:
-    tsc: bin/tsc
-    tsserver: bin/tsserver
-  checksum: 923f407da16df26c7810244c3455cc88e1d9db20067fbac7f988f484fea6239f89da9d41ae5ebbf7e0b86e096c4d809cb4b0732c6d40a634cb0fdbefd210bc18
+  checksum: 47b2e63418ea7ef7dd0bf359ee41c6fca852c680826089269c5d03673ead471e052b172561f377f9e51212054e5f0fe19dd58085ff7db7b168449a6af704c784
   languageName: node
   linkType: hard
 
