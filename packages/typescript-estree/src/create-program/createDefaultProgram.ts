@@ -59,7 +59,7 @@ function createDefaultProgram(
     [parseSettings.filePath],
     {
       ...commandLine.options,
-      jsDocParsingMode: ts.JSDocParsingMode?.ParseForTypeInfo,
+      jsDocParsingMode: parseSettings.jsDocParsingMode,
     },
     compilerHost,
   );
