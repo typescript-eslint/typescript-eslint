@@ -17,6 +17,7 @@ export const defaultParseSettings: ParseSettings = {
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   extraFileExtensions: [],
   filePath: '',
+  jsDocParsingMode: window.ts?.JSDocParsingMode?.ParseAll,
   jsx: true,
   loc: true,
   log: console.log,

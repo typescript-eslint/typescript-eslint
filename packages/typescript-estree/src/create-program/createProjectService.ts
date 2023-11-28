@@ -9,7 +9,9 @@ const createStubFileWatcher = (): ts.FileWatcher => ({
 
 export type TypeScriptProjectService = ts.server.ProjectService;
 
-export function createProjectService(): TypeScriptProjectService {
+export function createProjectService(
+  jsDocParsingMode?: ts.JSDocParsingMode,
+): TypeScriptProjectService {
   // We import this lazily to avoid its cost for users who don't use the service
   // TODO: Once we drop support for TS<5.3 we can import from "typescript" directly
   const tsserver = require('typescript/lib/tsserverlibrary') as typeof ts;
@@ -45,6 +47,6 @@ export function createProjectService(): TypeScriptProjectService {
       startGroup: doNothing,
     },
     session: undefined,
-    jsDocParsingMode: tsserver.JSDocParsingMode?.ParseForTypeInfo,
+    jsDocParsingMode,
   });
 }
