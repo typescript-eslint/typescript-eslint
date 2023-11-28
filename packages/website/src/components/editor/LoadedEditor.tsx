@@ -267,7 +267,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
     return debounce(() => editor.layout(), 1);
   }, [editor]);
 
-  const container = editor.getContainerDomNode?.() ?? editor.getDomNode();
+  const container = editor.getContainerDomNode();
 
   useResizeObserver(container, () => {
     resize();

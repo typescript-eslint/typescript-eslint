@@ -62,7 +62,7 @@ function ConfigEditorField({
         {item.label && <br />}
         {item.label && <span> {item.label}</span>}
       </span>
-      {(item.type === 'boolean' && (
+      {item.type === 'boolean' ? (
         <Checkbox
           name={`config_${item.key}`}
           value={item.key}
@@ -72,15 +72,16 @@ function ConfigEditorField({
             onChange(item.key, checked ? item.defaults?.[0] ?? true : undefined)
           }
         />
-      )) ||
-        (item.type === 'string' && item.enum && (
+      ) : (
+        item.enum && (
           <Dropdown
             name={`config_${item.key}`}
             value={String(value)}
             options={item.enum}
             onChange={(value): void => onChange(item.key, value)}
           />
-        ))}
+        )
+      )}
     </label>
   );
 }

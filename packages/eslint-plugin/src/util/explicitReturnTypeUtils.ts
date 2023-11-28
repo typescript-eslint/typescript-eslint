@@ -40,6 +40,53 @@ function isPropertyDefinitionWithTypeAnnotation(
 /**
  * Checks if a node belongs to:
  * ```
+ * foo(() => 1)
+ * ```
+ */
+function isFunctionArgument(
+  parent: TSESTree.Node,
+  callee?: FunctionExpression,
+): parent is TSESTree.CallExpression {
+  return (
+    parent.type === AST_NODE_TYPES.CallExpression &&
+    // make sure this isn't an IIFE
+    parent.callee !== callee
+  );
+}
+
+/**
+ * Checks if a node is type-constrained in JSX
+ * ```
+ * <Foo x={() => {}} />
+ * <Bar>{() => {}}</Bar>
+ * <Baz {...props} />
+ * ```
+ */
+function isTypedJSX(
+  node: TSESTree.Node,
+): node is TSESTree.JSXExpressionContainer | TSESTree.JSXSpreadAttribute {
+  return (
+    node.type === AST_NODE_TYPES.JSXExpressionContainer ||
+    node.type === AST_NODE_TYPES.JSXSpreadAttribute
+  );
+}
+
+function isTypedParent(
+  parent: TSESTree.Node,
+  callee?: FunctionExpression,
+): boolean {
+  return (
+    isTypeAssertion(parent) ||
+    isVariableDeclaratorWithTypeAnnotation(parent) ||
+    isPropertyDefinitionWithTypeAnnotation(parent) ||
+    isFunctionArgument(parent, callee) ||
+    isTypedJSX(parent)
+  );
+}
+
+/**
+ * Checks if a node belongs to:
+ * ```
  * new Foo(() => {})
  *         ^^^^^^^^
  * ```
@@ -65,26 +112,14 @@ function isPropertyOfObjectWithType(
   if (!property || property.type !== AST_NODE_TYPES.Property) {
     return false;
   }
-  const objectExpr = property.parent; // this shouldn't happen, checking just in case
-  /* istanbul ignore if */ if (
-    !objectExpr ||
-    objectExpr.type !== AST_NODE_TYPES.ObjectExpression
-  ) {
+  const objectExpr = property.parent;
+  if (objectExpr.type !== AST_NODE_TYPES.ObjectExpression) {
     return false;
   }
 
-  const parent = objectExpr.parent; // this shouldn't happen, checking just in case
-  /* istanbul ignore if */ if (!parent) {
-    return false;
-  }
+  const parent = objectExpr.parent;
 
-  return (
-    isTypeAssertion(parent) ||
-    isPropertyDefinitionWithTypeAnnotation(parent) ||
-    isVariableDeclaratorWithTypeAnnotation(parent) ||
-    isFunctionArgument(parent) ||
-    isPropertyOfObjectWithType(parent)
-  );
+  return isTypedParent(parent) || isPropertyOfObjectWithType(parent);
 }
 
 /**
@@ -101,11 +136,6 @@ function isPropertyOfObjectWithType(
 function doesImmediatelyReturnFunctionExpression({
   body,
 }: FunctionNode): boolean {
-  // Should always have a body; really checking just in case
-  /* istanbul ignore if */ if (!body) {
-    return false;
-  }
-
   // Check if body is a block with a single statement
   if (body.type === AST_NODE_TYPES.BlockStatement && body.body.length === 1) {
     const [statement] = body.body;
@@ -124,23 +154,6 @@ function doesImmediatelyReturnFunctionExpression({
   return (
     body.type === AST_NODE_TYPES.ArrowFunctionExpression ||
     body.type === AST_NODE_TYPES.FunctionExpression
-  );
-}
-
-/**
- * Checks if a node belongs to:
- * ```
- * foo(() => 1)
- * ```
- */
-function isFunctionArgument(
-  parent: TSESTree.Node,
-  callee?: FunctionExpression,
-): parent is TSESTree.CallExpression {
-  return (
-    parent.type === AST_NODE_TYPES.CallExpression &&
-    // make sure this isn't an IIFE
-    parent.callee !== callee
   );
 }
 
@@ -194,11 +207,8 @@ function isTypedFunctionExpression(
   }
 
   return (
-    isTypeAssertion(parent) ||
-    isVariableDeclaratorWithTypeAnnotation(parent) ||
-    isPropertyDefinitionWithTypeAnnotation(parent) ||
+    isTypedParent(parent, node) ||
     isPropertyOfObjectWithType(parent) ||
-    isFunctionArgument(parent, node) ||
     isConstructorArgument(parent)
   );
 }
@@ -296,14 +306,14 @@ function checkFunctionExpressionReturnType(
 function ancestorHasReturnType(node: FunctionNode): boolean {
   let ancestor: TSESTree.Node | undefined = node.parent;
 
-  if (ancestor?.type === AST_NODE_TYPES.Property) {
+  if (ancestor.type === AST_NODE_TYPES.Property) {
     ancestor = ancestor.value;
   }
 
   // if the ancestor is not a return, then this function was not returned at all, so we can exit early
-  const isReturnStatement = ancestor?.type === AST_NODE_TYPES.ReturnStatement;
+  const isReturnStatement = ancestor.type === AST_NODE_TYPES.ReturnStatement;
   const isBodylessArrow =
-    ancestor?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+    ancestor.type === AST_NODE_TYPES.ArrowFunctionExpression &&
     ancestor.body.type !== AST_NODE_TYPES.BlockStatement;
   if (!isReturnStatement && !isBodylessArrow) {
     return false;

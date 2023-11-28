@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
+import { Panel, PanelGroup, PanelResizeHandle } from 'react-resizable-panels';
 import type * as ts from 'typescript';
 
 import { findSelectionPath } from '../ast/selectedRange';
 import type { OnHoverNodeFn } from '../ast/types';
 import { isTSNode } from '../ast/utils';
 import styles from '../Playground.module.css';
-import ConditionalSplitPane from '../SplitPane/ConditionalSplitPane';
 import { SimplifiedTreeView } from './SimplifiedTreeView';
 import { TypeInfo } from './TypeInfo';
 
@@ -34,29 +34,34 @@ export function TypesDetails({
   }, [cursorPosition, value]);
 
   return (
-    <ConditionalSplitPane
-      split="vertical"
-      minSize="10%"
-      defaultSize="50%"
-      pane2Style={{ overflow: 'hidden' }}
-    >
-      <div className={styles.tabCode}>
-        <SimplifiedTreeView
-          onHoverNode={onHoverNode}
-          selectedNode={selectedNode}
-          onSelect={setSelectedNode}
-          value={value}
-        />
-      </div>
-      {selectedNode && (
-        <div className={styles.tabCode}>
-          <TypeInfo
+    <PanelGroup autoSaveId="playground-types" direction="horizontal">
+      <Panel
+        id="simplifiedTree"
+        defaultSize={35}
+        collapsible={true}
+        className={styles.PanelColumn}
+      >
+        <div className={styles.playgroundInfoContainer}>
+          <SimplifiedTreeView
             onHoverNode={onHoverNode}
-            typeChecker={typeChecker}
-            value={selectedNode}
+            selectedNode={selectedNode}
+            onSelect={setSelectedNode}
+            value={value}
           />
         </div>
+      </Panel>
+      <PanelResizeHandle className={styles.PanelResizeHandle} />
+      {selectedNode && (
+        <Panel id="typeInfo" collapsible={true} className={styles.PanelColumn}>
+          <div className={styles.playgroundInfoContainer}>
+            <TypeInfo
+              onHoverNode={onHoverNode}
+              typeChecker={typeChecker}
+              value={selectedNode}
+            />
+          </div>
+        </Panel>
       )}
-    </ConditionalSplitPane>
+    </PanelGroup>
   );
 }

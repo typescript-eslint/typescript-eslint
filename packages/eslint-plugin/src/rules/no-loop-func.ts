@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getScope } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -48,7 +49,7 @@ export default createRule<Options, MessageIds>({
         return;
       }
 
-      const references = context.getScope().through;
+      const references = getScope(context).through;
       const unsafeRefs = references
         .filter(r => !isSafe(loopNode, r))
         .map(r => r.identifier.name);
@@ -211,7 +212,7 @@ function isSafe(
 
     return (
       !upperRef.isWrite() ||
-      (variable?.scope?.variableScope === upperRef.from.variableScope &&
+      (variable?.scope.variableScope === upperRef.from.variableScope &&
         id.range[0] < border)
     );
   }

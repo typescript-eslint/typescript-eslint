@@ -1,6 +1,7 @@
 import { RuleTester as ESLintRuleTester } from 'eslint';
 
 import type { AST_NODE_TYPES, AST_TOKEN_TYPES } from '../ts-estree';
+import type { ClassicConfig } from './Config';
 import type { Linter } from './Linter';
 import type { ParserOptions } from './ParserOptions';
 import type {
@@ -23,7 +24,7 @@ interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   /**
    * Environments for the test case.
    */
-  readonly env?: Readonly<Record<string, boolean>>;
+  readonly env?: Readonly<Linter.EnvironmentConfig>;
   /**
    * The fake filename for the test case. Useful for rules that make assertion about filenames.
    */
@@ -31,7 +32,7 @@ interface ValidTestCase<TOptions extends Readonly<unknown[]>> {
   /**
    * The additional global variables.
    */
-  readonly globals?: Record<string, 'off' | 'readonly' | 'writable' | true>;
+  readonly globals?: Readonly<Linter.GlobalsConfig>;
   /**
    * Options for the test case.
    */
@@ -143,7 +144,7 @@ interface RunTests<
   readonly valid: readonly (ValidTestCase<TOptions> | string)[];
   readonly invalid: readonly InvalidTestCase<TMessageIds, TOptions>[];
 }
-interface RuleTesterConfig extends Linter.Config {
+interface RuleTesterConfig extends ClassicConfig.Config {
   // should be require.resolve(parserPackageName)
   readonly parser: string;
   readonly parserOptions?: Readonly<ParserOptions>;

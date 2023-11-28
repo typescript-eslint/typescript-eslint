@@ -4,7 +4,6 @@ import {
   createRule,
   getConstrainedTypeAtLocation,
   getParserServices,
-  getTypeArguments,
   getTypeName,
   isTypeArrayTypeOrUnionOfArrayTypes,
 } from '../util';
@@ -61,7 +60,7 @@ export default createRule<Options, MessageIds>({
       const type = services.getTypeAtLocation(node);
 
       if (checker.isArrayType(type) || checker.isTupleType(type)) {
-        const typeArgs = getTypeArguments(type, checker);
+        const typeArgs = checker.getTypeArguments(type);
         return typeArgs.every(arg => getTypeName(checker, arg) === 'string');
       }
       return false;

@@ -51,7 +51,9 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      mismatched:
+      mismatchedCase:
+        'The case statement does not have a shared enum type with the switch predicate.',
+      mismatchedCondition:
         'The two values in this comparison do not have a shared enum type.',
       replaceValueWithEnum: 'Replace with an enum value comparison.',
     },
@@ -62,56 +64,63 @@ export default createRule({
     const parserServices = getParserServices(context);
     const typeChecker = parserServices.program.getTypeChecker();
 
+    function isMismatchedComparison(
+      leftType: ts.Type,
+      rightType: ts.Type,
+    ): boolean {
+      // Allow comparisons that don't have anything to do with enums:
+      //
+      // ```ts
+      // 1 === 2;
+      // ```
+      const leftEnumTypes = getEnumTypes(typeChecker, leftType);
+      const rightEnumTypes = new Set(getEnumTypes(typeChecker, rightType));
+      if (leftEnumTypes.length === 0 && rightEnumTypes.size === 0) {
+        return false;
+      }
+
+      // Allow comparisons that share an enum type:
+      //
+      // ```ts
+      // Fruit.Apple === Fruit.Banana;
+      // ```
+      for (const leftEnumType of leftEnumTypes) {
+        if (rightEnumTypes.has(leftEnumType)) {
+          return false;
+        }
+      }
+
+      const leftTypeParts = tsutils.unionTypeParts(leftType);
+      const rightTypeParts = tsutils.unionTypeParts(rightType);
+
+      // If a type exists in both sides, we consider this comparison safe:
+      //
+      // ```ts
+      // declare const fruit: Fruit.Apple | 0;
+      // fruit === 0;
+      // ```
+      for (const leftTypePart of leftTypeParts) {
+        if (rightTypeParts.includes(leftTypePart)) {
+          return false;
+        }
+      }
+
+      return (
+        typeViolates(leftTypeParts, rightType) ||
+        typeViolates(rightTypeParts, leftType)
+      );
+    }
+
     return {
       'BinaryExpression[operator=/^[<>!=]?={0,2}$/]'(
         node: TSESTree.BinaryExpression,
       ): void {
-        const left = parserServices.getTypeAtLocation(node.left);
-        const right = parserServices.getTypeAtLocation(node.right);
+        const leftType = parserServices.getTypeAtLocation(node.left);
+        const rightType = parserServices.getTypeAtLocation(node.right);
 
-        // Allow comparisons that don't have anything to do with enums:
-        //
-        // ```ts
-        // 1 === 2;
-        // ```
-        const leftEnumTypes = getEnumTypes(typeChecker, left);
-        const rightEnumTypes = new Set(getEnumTypes(typeChecker, right));
-        if (leftEnumTypes.length === 0 && rightEnumTypes.size === 0) {
-          return;
-        }
-
-        // Allow comparisons that share an enum type:
-        //
-        // ```ts
-        // Fruit.Apple === Fruit.Banana;
-        // ```
-        for (const leftEnumType of leftEnumTypes) {
-          if (rightEnumTypes.has(leftEnumType)) {
-            return;
-          }
-        }
-
-        const leftTypeParts = tsutils.unionTypeParts(left);
-        const rightTypeParts = tsutils.unionTypeParts(right);
-
-        // If a type exists in both sides, we consider this comparison safe:
-        //
-        // ```ts
-        // declare const fruit: Fruit.Apple | 0;
-        // fruit === 0;
-        // ```
-        for (const leftTypePart of leftTypeParts) {
-          if (rightTypeParts.includes(leftTypePart)) {
-            return;
-          }
-        }
-
-        if (
-          typeViolates(leftTypeParts, right) ||
-          typeViolates(rightTypeParts, left)
-        ) {
+        if (isMismatchedComparison(leftType, rightType)) {
           context.report({
-            messageId: 'mismatched',
+            messageId: 'mismatchedCondition',
             node,
             suggest: [
               {
@@ -123,7 +132,7 @@ export default createRule({
                   // Fruit.Apple === 'apple'; // Fruit.Apple === Fruit.Apple
                   // ```
                   const leftEnumKey = getEnumKeyForLiteral(
-                    getEnumLiterals(left),
+                    getEnumLiterals(leftType),
                     getStaticValue(node.right)?.value,
                   );
 
@@ -138,7 +147,7 @@ export default createRule({
                   // 'apple' === Fruit.Apple; // Fruit.Apple === Fruit.Apple
                   // ```
                   const rightEnumKey = getEnumKeyForLiteral(
-                    getEnumLiterals(right),
+                    getEnumLiterals(rightType),
                     getStaticValue(node.left)?.value,
                   );
 
@@ -150,6 +159,32 @@ export default createRule({
                 },
               },
             ],
+          });
+        }
+      },
+
+      SwitchCase(node): void {
+        // Ignore `default` cases.
+        if (node.test == null) {
+          return;
+        }
+
+        const { parent } = node;
+
+        /**
+         * @see https://github.com/typescript-eslint/typescript-eslint/issues/6225
+         */
+        const switchStatement = parent as TSESTree.SwitchStatement;
+
+        const leftType = parserServices.getTypeAtLocation(
+          switchStatement.discriminant,
+        );
+        const rightType = parserServices.getTypeAtLocation(node.test);
+
+        if (isMismatchedComparison(leftType, rightType)) {
+          context.report({
+            messageId: 'mismatchedCase',
+            node,
           });
         }
       },

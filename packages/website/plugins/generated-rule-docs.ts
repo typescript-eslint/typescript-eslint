@@ -52,9 +52,8 @@ export const generatedRuleDocs: Plugin = () => {
       return;
     }
 
-    const rule = pluginRules[file.stem];
-    const meta = rule?.meta;
-    if (!meta?.docs) {
+    const rule = file.stem in pluginRules ? pluginRules[file.stem] : undefined;
+    if (!rule?.meta.docs) {
       return;
     }
 
@@ -72,7 +71,7 @@ export const generatedRuleDocs: Plugin = () => {
       {
         children: [
           {
-            children: meta.docs.description
+            children: rule.meta.docs.description
               .split(/`(.+?)`/)
               .map((value, index, array) => ({
                 type: index % 2 === 0 ? 'text' : 'inlineCode',
@@ -90,7 +89,7 @@ export const generatedRuleDocs: Plugin = () => {
     );
 
     // 3. Add a notice about formatting rules being 🤢
-    if (meta.type === 'layout') {
+    if (rule.meta.type === 'layout') {
       const warningNode = {
         value: `
 <admonition type="warning">
@@ -150,7 +149,7 @@ export const generatedRuleDocs: Plugin = () => {
       }
 
       insertIfMissing('Options');
-      if (meta.docs.extendsBaseRule) {
+      if (rule.meta.docs.extendsBaseRule) {
         insertIfMissing('How to Use');
       }
       return [headingIndices[0], headingIndices[1]];
@@ -158,10 +157,10 @@ export const generatedRuleDocs: Plugin = () => {
 
     let eslintrc: string;
 
-    if (meta.docs.extendsBaseRule) {
+    if (rule.meta.docs.extendsBaseRule) {
       const extendsBaseRuleName =
-        typeof meta.docs.extendsBaseRule === 'string'
-          ? meta.docs.extendsBaseRule
+        typeof rule.meta.docs.extendsBaseRule === 'string'
+          ? rule.meta.docs.extendsBaseRule
           : file.stem;
 
       children.splice(optionsH2Index + 1, 0, {
@@ -257,9 +256,9 @@ export const generatedRuleDocs: Plugin = () => {
 
       optionsH2Index += 2;
 
-      const hasNoConfig = Array.isArray(meta.schema)
-        ? meta.schema.length === 0
-        : Object.keys(meta.schema).length === 0;
+      const hasNoConfig = Array.isArray(rule.meta.schema)
+        ? rule.meta.schema.length === 0
+        : Object.keys(rule.meta.schema).length === 0;
       if (hasNoConfig) {
         children.splice(optionsH2Index + 1, 0, {
           children: [
@@ -390,7 +389,7 @@ export const generatedRuleDocs: Plugin = () => {
     );
 
     // 6. Also add a notice about coming from ESLint core for extension rules
-    if (meta.docs.extendsBaseRule) {
+    if (rule.meta.docs.extendsBaseRule) {
       children.push({
         children: [
           {
@@ -405,9 +404,9 @@ export const generatedRuleDocs: Plugin = () => {
             type: 'link',
             title: null,
             url: `https://github.com/eslint/eslint/blob/main/docs/src/rules/${
-              meta.docs.extendsBaseRule === true
+              rule.meta.docs.extendsBaseRule === true
                 ? file.stem
-                : meta.docs.extendsBaseRule
+                : rule.meta.docs.extendsBaseRule
             }.md`,
             children: [
               {

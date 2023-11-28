@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getFilename } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, isDefinitionFile } from '../util';
 
@@ -43,7 +44,7 @@ export default createRule({
     // In a definition file, export {} is necessary to make the module properly
     // encapsulated, even when there are other exports
     // https://github.com/typescript-eslint/typescript-eslint/issues/4975
-    if (isDefinitionFile(context.getFilename())) {
+    if (isDefinitionFile(getFilename(context))) {
       return {};
     }
     function checkNode(

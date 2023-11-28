@@ -3,6 +3,70 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+## [6.13.1](https://github.com/typescript-eslint/typescript-eslint/compare/v6.13.0...v6.13.1) (2023-11-28)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.13.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.12.0...v6.13.0) (2023-11-27)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.12.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.11.0...v6.12.0) (2023-11-20)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.11.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.10.0...v6.11.0) (2023-11-13)
+
+
+### Features
+
+* add types for flat config files ([#7273](https://github.com/typescript-eslint/typescript-eslint/issues/7273)) ([66cd0c0](https://github.com/typescript-eslint/typescript-eslint/commit/66cd0c0535e5de1b46ba337919a9a92748d2b0a6))
+* allow typescript@5.3.0-RC as devDependency ([#7821](https://github.com/typescript-eslint/typescript-eslint/issues/7821)) ([b6c40b4](https://github.com/typescript-eslint/typescript-eslint/commit/b6c40b42b68d5567c7468030ee45b9b84bec4c4d))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.9.1...v6.10.0) (2023-11-06)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+## [6.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v6.9.0...v6.9.1) (2023-10-30)
+
+**Note:** Version bump only for package @typescript-eslint/scope-manager
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [6.9.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.8.0...v6.9.0) (2023-10-23)
 
 **Note:** Version bump only for package @typescript-eslint/scope-manager

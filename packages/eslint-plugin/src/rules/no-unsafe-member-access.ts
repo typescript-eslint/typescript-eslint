@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 
 import {
@@ -44,7 +45,7 @@ export default createRule({
       compilerOptions,
       'noImplicitThis',
     );
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     const stateCache = new Map<TSESTree.Node, State>();
 

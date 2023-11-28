@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/types",
-  "version": "6.9.0",
+  "version": "6.13.1",
   "description": "Types for the TypeScript-ESTree AST spec",
   "files": [
     "dist",
@@ -41,8 +41,8 @@
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf src/generated && rimraf _ts3.4 && rimraf _ts4.3 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate-lib": "nx run scope-manager:generate-lib",
-    "lint": "nx lint",
+    "generate-lib": "npx nx run scope-manager:generate-lib",
+    "lint": "npx nx lint",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "nx": {

@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as ts from 'typescript';
 
 import {
@@ -98,7 +99,7 @@ export default createRule<Options, MessageIds>({
     ]);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     function validateNode(
       node:

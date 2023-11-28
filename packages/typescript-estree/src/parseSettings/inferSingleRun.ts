@@ -20,7 +20,7 @@ export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
     options?.project == null ||
     // programs passed via options means the user should be managing the programs, so we shouldn't
     // be creating our own single-run programs accidentally
-    options?.programs != null
+    options.programs != null
   ) {
     return false;
   }
@@ -34,7 +34,7 @@ export function inferSingleRun(options: TSESTreeOptions | undefined): boolean {
   }
 
   // Currently behind a flag while we gather real-world feedback
-  if (options?.allowAutomaticSingleRunInference) {
+  if (options.allowAutomaticSingleRunInference) {
     if (
       // Default to single runs for CI processes. CI=true is set by most CI providers by default.
       process.env.CI === 'true' ||

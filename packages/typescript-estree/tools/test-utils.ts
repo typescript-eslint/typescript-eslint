@@ -106,7 +106,7 @@ export function omitDeep<T = UnknownObject>(
   > = {},
 ): UnknownObject {
   function shouldOmit(keyName: string, val: unknown): boolean {
-    if (keysToOmit?.length) {
+    if (keysToOmit.length) {
       return keysToOmit.some(
         keyConfig => keyConfig.key === keyName && keyConfig.predicate(val),
       );

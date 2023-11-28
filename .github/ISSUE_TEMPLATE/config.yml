@@ -1,10 +1,10 @@
 blank_issues_enabled: false
 contact_links:
   - name: FAQ
-    about: Please check out our FAQ before filing new issues
+    about: Please read our FAQ before filing new issues
     url: https://typescript-eslint.io/linting/troubleshooting
   - name: Getting Started Guide
-    about: If you're looking for help setting up check out our getting started guide
+    about: If you're looking for help setting up, check out our getting started guide
     url: https://typescript-eslint.io
   - name: Ask a question on Discord
     about: If you just want to ask a question, consider asking it on Discord!

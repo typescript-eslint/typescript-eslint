@@ -170,7 +170,7 @@ let fn = (a: string, b: RegExp) => a + b;
 
 ### `skipCompoundAssignments`
 
-Examples of code for this rule with `{ skipCompoundAssignments: true }`:
+Examples of code for this rule with `{ skipCompoundAssignments: false }`:
 
 <!--tabs-->
 

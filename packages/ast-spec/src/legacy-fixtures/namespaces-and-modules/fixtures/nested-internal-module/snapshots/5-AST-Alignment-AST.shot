@@ -15,7 +15,8 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
           body: Array [
             ExportNamedDeclaration {
               type: 'ExportNamedDeclaration',
-              assertions: Array [],
+-             attributes: Array [],
++             assertions: Array [],
               declaration: VariableDeclaration {
                 type: 'VariableDeclaration',
                 declarations: Array [
@@ -74,7 +75,8 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
             },
             ExportNamedDeclaration {
               type: 'ExportNamedDeclaration',
-              assertions: Array [],
+-             attributes: Array [],
++             assertions: Array [],
               declaration: ClassDeclaration {
                 type: 'ClassDeclaration',
 -               abstract: false,
@@ -265,7 +267,8 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
             },
             ExportNamedDeclaration {
               type: 'ExportNamedDeclaration',
-              assertions: Array [],
+-             attributes: Array [],
++             assertions: Array [],
               declaration: TSModuleDeclaration {
                 type: 'TSModuleDeclaration',
                 body: TSModuleBlock {
@@ -273,7 +276,8 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules nested-internal-mod
                   body: Array [
                     ExportNamedDeclaration {
                       type: 'ExportNamedDeclaration',
-                      assertions: Array [],
+-                     attributes: Array [],
++                     assertions: Array [],
                       declaration: TSInterfaceDeclaration {
                         type: 'TSInterfaceDeclaration',
                         body: TSInterfaceBody {

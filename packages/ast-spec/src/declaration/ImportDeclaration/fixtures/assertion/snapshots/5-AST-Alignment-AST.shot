@@ -10,7 +10,8 @@ exports[`AST Fixtures declaration ImportDeclaration assertion AST Alignment - AS
     body: Array [
       ImportDeclaration {
         type: 'ImportDeclaration',
-        assertions: Array [
+-       attributes: Array [
++       assertions: Array [
           ImportAttribute {
             type: 'ImportAttribute',
             key: Identifier {
