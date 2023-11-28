@@ -67,7 +67,7 @@ export function TypeInfo({
   onHoverNode,
 }: TypeInfoProps): React.JSX.Element {
   const computed = useMemo(() => {
-    if (!typeChecker || !value) {
+    if (!typeChecker) {
       return undefined;
     }
     const info: InfoModel = {};
