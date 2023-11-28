@@ -368,7 +368,7 @@ export default createRule<Options, MessageIds>({
         }
 
         return typeContainsTypeParameter(
-          (type as TSESTree.TSTypeAnnotation).typeAnnotation ||
+          (type as TSESTree.TSTypeAnnotation).typeAnnotation ??
             (type as TSESTree.TSArrayType).elementType,
         );
       }
