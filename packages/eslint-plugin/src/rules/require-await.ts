@@ -128,24 +128,25 @@ export default createRule({
         return;
       }
 
-      if (node.delegate) {
-        const type = services.getTypeAtLocation(node.argument);
-        const typesToCheck = expandUnionOrIntersectionType(type);
-        for (const type of typesToCheck) {
-          const asyncIterator = tsutils.getWellKnownSymbolPropertyOfType(
-            type,
-            'asyncIterator',
-            checker,
-          );
-          if (asyncIterator !== undefined) {
-            scopeInfo.isAsyncYield = true;
-            break;
-          }
+      if (!node.delegate) {
+        if (isThenableType(services.esTreeNodeToTSNodeMap.get(node.argument))) {
+          scopeInfo.isAsyncYield = true;
         }
-      } else if (
-        isThenableType(services.esTreeNodeToTSNodeMap.get(node.argument))
-      ) {
-        scopeInfo.isAsyncYield = true;
+        return;
+      }
+
+      const type = services.getTypeAtLocation(node.argument);
+      const typesToCheck = expandUnionOrIntersectionType(type);
+      for (const type of typesToCheck) {
+        const asyncIterator = tsutils.getWellKnownSymbolPropertyOfType(
+          type,
+          'asyncIterator',
+          checker,
+        );
+        if (asyncIterator !== undefined) {
+          scopeInfo.isAsyncYield = true;
+          break;
+        }
       }
     }
 
