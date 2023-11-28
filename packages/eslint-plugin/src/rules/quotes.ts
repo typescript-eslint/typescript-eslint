@@ -40,7 +40,7 @@ export default createRule<Options, MessageIds>({
     function isAllowedAsNonBacktick(node: TSESTree.Literal): boolean {
       const parent = node.parent;
 
-      switch (parent?.type) {
+      switch (parent.type) {
         case AST_NODE_TYPES.TSAbstractMethodDefinition:
         case AST_NODE_TYPES.TSMethodSignature:
         case AST_NODE_TYPES.TSPropertySignature:

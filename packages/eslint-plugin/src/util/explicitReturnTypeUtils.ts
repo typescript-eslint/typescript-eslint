@@ -112,18 +112,12 @@ function isPropertyOfObjectWithType(
   if (!property || property.type !== AST_NODE_TYPES.Property) {
     return false;
   }
-  const objectExpr = property.parent; // this shouldn't happen, checking just in case
-  /* istanbul ignore if */ if (
-    !objectExpr ||
-    objectExpr.type !== AST_NODE_TYPES.ObjectExpression
-  ) {
+  const objectExpr = property.parent;
+  if (objectExpr.type !== AST_NODE_TYPES.ObjectExpression) {
     return false;
   }
 
-  const parent = objectExpr.parent; // this shouldn't happen, checking just in case
-  /* istanbul ignore if */ if (!parent) {
-    return false;
-  }
+  const parent = objectExpr.parent;
 
   return isTypedParent(parent) || isPropertyOfObjectWithType(parent);
 }
@@ -142,11 +136,6 @@ function isPropertyOfObjectWithType(
 function doesImmediatelyReturnFunctionExpression({
   body,
 }: FunctionNode): boolean {
-  // Should always have a body; really checking just in case
-  /* istanbul ignore if */ if (!body) {
-    return false;
-  }
-
   // Check if body is a block with a single statement
   if (body.type === AST_NODE_TYPES.BlockStatement && body.body.length === 1) {
     const [statement] = body.body;
@@ -317,14 +306,14 @@ function checkFunctionExpressionReturnType(
 function ancestorHasReturnType(node: FunctionNode): boolean {
   let ancestor: TSESTree.Node | undefined = node.parent;
 
-  if (ancestor?.type === AST_NODE_TYPES.Property) {
+  if (ancestor.type === AST_NODE_TYPES.Property) {
     ancestor = ancestor.value;
   }
 
   // if the ancestor is not a return, then this function was not returned at all, so we can exit early
-  const isReturnStatement = ancestor?.type === AST_NODE_TYPES.ReturnStatement;
+  const isReturnStatement = ancestor.type === AST_NODE_TYPES.ReturnStatement;
   const isBodylessArrow =
-    ancestor?.type === AST_NODE_TYPES.ArrowFunctionExpression &&
+    ancestor.type === AST_NODE_TYPES.ArrowFunctionExpression &&
     ancestor.body.type !== AST_NODE_TYPES.BlockStatement;
   if (!isReturnStatement && !isBodylessArrow) {
     return false;

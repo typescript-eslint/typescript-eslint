@@ -4,7 +4,7 @@ import type { ReportDescriptorMessageData } from '@typescript-eslint/utils/ts-es
 
 export function interpolate(
   text: string,
-  data: ReportDescriptorMessageData,
+  data: ReportDescriptorMessageData | undefined,
 ): string {
   if (!data) {
     return text;

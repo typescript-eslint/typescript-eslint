@@ -1,6 +1,7 @@
 import { PatternVisitor } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
+import { getScope } from '@typescript-eslint/utils/eslint-utils';
 import type { ScriptTarget } from 'typescript';
 
 import {
@@ -86,7 +87,6 @@ export default createRule<Options, MessageIds>({
   defaultOptions: defaultCamelCaseAllTheThingsConfig,
   create(contextWithoutDefaults) {
     const context =
-      contextWithoutDefaults.options &&
       contextWithoutDefaults.options.length > 0
         ? contextWithoutDefaults
         : // only apply the defaults when the user provides no config
@@ -113,10 +113,6 @@ export default createRule<Options, MessageIds>({
         | TSESTree.TSPropertySignatureNonComputedName,
       modifiers: Set<Modifiers>,
     ): void {
-      if (!validator) {
-        return;
-      }
-
       const key = node.key;
       if (requiresQuoting(key, compilerOptions.target)) {
         modifiers.add(Modifiers.requiresQuotes);
@@ -163,7 +159,7 @@ export default createRule<Options, MessageIds>({
     const unusedVariables = collectUnusedVariables(context);
     function isUnused(
       name: string,
-      initialScope: TSESLint.Scope.Scope | null = context.getScope(),
+      initialScope: TSESLint.Scope.Scope | null = getScope(context),
     ): boolean {
       let variable: TSESLint.Scope.Variable | null = null;
       let scope: TSESLint.Scope.Scope | null = initialScope;
@@ -185,11 +181,11 @@ export default createRule<Options, MessageIds>({
       return (
         // `const { x }`
         // does not match `const { x: y }`
-        (id.parent?.type === AST_NODE_TYPES.Property && id.parent.shorthand) ||
+        (id.parent.type === AST_NODE_TYPES.Property && id.parent.shorthand) ||
         // `const { x = 2 }`
         // does not match const `{ x: y = 2 }`
-        (id.parent?.type === AST_NODE_TYPES.AssignmentPattern &&
-          id.parent.parent?.type === AST_NODE_TYPES.Property &&
+        (id.parent.type === AST_NODE_TYPES.AssignmentPattern &&
+          id.parent.parent.type === AST_NODE_TYPES.Property &&
           id.parent.parent.shorthand)
       );
     }
@@ -213,12 +209,11 @@ export default createRule<Options, MessageIds>({
 
     function isAsyncVariableIdentifier(id: TSESTree.Identifier): boolean {
       return Boolean(
-        id.parent &&
-          (('async' in id.parent && id.parent.async) ||
-            ('init' in id.parent &&
-              id.parent.init &&
-              'async' in id.parent.init &&
-              id.parent.init.async)),
+        ('async' in id.parent && id.parent.async) ||
+          ('init' in id.parent &&
+            id.parent.init &&
+            'async' in id.parent.init &&
+            id.parent.init.async),
       );
     }
 
@@ -275,12 +270,12 @@ export default createRule<Options, MessageIds>({
 
           const baseModifiers = new Set<Modifiers>();
           const parent = node.parent;
-          if (parent?.type === AST_NODE_TYPES.VariableDeclaration) {
+          if (parent.type === AST_NODE_TYPES.VariableDeclaration) {
             if (parent.kind === 'const') {
               baseModifiers.add(Modifiers.const);
             }
 
-            if (isGlobal(context.getScope())) {
+            if (isGlobal(getScope(context))) {
               baseModifiers.add(Modifiers.global);
             }
           }
@@ -292,7 +287,7 @@ export default createRule<Options, MessageIds>({
               modifiers.add(Modifiers.destructured);
             }
 
-            if (isExported(parent, id.name, context.getScope())) {
+            if (isExported(parent, id.name, getScope(context))) {
               modifiers.add(Modifiers.exported);
             }
 
@@ -328,7 +323,7 @@ export default createRule<Options, MessageIds>({
 
           const modifiers = new Set<Modifiers>();
           // functions create their own nested scope
-          const scope = context.getScope().upper;
+          const scope = getScope(context).upper;
 
           if (isGlobal(scope)) {
             modifiers.add(Modifiers.global);
@@ -582,7 +577,7 @@ export default createRule<Options, MessageIds>({
 
           const modifiers = new Set<Modifiers>();
           // classes create their own nested scope
-          const scope = context.getScope().upper;
+          const scope = getScope(context).upper;
 
           if (node.abstract) {
             modifiers.add(Modifiers.abstract);
@@ -608,7 +603,7 @@ export default createRule<Options, MessageIds>({
         validator: validators.interface,
         handler: (node, validator): void => {
           const modifiers = new Set<Modifiers>();
-          const scope = context.getScope();
+          const scope = getScope(context);
 
           if (isExported(node, node.id.name, scope)) {
             modifiers.add(Modifiers.exported);
@@ -630,7 +625,7 @@ export default createRule<Options, MessageIds>({
         validator: validators.typeAlias,
         handler: (node, validator): void => {
           const modifiers = new Set<Modifiers>();
-          const scope = context.getScope();
+          const scope = getScope(context);
 
           if (isExported(node, node.id.name, scope)) {
             modifiers.add(Modifiers.exported);
@@ -653,7 +648,7 @@ export default createRule<Options, MessageIds>({
         handler: (node, validator): void => {
           const modifiers = new Set<Modifiers>();
           // enums create their own nested scope
-          const scope = context.getScope().upper;
+          const scope = getScope(context).upper;
 
           if (isExported(node, node.id.name, scope)) {
             modifiers.add(Modifiers.exported);
@@ -675,7 +670,7 @@ export default createRule<Options, MessageIds>({
         validator: validators.typeParameter,
         handler: (node: TSESTree.TSTypeParameter, validator): void => {
           const modifiers = new Set<Modifiers>();
-          const scope = context.getScope();
+          const scope = getScope(context);
 
           if (isUnused(node.name.name, scope)) {
             modifiers.add(Modifiers.unused);
@@ -689,16 +684,14 @@ export default createRule<Options, MessageIds>({
     };
 
     return Object.fromEntries(
-      Object.entries(selectors)
-        .map(([selector, { validator, handler }]) => {
-          return [
-            selector,
-            (node: Parameters<typeof handler>[0]): void => {
-              handler(node, validator);
-            },
-          ] as const;
-        })
-        .filter((s): s is NonNullable<typeof s> => s != null),
+      Object.entries(selectors).map(([selector, { validator, handler }]) => {
+        return [
+          selector,
+          (node: Parameters<typeof handler>[0]): void => {
+            handler(node, validator);
+          },
+        ] as const;
+      }),
     );
   },
 });
@@ -733,8 +726,8 @@ function isExported(
     for (const ref of variable.references) {
       const refParent = ref.identifier.parent;
       if (
-        refParent?.type === AST_NODE_TYPES.ExportDefaultDeclaration ||
-        refParent?.type === AST_NODE_TYPES.ExportSpecifier
+        refParent.type === AST_NODE_TYPES.ExportDefaultDeclaration ||
+        refParent.type === AST_NODE_TYPES.ExportSpecifier
       ) {
         return true;
       }

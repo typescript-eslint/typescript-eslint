@@ -167,13 +167,13 @@ function createValidator(
       count,
       affixes: affixes?.join(', '),
       formats: formats?.map(f => PredefinedFormats[f]).join(', '),
-      regex: custom?.regex?.toString(),
+      regex: custom?.regex.toString(),
       regexMatch:
         custom?.match === true
           ? 'match'
           : custom?.match === false
-          ? 'not match'
-          : null,
+            ? 'not match'
+            : null,
     };
   }
 

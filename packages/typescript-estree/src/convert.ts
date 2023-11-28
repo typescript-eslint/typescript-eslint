@@ -199,16 +199,24 @@ export class Converter {
         result.type === AST_NODE_TYPES.TSInterfaceDeclaration ||
         result.type === AST_NODE_TYPES.TSTypeAliasDeclaration;
       const isDeclare = 'declare' in result && result.declare;
-      return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
-        type: AST_NODE_TYPES.ExportNamedDeclaration,
+      return this.createNode<TSESTree.ExportNamedDeclaration>(
+        node,
         // @ts-expect-error - TODO, narrow the types here
-        declaration: result,
-        specifiers: [],
-        source: null,
-        exportKind: isType || isDeclare ? 'type' : 'value',
-        range: [exportKeyword.getStart(this.ast), result.range[1]],
-        assertions: [],
-      });
+        this.#withDeprecatedAliasGetter(
+          {
+            type: AST_NODE_TYPES.ExportNamedDeclaration,
+            declaration: result,
+            specifiers: [],
+            source: null,
+            exportKind: isType || isDeclare ? 'type' : 'value',
+            range: [exportKeyword.getStart(this.ast), result.range[1]],
+            attributes: [],
+          },
+          'assertions',
+          'attributes',
+          true,
+        ),
+      );
     }
 
     return result;
@@ -688,8 +696,8 @@ export class Converter {
     });
   }
 
-  private convertAssertClasue(
-    node: ts.AssertClause | undefined,
+  private convertImportAttributes(
+    node: ts.ImportAttributes | undefined,
   ): TSESTree.ImportAttribute[] {
     return node === undefined
       ? []
@@ -1858,13 +1866,24 @@ export class Converter {
       case SyntaxKind.ImportDeclaration: {
         this.assertModuleSpecifier(node, false);
 
-        const result = this.createNode<TSESTree.ImportDeclaration>(node, {
-          type: AST_NODE_TYPES.ImportDeclaration,
-          source: this.convertChild(node.moduleSpecifier),
-          specifiers: [],
-          importKind: 'value',
-          assertions: this.convertAssertClasue(node.assertClause),
-        });
+        const result = this.createNode<TSESTree.ImportDeclaration>(
+          node,
+          this.#withDeprecatedAliasGetter(
+            {
+              type: AST_NODE_TYPES.ImportDeclaration,
+              source: this.convertChild(node.moduleSpecifier),
+              specifiers: [],
+              importKind: 'value',
+              attributes: this.convertImportAttributes(
+                // eslint-disable-next-line deprecation/deprecation -- TS <5.3
+                node.attributes ?? node.assertClause,
+              ),
+            },
+            'assertions',
+            'attributes',
+            true,
+          ),
+        );
 
         if (node.importClause) {
           if (node.importClause.isTypeOnly) {
@@ -1925,33 +1944,50 @@ export class Converter {
       case SyntaxKind.ExportDeclaration: {
         if (node.exportClause?.kind === SyntaxKind.NamedExports) {
           this.assertModuleSpecifier(node, true);
-          return this.createNode<TSESTree.ExportNamedDeclaration>(node, {
-            type: AST_NODE_TYPES.ExportNamedDeclaration,
-            source: this.convertChild(node.moduleSpecifier),
-            specifiers: node.exportClause.elements.map(el =>
-              this.convertChild(el),
+          return this.createNode<TSESTree.ExportNamedDeclaration>(
+            node,
+            this.#withDeprecatedAliasGetter(
+              {
+                type: AST_NODE_TYPES.ExportNamedDeclaration,
+                source: this.convertChild(node.moduleSpecifier),
+                specifiers: node.exportClause.elements.map(el =>
+                  this.convertChild(el),
+                ),
+                exportKind: node.isTypeOnly ? 'type' : 'value',
+                declaration: null,
+                attributes: this.convertImportAttributes(
+                  // eslint-disable-next-line deprecation/deprecation -- TS <5.3
+                  node.attributes ?? node.assertClause,
+                ),
+              },
+              'assertions',
+              'attributes',
+              true,
             ),
-            exportKind: node.isTypeOnly ? 'type' : 'value',
-            declaration: null,
-            assertions: this.convertAssertClasue(node.assertClause),
-          });
+          );
         }
         this.assertModuleSpecifier(node, false);
-        return this.createNode<TSESTree.ExportAllDeclaration>(node, {
-          type: AST_NODE_TYPES.ExportAllDeclaration,
-          source: this.convertChild(node.moduleSpecifier),
-          exportKind: node.isTypeOnly ? 'type' : 'value',
-          exported:
-            // note - for compat with 3.7.x, where node.exportClause is always undefined and
-            //        SyntaxKind.NamespaceExport does not exist yet (i.e. is undefined), this
-            //        cannot be shortened to an optional chain, or else you end up with
-            //        undefined === undefined, and the true path will hard error at runtime
-            node.exportClause &&
-            node.exportClause.kind === SyntaxKind.NamespaceExport
-              ? this.convertChild(node.exportClause.name)
-              : null,
-          assertions: this.convertAssertClasue(node.assertClause),
-        });
+        return this.createNode<TSESTree.ExportAllDeclaration>(
+          node,
+          this.#withDeprecatedAliasGetter(
+            {
+              type: AST_NODE_TYPES.ExportAllDeclaration,
+              source: this.convertChild(node.moduleSpecifier),
+              exportKind: node.isTypeOnly ? 'type' : 'value',
+              exported:
+                node.exportClause?.kind === SyntaxKind.NamespaceExport
+                  ? this.convertChild(node.exportClause.name)
+                  : null,
+              attributes: this.convertImportAttributes(
+                // eslint-disable-next-line deprecation/deprecation -- TS <5.3
+                node.attributes ?? node.assertClause,
+              ),
+            },
+            'assertions',
+            'attributes',
+            true,
+          ),
+        );
       }
 
       case SyntaxKind.ExportSpecifier:
@@ -2688,8 +2724,8 @@ export class Converter {
           node.kind === SyntaxKind.ConstructSignature
             ? AST_NODE_TYPES.TSConstructSignatureDeclaration
             : node.kind === SyntaxKind.CallSignature
-            ? AST_NODE_TYPES.TSCallSignatureDeclaration
-            : AST_NODE_TYPES.TSFunctionType;
+              ? AST_NODE_TYPES.TSCallSignatureDeclaration
+              : AST_NODE_TYPES.TSFunctionType;
 
         return this.createNode<
           | TSESTree.TSCallSignatureDeclaration
@@ -2713,8 +2749,8 @@ export class Converter {
           parentKind === SyntaxKind.InterfaceDeclaration
             ? AST_NODE_TYPES.TSInterfaceHeritage
             : parentKind === SyntaxKind.HeritageClause
-            ? AST_NODE_TYPES.TSClassImplements
-            : AST_NODE_TYPES.TSInstantiationExpression;
+              ? AST_NODE_TYPES.TSClassImplements
+              : AST_NODE_TYPES.TSInstantiationExpression;
 
         return this.createNode<
           | TSESTree.TSClassImplements
@@ -3144,7 +3180,9 @@ export class Converter {
         });
       }
 
-      case SyntaxKind.AssertEntry: {
+      // eslint-disable-next-line deprecation/deprecation -- required for backwards-compatibility
+      case SyntaxKind.AssertEntry:
+      case SyntaxKind.ImportAttribute: {
         return this.createNode<TSESTree.ImportAttribute>(node, {
           type: AST_NODE_TYPES.ImportAttribute,
           key: this.convertChild(node.name),
@@ -3416,8 +3454,9 @@ export class Converter {
     node: Properties,
     aliasKey: AliasKey,
     valueKey: ValueKey,
+    suppressWarnings = false,
   ): Properties & Record<AliasKey, Properties[ValueKey]> {
-    let warned = false;
+    let warned = suppressWarnings;
 
     Object.defineProperty(node, aliasKey, {
       configurable: true,

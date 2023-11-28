@@ -83,7 +83,7 @@ export default createRule<Options, MessageIds>({
     function isBodyEmpty(
       node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
     ): boolean {
-      return !node.body || node.body.body.length === 0;
+      return node.body.body.length === 0;
     }
 
     /**
@@ -95,7 +95,7 @@ export default createRule<Options, MessageIds>({
     function hasParameterProperties(
       node: TSESTree.FunctionDeclaration | TSESTree.FunctionExpression,
     ): boolean {
-      return node.params?.some(
+      return node.params.some(
         param => param.type === AST_NODE_TYPES.TSParameterProperty,
       );
     }
@@ -111,7 +111,7 @@ export default createRule<Options, MessageIds>({
       const parent = node.parent;
       if (
         isBodyEmpty(node) &&
-        parent?.type === AST_NODE_TYPES.MethodDefinition &&
+        parent.type === AST_NODE_TYPES.MethodDefinition &&
         parent.kind === 'constructor'
       ) {
         const { accessibility } = parent;
@@ -139,7 +139,7 @@ export default createRule<Options, MessageIds>({
     ): boolean {
       if (isAllowedDecoratedFunctions && isBodyEmpty(node)) {
         const decorators =
-          node.parent?.type === AST_NODE_TYPES.MethodDefinition
+          node.parent.type === AST_NODE_TYPES.MethodDefinition
             ? node.parent.decorators
             : undefined;
         return !!decorators && !!decorators.length;
@@ -154,7 +154,7 @@ export default createRule<Options, MessageIds>({
       return (
         isAllowedOverrideMethods &&
         isBodyEmpty(node) &&
-        node.parent?.type === AST_NODE_TYPES.MethodDefinition &&
+        node.parent.type === AST_NODE_TYPES.MethodDefinition &&
         node.parent.override
       );
     }

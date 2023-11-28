@@ -1,5 +1,6 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, isNodeEqual } from '../../src/util';
 import { getFixturesRootDir } from '../RuleTester';
@@ -20,16 +21,11 @@ const rule = createRule({
   },
 
   create(context) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     return {
       LogicalExpression: (node: TSESTree.LogicalExpression): void => {
-        if (
-          (node.operator === '??' ||
-            node.operator === '||' ||
-            node.operator === '&&') &&
-          isNodeEqual(node.left, node.right)
-        ) {
+        if (isNodeEqual(node.left, node.right)) {
           context.report({
             node,
             messageId: 'removeExpression',

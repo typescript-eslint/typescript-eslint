@@ -1,4 +1,5 @@
 import type { TSESTree } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -32,7 +33,7 @@ export default createRule<Options, MessageIds>({
       context.options;
 
     const isAllmanStyle = style === 'allman';
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const rules = baseRule.create(context);
 
     /**

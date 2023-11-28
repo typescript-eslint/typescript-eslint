@@ -1,4 +1,5 @@
 import type { TSESLint } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 
 import {
@@ -50,7 +51,7 @@ export default createRule({
               {
                 messageId: 'removeAwait',
                 fix(fixer): TSESLint.RuleFix {
-                  const sourceCode = context.getSourceCode();
+                  const sourceCode = getSourceCode(context);
                   const awaitKeyword = nullThrows(
                     sourceCode.getFirstToken(node, isAwaitKeyword),
                     NullThrowsReasons.MissingToken('await', 'await expression'),

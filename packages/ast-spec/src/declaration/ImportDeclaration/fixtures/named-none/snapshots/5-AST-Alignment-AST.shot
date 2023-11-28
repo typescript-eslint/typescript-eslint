@@ -2,5 +2,43 @@
 
 exports[`AST Fixtures declaration ImportDeclaration named-none AST Alignment - AST 1`] = `
 "Snapshot Diff:
-Compared values have no visual difference."
+- TSESTree
++ Babel
+
+  Program {
+    type: 'Program',
+    body: Array [
+      ImportDeclaration {
+        type: 'ImportDeclaration',
+-       attributes: Array [],
++       assertions: Array [],
+        importKind: 'value',
+        source: Literal {
+          type: 'Literal',
+          raw: '\\'mod\\'',
+          value: 'mod',
+
+          range: [15, 20],
+          loc: {
+            start: { column: 15, line: 1 },
+            end: { column: 20, line: 1 },
+          },
+        },
+        specifiers: Array [],
+
+        range: [0, 21],
+        loc: {
+          start: { column: 0, line: 1 },
+          end: { column: 21, line: 1 },
+        },
+      },
+    ],
+    sourceType: 'module',
+
+    range: [0, 22],
+    loc: {
+      start: { column: 0, line: 1 },
+      end: { column: 0, line: 2 },
+    },
+  }"
 `;

@@ -2,7 +2,7 @@ import path from 'path';
 import * as ts from 'typescript';
 
 function getScriptKind(filePath: string, jsx: boolean): ts.ScriptKind {
-  const extension = path.extname(filePath).toLowerCase();
+  const extension = path.extname(filePath).toLowerCase() as ts.Extension;
   // note - we only respect the user's jsx setting for unknown extensions
   // this is so that we always match TS's internal script kind logic, preventing
   // weird errors due to a mismatch.

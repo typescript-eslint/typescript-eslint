@@ -306,6 +306,7 @@ export default createRule<Options, MessageIds>({
             type: AST_NODE_TYPES.ImportDeclaration,
             source: node.moduleReference.expression,
             assertions: [],
+            attributes: [],
             specifiers: [
               {
                 ...node.id,

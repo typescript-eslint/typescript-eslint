@@ -306,6 +306,45 @@ ruleTester.run('strict-enums-comparison', rule, {
 
       const bitShift = 1 >> Fruit.Apple;
     `,
+    `
+      enum Fruit {
+        Apple,
+      }
+
+      declare const fruit: Fruit;
+
+      switch (fruit) {
+        case Fruit.Apple: {
+          break;
+        }
+      }
+    `,
+    `
+      enum Vegetable {
+        Asparagus = 'asparagus',
+      }
+
+      declare const vegetable: Vegetable;
+
+      switch (vegetable) {
+        case Vegetable.Asparagus: {
+          break;
+        }
+      }
+    `,
+    `
+      enum Vegetable {
+        Asparagus = 'asparagus',
+      }
+
+      declare const vegetable: Vegetable;
+
+      switch (vegetable) {
+        default: {
+          break;
+        }
+      }
+    `,
   ],
   invalid: [
     {
@@ -315,7 +354,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple < 1;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -324,7 +363,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple > 1;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -333,7 +372,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple == 1;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -342,7 +381,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple === 1;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -351,7 +390,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple != 1;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -360,7 +399,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple !== 1;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -370,7 +409,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Apple === 0;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -380,7 +419,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Fruit.Banana === '';
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -391,7 +430,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Vegetable.Asparagus === 'beet';
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -402,7 +441,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         1 === Fruit.Apple;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -413,7 +452,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         'beet' === Vegetable.Asparagus;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -425,7 +464,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         const fruit = Fruit.Apple;
         fruit === 1;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -437,7 +476,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         const vegetable = Vegetable.Asparagus;
         vegetable === 'beet';
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -449,7 +488,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         const fruit = Fruit.Apple;
         1 === fruit;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -461,7 +500,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         const vegetable = Vegetable.Asparagus;
         'beet' === vegetable;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code:
@@ -473,7 +512,7 @@ ruleTester.run('strict-enums-comparison', rule, {
 }
       Fruit.Apple === Fruit2.Apple2;
         `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -489,7 +528,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         }
         Vegetable.Asparagus === Vegetable2.Asparagus2;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code:
@@ -502,7 +541,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       const fruit = Fruit.Apple;
       fruit === Fruit2.Apple2;
         `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -519,7 +558,7 @@ ruleTester.run('strict-enums-comparison', rule, {
         const vegetable = Vegetable.Asparagus;
         vegetable === Vegetable2.Asparagus2;
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
     },
     {
       code: `
@@ -545,10 +584,10 @@ ruleTester.run('strict-enums-comparison', rule, {
         mixed === 1;
       `,
       errors: [
-        { messageId: 'mismatched' },
-        { messageId: 'mismatched' },
-        { messageId: 'mismatched' },
-        { messageId: 'mismatched' },
+        { messageId: 'mismatchedCondition' },
+        { messageId: 'mismatchedCondition' },
+        { messageId: 'mismatchedCondition' },
+        { messageId: 'mismatchedCondition' },
       ],
     },
     {
@@ -563,7 +602,102 @@ ruleTester.run('strict-enums-comparison', rule, {
         declare const weirdString: __String;
         weirdString === 'someArbitraryValue';
       `,
-      errors: [{ messageId: 'mismatched' }],
+      errors: [{ messageId: 'mismatchedCondition' }],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+        }
+
+        declare const fruit: Fruit;
+
+        switch (fruit) {
+          case 0: {
+            break;
+          }
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCase' }],
+    },
+    {
+      code: `
+        enum Fruit {
+          Apple,
+          Banana,
+        }
+
+        declare const fruit: Fruit;
+
+        switch (fruit) {
+          case Fruit.Apple: {
+            break;
+          }
+          case 1: {
+            break;
+          }
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCase' }],
+    },
+    {
+      code: `
+        enum Vegetable {
+          Asparagus = 'asparagus',
+        }
+
+        declare const vegetable: Vegetable;
+
+        switch (vegetable) {
+          case 'asparagus': {
+            break;
+          }
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCase' }],
+    },
+    {
+      code: `
+        enum Vegetable {
+          Asparagus = 'asparagus',
+          Beet = 'beet',
+        }
+
+        declare const vegetable: Vegetable;
+
+        switch (vegetable) {
+          case Vegetable.Asparagus: {
+            break;
+          }
+          case 'beet': {
+            break;
+          }
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCase' }],
+    },
+    {
+      code: `
+        enum Vegetable {
+          Asparagus = 'asparagus',
+          Beet = 'beet',
+        }
+
+        declare const vegetable: Vegetable;
+
+        switch (vegetable) {
+          case Vegetable.Asparagus: {
+            break;
+          }
+          case 'beet': {
+            break;
+          }
+          default: {
+            break;
+          }
+        }
+      `,
+      errors: [{ messageId: 'mismatchedCase' }],
     },
     {
       code: `
@@ -576,7 +710,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       `,
       errors: [
         {
-          messageId: 'mismatched',
+          messageId: 'mismatchedCondition',
           suggestions: [
             {
               messageId: 'replaceValueWithEnum',
@@ -604,7 +738,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       `,
       errors: [
         {
-          messageId: 'mismatched',
+          messageId: 'mismatchedCondition',
           suggestions: [
             {
               messageId: 'replaceValueWithEnum',
@@ -632,7 +766,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       `,
       errors: [
         {
-          messageId: 'mismatched',
+          messageId: 'mismatchedCondition',
           suggestions: [
             {
               messageId: 'replaceValueWithEnum',
@@ -660,7 +794,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       `,
       errors: [
         {
-          messageId: 'mismatched',
+          messageId: 'mismatchedCondition',
           suggestions: [
             {
               messageId: 'replaceValueWithEnum',
@@ -688,7 +822,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       `,
       errors: [
         {
-          messageId: 'mismatched',
+          messageId: 'mismatchedCondition',
           suggestions: [
             {
               messageId: 'replaceValueWithEnum',
@@ -716,7 +850,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       `,
       errors: [
         {
-          messageId: 'mismatched',
+          messageId: 'mismatchedCondition',
           suggestions: [
             {
               messageId: 'replaceValueWithEnum',
@@ -744,7 +878,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       `,
       errors: [
         {
-          messageId: 'mismatched',
+          messageId: 'mismatchedCondition',
           suggestions: [
             {
               messageId: 'replaceValueWithEnum',
@@ -771,7 +905,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       `,
       errors: [
         {
-          messageId: 'mismatched',
+          messageId: 'mismatchedCondition',
           suggestions: [
             {
               messageId: 'replaceValueWithEnum',
@@ -797,7 +931,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       `,
       errors: [
         {
-          messageId: 'mismatched',
+          messageId: 'mismatchedCondition',
           suggestions: [
             {
               messageId: 'replaceValueWithEnum',
@@ -823,7 +957,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       `,
       errors: [
         {
-          messageId: 'mismatched',
+          messageId: 'mismatchedCondition',
           suggestions: [
             {
               messageId: 'replaceValueWithEnum',
@@ -849,7 +983,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       `,
       errors: [
         {
-          messageId: 'mismatched',
+          messageId: 'mismatchedCondition',
           suggestions: [
             {
               messageId: 'replaceValueWithEnum',
@@ -875,7 +1009,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       `,
       errors: [
         {
-          messageId: 'mismatched',
+          messageId: 'mismatchedCondition',
           suggestions: [
             {
               messageId: 'replaceValueWithEnum',
@@ -901,7 +1035,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       `,
       errors: [
         {
-          messageId: 'mismatched',
+          messageId: 'mismatchedCondition',
           suggestions: [
             {
               messageId: 'replaceValueWithEnum',
@@ -928,7 +1062,7 @@ ruleTester.run('strict-enums-comparison', rule, {
       `,
       errors: [
         {
-          messageId: 'mismatched',
+          messageId: 'mismatchedCondition',
           suggestions: [
             {
               messageId: 'replaceValueWithEnum',

@@ -1,4 +1,4 @@
-name: '♻ Propose a Change to Preset Configurations'
+name: '♻ Preset Configurations Change'
 description: 'Propose an addition, removal, or general change to a preset config'
 title: 'Configs: <a short description of my proposal>'
 labels:
@@ -7,7 +7,7 @@ labels:
   - triage
 body:
   - type: checkboxes
-    id: sanity-checks
+    id: preliminary-checks
     attributes:
       label: Before You File a Proposal Please Confirm You Have Done The Following...
       description: If any of these required steps are not taken, we may not be able to review your issue. Help us to help you!

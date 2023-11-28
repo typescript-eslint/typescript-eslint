@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import type {
   InferMessageIdsTypeFromRule,
@@ -94,7 +95,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: ['never'],
   create(context, [options]) {
     const rules = baseRule.create(context);
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const normalizedOptions = normalizeOptions(options);
 
     const predicate = {

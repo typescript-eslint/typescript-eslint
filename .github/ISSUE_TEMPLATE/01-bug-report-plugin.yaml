@@ -1,5 +1,5 @@
-name: '🐛 Report a Bug With a Rule'
-description: 'Report a bug you encountered with a lint rule'
+name: '🐛 Rule Bug'
+description: 'An issue with a single lint rule'
 title: 'Bug: [rule name here] <short description of the issue>'
 labels:
   - bug
@@ -7,7 +7,7 @@ labels:
   - triage
 body:
   - type: checkboxes
-    id: sanity-checks
+    id: preliminary-checks
     attributes:
       label: Before You File a Bug Report Please Confirm You Have Done The Following...
       description: If any of these required steps are not taken, we may not be able to review your issue. Help us to help you!
@@ -41,7 +41,7 @@ body:
     attributes:
       label: Repro Code
       description: A ***minimal*** code sample which reproduces the issue
-      render: typescript
+      render: TypeScript
     validations:
       required: true
   - type: textarea
