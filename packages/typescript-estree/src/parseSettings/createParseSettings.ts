@@ -25,7 +25,7 @@ let TSSERVER_PROJECT_SERVICE: TypeScriptProjectService | null = null;
 
 // NOTE - we intentionally use "unnecessary" `?.` here because in TS<5.3 this enum doesn't exist
 // This object exists so we can centralize these for tracking and so we don't proliferate these across the file
-export const JSDocParsingMode = {
+const JSDocParsingMode = {
   ParseAll: ts.JSDocParsingMode?.ParseAll,
   ParseNone: ts.JSDocParsingMode?.ParseNone,
   ParseForTypeErrors: ts.JSDocParsingMode?.ParseForTypeErrors,
@@ -168,7 +168,7 @@ export function createParseSettings(
     options.jsDocParsingMode == null &&
     parseSettings.projects.length === 0 &&
     parseSettings.programs == null &&
-    parseSettings.EXPERIMENTAL_projectService
+    parseSettings.EXPERIMENTAL_projectService == null
   ) {
     parseSettings.jsDocParsingMode = JSDocParsingMode.ParseNone;
   }

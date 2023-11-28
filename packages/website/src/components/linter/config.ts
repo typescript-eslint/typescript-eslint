@@ -1,5 +1,4 @@
 import type { ParseSettings } from '@typescript-eslint/typescript-estree/use-at-your-own-risk';
-import { JSDocParsingMode } from '@typescript-eslint/typescript-estree/use-at-your-own-risk';
 import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
 
 export const PARSER_NAME = '@typescript-eslint/parser';
@@ -18,7 +17,7 @@ export const defaultParseSettings: ParseSettings = {
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   extraFileExtensions: [],
   filePath: '',
-  jsDocParsingMode: JSDocParsingMode.ParseAll,
+  jsDocParsingMode: window.ts?.JSDocParsingMode?.ParseAll,
   jsx: true,
   loc: true,
   log: console.log,
