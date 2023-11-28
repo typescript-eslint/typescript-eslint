@@ -47,7 +47,7 @@
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf _ts4.3 && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "nx lint",
+    "lint": "npx nx lint",
     "test": "jest --coverage --runInBand --verbose",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },

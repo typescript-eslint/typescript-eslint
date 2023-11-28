@@ -9,9 +9,9 @@
     "generate-website-dts": "tsx ./tools/generate-website-dts.ts",
     "stylelint": "stylelint \"src/**/*.css\"",
     "stylelint:fix": "stylelint \"src/**/*.css\" --fix",
-    "lint": "nx lint",
+    "lint": "npx nx lint",
     "serve": "docusaurus serve",
-    "start": "nx start",
+    "start": "npx nx start",
     "swizzle": "docusaurus swizzle",
     "typecheck": "tsc -b ./tsconfig.json"
   },
