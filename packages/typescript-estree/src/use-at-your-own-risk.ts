@@ -2,6 +2,7 @@
 export * from './create-program/getScriptKind';
 export * from './ast-converter';
 export type { ParseSettings } from './parseSettings';
+export { JSDocParsingMode } from './parseSettings/createParseSettings';
 
 // required by packages/utils/src/ts-estree.ts
 export * from './getModifiers';
