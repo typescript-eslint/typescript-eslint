@@ -63,7 +63,8 @@ module.exports = {
       type: 'category',
     },
     {
-      collapsible: false,
+      collapsed: false,
+      collapsible: true,
       items: [
         'packages/eslint-plugin',
         'packages/eslint-plugin-tslint',
@@ -104,11 +105,12 @@ module.exports = {
       type: 'category',
     },
     {
+      collapsible: true,
       items: [
         'maintenance/branding',
-        'maintenance/dependency-version-upgrades',
+        'maintenance/contributor-tiers',
         {
-          collapsible: false,
+          collapsible: true,
           items: ['maintenance/issues/rule-deprecations'],
           label: 'Issues',
           link: {
@@ -117,8 +119,18 @@ module.exports = {
           },
           type: 'category',
         },
-        'maintenance/major-release-steps',
-        'maintenance/pull-requests',
+        'maintenance/releases',
+        {
+          collapsible: true,
+          items: ['maintenance/pull-requests/dependency-version-upgrades'],
+          label: 'Pull Requests',
+          link: {
+            id: 'maintenance/pull-requests',
+            type: 'doc',
+          },
+          type: 'category',
+        },
+        'maintenance/team',
       ],
       label: 'Maintenance',
       link: {

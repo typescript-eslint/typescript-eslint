@@ -13,6 +13,17 @@ It's imperative we give them a positive, uplifting experience.
 If you're ever unsure on any part of issue management, don't hesitate to loop in a maintainer that has more context to help!
 :::
 
+## Governance
+
+Per the scales from [Contribution Tiers > Pointing](./Contributor_Tiers.mdx#pointing):
+
+- Straightforward: at reviewer discretion, may be marked as approved by any committer or maintainer.
+  This includes docs enhancements, bug fixes, and feature additions.
+- Non-straightforward: may be marked as approved with either two committer approvals or one maintainer approval.
+  These include significant internal refactors and non-breaking public API changes.
+- "Unusual"-categorized: require a public discussion followed by two maintainer approvals.
+  These include significant refactors with cross-project and public API ramifications.
+
 ## Issue Flow
 
 :::note
@@ -135,6 +146,6 @@ Every so often, we like to [search for open issues `awaiting response`](https://
 Our flow for issues that have been waiting for >=1 month is:
 
 1. Ping the author with a message like the _Checking In_ template
-2. Add the `stale` label to the issue
-3. Wait 2 weeks
-4. If they still haven't responded, close the issue with a message like the _Pruning Stale Issue_ template
+1. Add the `stale` label to the issue
+1. Wait 2 weeks
+1. If they still haven't responded, close the issue with a message like the _Pruning Stale Issue_ template
