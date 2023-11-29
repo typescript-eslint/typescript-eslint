@@ -172,12 +172,12 @@ export default createRule<Options, MessageIds>({
       const isTypeParameter = getIsTypeParameter(typeParameters);
       for (const overloads of signatures) {
         forEachPair(overloads, (a, b) => {
-          const signature0 = (a as MethodDefinition).value ?? a;
-          const signature1 = (b as MethodDefinition).value ?? b;
+          const signature0 = (a as Partial<MethodDefinition>).value ?? a;
+          const signature1 = (b as Partial<MethodDefinition>).value ?? b;
 
           const unify = compareSignatures(
-            signature0,
-            signature1,
+            signature0 as SignatureDefinition,
+            signature1 as SignatureDefinition,
             isTypeParameter,
           );
           if (unify !== undefined) {

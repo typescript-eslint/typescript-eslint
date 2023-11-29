@@ -33,6 +33,8 @@ export function warnAboutTSVersion(
 
   if (
     passedLoggerFn ||
+    // See https://github.com/typescript-eslint/typescript-eslint/issues/7896
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     (typeof process === 'undefined' ? false : process.stdout?.isTTY)
   ) {
     const border = '=============';

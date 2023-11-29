@@ -430,7 +430,7 @@ export function findFirstMatchingAncestor(
     if (predicate(current)) {
       return current;
     }
-    current = current.parent;
+    current = current.parent as ts.Node | undefined;
   }
   return undefined;
 }
