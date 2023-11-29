@@ -1,6 +1,6 @@
 import type * as unist from 'unist';
 
-import type { RuleMetaDataWithDocs } from '../types';
+import type { RuleMetaDataWithDocs } from '../utils';
 
 export function insertFormattingNotice(
   children: unist.Node[],

@@ -2,7 +2,7 @@ import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 import type vfile from 'vfile';
 
-import type { RuleMetaDataWithDocs } from '../types';
+import type { RuleMetaDataWithDocs } from '../utils';
 
 export function insertRuleDescription(
   children: unist.Node[],

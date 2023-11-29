@@ -3,10 +3,11 @@ import type * as mdast from 'mdast';
 import * as path from 'path';
 import type * as unist from 'unist';
 
-import { spliceChildrenAndAdjustHeadings } from '../spliceChildrenAndAdjustHeadings';
-import type { RequiredHeadingIndices } from '../requiredHeadings';
-import { eslintPluginDirectory } from '../strings';
-import type { VFileWithStem } from '../types';
+import type { RequiredHeadingIndices, VFileWithStem } from '../utils';
+import {
+  eslintPluginDirectory,
+  spliceChildrenAndAdjustHeadings,
+} from '../utils';
 
 export function insertSpecialCaseOptions(
   children: unist.Node[],

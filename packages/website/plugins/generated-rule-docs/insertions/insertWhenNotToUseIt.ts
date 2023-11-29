@@ -1,9 +1,8 @@
 import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 
-import type { RequiredHeadingIndices } from '../requiredHeadings';
-import { spliceChildrenAndAdjustHeadings } from '../spliceChildrenAndAdjustHeadings';
-import type { RuleMetaDataWithDocs } from '../types';
+import type { RequiredHeadingIndices, RuleMetaDataWithDocs } from '../utils';
+import { spliceChildrenAndAdjustHeadings } from '../utils';
 
 export function insertWhenNotToUseIt(
   children: unist.Node[],

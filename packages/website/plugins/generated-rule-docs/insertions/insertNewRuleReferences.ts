@@ -6,11 +6,16 @@ import { EOL } from 'os';
 import * as path from 'path';
 import type * as unist from 'unist';
 
-import { nodeIsHeading } from '../nodes';
-import type { RequiredHeadingIndices } from '../requiredHeadings';
-import { spliceChildrenAndAdjustHeadings } from '../spliceChildrenAndAdjustHeadings';
-import { convertToPlaygroundHash } from '../strings';
-import type { RuleMetaDataWithDocs, VFileWithStem } from '../types';
+import type {
+  RequiredHeadingIndices,
+  RuleMetaDataWithDocs,
+  VFileWithStem,
+} from '../utils';
+import {
+  convertToPlaygroundHash,
+  nodeIsHeading,
+  spliceChildrenAndAdjustHeadings,
+} from '../utils';
 
 /**
  * Rules whose options schema generate annoyingly complex schemas.

@@ -9,10 +9,13 @@ import { insertResources } from './insertions/insertResources';
 import { insertRuleDescription } from './insertions/insertRuleDescription';
 import { insertSpecialCaseOptions } from './insertions/insertSpecialCaseOptions';
 import { insertWhenNotToUseIt } from './insertions/insertWhenNotToUseIt';
-import { nodeIsParent } from './nodes';
 import { removeSourceCodeNotice } from './removeSourceCodeNotice';
-import { ensureRequiredHeadings } from './requiredHeadings';
-import { isRuleMetaDataDocs, isVFileWithStem } from './types';
+import {
+  ensureRequiredHeadings,
+  isRuleMetaDataDocs,
+  isVFileWithStem,
+  nodeIsParent,
+} from './utils';
 
 export const generatedRuleDocs: Plugin = () => {
   return (root, file) => {

@@ -1,8 +1,8 @@
 import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 
-import { getUrlForRuleTest, sourceUrlPrefix } from '../strings';
-import type { RuleMetaDataWithDocs, VFileWithStem } from '../types';
+import type { RuleMetaDataWithDocs, VFileWithStem } from '../utils';
+import { getUrlForRuleTest, sourceUrlPrefix } from '../utils';
 
 export function insertResources(
   children: unist.Node[],

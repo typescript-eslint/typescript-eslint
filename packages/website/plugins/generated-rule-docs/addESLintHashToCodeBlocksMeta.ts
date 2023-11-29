@@ -1,8 +1,7 @@
 import type * as unist from 'unist';
 
-import { nodeIsCode } from './nodes';
-import { convertToPlaygroundHash } from './strings';
-import type { VFileWithStem } from './types';
+import type { VFileWithStem } from './utils';
+import { convertToPlaygroundHash, nodeIsCode } from './utils';
 
 const optionRegex = /option='(?<option>.*?)'/;
 
