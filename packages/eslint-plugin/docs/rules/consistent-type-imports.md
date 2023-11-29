@@ -96,7 +96,10 @@ If you are using [type-aware linting](https://typescript-eslint.io/linting/typed
 
 ## When Not To Use It
 
-- If you specifically want to use both import kinds for stylistic reasons, you can disable this rule.
+If you specifically want to use both import kinds for stylistic reasons, or don't wish to enforce one style over the other, you can avoid this rule.
+
+However, keep in mind that inconsistent style can harm readability in a project.
+We recommend picking a single option for this rule that works best for your project.
 
 ## Related To
 

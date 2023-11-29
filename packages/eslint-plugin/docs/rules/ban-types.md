@@ -125,3 +125,8 @@ Example configuration:
   ]
 }
 ```
+
+## When Not To Use It
+
+If your project is a rare one that intentionally deals with the class equivalents of primitives, it might not be worthwhile to enable the default `ban-types` options.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.

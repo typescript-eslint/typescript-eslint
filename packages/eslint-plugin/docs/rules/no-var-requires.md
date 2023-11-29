@@ -30,7 +30,8 @@ import foo from 'foo';
 
 ## When Not To Use It
 
-If you don't care about using newer module syntax, then you will not need this rule.
+If your project frequently uses older CommonJS `require`s, then this rule might not be applicable to you.
+If only a subset of your project uses `require`s then you might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Related To
 
