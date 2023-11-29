@@ -72,6 +72,7 @@
     "declarators",
     "destructure",
     "destructured",
+    "destructures",
     "discoverability",
     "dprint",
     "errored",
@@ -144,7 +145,10 @@
   "overrides": [
     {
       "filename": "**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}",
-      "ignoreRegExpList": ["/@[a-z]+/", "/#(end)?region/"],
+      "ignoreRegExpList": [
+        "/@[a-z]+/",
+        "/#(end)?region/"
+      ],
       "includeRegExpList": [
         "/\\/\\*[\\s\\S]*?\\*\\/|([^\\\\:]|^)\\/\\/.*$/",
         "/(\\/\\/[^\\n\\r]*[\\n\\r]+)/"

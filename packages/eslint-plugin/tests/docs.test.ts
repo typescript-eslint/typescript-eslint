@@ -47,6 +47,9 @@ describe('Validating rule docs', () => {
     'camelcase.md',
     'no-duplicate-imports.md',
   ]);
+
+  const rulesWithComplexOptions = new Set(['array-type', 'member-ordering']);
+
   it('All rules must have a corresponding rule doc', () => {
     const files = fs
       .readdirSync(docsRoot)
@@ -93,12 +96,12 @@ describe('Validating rule docs', () => {
 
       test(`headers must be title-cased`, () => {
         // Get all H2 headers objects as the other levels are variable by design.
-        const headers = tokens.filter(tokenIsH2);
+        const h2s = tokens.filter(tokenIsH2);
 
-        headers.forEach(header =>
-          expect(header.text).toBe(titleCase(header.text)),
-        );
+        h2s.forEach(h2 => expect(h2.text).toBe(titleCase(h2.text)));
       });
+
+      const headers = tokens.filter(tokenIsHeading);
 
       const importantHeadings = new Set([
         'How to Use',
@@ -108,14 +111,41 @@ describe('Validating rule docs', () => {
       ]);
 
       test('important headings must be h2s', () => {
-        const headers = tokens.filter(tokenIsHeading);
-
         for (const header of headers) {
           if (importantHeadings.has(header.raw.replace(/#/g, '').trim())) {
             expect(header.depth).toBe(2);
           }
         }
       });
+
+      const { schema } = rule.meta;
+      if (
+        !rulesWithComplexOptions.has(ruleName) &&
+        Array.isArray(schema) &&
+        !rule.meta.docs?.extendsBaseRule &&
+        rule.meta.type !== 'layout'
+      ) {
+        test('each rule option should be mentioned in a header', () => {
+          const headerTextAfterOptions = headers
+            .slice(headers.findIndex(header => header.text === 'Options'))
+            .map(header => header.text)
+            .join('\n');
+
+          for (const schemaItem of schema) {
+            if (schemaItem.type === 'object') {
+              for (const property of Object.keys(
+                schemaItem.properties as object,
+              )) {
+                if (!headerTextAfterOptions.includes(`\`${property}\``)) {
+                  throw new Error(
+                    `At least one header should include \`${property}\`.`,
+                  );
+                }
+              }
+            }
+          }
+        });
+      }
     });
   }
 });

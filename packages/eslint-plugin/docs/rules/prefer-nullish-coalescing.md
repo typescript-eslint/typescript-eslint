@@ -167,6 +167,16 @@ foo ?? 'a string';
 
 Also, if you would like to ignore all primitives types, you can set `ignorePrimitives: true`. It is equivalent to `ignorePrimitives: { string: true, number: true, bigint: true, boolean: true }`.
 
+### `allowRuleToRunWithoutStrictNullChecksIKnowWhatIAmDoing`
+
+If this is set to `false`, then the rule will error on every file whose `tsconfig.json` does _not_ have the `strictNullChecks` compiler option (or `strict`) set to `true`.
+
+Without `strictNullChecks`, TypeScript essentially erases `undefined` and `null` from the types. This means when this rule inspects the types from a variable, **it will not be able to tell that the variable might be `null` or `undefined`**, which essentially makes this rule useless.
+
+You should be using `strictNullChecks` to ensure complete type-safety in your codebase.
+
+If for some reason you cannot turn on `strictNullChecks`, but still want to use this rule - you can use this option to allow it - but know that the behavior of this rule is _undefined_ with the compiler option turned off. We will not accept bug reports if you are using this option.
+
 ## When Not To Use It
 
 If you are not using TypeScript 3.7 (or greater), then you will not be able to use this rule, as the operator is not supported.
