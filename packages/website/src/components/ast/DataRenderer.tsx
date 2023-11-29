@@ -115,7 +115,7 @@ function RenderExpandableObject({
         <div className={styles.subList}>
           {data.map((dataElement, index) => (
             <DataRender
-              key={dataElement[0] ?? index}
+              key={dataElement[0]}
               field={dataElement[0]}
               value={dataElement[1]}
               lastElement={index === lastIndex}

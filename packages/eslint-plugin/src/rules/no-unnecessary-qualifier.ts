@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -27,7 +28,7 @@ export default createRule({
     const services = getParserServices(context);
     const esTreeNodeToTSNodeMap = services.esTreeNodeToTSNodeMap;
     const checker = services.program.getTypeChecker();
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     function tryGetAliasedSymbol(
       symbol: ts.Symbol,
@@ -94,7 +95,6 @@ export default createRule({
         accessedSymbol.flags,
         sourceCode.getText(name),
       );
-
       return (
         fromScope === undefined || symbolsAreEqual(accessedSymbol, fromScope)
       );
@@ -160,7 +160,11 @@ export default createRule({
     }
 
     return {
-      TSModuleDeclaration: enterDeclaration,
+      'TSModuleDeclaration > TSModuleBlock'(
+        node: TSESTree.TSModuleBlock,
+      ): void {
+        enterDeclaration(node.parent as TSESTree.TSModuleDeclaration);
+      },
       TSEnumDeclaration: enterDeclaration,
       'ExportNamedDeclaration[declaration.type="TSModuleDeclaration"]':
         enterDeclaration,

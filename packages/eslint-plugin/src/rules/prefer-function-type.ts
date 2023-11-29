@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -28,14 +29,14 @@ export default createRule({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     /**
      * Checks if there the interface has exactly one supertype that isn't named 'Function'
      * @param node The node being checked
      */
     function hasOneSupertype(node: TSESTree.TSInterfaceDeclaration): boolean {
-      if (!node.extends || node.extends.length === 0) {
+      if (node.extends.length === 0) {
         return false;
       }
       if (node.extends.length !== 1) {

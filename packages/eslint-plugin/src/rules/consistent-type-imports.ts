@@ -1,5 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import {
+  getDeclaredVariables,
+  getSourceCode,
+} from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -104,7 +108,7 @@ export default createRule<Options, MessageIds>({
     const prefer = option.prefer ?? 'type-imports';
     const disallowTypeAnnotations = option.disallowTypeAnnotations !== false;
     const fixStyle = option.fixStyle ?? 'separate-type-imports';
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     const sourceImportsMap: Record<string, SourceImports> = {};
 
@@ -168,7 +172,7 @@ export default createRule<Options, MessageIds>({
                   continue;
                 }
 
-                const [variable] = context.getDeclaredVariables(specifier);
+                const [variable] = getDeclaredVariables(context, specifier);
                 if (variable.references.length === 0) {
                   unusedSpecifiers.push(specifier);
                 } else {
@@ -180,9 +184,9 @@ export default createRule<Options, MessageIds>({
                        * export default Type;
                        */
                       if (
-                        ref.identifier.parent?.type ===
+                        ref.identifier.parent.type ===
                           AST_NODE_TYPES.ExportSpecifier ||
-                        ref.identifier.parent?.type ===
+                        ref.identifier.parent.type ===
                           AST_NODE_TYPES.ExportDefaultDeclaration
                       ) {
                         if (ref.isValueReference && ref.isTypeReference) {
@@ -277,7 +281,7 @@ export default createRule<Options, MessageIds>({
                      * ```
                      * https://github.com/typescript-eslint/typescript-eslint/issues/7527
                      */
-                    if (report.node.assertions.length === 0) {
+                    if (report.node.attributes.length === 0) {
                       context.report({
                         node: report.node,
                         messageId: 'typeOverValue',
@@ -632,7 +636,7 @@ export default createRule<Options, MessageIds>({
         // import * as types from 'foo'
 
         // checks for presence of import assertions
-        if (node.assertions.length === 0) {
+        if (node.attributes.length === 0) {
           yield* fixInsertTypeSpecifierForImportDeclaration(fixer, node, false);
         }
         return;

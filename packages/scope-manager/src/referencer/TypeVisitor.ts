@@ -2,7 +2,7 @@ import type { TSESTree } from '@typescript-eslint/types';
 import { AST_NODE_TYPES } from '@typescript-eslint/types';
 
 import { ParameterDefinition, TypeDefinition } from '../definition';
-import { ScopeType } from '../scope';
+import { type Scope, ScopeType } from '../scope';
 import type { Referencer } from './Referencer';
 import { Visitor } from './Visitor';
 
@@ -147,7 +147,7 @@ class TypeVisitor extends Visitor {
       scope.type === ScopeType.mappedType
     ) {
       // search up the scope tree to figure out if we're in a nested type scope
-      let currentScope = scope.upper;
+      let currentScope = scope.upper as Scope | undefined;
       while (currentScope) {
         if (
           currentScope.type === ScopeType.functionType ||
@@ -186,7 +186,7 @@ class TypeVisitor extends Visitor {
       this.visit(node.typeParameters);
     }
 
-    node.extends?.forEach(this.visit, this);
+    node.extends.forEach(this.visit, this);
     this.visit(node.body);
 
     if (node.typeParameters) {

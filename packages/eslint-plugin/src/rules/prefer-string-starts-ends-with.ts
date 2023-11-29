@@ -2,6 +2,7 @@ import type { AST as RegExpAST } from '@eslint-community/regexpp';
 import { RegExpParser } from '@eslint-community/regexpp';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -38,8 +39,8 @@ export default createRule({
   },
 
   create(context) {
-    const globalScope = context.getScope();
-    const sourceCode = context.getSourceCode();
+    const globalScope = getScope(context);
+    const sourceCode = getSourceCode(context);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -384,7 +385,7 @@ export default createRule({
         let parentNode = getParent(node);
 
         let indexNode: TSESTree.Node | null = null;
-        if (parentNode?.type === AST_NODE_TYPES.CallExpression) {
+        if (parentNode.type === AST_NODE_TYPES.CallExpression) {
           if (parentNode.arguments.length === 1) {
             indexNode = parentNode.arguments[0];
           }

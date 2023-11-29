@@ -166,10 +166,7 @@ async function main(): Promise<void> {
     })
     .sort((a, b) => b.totalDonations - a.totalDonations);
 
-  const rcPath = path.resolve(
-    __dirname,
-    '../packages/website/data/sponsors.json',
-  );
+  const rcPath = path.resolve(__dirname, '../../website/data/sponsors.json');
   fs.writeFileSync(rcPath, await stringifyObject(rcPath, allSponsorsConfig));
 }
 

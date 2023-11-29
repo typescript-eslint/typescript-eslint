@@ -10,7 +10,8 @@ exports[`AST Fixtures declaration ExportAllDeclaration type-kind AST Alignment -
     body: Array [
       ExportAllDeclaration {
         type: 'ExportAllDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         exported: null,
         exportKind: 'type',
         source: Literal {

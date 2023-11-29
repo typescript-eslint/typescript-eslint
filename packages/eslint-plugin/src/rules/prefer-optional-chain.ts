@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import type { RuleFix } from '@typescript-eslint/utils/ts-eslint';
 import * as ts from 'typescript';
 
@@ -102,7 +103,7 @@ export default createRule<
     },
   ],
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const parserServices = getParserServices(context);
 
     const seenLogicals = new Set<TSESTree.LogicalExpression>();
@@ -120,7 +121,6 @@ export default createRule<
           rightNode.properties.length === 0;
         if (
           !isRightNodeAnEmptyObjectLiteral ||
-          !parentNode ||
           parentNode.type !== AST_NODE_TYPES.MemberExpression ||
           parentNode.optional
         ) {

@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -37,7 +38,7 @@ export default createRule<Options, MessageIds>({
   defaultOptions: ['property'],
 
   create(context, [mode]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     function getMethodKey(
       node: TSESTree.TSMethodSignature | TSESTree.TSPropertySignature,
@@ -130,11 +131,11 @@ export default createRule<Options, MessageIds>({
 
           const parent = methodNode.parent;
           const members =
-            parent?.type === AST_NODE_TYPES.TSInterfaceBody
+            parent.type === AST_NODE_TYPES.TSInterfaceBody
               ? parent.body
-              : parent?.type === AST_NODE_TYPES.TSTypeLiteral
-              ? parent.members
-              : [];
+              : parent.type === AST_NODE_TYPES.TSTypeLiteral
+                ? parent.members
+                : [];
 
           const duplicatedKeyMethodNodes: TSESTree.TSMethodSignature[] =
             members.filter(

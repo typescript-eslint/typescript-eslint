@@ -1,5 +1,6 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, isNonNullAssertionPunctuator } from '../util';
 
@@ -24,7 +25,7 @@ export default createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     return {
       TSNonNullExpression(node): void {
         const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
@@ -58,7 +59,7 @@ export default createRule<[], MessageIds>({
         }
 
         if (
-          node.parent?.type === AST_NODE_TYPES.MemberExpression &&
+          node.parent.type === AST_NODE_TYPES.MemberExpression &&
           node.parent.object === node
         ) {
           if (!node.parent.optional) {
@@ -91,7 +92,7 @@ export default createRule<[], MessageIds>({
             }
           }
         } else if (
-          node.parent?.type === AST_NODE_TYPES.CallExpression &&
+          node.parent.type === AST_NODE_TYPES.CallExpression &&
           node.parent.callee === node
         ) {
           if (!node.parent.optional) {

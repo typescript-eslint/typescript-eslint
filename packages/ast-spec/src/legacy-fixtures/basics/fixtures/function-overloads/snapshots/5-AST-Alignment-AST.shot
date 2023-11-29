@@ -10,7 +10,8 @@ exports[`AST Fixtures legacy-fixtures basics function-overloads AST Alignment - 
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         declaration: TSDeclareFunction {
           type: 'TSDeclareFunction',
           async: false,
@@ -98,7 +99,8 @@ exports[`AST Fixtures legacy-fixtures basics function-overloads AST Alignment - 
       },
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         declaration: TSDeclareFunction {
           type: 'TSDeclareFunction',
           async: false,
@@ -186,7 +188,8 @@ exports[`AST Fixtures legacy-fixtures basics function-overloads AST Alignment - 
       },
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         declaration: FunctionDeclaration {
           type: 'FunctionDeclaration',
           async: false,

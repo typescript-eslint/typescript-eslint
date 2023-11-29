@@ -10,6 +10,7 @@ import {
   ESLintUtils,
   TSESLint,
 } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 class UnusedVarsVisitor<
   TMessageIds extends string,
@@ -29,7 +30,7 @@ class UnusedVarsVisitor<
     });
 
     this.#scopeManager = ESLintUtils.nullThrows(
-      context.getSourceCode().scopeManager,
+      getSourceCode(context).scopeManager,
       'Missing required scope manager',
     );
   }
@@ -40,7 +41,7 @@ class UnusedVarsVisitor<
   >(
     context: TSESLint.RuleContext<TMessageIds, TOptions>,
   ): ReadonlySet<TSESLint.Scope.Variable> {
-    const program = context.getSourceCode().ast;
+    const program = getSourceCode(context).ast;
     const cached = this.RESULTS_CACHE.get(program);
     if (cached) {
       return cached;
@@ -246,7 +247,7 @@ class UnusedVarsVisitor<
 
     let idOrVariable;
     if (node.left.type === AST_NODE_TYPES.VariableDeclaration) {
-      const variable = this.#scopeManager.getDeclaredVariables(node.left)[0];
+      const variable = this.#scopeManager.getDeclaredVariables(node.left).at(0);
       if (!variable) {
         return;
       }
@@ -438,6 +439,8 @@ function isExported(variable: TSESLint.Scope.Variable): boolean {
     return node.parent!.type.indexOf('Export') === 0;
   });
 }
+
+const LOGICAL_ASSIGNMENT_OPERATORS = new Set(['&&=', '||=', '??=']);
 
 /**
  * Determines if the variable is used.
@@ -701,6 +704,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
       ref.isRead() && // in RHS of an assignment for itself. e.g. `a = a + 1`
       // self update. e.g. `a += 1`, `a++`
       ((parent.type === AST_NODE_TYPES.AssignmentExpression &&
+        !LOGICAL_ASSIGNMENT_OPERATORS.has(parent.operator) &&
         grandparent.type === AST_NODE_TYPES.ExpressionStatement &&
         parent.left === id) ||
         (parent.type === AST_NODE_TYPES.UpdateExpression &&

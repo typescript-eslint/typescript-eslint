@@ -15,7 +15,8 @@ exports[`AST Fixtures legacy-fixtures namespaces-and-modules ambient-module-decl
           body: Array [
             ImportDeclaration {
               type: 'ImportDeclaration',
-              assertions: Array [],
+-             attributes: Array [],
++             assertions: Array [],
               importKind: 'value',
               source: Literal {
                 type: 'Literal',

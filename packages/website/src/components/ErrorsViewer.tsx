@@ -35,12 +35,14 @@ function severityClass(
   severity: Monaco.MarkerSeverity,
 ): AlertBlockProps['type'] {
   switch (severity) {
+    /* eslint-disable @typescript-eslint/no-unsafe-enum-comparison -- Monaco is imported as a type */
     case 8:
       return 'danger';
     case 4:
       return 'warning';
     case 2:
       return 'note';
+    /* eslint-enable @typescript-eslint/no-unsafe-enum-comparison */
   }
   return 'info';
 }
@@ -113,7 +115,7 @@ export function ErrorViewer({
             <h4>{title}</h4>
           </div>
           <pre className={styles.errorPre}>
-            {type === 'danger' ? value?.stack : value.message}
+            {type === 'danger' ? value.stack : value.message}
           </pre>
         </AlertBlock>
       </div>
