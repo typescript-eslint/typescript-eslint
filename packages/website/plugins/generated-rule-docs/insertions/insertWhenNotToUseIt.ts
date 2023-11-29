@@ -2,7 +2,7 @@ import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 
 import type { RequiredHeadingIndices, RuleMetaDataWithDocs } from '../utils';
-import { spliceChildrenAndAdjustHeadings } from '../utils';
+import { nodeIsHeading, spliceChildrenAndAdjustHeadings } from '../utils';
 
 export function insertWhenNotToUseIt(
   children: unist.Node[],
@@ -13,13 +13,26 @@ export function insertWhenNotToUseIt(
     return;
   }
 
+  const hasExistingText =
+    headingIndices.whenNotToUseIt < children.length - 1 &&
+    children[headingIndices.whenNotToUseIt + 1].type !== 'heading';
+
+  const nextHeadingIndex =
+    children.findIndex(
+      child => nodeIsHeading(child) && child.depth === 2,
+      headingIndices.whenNotToUseIt + 1,
+    ) +
+    headingIndices.whenNotToUseIt +
+    1;
+
   spliceChildrenAndAdjustHeadings(
     children,
     headingIndices,
-    headingIndices.whenNotToUseIt + 1,
+    nextHeadingIndex === -1 ? children.length : nextHeadingIndex - 1,
     0,
     {
       children: [
+        ...(hasExistingText ? [{ type: 'thematicBreak' }] : []),
         {
           type: 'text',
           value:
