@@ -77,7 +77,7 @@ function err() {
 throw err();
 
 const foo = {
-  bar: new Error();
+  bar: new Error(),
 }
 throw foo.bar;
 
