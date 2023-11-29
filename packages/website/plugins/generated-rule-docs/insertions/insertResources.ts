@@ -1,16 +1,13 @@
 import type * as mdast from 'mdast';
-import type * as unist from 'unist';
 
-import type { RuleMetaDataWithDocs, VFileWithStem } from '../utils';
+import type { RuleDocsPage } from '../RuleDocsPage';
 import { getUrlForRuleTest, sourceUrlPrefix } from '../utils';
 
-export function insertResources(
-  children: unist.Node[],
-  file: VFileWithStem,
-  meta: RuleMetaDataWithDocs,
-): void {
+export function insertResources(page: RuleDocsPage): void {
   // Add a link to view the rule's source and test code
-  children.push(
+  page.spliceChildren(
+    page.children.length,
+    0,
     {
       children: [
         {
@@ -29,7 +26,7 @@ export function insertResources(
               children: [
                 {
                   type: 'link',
-                  url: `${sourceUrlPrefix}src/rules/${file.stem}.ts`,
+                  url: `${sourceUrlPrefix}src/rules/${page.file.stem}.ts`,
                   children: [
                     {
                       type: 'text',
@@ -49,7 +46,7 @@ export function insertResources(
               children: [
                 {
                   type: 'link',
-                  url: getUrlForRuleTest(file.stem),
+                  url: getUrlForRuleTest(page.file.stem),
                   children: [
                     {
                       type: 'text',
@@ -69,8 +66,8 @@ export function insertResources(
   );
 
   // Also add a notice about coming from ESLint core for extension rules
-  if (meta.docs.extendsBaseRule) {
-    children.push({
+  if (page.rule.meta.docs.extendsBaseRule) {
+    page.spliceChildren(page.children.length, 0, {
       children: [
         {
           type: 'jsx',
@@ -84,9 +81,9 @@ export function insertResources(
           type: 'link',
           title: null,
           url: `https://github.com/eslint/eslint/blob/main/docs/src/rules/${
-            meta.docs.extendsBaseRule === true
-              ? file.stem
-              : meta.docs.extendsBaseRule
+            page.rule.meta.docs.extendsBaseRule === true
+              ? page.file.stem
+              : page.rule.meta.docs.extendsBaseRule
           }.md`,
           children: [
             {

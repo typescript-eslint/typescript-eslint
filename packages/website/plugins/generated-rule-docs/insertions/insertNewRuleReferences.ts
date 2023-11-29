@@ -1,21 +1,12 @@
 import prettier from '@prettier/sync';
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
-import type { RuleModule } from '@typescript-eslint/utils/ts-eslint';
 import type * as mdast from 'mdast';
 import { EOL } from 'os';
 import * as path from 'path';
 import type * as unist from 'unist';
 
-import type {
-  RequiredHeadingIndices,
-  RuleMetaDataWithDocs,
-  VFileWithStem,
-} from '../utils';
-import {
-  convertToPlaygroundHash,
-  nodeIsHeading,
-  spliceChildrenAndAdjustHeadings,
-} from '../utils';
+import type { RuleDocsPage } from '../RuleDocsPage';
+import { convertToPlaygroundHash, nodeIsHeading } from '../utils';
 
 /**
  * Rules whose options schema generate annoyingly complex schemas.
@@ -41,28 +32,20 @@ const prettierConfig = {
   filepath: path.join(__dirname, '../defaults.ts'),
 };
 
-export function insertNewRuleReferences(
-  children: unist.Node[],
-  file: VFileWithStem,
-  meta: RuleMetaDataWithDocs,
-  headingIndices: RequiredHeadingIndices,
-  rule: RuleModule<string, unknown[]>,
-): string {
+export function insertNewRuleReferences(page: RuleDocsPage): string {
   // For non-extended rules, the code snippet is placed before the first h2
   // (i.e. at the end of the initial explanation)
-  const firstH2Index = children.findIndex(
+  const firstH2Index = page.children.findIndex(
     child => nodeIsHeading(child) && child.depth === 2,
   );
 
   const eslintrc = `{
   "rules": {
-    "@typescript-eslint/${file.stem}": "error"
+    "@typescript-eslint/${page.file.stem}": "error"
   }
 }`;
 
-  spliceChildrenAndAdjustHeadings(
-    children,
-    headingIndices,
+  page.spliceChildren(
     firstH2Index,
     0,
     {
@@ -79,41 +62,33 @@ export function insertNewRuleReferences(
     } as unist.Node,
   );
 
-  const hasNoConfig = Array.isArray(meta.schema)
-    ? meta.schema.length === 0
-    : Object.keys(meta.schema).length === 0;
+  const hasNoConfig = Array.isArray(page.rule.meta.schema)
+    ? page.rule.meta.schema.length === 0
+    : Object.keys(page.rule.meta.schema).length === 0;
 
   if (hasNoConfig) {
-    spliceChildrenAndAdjustHeadings(
-      children,
-      headingIndices,
-      headingIndices.howToUse + 1,
-      0,
-      {
-        children: [
-          {
-            type: 'text',
-            value: 'This rule is not configurable.',
-          },
-        ],
-        type: 'paragraph',
-      } as mdast.Paragraph,
-    );
-  } else if (!COMPLICATED_RULE_OPTIONS.has(file.stem)) {
+    page.spliceChildren(page.headingIndices.options + 1, 0, {
+      children: [
+        {
+          type: 'text',
+          value: 'This rule is not configurable.',
+        },
+      ],
+      type: 'paragraph',
+    } as mdast.Paragraph);
+  } else if (!COMPLICATED_RULE_OPTIONS.has(page.file.stem)) {
     const defaults =
-      SPECIAL_CASE_DEFAULTS.get(file.stem) ??
-      JSON.stringify(rule.defaultOptions);
+      SPECIAL_CASE_DEFAULTS.get(page.file.stem) ??
+      JSON.stringify(page.rule.defaultOptions);
 
-    spliceChildrenAndAdjustHeadings(
-      children,
-      headingIndices,
-      headingIndices.options + 1,
+    page.spliceChildren(
+      page.headingIndices.options + 1,
       0,
       {
         children: [
           {
             type: 'text',
-            value: 'This rule accepts the following options',
+            value: 'This rule accepts the following options:',
           } as mdast.Text,
         ],
         type: 'paragraph',
@@ -122,7 +97,7 @@ export function insertNewRuleReferences(
         lang: 'ts',
         type: 'code',
         value: [
-          compile(meta.schema),
+          compile(page.rule.meta.schema),
           prettier.format(
             `const defaultOptions: Options = ${defaults};`,
             prettierConfig,

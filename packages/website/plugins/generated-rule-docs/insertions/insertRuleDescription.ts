@@ -1,19 +1,16 @@
 import type * as mdast from 'mdast';
 import type * as unist from 'unist';
-import type vfile from 'vfile';
 
-import type { RuleMetaDataWithDocs } from '../utils';
+import type { RuleDocsPage } from '../RuleDocsPage';
 
-export function insertRuleDescription(
-  children: unist.Node[],
-  file: vfile.VFile,
-  meta: RuleMetaDataWithDocs,
-): void {
-  children.unshift(
+export function insertRuleDescription(page: RuleDocsPage): void {
+  page.spliceChildren(
+    0,
+    0,
     {
       children: [
         {
-          children: meta.docs.description
+          children: page.rule.meta.docs.description
             .split(/`(.+?)`/)
             .map((value, index, array) => ({
               type: index % 2 === 0 ? 'text' : 'inlineCode',
@@ -26,7 +23,7 @@ export function insertRuleDescription(
     } as mdast.Blockquote,
     {
       type: 'jsx',
-      value: `<rule-attributes name="${file.stem}" />`,
+      value: `<rule-attributes name="${page.file.stem}" />`,
     } as unist.Node,
   );
 }

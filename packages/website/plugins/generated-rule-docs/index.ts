@@ -2,6 +2,7 @@ import pluginRules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/r
 import type { Plugin } from 'unified';
 
 import { addESLintHashToCodeBlocksMeta } from './addESLintHashToCodeBlocksMeta';
+import { createRuleDocsPage } from './createRuleDocsPage';
 import { insertBaseRuleReferences } from './insertions/insertBaseRuleReferences';
 import { insertFormattingNotice } from './insertions/insertFormattingNotice';
 import { insertNewRuleReferences } from './insertions/insertNewRuleReferences';
@@ -11,8 +12,7 @@ import { insertSpecialCaseOptions } from './insertions/insertSpecialCaseOptions'
 import { insertWhenNotToUseIt } from './insertions/insertWhenNotToUseIt';
 import { removeSourceCodeNotice } from './removeSourceCodeNotice';
 import {
-  ensureRequiredHeadings,
-  isRuleMetaDataDocs,
+  isRuleModuleWithMetaDocs,
   isVFileWithStem,
   nodeIsParent,
 } from './utils';
@@ -24,25 +24,23 @@ export const generatedRuleDocs: Plugin = () => {
     }
 
     const rule = pluginRules[file.stem];
-    const meta = rule?.meta;
-    if (!isRuleMetaDataDocs(meta)) {
+    if (!isRuleModuleWithMetaDocs(rule)) {
       return;
     }
 
-    const { children } = root;
+    const page = createRuleDocsPage(root.children, file, rule);
 
-    removeSourceCodeNotice(children);
-    insertRuleDescription(children, file, meta);
-    insertFormattingNotice(children, meta);
+    removeSourceCodeNotice(page);
+    insertRuleDescription(page);
+    insertFormattingNotice(page);
 
-    const headingIndices = ensureRequiredHeadings(children, meta);
-    const eslintrc = meta.docs.extendsBaseRule
-      ? insertBaseRuleReferences(children, file, meta, headingIndices)
-      : insertNewRuleReferences(children, file, meta, headingIndices, rule);
+    const eslintrc = rule.meta.docs.extendsBaseRule
+      ? insertBaseRuleReferences(page)
+      : insertNewRuleReferences(page);
 
-    insertSpecialCaseOptions(children, file, headingIndices);
-    insertWhenNotToUseIt(children, headingIndices, meta);
-    insertResources(children, file, meta);
-    addESLintHashToCodeBlocksMeta(children, eslintrc, file);
+    insertSpecialCaseOptions(page);
+    insertWhenNotToUseIt(page);
+    insertResources(page);
+    addESLintHashToCodeBlocksMeta(page, eslintrc);
   };
 };

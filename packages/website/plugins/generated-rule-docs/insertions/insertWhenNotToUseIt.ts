@@ -1,34 +1,27 @@
 import type * as mdast from 'mdast';
-import type * as unist from 'unist';
 
-import type { RequiredHeadingIndices, RuleMetaDataWithDocs } from '../utils';
-import { nodeIsHeading, spliceChildrenAndAdjustHeadings } from '../utils';
+import type { RuleDocsPage } from '../RuleDocsPage';
+import { nodeIsHeading } from '../utils';
 
-export function insertWhenNotToUseIt(
-  children: unist.Node[],
-  headingIndices: RequiredHeadingIndices,
-  meta: RuleMetaDataWithDocs,
-): void {
-  if (!meta.docs.requiresTypeChecking) {
+export function insertWhenNotToUseIt(page: RuleDocsPage): void {
+  if (!page.rule.meta.docs.requiresTypeChecking) {
     return;
   }
 
   const hasExistingText =
-    headingIndices.whenNotToUseIt < children.length - 1 &&
-    children[headingIndices.whenNotToUseIt + 1].type !== 'heading';
+    page.headingIndices.whenNotToUseIt < page.children.length - 1 &&
+    page.children[page.headingIndices.whenNotToUseIt + 1].type !== 'heading';
 
   const nextHeadingIndex =
-    children.findIndex(
+    page.children.findIndex(
       child => nodeIsHeading(child) && child.depth === 2,
-      headingIndices.whenNotToUseIt + 1,
+      page.headingIndices.whenNotToUseIt + 1,
     ) +
-    headingIndices.whenNotToUseIt +
+    page.headingIndices.whenNotToUseIt +
     1;
 
-  spliceChildrenAndAdjustHeadings(
-    children,
-    headingIndices,
-    nextHeadingIndex === -1 ? children.length : nextHeadingIndex - 1,
+  page.spliceChildren(
+    nextHeadingIndex === -1 ? page.children.length : nextHeadingIndex - 1,
     0,
     {
       children: [

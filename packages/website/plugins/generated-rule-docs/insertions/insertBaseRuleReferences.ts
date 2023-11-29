@@ -1,68 +1,52 @@
 import type * as mdast from 'mdast';
 import type * as unist from 'unist';
 
-import type {
-  RequiredHeadingIndices,
-  RuleMetaDataWithDocs,
-  VFileWithStem,
-} from '../utils';
-import {
-  convertToPlaygroundHash,
-  getEslintrcString,
-  spliceChildrenAndAdjustHeadings,
-} from '../utils';
+import type { RuleDocsPage } from '../RuleDocsPage';
+import { convertToPlaygroundHash, getEslintrcString } from '../utils';
 
-export function insertBaseRuleReferences(
-  children: unist.Node[],
-  file: VFileWithStem,
-  meta: RuleMetaDataWithDocs,
-  headingIndices: RequiredHeadingIndices,
-): string {
+export function insertBaseRuleReferences(page: RuleDocsPage): string {
   const extendsBaseRuleName =
-    typeof meta.docs.extendsBaseRule === 'string'
-      ? meta.docs.extendsBaseRule
-      : file.stem;
+    typeof page.rule.meta.docs.extendsBaseRule === 'string'
+      ? page.rule.meta.docs.extendsBaseRule
+      : page.file.stem;
 
-  spliceChildrenAndAdjustHeadings(
-    children,
-    headingIndices,
-    headingIndices.options + 1,
-    0,
-    {
-      children: [
-        {
-          value: 'See ',
-          type: 'text',
-        },
-        {
-          children: [
-            {
-              type: 'inlineCode',
-              value: `eslint/${extendsBaseRuleName}`,
-            },
-            {
-              type: 'text',
-              value: ' options',
-            },
-          ],
-          type: 'link',
-          url: `https://eslint.org/docs/rules/${extendsBaseRuleName}#options`,
-        },
-        {
-          type: 'text',
-          value: '.',
-        },
-      ],
-      type: 'paragraph',
-    } as mdast.Paragraph,
+  page.spliceChildren(page.headingIndices.options + 1, 0, {
+    children: [
+      {
+        value: 'See ',
+        type: 'text',
+      },
+      {
+        children: [
+          {
+            type: 'inlineCode',
+            value: `eslint/${extendsBaseRuleName}`,
+          },
+          {
+            type: 'text',
+            value: ' options',
+          },
+        ],
+        type: 'link',
+        url: `https://eslint.org/docs/rules/${extendsBaseRuleName}#options`,
+      },
+      {
+        type: 'text',
+        value: '.',
+      },
+    ],
+    type: 'paragraph',
+  } as mdast.Paragraph);
+
+  const eslintrc = getEslintrcString(
+    extendsBaseRuleName,
+    page.file.stem,
+    false,
   );
+  const eslintrcHash = convertToPlaygroundHash(eslintrc);
 
-  const eslintrc = getEslintrcString(extendsBaseRuleName, file.stem, false);
-
-  spliceChildrenAndAdjustHeadings(
-    children,
-    headingIndices,
-    headingIndices.howToUse + 1,
+  page.spliceChildren(
+    page.headingIndices.howToUse + 1,
     0,
     {
       lang: 'js',
@@ -70,14 +54,12 @@ export function insertBaseRuleReferences(
       meta: 'title=".eslintrc.cjs"',
       value: `module.exports = ${getEslintrcString(
         extendsBaseRuleName,
-        file.stem,
+        page.file.stem,
         true,
       )};`,
     } as mdast.Code,
     {
-      value: `<try-in-playground eslintrcHash="${convertToPlaygroundHash(
-        eslintrc,
-      )}">Try this rule in the playground ↗</try-in-playground>`,
+      value: `<try-in-playground eslintrcHash="${eslintrcHash}">Try this rule in the playground ↗</try-in-playground>`,
       type: 'jsx',
     } as unist.Node,
   );

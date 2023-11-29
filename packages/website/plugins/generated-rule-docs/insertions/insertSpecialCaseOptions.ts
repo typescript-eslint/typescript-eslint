@@ -3,23 +3,16 @@ import type * as mdast from 'mdast';
 import * as path from 'path';
 import type * as unist from 'unist';
 
-import type { RequiredHeadingIndices, VFileWithStem } from '../utils';
-import {
-  eslintPluginDirectory,
-  spliceChildrenAndAdjustHeadings,
-} from '../utils';
+import type { RuleDocsPage } from '../RuleDocsPage';
+import { eslintPluginDirectory } from '../utils';
 
-export function insertSpecialCaseOptions(
-  children: unist.Node[],
-  file: VFileWithStem,
-  headingIndices: RequiredHeadingIndices,
-): void {
-  if (file.stem !== 'ban-types') {
+export function insertSpecialCaseOptions(page: RuleDocsPage): void {
+  if (page.file.stem !== 'ban-types') {
     return;
   }
 
-  const placeToInsert = children.findIndex(
-    (node: unist.Node) =>
+  const placeToInsert = page.children.findIndex(
+    node =>
       node.type === 'comment' &&
       (node as unist.Literal<string>).value.trim() === 'Inject default options',
   );
@@ -39,7 +32,7 @@ export function insertSpecialCaseOptions(
     throw new Error('Could not find default options for ban-types');
   }
 
-  spliceChildrenAndAdjustHeadings(children, headingIndices, placeToInsert, 1, {
+  page.spliceChildren(placeToInsert, 1, {
     lang: 'ts',
     type: 'code',
     value: defaultOptions,

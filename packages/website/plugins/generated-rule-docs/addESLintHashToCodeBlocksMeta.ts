@@ -1,18 +1,15 @@
-import type * as unist from 'unist';
-
-import type { VFileWithStem } from './utils';
+import type { RuleDocsPage } from './RuleDocsPage';
 import { convertToPlaygroundHash, nodeIsCode } from './utils';
 
 const optionRegex = /option='(?<option>.*?)'/;
 
 export function addESLintHashToCodeBlocksMeta(
-  children: unist.Node[],
+  page: RuleDocsPage,
   eslintrc: string,
-  file: VFileWithStem,
 ): void {
   let insideTab = false;
 
-  for (const node of children) {
+  for (const node of page.children) {
     if (
       node.type === 'jsx' &&
       'value' in node &&
@@ -47,7 +44,7 @@ export function addESLintHashToCodeBlocksMeta(
         } catch (err) {
           // eslint-disable-next-line no-console
           console.error(
-            `Invalid JSON detected in ${file.basename}. Check the \`option\` in the meta strings of code blocks.`,
+            `Invalid JSON detected in ${page.file.basename}. Check the \`option\` in the meta strings of code blocks.`,
           );
           throw err;
         }
