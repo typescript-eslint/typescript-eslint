@@ -25,12 +25,15 @@ let TSSERVER_PROJECT_SERVICE: TypeScriptProjectService | null = null;
 
 // NOTE - we intentionally use "unnecessary" `?.` here because in TS<5.3 this enum doesn't exist
 // This object exists so we can centralize these for tracking and so we don't proliferate these across the file
+// https://github.com/microsoft/TypeScript/issues/56579
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 const JSDocParsingMode = {
   ParseAll: ts.JSDocParsingMode?.ParseAll,
   ParseNone: ts.JSDocParsingMode?.ParseNone,
   ParseForTypeErrors: ts.JSDocParsingMode?.ParseForTypeErrors,
   ParseForTypeInfo: ts.JSDocParsingMode?.ParseForTypeInfo,
 } as const;
+/* eslint-enable @typescript-eslint/no-unnecessary-condition */
 
 export function createParseSettings(
   code: ts.SourceFile | string,

@@ -51,17 +51,15 @@ export function TypesDetails({
         </div>
       </Panel>
       <PanelResizeHandle className={styles.PanelResizeHandle} />
-      {selectedNode && (
-        <Panel id="typeInfo" collapsible={true} className={styles.PanelColumn}>
-          <div className={styles.playgroundInfoContainer}>
-            <TypeInfo
-              onHoverNode={onHoverNode}
-              typeChecker={typeChecker}
-              value={selectedNode}
-            />
-          </div>
-        </Panel>
-      )}
+      <Panel id="typeInfo" collapsible={true} className={styles.PanelColumn}>
+        <div className={styles.playgroundInfoContainer}>
+          <TypeInfo
+            onHoverNode={onHoverNode}
+            typeChecker={typeChecker}
+            value={selectedNode}
+          />
+        </div>
+      </Panel>
     </PanelGroup>
   );
 }

@@ -32,7 +32,7 @@ function findInObject(
   visited: Set<unknown>,
 ): {
   key: string[];
-  value: object;
+  value: unknown;
 } | null {
   const children = Object.entries(iter);
   for (const [name, child] of children) {
@@ -73,7 +73,7 @@ export function findSelectionPath(
 ): { path: string[]; node: object | null } {
   const nodePath = ['ast'];
   const visited = new Set<unknown>();
-  let currentNode: object | null = node;
+  let currentNode: unknown = node;
   while (currentNode) {
     // infinite loop guard
     if (visited.has(currentNode)) {
