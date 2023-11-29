@@ -182,11 +182,11 @@ export default createRule<Options, MessageIds>({
                   ),
                 )
               : replacements !== undefined
-              ? fixer.replaceTextRange(
-                  [replacements.start, replacements.end],
-                  replacements.text,
-                )
-              : [];
+                ? fixer.replaceTextRange(
+                    [replacements.start, replacements.end],
+                    replacements.text,
+                  )
+                : [];
           },
         });
       });

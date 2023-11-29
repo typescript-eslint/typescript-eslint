@@ -57,7 +57,7 @@ function OptionsSelectorContent({
             value={state.ts}
             disabled={!tsVersions.length}
             onChange={(ts): void => setState({ ts })}
-            options={(tsVersions.length && tsVersions) || [state.ts]}
+            options={tsVersions.length ? tsVersions : [state.ts]}
           />
         </InputLabel>
         <InputLabel name="Eslint">{process.env.ESLINT_VERSION}</InputLabel>

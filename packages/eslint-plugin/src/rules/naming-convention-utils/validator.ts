@@ -172,8 +172,8 @@ function createValidator(
         custom?.match === true
           ? 'match'
           : custom?.match === false
-          ? 'not match'
-          : null,
+            ? 'not match'
+            : null,
     };
   }
 

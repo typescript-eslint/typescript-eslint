@@ -4,7 +4,8 @@
     "composite": true,
     "outDir": "./dist",
     "rootDir": "./src",
-    "resolveJsonModule": true
+    "resolveJsonModule": true,
+    "removeComments": false
   },
   "include": ["src", "typings"],
   "references": [
