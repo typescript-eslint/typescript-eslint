@@ -50,7 +50,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       const foo = Promise;
       foo.reject(new Error());
     `,
-    `Promise['reject'](new Error())`,
+    "Promise['reject'](new Error());",
 
     `
       new Promise(function (resolve, reject) {
