@@ -52,26 +52,26 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
     `,
 
     `
-new Promise(function (resolve, reject) {
-  resolve(5);
-});
+      new Promise(function (resolve, reject) {
+        resolve(5);
+      });
     `,
     `
-new Promise(function (resolve, reject) {
-  reject(new Error());
-});
+      new Promise(function (resolve, reject) {
+        reject(new Error());
+      });
     `,
     `
-new Promise((resolve, reject) => {
-  reject(new Error());
-});
+      new Promise((resolve, reject) => {
+        reject(new Error());
+      });
     `,
     'new Promise((resolve, reject) => reject(new Error()));',
     {
       code: `
-new Promise(function (resolve, reject) {
-  reject();
-});
+        new Promise(function (resolve, reject) {
+          reject();
+        });
       `,
       options: [
         {
@@ -109,20 +109,20 @@ new Promise(function (resolve, reject) {
       new Foo((resolve, reject) => reject(5));
     `,
     `
-new Promise((resolve, reject) => {
-  return function (reject) {
-    reject(5);
-  };
-});
+      new Promise((resolve, reject) => {
+        return function (reject) {
+          reject(5);
+        };
+      });
     `,
     'new Promise((resolve, reject) => resolve(5, reject));',
     `
-class C {
-  #error: Error;
-  foo() {
-    Promise.reject(this.#error);
-  }
-}
+      class C {
+        #error: Error;
+        foo() {
+          Promise.reject(this.#error);
+        }
+      }
     `,
     `
       const foo = Promise;
