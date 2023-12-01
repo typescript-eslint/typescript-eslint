@@ -153,6 +153,8 @@ export = {
     '@typescript-eslint/prefer-namespace-keyword': 'error',
     '@typescript-eslint/prefer-nullish-coalescing': 'error',
     '@typescript-eslint/prefer-optional-chain': 'error',
+    'prefer-promise-reject-errors': 'off',
+    '@typescript-eslint/prefer-promise-reject-errors': 'error',
     '@typescript-eslint/prefer-readonly': 'error',
     '@typescript-eslint/prefer-readonly-parameter-types': 'error',
     '@typescript-eslint/prefer-reduce-type-parameter': 'error',
