@@ -1,11 +1,13 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
+import type { TSESLint } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import rule, {
+import type {
   MessageIds,
   Options,
 } from '../../src/rules/prefer-promise-reject-errors';
+import rule from '../../src/rules/prefer-promise-reject-errors';
 import { getFixturesRootDir } from '../RuleTester';
-import { AST_NODE_TYPES, TSESLint } from '@typescript-eslint/utils';
 
 const rootDir = getFixturesRootDir();
 const ruleTester = new RuleTester({
@@ -19,77 +21,112 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('prefer-promise-reject-errors', rule, {
   valid: [
-    'Promise.resolve(5)',
+    'Promise.resolve(5);',
     {
-      code: 'Promise.reject()',
+      code: 'Promise.reject();',
       options: [
         {
           allowEmptyReject: true,
         },
       ],
     },
-    'Promise.reject(new Error())',
-    'Promise.reject(new TypeError)',
-    "Promise.reject(new Error('foo'))",
+    'Promise.reject(new Error());',
+    'Promise.reject(new TypeError());',
+    "Promise.reject(new Error('foo'));",
     `
       class CustomError extends Error {}
-      Promise.reject(new CustomError())
+      Promise.reject(new CustomError());
     `,
     `
-      declare const foo: () => { err: SyntaxError }
-      Promise.reject(foo().err)
+      declare const foo: () => { err: SyntaxError };
+      Promise.reject(foo().err);
     `,
     `
-      declare const foo: () => Promise<Error>
-      Promise.reject(await foo())
+      declare const foo: () => Promise<Error>;
+      Promise.reject(await foo());
     `,
-    'Promise.reject(foo = new Error())',
+    'Promise.reject((foo = new Error()));',
     `
-      const foo = Promise
-      foo.reject(new Error())
+      const foo = Promise;
+      foo.reject(new Error());
     `,
 
-    'new Promise(function(resolve, reject) { resolve(5) })',
-    'new Promise(function(resolve, reject) { reject(new Error()) })',
-    'new Promise((resolve, reject) => { reject(new Error()) })',
-    'new Promise((resolve, reject) => reject(new Error()))',
+    `
+new Promise(function (resolve, reject) {
+  resolve(5);
+});
+    `,
+    `
+new Promise(function (resolve, reject) {
+  reject(new Error());
+});
+    `,
+    `
+new Promise((resolve, reject) => {
+  reject(new Error());
+});
+    `,
+    'new Promise((resolve, reject) => reject(new Error()));',
     {
-      code: 'new Promise(function(resolve, reject) { reject() })',
+      code: `
+new Promise(function (resolve, reject) {
+  reject();
+});
+      `,
       options: [
         {
           allowEmptyReject: true,
         },
       ],
     },
-    'new Promise()',
-    'new Promise(5)',
-    'new Promise((resolve, {apply}) => {})',
-    'new Promise((resolve, reject) => {})',
-    'new Promise((resolve, reject) => reject)',
+    'new Promise();',
+    'new Promise(5);',
+    'new Promise((resolve, { apply }) => {});',
+    'new Promise((resolve, reject) => {});',
+    'new Promise((resolve, reject) => reject);',
     `
       class CustomError extends Error {}
-      new Promise(function(resolve, reject) { reject(new CustomError()) })
+      new Promise(function (resolve, reject) {
+        reject(new CustomError());
+      });
     `,
     `
-      declare const foo: () => { err: SyntaxError }
-      new Promise(function(resolve, reject) { reject(foo().err) })
+      declare const foo: () => { err: SyntaxError };
+      new Promise(function (resolve, reject) {
+        reject(foo().err);
+      });
     `,
-    'new Promise((resolve, reject) => reject(foo = new Error()))',
+    'new Promise((resolve, reject) => reject((foo = new Error())));',
     `
-      new Foo((resolve, reject) => reject(5))
+      new Foo((resolve, reject) => reject(5));
     `,
     `
       class Foo {
-        constructor(executor: (resolve: () => void, reject: (reason?: any) => void) => void): Promise<any> {}
+        constructor(
+          executor: (resolve: () => void, reject: (reason?: any) => void) => void,
+        ): Promise<any> {}
       }
-      new Foo((resolve, reject) => reject(5))
+      new Foo((resolve, reject) => reject(5));
     `,
-    'new Promise((resolve, reject) => { return function(reject) { reject(5) } })',
-    'new Promise((resolve, reject) => resolve(5, reject))',
-    'class C { #error: Error; foo() { Promise.reject(this.#error); } }',
     `
-      const foo = Promise
-      new foo((resolve, reject) => reject(new Error()))
+new Promise((resolve, reject) => {
+  return function (reject) {
+    reject(5);
+  };
+});
+    `,
+    'new Promise((resolve, reject) => resolve(5, reject));',
+    `
+class C {
+  #error: Error;
+  foo() {
+    Promise.reject(this.#error);
+  }
+}
+    `,
+    `
+      const foo = Promise;
+      new foo((resolve, reject) => reject(new Error()));
     `,
   ],
   invalid: [

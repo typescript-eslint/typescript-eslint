@@ -1,5 +1,8 @@
-import { AST_NODE_TYPES, TSESTree } from '@typescript-eslint/utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getDeclaredVariables } from '@typescript-eslint/utils/eslint-utils';
 import type * as ts from 'typescript';
+
 import {
   createRule,
   getParserServices,
@@ -7,8 +10,6 @@ import {
   isFunction,
   isIdentifier,
 } from '../util';
-
-import { getDeclaredVariables } from '@typescript-eslint/utils/eslint-utils';
 
 export type MessageIds = 'rejectAnError';
 
@@ -51,7 +52,7 @@ export default createRule<Options, MessageIds>({
     const services = getParserServices(context);
     const program = services.program;
 
-    function checkRejectCall(callExpression: TSESTree.CallExpression) {
+    function checkRejectCall(callExpression: TSESTree.CallExpression): void {
       const argument = callExpression.arguments.at(0);
       if (!argument && options.allowEmptyReject) {
         return;
@@ -87,13 +88,13 @@ export default createRule<Options, MessageIds>({
     function skipChainExpression<T>(node: T): T & TSESTree.ChainElement {
       // @ts-expect-error https://github.com/typescript-eslint/typescript-eslint/issues/8008
       return node.type === AST_NODE_TYPES.ChainExpression
-        ? // @ts-expect-error ^
-          node.expression
+        ? // @ts-expect-error check the issue above ^
+          (node.expression as TSESTree.ChainExpression['expression'])
         : node;
     }
 
     return {
-      CallExpression(node) {
+      CallExpression(node): void {
         const callee = skipChainExpression(node.callee);
         if (
           callee.type !== AST_NODE_TYPES.MemberExpression ||
@@ -111,7 +112,7 @@ export default createRule<Options, MessageIds>({
 
         checkRejectCall(node);
       },
-      NewExpression(node) {
+      NewExpression(node): void {
         const callee = skipChainExpression(node.callee);
         if (!isPromiseConstructorLike(services.getTypeAtLocation(callee))) {
           return;
