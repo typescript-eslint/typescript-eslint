@@ -119,6 +119,8 @@
     "serializers",
     "Sourcegraph",
     "stringification",
+    "stringifying",
+    "stringly",
     "superset",
     "thenables",
     "transpiled",
@@ -135,7 +137,6 @@
     "unfixable",
     "unoptimized",
     "unprefixed",
-    "upcasting",
     "upsert",
     "warnonunsupportedtypescriptversion",
     "Zacher"

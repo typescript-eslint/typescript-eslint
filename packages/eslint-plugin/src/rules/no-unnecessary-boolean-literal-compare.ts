@@ -263,8 +263,8 @@ export default createRule<Options, MessageIds>({
                 : 'comparingNullableToTrueDirect'
               : 'comparingNullableToFalse'
             : comparison.negated
-            ? 'negated'
-            : 'direct',
+              ? 'negated'
+              : 'direct',
           node,
         });
       },

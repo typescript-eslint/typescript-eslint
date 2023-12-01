@@ -75,10 +75,10 @@ function RuleRow({
           fixable && hasSuggestions
             ? 'fixable and has suggestions'
             : fixable
-            ? 'fixable'
-            : hasSuggestions
-            ? 'has suggestions'
-            : undefined
+              ? 'fixable'
+              : hasSuggestions
+                ? 'has suggestions'
+                : undefined
         }
       >
         {fixable ? FIXABLE_EMOJI : ''}
@@ -385,8 +385,8 @@ function stringifyFiltersState(filters: FiltersState): string {
       value === 'include'
         ? key
         : value === 'exclude'
-        ? `${NEGATION_SYMBOL}${key}`
-        : '',
+          ? `${NEGATION_SYMBOL}${key}`
+          : '',
     )
     .filter(Boolean)
     .join('-');

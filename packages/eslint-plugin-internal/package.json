@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/eslint-plugin-internal",
-  "version": "6.11.0",
+  "version": "6.13.1",
   "private": true,
   "main": "dist/index.js",
   "scripts": {
@@ -8,16 +8,16 @@
     "clean": "tsc -b tsconfig.build.json --clean",
     "postclean": "rimraf dist && rimraf coverage",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "nx lint",
+    "lint": "npx nx lint",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@prettier/sync": "*",
-    "@typescript-eslint/rule-tester": "6.11.0",
-    "@typescript-eslint/scope-manager": "6.11.0",
-    "@typescript-eslint/type-utils": "6.11.0",
-    "@typescript-eslint/utils": "6.11.0",
+    "@typescript-eslint/rule-tester": "6.13.1",
+    "@typescript-eslint/scope-manager": "6.13.1",
+    "@typescript-eslint/type-utils": "6.13.1",
+    "@typescript-eslint/utils": "6.13.1",
     "prettier": "^3.0.3"
   },
   "devDependencies": {

@@ -711,4 +711,11 @@ You can use the `destructured` modifier to match these names, and explicitly set
 
 ## When Not To Use It
 
-If you do not want to enforce naming conventions for anything.
+This rule can be very strict.
+If you don't have strong needs for enforcing naming conventions, we recommend using it only to flag very egregious violations of your naming standards.
+Consider documenting your naming conventions and enforcing them in code review if you have processes like that.
+
+If you do not want to enforce naming conventions for anything, you can disable this rule.
+
+However, keep in mind that inconsistent style can harm readability in a project.
+We recommend that if you care about naming conventions, pick a single option for this rule that works best for your project.

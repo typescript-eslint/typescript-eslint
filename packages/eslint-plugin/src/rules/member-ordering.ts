@@ -19,6 +19,7 @@ type ReadonlyType = 'readonly-field' | 'readonly-signature';
 
 type MemberKind =
   | ReadonlyType
+  | 'accessor'
   | 'call-signature'
   | 'constructor'
   | 'field'
@@ -30,6 +31,7 @@ type MemberKind =
 
 type DecoratedMemberKind =
   | Exclude<ReadonlyType, 'readonly-signature'>
+  | 'accessor'
   | 'field'
   | 'get'
   | 'method'
@@ -170,6 +172,37 @@ export const defaultOrder: MemberType[] = [
 
   'constructor',
 
+  // Accessors
+  'public-static-accessor',
+  'protected-static-accessor',
+  'private-static-accessor',
+  '#private-static-accessor',
+
+  'public-decorated-accessor',
+  'protected-decorated-accessor',
+  'private-decorated-accessor',
+
+  'public-instance-accessor',
+  'protected-instance-accessor',
+  'private-instance-accessor',
+  '#private-instance-accessor',
+
+  'public-abstract-accessor',
+  'protected-abstract-accessor',
+
+  'public-accessor',
+  'protected-accessor',
+  'private-accessor',
+  '#private-accessor',
+
+  'static-accessor',
+  'instance-accessor',
+  'abstract-accessor',
+
+  'decorated-accessor',
+
+  'accessor',
+
   // Getters
   'public-static-get',
   'protected-static-get',
@@ -274,6 +307,7 @@ const allMemberTypes = Array.from(
       'method',
       'call-signature',
       'constructor',
+      'accessor',
       'get',
       'set',
       'static-initialization',
@@ -293,12 +327,13 @@ const allMemberTypes = Array.from(
           all.add(`${accessibility}-${type}`); // e.g. `public-field`
         }
 
-        // Only class instance fields, methods, get and set can have decorators attached to them
+        // Only class instance fields, methods, accessors, get and set can have decorators attached to them
         if (
           accessibility !== '#private' &&
           (type === 'readonly-field' ||
             type === 'field' ||
             type === 'method' ||
+            type === 'accessor' ||
             type === 'get' ||
             type === 'set')
         ) {
@@ -355,12 +390,14 @@ function getNodeType(node: Member): MemberKind | null {
       return 'constructor';
     case AST_NODE_TYPES.TSAbstractPropertyDefinition:
       return node.readonly ? 'readonly-field' : 'field';
+    case AST_NODE_TYPES.AccessorProperty:
+      return 'accessor';
     case AST_NODE_TYPES.PropertyDefinition:
       return node.value && functionExpressions.includes(node.value.type)
         ? 'method'
         : node.readonly
-        ? 'readonly-field'
-        : 'field';
+          ? 'readonly-field'
+          : 'field';
     case AST_NODE_TYPES.TSPropertySignature:
       return node.readonly ? 'readonly-field' : 'field';
     case AST_NODE_TYPES.TSIndexSignature:
@@ -518,8 +555,8 @@ function getRank(
     'static' in node && node.static
       ? 'static'
       : abstract
-      ? 'abstract'
-      : 'instance';
+        ? 'abstract'
+        : 'instance';
   const accessibility = getAccessibility(node);
 
   // Collect all existing member groups that apply to this node...

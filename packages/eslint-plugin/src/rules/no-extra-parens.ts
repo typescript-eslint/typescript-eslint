@@ -277,6 +277,7 @@ export default createRule<Options, MessageIds>({
         }
       },
     };
+    // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
     if (rules.ForInStatement && rules.ForOfStatement) {
       overrides.ForInStatement = function (node): void {
         if (isTypeAssertion(node.right)) {

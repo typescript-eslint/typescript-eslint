@@ -66,7 +66,7 @@ export type RuleModuleWithMetaDocs = RuleModule<string, unknown[]> & {
 export function isRuleModuleWithMetaDocs(
   rule: RuleModule<string, unknown[]> | undefined,
 ): rule is RuleModuleWithMetaDocs {
-  return !!rule?.meta?.docs;
+  return !!rule?.meta.docs;
 }
 
 export type VFileWithStem = VFile & {

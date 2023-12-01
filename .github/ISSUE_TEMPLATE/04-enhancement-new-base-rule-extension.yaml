@@ -1,4 +1,4 @@
-name: '✨ Propose a New Base Rule Extension'
+name: '✨ New Base Rule Extension'
 description: 'Propose a new base lint rule extension'
 title: 'Base rule extension: [rule-name] <a short description of my proposal>'
 labels:
@@ -14,7 +14,7 @@ body:
         In some cases, ESLint provides a rule itself, but it doesn't support TypeScript syntax; either it crashes, or it ignores the syntax, or it falsely reports against it.
         In these cases, we create what we call an extension rule; a rule within our plugin that has the same functionality, but also supports TypeScript.
   - type: checkboxes
-    id: sanity-checks
+    id: preliminary-checks
     attributes:
       label: Before You File a Proposal Please Confirm You Have Done The Following...
       description: If any of these required steps are not taken, we may not be able to review your issue. Help us to help you!
@@ -55,7 +55,7 @@ body:
     attributes:
       label: Fail
       description: Specify an example of code that should be detected and errored on.
-      render: typescript
+      render: TypeScript
       value: |
         var replace = 'me';
     validations:
@@ -65,7 +65,7 @@ body:
     attributes:
       label: Pass
       description: Specify an example of code that would be accepted in its place
-      render: typescript
+      render: TypeScript
       value: |
         const replace = 'me';
     validations:

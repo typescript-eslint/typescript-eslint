@@ -1,3 +1,5 @@
+// See https://github.com/typescript-eslint/typescript-eslint/issues/7630.
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 import { useWindowSize } from '@docusaurus/theme-common';
 import clsx from 'clsx';
 import type * as ESQuery from 'esquery';
@@ -62,8 +64,8 @@ function Playground(): React.JSX.Element {
     ? visualEslintRc && activeTab === 'eslintrc'
       ? 'eslintrc'
       : visualTSConfig && activeTab === 'tsconfig'
-      ? 'tsconfig'
-      : undefined
+        ? 'tsconfig'
+        : undefined
     : undefined;
 
   const onVisualEditor = useCallback((tab: TabType): void => {
@@ -205,10 +207,10 @@ function Playground(): React.JSX.Element {
                     state.showAST === 'ts'
                       ? astModel.storedTsAST
                       : state.showAST === 'scope'
-                      ? astModel.storedScope
-                      : state.showAST === 'es'
-                      ? astModel.storedAST
-                      : undefined
+                        ? astModel.storedScope
+                        : state.showAST === 'es'
+                          ? astModel.storedAST
+                          : undefined
                   }
                   showTokens={state.showTokens}
                   enableScrolling={state.scroll}

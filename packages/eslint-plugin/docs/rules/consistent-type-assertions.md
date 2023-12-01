@@ -106,3 +106,6 @@ const foo = <Foo props={{ ... } as Bar}/>;
 ## When Not To Use It
 
 If you do not want to enforce consistent type assertions.
+
+However, keep in mind that inconsistent style can harm readability in a project.
+We recommend picking a single option for this rule that works best for your project.

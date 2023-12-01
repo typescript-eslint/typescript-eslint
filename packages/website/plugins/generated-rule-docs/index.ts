@@ -23,6 +23,7 @@ export const generatedRuleDocs: Plugin = () => {
       return;
     }
 
+    // const rule = file.stem in pluginRules ? pluginRules[file.stem] : undefined;
     const rule = pluginRules[file.stem];
     if (!isRuleModuleWithMetaDocs(rule)) {
       return;

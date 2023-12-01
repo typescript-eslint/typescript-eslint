@@ -52,3 +52,9 @@ It will suggest instead pass the asserted type to `Array#reduce` as a generic ty
   {},
 );
 ```
+
+## When Not To Use It
+
+This rule can sometimes be difficult to work around when creating objects using a `.reduce`.
+See [[prefer-reduce-type-parameter] unfixable reporting #3440](https://github.com/typescript-eslint/typescript-eslint/issues/3440) for more details.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
