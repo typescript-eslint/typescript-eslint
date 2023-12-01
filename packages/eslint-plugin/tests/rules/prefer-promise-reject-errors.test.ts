@@ -44,6 +44,10 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       Promise.reject(await foo())
     `,
     'Promise.reject(foo = new Error())',
+    `
+      const foo = Promise
+      foo.reject(new Error())
+    `,
 
     'new Promise(function(resolve, reject) { resolve(5) })',
     'new Promise(function(resolve, reject) { reject(new Error()) })',
@@ -83,6 +87,10 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
     'new Promise((resolve, reject) => { return function(reject) { reject(5) } })',
     'new Promise((resolve, reject) => resolve(5, reject))',
     'class C { #error: Error; foo() { Promise.reject(this.#error); } }',
+    `
+      const foo = Promise
+      new foo((resolve, reject) => reject(new Error()))
+    `,
   ],
   invalid: [
     'Promise.reject(5)',
@@ -111,6 +119,10 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
     `
       declare const foo: boolean
       Promise.reject(foo && new Error())
+    `,
+    `
+      const foo = Promise
+      foo.reject()
     `,
 
     'Promise.reject?.(5)',
@@ -158,6 +170,10 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
         bar: PromiseConstructor
       }
       new (foo?.bar)((resolve, reject) => reject(5))
+    `,
+    `
+      const foo = Promise
+      new foo((resolve, reject) => reject(5))
     `,
   ].map<TSESLint.InvalidTestCase<MessageIds, Options>>(invalidCase => {
     return {
