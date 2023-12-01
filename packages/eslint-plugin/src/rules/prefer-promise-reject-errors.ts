@@ -70,11 +70,8 @@ export default createRule<Options, MessageIds>({
 
     function isPromiseConstructorLike(type: ts.Type): boolean {
       const symbol = type.getSymbol();
-      if (!symbol) {
-        return false;
-      }
 
-      if (symbol.getName() === 'PromiseConstructor') {
+      if (symbol?.getName() === 'PromiseConstructor') {
         const declarations = symbol.getDeclarations() ?? [];
         for (const declaration of declarations) {
           const sourceFile = declaration.getSourceFile();
@@ -132,19 +129,16 @@ export default createRule<Options, MessageIds>({
         const rejectVariable = getDeclaredVariables(context, executor).find(
           variable => variable.identifiers.includes(rejectParamNode),
         );
-        if (!rejectVariable) {
+        /* istanbul ignore if */ if (!rejectVariable) {
           return;
         }
 
-        const references = rejectVariable.references.filter(
-          ref =>
-            ref.isRead() &&
-            ref.identifier.parent.type === 'CallExpression' &&
-            ref.identifier === ref.identifier.parent.callee,
-        );
-
-        references.forEach(ref => {
-          if (ref.identifier.parent.type !== AST_NODE_TYPES.CallExpression) {
+        rejectVariable.references.forEach(ref => {
+          if (
+            !ref.isRead() ||
+            ref.identifier.parent.type !== AST_NODE_TYPES.CallExpression ||
+            ref.identifier !== ref.identifier.parent.callee
+          ) {
             return;
           }
 

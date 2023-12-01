@@ -57,6 +57,11 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
         },
       ],
     },
+    'new Promise()',
+    'new Promise(5)',
+    'new Promise((resolve, {apply}) => {})',
+    'new Promise((resolve, reject) => {})',
+    'new Promise((resolve, reject) => reject)',
     `
       class CustomError extends Error {}
       new Promise(function(resolve, reject) { reject(new CustomError()) })
@@ -66,6 +71,9 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       new Promise(function(resolve, reject) { reject(foo().err) })
     `,
     'new Promise((resolve, reject) => reject(foo = new Error()))',
+    `
+      new Foo((resolve, reject) => reject(5))
+    `,
     `
       class Foo {
         constructor(executor: (resolve: () => void, reject: (reason?: any) => void) => void): Promise<any> {}
