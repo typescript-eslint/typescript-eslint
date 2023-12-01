@@ -50,6 +50,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       const foo = Promise;
       foo.reject(new Error());
     `,
+    `Promise['reject'](new Error())`,
 
     `
       new Promise(function (resolve, reject) {
@@ -167,6 +168,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
     'Promise?.reject?.(5)',
     '(Promise?.reject)(5)',
     '(Promise?.reject)?.(5)',
+    `Promise['reject'](5)`,
 
     // Assignments with mathematical operators will either evaluate to a primitive value or throw a TypeError
     'Promise.reject(foo += new Error())',

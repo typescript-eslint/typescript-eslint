@@ -98,13 +98,10 @@ export default createRule<Options, MessageIds>({
         const callee = skipChainExpression(node.callee);
         if (
           callee.type !== AST_NODE_TYPES.MemberExpression ||
-          callee.computed
-        ) {
-          return;
-        }
-
-        if (
-          callee.property.name !== 'reject' ||
+          (callee.computed
+            ? callee.property.type === AST_NODE_TYPES.Literal &&
+              callee.property.value !== 'reject'
+            : callee.property.name !== 'reject') ||
           !isPromiseConstructorLike(services.getTypeAtLocation(callee.object))
         ) {
           return;
