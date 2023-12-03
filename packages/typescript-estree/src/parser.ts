@@ -243,7 +243,8 @@ function parseAndGenerateServices<T extends TSESTreeOptions = TSESTreeOptions>(
     options.filePath &&
     parseAndGenerateServicesCalls[options.filePath] > 1
       ? createIsolatedProgram(parseSettings)
-      : getProgramAndAST(parseSettings, hasFullTypeInformation)!;
+      : // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+        getProgramAndAST(parseSettings, hasFullTypeInformation)!;
 
   /**
    * Convert the TypeScript AST to an ESTree-compatible one, and optionally preserve

@@ -94,6 +94,7 @@ export function isStrongPrecedenceNode(innerNode: TSESTree.Node): boolean {
  * Check if a node's parent could have different precedence if the node changes.
  */
 function isWeakPrecedenceParent(node: TSESTree.Node): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const parent = node.parent!;
 
   if (
@@ -141,6 +142,7 @@ function isMissingSemicolonBefore(
   sourceCode: TSESLint.SourceCode,
 ): boolean {
   for (;;) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const parent = node.parent!;
 
     if (parent.type === AST_NODE_TYPES.ExpressionStatement) {
@@ -154,6 +156,7 @@ function isMissingSemicolonBefore(
         const previousStatement = block.body[statementIndex - 1];
         if (
           statementIndex > 0 &&
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           sourceCode.getLastToken(previousStatement)!.value !== ';'
         ) {
           return true;
@@ -173,6 +176,7 @@ function isMissingSemicolonBefore(
  * Checks if a node is LHS of an operator.
  */
 function isLeftHandSide(node: TSESTree.Node): boolean {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const parent = node.parent!;
 
   // a++

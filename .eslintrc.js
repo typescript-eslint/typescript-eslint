@@ -83,7 +83,6 @@ module.exports = {
       { allowIIFEs: true },
     ],
     '@typescript-eslint/no-explicit-any': 'error',
-    '@typescript-eslint/no-non-null-assertion': 'off',
     'no-constant-condition': 'off',
     '@typescript-eslint/no-unnecessary-condition': [
       'error',
@@ -252,6 +251,7 @@ module.exports = {
           'error',
           { allow: ['arrowFunctions'] },
         ],
+        '@typescript-eslint/no-non-null-assertion': 'off',
         '@typescript-eslint/no-unsafe-assignment': 'off',
         '@typescript-eslint/no-unsafe-call': 'off',
         '@typescript-eslint/no-unsafe-member-access': 'off',

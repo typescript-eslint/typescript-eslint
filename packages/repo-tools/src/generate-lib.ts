@@ -105,6 +105,7 @@ function sanitize(name: string): string {
 }
 
 function getVariablesFromScope(scopeManager: ScopeManager): Variable[] {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const scope = scopeManager.globalScope!.childScopes[0];
   const variables: Variable[] = [];
   for (const variable of scope.variables) {
@@ -120,6 +121,7 @@ const REFERENCE_REGEX = /\/ <reference lib="(.+)" \/>/;
 function getReferences(
   ast: TSESTree.Program & { comments?: TSESTree.Comment[] },
 ): Set<string> {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const comments = ast.comments!.filter(
     c =>
       c.type === AST_TOKEN_TYPES.Line &&

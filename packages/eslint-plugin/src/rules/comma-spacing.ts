@@ -71,6 +71,7 @@ export default createRule<Options, MessageIds>({
       for (const element of node.elements) {
         let token: TSESTree.Token | null;
         if (element == null) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           token = sourceCode.getTokenAfter(previousToken!);
           if (token && isCommaToken(token)) {
             ignoredTokens.add(token);

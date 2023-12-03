@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-non-null-assertion */
 import type { JSONSchema, TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';

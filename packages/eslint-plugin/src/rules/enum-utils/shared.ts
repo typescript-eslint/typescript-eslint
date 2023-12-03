@@ -12,11 +12,13 @@ import { isTypeFlagSet } from '../../util';
  * - `Fruit.Apple` --> `Fruit`
  */
 function getBaseEnumType(typeChecker: ts.TypeChecker, type: ts.Type): ts.Type {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const symbol = type.getSymbol()!;
   if (!tsutils.isSymbolFlagSet(symbol, ts.SymbolFlags.EnumMember)) {
     return type;
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return typeChecker.getTypeAtLocation(symbol.valueDeclaration!.parent);
 }
 

@@ -508,8 +508,10 @@ export default createRule<Options, MessageIds>({
 
     function checkScope(): void {
       const failures = checkOverloads(
+        /* eslint-disable @typescript-eslint/no-non-null-assertion */
         Array.from(currentScope!.overloads.values()),
         currentScope!.typeParameters,
+        /* eslint-enable @typescript-eslint/no-non-null-assertion */
       );
       addFailures(failures);
       currentScope = scopes.pop();

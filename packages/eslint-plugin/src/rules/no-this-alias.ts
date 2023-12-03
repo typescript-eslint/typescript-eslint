@@ -65,7 +65,8 @@ export default createRule<Options, MessageIds>({
 
         const hasAllowedName =
           id.type === AST_NODE_TYPES.Identifier
-            ? allowedNames!.includes(id.name)
+            ? // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
+              allowedNames!.includes(id.name)
             : false;
         if (!hasAllowedName) {
           context.report({

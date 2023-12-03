@@ -70,8 +70,10 @@ export default createRule({
       const sourceCode = getSourceCode(context);
 
       return [
+        /* eslint-disable @typescript-eslint/no-non-null-assertion */
         sourceCode.getTokenBefore(property)!.range[0],
         sourceCode.getTokenAfter(property)!.range[1],
+        /* eslint-enable @typescript-eslint/no-non-null-assertion */
       ];
     }
   },

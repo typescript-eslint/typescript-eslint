@@ -20,10 +20,12 @@ export function useProgramFromProjectService(
   }
 
   const scriptInfo = projectService.getScriptInfo(parseSettings.filePath);
+  /* eslint-disable @typescript-eslint/no-non-null-assertion */
   const program = projectService
     .getDefaultProjectForFile(scriptInfo!.fileName, true)!
     .getLanguageService(/*ensureSynchronized*/ true)
     .getProgram();
+  /* eslint-enable @typescript-eslint/no-non-null-assertion */
 
   if (!program) {
     return undefined;

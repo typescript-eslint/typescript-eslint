@@ -283,6 +283,7 @@ export default createRule<Options, MessageIds>({
      * @returns Whether or not the variable name is allowed.
      */
     function isAllowed(variable: TSESLint.Scope.Variable): boolean {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return options.allow!.includes(variable.name);
     }
 
@@ -651,6 +652,7 @@ export default createRule<Options, MessageIds>({
         const stack = globalScope.childScopes.slice();
 
         while (stack.length) {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const scope = stack.pop()!;
 
           stack.push(...scope.childScopes);

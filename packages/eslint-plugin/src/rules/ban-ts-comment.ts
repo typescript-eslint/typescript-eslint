@@ -132,6 +132,7 @@ export default createRule<[Options], MessageIds>({
           if (!match) {
             return;
           }
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const { directive, description } = match.groups!;
 
           const fullDirective = `ts-${directive}` as keyof Options;

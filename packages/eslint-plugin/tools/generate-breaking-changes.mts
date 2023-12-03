@@ -131,6 +131,7 @@ async function main(): Promise<void> {
       ...Object.entries(rules).map(([ruleName, { meta }]) => {
         const { deprecated } = meta;
         const { extendsBaseRule, recommended, requiresTypeChecking } =
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           meta.docs!;
 
         return [

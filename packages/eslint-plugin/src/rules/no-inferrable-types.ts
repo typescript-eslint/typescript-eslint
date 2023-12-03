@@ -226,6 +226,7 @@ export default createRule<Options, MessageIds>({
               node.left.optional) ||
             (node.type === AST_NODE_TYPES.PropertyDefinition && node.definite)
           ) {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             yield fixer.remove(sourceCode.getTokenBefore(typeNode)!);
           }
           yield fixer.remove(typeNode);

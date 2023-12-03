@@ -7,6 +7,7 @@ export function getTokenAtPosition(
   const queue: ts.Node[] = [sourceFile];
   let current: ts.Node;
   while (queue.length > 0) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     current = queue.shift()!;
     // find the child that contains 'position'
     for (const child of current.getChildren(sourceFile)) {
@@ -26,5 +27,7 @@ export function getTokenAtPosition(
       }
     }
   }
+
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   return current!;
 }

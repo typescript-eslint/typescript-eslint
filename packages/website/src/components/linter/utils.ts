@@ -80,6 +80,7 @@ export function parseMarkers(
         isPreferred: item.isPreferred,
         fix(): void {
           editor.executeEdits('eslint', [
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             createEditOperation(editor.getModel()!, item),
           ]);
         },

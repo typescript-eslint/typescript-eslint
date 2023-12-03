@@ -56,6 +56,7 @@ function getExpectedIndentForNode(
   sourceCodeLines: string[],
 ): number {
   const lineIdx = node.loc.start.line - 1;
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const indent = START_OF_LINE_WHITESPACE_MATCHER.exec(
     sourceCodeLines[lineIdx],
   )![1];
@@ -347,6 +348,7 @@ export default createRule<Options, MessageIds>({
       // +2 because we expect the string contents are indented one level
       const expectedIndent = parentIndent + 2;
 
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const firstLineIndent = START_OF_LINE_WHITESPACE_MATCHER.exec(
         lines[0],
       )![1];
@@ -369,6 +371,7 @@ export default createRule<Options, MessageIds>({
             continue;
           }
 
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const matches = START_OF_LINE_WHITESPACE_MATCHER.exec(line)!;
 
           const indent = matches[1];

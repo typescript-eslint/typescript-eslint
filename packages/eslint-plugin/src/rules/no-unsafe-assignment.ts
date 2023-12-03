@@ -342,6 +342,7 @@ export default createRule({
       ): void {
         checkAssignment(
           node.key,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           node.value!,
           node,
           getComparisonType(node.typeAnnotation),

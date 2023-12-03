@@ -125,10 +125,12 @@ export default createRule<Options, MessageIds>({
       }
 
       // there were no existing cases
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const openingBrace = sourceCode.getTokenAfter(
         node.discriminant,
         isOpeningBraceToken,
       )!;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const closingBrace = sourceCode.getTokenAfter(
         node.discriminant,
         isClosingBraceToken,

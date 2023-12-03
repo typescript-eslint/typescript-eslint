@@ -213,6 +213,7 @@ export default createRule({
     function getPropertyRange(
       node: TSESTree.MemberExpression,
     ): [number, number] {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const dotOrOpenBracket = sourceCode.getTokenAfter(
         node.object,
         isNotClosingParenToken,

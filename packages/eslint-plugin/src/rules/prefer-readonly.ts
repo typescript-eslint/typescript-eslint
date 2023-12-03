@@ -184,6 +184,7 @@ export default createRule<Options, MessageIds>({
         );
       },
       'ClassDeclaration, ClassExpression:exit'(): void {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const finalizedClassScope = classScopeStack.pop()!;
         const sourceCode = getSourceCode(context);
 

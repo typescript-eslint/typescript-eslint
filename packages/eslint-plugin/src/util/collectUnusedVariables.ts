@@ -137,6 +137,7 @@ class UnusedVarsVisitor<
     let node: TSESTree.Node;
     if (typeof variableOrIdentifierOrName === 'string') {
       name = variableOrIdentifierOrName;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       node = parent!;
     } else {
       name = variableOrIdentifierOrName.name;
@@ -431,11 +432,13 @@ function isExported(variable: TSESLint.Scope.Variable): boolean {
     let node = definition.node;
 
     if (node.type === AST_NODE_TYPES.VariableDeclarator) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       node = node.parent!;
     } else if (definition.type === TSESLint.Scope.DefinitionType.Parameter) {
       return false;
     }
 
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     return node.parent!.type.indexOf('Export') === 0;
   });
 }
@@ -565,8 +568,10 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
 
     const id = ref.identifier;
     const parent = id.parent;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const grandparent = parent.parent!;
     const refScope = ref.from.variableScope;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const varScope = ref.resolved!.scope.variableScope;
     const canBeUsedLater = refScope !== varScope || isInLoop(id);
 
@@ -698,6 +703,7 @@ function isUsedVariable(variable: TSESLint.Scope.Variable): boolean {
 
     const id = ref.identifier;
     const parent = id.parent;
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const grandparent = parent.parent!;
 
     return (

@@ -165,6 +165,7 @@ export default createRule({
         // Merged namespaces must all exist in the same file.
         // We could instead compare this file's nodes to find the merges.
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node.id);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const declarations = typeChecker
           .getSymbolAtLocation(tsNode)!
           .getDeclarations()!;

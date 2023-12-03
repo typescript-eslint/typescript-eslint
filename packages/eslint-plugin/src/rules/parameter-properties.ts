@@ -177,6 +177,7 @@ export default createRule<Options, MessageIds>({
       },
 
       ':matches(ClassDeclaration, ClassExpression):exit'(): void {
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const propertyNodesByName = propertyNodesByNameStack.pop()!;
 
         for (const [name, nodes] of propertyNodesByName) {

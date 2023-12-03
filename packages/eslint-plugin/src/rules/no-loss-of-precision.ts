@@ -33,8 +33,7 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    // eslint-disable-next-line @typescript-eslint/no-unnecessary-type-assertion
-    const rules = baseRule!.create(context);
+    const rules = baseRule.create(context);
 
     function isSeparatedNumeric(node: TSESTree.Literal): boolean {
       return typeof node.value === 'number' && node.raw.includes('_');

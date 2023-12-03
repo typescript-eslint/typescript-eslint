@@ -56,6 +56,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   const codeActions = useRef(new Map<string, LintCodeAction[]>()).current;
   const [tabs] = useState<Record<TabType, Monaco.editor.ITextModel>>(() => {
     const tabsDefault = {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       code: editor.getModel()!,
       tsconfig: monaco.editor.createModel(
         tsconfig,
@@ -75,6 +76,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
   });
 
   const updateMarkers = useCallback(() => {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     const model = editor.getModel()!;
     const markers = monaco.editor.getModelMarkers({
       resource: model.uri,
@@ -127,6 +129,7 @@ export const LoadedEditor: React.FC<LoadedEditorProps> = ({
         monaco.Uri.parse(webLinter.rules.get(ruleId)?.url ?? ''),
       );
       monaco.editor.setModelMarkers(
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         monaco.editor.getModel(monaco.Uri.file(uri))!,
         'eslint',
         diagnostics,

@@ -14,6 +14,7 @@ export function shallowEqual(
     return false;
   }
   for (const key of keys1) {
+    // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
     if (object1![key] !== object2![key]) {
       return false;
     }

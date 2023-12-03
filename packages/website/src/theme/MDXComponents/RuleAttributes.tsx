@@ -21,6 +21,7 @@ const recommendations = {
 };
 
 const getRecommendation = (docs: RuleMetaDataDocs): string[] => {
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   const recommendation = recommendations[docs.recommended!];
 
   return docs.requiresTypeChecking

@@ -209,6 +209,7 @@ export default createRule<Options, MessageIds>({
             }
           }
         }
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         return fixer.removeRange(rangeToRemove!);
       };
     }
@@ -230,6 +231,7 @@ export default createRule<Options, MessageIds>({
       ): TSESLint.RuleFix | null {
         if (node.decorators.length) {
           const lastDecorator = node.decorators[node.decorators.length - 1];
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const nextToken = sourceCode.getTokenAfter(lastDecorator)!;
           return fixer.insertTextBefore(nextToken, `${accessibility} `);
         }

@@ -167,8 +167,10 @@ export default createRule<Options, MessageIds>({
       typeAnnotation: TSESTree.TypeNode,
     ): void {
       const nextToken = typeAnnotation;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const punctuatorTokenEnd = sourceCode.getTokenBefore(nextToken)!;
       let punctuatorTokenStart = punctuatorTokenEnd;
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       let previousToken = sourceCode.getTokenBefore(punctuatorTokenEnd)!;
       let type = punctuatorTokenEnd.value;
 
@@ -202,12 +204,14 @@ export default createRule<Options, MessageIds>({
         // shift the start to the ?
         type = '?:';
         punctuatorTokenStart = previousToken;
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         previousToken = sourceCode.getTokenBefore(previousToken)!;
 
         // handle the +/- modifiers for optional modification operators
         if (previousToken.value === '+' || previousToken.value === '-') {
           type = `${previousToken.value}?:`;
           punctuatorTokenStart = previousToken;
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           previousToken = sourceCode.getTokenBefore(previousToken)!;
         }
       }

@@ -114,6 +114,7 @@ export const useSandboxServices = (
         return;
       }
 
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       const editorModel = sandboxInstance.editor.getModel()!;
       sandboxInstance.monaco.editor.setModelMarkers(
         editorModel,

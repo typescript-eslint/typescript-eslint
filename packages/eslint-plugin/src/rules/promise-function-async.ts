@@ -95,6 +95,7 @@ export default createRule<Options, MessageIds>({
   ) {
     const allAllowedPromiseNames = new Set([
       'Promise',
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       ...allowedPromiseNames!,
     ]);
     const services = getParserServices(context);
@@ -116,6 +117,7 @@ export default createRule<Options, MessageIds>({
       if (
         !containsAllTypesByName(
           returnType,
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           allowAny!,
           allAllowedPromiseNames,
           // If no return type is explicitly set, we check if any parts of the return type match a Promise (instead of requiring all to match).
@@ -162,6 +164,7 @@ export default createRule<Options, MessageIds>({
             const method = node.parent;
 
             // the token to put `async` before
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             let keyToken = sourceCode.getFirstToken(method)!;
 
             // if there are decorators then skip past them
@@ -171,6 +174,7 @@ export default createRule<Options, MessageIds>({
             ) {
               const lastDecorator =
                 method.decorators[method.decorators.length - 1];
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               keyToken = sourceCode.getTokenAfter(lastDecorator)!;
             }
 
@@ -179,11 +183,14 @@ export default createRule<Options, MessageIds>({
               keyToken.type === AST_TOKEN_TYPES.Keyword &&
               keyToken.range[0] < method.key.range[0]
             ) {
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               keyToken = sourceCode.getTokenAfter(keyToken)!;
             }
 
             // check if there is a space between key and previous token
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             const insertSpace = !sourceCode.isSpaceBetween!(
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               sourceCode.getTokenBefore(keyToken)!,
               keyToken,
             );

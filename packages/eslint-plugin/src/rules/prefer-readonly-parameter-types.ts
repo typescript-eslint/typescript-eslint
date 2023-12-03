@@ -114,6 +114,7 @@ export default createRule<Options, MessageIds>({
 
           const type = services.getTypeAtLocation(actualParam);
           const isReadOnly = isTypeReadonly(services.program, type, {
+            // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
             treatMethodsAsReadonly: treatMethodsAsReadonly!,
             allow,
           });

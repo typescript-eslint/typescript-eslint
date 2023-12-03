@@ -175,6 +175,7 @@ export function getTypescriptJsonSchema(): JSONSchema4 {
     if (item.type === 'boolean') {
       options[item.name] = {
         type: 'boolean',
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         description: item.description!.message,
       };
     } else if (item.type === 'list' && item.element?.type instanceof Map) {
@@ -184,11 +185,13 @@ export function getTypescriptJsonSchema(): JSONSchema4 {
           type: 'string',
           enum: Array.from(item.element.type.keys()),
         },
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         description: item.description!.message,
       };
     } else if (item.type instanceof Map) {
       options[item.name] = {
         type: 'string',
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         description: item.description!.message,
         enum: Array.from(item.type.keys()),
       };

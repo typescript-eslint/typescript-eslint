@@ -19,6 +19,7 @@ function memoize<T extends (...args: never[]) => unknown>(
     const key = resolver(...(args as Parameters<T>));
 
     if (cache.has(key)) {
+      // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
       return cache.get(key)!;
     }
     const result = func(...args);

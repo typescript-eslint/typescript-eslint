@@ -33,6 +33,7 @@ export const defaultConfig: ConfigModel = {
   showAST: false,
   sourceType: 'module',
   code: '',
+  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
   ts: process.env.TS_VERSION!,
   tsconfig: toJson({
     compilerOptions: {

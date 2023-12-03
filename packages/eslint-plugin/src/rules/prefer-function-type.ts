@@ -106,6 +106,7 @@ export default createRule({
           : (fixer: TSESLint.RuleFixer): TSESLint.RuleFix[] => {
               const fixes: TSESLint.RuleFix[] = [];
               const start = member.range[0];
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               const colonPos = member.returnType!.range[0] - start;
               const text = sourceCode.getText().slice(start, member.range[1]);
               const comments = sourceCode

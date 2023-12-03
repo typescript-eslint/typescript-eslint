@@ -95,6 +95,7 @@ export default createRule<Options, MessageIds>({
                   }
                   // If the property's computed, we have to attach the
                   // annotation after the square bracket, not the enclosed expression
+                  // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
                   return sourceCode.getTokenAfter(node.key)!;
                 }
                 return [

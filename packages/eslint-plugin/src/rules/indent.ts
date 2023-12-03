@@ -380,6 +380,7 @@ export default createRule<Options, MessageIds>({
 
       TSMappedType(node: TSESTree.TSMappedType) {
         const sourceCode = getSourceCode(context);
+        // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
         const squareBracketStart = sourceCode.getTokenBefore(
           node.typeParameter,
         )!;

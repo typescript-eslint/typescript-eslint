@@ -34,6 +34,7 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
     return Object.values(
       getTypescriptOptions().reduce<Record<string, ConfigOptionsType>>(
         (group, item) => {
+          // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
           const category = item.category!.message;
           // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           group[category] ??= {
@@ -44,12 +45,14 @@ function ConfigTypeScript(props: ConfigTypeScriptProps): React.JSX.Element {
             group[category].fields.push({
               key: item.name,
               type: 'boolean',
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               label: item.description!.message,
             });
           } else if (item.type instanceof Map) {
             group[category].fields.push({
               key: item.name,
               type: 'string',
+              // eslint-disable-next-line @typescript-eslint/no-non-null-assertion
               label: item.description!.message,
               enum: ['', ...Array.from<string>(item.type.keys())],
             });
