@@ -65,8 +65,7 @@ import T, { type U } from 'mod';
 
 ## When Not To Use It
 
-- If you want to leave behind side effect imports, then you shouldn't use this rule.
-- If you're not using TypeScript 5.0's `verbatimModuleSyntax` option, then you don't need this rule.
+If you're not using TypeScript 5.0's `verbatimModuleSyntax` option and your project is built with a bundler that manages import side effects for you, this rule may not be as useful for you.
 
 ## Related To
 

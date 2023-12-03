@@ -38,5 +38,5 @@ const includesBaz = example.property?.includes('baz') ?? false;
 
 ## When Not To Use It
 
-If your project does not use the `strictNullChecks` compiler option, this rule is likely useless to you.
-If your code is often wildly incorrect with respect to strict null-checking, your code may not yet be ready for this rule.
+If your project's types don't yet fully describe whether certain values may be nullable, such as if you're transitioning to `strictNullChecks`, this rule might create many false reports.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.

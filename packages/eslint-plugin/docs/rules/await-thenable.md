@@ -37,4 +37,6 @@ await createValue();
 ## When Not To Use It
 
 If you want to allow code to `await` non-Promise values.
-This is generally not preferred, but can sometimes be useful for visual consistency.
+For example, if your framework is in transition from one style of asynchronous code to another, it may be useful to include `await`s unnecessarily.
+This is generally not preferred but can sometimes be useful for visual consistency.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
