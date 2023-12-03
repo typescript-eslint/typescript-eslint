@@ -88,8 +88,7 @@ export default createRule<Options, MessageIds>({
     function skipChainExpression<T>(node: T): T & TSESTree.ChainElement {
       // @ts-expect-error https://github.com/typescript-eslint/typescript-eslint/issues/8008
       return node.type === AST_NODE_TYPES.ChainExpression
-        ? // @ts-expect-error check the issue above ^
-          (node.expression as TSESTree.ChainExpression['expression'])
+        ? (node as TSESTree.ChainExpression).expression
         : node;
     }
 
