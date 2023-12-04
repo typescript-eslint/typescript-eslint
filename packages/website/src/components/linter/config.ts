@@ -17,6 +17,9 @@ export const defaultParseSettings: ParseSettings = {
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect: false,
   extraFileExtensions: [],
   filePath: '',
+  // JSDocParsingMode was added in TS 5.3.
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
+  jsDocParsingMode: window.ts?.JSDocParsingMode?.ParseAll,
   jsx: true,
   loc: true,
   log: console.log,

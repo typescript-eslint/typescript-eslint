@@ -49,6 +49,11 @@ namespace Qux {}
 function Qux() {}
 ```
 
+## When Not To Use It
+
+If your project intentionally defines classes and interfaces with unsafe declaration merging patterns, this rule might not be for you.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+
 ## Further Reading
 
 - [Declaration Merging](https://www.typescriptlang.org/docs/handbook/declaration-merging.html)

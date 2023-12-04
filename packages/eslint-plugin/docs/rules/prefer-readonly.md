@@ -93,3 +93,7 @@ class Container {
   private neverModifiedPrivate = 'unchanged';
 }
 ```
+
+## When Not To Use It
+
+If you aren't trying to enforce strong immutability guarantees, this rule may be too restrictive for your project.

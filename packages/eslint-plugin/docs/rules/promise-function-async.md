@@ -57,3 +57,8 @@ async function functionReturnsUnionWithPromiseImplicitly(p: boolean) {
   return p ? 'value' : Promise.resolve('value');
 }
 ```
+
+## When Not To Use It
+
+This rule can be difficult to enable on projects that use APIs which require functions to always be `async`.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) along with filing issues on your dependencies for those specific situations instead of completely disabling this rule.

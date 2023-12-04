@@ -32,6 +32,9 @@ type EcmaVersion =
 type SourceTypeClassic = 'module' | 'script';
 type SourceType = SourceTypeClassic | 'commonjs';
 
+type JSDocParsingMode = 'all' | 'none' | 'type-info';
+
+// If you add publicly visible options here, make sure they're also documented in `docs/packages/Parser.mdx`
 interface ParserOptions {
   ecmaFeatures?: {
     globalReturn?: boolean;
@@ -57,8 +60,9 @@ interface ParserOptions {
   EXPERIMENTAL_useSourceOfProjectReferenceRedirect?: boolean; // purposely undocumented for now
   extraFileExtensions?: string[];
   filePath?: string;
+  jsDocParsingMode?: JSDocParsingMode;
   loc?: boolean;
-  program?: Program | null;
+  programs?: Program | null;
   project?: string[] | string | true | null;
   projectFolderIgnoreList?: (RegExp | string)[];
   range?: boolean;
@@ -77,6 +81,7 @@ export {
   CacheDurationSeconds,
   DebugLevel,
   EcmaVersion,
+  JSDocParsingMode,
   ParserOptions,
   SourceType,
 };

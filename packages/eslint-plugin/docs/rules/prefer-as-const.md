@@ -41,4 +41,7 @@ let foo = { bar: 'baz' };
 
 ## When Not To Use It
 
-If you are using TypeScript < 3.4
+If you don't care about which style of literals assertions is used in your code, then you will not need this rule.
+
+However, keep in mind that inconsistent style can harm readability in a project.
+We recommend picking a single option for this rule that works best for your project.

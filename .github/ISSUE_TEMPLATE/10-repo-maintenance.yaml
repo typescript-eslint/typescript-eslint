@@ -1,5 +1,5 @@
 name: '🏗 Improve Repository Maintenance'
-description: Report a bug or request a feature related to developing the typescript-eslint monorepo
+description: Improve the development experience for the typescript-eslint monorepo
 title: 'Repo: <short description of the issue>'
 labels:
   - 'repo maintenance'
