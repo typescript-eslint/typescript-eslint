@@ -713,6 +713,26 @@ let foo = (() => (() => {})())();
         },
       ],
     },
+    {
+      code: `
+class Bar {
+  bar: Foo = {
+    foo: x => x + 1,
+  };
+}
+      `,
+    },
+    {
+      code: `
+class Bar {
+  bar: Foo[] = [
+    {
+      foo: x => x + 1,
+    },
+  ];
+}
+      `,
+    },
   ],
   invalid: [
     {
@@ -1646,6 +1666,26 @@ class Foo {
           endLine: 4,
           column: 3,
           endColumn: 16,
+        },
+      ],
+    },
+    {
+      code: `
+class Bar {
+  bar = [
+    {
+      foo: x => x + 1,
+    },
+  ];
+}
+      `,
+      errors: [
+        {
+          messageId: 'missingReturnType',
+          line: 5,
+          endLine: 5,
+          column: 7,
+          endColumn: 12,
         },
       ],
     },
