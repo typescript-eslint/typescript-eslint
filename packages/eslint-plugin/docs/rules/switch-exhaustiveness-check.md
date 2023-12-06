@@ -6,8 +6,8 @@ description: 'Require switch-case statements to be exhaustive.'
 >
 > See **https://typescript-eslint.io/rules/switch-exhaustiveness-check** for documentation.
 
-When working with union types or enums in TypeScript, it is common to want to write a `switch` statement intended to contain a `case` for each possible type in the union or the enum.
-However, if the union type or the enum changes, it is easy to forget to modify the cases to account for any new types.
+When working with union types or enums in TypeScript, it's common to want to write a `switch` statement intended to contain a `case` for each possible type in the union or the enum.
+However, if the union type or the enum changes, it's easy to forget to modify the cases to account for any new types.
 
 This rule reports when a `switch` statement over a value typed as a union of literals or as an enum is missing a case for any of those literal types and does not have a `default` clause.
 
