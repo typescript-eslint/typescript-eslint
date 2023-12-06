@@ -27,7 +27,7 @@ For example, in applications that can have version mismatches between clients an
 
 If your project has a small number of intentionally redundant `default` cases, you might want to use an [inline ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for each of them.
 
-If your project has many intentionally redundant `default` cases, you may want to disable `allowDefaultCase` and use the [`default-case` core ESLint rule](https://eslint.org/docs/latest/rules/default-case).
+If your project has many intentionally redundant `default` cases, you may want to disable `allowDefaultCase` and use the [`default-case` core ESLint rule](https://eslint.org/docs/latest/rules/default-case) along with [a `satisfies never` check](https://www.typescriptlang.org/play?#code/C4TwDgpgBAYgTgVwJbCgXigcgIZjAGwkygB8sAjbAO2u0wG4AoRgMwSoGNgkB7KqBAGcI8ZMAAULRCgBcsacACUcwcDhIqAcygBvRlCiCA7ig4ALKJIWLd+g1A7ZhWXASJy99+3AjAEcfhw8QgApZA4iJi8AX2YvR2dMShoaTA87Lx8-AIpaGjCkCIYMqFiSgBMIFmwEfGB0rwMpMUNsbkEWJAhBKCoIADcIOCjGrP9A9gBrKh4jKgKikYNY5cZYoA).
 
 ### `requireDefaultForNonUnion`
 
