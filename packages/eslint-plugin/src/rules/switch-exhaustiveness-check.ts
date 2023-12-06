@@ -31,8 +31,7 @@ interface SwitchStatementMetadata {
 type Options = [
   {
     /**
-     * If `true`, allow superfluous `default` cases that obfuscate future type
-     * additions.
+     * If `true`, allow superfluous `default` cases that obfuscate future type additions.
      */
     allowDefaultCase: boolean;
 
