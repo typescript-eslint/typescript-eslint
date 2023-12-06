@@ -4,6 +4,7 @@ import * as path from 'path';
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
 import type { ProjectServiceOptions } from '../parser-options';
+import { getCanonicalFileName } from './shared';
 
 const doNothing = (): void => {};
 
@@ -66,7 +67,9 @@ export function createProjectService(
       typeof options === 'object'
         ? options.allowDefaultProjectForFiles
             ?.flatMap(pattern => globby.sync(pattern))
-            .map(filePath => path.join(tsconfigRootDir, filePath))
+            .map(filePath =>
+              getCanonicalFileName(path.join(tsconfigRootDir, filePath)),
+            )
         : undefined,
     ),
     service,
