@@ -33,7 +33,7 @@ type Options = [
     /**
      * If `true`, allow superfluous `default` cases that obfuscate future type additions.
      */
-    allowDefaultCase: boolean;
+    allowDefaultCase?: boolean;
 
     /**
      * If `true`, require a `default` clause for switches on non-union types.
