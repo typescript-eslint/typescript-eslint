@@ -57,7 +57,7 @@ export default createRule<Options, MessageIds>({
         properties: {
           allowDefaultCase: {
             description:
-              'If `true`, allow superfluous `default` cases that obfuscate future type additions.',
+              'If `true`, allow `default` cases on `switch` statements with exhaustive cases.',
             type: 'boolean',
           },
           requireDefaultForNonUnion: {
