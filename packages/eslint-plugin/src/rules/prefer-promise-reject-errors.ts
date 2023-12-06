@@ -73,7 +73,10 @@ export default createRule<Options, MessageIds>({
 
     function isPromiseConstructorLike(type: ts.Type): boolean {
       const symbol = type.getSymbol();
-      return isSymbolFromDefaultLibrary(program, symbol, 'PromiseConstructor');
+      return (
+        symbol?.getName() === 'PromiseConstructor' &&
+        isSymbolFromDefaultLibrary(program, symbol)
+      );
     }
 
     function skipChainExpression<T extends TSESTree.Node>(

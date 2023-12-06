@@ -15,7 +15,10 @@ export function isErrorLike(program: ts.Program, type: ts.Type): boolean {
     return false;
   }
 
-  if (isSymbolFromDefaultLibrary(program, symbol, 'Error')) {
+  if (
+    symbol.getName() === 'Error' &&
+    isSymbolFromDefaultLibrary(program, symbol)
+  ) {
     return true;
   }
 
