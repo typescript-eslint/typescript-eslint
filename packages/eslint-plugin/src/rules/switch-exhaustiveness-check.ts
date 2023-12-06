@@ -132,10 +132,6 @@ export default createRule<Options, MessageIds>({
         unionType => !caseTypes.has(unionType),
       );
 
-      /**
-       * Convert `ts.__String | undefined` to `string | undefined` for
-       * simplicity.
-       */
       const symbolName = discriminantType.getSymbol()?.escapedName as
         | string
         | undefined;
