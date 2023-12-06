@@ -11,8 +11,6 @@ However, if the union type or the enum changes, it is easy to forget to modify t
 
 This rule reports when a `switch` statement over a value typed as a union of literals or as an enum is missing a case for any of those literal types and does not have a `default` clause.
 
-There is also an option to check the exhaustiveness of switches on non-union types by requiring a default clause.
-
 ## Options
 
 ### `"allowDefaultCase"`
@@ -24,6 +22,12 @@ Defaults to true. If set to false, this rule will also report when a `switch` st
 Why is this important? Consider why TypeScript is valuable: when we add a new argument to a widely-used function, we don't have to go on a scavenger hunt through our codebase. We can simply run the TypeScript compiler and it will tell us all the exact places in the code that need to be updated. The `switch-exhaustiveness-check` rule is similar: when we add a new enum member, we don't have to go on a scavenger hunt. We can simply run ESLint and it will tell us all the exact places in the code that need to be updated. So in order to preserve the ability of ESLint to do this, we have to remove the `default` cases.
 
 Note that in some situations, like when switch statements use data from external APIs, `default` cases can be valuable, so you might want to turn the option off. For example, if you update the API of a web application to return a new value, it is possible that users will be using the app on the older version and have not refreshed the page yet. Thus, they might query the new API on an older version of the code, which would result in undefined behavior. In these kinds of situations, you might want to enforce an explicit `default` case that throws an error, or allows the user to safely save their work, or something along those lines.
+
+## `requireDefaultForNonUnion`
+
+Defaults to false. It set to true, this rule will also report when a `switch` statement switches over a non-union type (like a `number` or `string`, for example) and that `switch` statement does not have a `default` case.
+
+This is generally desirable so that `number` and `string` switches will be subject to the same exhaustive checks that your other switches are.
 
 ## Examples
 

@@ -64,7 +64,8 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowDefaultCase: {
-            description: "If `true`, allow superfluous `default` cases that obfuscate future type additions.",
+            description:
+              'If `true`, allow superfluous `default` cases that obfuscate future type additions.',
             type: 'boolean',
             default: true,
           },
@@ -84,7 +85,9 @@ export default createRule<Options, MessageIds>({
       addMissingCases: 'Add branches for missing cases.',
     },
   },
-  defaultOptions: [{ allowDefaultCase: true, requireDefaultForNonUnion: false }],
+  defaultOptions: [
+    { allowDefaultCase: true, requireDefaultForNonUnion: false },
+  ],
   create(context, [{ allowDefaultCase, requireDefaultForNonUnion }]) {
     const sourceCode = getSourceCode(context);
     const services = getParserServices(context);
@@ -150,9 +153,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkSwitchNoUnionDefaultCase(node: TSESTree.SwitchStatement) {
-      const hasDefault = node.cases.some(
-        switchCase => switchCase.test == null,
-      );
+      const hasDefault = node.cases.some(switchCase => switchCase.test == null);
 
       if (!hasDefault) {
         context.report({

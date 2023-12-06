@@ -745,7 +745,7 @@ switch (myUnion) {
       errors: [
         {
           messageId: 'dangerousDefaultCase',
-        }
+        },
       ],
     },
   ],
