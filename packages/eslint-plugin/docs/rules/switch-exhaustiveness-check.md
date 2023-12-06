@@ -23,7 +23,7 @@ Why is this important? Consider why TypeScript is valuable: when we add a new ar
 
 #### `"allowDefaultCase"` Caveats
 
-Note that in some situations, like when switch statements use data from external APIs, `default` cases can be valuable, so you might want to turn the option off. For example, if you update the API of a web application to return a new value, it is possible that users will be using the app on the older version, having not refreshed the page yet. Thus, they might query the new API on an older version of the code, which would result in undefined behavior. (In Flow, there is a special syntax to define [enums with unknown members](https://flow.org/en/docs/enums/defining-enums/#toc-flow-enums-with-unknown-members), but TypeScript does not have analogous functionality.)
+Note that in some situations, like when switch statements use data from external APIs, `default` cases can be valuable, so you might want to turn the option off. For example, if you update the API of a web application to return a new value, it is possible that users will be using the app on the older version, having not refreshed the webpage yet. Thus, they might query the new API on an older version of the code, which would result in undefined behavior. (In Flow, there is a special syntax to define [enums with unknown members](https://flow.org/en/docs/enums/defining-enums/#toc-flow-enums-with-unknown-members), but TypeScript does not have analogous functionality.)
 
 In these kinds of situations, you might want to enforce an explicit `default` case that throws an error, or allows the user to safely save their work, or something along those lines. You can do this by using [the `default-case` core ESLint rule](https://eslint.org/docs/latest/rules/default-case) combined with a `satisfies never` check. For example:
 
@@ -41,7 +41,8 @@ function useFruit(fruit: Fruit): string {
     }
 
     default: {
-      return fruit satisfies never;
+      fruit satisfies never;
+      return "unknownJuice";
     }
   }
 }
