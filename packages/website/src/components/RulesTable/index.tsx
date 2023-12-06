@@ -231,7 +231,7 @@ export default function RulesTable(): React.JSX.Element {
             setMode={(newMode): void =>
               changeFilter('typeInformation', newMode)
             }
-            label={`${TYPE_INFORMATION_EMOJI} requires type information`}
+            label={`${TYPE_INFORMATION_EMOJI} type checked`}
           />
           <RuleFilterCheckBox
             mode={filters.extension}
