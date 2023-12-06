@@ -1790,5 +1790,21 @@ cursed();
       `,
       errors: [{ line: 2, messageId: 'floatingPromiseArrayVoid' }],
     },
+    {
+      code: `
+        declare const arrayOrPromiseTuple:
+          | Array<number>
+          | [number, number, Promise<unknown>, string];
+        arrayOrPromiseTuple;
+      `,
+      errors: [{ line: 5, messageId: 'floatingPromiseArrayVoid' }],
+    },
+    {
+      code: `
+        declare const okArrayOrPromiseArray: Array<number> | Array<Promise<unknown>>;
+        okArrayOrPromiseArray;
+      `,
+      errors: [{ line: 3, messageId: 'floatingPromiseArrayVoid' }],
+    },
   ],
 });
