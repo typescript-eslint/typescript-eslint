@@ -4,7 +4,7 @@ authors:
     name: Josh Goldberg
     title: typescript-eslint Maintainer
     url: https://github.com/JoshuaKGoldberg
-description: Simplifying how many projects resolve their
+description: Simplifying how many projects resolve their TSConfigs for typed linting.
 slug: parser-options-project-true
 tags: [parser, parser options, project, tsconfig]
 title: Relative TSConfig Projects with `parserOptions.project = true`
@@ -141,7 +141,7 @@ We're working on an option to instead call the same TypeScript "Project Service"
 Project Services will automatically detect the TSConfig for each file (like `project: true`), and will also allow type information to be computed for JavaScript files without the `allowJs` compiler option (unlike `project: true`).
 
 We hope this option will eventually become the standard way to enable typed linting.
-However, because it's so new and untested, we're keeping it under the `EXPERIMENTAL_` prefix for at least all of the `6.X` versions.
+However, because it's so new and untested, we're keeping it under the `EXPERIMENTAL_` prefix for at least all most of the `6.X` versions.
 
 See [Packages > Parser > `EXPERIMENTAL_useProjectService`](/packages/parser#experimental_useprojectservice) for more information.
 
