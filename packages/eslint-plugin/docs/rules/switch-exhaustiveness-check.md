@@ -42,7 +42,7 @@ function useFruit(fruit: Fruit): string {
 
     default: {
       fruit satisfies never;
-      return "unknownJuice";
+      return 'unknownJuice';
     }
   }
 }
