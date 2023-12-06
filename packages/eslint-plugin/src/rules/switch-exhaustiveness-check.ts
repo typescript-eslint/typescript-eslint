@@ -13,19 +13,10 @@ import {
 } from '../util';
 
 interface SwitchStatementMetadata {
-  /** The name of the union that is inside of the switch statement. */
   symbolName: string | undefined;
-
-  /**
-   * If the length of this array is equal to 0, then the switch statement is
-   * exhaustive.
-   */
   missingBranchTypes: ts.Type[];
-
-  /**
-   * The node representing the `default` case on the switch statement, if any.
-   */
   defaultCase: TSESTree.SwitchCase | undefined;
+  isUnion: boolean;
 }
 
 type Options = [
@@ -100,13 +91,26 @@ export default createRule<Options, MessageIds>({
      */
     function getSwitchStatementMetadata(
       node: TSESTree.SwitchStatement,
-    ): SwitchStatementMetadata | undefined {
+    ): SwitchStatementMetadata {
+      /**
+       * The `test` property of a `SwitchCase` node will usually be a `Literal`
+       * node. However, on a `default` case, it will be equal to `null`.
+       */
+      const defaultCase = node.cases.find(
+        switchCase => switchCase.test == null,
+      );
+
       const discriminantType = getConstrainedTypeAtLocation(
         services,
         node.discriminant,
       );
       if (!discriminantType.isUnion()) {
-        return undefined;
+        return {
+          symbolName: undefined,
+          missingBranchTypes: [],
+          defaultCase,
+          isUnion: true,
+        };
       }
 
       const caseTypes = new Set<ts.Type>();
@@ -137,43 +141,12 @@ export default createRule<Options, MessageIds>({
         | string
         | undefined;
 
-      /**
-       * The `test` property of a `SwitchCase` node will usually be a `Literal`
-       * node. However, on a `default` case, it will be equal to `null`.
-       */
-      const defaultCase = node.cases.find(
-        switchCase => switchCase.test == null,
-      );
-
       return {
-        missingBranchTypes,
         symbolName,
+        missingBranchTypes,
         defaultCase,
+        isUnion: false,
       };
-    }
-
-    function checkSwitchNoUnionDefaultCase(
-      node: TSESTree.SwitchStatement,
-    ): void {
-      const hasDefault = node.cases.some(switchCase => switchCase.test == null);
-
-      if (!hasDefault) {
-        context.report({
-          node: node.discriminant,
-          messageId: 'switchIsNotExhaustive',
-          data: {
-            missingBranches: 'default',
-          },
-          suggest: [
-            {
-              messageId: 'addMissingCases',
-              fix(fixer): TSESLint.RuleFix {
-                return fixSwitch(fixer, node, [null]);
-              },
-            },
-          ],
-        });
-      }
     }
 
     function checkSwitchExhaustive(
@@ -318,19 +291,43 @@ export default createRule<Options, MessageIds>({
       }
     }
 
+    function checkSwitchNoUnionDefaultCase(
+      node: TSESTree.SwitchStatement,
+      switchStatementMetadata: SwitchStatementMetadata,
+    ): void {
+      if (!requireDefaultForNonUnion) {
+        return;
+      }
+
+      if (
+        !switchStatementMetadata.isUnion &&
+        switchStatementMetadata.defaultCase === null
+      ) {
+        context.report({
+          node: node.discriminant,
+          messageId: 'switchIsNotExhaustive',
+          data: {
+            missingBranches: 'default',
+          },
+          suggest: [
+            {
+              messageId: 'addMissingCases',
+              fix(fixer): TSESLint.RuleFix {
+                return fixSwitch(fixer, node, [null]);
+              },
+            },
+          ],
+        });
+      }
+    }
+
     return {
       SwitchStatement(node): void {
         const switchStatementMetadata = getSwitchStatementMetadata(node);
-        if (switchStatementMetadata === undefined) {
-          if (requireDefaultForNonUnion) {
-            checkSwitchNoUnionDefaultCase(node);
-          }
-
-          return;
-        }
 
         checkSwitchExhaustive(node, switchStatementMetadata);
         checkSwitchDangerousDefaultCase(switchStatementMetadata);
+        checkSwitchNoUnionDefaultCase(node, switchStatementMetadata);
       },
     };
   },
