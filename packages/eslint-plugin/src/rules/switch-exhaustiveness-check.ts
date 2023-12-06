@@ -152,7 +152,9 @@ export default createRule<Options, MessageIds>({
       };
     }
 
-    function checkSwitchNoUnionDefaultCase(node: TSESTree.SwitchStatement) {
+    function checkSwitchNoUnionDefaultCase(
+      node: TSESTree.SwitchStatement,
+    ): void {
       const hasDefault = node.cases.some(switchCase => switchCase.test == null);
 
       if (!hasDefault) {
@@ -177,7 +179,7 @@ export default createRule<Options, MessageIds>({
     function checkSwitchExhaustive(
       node: TSESTree.SwitchStatement,
       switchStatementMetadata: SwitchStatementMetadata,
-    ) {
+    ): void {
       const { missingBranchTypes, symbolName, defaultCase } =
         switchStatementMetadata;
 
