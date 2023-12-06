@@ -191,6 +191,7 @@ export function isComment(node: ts.Node): boolean {
  * @returns is JSDoc comment
  */
 function isJSDocComment(node: ts.Node): node is ts.JSDoc {
+  // eslint-disable-next-line deprecation/deprecation -- SyntaxKind.JSDoc was only added in TS4.7 so we can't use it yet
   return node.kind === SyntaxKind.JSDocComment;
 }
 
@@ -429,7 +430,7 @@ export function findFirstMatchingAncestor(
     if (predicate(current)) {
       return current;
     }
-    current = current.parent;
+    current = current.parent as ts.Node | undefined;
   }
   return undefined;
 }

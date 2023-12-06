@@ -1,6 +1,7 @@
 import type {
   CacheDurationSeconds,
   DebugLevel,
+  JSDocParsingMode,
 } from '@typescript-eslint/types';
 import type * as ts from 'typescript';
 
@@ -44,6 +45,18 @@ interface ParseOptions {
    * Absolute (or relative to `cwd`) path to the file being parsed.
    */
   filePath?: string;
+
+  /**
+   * If you are using TypeScript version >=5.3 then this option can be used as a performance optimization.
+   *
+   * The valid values for this rule are:
+   * - `'all'` - parse all JSDoc comments, always.
+   * - `'none'` - parse no JSDoc comments, ever.
+   * - `'type-info'` - parse just JSDoc comments that are required to provide correct type-info. TS will always parse JSDoc in non-TS files, but never in TS files.
+   *
+   * If you do not rely on JSDoc tags from the TypeScript AST, then you can safely set this to `'none'` to improve performance.
+   */
+  jsDocParsingMode?: JSDocParsingMode;
 
   /**
    * Enable parsing of JSX.

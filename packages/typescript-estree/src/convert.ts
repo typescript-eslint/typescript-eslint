@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
 // There's lots of funny stuff due to the typing of ts.Node
 /* eslint-disable @typescript-eslint/no-explicit-any, @typescript-eslint/no-unsafe-assignment, @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-return, @typescript-eslint/no-unsafe-member-access */
 import * as ts from 'typescript';
@@ -2724,8 +2725,8 @@ export class Converter {
           node.kind === SyntaxKind.ConstructSignature
             ? AST_NODE_TYPES.TSConstructSignatureDeclaration
             : node.kind === SyntaxKind.CallSignature
-            ? AST_NODE_TYPES.TSCallSignatureDeclaration
-            : AST_NODE_TYPES.TSFunctionType;
+              ? AST_NODE_TYPES.TSCallSignatureDeclaration
+              : AST_NODE_TYPES.TSFunctionType;
 
         return this.createNode<
           | TSESTree.TSCallSignatureDeclaration
@@ -2749,8 +2750,8 @@ export class Converter {
           parentKind === SyntaxKind.InterfaceDeclaration
             ? AST_NODE_TYPES.TSInterfaceHeritage
             : parentKind === SyntaxKind.HeritageClause
-            ? AST_NODE_TYPES.TSClassImplements
-            : AST_NODE_TYPES.TSInstantiationExpression;
+              ? AST_NODE_TYPES.TSClassImplements
+              : AST_NODE_TYPES.TSInstantiationExpression;
 
         return this.createNode<
           | TSESTree.TSClassImplements
@@ -3180,6 +3181,8 @@ export class Converter {
         });
       }
 
+      // eslint-disable-next-line deprecation/deprecation -- required for backwards-compatibility
+      case SyntaxKind.AssertEntry:
       case SyntaxKind.ImportAttribute: {
         return this.createNode<TSESTree.ImportAttribute>(node, {
           type: AST_NODE_TYPES.ImportAttribute,

@@ -380,3 +380,7 @@ type MyType = {
 };
 function foo(arg: MyType) {}
 ```
+
+## When Not To Use It
+
+If your project does not attempt to enforce strong immutability guarantees of parameters, you can avoid this rule.

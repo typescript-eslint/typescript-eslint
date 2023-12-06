@@ -1,5 +1,5 @@
 import debug from 'debug';
-import type * as ts from 'typescript';
+import * as ts from 'typescript';
 
 import type { ProjectServiceSettings } from '../create-program/createProjectService';
 import { createProjectService } from '../create-program/createProjectService';
@@ -23,6 +23,18 @@ const log = debug(
 let TSCONFIG_MATCH_CACHE: ExpiringCache<string, string> | null;
 let TSSERVER_PROJECT_SERVICE: ProjectServiceSettings | null = null;
 
+// NOTE - we intentionally use "unnecessary" `?.` here because in TS<5.3 this enum doesn't exist
+// This object exists so we can centralize these for tracking and so we don't proliferate these across the file
+// https://github.com/microsoft/TypeScript/issues/56579
+/* eslint-disable @typescript-eslint/no-unnecessary-condition */
+const JSDocParsingMode = {
+  ParseAll: ts.JSDocParsingMode?.ParseAll,
+  ParseNone: ts.JSDocParsingMode?.ParseNone,
+  ParseForTypeErrors: ts.JSDocParsingMode?.ParseForTypeErrors,
+  ParseForTypeInfo: ts.JSDocParsingMode?.ParseForTypeInfo,
+} as const;
+/* eslint-enable @typescript-eslint/no-unnecessary-condition */
+
 export function createParseSettings(
   code: ts.SourceFile | string,
   options: Partial<TSESTreeOptions> = {},
@@ -34,6 +46,22 @@ export function createParseSettings(
       ? options.tsconfigRootDir
       : process.cwd();
   const passedLoggerFn = typeof options.loggerFn === 'function';
+  const jsDocParsingMode = ((): ts.JSDocParsingMode => {
+    switch (options.jsDocParsingMode) {
+      case 'all':
+        return JSDocParsingMode.ParseAll;
+
+      case 'none':
+        return JSDocParsingMode.ParseNone;
+
+      case 'type-info':
+        return JSDocParsingMode.ParseForTypeInfo;
+
+      default:
+        return JSDocParsingMode.ParseAll;
+    }
+  })();
+
   const parseSettings: MutableParseSettings = {
     allowInvalidAST: options.allowInvalidAST === true,
     code,
@@ -47,8 +75,8 @@ export function createParseSettings(
       options.debugLevel === true
         ? new Set(['typescript-eslint'])
         : Array.isArray(options.debugLevel)
-        ? new Set(options.debugLevel)
-        : new Set(),
+          ? new Set(options.debugLevel)
+          : new Set(),
     errorOnTypeScriptSyntacticAndSemanticIssues: false,
     errorOnUnknownASTType: options.errorOnUnknownASTType === true,
     EXPERIMENTAL_projectService:
@@ -58,6 +86,7 @@ export function createParseSettings(
         options.EXPERIMENTAL_useProjectService !== false)
         ? (TSSERVER_PROJECT_SERVICE ??= createProjectService(
             options.EXPERIMENTAL_useProjectService,
+            jsDocParsingMode,
             tsconfigRootDir,
           ))
         : undefined,
@@ -74,14 +103,15 @@ export function createParseSettings(
         : getFileName(options.jsx),
       tsconfigRootDir,
     ),
+    jsDocParsingMode,
     jsx: options.jsx === true,
     loc: options.loc === true,
     log:
       typeof options.loggerFn === 'function'
         ? options.loggerFn
         : options.loggerFn === false
-        ? (): void => {} // eslint-disable-line @typescript-eslint/no-empty-function
-        : console.log, // eslint-disable-line no-console
+          ? (): void => {} // eslint-disable-line @typescript-eslint/no-empty-function
+          : console.log, // eslint-disable-line no-console
     preserveNodeMaps: options.preserveNodeMaps !== false,
     programs: Array.isArray(options.programs) ? options.programs : null,
     projects: [],
@@ -139,6 +169,17 @@ export function createParseSettings(
     });
   }
 
+  // No type-aware linting which means that cross-file (or even same-file) JSDoc is useless
+  // So in this specific case we default to 'none' if no value was provided
+  if (
+    options.jsDocParsingMode == null &&
+    parseSettings.projects.length === 0 &&
+    parseSettings.programs == null &&
+    parseSettings.EXPERIMENTAL_projectService == null
+  ) {
+    parseSettings.jsDocParsingMode = JSDocParsingMode.ParseNone;
+  }
+
   warnAboutTSVersion(parseSettings, passedLoggerFn);
 
   return parseSettings;
@@ -159,8 +200,8 @@ function enforceCodeString(code: unknown): string {
   return isSourceFile(code)
     ? code.getFullText(code)
     : typeof code === 'string'
-    ? code
-    : String(code);
+      ? code
+      : String(code);
 }
 
 /**

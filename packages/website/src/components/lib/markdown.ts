@@ -66,8 +66,8 @@ export function createMarkdownParams(state: ConfigModel): string {
     title: `Bug: [${onlyRuleName}] <short description of the issue>`,
     'playground-link': document.location.toString(),
     'repro-code': state.code,
-    'eslint-config': `module.exports = ${state.eslintrc ?? '{}'}`,
-    'typescript-config': state.tsconfig ?? '{}',
+    'eslint-config': `module.exports = ${state.eslintrc}`,
+    'typescript-config': state.tsconfig,
     versions: generateVersionsTable(state.ts),
   };
 

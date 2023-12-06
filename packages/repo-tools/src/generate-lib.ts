@@ -211,7 +211,7 @@ async function main(): Promise<void> {
 
     // import and spread all of the references
     const imports = [
-      "import { ImplicitLibVariableOptions } from '../variable';",
+      "import type { ImplicitLibVariableOptions } from '../variable';",
     ];
     for (const reference of references) {
       const name = sanitize(reference);
@@ -245,9 +245,9 @@ async function main(): Promise<void> {
 
     if (requiredBaseImports.size > 0) {
       imports.push(
-        `import {${Array.from(requiredBaseImports).join(
-          ',',
-        )}} from './${BASE_CONFIG_MODULE_NAME}';`,
+        `import {${Array.from(requiredBaseImports)
+          .sort()
+          .join(',')}} from './${BASE_CONFIG_MODULE_NAME}';`,
       );
     }
 

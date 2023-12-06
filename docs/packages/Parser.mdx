@@ -40,10 +40,11 @@ interface ParserOptions {
   ecmaVersion?: number | 'latest';
   emitDecoratorMetadata?: boolean;
   extraFileExtensions?: string[];
+  jsDocParsingMode?: 'all' | 'none' | 'type-info';
   jsxFragmentName?: string | null;
   jsxPragma?: string | null;
   lib?: string[];
-  program?: import('typescript').Program;
+  programs?: import('typescript').Program;
   project?: string | string[] | true;
   projectFolderIgnoreList?: string[];
   tsconfigRootDir?: string;
@@ -118,6 +119,21 @@ This option allows you to provide one or more additional file extensions which s
 The default extensions are `['.js', '.mjs', '.cjs', '.jsx', '.ts', '.mts', '.cts', '.tsx']`.
 Add extensions starting with `.`, followed by the file extension. E.g. for a `.vue` file use `"extraFileExtensions": [".vue"]`.
 
+### `jsDocParsingMode`
+
+> Default if `parserOptions.project` is set, then `'all'`, otherwise `'none'`
+
+When TS parses a file it will also parse JSDoc comments into the AST - which can then be consumed by lint rules.
+If you are using TypeScript version >=5.3 then this option can be used as a performance optimization.
+
+The valid values for this rule are:
+
+- `'all'` - parse all JSDoc comments, always.
+- `'none'` - parse no JSDoc comments, ever.
+- `'type-info'` - parse just JSDoc comments that are required to provide correct type-info. TS will always parse JSDoc in non-TS files, but never in TS files.
+
+If you do not use lint rules like `eslint-plugin-deprecation` that rely on TS's JSDoc tag representation, then you can set this to `'none'` to improve parser performance.
+
 ### `jsxFragmentName`
 
 > Default `null`
@@ -149,7 +165,7 @@ Specifies the TypeScript `lib`s that are available. This is used by the scope an
 
 If you provide `parserOptions.project`, you do not need to set this, as it will automatically detected from the compiler.
 
-### `program`
+### `programs`
 
 > Default `undefined`.
 

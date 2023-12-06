@@ -244,35 +244,35 @@ export default createRule<Options, MessageIds>({
         (typeof options.align === 'object'
           ? options.align.on
           : typeof options.multiLine?.align === 'object'
-          ? options.multiLine.align.on
-          : options.multiLine?.align ?? options.align) ?? 'colon';
+            ? options.multiLine.align.on
+            : options.multiLine?.align ?? options.align) ?? 'colon';
       const beforeColon =
         (typeof options.align === 'object'
           ? options.align.beforeColon
           : options.multiLine
-          ? typeof options.multiLine.align === 'object'
-            ? options.multiLine.align.beforeColon
-            : options.multiLine.beforeColon
-          : options.beforeColon) ?? false;
+            ? typeof options.multiLine.align === 'object'
+              ? options.multiLine.align.beforeColon
+              : options.multiLine.beforeColon
+            : options.beforeColon) ?? false;
       const expectedWhitespaceBeforeColon = beforeColon ? 1 : 0;
       const afterColon =
         (typeof options.align === 'object'
           ? options.align.afterColon
           : options.multiLine
-          ? typeof options.multiLine.align === 'object'
-            ? options.multiLine.align.afterColon
-            : options.multiLine.afterColon
-          : options.afterColon) ?? true;
+            ? typeof options.multiLine.align === 'object'
+              ? options.multiLine.align.afterColon
+              : options.multiLine.afterColon
+            : options.afterColon) ?? true;
       const expectedWhitespaceAfterColon = afterColon ? 1 : 0;
       const mode =
         (typeof options.align === 'object'
           ? options.align.mode
           : options.multiLine
-          ? typeof options.multiLine.align === 'object'
-            ? // same behavior as in original rule
-              options.multiLine.align.mode ?? options.multiLine.mode
-            : options.multiLine.mode
-          : options.mode) ?? 'strict';
+            ? typeof options.multiLine.align === 'object'
+              ? // same behavior as in original rule
+                options.multiLine.align.mode ?? options.multiLine.mode
+              : options.multiLine.mode
+            : options.mode) ?? 'strict';
 
       for (const node of group) {
         if (isKeyTypeNode(node)) {
@@ -307,8 +307,8 @@ export default createRule<Options, MessageIds>({
                   ? 'extraKey'
                   : 'extraValue'
                 : align === 'colon'
-                ? 'missingKey'
-                : 'missingValue',
+                  ? 'missingKey'
+                  : 'missingValue',
             fix: fixer => {
               if (difference > 0) {
                 return fixer.removeRange([
@@ -343,8 +343,8 @@ export default createRule<Options, MessageIds>({
             ? options.singleLine.beforeColon
             : options.beforeColon
           : options.multiLine
-          ? options.multiLine.beforeColon
-          : options.beforeColon) ?? false;
+            ? options.multiLine.beforeColon
+            : options.beforeColon) ?? false;
       const expectedWhitespaceBeforeColon = beforeColon ? 1 : 0;
       const afterColon =
         (singleLine
@@ -352,8 +352,8 @@ export default createRule<Options, MessageIds>({
             ? options.singleLine.afterColon
             : options.afterColon
           : options.multiLine
-          ? options.multiLine.afterColon
-          : options.afterColon) ?? true;
+            ? options.multiLine.afterColon
+            : options.afterColon) ?? true;
       const expectedWhitespaceAfterColon = afterColon ? 1 : 0;
       const mode =
         (singleLine
@@ -361,8 +361,8 @@ export default createRule<Options, MessageIds>({
             ? options.singleLine.mode
             : options.mode
           : options.multiLine
-          ? options.multiLine.mode
-          : options.mode) ?? 'strict';
+            ? options.multiLine.mode
+            : options.mode) ?? 'strict';
 
       if (isApplicable(node)) {
         checkBeforeColon(node, expectedWhitespaceBeforeColon, mode);

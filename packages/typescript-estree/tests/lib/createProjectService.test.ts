@@ -5,6 +5,7 @@ describe('createProjectService', () => {
     const allowDefaultProjectForFiles = ['./*.js'];
     const settings = createProjectService(
       { allowDefaultProjectForFiles },
+      undefined,
       __dirname,
     );
 
@@ -12,7 +13,7 @@ describe('createProjectService', () => {
   });
 
   it('sets allowDefaultProjectForFiles to an empty Set when options.allowDefaultProjectForFiles is not defined', () => {
-    const settings = createProjectService(undefined, __dirname);
+    const settings = createProjectService(undefined, undefined, __dirname);
 
     expect(settings.allowDefaultProjectForFiles.size).toBe(0);
   });

@@ -125,7 +125,7 @@ namespace Linter {
   export type Severity = SharedConfig.Severity;
   export type SeverityString = SharedConfig.SeverityString;
 
-  /** @deprecated use ClassicConfig.ConfigType instead */
+  /** @deprecated use Linter.ConfigType instead */
   export type Config = ClassicConfig.Config;
   export type ConfigType = ClassicConfig.Config | FlatConfig.ConfigArray;
   /** @deprecated use ClassicConfig.ConfigOverride instead */

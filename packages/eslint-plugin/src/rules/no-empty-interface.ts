@@ -104,15 +104,15 @@ export default createRule<Options, MessageIds>({
               ...(useAutoFix
                 ? { fix }
                 : !mergedWithClassDeclaration
-                ? {
-                    suggest: [
-                      {
-                        messageId: 'noEmptyWithSuper',
-                        fix,
-                      },
-                    ],
-                  }
-                : null),
+                  ? {
+                      suggest: [
+                        {
+                          messageId: 'noEmptyWithSuper',
+                          fix,
+                        },
+                      ],
+                    }
+                  : null),
             });
           }
         }

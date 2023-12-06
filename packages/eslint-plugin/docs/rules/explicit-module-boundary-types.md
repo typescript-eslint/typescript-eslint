@@ -243,8 +243,12 @@ export const foo: FooType = bar => {};
 
 ## When Not To Use It
 
-If you wish to make sure all functions have explicit return types, as opposed to only the module boundaries, you can use [explicit-function-return-type](./explicit-function-return-type.md)
+If your project is not used by downstream consumers that are sensitive to API types, you can disable this rule.
 
 ## Further Reading
 
 - TypeScript [Functions](https://www.typescriptlang.org/docs/handbook/functions.html#function-types)
+
+## Related To
+
+- [explicit-function-return-type](./explicit-function-return-type.md)

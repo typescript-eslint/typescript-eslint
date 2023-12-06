@@ -20,7 +20,10 @@ function createSourceFile(parseSettings: ParseSettings): ts.SourceFile {
     : ts.createSourceFile(
         parseSettings.filePath,
         parseSettings.codeFullText,
-        ts.ScriptTarget.Latest,
+        {
+          languageVersion: ts.ScriptTarget.Latest,
+          jsDocParsingMode: parseSettings.jsDocParsingMode,
+        },
         /* setParentNodes */ true,
         getScriptKind(parseSettings.filePath, parseSettings.jsx),
       );

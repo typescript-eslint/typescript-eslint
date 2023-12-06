@@ -138,6 +138,8 @@ Most commonly:
 - If an external package doesn't yet have typings and you want to use `any` pending adding a `.d.ts` for it
 - You're working with particularly complex or nuanced code that can't yet be represented in the TypeScript type system
 
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+
 ## Related To
 
 - [`no-unsafe-argument`](./no-unsafe-argument.md)
@@ -148,5 +150,7 @@ Most commonly:
 
 ## Further Reading
 
+- TypeScript [`any` type](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any)
+- TypeScript's [`unknown` type](https://www.typescriptlang.org/docs/handbook/2/functions.html#unknown)
 - TypeScript [`any` type documentation](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#any)
 - TypeScript [`unknown` type release notes](https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-0.html#new-unknown-top-type)

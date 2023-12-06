@@ -126,6 +126,37 @@ The default configuration looks as follows:
 
     "constructor",
 
+    // Accessors
+    "public-static-accessor",
+    "protected-static-accessor",
+    "private-static-accessor",
+    "#private-static-accessor",
+
+    "public-decorated-accessor",
+    "protected-decorated-accessor",
+    "private-decorated-accessor",
+
+    "public-instance-accessor",
+    "protected-instance-accessor",
+    "private-instance-accessor",
+    "#private-instance-accessor",
+
+    "public-abstract-accessor",
+    "protected-abstract-accessor",
+
+    "public-accessor",
+    "protected-accessor",
+    "private-accessor",
+    "#private-accessor",
+
+    "static-accessor",
+    "instance-accessor",
+    "abstract-accessor",
+
+    "decorated-accessor",
+
+    "accessor",
+
     // Getters
     "public-static-get",
     "protected-static-get",

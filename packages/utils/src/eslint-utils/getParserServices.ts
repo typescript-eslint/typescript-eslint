@@ -69,7 +69,7 @@ function getParserServices(
   if (
     // eslint-disable-next-line deprecation/deprecation -- TODO - support for ESLint v9 with backwards-compatible support for ESLint v8
     context.parserServices?.esTreeNodeToTSNodeMap == null ||
-    // eslint-disable-next-line deprecation/deprecation -- TODO - support for ESLint v9 with backwards-compatible support for ESLint v8
+    // eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-unnecessary-condition -- TODO - support for ESLint v9 with backwards-compatible support for ESLint v8
     context.parserServices.tsNodeToESTreeNodeMap == null
   ) {
     throw new Error(ERROR_MESSAGE);

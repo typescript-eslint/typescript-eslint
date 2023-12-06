@@ -20,6 +20,7 @@ export interface ProjectServiceSettings {
 
 export function createProjectService(
   options: boolean | ProjectServiceOptions | undefined,
+  jsDocParsingMode: ts.JSDocParsingMode | undefined,
   tsconfigRootDir: string,
 ): ProjectServiceSettings {
   // We import this lazily to avoid its cost for users who don't use the service
@@ -57,6 +58,7 @@ export function createProjectService(
       startGroup: doNothing,
     },
     session: undefined,
+    jsDocParsingMode,
   });
 
   return {
@@ -70,4 +72,3 @@ export function createProjectService(
     service,
   };
 }
-/* eslint-enable @typescript-eslint/no-empty-function */
