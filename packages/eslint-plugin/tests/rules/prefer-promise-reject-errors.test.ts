@@ -1,11 +1,6 @@
-import { RuleTester } from '@typescript-eslint/rule-tester';
-import type { TSESLint } from '@typescript-eslint/utils';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import type {
-  MessageIds,
-  Options,
-} from '../../src/rules/prefer-promise-reject-errors';
 import rule from '../../src/rules/prefer-promise-reject-errors';
 import { getFixturesRootDir } from '../RuleTester';
 
@@ -138,7 +133,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
   ],
   invalid: [
     {
-      code: 'Promise.reject(5)',
+      code: 'Promise.reject(5);',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -151,7 +146,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       ],
     },
     {
-      code: "Promise.reject('foo')",
+      code: "Promise.reject('foo');",
       errors: [
         {
           messageId: 'rejectAnError',
@@ -164,7 +159,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       ],
     },
     {
-      code: 'Promise.reject(`foo`)',
+      code: 'Promise.reject(`foo`);',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -177,7 +172,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       ],
     },
     {
-      code: "Promise.reject('foo', somethingElse)",
+      code: "Promise.reject('foo', somethingElse);",
       errors: [
         {
           messageId: 'rejectAnError',
@@ -190,7 +185,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       ],
     },
     {
-      code: 'Promise.reject(false)',
+      code: 'Promise.reject(false);',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -203,7 +198,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       ],
     },
     {
-      code: 'Promise.reject(void `foo`)',
+      code: 'Promise.reject(void `foo`);',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -216,7 +211,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       ],
     },
     {
-      code: 'Promise.reject()',
+      code: 'Promise.reject();',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -229,7 +224,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       ],
     },
     {
-      code: 'Promise.reject(undefined)',
+      code: 'Promise.reject(undefined);',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -242,7 +237,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       ],
     },
     {
-      code: 'Promise.reject(undefined)',
+      code: 'Promise.reject(undefined);',
       options: [{ allowEmptyReject: true }],
       errors: [
         {
@@ -256,7 +251,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       ],
     },
     {
-      code: 'Promise.reject(null)',
+      code: 'Promise.reject(null);',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -269,7 +264,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       ],
     },
     {
-      code: 'Promise.reject({ foo: 1 })',
+      code: 'Promise.reject({ foo: 1 });',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -282,7 +277,7 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       ],
     },
     {
-      code: 'Promise.reject([1, 2, 3])',
+      code: 'Promise.reject([1, 2, 3]);',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -296,8 +291,8 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
     },
     {
       code: `
-declare const foo: Error | undefined
-Promise.reject(foo)
+declare const foo: Error | undefined;
+Promise.reject(foo);
       `,
       errors: [
         {
@@ -312,8 +307,8 @@ Promise.reject(foo)
     },
     {
       code: `
-declare const foo: () => Promise<string>
-Promise.reject(await foo())
+declare const foo: () => Promise<string>;
+Promise.reject(await foo());
       `,
       errors: [
         {
@@ -328,8 +323,8 @@ Promise.reject(await foo())
     },
     {
       code: `
-declare const foo: boolean
-Promise.reject(foo && new Error())
+declare const foo: boolean;
+Promise.reject(foo && new Error());
       `,
       errors: [
         {
@@ -344,8 +339,8 @@ Promise.reject(foo && new Error())
     },
     {
       code: `
-const foo = Promise
-foo.reject()
+const foo = Promise;
+foo.reject();
       `,
       errors: [
         {
@@ -360,7 +355,7 @@ foo.reject()
     },
 
     {
-      code: 'Promise.reject?.(5)',
+      code: 'Promise.reject?.(5);',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -373,7 +368,7 @@ foo.reject()
       ],
     },
     {
-      code: 'Promise?.reject(5)',
+      code: 'Promise?.reject(5);',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -386,7 +381,7 @@ foo.reject()
       ],
     },
     {
-      code: 'Promise?.reject?.(5)',
+      code: 'Promise?.reject?.(5);',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -399,7 +394,7 @@ foo.reject()
       ],
     },
     {
-      code: '(Promise?.reject)(5)',
+      code: '(Promise?.reject)(5);',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -412,7 +407,7 @@ foo.reject()
       ],
     },
     {
-      code: '(Promise?.reject)?.(5)',
+      code: noFormat`(Promise?.reject)?.(5);`,
       errors: [
         {
           messageId: 'rejectAnError',
@@ -425,7 +420,7 @@ foo.reject()
       ],
     },
     {
-      code: `Promise['reject'](5)`,
+      code: "Promise['reject'](5);",
       errors: [
         {
           messageId: 'rejectAnError',
@@ -440,7 +435,7 @@ foo.reject()
 
     // Assignments with mathematical operators will either evaluate to a primitive value or throw a TypeError
     {
-      code: 'Promise.reject(foo += new Error())',
+      code: 'Promise.reject((foo += new Error()));',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -448,12 +443,12 @@ foo.reject()
           line: 1,
           endLine: 1,
           column: 1,
-          endColumn: 35,
+          endColumn: 37,
         },
       ],
     },
     {
-      code: 'Promise.reject(foo -= new Error())',
+      code: 'Promise.reject((foo -= new Error()));',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -461,12 +456,12 @@ foo.reject()
           line: 1,
           endLine: 1,
           column: 1,
-          endColumn: 35,
+          endColumn: 37,
         },
       ],
     },
     {
-      code: 'Promise.reject(foo **= new Error())',
+      code: 'Promise.reject((foo **= new Error()));',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -474,12 +469,12 @@ foo.reject()
           line: 1,
           endLine: 1,
           column: 1,
-          endColumn: 36,
+          endColumn: 38,
         },
       ],
     },
     {
-      code: 'Promise.reject(foo <<= new Error())',
+      code: 'Promise.reject((foo <<= new Error()));',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -487,12 +482,12 @@ foo.reject()
           line: 1,
           endLine: 1,
           column: 1,
-          endColumn: 36,
+          endColumn: 38,
         },
       ],
     },
     {
-      code: 'Promise.reject(foo |= new Error())',
+      code: 'Promise.reject((foo |= new Error()));',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -500,12 +495,12 @@ foo.reject()
           line: 1,
           endLine: 1,
           column: 1,
-          endColumn: 35,
+          endColumn: 37,
         },
       ],
     },
     {
-      code: 'Promise.reject(foo &= new Error())',
+      code: 'Promise.reject((foo &= new Error()));',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -513,52 +508,64 @@ foo.reject()
           line: 1,
           endLine: 1,
           column: 1,
-          endColumn: 35,
+          endColumn: 37,
         },
       ],
     },
 
     {
-      code: 'new Promise(function(resolve, reject) { reject() })',
+      code: `
+new Promise(function (resolve, reject) {
+  reject();
+});
+      `,
       errors: [
         {
           messageId: 'rejectAnError',
           type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
-          column: 41,
-          endColumn: 49,
+          line: 3,
+          endLine: 3,
+          column: 3,
+          endColumn: 11,
         },
       ],
     },
     {
-      code: 'new Promise(function(resolve, reject) { reject(5) })',
+      code: `
+new Promise(function (resolve, reject) {
+  reject(5);
+});
+      `,
       errors: [
         {
           messageId: 'rejectAnError',
           type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
-          column: 41,
-          endColumn: 50,
+          line: 3,
+          endLine: 3,
+          column: 3,
+          endColumn: 12,
         },
       ],
     },
     {
-      code: 'new Promise((resolve, reject) => { reject() })',
+      code: `
+new Promise((resolve, reject) => {
+  reject();
+});
+      `,
       errors: [
         {
           messageId: 'rejectAnError',
           type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
-          column: 36,
-          endColumn: 44,
+          line: 3,
+          endLine: 3,
+          column: 3,
+          endColumn: 11,
         },
       ],
     },
     {
-      code: 'new Promise((resolve, reject) => reject(5))',
+      code: 'new Promise((resolve, reject) => reject(5));',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -574,10 +581,10 @@ foo.reject()
       code: `
 new Promise((resolve, reject) => {
   fs.readFile('foo.txt', (err, file) => {
-    if (err) reject('File not found')
-    else resolve(file)
-  })
-})
+    if (err) reject('File not found');
+    else resolve(file);
+  });
+});
       `,
       errors: [
         {
@@ -591,7 +598,7 @@ new Promise((resolve, reject) => {
       ],
     },
     {
-      code: 'new Promise((yes, no) => no(5))',
+      code: 'new Promise((yes, no) => no(5));',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -604,46 +611,54 @@ new Promise((resolve, reject) => {
       ],
     },
     {
-      code: 'new Promise(({foo, bar, baz}, reject) => reject(5))',
+      code: 'new Promise(({ foo, bar, baz }, reject) => reject(5));',
       errors: [
         {
           messageId: 'rejectAnError',
           type: AST_NODE_TYPES.CallExpression,
           line: 1,
           endLine: 1,
-          column: 42,
-          endColumn: 51,
+          column: 44,
+          endColumn: 53,
         },
       ],
     },
     {
-      code: 'new Promise(function(reject, reject) { reject(5) })',
+      code: `
+new Promise(function (reject, reject) {
+  reject(5);
+});
+      `,
       errors: [
         {
           messageId: 'rejectAnError',
           type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
-          column: 40,
-          endColumn: 49,
+          line: 3,
+          endLine: 3,
+          column: 3,
+          endColumn: 12,
         },
       ],
     },
     {
-      code: 'new Promise(function(foo, arguments) { arguments(5) })',
+      code: `
+new Promise(function (foo, arguments) {
+  arguments(5);
+});
+      `,
       errors: [
         {
           messageId: 'rejectAnError',
           type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
-          column: 40,
-          endColumn: 52,
+          line: 3,
+          endLine: 3,
+          column: 3,
+          endColumn: 15,
         },
       ],
     },
     {
-      code: 'new Promise((foo, arguments) => arguments(5))',
+      code: 'new Promise((foo, arguments) => arguments(5));',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -656,20 +671,24 @@ new Promise((resolve, reject) => {
       ],
     },
     {
-      code: 'new Promise(function({}, reject) { reject(5) })',
+      code: `
+new Promise(function ({}, reject) {
+  reject(5);
+});
+      `,
       errors: [
         {
           messageId: 'rejectAnError',
           type: AST_NODE_TYPES.CallExpression,
-          line: 1,
-          endLine: 1,
-          column: 36,
-          endColumn: 45,
+          line: 3,
+          endLine: 3,
+          column: 3,
+          endColumn: 12,
         },
       ],
     },
     {
-      code: 'new Promise(({}, reject) => reject(5))',
+      code: 'new Promise(({}, reject) => reject(5));',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -682,7 +701,7 @@ new Promise((resolve, reject) => {
       ],
     },
     {
-      code: 'new Promise((resolve, reject, somethingElse = reject(5)) => {})',
+      code: 'new Promise((resolve, reject, somethingElse = reject(5)) => {});',
       errors: [
         {
           messageId: 'rejectAnError',
@@ -697,9 +716,9 @@ new Promise((resolve, reject) => {
     {
       code: `
 declare const foo: {
-  bar: PromiseConstructor
-}
-new foo.bar((resolve, reject) => reject(5))
+  bar: PromiseConstructor;
+};
+new foo.bar((resolve, reject) => reject(5));
       `,
       errors: [
         {
@@ -715,9 +734,9 @@ new foo.bar((resolve, reject) => reject(5))
     {
       code: `
 declare const foo: {
-  bar: PromiseConstructor
-}
-new (foo?.bar)((resolve, reject) => reject(5))
+  bar: PromiseConstructor;
+};
+new (foo?.bar)((resolve, reject) => reject(5));
       `,
       errors: [
         {
@@ -732,8 +751,8 @@ new (foo?.bar)((resolve, reject) => reject(5))
     },
     {
       code: `
-const foo = Promise
-new foo((resolve, reject) => reject(5))
+const foo = Promise;
+new foo((resolve, reject) => reject(5));
       `,
       errors: [
         {
