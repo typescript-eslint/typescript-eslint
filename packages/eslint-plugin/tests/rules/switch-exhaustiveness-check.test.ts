@@ -222,7 +222,7 @@ switch (value) {
     return -1;
 }
       `,
-      options: [{ allowDefaultCase: false, requireDefaultForNonUnion: true }],
+      options: [{ allowDefaultCaseForExhaustiveSwitch: false, requireDefaultForNonUnion: true }],
     },
   ],
   invalid: [
@@ -627,7 +627,7 @@ switch (value) {
     return 1;
 }
       `,
-      options: [{ allowDefaultCase: false, requireDefaultForNonUnion: true }],
+      options: [{ allowDefaultCaseForExhaustiveSwitch: false, requireDefaultForNonUnion: true }],
       errors: [
         {
           messageId: 'switchIsNotExhaustive',
@@ -741,7 +741,7 @@ switch (myUnion) {
   }
 }
       `,
-      options: [{ allowDefaultCase: false, requireDefaultForNonUnion: false }],
+      options: [{ allowDefaultCaseForExhaustiveSwitch: false, requireDefaultForNonUnion: false }],
       errors: [
         {
           messageId: 'dangerousDefaultCase',

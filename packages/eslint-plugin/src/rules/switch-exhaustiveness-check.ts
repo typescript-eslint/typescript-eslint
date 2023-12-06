@@ -26,7 +26,7 @@ type Options = [
      *
      * @default true
      */
-    allowDefaultCase?: boolean;
+    allowDefaultCaseForExhaustiveSwitch?: boolean;
 
     /**
      * If `true`, require a `default` clause for switches on non-union types.
@@ -55,7 +55,7 @@ export default createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          allowDefaultCase: {
+          allowDefaultCaseForExhaustiveSwitch: {
             description: `If 'true', allow 'default' cases on switch statements with exhaustive cases.`,
             type: 'boolean',
           },
@@ -76,9 +76,9 @@ export default createRule<Options, MessageIds>({
     },
   },
   defaultOptions: [
-    { allowDefaultCase: true, requireDefaultForNonUnion: false },
+    { allowDefaultCaseForExhaustiveSwitch: true, requireDefaultForNonUnion: false },
   ],
-  create(context, [{ allowDefaultCase, requireDefaultForNonUnion }]) {
+  create(context, [{ allowDefaultCaseForExhaustiveSwitch, requireDefaultForNonUnion }]) {
     const sourceCode = getSourceCode(context);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
@@ -268,7 +268,7 @@ export default createRule<Options, MessageIds>({
     function checkSwitchUnnecessaryDefaultCase(
       switchStatementMetadata: SwitchStatementMetadata,
     ): void {
-      if (allowDefaultCase) {
+      if (allowDefaultCaseForExhaustiveSwitch) {
         return;
       }
 
