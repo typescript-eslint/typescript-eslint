@@ -32,6 +32,8 @@ type Options = [
   {
     /**
      * If `true`, allow superfluous `default` cases that obfuscate future type additions.
+     *
+     * @default true
      */
     allowDefaultCase?: boolean;
 
