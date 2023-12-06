@@ -17,9 +17,8 @@ This rule reports when a `switch` statement over a value typed as a union of lit
 
 Defaults to true. If set to false, this rule will also report when a `switch` statement has a case for everything in a union and _also_ contains a `default` case. Thus, by setting this option to false, the rule becomes stricter.
 
-`default` cases in this situation are obviously superfluous, as they would contain dead code. But beyond being superfluous, these kind of `default` cases can be harmful: if a new value is added to the switch statement union, the `default` statement would prevent the `switch-exhaustiveness-check` rule from alerting you that you need to handle the new case.
-
-Why is this important? Consider why TypeScript is valuable: when we add a new argument to a widely-used function, we don't have to go on a scavenger hunt through our codebase. We can simply run the TypeScript compiler and it will tell us all the exact places in the code that need to be updated. The `switch-exhaustiveness-check` rule is similar: when we add a new enum member, we don't have to go on a scavenger hunt. We can simply run ESLint and it will tell us all the exact places in the code that need to be updated. So in order to preserve the ability of ESLint to do this, we have to remove the `default` cases.
+When a `switch` statement over a union type is exhaustive, a final `default` case would be a form of dead code.
+Additionally, if a new value is added to the union type, a `default` would prevent the `switch-exhaustiveness-check` rule from reporting on the new case not being handled in the `switch` statement.
 
 #### `"allowDefaultCase"` Caveats
 
