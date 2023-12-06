@@ -237,6 +237,30 @@ async function* foo(): Promise<string> {
         await using foo = new Bar();
       };
     `,
+    `
+      async function* test1() {
+        yield Promise.resolve(1);
+      }
+    `,
+    `
+      function asyncFunction() {
+        return Promise.resolve(1);
+      }
+      async function* test1() {
+        yield asyncFunction();
+      }
+    `,
+    `
+      declare const asyncFunction: () => Promise<void>;
+      async function* test1() {
+        yield asyncFunction();
+      }
+    `,
+    `
+      async function* test1() {
+        yield new Promise(() => {});
+      }
+    `,
   ],
 
   invalid: [
