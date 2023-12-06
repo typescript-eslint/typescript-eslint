@@ -274,7 +274,7 @@ export default createRule<Options, MessageIds>({
       );
     }
 
-    function checkSwitchDangerousDefaultCase(
+    function checkSwitchUnnecessaryDefaultCase(
       switchStatementMetadata: SwitchStatementMetadata,
     ): void {
       if (allowDefaultCase) {
