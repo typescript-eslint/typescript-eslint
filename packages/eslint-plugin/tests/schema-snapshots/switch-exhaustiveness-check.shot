@@ -9,7 +9,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
     "additionalProperties": false,
     "properties": {
       "allowDefaultCase": {
-        "description": "If `true`, allow superfluous `default` cases that obfuscate future type additions.",
+        "description": "If \`true\`, allow superfluous \`default\` cases that obfuscate future type additions.",
         "type": "boolean"
       },
       "requireDefaultForNonUnion": {
@@ -26,7 +26,7 @@ exports[`Rule schemas should be convertible to TS types for documentation purpos
 
 type Options = [
   {
-    /** If `true`, allow superfluous `default` cases that obfuscate future type additions. */
+    /** If \`true\`, allow superfluous \`default\` cases that obfuscate future type additions. */
     allowDefaultCase?: boolean;
     /** If 'true', require a 'default' clause for switches on non-union types. */
     requireDefaultForNonUnion?: boolean;

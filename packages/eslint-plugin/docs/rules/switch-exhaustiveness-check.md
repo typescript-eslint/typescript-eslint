@@ -50,11 +50,28 @@ function useFruit(fruit: Fruit): string {
 
 Doing this gives you the best of both worlds: explicit out-of-band value handling while still having the ability of TypeScript to alert to you all the places in your code-base where a new type constituent needs to be added. However, the downside is two-fold: there is no way for the `default-case` lint rule to distinguish between a `satisfies never` default case and some other kind of default case, so unsafe switch statements can still sneak into your codebase. Additionally, you have to maintain `default` cases everywhere, which makes things much more verbose.
 
-## `requireDefaultForNonUnion`
+### `requireDefaultForNonUnion`
 
 Defaults to false. It set to true, this rule will also report when a `switch` statement switches over a non-union type (like a `number` or `string`, for example) and that `switch` statement does not have a `default` case. Thus, by setting this option to true, the rule becomes stricter.
 
 This is generally desirable so that `number` and `string` switches will be subject to the same exhaustive checks that your other switches are.
+
+Examples of additional **incorrect** code for this rule with `{ requireDefaultForNonUnion: true }`:
+
+```ts option='{ "requireDefaultForNonUnion": true }' showPlaygroundButton
+const value: number = Math.floor(Math.random() * 3);
+
+switch (value) {
+  case 0:
+    return 0;
+  case 1:
+    return 1;
+}
+```
+
+Since `value` is a non-union type it requires the switch case to have a default clause only with `requireDefaultForNonUnion` enabled.
+
+<!--/tabs-->
 
 ## Examples
 
@@ -221,27 +238,6 @@ switch (fruit) {
     break;
 }
 ```
-
-<!--/tabs-->
-
-## Options
-
-### `requireDefaultForNonUnion`
-
-Examples of additional **incorrect** code for this rule with `{ requireDefaultForNonUnion: true }`:
-
-```ts option='{ "requireDefaultForNonUnion": true }' showPlaygroundButton
-const value: number = Math.floor(Math.random() * 3);
-
-switch (value) {
-  case 0:
-    return 0;
-  case 1:
-    return 1;
-}
-```
-
-Since `value` is a non-union type it requires the switch case to have a default clause only with `requireDefaultForNonUnion` enabled.
 
 <!--/tabs-->
 
