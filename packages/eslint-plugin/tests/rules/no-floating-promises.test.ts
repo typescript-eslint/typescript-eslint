@@ -487,14 +487,6 @@ void promiseArray;
       `,
     },
     {
-      // This one is a bit of a head-scratcher, knowing that the rule recursively
-      // checks .finally() expressions. However, ultimately, the whole expression
-      // is not a promise (it's invalid TS), so it's not a floating promise.
-      code: `
-[Promise.reject(), Promise.reject()].finally(() => {});
-      `,
-    },
-    {
       code: `
 [Promise.reject(), Promise.reject()].then(() => {});
       `,
