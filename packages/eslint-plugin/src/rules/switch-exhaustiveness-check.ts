@@ -22,7 +22,7 @@ interface SwitchStatementMetadata {
 type Options = [
   {
     /**
-     * If `true`, allow superfluous `default` cases that obfuscate future type additions.
+     * If `true`, allow `default` cases on switch statements with exhaustive cases.
      *
      * @default true
      */
@@ -56,8 +56,7 @@ export default createRule<Options, MessageIds>({
         type: 'object',
         properties: {
           allowDefaultCase: {
-            description:
-              'If `true`, allow `default` cases on `switch` statements with exhaustive cases.',
+            description: `If 'true', allow 'default' cases on switch statements with exhaustive cases.`,
             type: 'boolean',
           },
           requireDefaultForNonUnion: {
