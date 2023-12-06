@@ -7,6 +7,7 @@ export * from './getTokenAtPosition';
 export * from './getTypeArguments';
 export * from './getTypeName';
 export * from './isErrorLike';
+export * from './isSymbolFromDefaultLibrary';
 export * from './isTypeReadonly';
 export * from './isUnsafeAssignment';
 export * from './predicates';

@@ -1,5 +1,7 @@
 import * as ts from 'typescript';
 
+import { isSymbolFromDefaultLibrary } from './isSymbolFromDefaultLibrary';
+
 export function isErrorLike(program: ts.Program, type: ts.Type): boolean {
   if (type.isIntersection()) {
     return type.types.some(t => isErrorLike(program, t));
@@ -13,14 +15,8 @@ export function isErrorLike(program: ts.Program, type: ts.Type): boolean {
     return false;
   }
 
-  if (symbol.getName() === 'Error') {
-    const declarations = symbol.getDeclarations() ?? [];
-    for (const declaration of declarations) {
-      const sourceFile = declaration.getSourceFile();
-      if (program.isSourceFileDefaultLibrary(sourceFile)) {
-        return true;
-      }
-    }
+  if (isSymbolFromDefaultLibrary(program, symbol, 'Error')) {
+    return true;
   }
 
   if (symbol.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Interface)) {

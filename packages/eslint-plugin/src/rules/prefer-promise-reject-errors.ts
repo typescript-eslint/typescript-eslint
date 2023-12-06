@@ -9,6 +9,7 @@ import {
   isErrorLike,
   isFunction,
   isIdentifier,
+  isSymbolFromDefaultLibrary,
 } from '../util';
 
 export type MessageIds = 'rejectAnError';
@@ -71,18 +72,7 @@ export default createRule<Options, MessageIds>({
 
     function isPromiseConstructorLike(type: ts.Type): boolean {
       const symbol = type.getSymbol();
-
-      if (symbol?.getName() === 'PromiseConstructor') {
-        const declarations = symbol.getDeclarations() ?? [];
-        for (const declaration of declarations) {
-          const sourceFile = declaration.getSourceFile();
-          if (program.isSourceFileDefaultLibrary(sourceFile)) {
-            return true;
-          }
-        }
-      }
-
-      return false;
+      return isSymbolFromDefaultLibrary(program, symbol, 'PromiseConstructor');
     }
 
     function skipChainExpression<T>(node: T): T & TSESTree.ChainElement {
