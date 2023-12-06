@@ -75,10 +75,12 @@ export default createRule<Options, MessageIds>({
       return isSymbolFromDefaultLibrary(program, symbol, 'PromiseConstructor');
     }
 
-    function skipChainExpression<T>(node: T): T & TSESTree.ChainElement {
+    function skipChainExpression<T extends TSESTree.Node>(
+      node: T,
+    ): T & TSESTree.ChainElement {
       // @ts-expect-error https://github.com/typescript-eslint/typescript-eslint/issues/8008
       return node.type === AST_NODE_TYPES.ChainExpression
-        ? (node as TSESTree.ChainExpression).expression
+        ? node.expression
         : node;
     }
 
