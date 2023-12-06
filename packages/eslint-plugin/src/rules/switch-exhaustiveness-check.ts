@@ -91,10 +91,6 @@ export default createRule<Options, MessageIds>({
     function getSwitchStatementMetadata(
       node: TSESTree.SwitchStatement,
     ): SwitchStatementMetadata {
-      /**
-       * The `test` property of a `SwitchCase` node will usually be a `Literal`
-       * node. However, on a `default` case, it will be equal to `null`.
-       */
       const defaultCase = node.cases.find(
         switchCase => switchCase.test == null,
       );
@@ -321,7 +317,7 @@ export default createRule<Options, MessageIds>({
         const switchStatementMetadata = getSwitchStatementMetadata(node);
 
         checkSwitchExhaustive(node, switchStatementMetadata);
-        checkSwitchDangerousDefaultCase(switchStatementMetadata);
+        checkSwitchUnnecessaryDefaultCase(switchStatementMetadata);
         checkSwitchNoUnionDefaultCase(node, switchStatementMetadata);
       },
     };
