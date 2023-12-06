@@ -298,7 +298,7 @@ export default createRule<Options, MessageIds>({
 
       if (
         !switchStatementMetadata.isUnion &&
-        switchStatementMetadata.defaultCase === null
+        switchStatementMetadata.defaultCase === undefined
       ) {
         context.report({
           node: node.discriminant,
