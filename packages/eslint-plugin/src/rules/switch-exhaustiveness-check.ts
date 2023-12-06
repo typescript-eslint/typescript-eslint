@@ -76,9 +76,15 @@ export default createRule<Options, MessageIds>({
     },
   },
   defaultOptions: [
-    { allowDefaultCaseForExhaustiveSwitch: true, requireDefaultForNonUnion: false },
+    {
+      allowDefaultCaseForExhaustiveSwitch: true,
+      requireDefaultForNonUnion: false,
+    },
   ],
-  create(context, [{ allowDefaultCaseForExhaustiveSwitch, requireDefaultForNonUnion }]) {
+  create(
+    context,
+    [{ allowDefaultCaseForExhaustiveSwitch, requireDefaultForNonUnion }],
+  ) {
     const sourceCode = getSourceCode(context);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
