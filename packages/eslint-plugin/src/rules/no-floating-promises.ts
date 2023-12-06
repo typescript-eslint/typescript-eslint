@@ -63,7 +63,6 @@ export default createRule<Options, MessageId>({
         messageBase + ' ' + messageRejectionHandler,
       floatingUselessRejectionHandlerVoid:
         messageBaseVoid + ' ' + messageRejectionHandler,
-
       floatingPromiseArray: messagePromiseArray,
       floatingPromiseArrayVoid: messagePromiseArrayVoid,
     },
