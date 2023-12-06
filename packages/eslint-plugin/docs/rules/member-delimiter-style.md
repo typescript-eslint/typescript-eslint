@@ -158,4 +158,7 @@ type FooBar = { name: string; greet(): string }
 
 ## When Not To Use It
 
-If you don't care about enforcing a consistent member delimiter in interfaces and type literals, then you will not need this rule.
+If you specifically want to use both member delimiter kinds for stylistic reasons, or don't wish to enforce one style over the other, you can avoid this rule.
+
+However, keep in mind that inconsistent style can harm readability in a project.
+We recommend picking a single option for this rule that works best for your project.

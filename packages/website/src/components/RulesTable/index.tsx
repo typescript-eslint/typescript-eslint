@@ -75,10 +75,10 @@ function RuleRow({
           fixable && hasSuggestions
             ? 'fixable and has suggestions'
             : fixable
-            ? 'fixable'
-            : hasSuggestions
-            ? 'has suggestions'
-            : undefined
+              ? 'fixable'
+              : hasSuggestions
+                ? 'has suggestions'
+                : undefined
         }
       >
         {fixable ? FIXABLE_EMOJI : ''}
@@ -231,7 +231,7 @@ export default function RulesTable(): React.JSX.Element {
             setMode={(newMode): void =>
               changeFilter('typeInformation', newMode)
             }
-            label={`${TYPE_INFORMATION_EMOJI} requires type information`}
+            label={`${TYPE_INFORMATION_EMOJI} type checked`}
           />
           <RuleFilterCheckBox
             mode={filters.extension}
@@ -385,8 +385,8 @@ function stringifyFiltersState(filters: FiltersState): string {
       value === 'include'
         ? key
         : value === 'exclude'
-        ? `${NEGATION_SYMBOL}${key}`
-        : '',
+          ? `${NEGATION_SYMBOL}${key}`
+          : '',
     )
     .filter(Boolean)
     .join('-');

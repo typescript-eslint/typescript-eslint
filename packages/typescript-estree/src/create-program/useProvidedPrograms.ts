@@ -56,6 +56,7 @@ function createProgramFromConfigFile(
   configFile: string,
   projectDirectory?: string,
 ): ts.Program {
+  // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (ts.sys === undefined) {
     throw new Error(
       '`createProgramFromConfigFile` is only supported in a Node-like environment.',

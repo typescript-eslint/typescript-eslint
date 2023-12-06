@@ -2,6 +2,7 @@ import prettier from '@prettier/sync';
 import { getContextualType } from '@typescript-eslint/type-utils';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ESLintUtils } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule } from '../util';
 
@@ -147,7 +148,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ formatWithPrettier }]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const services = ESLintUtils.getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -171,6 +172,7 @@ export default createRule<Options, MessageIds>({
       } catch (ex) {
         // ex instanceof Error is false as of @prettier/sync@0.3.0, as is ex instanceof SyntaxError
         if (
+          // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
           (ex as Partial<Error> | undefined)?.constructor?.name !==
           'SyntaxError'
         ) {

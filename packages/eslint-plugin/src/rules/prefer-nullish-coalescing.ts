@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -125,7 +126,7 @@ export default createRule<Options, MessageIds>({
   ) {
     const parserServices = getParserServices(context);
     const compilerOptions = parserServices.program.getCompilerOptions();
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const checker = parserServices.program.getTypeChecker();
     const isStrictNullChecks = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
@@ -357,7 +358,7 @@ export default createRule<Options, MessageIds>({
         function* fix(
           fixer: TSESLint.RuleFixer,
         ): IterableIterator<TSESLint.RuleFix> {
-          if (node.parent && isLogicalOrOperator(node.parent)) {
+          if (isLogicalOrOperator(node.parent)) {
             // '&&' and '??' operations cannot be mixed without parentheses (e.g. a && b ?? c)
             if (
               node.left.type === AST_NODE_TYPES.LogicalExpression &&
@@ -433,7 +434,7 @@ function isMixedLogicalExpression(node: TSESTree.LogicalExpression): boolean {
     }
     seen.add(current);
 
-    if (current && current.type === AST_NODE_TYPES.LogicalExpression) {
+    if (current.type === AST_NODE_TYPES.LogicalExpression) {
       if (current.operator === '&&') {
         return true;
       } else if (current.operator === '||') {

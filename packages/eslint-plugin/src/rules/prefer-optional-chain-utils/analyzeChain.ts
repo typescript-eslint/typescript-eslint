@@ -553,7 +553,7 @@ export function analyzeChain(
         subChain.push(currentOperand);
       } else if (comparisonResult === NodeComparisonResult.Invalid) {
         maybeReportThenReset(validatedOperands);
-      } else if (comparisonResult === NodeComparisonResult.Equal) {
+      } else {
         // purposely don't push this case because the node is a no-op and if
         // we consider it then we might report on things like
         // foo && foo

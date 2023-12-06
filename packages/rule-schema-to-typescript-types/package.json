@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/rule-schema-to-typescript-types",
-  "version": "6.10.0",
+  "version": "6.13.2",
   "private": true,
   "type": "commonjs",
   "exports": {
@@ -27,15 +27,15 @@
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
     "generate-contributors": "tsx ./src/generate-contributors.ts",
     "generate-sponsors": "tsx ./src/generate-sponsors.ts",
-    "lint": "nx lint",
+    "lint": "npx nx lint",
     "postinstall-script": "tsx ./src/postinstall.ts",
     "test": "jest --coverage",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
   "dependencies": {
     "@prettier/sync": "*",
-    "@typescript-eslint/type-utils": "6.10.0",
-    "@typescript-eslint/utils": "6.10.0",
+    "@typescript-eslint/type-utils": "6.13.2",
+    "@typescript-eslint/utils": "6.13.2",
     "natural-compare": "^1.4.0",
     "prettier": "^3.0.3"
   },

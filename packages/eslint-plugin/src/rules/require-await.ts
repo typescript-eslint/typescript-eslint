@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
@@ -46,7 +47,7 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     let scopeInfo: ScopeInfo | null = null;
 
     /**
@@ -111,18 +112,27 @@ export default createRule({
     }
 
     /**
-     * mark `scopeInfo.isAsyncYield` to `true` if its a generator
-     * function and the delegate is `true`
+     * Mark `scopeInfo.isAsyncYield` to `true` if it
+     *  1) delegates async generator function
+     *    or
+     *  2) yields thenable type
      */
-    function markAsHasDelegateGen(node: TSESTree.YieldExpression): void {
+    function visitYieldExpression(node: TSESTree.YieldExpression): void {
       if (!scopeInfo?.isGen || !node.argument) {
         return;
       }
 
       if (node.argument.type === AST_NODE_TYPES.Literal) {
-        // making this `false` as for literals we don't need to check the definition
+        // ignoring this as for literals we don't need to check the definition
         // eg : async function* run() { yield* 1 }
-        scopeInfo.isAsyncYield ||= false;
+        return;
+      }
+
+      if (!node.delegate) {
+        if (isThenableType(services.esTreeNodeToTSNodeMap.get(node.argument))) {
+          scopeInfo.isAsyncYield = true;
+        }
+        return;
       }
 
       const type = services.getTypeAtLocation(node.argument);
@@ -151,7 +161,7 @@ export default createRule({
       AwaitExpression: markAsHasAwait,
       'VariableDeclaration[kind = "await using"]': markAsHasAwait,
       'ForOfStatement[await = true]': markAsHasAwait,
-      'YieldExpression[delegate = true]': markAsHasDelegateGen,
+      YieldExpression: visitYieldExpression,
 
       // check body-less async arrow function.
       // ignore `async () => await foo` because it's obviously correct
@@ -162,7 +172,7 @@ export default createRule({
         >,
       ): void {
         const expression = services.esTreeNodeToTSNodeMap.get(node);
-        if (expression && isThenableType(expression)) {
+        if (isThenableType(expression)) {
           markAsHasAwait();
         }
       },
@@ -183,7 +193,7 @@ export default createRule({
 
 function isEmptyFunction(node: FunctionNode): boolean {
   return (
-    node.body?.type === AST_NODE_TYPES.BlockStatement &&
+    node.body.type === AST_NODE_TYPES.BlockStatement &&
     node.body.body.length === 0
   );
 }

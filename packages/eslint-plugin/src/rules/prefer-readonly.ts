@@ -1,5 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -104,7 +105,7 @@ export default createRule<Options, MessageIds>({
     function isDestructuringAssignment(
       node: ts.PropertyAccessExpression,
     ): boolean {
-      let current: ts.Node = node.parent;
+      let current = node.parent as ts.Node | undefined;
 
       while (current) {
         const parent = current.parent;
@@ -184,7 +185,7 @@ export default createRule<Options, MessageIds>({
       },
       'ClassDeclaration, ClassExpression:exit'(): void {
         const finalizedClassScope = classScopeStack.pop()!;
-        const sourceCode = context.getSourceCode();
+        const sourceCode = getSourceCode(context);
 
         for (const violatingNode of finalizedClassScope.finalizeUnmodifiedPrivateNonReadonlys()) {
           const { esNode, nameNode } =

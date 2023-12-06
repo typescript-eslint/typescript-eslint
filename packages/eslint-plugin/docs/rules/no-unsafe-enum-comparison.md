@@ -6,21 +6,23 @@ description: 'Disallow comparing an enum value with a non-enum value.'
 >
 > See **https://typescript-eslint.io/rules/no-unsafe-enum-comparison** for documentation.
 
-The TypeScript compiler can be surprisingly lenient when working with enums.
-For example, it will allow you to compare enum values against numbers even though they might not have any type overlap:
+The TypeScript compiler can be surprisingly lenient when working with enums. String enums are widely considered to be safer than number enums, but even string enums have some pitfalls. For example, it is allowed to compare enum values against literals:
 
 ```ts
-enum Fruit {
-  Apple,
-  Banana,
+enum Vegetable {
+  Asparagus = 'asparagus',
 }
 
-declare let fruit: Fruit;
+declare const vegetable: Vegetable;
 
-fruit === 999; // No error
+vegetable === 'asparagus'; // No error
 ```
 
-This rule flags when an enum typed value is compared to a non-enum `number`.
+The above code snippet should instead be written as `vegetable === Vegetable.Asparagus`. Allowing literals in comparisons subverts the point of using enums in the first place. By enforcing comparisons with properly typed enums:
+
+- It makes a codebase more resilient to enum members changing values.
+- It allows for code IDEs to use the "Rename Symbol" feature to quickly rename an enum.
+- It aligns code to the proper enum semantics of referring to them by name and treating their values as implementation details.
 
 ## Examples
 
@@ -35,7 +37,7 @@ enum Fruit {
 
 declare let fruit: Fruit;
 
-fruit === 999;
+fruit === 0;
 ```
 
 ```ts
@@ -57,7 +59,7 @@ enum Fruit {
 
 declare let fruit: Fruit;
 
-fruit === Fruit.Banana;
+fruit === Fruit.Apple;
 ```
 
 ```ts
@@ -75,3 +77,6 @@ vegetable === Vegetable.Asparagus;
 ## When Not To Use It
 
 If you don't mind number and/or literal string constants being compared against enums, you likely don't need this rule.
+
+Separately, in the rare case of relying on an third party enums that are only imported as `type`s, it may be difficult to adhere to this rule.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.

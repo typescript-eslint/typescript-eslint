@@ -317,8 +317,7 @@ var bar = (function () {
 
 ## When Not To Use It
 
-If you don't wish to prevent calling code from using function return values in unexpected ways, then
-you will not need this rule.
+If you don't find the added cost of explicitly writing function return types to be worth the visual clarity, or your project is not large enough for it to be a factor in type checking performance, then you will not need this rule.
 
 ## Further Reading
 

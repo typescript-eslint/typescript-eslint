@@ -1,5 +1,6 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, getEnumNames, typeNodeRequiresParentheses } from '../util';
 
@@ -165,7 +166,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ checkIntersections, checkUnions, groupOrder }]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     const collator = new Intl.Collator('en', {
       sensitivity: 'base',
@@ -211,7 +212,7 @@ export default createRule<Options, MessageIds>({
                 ? 'Intersection'
                 : 'Union',
           };
-          if (node.parent?.type === AST_NODE_TYPES.TSTypeAliasDeclaration) {
+          if (node.parent.type === AST_NODE_TYPES.TSTypeAliasDeclaration) {
             messageId = 'notSortedNamed';
             data.name = node.parent.id.name;
           }

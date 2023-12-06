@@ -1,4 +1,5 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
@@ -29,7 +30,17 @@ interface SwitchStatementMetadata {
 
 type Options = [
   {
+    /**
+     * If `true`, allow superfluous `default` cases that obfucate future type additions.
+     */
     allowDefaultCase: boolean;
+
+    /**
+     * If `true`, require a `default` clause for switches on non-union types.
+     *
+     * @default false
+     */
+    requireDefaultForNonUnion?: boolean;
   },
 ];
 
@@ -43,8 +54,7 @@ export default createRule<Options, MessageIds>({
   meta: {
     type: 'suggestion',
     docs: {
-      description:
-        'Require switch-case statements to be exhaustive with union type',
+      description: 'Require switch-case statements to be exhaustive',
       requiresTypeChecking: true,
     },
     hasSuggestions: true,
@@ -52,6 +62,10 @@ export default createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
+          requireDefaultForNonUnion: {
+            description: `If 'true', require a 'default' clause for switches on non-union types.`,
+            type: 'boolean',
+          },
           allowDefaultCase: {
             type: 'boolean',
             default: true,
@@ -68,9 +82,9 @@ export default createRule<Options, MessageIds>({
       addMissingCases: 'Add branches for missing cases.',
     },
   },
-  defaultOptions: [{ allowDefaultCase: true }],
-  create(context, [{ allowDefaultCase }]) {
-    const sourceCode = context.getSourceCode();
+  defaultOptions: [{ allowDefaultCase: true, requireDefaultForNonUnion: false }],
+  create(context, [{ allowDefaultCase, requireDefaultForNonUnion }]) {
+    const sourceCode = getSourceCode(context);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
@@ -176,9 +190,9 @@ export default createRule<Options, MessageIds>({
     function fixSwitch(
       fixer: TSESLint.RuleFixer,
       node: TSESTree.SwitchStatement,
-      missingBranchTypes: ts.Type[],
+      missingBranchTypes: (ts.Type | null)[], // null means default branch
       symbolName?: string,
-    ): TSESLint.RuleFix | null {
+    ): TSESLint.RuleFix {
       const lastCase =
         node.cases.length > 0 ? node.cases[node.cases.length - 1] : null;
       const caseIndent = lastCase
@@ -189,8 +203,13 @@ export default createRule<Options, MessageIds>({
 
       const missingCases = [];
       for (const missingBranchType of missingBranchTypes) {
+        if (missingBranchType == null) {
+          missingCases.push(`default: { throw new Error('default case') }`);
+          continue;
+        }
+
         // While running this rule on the "checker.ts" file of TypeScript, the
-        // fix introduced a compiler error due to:
+        // the fix introduced a compiler error due to:
         //
         // ```ts
         // type __String = (string & {
@@ -213,13 +232,19 @@ export default createRule<Options, MessageIds>({
           (missingBranchName || missingBranchName === '') &&
           requiresQuoting(missingBranchName.toString(), compilerOptions.target)
         ) {
-          caseTest = `${symbolName}['${missingBranchName}']`;
+          const escapedBranchName = missingBranchName
+            .replace(/'/g, "\\'")
+            .replace(/\n/g, '\\n')
+            .replace(/\r/g, '\\r');
+
+          caseTest = `${symbolName}['${escapedBranchName}']`;
         }
 
         const errorMessage = `Not implemented yet: ${caseTest} case`;
+        const escapedErrorMessage = errorMessage.replace(/'/g, "\\'");
 
         missingCases.push(
-          `case ${caseTest}: { throw new Error('${errorMessage}') }`,
+          `case ${caseTest}: { throw new Error('${escapedErrorMessage}') }`,
         );
       }
 
@@ -262,6 +287,55 @@ export default createRule<Options, MessageIds>({
           node: defaultCase,
           messageId: 'dangerousDefaultCase',
         });
+
+        context.report({
+          node: node.discriminant,
+          messageId: 'switchIsNotExhaustive',
+          data: {
+            missingBranches: missingBranchTypes
+              .map(missingType =>
+                tsutils.isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
+                  ? `typeof ${missingType.getSymbol()?.escapedName as string}`
+                  : checker.typeToString(missingType),
+              )
+              .join(' | '),
+          },
+          suggest: [
+            {
+              messageId: 'addMissingCases',
+              fix(fixer): TSESLint.RuleFix {
+                return fixSwitch(
+                  fixer,
+                  node,
+                  missingBranchTypes,
+                  symbolName?.toString(),
+                );
+              },
+            },
+          ],
+        });
+      } else if (requireDefaultForNonUnion) {
+        const hasDefault = node.cases.some(
+          switchCase => switchCase.test == null,
+        );
+
+        if (!hasDefault) {
+          context.report({
+            node: node.discriminant,
+            messageId: 'switchIsNotExhaustive',
+            data: {
+              missingBranches: 'default',
+            },
+            suggest: [
+              {
+                messageId: 'addMissingCases',
+                fix(fixer): TSESLint.RuleFix {
+                  return fixSwitch(fixer, node, [null]);
+                },
+              },
+            ],
+          });
+        }
       }
     }
 

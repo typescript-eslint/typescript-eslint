@@ -1,6 +1,7 @@
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
 import { createRule, isFunction } from '../util';
 import type {
@@ -98,7 +99,7 @@ export default createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     // tracks all of the functions we've already checked
     const checkedFunctions = new Set<FunctionNode>();
@@ -272,7 +273,7 @@ export default createRule<Options, MessageIds>({
       while (current) {
         if (current.type === AST_NODE_TYPES.ReturnStatement) {
           // the parent of a return will always be a block statement, so we can skip over it
-          current = current.parent?.parent;
+          current = current.parent.parent;
           continue;
         }
 
@@ -294,7 +295,7 @@ export default createRule<Options, MessageIds>({
     }
 
     function followReference(node: TSESTree.Identifier): void {
-      const scope = context.getScope();
+      const scope = getScope(context);
       const variable = scope.set.get(node.name);
       /* istanbul ignore if */ if (!variable) {
         return;
@@ -405,11 +406,11 @@ export default createRule<Options, MessageIds>({
       node: TSESTree.TSEmptyBodyFunctionExpression,
     ): void {
       const isConstructor =
-        node.parent?.type === AST_NODE_TYPES.MethodDefinition &&
+        node.parent.type === AST_NODE_TYPES.MethodDefinition &&
         node.parent.kind === 'constructor';
       const isSetAccessor =
-        (node.parent?.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
-          node.parent?.type === AST_NODE_TYPES.MethodDefinition) &&
+        (node.parent.type === AST_NODE_TYPES.TSAbstractMethodDefinition ||
+          node.parent.type === AST_NODE_TYPES.MethodDefinition) &&
         node.parent.kind === 'set';
       if (!isConstructor && !isSetAccessor && !node.returnType) {
         context.report({

@@ -34,7 +34,9 @@ describe('describeFilePath', () => {
         'file.ts',
         'nested/file.ts',
       ])('filePath %s', filePath => {
-        expect(describeFilePath(filePath, tsconfigRootDir)).toMatchSnapshot();
+        expect(
+          describeFilePath(filePath, tsconfigRootDir).replaceAll('\\', '/'),
+        ).toMatchSnapshot();
       });
     },
   );

@@ -1,5 +1,9 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import {
+  getDeclaredVariables,
+  getSourceCode,
+} from '@typescript-eslint/utils/eslint-utils';
 
 import {
   createRule,
@@ -104,7 +108,7 @@ export default createRule<Options, MessageIds>({
     const prefer = option.prefer ?? 'type-imports';
     const disallowTypeAnnotations = option.disallowTypeAnnotations !== false;
     const fixStyle = option.fixStyle ?? 'separate-type-imports';
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     const sourceImportsMap: Record<string, SourceImports> = {};
 
@@ -115,6 +119,7 @@ export default createRule<Options, MessageIds>({
             ImportDeclaration(node): void {
               const source = node.source.value;
               // sourceImports is the object containing all the specifics for a particular import source, type or value
+              // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
               sourceImportsMap[source] ??= {
                 source,
                 reportValueImports: [], // if there is a mismatch where type importKind but value specifiers
@@ -168,7 +173,7 @@ export default createRule<Options, MessageIds>({
                   continue;
                 }
 
-                const [variable] = context.getDeclaredVariables(specifier);
+                const [variable] = getDeclaredVariables(context, specifier);
                 if (variable.references.length === 0) {
                   unusedSpecifiers.push(specifier);
                 } else {
@@ -180,9 +185,9 @@ export default createRule<Options, MessageIds>({
                        * export default Type;
                        */
                       if (
-                        ref.identifier.parent?.type ===
+                        ref.identifier.parent.type ===
                           AST_NODE_TYPES.ExportSpecifier ||
-                        ref.identifier.parent?.type ===
+                        ref.identifier.parent.type ===
                           AST_NODE_TYPES.ExportDefaultDeclaration
                       ) {
                         if (ref.isValueReference && ref.isTypeReference) {
@@ -190,8 +195,9 @@ export default createRule<Options, MessageIds>({
                         }
                       }
                       if (ref.isValueReference) {
-                        let parent: TSESTree.Node | undefined =
-                          ref.identifier.parent;
+                        let parent = ref.identifier.parent as
+                          | TSESTree.Node
+                          | undefined;
                         let child: TSESTree.Node = ref.identifier;
                         while (parent) {
                           switch (parent.type) {

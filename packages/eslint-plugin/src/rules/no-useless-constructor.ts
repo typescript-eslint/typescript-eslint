@@ -64,8 +64,7 @@ export default createRule<Options, MessageIds>({
     return {
       MethodDefinition(node): void {
         if (
-          node.value?.type === AST_NODE_TYPES.FunctionExpression &&
-          node.value.body &&
+          node.value.type === AST_NODE_TYPES.FunctionExpression &&
           checkAccessibility(node) &&
           checkParams(node)
         ) {

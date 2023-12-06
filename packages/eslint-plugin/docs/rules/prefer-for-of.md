@@ -41,6 +41,4 @@ for (let i = 0; i < array.length; i++) {
 }
 ```
 
-## When Not To Use It
-
-If you transpile for browsers that do not support for-of loops, you may wish to use traditional for loops that produce more compact code.
+<!-- Intentionally Omitted: When Not To Use It -->
