@@ -304,7 +304,6 @@ export default createRule<Options, MessageIds>({
     function checkSwitchDangerousDefaultCase(
       switchStatementMetadata: SwitchStatementMetadata,
     ): void {
-      // This feature of the rule is gated behind an option.
       if (allowDefaultCase) {
         return;
       }
