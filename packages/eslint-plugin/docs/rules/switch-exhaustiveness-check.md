@@ -22,32 +22,12 @@ Additionally, if a new value is added to the union type, a `default` would preve
 
 #### `"allowDefaultCase"` Caveats
 
-Note that in some situations, like when switch statements use data from external APIs, `default` cases can be valuable, so you might want to turn the option off. For example, if you update the API of a web application to return a new value, it is possible that users will be using the app on the older version, having not refreshed the webpage yet. Thus, they might query the new API on an older version of the code, which would result in undefined behavior. (In Flow, there is a special syntax to define [enums with unknown members](https://flow.org/en/docs/enums/defining-enums/#toc-flow-enums-with-unknown-members), but TypeScript does not have analogous functionality.)
+It can sometimes be useful to include a redundant `default` case on an exhaustive `switch` statement if it's possible for values to have types not represented by the union type.
+For example, in applications that can have version mismatches between clients and servers, it's possible for a server running a newer software version to send a value not recognized by the client's older typings.
 
-In these kinds of situations, you might want to enforce an explicit `default` case that throws an error, or allows the user to safely save their work, or something along those lines. You can do this by using [the `default-case` core ESLint rule](https://eslint.org/docs/latest/rules/default-case) combined with a `satisfies never` check. For example:
+If your project has a small number of intentionally redundant `default` cases, you might want to use an [inline ESLint disable comment](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for each of them.
 
-```ts
-type Fruit = 'apple' | 'banana';
-
-function useFruit(fruit: Fruit): string {
-  switch (fruit) {
-    case 'apple': {
-      return 'appleJuice';
-    }
-
-    case 'banana': {
-      return 'bananaJuice';
-    }
-
-    default: {
-      fruit satisfies never;
-      return 'unknownJuice';
-    }
-  }
-}
-```
-
-Doing this gives you the best of both worlds: explicit out-of-band value handling while still having the ability of TypeScript to alert to you all the places in your code-base where a new type constituent needs to be added. However, the downside is two-fold: there is no way for the `default-case` lint rule to distinguish between a `satisfies never` default case and some other kind of default case, so unsafe switch statements can still sneak into your codebase. Additionally, you have to maintain `default` cases everywhere, which makes things much more verbose.
+If your project has many intentionally redundant `default` cases, you may want to disable `allowDefaultCase` and use the [`default-case` core ESLint rule](https://eslint.org/docs/latest/rules/default-case).
 
 ### `requireDefaultForNonUnion`
 
