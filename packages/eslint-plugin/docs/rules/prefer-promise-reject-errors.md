@@ -20,25 +20,8 @@ It uses type information to guarantee that `Promise` can only be rejected with `
 
 Promise.reject('error');
 
-Promise.reject(0);
-
-Promise.reject(undefined);
-
-Promise.reject(null);
-
 const err = new Error();
 Promise.reject('an ' + err);
-
-const err = new Error();
-Promise.reject(`${err}`);
-
-const err = '';
-Promise.reject(err);
-
-function err() {
-  return '';
-}
-Promise.reject(err());
 
 const foo = {
   bar: '',
@@ -49,30 +32,9 @@ Promise.reject(foo.bar);
 
 new Promise((resolve, reject) => reject('error'));
 
-new Promise((resolve, reject) => reject(0));
-
-new Promise((resolve, reject) => reject(undefined));
-
-new Promise((resolve, reject) => reject(null));
-
 new Promise((resolve, reject) => {
   const err = new Error();
   reject('an ' + err);
-});
-
-new Promise((resolve, reject) => {
-  const err = new Error();
-  reject(`${err}`);
-});
-
-const err = '';
-new Promise((resolve, reject) => reject(err));
-
-new Promise((resolve, reject) => {
-  function err() {
-    return '';
-  }
-  return reject(err());
 });
 
 new Promise((resolve, reject) => {
@@ -90,24 +52,11 @@ new Promise((resolve, reject) => {
 
 Promise.reject(new Error());
 
-Promise.reject(new Error('error'));
-
-const e = new Error('error');
-Promise.reject(e);
-
 try {
-  Promise.reject(new Error('error'));
+  // ...
 } catch (e) {
   Promise.reject(e);
 }
-
-const err = new Error();
-Promise.reject(err);
-
-function err() {
-  return new Error();
-}
-Promise.reject(err());
 
 const foo = {
   bar: new Error(),
@@ -123,30 +72,11 @@ Promise.reject(new CustomError());
 
 new Promise((resolve, reject) => reject(new Error()));
 
-new Promise((resolve, reject) => reject(new Error('error')));
-
-new Promise((resolve, reject) => {
-  const e = new Error('error');
-  return reject(e);
-});
-
 try {
-  new Promise((resolve, reject) => reject(new Error('error')));
+  // ...
 } catch (e) {
   new Promise((resolve, reject) => reject(e));
 }
-
-new Promise((resolve, reject) => {
-  const err = new Error();
-  return reject(err);
-});
-
-new Promise((resolve, reject) => {
-  function err() {
-    return new Error();
-  }
-  return reject(err());
-});
 
 new Promise((resolve, reject) => {
   const foo = {
