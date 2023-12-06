@@ -71,7 +71,7 @@ export default createRule<Options, MessageIds>({
       switchIsNotExhaustive:
         'Switch is not exhaustive. Cases not matched: {{missingBranches}}',
       dangerousDefaultCase:
-        'The switch statement is exhaustive, so the default case is superfluous and will obfuscate future additions to the union.',
+        'The switch statement is exhaustive, so the default case is unnecessary.',
       addMissingCases: 'Add branches for missing cases.',
     },
   },
