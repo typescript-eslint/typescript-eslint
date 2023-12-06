@@ -17,6 +17,13 @@ Valid ways of handling a Promise-valued statement include:
 - Calling its `.then()` with two arguments
 - Calling its `.catch()` with one argument
 
+This rule also reports when an array of Promises is created and not properly handled. The main way to resolve this is by using one of the Promise concurrency methods to create a single promise, then handling that according to the procedure above. These methods include:
+
+- `Promise.all()`,
+- `Promise.allSettled()`,
+- `Promise.any()`
+- `Promise.race()`
+
 :::tip
 `no-floating-promises` only detects unhandled Promise _statements_.
 See [`no-misused-promises`](./no-misused-promises.md) for detecting code that provides Promises to _logical_ locations such as if statements.
@@ -40,6 +47,8 @@ returnsPromise().then(() => {});
 Promise.reject('value').catch();
 
 Promise.reject('value').finally();
+
+[1, 2, 3].map(async x => x + 1);
 ```
 
 ### ✅ Correct
@@ -59,6 +68,8 @@ returnsPromise().then(
 Promise.reject('value').catch(() => {});
 
 await Promise.reject('value').finally(() => {});
+
+await Promise.all([1, 2, 3].map(async x => x + 1));
 ```
 
 ## Options
