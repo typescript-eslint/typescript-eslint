@@ -106,7 +106,7 @@ interface ParseOptions {
  */
 export interface ProjectServiceOptions {
   /**
-   * Files to allow running with the default inferred project settings.
+   * Globs of files to allow running with the default inferred project settings.
    */
   allowDefaultProjectForFiles?: string[];
 }
