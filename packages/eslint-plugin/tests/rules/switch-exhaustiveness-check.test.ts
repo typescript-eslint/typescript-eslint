@@ -142,7 +142,7 @@ function test(value: Union): number {
   }
 }
     `,
-    // Switch contains default clause
+    // Switch contains default clause.
     `
 type Day =
   | 'Monday'
@@ -182,7 +182,7 @@ switch (day) {
   }
 }
     `,
-    // ... and enums (at least for now)
+    // ... and enums (at least for now).
     `
 enum Enum {
   A,
@@ -209,7 +209,7 @@ function test(value: ObjectUnion): number {
   }
 }
     `,
-    // Switch with default clause on non-union type
+    // switch with default clause on non-union type
     {
       code: `
 declare const value: number;
@@ -227,7 +227,7 @@ switch (value) {
   ],
   invalid: [
     {
-      // Matched only one branch out of seven
+      // Matched only one branch out of seven.
       code: `
 type Day =
   | 'Monday'
