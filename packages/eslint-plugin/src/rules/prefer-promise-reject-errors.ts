@@ -122,7 +122,6 @@ export default createRule<Options, MessageIds>({
 
         rejectVariable.references.forEach(ref => {
           if (
-            !ref.isRead() ||
             ref.identifier.parent.type !== AST_NODE_TYPES.CallExpression ||
             ref.identifier !== ref.identifier.parent.callee
           ) {
