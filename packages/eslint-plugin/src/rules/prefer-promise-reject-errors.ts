@@ -113,12 +113,10 @@ export default createRule<Options, MessageIds>({
           return;
         }
 
+        // reject param is always present in variables declared by executor
         const rejectVariable = getDeclaredVariables(context, executor).find(
           variable => variable.identifiers.includes(rejectParamNode),
-        );
-        /* istanbul ignore if */ if (!rejectVariable) {
-          return;
-        }
+        )!;
 
         rejectVariable.references.forEach(ref => {
           if (
