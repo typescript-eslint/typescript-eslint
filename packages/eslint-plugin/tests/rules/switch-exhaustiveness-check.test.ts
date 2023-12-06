@@ -224,7 +224,7 @@ switch (value) {
       `,
       options: [
         {
-          allowDefaultCaseForExhaustiveSwitch: false,
+          allowDefaultCaseForExhaustiveSwitch: true,
           requireDefaultForNonUnion: true,
         },
       ],
@@ -634,7 +634,7 @@ switch (value) {
       `,
       options: [
         {
-          allowDefaultCaseForExhaustiveSwitch: false,
+          allowDefaultCaseForExhaustiveSwitch: true,
           requireDefaultForNonUnion: true,
         },
       ],
