@@ -142,7 +142,7 @@ function test(value: Union): number {
   }
 }
     `,
-    // Switch contains default clause.
+    // Switch contains default clause
     `
 type Day =
   | 'Monday'
@@ -182,7 +182,7 @@ switch (day) {
   }
 }
     `,
-    // ... and enums (at least for now).
+    // ... and enums (at least for now)
     `
 enum Enum {
   A,
@@ -209,7 +209,7 @@ function test(value: ObjectUnion): number {
   }
 }
     `,
-    // switch with default clause on non-union type
+    // Switch with default clause on non-union type
     {
       code: `
 declare const value: number;
@@ -222,12 +222,12 @@ switch (value) {
     return -1;
 }
       `,
-      options: [{ requireDefaultForNonUnion: true }],
+      options: [{ allowDefaultCase: false, requireDefaultForNonUnion: true }],
     },
   ],
   invalid: [
     {
-      // Matched only one branch out of seven.
+      // Matched only one branch out of seven
       code: `
 type Day =
   | 'Monday'
@@ -627,7 +627,7 @@ switch (value) {
     return 1;
 }
       `,
-      options: [{ requireDefaultForNonUnion: true }],
+      options: [{ allowDefaultCase: false, requireDefaultForNonUnion: true }],
       errors: [
         {
           messageId: 'switchIsNotExhaustive',
@@ -718,17 +718,13 @@ switch (value) {
         case Enum.a: { throw new Error('Not implemented yet: Enum.a case') }
         case Enum['\\'a\\' \`b\` "c"']: { throw new Error('Not implemented yet: Enum[\\'\\\\'a\\\\' \`b\` "c"\\'] case') }
         }
-      `,
+              `,
             },
           ],
         },
-      },
-        {
-      code: noFormat`
-
-
-      // has dangerous default case
-      options: [{ allowDefaultCase: false }],
+      ],
+    },
+    {
       code: `
 type MyUnion = 'foo' | 'bar' | 'baz';
 
@@ -745,9 +741,11 @@ switch (myUnion) {
   }
 }
       `,
+      options: [{ allowDefaultCase: false, requireDefaultForNonUnion: false }],
       errors: [
         {
           messageId: 'dangerousDefaultCase',
+        }
       ],
     },
   ],

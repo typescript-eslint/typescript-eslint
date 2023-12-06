@@ -31,7 +31,8 @@ interface SwitchStatementMetadata {
 type Options = [
   {
     /**
-     * If `true`, allow superfluous `default` cases that obfucate future type additions.
+     * If `true`, allow superfluous `default` cases that obfuscate future type
+     * additions.
      */
     allowDefaultCase: boolean;
 
@@ -62,13 +63,14 @@ export default createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
+          allowDefaultCase: {
+            description: "If `true`, allow superfluous `default` cases that obfuscate future type additions.",
+            type: 'boolean',
+            default: true,
+          },
           requireDefaultForNonUnion: {
             description: `If 'true', require a 'default' clause for switches on non-union types.`,
             type: 'boolean',
-          },
-          allowDefaultCase: {
-            type: 'boolean',
-            default: true,
           },
         },
         additionalProperties: false,
@@ -147,10 +149,34 @@ export default createRule<Options, MessageIds>({
       };
     }
 
+    function checkSwitchNoUnionDefaultCase(node: TSESTree.SwitchStatement) {
+      const hasDefault = node.cases.some(
+        switchCase => switchCase.test == null,
+      );
+
+      if (!hasDefault) {
+        context.report({
+          node: node.discriminant,
+          messageId: 'switchIsNotExhaustive',
+          data: {
+            missingBranches: 'default',
+          },
+          suggest: [
+            {
+              messageId: 'addMissingCases',
+              fix(fixer): TSESLint.RuleFix {
+                return fixSwitch(fixer, node, [null]);
+              },
+            },
+          ],
+        });
+      }
+    }
+
     function checkSwitchExhaustive(
       node: TSESTree.SwitchStatement,
       switchStatementMetadata: SwitchStatementMetadata,
-    ): void {
+    ) {
       const { missingBranchTypes, symbolName, defaultCase } =
         switchStatementMetadata;
 
@@ -287,55 +313,6 @@ export default createRule<Options, MessageIds>({
           node: defaultCase,
           messageId: 'dangerousDefaultCase',
         });
-
-        context.report({
-          node: node.discriminant,
-          messageId: 'switchIsNotExhaustive',
-          data: {
-            missingBranches: missingBranchTypes
-              .map(missingType =>
-                tsutils.isTypeFlagSet(missingType, ts.TypeFlags.ESSymbolLike)
-                  ? `typeof ${missingType.getSymbol()?.escapedName as string}`
-                  : checker.typeToString(missingType),
-              )
-              .join(' | '),
-          },
-          suggest: [
-            {
-              messageId: 'addMissingCases',
-              fix(fixer): TSESLint.RuleFix {
-                return fixSwitch(
-                  fixer,
-                  node,
-                  missingBranchTypes,
-                  symbolName?.toString(),
-                );
-              },
-            },
-          ],
-        });
-      } else if (requireDefaultForNonUnion) {
-        const hasDefault = node.cases.some(
-          switchCase => switchCase.test == null,
-        );
-
-        if (!hasDefault) {
-          context.report({
-            node: node.discriminant,
-            messageId: 'switchIsNotExhaustive',
-            data: {
-              missingBranches: 'default',
-            },
-            suggest: [
-              {
-                messageId: 'addMissingCases',
-                fix(fixer): TSESLint.RuleFix {
-                  return fixSwitch(fixer, node, [null]);
-                },
-              },
-            ],
-          });
-        }
       }
     }
 
@@ -343,6 +320,10 @@ export default createRule<Options, MessageIds>({
       SwitchStatement(node): void {
         const switchStatementMetadata = getSwitchStatementMetadata(node);
         if (switchStatementMetadata === undefined) {
+          if (requireDefaultForNonUnion) {
+            checkSwitchNoUnionDefaultCase(node);
+          }
+
           return;
         }
 
