@@ -47,6 +47,8 @@ function useFruit(fruit: Fruit): string {
 }
 ```
 
+Doing this gives you the best of both worlds: explicit out-of-band value handling while still having the ability of TypeScript to alert to you all the places in your code-base where a new type constituent needs to be added. However, the downside is two-fold: there is no way for the `default-case` lint rule to distinguish between a `satisfies never` default case and some other kind of default case, so unsafe switch statements can still sneak into your codebase. Additionally, you have to maintain `default` cases everywhere, which makes things much more verbose.
+
 ## `requireDefaultForNonUnion`
 
 Defaults to false. It set to true, this rule will also report when a `switch` statement switches over a non-union type (like a `number` or `string`, for example) and that `switch` statement does not have a `default` case. Thus, by setting this option to true, the rule becomes stricter.
