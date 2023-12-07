@@ -105,9 +105,14 @@ export default createRule<Options, MessageIds>({
         services,
         node.discriminant,
       );
+
+      const symbolName = discriminantType.getSymbol()?.escapedName as
+        | string
+        | undefined;
+
       if (!discriminantType.isUnion()) {
         return {
-          symbolName: undefined,
+          symbolName,
           missingBranchTypes: [],
           defaultCase,
           isUnion: true,
@@ -133,10 +138,6 @@ export default createRule<Options, MessageIds>({
       const missingBranchTypes = unionTypes.filter(
         unionType => !caseTypes.has(unionType),
       );
-
-      const symbolName = discriminantType.getSymbol()?.escapedName as
-        | string
-        | undefined;
 
       return {
         symbolName,
