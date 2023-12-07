@@ -115,7 +115,7 @@ export default createRule<Options, MessageIds>({
           symbolName,
           missingBranchTypes: [],
           defaultCase,
-          isUnion: true,
+          isUnion: false,
         };
       }
 
@@ -143,7 +143,7 @@ export default createRule<Options, MessageIds>({
         symbolName,
         missingBranchTypes,
         defaultCase,
-        isUnion: false,
+        isUnion: true,
       };
     }
 
