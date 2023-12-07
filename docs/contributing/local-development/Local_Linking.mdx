@@ -8,7 +8,7 @@ The general strategy to do so is:
 
 1. [Global linking](#global-linking): Use your package manager's global link command to make `@typescript-eslint/*` packages available as global symlinks.
 2. [Repository linking](#repository-linking): Use your package manager's link command to reference those global symlinks in the local downstream repository.
-3. [Testing rules](#testing): Test your local rules and plugins by enabling them in the local downstream repository.
+3. [Testing rules](#testing-rules): Test your local rules and plugins by enabling them in the local downstream repository.
 
 ## Global Linking
 
@@ -50,19 +50,20 @@ To check that the local package is being used, consider adding a `console.log("H
 
 Now that you've linked the `@typescript-eslint/*` packages with your local downstream repository, the next step would be to include the rule on the local repository ESLint configuration file, e.g:
 
-```json
+```json title=".eslintrc.json"
 {
   "rules": {
     "@typescript-eslint/your-awesome-rule": "error"
   }
-  // etc
+  // ...
 }
 ```
 
-After that, you just need to run your repository `lint` script.
+After that, you need to run your repository's `lint` script and your changes should be reflected on the project.
 
-- `npm run lint`
-- `yarn lint`
+:::caution
+It's important to note that changes inside `@typescript-eslint` will not be reflected automatically inside your local repository! To update your linked repository, you'll need to run `yarn build` to build these changes.
+:::
 
 ## Troubleshooting
 
