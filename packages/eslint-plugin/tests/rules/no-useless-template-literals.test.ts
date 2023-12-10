@@ -91,7 +91,7 @@ ruleTester.run('no-useless-template-literals', rule, {
     `,
 
     `
-      const wrappedFunction = \`\${function(){}}\`;
+      const wrappedFunction = \`\${function () {}}\`;
     `,
 
     `
