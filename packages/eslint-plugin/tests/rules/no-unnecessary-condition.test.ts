@@ -1235,7 +1235,7 @@ foo ?.
 foo
   ?. ();
       `,
-      output: `
+      output: noFormat`
 let foo = () => {};
 foo();
 foo  ();
@@ -1285,7 +1285,7 @@ foo ?.
 foo
   ?. (bar);
       `,
-      output: `
+      output: noFormat`
 let foo = () => {};
 foo(bar);
 foo  (bar);

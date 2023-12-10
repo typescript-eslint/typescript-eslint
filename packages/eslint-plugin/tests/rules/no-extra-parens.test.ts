@@ -3,7 +3,7 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
-import { RuleTester } from '@typescript-eslint/rule-tester';
+import { RuleTester, noFormat } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-extra-parens';
 
@@ -731,7 +731,7 @@ f<(number) | string>(1)
     },
 
     {
-      code: `
+      code: noFormat`
 const Component = (
     <div>
         <p />
@@ -743,7 +743,7 @@ const Component = (
     />
 )
       `,
-      output: `
+      output: noFormat`
 const Component =${' '}
     <div>
         <p />
