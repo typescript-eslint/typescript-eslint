@@ -3,7 +3,7 @@
 /* eslint "@typescript-eslint/internal/plugin-test-formatting": ["error", { formatWithPrettier: false }] */
 /* eslint-enable eslint-comments/no-use */
 
-import { RuleTester, noFormat } from '@typescript-eslint/rule-tester';
+import { noFormat, RuleTester } from '@typescript-eslint/rule-tester';
 
 import rule from '../../src/rules/no-extra-parens';
 

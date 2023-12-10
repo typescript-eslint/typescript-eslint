@@ -18,7 +18,7 @@ This rule reports template literals that can be simplified to a normal string li
 const ab1 = `${'a'}${'b'}`;
 const ab2 = `a${'b'}`;
 
-const stringWithNumber = `1 + 1 = ${2}`;
+const stringWithNumber = `${'1 + 1 = '}${2}`;
 
 const stringWithBoolean = `${'true is '}${true}`;
 
@@ -35,9 +35,9 @@ const wrappedIntersection = `${intersectionWithString}`;
 const ab1 = 'ab';
 const ab2 = 'ab';
 
-const stringWithNumber = '1 + 1 = 2';
+const stringWithNumber = `1 + 1 = ${2}`;
 
-const stringWithBoolean = 'true is true';
+const stringWithBoolean = `true is ${true}`;
 
 const text = 'a';
 const wrappedText = text;
@@ -47,6 +47,10 @@ const wrappedIntersection = intersectionWithString;
 ```
 
 <!--/tabs-->
+
+## When Not To Use It
+
+When you want to allow string expressions inside template literals.
 
 ## Related To
 
