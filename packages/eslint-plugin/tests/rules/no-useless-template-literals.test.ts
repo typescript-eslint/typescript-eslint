@@ -249,8 +249,8 @@ ruleTester.run('no-useless-template-literals', rule, {
         {
           messageId: 'noUselessTemplateLiteral',
           line: 3,
-          column: 25,
-          endColumn: 36,
+          column: 28,
+          endColumn: 34,
         },
       ],
     },
@@ -263,8 +263,8 @@ ruleTester.run('no-useless-template-literals', rule, {
         {
           messageId: 'noUselessTemplateLiteral',
           line: 2,
-          column: 31,
-          endColumn: 62,
+          column: 34,
+          endColumn: 60,
         },
       ],
     },
@@ -278,8 +278,8 @@ ruleTester.run('no-useless-template-literals', rule, {
         {
           messageId: 'noUselessTemplateLiteral',
           line: 3,
-          column: 25,
-          endColumn: 42,
+          column: 28,
+          endColumn: 40,
         },
       ],
     },
@@ -294,8 +294,8 @@ ruleTester.run('no-useless-template-literals', rule, {
         {
           messageId: 'noUselessTemplateLiteral',
           line: 3,
-          column: 27,
-          endColumn: 35,
+          column: 30,
+          endColumn: 33,
         },
       ],
     },

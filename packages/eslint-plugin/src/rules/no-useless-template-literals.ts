@@ -65,7 +65,7 @@ export default createRule<[], MessageId>({
 
         if (hasSingleStringVariable) {
           context.report({
-            node,
+            node: node.expressions[0],
             messageId: 'noUselessTemplateLiteral',
           });
 
