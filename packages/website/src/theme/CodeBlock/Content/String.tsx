@@ -52,7 +52,12 @@ export default function CodeBlockString({
 
   const copiedCode = code
     .split('\n')
-    .filter((c, i) => !lineClassNames[i]?.includes('code-block-removed-line'))
+    .filter(
+      (c, i) =>
+        !(lineClassNames[i] as string[] | undefined)?.includes(
+          'code-block-removed-line',
+        ),
+    )
     .join('\n');
 
   const eslintrcHash = parseEslintrc(metastring);

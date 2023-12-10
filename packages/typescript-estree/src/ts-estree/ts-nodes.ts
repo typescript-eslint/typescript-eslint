@@ -4,9 +4,9 @@ import type * as ts from 'typescript';
 // Eg: https://github.com/typescript-eslint/typescript-eslint/issues/2388, https://github.com/typescript-eslint/typescript-eslint/issues/2784
 /* eslint-disable @typescript-eslint/ban-ts-comment, @typescript-eslint/prefer-ts-expect-error, @typescript-eslint/no-empty-interface */
 declare module 'typescript' {
-  // @ts-ignore - added in TS 4.5
+  /** @ts-ignore - added in TS 4.5, deprecated and converted to a type-alias in TS 5.3 */
   export interface AssertClause extends ts.Node {}
-  // @ts-ignore - added in TS 4.5
+  /** @ts-ignore - added in TS 4.5, deprecated and converted to a type-alias in TS 5.3 */
   export interface AssertEntry extends ts.Node {}
   // added in TS 4.9
   export interface SatisfiesExpression extends ts.Node {}
@@ -25,6 +25,10 @@ export type TSNode =
   | ts.Identifier
   | ts.ImportAttribute
   | ts.ImportAttributes
+  /* eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-duplicate-type-constituents -- intentional for old TS versions */
+  | ts.AssertClause
+  /* eslint-disable-next-line deprecation/deprecation, @typescript-eslint/no-duplicate-type-constituents -- intentional for old TS versions */
+  | ts.AssertEntry
   | ts.PrivateIdentifier
   | ts.QualifiedName
   | ts.ComputedPropertyName

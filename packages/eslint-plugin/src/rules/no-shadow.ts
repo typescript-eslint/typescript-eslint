@@ -412,7 +412,7 @@ export default createRule<Options, MessageIds>({
         return false;
       }
 
-      let node: TSESTree.Node | undefined = outerDef.name;
+      let node = outerDef.name as TSESTree.Node | undefined;
       const location = callExpression.range[1];
 
       while (node) {

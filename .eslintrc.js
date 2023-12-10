@@ -53,7 +53,6 @@ module.exports = {
     'deprecation/deprecation': 'error',
 
     // TODO(#7338): Investigate enabling these soon ✨
-    '@typescript-eslint/no-unnecessary-condition': 'off',
     '@typescript-eslint/no-dynamic-delete': 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
 
@@ -85,6 +84,11 @@ module.exports = {
     ],
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-non-null-assertion': 'off',
+    'no-constant-condition': 'off',
+    '@typescript-eslint/no-unnecessary-condition': [
+      'error',
+      { allowConstantLoopConditions: true },
+    ],
     '@typescript-eslint/no-var-requires': 'off',
     '@typescript-eslint/prefer-literal-enum-member': [
       'error',

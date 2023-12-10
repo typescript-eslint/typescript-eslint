@@ -482,4 +482,7 @@ class Foo {
 
 ## When Not To Use It
 
-If you don't care about the using parameter properties in constructors, then you will not need this rule.
+If you don't care about which style of parameter properties in constructors is used in your classes, then you will not need this rule.
+
+However, keep in mind that inconsistent style can harm readability in a project.
+We recommend picking a single option for this rule that works best for your project.

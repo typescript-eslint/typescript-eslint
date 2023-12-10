@@ -336,6 +336,11 @@ function ancestorHasReturnType(node: FunctionNode): boolean {
           return true;
         }
         break;
+      case AST_NODE_TYPES.PropertyDefinition:
+        if (ancestor.typeAnnotation) {
+          return true;
+        }
+        break;
     }
 
     ancestor = ancestor.parent;

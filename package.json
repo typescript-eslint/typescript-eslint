@@ -23,30 +23,30 @@
     "url": "https://github.com/typescript-eslint/typescript-eslint/issues"
   },
   "scripts": {
-    "build": "nx run-many --target=build --parallel --exclude website --exclude website-eslint",
+    "build": "npx nx run-many --target=build --parallel --exclude website --exclude website-eslint",
     "check-clean-workspace-after-install": "git diff --quiet --exit-code",
-    "check-configs": "nx run-many --target=check-configs --parallel",
-    "check-docs": "nx run-many --target=check-docs --parallel",
+    "check-configs": "npx nx run-many --target=check-configs --parallel",
+    "check-docs": "npx nx run-many --target=check-docs --parallel",
     "check-format": "prettier --check .",
     "check-spelling": "cspell --config=.cspell.json \"**/*.{md,mdx,ts,mts,cts,js,cjs,mjs,tsx,jsx}\" --no-progress --show-context --show-suggestions",
     "clean": "lerna clean -y && nx run-many --target=clean",
     "format": "prettier --write .",
-    "generate-breaking-changes": "nx run eslint-plugin:generate-breaking-changes",
-    "generate-configs": "nx run eslint-plugin:generate:configs",
-    "generate-contributors": "nx run repo-tools:generate-contributors",
-    "generate-sponsors": "nx run repo-tools:generate-sponsors",
-    "generate-website-dts": "nx run website:generate-website-dts",
-    "generate-lib": "nx run repo-tools:generate-lib",
+    "generate-breaking-changes": "npx nx run eslint-plugin:generate-breaking-changes",
+    "generate-configs": "npx nx run eslint-plugin:generate:configs",
+    "generate-contributors": "npx nx run repo-tools:generate-contributors",
+    "generate-sponsors": "npx nx run repo-tools:generate-sponsors",
+    "generate-website-dts": "npx nx run website:generate-website-dts",
+    "generate-lib": "npx nx run repo-tools:generate-lib",
     "lint-fix": "yarn lint --fix",
     "lint-markdown-fix": "yarn lint-markdown --fix",
     "lint-markdown": "markdownlint \"**/*.md\" --config=.markdownlint.json --ignore-path=.markdownlintignore",
-    "lint": "nx run-many --target=lint --parallel",
-    "postinstall": "nx run repo-tools:postinstall-script",
+    "lint": "npx nx run-many --target=lint --parallel",
+    "postinstall": "npx nx run repo-tools:postinstall-script",
     "pre-commit": "yarn lint-staged",
-    "start": "nx run website:start",
-    "test": "nx run-many --target=test --parallel --exclude integration-tests --exclude website --exclude website-eslint",
-    "test-integration": "nx run integration-tests:test",
-    "typecheck": "nx run-many --target=typecheck --parallel"
+    "start": "npx nx run website:start",
+    "test": "npx nx run-many --target=test --parallel --exclude integration-tests --exclude website --exclude website-eslint",
+    "test-integration": "npx nx run integration-tests:test",
+    "typecheck": "npx nx run-many --target=typecheck --parallel"
   },
   "engines": {
     "node": "^16.0.0 || >=18.0.0"
@@ -54,11 +54,11 @@
   "devDependencies": {
     "@actions/core": "^1.10.0",
     "@actions/github": "^6.0.0",
-    "@babel/code-frame": "^7.22.5",
-    "@babel/core": "^7.22.8",
-    "@babel/eslint-parser": "^7.22.7",
-    "@babel/parser": "^7.22.7",
-    "@babel/types": "^7.22.5",
+    "@babel/code-frame": "^7.22.13",
+    "@babel/core": "^7.23.3",
+    "@babel/eslint-parser": "^7.23.3",
+    "@babel/parser": "^7.23.3",
+    "@babel/types": "^7.23.3",
     "@nx/eslint": "17.1.2",
     "@nx/jest": "17.1.2",
     "@nx/workspace": "17.1.2",
@@ -69,7 +69,7 @@
     "@types/babel__core": "^7.20.1",
     "@types/debug": "^4.1.8",
     "@types/is-glob": "^4.0.2",
-    "@types/jest": "29.5.8",
+    "@types/jest": "29.5.11",
     "@types/jest-specific-snapshot": "^0.5.6",
     "@types/marked": "^5.0.0",
     "@types/natural-compare": "^1.4.1",
@@ -114,7 +114,7 @@
     "ts-node": "10.7.0",
     "tslint": "^6.1.3",
     "tsx": "^3.12.7",
-    "typescript": ">=4.3.5 <5.4.0 || 5.3.0-beta || 5.3.1-rc || 5.4.0-dev.20231117"
+    "typescript": ">=4.3.5 <5.4.0"
   },
   "resolutions": {
     "@jest/create-cache-key-function": "^29",
@@ -141,7 +141,7 @@
     "pretty-format": "^29",
     "react-split-pane@^0.1.92": "patch:react-split-pane@npm%3A0.1.92#./.yarn/patches/react-split-pane-npm-0.1.92-93dbf51dff.patch",
     "tsx": "^3.12.7",
-    "typescript": "patch:typescript@npm%3A5.4.0-dev.20231117#./.yarn/patches/typescript-npm-5.4.0-dev.20231117-78a04a34c5.patch"
+    "typescript": "5.3.2"
   },
   "packageManager": "yarn@3.7.0"
 }

@@ -87,6 +87,85 @@ Program {
             end: { column: 42, line: 3 },
           },
         },
+        options: ObjectExpression {
+          type: "ObjectExpression",
+          properties: [
+            Property {
+              type: "Property",
+              computed: false,
+              key: Identifier {
+                type: "Identifier",
+                name: "assert",
+
+                range: [89, 95],
+                loc: {
+                  start: { column: 16, line: 3 },
+                  end: { column: 22, line: 3 },
+                },
+              },
+              kind: "init",
+              method: false,
+              shorthand: false,
+              value: ObjectExpression {
+                type: "ObjectExpression",
+                properties: [
+                  Property {
+                    type: "Property",
+                    computed: false,
+                    key: Identifier {
+                      type: "Identifier",
+                      name: "type",
+
+                      range: [99, 103],
+                      loc: {
+                        start: { column: 26, line: 3 },
+                        end: { column: 30, line: 3 },
+                      },
+                    },
+                    kind: "init",
+                    method: false,
+                    shorthand: false,
+                    value: Literal {
+                      type: "Literal",
+                      raw: "'json'",
+                      value: "json",
+
+                      range: [105, 111],
+                      loc: {
+                        start: { column: 32, line: 3 },
+                        end: { column: 38, line: 3 },
+                      },
+                    },
+
+                    range: [99, 111],
+                    loc: {
+                      start: { column: 26, line: 3 },
+                      end: { column: 38, line: 3 },
+                    },
+                  },
+                ],
+
+                range: [97, 113],
+                loc: {
+                  start: { column: 24, line: 3 },
+                  end: { column: 40, line: 3 },
+                },
+              },
+
+              range: [89, 113],
+              loc: {
+                start: { column: 16, line: 3 },
+                end: { column: 40, line: 3 },
+              },
+            },
+          ],
+
+          range: [87, 115],
+          loc: {
+            start: { column: 14, line: 3 },
+            end: { column: 42, line: 3 },
+          },
+        },
         source: Literal {
           type: "Literal",
           raw: "'foo'",

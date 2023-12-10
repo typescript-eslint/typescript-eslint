@@ -267,6 +267,7 @@ function createWatchProgram(
     // eslint-disable-next-line @typescript-eslint/no-empty-function
     /*reportWatchStatus*/ () => {},
   ) as WatchCompilerHostOfConfigFile<ts.BuilderProgram>;
+  watchCompilerHost.jsDocParsingMode = parseSettings.jsDocParsingMode;
 
   // ensure readFile reads the code being linted instead of the copy on disk
   const oldReadFile = watchCompilerHost.readFile;

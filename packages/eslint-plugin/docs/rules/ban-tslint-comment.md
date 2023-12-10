@@ -36,4 +36,4 @@ someCode(); // This is a comment that just happens to mention tslint
 
 ## When Not To Use It
 
-If you are still using TSLint.
+If you are still using TSLint alongside ESLint.

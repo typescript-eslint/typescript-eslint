@@ -1,12 +1,12 @@
 name: '📝 Documentation'
-description: 'Request a change in documentation'
+description: 'Adding or improving in docs'
 title: 'Docs: <a short description of my proposal>'
 labels:
   - documentation
   - triage
 body:
   - type: checkboxes
-    id: sanity-checks
+    id: preliminary-checks
     attributes:
       label: Before You File a Documentation Request Please Confirm You Have Done The Following...
       options:
