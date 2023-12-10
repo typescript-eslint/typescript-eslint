@@ -17,7 +17,7 @@ export default createRule<[], MessageId>({
     type: 'problem',
     docs: {
       description: 'Disallow unnecessary template literals',
-      recommended: 'recommended',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {
@@ -30,7 +30,9 @@ export default createRule<[], MessageId>({
   create(context) {
     const services = getParserServices(context);
 
-    function isUnderlyingTypeString(expression: TSESTree.Expression): boolean {
+    function isUnderlyingTypeString(
+      expression: TSESTree.Expression,
+    ): expression is TSESTree.StringLiteral | TSESTree.Identifier {
       const type = getConstrainedTypeAtLocation(services, expression);
 
       const isString = (t: ts.Type): boolean => {
@@ -59,7 +61,6 @@ export default createRule<[], MessageId>({
           node.quasis[0].value.raw === '' &&
           node.quasis[1].value.raw === '' &&
           node.expressions.length === 1 &&
-          node.expressions[0].type === AST_NODE_TYPES.Identifier &&
           isUnderlyingTypeString(node.expressions[0]);
 
         if (hasSingleStringVariable) {
@@ -71,26 +72,21 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        const allowedChars = ['\r', '\n', "'", '"'];
+        const stringLiteralExpressions = node.expressions.filter(
+          (expression): expression is TSESTree.StringLiteral => {
+            return (
+              isUnderlyingTypeString(expression) &&
+              expression.type === AST_NODE_TYPES.Literal
+            );
+          },
+        );
 
-        const hasStringWithAllowedChars = node.quasis.some(quasi => {
-          return new RegExp(`[${allowedChars.join('')}]`).test(quasi.value.raw);
-        });
-
-        if (hasStringWithAllowedChars) {
-          return;
-        }
-
-        const allAreLiterals = node.expressions.every(expression => {
-          return expression.type === AST_NODE_TYPES.Literal;
-        });
-
-        if (allAreLiterals) {
+        stringLiteralExpressions.forEach(stringLiteral => {
           context.report({
-            node,
+            node: stringLiteral,
             messageId: 'noUselessTemplateLiteral',
           });
-        }
+        });
       },
     };
   },

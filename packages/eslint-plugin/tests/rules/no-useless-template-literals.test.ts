@@ -17,6 +17,8 @@ ruleTester.run('no-useless-template-literals', rule, {
   valid: [
     "const string = 'a';",
 
+    'const string = `a`;',
+
     `
       const string = 'a';
       const concatenated = \`\${string}b\`;
@@ -66,6 +68,38 @@ ruleTester.run('no-useless-template-literals', rule, {
 
     `
       tag\`\${'a'}\${'b'}\`;
+    `,
+
+    `
+      const wrappedNumber = \`\${1}\`;
+    `,
+
+    `
+      const wrappedBigint = \`\${1n}\`;
+    `,
+
+    `
+      const wrappedBoolean = \`\${true}\`;
+    `,
+
+    `
+      const wrappedNull = \`\${null}\`;
+    `,
+
+    `
+      const wrappedUndefined = \`\${undefined}\`;
+    `,
+
+    `
+      const wrappedFunction = \`\${function(){}}\`;
+    `,
+
+    `
+      const wrappedArrowFunction = \`\${() => {}}\`;
+    `,
+
+    `
+      const wrappedFunctionWithArgs = \`\${(...args: any[]) => args}\`;
     `,
 
     `
@@ -137,7 +171,29 @@ ruleTester.run('no-useless-template-literals', rule, {
         {
           messageId: 'noUselessTemplateLiteral',
           line: 2,
-          column: 30,
+          column: 33,
+          endColumn: 36,
+        },
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 2,
+          column: 39,
+          endColumn: 42,
+        },
+      ],
+    },
+
+    {
+      code: `
+        const b = 'b';
+        const concatenated = \`a\${b}\${'c'}\`;
+      `,
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 3,
+          column: 38,
+          endColumn: 41,
         },
       ],
     },
@@ -150,7 +206,8 @@ ruleTester.run('no-useless-template-literals', rule, {
         {
           messageId: 'noUselessTemplateLiteral',
           line: 2,
-          column: 30,
+          column: 34,
+          endColumn: 37,
         },
       ],
     },
@@ -163,20 +220,8 @@ ruleTester.run('no-useless-template-literals', rule, {
         {
           messageId: 'noUselessTemplateLiteral',
           line: 2,
-          column: 30,
-        },
-      ],
-    },
-
-    {
-      code: `
-        const concatenated = \`1 + 1 = \${2}\`;
-      `,
-      errors: [
-        {
-          messageId: 'noUselessTemplateLiteral',
-          line: 2,
-          column: 30,
+          column: 33,
+          endColumn: 43,
         },
       ],
     },
@@ -189,7 +234,8 @@ ruleTester.run('no-useless-template-literals', rule, {
         {
           messageId: 'noUselessTemplateLiteral',
           line: 2,
-          column: 30,
+          column: 33,
+          endColumn: 36,
         },
       ],
     },
@@ -204,6 +250,21 @@ ruleTester.run('no-useless-template-literals', rule, {
           messageId: 'noUselessTemplateLiteral',
           line: 3,
           column: 25,
+          endColumn: 36,
+        },
+      ],
+    },
+
+    {
+      code: `
+        const wrappedSymbol = \`\${String(Symbol.for('test'))}\`;
+      `,
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 2,
+          column: 31,
+          endColumn: 62,
         },
       ],
     },
@@ -218,6 +279,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           messageId: 'noUselessTemplateLiteral',
           line: 3,
           column: 25,
+          endColumn: 42,
         },
       ],
     },
@@ -233,6 +295,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           messageId: 'noUselessTemplateLiteral',
           line: 3,
           column: 27,
+          endColumn: 35,
         },
       ],
     },

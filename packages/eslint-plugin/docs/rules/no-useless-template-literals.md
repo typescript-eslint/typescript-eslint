@@ -22,8 +22,8 @@ const stringWithNumber = `1 + 1 = ${2}`;
 
 const stringWithBoolean = `${'true is '}${true}`;
 
-const string = 'a';
-const wrappedString = `${string}`;
+const text = 'a';
+const wrappedString = `${text}`;
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
 const wrappedIntersection = `${intersectionWithString}`;
@@ -39,8 +39,8 @@ const stringWithNumber = '1 + 1 = 2';
 
 const stringWithBoolean = 'true is true';
 
-const string = 'a';
-const wrappedString = string;
+const text = 'a';
+const wrappedString = text;
 
 declare const intersectionWithString: string & { _brand: 'test-brand' };
 const wrappedIntersection = intersectionWithString;
