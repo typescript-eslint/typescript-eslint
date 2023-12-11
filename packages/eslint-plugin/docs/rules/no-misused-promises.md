@@ -75,8 +75,8 @@ while (await promise) {
 
 ### `"checksVoidReturn"`
 
-Likewise, if you don't want functions that return promises where a void return is
-expected to be checked, your configuration will look like this:
+Likewise, if you don't want to check functions that return promises where a void return is
+expected, your configuration will look like this:
 
 ```json
 {
