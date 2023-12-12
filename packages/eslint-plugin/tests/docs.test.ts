@@ -159,7 +159,7 @@ describe('Validating rule metadata', () => {
   }
 
   for (const [ruleName, rule] of rulesData) {
-    describe(`${ruleName}`, () => {
+    describe(ruleName, () => {
       it('`name` field in rule must match the filename', () => {
         // validate if rule name is same as url
         // there is no way to access this field but its used only in generation of docs url
