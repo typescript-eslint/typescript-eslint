@@ -130,7 +130,6 @@ module.exports = {
           },
           type: 'category',
         },
-        'maintenance/team',
       ],
       label: 'Maintenance',
       link: {
