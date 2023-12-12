@@ -7,6 +7,7 @@ import {
   getConstrainedTypeAtLocation,
   getParserServices,
   isTypeFlagSet,
+  isUndefinedIdentifier,
 } from '../util';
 
 type MessageId = 'noUselessTemplateLiteral';
@@ -72,18 +73,15 @@ export default createRule<[], MessageId>({
           return;
         }
 
-        const stringLiteralExpressions = node.expressions.filter(
-          (expression): expression is TSESTree.StringLiteral => {
-            return (
-              isUnderlyingTypeString(expression) &&
-              expression.type === AST_NODE_TYPES.Literal
-            );
-          },
+        const literalsOrUndefinedExpressions = node.expressions.filter(
+          (expression): expression is TSESTree.Literal | TSESTree.Identifier =>
+            expression.type === AST_NODE_TYPES.Literal ||
+            isUndefinedIdentifier(expression),
         );
 
-        stringLiteralExpressions.forEach(stringLiteral => {
+        literalsOrUndefinedExpressions.forEach(expression => {
           context.report({
-            node: stringLiteral,
+            node: expression,
             messageId: 'noUselessTemplateLiteral',
           });
         });

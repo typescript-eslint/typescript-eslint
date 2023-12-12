@@ -39,6 +39,11 @@ ruleTester.run('no-useless-template-literals', rule, {
     `,
 
     `
+      declare const undefinedish: undefined;
+      \`\${undefinedish}\`;
+    `,
+
+    `
       declare const left: 'a';
       declare const right: 'b';
       \`\${left}\${right}\`;
@@ -62,16 +67,6 @@ ruleTester.run('no-useless-template-literals', rule, {
     '`true && false = ${true && false}`;',
 
     "tag`${'a'}${'b'}`;",
-
-    '`${1}`;',
-
-    '`${1n}`;',
-
-    '`${true}`;',
-
-    '`${null}`;',
-
-    '`${undefined}`;',
 
     '`${function () {}}`;',
 
@@ -141,6 +136,61 @@ ruleTester.run('no-useless-template-literals', rule, {
 
   invalid: [
     {
+      code: '`${1}`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 5,
+        },
+      ],
+    },
+    {
+      code: '`${1n}`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 6,
+        },
+      ],
+    },
+    {
+      code: '`${true}`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 8,
+        },
+      ],
+    },
+    {
+      code: '`${null}`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 8,
+        },
+      ],
+    },
+    {
+      code: '`${undefined}`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 4,
+          endColumn: 13,
+        },
+      ],
+    },
+    {
       code: "`${'a'}${'b'}`;",
       errors: [
         {
@@ -194,6 +244,12 @@ ruleTester.run('no-useless-template-literals', rule, {
           column: 4,
           endColumn: 14,
         },
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 17,
+          endColumn: 18,
+        },
       ],
     },
 
@@ -205,6 +261,12 @@ ruleTester.run('no-useless-template-literals', rule, {
           line: 1,
           column: 4,
           endColumn: 7,
+        },
+        {
+          messageId: 'noUselessTemplateLiteral',
+          line: 1,
+          column: 10,
+          endColumn: 14,
         },
       ],
     },

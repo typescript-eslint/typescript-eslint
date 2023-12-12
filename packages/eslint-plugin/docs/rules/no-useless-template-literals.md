@@ -35,9 +35,9 @@ const wrappedIntersection = `${intersectionWithString}`;
 const ab1 = 'ab';
 const ab2 = 'ab';
 
-const stringWithNumber = `1 + 1 = ${2}`;
+const stringWithNumber = `1 + 1 = 2`;
 
-const stringWithBoolean = `true is ${true}`;
+const stringWithBoolean = `true is true`;
 
 const text = 'a';
 const wrappedText = text;
