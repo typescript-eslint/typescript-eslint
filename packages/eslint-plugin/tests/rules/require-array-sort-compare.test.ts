@@ -126,6 +126,13 @@ ruleTester.run('require-array-sort-compare', rule, {
       `,
       options: [{ ignoreStringArrays: true }],
     },
+    {
+      code: `
+        function f(a: number[]) {
+          a.toSorted((a, b) => a - b);
+        }
+      `,
+    },
   ],
   invalid: [
     {
