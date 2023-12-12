@@ -16,255 +16,222 @@ const ruleTester = new RuleTester({
 ruleTester.run('no-useless-template-literals', rule, {
   valid: [
     "const string = 'a';",
-
     'const string = `a`;',
 
     `
-      const string = 'a';
-      const concatenated = \`\${string}b\`;
+      declare const string: 'a';
+      \`\${string}b\`;
     `,
 
     `
-      const number = 1;
-      const concatenated = \`\${number}b\`;
+      declare const number: 1;
+      \`\${number}b\`;
     `,
 
     `
-      const boolean = true;
-      const concatenated = \`\${boolean}b\`;
+      declare const boolean: true;
+      \`\${boolean}b\`;
     `,
 
     `
-      const nullish = null;
-      const concatenated = \`\${nullish}-undefined\`;
+      declare const nullish: null;
+      \`\${nullish}-undefined\`;
     `,
 
     `
-      const left = 'a';
-      const right = 'b';
-      const concatenated = \`\${left}\${right}\`;
+      declare const left: 'a';
+      declare const right: 'b';
+      \`\${left}\${right}\`;
     `,
 
     `
-      const left = 'a';
-      const right = 'c';
-      const concatenated = \`\${left}b\${right}\`;
+      declare const left: 'a';
+      declare const right: 'c';
+      \`\${left}b\${right}\`;
     `,
 
     `
-      const left = 'a';
-      const center = 'b';
-      const right = 'c';
-      const concatenated = \`\${left}\${center}\${right}\`;
+      declare const left: 'a';
+      declare const center: 'b';
+      declare const right: 'c';
+      \`\${left}\${center}\${right}\`;
+    `,
+
+    '`1 + 1 = ${1 + 1}`;',
+
+    '`true && false = ${true && false}`;',
+
+    "tag`${'a'}${'b'}`;",
+
+    '`${1}`;',
+
+    '`${1n}`;',
+
+    '`${true}`;',
+
+    '`${null}`;',
+
+    '`${undefined}`;',
+
+    '`${function () {}}`;',
+
+    '`${() => {}}`;',
+
+    '`${(...args: any[]) => args}`;',
+
+    `
+      declare const number: 1;
+      \`\${number}\`;
     `,
 
     `
-      const concatenated = \`1 + 1 = \${1 + 1}\`;
+      declare const boolean: true;
+      \`\${boolean}\`;
     `,
 
     `
-      const concatenated = \`true && false = \${true && false}\`;
-    `,
-
-    `
-      tag\`\${'a'}\${'b'}\`;
-    `,
-
-    `
-      const wrappedNumber = \`\${1}\`;
-    `,
-
-    `
-      const wrappedBigint = \`\${1n}\`;
-    `,
-
-    `
-      const wrappedBoolean = \`\${true}\`;
-    `,
-
-    `
-      const wrappedNull = \`\${null}\`;
-    `,
-
-    `
-      const wrappedUndefined = \`\${undefined}\`;
-    `,
-
-    `
-      const wrappedFunction = \`\${function () {}}\`;
-    `,
-
-    `
-      const wrappedArrowFunction = \`\${() => {}}\`;
-    `,
-
-    `
-      const wrappedFunctionWithArgs = \`\${(...args: any[]) => args}\`;
-    `,
-
-    `
-      const number = 1;
-      const wrapped = \`\${number}\`;
-    `,
-
-    `
-      const boolean = true;
-      const wrapped = \`\${boolean}\`;
-    `,
-
-    `
-      const nullish = null;
-      const wrapped = \`\${nullish}\`;
+      declare const nullish: null;
+      \`\${nullish}\`;
     `,
 
     `
       declare const union: string | number;
-      const wrapped = \`\${union}\`;
+      \`\${union}\`;
     `,
 
     `
       declare const unknown: unknown;
-      const wrapped = \`\${unknown}\`;
+      \`\${unknown}\`;
     `,
 
     `
       declare const never: never;
-      const wrapped = \`\${never}\`;
+      \`\${never}\`;
     `,
 
     `
       declare const any: any;
-      const wrapped = \`\${any}\`;
+      \`\${any}\`;
     `,
 
     `
       function func<T extends number>(arg: T) {
-        const wrapped = \`\${arg}\`;
+        \`\${arg}\`;
       }
     `,
 
     `
-      const wrapped = \`with
+      \`with
 
       new line\`;
     `,
 
     `
-      const a = 'a';
+      declare const a: 'a';
 
-      const wrapped = \`\${a} with
+      \`\${a} with
 
       new line\`;
     `,
 
     noFormat`
-      const wrapped = \`with windows \r new line\`;
+      \`with windows \r new line\`;
     `,
   ],
 
   invalid: [
     {
-      code: `
-        const concatenated = \`\${'a'}\${'b'}\`;
-      `,
+      code: "`${'a'}${'b'}`;",
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          line: 2,
-          column: 33,
-          endColumn: 36,
+          line: 1,
+          column: 4,
+          endColumn: 7,
         },
         {
           messageId: 'noUselessTemplateLiteral',
-          line: 2,
-          column: 39,
-          endColumn: 42,
+          line: 1,
+          column: 10,
+          endColumn: 13,
         },
       ],
     },
 
     {
       code: `
-        const b = 'b';
-        const concatenated = \`a\${b}\${'c'}\`;
+        declare const b: 'b';
+        \`a\${b}\${'c'}\`;
       `,
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 3,
-          column: 38,
-          endColumn: 41,
+          column: 17,
+          endColumn: 20,
         },
       ],
     },
 
     {
-      code: `
-        const concatenated = \`a\${'b'}\`;
-      `,
+      code: "`a${'b'}`;",
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          line: 2,
-          column: 34,
-          endColumn: 37,
+          line: 1,
+          column: 5,
+          endColumn: 8,
         },
       ],
     },
 
     {
-      code: `
-        const concatenated = \`\${'1 + 1 = '}\${2}\`;
-      `,
+      code: "`${'1 + 1 = '}${2}`;",
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          line: 2,
-          column: 33,
-          endColumn: 43,
+          line: 1,
+          column: 4,
+          endColumn: 14,
         },
       ],
     },
 
     {
-      code: `
-        const concatenated = \`\${'a'}\${true}\`;
-      `,
+      code: "`${'a'}${true}`;",
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          line: 2,
-          column: 33,
-          endColumn: 36,
+          line: 1,
+          column: 4,
+          endColumn: 7,
         },
       ],
     },
 
     {
       code: `
-        const string = 'a';
-        const wrapped = \`\${string}\`;
+        declare const string: 'a';
+        \`\${string}\`;
       `,
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 3,
-          column: 28,
-          endColumn: 34,
+          column: 12,
+          endColumn: 18,
         },
       ],
     },
 
     {
-      code: `
-        const wrappedSymbol = \`\${String(Symbol.for('test'))}\`;
-      `,
+      code: "`${String(Symbol.for('test'))}`;",
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          line: 2,
-          column: 34,
-          endColumn: 60,
+          line: 1,
+          column: 4,
+          endColumn: 30,
         },
       ],
     },
@@ -272,14 +239,14 @@ ruleTester.run('no-useless-template-literals', rule, {
     {
       code: `
         declare const intersection: string & { _brand: 'test-brand' };
-        const wrapped = \`\${intersection}\`;
+        \`\${intersection}\`;
       `,
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 3,
-          column: 28,
-          endColumn: 40,
+          column: 12,
+          endColumn: 24,
         },
       ],
     },
@@ -287,15 +254,15 @@ ruleTester.run('no-useless-template-literals', rule, {
     {
       code: `
         function func<T extends string>(arg: T) {
-          const wrapped = \`\${arg}\`;
+          \`\${arg}\`;
         }
       `,
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 3,
-          column: 30,
-          endColumn: 33,
+          column: 14,
+          endColumn: 17,
         },
       ],
     },
