@@ -13,10 +13,10 @@ import {
 } from '../util';
 
 interface SwitchMetadata {
-  symbolName: string | undefined;
-  missingBranchTypes: ts.Type[];
-  defaultCase: TSESTree.SwitchCase | undefined;
-  isUnion: boolean;
+  readonly symbolName: string | undefined;
+  readonly missingBranchTypes: ts.Type[];
+  readonly defaultCase: TSESTree.SwitchCase | undefined;
+  readonly isUnion: boolean;
 }
 
 type Options = [
