@@ -119,6 +119,7 @@ module.exports = {
         },
         'maintenance/major-release-steps',
         'maintenance/pull-requests',
+        'maintenance/team',
       ],
       label: 'Maintenance',
       link: {
