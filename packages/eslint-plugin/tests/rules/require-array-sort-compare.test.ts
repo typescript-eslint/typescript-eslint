@@ -254,5 +254,13 @@ ruleTester.run('require-array-sort-compare', rule, {
       errors: [{ messageId: 'requireCompare' }],
       options: [{ ignoreStringArrays: true }],
     },
+    {
+      code: `
+        function f(a: number[]) {
+          a.toSorted();
+        }
+      `,
+      errors: [{ messageId: 'requireCompare' }],
+    },
   ],
 });

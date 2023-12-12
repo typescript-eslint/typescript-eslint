@@ -6,7 +6,7 @@ description: 'Require `Array#sort` calls to always provide a `compareFunction`.'
 >
 > See **https://typescript-eslint.io/rules/require-array-sort-compare** for documentation.
 
-When called without a compare function, `Array#sort()` converts all non-undefined array elements into strings and then compares said strings based off their UTF-16 code units [[ECMA specification](https://www.ecma-international.org/ecma-262/9.0/#sec-sortcompare)].
+When called without a compare function, `Array#sort()` and `Array#toSorted()` converts all non-undefined array elements into strings and then compares said strings based off their UTF-16 code units [[ECMA specification](https://www.ecma-international.org/ecma-262/9.0/#sec-sortcompare)].
 
 The result is that elements are sorted alphabetically, regardless of their type.
 For example, when sorting numbers, this results in a "10 before 2" order:
