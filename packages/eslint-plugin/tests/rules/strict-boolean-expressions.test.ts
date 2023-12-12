@@ -701,7 +701,7 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
-              output: '        declare const x: string; if (x.length > 0) {}',
+              output: `        declare const x: string; if (x.length > 0) {}`,
             },
             {
               messageId: 'conditionFixCompareEmptyString',
@@ -709,7 +709,7 @@ if (y) {
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: '        declare const x: string; if (Boolean(x)) {}',
+              output: `        declare const x: string; if (Boolean(x)) {}`,
             },
           ],
         },
@@ -720,7 +720,7 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
-              output: '        (x: string) => (x.length === 0);',
+              output: `        (x: string) => (x.length === 0);`,
             },
             {
               messageId: 'conditionFixCompareEmptyString',
@@ -728,7 +728,7 @@ if (y) {
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: '        (x: string) => (!Boolean(x));',
+              output: `        (x: string) => (!Boolean(x));`,
             },
           ],
         },
@@ -739,8 +739,7 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixCompareStringLength',
-              output:
-                '        <T extends string>(x: T) => (x.length > 0) ? 1 : 0;',
+              output: `        <T extends string>(x: T) => (x.length > 0) ? 1 : 0;`,
             },
             {
               messageId: 'conditionFixCompareEmptyString',
@@ -748,8 +747,7 @@ if (y) {
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output:
-                '        <T extends string>(x: T) => (Boolean(x)) ? 1 : 0;',
+              output: `        <T extends string>(x: T) => (Boolean(x)) ? 1 : 0;`,
             },
           ],
         },
@@ -777,16 +775,16 @@ if (y) {
             {
               messageId: 'conditionFixCompareZero',
               // TODO: fix compare zero suggestion for bigint
-              output: 'while (0n !== 0) {}',
+              output: `while (0n !== 0) {}`,
             },
             {
               // TODO: remove check NaN suggestion for bigint
               messageId: 'conditionFixCompareNaN',
-              output: 'while (!Number.isNaN(0n)) {}',
+              output: `while (!Number.isNaN(0n)) {}`,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: 'while (Boolean(0n)) {}',
+              output: `while (Boolean(0n)) {}`,
             },
           ],
         },
@@ -797,15 +795,15 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
-              output: '        for (; 123 !== 0;) {}',
+              output: `        for (; 123 !== 0;) {}`,
             },
             {
               messageId: 'conditionFixCompareNaN',
-              output: '        for (; !Number.isNaN(123);) {}',
+              output: `        for (; !Number.isNaN(123);) {}`,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: '        for (; Boolean(123);) {}',
+              output: `        for (; Boolean(123);) {}`,
             },
           ],
         },
@@ -816,16 +814,15 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
-              output: '        declare const x: number; if (x !== 0) {}',
+              output: `        declare const x: number; if (x !== 0) {}`,
             },
             {
               messageId: 'conditionFixCompareNaN',
-              output:
-                '        declare const x: number; if (!Number.isNaN(x)) {}',
+              output: `        declare const x: number; if (!Number.isNaN(x)) {}`,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: '        declare const x: number; if (Boolean(x)) {}',
+              output: `        declare const x: number; if (Boolean(x)) {}`,
             },
           ],
         },
@@ -837,16 +834,16 @@ if (y) {
             {
               messageId: 'conditionFixCompareZero',
               // TODO: fix compare zero suggestion for bigint
-              output: '        (x: bigint) => x === 0;',
+              output: `        (x: bigint) => x === 0;`,
             },
             {
               // TODO: remove check NaN suggestion for bigint
               messageId: 'conditionFixCompareNaN',
-              output: '        (x: bigint) => Number.isNaN(x);',
+              output: `        (x: bigint) => Number.isNaN(x);`,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output: '        (x: bigint) => !Boolean(x);',
+              output: `        (x: bigint) => !Boolean(x);`,
             },
           ],
         },
@@ -857,17 +854,15 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
-              output: '        <T extends number>(x: T) => (x !== 0) ? 1 : 0;',
+              output: `        <T extends number>(x: T) => (x !== 0) ? 1 : 0;`,
             },
             {
               messageId: 'conditionFixCompareNaN',
-              output:
-                '        <T extends number>(x: T) => (!Number.isNaN(x)) ? 1 : 0;',
+              output: `        <T extends number>(x: T) => (!Number.isNaN(x)) ? 1 : 0;`,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output:
-                '        <T extends number>(x: T) => (Boolean(x)) ? 1 : 0;',
+              output: `        <T extends number>(x: T) => (Boolean(x)) ? 1 : 0;`,
             },
           ],
         },
@@ -897,18 +892,15 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixCompareZero',
-              output:
-                '        declare const a: any[] & { notLength: number }; if (a.notLength !== 0) {}',
+              output: `        declare const a: any[] & { notLength: number }; if (a.notLength !== 0) {}`,
             },
             {
               messageId: 'conditionFixCompareNaN',
-              output:
-                '        declare const a: any[] & { notLength: number }; if (!Number.isNaN(a.notLength)) {}',
+              output: `        declare const a: any[] & { notLength: number }; if (!Number.isNaN(a.notLength)) {}`,
             },
             {
               messageId: 'conditionFixCastBoolean',
-              output:
-                '        declare const a: any[] & { notLength: number }; if (Boolean(a.notLength)) {}',
+              output: `        declare const a: any[] & { notLength: number }; if (Boolean(a.notLength)) {}`,
             },
           ],
         },
@@ -966,11 +958,11 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixDefaultFalse',
-              output: 'declare const x: boolean | null; if (x ?? false) {}',
+              output: `declare const x: boolean | null; if (x ?? false) {}`,
             },
             {
               messageId: 'conditionFixCompareTrue',
-              output: 'declare const x: boolean | null; if (x === true) {}',
+              output: `declare const x: boolean | null; if (x === true) {}`,
             },
           ],
         },
@@ -981,11 +973,11 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixDefaultFalse',
-              output: '        (x?: boolean) => !(x ?? false);',
+              output: `        (x?: boolean) => !(x ?? false);`,
             },
             {
               messageId: 'conditionFixCompareFalse',
-              output: '        (x?: boolean) => x === false;',
+              output: `        (x?: boolean) => x === false;`,
             },
           ],
         },
@@ -996,13 +988,11 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixDefaultFalse',
-              output:
-                '        <T extends boolean | null | undefined>(x: T) => (x ?? false) ? 1 : 0;',
+              output: `        <T extends boolean | null | undefined>(x: T) => (x ?? false) ? 1 : 0;`,
             },
             {
               messageId: 'conditionFixCompareTrue',
-              output:
-                '        <T extends boolean | null | undefined>(x: T) => (x === true) ? 1 : 0;',
+              output: `        <T extends boolean | null | undefined>(x: T) => (x === true) ? 1 : 0;`,
             },
           ],
         },
@@ -1036,7 +1026,7 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
-              output: '        (x?: { a: number }) => x == null;',
+              output: `        (x?: { a: number }) => x == null;`,
             },
           ],
         },
@@ -1047,8 +1037,7 @@ if (y) {
           suggestions: [
             {
               messageId: 'conditionFixCompareNullish',
-              output:
-                '        <T extends {} | null | undefined>(x: T) => (x != null) ? 1 : 0;',
+              output: `        <T extends {} | null | undefined>(x: T) => (x != null) ? 1 : 0;`,
             },
           ],
         },

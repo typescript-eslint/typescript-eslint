@@ -504,7 +504,7 @@ let baz: object = {};
     },
     {
       code: noFormat`let a: Foo<   F   >;`,
-      output: 'let a: Foo<   T   >;',
+      output: `let a: Foo<   T   >;`,
       errors: [
         {
           messageId: 'bannedTypeMessage',

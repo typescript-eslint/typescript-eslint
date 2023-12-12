@@ -117,7 +117,7 @@ function data<T extends TODO>() {}
             {
               messageId: 'removeUnnecessaryConstraint',
               data: { constraint: 'any' },
-              output: 'const data = <T,>() => {};',
+              output: `const data = <T,>() => {};`,
             },
           ],
         },
@@ -141,7 +141,7 @@ function data<T extends TODO>() {}
             {
               messageId: 'removeUnnecessaryConstraint',
               data: { constraint: 'any' },
-              output: 'const data = <T,>() => {};',
+              output: `const data = <T,>() => {};`,
             },
           ],
         },
@@ -161,7 +161,7 @@ function data<T extends TODO>() {}
             {
               messageId: 'removeUnnecessaryConstraint',
               data: { constraint: 'any' },
-              output: 'const data = <T,>() => {};',
+              output: `const data = <T,>() => {};`,
             },
           ],
         },
@@ -181,7 +181,7 @@ function data<T extends TODO>() {}
             {
               messageId: 'removeUnnecessaryConstraint',
               data: { constraint: 'any' },
-              output: 'const data = <T,>() => {};',
+              output: `const data = <T,>() => {};`,
             },
           ],
         },
@@ -205,7 +205,7 @@ function data<T extends TODO>() {}
             {
               messageId: 'removeUnnecessaryConstraint',
               data: { constraint: 'any' },
-              output: 'const data = <T, >() => {};',
+              output: `const data = <T, >() => {};`,
             },
           ],
         },
@@ -229,7 +229,7 @@ function data<T extends TODO>() {}
             {
               messageId: 'removeUnnecessaryConstraint',
               data: { constraint: 'any' },
-              output: 'const data = <T ,>() => {};',
+              output: `const data = <T ,>() => {};`,
             },
           ],
         },
@@ -253,7 +253,7 @@ function data<T extends TODO>() {}
             {
               messageId: 'removeUnnecessaryConstraint',
               data: { constraint: 'any' },
-              output: 'const data = <T , >() => {};',
+              output: `const data = <T , >() => {};`,
             },
           ],
         },
@@ -301,7 +301,7 @@ function data<T extends TODO>() {}
             {
               messageId: 'removeUnnecessaryConstraint',
               data: { constraint: 'any' },
-              output: 'const data = <T, U extends any>() => {};',
+              output: `const data = <T, U extends any>() => {};`,
             },
           ],
         },
@@ -315,7 +315,7 @@ function data<T extends TODO>() {}
             {
               messageId: 'removeUnnecessaryConstraint',
               data: { constraint: 'any' },
-              output: 'const data = <T extends any, U>() => {};',
+              output: `const data = <T extends any, U>() => {};`,
             },
           ],
         },

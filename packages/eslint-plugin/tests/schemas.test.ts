@@ -180,7 +180,7 @@ describe('Rule schemas should validate options correctly', () => {
 
     test(`${ruleName} rejects arbitrary options`, () => {
       if (areOptionsValid(rule, [{ 'arbitrary-schemas.test.ts': true }])) {
-        throw new Error('Options succeeded validation for arbitrary options');
+        throw new Error(`Options succeeded validation for arbitrary options`);
       }
     });
   }

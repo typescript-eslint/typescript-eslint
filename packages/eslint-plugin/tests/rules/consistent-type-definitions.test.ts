@@ -64,7 +64,7 @@ export type W<T> = {
   invalid: [
     {
       code: noFormat`type T = { x: number; };`,
-      output: 'interface T { x: number; }',
+      output: `interface T { x: number; }`,
       options: ['interface'],
       errors: [
         {
@@ -76,7 +76,7 @@ export type W<T> = {
     },
     {
       code: noFormat`type T={ x: number; };`,
-      output: 'interface T { x: number; }',
+      output: `interface T { x: number; }`,
       options: ['interface'],
       errors: [
         {
@@ -88,7 +88,7 @@ export type W<T> = {
     },
     {
       code: noFormat`type T=                         { x: number; };`,
-      output: 'interface T { x: number; }',
+      output: `interface T { x: number; }`,
       options: ['interface'],
       errors: [
         {
@@ -120,7 +120,7 @@ export interface W<T> {
     },
     {
       code: noFormat`interface T { x: number; }`,
-      output: 'type T = { x: number; }',
+      output: `type T = { x: number; }`,
       options: ['type'],
       errors: [
         {
@@ -132,7 +132,7 @@ export interface W<T> {
     },
     {
       code: noFormat`interface T{ x: number; }`,
-      output: 'type T = { x: number; }',
+      output: `type T = { x: number; }`,
       options: ['type'],
       errors: [
         {
@@ -144,7 +144,7 @@ export interface W<T> {
     },
     {
       code: noFormat`interface T                          { x: number; }`,
-      output: 'type T = { x: number; }',
+      output: `type T = { x: number; }`,
       options: ['type'],
       errors: [
         {
@@ -156,7 +156,7 @@ export interface W<T> {
     },
     {
       code: noFormat`interface A extends B, C { x: number; };`,
-      output: 'type A = { x: number; } & B & C;',
+      output: `type A = { x: number; } & B & C;`,
       options: ['type'],
       errors: [
         {
@@ -168,7 +168,7 @@ export interface W<T> {
     },
     {
       code: noFormat`interface A extends B<T1>, C<T2> { x: number; };`,
-      output: 'type A = { x: number; } & B<T1> & C<T2>;',
+      output: `type A = { x: number; } & B<T1> & C<T2>;`,
       options: ['type'],
       errors: [
         {

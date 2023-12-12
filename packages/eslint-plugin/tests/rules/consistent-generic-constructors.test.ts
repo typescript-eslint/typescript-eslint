@@ -162,7 +162,7 @@ function a([a = new Foo<string>()]) {}
           messageId: 'preferConstructor',
         },
       ],
-      output: 'const a = new Map<string, number>();',
+      output: `const a = new Map<string, number>();`,
     },
     {
       code: noFormat`const a: Map< string, number > = new Map();`,
@@ -171,7 +171,7 @@ function a([a = new Foo<string>()]) {}
           messageId: 'preferConstructor',
         },
       ],
-      output: 'const a = new Map< string, number >();',
+      output: `const a = new Map< string, number >();`,
     },
     {
       code: noFormat`const a: Map<string, number> = new Map ();`,
@@ -180,7 +180,7 @@ function a([a = new Foo<string>()]) {}
           messageId: 'preferConstructor',
         },
       ],
-      output: 'const a = new Map<string, number> ();',
+      output: `const a = new Map<string, number> ();`,
     },
     {
       code: noFormat`const a: Foo<number> = new Foo;`,
@@ -189,7 +189,7 @@ function a([a = new Foo<string>()]) {}
           messageId: 'preferConstructor',
         },
       ],
-      output: 'const a = new Foo<number>();',
+      output: `const a = new Foo<number>();`,
     },
     {
       code: 'const a: /* comment */ Foo/* another */ <string> = new Foo();',
@@ -198,7 +198,7 @@ function a([a = new Foo<string>()]) {}
           messageId: 'preferConstructor',
         },
       ],
-      output: 'const a = new Foo/* comment *//* another */<string>();',
+      output: `const a = new Foo/* comment *//* another */<string>();`,
     },
     {
       code: 'const a: Foo/* comment */ <string> = new Foo /* another */();',
@@ -207,7 +207,7 @@ function a([a = new Foo<string>()]) {}
           messageId: 'preferConstructor',
         },
       ],
-      output: 'const a = new Foo/* comment */<string> /* another */();',
+      output: `const a = new Foo/* comment */<string> /* another */();`,
     },
     {
       code: noFormat`const a: Foo<string> = new \n Foo \n ();`,
@@ -216,7 +216,7 @@ function a([a = new Foo<string>()]) {}
           messageId: 'preferConstructor',
         },
       ],
-      output: 'const a = new \n Foo<string> \n ();',
+      output: `const a = new \n Foo<string> \n ();`,
     },
     {
       code: `
@@ -349,7 +349,7 @@ const a = function (a = new Foo<string>()) {};
           messageId: 'preferTypeAnnotation',
         },
       ],
-      output: 'const a: Map<string, number> = new Map  ();',
+      output: `const a: Map<string, number> = new Map  ();`,
     },
     {
       code: noFormat`const a = new Map< string, number >();`,
@@ -359,7 +359,7 @@ const a = function (a = new Foo<string>()) {};
           messageId: 'preferTypeAnnotation',
         },
       ],
-      output: 'const a: Map< string, number > = new Map();',
+      output: `const a: Map< string, number > = new Map();`,
     },
     {
       code: noFormat`const a = new \n Foo<string> \n ();`,
@@ -369,7 +369,7 @@ const a = function (a = new Foo<string>()) {};
           messageId: 'preferTypeAnnotation',
         },
       ],
-      output: 'const a: Foo<string> = new \n Foo \n ();',
+      output: `const a: Foo<string> = new \n Foo \n ();`,
     },
     {
       code: 'const a = new Foo/* comment */ <string> /* another */();',
@@ -379,7 +379,7 @@ const a = function (a = new Foo<string>()) {};
           messageId: 'preferTypeAnnotation',
         },
       ],
-      output: 'const a: Foo<string> = new Foo/* comment */  /* another */();',
+      output: `const a: Foo<string> = new Foo/* comment */  /* another */();`,
     },
     {
       code: 'const a = new Foo</* comment */ string, /* another */ number>();',
@@ -389,8 +389,7 @@ const a = function (a = new Foo<string>()) {};
           messageId: 'preferTypeAnnotation',
         },
       ],
-      output:
-        'const a: Foo</* comment */ string, /* another */ number> = new Foo();',
+      output: `const a: Foo</* comment */ string, /* another */ number> = new Foo();`,
     },
     {
       code: `

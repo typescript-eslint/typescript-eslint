@@ -171,7 +171,7 @@ type Bar = Foo
     },
     {
       code: 'interface Foo extends Array<number> {}',
-      output: 'type Foo = Array<number>',
+      output: `type Foo = Array<number>`,
       errors: [
         {
           messageId: 'noEmptyWithSuper',
@@ -182,7 +182,7 @@ type Bar = Foo
     },
     {
       code: 'interface Foo extends Array<number | {}> {}',
-      output: 'type Foo = Array<number | {}>',
+      output: `type Foo = Array<number | {}>`,
       errors: [
         {
           messageId: 'noEmptyWithSuper',

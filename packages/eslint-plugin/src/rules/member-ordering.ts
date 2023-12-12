@@ -578,7 +578,7 @@ function getRank(
 
       if (type === 'readonly-field') {
         memberGroups.push(`${accessibility}-decorated-field`);
-        memberGroups.push('decorated-field');
+        memberGroups.push(`decorated-field`);
       }
     }
 
@@ -666,8 +666,7 @@ export default createRule<Options, MessageIds>({
         'Member {{member}} should be declared before member {{beforeMember}}.',
       incorrectGroupOrder:
         'Member {{name}} should be declared before all {{rank}} definitions.',
-      incorrectRequiredMembersOrder:
-        'Member {{member}} should be declared after all {{optionalOrRequired}} members.',
+      incorrectRequiredMembersOrder: `Member {{member}} should be declared after all {{optionalOrRequired}} members.`,
     },
     schema: [
       {

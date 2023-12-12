@@ -203,7 +203,7 @@ function notcool(input: string) {
     {
       code: '(foo: undefined) => foo && console.log(foo);',
       errors: [{ line: 1, column: 28, messageId: 'invalidVoidExprArrow' }],
-      output: '(foo: undefined) => { foo && console.log(foo); };',
+      output: `(foo: undefined) => { foo && console.log(foo); };`,
     },
     {
       code: 'foo => foo || console.log(foo);',
@@ -212,12 +212,12 @@ function notcool(input: string) {
     {
       code: '(foo: undefined) => foo || console.log(foo);',
       errors: [{ line: 1, column: 28, messageId: 'invalidVoidExprArrow' }],
-      output: '(foo: undefined) => { foo || console.log(foo); };',
+      output: `(foo: undefined) => { foo || console.log(foo); };`,
     },
     {
       code: '(foo: void) => foo || console.log(foo);',
       errors: [{ line: 1, column: 23, messageId: 'invalidVoidExprArrow' }],
-      output: '(foo: void) => { foo || console.log(foo); };',
+      output: `(foo: void) => { foo || console.log(foo); };`,
     },
     {
       code: 'foo => (foo ? console.log(true) : console.log(false));',
@@ -225,7 +225,7 @@ function notcool(input: string) {
         { line: 1, column: 15, messageId: 'invalidVoidExprArrow' },
         { line: 1, column: 35, messageId: 'invalidVoidExprArrow' },
       ],
-      output: 'foo => { foo ? console.log(true) : console.log(false); };',
+      output: `foo => { foo ? console.log(true) : console.log(false); };`,
     },
     {
       code: `

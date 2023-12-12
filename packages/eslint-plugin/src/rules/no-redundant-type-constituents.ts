@@ -197,10 +197,8 @@ export default createRule({
       requiresTypeChecking: true,
     },
     messages: {
-      literalOverridden:
-        '{{literal}} is overridden by {{primitive}} in this union type.',
-      primitiveOverridden:
-        '{{primitive}} is overridden by the {{literal}} in this intersection type.',
+      literalOverridden: `{{literal}} is overridden by {{primitive}} in this union type.`,
+      primitiveOverridden: `{{primitive}} is overridden by the {{literal}} in this intersection type.`,
       overridden: `'{{typeName}}' is overridden by other types in this {{container}} type.`,
       overrides: `'{{typeName}}' overrides all other types in this {{container}} type.`,
     },

@@ -89,10 +89,10 @@ describe('Validating rule docs', () => {
       test(`${ruleName}.md must next have a blockquote directing to website`, () => {
         expect(tokens[2]).toMatchObject({
           text: [
-            '🛑 This file is source code, not the primary documentation location! 🛑',
-            '',
+            `🛑 This file is source code, not the primary documentation location! 🛑`,
+            ``,
             `See **https://typescript-eslint.io/rules/${ruleName}** for documentation.`,
-            '',
+            ``,
           ].join('\n'),
           type: 'blockquote',
         });
