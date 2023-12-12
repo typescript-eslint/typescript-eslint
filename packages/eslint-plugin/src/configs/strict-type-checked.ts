@@ -56,6 +56,7 @@ export = {
     '@typescript-eslint/no-unused-vars': 'error',
     'no-useless-constructor': 'off',
     '@typescript-eslint/no-useless-constructor': 'error',
+    '@typescript-eslint/no-useless-template-literals': 'error',
     '@typescript-eslint/no-var-requires': 'error',
     '@typescript-eslint/prefer-as-const': 'error',
     '@typescript-eslint/prefer-includes': 'error',

@@ -93,6 +93,21 @@ describe('all.ts', () => {
   itHasBaseRulesOverriden(unfilteredConfigRules);
 });
 
+describe('disable-type-checked.ts', () => {
+  const unfilteredConfigRules: Record<string, string> =
+    plugin.configs['disable-type-checked'].rules;
+
+  it('disables all type checked rules', () => {
+    const configRules = filterRules(unfilteredConfigRules);
+
+    const ruleConfigs: [string, string][] = Object.entries(rules)
+      .filter(([, rule]) => rule.meta.docs?.requiresTypeChecking)
+      .map(([name]) => [`${RULE_NAME_PREFIX}${name}`, 'off']);
+
+    expect(entriesToObject(ruleConfigs)).toEqual(entriesToObject(configRules));
+  });
+});
+
 describe('recommended.ts', () => {
   const unfilteredConfigRules: Record<string, string> =
     plugin.configs.recommended.rules;
