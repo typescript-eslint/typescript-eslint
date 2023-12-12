@@ -12,7 +12,7 @@ import {
   requiresQuoting,
 } from '../util';
 
-interface SwitchStatementMetadata {
+interface SwitchMetadata {
   symbolName: string | undefined;
   missingBranchTypes: ts.Type[];
   defaultCase: TSESTree.SwitchCase | undefined;
@@ -90,13 +90,7 @@ export default createRule<Options, MessageIds>({
     const checker = services.program.getTypeChecker();
     const compilerOptions = services.program.getCompilerOptions();
 
-    /**
-     * @returns Metadata about whether the switch is exhaustive (or `undefined`
-     *          if the switch case is not a union).
-     */
-    function getSwitchStatementMetadata(
-      node: TSESTree.SwitchStatement,
-    ): SwitchStatementMetadata {
+    function getSwitchMetadata(node: TSESTree.SwitchStatement): SwitchMetadata {
       const defaultCase = node.cases.find(
         switchCase => switchCase.test == null,
       );
@@ -149,10 +143,9 @@ export default createRule<Options, MessageIds>({
 
     function checkSwitchExhaustive(
       node: TSESTree.SwitchStatement,
-      switchStatementMetadata: SwitchStatementMetadata,
+      switchMetadata: SwitchMetadata,
     ): void {
-      const { missingBranchTypes, symbolName, defaultCase } =
-        switchStatementMetadata;
+      const { missingBranchTypes, symbolName, defaultCase } = switchMetadata;
 
       // We only trigger the rule if a `default` case does not exist, since that
       // would disqualify the switch statement from having cases that exactly
@@ -273,13 +266,13 @@ export default createRule<Options, MessageIds>({
     }
 
     function checkSwitchUnnecessaryDefaultCase(
-      switchStatementMetadata: SwitchStatementMetadata,
+      switchMetadata: SwitchMetadata,
     ): void {
       if (allowDefaultCaseForExhaustiveSwitch) {
         return;
       }
 
-      const { missingBranchTypes, defaultCase } = switchStatementMetadata;
+      const { missingBranchTypes, defaultCase } = switchMetadata;
 
       if (missingBranchTypes.length === 0 && defaultCase !== undefined) {
         context.report({
@@ -291,16 +284,15 @@ export default createRule<Options, MessageIds>({
 
     function checkSwitchNoUnionDefaultCase(
       node: TSESTree.SwitchStatement,
-      switchStatementMetadata: SwitchStatementMetadata,
+      switchMetadata: SwitchMetadata,
     ): void {
       if (!requireDefaultForNonUnion) {
         return;
       }
 
-      if (
-        !switchStatementMetadata.isUnion &&
-        switchStatementMetadata.defaultCase === undefined
-      ) {
+      const { isUnion, defaultCase } = switchMetadata;
+
+      if (!isUnion && defaultCase === undefined) {
         context.report({
           node: node.discriminant,
           messageId: 'switchIsNotExhaustive',
@@ -321,11 +313,11 @@ export default createRule<Options, MessageIds>({
 
     return {
       SwitchStatement(node): void {
-        const switchStatementMetadata = getSwitchStatementMetadata(node);
+        const switchMetadata = getSwitchMetadata(node);
 
-        checkSwitchExhaustive(node, switchStatementMetadata);
-        checkSwitchUnnecessaryDefaultCase(switchStatementMetadata);
-        checkSwitchNoUnionDefaultCase(node, switchStatementMetadata);
+        checkSwitchExhaustive(node, switchMetadata);
+        checkSwitchUnnecessaryDefaultCase(switchMetadata);
+        checkSwitchNoUnionDefaultCase(node, switchMetadata);
       },
     };
   },
