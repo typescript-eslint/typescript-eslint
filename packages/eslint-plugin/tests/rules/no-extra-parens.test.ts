@@ -731,7 +731,7 @@ f<(number) | string>(1)
     },
 
     {
-      code: noFormat`
+      code: `
 const Component = (
     <div>
         <p />

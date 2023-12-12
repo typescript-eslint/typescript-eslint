@@ -98,7 +98,7 @@ describe('Validating rule docs', () => {
         });
       });
 
-      test('headings must be title-cased', () => {
+      test(`headings must be title-cased`, () => {
         // Get all H2 headings objects as the other levels are variable by design.
         const headings = tokens.filter(tokenIsH2);
 
