@@ -189,7 +189,7 @@ export default createRule<Options, MessageIds>({
 
             // We have both type and value violations.
             const allExportNames = report.typeBasedSpecifiers.map(
-              specifier => `${specifier.local.name}`,
+              specifier => specifier.local.name,
             );
 
             if (allExportNames.length === 1) {
