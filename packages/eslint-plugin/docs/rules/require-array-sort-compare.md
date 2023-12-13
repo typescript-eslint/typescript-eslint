@@ -15,11 +15,11 @@ For example, when sorting numbers, this results in a "10 before 2" order:
 [1, 2, 3, 10, 20, 30].sort(); //→ [1, 10, 2, 20, 3, 30]
 ```
 
-This rule reports on any call to the `Array#sort()` method that doesn't provide a `compare` argument.
+This rule reports on any call to the sort methods that do not provide a `compare` argument.
 
 ## Examples
 
-This rule aims to ensure all calls of the native `Array#sort` method provide a `compareFunction`, while ignoring calls to user-defined `sort` methods.
+This rule aims to ensure all calls of the native sort methods provide a `compareFunction`, while ignoring calls to user-defined methods.
 
 <!--tabs-->
 
