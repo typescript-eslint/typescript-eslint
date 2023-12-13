@@ -1,5 +1,5 @@
 ---
-description: 'Require `Array#sort` calls to always provide a `compareFunction`.'
+description: 'Require `Array#sort` and `Array#toSorted` calls to always provide a `compareFunction`.'
 ---
 
 > 🛑 This file is source code, not the primary documentation location! 🛑
