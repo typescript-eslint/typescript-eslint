@@ -54,4 +54,5 @@ foo.endsWith('bar');
 
 ## When Not To Use It
 
-If you don't mind that style, you can turn this rule off safely.
+If you don't mind which style of string checking is used, you can turn this rule off safely.
+However, keep in mind that inconsistent style can harm readability in a project.

@@ -4,7 +4,7 @@ export const DEFAULT_TSCONFIG_CACHE_DURATION_SECONDS = 30;
 const ZERO_HR_TIME: [number, number] = [0, 0];
 
 export interface CacheLike<Key, Value> {
-  get(key: Key): Value | void;
+  get(key: Key): Value | undefined;
   set(key: Key, value: Value): this;
 }
 

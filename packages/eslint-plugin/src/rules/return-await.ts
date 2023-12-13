@@ -1,9 +1,17 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getParserServices,
+  isAwaitExpression,
+  isAwaitKeyword,
+  isTypeAnyType,
+  isTypeUnknownType,
+} from '../util';
 import { getOperatorPrecedence } from '../util/getOperatorPrecedence';
 
 type FunctionNode =
@@ -16,7 +24,7 @@ interface ScopeInfo {
   owningFunc: FunctionNode;
 }
 
-export default util.createRule({
+export default createRule({
   name: 'return-await',
   meta: {
     docs: {
@@ -45,9 +53,9 @@ export default util.createRule({
   defaultOptions: ['in-try-catch'],
 
   create(context, [option]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     const scopeInfoStack: ScopeInfo[] = [];
 
@@ -63,7 +71,7 @@ export default util.createRule({
     }
 
     function inTry(node: ts.Node): boolean {
-      let ancestor = node.parent;
+      let ancestor = node.parent as ts.Node | undefined;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (ts.isTryStatement(ancestor)) {
@@ -77,7 +85,7 @@ export default util.createRule({
     }
 
     function inCatch(node: ts.Node): boolean {
-      let ancestor = node.parent;
+      let ancestor = node.parent as ts.Node | undefined;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (ts.isCatchClause(ancestor)) {
@@ -91,7 +99,7 @@ export default util.createRule({
     }
 
     function isReturnPromiseInFinally(node: ts.Node): boolean {
-      let ancestor = node.parent;
+      let ancestor = node.parent as ts.Node | undefined;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (
@@ -108,7 +116,7 @@ export default util.createRule({
     }
 
     function hasFinallyBlock(node: ts.Node): boolean {
-      let ancestor = node.parent;
+      let ancestor = node.parent as ts.Node | undefined;
 
       while (ancestor && !ts.isFunctionLike(ancestor)) {
         if (ts.isTryStatement(ancestor)) {
@@ -126,11 +134,11 @@ export default util.createRule({
       node: TSESTree.Expression,
     ): TSESLint.RuleFix | null {
       // Should always be an await node; but let's be safe.
-      /* istanbul ignore if */ if (!util.isAwaitExpression(node)) {
+      /* istanbul ignore if */ if (!isAwaitExpression(node)) {
         return null;
       }
 
-      const awaitToken = sourceCode.getFirstToken(node, util.isAwaitKeyword);
+      const awaitToken = sourceCode.getFirstToken(node, isAwaitKeyword);
       // Should always be the case; but let's be safe.
       /* istanbul ignore if */ if (!awaitToken) {
         return null;
@@ -195,9 +203,7 @@ export default util.createRule({
 
       if (isAwait && !isThenable) {
         // any/unknown could be thenable; do not auto-fix
-        const useAutoFix = !(
-          util.isTypeAnyType(type) || util.isTypeUnknownType(type)
-        );
+        const useAutoFix = !(isTypeAnyType(type) || isTypeUnknownType(type));
         const fix = (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null =>
           removeAwait(fixer, node);
 
@@ -305,7 +311,7 @@ export default util.createRule({
         }
       },
       ReturnStatement(node): void {
-        const scopeInfo = scopeInfoStack[scopeInfoStack.length - 1];
+        const scopeInfo = scopeInfoStack.at(-1);
         if (!scopeInfo?.hasAsync || !node.argument) {
           return;
         }

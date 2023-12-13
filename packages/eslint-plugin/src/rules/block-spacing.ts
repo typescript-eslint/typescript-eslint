@@ -1,15 +1,20 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule, isTokenOnSameLine } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('block-spacing');
 
-export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'block-spacing',
   meta: {
     type: 'layout',
@@ -26,7 +31,7 @@ export default util.createRule<Options, MessageIds>({
   defaultOptions: ['always'],
 
   create(context, [whenToApplyOption]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     const baseRules = baseRule.create(context);
     const always = whenToApplyOption !== 'never';
     const messageId = always ? 'missing' : 'extra';
@@ -58,7 +63,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function isValid(left: TSESTree.Token, right: TSESTree.Token): boolean {
       return (
-        !util.isTokenOnSameLine(left, right) ||
+        !isTokenOnSameLine(left, right) ||
         sourceCode.isSpaceBetween!(left, right) === always
       );
     }
@@ -79,7 +84,6 @@ export default util.createRule<Options, MessageIds>({
 
       // Skip if the node is invalid or empty.
       if (
-        openBrace.type !== AST_TOKEN_TYPES.Punctuator ||
         openBrace.value !== '{' ||
         closeBrace.type !== AST_TOKEN_TYPES.Punctuator ||
         closeBrace.value !== '}' ||

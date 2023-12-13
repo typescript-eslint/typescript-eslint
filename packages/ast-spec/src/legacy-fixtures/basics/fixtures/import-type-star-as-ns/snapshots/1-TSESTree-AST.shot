@@ -6,7 +6,7 @@ Program {
   body: [
     ImportDeclaration {
       type: "ImportDeclaration",
-      assertions: [],
+      attributes: [],
       importKind: "type",
       source: Literal {
         type: "Literal",

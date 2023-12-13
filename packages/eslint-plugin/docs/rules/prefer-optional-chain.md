@@ -68,7 +68,7 @@ When this option is `true`, the rule will not provide an auto-fixer for cases wh
 
 In some cases this distinction _may_ matter - which is why these fixers are considered unsafe - they may break the build! For example in the following code:
 
-```ts
+```ts option='{ "allowPotentiallyUnsafeFixesThatModifyTheReturnTypeIKnowWhatImDoing": true }' showPlaygroundButton
 declare const foo: { bar: boolean } | null | undefined;
 declare function acceptsBoolean(arg: boolean): void;
 
@@ -76,7 +76,7 @@ declare function acceptsBoolean(arg: boolean): void;
 acceptsBoolean(foo != null && foo.bar);
 
 // ❌ typechecks UNSUCCESSFULLY as the expression returns `boolean | undefined`
-acceptsBoolean(foo != null && foo.bar);
+acceptsBoolean(foo?.bar);
 ```
 
 This style of code isn't super common - which means having this option set to `true` _should_ be safe in most codebases. However we default it to `false` due to its unsafe nature. We have provided this option for convenience because it increases the autofix cases covered by the rule. If you set option to `true` the onus is entirely on you and your team to ensure that each fix is correct and safe and that it does not break the build.
@@ -91,7 +91,7 @@ When this option is `true` the rule will check operands that are typed as `any` 
 
 #### ❌ Incorrect for `checkAny: true`
 
-```ts
+```ts option='{ "checkAny": true }'
 declare const thing: any;
 
 thing && thing.toString();
@@ -99,7 +99,7 @@ thing && thing.toString();
 
 #### ✅ Correct for `checkAny: false`
 
-```ts
+```ts option='{ "checkAny": false }'
 declare const thing: any;
 
 thing && thing.toString();
@@ -115,7 +115,7 @@ When this option is `true` the rule will check operands that are typed as `unkno
 
 #### ❌ Incorrect for `checkUnknown: true`
 
-```ts
+```ts option='{ "checkUnknown": true }'
 declare const thing: unknown;
 
 thing && thing.toString();
@@ -123,7 +123,7 @@ thing && thing.toString();
 
 #### ✅ Correct for `checkUnknown: false`
 
-```ts
+```ts option='{ "checkUnknown": false }'
 declare const thing: unknown;
 
 thing && thing.toString();
@@ -139,7 +139,7 @@ When this option is `true` the rule will check operands that are typed as `strin
 
 #### ❌ Incorrect for `checkString: true`
 
-```ts
+```ts option='{ "checkString": true }'
 declare const thing: string;
 
 thing && thing.toString();
@@ -147,7 +147,7 @@ thing && thing.toString();
 
 #### ✅ Correct for `checkString: false`
 
-```ts
+```ts option='{ "checkString": false }'
 declare const thing: string;
 
 thing && thing.toString();
@@ -163,7 +163,7 @@ When this option is `true` the rule will check operands that are typed as `numbe
 
 #### ❌ Incorrect for `checkNumber: true`
 
-```ts
+```ts option='{ "checkNumber": true }'
 declare const thing: number;
 
 thing && thing.toString();
@@ -171,7 +171,7 @@ thing && thing.toString();
 
 #### ✅ Correct for `checkNumber: false`
 
-```ts
+```ts option='{ "checkNumber": false }'
 declare const thing: number;
 
 thing && thing.toString();
@@ -187,7 +187,7 @@ When this option is `true` the rule will check operands that are typed as `boole
 
 #### ❌ Incorrect for `checkBoolean: true`
 
-```ts
+```ts option='{ "checkBoolean": true }'
 declare const thing: boolean;
 
 thing && thing.toString();
@@ -195,7 +195,7 @@ thing && thing.toString();
 
 #### ✅ Correct for `checkBoolean: false`
 
-```ts
+```ts option='{ "checkBoolean": false }'
 declare const thing: boolean;
 
 thing && thing.toString();
@@ -211,7 +211,7 @@ When this option is `true` the rule will check operands that are typed as `bigin
 
 #### ❌ Incorrect for `checkBigInt: true`
 
-```ts
+```ts option='{ "checkBigInt": true }'
 declare const thing: bigint;
 
 thing && thing.toString();
@@ -219,7 +219,7 @@ thing && thing.toString();
 
 #### ✅ Correct for `checkBigInt: false`
 
-```ts
+```ts option='{ "checkBigInt": false }'
 declare const thing: bigint;
 
 thing && thing.toString();
@@ -235,14 +235,14 @@ When this option is `true` the rule will skip operands that are not typed with `
 
 #### ❌ Incorrect for `requireNullish: true`
 
-```ts
+```ts option='{ "requireNullish": true }'
 declare const thing1: string | null;
 thing1 && thing1.toString();
 ```
 
 #### ✅ Correct for `requireNullish: true`
 
-```ts
+```ts option='{ "requireNullish": true }'
 declare const thing1: string | null;
 thing1?.toString();
 
@@ -254,7 +254,8 @@ thing2 && thing2.toString();
 
 ## When Not To Use It
 
-If you don't mind using more explicit `&&`s/`||`s, you don't need this rule.
+If your project is not accurately typed, such as if it's in the process of being converted to TypeScript or is susceptible to [trade-offs in control flow analysis](https://github.com/Microsoft/TypeScript/issues/9998), it may be difficult to enable this rule for particularly non-type-safe areas of code.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Further Reading
 

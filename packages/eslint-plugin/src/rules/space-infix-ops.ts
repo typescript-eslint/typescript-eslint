@@ -1,16 +1,21 @@
 import { AST_TOKEN_TYPES, TSESTree } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule, isNotOpeningParenToken } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('space-infix-ops');
 
-export type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-export type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+export type Options = InferOptionsTypeFromRule<typeof baseRule>;
+export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 const UNIONS = ['|', '&'];
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'space-infix-ops',
   meta: {
     type: 'layout',
@@ -34,7 +39,7 @@ export default util.createRule<Options, MessageIds>({
   ],
   create(context) {
     const rules = baseRule.create(context);
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     function report(operator: TSESTree.Token): void {
       context.report({
@@ -129,7 +134,7 @@ export default util.createRule<Options, MessageIds>({
       types.forEach(type => {
         const skipFunctionParenthesis =
           type.type === TSESTree.AST_NODE_TYPES.TSFunctionType
-            ? util.isNotOpeningParenToken
+            ? isNotOpeningParenToken
             : 0;
         const operator = sourceCode.getTokenBefore(
           type,

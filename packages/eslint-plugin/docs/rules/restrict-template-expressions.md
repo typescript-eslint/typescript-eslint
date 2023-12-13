@@ -51,7 +51,7 @@ const msg3 = `stringWithKindProp = ${stringWithKindProp}`;
 
 Examples of additional **correct** code for this rule with `{ allowNumber: true }`:
 
-```ts
+```ts option='{ "allowNumber": true }' showPlaygroundButton
 const arg = 123;
 const msg1 = `arg = ${arg}`;
 const msg2 = `arg = ${arg || 'zero'}`;
@@ -63,7 +63,7 @@ This option controls both numbers and BigInts.
 
 Examples of additional **correct** code for this rule with `{ allowBoolean: true }`:
 
-```ts
+```ts option='{ "allowBoolean": true }' showPlaygroundButton
 const arg = true;
 const msg1 = `arg = ${arg}`;
 const msg2 = `arg = ${arg || 'not truthy'}`;
@@ -73,7 +73,7 @@ const msg2 = `arg = ${arg || 'not truthy'}`;
 
 Examples of additional **correct** code for this rule with `{ allowAny: true }`:
 
-```ts
+```ts option='{ "allowAny": true }' showPlaygroundButton
 const user = JSON.parse('{ "name": "foo" }');
 const msg1 = `arg = ${user.name}`;
 const msg2 = `arg = ${user.name || 'the user with no name'}`;
@@ -83,7 +83,7 @@ const msg2 = `arg = ${user.name || 'the user with no name'}`;
 
 Examples of additional **correct** code for this rule with `{ allowNullish: true }`:
 
-```ts
+```ts option='{ "allowNullish": true }' showPlaygroundButton
 const arg = condition ? 'ok' : null;
 const msg1 = `arg = ${arg}`;
 ```
@@ -92,12 +92,12 @@ const msg1 = `arg = ${arg}`;
 
 Examples of additional **correct** code for this rule with `{ allowRegExp: true }`:
 
-```ts
+```ts option='{ "allowRegExp": true }' showPlaygroundButton
 const arg = new RegExp('foo');
 const msg1 = `arg = ${arg}`;
 ```
 
-```ts
+```ts option='{ "allowRegExp": true }' showPlaygroundButton
 const arg = /foo/;
 const msg1 = `arg = ${arg}`;
 ```
@@ -106,10 +106,14 @@ const msg1 = `arg = ${arg}`;
 
 Examples of additional **correct** code for this rule with `{ allowNever: true }`:
 
-```ts
+```ts option='{ "allowNever": true }' showPlaygroundButton
 const arg = 'something';
 const msg1 = typeof arg === 'string' ? arg : `arg = ${arg}`;
 ```
+
+## When Not To Use It
+
+If you're not worried about incorrectly stringifying non-string values in template literals, then you likely don't need this rule.
 
 ## Related To
 

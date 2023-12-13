@@ -98,4 +98,5 @@ setTimeout(Foo.fn, 100);
 
 ## When Not To Use It
 
-If you want to allow `new Function()` or `setTimeout()`, `setInterval()`, `setImmediate()` and `execScript()` with string arguments, then you can safely disable this rule.
+If your project is a rare one that needs to allow `new Function()` or `setTimeout()`, `setInterval()`, `setImmediate()` and `execScript()` with string arguments, then you can disable this rule.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.

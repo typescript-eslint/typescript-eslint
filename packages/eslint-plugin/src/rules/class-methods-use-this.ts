@@ -1,19 +1,25 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import {
+  createRule,
+  getFunctionHeadLoc,
+  getFunctionNameWithKind,
+  getStaticStringValue,
+} from '../util';
 
 type Options = [
   {
     exceptMethods?: string[];
     enforceForClassFields?: boolean;
     ignoreOverrideMethods?: boolean;
-    ignoreClassesThatImplementAnInterface?: boolean;
+    ignoreClassesThatImplementAnInterface?: boolean | 'public-fields';
   },
 ];
 type MessageIds = 'missingThis';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'class-methods-use-this',
   meta: {
     type: 'suggestion',
@@ -47,7 +53,18 @@ export default util.createRule<Options, MessageIds>({
             description: 'Ingore members marked with the `override` modifier',
           },
           ignoreClassesThatImplementAnInterface: {
-            type: 'boolean',
+            oneOf: [
+              {
+                type: 'boolean',
+                description: 'Ignore all classes that implement an interface',
+              },
+              {
+                type: 'string',
+                enum: ['public-fields'],
+                description:
+                  'Ignore only the public fields of classes that implement an interface',
+              },
+            ],
             description:
               'Ignore classes that specifically implement some interface',
           },
@@ -94,7 +111,7 @@ export default util.createRule<Options, MessageIds>({
         };
     let stack: Stack | undefined;
 
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     function pushContext(
       member?: TSESTree.MethodDefinition | TSESTree.PropertyDefinition,
@@ -140,6 +157,16 @@ export default util.createRule<Options, MessageIds>({
       return oldStack;
     }
 
+    function isPublicField(
+      accessibility: TSESTree.Accessibility | undefined,
+    ): boolean {
+      if (!accessibility || accessibility === 'public') {
+        return true;
+      }
+
+      return false;
+    }
+
     /**
      * Check if the node is an instance method not excluded by config
      */
@@ -164,7 +191,7 @@ export default util.createRule<Options, MessageIds>({
         node.key.type === AST_NODE_TYPES.PrivateIdentifier ? '#' : '';
       const name =
         node.key.type === AST_NODE_TYPES.Literal
-          ? util.getStaticStringValue(node.key)
+          ? getStaticStringValue(node.key)
           : node.key.name || '';
 
       return !exceptMethods.has(hashIfNeeded + (name ?? ''));
@@ -181,11 +208,13 @@ export default util.createRule<Options, MessageIds>({
       const stackContext = popContext();
       if (
         stackContext?.member == null ||
-        stackContext.class == null ||
         stackContext.usesThis ||
         (ignoreOverrideMethods && stackContext.member.override) ||
-        (ignoreClassesThatImplementAnInterface &&
-          stackContext.class.implements != null)
+        (ignoreClassesThatImplementAnInterface === true &&
+          stackContext.class.implements.length > 0) ||
+        (ignoreClassesThatImplementAnInterface === 'public-fields' &&
+          stackContext.class.implements.length > 0 &&
+          isPublicField(stackContext.member.accessibility))
       ) {
         return;
       }
@@ -193,10 +222,10 @@ export default util.createRule<Options, MessageIds>({
       if (isIncludedInstanceMethod(stackContext.member)) {
         context.report({
           node,
-          loc: util.getFunctionHeadLoc(node, sourceCode),
+          loc: getFunctionHeadLoc(node, sourceCode),
           messageId: 'missingThis',
           data: {
-            name: util.getFunctionNameWithKind(node),
+            name: getFunctionNameWithKind(node),
           },
         });
       }

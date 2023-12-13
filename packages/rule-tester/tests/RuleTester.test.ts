@@ -119,7 +119,7 @@ beforeEach(() => {
   jest.clearAllMocks();
 });
 
-const NOOP_RULE: RuleModule<'error', []> = {
+const NOOP_RULE: RuleModule<'error'> = {
   meta: {
     messages: {
       error: 'error',
@@ -134,7 +134,9 @@ const NOOP_RULE: RuleModule<'error', []> = {
 };
 
 function getTestConfigFromCall(): unknown[] {
-  return runRuleForItemSpy.mock.calls.map(c => c[2]);
+  return runRuleForItemSpy.mock.calls.map(c => {
+    return { ...c[2], filename: c[2].filename?.replaceAll('\\', '/') };
+  });
 }
 
 describe('RuleTester', () => {

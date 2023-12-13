@@ -1,7 +1,7 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 const enum OptionKeys {
   ArrayDestructuring = 'arrayDestructuring',
@@ -18,7 +18,7 @@ type Options = { [k in OptionKeys]?: boolean };
 
 type MessageIds = 'expectedTypedef' | 'expectedTypedefNamed';
 
-export default util.createRule<[Options], MessageIds>({
+export default createRule<[Options], MessageIds>({
   name: 'typedef',
   meta: {
     docs: {
@@ -124,10 +124,7 @@ export default util.createRule<[Options], MessageIds>({
             annotationNode = param.parameter;
 
             // Check TS parameter property with default value like `constructor(private param: string = 'something') {}`
-            if (
-              annotationNode &&
-              annotationNode.type === AST_NODE_TYPES.AssignmentPattern
-            ) {
+            if (annotationNode.type === AST_NODE_TYPES.AssignmentPattern) {
               annotationNode = annotationNode.left;
             }
 
@@ -137,7 +134,7 @@ export default util.createRule<[Options], MessageIds>({
             break;
         }
 
-        if (annotationNode !== undefined && !annotationNode.typeAnnotation) {
+        if (!annotationNode.typeAnnotation) {
           report(param, getNodeName(param));
         }
       }
@@ -175,7 +172,7 @@ export default util.createRule<[Options], MessageIds>({
       ...(arrayDestructuring && {
         ArrayPattern(node): void {
           if (
-            node.parent?.type === AST_NODE_TYPES.RestElement &&
+            node.parent.type === AST_NODE_TYPES.RestElement &&
             node.parent.typeAnnotation
           ) {
             return;
@@ -185,7 +182,7 @@ export default util.createRule<[Options], MessageIds>({
             !node.typeAnnotation &&
             !isForOfStatementContext(node) &&
             !isAncestorHasTypeAnnotation(node) &&
-            node.parent?.type !== AST_NODE_TYPES.AssignmentExpression
+            node.parent.type !== AST_NODE_TYPES.AssignmentExpression
           ) {
             report(node);
           }

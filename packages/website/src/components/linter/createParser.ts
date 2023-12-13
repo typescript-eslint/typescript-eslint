@@ -1,6 +1,6 @@
 import type * as tsvfs from '@site/src/vendor/typescript-vfs';
 import type { ParserOptions } from '@typescript-eslint/types';
-import type { TSESLint } from '@typescript-eslint/utils';
+import type { Parser } from '@typescript-eslint/utils/ts-eslint';
 import type * as ts from 'typescript';
 
 import { defaultParseSettings } from './config';
@@ -17,7 +17,7 @@ export function createParser(
   onUpdate: (filename: string, model: UpdateModel) => void,
   utils: WebLinterModule,
   vfs: typeof tsvfs,
-): TSESLint.Linter.ParserModule & {
+): Parser.ParserModule & {
   updateConfig: (compilerOptions: ts.CompilerOptions) => void;
 } {
   const registeredFiles = new Set<string>();
@@ -42,7 +42,7 @@ export function createParser(
     parseForESLint: (
       text: string,
       options: ParserOptions = {},
-    ): TSESLint.Linter.ESLintParseResult => {
+    ): Parser.ParseResult => {
       const filePath = options.filePath ?? '/input.ts';
 
       // if text is empty use empty line to avoid error

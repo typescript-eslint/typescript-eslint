@@ -1,10 +1,11 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type MessageIds = 'defineInitializer' | 'defineInitializerSuggestion';
 
-export default util.createRule<[], MessageIds>({
+export default createRule<[], MessageIds>({
   name: 'prefer-enum-initializers',
   meta: {
     type: 'suggestion',
@@ -23,7 +24,7 @@ export default util.createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     function TSEnumDeclaration(node: TSESTree.TSEnumDeclaration): void {
       const { members } = node;

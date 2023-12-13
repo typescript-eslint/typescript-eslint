@@ -1,8 +1,16 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
+import {
+  createRule,
+  getOperatorPrecedence,
+  getParserServices,
+  isClosingParenToken,
+  isOpeningParenToken,
+  isParenthesized,
+} from '../util';
 import { getWrappedCode } from '../util/getWrappedCode';
 
 // intentionally mirroring the options
@@ -23,7 +31,7 @@ type OptUnion =
     };
 export type Options = readonly [OptUnion];
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'consistent-type-assertions',
   meta: {
     type: 'suggestion',
@@ -83,8 +91,8 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
-    const parserServices = util.getParserServices(context, true);
+    const sourceCode = getSourceCode(context);
+    const parserServices = getParserServices(context, true);
 
     function isConst(node: TSESTree.TypeNode): boolean {
       if (node.type !== AST_NODE_TYPES.TSTypeReference) {
@@ -102,14 +110,14 @@ export default util.createRule<Options, MessageIds>({
       let beforeCount = 0;
       let afterCount = 0;
 
-      if (util.isParenthesized(node, sourceCode)) {
+      if (isParenthesized(node, sourceCode)) {
         const bodyOpeningParen = sourceCode.getTokenBefore(
           node,
-          util.isOpeningParenToken,
+          isOpeningParenToken,
         )!;
         const bodyClosingParen = sourceCode.getTokenAfter(
           node,
-          util.isClosingParenToken,
+          isClosingParenToken,
         )!;
 
         beforeCount = node.range[0] - bodyOpeningParen.range[0];
@@ -151,11 +159,11 @@ export default util.createRule<Options, MessageIds>({
                   node.typeAnnotation,
                 );
 
-                const asPrecedence = util.getOperatorPrecedence(
+                const asPrecedence = getOperatorPrecedence(
                   ts.SyntaxKind.AsExpression,
                   ts.SyntaxKind.Unknown,
                 );
-                const parentPrecedence = util.getOperatorPrecedence(
+                const parentPrecedence = getOperatorPrecedence(
                   tsNode.parent.kind,
                   ts.isBinaryExpression(tsNode.parent)
                     ? tsNode.parent.operatorToken.kind
@@ -169,7 +177,7 @@ export default util.createRule<Options, MessageIds>({
                 const text = `${expressionCode} as ${typeAnnotationCode}`;
                 return fixer.replaceText(
                   node,
-                  util.isParenthesized(node, sourceCode)
+                  isParenthesized(node, sourceCode)
                     ? text
                     : getWrappedCode(text, asPrecedence, parentPrecedence),
                 );
@@ -218,13 +226,10 @@ export default util.createRule<Options, MessageIds>({
         return;
       }
 
-      if (
-        checkType(node.typeAnnotation) &&
-        node.expression.type === AST_NODE_TYPES.ObjectExpression
-      ) {
+      if (checkType(node.typeAnnotation)) {
         const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
         if (
-          node.parent?.type === AST_NODE_TYPES.VariableDeclarator &&
+          node.parent.type === AST_NODE_TYPES.VariableDeclarator &&
           !node.parent.id.typeAnnotation
         ) {
           const { parent } = node;
@@ -247,9 +252,9 @@ export default util.createRule<Options, MessageIds>({
             fixer.replaceText(node, getTextWithParentheses(node.expression)),
             fixer.insertTextAfter(
               node,
-              ` satisfies ${context
-                .getSourceCode()
-                .getText(node.typeAnnotation)}`,
+              ` satisfies ${getSourceCode(context).getText(
+                node.typeAnnotation,
+              )}`,
             ),
           ],
         });

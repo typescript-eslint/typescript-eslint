@@ -33,14 +33,14 @@ Keeping to one side consistently improve code readability.
 
 #### ❌ Incorrect
 
-```ts
+```ts option='"constructor"'
 const map: Map<string, number> = new Map();
 const set: Set<string> = new Set();
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='"constructor"'
 const map = new Map<string, number>();
 const map: Map<string, number> = new MyMap();
 const set = new Set<string>();
@@ -54,14 +54,14 @@ const set: Set<string> = new Set<string>();
 
 #### ❌ Incorrect
 
-```ts
+```ts option='"type-annotation"'
 const map = new Map<string, number>();
 const set = new Set<string>();
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='"type-annotation"'
 const map: Map<string, number> = new Map();
 const set: Set<string> = new Set();
 const set = new Set();
@@ -71,3 +71,6 @@ const set: Set<string> = new Set<string>();
 ## When Not To Use It
 
 You can turn this rule off if you don't want to enforce one kind of generic constructor style over the other.
+
+However, keep in mind that inconsistent style can harm readability in a project.
+We recommend picking a single option for this rule that works best for your project.

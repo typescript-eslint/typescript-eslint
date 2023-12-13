@@ -9,7 +9,7 @@ abstract class DefinitionBase<
   TType extends DefinitionType,
   TNode extends TSESTree.Node,
   TParent extends TSESTree.Node | null,
-  TName extends TSESTree.Node = TSESTree.BindingName,
+  TName extends TSESTree.Node,
 > {
   /**
    * A unique ID for this instance - primarily used to help debugging and testing

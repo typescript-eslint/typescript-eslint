@@ -1,4 +1,4 @@
-name: '✨ Propose a New Rule'
+name: '✨ New Rule'
 description: 'Propose a new lint rule'
 title: 'Rule proposal: <a short description of my proposal>'
 labels:
@@ -7,7 +7,7 @@ labels:
   - triage
 body:
   - type: checkboxes
-    id: sanity-checks
+    id: preliminary-checks
     attributes:
       label: Before You File a Proposal Please Confirm You Have Done The Following...
       description: If any of these required steps are not taken, we may not be able to review your issue. Help us to help you!
@@ -48,7 +48,7 @@ body:
     attributes:
       label: Fail Cases
       description: Specify an example of code that should be detected and errored on.
-      render: typescript
+      render: TypeScript
       value: |
         var replace = 'me';
     validations:
@@ -58,7 +58,7 @@ body:
     attributes:
       label: Pass Cases
       description: Specify an example of code that would be accepted in its place
-      render: typescript
+      render: TypeScript
       value: |
         const replace = 'me';
     validations:

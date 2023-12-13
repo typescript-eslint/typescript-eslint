@@ -14,7 +14,7 @@ This rule reports on the use of `/// <reference path="..." />`, `/// <reference 
 
 With `{ "path": "never", "types": "never", "lib": "never" }` options set, the following will all be **incorrect** usage:
 
-```ts
+```ts option='{ "path": "never", "types": "never", "lib": "never" }' showPlaygroundButton
 /// <reference path="foo" />
 /// <reference types="bar" />
 /// <reference lib="baz" />
@@ -22,19 +22,19 @@ With `{ "path": "never", "types": "never", "lib": "never" }` options set, the fo
 
 Examples of **incorrect** code for the `{ "types": "prefer-import" }` option. Note that these are only errors when **both** styles are used for the **same** module:
 
-```ts
+```ts option='{ "types": "prefer-import" }' showPlaygroundButton
 /// <reference types="foo" />
 import * as foo from 'foo';
 ```
 
-```ts
+```ts option='{ "types": "prefer-import" }' showPlaygroundButton
 /// <reference types="foo" />
 import foo = require('foo');
 ```
 
 With `{ "path": "always", "types": "always", "lib": "always" }` options set, the following will all be **correct** usage:
 
-```ts
+```ts option='{ "path": "always", "types": "always", "lib": "always" }' showPlaygroundButton
 /// <reference path="foo" />
 /// <reference types="bar" />
 /// <reference lib="baz" />
@@ -42,17 +42,20 @@ With `{ "path": "always", "types": "always", "lib": "always" }` options set, the
 
 Examples of **correct** code for the `{ "types": "prefer-import" }` option:
 
-```ts
+```ts option='{ "types": "prefer-import" }' showPlaygroundButton
 import * as foo from 'foo';
 ```
 
-```ts
+```ts option='{ "types": "prefer-import" }' showPlaygroundButton
 import foo = require('foo');
 ```
 
-## When To Use It
+## When Not To Use It
 
-If you want to ban use of one or all of the triple slash reference directives, or any time you might use triple-slash type reference directives and ES6 import declarations in the same file.
+Most modern TypeScript projects generally use `import` statements to bring in types.
+It's rare to need a `///` triple-slash reference outside of auto-generated code.
+If your project is a rare one with one of those use cases, this rule might not be for you.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## When Not To Use It
 

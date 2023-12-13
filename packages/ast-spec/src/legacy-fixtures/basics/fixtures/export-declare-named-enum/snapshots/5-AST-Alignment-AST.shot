@@ -10,7 +10,8 @@ exports[`AST Fixtures legacy-fixtures basics export-declare-named-enum AST Align
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         declaration: TSEnumDeclaration {
           type: 'TSEnumDeclaration',
 -         const: false,

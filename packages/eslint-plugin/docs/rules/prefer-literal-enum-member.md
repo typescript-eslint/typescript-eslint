@@ -69,7 +69,7 @@ Examples of code for the `{ "allowBitwiseExpressions": true }` option:
 
 ### ❌ Incorrect
 
-```ts
+```ts option='{ "allowBitwiseExpressions": true }'
 const x = 1;
 enum Foo {
   A = x << 0,
@@ -84,7 +84,7 @@ enum Foo {
 
 ### ✅ Correct
 
-```ts
+```ts option='{ "allowBitwiseExpressions": true }'
 enum Foo {
   A = 1 << 0,
   B = 1 >> 0,
@@ -98,4 +98,4 @@ enum Foo {
 
 ## When Not To Use It
 
-If you want use anything other than simple literals as an enum value.
+If you want use anything other than simple literals as an enum value, this rule might not be for you.
