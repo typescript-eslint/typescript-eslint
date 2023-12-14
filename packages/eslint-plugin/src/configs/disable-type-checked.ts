@@ -12,6 +12,7 @@ export = {
     '@typescript-eslint/consistent-type-exports': 'off',
     '@typescript-eslint/dot-notation': 'off',
     '@typescript-eslint/naming-convention': 'off',
+    '@typescript-eslint/no-array-delete': 'off',
     '@typescript-eslint/no-base-to-string': 'off',
     '@typescript-eslint/no-confusing-void-expression': 'off',
     '@typescript-eslint/no-duplicate-type-constituents': 'off',
