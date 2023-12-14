@@ -29,17 +29,15 @@ export default createRule<[], MessageId>({
     const checker = services.program.getTypeChecker();
 
     function isUnderlyingTypeArray(type: ts.Type): boolean {
-      const isArray = (t: ts.Type): boolean => checker.isArrayType(t);
-
       if (type.isUnion()) {
-        return type.types.every(isArray);
+        return type.types.every(checker.isArrayType);
       }
 
       if (type.isIntersection()) {
-        return type.types.some(isArray);
+        return type.types.some(checker.isArrayType);
       }
 
-      return isArray(type);
+      return checker.isArrayType(type);
     }
 
     return {
@@ -74,7 +72,7 @@ export default createRule<[], MessageId>({
                 key,
                 target,
               },
-              fix(fixer): TSESLint.RuleFix | null {
+              fix(fixer): TSESLint.RuleFix {
                 return fixer.replaceText(node, `${target}.splice(${key}, 1)`);
               },
             },
