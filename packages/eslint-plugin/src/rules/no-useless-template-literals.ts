@@ -10,7 +10,7 @@ import {
   isUndefinedIdentifier,
 } from '../util';
 
-type MessageId = 'noUselessTemplateLiteral';
+type MessageId = 'noUselessTemplateLiteral' | 'removeUselessTemplateLiteral';
 
 export default createRule<[], MessageId>({
   name: 'no-useless-template-literals',
@@ -25,6 +25,9 @@ export default createRule<[], MessageId>({
     messages: {
       noUselessTemplateLiteral:
         'Template literal expression is unnecessary and can be simplified.',
+
+      removeUselessTemplateLiteral:
+        'Remove unnecessary template literal expression.',
     },
     schema: [],
   },
@@ -71,7 +74,7 @@ export default createRule<[], MessageId>({
             messageId: 'noUselessTemplateLiteral',
             suggest: [
               {
-                messageId: 'noUselessTemplateLiteral',
+                messageId: 'removeUselessTemplateLiteral',
                 fix(fixer): TSESLint.RuleFix[] {
                   const [prevQuasi, nextQuasi] = node.quasis;
 
@@ -107,7 +110,7 @@ export default createRule<[], MessageId>({
             messageId: 'noUselessTemplateLiteral',
             suggest: [
               {
-                messageId: 'noUselessTemplateLiteral',
+                messageId: 'removeUselessTemplateLiteral',
                 fix(fixer): TSESLint.RuleFix[] {
                   const index = node.expressions.indexOf(expression);
                   const prevQuasi = node.quasis[index];

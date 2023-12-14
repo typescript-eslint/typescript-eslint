@@ -145,7 +145,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 5,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: '`1`;',
             },
           ],
@@ -160,7 +160,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           messageId: 'noUselessTemplateLiteral',
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: '`1`;',
             },
           ],
@@ -175,7 +175,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           messageId: 'noUselessTemplateLiteral',
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: `'a';`,
             },
           ],
@@ -190,7 +190,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           messageId: 'noUselessTemplateLiteral',
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: `"a";`,
             },
           ],
@@ -205,7 +205,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           messageId: 'noUselessTemplateLiteral',
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: `'a' + 'b';`,
             },
           ],
@@ -223,7 +223,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 8,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: '`true`;',
             },
           ],
@@ -238,7 +238,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           messageId: 'noUselessTemplateLiteral',
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: '`true`;',
             },
           ],
@@ -256,7 +256,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 8,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: '`null`;',
             },
           ],
@@ -271,7 +271,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           messageId: 'noUselessTemplateLiteral',
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: '`null`;',
             },
           ],
@@ -289,7 +289,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 13,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: '`undefined`;',
             },
           ],
@@ -304,7 +304,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           messageId: 'noUselessTemplateLiteral',
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: '`undefined`;',
             },
           ],
@@ -322,7 +322,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 7,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: "`a${'b'}`;",
             },
           ],
@@ -334,7 +334,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 13,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: "`${'a'}b`;",
             },
           ],
@@ -349,7 +349,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           messageId: 'noUselessTemplateLiteral',
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: noFormat`\`a\${   'b'   }\`;`,
             },
           ],
@@ -358,7 +358,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           messageId: 'noUselessTemplateLiteral',
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: noFormat`\`\${   'a'   }b\`;`,
             },
           ],
@@ -379,7 +379,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 20,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: `
         declare const b: 'b';
         \`a\${b}c\`;
@@ -400,7 +400,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 8,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: '`ab`;',
             },
           ],
@@ -418,7 +418,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 14,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: '`1 + 1 = ${2}`;',
             },
           ],
@@ -430,7 +430,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 18,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: "`${'1 + 1 = '}2`;",
             },
           ],
@@ -448,7 +448,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 7,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: '`a${true}`;',
             },
           ],
@@ -460,7 +460,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 14,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: "`${'a'}true`;",
             },
           ],
@@ -481,7 +481,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 18,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: `
         declare const string: 'a';
         string;
@@ -502,7 +502,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           messageId: 'noUselessTemplateLiteral',
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: `
         declare const string: 'a';
         string;
@@ -523,7 +523,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 30,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: "String(Symbol.for('test'));",
             },
           ],
@@ -544,7 +544,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 24,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: `
         declare const intersection: string & { _brand: 'test-brand' };
         intersection;
@@ -569,7 +569,7 @@ ruleTester.run('no-useless-template-literals', rule, {
           endColumn: 17,
           suggestions: [
             {
-              messageId: 'noUselessTemplateLiteral',
+              messageId: 'removeUselessTemplateLiteral',
               output: `
         function func<T extends string>(arg: T) {
           arg;
