@@ -46,6 +46,7 @@ function normalizeOptions(options: Option): NormalizedOptions {
 export default createRule<Options, MessageIds>({
   name: 'comma-dangle',
   meta: {
+    deprecated: true,
     type: 'layout',
     docs: {
       description: 'Require or disallow trailing commas',

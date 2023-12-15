@@ -23,6 +23,7 @@ export type MessageIds =
 export default createRule<Options, MessageIds>({
   name: 'func-call-spacing',
   meta: {
+    deprecated: true,
     type: 'layout',
     docs: {
       description:

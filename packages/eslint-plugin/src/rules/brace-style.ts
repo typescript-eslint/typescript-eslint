@@ -16,6 +16,7 @@ export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 export default createRule<Options, MessageIds>({
   name: 'brace-style',
   meta: {
+    deprecated: true,
     type: 'layout',
     docs: {
       description: 'Enforce consistent brace style for blocks',

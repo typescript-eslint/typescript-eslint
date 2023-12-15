@@ -16,6 +16,7 @@ export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 export default createRule<Options, MessageIds>({
   name: 'quotes',
   meta: {
+    deprecated: true,
     type: 'layout',
     docs: {
       description:

@@ -27,6 +27,7 @@ const baseSchema = Array.isArray(baseRule.meta.schema)
 export default createRule<Options, MessageIds>({
   name: 'key-spacing',
   meta: {
+    deprecated: true,
     type: 'layout',
     docs: {
       description:

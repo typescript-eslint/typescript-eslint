@@ -92,6 +92,7 @@ const KNOWN_NODES = new Set([
 export default createRule<Options, MessageIds>({
   name: 'indent',
   meta: {
+    deprecated: true,
     type: 'layout',
     docs: {
       description: 'Enforce consistent indentation',

@@ -102,6 +102,7 @@ function getRules(
 export default createRule<Options, MessageIds>({
   name: 'type-annotation-spacing',
   meta: {
+    deprecated: true,
     type: 'layout',
     docs: {
       description: 'Require consistent spacing around type annotations',

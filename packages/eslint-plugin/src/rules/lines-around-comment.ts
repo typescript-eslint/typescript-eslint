@@ -50,6 +50,7 @@ function getCommentLineNums(comments: TSESTree.Comment[]): number[] {
 export default createRule<Options, MessageIds>({
   name: 'lines-around-comment',
   meta: {
+    deprecated: true,
     type: 'layout',
     docs: {
       description: 'Require empty lines around comments',

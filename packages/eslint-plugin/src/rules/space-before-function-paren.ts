@@ -20,6 +20,7 @@ export type MessageIds = 'missing' | 'unexpected';
 export default createRule<Options, MessageIds>({
   name: 'space-before-function-paren',
   meta: {
+    deprecated: true,
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before function parenthesis',

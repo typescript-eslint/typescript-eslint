@@ -16,6 +16,7 @@ export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 export default createRule<Options, MessageIds>({
   name: 'semi',
   meta: {
+    deprecated: true,
     type: 'layout',
     docs: {
       description: 'Require or disallow semicolons instead of ASI',

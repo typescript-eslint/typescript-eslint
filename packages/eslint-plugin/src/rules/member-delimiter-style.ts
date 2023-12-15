@@ -136,6 +136,7 @@ const BASE_SCHEMA: JSONSchema4 = {
 export default createRule<Options, MessageIds>({
   name: 'member-delimiter-style',
   meta: {
+    deprecated: true,
     type: 'layout',
     docs: {
       description:

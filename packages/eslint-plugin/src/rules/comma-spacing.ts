@@ -22,6 +22,7 @@ type MessageIds = 'missing' | 'unexpected';
 export default createRule<Options, MessageIds>({
   name: 'comma-spacing',
   meta: {
+    deprecated: true,
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before and after commas',

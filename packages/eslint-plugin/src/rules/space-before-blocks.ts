@@ -16,6 +16,7 @@ export type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 export default createRule<Options, MessageIds>({
   name: 'space-before-blocks',
   meta: {
+    deprecated: true,
     type: 'layout',
     docs: {
       description: 'Enforce consistent spacing before blocks',

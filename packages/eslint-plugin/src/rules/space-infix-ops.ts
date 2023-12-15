@@ -18,6 +18,7 @@ const UNIONS = ['|', '&'];
 export default createRule<Options, MessageIds>({
   name: 'space-infix-ops',
   meta: {
+    deprecated: true,
     type: 'layout',
     docs: {
       description: 'Require spacing around infix operators',
