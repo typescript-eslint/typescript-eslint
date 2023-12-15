@@ -20,8 +20,6 @@ This rule is aimed at maintaining consistency when throwing exception by disallo
 ### ❌ Incorrect
 
 ```ts
-/*eslint @typescript-eslint/no-throw-literal: "error"*/
-
 throw 'error';
 
 throw 0;
@@ -53,19 +51,17 @@ throw foo.bar;
 ### ✅ Correct
 
 ```ts
-/*eslint @typescript-eslint/no-throw-literal: "error"*/
-
 throw new Error();
 
-throw new Error("error");
+throw new Error('error');
 
-const e = new Error("error");
+const e = new Error('error');
 throw e;
 
 try {
-    throw new Error("error");
+  throw new Error('error');
 } catch (e) {
-    throw e;
+  throw e;
 }
 
 const err = new Error();
@@ -77,13 +73,13 @@ function err() {
 throw err();
 
 const foo = {
-  bar: new Error();
-}
+  bar: new Error(),
+};
 throw foo.bar;
 
 class CustomError extends Error {
   // ...
-};
+}
 throw new CustomError();
 ```
 
@@ -109,3 +105,5 @@ const defaultOptions: Options = {
   allowThrowingUnknown: false,
 };
 ```
+
+<!-- Intentionally omitted: When Not To Use It -->

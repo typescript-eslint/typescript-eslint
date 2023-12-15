@@ -50,3 +50,5 @@ function foo(bar?: { n: number }) {
   return bar?.n;
 }
 ```
+
+<!-- Intentionally Omitted: When Not To Use It -->

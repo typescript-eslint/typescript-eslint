@@ -1,6 +1,6 @@
 // Wrappers around ESLint's deprecation of existing methods
 // We'll be able to drop them once we no longer support ESLint <8.40.0.
-/* eslint-disable deprecation/deprecation */
+/* eslint-disable @typescript-eslint/no-unnecessary-condition, deprecation/deprecation */
 import type { Scope, SourceCode } from '../ts-eslint';
 import type { RuleContext } from '../ts-eslint/Rule';
 import type { TSESTree } from '../ts-estree';
