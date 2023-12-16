@@ -1,5 +1,12 @@
 [
   {
+    "id": "ESLint",
+    "image": "https://images.opencollective.com/eslint/96b09dc/logo.png",
+    "name": "ESLint",
+    "totalDonations": 2820000,
+    "website": "https://eslint.org/"
+  },
+  {
     "id": "Indeed",
     "image": "https://images.opencollective.com/indeed/4b8725e/logo.png",
     "name": "Indeed",
@@ -12,13 +19,6 @@
     "name": "Nx (by Nrwl)",
     "totalDonations": 825000,
     "website": "https://nx.dev"
-  },
-  {
-    "id": "ESLint",
-    "image": "https://images.opencollective.com/eslint/96b09dc/logo.png",
-    "name": "ESLint",
-    "totalDonations": 410000,
-    "website": "https://eslint.org/"
   },
   {
     "id": "Hugging Face",
