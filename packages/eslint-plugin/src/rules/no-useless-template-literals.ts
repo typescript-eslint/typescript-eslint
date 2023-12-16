@@ -135,7 +135,12 @@ export default createRule<[], MessageId>({
                     expression.type === AST_NODE_TYPES.Literal;
 
                   if (isStringLiteral) {
-                    fixes.push(fixer.replaceText(expression, expression.value));
+                    const escapedValue = expression.value.replace(
+                      /([`$])/g,
+                      '\\$1',
+                    );
+
+                    fixes.push(fixer.replaceText(expression, escapedValue));
                   }
 
                   return fixes;

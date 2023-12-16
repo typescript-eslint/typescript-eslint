@@ -580,5 +580,65 @@ ruleTester.run('no-useless-template-literals', rule, {
         },
       ],
     },
+
+    {
+      code: "`${'`'}`;",
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          suggestions: [
+            {
+              messageId: 'removeUselessTemplateLiteral',
+              output: "'`';",
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: "`back${'`'}tick`;",
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          suggestions: [
+            {
+              messageId: 'removeUselessTemplateLiteral',
+              output: '`back\\`tick`;',
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: "`dollar${'${`this is test`}'}sign`;",
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          suggestions: [
+            {
+              messageId: 'removeUselessTemplateLiteral',
+              output: '`dollar\\${\\`this is test\\`}sign`;',
+            },
+          ],
+        },
+      ],
+    },
+
+    {
+      code: '`complex${\'`${"`${test}`"}`\'}case`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+          suggestions: [
+            {
+              messageId: 'removeUselessTemplateLiteral',
+              output: '`complex\\`\\${"\\`\\${test}\\`"}\\`case`;',
+            },
+          ],
+        },
+      ],
+    },
   ],
 });
