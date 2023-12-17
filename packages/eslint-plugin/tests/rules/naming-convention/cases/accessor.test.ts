@@ -9,6 +9,10 @@ createTestCases([
       'class Ignored { private set "%"(ignored) {} }',
       'class Ignored { private static get %() {} }',
       'class Ignored { static get #%() {} }',
+      'class Ignored { accessor % = 10; }',
+      'class Ignored { accessor #% = 10; }',
+      'class Ignored { static accessor % = 10; }',
+      'class Ignored { static accessor #% = 10; }',
     ],
     options: {
       selector: 'accessor',
