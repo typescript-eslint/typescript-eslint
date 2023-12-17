@@ -6,7 +6,7 @@ description: 'Disallow using the `delete` operator on array values.'
 >
 > See **https://typescript-eslint.io/rules/no-array-delete** for documentation.
 
-When using the `delete` keyword with an array expression, the array's `length` property is not affected,
+When using the `delete` operator with an array value, the array's `length` property is not affected,
 but the element at the specified index is removed and leaves an empty slot in the array.
 This is likely to lead to unexpected behavior. As mentioned in the
 [MDN documentation](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/delete#deleting_array_elements),
