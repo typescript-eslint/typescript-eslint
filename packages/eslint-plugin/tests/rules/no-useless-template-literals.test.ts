@@ -137,231 +137,154 @@ ruleTester.run('no-useless-template-literals', rule, {
   invalid: [
     {
       code: '`${1}`;',
+      output: '`1`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 1,
           column: 4,
           endColumn: 5,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: '`1`;',
-            },
-          ],
         },
       ],
     },
 
     {
       code: noFormat`\`\${    1    }\`;`,
+      output: '`1`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: '`1`;',
-            },
-          ],
         },
       ],
     },
 
     {
       code: noFormat`\`\${    'a'    }\`;`,
+      output: `'a';`,
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: `'a';`,
-            },
-          ],
         },
       ],
     },
 
     {
       code: noFormat`\`\${    "a"    }\`;`,
+      output: `"a";`,
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: `"a";`,
-            },
-          ],
         },
       ],
     },
 
     {
       code: noFormat`\`\${    'a' + 'b'    }\`;`,
+      output: `'a' + 'b';`,
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: `'a' + 'b';`,
-            },
-          ],
         },
       ],
     },
 
     {
       code: '`${true}`;',
+      output: '`true`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 1,
           column: 4,
           endColumn: 8,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: '`true`;',
-            },
-          ],
         },
       ],
     },
 
     {
       code: noFormat`\`\${    true    }\`;`,
+      output: '`true`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: '`true`;',
-            },
-          ],
         },
       ],
     },
 
     {
       code: '`${null}`;',
+      output: '`null`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 1,
           column: 4,
           endColumn: 8,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: '`null`;',
-            },
-          ],
         },
       ],
     },
 
     {
       code: noFormat`\`\${    null    }\`;`,
+      output: '`null`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: '`null`;',
-            },
-          ],
         },
       ],
     },
 
     {
       code: '`${undefined}`;',
+      output: '`undefined`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 1,
           column: 4,
           endColumn: 13,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: '`undefined`;',
-            },
-          ],
         },
       ],
     },
 
     {
       code: noFormat`\`\${    undefined    }\`;`,
+      output: '`undefined`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: '`undefined`;',
-            },
-          ],
         },
       ],
     },
 
     {
-      code: "`${'a'}${'b'}`;",
+      code: "`${'a'} ${'b'}`;",
+      output: '`a b`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 1,
           column: 4,
           endColumn: 7,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: "`a${'b'}`;",
-            },
-          ],
         },
         {
           messageId: 'noUselessTemplateLiteral',
           line: 1,
-          column: 10,
-          endColumn: 13,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: "`${'a'}b`;",
-            },
-          ],
+          column: 11,
+          endColumn: 14,
         },
       ],
     },
 
     {
-      code: noFormat`\`\${   'a'   }\${   'b'   }\`;`,
+      code: noFormat`\`\${   'a'   } \${   'b'   }\`;`,
+      output: '`a b`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: noFormat`\`a\${   'b'   }\`;`,
-            },
-          ],
         },
         {
           messageId: 'noUselessTemplateLiteral',
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: noFormat`\`\${   'a'   }b\`;`,
-            },
-          ],
         },
       ],
     },
@@ -371,99 +294,67 @@ ruleTester.run('no-useless-template-literals', rule, {
         declare const b: 'b';
         \`a\${b}\${'c'}\`;
       `,
+      output: `
+        declare const b: 'b';
+        \`a\${b}c\`;
+      `,
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 3,
           column: 17,
           endColumn: 20,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: `
-        declare const b: 'b';
-        \`a\${b}c\`;
-      `,
-            },
-          ],
         },
       ],
     },
 
     {
       code: "`a${'b'}`;",
+      output: '`ab`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 1,
           column: 5,
           endColumn: 8,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: '`ab`;',
-            },
-          ],
         },
       ],
     },
 
     {
-      code: "`${'1 + 1 = '}${2}`;",
+      code: "`${'1 + 1 ='} ${2}`;",
+      output: '`1 + 1 = 2`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 1,
           column: 4,
-          endColumn: 14,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: '`1 + 1 = ${2}`;',
-            },
-          ],
+          endColumn: 13,
         },
         {
           messageId: 'noUselessTemplateLiteral',
           line: 1,
           column: 17,
           endColumn: 18,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: "`${'1 + 1 = '}2`;",
-            },
-          ],
         },
       ],
     },
 
     {
-      code: "`${'a'}${true}`;",
+      code: "`${'a'} ${true}`;",
+      output: '`a true`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 1,
           column: 4,
           endColumn: 7,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: '`a${true}`;',
-            },
-          ],
         },
         {
           messageId: 'noUselessTemplateLiteral',
           line: 1,
-          column: 10,
-          endColumn: 14,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: "`${'a'}true`;",
-            },
-          ],
+          column: 11,
+          endColumn: 15,
         },
       ],
     },
@@ -473,21 +364,16 @@ ruleTester.run('no-useless-template-literals', rule, {
         declare const string: 'a';
         \`\${string}\`;
       `,
+      output: `
+        declare const string: 'a';
+        string;
+      `,
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 3,
           column: 12,
           endColumn: 18,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: `
-        declare const string: 'a';
-        string;
-      `,
-            },
-          ],
         },
       ],
     },
@@ -497,36 +383,26 @@ ruleTester.run('no-useless-template-literals', rule, {
         declare const string: 'a';
         \`\${   string   }\`;
       `,
-      errors: [
-        {
-          messageId: 'noUselessTemplateLiteral',
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: `
+      output: `
         declare const string: 'a';
         string;
       `,
-            },
-          ],
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
         },
       ],
     },
 
     {
       code: "`${String(Symbol.for('test'))}`;",
+      output: "String(Symbol.for('test'));",
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 1,
           column: 4,
           endColumn: 30,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: "String(Symbol.for('test'));",
-            },
-          ],
         },
       ],
     },
@@ -536,21 +412,16 @@ ruleTester.run('no-useless-template-literals', rule, {
         declare const intersection: string & { _brand: 'test-brand' };
         \`\${intersection}\`;
       `,
+      output: `
+        declare const intersection: string & { _brand: 'test-brand' };
+        intersection;
+      `,
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 3,
           column: 12,
           endColumn: 24,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: `
-        declare const intersection: string & { _brand: 'test-brand' };
-        intersection;
-      `,
-            },
-          ],
         },
       ],
     },
@@ -561,82 +432,77 @@ ruleTester.run('no-useless-template-literals', rule, {
           \`\${arg}\`;
         }
       `,
+      output: `
+        function func<T extends string>(arg: T) {
+          arg;
+        }
+      `,
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
           line: 3,
           column: 14,
           endColumn: 17,
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: `
-        function func<T extends string>(arg: T) {
-          arg;
-        }
-      `,
-            },
-          ],
         },
       ],
     },
 
     {
       code: "`${'`'}`;",
+      output: "'`';",
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: "'`';",
-            },
-          ],
         },
       ],
     },
 
     {
       code: "`back${'`'}tick`;",
+      output: '`back\\`tick`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: '`back\\`tick`;',
-            },
-          ],
         },
       ],
     },
 
     {
       code: "`dollar${'${`this is test`}'}sign`;",
+      output: '`dollar\\${\\`this is test\\`}sign`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: '`dollar\\${\\`this is test\\`}sign`;',
-            },
-          ],
         },
       ],
     },
 
     {
       code: '`complex${\'`${"`${test}`"}`\'}case`;',
+      output: '`complex\\`\\${"\\`\\${test}\\`"}\\`case`;',
       errors: [
         {
           messageId: 'noUselessTemplateLiteral',
-          suggestions: [
-            {
-              messageId: 'removeUselessTemplateLiteral',
-              output: '`complex\\`\\${"\\`\\${test}\\`"}\\`case`;',
-            },
-          ],
+        },
+      ],
+    },
+
+    {
+      code: "`some ${'\\\\${test}'} string`;",
+      output: '`some \\\\\\${test} string`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
+        },
+      ],
+    },
+
+    {
+      code: "`some ${'\\\\`'} string`;",
+      output: '`some \\\\\\` string`;',
+      errors: [
+        {
+          messageId: 'noUselessTemplateLiteral',
         },
       ],
     },

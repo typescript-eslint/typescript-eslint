@@ -10,12 +10,12 @@ import {
   isUndefinedIdentifier,
 } from '../util';
 
-type MessageId = 'noUselessTemplateLiteral' | 'removeUselessTemplateLiteral';
+type MessageId = 'noUselessTemplateLiteral';
 
 export default createRule<[], MessageId>({
   name: 'no-useless-template-literals',
   meta: {
-    hasSuggestions: true,
+    fixable: 'code',
     type: 'suggestion',
     docs: {
       description: 'Disallow unnecessary template literals',
@@ -25,9 +25,6 @@ export default createRule<[], MessageId>({
     messages: {
       noUselessTemplateLiteral:
         'Template literal expression is unnecessary and can be simplified.',
-
-      removeUselessTemplateLiteral:
-        'Remove unnecessary template literal expression.',
     },
     schema: [],
   },
@@ -72,27 +69,22 @@ export default createRule<[], MessageId>({
           context.report({
             node: node.expressions[0],
             messageId: 'noUselessTemplateLiteral',
-            suggest: [
-              {
-                messageId: 'removeUselessTemplateLiteral',
-                fix(fixer): TSESLint.RuleFix[] {
-                  const [prevQuasi, nextQuasi] = node.quasis;
+            fix(fixer): TSESLint.RuleFix[] {
+              const [prevQuasi, nextQuasi] = node.quasis;
 
-                  // Remove the quasis and backticks.
-                  return [
-                    fixer.removeRange([
-                      prevQuasi.range[1] - 3,
-                      node.expressions[0].range[0],
-                    ]),
+              // Remove the quasis and backticks.
+              return [
+                fixer.removeRange([
+                  prevQuasi.range[1] - 3,
+                  node.expressions[0].range[0],
+                ]),
 
-                    fixer.removeRange([
-                      node.expressions[0].range[1],
-                      nextQuasi.range[0] + 2,
-                    ]),
-                  ];
-                },
-              },
-            ],
+                fixer.removeRange([
+                  node.expressions[0].range[1],
+                  nextQuasi.range[0] + 2,
+                ]),
+              ];
+            },
           });
 
           return;
@@ -108,45 +100,40 @@ export default createRule<[], MessageId>({
           context.report({
             node: expression,
             messageId: 'noUselessTemplateLiteral',
-            suggest: [
-              {
-                messageId: 'removeUselessTemplateLiteral',
-                fix(fixer): TSESLint.RuleFix[] {
-                  const index = node.expressions.indexOf(expression);
-                  const prevQuasi = node.quasis[index];
-                  const nextQuasi = node.quasis[index + 1];
+            fix(fixer): TSESLint.RuleFix[] {
+              const index = node.expressions.indexOf(expression);
+              const prevQuasi = node.quasis[index];
+              const nextQuasi = node.quasis[index + 1];
 
-                  // Remove the quasis' parts that are related to the current expression.
-                  const fixes = [
-                    fixer.removeRange([
-                      prevQuasi.range[1] - 2,
-                      expression.range[0],
-                    ]),
+              // Remove the quasis' parts that are related to the current expression.
+              const fixes = [
+                fixer.removeRange([
+                  prevQuasi.range[1] - 2,
+                  expression.range[0],
+                ]),
 
-                    fixer.removeRange([
-                      expression.range[1],
-                      nextQuasi.range[0] + 1,
-                    ]),
-                  ];
+                fixer.removeRange([
+                  expression.range[1],
+                  nextQuasi.range[0] + 1,
+                ]),
+              ];
 
-                  // Remove quotes for string literals (i.e. `'a'` will become `a`).
-                  const isStringLiteral =
-                    isUnderlyingTypeString(expression) &&
-                    expression.type === AST_NODE_TYPES.Literal;
+              // Remove quotes for string literals (i.e. `'a'` will become `a`).
+              const isStringLiteral =
+                isUnderlyingTypeString(expression) &&
+                expression.type === AST_NODE_TYPES.Literal;
 
-                  if (isStringLiteral) {
-                    const escapedValue = expression.value.replace(
-                      /([`$])/g,
-                      '\\$1',
-                    );
+              if (isStringLiteral) {
+                const escapedValue = expression.value.replace(
+                  /([`$\\])/g,
+                  '\\$1',
+                );
 
-                    fixes.push(fixer.replaceText(expression, escapedValue));
-                  }
+                fixes.push(fixer.replaceText(expression, escapedValue));
+              }
 
-                  return fixes;
-                },
-              },
-            ],
+              return fixes;
+            },
           });
         });
       },
