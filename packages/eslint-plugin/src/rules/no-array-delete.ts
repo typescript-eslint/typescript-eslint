@@ -22,7 +22,7 @@ export default createRule<[], MessageId>({
     },
     messages: {
       noArrayDelete:
-        'Using the `delete` operator with an array expression is unsafe. Use array.splice()` instead.',
+        'Using the `delete` operator with an array expression is unsafe. Use `array.splice()` instead.',
     },
     schema: [],
   },
