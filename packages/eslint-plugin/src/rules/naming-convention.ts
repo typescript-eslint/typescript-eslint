@@ -518,7 +518,10 @@ export default createRule<Options, MessageIds>({
 
       // #region accessor
 
-      [['Property[computed = false]:matches([kind = "get"], [kind = "set"])', 'AccessorProperty'].join(", ")]: {
+      [[
+        'Property[computed = false]:matches([kind = "get"], [kind = "set"])',
+        AST_NODE_TYPES.AccessorProperty,
+      ].join(', ')]: {
         validator: validators.accessor,
         handler: (node: TSESTree.PropertyNonComputedName, validator): void => {
           const modifiers = new Set<Modifiers>([Modifiers.public]);
