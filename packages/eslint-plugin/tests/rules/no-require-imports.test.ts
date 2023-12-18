@@ -161,7 +161,7 @@ var lib5 = require?.('lib5'),
       errors: [
         {
           line: 1,
-          column: 13,
+          column: 14,
           messageId: 'noRequireImports',
         },
       ],
@@ -183,7 +183,7 @@ var lib5 = require?.('lib5'),
       errors: [
         {
           line: 1,
-          column: 13,
+          column: 14,
           messageId: 'noRequireImports',
         },
       ],
