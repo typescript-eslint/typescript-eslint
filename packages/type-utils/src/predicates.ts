@@ -2,7 +2,7 @@ import debug from 'debug';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import { getTypeFlags, isTypeFlagSet } from './typeFlagUtils';
+import { isTypeFlagSet } from './typeFlagUtils';
 
 const log = debug('typescript-eslint:eslint-plugin:utils:types');
 
@@ -10,15 +10,12 @@ const log = debug('typescript-eslint:eslint-plugin:utils:types');
  * Checks if the given type is (or accepts) nullable
  */
 export function isNullableType(type: ts.Type): boolean {
-  const flags = getTypeFlags(type);
-
-  return (
-    (flags &
-      (ts.TypeFlags.Any |
-        ts.TypeFlags.Unknown |
-        ts.TypeFlags.Null |
-        ts.TypeFlags.Undefined)) !==
-    0
+  return isTypeFlagSet(
+    type,
+    ts.TypeFlags.Any |
+      ts.TypeFlags.Unknown |
+      ts.TypeFlags.Null |
+      ts.TypeFlags.Undefined,
   );
 }
 
