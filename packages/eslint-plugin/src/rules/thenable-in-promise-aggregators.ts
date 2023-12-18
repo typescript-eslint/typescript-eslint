@@ -1,8 +1,11 @@
-import * as tsutils from 'ts-api-utils';
 import {
   isTypeAnyType,
   isTypeUnknownType,
 } from '@typescript-eslint/type-utils';
+import type { TSESTree } from '@typescript-eslint/utils';
+import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import * as tsutils from 'ts-api-utils';
+
 import { createRule, getParserServices } from '../util';
 
 export default createRule({
@@ -31,17 +34,17 @@ export default createRule({
     const checker = services.program.getTypeChecker();
 
     return {
-      CallExpression(node): void {
-        if (node.callee.type !== 'MemberExpression') {
+      CallExpression(node: TSESTree.CallExpression): void {
+        if (node.callee.type !== AST_NODE_TYPES.MemberExpression) {
           return;
         }
-        if (node.callee.object.type !== 'Identifier') {
+        if (node.callee.object.type !== AST_NODE_TYPES.Identifier) {
           return;
         }
         if (node.callee.object.name !== 'Promise') {
           return;
         }
-        if (node.callee.property.type !== 'Identifier') {
+        if (node.callee.property.type !== AST_NODE_TYPES.Identifier) {
           return;
         }
 
@@ -56,14 +59,14 @@ export default createRule({
         }
 
         const arg = args[0];
-        if (arg.type === 'ArrayExpression') {
+        if (arg.type === AST_NODE_TYPES.ArrayExpression) {
           const { elements } = arg;
           if (elements.length === 0) {
             return;
           }
 
           for (const element of elements) {
-            if (element === null) {
+            if (element == null) {
               continue;
             }
             const elementType = services.getTypeAtLocation(element);

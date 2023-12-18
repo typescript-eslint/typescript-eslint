@@ -1,6 +1,6 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 
-import rule from '../../src/rules/await-thenable';
+import rule from '../../src/rules/thenable-in-promise-aggregators';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
@@ -84,9 +84,9 @@ async function test() {
     `,
     `
 async function test() {
-  await Promise.race([(Math.random() > 0.5 ? numberPromise : 0)]);
-  await Promise.race([(Math.random() > 0.5 ? foo : 0)]);
-  await Promise.race([(Math.random() > 0.5 ? bar : 0)]);
+  await Promise.race([Math.random() > 0.5 ? numberPromise : 0]);
+  await Promise.race([Math.random() > 0.5 ? foo : 0]);
+  await Promise.race([Math.random() > 0.5 ? bar : 0]);
 
   const intersectionPromise: Promise<number> & number;
   await Promise.race([intersectionPromise]);
@@ -118,7 +118,7 @@ const doSomething = async (
     obj3.a?.b.c?.(),
     obj4.a.b.c?.(),
     obj5.a?.().b?.c?.(),
-    obj6?.a.b.c?.()
+    obj6?.a.b.c?.(),
   ]);
 
   await Promise.allSettled([callback?.()]);
@@ -126,26 +126,26 @@ const doSomething = async (
     `,
     `
 async function test() {
-    const promiseArr: Promise<number>[];
-    await Promise.all(promiseArr);
+  const promiseArr: Promise<number>[];
+  await Promise.all(promiseArr);
 }
     `,
     `
 async function test() {
-    const intersectionArr: (Promise<number> & number)[];
-    await Promise.all(intersectionArr);
+  const intersectionArr: (Promise<number> & number)[];
+  await Promise.all(intersectionArr);
 }
     `,
     `
 async function test() {
-    const values = [1, 2, 3];
-    await Promise.all(values.map(value => Promise.resolve(value)));
+  const values = [1, 2, 3];
+  await Promise.all(values.map(value => Promise.resolve(value)));
 }
     `,
     `
 async function test() {
-    const values = [1, 2, 3];
-    await Promise.all(values.map(async (value) => {}));
+  const values = [1, 2, 3];
+  await Promise.all(values.map(async value => {}));
 }
     `,
   ],
@@ -156,7 +156,7 @@ async function test() {
       errors: [
         {
           line: 1,
-          messageIdArrayArg,
+          messageId: messageIdInArray,
         },
       ],
     },
@@ -165,7 +165,7 @@ async function test() {
       errors: [
         {
           line: 1,
-          messageIdArrayArg,
+          messageId: messageIdInArray,
         },
       ],
     },
@@ -174,7 +174,7 @@ async function test() {
       errors: [
         {
           line: 1,
-          messageIdArrayArg,
+          messageId: messageIdInArray,
         },
       ],
     },
@@ -183,7 +183,7 @@ async function test() {
       errors: [
         {
           line: 1,
-          messageIdArrayArg,
+          messageId: messageIdInArray,
         },
       ],
     },
@@ -192,16 +192,16 @@ async function test() {
       errors: [
         {
           line: 1,
-          messageIdArrayArg,
+          messageId: messageIdInArray,
         },
       ],
     },
     {
-      code: `async () => await Promise.race([Math.random() > 0.5 ? '' : 0]);`,
+      code: "async () => await Promise.race([Math.random() > 0.5 ? '' : 0]);",
       errors: [
         {
           line: 1,
-          messageIdArrayArg,
+          messageId: messageIdInArray,
         },
       ],
     },
@@ -213,7 +213,7 @@ await Promise.race([new NonPromise()]);
       errors: [
         {
           line: 3,
-          messageIdArrayArg,
+          messageId: messageIdInArray,
           suggestions: [],
         },
       ],
@@ -232,7 +232,7 @@ async function test() {
       errors: [
         {
           line: 8,
-          messageIdArrayArg,
+          messageId: messageIdInArray,
         },
       ],
     },
@@ -244,7 +244,7 @@ await Promise.race([callback?.()]);
       errors: [
         {
           line: 3,
-          messageIdArrayArg,
+          messageId: messageIdInArray,
         },
       ],
     },
@@ -256,7 +256,7 @@ await Promise.race([obj.a?.b?.()]);
       errors: [
         {
           line: 3,
-          messageIdArrayArg,
+          messageId: messageIdInArray,
         },
       ],
     },
@@ -268,7 +268,7 @@ await Promise.race([obj?.a.b.c?.()]);
       errors: [
         {
           line: 3,
-          messageIdArrayArg,
+          messageId: messageIdInArray,
         },
       ],
     },
@@ -280,8 +280,8 @@ await Promise.all([wrappedPromise, stdPromise]);
       `,
       errors: [
         {
-          line: 3,
-          messageIdInArray,
+          line: 4,
+          messageId: messageIdInArray,
         },
       ],
     },
@@ -290,7 +290,7 @@ await Promise.all([wrappedPromise, stdPromise]);
       errors: [
         {
           line: 1,
-          messageIdNonArrayArg,
+          messageId: messageIdNonArrayArg,
         },
       ],
     },
@@ -299,7 +299,7 @@ await Promise.all([wrappedPromise, stdPromise]);
       errors: [
         {
           line: 1,
-          messageIdNonArrayArg,
+          messageId: messageIdNonArrayArg,
         },
       ],
     },
@@ -308,7 +308,7 @@ await Promise.all([wrappedPromise, stdPromise]);
       errors: [
         {
           line: 1,
-          messageIdNonArrayArg,
+          messageId: messageIdNonArrayArg,
         },
       ],
     },
@@ -317,7 +317,7 @@ await Promise.all([wrappedPromise, stdPromise]);
       errors: [
         {
           line: 1,
-          messageIdNonArrayArg,
+          messageId: messageIdNonArrayArg,
         },
       ],
     },
@@ -329,28 +329,28 @@ await Promise.all(promiseArr);
       errors: [
         {
           line: 3,
-          messageIdNonArrayArg,
+          messageId: messageIdNonArrayArg,
         },
       ],
     },
     {
-      code: 'await Promise.all([0, 1].map((v) => v)',
+      code: 'await Promise.all([0, 1].map(v => v));',
       errors: [
         {
           line: 1,
-          messageIdArrayArg,
+          messageId: messageIdArrayArg,
         },
       ],
     },
     {
       code: `
 declare const promiseArr: Promise<number>[];
-await Promise.all(promiseArr.map((v) => await v));
+await Promise.all(promiseArr.map(v => await v));
       `,
       errors: [
         {
           line: 3,
-          messageIdArrayArg,
+          messageId: messageIdArrayArg,
         },
       ],
     },

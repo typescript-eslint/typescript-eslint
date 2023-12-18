@@ -47,6 +47,7 @@ export = {
     '@typescript-eslint/require-await': 'error',
     '@typescript-eslint/restrict-plus-operands': 'error',
     '@typescript-eslint/restrict-template-expressions': 'error',
+    '@typescript-eslint/thenable-in-promise-aggregators': 'error',
     '@typescript-eslint/triple-slash-reference': 'error',
     '@typescript-eslint/unbound-method': 'error',
   },
