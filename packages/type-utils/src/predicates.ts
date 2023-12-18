@@ -8,25 +8,18 @@ const log = debug('typescript-eslint:eslint-plugin:utils:types');
 
 /**
  * Checks if the given type is (or accepts) nullable
- * @param isReceiver true if the type is a receiving type (i.e. the type of a called function's parameter)
  */
-export function isNullableType(
-  type: ts.Type,
-  {
-    isReceiver = false,
-    allowUndefined = true,
-  }: { isReceiver?: boolean; allowUndefined?: boolean } = {},
-): boolean {
+export function isNullableType(type: ts.Type): boolean {
   const flags = getTypeFlags(type);
 
-  if (isReceiver && flags & (ts.TypeFlags.Any | ts.TypeFlags.Unknown)) {
-    return true;
-  }
-
-  if (allowUndefined) {
-    return (flags & (ts.TypeFlags.Null | ts.TypeFlags.Undefined)) !== 0;
-  }
-  return (flags & ts.TypeFlags.Null) !== 0;
+  return (
+    (flags &
+      (ts.TypeFlags.Any |
+        ts.TypeFlags.Unknown |
+        ts.TypeFlags.Null |
+        ts.TypeFlags.Undefined)) !==
+    0
+  );
 }
 
 /**
