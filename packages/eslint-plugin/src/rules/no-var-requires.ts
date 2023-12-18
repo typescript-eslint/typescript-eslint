@@ -6,7 +6,7 @@ import { createRule } from '../util';
 
 type Options = [
   {
-    allowPackageJson?: boolean;
+    allow: string[];
   },
 ];
 type MessageIds = 'noVarReqs';
@@ -26,24 +26,32 @@ export default createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          allowPackageJson: {
-            type: 'boolean',
+          allow: {
+            type: 'array',
+            items: { type: 'string' },
+            description: 'Patterns of import paths to allow requiring from.',
           },
         },
+        additionalProperties: false,
       },
     ],
   },
-  defaultOptions: [{ allowPackageJson: false }],
+  defaultOptions: [{ allow: [] }],
   create(context, options) {
+    const allowPatterns = options[0].allow.map(
+      pattern => new RegExp(pattern, 'u'),
+    );
+    function isImportPathAllowed(importPath: string): boolean {
+      return allowPatterns.some(pattern => importPath.match(pattern));
+    }
     return {
       'CallExpression[callee.name="require"]'(
         node: TSESTree.CallExpression,
       ): void {
         if (
-          options[0].allowPackageJson &&
           node.arguments[0]?.type === AST_NODE_TYPES.Literal &&
           typeof node.arguments[0].value === 'string' &&
-          node.arguments[0].value.endsWith('/package.json')
+          isImportPathAllowed(node.arguments[0].value)
         ) {
           return;
         }

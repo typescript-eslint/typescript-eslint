@@ -18,15 +18,23 @@ const json = require('./some.json');
     `,
     {
       code: "const pkg = require('./package.json');",
-      options: [{ allowPackageJson: true }],
+      options: [{ allow: ['/package\\.json$'] }],
     },
     {
       code: "const pkg = require('../package.json');",
-      options: [{ allowPackageJson: true }],
+      options: [{ allow: ['/package\\.json$'] }],
     },
     {
       code: "const pkg = require('../packages/package.json');",
-      options: [{ allowPackageJson: true }],
+      options: [{ allow: ['/package\\.json$'] }],
+    },
+    {
+      code: "const pkg = require('data.json');",
+      options: [{ allow: ['\\.json$'] }],
+    },
+    {
+      code: "const pkg = require('some-package');",
+      options: [{ allow: ['^some-package$'] }],
     },
   ],
   invalid: [
@@ -181,7 +189,18 @@ configValidator.addSchema(require('./a.json'));
     },
     {
       code: "const pkg = require('./package.jsonc');",
-      options: [{ allowPackageJson: true }],
+      options: [{ allow: ['/package\\.json$'] }],
+      errors: [
+        {
+          line: 1,
+          column: 13,
+          messageId: 'noVarReqs',
+        },
+      ],
+    },
+    {
+      code: "const pkg = require('./package.json');",
+      options: [{ allow: ['^some-package$'] }],
       errors: [
         {
           line: 1,

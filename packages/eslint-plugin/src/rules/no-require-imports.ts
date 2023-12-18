@@ -6,7 +6,7 @@ import * as util from '../util';
 
 type Options = [
   {
-    allowPackageJson?: boolean;
+    allow: string[];
   },
 ];
 type MessageIds = 'noRequireImports';
@@ -22,37 +22,35 @@ export default util.createRule<Options, MessageIds>({
       {
         type: 'object',
         properties: {
-          allowPackageJson: {
-            type: 'boolean',
+          allow: {
+            type: 'array',
+            items: { type: 'string' },
+            description: 'Patterns of import paths to allow requiring from.',
           },
         },
+        additionalProperties: false,
       },
     ],
     messages: {
       noRequireImports: 'A `require()` style import is forbidden.',
     },
   },
-  defaultOptions: [{ allowPackageJson: false }],
+  defaultOptions: [{ allow: [] }],
   create(context, options) {
-    function isPackageJsonImport(
-      specifier: TSESTree.Node | undefined,
-    ): boolean {
-      if (!specifier) {
-        return false;
-      }
-      return (
-        specifier.type === AST_NODE_TYPES.Literal &&
-        typeof specifier.value === 'string' &&
-        specifier.value.endsWith('/package.json')
-      );
+    const allowPatterns = options[0].allow.map(
+      pattern => new RegExp(pattern, 'u'),
+    );
+    function isImportPathAllowed(importPath: string): boolean {
+      return allowPatterns.some(pattern => importPath.match(pattern));
     }
     return {
       'CallExpression[callee.name="require"]'(
         node: TSESTree.CallExpression,
       ): void {
         if (
-          options[0].allowPackageJson &&
-          isPackageJsonImport(node.arguments[0])
+          node.arguments[0]?.type === AST_NODE_TYPES.Literal &&
+          typeof node.arguments[0].value === 'string' &&
+          isImportPathAllowed(node.arguments[0].value)
         ) {
           return;
         }
@@ -69,8 +67,9 @@ export default util.createRule<Options, MessageIds>({
       },
       TSExternalModuleReference(node): void {
         if (
-          options[0].allowPackageJson &&
-          isPackageJsonImport(node.expression)
+          node.expression.type === AST_NODE_TYPES.Literal &&
+          typeof node.expression.value === 'string' &&
+          isImportPathAllowed(node.expression.value)
         ) {
           return;
         }

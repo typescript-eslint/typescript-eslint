@@ -25,19 +25,27 @@ require('remark-preset-prettier');
     `,
     {
       code: "const pkg = require('./package.json');",
-      options: [{ allowPackageJson: true }],
+      options: [{ allow: ['/package\\.json$'] }],
     },
     {
       code: "const pkg = require('../package.json');",
-      options: [{ allowPackageJson: true }],
+      options: [{ allow: ['/package\\.json$'] }],
     },
     {
       code: "const pkg = require('../packages/package.json');",
-      options: [{ allowPackageJson: true }],
+      options: [{ allow: ['/package\\.json$'] }],
     },
     {
       code: "import pkg = require('../packages/package.json');",
-      options: [{ allowPackageJson: true }],
+      options: [{ allow: ['/package\\.json$'] }],
+    },
+    {
+      code: "import pkg = require('data.json');",
+      options: [{ allow: ['\\.json$'] }],
+    },
+    {
+      code: "import pkg = require('some-package');",
+      options: [{ allow: ['^some-package$'] }],
     },
   ],
   invalid: [
@@ -139,7 +147,7 @@ var lib5 = require?.('lib5'),
     },
     {
       code: "const pkg = require('./package.jsonc');",
-      options: [{ allowPackageJson: true }],
+      options: [{ allow: ['/package\\.json$'] }],
       errors: [
         {
           line: 1,
@@ -160,11 +168,22 @@ var lib5 = require?.('lib5'),
     },
     {
       code: "import pkg = require('./package.jsonc');",
-      options: [{ allowPackageJson: true }],
+      options: [{ allow: ['/package\\.json$'] }],
       errors: [
         {
           line: 1,
           column: 14,
+          messageId: 'noRequireImports',
+        },
+      ],
+    },
+    {
+      code: "import pkg = require('./package.json');",
+      options: [{ allow: ['^some-package$'] }],
+      errors: [
+        {
+          line: 1,
+          column: 13,
           messageId: 'noRequireImports',
         },
       ],
