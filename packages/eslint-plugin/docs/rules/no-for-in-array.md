@@ -53,4 +53,5 @@ for (const [i, value] of array.entries()) {
 
 ## When Not To Use It
 
-If you want to iterate through a loop using the indices in an array as strings, you can turn off this rule.
+If your project is a rare one that intentionally loops over string indices of arrays, you can turn off this rule.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.

@@ -10,7 +10,8 @@ exports[`AST Fixtures legacy-fixtures class-decorators export-named-class-decora
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         declaration: ClassDeclaration {
           type: 'ClassDeclaration',
 -         abstract: false,

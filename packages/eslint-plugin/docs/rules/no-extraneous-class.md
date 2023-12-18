@@ -205,13 +205,13 @@ The rule's options each add an exemption for a specific type of class.
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowConstructorOnly": true }'
 class NoFields {}
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowConstructorOnly": true }'
 class NoFields {
   constructor() {
     console.log('Hello, world!');
@@ -227,7 +227,7 @@ The `allowEmpty` option adds an exemption for classes that are entirely empty.
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowEmpty": true }'
 class NoFields {
   constructor() {
     console.log('Hello, world!');
@@ -237,7 +237,7 @@ class NoFields {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowEmpty": true }'
 class NoFields {}
 ```
 
@@ -254,13 +254,13 @@ It works against this rule's primary purpose of discouraging classes used only f
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowStaticOnly": true }'
 class EmptyClass {}
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowStaticOnly": true }'
 class NotEmptyClass {
   static version = 42;
 }
@@ -274,7 +274,7 @@ The `allowWithDecorator` option adds an exemption for classes that contain a mem
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowWithDecorator": true }'
 class Constants {
   static readonly version = 42;
 }
@@ -282,7 +282,7 @@ class Constants {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowWithDecorator": true }'
 class Constants {
   @logOnRead()
   static readonly version = 42;
@@ -291,4 +291,5 @@ class Constants {
 
 ## When Not To Use It
 
-You can disable this rule if you are unable -or unwilling- to switch off using classes as namespaces.
+If your project was set up before modern class and namespace practices, and you don't have the time to switch over, you might not be practically able to use this rule.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.

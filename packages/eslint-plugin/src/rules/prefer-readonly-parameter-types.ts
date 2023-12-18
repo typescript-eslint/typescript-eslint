@@ -1,11 +1,18 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import type { TypeOrValueSpecifier } from '../util';
+import {
+  createRule,
+  getParserServices,
+  isTypeReadonly,
+  readonlynessOptionsDefaults,
+  readonlynessOptionsSchema,
+} from '../util';
 
 type Options = [
   {
-    allow?: util.TypeOrValueSpecifier[];
+    allow?: TypeOrValueSpecifier[];
     checkParameterProperties?: boolean;
     ignoreInferredTypes?: boolean;
     treatMethodsAsReadonly?: boolean;
@@ -13,7 +20,7 @@ type Options = [
 ];
 type MessageIds = 'shouldBeReadonly';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'prefer-readonly-parameter-types',
   meta: {
     type: 'suggestion',
@@ -27,7 +34,7 @@ export default util.createRule<Options, MessageIds>({
         type: 'object',
         additionalProperties: false,
         properties: {
-          allow: util.readonlynessOptionsSchema.properties.allow,
+          allow: readonlynessOptionsSchema.properties.allow,
           checkParameterProperties: {
             type: 'boolean',
           },
@@ -35,7 +42,7 @@ export default util.createRule<Options, MessageIds>({
             type: 'boolean',
           },
           treatMethodsAsReadonly:
-            util.readonlynessOptionsSchema.properties.treatMethodsAsReadonly,
+            readonlynessOptionsSchema.properties.treatMethodsAsReadonly,
         },
       },
     ],
@@ -45,11 +52,11 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [
     {
-      allow: util.readonlynessOptionsDefaults.allow,
+      allow: readonlynessOptionsDefaults.allow,
       checkParameterProperties: true,
       ignoreInferredTypes: false,
       treatMethodsAsReadonly:
-        util.readonlynessOptionsDefaults.treatMethodsAsReadonly,
+        readonlynessOptionsDefaults.treatMethodsAsReadonly,
     },
   ],
   create(
@@ -63,7 +70,7 @@ export default util.createRule<Options, MessageIds>({
       },
     ],
   ) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
 
     return {
       [[
@@ -106,7 +113,7 @@ export default util.createRule<Options, MessageIds>({
           }
 
           const type = services.getTypeAtLocation(actualParam);
-          const isReadOnly = util.isTypeReadonly(services.program, type, {
+          const isReadOnly = isTypeReadonly(services.program, type, {
             treatMethodsAsReadonly: treatMethodsAsReadonly!,
             allow,
           });

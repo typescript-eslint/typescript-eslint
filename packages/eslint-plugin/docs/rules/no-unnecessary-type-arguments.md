@@ -71,3 +71,7 @@ class D extends C<string> {}
 interface I<T = number> {}
 class Impl implements I<string> {}
 ```
+
+## When Not To Use It
+
+If you prefer explicitly specifying type parameters even when they are equal to the default, you can skip this rule.

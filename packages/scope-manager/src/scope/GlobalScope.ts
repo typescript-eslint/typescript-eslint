@@ -60,7 +60,7 @@ class GlobalScope extends ScopeBase<
         // create an implicit global variable from assignment expression
         const info = ref.maybeImplicitGlobal;
         const node = info.pattern;
-        if (node && node.type === AST_NODE_TYPES.Identifier) {
+        if (node.type === AST_NODE_TYPES.Identifier) {
           this.defineVariable(
             node.name,
             this.implicit.set,

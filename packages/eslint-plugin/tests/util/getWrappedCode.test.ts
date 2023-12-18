@@ -1,8 +1,13 @@
 import { RuleTester } from '@typescript-eslint/rule-tester';
 import type { TSESTree } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as ts from 'typescript';
 
-import * as util from '../../src/util';
+import {
+  createRule,
+  getOperatorPrecedence,
+  getParserServices,
+} from '../../src/util';
 import { getWrappedCode } from '../../src/util/getWrappedCode';
 import { getFixturesRootDir } from '../RuleTester';
 
@@ -15,7 +20,7 @@ const ruleTester = new RuleTester({
   },
 });
 
-const removeFunctionRule = util.createRule({
+const removeFunctionRule = createRule({
   name: 'remove-function',
   defaultOptions: [],
   meta: {
@@ -32,8 +37,8 @@ const removeFunctionRule = util.createRule({
   },
 
   create(context) {
-    const sourceCode = context.getSourceCode();
-    const parserServices = util.getParserServices(context, true);
+    const sourceCode = getSourceCode(context);
+    const parserServices = getParserServices(context, true);
 
     const report = (node: TSESTree.CallExpression): void => {
       context.report({
@@ -43,13 +48,13 @@ const removeFunctionRule = util.createRule({
           const tsNode = parserServices.esTreeNodeToTSNodeMap.get(node);
           const tsArgumentNode = tsNode.arguments[0];
 
-          const nodePrecedence = util.getOperatorPrecedence(
+          const nodePrecedence = getOperatorPrecedence(
             tsArgumentNode.kind,
             ts.isBinaryExpression(tsArgumentNode)
               ? tsArgumentNode.operatorToken.kind
               : ts.SyntaxKind.Unknown,
           );
-          const parentPrecedence = util.getOperatorPrecedence(
+          const parentPrecedence = getOperatorPrecedence(
             tsNode.parent.kind,
             ts.isBinaryExpression(tsNode.parent)
               ? tsNode.parent.operatorToken.kind

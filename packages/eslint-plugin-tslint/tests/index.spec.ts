@@ -3,6 +3,8 @@ import { TSESLint } from '@typescript-eslint/utils';
 import { readFileSync } from 'fs';
 import path = require('path');
 
+import type { ClassicConfig } from '@typescript-eslint/utils/ts-eslint';
+
 import type { Options } from '../src/rules/config';
 import rule from '../src/rules/config';
 
@@ -165,7 +167,7 @@ ruleTester.run('tslint/config', rule, {
 });
 
 describe('tslint/error', () => {
-  function testOutput(code: string, config: TSESLint.Linter.Config): void {
+  function testOutput(code: string, config: ClassicConfig.Config): void {
     const linter = new TSESLint.Linter();
     linter.defineRule('tslint/config', rule);
     linter.defineParser('@typescript-eslint/parser', parser);

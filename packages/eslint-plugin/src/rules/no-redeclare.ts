@@ -1,8 +1,9 @@
 import { ScopeType } from '@typescript-eslint/scope-manager';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import { createRule, getNameLocationInGlobalDirectiveComment } from '../util';
 
 type MessageIds = 'redeclared' | 'redeclaredAsBuiltin' | 'redeclaredBySyntax';
 type Options = [
@@ -12,7 +13,7 @@ type Options = [
   },
 ];
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-redeclare',
   meta: {
     type: 'suggestion',
@@ -49,7 +50,7 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [options]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     const CLASS_DECLARATION_MERGE_NODES = new Set<AST_NODE_TYPES>([
       AST_NODE_TYPES.TSInterfaceDeclaration,
@@ -71,11 +72,10 @@ export default util.createRule<Options, MessageIds>({
         node?: TSESTree.Comment | TSESTree.Identifier;
         loc?: TSESTree.SourceLocation;
       },
-      void,
-      unknown
+      void
     > {
       if (
-        options?.builtinGlobals &&
+        options.builtinGlobals &&
         'eslintImplicitGlobalSetting' in variable &&
         (variable.eslintImplicitGlobalSetting === 'readonly' ||
           variable.eslintImplicitGlobalSetting === 'writable')
@@ -91,7 +91,7 @@ export default util.createRule<Options, MessageIds>({
           yield {
             type: 'comment',
             node: comment,
-            loc: util.getNameLocationInGlobalDirectiveComment(
+            loc: getNameLocationInGlobalDirectiveComment(
               sourceCode,
               comment,
               variable.name,
@@ -237,7 +237,7 @@ export default util.createRule<Options, MessageIds>({
      * Find variables in the current scope.
      */
     function checkForBlock(node: TSESTree.Node): void {
-      const scope = context.getScope();
+      const scope = getScope(context);
 
       /*
        * In ES5, some node type such as `BlockStatement` doesn't have that scope.
@@ -250,7 +250,7 @@ export default util.createRule<Options, MessageIds>({
 
     return {
       Program(): void {
-        const scope = context.getScope();
+        const scope = getScope(context);
 
         findVariablesInScope(scope);
 

@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/scope-manager",
-  "version": "6.7.3",
+  "version": "6.15.0",
   "description": "TypeScript scope analyser for ESLint",
   "files": [
     "dist",
@@ -34,22 +34,23 @@
     "estree"
   ],
   "scripts": {
-    "build": "nx build",
-    "clean": "nx clean",
-    "clean-fixtures": "nx clean-fixtures",
+    "build": "npx nx build",
+    "clean": "npx nx clean",
+    "clean-fixtures": "npx nx clean-fixtures",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "generate-lib": "nx generate-lib",
-    "lint": "nx lint",
-    "test": "nx test --code-coverage",
-    "typecheck": "nx typecheck"
+    "generate-lib": "npx nx generate-lib",
+    "lint": "npx nx lint",
+    "test": "npx nx test --code-coverage",
+    "typecheck": "npx nx typecheck"
   },
   "dependencies": {
-    "@typescript-eslint/types": "6.7.3",
-    "@typescript-eslint/visitor-keys": "6.7.3"
+    "@typescript-eslint/types": "6.15.0",
+    "@typescript-eslint/visitor-keys": "6.15.0"
   },
   "devDependencies": {
+    "@prettier/sync": "*",
     "@types/glob": "*",
-    "@typescript-eslint/typescript-estree": "6.7.3",
+    "@typescript-eslint/typescript-estree": "6.15.0",
     "glob": "*",
     "jest-specific-snapshot": "*",
     "make-dir": "*",

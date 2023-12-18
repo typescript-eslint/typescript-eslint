@@ -2,6 +2,7 @@ import type { AST as RegExpAST } from '@eslint-community/regexpp';
 import { parseRegExpLiteral } from '@eslint-community/regexpp';
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getScope } from '@typescript-eslint/utils/eslint-utils';
 import * as ts from 'typescript';
 
 import {
@@ -32,7 +33,7 @@ export default createRule({
   },
 
   create(context) {
-    const globalScope = context.getScope();
+    const globalScope = getScope(context);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
@@ -152,7 +153,7 @@ export default createRule({
       // Check if the comparison is equivalent to `includes()`.
       const callNode = node.parent as TSESTree.CallExpression;
       const compareNode = (
-        callNode.parent?.type === AST_NODE_TYPES.ChainExpression
+        callNode.parent.type === AST_NODE_TYPES.ChainExpression
           ? callNode.parent.parent
           : callNode.parent
       ) as TSESTree.BinaryExpression;

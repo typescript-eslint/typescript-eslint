@@ -74,14 +74,14 @@ Examples of code for this rule with `{ allowAny: true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowAny": true }'
 let fn = (a: number, b: []) => a + b;
 let fn = (a: string, b: []) => a + b;
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowAny": true }'
 let fn = (a: number, b: any) => a + b;
 let fn = (a: string, b: any) => a + b;
 ```
@@ -94,14 +94,14 @@ Examples of code for this rule with `{ allowBoolean: true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowBoolean": true }'
 let fn = (a: number, b: unknown) => a + b;
 let fn = (a: string, b: unknown) => a + b;
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowBoolean": true }'
 let fn = (a: number, b: boolean) => a + b;
 let fn = (a: string, b: boolean) => a + b;
 ```
@@ -114,7 +114,7 @@ Examples of code for this rule with `{ allowNullish: true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowNullish": true }'
 let fn = (a: number, b: unknown) => a + b;
 let fn = (a: number, b: never) => a + b;
 let fn = (a: string, b: unknown) => a + b;
@@ -123,7 +123,7 @@ let fn = (a: string, b: never) => a + b;
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowNullish": true }'
 let fn = (a: number, b: undefined) => a + b;
 let fn = (a: number, b: null) => a + b;
 let fn = (a: string, b: undefined) => a + b;
@@ -138,14 +138,14 @@ Examples of code for this rule with `{ allowNumberAndString: true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowNumberAndString": true }'
 let fn = (a: number, b: unknown) => a + b;
 let fn = (a: number, b: never) => a + b;
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowNumberAndString": true }'
 let fn = (a: number, b: string) => a + b;
 let fn = (a: number, b: number | string) => a + b;
 ```
@@ -158,25 +158,25 @@ Examples of code for this rule with `{ allowRegExp: true }`:
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowRegExp": true }'
 let fn = (a: number, b: RegExp) => a + b;
 ```
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowRegExp": true }'
 let fn = (a: string, b: RegExp) => a + b;
 ```
 
 ### `skipCompoundAssignments`
 
-Examples of code for this rule with `{ skipCompoundAssignments: true }`:
+Examples of code for this rule with `{ skipCompoundAssignments: false }`:
 
 <!--tabs-->
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "skipCompoundAssignments": true }'
 let foo: string | undefined;
 foo += 'some data';
 
@@ -186,7 +186,7 @@ bar += 0;
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "skipCompoundAssignments": true }'
 let foo: number = 0;
 foo += 1;
 
@@ -196,7 +196,7 @@ bar += 'test';
 
 ## When Not To Use It
 
-If you don't mind `"[object Object]"` in your strings, then you will not need this rule.
+If you don't mind a risk of `"[object Object]"` or incorrect type coercions in your values, then you will not need this rule.
 
 ## Related To
 

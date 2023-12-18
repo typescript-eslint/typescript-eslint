@@ -20,9 +20,8 @@ module.exports = {
   extends: [
     'eslint:recommended',
     'plugin:eslint-plugin/recommended',
-    'plugin:@typescript-eslint/recommended-type-checked',
+    'plugin:@typescript-eslint/strict-type-checked',
     'plugin:@typescript-eslint/stylistic-type-checked',
-    // TODO: consider enabling strict-type-checked
   ],
   parserOptions: {
     sourceType: 'module',
@@ -53,7 +52,8 @@ module.exports = {
     // make sure we're not leveraging any deprecated APIs
     'deprecation/deprecation': 'error',
 
-    // TODO(#7138): Investigate enabling these soon ✨
+    // TODO(#7338): Investigate enabling these soon ✨
+    '@typescript-eslint/no-dynamic-delete': 'off',
     '@typescript-eslint/prefer-nullish-coalescing': 'off',
 
     // TODO(#7130): Investigate changing these in or removing these from presets
@@ -84,7 +84,18 @@ module.exports = {
     ],
     '@typescript-eslint/no-explicit-any': 'error',
     '@typescript-eslint/no-non-null-assertion': 'off',
+    'no-constant-condition': 'off',
+    '@typescript-eslint/no-unnecessary-condition': [
+      'error',
+      { allowConstantLoopConditions: true },
+    ],
     '@typescript-eslint/no-var-requires': 'off',
+    '@typescript-eslint/prefer-literal-enum-member': [
+      'error',
+      {
+        allowBitwiseExpressions: true,
+      },
+    ],
     '@typescript-eslint/unbound-method': 'off',
     '@typescript-eslint/restrict-template-expressions': [
       'error',

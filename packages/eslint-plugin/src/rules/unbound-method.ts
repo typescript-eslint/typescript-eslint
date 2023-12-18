@@ -1,10 +1,15 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getFilename } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
-import { getModifiers } from '../util';
+import {
+  createRule,
+  getModifiers,
+  getParserServices,
+  isIdentifier,
+} from '../util';
 
 //------------------------------------------------------------------------------
 // Rule Definition
@@ -124,7 +129,7 @@ const getMemberFullName = (node: TSESTree.MemberExpression): string =>
 const BASE_MESSAGE =
   'Avoid referencing unbound methods which may cause unintentional scoping of `this`.';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'unbound-method',
   meta: {
     docs: {
@@ -161,9 +166,9 @@ export default util.createRule<Options, MessageIds>({
     },
   ],
   create(context, [{ ignoreStatic }]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const currentSourceFile = services.program.getSourceFile(
-      context.getFilename(),
+      getFilename(context),
     );
 
     function checkMethodAndReport(
@@ -226,7 +231,7 @@ export default util.createRule<Options, MessageIds>({
             ) {
               if (
                 notImported &&
-                util.isIdentifier(initNode) &&
+                isIdentifier(initNode) &&
                 nativelyBoundMembers.includes(
                   `${initNode.name}.${property.key.name}`,
                 )
@@ -268,14 +273,13 @@ function checkMethod(
       const decl = valueDeclaration as
         | ts.MethodDeclaration
         | ts.MethodSignature;
-      const firstParam = decl.parameters[0];
+      const firstParam = decl.parameters.at(0);
       const firstParamIsThis =
         firstParam?.name.kind === ts.SyntaxKind.Identifier &&
         // eslint-disable-next-line @typescript-eslint/no-unsafe-enum-comparison
-        firstParam?.name.escapedText === 'this';
+        firstParam.name.escapedText === 'this';
       const thisArgIsVoid =
-        firstParamIsThis &&
-        firstParam?.type?.kind === ts.SyntaxKind.VoidKeyword;
+        firstParamIsThis && firstParam.type?.kind === ts.SyntaxKind.VoidKeyword;
 
       return {
         dangerous:

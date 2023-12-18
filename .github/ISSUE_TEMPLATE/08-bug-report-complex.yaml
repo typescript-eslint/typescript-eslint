@@ -1,17 +1,16 @@
-name: '🐛 Report a Complex Bug With a Reproduction Repository'
-description: Report a complex bug you encountered by providing an isolated reproduction repository
+name: '🐛 Complex Bug With a Reproduction'
+description: Report a complex bug with an isolated reproduction
 title: 'Bug: <short description of the issue>'
 labels:
   - bug
   - triage
 body:
   - type: markdown
-    id: preamble
     attributes:
       value: |
         An isolated reproduction is one we can clone locally and get running without other projects or existing knowledge of your project. If we cannot reproduce your bug quickly with the provided steps, we may not be able to take action on this issue. Help us to help you!
   - type: checkboxes
-    id: sanity-checks
+    id: preliminary-checks
     attributes:
       label: Before You File a Bug Report Please Confirm You Have Done The Following...
       description: If any of these required steps are not taken, we may not be able to review your issue. Help us to help you!

@@ -3,6 +3,7 @@
 import { SourceCode as ESLintSourceCode } from 'eslint';
 
 import type { ParserServices, TSESTree } from '../ts-estree';
+import type { Parser } from './Parser';
 import type { Scope } from './Scope';
 
 declare class TokenStore {
@@ -186,7 +187,7 @@ declare class TokenStore {
    */
   getTokensAfter<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
-    options?: T,
+    options?: T | number,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
    * Gets the `count` tokens that precedes a given node or token.
@@ -196,31 +197,19 @@ declare class TokenStore {
    */
   getTokensBefore<T extends SourceCode.CursorWithCountOptions>(
     node: TSESTree.Node | TSESTree.Token,
-    options?: T,
+    options?: T | number,
   ): SourceCode.ReturnTypeFromOptions<T>[];
   /**
    * Gets all of the tokens between two non-overlapping nodes.
    * @param left Node before the desired token range.
    * @param right Node after the desired token range.
-   * @param options The option object. If this is a function then it's `options.filter`.
+   * @param options The option object. If this is a number then it's `options.count`. If this is a function then it's `options.filter`.
    * @returns Tokens between left and right.
    */
   getTokensBetween<T extends SourceCode.CursorWithCountOptions>(
     left: TSESTree.Node | TSESTree.Token,
     right: TSESTree.Node | TSESTree.Token,
-    padding?: T,
-  ): SourceCode.ReturnTypeFromOptions<T>[];
-  /**
-   * Gets all of the tokens between two non-overlapping nodes.
-   * @param left Node before the desired token range.
-   * @param right Node after the desired token range.
-   * @param padding Number of extra tokens on either side of center.
-   * @returns Tokens between left and right.
-   */
-  getTokensBetween<T extends SourceCode.CursorWithCountOptions>(
-    left: TSESTree.Node | TSESTree.Token,
-    right: TSESTree.Node | TSESTree.Token,
-    padding?: number,
+    options?: T | number,
   ): SourceCode.ReturnTypeFromOptions<T>[];
 }
 
@@ -312,6 +301,31 @@ declare class SourceCodeBase extends TokenStore {
    */
   isSpaceBetweenTokens(first: TSESTree.Token, second: TSESTree.Token): boolean;
   /**
+   * Returns the scope of the given node.
+   * This information can be used track references to variables.
+   * @since 8.37.0
+   */
+  getScope?(node: TSESTree.Node): Scope.Scope;
+  /**
+   * Returns an array of the ancestors of the given node, starting at
+   * the root of the AST and continuing through the direct parent of the current node.
+   * This array does not include the currently-traversed node itself.
+   * @since 8.38.0
+   */
+  getAncestors?(node: TSESTree.Node): TSESTree.Node[];
+  /**
+   * Returns a list of variables declared by the given node.
+   * This information can be used to track references to variables.
+   * @since 8.38.0
+   */
+  getDeclaredVariables?(node: TSESTree.Node): readonly Scope.Variable[];
+  /**
+   * Marks a variable with the given name in the current scope as used.
+   * This affects the no-unused-vars rule.
+   * @since 8.39.0
+   */
+  markVariableAsUsed?(name: string, node: TSESTree.Node): boolean;
+  /**
    * The source code split into lines according to ECMA-262 specification.
    * This is done to avoid each rule needing to do so separately.
    */
@@ -384,7 +398,7 @@ namespace SourceCode {
     visitorKeys: VisitorKeys | null;
   }
 
-  export type VisitorKeys = Record<string, string[]>;
+  export type VisitorKeys = Parser.VisitorKeys;
 
   export type FilterPredicate = (token: TSESTree.Token) => boolean;
   export type GetFilterPredicate<TFilter, TDefault> =

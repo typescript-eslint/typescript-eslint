@@ -1,7 +1,7 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 export type Options = [
   {
@@ -11,7 +11,7 @@ export type Options = [
 ];
 export type MessageIds = 'suggestNever' | 'suggestUnknown' | 'unexpectedAny';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-explicit-any',
   meta: {
     type: 'suggestion',
@@ -109,7 +109,6 @@ export default util.createRule<Options, MessageIds>({
     function isNodeValidArrayTSTypeReference(node: TSESTree.Node): boolean {
       return (
         node.type === AST_NODE_TYPES.TSTypeReference &&
-        node.typeName !== undefined &&
         node.typeName.type === AST_NODE_TYPES.Identifier &&
         ['Array', 'ReadonlyArray'].includes(node.typeName.name)
       );
@@ -136,7 +135,7 @@ export default util.createRule<Options, MessageIds>({
      */
     function isGreatGrandparentRestElement(node: TSESTree.Node): boolean {
       return (
-        node?.parent?.parent?.parent != null &&
+        node.parent?.parent?.parent != null &&
         isNodeRestElementInFunction(node.parent.parent.parent)
       );
     }

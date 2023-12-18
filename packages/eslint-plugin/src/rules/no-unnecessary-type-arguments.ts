@@ -2,8 +2,12 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
-import { findFirstResult } from '../util';
+import {
+  createRule,
+  findFirstResult,
+  getParserServices,
+  isTypeReferenceType,
+} from '../util';
 
 type ParameterCapableTSNode =
   | ts.CallExpression
@@ -18,7 +22,7 @@ type ParameterCapableTSNode =
 
 type MessageIds = 'unnecessaryTypeParameter';
 
-export default util.createRule<[], MessageIds>({
+export default createRule<[], MessageIds>({
   name: 'no-unnecessary-type-arguments',
   meta: {
     docs: {
@@ -36,17 +40,17 @@ export default util.createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     function getTypeForComparison(type: ts.Type): {
       type: ts.Type;
       typeArguments: readonly ts.Type[];
     } {
-      if (util.isTypeReferenceType(type)) {
+      if (isTypeReferenceType(type)) {
         return {
           type: type.target,
-          typeArguments: util.getTypeArguments(type, checker),
+          typeArguments: checker.getTypeArguments(type),
         };
       }
       return {
@@ -62,7 +66,7 @@ export default util.createRule<[], MessageIds>({
       // Just check the last one. Must specify previous type parameters if the last one is specified.
       const i = esParameters.params.length - 1;
       const arg = esParameters.params[i];
-      const param = typeParameters[i];
+      const param = typeParameters.at(i);
       if (!param?.default) {
         return;
       }

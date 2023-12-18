@@ -10,7 +10,8 @@ exports[`AST Fixtures declaration ExportNamedDeclaration declare-function AST Al
     body: Array [
       ExportNamedDeclaration {
         type: 'ExportNamedDeclaration',
-        assertions: Array [],
+-       attributes: Array [],
++       assertions: Array [],
         declaration: TSDeclareFunction {
           type: 'TSDeclareFunction',
           async: false,

@@ -7,6 +7,12 @@ import type { CacheLike } from './ExpiringCache';
 
 type DebugModule = 'eslint' | 'typescript-eslint' | 'typescript';
 
+// Workaround to support new TS version features for consumers on old TS versions
+declare module 'typescript' {
+  // Added in TypeScript 5.3
+  enum JSDocParsingMode {}
+}
+
 /**
  * Internal settings used by the parser to run on a file.
  */
@@ -83,6 +89,11 @@ export interface MutableParseSettings {
    * Path of the file being parsed.
    */
   filePath: string;
+
+  /**
+   * JSDoc parsing style to pass through to TypeScript
+   */
+  jsDocParsingMode: ts.JSDocParsingMode;
 
   /**
    * Whether parsing of JSX is enabled.

@@ -1,10 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import * as ts from 'typescript';
 
-import * as util from '../util';
-import { typeIsOrHasBaseType } from '../util';
+import { createRule, getParserServices, typeIsOrHasBaseType } from '../util';
 
 type MessageIds = 'preferReadonly';
 type Options = [
@@ -20,7 +20,7 @@ const functionScopeBoundaries = [
   AST_NODE_TYPES.MethodDefinition,
 ].join(', ');
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'prefer-readonly',
   meta: {
     docs: {
@@ -48,7 +48,7 @@ export default util.createRule<Options, MessageIds>({
   },
   defaultOptions: [{ onlyInlineLambdas: false }],
   create(context, [{ onlyInlineLambdas }]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
     const classScopeStack: ClassScope[] = [];
 
@@ -105,7 +105,7 @@ export default util.createRule<Options, MessageIds>({
     function isDestructuringAssignment(
       node: ts.PropertyAccessExpression,
     ): boolean {
-      let current: ts.Node = node.parent;
+      let current = node.parent as ts.Node | undefined;
 
       while (current) {
         const parent = current.parent;
@@ -185,7 +185,7 @@ export default util.createRule<Options, MessageIds>({
       },
       'ClassDeclaration, ClassExpression:exit'(): void {
         const finalizedClassScope = classScopeStack.pop()!;
-        const sourceCode = context.getSourceCode();
+        const sourceCode = getSourceCode(context);
 
         for (const violatingNode of finalizedClassScope.finalizeUnmodifiedPrivateNonReadonlys()) {
           const { esNode, nameNode } =
@@ -288,7 +288,10 @@ class ClassScope {
 
   public addDeclaredVariable(node: ParameterOrPropertyDeclaration): void {
     if (
-      !tsutils.isModifierFlagSet(node, ts.ModifierFlags.Private) ||
+      !(
+        tsutils.isModifierFlagSet(node, ts.ModifierFlags.Private) ||
+        node.name.kind === ts.SyntaxKind.PrivateIdentifier
+      ) ||
       tsutils.isModifierFlagSet(node, ts.ModifierFlags.Readonly) ||
       ts.isComputedPropertyName(node.name)
     ) {

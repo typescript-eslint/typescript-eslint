@@ -2,16 +2,20 @@ import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import type { JSONSchema4 } from '@typescript-eslint/utils/json-schema';
 
-import * as util from '../util';
+import type {
+  InferMessageIdsTypeFromRule,
+  InferOptionsTypeFromRule,
+} from '../util';
+import { createRule, deepMerge } from '../util';
 import { getESLintCoreRule } from '../util/getESLintCoreRule';
 
 const baseRule = getESLintCoreRule('no-magic-numbers');
 
-type Options = util.InferOptionsTypeFromRule<typeof baseRule>;
-type MessageIds = util.InferMessageIdsTypeFromRule<typeof baseRule>;
+type Options = InferOptionsTypeFromRule<typeof baseRule>;
+type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 
 // Extend base schema with additional property to ignore TS numeric literal types
-const schema = util.deepMerge(
+const schema = deepMerge(
   // eslint-disable-next-line @typescript-eslint/no-unsafe-argument -- https://github.com/microsoft/TypeScript/issues/17002
   Array.isArray(baseRule.meta.schema)
     ? baseRule.meta.schema[0]
@@ -34,7 +38,7 @@ const schema = util.deepMerge(
   },
 ) as unknown as JSONSchema4;
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-magic-numbers',
   meta: {
     type: 'suggestion',
@@ -100,7 +104,7 @@ export default util.createRule<Options, MessageIds>({
           let raw = node.raw;
 
           if (
-            node.parent?.type === AST_NODE_TYPES.UnaryExpression &&
+            node.parent.type === AST_NODE_TYPES.UnaryExpression &&
             // the base rule only shows the operator for negative numbers
             // https://github.com/eslint/eslint/blob/9dfc8501fb1956c90dc11e6377b4cb38a6bea65d/lib/rules/no-magic-numbers.js#L126
             node.parent.operator === '-'
@@ -130,7 +134,7 @@ export default util.createRule<Options, MessageIds>({
  */
 function getLiteralParent(node: TSESTree.Literal): TSESTree.Node | undefined {
   if (
-    node.parent?.type === AST_NODE_TYPES.UnaryExpression &&
+    node.parent.type === AST_NODE_TYPES.UnaryExpression &&
     ['-', '+'].includes(node.parent.operator)
   ) {
     return node.parent.parent;

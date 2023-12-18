@@ -1,9 +1,13 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import {
+  getAncestors,
+  getSourceCode,
+} from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
-export default util.createRule({
+export default createRule({
   name: 'consistent-type-definitions',
   meta: {
     type: 'suggestion',
@@ -26,21 +30,19 @@ export default util.createRule({
   },
   defaultOptions: ['interface'],
   create(context, [option]) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     /**
      * Iterates from the highest parent to the currently traversed node
      * to determine whether any node in tree is globally declared module declaration
      */
     function isCurrentlyTraversedNodeWithinModuleDeclaration(): boolean {
-      return context
-        .getAncestors()
-        .some(
-          node =>
-            node.type === AST_NODE_TYPES.TSModuleDeclaration &&
-            node.declare &&
-            node.global,
-        );
+      return getAncestors(context).some(
+        node =>
+          node.type === AST_NODE_TYPES.TSModuleDeclaration &&
+          node.declare &&
+          node.global,
+      );
     }
 
     return {
@@ -99,17 +101,15 @@ export default util.createRule({
                   );
                 }
 
-                if (node.extends) {
-                  node.extends.forEach(heritage => {
-                    const typeIdentifier = sourceCode.getText(heritage);
-                    fixes.push(
-                      fixer.insertTextAfter(node.body, ` & ${typeIdentifier}`),
-                    );
-                  });
-                }
+                node.extends.forEach(heritage => {
+                  const typeIdentifier = sourceCode.getText(heritage);
+                  fixes.push(
+                    fixer.insertTextAfter(node.body, ` & ${typeIdentifier}`),
+                  );
+                });
 
                 if (
-                  node.parent?.type === AST_NODE_TYPES.ExportDefaultDeclaration
+                  node.parent.type === AST_NODE_TYPES.ExportDefaultDeclaration
                 ) {
                   fixes.push(
                     fixer.removeRange([node.parent.range[0], node.range[0]]),
