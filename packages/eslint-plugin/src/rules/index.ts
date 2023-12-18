@@ -132,6 +132,7 @@ import spaceBeforeFunctionParen from './space-before-function-paren';
 import spaceInfixOps from './space-infix-ops';
 import strictBooleanExpressions from './strict-boolean-expressions';
 import switchExhaustivenessCheck from './switch-exhaustiveness-check';
+import thenableInPromiseAggregators from './thenable-in-promise-aggregators';
 import tripleSlashReference from './triple-slash-reference';
 import typeAnnotationSpacing from './type-annotation-spacing';
 import typedef from './typedef';
@@ -273,6 +274,7 @@ export default {
   'space-infix-ops': spaceInfixOps,
   'strict-boolean-expressions': strictBooleanExpressions,
   'switch-exhaustiveness-check': switchExhaustivenessCheck,
+  'thenable-in-promise-aggregators': thenableInPromiseAggregators,
   'triple-slash-reference': tripleSlashReference,
   'type-annotation-spacing': typeAnnotationSpacing,
   typedef: typedef,
