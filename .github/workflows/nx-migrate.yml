@@ -23,7 +23,7 @@ jobs:
     name: Run nx migrate if required
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           # To allow us to perform the git diff we need the git history
           fetch-depth: 0

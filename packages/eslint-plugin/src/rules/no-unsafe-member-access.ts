@@ -1,16 +1,22 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 
-import * as util from '../util';
-import { getThisExpression } from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getParserServices,
+  getThisExpression,
+  isTypeAnyType,
+} from '../util';
 
 const enum State {
   Unsafe = 1,
   Safe = 2,
 }
 
-export default util.createRule({
+export default createRule({
   name: 'no-unsafe-member-access',
   meta: {
     type: 'problem',
@@ -33,13 +39,13 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const compilerOptions = services.program.getCompilerOptions();
     const isNoImplicitThis = tsutils.isStrictCompilerOptionEnabled(
       compilerOptions,
       'noImplicitThis',
     );
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     const stateCache = new Map<TSESTree.Node, State>();
 
@@ -60,7 +66,7 @@ export default util.createRule({
       }
 
       const type = services.getTypeAtLocation(node.object);
-      const state = util.isTypeAnyType(type) ? State.Unsafe : State.Safe;
+      const state = isTypeAnyType(type) ? State.Unsafe : State.Safe;
       stateCache.set(node, state);
 
       if (state === State.Unsafe) {
@@ -75,8 +81,8 @@ export default util.createRule({
 
           if (
             thisExpression &&
-            util.isTypeAnyType(
-              util.getConstrainedTypeAtLocation(services, thisExpression),
+            isTypeAnyType(
+              getConstrainedTypeAtLocation(services, thisExpression),
             )
           ) {
             messageId = 'unsafeThisMemberExpression';
@@ -84,7 +90,7 @@ export default util.createRule({
         }
 
         context.report({
-          node,
+          node: node.property,
           messageId,
           data: {
             property: node.computed ? `[${propertyName}]` : `.${propertyName}`,
@@ -116,7 +122,7 @@ export default util.createRule({
 
         const type = services.getTypeAtLocation(node);
 
-        if (util.isTypeAnyType(type)) {
+        if (isTypeAnyType(type)) {
           const propertyName = sourceCode.getText(node);
           context.report({
             node,

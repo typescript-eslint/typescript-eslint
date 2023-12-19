@@ -36,8 +36,8 @@ function foo<T extends (Args: any) => void>(arg: T) {}
 export type ArrayInput<Func> = Func extends (arg0: Array<infer T>) => any
   ? T[]
   : Func extends (...args: infer T) => any
-  ? T
-  : never;
+    ? T
+    : never;
     `,
     `
 function foo() {
@@ -220,6 +220,17 @@ export class Wrapper<Wrapped> {
   static create<Wrapped>(wrapped: Wrapped) {
     return new Wrapper<Wrapped>(wrapped);
   }
+}
+    `,
+    `
+function makeA() {
+  return class A<T> {
+    constructor(public value: T) {}
+
+    static make<T>(value: T) {
+      return new A<T>(value);
+    }
+  };
 }
     `,
     {

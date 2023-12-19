@@ -135,7 +135,7 @@ describe('parseAndGenerateServices', () => {
         });
 
         expect(
-          parseResult.services.esTreeNodeToTSNodeMap?.has(
+          parseResult.services.esTreeNodeToTSNodeMap.has(
             parseResult.ast.body[0],
           ),
         ).toBe(setting);
@@ -187,8 +187,8 @@ describe('parseAndGenerateServices', () => {
         ext === '.json'
           ? '{ "x": 1 }'
           : jsxContent
-          ? 'const x = <div />;'
-          : 'const x = 1';
+            ? 'const x = <div />;'
+            : 'const x = 1';
       it(`should parse ${ext} file - ${
         jsxContent ? 'with' : 'without'
       } JSX content - parserOptions.jsx = ${jsxSetting}`, () => {
@@ -362,7 +362,7 @@ describe('parseAndGenerateServices', () => {
               filePath: join(PROJECT_DIR, filePath),
             });
           } catch (error) {
-            throw alignErrorPath(error as Error);
+            alignErrorPath(error as Error);
           }
         };
 
@@ -499,7 +499,7 @@ describe('parseAndGenerateServices', () => {
                 filePath: join(PROJECT_DIR, filePath),
               });
             } catch (error) {
-              throw alignErrorPath(error as Error);
+              alignErrorPath(error as Error);
             }
           };
 

@@ -1,9 +1,10 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { ASTUtils } from '@typescript-eslint/utils';
+import { getScope } from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
-export default util.createRule({
+export default createRule({
   name: 'no-require-imports',
   meta: {
     type: 'problem',
@@ -21,7 +22,7 @@ export default util.createRule({
       'CallExpression[callee.name="require"]'(
         node: TSESTree.CallExpression,
       ): void {
-        const variable = ASTUtils.findVariable(context.getScope(), 'require');
+        const variable = ASTUtils.findVariable(getScope(context), 'require');
 
         // ignore non-global require usage as it's something user-land custom instead
         // of the commonjs standard

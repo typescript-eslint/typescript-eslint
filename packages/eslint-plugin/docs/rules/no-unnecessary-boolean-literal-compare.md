@@ -61,7 +61,7 @@ Examples of code for this rule with `{ allowComparingNullableBooleansToTrue: fal
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowComparingNullableBooleansToTrue": false }'
 declare const someUndefinedCondition: boolean | undefined;
 if (someUndefinedCondition === true) {
 }
@@ -73,7 +73,7 @@ if (someNullCondition !== true) {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowComparingNullableBooleansToTrue": false }'
 declare const someUndefinedCondition: boolean | undefined;
 if (someUndefinedCondition) {
 }
@@ -91,7 +91,7 @@ Examples of code for this rule with `{ allowComparingNullableBooleansToFalse: fa
 
 #### ❌ Incorrect
 
-```ts
+```ts option='{ "allowComparingNullableBooleansToFalse": false }'
 declare const someUndefinedCondition: boolean | undefined;
 if (someUndefinedCondition === false) {
 }
@@ -103,7 +103,7 @@ if (someNullCondition !== false) {
 
 #### ✅ Correct
 
-```ts
+```ts option='{ "allowComparingNullableBooleansToFalse": false }'
 declare const someUndefinedCondition: boolean | undefined;
 if (someUndefinedCondition ?? true) {
 }
@@ -126,7 +126,7 @@ if (!(someNullCondition ?? true)) {
 | `!(nullableBooleanVar === false)` | `nullableBooleanVar ?? true`    | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 | `!(nullableBooleanVar !== false)` | `!(nullableBooleanVar ?? true)` | Only checked/fixed if the `allowComparingNullableBooleansToFalse` option is `false` |
 
-## Not To Use It
+## When Not To Use It
 
 Do not use this rule when `strictNullChecks` is disabled.
 ESLint is not able to distinguish between `false` and `undefined` or `null` values.

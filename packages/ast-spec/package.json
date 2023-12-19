@@ -1,6 +1,6 @@
 {
   "name": "@typescript-eslint/ast-spec",
-  "version": "6.7.0",
+  "version": "6.15.0",
   "description": "Complete specification for the TypeScript-ESTree AST",
   "private": true,
   "keywords": [
@@ -34,7 +34,7 @@
     "postclean": "rimraf dist && rimraf coverage",
     "clean-fixtures": "rimraf -g \"./src/**/fixtures/**/snapshots\"",
     "format": "prettier --write \"./**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx,json,md,css}\" --ignore-path ../../.prettierignore",
-    "lint": "nx lint",
+    "lint": "npx nx lint",
     "test": "jest",
     "typecheck": "tsc -p tsconfig.json --noEmit"
   },
@@ -47,14 +47,14 @@
     "@babel/core": "*",
     "@babel/eslint-parser": "*",
     "@babel/parser": "*",
-    "@microsoft/api-extractor": "^7.36.1",
+    "@microsoft/api-extractor": "^7.38.0",
     "glob": "*",
-    "jest": "29.6.4",
+    "jest": "29.7.0",
     "jest-diff": "^29.6.2",
     "jest-snapshot": "^29.6.2",
     "jest-specific-snapshot": "^8.0.0",
     "make-dir": "*",
-    "prettier": "^2.8.4",
+    "prettier": "^3.0.3",
     "pretty-format": "*",
     "rimraf": "*",
     "typescript": "*"

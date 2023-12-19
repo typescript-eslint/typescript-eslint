@@ -1,6 +1,12 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 
-import * as util from '../util';
+import {
+  createRule,
+  getConstrainedTypeAtLocation,
+  getParserServices,
+  getTypeName,
+  isTypeArrayTypeOrUnionOfArrayTypes,
+} from '../util';
 
 export type Options = [
   {
@@ -9,7 +15,7 @@ export type Options = [
 ];
 export type MessageIds = 'requireCompare';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'require-array-sort-compare',
   defaultOptions: [
     {
@@ -21,7 +27,7 @@ export default util.createRule<Options, MessageIds>({
     type: 'problem',
     docs: {
       description:
-        'Require `Array#sort` calls to always provide a `compareFunction`',
+        'Require `Array#sort` and `Array#toSorted` calls to always provide a `compareFunction`',
       requiresTypeChecking: true,
     },
     messages: {
@@ -43,7 +49,7 @@ export default util.createRule<Options, MessageIds>({
   },
 
   create(context, [options]) {
-    const services = util.getParserServices(context);
+    const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
     /**
@@ -54,31 +60,32 @@ export default util.createRule<Options, MessageIds>({
       const type = services.getTypeAtLocation(node);
 
       if (checker.isArrayType(type) || checker.isTupleType(type)) {
-        const typeArgs = util.getTypeArguments(type, checker);
-        return typeArgs.every(
-          arg => util.getTypeName(checker, arg) === 'string',
-        );
+        const typeArgs = checker.getTypeArguments(type);
+        return typeArgs.every(arg => getTypeName(checker, arg) === 'string');
       }
       return false;
     }
 
+    function checkSortArgument(callee: TSESTree.MemberExpression): void {
+      const calleeObjType = getConstrainedTypeAtLocation(
+        services,
+        callee.object,
+      );
+
+      if (options.ignoreStringArrays && isStringArrayNode(callee.object)) {
+        return;
+      }
+
+      if (isTypeArrayTypeOrUnionOfArrayTypes(calleeObjType, checker)) {
+        context.report({ node: callee.parent, messageId: 'requireCompare' });
+      }
+    }
+
     return {
-      "CallExpression[arguments.length=0] > MemberExpression[property.name='sort'][computed=false]"(
-        callee: TSESTree.MemberExpression,
-      ): void {
-        const calleeObjType = util.getConstrainedTypeAtLocation(
-          services,
-          callee.object,
-        );
-
-        if (options.ignoreStringArrays && isStringArrayNode(callee.object)) {
-          return;
-        }
-
-        if (util.isTypeArrayTypeOrUnionOfArrayTypes(calleeObjType, checker)) {
-          context.report({ node: callee.parent, messageId: 'requireCompare' });
-        }
-      },
+      "CallExpression[arguments.length=0] > MemberExpression[property.name='sort'][computed=false]":
+        checkSortArgument,
+      "CallExpression[arguments.length=0] > MemberExpression[property.name='toSorted'][computed=false]":
+        checkSortArgument,
     };
   },
 });

@@ -2,8 +2,9 @@ import type { Definition } from '@typescript-eslint/scope-manager';
 import { DefinitionType } from '@typescript-eslint/scope-manager';
 import type { TSESLint } from '@typescript-eslint/utils';
 import { ASTUtils, TSESTree } from '@typescript-eslint/utils';
+import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import { createRule, nullThrows, NullThrowsReasons } from '../util';
 
 function hasAssignmentBeforeNode(
   variable: TSESLint.Scope.Variable,
@@ -26,12 +27,10 @@ function isDefinitionWithAssignment(definition: Definition): boolean {
   }
 
   const variableDeclarator = definition.node;
-  return (
-    variableDeclarator.definite === true || variableDeclarator.init != null
-  );
+  return variableDeclarator.definite || variableDeclarator.init != null;
 }
 
-export default util.createRule({
+export default createRule({
   name: 'no-non-null-asserted-nullish-coalescing',
   meta: {
     type: 'problem',
@@ -55,7 +54,7 @@ export default util.createRule({
         node: TSESTree.TSNonNullExpression,
       ): void {
         if (node.expression.type === TSESTree.AST_NODE_TYPES.Identifier) {
-          const scope = context.getScope();
+          const scope = getScope(context);
           const identifier = node.expression;
           const variable = ASTUtils.findVariable(scope, identifier.name);
           if (variable && !hasAssignmentBeforeNode(variable, node)) {
@@ -63,7 +62,7 @@ export default util.createRule({
           }
         }
 
-        const sourceCode = context.getSourceCode();
+        const sourceCode = getSourceCode(context);
 
         context.report({
           node,
@@ -85,15 +84,12 @@ export default util.createRule({
             {
               messageId: 'suggestRemovingNonNull',
               fix(fixer): TSESLint.RuleFix {
-                const exclamationMark = util.nullThrows(
+                const exclamationMark = nullThrows(
                   sourceCode.getLastToken(
                     node,
                     ASTUtils.isNonNullAssertionPunctuator,
                   ),
-                  util.NullThrowsReasons.MissingToken(
-                    '!',
-                    'Non-null Assertion',
-                  ),
+                  NullThrowsReasons.MissingToken('!', 'Non-null Assertion'),
                 );
                 return fixer.remove(exclamationMark);
               },

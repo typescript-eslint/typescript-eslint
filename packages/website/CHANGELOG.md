@@ -3,6 +3,172 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+# [6.15.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.14.0...v6.15.0) (2023-12-18)
+
+**Note:** Version bump only for package website
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.14.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.13.2...v6.14.0) (2023-12-11)
+
+**Note:** Version bump only for package website
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+## [6.13.2](https://github.com/typescript-eslint/typescript-eslint/compare/v6.13.1...v6.13.2) (2023-12-04)
+
+**Note:** Version bump only for package website
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+## [6.13.1](https://github.com/typescript-eslint/typescript-eslint/compare/v6.13.0...v6.13.1) (2023-11-28)
+
+
+### Bug Fixes
+
+* default to parse all JSDoc and provide options to configure it ([#7999](https://github.com/typescript-eslint/typescript-eslint/issues/7999)) ([779e13e](https://github.com/typescript-eslint/typescript-eslint/commit/779e13ec86f92b94a96ecdf81cbc36120a132ff6))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.13.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.12.0...v6.13.0) (2023-11-27)
+
+**Note:** Version bump only for package website
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.12.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.11.0...v6.12.0) (2023-11-20)
+
+**Note:** Version bump only for package website
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.11.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.10.0...v6.11.0) (2023-11-13)
+
+
+### Features
+
+* add types for flat config files ([#7273](https://github.com/typescript-eslint/typescript-eslint/issues/7273)) ([66cd0c0](https://github.com/typescript-eslint/typescript-eslint/commit/66cd0c0535e5de1b46ba337919a9a92748d2b0a6))
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.10.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.9.1...v6.10.0) (2023-11-06)
+
+**Note:** Version bump only for package website
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+## [6.9.1](https://github.com/typescript-eslint/typescript-eslint/compare/v6.9.0...v6.9.1) (2023-10-30)
+
+**Note:** Version bump only for package website
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.9.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.8.0...v6.9.0) (2023-10-23)
+
+**Note:** Version bump only for package website
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+# [6.8.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.7.5...v6.8.0) (2023-10-16)
+
+**Note:** Version bump only for package website
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+## [6.7.5](https://github.com/typescript-eslint/typescript-eslint/compare/v6.7.4...v6.7.5) (2023-10-09)
+
+**Note:** Version bump only for package website
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+## [6.7.4](https://github.com/typescript-eslint/typescript-eslint/compare/v6.7.3...v6.7.4) (2023-10-02)
+
+**Note:** Version bump only for package website
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+## [6.7.3](https://github.com/typescript-eslint/typescript-eslint/compare/v6.7.2...v6.7.3) (2023-09-25)
+
+**Note:** Version bump only for package website
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+## [6.7.2](https://github.com/typescript-eslint/typescript-eslint/compare/v6.7.1...v6.7.2) (2023-09-18)
+
+**Note:** Version bump only for package website
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
+## [6.7.1](https://github.com/typescript-eslint/typescript-eslint/compare/v6.7.0...v6.7.1) (2023-09-18)
+
+**Note:** Version bump only for package website
+
+You can read about our [versioning strategy](https://main--typescript-eslint.netlify.app/users/versioning) and [releases](https://main--typescript-eslint.netlify.app/users/releases) on our website.
+
+
+
+
+
 # [6.7.0](https://github.com/typescript-eslint/typescript-eslint/compare/v6.6.0...v6.7.0) (2023-09-11)
 
 **Note:** Version bump only for package website

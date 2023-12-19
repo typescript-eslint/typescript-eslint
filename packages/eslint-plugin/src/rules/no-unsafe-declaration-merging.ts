@@ -1,10 +1,11 @@
 import type { Scope } from '@typescript-eslint/scope-manager';
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getScope } from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
-export default util.createRule({
+export default createRule({
   name: 'no-unsafe-declaration-merging',
   meta: {
     type: 'problem',
@@ -49,7 +50,7 @@ export default util.createRule({
         if (node.id) {
           // by default eslint returns the inner class scope for the ClassDeclaration node
           // but we want the outer scope within which merged variables will sit
-          const currentScope = context.getScope().upper;
+          const currentScope = getScope(context).upper;
           if (currentScope == null) {
             return;
           }
@@ -63,7 +64,7 @@ export default util.createRule({
       },
       TSInterfaceDeclaration(node): void {
         checkUnsafeDeclaration(
-          context.getScope(),
+          getScope(context),
           node.id,
           AST_NODE_TYPES.ClassDeclaration,
         );

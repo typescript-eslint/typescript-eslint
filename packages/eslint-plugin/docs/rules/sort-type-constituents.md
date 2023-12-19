@@ -99,3 +99,9 @@ The ordering of groups is determined by this option.
 - `tuple` - Tuple types (`[A, B, C]`)
 - `union` - Union types (`A | B`)
 - `nullish` - `null` and `undefined`
+
+## When Not To Use It
+
+This rule is purely a stylistic rule for maintaining consistency in your project.
+You can turn it off if you don't want to keep a consistent, predictable order for intersection and union types.
+However, keep in mind that inconsistent style can harm readability in a project.

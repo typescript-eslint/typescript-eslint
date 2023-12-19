@@ -1,11 +1,12 @@
 import type { TSESLint } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import { createRule, isNonNullAssertionPunctuator } from '../util';
 
 type MessageIds = 'noNonNull' | 'suggestOptionalChain';
 
-export default util.createRule<[], MessageIds>({
+export default createRule<[], MessageIds>({
   name: 'no-non-null-assertion',
   meta: {
     type: 'problem',
@@ -24,7 +25,7 @@ export default util.createRule<[], MessageIds>({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     return {
       TSNonNullExpression(node): void {
         const suggest: TSESLint.ReportSuggestionArray<MessageIds> = [];
@@ -34,7 +35,7 @@ export default util.createRule<[], MessageIds>({
           return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null => {
             const operator = sourceCode.getTokenAfter(
               node.expression,
-              util.isNonNullAssertionPunctuator,
+              isNonNullAssertionPunctuator,
             );
             if (operator) {
               return fixer.replaceText(operator, replacement);
@@ -47,7 +48,7 @@ export default util.createRule<[], MessageIds>({
           return (fixer: TSESLint.RuleFixer): TSESLint.RuleFix | null => {
             const operator = sourceCode.getTokenAfter(
               node.expression,
-              util.isNonNullAssertionPunctuator,
+              isNonNullAssertionPunctuator,
             );
             if (operator) {
               return fixer.remove(operator);
@@ -58,7 +59,7 @@ export default util.createRule<[], MessageIds>({
         }
 
         if (
-          node.parent?.type === AST_NODE_TYPES.MemberExpression &&
+          node.parent.type === AST_NODE_TYPES.MemberExpression &&
           node.parent.object === node
         ) {
           if (!node.parent.optional) {
@@ -91,7 +92,7 @@ export default util.createRule<[], MessageIds>({
             }
           }
         } else if (
-          node.parent?.type === AST_NODE_TYPES.CallExpression &&
+          node.parent.type === AST_NODE_TYPES.CallExpression &&
           node.parent.callee === node
         ) {
           if (!node.parent.optional) {

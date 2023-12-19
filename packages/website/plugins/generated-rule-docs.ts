@@ -1,3 +1,4 @@
+import prettier from '@prettier/sync';
 import pluginRules from '@typescript-eslint/eslint-plugin/use-at-your-own-risk/rules';
 import { compile } from '@typescript-eslint/rule-schema-to-typescript-types';
 import * as fs from 'fs';
@@ -5,7 +6,6 @@ import * as lz from 'lz-string';
 import type * as mdast from 'mdast';
 import { EOL } from 'os';
 import * as path from 'path';
-import { format, resolveConfig } from 'prettier';
 import type { Plugin } from 'unified';
 import type * as unist from 'unist';
 
@@ -29,7 +29,7 @@ const SPECIAL_CASE_DEFAULTS = new Map([
 ]);
 
 const prettierConfig = {
-  ...(resolveConfig.sync(__filename) ?? {}),
+  ...(prettier.resolveConfig(__filename) ?? {}),
   filepath: path.join(__dirname, 'defaults.ts'),
 };
 
@@ -40,7 +40,9 @@ const eslintPluginDirectory = path.resolve(
   path.join(__dirname, '../../eslint-plugin'),
 );
 
-function nodeIsParent(node: unist.Node<unist.Data>): node is unist.Parent {
+const optionRegex = /option='(?<option>.*?)'/;
+
+function nodeIsParent(node: unist.Node): node is unist.Parent {
   return 'children' in node;
 }
 
@@ -50,9 +52,8 @@ export const generatedRuleDocs: Plugin = () => {
       return;
     }
 
-    const rule = pluginRules[file.stem];
-    const meta = rule?.meta;
-    if (!meta?.docs) {
+    const rule = file.stem in pluginRules ? pluginRules[file.stem] : undefined;
+    if (!rule?.meta.docs) {
       return;
     }
 
@@ -70,7 +71,7 @@ export const generatedRuleDocs: Plugin = () => {
       {
         children: [
           {
-            children: meta.docs.description
+            children: rule.meta.docs.description
               .split(/`(.+?)`/)
               .map((value, index, array) => ({
                 type: index % 2 === 0 ? 'text' : 'inlineCode',
@@ -88,12 +89,11 @@ export const generatedRuleDocs: Plugin = () => {
     );
 
     // 3. Add a notice about formatting rules being 🤢
-    if (meta.type === 'layout') {
+    if (rule.meta.type === 'layout') {
       const warningNode = {
         value: `
 <admonition type="warning">
-  We strongly recommend you do not use this rule or any other formatting linter rules.
-  Use a separate dedicated formatter instead.
+  This rule will soon be moved to <a href="https://eslint.style">eslint-stylistic</a>.
   See <a href="/linting/troubleshooting/formatting">What About Formatting?</a> for more information.
 </admonition>
 `,
@@ -149,16 +149,18 @@ export const generatedRuleDocs: Plugin = () => {
       }
 
       insertIfMissing('Options');
-      if (meta.docs.extendsBaseRule) {
+      if (rule.meta.docs.extendsBaseRule) {
         insertIfMissing('How to Use');
       }
       return [headingIndices[0], headingIndices[1]];
     })();
 
-    if (meta.docs.extendsBaseRule) {
+    let eslintrc: string;
+
+    if (rule.meta.docs.extendsBaseRule) {
       const extendsBaseRuleName =
-        typeof meta.docs.extendsBaseRule === 'string'
-          ? meta.docs.extendsBaseRule
+        typeof rule.meta.docs.extendsBaseRule === 'string'
+          ? rule.meta.docs.extendsBaseRule
           : file.stem;
 
       children.splice(optionsH2Index + 1, 0, {
@@ -205,6 +207,7 @@ export const generatedRuleDocs: Plugin = () => {
   }
 }`;
       };
+      eslintrc = getEslintrcString(false);
 
       children.splice(
         howToUseH2Index + 1,
@@ -217,8 +220,8 @@ export const generatedRuleDocs: Plugin = () => {
         } as mdast.Code,
         {
           value: `<try-in-playground eslintrcHash="${convertToPlaygroundHash(
-            getEslintrcString(false),
-          )}" />`,
+            eslintrc,
+          )}">Try this rule in the playground ↗</try-in-playground>`,
           type: 'jsx',
         } as unist.Node,
       );
@@ -229,7 +232,7 @@ export const generatedRuleDocs: Plugin = () => {
         child => nodeIsHeading(child) && child.depth === 2,
       );
 
-      const getEslintrcString = `{
+      eslintrc = `{
   "rules": {
     "@typescript-eslint/${file.stem}": "error"
   }
@@ -241,21 +244,21 @@ export const generatedRuleDocs: Plugin = () => {
           lang: 'js',
           type: 'code',
           meta: 'title=".eslintrc.cjs"',
-          value: `module.exports = ${getEslintrcString};`,
+          value: `module.exports = ${eslintrc};`,
         } as mdast.Code,
         {
           value: `<try-in-playground eslintrcHash="${convertToPlaygroundHash(
-            getEslintrcString,
-          )}" />`,
+            eslintrc,
+          )}">Try this rule in the playground ↗</try-in-playground>`,
           type: 'jsx',
         } as unist.Node,
       );
 
       optionsH2Index += 2;
 
-      const hasNoConfig = Array.isArray(meta.schema)
-        ? meta.schema.length === 0
-        : Object.keys(meta.schema).length === 0;
+      const hasNoConfig = Array.isArray(rule.meta.schema)
+        ? rule.meta.schema.length === 0
+        : Object.keys(rule.meta.schema).length === 0;
       if (hasNoConfig) {
         children.splice(optionsH2Index + 1, 0, {
           children: [
@@ -287,7 +290,7 @@ export const generatedRuleDocs: Plugin = () => {
             type: 'code',
             value: [
               compile(rule.meta.schema),
-              format(
+              prettier.format(
                 `const defaultOptions: Options = ${defaults};`,
                 prettierConfig,
               ),
@@ -297,6 +300,33 @@ export const generatedRuleDocs: Plugin = () => {
           } as mdast.Code,
         );
       }
+    }
+
+    // Insert default rule options for ban-types
+    if (file.stem === 'ban-types') {
+      const placeToInsert = children.findIndex(
+        (node: unist.Node) =>
+          node.type === 'comment' &&
+          (node as unist.Literal<string>).value.trim() ===
+            'Inject default options',
+      );
+      if (placeToInsert === -1) {
+        throw new Error('Could not find default injection site in ban-types');
+      }
+      const defaultOptions = fs
+        .readFileSync(
+          path.join(eslintPluginDirectory, 'src/rules/ban-types.ts'),
+          'utf8',
+        )
+        .match(/^const defaultTypes.+?^\};$/msu)?.[0];
+      if (!defaultOptions) {
+        throw new Error('Could not find default options for ban-types');
+      }
+      children.splice(placeToInsert, 1, {
+        lang: 'ts',
+        type: 'code',
+        value: defaultOptions,
+      } as mdast.Code);
     }
 
     // 5. Add a link to view the rule's source and test code
@@ -359,7 +389,7 @@ export const generatedRuleDocs: Plugin = () => {
     );
 
     // 6. Also add a notice about coming from ESLint core for extension rules
-    if (meta.docs.extendsBaseRule) {
+    if (rule.meta.docs.extendsBaseRule) {
       children.push({
         children: [
           {
@@ -374,9 +404,9 @@ export const generatedRuleDocs: Plugin = () => {
             type: 'link',
             title: null,
             url: `https://github.com/eslint/eslint/blob/main/docs/src/rules/${
-              meta.docs.extendsBaseRule === true
+              rule.meta.docs.extendsBaseRule === true
                 ? file.stem
-                : meta.docs.extendsBaseRule
+                : rule.meta.docs.extendsBaseRule
             }.md`,
             children: [
               {
@@ -393,6 +423,59 @@ export const generatedRuleDocs: Plugin = () => {
         type: 'paragraph',
       } as mdast.Paragraph);
     }
+
+    // 7. Add `eslintrcHash` to the meta string of each correct/incorrect code sample
+    let insideTab = false;
+
+    for (const node of children) {
+      if (
+        node.type === 'jsx' &&
+        'value' in node &&
+        typeof node.value === 'string'
+      ) {
+        if (node.value.startsWith('<TabItem')) {
+          insideTab = true;
+        } else if (node.value === '</TabItem>') {
+          insideTab = false;
+        }
+        continue;
+      }
+
+      if (
+        nodeIsCode(node) &&
+        (insideTab || node.meta?.includes('showPlaygroundButton')) &&
+        !node.meta?.includes('eslintrcHash=')
+      ) {
+        let playgroundEslintrc = eslintrc;
+        const option = node.meta?.match(optionRegex)?.groups?.option;
+        if (option) {
+          playgroundEslintrc = playgroundEslintrc.replace(
+            '"error"',
+            `["error", ${option}]`,
+          );
+          try {
+            playgroundEslintrc = JSON.stringify(
+              JSON.parse(playgroundEslintrc),
+              null,
+              2,
+            );
+          } catch (err) {
+            // eslint-disable-next-line no-console
+            console.error(
+              `Invalid JSON detected in ${file.basename}. Check the \`option\` in the meta strings of code blocks.`,
+            );
+            throw err;
+          }
+        }
+
+        node.meta = [
+          node.meta,
+          `eslintrcHash="${convertToPlaygroundHash(playgroundEslintrc)}"`,
+        ]
+          .filter(Boolean)
+          .join(' ');
+      }
+    }
   };
 };
 
@@ -402,6 +485,10 @@ function convertToPlaygroundHash(eslintrc: string): string {
 
 function nodeIsHeading(node: unist.Node): node is mdast.Heading {
   return node.type === 'heading';
+}
+
+function nodeIsCode(node: unist.Node): node is mdast.Code {
+  return node.type === 'code';
 }
 
 function getUrlForRuleTest(ruleName: string): string {

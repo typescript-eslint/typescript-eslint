@@ -1,7 +1,8 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import { createRule, objectReduceKey } from '../util';
 
 type Types = Record<
   string,
@@ -124,7 +125,7 @@ export const TYPE_KEYWORDS = {
   void: AST_NODE_TYPES.TSVoidKeyword,
 };
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'ban-types',
   meta: {
     type: 'suggestion',
@@ -218,7 +219,7 @@ export default util.createRule<Options, MessageIds>({
 
     function checkBannedTypes(
       typeNode: TSESTree.Node,
-      name = stringifyNode(typeNode, context.getSourceCode()),
+      name = stringifyNode(typeNode, getSourceCode(context)),
     ): void {
       const bannedType = bannedTypes.get(name);
 
@@ -256,7 +257,7 @@ export default util.createRule<Options, MessageIds>({
       });
     }
 
-    const keywordSelectors = util.objectReduceKey(
+    const keywordSelectors = objectReduceKey(
       TYPE_KEYWORDS,
       (acc: TSESLint.RuleListener, keyword) => {
         if (bannedTypes.has(keyword)) {

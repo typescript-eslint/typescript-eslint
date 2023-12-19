@@ -6,7 +6,7 @@ Program {
   body: [
     ExportNamedDeclaration {
       type: "ExportNamedDeclaration",
-      assertions: [],
+      attributes: [],
       declaration: VariableDeclaration {
         type: "VariableDeclaration",
         declarations: [

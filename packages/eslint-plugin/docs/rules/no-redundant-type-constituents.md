@@ -70,6 +70,20 @@ type IntersectionStringLiteral = 'foo';
 
 This rule plays it safe and only works with bottom types, top types, and comparing literal types to primitive types.
 
+## When Not To Use It
+
+Some projects choose to occasionally intentionally include a redundant type constituent for documentation purposes.
+For example, the following code includes `string` in a union even though the `unknown` makes it redundant:
+
+```ts
+/**
+ * Normally a string name, but sometimes arbitrary unknown data.
+ */
+type NameOrOther = string | unknown;
+```
+
+If you strongly feel a preference for these unnecessary type constituents, this rule might not be for you.
+
 ## Further Reading
 
 - [Union Types](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#union-types)

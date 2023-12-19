@@ -37,7 +37,7 @@ const serializer: NewPlugin = {
 
     const keys = Object.keys(node).filter(k => !EXCLUDED_KEYS.has(k));
     if (keys.length === 0) {
-      return `${node.type}`;
+      return node.type;
     }
 
     if (SEEN_NODES.has(node)) {

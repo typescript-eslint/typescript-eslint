@@ -1,12 +1,13 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, ASTUtils } from '@typescript-eslint/utils';
+import { getScope } from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
 type Options = [];
 type MessageIds = 'noVarReqs';
 
-export default util.createRule<Options, MessageIds>({
+export default createRule<Options, MessageIds>({
   name: 'no-var-requires',
   meta: {
     type: 'problem',
@@ -26,12 +27,11 @@ export default util.createRule<Options, MessageIds>({
         node: TSESTree.CallExpression,
       ): void {
         const parent =
-          node.parent?.type === AST_NODE_TYPES.ChainExpression
+          node.parent.type === AST_NODE_TYPES.ChainExpression
             ? node.parent.parent
             : node.parent;
 
         if (
-          parent &&
           [
             AST_NODE_TYPES.CallExpression,
             AST_NODE_TYPES.MemberExpression,
@@ -41,7 +41,7 @@ export default util.createRule<Options, MessageIds>({
             AST_NODE_TYPES.VariableDeclarator,
           ].includes(parent.type)
         ) {
-          const variable = ASTUtils.findVariable(context.getScope(), 'require');
+          const variable = ASTUtils.findVariable(getScope(context), 'require');
 
           if (!variable?.identifiers.length) {
             context.report({

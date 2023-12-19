@@ -34,6 +34,7 @@ export const es5 = {
   ImportMeta: TYPE,
   ImportCallOptions: TYPE,
   ImportAssertions: TYPE,
+  ImportAttributes: TYPE,
   Math: TYPE_VALUE,
   Date: TYPE_VALUE,
   DateConstructor: TYPE,

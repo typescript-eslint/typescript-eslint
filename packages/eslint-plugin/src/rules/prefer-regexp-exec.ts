@@ -1,5 +1,7 @@
+/* eslint-disable @typescript-eslint/prefer-literal-enum-member */
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
+import { getScope, getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 import * as tsutils from 'ts-api-utils';
 import type * as ts from 'typescript';
 
@@ -37,10 +39,10 @@ export default createRule({
   },
 
   create(context) {
-    const globalScope = context.getScope();
+    const globalScope = getScope(context);
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
 
     /**
      * Check if a given node type is a string.
@@ -79,10 +81,9 @@ export default createRule({
         node.type === AST_NODE_TYPES.CallExpression ||
         node.type === AST_NODE_TYPES.NewExpression
       ) {
-        const [, flags] = node.arguments;
-        return (
-          flags &&
-          flags.type === AST_NODE_TYPES.Literal &&
+        const flags = node.arguments.at(1);
+        return !!(
+          flags?.type === AST_NODE_TYPES.Literal &&
           typeof flags.value === 'string' &&
           flags.value.includes('g')
         );

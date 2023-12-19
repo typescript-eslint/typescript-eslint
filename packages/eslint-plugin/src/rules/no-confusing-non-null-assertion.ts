@@ -1,9 +1,10 @@
 import type { TSESLint, TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES, AST_TOKEN_TYPES } from '@typescript-eslint/utils';
+import { getSourceCode } from '@typescript-eslint/utils/eslint-utils';
 
-import * as util from '../util';
+import { createRule } from '../util';
 
-export default util.createRule({
+export default createRule({
   name: 'no-confusing-non-null-assertion',
   meta: {
     type: 'problem',
@@ -29,7 +30,7 @@ export default util.createRule({
   },
   defaultOptions: [],
   create(context) {
-    const sourceCode = context.getSourceCode();
+    const sourceCode = getSourceCode(context);
     return {
       'BinaryExpression, AssignmentExpression'(
         node: TSESTree.AssignmentExpression | TSESTree.BinaryExpression,
@@ -50,7 +51,7 @@ export default util.createRule({
           const tokenAfterLeft = sourceCode.getTokenAfter(node.left);
           if (
             leftHandFinalToken?.type === AST_TOKEN_TYPES.Punctuator &&
-            leftHandFinalToken?.value === '!' &&
+            leftHandFinalToken.value === '!' &&
             tokenAfterLeft?.value !== ')'
           ) {
             if (isLeftHandPrimaryExpression(node.left)) {

@@ -1,0 +1,94 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Rule schemas should be convertible to TS types for documentation purposes prefer-destructuring 1`] = `
+"
+# SCHEMA:
+
+[
+  {
+    "oneOf": [
+      {
+        "additionalProperties": false,
+        "properties": {
+          "AssignmentExpression": {
+            "additionalProperties": false,
+            "properties": {
+              "array": {
+                "type": "boolean"
+              },
+              "object": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          },
+          "VariableDeclarator": {
+            "additionalProperties": false,
+            "properties": {
+              "array": {
+                "type": "boolean"
+              },
+              "object": {
+                "type": "boolean"
+              }
+            },
+            "type": "object"
+          }
+        },
+        "type": "object"
+      },
+      {
+        "additionalProperties": false,
+        "properties": {
+          "array": {
+            "type": "boolean"
+          },
+          "object": {
+            "type": "boolean"
+          }
+        },
+        "type": "object"
+      }
+    ]
+  },
+  {
+    "properties": {
+      "enforceForDeclarationWithTypeAnnotation": {
+        "type": "boolean"
+      },
+      "enforceForRenamedProperties": {
+        "type": "boolean"
+      }
+    },
+    "type": "object"
+  }
+]
+
+
+# TYPES:
+
+type Options = [
+  (
+    | {
+        AssignmentExpression?: {
+          array?: boolean;
+          object?: boolean;
+        };
+        VariableDeclarator?: {
+          array?: boolean;
+          object?: boolean;
+        };
+      }
+    | {
+        array?: boolean;
+        object?: boolean;
+      }
+  ),
+  {
+    enforceForDeclarationWithTypeAnnotation?: boolean;
+    enforceForRenamedProperties?: boolean;
+    [k: string]: unknown;
+  },
+];
+"
+`;

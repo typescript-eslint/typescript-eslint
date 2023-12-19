@@ -90,4 +90,10 @@ export function foo(sn: string | number): void;
 
 ## When Not To Use It
 
-If you don't care about the general structure of the code, then you will not need this rule.
+It can sometimes be useful to place overload signatures alongside other meaningful parts of a type.
+For example, if each of a function's overloads corresponds to a different property, you might wish to put each overloads next to its corresponding property.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
+
+## Related To
+
+- [`unified-signatures`](./unified-signatures.md)
