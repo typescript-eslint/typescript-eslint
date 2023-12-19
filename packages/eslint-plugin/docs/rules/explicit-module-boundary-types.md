@@ -40,38 +40,28 @@ export class Test {
 ### ✅ Correct
 
 ```ts
-// case 1: A function with no return value (void)
+// A function with no return value (void)
 export function test(): void {
   return;
 }
-// case 2: Function is not exported
-function test() {
-  return;
-}
 
-// case 1: A return value of type string
+// A return value of type string
 export var arrowFn = (): string => 'test';
-// case 2: arrowFn is not exported
-var arrowFn = (arg): string => `test ${arg}`;
 
-// case 1: All arguments should be typed
+// All arguments should be typed
 export var arrowFn = (arg: string): string => `test ${arg}`;
 export var arrowFn = (arg: unknown): string => `test ${arg}`;
-// case 2: arrowFn is not exported
-var arrowFn = (arg): string => `test ${arg}`;
-var arrowFn = (arg: any): string => `test ${arg}`;
 
 export class Test {
-  // case 1: A class method with no return value (void)
+  // A class method with no return value (void)
   method(): void {
     return;
   }
 }
-// case 2: Class is not exported
-class Test {
-  method() {
-    return;
-  }
+
+// The function does not apply because it is not an exported function.
+function test() {
+  return;
 }
 ```
 
