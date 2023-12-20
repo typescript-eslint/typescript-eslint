@@ -4,9 +4,6 @@ import rule from '../../src/rules/thenable-in-promise-aggregators';
 import { getFixturesRootDir } from '../RuleTester';
 
 const rootDir = getFixturesRootDir();
-const messageIdInArray = 'inArray';
-const messageIdArrayArg = 'arrayArg';
-const messageIdNonArrayArg = 'nonArrayArg';
 
 const ruleTester = new RuleTester({
   parserOptions: {
@@ -244,7 +241,7 @@ async function test() {
       errors: [
         {
           line: 1,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -253,7 +250,7 @@ async function test() {
       errors: [
         {
           line: 1,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -262,7 +259,7 @@ async function test() {
       errors: [
         {
           line: 1,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -271,7 +268,7 @@ async function test() {
       errors: [
         {
           line: 1,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -280,7 +277,7 @@ async function test() {
       errors: [
         {
           line: 1,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -289,7 +286,7 @@ async function test() {
       errors: [
         {
           line: 1,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -301,7 +298,7 @@ await Promise.race([new NonPromise()]);
       errors: [
         {
           line: 3,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -319,7 +316,7 @@ async function test() {
       errors: [
         {
           line: 8,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -331,7 +328,7 @@ await Promise.race([callback?.()]);
       errors: [
         {
           line: 3,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -343,7 +340,7 @@ await Promise.race([obj.a?.b?.()]);
       errors: [
         {
           line: 3,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -355,7 +352,7 @@ await Promise.race([obj?.a.b.c?.()]);
       errors: [
         {
           line: 3,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -368,7 +365,7 @@ await Promise.all([wrappedPromise, stdPromise]);
       errors: [
         {
           line: 4,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -380,7 +377,7 @@ await foo.race([0]);
       errors: [
         {
           line: 3,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -392,7 +389,7 @@ await Foo.all([0]);
       errors: [
         {
           line: 3,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -404,7 +401,7 @@ await foo.all([0]);
       errors: [
         {
           line: 3,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -413,7 +410,7 @@ await foo.all([0]);
       errors: [
         {
           line: 1,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -422,7 +419,7 @@ await foo.all([0]);
       errors: [
         {
           line: 1,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -431,7 +428,7 @@ await foo.all([0]);
       errors: [
         {
           line: 1,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -440,7 +437,7 @@ await foo.all([0]);
       errors: [
         {
           line: 1,
-          messageId: messageIdInArray,
+          messageId: 'inArray',
         },
       ],
     },
@@ -449,7 +446,7 @@ await foo.all([0]);
       errors: [
         {
           line: 1,
-          messageId: messageIdNonArrayArg,
+          messageId: 'nonArrayArg',
         },
       ],
     },
@@ -458,7 +455,7 @@ await foo.all([0]);
       errors: [
         {
           line: 1,
-          messageId: messageIdNonArrayArg,
+          messageId: 'nonArrayArg',
         },
       ],
     },
@@ -467,7 +464,7 @@ await foo.all([0]);
       errors: [
         {
           line: 1,
-          messageId: messageIdNonArrayArg,
+          messageId: 'nonArrayArg',
         },
       ],
     },
@@ -476,7 +473,7 @@ await foo.all([0]);
       errors: [
         {
           line: 1,
-          messageId: messageIdNonArrayArg,
+          messageId: 'nonArrayArg',
         },
       ],
     },
@@ -485,7 +482,7 @@ await foo.all([0]);
       errors: [
         {
           line: 1,
-          messageId: messageIdNonArrayArg,
+          messageId: 'nonArrayArg',
         },
       ],
     },
@@ -497,7 +494,7 @@ await Promise.all(promiseArr);
       errors: [
         {
           line: 3,
-          messageId: messageIdNonArrayArg,
+          messageId: 'nonArrayArg',
         },
       ],
     },
@@ -506,7 +503,7 @@ await Promise.all(promiseArr);
       errors: [
         {
           line: 1,
-          messageId: messageIdArrayArg,
+          messageId: 'arrayArg',
         },
       ],
     },
@@ -518,7 +515,7 @@ await Promise.all(promiseArr.map(v => await v));
       errors: [
         {
           line: 3,
-          messageId: messageIdArrayArg,
+          messageId: 'arrayArg',
         },
       ],
     },
@@ -530,7 +527,7 @@ await Promise.all?.(arr);
       errors: [
         {
           line: 3,
-          messageId: messageIdArrayArg,
+          messageId: 'arrayArg',
         },
       ],
     },
@@ -542,7 +539,7 @@ await Promise.race(foo);
       errors: [
         {
           line: 3,
-          messageId: messageIdArrayArg,
+          messageId: 'arrayArg',
         },
       ],
     },
@@ -551,7 +548,7 @@ await Promise.race(foo);
       errors: [
         {
           line: 1,
-          messageId: messageIdArrayArg,
+          messageId: 'arrayArg',
         },
       ],
     },
