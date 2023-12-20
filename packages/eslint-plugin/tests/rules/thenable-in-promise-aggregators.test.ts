@@ -38,6 +38,16 @@ async function test() {
     `,
     `
 async function test() {
+  await Promise['all']([Promise.resolve(3)]);
+}
+    `,
+    `
+async function test() {
+  await Promise.all([Promise['resolve'](3)]);
+}
+    `,
+    `
+async function test() {
   await Promise.race([(async () => true)()]);
 }
     `,
@@ -446,6 +456,33 @@ await foo.all([0]);
       ],
     },
     {
+      code: "await Promise['all']([3]);",
+      errors: [
+        {
+          line: 1,
+          messageId: 'inArray',
+        },
+      ],
+    },
+    {
+      code: "await Promise['race']([3]);",
+      errors: [
+        {
+          line: 1,
+          messageId: 'inArray',
+        },
+      ],
+    },
+    {
+      code: "await Promise['allSettled']([3]);",
+      errors: [
+        {
+          line: 1,
+          messageId: 'inArray',
+        },
+      ],
+    },
+    {
       code: 'await Promise.race(3);',
       errors: [
         {
@@ -483,6 +520,15 @@ await foo.all([0]);
     },
     {
       code: 'await Promise.race?.(undefined);',
+      errors: [
+        {
+          line: 1,
+          messageId: 'nonArrayArg',
+        },
+      ],
+    },
+    {
+      code: "await Promise['all'](3);",
       errors: [
         {
           line: 1,
@@ -549,6 +595,15 @@ await Promise.race(foo);
     },
     {
       code: 'await Promise.race([0] as const);',
+      errors: [
+        {
+          line: 1,
+          messageId: 'arrayArg',
+        },
+      ],
+    },
+    {
+      code: "await Promise['all']([0, 1].map(v => v));",
       errors: [
         {
           line: 1,
