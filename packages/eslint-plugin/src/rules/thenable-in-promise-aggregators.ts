@@ -168,7 +168,11 @@ export default createRule({
 
           for (const element of elements) {
             if (element == null) {
-              continue;
+              context.report({
+                messageId: 'inArray',
+                node: arg,
+              });
+              return;
             }
             const elementType = services.getTypeAtLocation(element);
             if (isTypeAnyType(elementType) || isTypeUnknownType(elementType)) {

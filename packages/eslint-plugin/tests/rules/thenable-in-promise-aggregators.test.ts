@@ -36,6 +36,11 @@ async function test() {
     `,
     `
 async function test() {
+  await Promise.all([]);
+}
+    `,
+    `
+async function test() {
   await Promise.race([(async () => true)()]);
 }
     `,
@@ -211,6 +216,12 @@ async function test() {
     `
 async function test() {
   await Promise.all([Promise.resolve(6)] as const);
+}
+    `,
+    `
+async function test() {
+  const foo = Array();
+  await Promise.all(foo);
 }
     `,
   ],
@@ -406,6 +417,15 @@ await foo.all([0]);
     },
     {
       code: 'await Promise?.race?.([0]);',
+      errors: [
+        {
+          line: 1,
+          messageId: messageIdInArray,
+        },
+      ],
+    },
+    {
+      code: 'await Promise.all([,]);',
       errors: [
         {
           line: 1,
