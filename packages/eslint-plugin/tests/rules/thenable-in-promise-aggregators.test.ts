@@ -158,15 +158,15 @@ declare const arrOfAny: any[];
 await Promise.all(arrOfAny);
     `,
     `
-declare const arrOfUnknown: unknown[] = [];
+declare const arrOfUnknown: unknown[];
 await Promise.all(arrOfAny);
     `,
     `
-declare const arrOfIntersection: (Promise<number> & number)[] = [];
+declare const arrOfIntersection: (Promise<number> & number)[];
 await Promise.all(arrOfIntersection);
     `,
     `
-declare const arrOfUnion: (Promise<number> | number)[] = [];
+declare const arrOfUnion: (Promise<number> | number)[];
 await Promise.all(arrOfUnion);
     `,
   ],
