@@ -482,7 +482,7 @@ Several rules were changed in significant enough ways to be considered breaking 
 
 - Previously deprecated rules are deleted ([chore(eslint-plugin): remove deprecated rules for v6](https://github.com/typescript-eslint/typescript-eslint/pull/6112)):
   - `@typescript-eslint/no-duplicate-imports`, replaced by `imports/no-duplicates`
-  - `@typescript-eslint/no-implicit-any-catch`, replaced by `@typescript-eslint/no-implicit-any`
+  - `@typescript-eslint/no-implicit-any-catch`, replaced by the TSConfig option [`useUnknownInCatchVariables`](https://www.typescriptlang.org/tsconfig#useUnknownInCatchVariables)
   - `@typescript-eslint/no-parameter-properties`, replaced by `@typescript-eslint/parameter-properties`
   - `@typescript-eslint/sort-type-union-intersection-members`, replaced by `@typescript-eslint/sort-type-constituents`
 - [feat(eslint-plugin): [prefer-nullish-coalescing]: add support for assignment expressions](https://github.com/typescript-eslint/typescript-eslint/pull/5234): Enhances the [`@typescript-eslint/prefer-nullish-coalescing`](https://typescript-eslint.io/prefer-nullish-coalescing) rule to also check `||=` expressions.
