@@ -227,13 +227,13 @@ async function test() {
     `
 async function test() {
   const arrOfAny: any[] = [];
-  await Promise.all(arrOfAny)
+  await Promise.all(arrOfAny);
 }
     `,
     `
 async function test() {
   const arrOfUnknown: unknown[] = [];
-  await Promise.all(arrOfAny)
+  await Promise.all(arrOfAny);
 }
     `,
   ],
@@ -418,7 +418,7 @@ await foo.all([0]);
       ],
     },
     {
-      code: 'await Promise?.race?.([0]);',
+      code: 'await Promise?.race([0]);',
       errors: [
         {
           line: 1,

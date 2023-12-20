@@ -5,7 +5,8 @@ import {
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-import ts from 'typescript';
+import * as ts from 'typescript';
+
 import { createRule, getParserServices } from '../util';
 
 export default createRule({
