@@ -6,7 +6,7 @@ export * from './getSourceFileOfNode';
 export * from './getTokenAtPosition';
 export * from './getTypeArguments';
 export * from './getTypeName';
-export * from './isErrorLike';
+export * from './isBuiltinSymbolLike';
 export * from './isSymbolFromDefaultLibrary';
 export * from './isTypeReadonly';
 export * from './isUnsafeAssignment';

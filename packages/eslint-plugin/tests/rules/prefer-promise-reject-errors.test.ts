@@ -130,6 +130,24 @@ ruleTester.run('prefer-promise-reject-errors', rule, {
       const foo = Promise;
       new foo((resolve, reject) => reject(new Error()));
     `,
+    `
+      class Foo extends Promise<number> {}
+      Foo.reject(new Error());
+    `,
+    `
+      class Foo extends Promise<number> {}
+      new Foo((resolve, reject) => reject(new Error()));
+    `,
+    `
+      declare const someRandomCall: {
+        reject(arg: any): void;
+      };
+      someRandomCall.reject(5);
+    `,
+    `
+      declare const foo: PromiseConstructor;
+      foo.reject(new Error());
+    `,
   ],
   invalid: [
     {
@@ -762,6 +780,55 @@ new foo((resolve, reject) => reject(5));
           endLine: 3,
           column: 30,
           endColumn: 39,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Promise<number> {}
+Foo.reject(5);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 14,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: PromiseConstructor & string;
+foo.reject(5);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 3,
+          endLine: 3,
+          column: 1,
+          endColumn: 14,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Promise<number> {}
+class Bar extends Foo {}
+Bar.reject(5);
+      `,
+      errors: [
+        {
+          messageId: 'rejectAnError',
+          type: AST_NODE_TYPES.CallExpression,
+          line: 4,
+          endLine: 4,
+          column: 1,
+          endColumn: 14,
         },
       ],
     },

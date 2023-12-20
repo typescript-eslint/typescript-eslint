@@ -1,7 +1,6 @@
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import { getDeclaredVariables } from '@typescript-eslint/utils/eslint-utils';
-import type * as ts from 'typescript';
 
 import {
   createRule,
@@ -9,7 +8,8 @@ import {
   isErrorLike,
   isFunction,
   isIdentifier,
-  isSymbolFromDefaultLibrary,
+  isPromiseConstructorLike,
+  isPromiseLike,
 } from '../util';
 
 export type MessageIds = 'rejectAnError';
@@ -71,14 +71,6 @@ export default createRule<Options, MessageIds>({
       }
     }
 
-    function isPromiseConstructorLike(type: ts.Type): boolean {
-      const symbol = type.getSymbol();
-      return (
-        symbol?.getName() === 'PromiseConstructor' &&
-        isSymbolFromDefaultLibrary(program, symbol)
-      );
-    }
-
     function skipChainExpression<T extends TSESTree.Node>(
       node: T,
     ): T | TSESTree.ChainElement {
@@ -90,13 +82,21 @@ export default createRule<Options, MessageIds>({
     return {
       CallExpression(node): void {
         const callee = skipChainExpression(node.callee);
+
+        if (callee.type !== AST_NODE_TYPES.MemberExpression) {
+          return;
+        }
+
+        const calleeObjectType = services.getTypeAtLocation(callee.object);
         if (
-          callee.type !== AST_NODE_TYPES.MemberExpression ||
           (callee.computed
             ? callee.property.type === AST_NODE_TYPES.Literal &&
               callee.property.value !== 'reject'
             : callee.property.name !== 'reject') ||
-          !isPromiseConstructorLike(services.getTypeAtLocation(callee.object))
+          !(
+            isPromiseConstructorLike(program, calleeObjectType) ||
+            isPromiseLike(program, calleeObjectType)
+          )
         ) {
           return;
         }
@@ -105,7 +105,9 @@ export default createRule<Options, MessageIds>({
       },
       NewExpression(node): void {
         const callee = skipChainExpression(node.callee);
-        if (!isPromiseConstructorLike(services.getTypeAtLocation(callee))) {
+        if (
+          !isPromiseConstructorLike(program, services.getTypeAtLocation(callee))
+        ) {
           return;
         }
 
