@@ -185,20 +185,15 @@ export default createRule({
               node: element,
             });
           }
-        } else {
-          const argType = services.getTypeAtLocation(arg);
-          if (isTypeAnyType(argType) || isTypeUnknownType(argType)) {
-            return;
-          }
+          return;
+        }
 
-          if (!checker.isArrayType(argType)) {
-            context.report({
-              messageId: 'nonArrayArg',
-              node: arg,
-            });
-            return;
-          }
+        const argType = services.getTypeAtLocation(arg);
+        if (isTypeAnyType(argType) || isTypeUnknownType(argType)) {
+          return;
+        }
 
+        if (checker.isArrayType(argType)) {
           if (argType.typeArguments === undefined) {
             return;
           }
@@ -221,7 +216,38 @@ export default createRule({
             messageId: 'arrayArg',
             node: arg,
           });
+          return;
         }
+
+        if (checker.isTupleType(argType)) {
+          if (argType.typeArguments === undefined) {
+            return;
+          }
+
+          const originalNode = services.esTreeNodeToTSNodeMap.get(arg);
+          for (const typeArg of argType.typeArguments) {
+            if (isTypeAnyType(typeArg) || isTypeUnknownType(typeArg)) {
+              continue;
+            }
+
+            if (tsutils.isThenableType(checker, originalNode, typeArg)) {
+              continue;
+            }
+
+            context.report({
+              messageId: 'arrayArg',
+              node: arg,
+            });
+            return;
+          }
+          return;
+        }
+
+        context.report({
+          messageId: 'nonArrayArg',
+          node: arg,
+        });
+        return;
       },
     };
   },

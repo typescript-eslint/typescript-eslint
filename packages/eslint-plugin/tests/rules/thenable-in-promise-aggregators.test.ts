@@ -202,6 +202,17 @@ async function test() {
   await foo.resolve?.([foo.resolve(3)]);
 }
     `,
+    `
+async function test() {
+  const promisesTuple: [Promise<number>] = [Promise.resolve(3)];
+  await Promise.all(promisesTuple);
+}
+    `,
+    `
+async function test() {
+  await Promise.all([Promise.resolve(6)] as const);
+}
+    `,
   ],
 
   invalid: [
@@ -488,6 +499,27 @@ await Promise.all?.(arr);
       errors: [
         {
           line: 3,
+          messageId: messageIdArrayArg,
+        },
+      ],
+    },
+    {
+      code: `
+declare const foo: [number];
+await Promise.race(foo);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: messageIdArrayArg,
+        },
+      ],
+    },
+    {
+      code: 'await Promise.race([0] as const);',
+      errors: [
+        {
+          line: 1,
           messageId: messageIdArrayArg,
         },
       ],
