@@ -198,12 +198,11 @@ export default createRule({
         }
 
         if (checker.isArrayType(argType)) {
-          if (argType.typeArguments === undefined) {
-            return;
-          }
-
-          if (argType.typeArguments.length < 1) {
-            return;
+          if (
+            argType.typeArguments == null ||
+            argType.typeArguments.length < 1
+          ) {
+            throw new Error('Expected to find type arguments for an array.');
           }
 
           const typeArg = argType.typeArguments[0];
