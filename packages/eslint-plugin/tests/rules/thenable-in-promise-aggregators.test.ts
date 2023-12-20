@@ -111,6 +111,12 @@ async function test() {
     `,
     `
 async function test() {
+  const unionPromise: Promise<number> | number;
+  await Promise.race([unionPromise]);
+}
+    `,
+    `
+async function test() {
   class Thenable {
     then(callback: () => {}) {}
   }
@@ -245,6 +251,18 @@ async function test() {
 async function test() {
   const arrOfUnknown: unknown[] = [];
   await Promise.all(arrOfAny);
+}
+    `,
+    `
+async function test() {
+  const arrOfIntersection: (Promise<number> & number)[] = [];
+  await Promise.all(arrOfIntersection);
+}
+    `,
+    `
+async function test() {
+  const arrOfUnion: (Promise<number> | number)[] = [];
+  await Promise.all(arrOfUnion);
 }
     `,
   ],
@@ -483,6 +501,18 @@ await foo.all([0]);
       ],
     },
     {
+      code: `
+declare const badUnion: number | string;
+await Promise.all([badUnion]);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: 'inArray',
+        },
+      ],
+    },
+    {
       code: 'await Promise.race(3);',
       errors: [
         {
@@ -607,6 +637,18 @@ await Promise.race(foo);
       errors: [
         {
           line: 1,
+          messageId: 'arrayArg',
+        },
+      ],
+    },
+    {
+      code: `
+declare const badUnionArr: (number | string)[];
+await Promise.all(badUnionArr);
+      `,
+      errors: [
+        {
+          line: 3,
           messageId: 'arrayArg',
         },
       ],
