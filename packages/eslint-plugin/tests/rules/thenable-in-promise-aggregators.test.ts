@@ -78,7 +78,11 @@ async function test() {
   class Foo extends Promise<number> {}
   const foo: Foo = Foo.resolve(2);
   await Promise.race([foo]);
-
+}
+    `,
+    `
+async function test() {
+  class Foo extends Promise<number> {}
   class Bar extends Foo {}
   const bar: Bar = Bar.resolve(2);
   await Promise.race([bar]);
@@ -86,10 +90,11 @@ async function test() {
     `,
     `
 async function test() {
-  await Promise.race([Math.random() > 0.5 ? numberPromise : 0]);
-  await Promise.race([Math.random() > 0.5 ? foo : 0]);
-  await Promise.race([Math.random() > 0.5 ? bar : 0]);
-
+  await Promise.race([Math.random() > 0.5 ? nonExistentSymbol : 0]);
+}
+    `,
+    `
+async function test() {
   const intersectionPromise: Promise<number> & number;
   await Promise.race([intersectionPromise]);
 }
@@ -121,9 +126,8 @@ const doSomething = async (
     obj4.a.b.c?.(),
     obj5.a?.().b?.c?.(),
     obj6?.a.b.c?.(),
+    callback(),
   ]);
-
-  await Promise.allSettled([callback?.()]);
 };
     `,
     `
