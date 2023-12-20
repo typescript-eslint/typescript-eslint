@@ -224,6 +224,18 @@ async function test() {
   await Promise.all(foo);
 }
     `,
+    `
+async function test() {
+  const arrOfAny: any[] = [];
+  await Promise.all(arrOfAny)
+}
+    `,
+    `
+async function test() {
+  const arrOfUnknown: unknown[] = [];
+  await Promise.all(arrOfAny)
+}
+    `,
   ],
 
   invalid: [
