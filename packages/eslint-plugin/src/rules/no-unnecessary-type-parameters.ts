@@ -19,6 +19,7 @@ export default createRule({
       description: 'Disallow signatures using a generic parameter only once',
     },
     messages: {
+      // TODO: remove this, it's already covered by no-unused-vars
       never: 'Type parameter {{name}} is never used.',
       sole: 'Type parameter {{name}} is used only once.',
     },
