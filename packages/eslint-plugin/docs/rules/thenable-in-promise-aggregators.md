@@ -11,8 +11,7 @@ The `await` keyword is generally used to retrieve the result of calling a Thenab
 
 When multiple Thenable's are running at the same time, it is sometimes desirable to wait until any one of them resolves (`Promise.race`), all of them resolve or any of them reject (`Promise.all`), or all of them resolve or reject (`Promise.allSettled`).
 
-Each of these functions accept an iterable of promises as input and return a single
-Promise.
+Each of these functions accept an iterable of promises as input and return a single Promise.
 If a non-Thenable is passed, it is ignored.
 While doing so is valid JavaScript, it is often a programmer error, such as forgetting to unwrap a wrapped promise, or using the `await` keyword on the individual promises, which defeats the purpose of using one of these Promise aggregators.
 
