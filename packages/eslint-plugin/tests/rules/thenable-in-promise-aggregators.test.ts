@@ -148,6 +148,60 @@ async function test() {
   await Promise.all(values.map(async value => {}));
 }
     `,
+    `
+async function test() {
+  const foo = Promise;
+  await foo.all([Promise.resolve(3)]);
+}
+    `,
+    `
+async function test() {
+  const foo = Promise;
+  await Promise.all([foo.resolve(3)]);
+}
+    `,
+    `
+async function test() {
+  class Foo extends Promise<number> {}
+  await Foo.all([Foo.resolve(3)]);
+}
+    `,
+    `
+async function test() {
+  const foo = Promise;
+  await Promise.all([
+    new foo(resolve => {
+      resolve();
+    }),
+  ]);
+}
+    `,
+    `
+async function test() {
+  class Foo extends Promise<number> {}
+  const myfn = () =>
+    new Foo(resolve => {
+      resolve(3);
+    });
+  await Promise.all([myfn()]);
+}
+    `,
+    `
+async function test() {
+  await Promise.resolve?.([Promise.resolve(3)]);
+}
+    `,
+    `
+async function test() {
+  await Promise?.resolve?.([Promise.resolve(3)]);
+}
+    `,
+    `
+async function test() {
+  const foo = Promise;
+  await foo.resolve?.([foo.resolve(3)]);
+}
+    `,
   ],
 
   invalid: [
@@ -286,6 +340,69 @@ await Promise.all([wrappedPromise, stdPromise]);
       ],
     },
     {
+      code: `
+const foo = Promise;
+await foo.race([0]);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: messageIdInArray,
+        },
+      ],
+    },
+    {
+      code: `
+class Foo extends Promise<number> {}
+await Foo.all([0]);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: messageIdInArray,
+        },
+      ],
+    },
+    {
+      code: `
+const foo = (() => Promise)();
+await foo.all([0]);
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: messageIdInArray,
+        },
+      ],
+    },
+    {
+      code: 'await Promise.race?.([0]);',
+      errors: [
+        {
+          line: 1,
+          messageId: messageIdInArray,
+        },
+      ],
+    },
+    {
+      code: 'await Promise?.race?.([0]);',
+      errors: [
+        {
+          line: 1,
+          messageId: messageIdInArray,
+        },
+      ],
+    },
+    {
+      code: 'await Promise?.race?.([0]);',
+      errors: [
+        {
+          line: 1,
+          messageId: messageIdInArray,
+        },
+      ],
+    },
+    {
       code: 'await Promise.race(3);',
       errors: [
         {
@@ -322,6 +439,15 @@ await Promise.all([wrappedPromise, stdPromise]);
       ],
     },
     {
+      code: 'await Promise.race?.(undefined);',
+      errors: [
+        {
+          line: 1,
+          messageId: messageIdNonArrayArg,
+        },
+      ],
+    },
+    {
       code: `
 declare const promiseArr: Promise<number[]>;
 await Promise.all(promiseArr);
@@ -346,6 +472,18 @@ await Promise.all(promiseArr);
       code: `
 declare const promiseArr: Promise<number>[];
 await Promise.all(promiseArr.map(v => await v));
+      `,
+      errors: [
+        {
+          line: 3,
+          messageId: messageIdArrayArg,
+        },
+      ],
+    },
+    {
+      code: `
+declare const arr: number[];
+await Promise.all?.(arr);
       `,
       errors: [
         {

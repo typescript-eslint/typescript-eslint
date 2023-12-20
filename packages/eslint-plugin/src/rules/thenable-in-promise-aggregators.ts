@@ -5,7 +5,7 @@ import {
 import type { TSESTree } from '@typescript-eslint/utils';
 import { AST_NODE_TYPES } from '@typescript-eslint/utils';
 import * as tsutils from 'ts-api-utils';
-
+import ts from 'typescript';
 import { createRule, getParserServices } from '../util';
 
 export default createRule({
@@ -33,28 +33,129 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
+    const aggregateFunctionNames = ['all', 'race', 'allSettled'];
+
+    function skipChainExpression<T extends TSESTree.Node>(
+      node: T,
+    ): T | TSESTree.ChainElement {
+      return node.type === AST_NODE_TYPES.ChainExpression
+        ? node.expression
+        : node;
+    }
+
+    function isSymbolFromDefaultLibrary(
+      program: ts.Program,
+      symbol: ts.Symbol | undefined,
+    ): boolean {
+      if (!symbol) {
+        return false;
+      }
+
+      const declarations = symbol.getDeclarations() ?? [];
+      for (const declaration of declarations) {
+        const sourceFile = declaration.getSourceFile();
+        if (program.isSourceFileDefaultLibrary(sourceFile)) {
+          return true;
+        }
+      }
+
+      return false;
+    }
+
+    // Is like Promise, or a class/interface extending from Promise
+    function isPromiseClassLike(program: ts.Program, type: ts.Type): boolean {
+      if (type.isIntersection()) {
+        return type.types.some(t => isPromiseLike(program, t));
+      }
+      if (type.isUnion()) {
+        return type.types.every(t => isPromiseLike(program, t));
+      }
+
+      const symbol = type.getSymbol();
+      if (!symbol) {
+        return false;
+      }
+
+      if (
+        symbol.getName() === 'Promise' &&
+        isSymbolFromDefaultLibrary(program, symbol)
+      ) {
+        return true;
+      }
+
+      if (symbol.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Interface)) {
+        const checker = program.getTypeChecker();
+
+        for (const baseType of checker.getBaseTypes(type as ts.InterfaceType)) {
+          if (isPromiseLike(program, baseType)) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    }
+
+    // Is like PromiseConstructor, or a class/interface extending from Promise
+    function isPromiseLike(program: ts.Program, type: ts.Type): boolean {
+      if (type.isIntersection()) {
+        return type.types.some(t => isPromiseLike(program, t));
+      }
+      if (type.isUnion()) {
+        return type.types.every(t => isPromiseLike(program, t));
+      }
+
+      const symbol = type.getSymbol();
+      if (!symbol) {
+        return false;
+      }
+
+      if (
+        symbol.getName() === 'PromiseConstructor' &&
+        isSymbolFromDefaultLibrary(program, symbol)
+      ) {
+        return true;
+      }
+
+      if (symbol.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Interface)) {
+        const checker = program.getTypeChecker();
+
+        for (const baseType of checker.getBaseTypes(type as ts.InterfaceType)) {
+          if (isPromiseClassLike(program, baseType)) {
+            return true;
+          }
+        }
+      }
+
+      return false;
+    }
+
     return {
       CallExpression(node: TSESTree.CallExpression): void {
-        if (node.callee.type !== AST_NODE_TYPES.MemberExpression) {
-          return;
-        }
-        if (node.callee.object.type !== AST_NODE_TYPES.Identifier) {
-          return;
-        }
-        if (node.callee.object.name !== 'Promise') {
-          return;
-        }
-        if (node.callee.property.type !== AST_NODE_TYPES.Identifier) {
+        const callee = skipChainExpression(node.callee);
+        if (callee.type !== AST_NODE_TYPES.MemberExpression) {
           return;
         }
 
-        const { name } = node.callee.property;
-        if (!['race', 'all', 'allSettled'].includes(name)) {
+        if (callee.computed) {
+          if (
+            callee.property.type !== AST_NODE_TYPES.Literal ||
+            typeof callee.property.value !== 'string' ||
+            !aggregateFunctionNames.includes(callee.property.value)
+          ) {
+            return;
+          }
+        } else if (!aggregateFunctionNames.includes(callee.property.name)) {
           return;
         }
 
-        const { arguments: args } = node;
-        if (args.length !== 1) {
+        const callerType = services.getTypeAtLocation(callee.object);
+        if (!isPromiseLike(services.program, callerType)) {
+          return;
+        }
+
+        const args = node.arguments;
+        if (args.length < 1) {
           return;
         }
 
