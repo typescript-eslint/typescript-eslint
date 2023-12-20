@@ -302,7 +302,6 @@ await Promise.race([new NonPromise()]);
         {
           line: 3,
           messageId: messageIdInArray,
-          suggestions: [],
         },
       ],
     },
