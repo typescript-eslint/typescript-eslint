@@ -16,114 +16,62 @@ const ruleTester = new RuleTester({
 
 ruleTester.run('thenable-in-promise-aggregators', rule, {
   valid: [
+    'await Promise.race([Promise.resolve(3)]);',
+    'await Promise.all([Promise.resolve(3)]);',
+    'await Promise.allSettled([Promise.resolve(3)]);',
+    'await Promise.all([]);',
+    "await Promise['all']([Promise.resolve(3)]);",
+    "await Promise.all([Promise['resolve'](3)]);",
+    'await Promise.race([(async () => true)()]);',
     `
-async function test() {
-  await Promise.race([Promise.resolve(3)]);
+function returnsPromise() {
+  return Promise.resolve('value');
 }
+await Promise.race([returnsPromise()]);
     `,
     `
-async function test() {
-  await Promise.all([Promise.resolve(3)]);
-}
+async function returnsPromiseAsync() {}
+await Promise.race([returnsPromiseAsync()]);
     `,
     `
-async function test() {
-  await Promise.allSettled([Promise.resolve(3)]);
-}
+declare const anyValue: any;
+await Promise.race([anyValue]);
     `,
     `
-async function test() {
-  await Promise.all([]);
-}
+declare const unknownValue: unknown;
+await Promise.race([unknownValue]);
     `,
     `
-async function test() {
-  await Promise['all']([Promise.resolve(3)]);
-}
+declare const numberPromise: Promise<number>;
+await Promise.race([numberPromise]);
     `,
     `
-async function test() {
-  await Promise.all([Promise['resolve'](3)]);
-}
+class Foo extends Promise<number> {}
+const foo: Foo = Foo.resolve(2);
+await Promise.race([foo]);
     `,
     `
-async function test() {
-  await Promise.race([(async () => true)()]);
-}
+class Foo extends Promise<number> {}
+class Bar extends Foo {}
+const bar: Bar = Bar.resolve(2);
+await Promise.race([bar]);
+    `,
+    'await Promise.race([Math.random() > 0.5 ? nonExistentSymbol : 0]);',
+    `
+declare const intersectionPromise: Promise<number> & number;
+await Promise.race([intersectionPromise]);
     `,
     `
-async function test() {
-  function returnsPromise() {
-    return Promise.resolve('value');
-  }
-  await Promise.race([returnsPromise()]);
-}
+declare const unionPromise: Promise<number> | number;
+await Promise.race([unionPromise]);
     `,
     `
-async function test() {
-  async function returnsPromiseAsync() {}
-  await Promise.race([returnsPromiseAsync()]);
+class Thenable {
+  then(callback: () => {}) {}
 }
-    `,
-    `
-async function test() {
-  let anyValue: any;
-  await Promise.race([anyValue]);
-}
-    `,
-    `
-async function test() {
-  let unknownValue: unknown;
-  await Promise.race([unknownValue]);
-}
-    `,
-    `
-async function test() {
-  const numberPromise: Promise<number>;
-  await Promise.race([numberPromise]);
-}
-    `,
-    `
-async function test() {
-  class Foo extends Promise<number> {}
-  const foo: Foo = Foo.resolve(2);
-  await Promise.race([foo]);
-}
-    `,
-    `
-async function test() {
-  class Foo extends Promise<number> {}
-  class Bar extends Foo {}
-  const bar: Bar = Bar.resolve(2);
-  await Promise.race([bar]);
-}
-    `,
-    `
-async function test() {
-  await Promise.race([Math.random() > 0.5 ? nonExistentSymbol : 0]);
-}
-    `,
-    `
-async function test() {
-  const intersectionPromise: Promise<number> & number;
-  await Promise.race([intersectionPromise]);
-}
-    `,
-    `
-async function test() {
-  const unionPromise: Promise<number> | number;
-  await Promise.race([unionPromise]);
-}
-    `,
-    `
-async function test() {
-  class Thenable {
-    then(callback: () => {}) {}
-  }
-  const thenable = new Thenable();
 
-  await Promise.race([thenable]);
-}
+const thenable = new Thenable();
+await Promise.race([thenable]);
     `,
     `
 const doSomething = async (
@@ -147,123 +95,79 @@ const doSomething = async (
 };
     `,
     `
-async function test() {
-  const promiseArr: Promise<number>[];
-  await Promise.all(promiseArr);
-}
+declare const promiseArr: Promise<number>[];
+await Promise.all(promiseArr);
     `,
     `
-async function test() {
-  const intersectionArr: (Promise<number> & number)[];
-  await Promise.all(intersectionArr);
-}
+declare const intersectionArr: (Promise<number> & number)[];
+await Promise.all(intersectionArr);
     `,
     `
-async function test() {
-  const values = [1, 2, 3];
-  await Promise.all(values.map(value => Promise.resolve(value)));
-}
+const values = [1, 2, 3];
+await Promise.all(values.map(value => Promise.resolve(value)));
     `,
     `
-async function test() {
-  const values = [1, 2, 3];
-  await Promise.all(values.map(async value => {}));
-}
+const values = [1, 2, 3];
+await Promise.all(values.map(async value => {}));
     `,
     `
-async function test() {
-  const foo = Promise;
-  await foo.all([Promise.resolve(3)]);
-}
+const foo = Promise;
+await foo.all([Promise.resolve(3)]);
     `,
     `
-async function test() {
-  const foo = Promise;
-  await Promise.all([foo.resolve(3)]);
-}
+const foo = Promise;
+await Promise.all([foo.resolve(3)]);
     `,
     `
-async function test() {
-  class Foo extends Promise<number> {}
-  await Foo.all([Foo.resolve(3)]);
-}
+class Foo extends Promise<number> {}
+await Foo.all([Foo.resolve(3)]);
     `,
     `
-async function test() {
-  const foo = Promise;
-  await Promise.all([
-    new foo(resolve => {
-      resolve();
-    }),
-  ]);
-}
+const foo = Promise;
+await Promise.all([
+  new foo(resolve => {
+    resolve();
+  }),
+]);
     `,
     `
-async function test() {
-  class Foo extends Promise<number> {}
-  const myfn = () =>
-    new Foo(resolve => {
-      resolve(3);
-    });
-  await Promise.all([myfn()]);
-}
+class Foo extends Promise<number> {}
+const myfn = () =>
+  new Foo(resolve => {
+    resolve(3);
+  });
+await Promise.all([myfn()]);
+    `,
+    'await Promise.resolve?.([Promise.resolve(3)]);',
+    'await Promise?.resolve?.([Promise.resolve(3)]);',
+    `
+const foo = Promise;
+await foo.resolve?.([foo.resolve(3)]);
     `,
     `
-async function test() {
-  await Promise.resolve?.([Promise.resolve(3)]);
-}
+const promisesTuple: [Promise<number>] = [Promise.resolve(3)];
+await Promise.all(promisesTuple);
+    `,
+    'await Promise.all([Promise.resolve(6)] as const);',
+    `
+const foo = Array();
+await Promise.all(foo);
     `,
     `
-async function test() {
-  await Promise?.resolve?.([Promise.resolve(3)]);
-}
+declare const arrOfAny: any[];
+await Promise.all(arrOfAny);
     `,
     `
-async function test() {
-  const foo = Promise;
-  await foo.resolve?.([foo.resolve(3)]);
-}
+declare const arrOfUnknown: unknown[] = [];
+await Promise.all(arrOfAny);
     `,
     `
-async function test() {
-  const promisesTuple: [Promise<number>] = [Promise.resolve(3)];
-  await Promise.all(promisesTuple);
-}
+declare const arrOfIntersection: (Promise<number> & number)[] = [];
+await Promise.all(arrOfIntersection);
     `,
     `
-async function test() {
-  await Promise.all([Promise.resolve(6)] as const);
-}
-    `,
-    `
-async function test() {
-  const foo = Array();
-  await Promise.all(foo);
-}
-    `,
-    `
-async function test() {
-  const arrOfAny: any[] = [];
-  await Promise.all(arrOfAny);
-}
-    `,
-    `
-async function test() {
-  const arrOfUnknown: unknown[] = [];
-  await Promise.all(arrOfAny);
-}
-    `,
-    `
-async function test() {
-  const arrOfIntersection: (Promise<number> & number)[] = [];
-  await Promise.all(arrOfIntersection);
-}
-    `,
-    `
-async function test() {
-  const arrOfUnion: (Promise<number> | number)[] = [];
-  await Promise.all(arrOfUnion);
-}
+declare const arrOfUnion: (Promise<number> | number)[] = [];
+await Promise.all(arrOfUnion);
     `,
   ],
 
