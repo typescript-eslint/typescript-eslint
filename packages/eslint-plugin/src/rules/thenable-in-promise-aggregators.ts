@@ -14,7 +14,7 @@ export default createRule({
     docs: {
       description:
         'Disallow passing non-Thenable values to promise aggregators',
-      recommended: 'recommended',
+      recommended: 'strict',
       requiresTypeChecking: true,
     },
     messages: {
