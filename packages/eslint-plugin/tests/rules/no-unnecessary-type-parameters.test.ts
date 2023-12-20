@@ -89,16 +89,67 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
         },
       ],
     },
+    {
+      code: `
+        declare function get<T extends object>(): T;
+        // ~~~~~~~~~~~~~~~~ [cannotInfer { "name": "T" }]
+      `,
+      errors: [
+        {
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        declare function get<T, U = T>(param: U): U;
+        // ~ [cannotInfer { "name": "T" }]
+      `,
+      errors: [
+        {
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      code: `
+        declare function get<T, U extends T = T>(param: T): U;
+        // ~~~~~~~~~~~~~~~ [cannotInfer { "name": "U" }]
+      `,
+      errors: [
+        {
+          messageId: 'sole',
+        },
+      ],
+    },
+    {
+      only: true,
+      code: `
+        function printProperty<T, K extends keyof T>(obj: T, key: K) {
+          console.log(obj[key]);
+        }
+      `,
+      errors: [
+        {
+          messageId: 'sole',
+        },
+      ],
+    },
+    // {
+    //   code: ``,
+    //   errors: [
+    //     {
+    //       messageId: 'sole',
+    //     }
+    //   ]
+    // }
   ],
   /*
     }),
     `
-      declare function get<T extends object>(): T;
-                           ~~~~~~~~~~~~~~~~ [cannotInfer { "name": "T" }]
-      declare function get<T, U = T>(param: U): U;
-                           ~ [cannotInfer { "name": "T" }]
-      declare function get<T, U extends T = T>(param: T): U;
-                              ~~~~~~~~~~~~~~~ [cannotInfer { "name": "U" }]
+
+
+
       declare function get<T extends string, U>(param: Record<T, U>): boolean;
                            ~~~~~~~~~~~~~~~~ [canReplace { "name": "T", "replacement": "string" }]
                                              ~ [canReplace { "name": "U", "replacement": "unknown" }]

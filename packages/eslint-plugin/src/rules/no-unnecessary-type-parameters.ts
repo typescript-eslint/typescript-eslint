@@ -1,6 +1,7 @@
 /* eslint-disable */
 import type { TSESTree } from '@typescript-eslint/utils';
 import * as ts from 'typescript';
+import * as tsutils from 'ts-api-utils';
 
 import { createRule, getParserServices } from '../util';
 
@@ -28,6 +29,62 @@ export default createRule({
   },
   name: 'no-unnecessary-generics',
   create(context) {
+    const parserServices = getParserServices(context);
+    let usage: Map<ts.Identifier, tsutils.VariableInfo> | undefined;
+    function checkTypeParameters(
+      typeParameters: readonly ts.TypeParameterDeclaration[],
+      signature: ts.SignatureDeclaration,
+    ) {
+      if (usage === undefined) {
+        usage = tsutils.collectVariableUsage(signature.getSourceFile());
+      }
+
+      // XXX need to rewrite this (didn't even realize JS had labeled loops!)
+      outer: for (const typeParameter of typeParameters) {
+        let usedInParameters = false;
+        let usedInReturnOrExtends = isFunctionWithBody(signature);
+        for (const use of usage.get(typeParameter.name)!.uses) {
+          if (
+            use.location.pos > signature.parameters.pos &&
+            use.location.pos < signature.parameters.end
+          ) {
+            if (usedInParameters) {
+              continue outer;
+            }
+            usedInParameters = true;
+          } else if (!usedInReturnOrExtends) {
+            usedInReturnOrExtends =
+              use.location.pos > signature.parameters.end ||
+              isUsedInConstraint(use.location, typeParameters);
+          }
+        }
+        // XXX why are these handled differently?
+        if (!usedInParameters) {
+          context.report({
+            data: {
+              name: typeParameter.name.text,
+            },
+            node: parserServices.tsNodeToESTreeNodeMap.get(typeParameter),
+            messageId: 'sole',
+          });
+        } else if (
+          !usedInReturnOrExtends
+          // && !isConstrainedByOtherTypeParameter(typeParameter, typeParameters)
+        ) {
+          context.report({
+            data: {
+              name: typeParameter.name.text,
+              replacement: typeParameter.constraint
+                ? typeParameter.constraint.getText(signature.getSourceFile())
+                : 'unknown',
+            },
+            node: parserServices.tsNodeToESTreeNodeMap.get(typeParameter),
+            messageId: 'sole',
+          });
+        }
+      }
+    }
+
     return {
       [[
         'ArrowFunctionExpression[typeParameters]',
@@ -39,7 +96,6 @@ export default createRule({
         'TSFunctionType[typeParameters]',
         'TSMethodSignature[typeParameters]',
       ].join(', ')](esNode: ESTreeFunctionLikeWithTypeParameters): void {
-        const parserServices = getParserServices(context);
         const tsNode = parserServices.esTreeNodeToTSNodeMap.get(
           esNode,
         ) as TSSignatureDeclarationWithTypeParameters;
@@ -47,83 +103,54 @@ export default createRule({
           return;
         }
 
-        const checker = parserServices.program.getTypeChecker();
+        // const checker = parserServices.program.getTypeChecker();
 
-        for (const typeParameter of tsNode.typeParameters) {
-          const result = getSoleUse(
-            tsNode,
-            assertDefined(checker.getSymbolAtLocation(typeParameter.name)),
-            checker,
-          );
+        checkTypeParameters(tsNode.typeParameters, tsNode);
 
-          if (result === 'ok') {
-            continue;
-          }
-
-          context.report({
-            data: { name: typeParameter.name.text },
-            messageId: result,
-            node: parserServices.tsNodeToESTreeNodeMap.get(typeParameter),
-          });
-        }
+        // if (result === 'ok') {
+        //   continue;
+        // }
+        //
+        // context.report({
+        //   data: { name: typeParameter.name.text },
+        //   messageId: result,
+        //   node: parserServices.tsNodeToESTreeNodeMap.get(typeParameter),
+        // });
       },
     };
   },
 });
 
-type Result = 'ok' | 'never' | 'sole';
-
-function getSoleUse(
-  sig: ts.SignatureDeclaration,
-  typeParameterSymbol: ts.Symbol,
-  checker: ts.TypeChecker,
-): Result {
-  const exit = {};
-  let soleUse: ts.Identifier | undefined;
-
-  try {
-    if (sig.typeParameters) {
-      for (const tp of sig.typeParameters) {
-        if (tp.constraint) {
-          recur(tp.constraint);
-        }
-      }
-    }
-    for (const param of sig.parameters) {
-      if (param.type) {
-        recur(param.type);
-      }
-    }
-    if (sig.type) {
-      recur(sig.type);
-    }
-  } catch (err) {
-    if (err === exit) {
-      return 'ok';
-    }
-    throw err;
-  }
-
-  return soleUse ? 'sole' : 'never';
-
-  function recur(node: ts.Node): void {
-    if (ts.isIdentifier(node)) {
-      if (checker.getSymbolAtLocation(node) === typeParameterSymbol) {
-        if (soleUse === undefined) {
-          soleUse = node;
-        } else {
-          throw exit;
-        }
-      }
-    } else {
-      node.forEachChild(recur);
+function isUsedInConstraint(
+  use: ts.Identifier,
+  typeParameters: readonly ts.TypeParameterDeclaration[],
+) {
+  for (const typeParameter of typeParameters) {
+    if (
+      typeParameter.constraint !== undefined &&
+      use.pos >= typeParameter.constraint.pos &&
+      use.pos < typeParameter.constraint.end
+    ) {
+      return true;
     }
   }
+  return false;
 }
 
-function assertDefined<T>(value: T | undefined): T {
-  if (value === undefined) {
-    throw new Error('unreachable');
+export function isFunctionWithBody(
+  node: ts.Node,
+): node is ts.FunctionLikeDeclaration & { body: {} } {
+  switch (node.kind) {
+    case ts.SyntaxKind.GetAccessor:
+    case ts.SyntaxKind.SetAccessor:
+    case ts.SyntaxKind.FunctionDeclaration:
+    case ts.SyntaxKind.MethodDeclaration:
+    case ts.SyntaxKind.Constructor:
+      return (<ts.FunctionLikeDeclaration>node).body !== undefined;
+    case ts.SyntaxKind.FunctionExpression:
+    case ts.SyntaxKind.ArrowFunction:
+      return true;
+    default:
+      return false;
   }
-  return value;
 }
