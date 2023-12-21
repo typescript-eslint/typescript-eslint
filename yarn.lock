@@ -5015,19 +5015,25 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-arm64@npm:1.3.99":
-  version: 1.3.99
-  resolution: "@swc/core-darwin-arm64@npm:1.3.99"
+"@swc/core-darwin-arm64@npm:1.3.101":
+  version: 1.3.101
+  resolution: "@swc/core-darwin-arm64@npm:1.3.101"
   conditions: os=darwin & cpu=arm64
   languageName: node
   linkType: hard
 
-"@swc/core-darwin-x64@npm:1.3.99":
-  version: 1.3.99
-  resolution: "@swc/core-darwin-x64@npm:1.3.99"
+"@swc/core-darwin-x64@npm:1.3.101":
+  version: 1.3.101
+  resolution: "@swc/core-darwin-x64@npm:1.3.101"
   conditions: os=darwin & cpu=x64
   languageName: node
   linkType: hard
+
+"@swc/core-linux-arm-gnueabihf@link:./tools/dummypkg::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
+  version: 0.0.0-use.local
+  resolution: "@swc/core-linux-arm-gnueabihf@link:./tools/dummypkg::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A."
+  languageName: node
+  linkType: soft
 
 "@swc/core-linux-arm64-gnu@link:./tools/dummypkg::locator=%40typescript-eslint%2Ftypescript-eslint%40workspace%3A.":
   version: 0.0.0-use.local
@@ -5041,16 +5047,16 @@ __metadata:
   languageName: node
   linkType: soft
 
-"@swc/core-linux-x64-gnu@npm:1.3.99":
-  version: 1.3.99
-  resolution: "@swc/core-linux-x64-gnu@npm:1.3.99"
+"@swc/core-linux-x64-gnu@npm:1.3.101":
+  version: 1.3.101
+  resolution: "@swc/core-linux-x64-gnu@npm:1.3.101"
   conditions: os=linux & cpu=x64 & libc=glibc
   languageName: node
   linkType: hard
 
-"@swc/core-linux-x64-musl@npm:1.3.99":
-  version: 1.3.99
-  resolution: "@swc/core-linux-x64-musl@npm:1.3.99"
+"@swc/core-linux-x64-musl@npm:1.3.101":
+  version: 1.3.101
+  resolution: "@swc/core-linux-x64-musl@npm:1.3.101"
   conditions: os=linux & cpu=x64 & libc=musl
   languageName: node
   linkType: hard
@@ -5067,26 +5073,27 @@ __metadata:
   languageName: node
   linkType: soft
 
-"@swc/core-win32-x64-msvc@npm:1.3.99":
-  version: 1.3.99
-  resolution: "@swc/core-win32-x64-msvc@npm:1.3.99"
+"@swc/core-win32-x64-msvc@npm:1.3.101":
+  version: 1.3.101
+  resolution: "@swc/core-win32-x64-msvc@npm:1.3.101"
   conditions: os=win32 & cpu=x64
   languageName: node
   linkType: hard
 
 "@swc/core@npm:^1.3.68":
-  version: 1.3.99
-  resolution: "@swc/core@npm:1.3.99"
+  version: 1.3.101
+  resolution: "@swc/core@npm:1.3.101"
   dependencies:
-    "@swc/core-darwin-arm64": 1.3.99
-    "@swc/core-darwin-x64": 1.3.99
-    "@swc/core-linux-arm64-gnu": 1.3.99
-    "@swc/core-linux-arm64-musl": 1.3.99
-    "@swc/core-linux-x64-gnu": 1.3.99
-    "@swc/core-linux-x64-musl": 1.3.99
-    "@swc/core-win32-arm64-msvc": 1.3.99
-    "@swc/core-win32-ia32-msvc": 1.3.99
-    "@swc/core-win32-x64-msvc": 1.3.99
+    "@swc/core-darwin-arm64": 1.3.101
+    "@swc/core-darwin-x64": 1.3.101
+    "@swc/core-linux-arm-gnueabihf": 1.3.101
+    "@swc/core-linux-arm64-gnu": 1.3.101
+    "@swc/core-linux-arm64-musl": 1.3.101
+    "@swc/core-linux-x64-gnu": 1.3.101
+    "@swc/core-linux-x64-musl": 1.3.101
+    "@swc/core-win32-arm64-msvc": 1.3.101
+    "@swc/core-win32-ia32-msvc": 1.3.101
+    "@swc/core-win32-x64-msvc": 1.3.101
     "@swc/counter": ^0.1.1
     "@swc/types": ^0.1.5
   peerDependencies:
@@ -5095,6 +5102,8 @@ __metadata:
     "@swc/core-darwin-arm64":
       optional: true
     "@swc/core-darwin-x64":
+      optional: true
+    "@swc/core-linux-arm-gnueabihf":
       optional: true
     "@swc/core-linux-arm64-gnu":
       optional: true
@@ -5113,7 +5122,7 @@ __metadata:
   peerDependenciesMeta:
     "@swc/helpers":
       optional: true
-  checksum: a4d51e650913045fe3100195b053dafb55dc06fcadd4a9381712c64f09a75d548596bb1a96e8ed84ba0199f701e821a381a25db82c1016cdd731e0077a83192e
+  checksum: d9db5cc3306dc48e3f9fda4597c702de99851156a904be1974d69684589b52c73918270dbef06568e2ba5f9efb17a92333b361a79d1e138fad19a386c0f8c2c1
   languageName: node
   linkType: hard
 
