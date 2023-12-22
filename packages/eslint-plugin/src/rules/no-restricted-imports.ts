@@ -216,7 +216,7 @@ function shouldCreateRule(
   baseRules: RuleListener,
   options: Options,
 ): baseRules is Exclude<RuleListener, Record<string, never>> {
-  if (!Object.keys(baseRules).length || options.length === 0) {
+  if (Object.keys(baseRules).length === 0 || options.length === 0) {
     return false;
   }
 
