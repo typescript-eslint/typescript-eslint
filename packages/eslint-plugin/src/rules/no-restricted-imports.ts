@@ -221,7 +221,7 @@ function shouldCreateRule(
   }
 
   if (!isOptionsArrayOfStringOrObject(options)) {
-    return !!(options[0].paths?.length || options[0].patterns?.length);
+    return options[0].paths?.length !== 0 || options[0].patterns?.length !== 0;
   }
 
   return true;
