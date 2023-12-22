@@ -38,11 +38,14 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
     //     declare function compare<T, U extends T>(param1: T, param2: U): boolean; // this is also valid because T constrains U
     //   `,
     // },
-    `
-      function getProperty<T, K extends keyof T>(obj: T, key: K) {
-        return obj[key];
-      }
-    `,
+    {
+      only: true,
+      code: `
+        function getProperty<T, K extends keyof T>(obj: T, key: K) {
+          return obj[key];
+        }
+      `,
+    },
     {
       code: `
         // The inferred return type is V, therefore this is valid.
@@ -123,7 +126,7 @@ ruleTester.run('no-unnecessary-type-parameters', rule, {
       ],
     },
     {
-      only: true,
+      // only: true,
       code: `
         function printProperty<T, K extends keyof T>(obj: T, key: K) {
           console.log(obj[key]);

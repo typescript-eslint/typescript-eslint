@@ -20,8 +20,6 @@ export default createRule({
       description: 'Disallow signatures using a generic parameter only once',
     },
     messages: {
-      // TODO: remove this, it's already covered by no-unused-vars
-      never: 'Type parameter {{name}} is never used.',
       sole: 'Type parameter {{name}} is used only once.',
     },
     schema: [],
@@ -31,13 +29,11 @@ export default createRule({
   create(context) {
     const parserServices = getParserServices(context);
     let usage: Map<ts.Identifier, tsutils.VariableInfo> | undefined;
+    /*
     function checkTypeParameters(
       typeParameters: readonly ts.TypeParameterDeclaration[],
       signature: ts.SignatureDeclaration,
     ) {
-      if (usage === undefined) {
-        usage = tsutils.collectVariableUsage(signature.getSourceFile());
-      }
 
       // XXX need to rewrite this (didn't even realize JS had labeled loops!)
       outer: for (const typeParameter of typeParameters) {
@@ -84,6 +80,7 @@ export default createRule({
         }
       }
     }
+    */
 
     return {
       [[
@@ -105,7 +102,24 @@ export default createRule({
 
         // const checker = parserServices.program.getTypeChecker();
 
-        checkTypeParameters(tsNode.typeParameters, tsNode);
+        if (usage === undefined) {
+          usage = tsutils.collectVariableUsage(tsNode.getSourceFile());
+        }
+
+        for (const typeParameter of tsNode.typeParameters) {
+          const { uses } = usage.get(typeParameter.name)!;
+          if (uses.length === 1) {
+            context.report({
+              data: {
+                name: typeParameter.name.text,
+              },
+              node: parserServices.tsNodeToESTreeNodeMap.get(typeParameter),
+              messageId: 'sole',
+            });
+          }
+        }
+
+        // checkTypeParameters(tsNode.typeParameters, tsNode);
 
         // if (result === 'ok') {
         //   continue;
