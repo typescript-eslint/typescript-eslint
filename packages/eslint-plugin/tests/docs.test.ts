@@ -53,6 +53,7 @@ describe('Validating rule docs', () => {
     // comments in the files for more information.
     'camelcase.md',
     'no-duplicate-imports.md',
+    'no-parameter-properties.md',
   ]);
   it('All rules must have a corresponding rule doc', () => {
     const files = fs
