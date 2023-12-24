@@ -63,47 +63,31 @@ export default createRule({
       return false;
     }
 
-    // Is like Promise, or a class/interface extending from Promise
-    function isPromiseClassLike(program: ts.Program, type: ts.Type): boolean {
-      if (type.isIntersection()) {
-        return type.types.some(t => isPromiseLike(program, t));
-      }
-      if (type.isUnion()) {
-        return type.types.every(t => isPromiseLike(program, t));
-      }
-
-      const symbol = type.getSymbol();
-      if (!symbol) {
-        return false;
-      }
-
-      if (
-        symbol.getName() === 'Promise' &&
-        isSymbolFromDefaultLibrary(program, symbol)
-      ) {
-        return true;
-      }
-
-      if (symbol.flags & (ts.SymbolFlags.Class | ts.SymbolFlags.Interface)) {
-        const checker = program.getTypeChecker();
-
-        for (const baseType of checker.getBaseTypes(type as ts.InterfaceType)) {
-          if (isPromiseLike(program, baseType)) {
-            return true;
-          }
-        }
-      }
-
-      return false;
+    function isPromiseLike(program: ts.Program, type: ts.Type): boolean {
+      return isBuiltinSymbolLike(program, type, 'Promise');
     }
 
-    // Is like PromiseConstructor, or a class/interface extending from Promise
-    function isPromiseLike(program: ts.Program, type: ts.Type): boolean {
+    function isPromiseConstructorLike(
+      program: ts.Program,
+      type: ts.Type,
+    ): boolean {
+      return isBuiltinSymbolLike(program, type, 'PromiseConstructor');
+    }
+
+    function isBuiltinSymbolLike(
+      program: ts.Program,
+      type: ts.Type,
+      symbolName: string,
+    ): boolean {
       if (type.isIntersection()) {
-        return type.types.some(t => isPromiseLike(program, t));
+        return type.types.some(t =>
+          isBuiltinSymbolLike(program, t, symbolName),
+        );
       }
       if (type.isUnion()) {
-        return type.types.every(t => isPromiseLike(program, t));
+        return type.types.every(t =>
+          isBuiltinSymbolLike(program, t, symbolName),
+        );
       }
 
       const symbol = type.getSymbol();
@@ -112,7 +96,7 @@ export default createRule({
       }
 
       if (
-        symbol.getName() === 'PromiseConstructor' &&
+        symbol.getName() === symbolName &&
         isSymbolFromDefaultLibrary(program, symbol)
       ) {
         return true;
@@ -122,7 +106,7 @@ export default createRule({
         const checker = program.getTypeChecker();
 
         for (const baseType of checker.getBaseTypes(type as ts.InterfaceType)) {
-          if (isPromiseClassLike(program, baseType)) {
+          if (isBuiltinSymbolLike(program, baseType, symbolName)) {
             return true;
           }
         }
@@ -151,7 +135,10 @@ export default createRule({
         }
 
         const callerType = services.getTypeAtLocation(callee.object);
-        if (!isPromiseLike(services.program, callerType)) {
+        if (
+          !isPromiseConstructorLike(services.program, callerType) &&
+          !isPromiseLike(services.program, callerType)
+        ) {
           return;
         }
 
