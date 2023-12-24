@@ -34,7 +34,7 @@ export default createRule<Options, MessageIds>({
   name: 'lines-between-class-members',
   meta: {
     deprecated: true,
-    replacedBy: ['@stylistic/ts/line-between-class-members'],
+    replacedBy: ['@stylistic/ts/lines-between-class-members'],
     type: 'layout',
     docs: {
       description: 'Require or disallow an empty line between class members',

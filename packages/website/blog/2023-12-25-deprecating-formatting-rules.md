@@ -51,7 +51,7 @@ The equivalent stylistic rules for deprecated typescript-eslint rules are summar
 | [`@typescript-eslint/key-spacing`](/rules/key-spacing)                                        | [`@stylistic/key-spacing`](https://eslint.style/rules/ts/key-spacing)                                 |
 | [`@typescript-eslint/keyword-spacing`](/rules/keyword-spacing)                                | [`@stylistic/keyword-spacing`](https://eslint.style/rules/ts/keyword-spacing)                         |
 | [`@typescript-eslint/lines-around-comment`](/rules/lines-around-comment)                      | [`@stylistic/lines-around-comment`](https://eslint.style/rules/ts/lines-around-comment)               |
-| [`@typescript-eslint/lines-between-class-members`](/rules/lines-between-class-members)        | [`@stylistic/line-between-class-members`](https://eslint.style/rules/ts/between-class-members)        |
+| [`@typescript-eslint/lines-between-class-members`](/rules/lines-between-class-members)        | [`@stylistic/lines-between-class-members`](https://eslint.style/rules/ts/lines-between-class-members)        |
 | [`@typescript-eslint/member-delimiter-style`](/rules/member-delimiter-style)                  | [`@stylistic/member-delimiter-style`](https://eslint.style/rules/ts/member-delimiter-style)           |
 | [`@typescript-eslint/no-extra-parens`](/rules/no-extra-parens)                                | [`@stylistic/no-extra-parens`](https://eslint.style/rules/ts/no-extra-parens)                         |
 | [`@typescript-eslint/padding-line-between-statements`](/rules/padding-line-between-statement) | [`@stylistic/padding-line-between-statements`](https://eslint.style/rules/ts/line-between-statements) |
