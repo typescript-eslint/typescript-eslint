@@ -1,20 +1,21 @@
 import { createProjectService } from '../../src/create-program/createProjectService';
 
 describe('createProjectService', () => {
-  it('sets allowDefaultProjectForFiles to a populated Set when options.allowDefaultProjectForFiles is defined', () => {
+  it('sets allowDefaultProjectForFiles when options.allowDefaultProjectForFiles is defined', () => {
     const allowDefaultProjectForFiles = ['./*.js'];
     const settings = createProjectService(
       { allowDefaultProjectForFiles },
       undefined,
-      __dirname,
     );
 
-    expect(settings.allowDefaultProjectForFiles.size).toBe(1);
+    expect(settings.allowDefaultProjectForFiles).toBe(
+      allowDefaultProjectForFiles,
+    );
   });
 
-  it('sets allowDefaultProjectForFiles to an empty Set when options.allowDefaultProjectForFiles is not defined', () => {
-    const settings = createProjectService(undefined, undefined, __dirname);
+  it('does not set allowDefaultProjectForFiles when options.allowDefaultProjectForFiles is not defined', () => {
+    const settings = createProjectService(undefined, undefined);
 
-    expect(settings.allowDefaultProjectForFiles.size).toBe(0);
+    expect(settings.allowDefaultProjectForFiles).toBeUndefined();
   });
 });

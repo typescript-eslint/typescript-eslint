@@ -1,10 +1,7 @@
 /* eslint-disable @typescript-eslint/no-empty-function -- for TypeScript APIs*/
-import globby from 'globby';
-import * as path from 'path';
 import type * as ts from 'typescript/lib/tsserverlibrary';
 
 import type { ProjectServiceOptions } from '../parser-options';
-import { getCanonicalFileName } from './shared';
 
 const doNothing = (): void => {};
 
@@ -15,14 +12,13 @@ const createStubFileWatcher = (): ts.FileWatcher => ({
 export type TypeScriptProjectService = ts.server.ProjectService;
 
 export interface ProjectServiceSettings {
-  allowDefaultProjectForFiles: ReadonlySet<string>;
+  allowDefaultProjectForFiles: string[] | undefined;
   service: TypeScriptProjectService;
 }
 
 export function createProjectService(
   options: boolean | ProjectServiceOptions | undefined,
   jsDocParsingMode: ts.JSDocParsingMode | undefined,
-  tsconfigRootDir: string,
 ): ProjectServiceSettings {
   // We import this lazily to avoid its cost for users who don't use the service
   // TODO: Once we drop support for TS<5.3 we can import from "typescript" directly
@@ -63,15 +59,10 @@ export function createProjectService(
   });
 
   return {
-    allowDefaultProjectForFiles: new Set(
+    allowDefaultProjectForFiles:
       typeof options === 'object'
         ? options.allowDefaultProjectForFiles
-            ?.flatMap(pattern => globby.sync(pattern))
-            .map(filePath =>
-              getCanonicalFileName(path.join(tsconfigRootDir, filePath)),
-            )
         : undefined,
-    ),
     service,
   };
 }

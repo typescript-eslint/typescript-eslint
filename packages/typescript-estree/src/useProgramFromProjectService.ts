@@ -1,3 +1,4 @@
+import { minimatch } from 'minimatch';
 import { createProjectProgram } from './create-program/createProjectProgram';
 import type { ProjectServiceSettings } from './create-program/createProjectService';
 import {
@@ -23,12 +24,12 @@ export function useProgramFromProjectService(
 
   if (hasFullTypeInformation) {
     if (opened.configFileName) {
-      if (allowDefaultProjectForFiles.has(filePath)) {
+      if (filePathMatchedBy(filePath, allowDefaultProjectForFiles)) {
         throw new Error(
           `${filePath} was included by allowDefaultProjectForFiles but also was found in the project service. Consider removing it from allowDefaultProjectForFiles.`,
         );
       }
-    } else if (!allowDefaultProjectForFiles.has(filePath)) {
+    } else if (!filePathMatchedBy(filePath, allowDefaultProjectForFiles)) {
       throw new Error(
         `${filePath} was not found by the project service. Consider either including it in the tsconfig.json or including it in allowDefaultProjectForFiles.`,
       );
@@ -46,4 +47,13 @@ export function useProgramFromProjectService(
   }
 
   return createProjectProgram(parseSettings, [program]);
+}
+
+function filePathMatchedBy(
+  filePath: string,
+  allowDefaultProjectForFiles: string[] | undefined,
+) {
+  return !!allowDefaultProjectForFiles?.some(pattern =>
+    minimatch(filePath, pattern),
+  );
 }

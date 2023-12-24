@@ -87,7 +87,6 @@ export function createParseSettings(
         ? (TSSERVER_PROJECT_SERVICE ??= createProjectService(
             options.EXPERIMENTAL_useProjectService,
             jsDocParsingMode,
-            tsconfigRootDir,
           ))
         : undefined,
     EXPERIMENTAL_useSourceOfProjectReferenceRedirect:
