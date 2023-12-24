@@ -58,7 +58,7 @@ The equivalent stylistic rules for deprecated typescript-eslint rules are summar
 | [`@typescript-eslint/quotes`](/rules/quotes)                                                  | [`@stylistic/quotes`](https://eslint.style/rules/ts/quotes)                                           |
 | [`@typescript-eslint/semi`](/rules/semi)                                                      | [`@stylistic/semi`](https://eslint.style/rules/ts/semi)                                               |
 | [`@typescript-eslint/space-before-blocks`](/rules/space-before-blocks)                        | [`@stylistic/space-before-blocks`](https://eslint.style/rules/ts/space-before-blocks)                 |
-| [`@typescript-eslint/space-before-function-paren`](/rules/space-before-function-paren)        | [`@stylistic/space-before-function-paren`](https://eslint.style/rules/ts/before-function-paren)       |
+| [`@typescript-eslint/space-before-function-paren`](/rules/space-before-function-paren)        | [`@stylistic/space-before-function-paren`](https://eslint.style/rules/ts/space-before-function-paren)       |
 | [`@typescript-eslint/space-infix-ops`](/rules/space-infix-ops)                                | [`@stylistic/space-infix-ops`](https://eslint.style/rules/ts/space-infix-ops)                         |
 | [`@typescript-eslint/type-annotation-spacing`](/rules/type-annotation-spacing)                | [`@stylistic/type-annotation-spacing`](https://eslint.style/rules/ts/type-annotation-spacing)         |
 
