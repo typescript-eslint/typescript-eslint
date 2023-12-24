@@ -101,8 +101,7 @@ You might consider using [ESLint disable comments](https://eslint.org/docs/lates
 This rule has a known edge case of triggering on conditions that were modified within function calls (as side effects).
 It is due to limitations of TypeScript's type narrowing.
 See [#9998](https://github.com/microsoft/TypeScript/issues/9998) for details.
-
-We recommend upcasting the variable with a [type assertion](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions).
+We recommend using a [type assertion](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions) in those cases.
 
 ```ts
 let condition = false as boolean;
