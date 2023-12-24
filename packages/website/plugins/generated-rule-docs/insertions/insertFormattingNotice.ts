@@ -3,13 +3,13 @@ import type * as unist from 'unist';
 import type { RuleDocsPage } from '../RuleDocsPage';
 
 export function insertFormattingNotice(page: RuleDocsPage): void {
-  if (page.rule.meta.type !== 'layout') {
+  const replacement = page.rule.meta.replacedBy?.find(e =>
+    e.startsWith('@stylistic/'),
+  );
+  if (!replacement) {
     return;
   }
 
-  const replacement = page.rule.meta.replacedBy!.find(e =>
-    e.startsWith('@stylistic/'),
-  );
   const url =
     replacement &&
     `https://eslint.style/rules/ts/${replacement.replace('@stylistic/', '')}`;
