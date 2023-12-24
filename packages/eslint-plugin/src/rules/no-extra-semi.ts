@@ -13,6 +13,8 @@ type MessageIds = InferMessageIdsTypeFromRule<typeof baseRule>;
 export default createRule<Options, MessageIds>({
   name: 'no-extra-semi',
   meta: {
+    deprecated: true,
+    replacedBy: ['@stylistic/ts/no-extra-semi'],
     type: 'suggestion',
     docs: {
       description: 'Disallow unnecessary semicolons',
