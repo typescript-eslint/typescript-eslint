@@ -54,6 +54,7 @@ The equivalent stylistic rules for deprecated typescript-eslint rules are summar
 | [`@typescript-eslint/lines-between-class-members`](/rules/lines-between-class-members)         | [`@stylistic/lines-between-class-members`](https://eslint.style/rules/ts/lines-between-class-members)         |
 | [`@typescript-eslint/member-delimiter-style`](/rules/member-delimiter-style)                   | [`@stylistic/member-delimiter-style`](https://eslint.style/rules/ts/member-delimiter-style)                   |
 | [`@typescript-eslint/no-extra-parens`](/rules/no-extra-parens)                                 | [`@stylistic/no-extra-parens`](https://eslint.style/rules/ts/no-extra-parens)                                 |
+| [`@typescript-eslint/no-extra-semi`](/rules/no-extra-semi)                                     | [`@stylistic/no-extra-semi`](https://eslint.style/rules/ts/no-extra-semi)                                     |
 | [`@typescript-eslint/padding-line-between-statements`](/rules/padding-line-between-statements) | [`@stylistic/padding-line-between-statements`](https://eslint.style/rules/ts/padding-line-between-statements) |
 | [`@typescript-eslint/quotes`](/rules/quotes)                                                   | [`@stylistic/quotes`](https://eslint.style/rules/ts/quotes)                                                   |
 | [`@typescript-eslint/semi`](/rules/semi)                                                       | [`@stylistic/semi`](https://eslint.style/rules/ts/semi)                                                       |
