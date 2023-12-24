@@ -19,6 +19,7 @@ ruleTester.run('thenable-in-promise-aggregators', rule, {
     'await Promise.race([Promise.resolve(3)]);',
     'await Promise.all([Promise.resolve(3)]);',
     'await Promise.allSettled([Promise.resolve(3)]);',
+    'await Promise.any([Promise.resolve(3)]);',
     'await Promise.all([]);',
     "await Promise['all']([Promise.resolve(3)]);",
     "await Promise.all([Promise['resolve'](3)]);",
@@ -280,6 +281,15 @@ await Promise.all(baz);
     },
     {
       code: 'await Promise.allSettled([0]);',
+      errors: [
+        {
+          line: 1,
+          messageId: 'inArray',
+        },
+      ],
+    },
+    {
+      code: 'await Promise.any([0]);',
       errors: [
         {
           line: 1,

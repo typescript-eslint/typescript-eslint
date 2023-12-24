@@ -33,7 +33,7 @@ export default createRule({
     const services = getParserServices(context);
     const checker = services.program.getTypeChecker();
 
-    const aggregateFunctionNames = ['all', 'race', 'allSettled'];
+    const aggregateFunctionNames = ['all', 'race', 'allSettled', 'any'];
 
     function skipChainExpression<T extends TSESTree.Node>(
       node: T,
