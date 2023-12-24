@@ -155,3 +155,9 @@ type ExampleGroup = null | 123;
 ```ts option='{ "groupOrder": ["literal", "nullish" ]}'
 type ExampleGroup = 123 | null;
 ```
+
+## When Not To Use It
+
+This rule is purely a stylistic rule for maintaining consistency in your project.
+You can turn it off if you don't want to keep a consistent, predictable order for intersection and union types.
+However, keep in mind that inconsistent style can harm readability in a project.

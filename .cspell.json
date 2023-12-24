@@ -120,6 +120,7 @@
     "serializers",
     "Sourcegraph",
     "stringification",
+    "stringifying",
     "stringly",
     "superset",
     "thenables",
@@ -137,7 +138,6 @@
     "unfixable",
     "unoptimized",
     "unprefixed",
-    "upcasting",
     "upsert",
     "warnonunsupportedtypescriptversion",
     "Zacher"
@@ -145,10 +145,7 @@
   "overrides": [
     {
       "filename": "**/*.{ts,mts,cts,js,cjs,mjs,tsx,jsx}",
-      "ignoreRegExpList": [
-        "/@[a-z]+/",
-        "/#(end)?region/"
-      ],
+      "ignoreRegExpList": ["/@[a-z]+/", "/#(end)?region/"],
       "includeRegExpList": [
         "/\\/\\*[\\s\\S]*?\\*\\/|([^\\\\:]|^)\\/\\/.*$/",
         "/(\\/\\/[^\\n\\r]*[\\n\\r]+)/"

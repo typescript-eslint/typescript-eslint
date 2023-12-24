@@ -77,3 +77,6 @@ vegetable === Vegetable.Asparagus;
 ## When Not To Use It
 
 If you don't mind number and/or literal string constants being compared against enums, you likely don't need this rule.
+
+Separately, in the rare case of relying on an third party enums that are only imported as `type`s, it may be difficult to adhere to this rule.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.

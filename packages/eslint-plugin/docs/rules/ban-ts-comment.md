@@ -143,7 +143,8 @@ if (false) {
 
 ## When Not To Use It
 
-If you want to use all of the TypeScript directives.
+If your project or its dependencies were not architected with strong type safety in mind, it can be difficult to always adhere to proper TypeScript semantics.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.
 
 ## Further Reading
 

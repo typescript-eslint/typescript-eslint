@@ -89,3 +89,8 @@ class X implements Y {
   property = () => {};
 }
 ```
+
+## When Not To Use It
+
+If your project dynamically changes `this` scopes around in a way TypeScript has difficulties modeling, this rule may not be viable to use.
+You might consider using [ESLint disable comments](https://eslint.org/docs/latest/use/configure/rules#using-configuration-comments-1) for those specific situations instead of completely disabling this rule.

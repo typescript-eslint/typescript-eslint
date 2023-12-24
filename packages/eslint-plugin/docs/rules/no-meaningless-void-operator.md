@@ -47,3 +47,7 @@ void bar(); // discarding a number
 ### `checkNever`
 
 `checkNever: true` will suggest removing `void` when the argument has type `never`.
+
+## When Not To Use It
+
+If you don't mind extra `void`s in your project, you can avoid this rule.

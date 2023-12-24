@@ -102,5 +102,4 @@ class Mx {
 
 ## When Not To Use It
 
-When you have no strong preference, or do not wish to enforce a particular style
-for how literal values are exposed by your classes.
+When you have no strong preference, or do not wish to enforce a particular style for how literal values are exposed by your classes.

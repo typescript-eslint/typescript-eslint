@@ -1,0 +1,4 @@
+---
+id: governance
+title: Governance
+---
